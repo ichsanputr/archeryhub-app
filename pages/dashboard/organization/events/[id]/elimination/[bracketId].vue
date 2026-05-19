@@ -112,7 +112,7 @@
                                         <span class="truncate hidden sm:inline">{{ categoryInfo.category_name }}</span>
                                         <span class="opacity-40 hidden sm:inline">•</span>
                                         <span class="truncate hidden sm:inline">{{ bracket.bracket_size }}
-                                            Peserta</span>
+                                            {{ $t('event_elimination.participants') }}</span>
                                     </template>
                                 </div>
 
@@ -124,7 +124,7 @@
                                         <Icon icon="ph:chart-bar-fill" class="text-primary text-[10px] sm:text-xs" />
                                         <span
                                             class="text-[8px] sm:text-[10px] font-black tracking-wide sm:tracking-widest text-white/60 whitespace-nowrap">
-                                            {{ finishedMatchesCount }}/{{ matches.length }} Selesai
+                                            {{ finishedMatchesCount }}/{{ matches.length }} {{ $t('event_elimination.done') }}
                                         </span>
                                     </div>
                                     <div v-if="currentRoundNo"
@@ -164,7 +164,7 @@
                             <BaseButton v-if="!currentRoundNo && Object.keys(rounds).length === 0"
                                 @click="generateBracket" variant="primary" icon="ph:magic-wand-bold"
                                 class="h-10 sm:h-11 shadow-lg shadow-primary/30 tracking-[0.2em] font-black text-[10px] sm:text-xs">
-                                Buat Bracket
+                                {{ $t('event_elimination.create_bracket') }}
                             </BaseButton>
 
                         </div>
@@ -199,11 +199,11 @@
         <!-- Not Found / Error State -->
         <div v-else class="text-center py-20 bg-white rounded-[40px] border border-gray-100 shadow-sm">
             <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-50 mb-4 mx-auto" />
-            <h2 class="text-3xl font-black text-navy tracking-tight">Bracket Tidak Ditemukan</h2>
-            <p class="text-gray-400 mt-2">UUID bracket atau ID pertandingan tidak valid.</p>
+            <h2 class="text-3xl font-black text-navy tracking-tight">{{ $t('event_elimination.bracket_not_found') }}</h2>
+            <p class="text-gray-400 mt-2">{{ $t('event_elimination.bracket_invalid_desc') }}</p>
             <button @click="navigateTo(`/dashboard/events/${eventId}/elimination`)"
                 class="mt-10 px-6 py-3 rounded-2xl border-2 border-navy text-navy font-black tracking-widest hover:bg-navy hover:text-white transition-all">
-                Kembali ke Daftar
+                {{ $t('event_elimination.back_to_list') }}
             </button>
         </div>
     </div>
@@ -226,14 +226,9 @@
                         </div>
 
                         <div class="relative p-6 sm:p-8 text-center">
-                            <!-- Title -->
                             <div class="mb-4 sm:mb-6">
-                                <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">Akhiri
-                                    Pertandingan?
-                                </h2>
-                                <p class="text-white/60 text-[10px] sm:text-sm mt-1">Konfirmasi untuk menentukan
-                                    pemenang
-                                </p>
+                                <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">{{ $t('event_elimination.end_match_confirm') }}</h2>
+                                <p class="text-white/60 text-[10px] sm:text-sm mt-1">{{ $t('event_elimination.end_match_confirm_desc') }}</p>
                             </div>
 
                             <!-- Battle Display -->
@@ -258,7 +253,7 @@
                                         <div v-if="getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id"
                                             class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[8px] sm:text-[10px] font-black tracking-wider shrink-0 sm:mt-2">
                                             <Icon icon="ph:crown-simple-fill" class="text-[10px]" />
-                                            <span class="hidden sm:inline">PEMENANG</span>
+                                            <span class="hidden sm:inline">{{ $t('event_elimination.winner') }}</span>
                                         </div>
                                     </div>
 
@@ -289,7 +284,7 @@
                                         <div v-if="getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id"
                                             class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[8px] sm:text-[10px] font-black tracking-wider shrink-0 sm:mt-2">
                                             <Icon icon="ph:crown-simple-fill" class="text-[10px]" />
-                                            <span class="hidden sm:inline">PEMENANG</span>
+                                            <span class="hidden sm:inline">{{ $t('event_elimination.winner') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -300,13 +295,10 @@
                                 class="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl text-left">
                                 <div class="flex items-center gap-2 mb-3">
                                     <Icon icon="ph:info-bold" class="text-yellow-500" />
-                                    <span class="text-xs font-black text-yellow-500 tracking-widest">Penentuan
-                                        Pemenang Manual</span>
+                                    <span class="text-xs font-black text-yellow-500 tracking-widest">{{ $t('event_elimination.manual_winner_desc') }}</span>
                                 </div>
                                 <p class="text-[10px] text-white/40 mb-4 leading-relaxed">
-                                    Skor shoot-off sama. Silahkan pilih pemenang secara manual berdasarkan kriteria
-                                    (misal:
-                                    panah terdekat ke pusat).
+                                    {{ $t('event_elimination.shoot_off_tie_desc') }}
                                 </p>
 
                                 <div class="space-y-2">
@@ -336,13 +328,13 @@
                             <div class="flex gap-3">
                                 <button @click="showEndMatchDialog = false"
                                     class="flex-1 px-6 py-3 rounded-xl bg-white/10 border border-white/20 text-white font-bold hover:bg-white/20 transition-all">
-                                    Batal
+                                    {{ $t('event_elimination.cancel') }}
                                 </button>
                                 <BaseButton @click="confirmEndMatch"
                                     :disabled="isEndingMatch || (selectedScoringMatch && getMatchScore(selectedScoringMatch, 'A') === getMatchScore(selectedScoringMatch, 'B') && !manualWinnerId)"
                                     variant="primary" :loading="isEndingMatch" icon="ph:check-bold"
                                     class="flex-1 px-6 py-3 rounded-xl font-black tracking-wide">
-                                    {{ isEndingMatch ? 'Memproses...' : 'Konfirmasi' }}
+                                    {{ isEndingMatch ? $t('event_elimination.processing') : $t('event_elimination.confirm') }}
                                 </BaseButton>
                             </div>
                         </div>
@@ -356,6 +348,7 @@
 <script setup>
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import { useI18n } from 'vue-i18n'
 
 import EliminationBracketView from '~/components/elimination/EliminationBracketView.vue'
 import EliminationTargetMode from '~/components/elimination/EliminationTargetMode.vue'
@@ -364,6 +357,8 @@ import EliminationScoringMode from '~/components/elimination/EliminationScoringM
 definePageMeta({
     layout: 'dashboard'
 })
+
+const { t } = useI18n()
 
 const route = useRoute()
 const router = useRouter()
@@ -406,7 +401,7 @@ const finishedMatchesCount = computed(() => {
 })
 
 const pageTitle = computed(() => {
-    const catName = bracket.value?.category_name || 'Bagan Eliminasi'
+    const catName = bracket.value?.category_name || t('event_elimination.title') || 'Bagan Eliminasi'
     if (!currentRoundNo.value) return catName
     return `${catName} - ${getRoundName(parseInt(currentRoundNo.value))}`
 })
@@ -424,10 +419,10 @@ const targetOptions = computed(() => {
 
 // Round Management States
 const activeTab = ref(route.query.mode === 'scoring' ? 'scoring' : 'target')
-const tabs = [
-    { id: 'target', label: 'Target', icon: 'ph:target-bold' },
-    { id: 'scoring', label: 'Penilaian', icon: 'ph:pencil-circle-bold' }
-]
+const tabs = computed(() => [
+    { id: 'target', label: t('event_elimination.target_codes') || 'Target', icon: 'ph:target-bold' },
+    { id: 'scoring', label: t('event_elimination.scores') || 'Penilaian', icon: 'ph:pencil-circle-bold' }
+])
 
 // Sync activeTab with route query
 watch(() => route.query.mode, (newMode) => {
@@ -543,7 +538,7 @@ const fetchBracket = async (silent = false) => {
         fetchTeamMembers()
     } catch (error) {
         console.error('Failed to fetch bracket:', error)
-        toast.error('Gagal memuat bracket')
+        toast.error(t('event_elimination.toast_bracket_load_failed'))
     } finally {
         if (!silent) isLoading.value = false
     }
@@ -575,14 +570,14 @@ const fetchAvailableTargets = async () => {
 const generateBracket = async () => {
     try {
         await post(`/events/${eventId}/elimination/brackets/${bracketId}/generate`)
-        toast.success('Bracket berhasil di-generate')
+        toast.success(t('event_elimination.toast_bracket_generated'))
         await fetchBracket()
     } catch (error) {
         console.error('Failed to generate bracket:', error)
         const data = error?.data || error?.response?.data
-        let msg = data?.error || 'Gagal generate bracket'
+        let msg = data?.error || t('event_elimination.toast_bracket_generate_failed')
         if (data?.participant_count != null && data?.required != null) {
-            msg = `${data.error} (tersedia ${data.participant_count}, diperlukan ${data.required})`
+            msg = `${data.error} (${t('event_elimination.available')} ${data.participant_count}, ${t('event_elimination.required_count')} ${data.required})`
         }
         toast.error(msg)
     }
@@ -603,10 +598,10 @@ const openScoresheet = async () => {
         const url = `${apiBase}/events/${eventId}/elimination/brackets/${bracketId}/scoresheet?${params}`
         const win = window.open(url, '_blank')
         if (!win) {
-            toast.addToast('Popup diblokir. Izinkan popup untuk halaman ini.', 'warning')
+            toast.addToast(t('event_elimination.popup_blocked'), 'warning')
         }
     } catch {
-        toast.addToast('Gagal membuka scoresheet', 'error')
+        toast.addToast(t('event_elimination.toast_failed_open_scoresheet'), 'error')
     } finally {
         isDownloadingScoresheet.value = false
     }
@@ -853,7 +848,7 @@ const calculateEndStats = (matchId, endNo, side) => {
 const addArrowScore = (score) => {
     if (!selectedScoringMatch.value) return
     if (isMatchFinished.value) {
-        toast.info('Pertandingan sudah selesai, skor tidak dapat diubah')
+        toast.info(t('event_elimination.toast_match_finished_no_edit'))
         return
     }
     const matchId = selectedScoringMatch.value.id
@@ -951,7 +946,7 @@ const saveAndNext = async () => {
             arrows_b: matchEnds.value[matchId].B[currentEnd.value].arrows.filter(a => a !== null).map(a => String(a))
         })
 
-        toast.success(`Skor End ${currentEnd.value} Berhasil Disimpan`)
+        toast.success(t('event_elimination.toast_end_score_saved', { end: currentEnd.value }))
 
         // Update match scores in UI by re-fetching bracket (silently)
         await fetchBracket(true)
@@ -963,7 +958,7 @@ const saveAndNext = async () => {
             if (currentEnd.value < (bracket.value?.ends_per_match || 5)) currentEnd.value++
         }
     } catch (e) {
-        toast.error('Gagal menyimpan skor')
+        toast.error(t('event_elimination.toast_save_score_failed'))
     } finally {
         isSaving.value = false
     }
@@ -971,14 +966,14 @@ const saveAndNext = async () => {
 
 const resetMatch = async () => {
     if (!selectedScoringMatch.value) return
-    const confirmed = confirm('Apakah Anda yakin ingin me-reset status pertandingan ini menjadi LIVE? Ini akan memungkinkan pengeditan skor kembali dan menghapus status pemenang dari babak berikutnya.')
+    const confirmed = confirm(t('event_elimination.confirm_reset_match'))
     if (!confirmed) return
 
     isResetting.value = true
     try {
         const matchId = selectedScoringMatch.value.id
         await post(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/reset`)
-        toast.success('Status pertandingan berhasil di-reset menjadi LIVE')
+        toast.success(t('event_elimination.toast_match_reset_live'))
 
         // Refresh data
         await fetchBracket()
@@ -990,7 +985,7 @@ const resetMatch = async () => {
         }
     } catch (error) {
         console.error('Failed to reset match:', error)
-        toast.error('Gagal me-reset status pertandingan')
+        toast.error(t('event_elimination.toast_reset_match_failed'))
     } finally {
         isResetting.value = false
     }
@@ -1014,7 +1009,7 @@ const confirmEndMatch = async () => {
             winner_entry_id: manualWinnerId.value
         })
 
-        toast.success('Pertandingan berhasil diakhiri!')
+        toast.success(t('event_elimination.toast_match_ended'))
 
         // Close dialog
         showEndMatchDialog.value = false
@@ -1027,7 +1022,7 @@ const confirmEndMatch = async () => {
 
     } catch (e) {
         console.error('Failed to end match:', e)
-        toast.error('Gagal mengakhiri pertandingan')
+        toast.error(t('event_elimination.toast_end_match_failed'))
     } finally {
         isEndingMatch.value = false
     }
@@ -1043,9 +1038,9 @@ const updateTarget = async (match) => {
                 }
             ]
         })
-        toast.success('Lokasi target diupdate')
+        toast.success(t('event_elimination.toast_target_updated'))
     } catch (e) {
-        toast.error('Gagal mengupdate target')
+        toast.error(t('event_elimination.toast_update_target_failed'))
     }
 }
 
@@ -1054,10 +1049,10 @@ const autoAssignTargets = async () => {
     try {
         const roundNo = currentRoundNo.value || 1
         const response = await post(`/events/${eventId}/elimination/brackets/${bracketId}/targets/auto-assign?round=${roundNo}`)
-        toast.success(response?.message || 'Auto assign berhasil')
+        toast.success(response?.message || t('event_elimination.toast_auto_assign_success'))
         await fetchBracket()
     } catch (e) {
-        toast.error(e?.data?.error || 'Gagal melakukan auto assign')
+        toast.error(e?.data?.error || t('event_elimination.toast_auto_assign_failed'))
     } finally {
         isAutoAssigning.value = false
     }
@@ -1093,24 +1088,24 @@ const finishMatchAction = async (match) => {
         await post(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${match.id}/finish`, {
             winner_entry_id: winnerId
         })
-        toast.success('Pertandingan Selesai!')
+        toast.success(t('event_elimination.toast_match_finished'))
         await fetchBracket()
         selectedScoringMatch.value = null
     } catch (e) {
-        toast.error('Gagal menutup match')
+        toast.error(t('event_elimination.toast_finish_match_failed'))
     }
 }
 
 const getFullTargetName = (match) => {
-    if (!match) return 'Belum Ada Target'
+    if (!match) return t('event_elimination.no_target')
     if (match.target_name) return match.target_name.startsWith('Target') ? match.target_name : `Target ${match.target_name}`
     return getTargetName(match.target_id || match.target_uuid)
 }
 
 const getTargetName = (tid) => {
-    if (!tid) return 'Belum Ada Target'
-    const t = availableTargets.value.find(o => o.id === tid)
-    return t ? `Target ${t.name}` : 'Target Terpilih'
+    if (!tid) return t('event_elimination.no_target')
+    const tItem = availableTargets.value.find(o => o.id === tid)
+    return tItem ? `Target ${tItem.name}` : t('event_elimination.selected_target')
 }
 
 const formatDate = (d) => dayjs(d).format('DD MMM YYYY, HH:mm')
@@ -1187,10 +1182,10 @@ function getRoundName(roundNo) {
     const size = bracket.value?.bracket_size || 8
     const totalRounds = Math.log2(size)
     const roundFromEnd = totalRounds - roundNo + 1
-    if (roundFromEnd === 1) return 'Final'
-    if (roundFromEnd === 2) return 'Semifinal'
-    if (roundFromEnd === 3) return 'Quarterfinal'
-    return `Round of ${Math.pow(2, roundFromEnd)}`
+    if (roundFromEnd === 1) return t('event_elimination.final') || 'Final'
+    if (roundFromEnd === 2) return t('event_elimination.semifinal') || 'Semifinal'
+    if (roundFromEnd === 3) return t('event_elimination.quarterfinal') || 'Quarterfinal'
+    return t('event_elimination.round_of', { count: Math.pow(2, roundFromEnd) }) || `Round of ${Math.pow(2, roundFromEnd)}`
 }
 
 // Auto-select first match when in scoring mode and roundMatches are loaded

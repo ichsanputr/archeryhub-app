@@ -27,7 +27,7 @@
               <div v-if="isLoading && !sessionData"
                 class="h-8 w-48 sm:h-10 sm:w-64 bg-white/10 rounded-lg animate-pulse mb-2"></div>
               <h1 v-else class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                {{ sessionData?.name || 'Sesi Kualifikasi' }}
+                {{ sessionData?.name || $t('event_qualification.qualification_session') }}
               </h1>
 
               <div v-if="isLoading && !sessionData" class="flex gap-4">
@@ -42,12 +42,12 @@
                 <span class="opacity-20 hidden sm:inline">•</span>
                 <div class="flex items-center gap-1.5">
                   <Icon icon="ph:arrow-clockwise-bold" class="text-xs sm:text-sm text-primary" />
-                  <span>{{ sessionData?.total_ends || 0 }} Ends</span>
+                  <span>{{ sessionData?.total_ends || 0 }} {{ $t('event_qualification.ends') }}</span>
                 </div>
                 <span class="opacity-20 hidden sm:inline">•</span>
                 <div class="flex items-center gap-1.5">
                   <Icon icon="ph:crosshair-bold" class="text-xs sm:text-sm text-primary" />
-                  <span>{{ sessionData?.arrows_per_end || 0 }} Arrows/End</span>
+                  <span>{{ sessionData?.arrows_per_end || 0 }} {{ $t('event_qualification.arrows').toLowerCase() }}/{{ $t('event_qualification.ends').toLowerCase().replace(/s$/, '') }}</span>
                 </div>
               </div>
             </div>
@@ -60,7 +60,7 @@
               @click="downloadScoresheet">
               <Icon :icon="isDownloadingScoresheet ? 'ph:spinner' : 'ph:printer-bold'"
                 :class="['text-lg', isDownloadingScoresheet ? 'animate-spin' : '']" />
-              {{ isDownloadingScoresheet ? 'Memproses...' : 'Cetak Scoresheet' }}
+              {{ isDownloadingScoresheet ? $t('event_qualification.processing') : $t('event_qualification.print_scoresheet') }}
             </button>
           </div>
         </div>
@@ -81,7 +81,7 @@
 
     <!-- Category Selection (Shared for both tabs) -->
     <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-      <h2 class="text-base font-bold text-navy mb-4">Pilih Kategori Lomba</h2>
+      <h2 class="text-base font-bold text-navy mb-4">{{ $t('event_qualification.choose_category') }}</h2>
 
       <div v-if="loadingCategories" class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
         <div v-for="i in 4" :key="i" class="flex-shrink-0 w-72 p-5 rounded-xl border border-gray-100 animate-pulse">
@@ -97,7 +97,7 @@
 
       <div v-else-if="categories.length === 0" class="text-center py-8 text-gray-400">
         <Icon icon="ph:folder-notch-open" class="text-4xl mx-auto mb-2" />
-        <p>Kategori tidak ditemukan</p>
+        <p>{{ $t('event_qualification.category_not_found') }}</p>
       </div>
 
       <div v-else class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
@@ -134,7 +134,7 @@
         class="absolute inset-0 z-[50] flex items-center justify-center bg-white/60 backdrop-blur-sm min-h-[400px]">
         <div class="flex flex-col items-center gap-3">
           <div class="size-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-          <p class="text-xs font-bold text-navy animate-pulse tracking-widest">Memuat Data...</p>
+          <p class="text-xs font-bold text-navy animate-pulse tracking-widest">{{ $t('event_qualification.loading_data') }}</p>
         </div>
       </div>
 
@@ -157,9 +157,8 @@
         <div class="size-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
           <Icon icon="ph:cursor-click-bold" class="text-4xl text-gray-300" />
         </div>
-        <h3 class="text-xl font-bold text-navy mb-2">Kategori Belum Dipilih</h3>
-        <p class="text-gray-500 max-w-xs mx-auto">Silakan pilih salah satu kategori di atas untuk mulai mengelola sesi.
-        </p>
+        <h3 class="text-xl font-bold text-navy mb-2">{{ $t('event_qualification.category_not_selected') }}</h3>
+        <p class="text-gray-500 max-w-xs mx-auto">{{ $t('event_qualification.choose_category_to_manage') }}</p>
       </div>
     </div>
   </div>
@@ -169,9 +168,11 @@
 import { Icon } from '@iconify/vue'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import QualificationTargetMode from '~/components/qualification/QualificationTargetMode.vue'
 import QualificationScoringMode from '~/components/qualification/QualificationScoringMode.vue'
 
+const { t } = useI18n()
 const route = useRoute()
 const { get } = useApi()
 const config = useRuntimeConfig()
@@ -185,7 +186,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Manajemen Sesi Kualifikasi - ArcheryHub.id'
+  title: computed(() => `${t('event_qualification.title')} - ArcheryHub.id`)
 })
 
 // State
@@ -204,10 +205,10 @@ const isLoadingAssignments = ref(false)
 const loadingCategories = ref(false)
 const isDownloadingScoresheet = ref(false)
 
-const tabs = [
-  { id: 'target', label: 'Target', icon: 'ph:target' },
-  { id: 'input', label: 'Input Nilai', icon: 'ph:pencil-simple' }
-]
+const tabs = computed(() => [
+  { id: 'target', label: t('event_qualification.board_assignments'), icon: 'ph:target' },
+  { id: 'input', label: t('event_qualification.input_scoring'), icon: 'ph:pencil-simple' }
+])
 
 const currentCategoryArchers = computed(() => {
   if (!selectedCategory.value) return []
@@ -477,10 +478,10 @@ const downloadScoresheet = async () => {
     const url = `${apiBase}/events/${eventId}/qualification/sessions/${sessionData.value.session_code}/scoresheet?${params}`
     const win = window.open(url, '_blank')
     if (!win) {
-      toast.addToast('Popup diblokir. Izinkan popup untuk halaman ini.', 'warning')
+      toast.addToast(t('event_qualification.popup_blocked'), 'warning')
     }
   } catch {
-    toast.addToast('Gagal membuka scoresheet', 'error')
+    toast.addToast(t('event_qualification.failed_open_scoresheet'), 'error')
   } finally {
     isDownloadingScoresheet.value = false
   }

@@ -31,14 +31,14 @@
       <nav v-if="transparent || !isDashboard" class="hidden lg:flex items-center gap-6 xl:gap-8 ml-4">
         <NuxtLink to="/"
           :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { 'bg-primary text-primary-text font-bold': route.path === '/' }]"
-          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">Beranda</NuxtLink>
+          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">{{ t('nav.home') }}</NuxtLink>
         <NuxtLink to="/events"
           :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { 'bg-primary text-primary-text font-bold': route.path.startsWith('/events') }]"
-          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">Event</NuxtLink>
+          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">{{ t('nav.features') }}</NuxtLink>
 
         <NuxtLink to="/news"
           :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { 'bg-primary text-primary-text font-bold': route.path.startsWith('/news') }]"
-          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">Berita</NuxtLink>
+          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">{{ t('nav.news') }}</NuxtLink>
       </nav>
 
       <!-- Event Manage Mode (For All Personas) -->
@@ -46,7 +46,7 @@
         <NuxtLink :to="backToDashboardPath"
           class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600 hover:text-navy shrink-0">
           <Icon icon="ph:arrow-left" class="text-xl" />
-          <span class="text-sm font-bold">Kembali ke Dashboard</span>
+          <span class="text-sm font-bold">{{ t('dashboard.header.back_to_dashboard') }}</span>
         </NuxtLink>
         <div class="h-6 w-px bg-gray-200"></div>
         <h1 class="text-lg font-black text-header-text truncate">
@@ -66,7 +66,7 @@
               :alt="user?.name || 'Organization'" class="w-full h-full object-cover" />
           </div>
           <h2 class="text-lg font-black text-header-text truncate max-w-sm tracking-tight">
-            {{ user?.full_name || 'Organisasi' }}
+            {{ user?.full_name || t('dashboard.sidebar.roles.organization') }}
           </h2>
         </div>
       </div>
@@ -117,9 +117,9 @@
           ? 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-navy'
           : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white border border-white/20'
       ]" class="hidden sm:flex items-center gap-2 rounded-xl px-3 h-9 text-sm transition-all"
-        title="Cari halaman (Ctrl+K)">
+        :title="`${t('dashboard.header.search_pages')} (Ctrl+K)`">
         <Icon icon="ph:magnifying-glass-bold" class="text-base" />
-        <span class="hidden md:inline text-xs font-medium">Cari halaman</span>
+        <span class="hidden md:inline text-xs font-medium">{{ t('dashboard.header.search_pages') }}</span>
         <kbd
           :class="isScrolled || !transparent ? 'bg-white border-gray-200 text-gray-400' : 'bg-white/10 border-white/20 text-white/50'"
           class="hidden lg:inline-flex items-center px-1.5 py-0.5 border rounded text-xs font-mono ml-1">Ctrl K</kbd>
@@ -127,7 +127,7 @@
       <!-- Mobile search icon -->
       <button @click="searchDialog?.open()"
         :class="isScrolled || !transparent ? 'text-gray-500 hover:text-navy' : 'text-white/70 hover:text-white'"
-        class="sm:hidden p-2 rounded-xl transition-colors" title="Cari halaman">
+        class="sm:hidden p-2 rounded-xl transition-colors" :title="t('dashboard.header.search_pages')">
         <Icon icon="ph:magnifying-glass-bold" class="text-xl" />
       </button>
     </div>
@@ -149,7 +149,7 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const config = useRuntimeConfig()
 
-const { locale, locales, setLocale } = useI18n()
+const { locale, locales, setLocale, t } = useI18n()
 const showLangMenu = ref(false)
 const langFlags = {
   en: 'circle-flags:us',

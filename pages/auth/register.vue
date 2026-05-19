@@ -19,12 +19,11 @@
                             class="text-logo-id">.id</span></span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display">
-                    Ikutan Revolusi <br />
-                    Digital Panahan
+                    Join the Digital <br />
+                    Archery Revolution
                 </h1>
                 <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
-                    Gabung bareng komunitas panahan terbesar di Indonesia buat kelola klub, pantau skor, sama ikutan
-                    lomba.
+                    Join the largest archery community in Indonesia to manage clubs, track scores, and participate in tournaments.
                 </p>
                 <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
                     <div class="flex -space-x-2">
@@ -38,7 +37,7 @@
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
                     </div>
-                    <span>Pemanah udah gabung di Archeris.net</span>
+                    <span>Archers have joined Archeris.net</span>
                 </div>
             </div>
         </div>
@@ -59,9 +58,8 @@
                 </div>
 
                 <div class="text-center lg:text-left">
-                    <h2 class="text-3xl font-black tracking-tight text-navy font-display">Buat Akun Baru</h2>
-                    <p class="mt-2 text-sm text-slate-500 font-body">Gabung bareng komunitas panahan terbesar di
-                        Indonesia.</p>
+                    <h2 class="text-3xl font-black tracking-tight text-navy font-display">Create New Account</h2>
+                    <p class="mt-2 text-sm text-slate-500 font-body">Join the largest archery community in Indonesia.</p>
                 </div>
 
                 <!-- User Type Tabs -->
@@ -82,33 +80,33 @@
                             <div v-if="form.userType === 'archer'" class="space-y-4">
                                 <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:user-bold" class="text-primary text-lg" />
-                                    Data Pemanah
+                                    Archer Info
                                 </h4>
-                                <BaseInput v-model="form.fullName" label="Nama Lengkap" placeholder="Masukkan Nama Anda"
+                                <BaseInput v-model="form.fullName" label="Full Name" placeholder="Enter your name"
                                     required
-                                    :error="errors.fullName || (isNameTaken ? 'Nama atlet sudah terdaftar' : '')"
+                                    :error="errors.fullName || (isNameTaken ? 'Athlete name is already registered' : '')"
                                     @update:model-value="validate('fullName', form.fullName, [rules.required(), rules.minLength(3)])" />
 
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="space-y-1">
-                                        <label class="text-sm font-bold text-navy">Jenis Kelamin</label>
+                                        <label class="text-sm font-bold text-navy">Gender</label>
                                         <select v-model="form.gender"
                                             class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-                                            <option value="male">Laki-laki</option>
-                                            <option value="female">Perempuan</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
                                         </select>
                                     </div>
-                                    <BaseInput v-model="form.dateOfBirth" label="Tanggal Lahir" type="date" required
+                                    <BaseInput v-model="form.dateOfBirth" label="Date of Birth" type="date" required
                                         :error="errors.dateOfBirth"
                                         @update:model-value="validate('dateOfBirth', form.dateOfBirth, [rules.required()])" />
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-4">
-                                    <BaseSelect v-model="form.city" :items="cities" label="Kota"
-                                        placeholder="Pilih Kota" required :error="errors.city" searchable
+                                    <BaseSelect v-model="form.city" :items="cities" label="City"
+                                        placeholder="Select City" required :error="errors.city" searchable
                                         @update:model-value="validate('city', form.city, [rules.required()])" />
                                     <div class="space-y-1">
-                                        <label class="text-sm font-bold text-navy">Tipe Busur Utama</label>
+                                        <label class="text-sm font-bold text-navy">Main Bow Type</label>
                                         <select v-model="form.bowType"
                                             class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
                                             <option value="recurve">Recurve</option>
@@ -120,75 +118,70 @@
                                     </div>
                                 </div>
 
-                                <BaseInput v-model="form.school" label="Sekolah / Instansi"
-                                    placeholder="Masukkan nama sekolah atau instansi" />
+                                <BaseInput v-model="form.school" label="School / Institution"
+                                    placeholder="Enter school or institution name" />
 
-                                <p class="mt-2 text-xs text-gray-400 font-body italic">* Data ini penting untuk
-                                    penentuan kategori
-                                    lomba.</p>
+                                <p class="mt-2 text-xs text-gray-400 font-body italic">* This data is important for determining tournament categories.</p>
                             </div>
 
                             <!-- Organization: Nama Organisasi -->
                             <div v-if="form.userType === 'organization'" class="space-y-4">
                                 <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:buildings-bold" class="text-primary text-lg" />
-                                    Data Organisasi
+                                    Organization Info
                                 </h4>
-                                <BaseInput v-model="form.organizationName" label="Nama Organisasi"
-                                    placeholder="Nama resmi organisasi" required
-                                    :error="errors.organizationName || (isNameTaken ? 'Nama organisasi sudah terdaftar' : '')"
+                                <BaseInput v-model="form.organizationName" label="Organization Name"
+                                    placeholder="Official organization name" required
+                                    :error="errors.organizationName || (isNameTaken ? 'Organization name is already registered' : '')"
                                     @update:model-value="validate('organizationName', form.organizationName, [rules.required(), rules.minLength(3)])" />
 
                                 <div class="grid grid-cols-2 gap-4">
-                                    <BaseInput v-model="form.acronym" label="Singkatan (Acronym)"
-                                        placeholder="Contoh: PERPANI" :error="errors.acronym"
+                                    <BaseInput v-model="form.acronym" label="Acronym"
+                                        placeholder="Example: PERPANI" :error="errors.acronym"
                                         @update:model-value="validate('acronym', form.acronym, [rules.minLength(2)])" />
-                                    <BaseInput v-model="form.whatsappNo" label="Nomor WhatsApp"
+                                    <BaseInput v-model="form.whatsappNo" label="WhatsApp Number"
                                         placeholder="081234567XXX" required number-only :error="errors.whatsappNo"
                                         @update:model-value="validate('whatsappNo', form.whatsappNo, [rules.required(), rules.minLength(10)])" />
                                 </div>
 
-                                <BaseSelect v-model="form.city" label="Kota" placeholder="Pilih Kota" required
+                                <BaseSelect v-model="form.city" label="City" placeholder="Select City" required
                                     :items="cities" :error="errors.city" searchable
                                     @update:model-value="validate('city', form.city, [rules.required()])" />
 
                                 <div class="space-y-1">
-                                    <label class="text-sm font-bold text-navy">Alamat Lengkap</label>
+                                    <label class="text-sm font-bold text-navy">Full Address</label>
                                     <textarea v-model="form.address"
                                         class="w-full p-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all min-h-[80px]"
                                         :class="{ 'border-red-500': errors.address }"
-                                        placeholder="Alamat kantor atau sekretariat"
+                                        placeholder="Office or secretariat address"
                                         @input="validate('address', form.address, [rules.required()])"></textarea>
                                     <p v-if="errors.address" class="text-red-500  text-xs font-bold ml-1">{{
                                         errors.address }}</p>
                                 </div>
                             </div>
 
-
-
                             <!-- Seller: Nama Toko -->
                             <div v-if="form.userType === 'seller'">
                                 <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:storefront-bold" class="text-primary text-lg" />
-                                    Data Toko
+                                    Shop Info
                                 </h4>
-                                <BaseInput v-model="form.storeName" label="Nama Toko" placeholder="Nama toko Anda"
+                                <BaseInput v-model="form.storeName" label="Shop Name" placeholder="Your shop name"
                                     required
-                                    :error="errors.storeName || (isNameTaken ? 'Nama toko sudah terdaftar' : '')"
+                                    :error="errors.storeName || (isNameTaken ? 'Shop name is already registered' : '')"
                                     @update:model-value="validate('storeName', form.storeName, [rules.required(), rules.minLength(3)])" />
-                                <p class="mt-2 text-xs text-gray-400">Alamat dan detail toko bisa dilengkapi di halaman
-                                    profil.</p>
+                                <p class="mt-2 text-xs text-gray-400">Shop address and details can be completed in the profile page.</p>
                             </div>
                         </div>
 
                         <div class="flex flex-col gap-2 pt-6 border-t border-gray-100">
                             <BaseCheckbox v-model="form.terms" required :error="errors.terms"
-                                @update:model-value="validate('terms', form.terms, [rules.required('Anda harus menyetujui syarat & ketentuan')])">
-                                Saya setuju dengan
+                                @update:model-value="validate('terms', form.terms, [rules.required('You must agree to the terms & conditions')])">
+                                I agree to the
                                 <NuxtLink class="font-bold underline text-navy hover:text-primary-hover" to="/terms">
-                                    Syarat & Ketentuan</NuxtLink> dan
+                                    Terms & Conditions</NuxtLink> and
                                 <NuxtLink class="font-bold underline text-navy hover:text-primary-hover" to="/privacy">
-                                    Kebijakan Privasi</NuxtLink>
+                                    Privacy Policy</NuxtLink>
                             </BaseCheckbox>
                         </div>
 
@@ -197,20 +190,20 @@
                             <BaseButton variant="gold" block size="lg" icon="logos:google-icon"
                                 @click="handleGoogleRegister" :loading="isGoogleLoading || isValidating"
                                 :disabled="!isNameValid || !form.terms || isNameTaken || isValidating">
-                                Daftar dengan Google
+                                Register with Google
                             </BaseButton>
                             <p class="mt-4 text-xs text-center text-gray-400">
-                                Pilih tipe akun di atas, isi nama, lalu klik tombol ini.
+                                Select account type above, enter name, then click this button.
                             </p>
                         </div>
                     </form>
 
                     <div class="mt-8 text-center font-body">
                         <p class="text-sm text-slate-600">
-                            Sudah punya akun?
+                            Already have an account?
                             <NuxtLink class="font-black text-navy hover:text-primary-hover transition-colors"
                                 to="/auth/login">
-                                Masuk di sini
+                                Login here
                             </NuxtLink>
                         </p>
                     </div>
@@ -235,13 +228,13 @@ const toast = useToast()
 const cities = ref([])
 
 useHead({
-    title: 'Buat Akun Baru - Archeris.net'
+    title: 'Register - Archeris.net'
 })
 
 const userTypes = [
-    { value: 'archer', label: 'Pemanah', icon: 'temaki:archery' },
-    { value: 'organization', label: 'Organisasi', icon: 'ph:buildings-bold' },
-    { value: 'seller', label: 'Penjual', icon: 'ph:storefront-bold' }
+    { value: 'archer', label: 'Archer', icon: 'temaki:archery' },
+    { value: 'organization', label: 'Organization', icon: 'ph:buildings-bold' },
+    { value: 'seller', label: 'Seller', icon: 'ph:storefront-bold' }
 ]
 
 const { errors, validate, validateForm, rules } = useFormValidation()
@@ -309,7 +302,7 @@ const checkNameUnique = async (name) => {
         const response = await get(`/auth/check-name?type=${form.value.userType}&name=${encodeURIComponent(name)}`)
         isNameTaken.value = response.exists
         if (response.exists) {
-            toast.error('Nama ini sudah terdaftar. Silakan gunakan nama lain.')
+            toast.error('This name is already registered. Please use another name.')
         }
     } catch (err) {
         console.error('Failed to check name:', err)
@@ -374,12 +367,12 @@ const handleRegister = () => {
 
 const handleGoogleRegister = async () => {
     if (!isNameValid.value) {
-        toast.error('Silakan isi nama yang valid (minimal 3 karakter)')
+        toast.error('Please enter a valid name (minimum 3 characters)')
         return
     }
 
     if (!form.value.terms) {
-        toast.error('Anda harus menyetujui syarat dan ketentuan')
+        toast.error('You must agree to the terms and conditions')
         return
     }
 
@@ -417,13 +410,13 @@ const handleGoogleRegister = async () => {
         await login(form.value.userType, metadata)
     } catch (err) {
         console.error('Google registration failed:', err)
-        let errorMessage = 'Gagal menyambung ke Google. Silakan coba lagi.'
+        let errorMessage = 'Failed to connect to Google. Please try again.'
 
         // Handle different error types
         if (err.status === 401 || err.statusCode === 401) {
-            errorMessage = 'Autentikasi gagal. Silakan coba lagi.'
+            errorMessage = 'Authentication failed. Please try again.'
         } else if (err.status === 500 || err.statusCode === 500) {
-            errorMessage = 'Terjadi kesalahan pada server. Silakan coba lagi nanti.'
+            errorMessage = 'A server error occurred. Please try again later.'
         } else if (err.data?.error) {
             errorMessage = err.data.error
         } else if (err.response?._data?.error) {

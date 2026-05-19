@@ -9,11 +9,10 @@
         </div>
         <div class="space-y-2">
           <h1 class="text-2xl font-bold text-gray-900 dark:text-white font-display">
-            Email sudah terdaftar
+            Email already registered
           </h1>
           <div class="text-gray-600 dark:text-gray-300 text-sm font-body">
-            Email yang kamu pakai buat daftar lewat Google udah punya akun di Archeris.net. Kamu bisa langsung masuk
-            pakai akun itu.
+            The email you used to register via Google already has an account on Archeris.net. You can log in directly using that account.
           </div>
         </div>
 
@@ -28,25 +27,25 @@
           <div v-if="userTypeLabel" class="flex items-center gap-3">
             <span class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-xl">badge</span>
             <div class="min-w-0 flex-1">
-              <div class="text-xs font-medium text-gray-500 dark:text-gray-400  tracking-wider">Tipe akun</div>
+              <div class="text-xs font-medium text-gray-500 dark:text-gray-400  tracking-wider">Account type</div>
               <div class="text-sm font-medium text-gray-900 dark:text-white">{{ userTypeLabel }}</div>
             </div>
           </div>
         </div>
 
         <div class="text-xs text-gray-500 dark:text-gray-400 font-body">
-          Klik tombol di bawah buat masuk ke akun yang udah ada.
+          Click the button below to log in to the existing account.
         </div>
 
         <NuxtLink to="/auth/login"
           class="inline-flex items-center justify-center gap-2 w-full px-6 py-3 bg-primary text-navy font-bold rounded-xl hover:bg-primary-hover transition-colors shadow-sm shadow-primary/20">
           <span class="material-symbols-outlined">login</span>
-          Masuk ke akun
+          Log in to account
         </NuxtLink>
 
         <NuxtLink to="/"
           class="inline-block text-sm text-gray-500 dark:text-gray-400 hover:text-primary transition-colors font-body">
-          Kembali ke beranda
+          Back to homepage
         </NuxtLink>
       </div>
     </div>
@@ -60,7 +59,7 @@ import { useRoute } from 'vue-router'
 definePageMeta({ layout: 'default' })
 
 useHead({
-  title: 'Email Sudah Terdaftar - Archeris.net'
+  title: 'Email Already Registered - Archeris.net'
 })
 
 const route = useRoute()
@@ -74,9 +73,9 @@ const userTypeLabel = computed(() => {
   const t = route.query.user_type
   const type = typeof t === 'string' ? t.toLowerCase() : ''
   const labels = {
-    archer: 'Pemanah',
-    organization: 'Organisasi',
-    club: 'Klub',
+    archer: 'Archer',
+    organization: 'Organization',
+    club: 'Club',
     seller: 'Seller',
   }
   return labels[type] || type || ''

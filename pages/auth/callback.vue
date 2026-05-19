@@ -4,20 +4,20 @@
       <div v-if="loading" class="space-y-4">
         <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent">
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Menyambungkan akun...</h2>
-        <p class="text-gray-500 dark:text-gray-400">Mohon tunggu sebentar sementara kami memproses login Anda.</p>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Connecting account...</h2>
+        <p class="text-gray-500 dark:text-gray-400">Please wait a moment while we process your login.</p>
       </div>
 
       <div v-else-if="error" class="space-y-6">
         <div class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-red-100 text-red-600">
           <span class="material-symbols-outlined text-4xl">error</span>
         </div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Gagal Masuk</h2>
-        <p class="text-red-500 mb-6">{{ error }}</p>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white font-display">Failed to Log In</h2>
+        <p class="text-red-500 mb-6 font-body text-sm">{{ error }}</p>
         <NuxtLink to="/auth/login"
           class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-navy font-bold rounded-xl hover:bg-primary-hover transition-colors shadow-lg shadow-primary/20">
           <span class="material-symbols-outlined">arrow_back</span>
-          Kembali ke Login
+          Back to Login
         </NuxtLink>
       </div>
     </div>
@@ -33,7 +33,7 @@ const route = useRoute()
 const { handleCallback, user } = useAuth()
 
 useHead({
-  title: 'Menyambungkan Akun... - Archeris.net'
+  title: 'Connecting Account... - Archeris.net'
 })
 
 const loading = ref(true)
@@ -44,7 +44,7 @@ onMounted(async () => {
   const state = route.query.state
 
   if (!code) {
-    error.value = 'Kode otorisasi tidak ditemukan.'
+    error.value = 'Authorization code not found.'
     loading.value = false
     return
   }
@@ -68,7 +68,7 @@ onMounted(async () => {
       return
     }
     console.error('Callback processing failed:', err)
-    error.value = err?.data?.error || err?.message || 'Terjadi kesalahan saat menyambungkan ke Google.'
+    error.value = err?.data?.error || err?.message || 'An error occurred while connecting to Google.'
   } finally {
     loading.value = false
   }

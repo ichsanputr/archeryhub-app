@@ -9,13 +9,13 @@
         <Icon :ssr="true" icon="ph:check-circle-bold" class="w-10 h-10" />
       </div>
 
-      <h1 class="text-2xl font-black text-navy mb-2 tracking-tight">Login Berhasil!</h1>
-      <p class="text-slate-500 font-medium mb-8">Autentikasi kamu berhasil. Sekarang kamu bisa kembali ke halaman utama.
+      <h1 class="text-2xl font-black text-navy mb-2 tracking-tight">Login Successful!</h1>
+      <p class="text-slate-500 font-medium mb-8">Your authentication was successful. You can now return to the homepage.
       </p>
 
       <button @click="goHome"
         class="w-full bg-navy hover:bg-navy-light text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-navy/10 active:scale-[0.98]">
-        Kembali ke Beranda
+        Back to Homepage
       </button>
     </div>
   </div>
@@ -31,7 +31,7 @@ const router = useRouter()
 const { setToken } = useAuth()
 
 useHead({
-  title: 'Login Berhasil - Archeris.net'
+  title: 'Login Successful - Archeris.net'
 })
 
 onMounted(() => {

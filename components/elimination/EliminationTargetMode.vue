@@ -6,9 +6,8 @@
                 <Icon icon="ph:target-bold" class="text-2xl" />
             </div>
             <div class="flex-1 min-w-0">
-                <h3 class="text-lg font-black text-navy leading-tight">Alokasi Bantalan Target</h3>
-                <p class="text-xs text-navy/50 font-medium">Tentukan posisi bantalan untuk setiap pertandingan di babak
-                    ini. Gunakan Auto Assign untuk alokasi cepat.</p>
+                <h3 class="text-lg font-black text-navy leading-tight">{{ $t('event_elimination.target_allocation') }}</h3>
+                <p class="text-xs text-navy/50 font-medium">{{ $t('event_elimination.target_allocation_desc') }}</p>
             </div>
             <BaseButton variant="primary" icon="ph:magic-wand-bold" :loading="isAutoAssigning"
                 @click="$emit('auto-assign')" class="hidden sm:flex shadow-sm shadow-primary/20 !rounded-2xl">
@@ -38,7 +37,7 @@
                         </div>
                         <div>
                             <div class="text-[10px] font-black text-navy/30 tracking-[0.2em] leading-none mb-1">
-                                Pertandingan</div>
+                                {{ $t('event_elimination.match') }}</div>
                             <div class="text-xs font-black text-navy/80 ">Match {{ match.match_no }}</div>
                         </div>
                     </div>
@@ -49,7 +48,7 @@
                     </div>
                     <div v-else-if="match.target_name"
                         class="px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
-                        <span class="text-[10px] font-black text-primary-hover tracking-widest ">TERPLOT</span>
+                        <span class="text-[10px] font-black text-primary-hover tracking-widest ">{{ $t('event_elimination.plotted') }}</span>
                     </div>
                 </div>
 
@@ -85,8 +84,7 @@
                     <div
                         class="p-1 px-3 bg-navy/5 rounded-2xl border border-navy/5 group/sel focus-within:bg-white focus-within:border-primary/30 transition-all">
                         <div class="flex items-center justify-between mb-1 mt-1">
-                            <label class="text-[9px] font-black text-navy/30 tracking-widest block">Garis
-                                Target</label>
+                            <label class="text-[9px] font-black text-navy/30 tracking-widest block">{{ $t('event_elimination.target_line') }}</label>
                             <span v-if="match.board_code"
                                 class="text-[8px] font-black bg-navy text-primary px-1.5 py-0.5 rounded shadow-sm">{{
                                     match.board_code }}</span>
@@ -94,7 +92,7 @@
                         <select :value="match.target_id"
                             class="w-full bg-transparent border-none focus:ring-0 text-sm font-black text-navy outline-none py-1.5 cursor-pointer"
                             @change="e => { match.target_id = e.target.value; $emit('update-target', match) }">
-                            <option value="">-- Pilih Target --</option>
+                            <option value="">-- {{ $t('event_elimination.select_target_option') }} --</option>
                             <option v-for="opt in getFilteredOptions(match.id)" :key="opt.id" :value="opt.id">
                                 {{ opt.displayName || opt.name }} {{ opt.board_code ? `(${opt.board_code})` : '' }}
                             </option>
@@ -107,6 +105,8 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
 const props = defineProps({
     roundMatches: { type: Array, required: true },
     targetOptions: { type: Array, required: true },
@@ -114,6 +114,8 @@ const props = defineProps({
 })
 
 defineEmits(['update-target', 'auto-assign'])
+
+const { t } = useI18n()
 
 const getFilteredOptions = (currentMatchId) => {
     // Get all assigned target IDs except for the current match

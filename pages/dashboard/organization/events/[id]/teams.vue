@@ -27,10 +27,10 @@
                         <div class="flex-1">
                             <h1
                                 class="text-xl sm:text-2xl lg:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2">
-                                Manajemen Tim Resmi
+                                {{ $t('event_teams.title') }}
                             </h1>
                             <p class="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
-                                Kelola tim untuk babak eliminasi. Gunakan sync otomatis atau buat tim manual.
+                                {{ $t('event_teams.subtitle') }}
                             </p>
                         </div>
                     </div>
@@ -40,12 +40,12 @@
                         <BaseButton variant="white" icon="ph:arrows-clockwise"
                             class="h-10 sm:h-11 px-5 w-full sm:w-auto text-xs sm:text-sm" @click="handleSyncTeams"
                             :loading="isSyncing">
-                            Sync Otomatis
+                            {{ $t('event_teams.auto_sync') }}
                         </BaseButton>
                         <BaseButton variant="primary" icon="ph:plus-bold"
                             class="h-10 sm:h-11 px-5 w-full sm:w-auto shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all text-xs sm:text-sm"
                             @click="openAddTeamModal">
-                            Tambah Tim Manual
+                            {{ $t('event_teams.add_manual') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
 
         <!-- Category Selection -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <h2 class="text-base font-black text-navy mb-4">Pilih Kategori Lomba</h2>
+            <h2 class="text-base font-black text-navy mb-4">{{ $t('event_teams.select_category') }}</h2>
 
             <div v-if="loadingCategories" class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                 <div v-for="i in 4" :key="i"
@@ -71,7 +71,7 @@
 
             <div v-else-if="categories.length === 0" class="text-center py-8 text-gray-400">
                 <Icon icon="ph:folder-notch-open" class="text-4xl mx-auto mb-2" />
-                <p>Kategori tidak ditemukan</p>
+                <p>{{ $t('event_teams.category_not_found') }}</p>
             </div>
 
             <div v-else class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
@@ -99,7 +99,7 @@
                                     <div v-if="category.team_count > 0"
                                         class="flex items-center gap-1 text-[10px] font-bold text-primary">
                                         <Icon icon="ph:users-three-bold" />
-                                        <span>{{ category.team_count }} Tim</span>
+                                        <span>{{ $t('event_teams.team_count_badge', { count: category.team_count }) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -114,8 +114,8 @@
             <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div>
-                        <h2 class="text-lg font-black text-navy leading-tight">Daftar Tim Resmi</h2>
-                        <p class="text-sm text-gray-500 mt-1">Tim yang terdaftar dalam kategori ini</p>
+                        <h2 class="text-lg font-black text-navy leading-tight">{{ $t('event_teams.official_team_list') }}</h2>
+                        <p class="text-sm text-gray-500 mt-1">{{ $t('event_teams.team_list_desc') }}</p>
                     </div>
                 </div>
 
@@ -129,11 +129,8 @@
                         class="size-20 bg-white shadow-sm rounded-3xl flex items-center justify-center mx-auto mb-6 transform rotate-3">
                         <Icon icon="ph:users-four" class="text-4xl text-gray-200" />
                     </div>
-                    <h3 class="text-xl font-bold text-navy mb-2">Belum ada tim resmi</h3>
-                    <p class="text-gray-400 max-w-sm mx-auto text-sm">
-                        Klik tombol <strong>Sync Otomatis</strong> untuk membuat tim dari peringkat kualifikasi, atau
-                        buat tim manual.
-                    </p>
+                    <h3 class="text-xl font-bold text-navy mb-2">{{ $t('event_teams.no_teams') }}</h3>
+                    <p class="text-gray-400 max-w-sm mx-auto text-sm" v-html="$t('event_teams.no_teams_desc')"></p>
                 </div>
 
                 <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -164,7 +161,7 @@
                             <p
                                 class="text-[10px] font-black text-gray-400 tracking-widest mb-2 flex items-center gap-2">
                                 <Icon icon="ph:identification-card-bold" />
-                                Anggota Tim & Skor
+                                {{ $t('event_teams.members_and_scores') }}
                             </p>
                             <div v-if="team.members && team.members.length > 0">
                                 <div v-for="(member, index) in team.members" :key="member.id || index"
@@ -182,7 +179,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div v-else class="text-sm text-gray-400 italic">Tidak ada anggota</div>
+                            <div v-else class="text-sm text-gray-400 italic">{{ $t('event_teams.no_members') }}</div>
                         </div>
 
                         <div class="flex items-center justify-between pt-4 border-t border-gray-100">
@@ -197,7 +194,7 @@
                                 </button>
                             </div>
                             <div class="flex flex-col items-end">
-                                <span class="text-[10px] font-black text-gray-400 tracking-widest">Total Skor</span>
+                                <span class="text-[10px] font-black text-gray-400 tracking-widest">{{ $t('event_teams.total_score') }}</span>
                                 <span class="text-xl font-black text-navy">{{ team.total_score }}</span>
                             </div>
                         </div>
@@ -214,8 +211,8 @@
                         <Icon :icon="isEditing ? 'ph:pencil-circle-bold' : 'ph:plus-circle-bold'" class="text-xl text-primary" />
                     </div>
                     <div class="flex flex-col -space-y-1">
-                        <h2 class="text-xl font-black text-navy tracking-tighter">{{ isEditing ? 'Edit Detil Tim' : 'Tambah Tim Manual' }}</h2>
-                        <p class="text-[10px] font-bold text-gray-400 tracking-widest">{{ teamForm.team_name || 'Tim Baru' }}</p>
+                        <h2 class="text-xl font-black text-navy tracking-tighter">{{ isEditing ? $t('event_teams.edit_team_detail') : $t('event_teams.add_team_manual') }}</h2>
+                        <p class="text-[10px] font-bold text-gray-400 tracking-widest">{{ teamForm.team_name || $t('event_teams.new_team') }}</p>
                     </div>
                 </div>
             </template>
@@ -224,12 +221,12 @@
                 <div class="space-y-4">
                     <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
                         <Icon icon="ph:identification-card-bold" class="text-primary text-lg" />
-                        Identitas & Kategori
+                        {{ $t('event_teams.identity_and_category') }}
                     </h3>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50/50 p-6 rounded-3xl border border-gray-100">
                         <div class="md:col-span-2">
-                             <BaseInput v-model="teamForm.team_name" label="Nama Tim" placeholder="Contoh: Jogja Archery A"
+                             <BaseInput v-model="teamForm.team_name" :label="$t('event_teams.team_name')" :placeholder="$t('event_teams.team_name_placeholder')"
                                 required icon="ph:users-four" />
                         </div>
                     </div>
@@ -238,8 +235,7 @@
                         <!-- Editing: lock category and club as read-only -->
                         <template v-if="isEditing">
                             <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-500 tracking-widest">Kategori
-                                    Lomba</label>
+                                <label class="block text-xs font-bold text-gray-500 tracking-widest">{{ $t('event_teams.category_label') }}</label>
                                 <div
                                     class="h-10 px-3 flex items-center rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-navy">
                                     <Icon icon="ph:lock-simple" class="text-gray-400 mr-2 shrink-0" />
@@ -249,7 +245,7 @@
                             </div>
                             <div class="space-y-1.5">
                                 <label
-                                    class="block text-xs font-bold text-gray-500 tracking-widest">Klub</label>
+                                    class="block text-xs font-bold text-gray-500 tracking-widest">{{ $t('event_teams.club') }}</label>
                                 <div
                                     class="h-10 px-3 flex items-center rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-navy">
                                     <Icon icon="ph:lock-simple" class="text-gray-400 mr-2 shrink-0" />
@@ -259,10 +255,10 @@
                         </template>
                         <!-- Adding: show dropdowns -->
                         <template v-else>
-                            <BaseSelect v-model="teamForm.category_id" :items="mappedCategories" label="Kategori Lomba"
-                                placeholder="Pilih Kategori" @update:modelValue="onModalCategoryChange" searchable />
-                            <BaseSelect v-model="teamForm.club_name" :items="mappedClubs" label="Pilih Klub"
-                                placeholder="Pilih Klub" :disabled="!teamForm.category_id || loadingParticipants"
+                            <BaseSelect v-model="teamForm.category_id" :items="mappedCategories" :label="$t('event_teams.category_label')"
+                                :placeholder="$t('event_teams.select_category_placeholder')" @update:modelValue="onModalCategoryChange" searchable />
+                            <BaseSelect v-model="teamForm.club_name" :items="mappedClubs" :label="$t('event_teams.club')"
+                                :placeholder="$t('event_teams.select_club_placeholder')" :disabled="!teamForm.category_id || loadingParticipants"
                                 @update:modelValue="onModalClubChange" searchable />
                         </template>
                     </div>
@@ -273,17 +269,17 @@
                     <div class="flex items-center justify-between">
                         <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
                             <Icon icon="ph:users-four-bold" class="text-primary text-lg" />
-                            Pilih Anggota ({{ teamForm.member_ids.length }}/{{ maxMembers }})
+                            {{ $t('event_teams.select_members', { current: teamForm.member_ids.length, max: maxMembers }) }}
                         </h3>
                         <span v-if="teamForm.member_ids.length === maxMembers"
                             class="text-[10px] bg-amber-100 text-amber-600 px-2 py-0.5 rounded-full font-black tracking-widest animate-pulse">
-                            Slot Penuh
+                            {{ $t('event_teams.slot_full') }}
                         </span>
                     </div>
 
                     <div v-if="loadingParticipants" class="py-12 text-center">
                         <LoadingSpinner />
-                        <p class="text-xs text-gray-400 mt-2">memuat daftar pemanah...</p>
+                        <p class="text-xs text-gray-400 mt-2">{{ $t('event_teams.loading_archers') }}</p>
                     </div>
 
                     <div v-else-if="!teamForm.club_name"
@@ -291,8 +287,8 @@
                         <div class="size-16 rounded-full bg-white flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100">
                             <Icon icon="ph:buildings" class="text-3xl text-gray-300" />
                         </div>
-                        <p class="text-sm font-bold text-gray-500">silakan pilih klub terlebih dahulu</p>
-                        <p class="text-xs text-gray-400 mt-1">satu tim harus berasal dari klub yang sama.</p>
+                        <p class="text-sm font-bold text-gray-500">{{ $t('event_teams.please_select_club') }}</p>
+                        <p class="text-xs text-gray-400 mt-1">{{ $t('event_teams.same_club_rule') }}</p>
                     </div>
 
                     <div v-else-if="filteredParticipants.length > 0"
@@ -362,9 +358,9 @@
                             class="size-16 rounded-full bg-white flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100">
                             <Icon icon="ph:user-search" class="text-3xl text-gray-300" />
                         </div>
-                        <p class="text-sm font-bold text-gray-500">pemanah tidak ditemukan</p>
+                        <p class="text-sm font-bold text-gray-500">{{ $t('event_teams.archers_not_found') }}</p>
                         <p class="text-xs text-gray-400 mt-1 max-w-[200px] mx-auto">
-                            belum ada pemanah dari klub ini yang terdaftar di kategori tersebut.
+                            {{ $t('event_teams.no_archers_registered_desc') }}
                         </p>
                     </div>
             </div>
@@ -372,11 +368,11 @@
 
             <template #action>
                 <div class="flex justify-end gap-3 pt-2">
-                    <BaseButton variant="white" @click="showTeamModal = false" class="px-8">Batal</BaseButton>
+                    <BaseButton variant="white" @click="showTeamModal = false" class="px-8">{{ $t('event_teams.cancel') }}</BaseButton>
                     <BaseButton variant="primary" :loading="isSaving" @click="handleSaveTeam"
                         class="px-8 shadow-lg shadow-primary/20"
                         :disabled="teamForm.member_ids.length < minMembers || !teamForm.team_name">
-                        {{ isEditing ? 'Simpan Perubahan' : 'Buat Tim' }}
+                        {{ isEditing ? $t('event_teams.save_changes') : $t('event_teams.create_team') }}
                     </BaseButton>
                 </div>
             </template>
@@ -389,7 +385,7 @@
                     <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
                         <Icon icon="ph:trash-bold" class="text-xl text-red-600" />
                     </div>
-                    <h2 class="text-xl font-black text-navy">Hapus Tim?</h2>
+                    <h2 class="text-xl font-black text-navy">{{ $t('event_teams.delete_team_confirm') }}</h2>
                 </div>
             </template>
             <div class="space-y-6">
@@ -398,22 +394,18 @@
                         <Icon icon="ph:trash-bold" class="text-5xl" />
                     </div>
                     <div class="space-y-2">
-                        <h3 class="text-lg font-black text-navy tracking-widest">Konfirmasi Hapus</h3>
-                        <p class="text-sm text-gray-500 max-w-sm">
-                            Yakin ingin menghapus tim
-                            <span class="font-bold text-navy">"{{ teamToDelete?.team_name }}"</span>?
-                            Tindakan ini tidak dapat dibatalkan.
-                        </p>
+                        <h3 class="text-lg font-black text-navy tracking-widest">{{ $t('event_teams.delete_confirm_title') }}</h3>
+                        <p class="text-sm text-gray-500 max-w-sm" v-html="$t('event_teams.delete_warning', { name: teamToDelete?.team_name })"></p>
                     </div>
                 </div>
             </div>
             <template #action>
                 <div class="flex justify-end gap-3 pt-2">
-                    <BaseButton variant="white" @click="showDeleteConfirm = false" class="px-8 font-bold">Batal
+                    <BaseButton variant="white" @click="showDeleteConfirm = false" class="px-8 font-bold">{{ $t('event_teams.cancel') }}
                     </BaseButton>
                     <BaseButton variant="primary" :loading="isDeleting" @click="executeDeleteTeam"
                         class="px-8 bg-red-500 hover:bg-red-600 border-red-500 shadow-lg shadow-red-200 font-bold">
-                        Ya, Hapus
+                        {{ $t('event_teams.yes_delete') }}
                     </BaseButton>
                 </div>
             </template>
@@ -426,7 +418,7 @@
                     <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
                         <Icon icon="ph:arrows-clockwise-bold" class="text-xl text-red-600" />
                     </div>
-                    <h2 class="text-xl font-black text-navy">Sinkronisasi Tim?</h2>
+                    <h2 class="text-xl font-black text-navy">{{ $t('event_teams.sync_teams_confirm') }}</h2>
                 </div>
             </template>
             <div class="space-y-6">
@@ -436,10 +428,9 @@
                         <Icon icon="ph:warning-circle-bold" class="text-5xl" />
                     </div>
                     <div class="space-y-2">
-                        <h3 class="text-lg font-black text-navy tracking-widest">Tindakan Destruktif</h3>
+                        <h3 class="text-lg font-black text-navy tracking-widest">{{ $t('event_teams.destructive_action') }}</h3>
                         <p class="text-sm text-gray-500 max-w-sm">
-                            Sistem akan menghapus semua data tim yang ada di kategori ini dan membuat tim baru secara
-                            otomatis berdasarkan peringkat skor kualifikasi tertinggi.
+                            {{ $t('event_teams.sync_warning') }}
                         </p>
                     </div>
                 </div>
@@ -447,11 +438,11 @@
 
             <template #action>
                 <div class="flex justify-end gap-3 pt-2">
-                    <BaseButton variant="white" @click="showSyncConfirm = false" class="px-8 font-bold">Batal
+                    <BaseButton variant="white" @click="showSyncConfirm = false" class="px-8 font-bold">{{ $t('event_teams.cancel') }}
                     </BaseButton>
                     <BaseButton variant="primary" :loading="isSyncing" @click="executeSyncTeams"
                         class="px-8 bg-red-500 hover:bg-red-600 border-red-500 shadow-lg shadow-red-200 font-bold">
-                        Ya, Sinkronkan
+                        {{ $t('event_teams.yes_sync') }}
                     </BaseButton>
                 </div>
             </template>
@@ -471,18 +462,20 @@ import BaseSelect from '~/components/common/BaseSelect.vue'
 import BaseDialogForm from '~/components/common/BaseDialogForm.vue'
 import LoadingSpinner from '~/components/common/LoadingSpinner.vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const eventId = route.params.id
 const { get, post, put, delete: del } = useApi()
 const toast = useToast()
+const { t } = useI18n()
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 useHead({
-    title: 'Manajemen Tim - Dashboard'
+    title: t('event_teams.page_title')
 })
 
 // State Management
@@ -562,7 +555,7 @@ const mappedClubs = computed(() => {
             title: club.name + (count > 0 ? ` (${count})` : ''),
             value: club.name,
             icon: 'ph:buildings',
-            description: count > 0 ? `${count} pemanah tersedia` : 'Tidak ada pemanah di kategori ini'
+            description: count > 0 ? t('event_teams.archers_available', { count }) : t('event_teams.no_archers_available')
         }
     })
 
@@ -577,10 +570,10 @@ const mappedClubs = computed(() => {
     // 4. Add Independen if participants exist
     if (hasIndependen) {
         clubs.unshift({
-            title: 'Independen',
+            title: t('event_teams.independent'),
             value: 'Independen',
             icon: 'ph:user',
-            description: 'Pemanah tanpa klub'
+            description: t('event_teams.no_club_archers')
         })
     }
 
@@ -716,23 +709,23 @@ const formatSyncDetailsMessage = (details = {}) => {
         const extras = []
 
         if (typeof details.total_participants === 'number') {
-            extras.push(`total peserta: ${details.total_participants}`)
+            extras.push(t('event_teams.total_participants_sync', { count: details.total_participants }))
         }
 
         if (typeof details.clubs_with_participants === 'number') {
-            extras.push(`klub terlibat: ${details.clubs_with_participants}`)
+            extras.push(t('event_teams.clubs_involved_sync', { count: details.clubs_with_participants }))
         }
 
         if (typeof details.male_participants === 'number') {
-            extras.push(`putra: ${details.male_participants}`)
+            extras.push(t('event_teams.male_sync', { count: details.male_participants }))
         }
 
         if (typeof details.female_participants === 'number') {
-            extras.push(`putri: ${details.female_participants}`)
+            extras.push(t('event_teams.female_sync', { count: details.female_participants }))
         }
 
         if (typeof details.eligible_team_groups === 'number') {
-            extras.push(`grup layak: ${details.eligible_team_groups}`)
+            extras.push(t('event_teams.eligible_groups_sync', { count: details.eligible_team_groups }))
         }
 
         return extras.length > 0
@@ -755,16 +748,16 @@ const executeSyncTeams = async () => {
 
         if (syncCount > 0) {
             toast.success(response?.message
-                ? `${response.message}. ${syncCount} tim dibuat.`
-                : `${syncCount} tim berhasil disinkronisasi otomatis`)
+                ? `${response.message}. ${t('event_teams.toast_sync_count', { count: syncCount })}`
+                : t('event_teams.toast_sync_success', { count: syncCount }))
         } else {
-            toast.error(detailMessage || 'Sinkronisasi tidak menghasilkan tim. Periksa kecukupan peserta dan skor kualifikasi.')
+            toast.error(detailMessage || t('event_teams.toast_sync_no_teams'))
         }
 
         await fetchTeams(selectedCategory.value.id)
     } catch (error) {
         console.error('Failed to sync teams:', error)
-        const errorMessage = error?.data?.error || error?.data?.details?.reason || error?.data?.message || error?.message || 'Gagal sinkronisasi tim'
+        const errorMessage = error?.data?.error || error?.data?.details?.reason || error?.data?.message || error?.message || t('event_teams.toast_sync_failed')
         toast.error(errorMessage)
     } finally {
         isSyncing.value = false
@@ -803,11 +796,11 @@ const openEditTeamModal = (team) => {
 
 const handleSaveTeam = async () => {
     if (!teamForm.team_name) {
-        toast.error('Nama tim wajib diisi')
+        toast.error(t('event_teams.toast_team_name_required'))
         return
     }
     if (teamForm.member_ids.length < minMembers.value) {
-        toast.error(`Pilih minimal ${minMembers.value} anggota`)
+        toast.error(t('event_teams.toast_min_members', { count: minMembers.value }))
         return
     }
 
@@ -821,17 +814,17 @@ const handleSaveTeam = async () => {
 
         if (isEditing.value) {
             await put(`/teams/${currentTeamId.value}`, payload)
-            toast.success('Tim berhasil diperbarui')
+            toast.success(t('event_teams.toast_team_updated'))
         } else {
             await post(`/teams/event/${eventId}`, payload)
-            toast.success('Tim berhasil dibuat')
+            toast.success(t('event_teams.toast_team_created'))
         }
 
         showTeamModal.value = false
         await fetchTeams(selectedCategory.value.id)
     } catch (error) {
         console.error('Failed to save team:', error)
-        toast.error('Gagal menyimpan tim')
+        toast.error(t('event_teams.toast_team_save_failed'))
     } finally {
         isSaving.value = false
     }
@@ -842,13 +835,13 @@ const executeDeleteTeam = async () => {
     isDeleting.value = true
     try {
         await del(`/teams/${teamToDelete.value.id}`)
-        toast.success('Tim berhasil dihapus')
+        toast.success(t('event_teams.toast_team_deleted'))
         showDeleteConfirm.value = false
         teamToDelete.value = null
         await fetchTeams(selectedCategory.value.id)
     } catch (error) {
         console.error('Failed to delete team:', error)
-        toast.error('Gagal menghapus tim')
+        toast.error(t('event_teams.toast_team_delete_failed'))
     } finally {
         isDeleting.value = false
     }

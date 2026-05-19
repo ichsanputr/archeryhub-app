@@ -22,11 +22,11 @@
                             class="text-logo-id">.id</span></span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display">
-                    Tingkatkan <br />
-                    Panahan Indonesia
+                    Elevate <br />
+                    Indonesian Archery
                 </h1>
                 <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
-                    Gabung sama platform digital panahan nomor satu buat kelola turnamen, atlet, sama skor real-time.
+                    Join the number one digital archery platform to manage tournaments, athletes, and real-time scoring.
                 </p>
                 <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
                     <div class="flex -space-x-2">
@@ -40,7 +40,7 @@
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
                     </div>
-                    <span>Pemanah udah gabung di Archeris.net</span>
+                    <span>Archers have joined Archeris.net</span>
                 </div>
             </div>
         </div>
@@ -69,9 +69,8 @@
                             </div>
                         </div>
                     </div>
-                    <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display">Masuk Lagi Yuk!</h2>
-                    <p class="mt-2 text-slate-500 text-sm font-body">Masukin email sama password kamu buat lanjut ya.
-                    </p>
+                    <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display">Welcome Back!</h2>
+                    <p class="mt-2 text-slate-500 text-sm font-body">Please enter your email and password to continue.</p>
                 </div>
 
                 <form @submit.prevent="handleEmailAuth" class="space-y-6">
@@ -79,28 +78,28 @@
                         <div class="flex items-center justify-between">
                             <span class="font-bold text-amber-800 flex items-center gap-1.5">
                                 <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-                                mode pengembangan / dev mode
+                                development mode / dev mode
                             </span>
                             <span class="text-[10px] bg-amber-200/60 text-amber-800 px-1.5 py-0.5 rounded font-mono font-bold">auto-fill</span>
                         </div>
-                        <label class="block font-bold text-slate-700">pilih jenis akun demo:</label>
+                        <label class="block font-bold text-slate-700">select demo account type:</label>
                         <select @change="selectDemoUser($event.target.value)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-slate-700 focus:outline-none focus:ring-1 focus:ring-amber-500 font-medium">
-                            <option value="">-- pilih akun --</option>
-                            <option value="archer">archer (pemanah) - stewie4king@gmail.com</option>
-                            <option value="organization">organization (klub) - ichsanfadhil67@gmail.com</option>
-                            <option value="seller">seller (toko) - seller@panahan.com</option>
+                            <option value="">-- select account --</option>
+                            <option value="archer">archer (archer) - stewie4king@gmail.com</option>
+                            <option value="organization">organization (club) - ichsanfadhil67@gmail.com</option>
+                            <option value="seller">seller (shop) - seller@panahan.com</option>
                         </select>
                     </div>
 
-                    <BaseInput v-model="form.email" label="Alamat Email" placeholder="name@company.com" type="email"
+                    <BaseInput v-model="form.email" label="Email Address" placeholder="name@company.com" type="email"
                         icon="mail" required :error="errors.email"
                         @update:model-value="validate('email', form.email, [rules.required(), rules.email()])" />
 
                     <div class="space-y-2">
                         <div class="flex items-center justify-between px-1">
-                            <label class="text-xs font-bold text-navy  tracking-wider">Kata Sandi</label>
+                            <label class="text-xs font-bold text-navy  tracking-wider">Password</label>
                             <NuxtLink to="/auth/forgot-password" class="text-xs font-bold transition-colors">
-                                Lupa password?
+                                Forgot password?
                             </NuxtLink>
                         </div>
                         <BaseInput v-model="form.password" placeholder="••••••••" type="password" icon="lock" required
@@ -109,12 +108,12 @@
                     </div>
 
                     <div class="flex items-center">
-                        <BaseCheckbox v-model="form.rememberMe" label="Ingat saya" />
+                        <BaseCheckbox v-model="form.rememberMe" label="Remember me" />
                     </div>
 
                     <div>
                         <BaseButton type="submit" variant="gold" block :loading="isLoading" icon-right="ph:arrow-right">
-                            Masuk Sekarang
+                            Login Now
                         </BaseButton>
                     </div>
                 </form>
@@ -124,22 +123,21 @@
                         <div class="w-full border-t border-gray-200"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-4 bg-white text-slate-500 font-medium font-body">Atau masuk lewat</span>
+                        <span class="px-4 bg-white text-slate-500 font-medium font-body">Or login with</span>
                     </div>
                 </div>
 
                 <div class="mt-6">
                     <BaseButton variant="outline" block icon="logos:google-icon" @click="handleGoogleLogin"
                         :loading="isLoading && !form.email">
-                        Masuk dengan Google
+                        Login with Google
                     </BaseButton>
                 </div>
 
                 <p class="mt-8 text-center text-sm text-slate-600 font-body">
-                    Belum punya akun?
+                    Don't have an account?
                     <NuxtLink to="/auth/register"
-                        class="font-black text-navy hover:text-primary-hover hover:underline transition-all">Daftar di
-                        sini!
+                        class="font-black text-navy hover:text-primary-hover hover:underline transition-all">Register here!
                     </NuxtLink>
                 </p>
             </div>
@@ -182,7 +180,7 @@ const selectDemoUser = (role) => {
 }
 
 useHead({
-    title: 'Masuk - Archeris.net'
+    title: 'Login - Archeris.net'
 })
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
@@ -282,13 +280,13 @@ const handleEmailAuth = async () => {
         window.location.href = redirect
     } catch (err) {
         console.error('Auth failed:', err)
-        let errorMessage = 'Email atau kata sandi salah'
+        let errorMessage = 'Invalid email or password'
 
         // Handle different error types
         if (err.status === 401 || err.statusCode === 401) {
-            errorMessage = 'Email atau kata sandi salah. Silakan coba lagi.'
+            errorMessage = 'Invalid email or password. Please try again.'
         } else if (err.status === 500 || err.statusCode === 500) {
-            errorMessage = 'Terjadi kesalahan pada server. Silakan coba lagi nanti.'
+            errorMessage = 'A server error occurred. Please try again later.'
         } else if (err.data?.error) {
             errorMessage = err.data.error
         } else if (err.response?._data?.error) {
@@ -310,13 +308,13 @@ const handleGoogleLogin = async () => {
         await login()
     } catch (err) {
         console.error('Google login failed:', err)
-        let errorMessage = 'Gagal menyambung ke Google. Silakan coba lagi.'
+        let errorMessage = 'Failed to connect to Google. Please try again.'
 
         // Handle different error types
         if (err.status === 401 || err.statusCode === 401) {
-            errorMessage = 'Autentikasi gagal. Silakan coba lagi.'
+            errorMessage = 'Authentication failed. Please try again.'
         } else if (err.status === 500 || err.statusCode === 500) {
-            errorMessage = 'Terjadi kesalahan pada server. Silakan coba lagi nanti.'
+            errorMessage = 'A server error occurred. Please try again later.'
         } else if (err.data?.error) {
             errorMessage = err.data.error
         } else if (err.response?._data?.error) {

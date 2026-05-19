@@ -22,11 +22,11 @@
                             class="text-logo-id">.id</span></span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display">
-                    Atur Ulang <br />
-                    Akses Kamu
+                    Reset <br />
+                    Your Access
                 </h1>
                 <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
-                    Jangan khawatir, tinggal ikutin langkah simpelnya buat dapet balik akses akun Archeris kamu.
+                    Don't worry, just follow the simple steps to regain access to your Archeris account.
                 </p>
                 <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
                     <div class="flex -space-x-2">
@@ -40,7 +40,7 @@
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
                     </div>
-                    <span>Pemanah udah gabung di Archeris.net</span>
+                    <span>Archers have joined Archeris.net</span>
                 </div>
             </div>
         </div>
@@ -71,27 +71,27 @@
                                 class="w-14 h-14 rounded-2xl bg-navy/5 border border-navy/10 flex items-center justify-center mb-5">
                                 <Icon icon="ph:envelope-simple-open-bold" class="text-2xl text-navy" />
                             </div>
-                            <h1 class="text-2xl font-black text-navy tracking-tight">Lupa Password?</h1>
+                            <h1 class="text-2xl font-black text-navy tracking-tight">Forgot Password?</h1>
                             <p class="mt-2 text-slate-500 text-sm leading-relaxed">
-                                Masukkan email akun kamu. Kami akan kirimkan kode OTP untuk reset password.
+                                Enter your account email. We will send you an OTP code to reset your password.
                             </p>
                         </div>
 
                         <form @submit.prevent="requestOTP" class="space-y-5">
-                            <BaseInput v-model="form.email" label="Alamat Email" placeholder="nama@email.com"
+                            <BaseInput v-model="form.email" label="Email Address" placeholder="name@email.com"
                                 type="email" icon="mail" required :error="errors.email"
                                 @update:model-value="validate('email', form.email, [rules.required(), rules.email()])" />
 
                             <BaseButton type="submit" variant="gold" block :loading="isLoading"
                                 icon-right="ph:arrow-right">
-                                Kirim Kode OTP
+                                Send OTP Code
                             </BaseButton>
                         </form>
 
-                        <p class="mt-6 text-center text-sm text-slate-500">
-                            Ingat password?
+                        <p class="mt-6 text-center text-sm text-slate-500 font-body">
+                            Remember your password?
                             <NuxtLink to="/auth/login"
-                                class="font-black text-navy hover:text-primary transition-colors">Masuk di sini
+                                class="font-black text-navy hover:text-primary transition-colors">Log in here
                             </NuxtLink>
                         </p>
                     </div>
@@ -105,10 +105,10 @@
                                 class="w-14 h-14 rounded-2xl bg-yellow-50 border border-yellow-100 flex items-center justify-center mb-5">
                                 <Icon icon="ph:lock-key-open-bold" class="text-2xl text-yellow-500" />
                             </div>
-                            <h1 class="text-2xl font-black text-navy tracking-tight">Masukkan Kode OTP</h1>
+                            <h1 class="text-2xl font-black text-navy tracking-tight">Enter OTP Code</h1>
                             <p class="mt-2 text-slate-500 text-sm leading-relaxed">
-                                Kode 6 digit telah dikirim ke <strong>{{ form.email }}</strong>.<br />
-                                Berlaku selama <strong>5 menit</strong>.
+                                A 6-digit code has been sent to <strong>{{ form.email }}</strong>.<br />
+                                Valid for <strong>5 minutes</strong>.
                             </p>
                         </div>
 
@@ -130,20 +130,20 @@
 
                         <BaseButton variant="gold" block :loading="isLoading" icon-right="ph:arrow-right"
                             @click="verifyOTP">
-                            Verifikasi Kode
+                            Verify Code
                         </BaseButton>
 
                         <div class="mt-8 flex flex-col items-center gap-4">
                             <button @click="requestOTP" :disabled="resendCooldown > 0"
                                 class="text-sm font-bold text-slate-500 hover:text-navy disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-2">
                                 <Icon v-if="resendCooldown <= 0" icon="ph:arrow-counter-clockwise" />
-                                {{ resendCooldown > 0 ? `Kirim ulang dalam ${resendCooldown}s` : 'Kirim ulang kode OTP'
+                                {{ resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend OTP code'
                                 }}
                             </button>
 
                             <button @click="currentStep = 0"
                                 class="text-sm font-bold text-slate-400 hover:text-slate-600 transition-all flex items-center gap-1">
-                                <Icon icon="ph:arrow-left" /> Ganti email tujuan
+                                <Icon icon="ph:arrow-left" /> Change email address
                             </button>
                         </div>
                     </div>
@@ -157,21 +157,21 @@
                                 class="w-14 h-14 rounded-2xl bg-green-50 border border-green-100 flex items-center justify-center mb-5">
                                 <Icon icon="ph:shield-check-bold" class="text-2xl text-green-500" />
                             </div>
-                            <h1 class="text-2xl font-black text-navy tracking-tight">Buat Password Baru</h1>
+                            <h1 class="text-2xl font-black text-navy tracking-tight">Create New Password</h1>
                             <p class="mt-2 text-slate-500 text-sm leading-relaxed">
-                                OTP terverifikasi! Sekarang buat password baru untuk akun kamu.
+                                OTP verified! Now create a new password for your account.
                             </p>
                         </div>
 
                         <form @submit.prevent="resetPassword" class="space-y-5">
-                            <BaseInput v-model="form.newPassword" label="Password Baru" placeholder="••••••••"
+                            <BaseInput v-model="form.newPassword" label="New Password" placeholder="••••••••"
                                 type="password" icon="lock" required :error="errors.newPassword"
                                 @update:model-value="validate('newPassword', form.newPassword, [rules.required(), rules.minLength(6)])" />
 
-                            <BaseInput v-model="form.confirmPassword" label="Konfirmasi Password Baru"
+                            <BaseInput v-model="form.confirmPassword" label="Confirm New Password"
                                 placeholder="••••••••" type="password" icon="lock" required
                                 :error="errors.confirmPassword"
-                                @update:model-value="validate('confirmPassword', form.confirmPassword, [rules.required(), rules.sameAs(form.newPassword, 'Password tidak sama')])" />
+                                @update:model-value="validate('confirmPassword', form.confirmPassword, [rules.required(), rules.sameAs(form.newPassword, 'Passwords do not match')])" />
 
                             <!-- Password strength indicator -->
                             <div v-if="form.newPassword" class="space-y-1.5">
@@ -185,7 +185,7 @@
 
                             <BaseButton type="submit" variant="gold" block :loading="isLoading"
                                 icon-right="ph:check-bold">
-                                Simpan Password Baru
+                                Save New Password
                             </BaseButton>
                         </form>
                     </div>
@@ -198,12 +198,12 @@
                             class="w-20 h-20 rounded-full bg-green-50 border-2 border-green-100 flex items-center justify-center mx-auto mb-6">
                             <Icon icon="ph:check-circle-bold" class="text-4xl text-green-500" />
                         </div>
-                        <h1 class="text-2xl font-black text-navy mb-3">Password Berhasil Direset!</h1>
-                        <p class="text-slate-500 text-sm leading-relaxed mb-8">
-                            Selamat! Password akun kamu sudah diperbarui.<br />Silakan masuk dengan password baru.
+                        <h1 class="text-2xl font-black text-navy mb-3">Password Reset Successfully!</h1>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-8 font-body">
+                            Congratulations! Your account password has been updated.<br />Please log in with your new password.
                         </p>
                         <BaseButton variant="gold" block icon-right="ph:arrow-right" @click="goToLogin">
-                            Masuk Sekarang
+                            Log In Now
                         </BaseButton>
                     </div>
                 </Transition>
@@ -220,7 +220,7 @@ import { useToast } from '~/composables/useToast'
 
 definePageMeta({ layout: false })
 
-useHead({ title: 'Lupa Password - Archeris.net' })
+useHead({ title: 'Forgot Password - Archeris.net' })
 
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
@@ -266,9 +266,9 @@ const form = ref({
 const otpDigits = ref(['', '', '', '', '', ''])
 
 const steps = [
-    { title: 'Masukkan Email', desc: 'Kami kirim kode verifikasi' },
-    { title: 'Verifikasi OTP', desc: 'Cek inbox atau spam kamu' },
-    { title: 'Password Baru', desc: 'Buat password yang kuat' },
+    { title: 'Enter Email', desc: 'We will send a verification code' },
+    { title: 'Verify OTP', desc: 'Check your inbox or spam' },
+    { title: 'New Password', desc: 'Create a strong password' },
 ]
 
 // OTP helpers
@@ -319,7 +319,7 @@ const strengthTextColor = computed(() => {
     return colors[passwordStrength.value]
 })
 const strengthLabel = computed(() => {
-    const labels = ['', 'Lemah', 'Cukup', 'Bagus', 'Kuat']
+    const labels = ['', 'Weak', 'Fair', 'Good', 'Strong']
     return labels[passwordStrength.value] || ''
 })
 
@@ -350,9 +350,9 @@ const requestOTP = async () => {
         otpDigits.value = ['', '', '', '', '', '']
         currentStep.value = 1
         startCooldown()
-        toast.success('Kode OTP telah dikirimkan ke email kamu')
+        toast.success('OTP code has been sent to your email')
     } catch (err) {
-        toast.error(err?.data?.error || 'Gagal mengirim kode. Coba lagi.')
+        toast.error(err?.data?.error || 'Failed to send code. Please try again.')
     } finally {
         isLoading.value = false
     }
@@ -361,7 +361,7 @@ const requestOTP = async () => {
 // Step 2: verify OTP
 const verifyOTP = async () => {
     if (otpValue.value.length !== 6) {
-        errors.otp = 'Masukkan semua 6 digit kode OTP'
+        errors.otp = 'Enter all 6 digits of the OTP code'
         return
     }
     errors.otp = ''
@@ -373,7 +373,7 @@ const verifyOTP = async () => {
         })
         currentStep.value = 2
     } catch (err) {
-        errors.otp = err?.data?.error || 'Kode OTP tidak valid atau sudah kedaluwarsa'
+        errors.otp = err?.data?.error || 'Invalid or expired OTP code'
     } finally {
         isLoading.value = false
     }
@@ -385,7 +385,7 @@ const resetPassword = async () => {
         { newPassword: form.value.newPassword, confirmPassword: form.value.confirmPassword },
         {
             newPassword: [rules.required(), rules.minLength(6)],
-            confirmPassword: [rules.required(), rules.sameAs(form.value.newPassword, 'Password tidak sama')]
+            confirmPassword: [rules.required(), rules.sameAs(form.value.newPassword, 'Passwords do not match')]
         }
     )
     if (!isValid) return
@@ -402,7 +402,7 @@ const resetPassword = async () => {
         })
         currentStep.value = 3
     } catch (err) {
-        toast.error(err?.data?.error || 'Gagal mereset password. Coba mulai ulang.')
+        toast.error(err?.data?.error || 'Failed to reset password. Please start over.')
     } finally {
         isLoading.value = false
     }

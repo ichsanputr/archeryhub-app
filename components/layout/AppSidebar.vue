@@ -92,7 +92,7 @@
         :class="isOnEventSubPage ? '' : 'mt-4'">
         <div v-if="!isOnEventSubPage && !isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
         <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
-          <p class="text-xs font-bold text-gray-500">Manajemen Event</p>
+          <p class="text-xs font-bold text-gray-500">{{ t('dashboard.sidebar.event_management') }}</p>
         </div>
         <NuxtLink v-for="item in eventLinks" :key="item.path" :to="item.path"
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group" :class="isActive(item.path)
@@ -121,7 +121,7 @@
         </div>
         <button @click="handleLogout"
           class="p-2 text-gray-400 hover:text-red-400 transition-colors rounded-lg hover:bg-white/5"
-          :title="isSidebarCollapsed ? 'Keluar' : ''">
+          :title="isSidebarCollapsed ? t('dashboard.sidebar.sign_out') : ''">
           <Icon icon="ph:sign-out" class="text-[20px]" />
         </button>
       </div>
@@ -210,30 +210,30 @@ const eventLinks = computed(() => {
 
   if (isArcher) {
     return [
-      { label: 'Registrasi', icon: 'ph:clipboard-text', path: `${prefix}/events/${eventId.value}/my-registration` },
-      { label: 'Hasil Kualifikasi', icon: 'ph:chart-line-up-bold', path: `${prefix}/events/${eventId.value}/my-qualification` },
-      { label: 'Hasil Eliminasi', icon: 'ph:git-merge-bold', path: `${prefix}/events/${eventId.value}/my-elimination` },
+      { label: t('dashboard.sidebar.registration'), icon: 'ph:clipboard-text', path: `${prefix}/events/${eventId.value}/my-registration` },
+      { label: t('dashboard.sidebar.qualification_results'), icon: 'ph:chart-line-up-bold', path: `${prefix}/events/${eventId.value}/my-qualification` },
+      { label: t('dashboard.sidebar.elimination_results'), icon: 'ph:git-merge-bold', path: `${prefix}/events/${eventId.value}/my-elimination` },
     ]
   }
 
   const links = [
-    { label: 'Ringkasan', icon: 'ph:squares-four', path: `${prefix}/events/${eventId.value}/overview` },
-    { label: 'Halaman Event', icon: 'ph:browser', path: `${prefix}/events/${eventId.value}/page` },
-    { label: 'Peserta', icon: 'ph:users-three', path: `${prefix}/events/${eventId.value}/participants` },
-    { label: 'Tim', icon: 'ph:users-four', path: `${prefix}/events/${eventId.value}/teams` },
+    { label: t('dashboard.sidebar.summary'), icon: 'ph:squares-four', path: `${prefix}/events/${eventId.value}/overview` },
+    { label: t('dashboard.sidebar.event_page'), icon: 'ph:browser', path: `${prefix}/events/${eventId.value}/page` },
+    { label: t('dashboard.sidebar.participants'), icon: 'ph:users-three', path: `${prefix}/events/${eventId.value}/participants` },
+    { label: t('dashboard.sidebar.teams'), icon: 'ph:users-four', path: `${prefix}/events/${eventId.value}/teams` },
   ]
 
   if (isOrganization) {
-    links.push({ label: 'Kategori Lomba', icon: 'ph:tag', path: `${prefix}/events/${eventId.value}/categories` })
+    links.push({ label: t('dashboard.sidebar.competition_categories'), icon: 'ph:tag', path: `${prefix}/events/${eventId.value}/categories` })
   }
 
   links.push(
-    { label: 'Target', icon: 'ph:target', path: `${prefix}/events/${eventId.value}/targets` },
-    { label: 'Kualifikasi', icon: 'fluent:table-freeze-column-20-regular', path: `${prefix}/events/${eventId.value}/qualification` },
-    { label: 'Eliminasi', icon: 'mdi:bracket', path: `${prefix}/events/${eventId.value}/elimination` },
-    { label: 'Printout', icon: 'ph:printer-bold', path: `${prefix}/events/${eventId.value}/printout` },
-    { label: 'Scan QR', icon: 'ph:qr-code', path: '/scan/qr' },
-    { label: 'Reset Data', icon: 'ph:arrow-counter-clockwise', path: `${prefix}/events/${eventId.value}/reset` },
+    { label: t('dashboard.sidebar.targets'), icon: 'ph:target', path: `${prefix}/events/${eventId.value}/targets` },
+    { label: t('dashboard.sidebar.qualification'), icon: 'fluent:table-freeze-column-20-regular', path: `${prefix}/events/${eventId.value}/qualification` },
+    { label: t('dashboard.sidebar.elimination'), icon: 'mdi:bracket', path: `${prefix}/events/${eventId.value}/elimination` },
+    { label: t('dashboard.sidebar.printout'), icon: 'ph:printer-bold', path: `${prefix}/events/${eventId.value}/printout` },
+    { label: t('dashboard.sidebar.scan_qr'), icon: 'ph:qr-code', path: '/scan/qr' },
+    { label: t('dashboard.sidebar.reset_data'), icon: 'ph:arrow-counter-clockwise', path: `${prefix}/events/${eventId.value}/reset` },
   )
 
   return links
@@ -251,8 +251,14 @@ const canManageEvents = computed(() => {
 
 const userRoleLabel = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
-  const labels = { 'archer': 'Pemanah', 'organization': 'Organisasi', 'admin': 'Admin', 'seller': 'Penjual', 'scorekeeper': 'Scorekeeper' }
-  return labels[role] || 'Pengguna'
+  const labels = {
+    'archer': t('dashboard.sidebar.roles.archer'),
+    'organization': t('dashboard.sidebar.roles.organization'),
+    'admin': t('dashboard.sidebar.roles.admin'),
+    'seller': t('dashboard.sidebar.roles.seller'),
+    'scorekeeper': t('dashboard.sidebar.roles.scorekeeper')
+  }
+  return labels[role] || t('dashboard.sidebar.roles.user')
 })
 
 const { isSubscriptionActive, isElite } = useSubscription()

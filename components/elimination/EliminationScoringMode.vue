@@ -6,7 +6,7 @@
                 <div class="flex items-center justify-between mb-4 lg:mb-6 pb-2 border-b border-gray-50">
                     <h3 class="text-[10px] font-black tracking-[0.2em] text-navy/40 flex items-center gap-2 ">
                         <Icon icon="ph:list-bullets-bold" class="text-sm" />
-                        Daftar Pertandingan
+                        {{ $t('event_elimination.match_list') }}
                     </h3>
                     <span class="px-2 py-0.5 rounded-lg bg-slate-100 text-[10px] font-black text-slate-400">{{
                         roundMatches.length }}</span>
@@ -135,7 +135,7 @@
                                 </h4>
                                 <p
                                     class="text-[8px] sm:text-[10px] font-black text-primary tracking-[0.2em] opacity-60">
-                                    {{ bracket.bracket_type !== 'individual' ? 'Tim A' : 'Peserta A' }}
+                                    {{ bracket.bracket_type !== 'individual' ? $t('event_elimination.team_a') : $t('event_elimination.participant_a') }}
                                 </p>
                                 <!-- Team member roster for non-individual brackets -->
                                 <div v-if="bracket.bracket_type !== 'individual' && membersA.length"
@@ -200,14 +200,14 @@
                                         class="px-5 py-1.5 rounded-xl bg-green-500/10 border border-green-500/20 backdrop-blur-sm flex items-center gap-2">
                                         <Icon icon="ph:seal-check-fill" class="text-green-500 text-[10px]" />
                                         <span
-                                            class="text-[9px] font-black tracking-[0.3em] text-green-400 ">SELESAI</span>
+                                            class="text-[9px] font-black tracking-[0.3em] text-green-400 ">{{ $t('event_elimination.finished_badge') }}</span>
                                     </div>
                                     <button @click="$emit('reset-match')" :disabled="isResetting"
                                         class="group px-3 py-1.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2"
-                                        title="Atur Ulang Pertandingan ke Mode Berlangsung">
+                                        :title="$t('event_elimination.reset_match_title')">
                                         <Icon :icon="isResetting ? 'ph:circle-notch-bold' : 'ph:lock-open-bold'"
                                             :class="{ 'animate-spin': isResetting }" class="text-xs" />
-                                        <span class="text-[8px] font-black tracking-wider">ATUR ULANG</span>
+                                        <span class="text-[8px] font-black tracking-wider">{{ $t('event_elimination.reset') }}</span>
                                     </button>
                                 </div>
                                 <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
@@ -218,13 +218,13 @@
                                         <Icon v-else icon="ph:flag-checkered-fill"
                                             class="group-hover:rotate-12 transition-transform text-xs" />
                                     </div>
-                                    <span>{{ isEndingMatch ? 'Proses...' : 'Akhiri' }}</span>
+                                    <span>{{ isEndingMatch ? $t('event_elimination.processing') : $t('event_elimination.end') }}</span>
                                 </button>
                                 <div v-else
                                     class="px-5 py-1.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2">
                                     <div class="size-1 rounded-full bg-white/20 animate-pulse"></div>
                                     <span
-                                        class="text-[9px] font-black tracking-[0.3em] text-white/30 ">BERLANGSUNG</span>
+                                        class="text-[9px] font-black tracking-[0.3em] text-white/30 ">{{ $t('event_elimination.live_badge') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -269,7 +269,7 @@
                                     {{ selectedScoringMatch.entry_b_name || 'TBD' }}
                                 </h4>
                                 <p class="text-[8px] sm:text-[10px] font-black text-white tracking-[0.2em] opacity-40">
-                                    {{ bracket.bracket_type !== 'individual' ? 'Tim B' : 'Peserta B' }}
+                                    {{ bracket.bracket_type !== 'individual' ? $t('event_elimination.team_b') : $t('event_elimination.participant_b') }}
                                 </p>
                                 <!-- Team member roster for non-individual brackets -->
                                 <div v-if="bracket.bracket_type !== 'individual' && membersB.length"
@@ -291,14 +291,14 @@
                             <div v-if="selectedScoringMatch.winner_entry_id || selectedScoringMatch.status === 'finished'"
                                 class="w-full py-3 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center gap-2">
                                 <Icon icon="ph:seal-check-fill" class="text-green-500 text-sm" />
-                                <span class="text-[10px] font-black tracking-[0.3em] text-green-400 ">PERTANDINGAN
-                                    SELESAI</span>
+                                <span class="text-[10px] font-black tracking-[0.3em] text-green-400 ">{{ $t('event_elimination.match_finished_badge') }}
+</span>
                             </div>
                             <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
                                 class="w-full py-3.5 sm:py-4 rounded-xl bg-primary text-btn-text font-black text-[10px] sm:text-xs tracking-widest flex items-center justify-center gap-2 sm:gap-3 transition-all active:scale-[0.98]">
                                 <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold" class="animate-spin text-lg" />
                                 <Icon v-else icon="ph:flag-checkered-fill" class="text-lg" />
-                                <span>{{ isEndingMatch ? 'Mengakhiri...' : 'Akhiri Pertandingan' }}</span>
+                                <span>{{ isEndingMatch ? $t('event_elimination.processing') : $t('event_elimination.end_match') }}</span>
                             </button>
                         </div>
                     </div>
@@ -458,7 +458,7 @@
                                                     <template v-else>
                                                         <span
                                                             class="text-[9px] sm:text-[10px] tracking-widest truncate">{{
-                                                                isMatchFinished ? 'HANYA BACA' : 'Simpan Skor' }}</span>
+                                                                isMatchFinished ? $t('event_elimination.read_only') : $t('event_elimination.save_score') }}</span>
                                                         <Icon icon="ph:paper-plane-right-fill"
                                                             class="text-base sm:text-lg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                                                     </template>
@@ -483,9 +483,9 @@
                     </div>
                     <Icon icon="ph:hand-pointing-bold" class="text-4xl text-gray-300 relative z-10" />
                 </div>
-                <h3 class="text-xl font-black text-navy tracking-tight">Mulai Penilaian</h3>
+                <h3 class="text-xl font-black text-navy tracking-tight">{{ $t('event_elimination.start_scoring') }}</h3>
                 <p class="text-gray-400 mt-2 max-w-sm text-center text-sm font-medium">
-                    Pilih salah satu pertandingan dari daftar sebelah kiri untuk memulai penginputan skor real-time
+                    {{ $t('event_elimination.select_match_desc') }}
                 </p>
             </div>
         </div>
@@ -493,7 +493,10 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+
+const { t } = useI18n()
 
 const props = defineProps({
     bracket: { type: Object, required: true },
@@ -658,10 +661,10 @@ const calculateSetPoints = (matchId, side) => {
 }
 
 const getFullTargetName = (match) => {
-    if (!match) return 'Belum Ada Target'
+    if (!match) return t('event_elimination.no_target')
     if (match.board_code) return `${match.board_code}`
     if (match.target_name) return match.target_name.startsWith('Target') ? match.target_name : `Target ${match.target_name}`
-    return 'Belum Ada Target'
+    return t('event_elimination.no_target')
 }
 
 const calculateEndTotal = (matchId, endNo, side) => {

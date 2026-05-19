@@ -4,7 +4,7 @@
         <div v-if="pending" class="min-h-screen flex items-center justify-center">
             <div class="text-center">
                 <Icon icon="ph:circle-notch-bold" class="text-4xl text-primary animate-spin mb-4" />
-                <span class="text-gray-500 font-medium block">Memuat data...</span>
+                <span class="text-gray-500 font-medium block">Loading data...</span>
             </div>
         </div>
 
@@ -14,17 +14,17 @@
                 <div class="h-16 w-16 bg-red-50 rounded-full flex items-center justify-center mb-4 mx-auto">
                     <Icon icon="ph:warning-circle-fill" class="text-3xl text-red-500" />
                 </div>
-                <h2 class="text-xl font-black text-navy mb-3">Gagal Memuat Data</h2>
-                <span class="text-gray-500 mb-6 block">{{ fetchError.message || 'Terjadi kesalahan.' }}</span>
-                <BaseButton @click="refresh()" variant="navy" size="md">Coba Lagi</BaseButton>
+                <h2 class="text-xl font-black text-navy mb-3">Failed to Load Data</h2>
+                <span class="text-gray-500 mb-6 block">{{ fetchError.message || 'An error occurred.' }}</span>
+                <BaseButton @click="refresh()" variant="navy" size="md">Try Again</BaseButton>
             </div>
         </div>
 
         <!-- No Data -->
         <div v-else-if="!data || !data.event" class="min-h-screen flex items-center justify-center px-4">
             <div class="text-center max-w-md">
-                <h2 class="text-xl font-black text-navy mb-3">Event Tidak Ditemukan</h2>
-                <BaseButton to="/events" variant="navy" size="md">Lihat Event Lain</BaseButton>
+                <h2 class="text-xl font-black text-navy mb-3">Event Not Found</h2>
+                <BaseButton to="/events" variant="navy" size="md">View Other Events</BaseButton>
             </div>
         </div>
 
@@ -59,7 +59,7 @@
                             <Icon icon="ph:check-bold" class="text-4xl text-navy" />
                         </div>
                     </div>
-                    <h1 class="text-2xl font-black text-white mb-2 text-center">Pendaftaran Berhasil!</h1>
+                    <h1 class="text-2xl font-black text-white mb-2 text-center">Registration Successful!</h1>
                     <span class="text-white/50 text-sm font-medium text-center block">{{ event.name }}</span>
                 </div>
 
@@ -81,20 +81,18 @@
                     </div>
                     <!-- QR -->
                     <div v-if="paymentResult.qr_url" class="flex flex-col items-center bg-white rounded-xl p-4">
-                        <span class="text-[10px] font-black tracking-widest text-gray-400 block mb-3">Scan
-                            QRIS</span>
+                        <span class="text-[10px] font-black tracking-widest text-gray-400 block mb-3">Scan QRIS</span>
                         <img :src="paymentResult.qr_url" class="w-40 h-40" />
                     </div>
                     <!-- Amount & method -->
                     <div class="flex items-center justify-between border-t border-white/10 pt-3">
                         <div>
-                            <span class="text-[9px] text-white/40 font-black tracking-widest block">Total
-                                Bayar</span>
+                            <span class="text-[9px] text-white/40 font-black tracking-widest block">Total Amount</span>
                             <span class="font-black text-primary text-lg tabular-nums">Rp {{ (paymentResult.total_amount
                                 || paymentResult.amount || 0).toLocaleString('id-ID') }}</span>
                         </div>
                         <div v-if="paymentResult.payment_method" class="text-right">
-                            <span class="text-[9px] text-white/40 font-black tracking-widest block">Metode</span>
+                            <span class="text-[9px] text-white/40 font-black tracking-widest block">Method</span>
                             <span class="text-white font-black text-sm">{{ paymentResult.payment_method }}</span>
                         </div>
                     </div>
@@ -102,8 +100,8 @@
                     <div v-if="paymentResult.checkout_url"
                         class="flex items-center gap-2.5 bg-primary/10 border border-primary/20 rounded-xl p-3">
                         <Icon icon="ph:arrow-square-out-bold" class="text-primary shrink-0" />
-                        <span class="text-xs text-white/70 font-medium block">Mengarahkan ke halaman pembayaran dalam
-                            <strong class="text-primary">{{ redirectCountdown }}</strong> detik...</span>
+                        <span class="text-xs text-white/70 font-medium block">Redirecting to payment page in
+                            <strong class="text-primary">{{ redirectCountdown }}</strong> seconds...</span>
                     </div>
                 </div>
 
@@ -111,7 +109,7 @@
                 <!-- Manual go to dashboard link (subtle) -->
                 <span class="text-center block text-white/30 text-xs font-medium">
                     <NuxtLink to="/dashboard/archer/events"
-                        class="hover:text-white/60 transition-colors underline underline-offset-4">Lihat di Dashboard →
+                        class="hover:text-white/60 transition-colors underline underline-offset-4">View in Dashboard →
                     </NuxtLink>
                 </span>
             </div>
@@ -119,7 +117,7 @@
 
         <template v-else>
             <!-- Hero Header -->
-            <div class="bg-navy relative overflow-hidden h-[200px] md:h-[260px] flex items-end">
+            <div class="bg-navy relative overflow-hidden min-h-[220px] md:min-h-[280px] pt-20 flex items-end">
                 <div class="absolute inset-0 z-0">
                     <img alt="Event Banner" class="w-full h-full object-cover object-center"
                         src="/hero-event-detail.jpeg" />
@@ -132,13 +130,13 @@
                         <NuxtLink :to="`/events/${slug}`"
                             class="text-white/60 hover:text-white transition-colors text-xs font-bold tracking-widest flex items-center gap-1">
                             <Icon icon="ph:arrow-left-bold" />
-                            Kembali
+                            Back
                         </NuxtLink>
                         <Icon icon="ph:caret-right-bold" class="text-white/30 text-[10px]" />
-                        <span class="text-white/60 text-xs font-bold tracking-widest">Pendaftaran</span>
+                        <span class="text-white/60 text-xs font-bold tracking-widest">Registration</span>
                     </div>
                     <h1 class="text-2xl md:text-4xl font-black text-white tracking-tight leading-tight">
-                        Daftar: {{ event.name }}
+                        Register: {{ event.name }}
                     </h1>
                     <div class="flex flex-wrap items-center gap-4 mt-2 text-white/70 text-sm">
                         <div class="flex items-center gap-1.5">
@@ -159,13 +157,13 @@
                     <div class="h-20 w-20 bg-navy rounded-3xl flex items-center justify-center mx-auto mb-6">
                         <Icon icon="ph:identification-card" class="text-4xl text-primary" />
                     </div>
-                    <h2 class="text-2xl font-black text-navy mb-3">Anda Sudah Terdaftar</h2>
-                    <span class="text-gray-500 mb-8 leading-relaxed block">Anda telah mendaftar untuk <strong>{{
+                    <h2 class="text-2xl font-black text-navy mb-3">You Are Already Registered</h2>
+                    <span class="text-gray-500 mb-8 leading-relaxed block">You have already registered for <strong>{{
                         event.name }}</strong>.</span>
                     <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                        <BaseButton to="/dashboard/archer/events" variant="navy" size="lg" class="px-8">Ke Dashboard
+                        <BaseButton to="/dashboard/archer/events" variant="navy" size="lg" class="px-8">Go to Dashboard
                         </BaseButton>
-                        <BaseButton :to="`/events/${slug}`" variant="outline" size="lg" class="px-8">Kembali ke Event
+                        <BaseButton :to="`/events/${slug}`" variant="outline" size="lg" class="px-8">Back to Event
                         </BaseButton>
                     </div>
                 </div>
@@ -188,7 +186,7 @@
                                     class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
                                     <Icon icon="ph:user-bold" class="text-lg" />
                                 </div>
-                                <h2 class="text-base font-black text-navy">Data Atlet</h2>
+                                <h2 class="text-base font-black text-navy">Athlete Data</h2>
                             </div>
                             <div class="p-6">
                                 <!-- Not logged in -->
@@ -197,10 +195,9 @@
                                         class="h-14 w-14 bg-primary rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-primary/20">
                                         <Icon icon="ph:lock-bold" class="text-2xl text-navy" />
                                     </div>
-                                    <h3 class="font-black text-navy mb-2">Login Diperlukan</h3>
-                                    <span class="text-sm text-gray-500 mb-5 block">Silakan login sebagai atlet untuk
-                                        mendaftar.</span>
-                                    <BaseButton :to="loginUrl" variant="navy" size="md">Login Sekarang</BaseButton>
+                                    <h3 class="font-black text-navy mb-2">Login Required</h3>
+                                    <span class="text-sm text-gray-500 mb-5 block">Please log in as an athlete to register.</span>
+                                    <BaseButton :to="loginUrl" variant="navy" size="md">Login Now</BaseButton>
                                 </div>
 
                                 <!-- Not an archer -->
@@ -208,10 +205,9 @@
                                     <div class="h-14 w-14 bg-primary rounded-2xl flex items-center justify-center mb-4">
                                         <Icon icon="ph:user-plus-bold" class="text-2xl text-navy" />
                                     </div>
-                                    <h3 class="font-black text-navy mb-2">Akun Atlet Diperlukan</h3>
-                                    <span class="text-sm text-gray-500 mb-5 block">Khusus untuk profil atlet.</span>
-                                    <BaseButton to="/auth/register?type=archer" variant="navy" size="md">Daftar Sebagai
-                                        Atlet</BaseButton>
+                                    <h3 class="font-black text-navy mb-2">Athlete Account Required</h3>
+                                    <span class="text-sm text-gray-500 mb-5 block">Specifically for athlete profiles.</span>
+                                    <BaseButton to="/auth/register?type=archer" variant="navy" size="md">Register as Athlete</BaseButton>
                                 </div>
 
                                 <!-- Logged in archer -->
@@ -224,7 +220,7 @@
                                         </div>
                                         <div>
                                             <span class="font-black text-navy text-lg leading-tight block">{{
-                                                profileForm.full_name || 'Atlet' }}</span>
+                                                profileForm.full_name || 'Athlete' }}</span>
                                             <span class="text-sm text-gray-400 block">{{ archerProfile?.email || ''
                                             }}</span>
                                             <span v-if="archerProfile?.id"
@@ -233,27 +229,25 @@
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <BaseInput v-model="profileForm.full_name" label="Nama Lengkap"
-                                            placeholder="Nama lengkap" required icon="ph:user-bold" />
+                                        <BaseInput v-model="profileForm.full_name" label="Full Name"
+                                            placeholder="Full name" required icon="ph:user-bold" />
                                         <BaseSelect v-model="profileForm.gender" :items="genderOptions"
-                                            label="Jenis Kelamin" placeholder="Pilih" required
+                                            label="Gender" placeholder="Select" required
                                             icon="ph:gender-intersex" />
-                                        <BaseInput v-model="profileForm.date_of_birth" label="Tanggal Lahir" type="date"
+                                        <BaseInput v-model="profileForm.date_of_birth" label="Date of Birth" type="date"
                                             required icon="ph:calendar-blank" />
                                         <BaseSelect v-model="profileForm.bow_type" :items="bowTypeOptions"
-                                            label="Jenis Busur" placeholder="Pilih tipe busur" required
+                                            label="Bow Type" placeholder="Select bow type" required
                                             icon="ph:target-bold" />
                                         <BaseSelect v-model="profileForm.city" :items="cityOptions"
-                                            label="Kota / Kabupaten" placeholder="Pilih kota" icon="ph:map-pin-bold"
+                                            label="City / Regency" placeholder="Select city" icon="ph:map-pin-bold"
                                             class="relative z-20" />
-                                        <BaseInput v-model="profileForm.club_name" label="Klub / Instansi"
-                                            icon="ph:users-bold" hint="Tidak dapat diubah di sini" disabled readonly />
+                                        <BaseInput v-model="profileForm.club_name" label="Club / Institution"
+                                            icon="ph:users-bold" hint="Cannot be changed here" disabled readonly />
                                     </div>
                                     <div class="p-3.5 bg-primary/10 border border-primary/20 rounded-xl flex gap-2.5">
                                         <Icon icon="ph:info-bold" class="text-navy shrink-0 mt-0.5" />
-                                        <span class="text-xs text-navy/80 font-medium leading-relaxed block">Pastikan
-                                            data sudah
-                                            benar sebelum melanjutkan pendaftaran.</span>
+                                        <span class="text-xs text-navy/80 font-medium leading-relaxed block">Please ensure the data is correct before proceeding with registration.</span>
                                     </div>
                                 </div>
                             </div>
@@ -268,16 +262,14 @@
                                     <Icon icon="ph:tag-bold" class="text-lg" />
                                 </div>
                                 <div>
-                                    <h2 class="text-base font-black text-navy">Pilih Kategori</h2>
-                                    <span class="text-[10px] text-gray-400 font-medium block">Bisa lebih dari satu jika
-                                        jadwal
-                                        memungkinkan</span>
+                                    <h2 class="text-base font-black text-navy">Select Category</h2>
+                                    <span class="text-[10px] text-gray-400 font-medium block">Can select multiple if the schedule allows</span>
                                 </div>
                             </div>
                             <div class="p-6">
                                 <div class="relative mb-4">
                                     <input v-model="categorySearch" type="text"
-                                        placeholder="Cari divisi atau kategori..."
+                                        placeholder="Search division or category..."
                                         class="w-full h-10 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium" />
                                     <Icon icon="ph:magnifying-glass"
                                         class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -307,14 +299,12 @@
                                     <div v-if="filteredCategories.length === 0" class="py-10 text-center text-gray-400">
                                         <Icon icon="ph:magnifying-glass-slash"
                                             class="text-3xl mx-auto mb-2 opacity-40" />
-                                        <span class="text-xs font-bold tracking-widest block">Kategori tidak
-                                            ditemukan</span>
+                                        <span class="text-xs font-bold tracking-widest block">Category not found</span>
                                     </div>
                                     <div v-if="categories.length === 0 && !pending"
                                         class="p-4 bg-amber-50 border border-amber-100 rounded-xl flex gap-2.5">
                                         <Icon icon="ph:warning-bold" class="text-amber-500 shrink-0" />
-                                        <span class="text-sm text-amber-700 font-medium block">Kategori belum tersedia.
-                                            Hubungi penyelenggara.</span>
+                                        <span class="text-sm text-amber-700 font-medium block">Category not yet available. Please contact the organizer.</span>
                                     </div>
                                 </div>
                             </div>
@@ -328,13 +318,12 @@
                                     class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
                                     <Icon icon="ph:receipt-bold" class="text-lg" />
                                 </div>
-                                <h2 class="text-base font-black text-navy">Ringkasan</h2>
+                                <h2 class="text-base font-black text-navy">Summary</h2>
                             </div>
                             <div class="p-6 space-y-4">
                                 <!-- Selected categories list -->
                                 <div v-if="form.category_ids.length > 0" class="space-y-2">
-                                    <span class="text-[10px] font-black text-gray-400 tracking-widest block">Kategori
-                                        Dipilih</span>
+                                    <span class="text-[10px] font-black text-gray-400 tracking-widest block">Selected Categories</span>
                                     <div v-for="catId in form.category_ids" :key="catId"
                                         class="flex items-center justify-between gap-2">
                                         <div class="flex items-center gap-2 min-w-0">
@@ -351,13 +340,11 @@
                                 </div>
                                 <div v-else class="py-4 text-center border-2 border-dashed border-gray-100 rounded-xl">
                                     <Icon icon="ph:tag-light" class="text-3xl text-gray-300 mb-1 mx-auto" />
-                                    <span class="text-xs text-gray-300 font-bold tracking-widest block">Belum
-                                        ada
-                                        kategori dipilih</span>
+                                    <span class="text-xs text-gray-300 font-bold tracking-widest block">No categories selected yet</span>
                                 </div>
                                 <div class="pt-4 border-t border-gray-100 space-y-1.5">
                                     <div class="flex items-center justify-between text-sm">
-                                        <span class="text-gray-500">{{ form.category_ids.length }} Kategori</span>
+                                        <span class="text-gray-500">{{ form.category_ids.length }} {{ form.category_ids.length > 1 ? 'Categories' : 'Category' }}</span>
                                         <span class="font-bold text-navy">× Rp {{ (event.registration_fee ||
                                             0).toLocaleString('id-ID') }}</span>
                                     </div>
@@ -383,15 +370,14 @@
                                     class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
                                     <Icon icon="ph:credit-card-bold" class="text-lg" />
                                 </div>
-                                <h2 class="text-base font-black text-navy">Metode Pembayaran</h2>
+                                <h2 class="text-base font-black text-navy">Payment Method</h2>
                             </div>
                             <div class="p-6 space-y-5">
 
                                 <!-- Online Payment Channels — Expansion panel -->
                                 <div v-if="form.payment_type === 'online'" class="space-y-2">
-                                    <span class="text-[10px] font-black text-gray-600 tracking-widest block">Pilih
-                                        Metode Pembayaran Online</span>
-                                    <div class="flex flex-col gap-2">
+                                    <span class="text-[10px] font-black text-gray-600 tracking-widest block">Select Online Payment Method</span>
+                                    <div class="flex flex-col gap-2 max-h-[320px] overflow-y-auto pr-1 custom-scrollbar">
                                         <div v-for="ch in onlineChannels" :key="ch.code"
                                             class="rounded-xl border-2 transition-all overflow-hidden"
                                             :class="form.online_channel === ch.code ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
@@ -416,8 +402,7 @@
                                                 <div v-if="channelInstructionsLoading === ch.code"
                                                     class="flex items-center gap-2 py-4 text-gray-500">
                                                     <Icon icon="ph:circle-notch-bold" class="animate-spin text-lg" />
-                                                    <span class="text-xs font-medium">Memuat panduan
-                                                        pembayaran...</span>
+                                                    <span class="text-xs font-medium">Loading payment guide...</span>
                                                 </div>
                                                 <div v-else-if="channelInstructionGroups(ch.code).length"
                                                     class="space-y-4">
@@ -455,8 +440,7 @@
                                                     </div>
                                                 </div>
                                                 <div v-else class="py-3 text-xs text-gray-500 italic">
-                                                    Panduan tidak tersedia. Setelah mendaftar, instruksi pembayaran akan
-                                                    muncul.
+                                                    Guide not available. After registering, payment instructions will appear.
                                                 </div>
                                             </div>
                                         </div>
@@ -465,8 +449,7 @@
                                         <Icon icon="ph:shield-check-bold"
                                             class="text-blue-500 shrink-0 text-sm mt-0.5" />
                                         <span
-                                            class="text-[10px] text-blue-700 font-medium leading-relaxed block">Pembayaran
-                                            aman via Tripay. Konfirmasi otomatis setelah pembayaran berhasil.</span>
+                                            class="text-[10px] text-blue-700 font-medium leading-relaxed block">Secure payment via Tripay. Automatic confirmation after successful payment.</span>
                                     </div>
                                 </div>
                             </div>
@@ -476,7 +459,7 @@
                         <div class="space-y-3">
                             <BaseButton @click="handleSubmit" :loading="loading" :disabled="!isFormValid" variant="navy"
                                 size="lg" block>
-                                Daftar Sekarang
+                                Register Now
                                 <template #icon-right>
                                     <Icon icon="ph:arrow-right-bold" />
                                 </template>
@@ -484,9 +467,7 @@
                             <span v-if="submitError" class="text-sm text-red-500 font-bold text-center block">{{
                                 submitError }}</span>
                             <span
-                                class="text-[10px] text-gray-400 text-center font-medium leading-relaxed block">Konfirmasi
-                                otomatis setelah
-                                pembayaran berhasil.</span>
+                                class="text-[10px] text-gray-400 text-center font-medium leading-relaxed block">Automatic confirmation after successful payment.</span>
                         </div>
                     </div>
                 </div>
@@ -496,7 +477,7 @@
 </template>
 
 <script setup>
-definePageMeta({ layout: 'blank' })
+definePageMeta({ layout: 'landing' })
 
 import { useApi } from '~/composables/useApi'
 import { usePayment } from '~/composables/usePayment'
@@ -538,7 +519,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             $fetch(`${apiBaseUrl}/payment/channels`).catch(() => [])
         ])
 
-        const formatDate = (d) => d ? useDateFormat(d, 'DD MMM YYYY', { locales: 'id-ID' }).value : ''
+        const formatDate = (d) => d ? useDateFormat(d, 'DD MMM YYYY', { locales: 'en-US' }).value : ''
 
         const eventData = {
             id: eventId,
@@ -593,7 +574,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
                 }))
         }
     } catch (err) {
-        throw createError({ statusCode: 500, message: 'Gagal memuat data pendaftaran' })
+        throw createError({ statusCode: 500, message: 'Failed to load registration data' })
     }
 })
 
@@ -646,8 +627,8 @@ const profileForm = ref({
 })
 
 const genderOptions = [
-    { title: 'Pria', value: 'male' },
-    { title: 'Wanita', value: 'female' }
+    { title: 'Male', value: 'male' },
+    { title: 'Female', value: 'female' }
 ]
 
 const onlineChannels = computed(() => data.value?.onlineChannels || [])
@@ -804,7 +785,7 @@ const handleSubmit = async () => {
         }
 
         const athleteId = archerProfile.value?.uuid || archerProfile.value?.archer_id || archerProfile.value?.id
-        if (!athleteId) { submitError.value = 'Profil pemanah tidak lengkap. Silakan login ulang.'; return }
+        if (!athleteId) { submitError.value = 'Archer profile is incomplete. Please log in again.'; return }
 
         const payload = {
             athlete_id: athleteId,
@@ -834,14 +815,30 @@ const handleSubmit = async () => {
 
         registrationSuccess.value = true
     } catch (err) {
-        submitError.value = err.response?.data?.error || err.data?.error || err.message || 'Gagal melakukan pendaftaran.'
+        submitError.value = err.response?.data?.error || err.data?.error || err.message || 'Failed to complete registration.'
     } finally {
         loading.value = false
     }
 }
 
 useSeoMeta({
-    title: () => `Daftar ${event.value?.name || 'Event'} - Archeryhub.id`,
-    description: () => `Konfirmasi pendaftaran untuk ${event.value?.name || 'event'}`
+    title: () => `Register ${event.value?.name || 'Event'} - Archeris.net`,
+    description: () => `Confirm registration for ${event.value?.name || 'event'}`
 })
 </script>
+
+<style scoped>
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1;
+}
+</style>

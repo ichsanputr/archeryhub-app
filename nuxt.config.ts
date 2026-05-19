@@ -29,7 +29,7 @@ const dashboardPages = getDashboardPages(path.resolve(__dirname, 'pages/dashboar
 export default defineNuxtConfig({
   ssr: true,
   devServer: {
-    port: 3000,
+    port: 3003,
   },
   modules: [
     '@vueuse/motion/nuxt',
