@@ -1,0 +1,2 @@
+import{m as a,c as n,a as e,b as o,t as c,u as _,o as i,$ as r,a0 as l}from"./Bc-FEg2P.js";const p=r(l),d={class:"flex items-center justify-center min-h-[60vh]"},m={class:"flex flex-col items-center gap-4"},x={class:"text-gray-400 font-bold animate-pulse"},y={__name:"index",setup(f){const{t}=a();return(u,h)=>{const s=p;return i(),n("div",d,[e("div",m,[o(s,{icon:"ph:spinner-gap-bold",class:"text-4xl text-primary animate-spin"}),e("p",x,c(_(t)("loading_dashboard")),1)])])}}};export{y as default};
+//# sourceMappingURL=B0o18nFG.js.map
