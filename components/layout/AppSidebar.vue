@@ -271,10 +271,10 @@ const navSections = computed(() => {
   if (role === 'archer') {
     return [
       { label: t('dashboard.sidebar.my_events'), icon: 'ph:trophy', path: '/dashboard/archer/events' },
-      { label: t('dashboard.sidebar.finance'), icon: 'ph:credit-card', path: '/dashboard/archer/payments' },
-      { label: t('dashboard.sidebar.overview'), icon: 'ph:shopping-cart', path: '/dashboard/archer/cart' }, // using cart but standard
-      { label: t('dashboard.sidebar.news'), icon: 'ph:chat-circle-dots', path: '/dashboard/archer/chat', badge: 'New' },
-      { label: t('dashboard.sidebar.profile'), icon: 'ph:user-circle', path: '/dashboard/archer/profile' },
+      { label: t('dashboard.sidebar.payments'), icon: 'ph:credit-card', path: '/dashboard/archer/payments' },
+      { label: t('dashboard.sidebar.cart'), icon: 'ph:shopping-cart', path: '/dashboard/archer/cart' },
+      { label: t('dashboard.sidebar.chat'), icon: 'ph:chat-circle-dots', path: '/dashboard/archer/chat', badge: 'New' },
+      { label: t('dashboard.sidebar.archer_profile'), icon: 'ph:user-circle', path: '/dashboard/archer/profile' },
       { label: t('dashboard.sidebar.settings'), icon: 'ph:gear', path: '/dashboard/archer/settings' },
     ]
   }

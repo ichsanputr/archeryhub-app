@@ -1337,6 +1337,47 @@
     "clear_filter": "필터 해제"
   },
   "loading_dashboard": "대시보드 불러오는 중...",
+  "events": {
+    "list": {
+      "title": "대회 목록",
+      "subtitle": "대회를 관리하고 진행 상황을 모니터링하세요",
+      "create_event": "대회 생성",
+      "search_placeholder": "대회명, 장소 또는 코드 검색...",
+      "search_label": "검색",
+      "reset_filters": "초기화",
+      "table_headers": {
+        "event_info": "대회 정보",
+        "schedule_location": "일정 및 장소",
+        "participants_categories": "참가자 / 카테고리",
+        "status": "상태",
+        "actions": "작업"
+      },
+      "loading": "대회 불러오는 중...",
+      "loading_subtitle": "대회 데이터를 준비 중입니다",
+      "empty_state": {
+        "title": "대회를 찾을 수 없습니다",
+        "description": "검색 조건에 맞는 대회가 없습니다.",
+        "clear_filters": "필터 해제",
+        "create_first": "첫 번째 대회 생성"
+      },
+      "participants": "참가자",
+      "categories": "카테고리",
+      "manage": "관리",
+      "delete_dialog": {
+        "title": "대회 삭제",
+        "message": "'{name}' 대회를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+        "confirm": "예, 삭제합니다",
+        "cancel": "취소"
+      },
+      "delete_success": "대회가 성공적으로 삭제되었습니다",
+      "delete_failed": "대회 삭제 실패"
+    },
+    "status": {
+      "active": "진행 중",
+      "draft": "초안",
+      "completed": "완료"
+    }
+  },
   "my_registration": {
     "my_events": "내 대회",
     "registration_status": "신청 현황",

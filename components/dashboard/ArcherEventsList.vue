@@ -128,71 +128,122 @@
     <div v-else class="space-y-8">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="event in filteredEvents" :key="event.id"
-          class="group bg-white rounded-3xl border border-slate-100 p-6 flex flex-col shadow-sm hover:shadow-sm hover:border-primary/20 transition-all duration-300 relative overflow-hidden">
+          class="group bg-white rounded-2xl border border-slate-100 p-5 flex flex-col shadow-sm hover:shadow-lg hover:border-primary/30 transition-all duration-300 relative overflow-hidden">
 
           <!-- Decorative Background -->
           <div
-            class="absolute -right-4 -bottom-4 size-24 bg-slate-50/50 rounded-full blur-2xl group-hover:bg-primary/5 transition-colors">
+            class="absolute -right-4 -bottom-4 size-24 bg-slate-50/50 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors">
           </div>
 
           <!-- Card Header -->
-          <div class="flex items-center gap-4 mb-4">
+          <div class="flex items-start gap-3 mb-4 relative z-10">
             <div
-              class="size-14 sm:size-16 rounded-2xl bg-slate-50 overflow-hidden flex items-center justify-center shrink-0 border border-slate-100 group-hover:border-primary/20 transition-all">
+              class="size-14 rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center shrink-0 border-2 border-slate-100 group-hover:border-primary/30 transition-all shadow-sm">
               <img v-if="event.logo_url" :src="event.logo_url" class="size-full object-cover" />
               <Icon v-else icon="ph:trophy-bold"
                 class="text-2xl text-slate-300 group-hover:text-primary transition-colors" />
             </div>
             <div class="min-w-0 flex-1">
-              <div class="flex items-center gap-2 mb-1">
-                <span class="px-1.5 py-0.5 bg-navy text-primary rounded-[4px] text-[8px] font-black tracking-widest">{{
-                  event.code?.toUpperCase() }}</span>
+              <div class="flex items-center gap-1.5 mb-1.5">
+                <span class="px-1.5 py-0.5 bg-navy text-primary rounded text-[8px] font-black tracking-widest uppercase">{{
+                  event.code?.toUpperCase() || 'EVENT' }}</span>
+                <span v-if="event.city" class="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-[8px] font-bold">
+                  <Icon icon="ph:map-pin-bold" class="inline text-[9px]" /> {{ event.city }}
+                </span>
               </div>
               <h3
-                class="text-base font-black text-navy leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                class="text-sm font-black text-navy leading-tight group-hover:text-primary transition-colors line-clamp-2 mb-0.5">
                 {{ event.name }}
               </h3>
+              <p v-if="event.organizer_name" class="text-[10px] text-slate-400 font-medium truncate">
+                <Icon icon="ph:buildings-bold" class="inline text-[9px]" /> {{ event.organizer_name }}
+              </p>
             </div>
           </div>
 
-          <!-- Card Body -->
-          <div class="grid grid-cols-2 gap-3 mb-4">
+          <!-- Card Body - Event Details Grid (2 columns) -->
+          <div class="grid grid-cols-2 gap-2 mb-4 relative z-10">
+            <!-- Date -->
             <div class="flex items-start gap-2">
-              <div class="size-7 rounded-lg bg-slate-50 flex items-center justify-center text-primary shrink-0">
+              <div class="size-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
                 <Icon icon="ph:calendar-blank-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <p class="text-[9px] font-black text-slate-400 tracking-widest mb-0">{{ t('my_events.schedule') }}</p>
-                <p class="text-xs font-bold text-navy truncate">{{ formatDate(event.start_date) }}</p>
+                <p class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.schedule') }}</p>
+                <p class="text-[11px] font-bold text-navy truncate">{{ formatDate(event.start_date) }}</p>
               </div>
             </div>
 
+            <!-- Location -->
             <div class="flex items-start gap-2">
-              <div class="size-7 rounded-lg bg-slate-50 flex items-center justify-center text-primary shrink-0">
+              <div class="size-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
                 <Icon icon="ph:map-pin-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <p class="text-[9px] font-black text-slate-400 tracking-widest mb-0">{{ t('my_events.location') }}</p>
-                <p class="text-xs font-bold text-navy truncate">{{ event.venue }}</p>
+                <p class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.location') }}</p>
+                <p class="text-[11px] font-bold text-navy truncate">{{ event.venue || event.location || '-' }}</p>
+              </div>
+            </div>
+
+            <!-- Category -->
+            <div class="flex items-start gap-2">
+              <div class="size-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <Icon icon="ph:tag-bold" class="text-xs" />
+              </div>
+              <div class="min-w-0">
+                <p class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.category') }}</p>
+                <p class="text-[11px] font-bold text-navy truncate">{{ event.category_name || '-' }}</p>
+              </div>
+            </div>
+
+            <!-- Registration Number -->
+            <div v-if="event.back_number" class="flex items-start gap-2">
+              <div class="size-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <Icon icon="ph:identification-badge-bold" class="text-xs" />
+              </div>
+              <div class="min-w-0">
+                <p class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.back_number') }}</p>
+                <p class="text-[11px] font-black text-navy">{{ event.back_number }}</p>
               </div>
             </div>
           </div>
 
-          <!-- Status Badge (Consolidated) -->
-          <div class="mb-5">
-            <div :class="getMainStatusClass(event)"
-              class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[10px] font-black tracking-widest border shadow-sm">
-              <span :class="getMainStatusDotClass(event)" class="size-1.5 rounded-full"></span>
-              {{ getMainStatusLabel(event) }}
+          <!-- Status & Payment Info -->
+          <div class="mb-4 relative z-10 space-y-2">
+            <!-- Main Status Text -->
+            <div class="flex items-center justify-between">
+              <span class="text-[10px] font-black text-slate-400 tracking-widest">STATUS</span>
+              <div class="flex items-center gap-1.5">
+                <span :class="getMainStatusDotClass(event)" class="size-1.5 rounded-full animate-pulse"></span>
+                <span :class="getMainStatusTextClass(event)" class="text-[10px] font-black tracking-wider">
+                  {{ getMainStatusLabel(event) }}
+                </span>
+              </div>
+            </div>
+            
+            <!-- Payment Amount if unpaid -->
+            <div v-if="event.payment_amount && event.payment_status !== 'lunas' && event.payment_status !== 'paid'"
+              class="flex items-center justify-between pt-2 border-t border-slate-100">
+              <span class="text-[10px] font-bold text-slate-500">Payment Due</span>
+              <span class="text-sm font-black text-amber-600">
+                Rp {{ Number(event.payment_amount).toLocaleString('id-ID') }}
+              </span>
             </div>
           </div>
 
           <!-- Card Footer -->
-          <div class="mt-auto pt-4 border-t border-slate-50 flex items-center gap-3">
+          <div class="mt-auto pt-4 border-t border-slate-100 flex items-center gap-2 relative z-10">
             <BaseButton :to="`/dashboard/archer/events/${event.slug || event.id}/my-registration`" variant="primary"
-              size="sm" class="flex-1 font-black tracking-widest text-[10px] h-10 shadow-sm shadow-primary/10">
-              {{ t('my_events.open_event') }}
+              size="sm" class="flex-1 font-black tracking-widest text-[10px] h-9 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all">
+              <Icon icon="ph:arrow-right-bold" class="text-sm" />
+              {{ $t('my_events.open_event') }}
             </BaseButton>
+            
+            <!-- QR Code Button if available -->
+            <button v-if="event.qr_raw" @click="showQRDialog(event)"
+              class="size-9 rounded-lg bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center transition-all border border-slate-200 hover:border-slate-300">
+              <Icon icon="ph:qr-code-bold" class="text-base" />
+            </button>
           </div>
         </div>
       </div>
@@ -468,6 +519,20 @@ const getMainStatusClass = (event) => {
     return getPaymentStatusClass(event.payment_status)
   }
   return getStatusClass(event.participant_status)
+}
+
+const getMainStatusTextClass = (event) => {
+  const pStatus = (event.participant_status || '').toLowerCase()
+  const payStatus = (event.payment_status || '').toLowerCase()
+  if (pStatus === 'rejected') return 'text-red-600'
+  if (payStatus !== 'lunas' && payStatus !== 'paid' && payStatus !== '-') {
+    if (payStatus === 'menunggu' || payStatus === 'menunggu_acc' || payStatus === 'pending' || payStatus === 'menunggu acc' || payStatus === 'unpaid') {
+      return 'text-amber-600'
+    }
+    return 'text-yellow-600'
+  }
+  if (pStatus === 'terdaftar' || pStatus === 'approved') return 'text-green-600'
+  return 'text-slate-600'
 }
 
 const getMainStatusDotClass = (event) => {

@@ -32,27 +32,14 @@
 
         <div v-if="activeTab === 'faq'" class="space-y-6">
             <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div
-                    class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
                     <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                         <Icon icon="ph:question" class="text-primary text-lg sm:text-xl" />
                         Pertanyaan Sering Diajukan (FAQ)
                     </h2>
-                    <div class="flex items-center gap-3 sm:gap-4">
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
-                            <button @click="form.page_settings.sections.faq = !form.page_settings.sections.faq"
-                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
-                                :class="form.page_settings.sections.faq ? 'bg-primary' : 'bg-gray-200'">
-                                <span
-                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
-                                    :class="form.page_settings.sections.faq ? 'translate-x-5.5' : 'translate-x-1'"></span>
-                            </button>
-                        </div>
-                        <BaseButton variant="outline" size="xs" @click="addFAQField">
-                            <Icon icon="ph:plus-bold" class="mr-1" /> Tambah
-                        </BaseButton>
-                    </div>
+                    <BaseButton variant="outline" size="xs" @click="addFAQField">
+                        <Icon icon="ph:plus-bold" class="mr-1" /> Tambah
+                    </BaseButton>
                 </div>
                 <div class="p-4 sm:p-6 space-y-4">
                     <div v-if="form.faq?.length === 0"
@@ -91,22 +78,11 @@
             <!-- Informasi Tab -->
             <div v-if="activeTab === 'informasi'" class="space-y-6">
                 <section class="relative z-20 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-visible">
-                    <div
-                        class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between rounded-t-2xl overflow-hidden">
+                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 rounded-t-2xl overflow-hidden">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:info" class="text-primary text-lg sm:text-xl" />
                             Informasi Dasar
                         </h2>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
-                            <button @click="form.page_settings.sections.about = !form.page_settings.sections.about"
-                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
-                                :class="form.page_settings.sections.about ? 'bg-primary' : 'bg-gray-200'">
-                                <span
-                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
-                                    :class="form.page_settings.sections.about ? 'translate-x-5.5' : 'translate-x-1'"></span>
-                            </button>
-                        </div>
                     </div>
                     <div class="p-4 sm:p-6 space-y-5">
                         <div class="space-y-2">
@@ -142,162 +118,197 @@
                         </div>
                     </div>
                 </section>
-
-                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div
-                        class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
-                        <h2 class="text-base sm:text-lg font-bold text-navy">
-                            Divisi Kompetisi
-                        </h2>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
-                            <button
-                                @click="form.page_settings.sections.divisions = !form.page_settings.sections.divisions"
-                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
-                                :class="form.page_settings.sections.divisions ? 'bg-primary' : 'bg-gray-200'">
-                                <span
-                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
-                                    :class="form.page_settings.sections.divisions ? 'translate-x-5.5' : 'translate-x-1'"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="p-4 sm:p-6">
-                        <div v-if="eventCategories.length === 0" class="text-center py-12">
-                            <Icon icon="ph:info" class="text-4xl text-gray-200 mx-auto mb-3" />
-                            <p class="text-sm text-gray-500 mb-4">Belum ada kategori lomba yang dibuat. Tambahkan
-                                kategori untuk menampilkan divisi kompetisi.</p>
-                            <BaseButton variant="outline" size="sm" :to="`/dashboard/events/${eventId}/categories`">
-                                <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Kategori
-                            </BaseButton>
-                        </div>
-                        <div v-else class="space-y-4">
-                            <div v-for="division in groupedDivisions" :key="division.name"
-                                class="border border-gray-100 rounded-xl p-5 hover:border-primary transition-colors bg-gray-50/50">
-                                <div class="flex items-center justify-between mb-4">
-                                    <div>
-                                        <h3 class="text-lg font-bold text-navy">{{ division.name }}</h3>
-                                        <p class="text-xs text-gray-500">{{ division.categories.length }} kategori</p>
-                                    </div>
-                                    <span class="bg-navy text-white text-xs font-bold px-3 py-1 rounded-full">
-                                        {{ division.distance || 'Standard' }}
-                                    </span>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                    <div v-for="category in division.categories" :key="category.id"
-                                        class="bg-white rounded-lg p-3 border border-gray-100 flex items-center gap-2">
-                                        <Icon icon="ph:check-circle-fill"
-                                            class="text-primary text-base flex-shrink-0" />
-                                        <div class="flex-1 min-w-0">
-                                            <p class="text-sm font-bold text-navy truncate">
-                                                {{ category.category_name }} - {{ category.event_type_name }} - {{
-                                                    category.gender_division_name }}
-                                            </p>
-                                            <p v-if="category.max_participants" class="text-xs text-gray-500">
-                                                Maks. {{ category.max_participants }} peserta
-                                            </p>
-                                        </div>
-                                        <span
-                                            :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
-                                            class="px-2 py-0.5 rounded-full text-[10px] font-bold flex-shrink-0">
-                                            {{ category.status === 'active' ? 'Aktif' : 'Nonaktif' }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
             </div>
 
             <!-- Pendaftaran Tab -->
             <div v-if="activeTab === 'pendaftaran'" class="space-y-6">
+
+                <!-- Registration Deadline -->
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div
-                        class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
+                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:calendar-check" class="text-primary text-lg sm:text-xl" />
+                            Batas Pendaftaran
+                        </h2>
+                    </div>
+                    <div class="p-4 sm:p-6">
+                        <div class="max-w-xs space-y-2">
+                            <label class="text-sm font-bold text-gray-700">Tanggal & Waktu Batas Pendaftaran</label>
+                            <input v-model="form.registration_deadline" type="datetime-local"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" />
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Fee Mode Selector + Config -->
+                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:ticket" class="text-primary text-lg sm:text-xl" />
                             Biaya Pendaftaran
                         </h2>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
-                            <button @click="form.page_settings.sections.fees = !form.page_settings.sections.fees"
-                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
-                                :class="form.page_settings.sections.fees ? 'bg-primary' : 'bg-gray-200'">
-                                <span
-                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
-                                    :class="form.page_settings.sections.fees ? 'translate-x-5.5' : 'translate-x-1'"></span>
-                            </button>
-                        </div>
                     </div>
-                    <div class="p-4 sm:p-6 space-y-5">
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <label class="text-sm font-bold text-gray-700">List Biaya Pendaftaran</label>
-                                <BaseButton variant="outline" size="xs" @click="addFeeField">
-                                    <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Biaya
-                                </BaseButton>
-                            </div>
-                            <div v-if="!form.fees || form.fees.length === 0"
-                                class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                                <p class="text-xs text-gray-400">Belum ada biaya pendaftaran. Tambahkan untuk memudahkan
-                                    pendaftar.</p>
-                            </div>
-                            <div v-else class="space-y-3">
-                                <div v-for="(fee, index) in form.fees" :key="index"
-                                    class="flex flex-col sm:flex-row gap-3 items-start bg-gray-50 p-3 sm:p-4 rounded-xl border border-gray-100">
-                                    <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        <input v-model="fee.name" type="text" placeholder="Nama Biaya"
-                                            class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm" />
-                                        <div class="relative">
-                                            <span
-                                                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">IDR</span>
-                                            <input v-model.number="fee.amount" type="number"
-                                                class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 text-sm" />
-                                        </div>
-                                        <input v-model="fee.description" type="text" placeholder="Deskripsi (opsional)"
-                                            class="md:col-span-2 w-full px-4 py-2 rounded-lg border border-gray-200 text-xs" />
+                    <div class="p-4 sm:p-6 space-y-6">
+
+                        <!-- Mode Selector -->
+                        <div class="space-y-3">
+                            <label class="text-sm font-bold text-gray-700">Mode Biaya Pendaftaran</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <!-- Mode: Per Participant Type -->
+                                <button type="button"
+                                    @click="form.fee_mode = 'per_type'"
+                                    :class="form.fee_mode === 'per_type'
+                                        ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
+                                        : 'border-gray-200 hover:border-gray-300 bg-white'"
+                                    class="flex items-start gap-4 p-4 rounded-2xl border-2 text-left transition-all">
+                                    <div :class="form.fee_mode === 'per_type' ? 'bg-primary text-navy' : 'bg-gray-100 text-gray-500'"
+                                        class="size-10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                                        <Icon icon="ph:users-three-bold" class="text-xl" />
                                     </div>
-                                    <button @click="removeFeeField(index)" class="p-2 text-gray-400 hover:text-red-500">
-                                        <Icon icon="ph:trash" />
-                                    </button>
-                                </div>
+                                    <div>
+                                        <p class="text-sm font-black text-navy">Per Tipe Peserta</p>
+                                        <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">Biaya berbeda untuk Individu, Tim, dan Tim Campuran</p>
+                                    </div>
+                                    <div v-if="form.fee_mode === 'per_type'" class="ml-auto shrink-0">
+                                        <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
+                                    </div>
+                                </button>
+
+                                <!-- Mode: Per Category -->
+                                <button type="button"
+                                    @click="form.fee_mode = 'per_category'"
+                                    :class="form.fee_mode === 'per_category'
+                                        ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
+                                        : 'border-gray-200 hover:border-gray-300 bg-white'"
+                                    class="flex items-start gap-4 p-4 rounded-2xl border-2 text-left transition-all">
+                                    <div :class="form.fee_mode === 'per_category' ? 'bg-primary text-navy' : 'bg-gray-100 text-gray-500'"
+                                        class="size-10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                                        <Icon icon="ph:stack-bold" class="text-xl" />
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-black text-navy">Per Kategori</p>
+                                        <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">Setiap kategori lomba memiliki biaya sendiri</p>
+                                    </div>
+                                    <div v-if="form.fee_mode === 'per_category'" class="ml-auto shrink-0">
+                                        <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
+                                    </div>
+                                </button>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-100">
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">Batas Pendaftaran</label>
-                                <input v-model="form.registration_deadline" type="datetime-local"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none" />
+                        <!-- ── MODE: Per Participant Type ── -->
+                        <div v-if="form.fee_mode === 'per_type'" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <!-- Individual -->
+                                <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <div class="size-8 rounded-lg bg-navy/10 flex items-center justify-center">
+                                            <Icon icon="ph:user-bold" class="text-navy text-sm" />
+                                        </div>
+                                        <label class="text-sm font-black text-navy">Individu</label>
+                                    </div>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
+                                        <input v-model.number="form.fee_per_type.individual" type="number" min="0"
+                                            placeholder="0"
+                                            class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                                    </div>
+                                    <p class="text-[10px] text-gray-400">Biaya per kategori untuk peserta individu</p>
+                                </div>
+                                <!-- Team -->
+                                <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <div class="size-8 rounded-lg bg-navy/10 flex items-center justify-center">
+                                            <Icon icon="ph:users-bold" class="text-navy text-sm" />
+                                        </div>
+                                        <label class="text-sm font-black text-navy">Tim</label>
+                                    </div>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
+                                        <input v-model.number="form.fee_per_type.team" type="number" min="0"
+                                            placeholder="0"
+                                            class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                                    </div>
+                                    <p class="text-[10px] text-gray-400">Biaya per kategori untuk tim (3 pemanah)</p>
+                                </div>
+                                <!-- Mixed Team -->
+                                <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <div class="size-8 rounded-lg bg-navy/10 flex items-center justify-center">
+                                            <Icon icon="ph:users-three-bold" class="text-navy text-sm" />
+                                        </div>
+                                        <label class="text-sm font-black text-navy">Tim Campuran</label>
+                                    </div>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
+                                        <input v-model.number="form.fee_per_type.mixed_team" type="number" min="0"
+                                            placeholder="0"
+                                            class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                                    </div>
+                                    <p class="text-[10px] text-gray-400">Biaya per kategori untuk tim campuran (2 pemanah)</p>
+                                </div>
                             </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">Biaya pendaftaran (Rp)</label>
-                                <input v-model.number="form.entry_fee" type="number" placeholder="350000" min="10000"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                                <p class="text-[10px] text-gray-400 font-bold italic pl-1">Minimal biaya pendaftaran
-                                    adalah Rp 10.000</p>
+                            <!-- entry_fee fallback note removed -->
+                        </div>
+
+                        <!-- ── MODE: Per Category ── -->
+                        <div v-if="form.fee_mode === 'per_category'" class="space-y-4">
+                            <div v-if="eventCategories.length === 0"
+                                class="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                <Icon icon="ph:stack" class="text-3xl text-gray-300 mx-auto mb-2" />
+                                <p class="text-xs text-gray-400 font-bold">Belum ada kategori lomba.</p>
+                                <p class="text-xs text-gray-400 mt-1">Tambahkan kategori terlebih dahulu di menu Kategori.</p>
+                                <BaseButton variant="outline" size="xs" class="mt-3" :to="`/dashboard/events/${eventId}/categories`">
+                                    <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Kategori
+                                </BaseButton>
+                            </div>
+
+                            <div v-else class="space-y-2">
+                                <div v-for="cat in eventCategories" :key="cat.id"
+                                    class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 hover:border-primary/20 transition-all">
+                                    <!-- Category Icon -->
+                                    <div class="h-10 w-10 rounded-xl border border-gray-100 bg-white flex items-center justify-center shadow-sm shrink-0 overflow-hidden p-1.5">
+                                        <img :src="'/' + getCategoryIcon(`${cat.division_name} ${cat.event_type_name} ${cat.gender_division_name}`)"
+                                            :alt="cat.division_name"
+                                            class="w-full h-full object-contain" />
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-bold text-navy truncate">
+                                            {{ cat.category_name }} – {{ cat.event_type_name }} – {{ cat.gender_division_name }}
+                                        </p>
+                                        <p class="text-[10px] text-gray-400">{{ cat.division_name }}</p>
+                                    </div>
+                                    <div class="relative shrink-0 w-36">
+                                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
+                                        <input
+                                            :value="form.fee_per_category[cat.id] ?? 0"
+                                            @input="form.fee_per_category[cat.id] = Number($event.target.value)"
+                                            type="number" min="0" placeholder="0"
+                                            class="w-full pl-9 pr-3 py-2 rounded-lg border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Default fallback fee -->
+                            <div class="pt-4 border-t border-gray-100 space-y-2">
+                                <label class="text-sm font-bold text-gray-700">Biaya Default (untuk kategori tanpa harga khusus)</label>
+                                <div class="relative max-w-xs">
+                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
+                                    <input v-model.number="form.entry_fee" type="number" min="0" placeholder="0"
+                                        class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                                </div>
+                                <p class="text-[10px] text-gray-400">Digunakan jika kategori tidak memiliki biaya khusus.</p>
                             </div>
                         </div>
                     </div>
                 </section>
 
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div
-                        class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:emoji-events" class="text-primary text-lg sm:text-xl" />
                             Hadiah & Guidebook
                         </h2>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
-                            <button @click="form.page_settings.sections.prizes = !form.page_settings.sections.prizes"
-                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
-                                :class="form.page_settings.sections.prizes ? 'bg-primary' : 'bg-gray-200'">
-                                <span
-                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
-                                    :class="form.page_settings.sections.prizes ? 'translate-x-5.5' : 'translate-x-1'"></span>
-                            </button>
-                        </div>
                     </div>
                     <div class="p-4 sm:p-6 space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -328,25 +339,25 @@
                                     <label class="text-xs font-bold text-gray-600">Juara 1</label>
                                     <input v-model="form.prizes.first" type="text" placeholder="Rp 15.000.000"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
-                                    <input v-model="form.prizes.first_caption" type="text"
+                                    <textarea v-model="form.prizes.first_caption" rows="2"
                                         placeholder="Contoh: Medali emas dan sertifikat"
-                                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs" />
+                                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs resize-none"></textarea>
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-gray-600">Juara 2</label>
                                     <input v-model="form.prizes.second" type="text" placeholder="Rp 10.000.000"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
-                                    <input v-model="form.prizes.second_caption" type="text"
+                                    <textarea v-model="form.prizes.second_caption" rows="2"
                                         placeholder="Contoh: Medali perak dan sertifikat"
-                                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs" />
+                                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs resize-none"></textarea>
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-gray-600">Juara 3</label>
                                     <input v-model="form.prizes.third" type="text" placeholder="Rp 7.500.000"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
-                                    <input v-model="form.prizes.third_caption" type="text"
+                                    <textarea v-model="form.prizes.third_caption" rows="2"
                                         placeholder="Contoh: Medali perunggu dan sertifikat"
-                                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs" />
+                                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs resize-none"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -357,21 +368,11 @@
             <!-- Lokasi Tab -->
             <section v-if="activeTab === 'lokasi'"
                 class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div
-                    class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
                     <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                         <Icon icon="ph:map-pin" class="text-primary text-lg sm:text-xl" />
                         Lokasi & Peta
                     </h2>
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
-                        <button @click="form.page_settings.sections.location = !form.page_settings.sections.location"
-                            class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
-                            :class="form.page_settings.sections.location ? 'bg-primary' : 'bg-gray-200'">
-                            <span class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
-                                :class="form.page_settings.sections.location ? 'translate-x-5.5' : 'translate-x-1'"></span>
-                        </button>
-                    </div>
                 </div>
                 <div class="p-4 sm:p-6 space-y-5">
                     <div class="space-y-2">
@@ -499,28 +500,14 @@
             <!-- Jadwal Tab -->
             <section v-if="activeTab === 'jadwal'"
                 class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div
-                    class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
                     <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                         <Icon icon="ph:calendar-bold" class="text-primary text-lg sm:text-xl" />
                         Jadwal Lomba
                     </h2>
-                    <div class="flex items-center gap-3 sm:gap-4">
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
-                            <button
-                                @click="form.page_settings.sections.schedule = !form.page_settings.sections.schedule"
-                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
-                                :class="form.page_settings.sections.schedule ? 'bg-primary' : 'bg-gray-200'">
-                                <span
-                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
-                                    :class="form.page_settings.sections.schedule ? 'translate-x-5.5' : 'translate-x-1'"></span>
-                            </button>
-                        </div>
-                        <BaseButton variant="outline" size="xs" @click="addScheduleField">
-                            <Icon icon="ph:plus-bold" class="mr-1" /> Tambah
-                        </BaseButton>
-                    </div>
+                    <BaseButton variant="outline" size="xs" @click="addScheduleField">
+                        <Icon icon="ph:plus-bold" class="mr-1" /> Tambah
+                    </BaseButton>
                 </div>
                 <div class="p-4 sm:p-6 space-y-4">
                     <div v-if="form.schedules.length === 0"
@@ -794,6 +781,7 @@ import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 import { useApi } from '~/composables/useApi'
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 
 const statusOptions = [
     { value: 'draft', title: 'Draft (Belum dipublikasi)' },
@@ -915,6 +903,13 @@ const form = ref({
     schedules: [],
     registration_deadline: '',
     entry_fee: 0,
+    fee_mode: 'per_type',           // 'per_type' | 'per_category'
+    fee_per_type: {
+        individual: 0,
+        team: 0,
+        mixed_team: 0
+    },
+    fee_per_category: {},           // { [categoryId]: amount }
     location_type: '',
     status: 'draft',
     total_prize: 0,
@@ -1321,6 +1316,13 @@ const fetchEventData = async () => {
                 })),
                 registration_deadline: formatToDatetimeLocal(data.registration_deadline),
                 entry_fee: data.entry_fee || 0,
+                fee_mode: pageSettings.fee_mode || 'per_type',
+                fee_per_type: {
+                    individual: pageSettings.fee_per_type?.individual ?? data.entry_fee ?? 0,
+                    team: pageSettings.fee_per_type?.team ?? 0,
+                    mixed_team: pageSettings.fee_per_type?.mixed_team ?? 0
+                },
+                fee_per_category: pageSettings.fee_per_category || {},
                 location_type: data.location_type || data.discipline_name || '',
                 status: data.status || 'draft',
                 total_prize: data.total_prize || 0,
@@ -1348,6 +1350,11 @@ const saveEventPage = async () => {
 
     saving.value = true
     try {
+        // Sync entry_fee from fee_per_type.individual when in per_type mode
+        const effectiveEntryFee = form.value.fee_mode === 'per_type'
+            ? (form.value.fee_per_type.individual || 0)
+            : (form.value.entry_fee || 0)
+
         // Prepare data for API
         const payload = {
             name: form.value.name,
@@ -1360,7 +1367,7 @@ const saveEventPage = async () => {
             banner_url: form.value.banner_url,
             logo_url: form.value.logo_url,
             registration_deadline: formatFromDatetimeLocal(form.value.registration_deadline),
-            entry_fee: form.value.entry_fee || 0,
+            entry_fee: effectiveEntryFee,
             location_type: form.value.location_type,
             status: form.value.status,
             total_prize: form.value.total_prize,
@@ -1378,7 +1385,10 @@ const saveEventPage = async () => {
                 fees: form.value.fees || [],
                 payment_methods: form.value.payment_methods || [],
                 prizes: form.value.prizes || {},
-                results: form.value.results || []
+                results: form.value.results || [],
+                fee_mode: form.value.fee_mode || 'per_type',
+                fee_per_type: form.value.fee_per_type || { individual: 0, team: 0, mixed_team: 0 },
+                fee_per_category: form.value.fee_per_category || {}
             })
         }
 

@@ -105,6 +105,10 @@
       "news": "Berita",
       "settings": "Pengaturan",
       "sign_out": "Keluar",
+      "payments": "Pembayaran",
+      "cart": "Keranjang",
+      "chat": "Chat",
+      "archer_profile": "Profil Saya",
       "event_management": "Manajemen Event",
       "registration": "Registrasi",
       "qualification_results": "Hasil Kualifikasi",
@@ -515,6 +519,8 @@
     "technical_handbook": "Buku Panduan Teknis (THB)",
     "technical_handbook_desc": "Unduh panduan lengkap yang berisi peraturan, regulasi, dan jadwal detail turnamen.",
     "download_pdf": "Unduh PDF",
+    "competition_categories": "Kategori Lomba",
+    "competition_categories_desc": "Kategori lomba yang tersedia dalam event ini",
     "competition_divisions": "Divisi Kompetisi",
     "total_prizes": "Total Hadiah",
     "prizes": {
@@ -532,7 +538,44 @@
     "mixed_team": "Beregu Campuran",
     "individual": "Perorangan",
     "team3": "Tim 3 Orang",
-    "mixed2": "Tim Campuran 2 Orang"
+    "mixed2": "Tim Campuran 2 Orang",
+    "register_now": "Yuk Daftar Sekarang",
+    "already_registered": "Anda Sudah Terdaftar"
+  },
+  "event_create": {
+    "page_title": "Buat Event Baru",
+    "breadcrumb_new": "Buat Baru",
+    "title": "Buat Event Baru",
+    "subtitle": "Lengkapi informasi dasar kompetisi panahan Anda.",
+    "section_identity": "Identitas Event",
+    "section_schedule": "Jadwal",
+    "section_details": "Detail Event",
+    "section_settings": "Pengaturan",
+    "field_name": "Nama Event",
+    "field_name_placeholder": "contoh: National Indoor Championship 2024",
+    "field_slug": "Slug Event",
+    "field_slug_placeholder": "contoh: national-indoor-championship-2024",
+    "slug_hint": "Slug otomatis dibuat dari Nama Event, tapi Anda bisa mengubahnya.",
+    "slug_validation": "Slug hanya boleh huruf kecil, angka, dan tanda minus (-)",
+    "field_venue": "Lokasi Venue",
+    "field_venue_placeholder": "Masukkan nama venue atau alamat",
+    "field_country": "Negara",
+    "field_location_type": "Tipe Lokasi",
+    "field_gmaps": "Link Google Maps",
+    "field_gmaps_placeholder": "https://goo.gl/maps/...",
+    "gmaps_invalid": "Link Google Maps tidak valid. Pastikan link diawali dengan https://goo.gl/maps/ atau https://www.google.com/maps/",
+    "field_start_date": "Tanggal & Waktu Mulai",
+    "field_end_date": "Tanggal & Waktu Selesai",
+    "field_registration_deadline": "Batas Pendaftaran",
+    "field_description": "Deskripsi Lengkap",
+    "field_initial_status": "Status Awal",
+    "status_draft": "Draft (Belum dipublikasi)",
+    "status_published": "Published (Langsung aktif)",
+    "button_cancel": "Batal",
+    "button_create": "Buat Event",
+    "end_date_validation": "Waktu selesai harus setelah waktu mulai",
+    "success_message": "Event berhasil dibuat",
+    "error_message": "Gagal membuat event"
   },
   "event_elimination": {
     "title": "Manajemen Eliminasi",
@@ -908,6 +951,8 @@
     "search_event": "Cari Turnamen Baru",
     "schedule": "Jadwal",
     "location": "Lokasi",
+    "category": "Kategori",
+    "back_number": "Nomor Punggung",
     "open_event": "Buka Event",
     "qr_instructions": "Tunjukkan QR code ini pada panitia saat pendaftaran ulang di venue.",
     "toast_load_failed": "Gagal memuat event.",
@@ -1344,6 +1389,47 @@
     "clear_filter": "Hapus Filter"
   },
   "loading_dashboard": "memuat dashboard...",
+  "events": {
+    "list": {
+      "title": "Daftar Event",
+      "subtitle": "Kelola kompetisi dan pantau progres event Anda",
+      "create_event": "Buat Event",
+      "search_placeholder": "Cari nama event, lokasi, atau kode...",
+      "search_label": "Pencarian",
+      "reset_filters": "Reset",
+      "table_headers": {
+        "event_info": "Informasi Event",
+        "schedule_location": "Jadwal & Lokasi",
+        "participants_categories": "Peserta / Kategori",
+        "status": "Status",
+        "actions": "Aksi"
+      },
+      "loading": "Memuat Event...",
+      "loading_subtitle": "Menyiapkan data kompetisi Anda",
+      "empty_state": {
+        "title": "Event Tidak Ditemukan",
+        "description": "Belum ada event yang sesuai dengan kriteria pencarian Anda.",
+        "clear_filters": "Hapus Filter",
+        "create_first": "Buat Event Pertama"
+      },
+      "participants": "Peserta",
+      "categories": "Kategori",
+      "manage": "Kelola",
+      "delete_dialog": {
+        "title": "Hapus Event",
+        "message": "Apakah Anda yakin ingin menghapus event '{name}'? Tindakan ini tidak dapat dibatalkan.",
+        "confirm": "Ya, Hapus",
+        "cancel": "Batal"
+      },
+      "delete_success": "Event berhasil dihapus",
+      "delete_failed": "Gagal menghapus event"
+    },
+    "status": {
+      "active": "Aktif",
+      "draft": "Draft",
+      "completed": "Selesai"
+    }
+  },
   "my_registration": {
     "my_events": "Kompetisi Saya",
     "registration_status": "Status Pendaftaran",

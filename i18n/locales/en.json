@@ -105,6 +105,10 @@
       "news": "News",
       "settings": "Settings",
       "sign_out": "Sign Out",
+      "payments": "Payments",
+      "cart": "Cart",
+      "chat": "Chat",
+      "archer_profile": "My Profile",
       "event_management": "Event Management",
       "registration": "Registration",
       "qualification_results": "Qualification Results",
@@ -515,6 +519,8 @@
     "technical_handbook": "Technical Handbook (THB)",
     "technical_handbook_desc": "Download the complete guide containing rules, regulations, and detailed tournament schedule.",
     "download_pdf": "Download PDF",
+    "competition_categories": "Competition Categories",
+    "competition_categories_desc": "Available competition categories in this event",
     "competition_divisions": "Competition Divisions",
     "total_prizes": "Total Prizes",
     "prizes": {
@@ -532,7 +538,44 @@
     "mixed_team": "Mixed Team",
     "individual": "Individual",
     "team3": "Team (3 Archers)",
-    "mixed2": "Mixed Team (2 Archers)"
+    "mixed2": "Mixed Team (2 Archers)",
+    "register_now": "Register Now",
+    "already_registered": "Already Registered"
+  },
+  "event_create": {
+    "page_title": "Create New Event",
+    "breadcrumb_new": "Create New",
+    "title": "Create New Event",
+    "subtitle": "Complete the basic information for your archery competition.",
+    "section_identity": "Event Identity",
+    "section_schedule": "Schedule",
+    "section_details": "Event Details",
+    "section_settings": "Settings",
+    "field_name": "Event Name",
+    "field_name_placeholder": "e.g., National Indoor Championship 2024",
+    "field_slug": "Event Slug",
+    "field_slug_placeholder": "e.g., national-indoor-championship-2024",
+    "slug_hint": "Slug is automatically generated from Event Name, but you can change it.",
+    "slug_validation": "Slug can only contain lowercase letters, numbers, and hyphens (-)",
+    "field_venue": "Venue Location",
+    "field_venue_placeholder": "Enter venue name or address",
+    "field_country": "Country",
+    "field_location_type": "Location Type",
+    "field_gmaps": "Google Maps Link",
+    "field_gmaps_placeholder": "https://goo.gl/maps/...",
+    "gmaps_invalid": "Invalid Google Maps link. Make sure the link starts with https://goo.gl/maps/ or https://www.google.com/maps/",
+    "field_start_date": "Start Date & Time",
+    "field_end_date": "End Date & Time",
+    "field_registration_deadline": "Registration Deadline",
+    "field_description": "Full Description",
+    "field_initial_status": "Initial Status",
+    "status_draft": "Draft (Not published yet)",
+    "status_published": "Published (Active immediately)",
+    "button_cancel": "Cancel",
+    "button_create": "Create Event",
+    "end_date_validation": "End time must be after start time",
+    "success_message": "Event created successfully",
+    "error_message": "Failed to create event"
   },
   "event_elimination": {
     "title": "Elimination Management",
@@ -908,6 +951,8 @@
     "search_event": "Search New Tournaments",
     "schedule": "Schedule",
     "location": "Location",
+    "category": "Category",
+    "back_number": "Back Number",
     "open_event": "Open Event",
     "qr_instructions": "Show this QR code to the committee at the venue registration desk.",
     "toast_load_failed": "Failed to load events.",
@@ -1344,6 +1389,47 @@
     "clear_filter": "Clear Filter"
   },
   "loading_dashboard": "loading dashboard...",
+  "events": {
+    "list": {
+      "title": "Events List",
+      "subtitle": "Manage competitions and monitor your event progress",
+      "create_event": "Create Event",
+      "search_placeholder": "Search event name, location, or code...",
+      "search_label": "Search",
+      "reset_filters": "Reset",
+      "table_headers": {
+        "event_info": "Event Information",
+        "schedule_location": "Schedule & Location",
+        "participants_categories": "Participants / Categories",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "loading": "Loading Events...",
+      "loading_subtitle": "Preparing your competition data",
+      "empty_state": {
+        "title": "No Events Found",
+        "description": "No events match your search criteria.",
+        "clear_filters": "Clear Filters",
+        "create_first": "Create First Event"
+      },
+      "participants": "Participants",
+      "categories": "Categories",
+      "manage": "Manage",
+      "delete_dialog": {
+        "title": "Delete Event",
+        "message": "Are you sure you want to delete event '{name}'? This action cannot be undone.",
+        "confirm": "Yes, Delete",
+        "cancel": "Cancel"
+      },
+      "delete_success": "Event successfully deleted",
+      "delete_failed": "Failed to delete event"
+    },
+    "status": {
+      "active": "Active",
+      "draft": "Draft",
+      "completed": "Completed"
+    }
+  },
   "my_registration": {
     "my_events": "My Events",
     "registration_status": "Registration Status",

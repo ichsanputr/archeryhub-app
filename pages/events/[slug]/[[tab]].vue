@@ -45,7 +45,7 @@
             <div class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar -mb-px">
-                        <NuxtLink v-for="tab in tabs" :key="tab" :to="getTabLink(tab)"
+                        <NuxtLink v-for="tab in tabs" :key="tab" :to="getTabLink(tab)" replace
                             class="px-4 md:px-6 py-3 md:py-4 font-semibold text-sm md:text-base transition-colors whitespace-nowrap border-b-2"
                             :class="activeTab === tab ? 'text-navy border-primary bg-primary/5' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
                             {{ tab }}
@@ -63,8 +63,7 @@
                         <TournamentTabsSkeleton v-if="isTabLoading" :tab="activeTab" />
                         <div v-else-if="activeTab === 'Ringkasan'" class="space-y-8">
                             <!-- About Section -->
-                            <section v-if="tournament.page_settings?.sections?.about !== false"
-                                class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100">
+                            <section class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100">
                                 <h2
                                     class="font-black text-navy text-lg sm:text-2xl mb-6 flex items-center gap-2 md:gap-3">
                                     <div
@@ -97,8 +96,7 @@
                             </section>
 
                             <!-- Divisions Section -->
-                            <section
-                                v-if="tournament.page_settings?.sections?.divisions !== false && divisionsData.length > 0"
+                            <section v-if="divisionsData.length > 0"
                                 class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100 relative overflow-hidden">
 
 
@@ -111,10 +109,9 @@
                                                 <Icon icon="ph:squares-four-bold"
                                                     class="text-base md:text-xl text-navy" />
                                             </div>
-                                            Kategori Lomba
+                                            {{ $t('event_detail.competition_categories') }}
                                         </h2>
-                                        <p class="text-sm text-gray-400 font-medium">Kategori lomba yang tersedia dalam
-                                            event ini</p>
+                                        <p class="text-sm text-gray-400 font-medium">{{ $t('event_detail.competition_categories_desc') }}</p>
                                     </div>
                                     <div v-if="divisionsData.length > 2" class="hidden md:flex gap-2">
                                         <button @click="scroll('left')"
@@ -178,102 +175,119 @@
                             </section>
 
                             <!-- Registration Fees Section -->
-                            <section v-if="tournament.page_settings?.sections?.fees !== false"
-                                class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100">
-                                <div
-                                    class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 relative z-10">
+                            <section class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 relative z-10">
                                     <div>
-                                        <h2
-                                            class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
-                                            <div
-                                                class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
+                                        <h2 class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
+                                            <div class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
                                                 <Icon icon="ph:wallet-bold" class="text-base md:text-xl text-navy" />
                                             </div>
                                             Biaya Pendaftaran
                                         </h2>
-                                        <p class="text-sm text-gray-400 font-medium">Pilih kategori yang sesuai dengan
-                                            divisi dan level peserta</p>
+                                        <p class="text-sm text-gray-400 font-medium">
+                                            <template v-if="tournament.fee_mode === 'per_category'">Biaya berbeda per kategori lomba</template>
+                                            <template v-else-if="tournament.fee_mode === 'per_type'">Biaya berbeda per tipe peserta (individu / tim)</template>
+                                            <template v-else>Pilih kategori yang sesuai dengan divisi dan level peserta</template>
+                                        </p>
                                     </div>
                                 </div>
 
-                                <div v-if="tournament.fees && tournament.fees.length > 0"
-                                    class="overflow-x-auto no-scrollbar scroll-smooth pb-4 -mx-1 px-1">
-                                    <div class="flex gap-6 min-w-max">
-                                        <div v-for="(fee, idx) in formattedFees" :key="idx"
-                                            class="bg-white border border-gray-200 p-7 rounded-[2rem] hover:border-primary hover:shadow-md transition-all relative w-[340px] md:w-[360px]">
-                                            <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2 ">
-                                                {{ fee.typeLabel }}
+                                <!-- Per Type: show 3 cards (individual / team / mixed) -->
+                                <div v-if="tournament.fee_mode === 'per_type' && formattedFees.length > 0"
+                                    class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                                    <div v-for="fee in formattedFees" :key="fee.name"
+                                        class="bg-white border border-gray-200 p-6 rounded-[2rem] hover:border-primary hover:shadow-md transition-all relative">
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <div class="size-10 rounded-xl bg-navy/5 flex items-center justify-center shrink-0">
+                                                <Icon :icon="fee.iconName || 'ph:user-bold'" class="text-navy text-xl" />
                                             </div>
-                                            <h3 class="text-lg font-black text-navy mb-5">{{ fee.name }}</h3>
-                                            <div class="text-2xl sm:text-3xl font-black text-navy mb-6 tracking-tight">
+                                            <div>
+                                                <div class="text-[10px] font-black tracking-widest text-gray-400">{{ fee.typeLabel }}</div>
+                                                <h3 class="text-base font-black text-navy leading-tight">{{ fee.name }}</h3>
+                                            </div>
+                                        </div>
+                                        <div class="text-2xl sm:text-3xl font-black text-navy mb-2 tracking-tight">
+                                            Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}
+                                            <span class="text-sm text-gray-400 font-semibold">/ kategori</span>
+                                        </div>
+                                        <p class="text-xs text-gray-500">{{ fee.description }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Per Category: table-style list -->
+                                <div v-else-if="tournament.fee_mode === 'per_category' && formattedFees.length > 0"
+                                    class="space-y-2">
+                                    <div v-for="fee in formattedFees" :key="fee.name"
+                                        class="flex items-center gap-4 p-4 rounded-2xl border border-gray-100 bg-gray-50/50 hover:border-primary/30 transition-all">
+                                        <!-- Category icon -->
+                                        <div class="h-10 w-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1.5 shadow-sm">
+                                            <img v-if="fee.icon" :src="'/' + fee.icon" :alt="fee.typeLabel" class="w-full h-full object-contain" />
+                                            <Icon v-else icon="ph:target-bold" class="text-navy text-lg" />
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-black text-navy truncate">{{ fee.name }}</p>
+                                            <p class="text-[10px] text-gray-400">{{ fee.typeLabel }}</p>
+                                        </div>
+                                        <div class="text-right shrink-0">
+                                            <p class="text-base font-black text-navy tabular-nums">Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}</p>
+                                            <p class="text-[10px] text-gray-400">/ peserta</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Fallback: informational fees list (old format) or single flat fee -->
+                                <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+                                    <template v-if="formattedFees.length > 0">
+                                        <div v-for="(fee, idx) in formattedFees" :key="idx"
+                                            class="bg-white border border-gray-200 p-6 rounded-2xl hover:border-primary hover:shadow-md transition-all">
+                                            <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2">{{ fee.typeLabel }}</div>
+                                            <h3 class="text-lg font-black text-navy mb-4">{{ fee.name }}</h3>
+                                            <div class="text-2xl sm:text-3xl font-black text-navy mb-4 tracking-tight">
                                                 Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}
                                                 <span class="text-sm text-gray-400 font-semibold">/ peserta</span>
                                             </div>
-                                            <ul v-if="fee.description" class="space-y-2.5 text-sm text-gray-600 mb-6">
+                                            <p v-if="fee.description" class="text-sm text-gray-500">{{ fee.description }}</p>
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        <div class="bg-white border border-gray-200 p-6 rounded-2xl">
+                                            <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2">Biaya Tetap</div>
+                                            <h3 class="text-lg font-black text-navy mb-4">Semua Kategori</h3>
+                                            <div class="text-2xl sm:text-3xl font-black text-navy mb-4 tracking-tight">
+                                                Rp {{ (tournament.entry_fee || 0).toLocaleString('id-ID') }}
+                                                <span class="text-sm text-gray-400 font-semibold">/ peserta</span>
+                                            </div>
+                                            <ul class="space-y-2 text-sm text-gray-600">
                                                 <li class="flex items-start gap-2">
                                                     <Icon icon="ph:check-circle-fill" class="text-primary mt-0.5" />
-                                                    <span>{{ fee.description }}</span>
+                                                    <span>Berlaku untuk seluruh kategori event</span>
+                                                </li>
+                                                <li class="flex items-start gap-2">
+                                                    <Icon icon="ph:check-circle-fill" class="text-primary mt-0.5" />
+                                                    <span>Pembayaran per peserta per kategori</span>
                                                 </li>
                                             </ul>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <!-- Fallback if no fees list -->
-                                <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-                                    <div class="bg-white border border-gray-200 p-6 rounded-2xl">
-                                        <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2 ">
-                                            Biaya Tetap
-                                        </div>
-                                        <h3 class="text-lg font-black text-navy mb-5">Semua Kategori</h3>
-                                        <div class="text-2xl sm:text-3xl font-black text-navy mb-6 tracking-tight">
-                                            Rp {{ (tournament.entry_fee || 0).toLocaleString('id-ID') }}
-                                            <span class="text-sm text-gray-400 font-semibold">/ peserta</span>
-                                        </div>
-                                        <ul class="space-y-2.5 text-sm text-gray-600 mb-6">
-                                            <li class="flex items-start gap-2">
-                                                <Icon icon="ph:check-circle-fill" class="text-primary mt-0.5" />
-                                                <span>Berlaku untuk seluruh kategori event</span>
-                                            </li>
-                                            <li class="flex items-start gap-2">
-                                                <Icon icon="ph:check-circle-fill" class="text-primary mt-0.5" />
-                                                <span>Pembayaran per peserta per kategori</span>
-                                            </li>
-                                        </ul>
-                                        <div
-                                            class="w-full py-3 border-2 border-navy text-center text-xs font-black tracking-widest text-navy rounded-xl">
-                                            Biaya Tetap Aktif
-                                        </div>
-                                    </div>
+                                    </template>
                                 </div>
 
                                 <!-- Integrated Payment Methods inside Fee Section -->
                                 <div v-if="tournament.payment_methods && tournament.payment_methods.length > 0"
                                     class="pt-8 mt-8 border-t border-gray-200">
-                                    <h3 class="text-xs font-black text-gray-400 tracking-[0.2em] mb-5 ">Metode
-                                        Pembayaran
-                                    </h3>
+                                    <h3 class="text-xs font-black text-gray-400 tracking-[0.2em] mb-5">Metode Pembayaran</h3>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                         <div v-for="(method, idx) in tournament.payment_methods" :key="idx"
                                             class="p-4 rounded-2xl bg-white border border-gray-200 flex items-center gap-4">
-                                            <div
-                                                class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-slate-50 shadow-sm flex items-center justify-center shrink-0 overflow-hidden p-1.5">
+                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-slate-50 shadow-sm flex items-center justify-center shrink-0 overflow-hidden p-1.5">
                                                 <img v-if="getPaymentMethodImage(method.bank_name)"
                                                     :src="getPaymentMethodImage(method.bank_name)"
                                                     class="w-full h-full object-contain" :alt="method.bank_name" />
-                                                <Icon v-else :icon="getPaymentIcon(method)"
-                                                    class="text-xl md:text-2xl text-navy" />
+                                                <Icon v-else :icon="getPaymentIcon(method)" class="text-xl md:text-2xl text-navy" />
                                             </div>
                                             <div class="min-w-0">
-                                                <div class="text-[10px] font-black text-gray-400 tracking-wider mb-0.5">
-                                                    {{ method.bank_name }}
-                                                </div>
-                                                <div class="text-sm font-black text-navy truncate">
-                                                    {{ method.account_number }}
-                                                </div>
-                                                <div class="text-[10px] font-bold text-gray-500 truncate mt-0.5 italic">
-                                                    a.n {{ method.account_name }}
-                                                </div>
+                                                <div class="text-[10px] font-black text-gray-400 tracking-wider mb-0.5">{{ method.bank_name }}</div>
+                                                <div class="text-sm font-black text-navy truncate">{{ method.account_number }}</div>
+                                                <div class="text-[10px] font-bold text-gray-500 truncate mt-0.5 italic">a.n {{ method.account_name }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -281,7 +295,7 @@
                             </section>
 
 
-                            <section v-if="tournament.page_settings?.sections?.prizes !== false"
+                            <section v-if="tournament.total_prize > 0 || tournament.prizes?.first"
                                 class="min-h-screen flex flex-col lg:flex-row overflow-hidden rounded-3xl border border-gray-100 shadow-sm">
                                 <div
                                     class="lg:w-1/2 bg-primary relative flex flex-col justify-center items-center px-8 md:px-12 py-16 target-texture">
@@ -610,18 +624,12 @@
                                 <template v-else>
                                     <div v-if="isAlreadyRegistered"
                                         class="w-full py-4 bg-gray-100 text-gray-400 font-bold rounded-xl text-center cursor-not-allowed border border-gray-200">
-                                        Anda Sudah Terdaftar
+                                        {{ $t('event_detail.already_registered') }}
                                     </div>
                                     <NuxtLink v-else :to="registerUrl"
                                         class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
-                                        Yuk Daftar Sekarang
+                                        {{ $t('event_detail.register_now') }}
                                     </NuxtLink>
-                                    <p class="text-center text-xs text-gray-400 mt-3">Sudah terdaftar?
-                                        <NuxtLink class="text-navy font-bold hover:underline"
-                                            :to="isArcher ? '/dashboard/archer/events' : '/dashboard/events'">
-                                            Cek status
-                                        </NuxtLink>
-                                    </p>
                                 </template>
                             </template>
                         </div>
@@ -668,7 +676,7 @@
                         </div>
 
                         <!-- Map Card -->
-                        <div v-if="tournament.page_settings?.sections?.location !== false"
+                        <div v-if="tournament.gmaps_link || tournament.address"
                             class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
                             <div class="h-48 w-full bg-gray-100 relative group">
                                 <iframe v-if="gmapsEmbedUrl" :src="gmapsEmbedUrl" width="100%" height="100%"
@@ -795,30 +803,29 @@ const fallbackTournament = {
 const tabs = computed(() => {
     if (!tournament.value || !tournament.value.page_settings) return ['Ringkasan']
     const list = ['Ringkasan']
-    if (tournament.value.page_settings?.sections?.schedule !== false) {
-        list.push('Jadwal Lomba')
-    }
+    // Always include schedule tab
+    list.push('Jadwal Lomba')
     list.push('Peserta', 'Hasil')
-    if (tournament.value.page_settings?.sections?.location !== false) {
-        list.push('Lokasi')
-    }
+    // Always include location tab
+    list.push('Lokasi')
     // Always show Galeri tab
     list.push('Galeri')
-    if (tournament.value.page_settings?.sections?.faq !== false && tournament.value.faq?.length > 0) {
+    // FAQ only if there are FAQ items
+    if (tournament.value.faq?.length > 0) {
         list.push('FAQ')
     }
     return list
 })
 const activeTab = computed(() => {
-    const sub = route.params.tab || ''
-    return slugToTab[sub] || 'Ringkasan'
+    const q = route.query.tab || ''
+    return slugToTab[q] || 'Ringkasan'
 })
 const isTabLoading = ref(false)
 
 const getTabLink = (tabName) => {
     const slug_tab = tabToSlug[tabName]
     if (!slug_tab) return `/events/${slug}`
-    return `/events/${slug}/${slug_tab}`
+    return `/events/${slug}?tab=${slug_tab}`
 }
 
 const tabToSlug = {
@@ -918,7 +925,11 @@ const transformEventData = (data) => {
         fees: pg.fees || [],
         results: pg.results || [],
         payment_methods: pg.payment_methods || [],
-        location_accessibility: pg.location_accessibility || []
+        location_accessibility: pg.location_accessibility || [],
+        entry_fee: data.entry_fee || 0,
+        fee_mode: pg.fee_mode || 'per_type',
+        fee_per_type: pg.fee_per_type || { individual: data.entry_fee || 0, team: 0, mixed_team: 0 },
+        fee_per_category: pg.fee_per_category || {}
     }
 }
 
@@ -934,16 +945,19 @@ const processDivisions = (events) => {
         if (!grouped[e.division_name]) {
             grouped[e.division_name] = {
                 name: e.division_name,
-                categories: new Set()
+                categories: new Set(),
+                rawCategories: []
             }
         }
         const label = formatCategoryLabel(e)
         if (label) grouped[e.division_name].categories.add(label)
+        grouped[e.division_name].rawCategories.push(e)
     })
 
     return Object.values(grouped).map(d => ({
         name: d.name,
         categories: Array.from(d.categories),
+        rawCategories: d.rawCategories,
         icon: getCategoryIcon(d.name)
     }))
 }
@@ -1070,7 +1084,54 @@ watchEffect(() => {
 })
 
 const formattedFees = computed(() => {
-    return (tournament.value?.fees || []).map(fee => ({
+    const t = tournament.value
+    if (!t) return []
+
+    const fmtRp = (val) => `Rp ${(val || 0).toLocaleString('id-ID')}`
+
+    if (t.fee_mode === 'per_category' && divisionsData.value?.length > 0) {
+        // Build per-category fee list from all categories
+        const result = []
+        const seen = new Set()
+        ;(divisionsData.value || []).forEach(div => {
+            div.rawCategories?.forEach(cat => {
+                const catId = cat.id || cat.uuid
+                const fee = t.fee_per_category?.[catId] ?? t.entry_fee ?? 0
+                const label = [cat.category_name, cat.event_type_name, cat.gender_division_name].filter(Boolean).join(' – ')
+                if (!seen.has(label)) {
+                    seen.add(label)
+                    result.push({
+                        name: label,
+                        amount: fee,
+                        description: '',
+                        typeLabel: div.name,
+                        icon: div.icon
+                    })
+                }
+            })
+        })
+        return result
+    }
+
+    if (t.fee_mode === 'per_type') {
+        const types = [
+            { key: 'individual', label: 'Individual', icon: 'ph:user-bold', desc: 'Per category per archer' },
+            { key: 'team', label: 'Team (3 archers)', icon: 'ph:users-bold', desc: 'Per category per team' },
+            { key: 'mixed_team', label: 'Mixed Team (2 archers)', icon: 'ph:users-three-bold', desc: 'Per category per team' }
+        ]
+        return types
+            .filter(tp => (t.fee_per_type?.[tp.key] || 0) > 0)
+            .map(tp => ({
+                name: tp.label,
+                amount: t.fee_per_type?.[tp.key] || 0,
+                description: tp.desc,
+                typeLabel: 'Per Participant Type',
+                iconName: tp.icon
+            }))
+    }
+
+    // Fallback: informational fees list
+    return (t.fees || []).map(fee => ({
         ...fee,
         typeLabel: (fee.name || '').toLowerCase().includes('tim') ? 'Divisi Tim' : 'Divisi Individu'
     }))
@@ -1079,13 +1140,10 @@ const formattedFees = computed(() => {
 // Initial tab sync logic is now handled by computed activeTab
 onMounted(() => {
     if (!tournament.value) return
-    // Handle old query param redirects if any
-    if (route.query.tab) {
-        const legacyTab = decodeTabName(route.query.tab)
-        const targetSlug = tabToSlug[legacyTab]
-        if (targetSlug !== undefined) {
-            navigateTo(`/events/${slug}/${targetSlug}`, { replace: true })
-        }
+    // Handle old path-based tab redirects (e.g. /events/slug/jadwal-lomba → /events/slug?tab=jadwal-lomba)
+    const pathTab = route.params.tab
+    if (pathTab && typeof pathTab === 'string' && pathTab !== '') {
+        navigateTo(`/events/${slug}?tab=${pathTab}`, { replace: true })
     }
 })
 

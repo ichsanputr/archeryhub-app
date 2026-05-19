@@ -81,7 +81,7 @@
                         </h2>
 
                         <div class="space-y-3">
-                            <BaseButton variant="primary" block
+                            <BaseButton variant="primary" block @click="openWithdrawDialog"
                                 class="font-black tracking-widest text-[10px] h-11 !rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
                                 Tarik Saldo
                             </BaseButton>
@@ -175,12 +175,109 @@
                 </div>
             </div>
         </div>
+
+        <!-- Withdrawal Dialog -->
+        <BaseDialogForm v-model="showWithdrawDialog" @close="closeWithdrawDialog">
+            <template #header>
+                <div class="flex items-center gap-3">
+                    <div class="size-10 bg-primary/10 rounded-xl flex items-center justify-center shadow-inner">
+                        <Icon icon="ph:bank-bold" class="text-xl text-primary" />
+                    </div>
+                    <h2 class="text-xl font-black text-navy">Tarik Saldo</h2>
+                </div>
+            </template>
+
+            <div class="space-y-5">
+                <!-- Verification OTP Segment -->
+                <div v-if="!otpSent" class="space-y-3 text-center py-4 bg-gray-50/50 border border-gray-100 rounded-2xl">
+                    <Icon icon="ph:envelope-open-bold" class="text-4xl text-primary mx-auto animate-bounce" />
+                    <div class="space-y-1">
+                        <h3 class="text-xs font-black text-navy">Request Verification Code</h3>
+                        <p class="text-[10px] text-gray-500 max-w-xs mx-auto font-medium">
+                            A 6-digit OTP verification code will be sent to your email to authorize this withdrawal.
+                        </p>
+                    </div>
+                    <BaseButton variant="primary" class="font-black text-xs h-9 tracking-wider shadow-md"
+                        :loading="sendingOtp" @click="requestWithdrawalOTP">
+                        Send Code to Email
+                    </BaseButton>
+                </div>
+
+                <!-- Verification Input fields -->
+                <div v-else class="space-y-4">
+                    <!-- Already Verified Banner -->
+                    <div v-if="isOtpVerified"
+                        class="p-4 bg-green-50 border border-green-200 rounded-2xl flex flex-col gap-2 items-center text-center">
+                        <div class="size-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <Icon icon="ph:shield-check-fill" class="text-2xl text-green-600" />
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-black text-green-900">Email Verified</h4>
+                            <p class="text-[10px] text-green-700 mt-0.5 font-medium font-sans">
+                                You can perform additional withdrawals without requesting another OTP for the next <span
+                                    class="font-black font-mono text-green-800">{{ formattedRemainingTime }}</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div v-else class="p-3 bg-green-50 border border-green-100 rounded-xl flex gap-2.5 items-start">
+                        <Icon icon="ph:check-circle-bold" class="text-green-600 text-lg shrink-0 mt-0.5" />
+                        <p class=" text-xs text-green-800 font-semibold leading-relaxed">
+                            Verification code has been sent to your registered email. It is valid for 15 minutes.
+                        </p>
+                    </div>
+
+                    <!-- OTP Input -->
+                    <div v-if="!isOtpVerified" class="space-y-2">
+                        <label class="block text-xs font-bold text-navy">
+                            Enter 6-Digit OTP Code *
+                        </label>
+                        <BaseInput v-model="otpCode" placeholder="Enter the 6-digit OTP code" type="text" maxlength="6"
+                            class="font-mono text-center tracking-widest text-lg font-black" required />
+                    </div>
+
+                    <!-- Withdrawal Amount -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-navy">
+                            Withdrawal Amount (Rp) *
+                        </label>
+                        <BaseInput v-model="withdrawalAmount" placeholder="Minimum Rp 100.000" type="number" min="100000"
+                            :max="balance" required />
+                        <p class="text-[10px] text-gray-500 font-medium">
+                            Available Balance: Rp {{ balance.toLocaleString('id-ID') }}
+                        </p>
+                    </div>
+
+                    <!-- Bank Account Info -->
+                    <div v-if="primaryAccount"
+                        class="p-4 bg-navy/5 border border-navy/10 rounded-xl">
+                        <h4 class="text-xs font-black text-navy mb-2">Destination Account</h4>
+                        <div class="space-y-1 text-xs">
+                            <p class="font-bold text-navy">{{ primaryAccount.bank_name }}</p>
+                            <p class="text-gray-600">{{ primaryAccount.account_number }}</p>
+                            <p class="text-gray-600">{{ primaryAccount.account_name }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <template #action>
+                <BaseButton variant="white" @click="closeWithdrawDialog" :disabled="isSubmittingWithdrawal">
+                    Cancel
+                </BaseButton>
+                <BaseButton v-if="otpSent" variant="primary" @click="handleWithdrawal" :loading="isSubmittingWithdrawal"
+                    :disabled="otpCode.trim().length !== 6 || !withdrawalAmount || withdrawalAmount < 100000 || withdrawalAmount > balance">
+                    <Icon icon="ph:bank-bold" class="mr-1.5" />
+                    Submit Withdrawal
+                </BaseButton>
+            </template>
+        </BaseDialogForm>
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed, onUnmounted } from 'vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
@@ -214,6 +311,53 @@ const order = ref('DESC')
 const currentPage = ref(1)
 const totalItems = ref(0)
 const itemsPerPage = ref(10)
+
+// Withdrawal Dialog State
+const showWithdrawDialog = ref(false)
+const otpCode = ref('')
+const otpSent = ref(false)
+const sendingOtp = ref(false)
+const isSubmittingWithdrawal = ref(false)
+const withdrawalAmount = ref(null)
+
+// 5 Minutes Active Verification Session States
+const verifiedOtp = ref('')
+const verifiedTime = ref(null)
+const remainingTime = ref(0)
+let timerId = null
+
+const isOtpVerified = computed(() => {
+    return !!(verifiedOtp.value && verifiedTime.value && (Date.now() - verifiedTime.value < 5 * 60 * 1000))
+})
+
+const formattedRemainingTime = computed(() => {
+    const m = Math.floor(remainingTime.value / 60)
+    const s = remainingTime.value % 60
+    return `${m}:${s < 10 ? '0' : ''}${s}`
+})
+
+const startCountdown = () => {
+    if (timerId) clearInterval(timerId)
+    const update = () => {
+        if (!verifiedTime.value) {
+            remainingTime.value = 0
+            return
+        }
+        const diff = Math.max(0, 5 * 60 * 1000 - (Date.now() - verifiedTime.value))
+        remainingTime.value = Math.ceil(diff / 1000)
+        if (remainingTime.value <= 0) {
+            verifiedOtp.value = ''
+            verifiedTime.value = null
+            otpCode.value = ''
+            if (timerId) {
+                clearInterval(timerId)
+                timerId = null
+            }
+        }
+    }
+    update()
+    timerId = setInterval(update, 1000)
+}
 
 const verifyPassword = async () => {
     if (!password.value) return
@@ -310,10 +454,106 @@ const initData = async () => {
     loading.value = false
 }
 
+const openWithdrawDialog = () => {
+    if (balance.value < 100000) {
+        toast.error('Saldo minimum untuk penarikan adalah Rp 100.000')
+        return
+    }
+    
+    if (!primaryAccount.value) {
+        toast.error('Anda belum memiliki rekening bank. Silakan tambahkan rekening terlebih dahulu.')
+        return
+    }
+    
+    withdrawalAmount.value = null
+    
+    if (isOtpVerified.value) {
+        otpCode.value = verifiedOtp.value
+        otpSent.value = true
+    } else {
+        otpCode.value = ''
+        otpSent.value = false
+    }
+    
+    showWithdrawDialog.value = true
+}
+
+const closeWithdrawDialog = () => {
+    showWithdrawDialog.value = false
+    withdrawalAmount.value = null
+    if (!isOtpVerified.value) {
+        otpCode.value = ''
+        otpSent.value = false
+    }
+}
+
+const requestWithdrawalOTP = async () => {
+    sendingOtp.value = true
+    try {
+        await api.post('/organizations/wallet/withdrawals/request-otp')
+        otpSent.value = true
+        toast.success('Verification code sent to your email')
+    } catch (error) {
+        console.error('Failed to request withdrawal OTP:', error)
+        toast.error(error?.data?.error || 'Failed to send verification code')
+    } finally {
+        sendingOtp.value = false
+    }
+}
+
+const handleWithdrawal = async () => {
+    if (otpCode.value.trim().length !== 6) {
+        toast.error('OTP code must be 6 digits')
+        return
+    }
+    
+    if (!withdrawalAmount.value || withdrawalAmount.value < 100000) {
+        toast.error('Minimum withdrawal amount is Rp 100.000')
+        return
+    }
+    
+    if (withdrawalAmount.value > balance.value) {
+        toast.error('Withdrawal amount exceeds available balance')
+        return
+    }
+
+    isSubmittingWithdrawal.value = true
+    try {
+        const payload = {
+            amount: withdrawalAmount.value,
+            otp_code: otpCode.value.trim()
+        }
+
+        await api.post('/organizations/wallet/withdrawals', payload)
+        toast.success('Withdrawal request submitted successfully')
+        
+        // Save verified OTP and time for 5 minutes window
+        verifiedOtp.value = otpCode.value.trim()
+        verifiedTime.value = Date.now()
+        startCountdown()
+        
+        closeWithdrawDialog()
+        
+        // Refresh data
+        await initData()
+    } catch (error) {
+        console.error('Failed to submit withdrawal:', error)
+        toast.error(error?.data?.error || 'Failed to submit withdrawal request')
+    } finally {
+        isSubmittingWithdrawal.value = false
+    }
+}
+
 onMounted(async () => {
     if (sessionStorage.getItem('finance_verified') === 'true') {
         isVerified.value = true
         await initData()
+    }
+})
+
+onUnmounted(() => {
+    if (timerId) {
+        clearInterval(timerId)
     }
 })
 </script>

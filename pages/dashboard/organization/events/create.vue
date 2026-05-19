@@ -5,19 +5,18 @@
       <nav class="flex flex-wrap gap-2 items-center">
         <NuxtLink to="/dashboard/organization"
           class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">
-          Dashboard</NuxtLink>
+          {{ $t('dashboard.sidebar.overview') }}</NuxtLink>
         <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
         <NuxtLink to="/dashboard/organization/events"
-          class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">Events</NuxtLink>
+          class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">{{ $t('dashboard.sidebar.event') }}</NuxtLink>
         <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
-        <span class="text-navy text-sm font-bold">Buat Baru</span>
+        <span class="text-navy text-sm font-bold">{{ $t('event_create.breadcrumb_new') }}</span>
       </nav>
 
       <div class="flex flex-wrap justify-between gap-6 items-end">
         <div class="flex flex-col gap-3">
-          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Buat event baru</h1>
-          <p class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">Lengkapi informasi dasar kompetisi
-            panahan Anda.</p>
+          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">{{ $t('event_create.title') }}</h1>
+          <p class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">{{ $t('event_create.subtitle') }}</p>
         </div>
       </div>
     </div>
@@ -28,31 +27,31 @@
 
         <!-- Single Step: Event Info -->
         <div class="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4">
-          <FormSection icon="ph:identification-card" title="Identitas Event">
+          <FormSection icon="ph:identification-card" :title="$t('event_create.section_identity')">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="md:col-span-2">
-                <BaseInput v-model="form.name" label="Nama Event"
-                  placeholder="contoh: National Indoor Championship 2024" required :error="errors.name"
+                <BaseInput v-model="form.name" :label="$t('event_create.field_name')"
+                  :placeholder="$t('event_create.field_name_placeholder')" required :error="errors.name"
                   @blur="validate('name', form.name, [rules.required()])" />
               </div>
               <div class="md:col-span-2">
-                <BaseInput v-model="form.slug" label="Slug Event"
-                  placeholder="contoh: national-indoor-championship-2024" required :error="errors.slug"
+                <BaseInput v-model="form.slug" :label="$t('event_create.field_slug')"
+                  :placeholder="$t('event_create.field_slug_placeholder')" required :error="errors.slug"
                   @input="onSlugInput"
-                  @blur="validate('slug', form.slug, [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug hanya boleh huruf kecil, angka, dan tanda minus (-)')])" />
+                  @blur="validate('slug', form.slug, [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, $t('event_create.slug_validation'))])" />
                 <p class="text-xs text-gray-500 mt-1.5">
-                  Slug otomatis dibuat dari Nama Event, tapi Anda bisa mengubahnya.
+                  {{ $t('event_create.slug_hint') }}
                 </p>
               </div>
-              <BaseInput v-model="form.venue" label="Lokasi Venue" placeholder="Masukkan nama venue atau alamat"
+              <BaseInput v-model="form.venue" :label="$t('event_create.field_venue')" :placeholder="$t('event_create.field_venue_placeholder')"
                 icon="la:place-of-worship" />
-              <BaseSelect v-model="form.type" label="Tipe Lokasi" :items="disciplineItems" required :error="errors.type"
+              <BaseSelect v-model="form.country" :label="$t('event_create.field_country')" :items="countryItems" required :error="errors.country"
+                @blur="validate('country', form.country, [rules.required()])" />
+              <BaseSelect v-model="form.type" :label="$t('event_create.field_location_type')" :items="disciplineItems" required :error="errors.type"
                 @blur="validate('type', form.type, [rules.required()])" />
-              <BaseSelect v-model="form.city" label="Kota" :items="cityItems" required :error="errors.city"
-                @blur="validate('city', form.city, [rules.required()])" />
 
               <div class="md:col-span-2">
-                <BaseInput v-model="form.gmapsLink" label="Link Google Maps" placeholder="https://goo.gl/maps/..."
+                <BaseInput v-model="form.gmapsLink" :label="$t('event_create.field_gmaps')" :placeholder="$t('event_create.field_gmaps_placeholder')"
                   icon="ph:map-pin" @blur="validateGmapsLink" />
 
                 <!-- Gmaps Preview -->
@@ -63,131 +62,36 @@
                   </iframe>
                 </div>
                 <p v-else-if="form.gmapsLink && !isValidGmaps" class="text-red-500 text-xs font-bold mt-1">
-                  Link Google Maps tidak valid. Pastikan link diawali dengan https://goo.gl/maps/ atau
-                  https://www.google.com/maps/
+                  {{ $t('event_create.gmaps_invalid') }}
                 </p>
               </div>
             </div>
           </FormSection>
 
-          <FormSection icon="ant-design:schedule-outlined" title="Jadwal & Biaya">
+          <FormSection icon="ant-design:schedule-outlined" :title="$t('event_create.section_schedule')">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.startDate" label="Tanggal & Waktu Mulai" type="datetime-local" required
+              <BaseInput v-model="form.startDate" :label="$t('event_create.field_start_date')" type="datetime-local" required
                 :error="errors.startDate" @blur="validate('startDate', form.startDate, [rules.required()])" />
-              <BaseInput v-model="form.endDate" label="Tanggal & Waktu Selesai" type="datetime-local" required
+              <BaseInput v-model="form.endDate" :label="$t('event_create.field_end_date')" type="datetime-local" required
                 :error="errors.endDate" @blur="validate('endDate', form.endDate, [rules.required()])" />
-              <div class="space-y-2">
-                <label class="text-sm font-bold text-gray-700">Biaya Pendaftaran (Rp)</label>
-                <input v-model.number="form.entryFee" type="number" placeholder="350000" min="10000"
-                  class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                <p class="text-[10px] text-gray-400 font-bold italic pl-1">Minimal biaya pendaftaran adalah Rp 10.000
-                </p>
-              </div>
-              <BaseInput v-model="form.registrationDeadline" label="Batas pendaftaran" type="datetime-local" />
+              <BaseInput v-model="form.registrationDeadline" :label="$t('event_create.field_registration_deadline')" type="datetime-local" />
             </div>
           </FormSection>
 
-          <!-- Event Images Section -->
-          <FormSection icon="ph:images-bold" title="Gambar Event">
-            <p class="text-text-secondary text-sm mb-4">Tambahkan gambar untuk event Anda. Gambar pertama akan menjadi
-              thumbnail utama.</p>
-
-            <div class="flex flex-wrap gap-4">
-              <!-- Image Thumbnails -->
-              <div v-for="(img, index) in form.images" :key="index"
-                class="relative group w-32 h-32 rounded-xl overflow-hidden border-2 transition-all"
-                :class="img.isPrimary ? 'border-primary shadow-md shadow-primary/20' : 'border-gray-200'">
-                <img :src="img.url" :alt="img.caption || 'Event image'" class="w-full h-full object-cover" />
-
-                <!-- Overlay Actions -->
-                <div
-                  class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                  <button type="button" @click="setPrimaryImage(index)"
-                    class="text-white text-xs flex items-center gap-1 hover:text-primary transition-colors"
-                    :class="{ 'text-primary': img.isPrimary }">
-                    <Icon :icon="img.isPrimary ? 'ph:star-fill' : 'ph:star'" class="text-lg" />
-                    {{ img.isPrimary ? 'Utama' : 'Set Utama' }}
-                  </button>
-                  <button type="button" @click="removeImage(index)"
-                    class="text-white text-xs flex items-center gap-1 hover:text-red-400 transition-colors">
-                    <Icon icon="ph:trash" class="text-lg" />
-                    Hapus
-                  </button>
-                </div>
-
-                <!-- Primary Badge -->
-                <div v-if="img.isPrimary"
-                  class="absolute top-1 left-1 bg-primary text-navy text-[10px] font-bold px-1.5 py-0.5 rounded">
-                  Utama
-                </div>
-              </div>
-
-              <!-- Add Image Button -->
-              <button type="button" @click="showImageModal = true"
-                class="w-32 h-32 rounded-xl border-2 border-dashed border-gray-300 hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-primary">
-                <Icon icon="ph:plus-bold" class="text-2xl" />
-                <span class="text-xs font-medium">Tambah</span>
-              </button>
-            </div>
-          </FormSection>
-
-          <!-- Payment Methods Section -->
-          <FormSection icon="ph:credit-card" title="Metode Pembayaran">
-            <p class="text-text-secondary text-sm mb-4">Tambahkan metode pembayaran yang tersedia untuk event ini.</p>
-
-            <div class="space-y-4">
-              <!-- Payment Method List -->
-              <div v-for="(method, index) in form.paymentMethods" :key="index"
-                class="bg-gray-50 border border-gray-200 rounded-xl p-4">
-                <div class="flex items-start justify-between gap-4 mb-4">
-                  <h4 class="text-sm font-bold text-navy">Metode {{ index + 1 }}</h4>
-                  <button type="button" @click="removePaymentMethod(index)"
-                    class="text-red-500 hover:text-red-700 transition-colors">
-                    <Icon icon="ph:trash" class="text-lg" />
-                  </button>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div class="md:col-span-2">
-                    <BaseInput v-model="method.payment_method" label="Nama Metode Pembayaran"
-                      placeholder="contoh: Transfer Bank BCA" required />
-                  </div>
-                  <BaseInput v-model="method.account_name" label="Nama Pemilik Rekening"
-                    placeholder="contoh: PT Archery Indonesia" />
-                  <BaseInput v-model="method.account_number" label="Nomor Rekening/ID"
-                    placeholder="contoh: 1234567890" />
-                  <div class="md:col-span-2">
-                    <BaseTextarea v-model="method.instructions" label="Instruksi Pembayaran (Opsional)"
-                      placeholder="Tambahkan instruksi atau catatan khusus untuk metode pembayaran ini..." rows="3" />
-                  </div>
-                  <BaseInput v-model.number="method.display_order" label="Urutan Tampilan" type="number"
-                    placeholder="0" />
-                </div>
-              </div>
-
-              <!-- Add Payment Method Button -->
-              <button type="button" @click="addPaymentMethod"
-                class="w-full py-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2 text-gray-500 hover:text-primary font-medium">
-                <Icon icon="ph:plus-circle" class="text-xl" />
-                Tambah Metode Pembayaran
-              </button>
-            </div>
-          </FormSection>
-
-          <FormSection icon="ph:article" title="Detail Event">
+          <FormSection icon="ph:article" :title="$t('event_create.section_details')">
             <div class="flex flex-col gap-1.5">
-              <label class="text-navy text-sm font-bold ml-1">Deskripsi Lengkap</label>
+              <label class="text-navy text-sm font-bold ml-1">{{ $t('event_create.field_description') }}</label>
               <div class="min-h-[300px]">
                 <TiptapEditor v-model="form.description" />
               </div>
             </div>
           </FormSection>
 
-          <FormSection icon="ph:gear" title="Pengaturan">
+          <FormSection icon="ph:gear" :title="$t('event_create.section_settings')">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <BaseSelect v-model="form.status" label="Status awal" :items="[
-                { title: 'Draft (Belum dipublikasi)', value: 'draft' },
-                { title: 'Published (Langsung aktif)', value: 'published' }
+              <BaseSelect v-model="form.status" :label="$t('event_create.field_initial_status')" :items="[
+                { title: $t('event_create.status_draft'), value: 'draft' },
+                { title: $t('event_create.status_published'), value: 'published' }
               ]" />
             </div>
           </FormSection>
@@ -198,17 +102,14 @@
         <div
           class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-8 border-t border-gray-100 mt-4">
           <BaseButton to="/dashboard/organization/events" variant="ghost" class="px-8 whitespace-nowrap">
-            Batal
+            {{ $t('event_create.button_cancel') }}
           </BaseButton>
           <BaseButton type="submit" variant="primary" :loading="isSubmitting" class="px-10 whitespace-nowrap">
-            Buat event
+            {{ $t('event_create.button_create') }}
           </BaseButton>
         </div>
       </form>
     </div>
-
-    <!-- Media Library Modal -->
-    <MediaLibrary :show="showImageModal" @close="showImageModal = false" @select="handleMediaSelect" />
   </div>
 </template>
 
@@ -216,16 +117,18 @@
 import { Icon } from '@iconify/vue'
 import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import FormSection from '~/components/common/FormSection.vue'
-import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import { useFormValidation } from '~/composables/useFormValidation'
 import { useToast } from '~/composables/useToast'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
+const { t } = useI18n()
+
 useHead({
-  title: 'Buat Event Baru - Archeris Dashboard'
+  title: computed(() => `${t('event_create.page_title')} - Archeris Dashboard`)
 })
 
 const router = useRouter()
@@ -240,19 +143,14 @@ const form = reactive({
   name: '',
   slug: '',
   venue: '',
+  country: 'Indonesia',
   gmapsLink: '',
   startDate: '',
   endDate: '',
   description: '',
   type: '', // Discipline
-  city: '',
-  divisions: [],
-  categories: [],
-  entryFee: 350000,
   registrationDeadline: '',
-  status: 'draft',
-  images: [],
-  paymentMethods: []
+  status: 'draft'
 })
 
 const isSlugManuallyEdited = ref(false)
@@ -291,15 +189,15 @@ const disciplineItems = computed(() => {
     .map((d) => ({ title: d.name, value: d.name }))
 })
 
-const indonesianCities = [
-  'Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Semarang', 'Makassar', 'Palembang',
-  'Tangerang', 'Tangerang Selatan', 'Depok', 'Bekasi', 'Bogor', 'Yogyakarta',
-  'Surakarta (Solo)', 'Denpasar', 'Malang', 'Bandar Lampung', 'Pontianak',
-  'Banjarmasin', 'Samarinda', 'Balikpapan', 'Batam', 'Padang', 'Jambi',
-  'Pekanbaru', 'Mataram', 'Kupang', 'Ambon', 'Jayapura', 'Manado'
+const countries = [
+  'Indonesia', 'Malaysia', 'Singapore', 'Thailand', 'Philippines', 
+  'Vietnam', 'Myanmar', 'Cambodia', 'Laos', 'Brunei',
+  'Australia', 'New Zealand', 'Japan', 'South Korea', 'China',
+  'India', 'United States', 'United Kingdom', 'Germany', 'France',
+  'Other'
 ].sort()
 
-const cityItems = computed(() => indonesianCities.map(city => ({ title: city, value: city })))
+const countryItems = computed(() => countries.map(country => ({ title: country, value: country })))
 
 onMounted(async () => {
   try {
@@ -317,15 +215,9 @@ const isValidGmaps = ref(true)
 const gmapsEmbedUrl = computed(() => {
   if (!form.gmapsLink || !isValidGmaps.value) return null
 
-  // Basic heuristic to convert share links to search-based embed links
-  // since we don't have an API key for the formal Embed API.
-  // The 'output=embed' parameter works with search queries.
   try {
     const url = new URL(form.gmapsLink)
     if (url.hostname.includes('google.com') || url.hostname === 'goo.gl') {
-      // If it's a short link or a complex link, we use the query if we can find it,
-      // but the safest way without API is to use the venue name or the whole link
-      // as a search parameter.
       return `https://maps.google.com/maps?q=${encodeURIComponent(form.gmapsLink)}&output=embed`
     }
   } catch (e) {
@@ -343,67 +235,14 @@ const validateGmapsLink = () => {
   isValidGmaps.value = regex.test(form.gmapsLink)
 }
 
-const showImageModal = ref(false)
-
-// Handle media selection from MediaLibrary
-const handleMediaSelect = ({ url, caption }) => {
-  form.images.push({
-    url,
-    caption,
-    isPrimary: form.images.length === 0
-  })
-}
-
-const removeImage = (index) => {
-  const wasPrimary = form.images[index].isPrimary
-  form.images.splice(index, 1)
-  if (wasPrimary && form.images.length > 0) {
-    form.images[0].isPrimary = true
-  }
-}
-
-const setPrimaryImage = (index) => {
-  form.images.forEach((img, i) => {
-    img.isPrimary = i === index
-  })
-}
-
-// Payment Methods
-const addPaymentMethod = () => {
-  form.paymentMethods.push({
-    payment_method: '',
-    account_name: '',
-    account_number: '',
-    instructions: '',
-    display_order: form.paymentMethods.length
-  })
-}
-
-const removePaymentMethod = (index) => {
-  form.paymentMethods.splice(index, 1)
-  // Re-index display orders
-  form.paymentMethods.forEach((method, i) => {
-    if (!method.display_order) method.display_order = i
-  })
-}
-
-const toggleValue = (arr, val) => {
-  const index = arr.indexOf(val)
-  if (index === -1) {
-    arr.push(val)
-  } else {
-    arr.splice(index, 1)
-  }
-}
-
 const validateStep = () => {
   const isBasicValid = validateForm(form, {
     name: [rules.required()],
-    slug: [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug hanya boleh huruf kecil, angka, dan tanda minus (-)')],
+    slug: [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, t('event_create.slug_validation'))],
     startDate: [rules.required()],
     endDate: [rules.required()],
     type: [rules.required()],
-    city: [rules.required()]
+    country: [rules.required()]
   })
 
   // Additional validation: end date must be after start date
@@ -411,21 +250,13 @@ const validateStep = () => {
     const startTime = new Date(form.startDate).getTime()
     const endTime = new Date(form.endDate).getTime()
     if (endTime <= startTime) {
-      errors.endDate = 'Waktu selesai harus setelah waktu mulai'
+      errors.endDate = t('event_create.end_date_validation')
       return false
     }
   }
 
   return isBasicValid
 }
-
-const formatDate = (dateStr) => {
-  if (!dateStr) return '-'
-  return new Date(dateStr).toLocaleDateString('id-ID', {
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
-  })
-}
-
 
 const handleSubmit = async () => {
   if (!validateStep()) return
@@ -434,8 +265,6 @@ const handleSubmit = async () => {
   try {
     const formatToISO = (dateStr) => {
       if (!dateStr) return null
-      // dateStr from datetime-local is YYYY-MM-DDTHH:mm
-      // Append :00Z or convert via Date object
       return new Date(dateStr).toISOString()
     }
 
@@ -444,56 +273,25 @@ const handleSubmit = async () => {
       name: form.name,
       slug: form.slug,
       venue: form.venue,
-      city: form.city,
+      country: form.country,
       gmaps_link: form.gmapsLink,
       start_date: formatToISO(form.startDate),
       end_date: formatToISO(form.endDate),
       description: form.description,
-      entry_fee: form.entryFee,
       status: form.status,
       registration_deadline: formatToISO(form.registrationDeadline),
-      location_type: form.type,
-      images: form.images.map((img, i) => ({
-        url: img.url,
-        caption: img.caption,
-        is_primary: img.isPrimary,
-        display_order: i
-      }))
+      location_type: form.type
     }
 
     const result = await post('/events', payload)
 
     if (result?.id || result?.uuid) {
-      const eventId = result.id || result.uuid
-
-      // Create payment methods if any
-      if (form.paymentMethods.length > 0) {
-        try {
-          await Promise.all(
-            form.paymentMethods
-              .filter(m => m.payment_method) // Only create methods with names
-              .map(method =>
-                post(`/events/${eventId}/payment-methods`, {
-                  payment_method: method.payment_method,
-                  account_name: method.account_name || null,
-                  account_number: method.account_number || null,
-                  instructions: method.instructions || null,
-                  display_order: method.display_order || 0
-                })
-              )
-          )
-        } catch (pmError) {
-          console.error('Failed to create payment methods:', pmError)
-          toast.warning('Event berhasil dibuat, namun ada masalah dengan metode pembayaran')
-        }
-      }
-
-      toast.success('Event berhasil dibuat')
+      toast.success(t('event_create.success_message'))
       router.push('/dashboard/organization/events')
     }
   } catch (error) {
     console.error('Failed to create tournament:', error)
-    toast.error(getApiErrorMessage(error, 'Gagal membuat event'))
+    toast.error(getApiErrorMessage(error, t('event_create.error_message')))
   } finally {
     isSubmitting.value = false
   }

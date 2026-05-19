@@ -279,110 +279,175 @@
                             </div>
                         </section>
 
+                        <!-- Participant Type Selection (only when fee_mode === 'per_type') -->
+                        <section v-if="event.fee_mode === 'per_type' && activeParticipantTypes.length > 0" class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-5">
+                            <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
+                                <div class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
+                                    <Icon icon="ph:users-three-bold" class="text-lg" />
+                                </div>
+                                <div>
+                                    <h2 class="text-base font-black text-navy">Pilih Tipe Peserta</h2>
+                                    <span class="text-[10px] text-gray-400 font-medium block">Can select multiple if the schedule allows</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="grid gap-2"
+                                    :class="{
+                                        'grid-cols-1 max-w-xs mx-auto': activeParticipantTypes.length === 1,
+                                        'grid-cols-2 max-w-md mx-auto': activeParticipantTypes.length === 2,
+                                        'grid-cols-3': activeParticipantTypes.length >= 3
+                                    }">
+                                    <button v-for="pt in activeParticipantTypes" :key="pt.value"
+                                        type="button"
+                                        @click="toggleParticipantType(pt.value)"
+                                        :class="form.participant_types.includes(pt.value)
+                                            ? 'border-primary bg-primary/5 text-navy'
+                                            : 'border-gray-200 text-gray-500 hover:border-gray-300'"
+                                        class="flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-all text-center">
+                                        <Icon :icon="pt.icon" class="text-lg" />
+                                        <span class="text-[10px] font-black tracking-wide">{{ pt.label }}</span>
+                                        <span class="text-[9px] font-bold text-primary tabular-nums">{{ formatPrice(pt.fee) }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+
                         <!-- Category Selection -->
                         <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                            <div
-                                class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
-                                <div
-                                    class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
+                            <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
+                                <div class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
                                     <Icon icon="ph:tag-bold" class="text-lg" />
                                 </div>
                                 <div>
                                     <h2 class="text-base font-black text-navy">Select Category</h2>
-                                    <span class="text-[10px] text-gray-400 font-medium block">Can select multiple if the
-                                        schedule allows</span>
+                                    <span class="text-[10px] text-gray-400 font-medium block">Can select multiple if the schedule allows</span>
                                 </div>
                             </div>
-                            <div class="p-6">
-                                <div class="relative mb-4">
+                            <div class="p-6 space-y-4">
+
+                                <!-- Category search -->
+                                <div class="relative">
                                     <input v-model="categorySearch" type="text"
                                         placeholder="Search division or category..."
                                         class="w-full h-10 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium" />
-                                    <Icon icon="ph:magnifying-glass"
-                                        class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                                    <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                                 </div>
 
+                                <!-- Category list -->
                                 <div class="max-h-[320px] overflow-y-auto pr-1 space-y-2 custom-scrollbar">
                                     <div v-for="category in filteredCategories" :key="category.id"
-                                        class="flex items-center justify-between p-4 rounded-xl border-2 transition-all cursor-pointer group"
+                                        class="rounded-xl border-2 transition-all cursor-pointer"
                                         :class="form.category_ids.includes(category.id)
-                                            ? 'border-primary bg-primary/5 shadow-sm'
+                                            ? 'border-primary bg-primary/5'
                                             : 'border-gray-100 bg-gray-50/50 hover:border-gray-200'"
                                         @click="toggleCategory(category.id)">
-                                        <div class="flex items-center gap-3">
-                                            <div class="size-5 rounded-md border-2 flex items-center justify-center transition-all shrink-0"
-                                                :class="form.category_ids.includes(category.id) ? 'bg-primary border-primary' : 'bg-white border-gray-300 group-hover:border-navy'">
-                                                <Icon v-if="form.category_ids.includes(category.id)"
-                                                    icon="ph:check-bold" class="text-navy text-xs" />
+                                        <div class="flex items-center justify-between p-3.5 gap-3">
+                                            <div class="flex items-center gap-3">
+                                                <div class="size-5 rounded-md border-2 flex items-center justify-center transition-all shrink-0"
+                                                    :class="form.category_ids.includes(category.id) ? 'bg-primary border-primary' : 'bg-white border-gray-300'">
+                                                    <Icon v-if="form.category_ids.includes(category.id)" icon="ph:check-bold" class="text-navy text-xs" />
+                                                </div>
+                                                <span class="text-sm font-bold text-navy leading-tight">{{ category.name }}</span>
                                             </div>
-                                            <span class="text-sm font-bold text-navy leading-tight">{{ category.name
-                                            }}</span>
+                                            <span v-if="getFeeForCategory(category.id) > 0"
+                                                class="text-xs font-black tabular-nums shrink-0 ml-2 text-primary">
+                                                {{ formatPrice(getFeeForCategory(category.id)) }}
+                                            </span>
+                                            <span v-else class="text-xs text-gray-400 shrink-0">free</span>
                                         </div>
-                                        <span v-if="event.registration_fee > 0"
-                                            class="text-xs font-black tabular-nums shrink-0 ml-2">
-                                            {{ formatPrice(event.registration_fee || 0) }}
-                                        </span>
+
+                                        <!-- Team partner section (per_type + team/mixed, when category is selected) -->
+                                        <div v-if="form.category_ids.includes(category.id) && event.fee_mode === 'per_type' && getCategoryType(category) !== 'individual'"
+                                            class="border-t border-primary/20 px-3.5 pb-3.5 pt-3 space-y-2"
+                                            @click.stop>
+                                            <div class="flex items-center justify-between">
+                                                <div class="text-[10px] font-black text-gray-500 tracking-widest uppercase">
+                                                    {{ getCategoryType(category) === 'mixed_team' ? 'Partner (1 Required)' : 'Team Members (2 Required)' }}
+                                                </div>
+                                                <button type="button"
+                                                    @click="openPartnerDialog(category.id)"
+                                                    :disabled="getPartnersForCategory(category.id).length >= (getCategoryType(category) === 'mixed_team' ? 1 : 2)"
+                                                    class="text-[10px] font-black text-primary hover:text-primary/80 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1">
+                                                    <Icon icon="ph:plus-bold" class="text-xs" />
+                                                    Add
+                                                </button>
+                                            </div>
+                                            <!-- Added partners -->
+                                            <div v-if="getPartnersForCategory(category.id).length > 0" class="space-y-1.5">
+                                                <div v-for="partner in getPartnersForCategory(category.id)" :key="partner.uuid || partner.id"
+                                                    class="flex items-center gap-2 p-2 bg-white rounded-lg border border-gray-100">
+                                                    <img :src="partner.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(partner.full_name || 'A')}&background=1a2744&color=f5c842&size=32`"
+                                                        class="size-6 rounded-full object-cover shrink-0" />
+                                                    <span class="text-xs font-bold text-navy flex-1 truncate">{{ partner.full_name }}</span>
+                                                    <span v-if="partner.id" class="text-[9px] text-gray-400 font-mono">{{ partner.id }}</span>
+                                                    <button type="button" @click="removePartner(category.id, partner.uuid || partner.id)"
+                                                        class="p-0.5 text-gray-400 hover:text-red-500 transition-colors shrink-0">
+                                                        <Icon icon="ph:x-bold" class="text-xs" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- Empty state -->
+                                            <div v-else class="text-[10px] text-gray-400 italic">
+                                                no partners added yet
+                                            </div>
+                                            <!-- Incomplete warning -->
+                                            <div v-if="!isPartnerComplete(category.id)"
+                                                class="flex items-center gap-1.5 text-[10px] text-amber-600 font-bold">
+                                                <Icon icon="ph:warning-bold" class="text-xs" />
+                                                {{ getCategoryType(category) === 'mixed_team' ? '1 partner required' : '2 team members required' }}
+                                            </div>
+                                        </div>
                                     </div>
+
                                     <div v-if="filteredCategories.length === 0" class="py-10 text-center text-gray-400">
-                                        <Icon icon="ph:magnifying-glass-slash"
-                                            class="text-3xl mx-auto mb-2 opacity-40" />
-                                        <span class="text-xs font-bold tracking-widest block">Category not found</span>
+                                        <Icon icon="ph:magnifying-glass-slash" class="text-3xl mx-auto mb-2 opacity-40" />
+                                        <span class="text-xs font-bold tracking-widest block">category not found</span>
                                     </div>
                                     <div v-if="categories.length === 0 && !pending"
                                         class="p-4 bg-amber-50 border border-amber-100 rounded-xl flex gap-2.5">
                                         <Icon icon="ph:warning-bold" class="text-amber-500 shrink-0" />
-                                        <span class="text-sm text-amber-700 font-medium block">Category not yet
-                                            available. Please contact the organizer.</span>
+                                        <span class="text-sm text-amber-700 font-medium block">category not yet available. please contact the organizer.</span>
                                     </div>
                                 </div>
                             </div>
                         </section>
 
-                        <!-- Order Summary (below Pilih Kategori) -->
+                        <!-- Order Summary -->
                         <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                            <div
-                                class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
-                                <div
-                                    class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
+                            <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
+                                <div class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
                                     <Icon icon="ph:receipt-bold" class="text-lg" />
                                 </div>
-                                <h2 class="text-base font-black text-navy">Summary</h2>
+                                <h2 class="text-base font-black text-navy text-lowercase">summary</h2>
                             </div>
                             <div class="p-6 space-y-4">
-                                <!-- Selected categories list -->
                                 <div v-if="form.category_ids.length > 0" class="space-y-2">
-                                    <span class="text-[10px] font-black text-gray-400 tracking-widest block">Selected
-                                        Categories</span>
+                                    <span class="text-[10px] font-black text-gray-400 tracking-widest block">selected categories</span>
                                     <div v-for="catId in form.category_ids" :key="catId"
                                         class="flex items-center justify-between gap-2">
                                         <div class="flex items-center gap-2 min-w-0">
-                                            <div
-                                                class="size-4 rounded-full bg-primary flex items-center justify-center shrink-0">
+                                            <div class="size-4 rounded-full bg-primary flex items-center justify-center shrink-0">
                                                 <Icon icon="ph:check-bold" class="text-navy text-[8px]" />
                                             </div>
-                                            <span class="text-xs font-medium text-navy truncate">{{
-                                                getCategoryName(catId) }}</span>
+                                            <span class="text-xs font-medium text-navy truncate">{{ getCategoryName(catId) }}</span>
                                         </div>
-                                        <span class="text-xs font-black text-navy tabular-nums shrink-0">{{
-                                            formatPrice(event.registration_fee || 0) }}</span>
+                                        <span class="text-xs font-black text-navy tabular-nums shrink-0">{{ formatPrice(getFeeForCategory(catId)) }}</span>
                                     </div>
                                 </div>
                                 <div v-else class="py-4 text-center border-2 border-dashed border-gray-100 rounded-xl">
                                     <Icon icon="ph:tag-light" class="text-3xl text-gray-300 mb-1 mx-auto" />
-                                    <span class="text-xs text-gray-300 font-bold tracking-widest block">No categories
-                                        selected yet</span>
+                                    <span class="text-xs text-gray-300 font-bold tracking-widest block">no categories selected yet</span>
                                 </div>
                                 <div class="pt-4 border-t border-gray-100 space-y-1.5">
                                     <div class="flex items-center justify-between text-sm">
-                                        <span class="text-gray-500">{{ form.category_ids.length }} {{
-                                            form.category_ids.length > 1 ? 'Categories' : 'Category' }}</span>
-                                        <span class="font-bold text-navy">× {{ formatPrice(event.registration_fee ||
-                                            0) }}</span>
+                                        <span class="text-gray-500">{{ form.category_ids.length }} {{ form.category_ids.length > 1 ? 'categories' : 'category' }}</span>
+                                        <span class="font-bold text-navy capitalize">
+                                            {{ event.fee_mode === 'per_type' ? form.participant_types.map(t => t.replace('_', ' ')).join(', ') : 'per category' }}
+                                        </span>
                                     </div>
                                     <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                                        <span class="font-black text-navy">Total</span>
-                                        <span class="text-2xl font-black text-navy tabular-nums">{{
-                                            formatPrice(totalFee) }}</span>
+                                        <span class="font-black text-navy">total</span>
+                                        <span class="text-2xl font-black text-navy tabular-nums">{{ formatPrice(totalFee) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -392,250 +457,177 @@
                     <!-- RIGHT COLUMN — Payment + CTA (sticky) -->
                     <div class="lg:col-span-2 lg:sticky lg:top-6 space-y-5">
 
-                        <!-- Payment Method -->
-                        <section v-if="event.registration_fee > 0"
-                            class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                            <div
-                                class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
-                                <div
-                                    class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
+                        <!-- Combined Payment Methods -->
+                        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                            <!-- Header with primary bg-color icon, same as Athlete Data -->
+                            <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
+                                <div class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
                                     <Icon icon="ph:credit-card-bold" class="text-lg" />
                                 </div>
-                                <h2 class="text-base font-black text-navy">Payment Method</h2>
+                                <div>
+                                    <h2 class="text-base font-black text-navy">Metode Pembayaran</h2>
+                                    <span class="text-[10px] text-gray-400 font-medium block">Pilih metode pembayaran online atau transfer manual</span>
+                                </div>
                             </div>
-                            <div class="p-6 space-y-5">
-                                <!-- Payment Type Selector -->
-                                <div class="flex gap-2 p-1 bg-gray-100 rounded-xl mb-2">
-                                    <button @click="form.payment_type = 'online'" type="button"
-                                        :class="form.payment_type === 'online' ? 'bg-white text-navy shadow-sm' : 'text-gray-500 hover:text-navy'"
-                                        class="flex-1 py-2 text-xs font-black tracking-widest rounded-lg transition-all focus:outline-none">
-                                        Online
-                                    </button>
-                                    <button @click="form.payment_type = 'manual'" type="button"
-                                        :class="form.payment_type === 'manual' ? 'bg-white text-navy shadow-sm' : 'text-gray-500 hover:text-navy'"
-                                        class="flex-1 py-2 text-xs font-black tracking-widest rounded-lg transition-all focus:outline-none">
-                                        Manual Transfer
-                                    </button>
-                                </div>
 
-                                <!-- Online Payment Channels — Expansion panel -->
+                            <!-- Tabs Switcher -->
+                            <div class="flex border-b border-gray-100">
+                                <button type="button"
+                                    @click="form.payment_type = 'online'; form.manual_method_id = ''"
+                                    :class="form.payment_type === 'online' ? 'border-primary text-navy font-black' : 'border-transparent text-gray-400 hover:text-gray-600'"
+                                    class="flex-1 py-3 text-center border-b-2 text-xs transition-all tracking-wide">
+                                    Pembayaran Online
+                                </button>
+                                <button v-if="orgManualMethods.length > 0 || paymentMethods.length > 0"
+                                    type="button"
+                                    @click="form.payment_type = 'manual'; form.online_channel = ''"
+                                    :class="form.payment_type === 'manual' ? 'border-primary text-navy font-black' : 'border-transparent text-gray-400 hover:text-gray-600'"
+                                    class="flex-1 py-3 text-center border-b-2 text-xs transition-all tracking-wide">
+                                    Transfer Manual
+                                </button>
+                            </div>
+
+                            <div class="p-6">
+                                <!-- Tab Content 1: Online Payment -->
                                 <div v-if="form.payment_type === 'online'" class="space-y-2">
-                                    <span class="text-xs font-black text-gray-600 tracking-widest block">Select
-                                        online payment method</span>
-                                    <div
-                                        class="flex flex-col gap-2 max-h-[480px] overflow-y-auto pr-1 custom-scrollbar">
-
-                                        <!-- PayPal (Powered by Paddle) -->
-                                        <div class="rounded-xl border-2 transition-all overflow-hidden shrink-0"
-                                            :class="form.online_channel === 'paddle_paypal' ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
-                                            <div @click="selectOnlineChannel('paddle_paypal')"
-                                                class="w-full p-4 text-left block focus:outline-none h-auto min-h-[64px] cursor-pointer">
-                                                <div class="flex items-center gap-3 w-full">
-                                                    <div
-                                                        class="h-9 w-9 min-w-[36px] rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
-                                                        <Icon icon="logos:paypal" class="text-lg" />
-                                                    </div>
-                                                    <div class="flex-1 min-w-0">
-                                                        <span
-                                                            class="text-sm font-black text-navy block leading-tight">PayPal</span>
-                                                        <span
-                                                            class="text-[10px] text-gray-400 font-medium block mt-0.5">International
-                                                            Payments (Powered by Paddle)</span>
-                                                    </div>
-                                                </div>
+                                    <!-- Paddle: PayPal -->
+                                    <div class="rounded-xl border-2 transition-all overflow-hidden"
+                                        :class="form.online_channel === 'paddle_paypal' ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
+                                        <div @click="selectOnlineChannel('paddle_paypal'); form.payment_type = 'online'; form.manual_method_id = ''"
+                                            class="w-full p-3.5 flex items-center gap-3 cursor-pointer">
+                                            <div class="h-9 w-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
+                                                <Icon icon="logos:paypal" class="text-lg" />
                                             </div>
-                                        </div>
-
-                                        <!-- Google Pay (Powered by Paddle) -->
-                                        <div class="rounded-xl border-2 transition-all overflow-hidden shrink-0"
-                                            :class="form.online_channel === 'paddle_gpay' ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
-                                            <div @click="selectOnlineChannel('paddle_gpay')"
-                                                class="w-full p-4 text-left block focus:outline-none h-auto min-h-[64px] cursor-pointer">
-                                                <div class="flex items-center gap-3 w-full">
-                                                    <div
-                                                        class="h-9 w-9 min-w-[36px] rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
-                                                        <Icon icon="logos:google-pay" class="text-2xl" />
-                                                    </div>
-                                                    <div class="flex-1 min-w-0">
-                                                        <span
-                                                            class="text-sm font-black text-navy block leading-tight">Google
-                                                            Pay</span>
-                                                        <span
-                                                            class="text-[10px] text-gray-400 font-medium block mt-0.5">International
-                                                            Payments (Powered by Paddle)</span>
-                                                    </div>
-                                                </div>
+                                            <div class="flex-1 min-w-0">
+                                                <span class="text-sm font-black text-navy block leading-tight">PayPal</span>
+                                                <span class="text-[10px] text-gray-400 font-medium">International · Powered by Paddle</span>
                                             </div>
-                                        </div>
-
-                                        <div v-for="ch in onlineChannels" :key="ch.code"
-                                            class="rounded-xl border-2 transition-all overflow-hidden shrink-0"
-                                            :class="form.online_channel === ch.code ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
-                                            <div @click="selectOnlineChannel(ch.code)"
-                                                class="w-full p-4 text-left block focus:outline-none h-auto min-h-[64px] cursor-pointer">
-                                                <div class="flex items-center gap-3 w-full">
-                                                    <div
-                                                        class="h-9 w-9 min-w-[36px] rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
-                                                        <img v-if="getChannelIcon(ch)" :src="getChannelIcon(ch)"
-                                                            class="w-full h-full object-contain" />
-                                                        <Icon v-else icon="ph:credit-card-bold"
-                                                            class="text-navy text-sm" />
-                                                    </div>
-                                                    <div class="flex-1 min-w-0">
-                                                        <span
-                                                            class="text-sm font-black text-navy block leading-tight">{{
-                                                                ch.label }}</span>
-                                                        <span
-                                                            class="text-[10px] text-gray-400 font-medium block mt-0.5">{{
-                                                                ch.type
-                                                            }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Expanded: payment instructions -->
-                                            <div v-if="form.online_channel === ch.code"
-                                                class="border-t border-gray-100 bg-white/80 px-4 pb-4 pt-2">
-                                                <div v-if="channelInstructionsLoading === ch.code"
-                                                    class="flex items-center gap-2 py-4 text-gray-500">
-                                                    <Icon icon="ph:circle-notch-bold" class="animate-spin text-lg" />
-                                                    <span class="text-xs font-medium">Loading payment guide...</span>
-                                                </div>
-                                                <div v-else-if="channelInstructionGroups(ch.code).length"
-                                                    class="space-y-4">
-                                                    <!-- Tab panel when multiple platforms (e.g. Internet Banking, Aplikasi BRImo) -->
-                                                    <div v-if="channelInstructionGroups(ch.code).length > 1"
-                                                        class="flex gap-2 flex-wrap border-b border-gray-100 pb-2 mb-2">
-                                                        <div v-for="(group, gi) in channelInstructionGroups(ch.code)"
-                                                            :key="group.title"
-                                                            @click="setActiveInstructionTab(ch.code, gi)"
-                                                            :class="getActiveInstructionTab(ch.code) === gi
-                                                                ? 'bg-navy text-white border-navy'
-                                                                : 'bg-white text-gray-500 border-gray-200 hover:border-navy/40'"
-                                                            class="px-3 py-1.5 rounded-lg border text-[10px] font-black tracking-widest transition-colors cursor-pointer">
-                                                            {{ group.title }}
-                                                        </div>
-                                                    </div>
-                                                    <!-- Steps for active tab (or only group) -->
-                                                    <div v-for="(group, gi) in channelInstructionGroups(ch.code)"
-                                                        :key="group.title"
-                                                        v-show="channelInstructionGroups(ch.code).length === 1 || getActiveInstructionTab(ch.code) === gi"
-                                                        class="space-y-2.5">
-                                                        <div v-if="channelInstructionGroups(ch.code).length > 1"
-                                                            class="text-[10px] font-black text-gray-500 tracking-widest">
-                                                            {{ group.title }}
-                                                        </div>
-                                                        <div v-for="(step, si) in (group.steps || [])" :key="si"
-                                                            class="flex gap-3">
-                                                            <span
-                                                                class="size-5 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px]">
-                                                                {{ si + 1 }}
-                                                            </span>
-                                                            <span v-html="step"
-                                                                class="text-xs text-gray-600 font-medium leading-relaxed"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div v-else class="py-3 text-xs text-gray-500 italic">
-                                                    Guide not available. After registering, payment instructions will
-                                                    appear.
-                                                </div>
+                                            <div v-if="form.online_channel === 'paddle_paypal'" class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0">
+                                                <Icon icon="ph:check-bold" class="text-navy text-[10px]" />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="p-3 bg-blue-50 rounded-xl border border-blue-100 flex gap-2">
-                                        <Icon icon="ph:shield-check-bold"
-                                            class="text-blue-500 shrink-0 text-sm mt-0.5" />
-                                        <span class="text-[10px] text-blue-700 font-medium leading-relaxed block">secure
-                                            payment via tripay. automatic confirmation after successful payment.</span>
+                                    <!-- Paddle: Google Pay -->
+                                    <div class="rounded-xl border-2 transition-all overflow-hidden"
+                                        :class="form.online_channel === 'paddle_gpay' ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
+                                        <div @click="selectOnlineChannel('paddle_gpay'); form.payment_type = 'online'; form.manual_method_id = ''"
+                                            class="w-full p-3.5 flex items-center gap-3 cursor-pointer">
+                                            <div class="h-9 w-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
+                                                <Icon icon="logos:google-pay" class="text-2xl" />
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <span class="text-sm font-black text-navy block leading-tight">Google Pay</span>
+                                                <span class="text-[10px] text-gray-400 font-medium">International · Powered by Paddle</span>
+                                            </div>
+                                            <div v-if="form.online_channel === 'paddle_gpay'" class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0">
+                                                <Icon icon="ph:check-bold" class="text-navy text-[10px]" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Tripay channels -->
+                                    <div v-for="ch in onlineChannels" :key="ch.code"
+                                        class="rounded-xl border-2 transition-all overflow-hidden"
+                                        :class="form.online_channel === ch.code ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
+                                        <div @click="selectOnlineChannel(ch.code); form.payment_type = 'online'; form.manual_method_id = ''"
+                                            class="w-full p-3.5 flex items-center gap-3 cursor-pointer">
+                                            <div class="h-9 w-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
+                                                <img v-if="getChannelIcon(ch)" :src="getChannelIcon(ch)" class="w-full h-full object-contain" />
+                                                <Icon v-else icon="ph:credit-card-bold" class="text-navy text-sm" />
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <span class="text-sm font-black text-navy block leading-tight">{{ ch.label }}</span>
+                                                <span class="text-[10px] text-gray-400 font-medium">{{ ch.type }}</span>
+                                            </div>
+                                            <div v-if="form.online_channel === ch.code" class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0">
+                                                <Icon icon="ph:check-bold" class="text-navy text-[10px]" />
+                                            </div>
+                                        </div>
+                                        <div v-if="form.online_channel === ch.code" class="border-t border-gray-100 bg-white/80 px-4 pb-4 pt-2">
+                                            <div v-if="channelInstructionsLoading === ch.code" class="flex items-center gap-2 py-4 text-gray-500">
+                                                <Icon icon="ph:circle-notch-bold" class="animate-spin text-lg" />
+                                                <span class="text-xs font-medium">Loading payment guide...</span>
+                                            </div>
+                                            <div v-else-if="channelInstructionGroups(ch.code).length" class="space-y-4">
+                                                <div v-if="channelInstructionGroups(ch.code).length > 1" class="flex gap-2 flex-wrap border-b border-gray-100 pb-2 mb-2">
+                                                    <div v-for="(group, gi) in channelInstructionGroups(ch.code)" :key="group.title"
+                                                        @click="setActiveInstructionTab(ch.code, gi)"
+                                                        :class="getActiveInstructionTab(ch.code) === gi ? 'bg-navy text-white border-navy' : 'bg-white text-gray-500 border-gray-200 hover:border-navy/40'"
+                                                        class="px-3 py-1.5 rounded-lg border text-[10px] font-black tracking-widest transition-colors cursor-pointer">
+                                                        {{ group.title }}
+                                                    </div>
+                                                </div>
+                                                <div v-for="(group, gi) in channelInstructionGroups(ch.code)" :key="group.title"
+                                                    v-show="channelInstructionGroups(ch.code).length === 1 || getActiveInstructionTab(ch.code) === gi"
+                                                    class="space-y-2.5">
+                                                    <div v-for="(step, si) in (group.steps || [])" :key="si" class="flex gap-3">
+                                                        <span class="size-5 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px]">{{ si + 1 }}</span>
+                                                        <span v-html="step" class="text-xs text-gray-600 font-medium leading-relaxed"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-else class="py-3 text-xs text-gray-500 italic">Guide not available. Instructions will appear after registering.</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2 pt-1">
+                                        <Icon icon="ph:shield-check-bold" class="text-emerald-500 text-sm shrink-0" />
+                                        <span class="text-[10px] text-gray-400 font-medium">Secure · Auto-confirmed after payment</span>
                                     </div>
                                 </div>
 
-                                <!-- Manual Bank Transfer Section -->
-                                <div v-if="form.payment_type === 'manual'" class="space-y-4">
-                                    <span class="text-[10px] font-black text-gray-600 tracking-widest block">transfer to
-                                        organizer bank account</span>
-                                    <div class="flex flex-col gap-3">
-                                        <div v-for="bank in paymentMethods" :key="bank.uuid"
-                                            class="p-4 rounded-xl border border-gray-200 bg-gray-50/50 flex flex-col justify-between relative overflow-hidden">
-                                            <div class="flex items-start justify-between gap-3">
-                                                <div>
-                                                    <span
-                                                        class="text-[9px] font-black tracking-widest text-gray-400 block mb-1">bank
-                                                        name</span>
-                                                    <span class="text-sm font-black text-navy">{{ bank.payment_method
-                                                        }}</span>
-                                                </div>
-                                                <div class="text-right">
-                                                    <span
-                                                        class="text-[9px] font-black tracking-widest text-gray-400 block mb-1">account
-                                                        holder</span>
-                                                    <span class="text-sm font-black text-navy">{{ bank.account_name
-                                                        }}</span>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="mt-4 pt-3 border-t border-gray-200/60 flex items-center justify-between">
-                                                <div>
-                                                    <span
-                                                        class="text-[9px] font-black tracking-widest text-gray-400 block">account
-                                                        number</span>
-                                                    <span
-                                                        class="font-mono text-base font-black text-navy tracking-wider">{{
-                                                            bank.account_number }}</span>
-                                                </div>
-                                                <button @click="copyToClipboard(bank.account_number)"
-                                                    class="p-2 rounded-lg bg-primary text-navy shrink-0 hover:opacity-90 transition-opacity">
-                                                    <Icon icon="ph:copy-bold" class="text-xs" />
-                                                </button>
-                                            </div>
+                                <!-- Tab Content 2: Manual Transfer -->
+                                <div v-if="form.payment_type === 'manual'" class="space-y-2">
+                                    <div v-for="method in (orgManualMethods.length > 0 ? orgManualMethods : paymentMethods)"
+                                        :key="method.uuid || method.account_number"
+                                        @click="form.manual_method_id = (method.uuid || method.account_number); form.payment_type = 'manual'; form.online_channel = ''"
+                                        class="flex items-center gap-3 p-3.5 rounded-xl border-2 cursor-pointer transition-all"
+                                        :class="form.manual_method_id === (method.uuid || method.account_number)
+                                            ? 'border-primary bg-primary/5'
+                                            : 'border-gray-100 hover:border-gray-200 bg-white'">
+                                        <div class="h-10 w-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1.5 shadow-sm">
+                                            <img v-if="getPaymentMethodImage(method.bank_name || method.payment_method)"
+                                                :src="getPaymentMethodImage(method.bank_name || method.payment_method)"
+                                                class="w-full h-full object-contain" />
+                                            <Icon v-else icon="ph:bank-bold" class="text-xl text-navy" />
                                         </div>
-                                        <div v-if="paymentMethods.length === 0"
-                                            class="p-4 bg-amber-50 border border-amber-100 rounded-xl flex gap-2.5">
-                                            <Icon icon="ph:warning-bold" class="text-amber-500 shrink-0" />
-                                            <span class="text-xs text-amber-700 font-medium block">no bank accounts
-                                                available. please contact organizer.</span>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-sm font-black text-navy leading-tight">{{ method.custom_name || method.bank_name || method.payment_method }}</div>
+                                            <div class="font-mono text-xs font-bold text-gray-500 mt-0.5">{{ method.account_number }}</div>
+                                            <div class="text-[10px] text-gray-400">{{ method.account_name }}</div>
+                                        </div>
+                                        <div class="flex items-center gap-2 shrink-0">
+                                            <button @click.stop="copyToClipboard(method.account_number)"
+                                                class="p-1.5 rounded-lg bg-gray-100 hover:bg-primary hover:text-navy text-gray-500 transition-colors">
+                                                <Icon icon="ph:copy-bold" class="text-xs" />
+                                            </button>
+                                            <div v-if="form.manual_method_id === (method.uuid || method.account_number)"
+                                                class="size-5 rounded-full bg-primary flex items-center justify-center">
+                                                <Icon icon="ph:check-bold" class="text-navy text-[10px]" />
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <!-- Upload Payment Proof Section -->
-                                    <div class="space-y-2 mt-4 pt-4 border-t border-gray-100">
-                                        <span class="text-[10px] font-black text-gray-600 tracking-widest block">upload
-                                            payment proof</span>
-                                        <div class="flex flex-col gap-3">
-                                            <div @click="triggerFileInput"
-                                                class="border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-gray-50"
-                                                :class="proofFileUrl ? 'border-primary/50 bg-primary/5' : 'border-gray-200 bg-gray-50/50'">
-
-                                                <input type="file" ref="proofInput" class="hidden" accept="image/*"
-                                                    @change="handleProofUpload" />
-
-                                                <template v-if="uploadingProof">
-                                                    <Icon icon="ph:circle-notch-bold"
-                                                        class="text-2xl text-primary animate-spin mb-2" />
-                                                    <span class="text-xs text-gray-500 font-bold block">uploading
-                                                        proof...</span>
-                                                </template>
-                                                <template v-else-if="proofFileUrl">
-                                                    <img :src="proofFileUrl"
-                                                        class="max-h-32 object-contain rounded-lg mb-2 border border-gray-100" />
-                                                    <span class="text-[10px] text-green-600 font-bold block">proof
-                                                        uploaded successfully</span>
-                                                    <span class="text-[9px] text-gray-400 block">click to change
-                                                        image</span>
-                                                </template>
-                                                <template v-else>
-                                                    <Icon icon="ph:cloud-arrow-up-bold"
-                                                        class="text-2xl text-gray-400 mb-2" />
-                                                    <span class="text-xs text-gray-500 font-bold block">click to upload
-                                                        payment proof</span>
-                                                    <span class="text-[9px] text-gray-400 block">jpeg, png (max
-                                                        10mb)</span>
-                                                </template>
-                                            </div>
-                                            <span v-if="uploadError"
-                                                class="text-xs text-red-500 font-bold block mt-1">{{ uploadError
-                                                }}</span>
+                                    <!-- Upload proof when manual selected -->
+                                    <div v-if="form.manual_method_id" class="pt-3 border-t border-gray-100 space-y-2">
+                                        <div class="text-[10px] font-black text-gray-500 tracking-widest">Upload Payment Proof</div>
+                                        <div @click="triggerFileInput"
+                                            class="border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-gray-50"
+                                            :class="proofFileUrl ? 'border-primary/50 bg-primary/5' : 'border-gray-200'">
+                                            <input type="file" ref="proofInput" class="hidden" accept="image/*" @change="handleProofUpload" />
+                                            <template v-if="uploadingProof">
+                                                <Icon icon="ph:circle-notch-bold" class="text-2xl text-primary animate-spin mb-2" />
+                                                <span class="text-xs text-gray-500 font-bold">Uploading...</span>
+                                            </template>
+                                            <template v-else-if="proofFileUrl">
+                                                <img :src="proofFileUrl" class="max-h-28 object-contain rounded-lg mb-2 border border-gray-100" />
+                                                <span class="text-[10px] text-green-600 font-bold">Proof uploaded ✓</span>
+                                                <span class="text-[9px] text-gray-400">Click to change</span>
+                                            </template>
+                                            <template v-else>
+                                                <Icon icon="ph:cloud-arrow-up-bold" class="text-2xl text-gray-400 mb-2" />
+                                                <span class="text-xs text-gray-500 font-bold">Click to upload proof</span>
+                                                <span class="text-[9px] text-gray-400">JPEG, PNG (max 10MB)</span>
+                                            </template>
                                         </div>
+                                        <span v-if="uploadError" class="text-xs text-red-500 font-bold block">{{ uploadError }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -662,6 +654,100 @@
             </main>
         </template>
     </div>
+
+    <!-- Partner Search Dialog -->
+    <Teleport to="body">
+        <div v-if="showPartnerDialog"
+            class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            @click.self="showPartnerDialog = false">
+            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden">
+                <!-- Header -->
+                <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-base font-black text-navy">
+                            {{ partnerDialogType === 'mixed_team' ? 'Add Partner' : 'Add Team Member' }}
+                        </h3>
+                        <div class="text-[10px] text-gray-400 mt-0.5">
+                            {{ partnerDialogType === 'mixed_team' ? '1 partner required' : '2 members required' }}
+                        </div>
+                    </div>
+                    <button @click="showPartnerDialog = false"
+                        class="size-8 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
+                        <Icon icon="ph:x-bold" class="text-sm" />
+                    </button>
+                </div>
+
+                <!-- Search input -->
+                <div class="p-4 border-b border-gray-100">
+                    <div class="relative">
+                        <input v-model="partnerSearchQuery" type="text"
+                            placeholder="Search by name, ID, or username..."
+                            class="w-full h-11 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium"
+                            autofocus />
+                        <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <Icon v-if="partnerSearchLoading" icon="ph:circle-notch-bold"
+                            class="absolute right-3.5 top-1/2 -translate-y-1/2 text-primary animate-spin" />
+                    </div>
+                </div>
+
+                <!-- Results -->
+                <div class="max-h-72 overflow-y-auto">
+                    <div v-if="partnerSearchQuery.length < 2" class="py-10 text-center text-gray-400">
+                        <Icon icon="ph:magnifying-glass" class="text-3xl mx-auto mb-2 opacity-30" />
+                        <div class="text-xs font-bold">Type at least 2 characters to search</div>
+                    </div>
+                    <div v-else-if="partnerSearchResults.length === 0 && !partnerSearchLoading" class="py-10 text-center text-gray-400">
+                        <Icon icon="ph:user-slash" class="text-3xl mx-auto mb-2 opacity-30" />
+                        <div class="text-xs font-bold">No archers found</div>
+                    </div>
+                    <div v-else class="divide-y divide-gray-50">
+                        <div v-for="archer in partnerSearchResults" :key="archer.uuid || archer.id"
+                            @click="addPartner(archer)"
+                            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors"
+                            :class="getPartnersForCategory(partnerDialogCategoryId).some(p => (p.uuid || p.id) === (archer.uuid || archer.id)) ? 'opacity-40 pointer-events-none' : ''">
+                            <img :src="archer.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(archer.full_name || 'A')}&background=1a2744&color=f5c842&size=40`"
+                                class="size-10 rounded-full object-cover shrink-0 border border-gray-100" />
+                            <div class="flex-1 min-w-0">
+                                <div class="text-sm font-black text-navy truncate">{{ archer.full_name }}</div>
+                                <div class="text-[10px] text-gray-400 font-mono">{{ archer.id }}</div>
+                                <div v-if="archer.club_name" class="text-[10px] text-gray-400">{{ archer.club_name }}</div>
+                            </div>
+                            <div v-if="getPartnersForCategory(partnerDialogCategoryId).some(p => (p.uuid || p.id) === (archer.uuid || archer.id))"
+                                class="size-6 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                                <Icon icon="ph:check-bold" class="text-green-600 text-xs" />
+                            </div>
+                            <Icon v-else icon="ph:plus-circle-bold" class="text-primary text-xl shrink-0" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current partners -->
+                <div v-if="partnerDialogCategoryId && getPartnersForCategory(partnerDialogCategoryId).length > 0"
+                    class="px-4 py-3 border-t border-gray-100 bg-gray-50/50">
+                    <div class="text-[10px] font-black text-gray-400 tracking-widest mb-2 uppercase">Added</div>
+                    <div class="space-y-1.5">
+                        <div v-for="partner in getPartnersForCategory(partnerDialogCategoryId)" :key="partner.uuid || partner.id"
+                            class="flex items-center gap-2 p-2 bg-white rounded-lg border border-gray-100">
+                            <img :src="partner.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(partner.full_name || 'A')}&background=1a2744&color=f5c842&size=32`"
+                                class="size-6 rounded-full object-cover shrink-0" />
+                            <span class="text-xs font-bold text-navy flex-1 truncate">{{ partner.full_name }}</span>
+                            <button @click="removePartner(partnerDialogCategoryId, partner.uuid || partner.id)"
+                                class="p-0.5 text-gray-400 hover:text-red-500 transition-colors">
+                                <Icon icon="ph:x-bold" class="text-xs" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Done button -->
+                <div class="px-4 py-4 border-t border-gray-100">
+                    <BaseButton variant="primary" block @click="showPartnerDialog = false">
+                        Done
+                    </BaseButton>
+                </div>
+            </div>
+        </div>
+    </Teleport>
 </template>
 
 <script setup>
@@ -709,6 +795,28 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
 
         const formatDate = (d) => d ? useDateFormat(d, 'DD MMM YYYY', { locales: 'en-US' }).value : ''
 
+        // Parse fee settings from page_settings
+        let pageSettings = {}
+        try {
+            pageSettings = typeof eventResponse.page_settings_raw === 'string'
+                ? JSON.parse(eventResponse.page_settings_raw)
+                : (eventResponse.page_settings_raw || eventResponse.page_settings || {})
+        } catch (e) {}
+
+        // Also fetch org page_settings payment methods (from /organizations/me via event organizer)
+        let orgManualMethods = []
+        try {
+            const orgRes = await $fetch(`${apiBaseUrl}/organizations/${eventResponse.organizer_id || eventResponse.organizer_slug || 'me'}`).catch(() => null)
+            const orgSettings = orgRes?.organization?.page_settings || orgRes?.page_settings || orgRes?.data?.page_settings || orgRes?.data?.organization?.page_settings
+            let parsedOrgSettings = {}
+            if (typeof orgSettings === 'string') {
+                try { parsedOrgSettings = JSON.parse(orgSettings) } catch (e) {}
+            } else if (orgSettings && typeof orgSettings === 'object') {
+                parsedOrgSettings = orgSettings
+            }
+            orgManualMethods = (parsedOrgSettings.payment_methods || []).filter(m => m.bank_name && m.account_number)
+        } catch (e) {}
+
         const eventData = {
             id: eventId,
             name: eventResponse.name || eventResponse.title || 'Event',
@@ -722,7 +830,15 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             image: eventResponse.image || eventResponse.banner_url || '',
             description: eventResponse.description || '',
             registration_fee: eventResponse.entry_fee || eventResponse.registration_fee || 0,
-            currency: eventResponse.currency || 'IDR'
+            currency: eventResponse.currency || 'IDR',
+            // Fee mode settings
+            fee_mode: pageSettings.fee_mode || 'per_type',
+            fee_per_type: pageSettings.fee_per_type || {
+                individual: eventResponse.entry_fee || 0,
+                team: 0,
+                mixed_team: 0
+            },
+            fee_per_category: pageSettings.fee_per_category || {}
         }
 
         let archerProfileData = profileResponse?.data || profileResponse
@@ -741,7 +857,8 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
 
         const categoriesData = (categoriesResponse.events || categoriesResponse.categories || []).map(cat => ({
             id: cat.id || cat.uuid,
-            name: `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`.trim()
+            name: `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`.trim(),
+            event_type_name: cat.event_type_name || ''
         }))
 
         return {
@@ -750,6 +867,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             categories: categoriesData,
             archerProfile: archerProfileData,
             paymentMethods: paymentMethodsData,
+            orgManualMethods: orgManualMethods,
             bowTypes: (bowTypesRes.bow_types || []).map(b => ({ title: b.name, value: b.code })),
             cities: (citiesRes.data || []).map(c => ({ title: c.name, value: c.name })),
             participants: participantsResponse?.participants || [],
@@ -793,7 +911,117 @@ const form = ref({
     category_ids: [],
     payment_amount: 0,
     payment_type: 'online',
-    online_channel: ''
+    online_channel: '',
+    participant_type: 'individual',  // legacy single value
+    participant_types: ['individual'],
+    manual_method_id: '',
+    // Team/mixed partners: { [categoryId]: { team: [archer], mixed: [archer] } }
+    team_partners: {}
+})
+
+// Partner search state
+const partnerSearchQuery = ref('')
+const partnerSearchResults = ref([])
+const partnerSearchLoading = ref(false)
+const showPartnerDialog = ref(false)
+const partnerDialogCategoryId = ref(null)
+const partnerDialogType = ref('team') // 'team' (need 2 more) | 'mixed_team' (need 1 more)
+
+const searchPartners = async () => {
+    const q = partnerSearchQuery.value.trim()
+    if (!q || q.length < 2) { partnerSearchResults.value = []; return }
+    partnerSearchLoading.value = true
+    try {
+        const res = await $fetch(`${apiBaseUrl}/archers?search=${encodeURIComponent(q)}&limit=10`)
+        const list = res?.data || res?.archers || res || []
+        // Exclude self
+        const selfId = archerProfile.value?.uuid || archerProfile.value?.id
+        partnerSearchResults.value = list.filter(a => (a.uuid || a.id) !== selfId)
+    } catch (e) {
+        partnerSearchResults.value = []
+    } finally {
+        partnerSearchLoading.value = false
+    }
+}
+
+const openPartnerDialog = (categoryId) => {
+    partnerDialogCategoryId.value = categoryId
+    const category = categories.value.find(c => c.id === categoryId)
+    partnerDialogType.value = category ? getCategoryType(category) : 'team'
+    partnerSearchQuery.value = ''
+    partnerSearchResults.value = []
+    showPartnerDialog.value = true
+}
+
+const getPartnersForCategory = (categoryId) => {
+    return form.value.team_partners[categoryId] || []
+}
+
+const addPartner = (archer) => {
+    const catId = partnerDialogCategoryId.value
+    if (!catId) return
+    const maxPartners = partnerDialogType.value === 'mixed_team' ? 1 : 2
+    const current = form.value.team_partners[catId] || []
+    const alreadyAdded = current.some(p => (p.uuid || p.id) === (archer.uuid || archer.id))
+    if (alreadyAdded || current.length >= maxPartners) return
+    form.value.team_partners = {
+        ...form.value.team_partners,
+        [catId]: [...current, archer]
+    }
+}
+
+const removePartner = (categoryId, archerId) => {
+    const current = form.value.team_partners[categoryId] || []
+    form.value.team_partners = {
+        ...form.value.team_partners,
+        [categoryId]: current.filter(p => (p.uuid || p.id) !== archerId)
+    }
+}
+
+const toggleParticipantType = (type) => {
+    if (!form.value.participant_types) {
+        form.value.participant_types = []
+    }
+    const idx = form.value.participant_types.indexOf(type)
+    if (idx === -1) {
+        form.value.participant_types.push(type)
+    } else {
+        form.value.participant_types.splice(idx, 1)
+    }
+
+    form.value.participant_type = form.value.participant_types[0] || 'individual'
+
+    // Clean up selected categories that are no longer in selected types
+    form.value.category_ids = form.value.category_ids.filter(catId => {
+        const category = categories.value.find(c => c.id === catId)
+        if (!category) return false
+        const catType = getCategoryType(category)
+        return form.value.participant_types.includes(catType)
+    })
+}
+
+const getCategoryType = (category) => {
+    const typeName = (category?.event_type_name || '').toLowerCase()
+    if (typeName.includes('mixed')) return 'mixed_team'
+    if (typeName.includes('team')) return 'team'
+    return 'individual'
+}
+
+const isPartnerComplete = (categoryId) => {
+    const category = categories.value.find(c => c.id === categoryId)
+    const type = category ? getCategoryType(category) : 'individual'
+    if (type === 'individual') return true
+    const partners = getPartnersForCategory(categoryId)
+    if (type === 'mixed_team') return partners.length >= 1
+    if (type === 'team') return partners.length >= 2
+    return true
+}
+
+// Debounce partner search
+let partnerSearchTimer = null
+watch(partnerSearchQuery, () => {
+    clearTimeout(partnerSearchTimer)
+    partnerSearchTimer = setTimeout(searchPartners, 300)
 })
 
 const profileForm = ref({
@@ -817,17 +1045,39 @@ const onlineChannels = computed(() => data.value?.onlineChannels || [])
 // No auto-select: user must explicitly choose payment method
 
 // ─── COMPUTED ─────────────────────────────────────────────────────────────────
-const event = computed(() => data.value?.event || { name: '', date: '', location: '', image: '', description: '', registration_fee: 0 })
+const event = computed(() => data.value?.event || { name: '', date: '', location: '', image: '', description: '', registration_fee: 0, fee_mode: 'per_type', fee_per_type: { individual: 0, team: 0, mixed_team: 0 }, fee_per_category: {} })
 const categories = computed(() => data.value?.categories || [])
 const bowTypeOptions = computed(() => data.value?.bowTypes || [])
 const cityOptions = computed(() => data.value?.cities || [])
 const paymentMethods = computed(() => data.value?.paymentMethods || [])
+const orgManualMethods = computed(() => data.value?.orgManualMethods || [])
 const archerProfile = computed(() => globalArcherProfile.value || data.value?.archerProfile)
 
+const activeParticipantTypes = computed(() => {
+    const list = []
+    const fees = event.value.fee_per_type || {}
+    
+    if (fees.individual !== undefined && fees.individual !== null && fees.individual !== '' && Number(fees.individual) > 0) {
+        list.push({ value: 'individual', label: 'Individual', icon: 'ph:user-bold', fee: Number(fees.individual) })
+    }
+    if (fees.team !== undefined && fees.team !== null && fees.team !== '' && Number(fees.team) > 0) {
+        list.push({ value: 'team', label: 'Team', icon: 'ph:users-bold', fee: Number(fees.team) })
+    }
+    if (fees.mixed_team !== undefined && fees.mixed_team !== null && fees.mixed_team !== '' && Number(fees.mixed_team) > 0) {
+        list.push({ value: 'mixed_team', label: 'Mixed Team', icon: 'ph:users-three-bold', fee: Number(fees.mixed_team) })
+    }
+    return list
+})
+
 const filteredCategories = computed(() => {
-    if (!categorySearch.value) return categories.value
+    let list = categories.value
+    if (event.value.fee_mode === 'per_type') {
+        const types = form.value.participant_types || []
+        list = list.filter(c => types.includes(getCategoryType(c)))
+    }
+    if (!categorySearch.value) return list
     const s = categorySearch.value.toLowerCase()
-    return categories.value.filter(c => c.name.toLowerCase().includes(s))
+    return list.filter(c => c.name.toLowerCase().includes(s))
 })
 
 const isArcher = computed(() => {
@@ -840,7 +1090,21 @@ const userDisplay = computed(() => ({
     email: archerProfile.value?.email || user.value?.email || '',
 }))
 
-const totalFee = computed(() => (event.value.registration_fee || 0) * form.value.category_ids.length)
+// Fee per category helper
+const getFeeForCategory = (catId) => {
+    const ev = event.value
+    if (ev.fee_mode === 'per_category') {
+        return ev.fee_per_category?.[catId] ?? ev.registration_fee ?? 0
+    }
+    // per_type mode
+    const category = categories.value.find(c => c.id === catId)
+    const type = category ? getCategoryType(category) : 'individual'
+    return ev.fee_per_type?.[type] ?? ev.registration_fee ?? 0
+}
+
+const totalFee = computed(() => {
+    return form.value.category_ids.reduce((sum, catId) => sum + getFeeForCategory(catId), 0)
+})
 
 const formatPrice = (val) => {
     const currency = event.value?.currency || 'IDR'
@@ -873,10 +1137,21 @@ const isFormValid = computed(() => {
     const categoriesSelected = form.value.category_ids.length > 0
     const archerProfileExists = !!archerProfile.value
     const profileComplete = !!profileForm.value.full_name && !!profileForm.value.gender && !!profileForm.value.date_of_birth && !!profileForm.value.bow_type
-    const channelSelected = event.value.registration_fee > 0
-        ? (form.value.payment_type === 'online' ? !!form.value.online_channel : !!proofFileUrl.value)
+    // For team/mixed: all selected categories must have complete partners
+    const partnersComplete = form.value.category_ids.every(catId => {
+        const category = categories.value.find(c => c.id === catId)
+        if (!category) return true
+        const catType = getCategoryType(category)
+        if (event.value.fee_mode === 'per_type' && catType !== 'individual') {
+            return isPartnerComplete(catId)
+        }
+        return true
+    })
+    // Payment: either online channel selected OR manual method + proof uploaded
+    const paymentSelected = totalFee.value > 0
+        ? (form.value.payment_type === 'online' ? !!form.value.online_channel : (!!form.value.manual_method_id && !!proofFileUrl.value))
         : true
-    return categoriesSelected && archerProfileExists && profileComplete && channelSelected
+    return categoriesSelected && archerProfileExists && profileComplete && partnersComplete && paymentSelected
 })
 
 const buttonText = computed(() => {
@@ -975,6 +1250,17 @@ watch(() => archerProfile.value, (profile) => {
 
 watch(totalFee, (val) => { form.value.payment_amount = val }, { immediate: true })
 
+watch(activeParticipantTypes, (types) => {
+    if (types.length > 0) {
+        const activeVals = types.map(t => t.value)
+        const hasActiveSelected = form.value.participant_types.some(t => activeVals.includes(t))
+        if (!hasActiveSelected) {
+            form.value.participant_types = [activeVals[0]]
+            form.value.participant_type = activeVals[0]
+        }
+    }
+}, { immediate: true })
+
 // ─── METHODS ──────────────────────────────────────────────────────────────────
 const toggleCategory = (id) => {
     const idx = form.value.category_ids.indexOf(id)
@@ -1035,7 +1321,11 @@ const handleSubmit = async () => {
             athlete_id: athleteId,
             event_category_ids: form.value.category_ids,
             payment_amount: form.value.payment_amount || 0,
-            payment_type: form.value.payment_type
+            payment_type: form.value.payment_type,
+            participant_type: form.value.participant_types && form.value.participant_types.length > 0
+                ? form.value.participant_types[0]
+                : (form.value.participant_type || 'individual'),
+            team_partners: form.value.team_partners // { [categoryId]: [{ uuid, full_name }] }
         }
 
         const response = await post(`/events/${event.value.id}/participants`, payload)
@@ -1065,6 +1355,7 @@ const handleSubmit = async () => {
             } else if (selectedChannel === 'paddle') {
                 const txId = payResult.tripay_reference
                 if (txId && !txId.includes('mock') && window.Paddle) {
+                    // Always use Paddle popup overlay
                     window.Paddle.Checkout.open({
                         transactionId: txId,
                         eventCallback: (data) => {
@@ -1076,9 +1367,8 @@ const handleSubmit = async () => {
                 } else if (payResult.checkout_url && payResult.checkout_url.includes('txn_mock_')) {
                     // Redirect to simulator page for mock payments
                     window.location.href = `/test-paddle?ref=${payResult.reference}`
-                } else if (payResult.checkout_url) {
-                    window.location.href = payResult.checkout_url
                 } else {
+                    // Fallback: show success if no Paddle SDK available
                     registrationSuccess.value = true
                 }
             } else if (payResult.checkout_url) {
