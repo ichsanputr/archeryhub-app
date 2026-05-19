@@ -648,8 +648,8 @@ const registrationStats = computed(() => {
 
         // Payment stats
         const status = p.payment_status?.toLowerCase()
-        if (status === 'lunas') stats.byPayment.lunas++
-        else if (status === 'menunggu_acc') stats.byPayment.menunggu_acc++
+        if (status === 'lunas' || status === 'paid') stats.byPayment.lunas++
+        else if (status === 'menunggu_acc' || status === 'menunggu acc' || status === 'pending') stats.byPayment.menunggu_acc++
         else stats.byPayment.belum_lunas++
     })
 

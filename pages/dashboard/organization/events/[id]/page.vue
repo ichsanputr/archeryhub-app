@@ -5,8 +5,8 @@
             <div>
                 <h1 class="text-2xl sm:text-3xl font-black text-navy tracking-tight text-center sm:text-left">Halaman
                     Event</h1>
-                <p class="text-gray-500 mt-1 text-sm text-center sm:text-left">Kelola informasi yang ditampilkan di
-                    halaman publik event.</p>
+                <div class="text-gray-500 mt-1 text-sm text-center sm:text-left">Kelola informasi yang ditampilkan di
+                    halaman publik event.</div>
             </div>
             <div class="flex items-center justify-center sm:justify-end gap-2 sm:gap-3">
                 <BaseButton variant="outline" icon="ph:eye" :to="`/events/${eventData.slug}`" target="_blank" size="md"
@@ -44,7 +44,7 @@
                 <div class="p-4 sm:p-6 space-y-4">
                     <div v-if="form.faq?.length === 0"
                         class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                        <p class="text-sm text-gray-500">Belum ada FAQ yang ditambahkan.</p>
+                        <div class="text-sm text-gray-500">Belum ada FAQ yang ditambahkan.</div>
                     </div>
                     <div v-else class="space-y-4">
                         <div v-for="(item, index) in form.faq" :key="index"
@@ -166,8 +166,8 @@
                                         <Icon icon="ph:users-three-bold" class="text-xl" />
                                     </div>
                                     <div>
-                                        <p class="text-sm font-black text-navy">Per Tipe Peserta</p>
-                                        <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">Biaya berbeda untuk Individu, Tim, dan Tim Campuran</p>
+                                        <div class="text-sm font-black text-navy">Per Tipe Peserta</div>
+                                        <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">Biaya berbeda untuk Individu, Tim, dan Tim Campuran</div>
                                     </div>
                                     <div v-if="form.fee_mode === 'per_type'" class="ml-auto shrink-0">
                                         <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
@@ -186,8 +186,8 @@
                                         <Icon icon="ph:stack-bold" class="text-xl" />
                                     </div>
                                     <div>
-                                        <p class="text-sm font-black text-navy">Per Kategori</p>
-                                        <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">Setiap kategori lomba memiliki biaya sendiri</p>
+                                        <div class="text-sm font-black text-navy">Per Kategori</div>
+                                        <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">Setiap kategori lomba memiliki biaya sendiri</div>
                                     </div>
                                     <div v-if="form.fee_mode === 'per_category'" class="ml-auto shrink-0">
                                         <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
@@ -213,7 +213,7 @@
                                             placeholder="0"
                                             class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                                     </div>
-                                    <p class="text-[10px] text-gray-400">Biaya per kategori untuk peserta individu</p>
+                                    <div class="text-[10px] text-gray-400">Biaya per kategori untuk peserta individu</div>
                                 </div>
                                 <!-- Team -->
                                 <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
@@ -229,7 +229,7 @@
                                             placeholder="0"
                                             class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                                     </div>
-                                    <p class="text-[10px] text-gray-400">Biaya per kategori untuk tim (3 pemanah)</p>
+                                    <div class="text-[10px] text-gray-400">Biaya per kategori untuk tim (3 pemanah)</div>
                                 </div>
                                 <!-- Mixed Team -->
                                 <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
@@ -245,7 +245,7 @@
                                             placeholder="0"
                                             class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                                     </div>
-                                    <p class="text-[10px] text-gray-400">Biaya per kategori untuk tim campuran (2 pemanah)</p>
+                                    <div class="text-[10px] text-gray-400">Biaya per kategori untuk tim campuran (2 pemanah)</div>
                                 </div>
                             </div>
                             <!-- entry_fee fallback note removed -->
@@ -256,8 +256,8 @@
                             <div v-if="eventCategories.length === 0"
                                 class="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                                 <Icon icon="ph:stack" class="text-3xl text-gray-300 mx-auto mb-2" />
-                                <p class="text-xs text-gray-400 font-bold">Belum ada kategori lomba.</p>
-                                <p class="text-xs text-gray-400 mt-1">Tambahkan kategori terlebih dahulu di menu Kategori.</p>
+                                <div class="text-xs text-gray-400 font-bold">Belum ada kategori lomba.</div>
+                                <div class="text-xs text-gray-400 mt-1">Tambahkan kategori terlebih dahulu di menu Kategori.</div>
                                 <BaseButton variant="outline" size="xs" class="mt-3" :to="`/dashboard/events/${eventId}/categories`">
                                     <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Kategori
                                 </BaseButton>
@@ -273,10 +273,10 @@
                                             class="w-full h-full object-contain" />
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-bold text-navy truncate">
+                                        <div class="text-sm font-bold text-navy truncate">
                                             {{ cat.category_name }} – {{ cat.event_type_name }} – {{ cat.gender_division_name }}
-                                        </p>
-                                        <p class="text-[10px] text-gray-400">{{ cat.division_name }}</p>
+                                        </div>
+                                        <div class="text-[10px] text-gray-400">{{ cat.division_name }}</div>
                                     </div>
                                     <div class="relative shrink-0 w-36">
                                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
@@ -297,7 +297,7 @@
                                     <input v-model.number="form.entry_fee" type="number" min="0" placeholder="0"
                                         class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                                 </div>
-                                <p class="text-[10px] text-gray-400">Digunakan jika kategori tidak memiliki biaya khusus.</p>
+                                <div class="text-[10px] text-gray-400">Digunakan jika kategori tidak memiliki biaya khusus.</div>
                             </div>
                         </div>
                     </div>
@@ -409,7 +409,7 @@
                     </div>
                     <div class="space-y-3">
                         <label class="text-sm font-bold text-gray-700">Aksesibilitas Lokasi</label>
-                        <p class="text-xs text-gray-500 mb-3">Pilih opsi yang tersedia untuk lokasi ini</p>
+                        <div class="text-xs text-gray-500 mb-3">Pilih opsi yang tersedia untuk lokasi ini</div>
                         <div class="flex flex-wrap gap-2">
                             <button v-for="option in locationAccessibilityOptions" :key="option" type="button"
                                 @click="toggleLocationAccessibility(option)"
@@ -512,7 +512,7 @@
                 <div class="p-4 sm:p-6 space-y-4">
                     <div v-if="form.schedules.length === 0"
                         class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                        <p class="text-sm text-gray-400">Belum ada jadwal yang ditambahkan.</p>
+                        <div class="text-sm text-gray-400">Belum ada jadwal yang ditambahkan.</div>
                     </div>
                     <div v-else class="space-y-4">
                         <div v-for="(session, index) in form.schedules" :key="index"
@@ -572,8 +572,8 @@
                         </div>
                         Sumber Hasil Lomba
                     </h2>
-                    <p class="text-xs text-gray-400 mt-1.5 font-medium">Pilih bagaimana hasil lomba ditampilkan di
-                        halaman publik event.</p>
+                    <div class="text-xs text-gray-400 mt-1.5 font-medium">Pilih bagaimana hasil lomba ditampilkan di
+                        halaman publik event.</div>
                 </div>
                 <div class="p-4 sm:p-6">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -592,8 +592,8 @@
                                 </div>
                             </div>
                             <h4 class="font-bold text-sm text-navy">Dari Sistem</h4>
-                            <p class=" text-xs text-gray-400 mt-0.5 leading-relaxed">Hasil kualifikasi & eliminasi
-                                dari scoring system.</p>
+                            <div class=" text-xs text-gray-400 mt-0.5 leading-relaxed">Hasil kualifikasi & eliminasi
+                                dari scoring system.</div>
                         </button>
                         <button @click="form.page_settings.results_type = 'manual'" type="button"
                             class="relative p-4 sm:p-5 rounded-2xl border-2 text-left transition-all group"
@@ -610,8 +610,8 @@
                                 </div>
                             </div>
                             <h4 class="font-bold text-sm text-navy">Upload Manual</h4>
-                            <p class=" text-xs text-gray-400 mt-0.5 leading-relaxed">Upload file PDF/gambar hasil
-                                lomba secara manual.</p>
+                            <div class=" text-xs text-gray-400 mt-0.5 leading-relaxed">Upload file PDF/gambar hasil
+                                lomba secara manual.</div>
                         </button>
                     </div>
                 </div>
@@ -629,8 +629,8 @@
                             </div>
                             Upload Dokumen Hasil
                         </h2>
-                        <p class="text-xs sm:text-sm text-gray-500 mt-1 font-medium">Upload file PDF, gambar, atau
-                            dokumen hasil lomba.</p>
+                        <div class="text-xs sm:text-sm text-gray-500 mt-1 font-medium">Upload file PDF, gambar, atau
+                            dokumen hasil lomba.</div>
                     </div>
                     <BaseButton variant="primary" size="sm" icon="ph:plus-bold"
                         @click="$refs.resultsFileInput?.click()">
@@ -652,10 +652,10 @@
                                     class="text-4xl text-gray-300 group-hover:text-primary" />
                             </div>
                             <div class="max-w-xs mx-auto">
-                                <p class="text-base font-black text-navy group-hover:text-primary transition-colors">
-                                    Upload Hasil Lomba</p>
-                                <p class="text-sm text-gray-500 mt-1 font-medium italic">Drag & drop beberapa file di
-                                    sini. Mendukung PDF, JPG, & PNG.</p>
+                                <div class="text-base font-black text-navy group-hover:text-primary transition-colors">
+                                    Upload Hasil Lomba</div>
+                                <div class="text-sm text-gray-500 mt-1 font-medium italic">Drag & drop beberapa file di
+                                    sini. Mendukung PDF, JPG, & PNG.</div>
                             </div>
                             <div class="flex gap-2">
                                 <span
@@ -709,10 +709,10 @@
 
                                         <!-- Footer Actions -->
                                         <div class="flex items-center justify-between mt-4">
-                                            <p
+                                            <div
                                                 class="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
                                                 {{ formatFileSize(file.size) }}
-                                            </p>
+                                            </div>
                                             <div class="flex items-center gap-2">
                                                 <a :href="file.url" target="_blank"
                                                     class="p-2 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
@@ -737,9 +737,9 @@
                                     class="p-3 bg-gray-50 rounded-full group-hover:bg-navy group-hover:text-primary transition-all text-gray-400">
                                     <Icon icon="ph:plus-bold" class="text-xl" />
                                 </div>
-                                <p
-                                    class="text-xs font-black text-gray-400 mt-3  tracking-widest group-hover:text-primary">
-                                    Tambah File Lagi</p>
+                                <div
+                                                    class="text-xs font-black text-gray-400 mt-3  tracking-widest group-hover:text-primary">
+                                                    Tambah File Lagi</div>
                             </div>
                         </div>
                     </div>
@@ -759,11 +759,11 @@
                         </div>
                         <div>
                             <h4 class="font-bold text-navy text-sm">Hasil Dari Sistem Scoring</h4>
-                            <p class="text-xs text-gray-500 mt-1 leading-relaxed">
+                            <div class="text-xs text-gray-500 mt-1 leading-relaxed">
                                 Hasil kualifikasi dan bagan eliminasi akan ditampilkan secara otomatis dari data scoring
                                 yang telah diinput melalui menu <strong>Scoring</strong>. Pastikan skor sudah diinput
                                 dengan benar.
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -207,7 +207,7 @@
                                 <div v-else
                                     class="w-32 h-32 flex flex-col items-center justify-center bg-gray-50 rounded-lg text-gray-400">
                                     <Icon icon="ph:qr-code" class="text-4xl mb-1" />
-                                    <span class="text-[10px] font-bold">Belum Lunas</span>
+                                    <span class="text-[10px] font-bold">Unpaid</span>
                                 </div>
 
                                 <!-- Corner Accents -->
@@ -224,7 +224,7 @@
                                 Tunjukkan QR ini kepada panitia saat melakukan daftar ulang di lokasi.
                             </div>
                             <div v-else class="text-[10px] font-bold text-amber-600 max-w-[180px] leading-relaxed mb-3">
-                                QR akan muncul setelah status pembayaran diubah ke <strong>Lunas</strong>.
+                                QR will appear after payment status is changed to <strong>Paid</strong>.
                             </div>
 
                             <!-- Raw QR value copy -->
@@ -387,7 +387,8 @@ const toggleCategory = (id) => {
 }
 
 const paymentStatusOptions = [
-    { label: 'Lunas', value: 'lunas' },
+    { label: 'Paid', value: 'paid' },
+    { label: 'Pending', value: 'pending' },
     { label: 'Unpaid', value: 'unpaid' }
 ]
 
@@ -460,27 +461,24 @@ const getCategoryName = (p) => {
 
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
-    if (s === 'menunggu' || s === 'menunggu acc' || !s) return 'Menunggu ACC'
-    return s
+    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return 'Registered'
+    return 'Pending'
 }
 
 const getStatusClass = (status) => {
-    switch (status) {
-        case 'lunas':
-            return 'bg-green-50 text-green-600 border-green-200'
-        case 'menunggu':
-        case 'menunggu acc':
-        default:
-            return 'bg-amber-50 text-amber-600 border-amber-200'
+    const s = (status || '').toLowerCase()
+    if (s === 'paid' || s === 'lunas' || s === 'registered' || s === 'terdaftar') {
+        return 'bg-green-50 text-green-600 border-green-200'
     }
+    return 'bg-amber-50 text-amber-600 border-amber-200'
 }
 
 const getSourceLabel = (source) => {
     switch (source) {
-        case 'invited': return 'Diundang'
-        case 'admin_created': return 'Dibuat Admin'
+        case 'invited': return 'Invited'
+        case 'admin_created': return 'Created by Admin'
         case 'self_register':
-        default: return 'Daftar Sendiri'
+        default: return 'Self Registered'
     }
 }
 

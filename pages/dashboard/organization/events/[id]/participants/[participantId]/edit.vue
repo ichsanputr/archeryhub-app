@@ -234,13 +234,14 @@ const isSubmitting = ref(false)
 const isKicking = ref(false)
 
 const statusOptions = [
-    { title: 'Terdaftar / Lunas', value: 'Terdaftar', icon: 'ph:check-circle' },
-    { title: 'Unpaid', value: 'Unpaid', icon: 'ph:hourglass' }
+    { title: 'Paid', value: 'paid', icon: 'ph:check-circle' },
+    { title: 'Pending', value: 'pending', icon: 'ph:hourglass' },
+    { title: 'Unpaid', value: 'unpaid', icon: 'ph:hourglass' }
 ]
 
 const form = reactive({
     category_id: '',
-    status: 'Unpaid',
+    status: 'unpaid',
     payment_amount: 0
 })
 
@@ -255,7 +256,7 @@ const fetchParticipant = async () => {
             participant.value = found
             // Populate form
             form.category_id = found.category_id
-            form.status = found.status || 'Unpaid'
+            form.status = found.status || found.payment_status || 'unpaid'
             form.payment_amount = found.payment_amount || 0
         }
 

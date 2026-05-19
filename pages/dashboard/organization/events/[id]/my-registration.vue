@@ -127,7 +127,7 @@
                                 :class="getStatusClass(participant.payment_status)">
                                 <div class="flex items-center gap-3">
                                     <Icon
-                                        :icon="participant.payment_status === 'lunas' ? 'ph:check-circle-fill' : 'ph:clock-bold'"
+                                        :icon="(participant.payment_status === 'lunas' || participant.payment_status === 'paid') ? 'ph:check-circle-fill' : 'ph:clock-bold'"
                                         class="text-2xl" />
                                     <span class="font-black tracking-widest text-xs">{{
                                         getDisplayStatus(participant.payment_status) }}</span>
@@ -215,14 +215,14 @@ const paymentProofs = computed(() => {
 
 const getStatusClass = (status) => {
     const s = (status || '').toLowerCase()
-    if (s === 'lunas') return 'bg-green-500/10 text-green-500 border-green-500/20'
+    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return 'bg-green-500/10 text-green-500 border-green-500/20'
     return 'bg-amber-500/10 text-amber-500 border-amber-500/20'
 }
 
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
-    if (s === 'menunggu' || s === 'menunggu acc' || !s) return 'UNPAID'
-    return s.toUpperCase()
+    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return 'REGISTERED'
+    return 'PENDING'
 }
 
 const formatCurrency = (val) => {

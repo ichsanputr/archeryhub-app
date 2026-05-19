@@ -293,8 +293,8 @@
                             <div class="p-6">
                                 <div class="grid gap-2"
                                     :class="{
-                                        'grid-cols-1 max-w-xs mx-auto': activeParticipantTypes.length === 1,
-                                        'grid-cols-2 max-w-md mx-auto': activeParticipantTypes.length === 2,
+                                        'grid-cols-1 max-w-xs': activeParticipantTypes.length === 1,
+                                        'grid-cols-2 max-w-md': activeParticipantTypes.length === 2,
                                         'grid-cols-3': activeParticipantTypes.length >= 3
                                     }">
                                     <button v-for="pt in activeParticipantTypes" :key="pt.value"
@@ -303,10 +303,10 @@
                                         :class="form.participant_types.includes(pt.value)
                                             ? 'border-primary bg-primary/5 text-navy'
                                             : 'border-gray-200 text-gray-500 hover:border-gray-300'"
-                                        class="flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-all text-center">
+                                        class="flex flex-col items-start gap-1 p-3 rounded-xl border-2 transition-all text-left w-full">
                                         <Icon :icon="pt.icon" class="text-lg" />
                                         <span class="text-[10px] font-black tracking-wide">{{ pt.label }}</span>
-                                        <span class="text-[9px] font-bold text-primary tabular-nums">{{ formatPrice(pt.fee) }}</span>
+                                        <span class="text-[9px] font-bold text-navy tabular-nums">{{ formatPrice(pt.fee) }}</span>
                                     </button>
                                 </div>
                             </div>
@@ -349,11 +349,11 @@
                                                 </div>
                                                 <span class="text-sm font-bold text-navy leading-tight">{{ category.name }}</span>
                                             </div>
-                                            <span v-if="getFeeForCategory(category.id) > 0"
-                                                class="text-xs font-black tabular-nums shrink-0 ml-2 text-primary">
+                                            <span v-if="event.fee_mode !== 'per_type' && getFeeForCategory(category.id) > 0"
+                                                class="text-xs font-black tabular-nums shrink-0 ml-2 text-navy">
                                                 {{ formatPrice(getFeeForCategory(category.id)) }}
                                             </span>
-                                            <span v-else class="text-xs text-gray-400 shrink-0">free</span>
+                                            <span v-else-if="event.fee_mode !== 'per_type'" class="text-xs text-gray-400 shrink-0">Free</span>
                                         </div>
 
                                         <!-- Team partner section (per_type + team/mixed, when category is selected) -->
@@ -418,31 +418,49 @@
                                 <div class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
                                     <Icon icon="ph:receipt-bold" class="text-lg" />
                                 </div>
-                                <h2 class="text-base font-black text-navy text-lowercase">summary</h2>
+                                <h2 class="text-base font-black text-navy">Summary</h2>
                             </div>
-                            <div class="p-6 space-y-4">
-                                <div v-if="form.category_ids.length > 0" class="space-y-2">
-                                    <span class="text-[10px] font-black text-gray-400 tracking-widest block">selected categories</span>
+                            <div class="p-6">
+                                <!-- Selected Categories Receipt -->
+                                <div v-if="form.category_ids.length > 0" class="space-y-3">
+                                    <!-- Participant Types (only if fee_mode === per_type) -->
+                                    <template v-if="event.fee_mode === 'per_type'">
+                                        <span class="text-[10px] font-black text-gray-400 tracking-widest block uppercase">Participant Types</span>
+                                        <div v-for="type in form.participant_types" :key="type"
+                                            class="flex items-center justify-between gap-2">
+                                            <div class="flex items-center gap-2 min-w-0">
+                                                <div class="size-4 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                                                    <Icon icon="ph:user-bold" class="text-navy text-[8px]" />
+                                                </div>
+                                                <span class="text-xs font-bold text-navy capitalize">{{ type.replace('_', ' ') }}</span>
+                                            </div>
+                                            <span class="text-xs font-black text-navy tabular-nums shrink-0">{{ formatPrice(event.fee_per_type?.[type] || 0) }}</span>
+                                        </div>
+                                        <div class="h-px bg-gray-100 my-2"></div>
+                                    </template>
+
+                                    <span class="text-[10px] font-black text-gray-400 tracking-widest block uppercase">Selected Categories</span>
                                     <div v-for="catId in form.category_ids" :key="catId"
                                         class="flex items-center justify-between gap-2">
                                         <div class="flex items-center gap-2 min-w-0">
-                                            <div class="size-4 rounded-full bg-primary flex items-center justify-center shrink-0">
+                                            <div class="size-4 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                                                 <Icon icon="ph:check-bold" class="text-navy text-[8px]" />
                                             </div>
                                             <span class="text-xs font-medium text-navy truncate">{{ getCategoryName(catId) }}</span>
                                         </div>
-                                        <span class="text-xs font-black text-navy tabular-nums shrink-0">{{ formatPrice(getFeeForCategory(catId)) }}</span>
+                                        <span v-if="event.fee_mode !== 'per_type'" class="text-xs font-black text-navy tabular-nums shrink-0">{{ formatPrice(getFeeForCategory(catId)) }}</span>
+                                        <span v-else class="text-xs text-gray-400 shrink-0 capitalize">Included</span>
                                     </div>
                                 </div>
                                 <div v-else class="py-4 text-center border-2 border-dashed border-gray-100 rounded-xl">
                                     <Icon icon="ph:tag-light" class="text-3xl text-gray-300 mb-1 mx-auto" />
                                     <span class="text-xs text-gray-300 font-bold tracking-widest block">no categories selected yet</span>
                                 </div>
-                                <div class="pt-4 border-t border-gray-100 space-y-1.5">
+                                <div class="pt-4 border-t border-gray-100 space-y-1.5 mt-4">
                                     <div class="flex items-center justify-between text-sm">
                                         <span class="text-gray-500">{{ form.category_ids.length }} {{ form.category_ids.length > 1 ? 'categories' : 'category' }}</span>
                                         <span class="font-bold text-navy capitalize">
-                                            {{ event.fee_mode === 'per_type' ? form.participant_types.map(t => t.replace('_', ' ')).join(', ') : 'per category' }}
+                                            {{ event.fee_mode === 'per_type' ? form.participant_types.map(t => t.charAt(0).toUpperCase() + t.slice(1).replace('_', ' ')).join(', ') : 'Per Category' }}
                                         </span>
                                     </div>
                                     <div class="flex items-center justify-between pt-2 border-t border-gray-100">
@@ -576,7 +594,13 @@
 
                                 <!-- Tab Content 2: Manual Transfer -->
                                 <div v-if="form.payment_type === 'manual'" class="space-y-2">
-                                    <div v-for="method in (orgManualMethods.length > 0 ? orgManualMethods : paymentMethods)"
+                                    <div v-if="orgManualMethods.length === 0"
+                                        class="p-6 text-center border-2 border-dashed border-gray-100 rounded-xl bg-gray-50/50">
+                                        <Icon icon="ph:credit-card-light" class="text-3xl text-gray-300 mb-1.5 mx-auto" />
+                                        <span class="text-xs text-navy font-black block">Manual Transfer Not Available</span>
+                                        <span class="text-[10px] text-gray-400 block mt-1">This event does not support manual transfer. Please configure a payment method in your organization settings or use online payment channels.</span>
+                                    </div>
+                                    <div v-else v-for="method in orgManualMethods"
                                         :key="method.uuid || method.account_number"
                                         @click="form.manual_method_id = (method.uuid || method.account_number); form.payment_type = 'manual'; form.online_channel = ''"
                                         class="flex items-center gap-3 p-3.5 rounded-xl border-2 cursor-pointer transition-all"
@@ -1103,6 +1127,14 @@ const getFeeForCategory = (catId) => {
 }
 
 const totalFee = computed(() => {
+    if (event.value.fee_mode === 'per_type') {
+        const types = form.value.participant_types || []
+        const fees = event.value.fee_per_type || {}
+        return types.reduce((sum, type) => {
+            const fee = fees[type] ?? 0
+            return sum + Number(fee)
+        }, 0)
+    }
     return form.value.category_ids.reduce((sum, catId) => sum + getFeeForCategory(catId), 0)
 })
 

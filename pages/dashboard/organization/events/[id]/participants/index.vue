@@ -263,9 +263,9 @@ const isLoading = ref(true)
 const statusFilter = ref('Semua')
 const categoryFilter = ref([])
 const statusOptions = [
-    { title: 'Semua Status', value: 'Semua' },
-    { title: 'Lunas', value: 'lunas' },
-    { title: 'Unpaid', value: 'unpaid' }
+    { title: 'All Statuses', value: 'Semua' },
+    { title: 'Registered', value: 'paid' },
+    { title: 'Pending', value: 'pending' }
 ]
 
 const categoryFilterOptions = computed(() => {
@@ -401,19 +401,16 @@ const getFilteredCategoryLabels = (participant) => {
 
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
-    if (s === 'menunggu' || s === 'menunggu acc' || !s) return 'unpaid'
-    return s
+    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return 'Registered'
+    return 'Pending'
 }
 
 const getStatusClass = (status) => {
-    switch (status?.toLowerCase()) {
-        case 'lunas':
-            return 'bg-green-50 text-green-600 border-green-200'
-        case 'menunggu':
-        case 'menunggu acc':
-        default:
-            return 'bg-amber-50 text-amber-600 border-amber-200'
+    const s = (status || '').toLowerCase()
+    if (s === 'paid' || s === 'lunas' || s === 'registered' || s === 'terdaftar') {
+        return 'bg-green-50 text-green-600 border-green-200'
     }
+    return 'bg-amber-50 text-amber-600 border-amber-200'
 }
 
 const uniqueClubs = computed(() => {

@@ -393,8 +393,9 @@ const bowOptions = [
 ]
 
 const paymentStatusOptions = [
-    { title: 'Unpaid', value: 'unpaid' },
-    { title: 'Lunas', value: 'lunas' }
+    { title: 'Paid', value: 'paid' },
+    { title: 'Pending', value: 'pending' },
+    { title: 'Unpaid', value: 'unpaid' }
 ]
 
 const sourceOptions = [
@@ -618,7 +619,7 @@ const submit = async () => {
                 athlete_ids: selectedArchers.value.map(a => a.uuid || a.id),
                 event_category_ids: form.category_ids,
                 payment_amount: form.payment_amount || 0,
-                payment_status: form.payment_status || 'lunas',
+                payment_status: form.payment_status || 'paid',
                 registration_source: form.registration_source || 'admin_created'
             }
             const result = await post(`/events/${route.params.id}/participants/batch`, payload)
@@ -658,7 +659,7 @@ const submit = async () => {
                 athlete_id: archerId,
                 event_category_ids: form.category_ids,
                 payment_amount: form.payment_amount || 0,
-                payment_status: form.payment_status || 'lunas',
+                payment_status: form.payment_status || 'paid',
                 registration_source: form.registration_source || 'admin_created'
             }
             await post(`/events/${route.params.id}/participants`, payload)

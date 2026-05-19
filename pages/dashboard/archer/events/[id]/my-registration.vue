@@ -400,14 +400,15 @@ const initiatePaymentGateway = async () => {
 
 const getStatusClass = (status, onNavy = false) => {
     const s = (status || '').toLowerCase()
-    if (s === 'lunas' || s === 'paid') return onNavy ? 'bg-primary text-navy border-primary' : 'bg-green-50 text-green-600 border-green-200'
+    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') {
+        return onNavy ? 'bg-primary text-navy border-primary' : 'bg-green-50 text-green-600 border-green-200'
+    }
     return onNavy ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : 'bg-amber-50 text-amber-600 border-amber-200'
 }
 
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
-    if (s === 'lunas' || s === 'paid') return t('my_registration.paid')
-    if (s === 'menunggu' || s === 'menunggu acc' || s === 'unpaid' || !s) return t('my_registration.unpaid')
+    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return t('my_registration.paid')
     return t('my_registration.pending')
 }
 

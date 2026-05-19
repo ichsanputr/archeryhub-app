@@ -281,7 +281,7 @@
                                             </div>
                                             <div>
                                                 <span
-                                                    class="block text-sm font-bold text-navy-dark leading-tight">Lunas</span>
+                                                    class="block text-sm font-bold text-navy-dark leading-tight">Paid</span>
                                                 <span class="text-[10px] text-gray-400 font-medium">Pembayaran
                                                     Terverifikasi</span>
                                             </div>
@@ -298,8 +298,7 @@
                                             </div>
                                             <div>
                                                 <span
-                                                    class="block text-sm font-bold text-navy-dark leading-tight">Menunggu
-                                                    Acc</span>
+                                                    class="block text-sm font-bold text-navy-dark leading-tight">Pending</span>
                                                 <span class="text-[10px] text-gray-400 font-medium">Butuh
                                                     Verifikasi</span>
                                             </div>
@@ -315,8 +314,7 @@
                                                 <Icon icon="ph:warning-circle-fill" class="text-xl" />
                                             </div>
                                             <div>
-                                                <span class="block text-sm font-bold text-navy-dark leading-tight">Belum
-                                                    Lunas</span>
+                                                <span class="block text-sm font-bold text-navy-dark leading-tight">Unpaid</span>
                                                 <span class="text-[10px] text-gray-400 font-medium">Tagihan
                                                     Terbuka</span>
                                             </div>
@@ -638,8 +636,8 @@ const registrationStats = computed(() => {
 
         // Payment stats
         const status = p.payment_status?.toLowerCase()
-        if (status === 'lunas') stats.byPayment.lunas++
-        else if (status === 'menunggu_acc') stats.byPayment.menunggu_acc++
+        if (status === 'lunas' || status === 'paid') stats.byPayment.lunas++
+        else if (status === 'menunggu_acc' || status === 'menunggu acc' || status === 'pending') stats.byPayment.menunggu_acc++
         else stats.byPayment.belum_lunas++
     })
 
