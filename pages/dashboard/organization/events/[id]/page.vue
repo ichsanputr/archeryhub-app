@@ -281,109 +281,6 @@
                     </div>
                 </section>
 
-                <!-- Metode Pembayaran Section -->
-                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div
-                        class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
-                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:credit-card" class="text-primary text-lg sm:text-xl" />
-                            Metode Pembayaran
-                        </h2>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
-                            <button
-                                @click="form.page_settings.sections.payment_methods = !form.page_settings.sections.payment_methods"
-                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
-                                :class="form.page_settings.sections.payment_methods ? 'bg-primary' : 'bg-gray-200'">
-                                <span
-                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
-                                    :class="form.page_settings.sections.payment_methods ? 'translate-x-5.5' : 'translate-x-1'"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="p-4 sm:p-6 space-y-5">
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <label class="text-sm font-bold text-gray-700">Daftar Metode Pembayaran</label>
-                                <BaseButton variant="outline" size="xs" @click="addPaymentMethodField">
-                                    <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Metode
-                                </BaseButton>
-                            </div>
-                            <div v-if="!form.payment_methods || form.payment_methods.length === 0"
-                                class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                                <p class="text-xs text-gray-400">Belum ada metode pembayaran. Tambahkan untuk informasi
-                                    peserta.</p>
-                            </div>
-                            <div v-else class="space-y-3">
-                                <div v-for="(method, index) in form.payment_methods" :key="index"
-                                    class="flex flex-col sm:flex-row gap-4 items-start bg-gray-50 p-4 sm:p-6 rounded-2xl border border-gray-100 hover:border-primary/20 transition-all shadow-sm group">
-                                    <div
-                                        class="shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-xl shadow-sm flex items-center justify-center border border-gray-100 group-hover:scale-110 transition-transform overflow-hidden p-2">
-                                        <img v-if="getPaymentMethodImage(method.bank_name)"
-                                            :src="getPaymentMethodImage(method.bank_name)"
-                                            class="w-full h-full object-contain" :alt="method.bank_name" />
-                                        <Icon v-else :icon="getPaymentMethodIcon(method.bank_name)"
-                                            class="text-2xl sm:text-3xl text-navy" />
-                                    </div>
-                                    <div class="flex-grow space-y-4">
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div class="space-y-1">
-                                                <label
-                                                    class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nama
-                                                    Bank / Provider</label>
-                                                <BaseSelect v-model="method.bank_name" :items="indonesianPaymentMethods"
-                                                    item-title="title" item-value="value"
-                                                    placeholder="Pilih Bank/Provider"
-                                                    @update:model-value="(val) => updatePaymentType(index, val)" />
-                                            </div>
-                                            <div class="space-y-1">
-                                                <label
-                                                    class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nomor
-                                                    Rekening / Akun</label>
-                                                <input v-model="method.account_number" type="text"
-                                                    placeholder="8000xxxxxxx"
-                                                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all" />
-                                            </div>
-                                        </div>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                            <div class="space-y-1">
-                                                <label
-                                                    class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nama
-                                                    Pemilik Rekening</label>
-                                                <input v-model="method.account_name" type="text"
-                                                    placeholder="Contoh: Muhammad Ali"
-                                                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all" />
-                                            </div>
-                                            <div class="space-y-1 text-right pt-4 flex flex-col justify-center">
-                                                <span
-                                                    class="text-[10px] font-black text-gray-400 tracking-widest mb-1">Tipe
-                                                    Metode</span>
-                                                <span
-                                                    class="px-3 py-1 bg-navy text-primary rounded-full text-[10px] font-black w-fit ml-auto capitalize shadow-sm">
-                                                    {{ method.type === 'bank' ? 'Bank Transfer' : method.type === 'qris'
-                                                        ? 'QRIS' : 'E-Wallet' }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="space-y-1">
-                                            <label
-                                                class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Instruksi
-                                                Tambahan (Opsional)</label>
-                                            <input v-model="method.instructions" type="text"
-                                                placeholder="Contoh: Lampirkan bukti transfer di form konfirmasi"
-                                                class="w-full px-4 py-2 rounded-xl border border-gray-200 text-xs text-gray-500 bg-white" />
-                                        </div>
-                                    </div>
-                                    <button @click="removePaymentMethodField(index)"
-                                        class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all self-center sm:mt-4">
-                                        <Icon icon="ph:trash-bold" class="text-xl" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     <div
                         class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
@@ -903,12 +800,6 @@ const statusOptions = [
     { value: 'active', title: 'Aktif (Dipublikasikan)' }
 ]
 
-const paymentMethodTypes = [
-    { value: 'bank', title: 'Bank Transfer' },
-    { value: 'ewallet', title: 'E-Wallet' },
-    { value: 'qris', title: 'QRIS' }
-]
-
 definePageMeta({
     layout: 'dashboard'
 })
@@ -916,35 +807,6 @@ definePageMeta({
 useHead({
     title: 'Edit Event - Dashboard'
 })
-
-const indonesianPaymentMethods = [
-    { title: 'BCA (Bank Central Asia)', value: 'BCA', image: '/payment-method/bca.png', type: 'bank' },
-    { title: 'Mandiri', value: 'Mandiri', image: '/payment-method/mandiri.png', type: 'bank' },
-    { title: 'BNI (Bank Negara Indonesia)', value: 'BNI', image: '/payment-method/bni.png', type: 'bank' },
-    { title: 'BRI (Bank Rakyat Indonesia)', value: 'BRI', image: '/payment-method/bri.png', type: 'bank' },
-    { title: 'BSI (Bank Syariah Indonesia)', value: 'BSI', image: '/payment-method/bsi.png', type: 'bank' },
-    { title: 'Bank Danamon', value: 'Danamon', image: '/payment-method/danamon.png', type: 'bank' },
-    { title: 'GoPay', value: 'GoPay', image: '/payment-method/gopay.png', type: 'ewallet' },
-    { title: 'OVO', value: 'OVO', image: '/payment-method/ovo.png', type: 'ewallet' },
-    { title: 'DANA', value: 'DANA', image: '/payment-method/dana.png', type: 'ewallet' },
-]
-
-const getPaymentMethodIcon = (bankName) => {
-    const method = indonesianPaymentMethods.find(m => m.value === bankName)
-    return method ? method.icon : 'ph:credit-card-bold'
-}
-
-const getPaymentMethodImage = (bankName) => {
-    const method = indonesianPaymentMethods.find(m => m.value === bankName)
-    return method ? method.image : null
-}
-
-const updatePaymentType = (index, bankName) => {
-    const method = indonesianPaymentMethods.find(m => m.value === bankName)
-    if (method && form.value.payment_methods[index]) {
-        form.value.payment_methods[index].type = method.type
-    }
-}
 
 const route = useRoute()
 const router = useRouter()
@@ -1112,22 +974,7 @@ const removeFeeField = (index) => {
     form.value.fees.splice(index, 1)
 }
 
-const addPaymentMethodField = () => {
-    if (!form.value.payment_methods) {
-        form.value.payment_methods = []
-    }
-    form.value.payment_methods.push({
-        bank_name: '',
-        account_number: '',
-        account_name: '',
-        type: 'bank',
-        instructions: ''
-    })
-}
 
-const removePaymentMethodField = (index) => {
-    form.value.payment_methods.splice(index, 1)
-}
 
 const addScheduleField = () => {
     const lastSchedule = form.value.schedules.length > 0 ? form.value.schedules[form.value.schedules.length - 1] : null

@@ -201,7 +201,7 @@ useHead({
 })
 
 const { user } = useAuth()
-const { get, put, del } = useApi()
+const { get, put, delete: del } = useApi()
 const toast = useToast()
 
 const isLoading = ref(true)

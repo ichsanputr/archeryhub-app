@@ -44,8 +44,8 @@
                 <!-- Success Icon -->
                 <div class="flex flex-col items-center mb-8">
                     <div class="relative mb-6">
-                        <!-- Countdown ring (only for online payment with checkout URL) -->
-                        <svg v-if="paymentResult?.checkout_url" class="absolute inset-0 w-full h-full -rotate-90"
+                        <!-- Countdown ring (only for tripay checkout URL redirect) -->
+                        <svg v-if="paymentResult?.checkout_url && paymentResult?.payment_method !== 'paddle'" class="absolute inset-0 w-full h-full -rotate-90"
                             viewBox="0 0 80 80">
                             <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(255,255,255,0.1)"
                                 stroke-width="4" />
@@ -96,12 +96,33 @@
                             <span class="text-white font-black text-sm">{{ paymentResult.payment_method }}</span>
                         </div>
                     </div>
-                    <!-- Redirect notice -->
-                    <div v-if="paymentResult.checkout_url"
-                        class="flex items-center gap-2.5 bg-primary/10 border border-primary/20 rounded-xl p-3">
-                        <Icon icon="ph:arrow-square-out-bold" class="text-primary shrink-0" />
-                        <span class="text-xs text-white/70 font-medium block">Redirecting to payment page in
-                            <strong class="text-primary">{{ redirectCountdown }}</strong> seconds...</span>
+                    <!-- Redirect notice (Tripay) -->
+                    <div v-if="paymentResult.checkout_url && paymentResult.payment_method !== 'paddle'"
+                        class="flex flex-col gap-3 bg-primary/10 border border-primary/20 rounded-xl p-4">
+                        <div class="flex items-center gap-2.5">
+                            <Icon icon="ph:info-bold" class="text-primary shrink-0" />
+                            <span class="text-xs text-white/90 font-bold block">Action Required: Complete Payment</span>
+                        </div>
+                        <span class="text-[11px] text-white/70 font-medium block leading-relaxed">
+                            Click the button below to proceed to the secure checkout page and complete your payment.
+                        </span>
+                        <a :href="paymentResult.checkout_url" target="_blank"
+                            class="flex items-center justify-center gap-2 bg-primary hover:bg-primary/95 text-navy font-black text-xs py-2.5 px-4 rounded-lg transition-colors">
+                            <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
+                            Proceed to Payment Page
+                        </a>
+                    </div>
+                    <!-- Paddle overlay notice -->
+                    <div v-if="paymentResult.payment_method === 'paddle'"
+                        class="flex items-center gap-2.5 bg-blue-500/10 border border-blue-400/20 rounded-xl p-3">
+                        <Icon icon="ph:credit-card-bold" class="text-blue-300 shrink-0" />
+                        <span class="text-xs text-white/70 font-medium block">Payment window is opening... complete your payment in the Paddle overlay.</span>
+                    </div>
+                    <!-- Manual payment proof uploaded notice -->
+                    <div v-if="paymentResult.payment_method === 'manual'"
+                        class="flex items-center gap-2.5 bg-amber-500/10 border border-amber-400/20 rounded-xl p-3">
+                        <Icon icon="ph:clock-bold" class="text-amber-300 shrink-0" />
+                        <span class="text-xs text-white/70 font-medium block">payment proof uploaded. the organizer will verify your payment.</span>
                     </div>
                 </div>
 
@@ -381,18 +402,30 @@
                                 <h2 class="text-base font-black text-navy">Payment Method</h2>
                             </div>
                             <div class="p-6 space-y-5">
+                                <!-- Payment Type Selector -->
+                                <div class="flex gap-2 p-1 bg-gray-100 rounded-xl mb-2">
+                                    <button @click="form.payment_type = 'online'" type="button"
+                                        :class="form.payment_type === 'online' ? 'bg-white text-navy shadow-sm' : 'text-gray-500 hover:text-navy'"
+                                        class="flex-1 py-2 text-xs font-black tracking-widest rounded-lg transition-all focus:outline-none">
+                                        online
+                                    </button>
+                                    <button @click="form.payment_type = 'manual'" type="button"
+                                        :class="form.payment_type === 'manual' ? 'bg-white text-navy shadow-sm' : 'text-gray-500 hover:text-navy'"
+                                        class="flex-1 py-2 text-xs font-black tracking-widest rounded-lg transition-all focus:outline-none">
+                                        manual transfer
+                                    </button>
+                                </div>
 
                                 <!-- Online Payment Channels — Expansion panel -->
                                 <div v-if="form.payment_type === 'online'" class="space-y-2">
-                                    <span class="text-[10px] font-black text-gray-600 tracking-widest block">Select
-                                        Online Payment Method</span>
+                                    <span class="text-[10px] font-black text-gray-600 tracking-widest block">select online payment method</span>
                                     <div
-                                        class="flex flex-col gap-2 max-h-[320px] overflow-y-auto pr-1 custom-scrollbar">
+                                        class="flex flex-col gap-2 max-h-[480px] overflow-y-auto pr-1 custom-scrollbar">
                                         
-                                        <!-- Paddle Payment Method (PayPal / Google Pay / CC) -->
+                                        <!-- PayPal (Powered by Paddle) -->
                                         <div class="rounded-xl border-2 transition-all overflow-hidden shrink-0"
-                                            :class="form.online_channel === 'paddle' ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
-                                            <div @click="selectOnlineChannel('paddle')"
+                                            :class="form.online_channel === 'paddle_paypal' ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
+                                            <div @click="selectOnlineChannel('paddle_paypal')"
                                                 class="w-full p-4 text-left block focus:outline-none h-auto min-h-[64px] cursor-pointer">
                                                 <div class="flex items-center gap-3 w-full">
                                                     <div
@@ -401,7 +434,27 @@
                                                     </div>
                                                     <div class="flex-1 min-w-0">
                                                         <span
-                                                            class="text-sm font-black text-navy block leading-tight">PayPal & Google Pay</span>
+                                                            class="text-sm font-black text-navy block leading-tight">PayPal</span>
+                                                        <span
+                                                            class="text-[10px] text-gray-400 font-medium block mt-0.5">International Payments (Powered by Paddle)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Google Pay (Powered by Paddle) -->
+                                        <div class="rounded-xl border-2 transition-all overflow-hidden shrink-0"
+                                            :class="form.online_channel === 'paddle_gpay' ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
+                                            <div @click="selectOnlineChannel('paddle_gpay')"
+                                                class="w-full p-4 text-left block focus:outline-none h-auto min-h-[64px] cursor-pointer">
+                                                <div class="flex items-center gap-3 w-full">
+                                                    <div
+                                                        class="h-9 w-9 min-w-[36px] rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
+                                                        <Icon icon="logos:google-pay" class="text-2xl" />
+                                                    </div>
+                                                    <div class="flex-1 min-w-0">
+                                                        <span
+                                                            class="text-sm font-black text-navy block leading-tight">Google Pay</span>
                                                         <span
                                                             class="text-[10px] text-gray-400 font-medium block mt-0.5">International Payments (Powered by Paddle)</span>
                                                     </div>
@@ -486,8 +539,69 @@
                                     <div class="p-3 bg-blue-50 rounded-xl border border-blue-100 flex gap-2">
                                         <Icon icon="ph:shield-check-bold"
                                             class="text-blue-500 shrink-0 text-sm mt-0.5" />
-                                        <span class="text-[10px] text-blue-700 font-medium leading-relaxed block">Secure
-                                            payment via Tripay. Automatic confirmation after successful payment.</span>
+                                        <span class="text-[10px] text-blue-700 font-medium leading-relaxed block">secure payment via tripay. automatic confirmation after successful payment.</span>
+                                    </div>
+                                </div>
+
+                                <!-- Manual Bank Transfer Section -->
+                                <div v-if="form.payment_type === 'manual'" class="space-y-4">
+                                    <span class="text-[10px] font-black text-gray-600 tracking-widest block">transfer to organizer bank account</span>
+                                    <div class="flex flex-col gap-3">
+                                        <div v-for="bank in paymentMethods" :key="bank.uuid"
+                                            class="p-4 rounded-xl border border-gray-200 bg-gray-50/50 flex flex-col justify-between relative overflow-hidden">
+                                            <div class="flex items-start justify-between gap-3">
+                                                <div>
+                                                    <span class="text-[9px] font-black tracking-widest text-gray-400 block mb-1">bank name</span>
+                                                    <span class="text-sm font-black text-navy">{{ bank.payment_method }}</span>
+                                                </div>
+                                                <div class="text-right">
+                                                    <span class="text-[9px] font-black tracking-widest text-gray-400 block mb-1">account holder</span>
+                                                    <span class="text-sm font-black text-navy">{{ bank.account_name }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4 pt-3 border-t border-gray-200/60 flex items-center justify-between">
+                                                <div>
+                                                    <span class="text-[9px] font-black tracking-widest text-gray-400 block">account number</span>
+                                                    <span class="font-mono text-base font-black text-navy tracking-wider">{{ bank.account_number }}</span>
+                                                </div>
+                                                <button @click="copyToClipboard(bank.account_number)" class="p-2 rounded-lg bg-primary text-navy shrink-0 hover:opacity-90 transition-opacity">
+                                                    <Icon icon="ph:copy-bold" class="text-xs" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div v-if="paymentMethods.length === 0" class="p-4 bg-amber-50 border border-amber-100 rounded-xl flex gap-2.5">
+                                            <Icon icon="ph:warning-bold" class="text-amber-500 shrink-0" />
+                                            <span class="text-xs text-amber-700 font-medium block">no bank accounts available. please contact organizer.</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Upload Payment Proof Section -->
+                                    <div class="space-y-2 mt-4 pt-4 border-t border-gray-100">
+                                        <span class="text-[10px] font-black text-gray-600 tracking-widest block">upload payment proof</span>
+                                        <div class="flex flex-col gap-3">
+                                            <div @click="triggerFileInput" 
+                                                class="border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-gray-50"
+                                                :class="proofFileUrl ? 'border-primary/50 bg-primary/5' : 'border-gray-200 bg-gray-50/50'">
+                                                
+                                                <input type="file" ref="proofInput" class="hidden" accept="image/*" @change="handleProofUpload" />
+                                                
+                                                <template v-if="uploadingProof">
+                                                    <Icon icon="ph:circle-notch-bold" class="text-2xl text-primary animate-spin mb-2" />
+                                                    <span class="text-xs text-gray-500 font-bold block">uploading proof...</span>
+                                                </template>
+                                                <template v-else-if="proofFileUrl">
+                                                    <img :src="proofFileUrl" class="max-h-32 object-contain rounded-lg mb-2 border border-gray-100" />
+                                                    <span class="text-[10px] text-green-600 font-bold block">proof uploaded successfully</span>
+                                                    <span class="text-[9px] text-gray-400 block">click to change image</span>
+                                                </template>
+                                                <template v-else>
+                                                    <Icon icon="ph:cloud-arrow-up-bold" class="text-2xl text-gray-400 mb-2" />
+                                                    <span class="text-xs text-gray-500 font-bold block">click to upload payment proof</span>
+                                                    <span class="text-[9px] text-gray-400 block">jpeg, png (max 10mb)</span>
+                                                </template>
+                                            </div>
+                                            <span v-if="uploadError" class="text-xs text-red-500 font-bold block mt-1">{{ uploadError }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -497,7 +611,7 @@
                         <div class="space-y-3">
                             <BaseButton @click="handleSubmit" :loading="loading" :disabled="!isFormValid" variant="navy"
                                 size="lg" block>
-                                Register Now
+                                {{ buttonText }}
                                 <template #icon-right>
                                     <Icon icon="ph:arrow-right-bold" />
                                 </template>
@@ -630,18 +744,31 @@ const redirectCountdown = ref(4)
 const proofInput = ref(null)
 const paymentPreviews = ref([])
 const categorySearch = ref('')
+const uploadingProof = ref(false)
+const proofFileUrl = ref('')
+const uploadError = ref('')
 
-// Auto-redirect to Tripay checkout after 4s
+// For Paddle: open inline overlay. For others: redirect countdown.
 watch(registrationSuccess, (val) => {
-    if (!val || !paymentResult.value?.checkout_url) return
-    redirectCountdown.value = 4
-    const interval = setInterval(() => {
-        redirectCountdown.value--
-        if (redirectCountdown.value <= 0) {
-            clearInterval(interval)
-            window.location.href = paymentResult.value.checkout_url
+    if (!val || !paymentResult.value) return
+    const res = paymentResult.value
+    const toast = useToast()
+
+    // Paddle inline overlay
+    if (res.payment_method === 'paddle' || res.tripay_reference?.startsWith('txn')) {
+        if (window.Paddle && res.tripay_reference && !res.tripay_reference.includes('mock')) {
+            nextTick(() => {
+                window.Paddle.Checkout.open({ transactionId: res.tripay_reference })
+            })
         }
-    }, 1000)
+        // If mock / no Paddle.js, just show success screen without redirect
+        return
+    }
+
+    // Tripay: just show toast and do not redirect
+    if (res.checkout_url) {
+        toast.success('Registration successful! Please complete your payment.')
+    }
 })
 
 const copyToClipboard = (text) => {
@@ -718,9 +845,21 @@ const isFormValid = computed(() => {
     const archerProfileExists = !!archerProfile.value
     const profileComplete = !!profileForm.value.full_name && !!profileForm.value.gender && !!profileForm.value.date_of_birth && !!profileForm.value.bow_type
     const channelSelected = event.value.registration_fee > 0
-        ? !!form.value.online_channel
+        ? (form.value.payment_type === 'online' ? !!form.value.online_channel : !!proofFileUrl.value)
         : true
     return categoriesSelected && archerProfileExists && profileComplete && channelSelected
+})
+
+const buttonText = computed(() => {
+    if (form.value.payment_type === 'online') {
+        if (form.value.online_channel?.startsWith('paddle_')) {
+            return 'Pay with Paddle'
+        }
+        if (form.value.online_channel) {
+            return 'Pay Now'
+        }
+    }
+    return 'Register Now'
 })
 
 const loginUrl = computed(() => `/auth/login?redirect=${encodeURIComponent(route.fullPath)}`)
@@ -760,6 +899,7 @@ const getChannelIcon = (ch) => {
 // Online channel expansion panel: fetch & show payment instructions
 const selectOnlineChannel = async (code) => {
     form.value.online_channel = code
+    if (code.startsWith('paddle_')) return
     if (channelInstructionsCache.value[code]) return
     channelInstructionsLoading.value = code
     try {
@@ -813,6 +953,35 @@ const toggleCategory = (id) => {
 }
 
 
+const triggerFileInput = () => {
+    proofInput.value?.click()
+}
+
+const handleProofUpload = async (evt) => {
+    const file = evt.target.files?.[0]
+    if (!file) return
+
+    if (file.size > 10 * 1024 * 1024) {
+        uploadError.value = 'file too large. maximum size is 10mb.'
+        return
+    }
+
+    uploadingProof.value = true
+    uploadError.value = ''
+    try {
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('caption', `proof-${slug}-${Date.now()}`)
+
+        const res = await upload('/media/upload', formData)
+        proofFileUrl.value = res.url || res.URL || ''
+    } catch (err) {
+        uploadError.value = err.response?.data?.error || err.data?.error || err.message || 'failed to upload image.'
+    } finally {
+        uploadingProof.value = false
+    }
+}
+
 const handleSubmit = async () => {
     if (!isFormValid.value) return
     loading.value = true
@@ -837,29 +1006,47 @@ const handleSubmit = async () => {
             athlete_id: athleteId,
             event_category_ids: form.value.category_ids,
             payment_amount: form.value.payment_amount || 0,
-            payment_type: 'online'
+            payment_type: form.value.payment_type
         }
 
         const response = await post(`/events/${event.value.id}/participants`, payload)
 
-        // For online payment: call Tripay with chosen channel
+        // create transaction
         const registrationId = response.registration_id || response.uuid
+        const selectedChannel = form.value.payment_type === 'online'
+            ? (form.value.online_channel.startsWith('paddle_') ? 'paddle' : form.value.online_channel)
+            : 'manual'
+
         try {
             const payResult = await post('/payment/create', {
                 type: 'registration',
                 registration_id: registrationId,
                 event_id: event.value.id,
-                method: form.value.online_channel
+                method: selectedChannel
             })
             paymentResult.value = payResult
+
+            // if manual, upload the proof url
+            if (form.value.payment_type === 'manual') {
+                const txRef = payResult.reference
+                await post(`/payment/manual/${txRef}/upload-proof`, {
+                    proof_url: proofFileUrl.value
+                })
+            }
+
             registrationSuccess.value = true
+
+            // Paddle inline overlay — open immediately if Paddle.js is ready
+            if (selectedChannel === 'paddle' && window.Paddle) {
+                const txId = payResult.tripay_reference
+                if (txId && !txId.includes('mock')) {
+                    window.Paddle.Checkout.open({ transactionId: txId })
+                }
+            }
         } catch (payErr) {
             // Registration succeeded but payment link failed - still show success
             registrationSuccess.value = true
         }
-        return
-
-        registrationSuccess.value = true
     } catch (err) {
         submitError.value = err.response?.data?.error || err.data?.error || err.message || 'Failed to complete registration.'
     } finally {

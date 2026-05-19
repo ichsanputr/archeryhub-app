@@ -235,7 +235,7 @@ import BasePagination from '~/components/common/BasePagination.vue'
 import AppDialog from '~/components/common/AppDialog.vue'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
-const { get, del } = useApi()
+const { get, delete: del } = useApi()
 const router = useRouter()
 const { setEvent } = useEventContext()
 const { isSubscriptionActive, canCreateEvent } = useSubscription()

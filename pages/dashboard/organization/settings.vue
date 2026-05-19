@@ -239,14 +239,93 @@
         </div>
       </div>
     </div>
+
+    <!-- Tab: Metode Pembayaran -->
+    <div v-show="activeTab === 'payment'" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
+      <h3 class="text-xl font-black text-navy mb-2 flex items-center justify-between">
+        Metode Pembayaran Manual
+        <Icon v-if="savingPayment" icon="ph:circle-notch" class="animate-spin text-primary" />
+      </h3>
+      <div class="text-gray-500 text-sm mb-6">Kelola informasi rekening/e-wallet untuk pembayaran transfer manual</div>
+
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <label class="text-sm font-bold text-gray-700">Daftar Metode Pembayaran</label>
+          <BaseButton variant="outline" size="xs" @click="addPaymentMethodField">
+            <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Metode
+          </BaseButton>
+        </div>
+        <div v-if="!paymentMethods || paymentMethods.length === 0"
+          class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+          <p class="text-xs text-gray-400">Belum ada metode pembayaran. Tambahkan untuk informasi peserta.</p>
+        </div>
+        <div v-else class="space-y-3">
+          <div v-for="(method, index) in paymentMethods" :key="index"
+            class="flex flex-col sm:flex-row gap-4 items-start bg-gray-50 p-4 sm:p-6 rounded-2xl border border-gray-100 hover:border-primary/20 transition-all shadow-sm group">
+            <div
+              class="shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-xl shadow-sm flex items-center justify-center border border-gray-100 group-hover:scale-110 transition-transform overflow-hidden p-2">
+              <img v-if="getPaymentMethodImage(method.bank_name)"
+                :src="getPaymentMethodImage(method.bank_name)"
+                class="w-full h-full object-contain" :alt="method.bank_name" />
+              <Icon v-else :icon="getPaymentMethodIcon(method.bank_name)"
+                class="text-2xl sm:text-3xl text-navy" />
+            </div>
+            <div class="flex-grow space-y-4 w-full">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-1">
+                  <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nama Bank / Provider</label>
+                  <BaseSelect v-model="method.bank_name" :items="paymentMethodOptions"
+                    item-title="title" item-value="value" placeholder="Pilih Bank/Provider"
+                    @update:model-value="(val) => updatePaymentType(index, val)" />
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nomor Rekening / Akun</label>
+                  <input v-model="method.account_number" type="text" placeholder="8000xxxxxxx"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all" />
+                </div>
+              </div>
+              <div v-if="method.bank_name === 'Custom'" class="grid grid-cols-1 gap-4">
+                <div class="space-y-1">
+                  <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nama Provider Kustom (Custom Provider Name)</label>
+                  <input v-model="method.custom_name" type="text" placeholder="Contoh: Wise, Revolut, Stripe, dll."
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all" />
+                </div>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-1">
+                  <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nama Pemilik Rekening</label>
+                  <input v-model="method.account_name" type="text" placeholder="Contoh: Muhammad Ali"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all" />
+                </div>
+                <div class="space-y-1 text-right pt-4 flex flex-col justify-center">
+                  <span class="text-[10px] font-black text-gray-400 tracking-widest mb-1">Tipe Metode</span>
+                  <span class="px-3 py-1 bg-navy text-primary rounded-full text-[10px] font-black w-fit ml-auto capitalize shadow-sm">
+                    {{ method.type === 'bank' ? 'Bank Transfer' : method.type === 'qris' ? 'QRIS' : method.type === 'ewallet' ? 'E-Wallet' : method.type === 'international' ? 'International' : 'Custom' }}
+                  </span>
+                </div>
+              </div>
+              <div class="space-y-1">
+                <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Instruksi Tambahan (Opsional)</label>
+                <input v-model="method.instructions" type="text" placeholder="Contoh: Lampirkan bukti transfer di form konfirmasi"
+                  class="w-full px-4 py-2 rounded-xl border border-gray-200 text-xs text-gray-500 bg-white" />
+              </div>
+            </div>
+            <button @click="removePaymentMethodField(index)"
+              class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all self-center sm:mt-4">
+              <Icon icon="ph:trash-bold" class="text-xl" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Save Button (Optional depending on tab) -->
-  <div v-if="activeTab === 'theme'" class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
+  <div v-if="activeTab === 'theme' || activeTab === 'payment'" class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
     <BaseButton variant="outline" size="md" @click="resetForm" :loading="isResetting">
       Batal
     </BaseButton>
-    <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral">
+    <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral || savingPayment">
       Simpan Perubahan
     </BaseButton>
   </div>
@@ -260,6 +339,7 @@ import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useTheme } from '~/composables/useTheme'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 
 definePageMeta({
   title: 'Pengaturan',
@@ -270,7 +350,7 @@ useHead({
   title: 'Pengaturan Akun - Archeris Dashboard'
 })
 
-const { login, user } = useAuth()
+const { login, user, organizationProfile } = useAuth()
 const { get, put } = useApi()
 const toast = useToast()
 const { currentTheme, themes, isSyncing } = useTheme()
@@ -279,7 +359,137 @@ const route = useRoute()
 const tabs = [
   { label: 'Keamanan', value: 'security', icon: 'ph:shield-check' },
   { label: 'Tema', value: 'theme', icon: 'ph:palette' },
+  { label: 'Metode Pembayaran', value: 'payment', icon: 'ph:credit-card' },
 ]
+
+const paymentMethodOptions = [
+  // Indonesian Banks
+  { title: 'BCA (Bank Central Asia)', value: 'BCA', image: '/payment-method/bca.png', type: 'bank' },
+  { title: 'Mandiri', value: 'Mandiri', image: '/payment-method/mandiri.png', type: 'bank' },
+  { title: 'BNI (Bank Negara Indonesia)', value: 'BNI', image: '/payment-method/bni.png', type: 'bank' },
+  { title: 'BRI (Bank Rakyat Indonesia)', value: 'BRI', image: '/payment-method/bri.png', type: 'bank' },
+  { title: 'BSI (Bank Syariah Indonesia)', value: 'BSI', image: '/payment-method/bsi.png', type: 'bank' },
+  { title: 'Bank Danamon', value: 'Danamon', image: '/payment-method/danamon.png', type: 'bank' },
+  // Indonesian E-Wallets
+  { title: 'GoPay', value: 'GoPay', image: '/payment-method/gopay.png', type: 'ewallet' },
+  { title: 'OVO', value: 'OVO', image: '/payment-method/ovo.png', type: 'ewallet' },
+  { title: 'DANA', value: 'DANA', image: '/payment-method/dana.png', type: 'ewallet' },
+  
+  // International / Global Methods
+  { title: 'PayPal', value: 'PayPal', icon: 'ph:paypal-logo-bold', type: 'international' },
+  { title: 'Wise', value: 'Wise', icon: 'ph:globe-bold', type: 'international' },
+  { title: 'Revolut', value: 'Revolut', icon: 'ph:credit-card-bold', type: 'international' },
+  { title: 'Payoneer', value: 'Payoneer', icon: 'ph:credit-card-bold', type: 'international' },
+  { title: 'Bank Transfer (International / SWIFT)', value: 'International Transfer', icon: 'ph:bank-bold', type: 'bank' },
+  { title: 'Credit / Debit Card', value: 'Credit Card', icon: 'ph:credit-card-bold', type: 'international' },
+  
+  // Custom / Other
+  { title: 'Lainnya / Custom', value: 'Custom', icon: 'ph:dots-three-circle-bold', type: 'custom' },
+]
+
+const getPaymentMethodIcon = (bankName) => {
+  const method = paymentMethodOptions.find(m => m.value === bankName)
+  return method ? method.icon : 'ph:credit-card-bold'
+}
+
+const getPaymentMethodImage = (bankName) => {
+  const method = paymentMethodOptions.find(m => m.value === bankName)
+  return method ? method.image : null
+}
+
+const updatePaymentType = (index, bankName) => {
+  const method = paymentMethodOptions.find(m => m.value === bankName)
+  if (method && paymentMethods.value[index]) {
+    paymentMethods.value[index].type = method.type
+  }
+}
+
+const paymentMethods = ref([])
+const savingPayment = ref(false)
+
+const addPaymentMethodField = () => {
+  if (!paymentMethods.value) {
+    paymentMethods.value = []
+  }
+  paymentMethods.value.push({
+    uuid: Math.random().toString(36).substring(2, 15),
+    bank_name: '',
+    custom_name: '',
+    account_number: '',
+    account_name: '',
+    type: 'bank',
+    instructions: ''
+  })
+}
+
+const removePaymentMethodField = (index) => {
+  paymentMethods.value.splice(index, 1)
+}
+
+const loadOrgSettings = async () => {
+  try {
+    let org = organizationProfile.value
+    if (!org) {
+      const response = await get('/organizations/me')
+      org = response?.data || response
+    }
+    if (org) {
+      const rawPageSettings = org.page_settings
+      if (rawPageSettings) {
+        try {
+          const parsed = typeof rawPageSettings === 'string' ? JSON.parse(rawPageSettings) : rawPageSettings
+          if (parsed.payment_methods) {
+            paymentMethods.value = parsed.payment_methods.map(m => ({
+              uuid: m.uuid || Math.random().toString(36).substring(2, 15),
+              bank_name: m.bank_name || '',
+              custom_name: m.custom_name || '',
+              account_number: m.account_number || '',
+              account_name: m.account_name || '',
+              type: m.type || 'bank',
+              instructions: m.instructions || ''
+            }))
+          } else {
+            paymentMethods.value = []
+          }
+        } catch (e) {
+          console.error('Failed to parse page settings', e)
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Failed to load organization settings:', error)
+  }
+}
+
+const savePaymentSettings = async () => {
+  savingPayment.value = true
+  try {
+    const response = await get('/organizations/me')
+    const org = response?.data || response
+    
+    let currentSettings = {}
+    if (org && org.page_settings) {
+      try {
+        currentSettings = typeof org.page_settings === 'string' ? JSON.parse(org.page_settings) : org.page_settings
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    
+    currentSettings.payment_methods = paymentMethods.value
+    
+    await put('/organizations/me', {
+      page_settings: JSON.stringify(currentSettings)
+    })
+    
+    toast.success('Metode pembayaran berhasil disimpan')
+  } catch (error) {
+    console.error('Failed to save payment settings:', error)
+    toast.error('Gagal menyimpan metode pembayaran')
+  } finally {
+    savingPayment.value = false
+  }
+}
 
 const activeTab = ref('security')
 const isRequestingOTP = ref(false)
@@ -369,6 +579,8 @@ onMounted(async () => {
     console.error('Failed to load user data:', error)
     toast.error('Gagal memuat data pengguna')
   }
+
+  await loadOrgSettings()
 })
 
 const saveAccountInfo = async () => {
@@ -405,6 +617,17 @@ const saveAccountInfo = async () => {
 }
 
 const resetForm = async () => {
+  if (activeTab.value === 'payment') {
+    isResetting.value = true
+    try {
+      await loadOrgSettings()
+      toast.info('Formulir telah direset ke data asli')
+    } finally {
+      isResetting.value = false
+    }
+    return
+  }
+
   if (!initialAccountForm.value) return
 
   isResetting.value = true
@@ -419,6 +642,11 @@ const resetForm = async () => {
 }
 
 const saveSettings = async () => {
+  if (activeTab.value === 'payment') {
+    await savePaymentSettings()
+    return
+  }
+
   isSavingGeneral.value = true
   // This is for general settings like language, timezone, notifications
   try {

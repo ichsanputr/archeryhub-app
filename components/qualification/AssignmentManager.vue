@@ -77,7 +77,7 @@ const props = defineProps({
 
 const emit = defineEmits(['updated'])
 
-const { get, post, del } = useApi()
+const { get, post, delete: del } = useApi()
 const toast = useToast()
 
 const assignments = ref([])

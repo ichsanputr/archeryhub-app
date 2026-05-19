@@ -309,24 +309,10 @@
         </div>
 
         <!-- Cancel Confirmation Dialog -->
-        <AppDialog v-model:show="showCancelConfirm" :title="t('my_registration.cancel_dialog_title')" type="danger"
-            icon="ph:warning-circle-bold" size="sm">
-            <template #default>
-                <p class="text-sm text-slate-600 dark:text-slate-300 text-center">
-                    {{ t('my_registration.cancel_dialog_desc') }}
-                </p>
-            </template>
-            <template #actions>
-                <BaseButton variant="white" @click="showCancelConfirm = false"
-                    class="flex-1 font-black tracking-widest text-xs">
-                    {{ t('my_registration.cancel_dialog_back') }}
-                </BaseButton>
-                <BaseButton variant="danger" @click="cancelRegistration" :loading="isCancelling"
-                    class="flex-1 font-black tracking-widest text-xs">
-                    {{ t('my_registration.cancel_dialog_confirm') }}
-                </BaseButton>
-            </template>
-        </AppDialog>
+        <AppDialog v-model:show="showCancelConfirm" :title="t('my_registration.cancel_dialog_title')"
+            :message="t('my_registration.cancel_dialog_desc')" type="danger" icon="ph:warning-circle-bold"
+            :confirm-text="t('my_registration.cancel_dialog_confirm')"
+            :cancel-text="t('my_registration.cancel_dialog_back')" @confirm="cancelRegistration" />
 
     </div>
 </template>
@@ -340,7 +326,7 @@ import { useToast } from '~/composables/useToast'
 
 const { t } = useI18n()
 const toast = useToast()
-const { get, post, del } = useApi()
+const { get, post, delete: del } = useApi()
 const route = useRoute()
 const eventId = route.params.id
 
