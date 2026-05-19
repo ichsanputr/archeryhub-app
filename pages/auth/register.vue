@@ -144,9 +144,9 @@
                                         @update:model-value="validate('whatsappNo', form.whatsappNo, [rules.required(), rules.minLength(10)])" />
                                 </div>
 
-                                <BaseSelect v-model="form.city" label="City" placeholder="Select City" required
-                                    :items="cities" :error="errors.city" searchable
-                                    @update:model-value="validate('city', form.city, [rules.required()])" />
+                                <BaseSelect v-model="form.country" label="Country" placeholder="Select Country" required
+                                    :items="countries" :error="errors.country" searchable
+                                    @update:model-value="validate('country', form.country, [rules.required()])" />
 
                                 <div class="space-y-1">
                                     <label class="text-sm font-bold text-navy">Full Address</label>
@@ -270,12 +270,27 @@ const form = ref({
     gender: 'male',
     dateOfBirth: '',
     city: '',
+    country: 'Indonesia',
     school: '',
     bowType: 'recurve',
     acronym: '',
     whatsappNo: '',
     address: ''
 })
+
+const countries = ref([
+    { title: 'Indonesia', value: 'Indonesia', icon: 'circle-flags:id' },
+    { title: 'Malaysia', value: 'Malaysia', icon: 'circle-flags:my' },
+    { title: 'Singapore', value: 'Singapore', icon: 'circle-flags:sg' },
+    { title: 'Thailand', value: 'Thailand', icon: 'circle-flags:th' },
+    { title: 'Philippines', value: 'Philippines', icon: 'circle-flags:ph' },
+    { title: 'Vietnam', value: 'Vietnam', icon: 'circle-flags:vn' },
+    { title: 'Australia', value: 'Australia', icon: 'circle-flags:au' },
+    { title: 'Japan', value: 'Japan', icon: 'circle-flags:jp' },
+    { title: 'South Korea', value: 'South Korea', icon: 'circle-flags:kr' },
+    { title: 'United Kingdom', value: 'United Kingdom', icon: 'circle-flags:gb' },
+    { title: 'United States', value: 'United States', icon: 'circle-flags:us' }
+])
 
 const { register, login } = useAuth()
 const { get } = useApi()
@@ -400,7 +415,7 @@ const handleGoogleRegister = async () => {
             Object.assign(metadata, {
                 organization_name: form.value.organizationName,
                 acronym: form.value.acronym,
-                city: form.value.city,
+                country: form.value.country,
                 address: form.value.address,
                 whatsapp_no: form.value.whatsappNo
             })

@@ -215,7 +215,20 @@
 
         <!-- Verification Input fields -->
         <div v-else class="space-y-4">
-          <div class="p-3 bg-green-50 border border-green-100 rounded-xl flex gap-2.5 items-start">
+          <!-- Already Verified Banner -->
+          <div v-if="isOtpVerified" class="p-4 bg-green-50 border border-green-200 rounded-2xl flex flex-col gap-2 items-center text-center">
+            <div class="size-10 bg-green-100 rounded-full flex items-center justify-center">
+              <Icon icon="ph:shield-check-fill" class="text-2xl text-green-600" />
+            </div>
+            <div>
+              <h4 class="text-xs font-black text-green-900">Email Verified</h4>
+              <p class="text-[10px] text-green-700 mt-0.5 font-medium font-sans">
+                You can perform additional resets without requesting another OTP for the next <span class="font-black font-mono text-green-800">{{ formattedRemainingTime }}</span>
+              </p>
+            </div>
+          </div>
+          
+          <div v-else class="p-3 bg-green-50 border border-green-100 rounded-xl flex gap-2.5 items-start">
             <Icon icon="ph:check-circle-bold" class="text-green-600 text-lg shrink-0 mt-0.5" />
             <p class=" text-xs text-green-800 font-semibold leading-relaxed">
               Verification code has been sent to your registered email. It is valid for 15 minutes.
@@ -223,7 +236,7 @@
           </div>
 
           <!-- OTP Input -->
-          <div class="space-y-2">
+          <div v-if="!isOtpVerified" class="space-y-2">
             <label class="block text-xs font-bold text-navy">
               Enter 6-Digit OTP Code *
             </label>
@@ -255,7 +268,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
@@ -288,6 +301,45 @@ const isSubmitting = ref(false)
 const currentActionTarget = ref('')
 const currentActionTitle = ref('')
 
+// 5 Minutes Active Verification Session States
+const verifiedOtp = ref('')
+const verifiedTime = ref(null)
+const remainingTime = ref(0)
+let timerId = null
+
+const isOtpVerified = computed(() => {
+  return !!(verifiedOtp.value && verifiedTime.value && (Date.now() - verifiedTime.value < 5 * 60 * 1000))
+})
+
+const formattedRemainingTime = computed(() => {
+  const m = Math.floor(remainingTime.value / 60)
+  const s = remainingTime.value % 60
+  return `${m}:${s < 10 ? '0' : ''}${s}`
+})
+
+const startCountdown = () => {
+  if (timerId) clearInterval(timerId)
+  const update = () => {
+    if (!verifiedTime.value) {
+      remainingTime.value = 0
+      return
+    }
+    const diff = Math.max(0, 5 * 60 * 1000 - (Date.now() - verifiedTime.value))
+    remainingTime.value = Math.ceil(diff / 1000)
+    if (remainingTime.value <= 0) {
+      verifiedOtp.value = ''
+      verifiedTime.value = null
+      otpCode.value = ''
+      if (timerId) {
+        clearInterval(timerId)
+        timerId = null
+      }
+    }
+  }
+  update()
+  timerId = setInterval(update, 1000)
+}
+
 const fetchEventDetails = async () => {
   isLoading.value = true
   try {
@@ -306,16 +358,24 @@ const openConfirmDialog = (target, title) => {
   currentActionTarget.value = target
   currentActionTitle.value = title
   confirmText.value = ''
-  otpCode.value = ''
-  otpSent.value = false
+  
+  if (isOtpVerified.value) {
+    otpCode.value = verifiedOtp.value
+    otpSent.value = true
+  } else {
+    otpCode.value = ''
+    otpSent.value = false
+  }
   showConfirmDialog.value = true
 }
 
 const closeConfirmDialog = () => {
   showConfirmDialog.value = false
   confirmText.value = ''
-  otpCode.value = ''
-  otpSent.value = false
+  if (!isOtpVerified.value) {
+    otpCode.value = ''
+    otpSent.value = false
+  }
 }
 
 const requestVerificationCode = async () => {
@@ -353,6 +413,12 @@ const handleReset = async () => {
 
     await post(`/events/${eventId}/reset`, payload)
     toast.success(`Successfully completed: ${currentActionTitle.value}`)
+    
+    // Save verified OTP and time for 5 minutes window
+    verifiedOtp.value = otpCode.value.trim()
+    verifiedTime.value = Date.now()
+    startCountdown()
+    
     closeConfirmDialog()
   } catch (error) {
     console.error('Failed to reset event data:', error)
@@ -364,5 +430,11 @@ const handleReset = async () => {
 
 onMounted(() => {
   fetchEventDetails()
+})
+
+onUnmounted(() => {
+  if (timerId) {
+    clearInterval(timerId)
+  }
 })
 </script>

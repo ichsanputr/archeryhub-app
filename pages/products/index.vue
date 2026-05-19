@@ -209,8 +209,57 @@ const allowedProductImages = [
     'https://images.unsplash.com/photo-1491553895911-0055eca6402d'
 ]
 
-const categories = computed(() => tm('products_page.categories_list') || [])
-const sortOptions = computed(() => tm('products_page.sort_options_list') || [])
+const categories = computed(() => [
+    {
+        label: t('products_page.category_labels.all'),
+        value: 'all',
+        icon: 'ph:squares-four'
+    },
+    {
+        label: t('products_page.category_labels.equipment'),
+        value: 'equipment',
+        icon: 'ph:target'
+    },
+    {
+        label: t('products_page.category_labels.apparel'),
+        value: 'apparel',
+        icon: 'ph:t-shirt'
+    },
+    {
+        label: t('products_page.category_labels.accessories'),
+        value: 'accessories',
+        icon: 'ph:bag'
+    },
+    {
+        label: t('products_page.category_labels.training'),
+        value: 'training',
+        icon: 'ph:graduation-cap'
+    },
+    {
+        label: t('products_page.category_labels.other'),
+        value: 'other',
+        icon: 'ph:package'
+    }
+])
+
+const sortOptions = computed(() => [
+    {
+        value: 'newest',
+        title: t('products_page.sort_options.newest')
+    },
+    {
+        value: 'price-low',
+        title: t('products_page.sort_options.price_low')
+    },
+    {
+        value: 'price-high',
+        title: t('products_page.sort_options.price_high')
+    },
+    {
+        value: 'popular',
+        title: t('products_page.sort_options.popular')
+    }
+])
 
 const { data: productResponse, pending: isLoading } = useAsyncData('products', () => $fetch(`${apiBaseUrl}/products`), {
     lazy: true,

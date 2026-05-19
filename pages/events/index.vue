@@ -19,17 +19,9 @@
                         class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6"
                         v-html="$t('events_page.title')">
                     </h1>
-                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl mb-8">
+                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl">
                         {{ $t('events_page.description') }}
                     </p>
-                    <div class="flex flex-wrap gap-4">
-                        <NuxtLink :to="localePath('/auth/register?type=organizer')">
-                            <BaseButton variant="primary" size="lg" icon="ph:plus-circle-bold"
-                                class="shadow-sm shadow-primary/20 font-black">
-                                {{ $t('events_page.register_event') }}
-                            </BaseButton>
-                        </NuxtLink>
-                    </div>
                 </div>
             </div>
         </div>
@@ -225,38 +217,6 @@
                 </div>
             </div>
         </main>
-
-        <!-- CTA Section -->
-        <section class="py-12 md:py-16 bg-navy relative overflow-hidden">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0 opacity-10"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.1);">
-            </div>
-            <div class="absolute inset-0 opacity-10">
-                <div class="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
-                <div class="absolute bottom-0 left-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
-            </div>
-            <div class="container mx-auto px-4 max-w-7xl relative z-10">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10">
-                    <div class="text-center md:text-left">
-                        <h2 class="text-lg sm:text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">
-                            {{ $t('events_page.cta_title') }}
-                        </h2>
-                        <p class="text-white/70 text-sm sm:text-base font-bold max-w-xl leading-relaxed">
-                            {{ $t('events_page.cta_desc') }}
-                        </p>
-                    </div>
-                    <NuxtLink :to="localePath('/auth/register?type=organizer')">
-                        <button
-                            class="px-8 py-4 bg-navy hover:bg-navy-light text-white font-black rounded-xl transition-all shadow-sm shadow-navy/20 flex items-center gap-3 text-lg group">
-                            <Icon icon="ph:plus-circle-bold"
-                                class="text-xl group-hover:rotate-90 transition-transform duration-500" />
-                            {{ $t('events_page.cta_button') }}
-                        </button>
-                    </NuxtLink>
-                </div>
-            </div>
-        </section>
 
     </div>
 </template>

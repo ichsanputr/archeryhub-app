@@ -248,6 +248,19 @@
       </h3>
       <div class="text-gray-500 text-sm mb-6">Kelola informasi rekening/e-wallet untuk pembayaran transfer manual</div>
 
+      <!-- Currency Configuration -->
+      <div class="mb-8 p-6 bg-navy/5 border border-navy/10 rounded-2xl">
+        <h4 class="text-sm font-black text-navy tracking-widest mb-2 flex items-center gap-2">
+          <Icon icon="ph:currency-circle-dollar-bold" class="text-primary text-lg" />
+          Mata Uang Organisasi (Organization Currency)
+        </h4>
+        <p class="text-xs text-gray-500 mb-4">Pilih mata uang default yang akan digunakan untuk seluruh pendaftaran event organisasi Anda.</p>
+        <div class="max-w-xs">
+          <BaseSelect v-model="selectedCurrency" :items="currencies"
+            item-title="title" item-value="value" placeholder="Pilih Mata Uang" />
+        </div>
+      </div>
+
       <div class="space-y-4">
         <div class="flex items-center justify-between">
           <label class="text-sm font-bold text-gray-700">Daftar Metode Pembayaran</label>
@@ -407,6 +420,36 @@ const updatePaymentType = (index, bankName) => {
 const paymentMethods = ref([])
 const savingPayment = ref(false)
 
+const selectedCurrency = ref('IDR')
+
+const currencies = ref([
+  { title: 'IDR - Rupiah Indonesia', value: 'IDR', icon: 'circle-flags:id' },
+  { title: 'MYR - Ringgit Malaysia', value: 'MYR', icon: 'circle-flags:my' },
+  { title: 'SGD - Dolar Singapura', value: 'SGD', icon: 'circle-flags:sg' },
+  { title: 'THB - Baht Thailand', value: 'THB', icon: 'circle-flags:th' },
+  { title: 'PHP - Peso Filipina', value: 'PHP', icon: 'circle-flags:ph' },
+  { title: 'VND - Dong Vietnam', value: 'VND', icon: 'circle-flags:vn' },
+  { title: 'AUD - Dolar Australia', value: 'AUD', icon: 'circle-flags:au' },
+  { title: 'JPY - Yen Jepang', value: 'JPY', icon: 'circle-flags:jp' },
+  { title: 'KRW - Won Korea Selatan', value: 'KRW', icon: 'circle-flags:kr' },
+  { title: 'GBP - Pound Sterling', value: 'GBP', icon: 'circle-flags:gb' },
+  { title: 'USD - Dolar Amerika Serikat', value: 'USD', icon: 'circle-flags:us' }
+])
+
+const countryToCurrency = {
+  'Indonesia': 'IDR',
+  'Malaysia': 'MYR',
+  'Singapore': 'SGD',
+  'Thailand': 'THB',
+  'Philippines': 'PHP',
+  'Vietnam': 'VND',
+  'Australia': 'AUD',
+  'Japan': 'JPY',
+  'South Korea': 'KRW',
+  'United Kingdom': 'GBP',
+  'United States': 'USD'
+}
+
 const addPaymentMethodField = () => {
   if (!paymentMethods.value) {
     paymentMethods.value = []
@@ -438,6 +481,11 @@ const loadOrgSettings = async () => {
       if (rawPageSettings) {
         try {
           const parsed = typeof rawPageSettings === 'string' ? JSON.parse(rawPageSettings) : rawPageSettings
+          if (parsed.currency) {
+            selectedCurrency.value = parsed.currency
+          } else {
+            selectedCurrency.value = countryToCurrency[org.country] || 'IDR'
+          }
           if (parsed.payment_methods) {
             paymentMethods.value = parsed.payment_methods.map(m => ({
               uuid: m.uuid || Math.random().toString(36).substring(2, 15),
@@ -454,6 +502,8 @@ const loadOrgSettings = async () => {
         } catch (e) {
           console.error('Failed to parse page settings', e)
         }
+      } else {
+        selectedCurrency.value = countryToCurrency[org.country] || 'IDR'
       }
     }
   } catch (error) {
@@ -477,6 +527,7 @@ const savePaymentSettings = async () => {
     }
     
     currentSettings.payment_methods = paymentMethods.value
+    currentSettings.currency = selectedCurrency.value
     
     await put('/organizations/me', {
       page_settings: JSON.stringify(currentSettings)

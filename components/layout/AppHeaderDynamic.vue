@@ -16,8 +16,8 @@
           <!-- Turnamen with Mega Menu -->
           <div class="relative" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
             <button
-              class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary px-3 py-1.5 rounded-lg text-gray-600 hover:text-navy"
-              :class="{ 'bg-primary !text-black hover:!text-black font-bold': isActive('/events') }">
+            class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary px-3 py-1.5 rounded-lg text-gray-600"
+              :class="{ '!text-primary font-bold': isActive('/events') }">
               Event
               <Icon icon="ph:caret-down" class="text-xs transition-transform" :class="{ 'rotate-180': showMegaMenu }" />
             </button>
@@ -94,16 +94,16 @@
 
 
           <NuxtLink to="/archers"
-            class="text-gray-600 text-navy font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg"
-            :class="{ 'bg-primary !text-black hover:!text-black': isActive('/archers') }">
+            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
+            :class="{ '!text-primary font-bold': isActive('/archers') }">
             Pemanah</NuxtLink>
           <NuxtLink to="/blog"
-            class="text-gray-600 text-navy font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg"
-            :class="{ 'bg-primary !text-black hover:!text-black': isActive('/blog') }">
+            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
+            :class="{ '!text-primary font-bold': isActive('/blog') }">
             Blog</NuxtLink>
           <NuxtLink to="/products"
-            class="text-gray-600 text-navy font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg"
-            :class="{ 'bg-primary !text-black hover:!text-black': isActive('/products') }">
+            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
+            :class="{ '!text-primary font-bold': isActive('/products') }">
             Marketplace
           </NuxtLink>
         </nav>

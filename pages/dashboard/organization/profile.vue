@@ -51,25 +51,9 @@
               <BaseInput v-model="form.slug" label="Slug URL" placeholder="perpani-indonesia"
                 helper="Digunakan untuk URL profil publik (Archeris.net/organization/slug)" />
 
-              <!-- City Autocomplete -->
-              <div class="relative">
-                <label class="block text-sm font-bold text-navy mb-2">Kota</label>
-                <input v-model="citySearch" type="text"
-                  class="w-full px-4 py-3 rounded-xl border border-gray-100 text-sm font-bold transition-all outline-none focus:border-navy bg-gray-50"
-                  placeholder="Cari kota..." @focus="showCityDropdown = true" @blur="handleCityBlur"
-                  @input="handleCitySearch" />
-
-                <div v-if="showCityDropdown && filteredCities.length > 0"
-                  class="absolute z-50 w-full mt-2 bg-white border border-gray-100 rounded-2xl shadow-md max-h-60 overflow-y-auto p-1 py-2">
-                  <div v-for="city in filteredCities" :key="city" @mousedown.prevent="selectCity(city)"
-                    class="w-full px-4 py-2.5 text-left text-sm font-bold text-navy hover:bg-gray-50 rounded-xl transition-colors cursor-pointer">
-                    {{ city }}
-                  </div>
-                </div>
-                <div v-if="loadingCities" class="absolute right-3 top-[38px]">
-                  <Icon icon="ph:circle-notch-bold" class="animate-spin text-gray-400" />
-                </div>
-              </div>
+              <!-- Country Select -->
+              <BaseSelect v-model="form.country" label="Negara (Country)" placeholder="Pilih Negara..." required
+                :items="countries" searchable />
             </div>
             <div>
               <label class="block text-sm font-bold text-navy mb-2">Tentang Organisasi</label>
@@ -330,6 +314,21 @@ import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import BaseSelect from '~/components/common/BaseSelect.vue'
+
+const countries = ref([
+    { title: 'Indonesia', value: 'Indonesia', icon: 'circle-flags:id' },
+    { title: 'Malaysia', value: 'Malaysia', icon: 'circle-flags:my' },
+    { title: 'Singapore', value: 'Singapore', icon: 'circle-flags:sg' },
+    { title: 'Thailand', value: 'Thailand', icon: 'circle-flags:th' },
+    { title: 'Philippines', value: 'Philippines', icon: 'circle-flags:ph' },
+    { title: 'Vietnam', value: 'Vietnam', icon: 'circle-flags:vn' },
+    { title: 'Australia', value: 'Australia', icon: 'circle-flags:au' },
+    { title: 'Japan', value: 'Japan', icon: 'circle-flags:jp' },
+    { title: 'South Korea', value: 'South Korea', icon: 'circle-flags:kr' },
+    { title: 'United Kingdom', value: 'United Kingdom', icon: 'circle-flags:gb' },
+    { title: 'United States', value: 'United States', icon: 'circle-flags:us' }
+])
 
 definePageMeta({
   title: 'Profil Organisasi',
@@ -400,7 +399,7 @@ const form = reactive({
   slug: '',
   bannerUrl: '',
   logoUrl: '',
-  city: '',
+  country: 'Indonesia',
   description: '',
   whatsapp_no: '',
   email: '',
@@ -521,8 +520,7 @@ const loadProfile = async () => {
       form.slug = org.slug || ''
       form.bannerUrl = org.banner_url || ''
       form.logoUrl = org.avatar_url || org.logo_url || ''
-      form.city = org.city || ''
-      citySearch.value = org.city || ''
+      form.country = org.country || 'Indonesia'
       form.description = org.description || ''
       form.whatsapp_no = org.whatsapp_no || ''
       form.email = org.email || ''
@@ -570,7 +568,7 @@ const saveProfile = async () => {
       banner_url: form.bannerUrl,
       logo_url: form.logoUrl,
       avatar_url: form.logoUrl, // Some APIs might expect avatar_url
-      city: form.city,
+      country: form.country,
       description: form.description,
       whatsapp_no: form.whatsapp_no,
       website: form.website,

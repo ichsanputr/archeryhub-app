@@ -256,7 +256,15 @@ const testWebhook = async () => {
             method: 'GET',
             credentials: 'include'
         })
-        addLog('webhook-sim', `Sukses! Callback berhasil diproses. Langganan diperpanjang!`, 'success')
+        addLog('webhook-sim', `Sukses! Callback berhasil diproses.`, 'success')
+        addLog('redirect', 'Mengarahkan kembali dalam 1.5 detik...', 'info')
+        setTimeout(() => {
+            if (res.is_subscription) {
+                useRouter().push('/dashboard/organization/subscription?status=success')
+            } else {
+                useRouter().push('/dashboard/archer/events?status=success')
+            }
+        }, 1500)
     } catch (err) {
         addLog('error', `Simulasi Gagal: ${err.data?.error || err.message}`, 'error')
     } finally {

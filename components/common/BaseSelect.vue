@@ -25,8 +25,9 @@
                             :placeholder="selectedLabel || placeholder || 'Cari...'" @click.stop
                             @keydown.esc="closeDropdown" />
                     </div>
-                    <div v-else :class="!selectedLabel ? 'text-gray-400' : 'text-black'" class="truncate">
-                        {{ selectedLabel || placeholder || 'Pilih opsi' }}
+                    <div v-else :class="!selectedLabel ? 'text-gray-400' : 'text-black'" class="truncate flex items-center gap-2">
+                        <Icon v-if="selectedItemIcon" :icon="selectedItemIcon" class="text-base flex-shrink-0" />
+                        <span>{{ selectedLabel || placeholder || 'Pilih opsi' }}</span>
                     </div>
                 </div>
 
@@ -180,6 +181,12 @@ const selectedLabel = computed(() => {
     }
     const selectedItem = props.items.find(item => getItemValue(item) === props.modelValue)
     return selectedItem ? getItemTitle(selectedItem) : null
+})
+
+const selectedItemIcon = computed(() => {
+    if (props.multiple) return null
+    const selectedItem = props.items.find(item => getItemValue(item) === props.modelValue)
+    return selectedItem ? selectedItem.icon : null
 })
 
 const isSelected = (item) => {

@@ -115,7 +115,12 @@ const handlePayment = async () => {
             } else {
                 if (window.Paddle && res.tripay_reference) {
                     window.Paddle.Checkout.open({
-                        transactionId: res.tripay_reference
+                        transactionId: res.tripay_reference,
+                        eventCallback: (data) => {
+                            if (data.name === 'checkout.completed') {
+                                router.push('/dashboard/organization/subscription?status=success')
+                            }
+                        }
                     })
                 } else {
                     window.location.href = res.checkout_url

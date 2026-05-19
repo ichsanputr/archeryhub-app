@@ -18,7 +18,7 @@
                     <div class="relative" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
                         <button
                             class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary px-3 py-1.5 rounded-lg"
-                            :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black font-bold': isActive('/events') }]">
+                            :class="[navLinkClasses, { '!text-primary font-bold': isActive('/events') }]">
                             {{ $t('nav.features') }}
                             <Icon icon="ph:caret-down" class="text-xs transition-transform"
                                 :class="{ 'rotate-180': showMegaMenu }" />
@@ -108,15 +108,15 @@
 
                     <NuxtLink :to="localePath('/archers')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black font-bold': isActive('/archers') }]">
+                        :class="[navLinkClasses, { '!text-primary font-bold': isActive('/archers') }]">
                         {{ $t('nav.archers') }}</NuxtLink>
                     <NuxtLink :to="localePath('/news')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black font-bold': isActive('/news') }]">
+                        :class="[navLinkClasses, { '!text-primary font-bold': isActive('/news') }]">
                         {{ $t('nav.news') }}</NuxtLink>
                     <NuxtLink :to="localePath('/products')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black font-bold': isActive('/products') }]">
+                        :class="[navLinkClasses, { '!text-primary font-bold': isActive('/products') }]">
                         {{ $t('nav.marketplace') }}
                     </NuxtLink>
                 </nav>
