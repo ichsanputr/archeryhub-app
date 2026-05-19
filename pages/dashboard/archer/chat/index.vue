@@ -14,13 +14,13 @@
               <Icon icon="ph:chat-circle-dots-bold" class="text-primary text-lg" />
             </div>
             <div>
-              <h1 class="text-base font-black text-navy leading-none">Pesan Saya</h1>
-              <div class=" text-xs text-gray-500 font-semibold mt-0.5">Percakapan dengan penjual</div>
+              <h1 class="text-base font-black text-navy leading-none">{{ $t('chat.title') }}</h1>
+              <div class=" text-xs text-gray-500 font-semibold mt-0.5">{{ $t('chat.subtitle') }}</div>
             </div>
           </div>
           <div class="relative">
             <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
-            <input v-model="searchQuery" type="text" placeholder="Cari percakapan..."
+            <input v-model="searchQuery" type="text" :placeholder="$t('chat.search_placeholder')"
               class="w-full pl-9 pr-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-primary/20 focus:border-primary/40 focus:bg-white transition-all outline-none placeholder:text-gray-400" />
           </div>
         </div>
@@ -46,10 +46,10 @@
               class="size-20 rounded-3xl bg-white border-2 border-dashed border-gray-200 flex items-center justify-center mb-4">
               <Icon icon="ph:chat-centered-dots" class="text-4xl text-gray-300" />
             </div>
-            <div class="text-sm font-black text-gray-500">Belum ada percakapan</div>
-            <div class=" text-xs text-gray-400 font-medium mt-1 mb-4">Chat penjual dari halaman produk</div>
+            <div class="text-sm font-black text-gray-500">{{ $t('chat.empty_title') }}</div>
+            <div class=" text-xs text-gray-400 font-medium mt-1 mb-4">{{ $t('chat.empty_desc') }}</div>
             <BaseButton to="/products" variant="primary" size="sm" icon="ph:storefront-bold" class="!rounded-xl">
-              Jelajahi Produk
+              {{ $t('chat.explore_products') }}
             </BaseButton>
           </div>
 
@@ -91,7 +91,7 @@
                 </div>
                 <div class=" text-xs truncate leading-snug"
                   :class="conv.archer_unread > 0 ? 'text-navy font-bold' : 'text-gray-500 font-medium'">
-                  {{ conv.last_message || (conv.product_name ? `Re: ${conv.product_name}` : 'Mulai percakapan') }}
+                  {{ conv.last_message || (conv.product_name ? `Re: ${conv.product_name}` : $t('chat.start_conversation')) }}
                 </div>
                 <div v-if="conv.product_name"
                   class="mt-1 inline-flex items-center gap-1 text-[9px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.5 rounded-md">
@@ -113,12 +113,12 @@
             class="size-24 rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center mb-6">
             <Icon icon="ph:chat-circle-dots-bold" class="text-4xl text-primary/50" />
           </div>
-          <h3 class="text-xl font-black text-navy tracking-tight mb-2">Pilih percakapan</h3>
+          <h3 class="text-xl font-black text-navy tracking-tight mb-2">{{ $t('chat.select_conversation') }}</h3>
           <div class="text-sm text-gray-400 font-medium max-w-[260px] leading-relaxed">
-            Pilih percakapan di sebelah kiri, atau mulai chat baru dari halaman produk.
+            {{ $t('chat.select_conversation_desc') }}
           </div>
           <BaseButton to="/products" variant="primary" size="sm" icon="ph:storefront-bold" class="mt-6 !rounded-xl">
-            Jelajahi Produk
+            {{ $t('chat.explore_products') }}
           </BaseButton>
         </div>
 
@@ -176,10 +176,10 @@
             </div>
             <div class="flex-1 min-w-0">
               <div class="text-[10px] font-black text-navy truncate">{{ activeConv.product_name }}</div>
-              <div class="text-[9px] text-gray-500 font-semibold">Produk yang ditanyakan</div>
+              <div class="text-[9px] text-gray-500 font-semibold">{{ $t('chat.product_inquiry') }}</div>
             </div>
             <a v-if="activeConv.product_id" :href="`/products/${activeConv.product_id}`" target="_blank"
-              class="text-[10px] font-black text-primary hover:underline shrink-0">Lihat →</a>
+              class="text-[10px] font-black text-primary hover:underline shrink-0">{{ $t('chat.view_product') }} →</a>
           </div>
 
           <!-- Messages area -->
@@ -202,8 +202,8 @@
                   class="size-16 rounded-3xl bg-white border-2 border-dashed border-gray-200 flex items-center justify-center mb-3">
                   <Icon icon="ph:chat-circle-bold" class="text-3xl text-gray-300" />
                 </div>
-                <div class="text-sm font-bold text-gray-400">Belum ada pesan</div>
-                <div class="text-xs text-gray-300 font-medium mt-1">Mulai percakapan dengan penjual</div>
+                <div class="text-sm font-bold text-gray-400">{{ $t('chat.no_messages') }}</div>
+                <div class="text-xs text-gray-300 font-medium mt-1">{{ $t('chat.no_messages_desc') }}</div>
               </div>
 
               <template v-else>
@@ -245,7 +245,7 @@
             <div class="flex items-end gap-2.5 max-w-4xl mx-auto">
               <div
                 class="flex-grow bg-gray-50 rounded-2xl border-2 border-gray-200 focus-within:border-primary/40 focus-within:bg-white transition-all flex items-end overflow-hidden">
-                <textarea v-model="newMessage" placeholder="Tulis pesan..." rows="1"
+                <textarea v-model="newMessage" :placeholder="$t('chat.write_placeholder')" rows="1"
                   @keydown.enter.exact.prevent="sendMessage"
                   class="flex-grow bg-transparent border-none focus:ring-0 text-sm font-medium px-4 py-3 max-h-32 resize-none no-scrollbar text-navy placeholder:text-gray-300 outline-none" />
               </div>
@@ -255,8 +255,7 @@
                 <Icon v-else icon="ph:paper-plane-right-fill" class="text-primary text-lg" />
               </button>
             </div>
-            <div class="text-[9px] text-gray-300 font-semibold text-center mt-2">Enter untuk kirim · Shift+Enter untuk
-              baris baru
+            <div class="text-[9px] text-gray-300 font-semibold text-center mt-2">{{ $t('chat.input_tips') }}
             </div>
           </div>
         </template>
@@ -269,9 +268,15 @@
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({ layout: 'dashboard' })
-useHead({ title: 'Pesan Saya - Archeris' })
+
+const { t } = useI18n()
+
+useHead({
+  title: computed(() => t('chat.title') + ' - Archeris')
+})
 
 const route = useRoute()
 const { get, post } = useApi()
@@ -356,7 +361,7 @@ const fetchMessages = async (convId) => {
     await scrollToBottom()
   } catch (e) {
     console.error('Failed to fetch messages:', e)
-    toast.error('Gagal memuat pesan')
+    toast.error(t('chat.load_failed'))
   } finally {
     isLoadingMessages.value = false
   }
@@ -404,7 +409,7 @@ const sendMessage = async () => {
       conversations.value[convIdx].last_message_at = new Date().toISOString()
     }
   } catch (e) {
-    toast.error('Gagal mengirim pesan')
+    toast.error(t('chat.send_failed'))
     messages.value = messages.value.filter(m => m.id !== tempMsg.id)
   } finally {
     isSending.value = false
@@ -426,12 +431,12 @@ const isOnline = (lastSeenAt) => {
 }
 
 const lastActiveLabel = (lastSeenAt) => {
-  if (!lastSeenAt) return 'Offline'
+  if (!lastSeenAt) return t('chat.status_offline')
   const diff = Date.now() - new Date(lastSeenAt).getTime()
-  if (diff < 5 * 60 * 1000) return 'Aktif sekarang'
-  if (diff < 60 * 60 * 1000) return `Aktif ${Math.floor(diff / 60000)} mnt lalu`
-  if (diff < 24 * 60 * 60 * 1000) return `Aktif ${Math.floor(diff / 3600000)} jam lalu`
-  return `Aktif ${Math.floor(diff / 86400000)} hari lalu`
+  if (diff < 5 * 60 * 1000) return t('chat.status_online')
+  if (diff < 60 * 60 * 1000) return t('chat.status_active_m', { val: Math.floor(diff / 60000) })
+  if (diff < 24 * 60 * 60 * 1000) return t('chat.status_active_h', { val: Math.floor(diff / 3600000) })
+  return t('chat.status_active_d', { val: Math.floor(diff / 86400000) })
 }
 
 // ─── Formatting ───────────────────────────────────────────────────────────────
@@ -441,7 +446,7 @@ const formatTime = (dt) => {
   const now = new Date()
   const diffDays = Math.floor((now - d) / 86400000)
   if (diffDays === 0) return d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-  if (diffDays === 1) return 'Kemarin'
+  if (diffDays === 1) return t('chat.yesterday')
   if (diffDays < 7) return d.toLocaleDateString('id-ID', { weekday: 'short' })
   return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })
 }
@@ -456,8 +461,8 @@ const formatDateLabel = (dt) => {
   const d = new Date(dt)
   const now = new Date()
   const diffDays = Math.floor((now - d) / 86400000)
-  if (diffDays === 0) return 'Hari ini'
-  if (diffDays === 1) return 'Kemarin'
+  if (diffDays === 0) return t('chat.today')
+  if (diffDays === 1) return t('chat.yesterday')
   return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })
 }
 

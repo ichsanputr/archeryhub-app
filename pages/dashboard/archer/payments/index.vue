@@ -12,8 +12,8 @@
                     </div>
                     <div>
                         <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 text-white">
-                            Riwayat Pembayaran</h1>
-                        <p class="text-slate-300 text-xs sm:text-sm">Pantau semua transaksi dan status pembayaran Anda
+                            {{ $t('payments.title') }}</h1>
+                        <p class="text-slate-300 text-xs sm:text-sm">{{ $t('payments.desc') }}
                         </p>
                     </div>
                 </div>
@@ -35,8 +35,8 @@
         <div v-else-if="payments.length === 0" class="bg-white border border-slate-100 rounded-3xl p-12 text-center">
             <div class="max-w-xs mx-auto space-y-4">
                 <Icon icon="ph:receipt-x-bold" class="text-5xl text-slate-200 mx-auto" />
-                <p class="text-lg font-black text-navy">Belum Ada Transaksi</p>
-                <p class="text-sm text-slate-500 font-medium">Anda belum melakukan pembayaran apapun.</p>
+                <p class="text-lg font-black text-navy">{{ $t('payments.no_transactions') }}</p>
+                <p class="text-sm text-slate-500 font-medium">{{ $t('payments.no_transactions_desc') }}</p>
             </div>
         </div>
 
@@ -54,7 +54,7 @@
                             <p class="text-[10px] font-black text-slate-400 tracking-widest mb-1">{{
                                 formatDate(payment.created_at) }} • {{ payment.reference }}</p>
                             <h3 class="text-base font-black text-navy dark:text-white leading-tight mb-1">
-                                {{ payment.event_name || payment.plan_name || 'Pembayaran Archeris' }}</h3>
+                                {{ payment.event_name || payment.plan_name || $t('payments.payment_title_default') }}</h3>
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="text-sm font-bold text-navy/70 dark:text-white/70">{{
                                     formatCurrency(payment.total_amount) }}</span>
@@ -75,7 +75,7 @@
                         <BaseButton v-if="payment.status === 'pending' && payment.checkout_url"
                             :to="payment.checkout_url" target="_blank" variant="primary" size="sm"
                             class="h-9 px-4 font-black text-[10px] tracking-wider">
-                            Bayar Sekarang
+                            {{ $t('payments.pay_now') }}
                         </BaseButton>
                         <BaseButton v-else-if="payment.status === 'paid'" :to="getInvoiceUrl(payment.reference)"
                             target="_blank" variant="white" size="sm" icon="ph:file-pdf"
@@ -98,9 +98,9 @@
                     <div v-if="payment.va_number || payment.pay_code"
                         class="flex items-center justify-between p-3 bg-white dark:bg-slate-800 rounded-xl border border-primary/20">
                         <span class="text-[10px] font-black text-slate-400 tracking-widest">
-                            {{ payment.va_number ? 'Nomor VA' : 'Kode Bayar' }}
+                            {{ payment.va_number ? $t('payments.va_number') : $t('payments.pay_code') }}
                         </span>
-                        <span class="text-sm font-black text-navy dark:text-white font-mono tracking-wider select-all">
+                        <span class="text-sm font-black text-navy dark:text-white font-mono tracking-wider select-all font-bold">
                             {{ payment.va_number || payment.pay_code }}
                         </span>
                     </div>
@@ -113,7 +113,7 @@
 
                     <!-- Instruction groups -->
                     <template v-if="parseInstructionGroups(payment.instructions).length">
-                        <div class="text-[10px] font-black text-slate-400 tracking-widest pt-1">Cara Pembayaran</div>
+                        <div class="text-[10px] font-black text-slate-400 tracking-widest pt-1">{{ $t('payments.how_to_pay') }}</div>
                         <!-- Tab selector when multiple groups -->
                         <div v-if="parseInstructionGroups(payment.instructions).length > 1"
                             class="flex gap-2 flex-wrap">
@@ -134,7 +134,7 @@
                                 class="text-[10px] font-black text-slate-500 tracking-widest">{{ group.title }}</div>
                             <div v-for="(step, si) in group.steps" :key="si" class="flex gap-3">
                                 <span
-                                    class="size-5 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px]">
+                                    class="size-5 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px] font-bold">
                                     {{ si + 1 }}
                                 </span>
                                 <span v-html="step"
@@ -156,13 +156,17 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { ref, onMounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
 const { get } = useApi()
 const config = useRuntimeConfig()
+const { t } = useI18n()
 
 definePageMeta({ layout: 'dashboard' })
 
 useHead({
-    title: 'Riwayat Pembayaran - Archeris'
+    title: computed(() => t('payments.title') + ' - Archeris')
 })
 
 const payments = ref([])
@@ -223,10 +227,10 @@ const getStatusClass = (status) => {
 
 const getStatusLabel = (status) => {
     const labels = {
-        'pending': 'Menunggu',
-        'paid': 'Terbayar',
-        'expired': 'Kedaluwarsa',
-        'failed': 'Gagal'
+        'pending': t('payments.status_pending'),
+        'paid': t('payments.status_paid'),
+        'expired': t('payments.status_expired'),
+        'failed': t('payments.status_failed')
     }
     return labels[status] || status
 }
@@ -281,3 +285,4 @@ const parseInstructionGroups = (raw) => {
     return []
 }
 </script>
+

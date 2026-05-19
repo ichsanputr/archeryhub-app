@@ -125,7 +125,7 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
                     </div>
                 </div>
-                <div class="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+                <div class="relative z-20 mb-10 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-8">
                     <div class="flex items-center gap-3 mb-2">
                         <NuxtLink :to="`/events/${slug}`"
                             class="text-white/60 hover:text-white transition-colors text-xs font-bold tracking-widest flex items-center gap-1">
@@ -196,7 +196,8 @@
                                         <Icon icon="ph:lock-bold" class="text-2xl text-navy" />
                                     </div>
                                     <h3 class="font-black text-navy mb-2">Login Required</h3>
-                                    <span class="text-sm text-gray-500 mb-5 block">Please log in as an athlete to register.</span>
+                                    <span class="text-sm text-gray-500 mb-5 block">Please log in as an athlete to
+                                        register.</span>
                                     <BaseButton :to="loginUrl" variant="navy" size="md">Login Now</BaseButton>
                                 </div>
 
@@ -206,8 +207,10 @@
                                         <Icon icon="ph:user-plus-bold" class="text-2xl text-navy" />
                                     </div>
                                     <h3 class="font-black text-navy mb-2">Athlete Account Required</h3>
-                                    <span class="text-sm text-gray-500 mb-5 block">Specifically for athlete profiles.</span>
-                                    <BaseButton to="/auth/register?type=archer" variant="navy" size="md">Register as Athlete</BaseButton>
+                                    <span class="text-sm text-gray-500 mb-5 block">Specifically for athlete
+                                        profiles.</span>
+                                    <BaseButton to="/auth/register?type=archer" variant="navy" size="md">Register as
+                                        Athlete</BaseButton>
                                 </div>
 
                                 <!-- Logged in archer -->
@@ -231,9 +234,8 @@
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <BaseInput v-model="profileForm.full_name" label="Full Name"
                                             placeholder="Full name" required icon="ph:user-bold" />
-                                        <BaseSelect v-model="profileForm.gender" :items="genderOptions"
-                                            label="Gender" placeholder="Select" required
-                                            icon="ph:gender-intersex" />
+                                        <BaseSelect v-model="profileForm.gender" :items="genderOptions" label="Gender"
+                                            placeholder="Select" required icon="ph:gender-intersex" />
                                         <BaseInput v-model="profileForm.date_of_birth" label="Date of Birth" type="date"
                                             required icon="ph:calendar-blank" />
                                         <BaseSelect v-model="profileForm.bow_type" :items="bowTypeOptions"
@@ -247,7 +249,8 @@
                                     </div>
                                     <div class="p-3.5 bg-primary/10 border border-primary/20 rounded-xl flex gap-2.5">
                                         <Icon icon="ph:info-bold" class="text-navy shrink-0 mt-0.5" />
-                                        <span class="text-xs text-navy/80 font-medium leading-relaxed block">Please ensure the data is correct before proceeding with registration.</span>
+                                        <span class="text-xs text-navy/80 font-medium leading-relaxed block">Please
+                                            ensure the data is correct before proceeding with registration.</span>
                                     </div>
                                 </div>
                             </div>
@@ -263,7 +266,8 @@
                                 </div>
                                 <div>
                                     <h2 class="text-base font-black text-navy">Select Category</h2>
-                                    <span class="text-[10px] text-gray-400 font-medium block">Can select multiple if the schedule allows</span>
+                                    <span class="text-[10px] text-gray-400 font-medium block">Can select multiple if the
+                                        schedule allows</span>
                                 </div>
                             </div>
                             <div class="p-6">
@@ -304,7 +308,8 @@
                                     <div v-if="categories.length === 0 && !pending"
                                         class="p-4 bg-amber-50 border border-amber-100 rounded-xl flex gap-2.5">
                                         <Icon icon="ph:warning-bold" class="text-amber-500 shrink-0" />
-                                        <span class="text-sm text-amber-700 font-medium block">Category not yet available. Please contact the organizer.</span>
+                                        <span class="text-sm text-amber-700 font-medium block">Category not yet
+                                            available. Please contact the organizer.</span>
                                     </div>
                                 </div>
                             </div>
@@ -323,7 +328,8 @@
                             <div class="p-6 space-y-4">
                                 <!-- Selected categories list -->
                                 <div v-if="form.category_ids.length > 0" class="space-y-2">
-                                    <span class="text-[10px] font-black text-gray-400 tracking-widest block">Selected Categories</span>
+                                    <span class="text-[10px] font-black text-gray-400 tracking-widest block">Selected
+                                        Categories</span>
                                     <div v-for="catId in form.category_ids" :key="catId"
                                         class="flex items-center justify-between gap-2">
                                         <div class="flex items-center gap-2 min-w-0">
@@ -340,11 +346,13 @@
                                 </div>
                                 <div v-else class="py-4 text-center border-2 border-dashed border-gray-100 rounded-xl">
                                     <Icon icon="ph:tag-light" class="text-3xl text-gray-300 mb-1 mx-auto" />
-                                    <span class="text-xs text-gray-300 font-bold tracking-widest block">No categories selected yet</span>
+                                    <span class="text-xs text-gray-300 font-bold tracking-widest block">No categories
+                                        selected yet</span>
                                 </div>
                                 <div class="pt-4 border-t border-gray-100 space-y-1.5">
                                     <div class="flex items-center justify-between text-sm">
-                                        <span class="text-gray-500">{{ form.category_ids.length }} {{ form.category_ids.length > 1 ? 'Categories' : 'Category' }}</span>
+                                        <span class="text-gray-500">{{ form.category_ids.length }} {{
+                                            form.category_ids.length > 1 ? 'Categories' : 'Category' }}</span>
                                         <span class="font-bold text-navy">× Rp {{ (event.registration_fee ||
                                             0).toLocaleString('id-ID') }}</span>
                                     </div>
@@ -376,26 +384,55 @@
 
                                 <!-- Online Payment Channels — Expansion panel -->
                                 <div v-if="form.payment_type === 'online'" class="space-y-2">
-                                    <span class="text-[10px] font-black text-gray-600 tracking-widest block">Select Online Payment Method</span>
-                                    <div class="flex flex-col gap-2 max-h-[320px] overflow-y-auto pr-1 custom-scrollbar">
+                                    <span class="text-[10px] font-black text-gray-600 tracking-widest block">Select
+                                        Online Payment Method</span>
+                                    <div
+                                        class="flex flex-col gap-2 max-h-[320px] overflow-y-auto pr-1 custom-scrollbar">
+                                        
+                                        <!-- Paddle Payment Method (PayPal / Google Pay / CC) -->
+                                        <div class="rounded-xl border-2 transition-all overflow-hidden shrink-0"
+                                            :class="form.online_channel === 'paddle' ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
+                                            <div @click="selectOnlineChannel('paddle')"
+                                                class="w-full p-4 text-left block focus:outline-none h-auto min-h-[64px] cursor-pointer">
+                                                <div class="flex items-center gap-3 w-full">
+                                                    <div
+                                                        class="h-9 w-9 min-w-[36px] rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
+                                                        <Icon icon="logos:paypal" class="text-lg" />
+                                                    </div>
+                                                    <div class="flex-1 min-w-0">
+                                                        <span
+                                                            class="text-sm font-black text-navy block leading-tight">PayPal & Google Pay</span>
+                                                        <span
+                                                            class="text-[10px] text-gray-400 font-medium block mt-0.5">International Payments (Powered by Paddle)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div v-for="ch in onlineChannels" :key="ch.code"
-                                            class="rounded-xl border-2 transition-all overflow-hidden"
+                                            class="rounded-xl border-2 transition-all overflow-hidden shrink-0"
                                             :class="form.online_channel === ch.code ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
-                                            <button @click="selectOnlineChannel(ch.code)"
-                                                class="w-full flex items-center gap-3 p-3 text-left">
-                                                <div
-                                                    class="h-9 w-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
-                                                    <img v-if="ch.icon" :src="ch.icon"
-                                                        class="w-full h-full object-contain" />
-                                                    <Icon v-else icon="ph:credit-card-bold" class="text-navy text-sm" />
+                                            <div @click="selectOnlineChannel(ch.code)"
+                                                class="w-full p-4 text-left block focus:outline-none h-auto min-h-[64px] cursor-pointer">
+                                                <div class="flex items-center gap-3 w-full">
+                                                    <div
+                                                        class="h-9 w-9 min-w-[36px] rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
+                                                        <img v-if="getChannelIcon(ch)" :src="getChannelIcon(ch)"
+                                                            class="w-full h-full object-contain" />
+                                                        <Icon v-else icon="ph:credit-card-bold"
+                                                            class="text-navy text-sm" />
+                                                    </div>
+                                                    <div class="flex-1 min-w-0">
+                                                        <span
+                                                            class="text-sm font-black text-navy block leading-tight">{{
+                                                                ch.label }}</span>
+                                                        <span
+                                                            class="text-[10px] text-gray-400 font-medium block mt-0.5">{{
+                                                                ch.type
+                                                            }}</span>
+                                                    </div>
                                                 </div>
-                                                <div class="flex-1 min-w-0">
-                                                    <span class="text-sm font-black text-navy block leading-tight">{{
-                                                        ch.label }}</span>
-                                                    <span class="text-[10px] text-gray-400 font-medium">{{ ch.type
-                                                        }}</span>
-                                                </div>
-                                            </button>
+                                            </div>
                                             <!-- Expanded: payment instructions -->
                                             <div v-if="form.online_channel === ch.code"
                                                 class="border-t border-gray-100 bg-white/80 px-4 pb-4 pt-2">
@@ -409,15 +446,15 @@
                                                     <!-- Tab panel when multiple platforms (e.g. Internet Banking, Aplikasi BRImo) -->
                                                     <div v-if="channelInstructionGroups(ch.code).length > 1"
                                                         class="flex gap-2 flex-wrap border-b border-gray-100 pb-2 mb-2">
-                                                        <button v-for="(group, gi) in channelInstructionGroups(ch.code)"
+                                                        <div v-for="(group, gi) in channelInstructionGroups(ch.code)"
                                                             :key="group.title"
                                                             @click="setActiveInstructionTab(ch.code, gi)"
                                                             :class="getActiveInstructionTab(ch.code) === gi
                                                                 ? 'bg-navy text-white border-navy'
                                                                 : 'bg-white text-gray-500 border-gray-200 hover:border-navy/40'"
-                                                            class="px-3 py-1.5 rounded-lg border text-[10px] font-black tracking-widest transition-colors">
+                                                            class="px-3 py-1.5 rounded-lg border text-[10px] font-black tracking-widest transition-colors cursor-pointer">
                                                             {{ group.title }}
-                                                        </button>
+                                                        </div>
                                                     </div>
                                                     <!-- Steps for active tab (or only group) -->
                                                     <div v-for="(group, gi) in channelInstructionGroups(ch.code)"
@@ -440,7 +477,8 @@
                                                     </div>
                                                 </div>
                                                 <div v-else class="py-3 text-xs text-gray-500 italic">
-                                                    Guide not available. After registering, payment instructions will appear.
+                                                    Guide not available. After registering, payment instructions will
+                                                    appear.
                                                 </div>
                                             </div>
                                         </div>
@@ -448,8 +486,8 @@
                                     <div class="p-3 bg-blue-50 rounded-xl border border-blue-100 flex gap-2">
                                         <Icon icon="ph:shield-check-bold"
                                             class="text-blue-500 shrink-0 text-sm mt-0.5" />
-                                        <span
-                                            class="text-[10px] text-blue-700 font-medium leading-relaxed block">Secure payment via Tripay. Automatic confirmation after successful payment.</span>
+                                        <span class="text-[10px] text-blue-700 font-medium leading-relaxed block">Secure
+                                            payment via Tripay. Automatic confirmation after successful payment.</span>
                                     </div>
                                 </div>
                             </div>
@@ -467,7 +505,9 @@
                             <span v-if="submitError" class="text-sm text-red-500 font-bold text-center block">{{
                                 submitError }}</span>
                             <span
-                                class="text-[10px] text-gray-400 text-center font-medium leading-relaxed block">Automatic confirmation after successful payment.</span>
+                                class="text-[10px] text-gray-400 text-center font-medium leading-relaxed block">Automatic
+                                confirmation after
+                                successful payment.</span>
                         </div>
                     </div>
                 </div>
@@ -711,6 +751,12 @@ const getPaymentMethodImage = (bankName) => {
     return m ? m.image : null
 }
 
+const getChannelIcon = (ch) => {
+    const localIcon = getPaymentMethodImage(ch.label)
+    if (localIcon) return localIcon
+    return ch.icon || ''
+}
+
 // Online channel expansion panel: fetch & show payment instructions
 const selectOnlineChannel = async (code) => {
     form.value.online_channel = code
@@ -831,13 +877,16 @@ useSeoMeta({
 .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-track {
     background: transparent;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background: #e2e8f0;
     border-radius: 4px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #cbd5e1;
 }

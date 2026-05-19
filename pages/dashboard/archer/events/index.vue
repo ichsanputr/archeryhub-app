@@ -5,13 +5,16 @@
 <script setup>
 import { useAuth } from '~/composables/useAuth'
 import { useEventContext } from '~/composables/useEventContext'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 definePageMeta({
   layout: 'dashboard'
 })
 
 useHead({
-  title: 'Event Saya - Archeris Dashboard'
+  title: computed(() => t('my_registration.my_events') + ' - Archeris Dashboard')
 })
 
 const { clearEvent } = useEventContext()

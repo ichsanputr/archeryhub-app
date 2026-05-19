@@ -9,14 +9,13 @@
         <NuxtLink to="/dashboard/archer/events"
           class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">Events</NuxtLink>
         <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
-        <span class="text-navy text-sm font-bold">Buat Baru</span>
+        <span class="text-navy text-sm font-bold">{{ t('event_create.breadcrumb_create') }}</span>
       </nav>
 
       <div class="flex flex-wrap justify-between gap-6 items-end">
         <div class="flex flex-col gap-3">
-          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Buat event baru</h1>
-          <p class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">Lengkapi informasi dasar kompetisi
-            panahan Anda.</p>
+          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">{{ t('event_create.title') }}</h1>
+          <p class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">{{ t('event_create.subtitle') }}</p>
         </div>
       </div>
     </div>
@@ -27,31 +26,31 @@
 
         <!-- Single Step: Event Info -->
         <div class="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4">
-          <FormSection icon="ph:identification-card" title="Identitas Event">
+          <FormSection icon="ph:identification-card" :title="t('event_create.identity')">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="md:col-span-2">
-                <BaseInput v-model="form.name" label="Nama Event"
-                  placeholder="contoh: National Indoor Championship 2024" required :error="errors.name"
+                <BaseInput v-model="form.name" :label="t('event_create.event_name')"
+                  :placeholder="t('event_create.name_placeholder')" required :error="errors.name"
                   @blur="validate('name', form.name, [rules.required()])" />
               </div>
               <div class="md:col-span-2">
-                <BaseInput v-model="form.slug" label="Slug Event"
-                  placeholder="contoh: national-indoor-championship-2024" required :error="errors.slug"
+                <BaseInput v-model="form.slug" :label="t('event_create.slug')"
+                  :placeholder="t('event_create.slug_placeholder')" required :error="errors.slug"
                   @input="onSlugInput"
-                  @blur="validate('slug', form.slug, [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug hanya boleh huruf kecil, angka, dan tanda minus (-)')])" />
+                  @blur="validate('slug', form.slug, [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, t('event_create.error_slug_format'))])" />
                 <p class="text-xs text-gray-500 mt-1.5">
-                  Slug otomatis dibuat dari Nama Event, tapi Anda bisa mengubahnya.
+                  {{ t('event_create.slug_help') }}
                 </p>
               </div>
-              <BaseInput v-model="form.venue" label="Lokasi Venue" placeholder="Masukkan nama venue atau alamat"
+              <BaseInput v-model="form.venue" :label="t('event_create.venue_location')" :placeholder="t('event_create.venue_placeholder')"
                 icon="la:place-of-worship" />
-              <BaseSelect v-model="form.type" label="Tipe Lokasi" :items="disciplineItems" required :error="errors.type"
+              <BaseSelect v-model="form.type" :label="t('event_create.location_type')" :items="disciplineItems" required :error="errors.type"
                 @blur="validate('type', form.type, [rules.required()])" />
-              <BaseSelect v-model="form.city" label="Kota" :items="cityItems" required :error="errors.city"
+              <BaseSelect v-model="form.city" :label="t('event_create.city')" :items="cityItems" required :error="errors.city"
                 @blur="validate('city', form.city, [rules.required()])" />
 
               <div class="md:col-span-2">
-                <BaseInput v-model="form.gmapsLink" label="Link Google Maps" placeholder="https://goo.gl/maps/..."
+                <BaseInput v-model="form.gmapsLink" :label="t('event_create.gmaps_link')" placeholder="https://goo.gl/maps/..."
                   icon="ph:map-pin" @blur="validateGmapsLink" />
 
                 <!-- Gmaps Preview -->
@@ -62,29 +61,27 @@
                   </iframe>
                 </div>
                 <p v-else-if="form.gmapsLink && !isValidGmaps" class="text-red-500 text-xs font-bold mt-1">
-                  Link Google Maps tidak valid. Pastikan link diawali dengan https://goo.gl/maps/ atau
-                  https://www.google.com/maps/
+                  {{ t('event_create.gmaps_error') }}
                 </p>
               </div>
             </div>
           </FormSection>
 
-          <FormSection icon="ant-design:schedule-outlined" title="Jadwal & Biaya">
+          <FormSection icon="ant-design:schedule-outlined" :title="t('event_create.schedule_pricing')">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.startDate" label="Tanggal & Waktu Mulai" type="datetime-local" required
+              <BaseInput v-model="form.startDate" :label="t('event_create.start_date')" type="datetime-local" required
                 :error="errors.startDate" @blur="validate('startDate', form.startDate, [rules.required()])" />
-              <BaseInput v-model="form.endDate" label="Tanggal & Waktu Selesai" type="datetime-local" required
+              <BaseInput v-model="form.endDate" :label="t('event_create.end_date')" type="datetime-local" required
                 :error="errors.endDate" @blur="validate('endDate', form.endDate, [rules.required()])" />
-              <BaseInput v-model.number="form.entryFee" label="Biaya pendaftaran (Rp)" type="number"
+              <BaseInput v-model.number="form.entryFee" :label="t('event_create.entry_fee')" type="number"
                 placeholder="350000" />
-              <BaseInput v-model="form.registrationDeadline" label="Batas pendaftaran" type="datetime-local" />
+              <BaseInput v-model="form.registrationDeadline" :label="t('event_create.deadline')" type="datetime-local" />
             </div>
           </FormSection>
 
           <!-- Event Images Section -->
-          <FormSection icon="ph:images-bold" title="Gambar Event">
-            <p class="text-text-secondary text-sm mb-4">Tambahkan gambar untuk event Anda. Gambar pertama akan menjadi
-              thumbnail utama.</p>
+          <FormSection icon="ph:images-bold" :title="t('event_create.event_images')">
+            <p class="text-text-secondary text-sm mb-4">{{ t('event_create.images_desc') }}</p>
 
             <div class="flex flex-wrap gap-4">
               <!-- Image Thumbnails -->
@@ -100,19 +97,19 @@
                     class="text-white text-xs flex items-center gap-1 hover:text-primary transition-colors"
                     :class="{ 'text-primary': img.isPrimary }">
                     <Icon :icon="img.isPrimary ? 'ph:star-fill' : 'ph:star'" class="text-lg" />
-                    {{ img.isPrimary ? 'Utama' : 'Set Utama' }}
+                    {{ img.isPrimary ? t('event_create.primary') : t('event_create.set_primary') }}
                   </button>
                   <button type="button" @click="removeImage(index)"
                     class="text-white text-xs flex items-center gap-1 hover:text-red-400 transition-colors">
                     <Icon icon="ph:trash" class="text-lg" />
-                    Hapus
+                    {{ t('event_create.delete') }}
                   </button>
                 </div>
 
                 <!-- Primary Badge -->
                 <div v-if="img.isPrimary"
                   class="absolute top-1 left-1 bg-primary text-navy text-[10px] font-bold px-1.5 py-0.5 rounded">
-                  Utama
+                  {{ t('event_create.primary') }}
                 </div>
               </div>
 
@@ -120,21 +117,21 @@
               <button type="button" @click="showImageModal = true"
                 class="w-32 h-32 rounded-xl border-2 border-dashed border-gray-300 hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-primary">
                 <Icon icon="ph:plus-bold" class="text-2xl" />
-                <span class="text-xs font-medium">Tambah</span>
+                <span class="text-xs font-medium">{{ t('event_create.add') }}</span>
               </button>
             </div>
           </FormSection>
 
           <!-- Payment Methods Section -->
-          <FormSection icon="ph:credit-card" title="Metode Pembayaran">
-            <p class="text-text-secondary text-sm mb-4">Tambahkan metode pembayaran yang tersedia untuk event ini.</p>
+          <FormSection icon="ph:credit-card" :title="t('event_create.payment_methods')">
+            <p class="text-text-secondary text-sm mb-4">{{ t('event_create.payment_desc') }}</p>
 
             <div class="space-y-4">
               <!-- Payment Method List -->
               <div v-for="(method, index) in form.paymentMethods" :key="index"
                 class="bg-gray-50 border border-gray-200 rounded-xl p-4">
                 <div class="flex items-start justify-between gap-4 mb-4">
-                  <h4 class="text-sm font-bold text-navy">Metode {{ index + 1 }}</h4>
+                  <h4 class="text-sm font-bold text-navy">{{ t('event_create.method_num', { val: index + 1 }) }}</h4>
                   <button type="button" @click="removePaymentMethod(index)"
                     class="text-red-500 hover:text-red-700 transition-colors">
                     <Icon icon="ph:trash" class="text-lg" />
@@ -143,18 +140,18 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div class="md:col-span-2">
-                    <BaseInput v-model="method.payment_method" label="Nama Metode Pembayaran"
-                      placeholder="contoh: Transfer Bank BCA" required />
+                    <BaseInput v-model="method.payment_method" :label="t('event_create.payment_name')"
+                      :placeholder="t('event_create.payment_name_placeholder')" required />
                   </div>
-                  <BaseInput v-model="method.account_name" label="Nama Pemilik Rekening"
-                    placeholder="contoh: PT Archery Indonesia" />
-                  <BaseInput v-model="method.account_number" label="Nomor Rekening/ID"
-                    placeholder="contoh: 1234567890" />
+                  <BaseInput v-model="method.account_name" :label="t('event_create.account_name')"
+                    :placeholder="t('event_create.account_name_placeholder')" />
+                  <BaseInput v-model="method.account_number" :label="t('event_create.account_number')"
+                    :placeholder="t('event_create.account_number_placeholder')" />
                   <div class="md:col-span-2">
-                    <BaseTextarea v-model="method.instructions" label="Instruksi Pembayaran (Opsional)"
-                      placeholder="Tambahkan instruksi atau catatan khusus untuk metode pembayaran ini..." rows="3" />
+                    <BaseTextarea v-model="method.instructions" :label="t('event_create.payment_instructions')"
+                      :placeholder="t('event_create.payment_instructions_placeholder')" rows="3" />
                   </div>
-                  <BaseInput v-model.number="method.display_order" label="Urutan Tampilan" type="number"
+                  <BaseInput v-model.number="method.display_order" :label="t('event_create.display_order')" type="number"
                     placeholder="0" />
                 </div>
               </div>
@@ -163,25 +160,25 @@
               <button type="button" @click="addPaymentMethod"
                 class="w-full py-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2 text-gray-500 hover:text-primary font-medium">
                 <Icon icon="ph:plus-circle" class="text-xl" />
-                Tambah Metode Pembayaran
+                {{ t('event_create.add_payment_method') }}
               </button>
             </div>
           </FormSection>
 
-          <FormSection icon="ph:article" title="Detail Event">
+          <FormSection icon="ph:article" :title="t('event_create.event_details')">
             <div class="flex flex-col gap-1.5">
-              <label class="text-navy text-sm font-bold ml-1">Deskripsi Lengkap</label>
+              <label class="text-navy text-sm font-bold ml-1">{{ t('event_create.full_desc') }}</label>
               <div class="min-h-[300px]">
                 <TiptapEditor v-model="form.description" />
               </div>
             </div>
           </FormSection>
 
-          <FormSection icon="ph:gear" title="Pengaturan">
+          <FormSection icon="ph:gear" :title="t('event_create.settings')">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <BaseSelect v-model="form.status" label="Status awal" :items="[
-                { title: 'Draft (Belum dipublikasi)', value: 'draft' },
-                { title: 'Published (Langsung aktif)', value: 'published' }
+              <BaseSelect v-model="form.status" :label="t('event_create.initial_status')" :items="[
+                { title: t('event_create.draft_status'), value: 'draft' },
+                { title: t('event_create.published_status'), value: 'published' }
               ]" />
             </div>
           </FormSection>
@@ -192,10 +189,10 @@
         <div
           class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-8 border-t border-gray-100 mt-4">
           <BaseButton to="/dashboard/archer/events" variant="ghost" class="px-8 whitespace-nowrap">
-            Batal
+            {{ t('event_create.cancel') }}
           </BaseButton>
           <BaseButton type="submit" variant="primary" :loading="isSubmitting" class="px-10 whitespace-nowrap">
-            Buat event
+            {{ t('event_create.create_button') }}
           </BaseButton>
         </div>
       </form>
@@ -213,13 +210,16 @@ import FormSection from '~/components/common/FormSection.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import { useFormValidation } from '~/composables/useFormValidation'
 import { useToast } from '~/composables/useToast'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
+const { t } = useI18n()
+
 useHead({
-  title: 'Buat Event Baru - Archeris Dashboard'
+  title: computed(() => `${t('event_create.title')} - Archeris Dashboard`)
 })
 
 const router = useRouter()
@@ -311,15 +311,10 @@ const isValidGmaps = ref(true)
 const gmapsEmbedUrl = computed(() => {
   if (!form.gmapsLink || !isValidGmaps.value) return null
 
-  // Basic heuristic to convert share links to search-based embed links
-  // since we don't have an API key for the formal Embed API.
-  // The 'output=embed' parameter works with search queries.
+  // Heuristic to convert share links to search-based embed links
   try {
     const url = new URL(form.gmapsLink)
     if (url.hostname.includes('google.com') || url.hostname === 'goo.gl') {
-      // If it's a short link or a complex link, we use the query if we can find it,
-      // but the safest way without API is to use the venue name or the whole link
-      // as a search parameter.
       return `https://maps.google.com/maps?q=${encodeURIComponent(form.gmapsLink)}&output=embed`
     }
   } catch (e) {
@@ -393,7 +388,7 @@ const toggleValue = (arr, val) => {
 const validateStep = () => {
   const isBasicValid = validateForm(form, {
     name: [rules.required()],
-    slug: [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug hanya boleh huruf kecil, angka, dan tanda minus (-)')],
+    slug: [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, t('event_create.error_slug_format'))],
     startDate: [rules.required()],
     endDate: [rules.required()],
     type: [rules.required()],
@@ -405,7 +400,7 @@ const validateStep = () => {
     const startTime = new Date(form.startDate).getTime()
     const endTime = new Date(form.endDate).getTime()
     if (endTime <= startTime) {
-      errors.endDate = 'Waktu selesai harus setelah waktu mulai'
+      errors.endDate = t('event_create.error_date_order')
       return false
     }
   }
@@ -428,8 +423,6 @@ const handleSubmit = async () => {
   try {
     const formatToISO = (dateStr) => {
       if (!dateStr) return null
-      // dateStr from datetime-local is YYYY-MM-DDTHH:mm
-      // Append :00Z or convert via Date object
       return new Date(dateStr).toISOString()
     }
 
@@ -478,16 +471,16 @@ const handleSubmit = async () => {
           )
         } catch (pmError) {
           console.error('Failed to create payment methods:', pmError)
-          toast.warning('Event berhasil dibuat, namun ada masalah dengan metode pembayaran')
+          toast.warning(t('event_create.toast_create_warning'))
         }
       }
 
-      toast.success('Event berhasil dibuat')
+      toast.success(t('event_create.toast_create_success'))
       router.push('/dashboard/archer/events')
     }
   } catch (error) {
     console.error('Failed to create tournament:', error)
-    toast.error(getApiErrorMessage(error, 'Gagal membuat event'))
+    toast.error(getApiErrorMessage(error, t('event_create.toast_create_failed')))
   } finally {
     isSubmitting.value = false
   }

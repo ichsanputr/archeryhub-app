@@ -16,11 +16,11 @@
                             <nav
                                 class="flex text-[10px] font-bold text-white/40 tracking-widest mb-1 items-center gap-1.5">
                                 <NuxtLink :to="`/dashboard/archer/events/${eventId}`"
-                                    class="hover:text-white transition-colors">Event</NuxtLink>
+                                    class="hover:text-white transition-colors">{{ t('elimination.nav_event') }}</NuxtLink>
                                 <Icon icon="ph:caret-right-bold" class="text-[9px]" />
-                                <span class="text-white/70">Hasil Eliminasi</span>
+                                <span class="text-white/70">{{ t('elimination.nav_title') }}</span>
                             </nav>
-                            <h1 class="text-2xl font-black tracking-tight">Perjalanan Eliminasi Saya</h1>
+                            <h1 class="text-2xl font-black tracking-tight">{{ t('elimination.title') }}</h1>
                         </div>
                     </div>
                     <!-- Badge & Category -->
@@ -40,13 +40,13 @@
 
                         <!-- Status badge -->
                         <div class="flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-black hidden sm:flex"
-                            :class="elimStatusLabel === 'Juara'
+                            :class="elimStatusLabel === t('elimination.status_champion')
                                 ? 'bg-primary text-navy border-primary/40'
-                                : elimStatusLabel === 'Aktif'
+                                : elimStatusLabel === t('elimination.status_active')
                                     ? 'bg-green-500/20 text-green-300 border-green-500/30'
                                     : 'bg-white/10 text-white border-white/20'">
                             <Icon
-                                :icon="elimStatusLabel === 'Juara' ? 'ph:crown-fill' : elimStatusLabel === 'Aktif' ? 'ph:play-circle-fill' : 'ph:trophy-bold'"
+                                :icon="elimStatusLabel === t('elimination.status_champion') ? 'ph:crown-fill' : elimStatusLabel === t('elimination.status_active') ? 'ph:play-circle-fill' : 'ph:trophy-bold'"
                                 class="text-base" />
                             {{ elimStatusLabel }}
                         </div>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="flex-1 text-center sm:text-left">
                         <h2 class="text-2xl sm:text-3xl font-black text-navy dark:text-white tracking-tight">
-                            {{ userProfile?.full_name || 'Archer' }}
+                            {{ userProfile?.full_name || t('elimination.archer') }}
                         </h2>
                         <div
                             class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2 text-slate-500 dark:text-slate-400 text-xs font-medium">
@@ -89,11 +89,11 @@
                     </div>
                     <!-- Match count -->
                     <div class="flex flex-col items-center sm:items-end">
-                        <span class="text-[10px] font-black text-slate-400 tracking-widest mb-1">Pertandingan</span>
+                        <span class="text-[10px] font-black text-slate-400 tracking-widest mb-1">{{ t('elimination.matches') }}</span>
                         <div class="flex items-baseline gap-1">
                             <span class="text-5xl font-black text-navy dark:text-white tracking-tighter tabular-nums">{{
                                 elimMatches.length }}</span>
-                            <span class="text-sm font-bold text-slate-400">match</span>
+                            <span class="text-sm font-bold text-slate-400">{{ t('elimination.match') }}</span>
                         </div>
                     </div>
                 </div>
@@ -107,15 +107,14 @@
                     <div class="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-500">
                         <Icon icon="ph:git-merge-bold" class="text-lg" />
                     </div>
-                    <h4 class="font-black text-xl text-navy dark:text-white">Alur Eliminasi</h4>
+                    <h4 class="font-black text-xl text-navy dark:text-white">{{ t('elimination.path_title') }}</h4>
                 </div>
 
                 <!-- No matches -->
                 <div v-if="elimMatches.length === 0"
                     class="py-20 text-center border-2 border-dashed border-slate-100 dark:border-slate-800 m-6 rounded-3xl">
                     <Icon icon="ph:sword-light" class="text-7xl mx-auto mb-6 opacity-10" />
-                    <span class="text-sm font-black tracking-widest text-slate-300 block">Belum mencapai
-                        eliminasi</span>
+                    <span class="text-sm font-black tracking-widest text-slate-300 block">{{ t('elimination.not_reached') }}</span>
                 </div>
 
                 <!-- Match cards — vertical timeline layout -->
@@ -148,14 +147,13 @@
                                             class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
                                             <span class="text-[10px] font-black tracking-widest"
                                                 :class="match.winner_entry_uuid === myEntryUuid ? 'text-navy dark:text-primary' : 'text-slate-400'">
-                                                Babak {{ match.round_no }} · Match #{{ match.match_no || '-' }}
+                                                {{ t('elimination.round_match', { round: match.round_no, match: match.match_no || '-' }) }}
                                             </span>
                                             <span class="flex items-center gap-1 text-[10px] font-black"
                                                 :class="match.winner_entry_uuid === myEntryUuid ? '' : 'text-slate-300'">
                                                 <Icon
                                                     :icon="match.winner_entry_uuid === myEntryUuid ? 'ph:crown-fill' : (match.status === 'finished' ? 'ph:check-circle-bold' : 'ph:clock-bold')" />
-                                                {{ match.winner_entry_uuid === myEntryUuid ? 'MENANG' : (match.status
-                                                    === 'finished' ? 'KALAH' : 'AKTIF') }}
+                                                {{ match.winner_entry_uuid === myEntryUuid ? t('elimination.win') : (match.status === 'finished' ? t('elimination.lose') : t('elimination.active')) }}
                                             </span>
                                         </div>
                                     </div>
@@ -169,11 +167,12 @@
                                             <div class="min-w-0">
                                                 <span
                                                     class="text-xs font-black text-navy dark:text-white truncate block">
-                                                    {{ match.entry_a_name || 'TBD' }}
+                                                    {{ match.entry_a_name || 'tbd' }}
                                                 </span>
                                                 <span v-if="match.entry_a_seed"
-                                                    class="text-[10px] text-slate-400 font-bold">Unggulan #{{
-                                                        match.entry_a_seed }}</span>
+                                                    class="text-[10px] text-slate-400 font-bold">
+                                                    {{ t('elimination.seed', { seed: match.entry_a_seed }) }}
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="flex items-center gap-2 shrink-0">
@@ -193,11 +192,12 @@
                                             <div class="min-w-0">
                                                 <span
                                                     class="text-xs font-bold text-slate-500 dark:text-slate-400 truncate block">
-                                                    {{ match.entry_b_name || 'TBD' }}
+                                                    {{ match.entry_b_name || 'tbd' }}
                                                 </span>
                                                 <span v-if="match.entry_b_seed"
-                                                    class="text-[10px] text-slate-400 font-bold">Unggulan #{{
-                                                        match.entry_b_seed }}</span>
+                                                    class="text-[10px] text-slate-400 font-bold">
+                                                    {{ t('elimination.seed', { seed: match.entry_b_seed }) }}
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="flex items-center gap-2 shrink-0">
@@ -212,8 +212,7 @@
                                     <div v-if="match.ends && match.ends.length"
                                         class="px-5 py-3 border-t border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800">
                                         <div class="flex gap-2 mb-2">
-                                            <span class="text-[10px] font-black tracking-widest text-slate-400">Rincian
-                                                Skor Per End</span>
+                                            <span class="text-[10px] font-black tracking-widest text-slate-400">{{ t('elimination.score_per_end') }}</span>
                                         </div>
                                         <div class="flex flex-col gap-2 text-xs">
                                             <div class="flex items-center min-w-0 gap-3">
@@ -253,7 +252,7 @@
                                         <NuxtLink :to="`/match/${match.id || match.match_id}`"
                                             class="text-[10px] font-black text-slate-400 hover:text-primary transition-colors flex items-center gap-1">
                                             <Icon icon="ph:arrow-square-out-bold" />
-                                            Buka halaman match
+                                            {{ t('elimination.open_match_page') }}
                                         </NuxtLink>
                                     </div>
                                 </div>
@@ -269,6 +268,9 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const { get } = useApi()
 const route = useRoute()
@@ -294,11 +296,11 @@ const currentCategoryName = computed(() => {
 })
 
 const elimStatusLabel = computed(() => {
-    if (!elimMatches.value.length) return 'Siap'
+    if (!elimMatches.value.length) return t('elimination.status_ready')
     const lastMatch = [...elimMatches.value].reverse()[0]
-    if (lastMatch.status !== 'finished' && lastMatch.status !== 'completed') return 'Aktif'
-    if (lastMatch.winner_entry_uuid === myEntryUuid.value) return 'Juara'
-    return 'Selesai'
+    if (lastMatch.status !== 'finished' && lastMatch.status !== 'completed') return t('elimination.status_active')
+    if (lastMatch.winner_entry_uuid === myEntryUuid.value) return t('elimination.status_champion')
+    return t('elimination.status_ended')
 })
 
 const handleBack = () => router.back()

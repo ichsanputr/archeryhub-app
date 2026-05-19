@@ -33,11 +33,11 @@
                             <template v-else>
                                 <div class="flex items-center gap-3 mb-2">
                                     <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">
-                                        {{ event?.name || 'Ringkasan Event' }}
+                                        {{ event?.name || t('event_overview.title') }}
                                     </h1>
                                 </div>
                                 <p v-if="event" class="text-slate-300 text-sm mb-2">
-                                    {{ event.venue || 'Lokasi Event' }} • {{ event.location || 'Alamat' }}
+                                    {{ event.venue || t('event_overview.venue_default') }} • {{ event.location || t('event_overview.address_default') }}
                                 </p>
                                 <div class="flex flex-wrap items-center gap-4">
                                     <div
@@ -54,7 +54,7 @@
                     <div class="flex flex-wrap gap-3 flex-shrink-0">
                         <BaseButton variant="white" icon="ph:share-network-bold"
                             class="h-11 px-5 border-white/20 shadow-sm font-bold" @click="openShareDialog">
-                            Bagikan
+                            {{ t('event_overview.share') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -141,8 +141,9 @@
                         class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Total
-                                    Pemanah</p>
+                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
+                                    {{ t('event_overview.total_archers') }}
+                                </p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{
                                     event?.participant_count || 0 }}</p>
                             </div>
@@ -154,7 +155,7 @@
                         <div class="mt-auto">
                             <p class="text-green-600 text-xs font-bold flex items-center gap-1">
                                 <Icon icon="ph:trend-up" class="text-[14px]" />
-                                {{ participants.length }} terdaftar
+                                {{ participants.length }} {{ t('event_overview.registered') }}
                             </p>
                         </div>
                     </div>
@@ -163,8 +164,9 @@
                         class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Target
-                                    Aktif</p>
+                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
+                                    {{ t('event_overview.active_targets') }}
+                                </p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">
                                     {{ event?.active_target_count || 0 }}<span
                                         class="text-lg text-gray-400 font-medium ml-1">/
@@ -179,7 +181,7 @@
                         <div class="mt-auto">
                             <p class="text-text-secondary text-xs font-medium flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                                Sistem berjalan normal
+                                {{ t('event_overview.system_normal') }}
                             </p>
                         </div>
                     </div>
@@ -189,7 +191,8 @@
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
-                                    Penyelesaian</p>
+                                    {{ t('event_overview.completion') }}
+                                </p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
                                     }}%</p>
                             </div>
@@ -207,8 +210,9 @@
                         class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Sisa
-                                    Waktu</p>
+                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
+                                    {{ t('event_overview.time_left') }}
+                                </p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight tabular-nums">{{
                                     timeLeft }}</p>
                             </div>
@@ -218,7 +222,7 @@
                             </div>
                         </div>
                         <div class="mt-auto">
-                            <p class="text-text-secondary text-xs font-medium">Estimasi Selesai: {{ estimatedEnd }}</p>
+                            <p class="text-text-secondary text-xs font-medium">{{ t('event_overview.estimated_end', { time: estimatedEnd }) }}</p>
                         </div>
                     </div>
                 </div>
@@ -229,17 +233,20 @@
                     <div
                         class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Analisis Pendaftaran
+                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">
+                                {{ t('event_overview.registration_analytics') }}
                             </h3>
                             <NuxtLink :to="`/dashboard/events/${route.params.id}/participants`"
-                                class="text-xs text-navy font-bold hover:text-primary transition-colors">Lihat Semua
-                                Peserta</NuxtLink>
+                                class="text-xs text-navy font-bold hover:text-primary transition-colors">
+                                {{ t('event_overview.view_all_participants') }}
+                            </NuxtLink>
                         </div>
                         <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/30">
                             <!-- By Category -->
                             <div>
-                                <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">Sebaran
-                                    Kategori</h4>
+                                <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">
+                                    {{ t('event_overview.category_distribution') }}
+                                </h4>
                                 <div class="space-y-4">
                                     <div v-for="cat in registrationStats.categories.slice(0, 5)" :key="cat.name"
                                         class="space-y-1.5">
@@ -262,18 +269,19 @@
                                     </div>
                                     <div v-if="registrationStats.categories.length === 0"
                                         class="py-10 text-center text-gray-400 italic text-xs">
-                                        Belum ada data kategori
+                                        {{ t('event_overview.no_category_data') }}
                                     </div>
                                     <p v-if="registrationStats.categories.length > 5"
                                         class="text-[10px] text-gray-400 italic text-center pt-2">
-                                        Menampilkan 5 kategori terbanyak
+                                        {{ t('event_overview.showing_top_categories') }}
                                     </p>
                                 </div>
                             </div>
                             <!-- Payment Status -->
                             <div>
-                                <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">Status
-                                    Pembayaran</h4>
+                                <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">
+                                    {{ t('event_overview.payment_status') }}
+                                </h4>
                                 <div class="space-y-3">
                                     <div
                                         class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm transition-transform hover:-translate-y-0.5">
@@ -284,9 +292,8 @@
                                             </div>
                                             <div>
                                                 <span
-                                                    class="block text-sm font-bold text-navy-dark leading-tight">Lunas</span>
-                                                <span class="text-[10px] text-gray-400 font-medium">Pembayaran
-                                                    Terverifikasi</span>
+                                                    class="block text-sm font-bold text-navy-dark leading-tight">{{ t('event_overview.paid') }}</span>
+                                                <span class="text-[10px] text-gray-400 font-medium">{{ t('event_overview.payment_verified') }}</span>
                                             </div>
                                         </div>
                                         <span class="text-2xl font-black text-green-600 font-mono">{{
@@ -301,10 +308,8 @@
                                             </div>
                                             <div>
                                                 <span
-                                                    class="block text-sm font-bold text-navy-dark leading-tight">Menunggu
-                                                    Acc</span>
-                                                <span class="text-[10px] text-gray-400 font-medium">Butuh
-                                                    Verifikasi</span>
+                                                    class="block text-sm font-bold text-navy-dark leading-tight">{{ t('event_overview.waiting_acc') }}</span>
+                                                <span class="text-[10px] text-gray-400 font-medium">{{ t('event_overview.need_verification') }}</span>
                                             </div>
                                         </div>
                                         <span class="text-2xl font-black text-amber-600 font-mono">{{
@@ -318,10 +323,8 @@
                                                 <Icon icon="ph:warning-circle-fill" class="text-xl" />
                                             </div>
                                             <div>
-                                                <span class="block text-sm font-bold text-navy-dark leading-tight">Belum
-                                                    Lunas</span>
-                                                <span class="text-[10px] text-gray-400 font-medium">Tagihan
-                                                    Terbuka</span>
+                                                <span class="block text-sm font-bold text-navy-dark leading-tight">{{ t('event_overview.unpaid') }}</span>
+                                                <span class="text-[10px] text-gray-400 font-medium">{{ t('event_overview.open_bill') }}</span>
                                             </div>
                                         </div>
                                         <span class="text-2xl font-black text-red-600 font-mono">{{
@@ -335,10 +338,11 @@
                     <!-- Leaderboard -->
                     <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Papan Peringkat</h3>
+                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">{{ t('event_overview.leaderboard') }}</h3>
                             <NuxtLink :to="`/dashboard/events/${route.params.id}/results`"
                                 class="text-xs text-text-secondary hover:text-navy-dark font-semibold transition-colors">
-                                Lihat Semua</NuxtLink>
+                                {{ t('event_overview.view_all') }}
+                            </NuxtLink>
                         </div>
                         <div class="flex-1 overflow-y-auto max-h-[440px] p-4">
                             <div class="space-y-3">
@@ -388,14 +392,14 @@
                                             {{ participant.total_score || 0 }}
                                         </div>
                                         <div class="text-[9px] font-black text-gray-400 tracking-tighter">
-                                            Total
-                                            Skor</div>
+                                            {{ t('event_overview.total_score') }}
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div v-if="topParticipants.length === 0"
                                     class="py-12 text-center text-gray-400 italic font-medium bg-gray-50/50 rounded-2xl">
-                                    Belum ada skor tersedia
+                                    {{ t('event_overview.no_scores_available') }}
                                 </div>
                             </div>
                         </div>
@@ -432,18 +436,18 @@
                                     <Icon icon="ph:share-network-bold" class="text-3xl" />
                                 </div>
                                 <div>
-                                    <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">Bagikan Event</h3>
+                                    <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">
+                                        {{ t('event_overview.share_event') }}
+                                    </h3>
                                     <p class="text-text-secondary text-sm font-medium leading-relaxed">
-                                        Sebarkan link halaman publik event ini ke sosial media atau salin link untuk
-                                        peserta.
+                                        {{ t('event_overview.share_event_desc') }}
                                     </p>
                                 </div>
                             </div>
 
                             <!-- Link Copy Segment -->
                             <div class="space-y-3 mb-8">
-                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">Link
-                                    Publik Event</label>
+                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">{{ t('event_overview.public_event_link') }}</label>
                                 <div class="flex items-center gap-2">
                                     <div
                                         class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-xs text-gray-600 font-mono truncate">
@@ -452,16 +456,14 @@
                                     <BaseButton @click="copyPublicUrl" variant="primary" size="sm"
                                         :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'"
                                         class="px-5 h-10 font-bold tracking-widest text-[10px] shrink-0 shadow-md">
-                                        {{ copySuccess ? 'Tersalin' : 'Salin' }}
+                                        {{ copySuccess ? t('event_overview.copied') : t('event_overview.copy') }}
                                     </BaseButton>
                                 </div>
                             </div>
 
                             <!-- Social Sharing -->
                             <div class="space-y-4">
-                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">Bagikan
-                                    Ke
-                                    Sosial Media</label>
+                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">{{ t('event_overview.share_to_social') }}</label>
                                 <div class="grid grid-cols-4 gap-3">
                                     <div v-for="social in [
                                         { id: 'whatsapp', icon: 'ph:whatsapp-logo-fill', color: 'text-green-500', bg: 'bg-green-50', hover: 'hover:bg-green-500' },
@@ -499,6 +501,9 @@ import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useEventContext } from '~/composables/useEventContext'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 definePageMeta({
     layout: 'dashboard'
@@ -546,9 +551,9 @@ const filteredParticipants = computed(() => {
     )
 })
 
-const tabs = [
-    { id: 'overview', label: 'Ringkasan', icon: 'ph:layout-bold' }
-]
+const tabs = computed(() => [
+    { id: 'overview', label: t('event_overview.title'), icon: 'ph:layout-bold' }
+])
 
 const groupedTargets = computed(() => {
     const targets = {}
@@ -592,7 +597,7 @@ const timeLeft = computed(() => {
     if (!event.value?.end_date) return 'N/A'
     const end = new Date(event.value.end_date)
     const diff = end - now.value
-    if (diff < 0) return 'Selesai'
+    if (diff < 0) return t('event_overview.ended')
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24))
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
@@ -632,7 +637,7 @@ const registrationStats = computed(() => {
         const catId = p.category_id || 'unassigned'
         if (!stats.byCategory[catId]) {
             stats.byCategory[catId] = {
-                name: p.category_name || 'Tanpa Kategori',
+                name: p.category_name || t('event_overview.no_category'),
                 division: p.division_name || 'N/A',
                 event_type: p.event_type_name || '',
                 gender: p.gender_division_name || '',
@@ -728,8 +733,8 @@ const alerts = computed(() => {
             id: 1,
             type: 'info',
             icon: 'ph:user-plus',
-            title: 'Peserta Belum Diatur',
-            message: `${participants.value.filter(p => !p.target_name).length} peserta belum memiliki nomor bantalan.`
+            title: t('event_overview.unassigned_participants_title'),
+            message: t('event_overview.unassigned_participants_desc', { count: participants.value.filter(p => !p.target_name).length })
         })
     }
     return alertList
@@ -809,8 +814,8 @@ const getStatusDotClass = (status) => {
 
 const getStatusLabel = (status) => {
     const labels = {
-        'active': 'Aktif',
-        'draft': 'Draft'
+        'active': t('event_overview.status_active'),
+        'draft': t('event_overview.status_draft')
     }
     return labels[status] || status
 }

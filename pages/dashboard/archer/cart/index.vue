@@ -18,7 +18,7 @@
                 <div class="flex items-center gap-2 text-sm text-white/60 mb-4">
                     <NuxtLink to="/dashboard/archer" class="hover:text-white transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-base" />
-                    <span class="text-primary font-medium">Keranjang Belanja</span>
+                    <span class="text-primary font-medium">{{ $t('cart.title') }}</span>
                 </div>
                 <div class="flex items-start gap-4">
                     <!-- Icon Badge -->
@@ -27,8 +27,8 @@
                         <Icon icon="ph:shopping-cart" class="text-primary text-2xl" />
                     </div>
                     <div class="flex-grow">
-                        <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">Keranjang Belanja</h1>
-                        <p class="text-slate-300 text-sm mt-1">Kelola produk-produk pilihan Anda sebelum checkout</p>
+                        <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">{{ $t('cart.title') }}</h1>
+                        <p class="text-slate-300 text-sm mt-1">{{ $t('cart.desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
         <div v-if="isLoading"
             class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
             <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
-            <p class="text-gray-500 font-medium">Memuat data keranjang...</p>
+            <p class="text-gray-500 font-medium">{{ $t('cart.loading') }}</p>
         </div>
 
         <div v-else>
@@ -47,11 +47,10 @@
                 <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-6">
                     <Icon icon="ph:shopping-bag-open" class="text-5xl text-gray-200" />
                 </div>
-                <h3 class="text-xl font-bold text-navy mb-2">Keranjang Belanja Kosong</h3>
-                <p class="text-gray-500 mb-8 px-6 text-center max-w-md">Belum ada perlengkapan archery di keranjang
-                    Anda.</p>
+                <h3 class="text-xl font-bold text-navy mb-2">{{ $t('cart.empty_title') }}</h3>
+                <p class="text-gray-500 mb-8 px-6 text-center max-w-md">{{ $t('cart.empty_desc') }}</p>
                 <NuxtLink to="/products">
-                    <BaseButton variant="primary" size="lg" icon="ph:shopping-bag">Mulai Belanja</BaseButton>
+                    <BaseButton variant="primary" size="lg" icon="ph:shopping-bag">{{ $t('cart.start_shopping') }}</BaseButton>
                 </NuxtLink>
             </div>
 
@@ -83,7 +82,7 @@
                                     {{ item.product_name }}</h3>
                                 <div v-if="item.color"
                                     class="inline-flex items-center gap-2 px-2 py-0.5 bg-gray-100 rounded text-[10px] text-gray-600 font-bold">
-                                    Varian: {{ item.color }}
+                                    {{ $t('cart.variant', { val: item.color }) }}
                                 </div>
                             </div>
 
@@ -118,7 +117,7 @@
                         <!-- Remove Button -->
                         <button @click="removeItem(item.uuid)"
                             class="absolute top-4 right-4 p-2 text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
-                            title="Hapus Produk">
+                            :title="$t('cart.remove_product')">
                             <Icon icon="ph:trash-bold" class="text-lg" />
                         </button>
                     </div>
@@ -130,22 +129,21 @@
                         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 ring-4 ring-primary/5">
                             <h4 class="font-bold text-navy mb-6 flex items-center gap-2">
                                 <Icon icon="ph:receipt-bold" class="text-primary" />
-                                Ringkasan Pesanan
+                                {{ $t('cart.order_summary') }}
                             </h4>
 
                             <div class="space-y-4 mb-8">
                                 <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500 font-medium">Subtotal ({{ totalProductQty }}
-                                        produk)</span>
+                                    <span class="text-gray-500 font-medium">{{ $t('cart.subtotal', { num: totalProductQty }) }}</span>
                                     <span class="font-bold text-navy">Rp {{ formatPrice(totalProductSubtotal) }}</span>
                                 </div>
                                 <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500 font-medium">Estimasi Ongkir</span>
-                                    <span class="text-gray-400 italic text-xs font-bold">Checkout untuk hitung</span>
+                                    <span class="text-gray-500 font-medium">{{ $t('cart.shipping_est') }}</span>
+                                    <span class="text-gray-400 italic text-xs font-bold">{{ $t('cart.shipping_checkout_calc') }}</span>
                                 </div>
                                 <div
                                     class="pt-4 border-t border-dashed border-gray-200 flex justify-between items-center">
-                                    <span class="font-bold text-navy tracking-widest text-xs">Total Pembayaran</span>
+                                    <span class="font-bold text-navy tracking-widest text-xs">{{ $t('cart.total_payment') }}</span>
                                     <span class="text-2xl font-black text-navy">Rp {{ formatPrice(totalProductSubtotal)
                                         }}</span>
                                 </div>
@@ -154,13 +152,12 @@
                             <BaseButton @click="navigateTo('/dashboard/archer/cart/payment')" class="w-full"
                                 variant="primary" size="lg" icon="ph:arrow-right-bold"
                                 :disabled="productCart.length === 0">
-                                Lanjut ke Pembayaran
+                                {{ $t('cart.checkout') }}
                             </BaseButton>
 
                             <div class="mt-6 p-4 bg-navy/[0.02] rounded-xl border border-navy/5">
                                 <p class="text-[10px] text-gray-400 text-center italic">
-                                    Produk akan dikirim langsung oleh masing-masing penjual setelah pembayaran
-                                    diverifikasi.
+                                    {{ $t('cart.direct_shipping_info') }}
                                 </p>
                             </div>
                         </div>
@@ -170,12 +167,12 @@
                             <div
                                 class="p-3 bg-white rounded-xl border border-gray-100 flex flex-col items-center text-center gap-2">
                                 <Icon icon="ph:shield-check-fill" class="text-primary text-xl" />
-                                <span class="text-[9px] font-bold text-navy tracking-tighter">Garansi Aman</span>
+                                <span class="text-[9px] font-bold text-navy tracking-tighter">{{ $t('cart.secure_guarantee') }}</span>
                             </div>
                             <div
                                 class="p-3 bg-white rounded-xl border border-gray-100 flex flex-col items-center text-center gap-2">
                                 <Icon icon="ph:truck-fill" class="text-primary text-xl" />
-                                <span class="text-[9px] font-bold text-navy tracking-tighter">Kurir Terpercaya</span>
+                                <span class="text-[9px] font-bold text-navy tracking-tighter">{{ $t('cart.trusted_courier') }}</span>
                             </div>
                         </div>
                     </div>
@@ -191,13 +188,16 @@ import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({
     layout: 'dashboard'
 })
 
+const { t } = useI18n()
+
 useHead({
-    title: 'Keranjang Belanja - Archeris'
+    title: computed(() => t('cart.title') + ' - Archeris')
 })
 
 const { user } = useAuth()
@@ -230,7 +230,7 @@ const fetchCart = async () => {
         }))
     } catch (e) {
         console.error('Failed to load cart', e)
-        toast.error('Gagal mengambil data keranjang')
+        toast.error(t('cart.cart_error'))
     } finally {
         isLoading.value = false
     }
@@ -244,7 +244,7 @@ const updateQty = async (item, delta) => {
 
     // Stock validation
     if (newQty > item.product_stock) {
-        toast.error(`Maaf, stok hanya tersedia ${item.product_stock} unit`)
+        toast.error(t('cart.stock_limit', { stock: item.product_stock }))
         return
     }
 
@@ -253,22 +253,22 @@ const updateQty = async (item, delta) => {
         await put(`/cart/${item.uuid}`, { quantity: newQty })
         item.quantity = newQty
     } catch (e) {
-        toast.error('Gagal memperbarui jumlah produk')
+        toast.error(t('cart.update_failed'))
     } finally {
         isProcessing.value = false
     }
 }
 
 const removeItem = async (uuid) => {
-    if (!confirm('Hapus produk ini dari keranjang?')) return
+    if (!confirm(t('cart.confirm_remove'))) return
 
     isProcessing.value = true
     try {
         await del(`/cart/${uuid}`)
         productCart.value = productCart.value.filter(i => i.uuid !== uuid)
-        toast.success('Produk berhasil dihapus')
+        toast.success(t('cart.remove_success'))
     } catch (e) {
-        toast.error('Gagal menghapus produk')
+        toast.error(t('cart.remove_failed'))
     } finally {
         isProcessing.value = false
     }

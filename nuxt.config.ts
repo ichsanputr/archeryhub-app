@@ -46,7 +46,10 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
     detectBrowserLanguage: false,
-    pages: dashboardPages
+    pages: dashboardPages,
+    compilation: {
+      strictMessage: false
+    }
   },
   components: [
     {

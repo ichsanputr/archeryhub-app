@@ -16,11 +16,11 @@
                             <nav
                                 class="flex text-[10px] font-bold text-white/40 tracking-widest mb-1 items-center gap-1.5">
                                 <NuxtLink :to="`/dashboard/archer/events/${eventId}`"
-                                    class="hover:text-white transition-colors">Event</NuxtLink>
+                                    class="hover:text-white transition-colors">{{ t('qualification.nav_event') }}</NuxtLink>
                                 <Icon icon="ph:caret-right-bold" class="text-[9px]" />
-                                <span class="text-white/70">Hasil Kualifikasi</span>
+                                <span class="text-white/70">{{ t('qualification.nav_title') }}</span>
                             </nav>
-                            <h1 class="text-2xl font-black tracking-tight">Hasil Kualifikasi Saya</h1>
+                            <h1 class="text-2xl font-black tracking-tight">{{ t('qualification.title') }}</h1>
                         </div>
                     </div>
                     <div class="flex items-center gap-3 flex-shrink-0">
@@ -63,7 +63,7 @@
                     </div>
                     <div class="flex-1 text-center sm:text-left">
                         <h2 class="text-2xl sm:text-3xl font-black text-navy dark:text-white tracking-tight">
-                            {{ userProfile?.full_name || 'Archer' }}
+                            {{ userProfile?.full_name || t('qualification.archer') }}
                         </h2>
                         <div
                             class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2 text-slate-500 dark:text-slate-400 text-xs font-medium">
@@ -74,13 +74,12 @@
                             <span class="w-1 h-1 rounded-full bg-slate-300" />
                             <span>{{ currentCategoryName || categoryName || '-' }}</span>
                             <span class="w-1 h-1 rounded-full bg-slate-300" />
-                            <span>{{ userProfile?.club_name || 'Independent' }}</span>
+                            <span>{{ userProfile?.club_name || t('qualification.independent') }}</span>
                         </div>
                     </div>
                     <!-- Rank Badge -->
                     <div class="flex flex-col items-center sm:items-end">
-                        <span class="text-[10px] font-black text-slate-400 tracking-widest mb-1">Peringkat
-                            Kualifikasi</span>
+                        <span class="text-[10px] font-black text-slate-400 tracking-widest mb-1">{{ t('qualification.rank_title') }}</span>
                         <div class="flex items-baseline gap-1">
                             <span class="text-5xl font-black text-primary tracking-tighter tabular-nums">{{ qualRank ||
                                 '-' }}</span>
@@ -95,8 +94,9 @@
                 <div
                     class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-between group hover:border-primary/30 transition-colors">
                     <div>
-                        <span class="text-[10px] text-slate-400 font-black tracking-widest block mb-1">Total
-                            Skor</span>
+                        <span class="text-[10px] text-slate-400 font-black tracking-widest block mb-1">
+                            {{ t('qualification.total_score') }}
+                        </span>
                         <span class="text-4xl font-black text-navy dark:text-white tracking-tighter tabular-nums">{{
                             qualTotalScore || 0 }}</span>
                     </div>
@@ -108,8 +108,9 @@
                 <div
                     class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-between group hover:border-primary/30 transition-colors">
                     <div>
-                        <span class="text-[10px] text-slate-400 font-black tracking-widest block mb-1">Total
-                            10s+X</span>
+                        <span class="text-[10px] text-slate-400 font-black tracking-widest block mb-1">
+                            {{ t('qualification.total_ten_x') }}
+                        </span>
                         <span class="text-4xl font-black text-navy dark:text-white tracking-tighter tabular-nums">{{
                             qualTotalTenX || 0 }}</span>
                     </div>
@@ -121,8 +122,9 @@
                 <div
                     class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-between group hover:border-primary/30 transition-colors">
                     <div>
-                        <span class="text-[10px] text-slate-400 font-black tracking-widest block mb-1">Total
-                            X</span>
+                        <span class="text-[10px] text-slate-400 font-black tracking-widest block mb-1">
+                            {{ t('qualification.total_x') }}
+                        </span>
                         <span class="text-4xl font-black text-navy dark:text-white tracking-tighter tabular-nums">{{
                             qualTotalX || 0 }}</span>
                     </div>
@@ -142,7 +144,7 @@
                         <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
                             <Icon icon="ph:chart-line-up-bold" class="text-lg" />
                         </div>
-                        Jejak Kualifikasi
+                        {{ t('qualification.history_title') }}
                     </h4>
                     <!-- Session Tabs -->
                     <div v-if="qualSessions.length > 1"
@@ -150,7 +152,7 @@
                         <button v-for="(session, idx) in qualSessions" :key="idx" @click="activeSessionIdx = idx"
                             class="px-5 py-2 rounded-lg transition-all"
                             :class="activeSessionIdx === idx ? 'bg-white dark:bg-slate-700 text-navy dark:text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'">
-                            Sesi {{ idx + 1 }}
+                            {{ t('qualification.session', { num: idx + 1 }) }}
                         </button>
                     </div>
                 </div>
@@ -160,10 +162,10 @@
                         <thead
                             class="bg-slate-50/50 dark:bg-slate-900/50 text-slate-400 text-[10px] font-black tracking-widest">
                             <tr>
-                                <th class="px-6 sm:px-8 py-4">End</th>
-                                <th class="px-6 sm:px-8 py-4 text-center">Rincian Skor</th>
-                                <th class="px-6 sm:px-8 py-4 text-center">Skor End</th>
-                                <th class="px-6 sm:px-8 py-4 text-center">10s+X</th>
+                                <th class="px-6 sm:px-8 py-4">{{ t('qualification.end') }}</th>
+                                <th class="px-6 sm:px-8 py-4 text-center">{{ t('qualification.score_details') }}</th>
+                                <th class="px-6 sm:px-8 py-4 text-center">{{ t('qualification.end_score') }}</th>
+                                <th class="px-6 sm:px-8 py-4 text-center">{{ t('qualification.ten_x') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-50 dark:divide-slate-700 font-medium">
@@ -213,7 +215,7 @@
                                 <tr class="bg dark:bg-primary/5 border-t-2 border-primary">
                                     <td class="px-6 sm:px-8 py-5 text-right tracking-widest text-[10px] text-slate-500 font-black"
                                         colspan="2">
-                                        Total Sesi:
+                                        {{ t('qualification.session_total') }}
                                     </td>
                                     <td
                                         class="px-6 sm:px-8 py-5 text-center text-3xl font-black tracking-tighter tabular-nums">
@@ -229,8 +231,9 @@
                             <tr v-else>
                                 <td colspan="4" class="py-20 text-center">
                                     <Icon icon="ph:target-light" class="text-6xl mx-auto mb-4 opacity-10" />
-                                    <span class="text-xs font-black tracking-widest text-slate-300 block">Data
-                                        tidak tersedia</span>
+                                    <span class="text-xs font-black tracking-widest text-slate-300 block">
+                                        {{ t('qualification.no_data') }}
+                                    </span>
                                 </td>
                             </tr>
                         </tbody>
@@ -244,6 +247,9 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const { get } = useApi()
 const route = useRoute()
@@ -277,7 +283,7 @@ const activeSession = computed(() => qualSessions.value[activeSessionIdx.value] 
 
 const getOrdinal = (n) => {
     if (!n) return ''
-    const s = ["th", "st", "nd", "rd"]
+    const s = [t('qualification.th'), t('qualification.st'), t('qualification.nd'), t('qualification.rd')]
     const v = n % 100
     return s[(v - 20) % 10] || s[v] || s[0]
 }

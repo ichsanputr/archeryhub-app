@@ -3,15 +3,15 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
       <div>
-        <h1 class="text-3xl font-black text-navy tracking-tight">Profil Pemanah</h1>
-        <p class="text-gray-500 mt-1 font-medium">Atur informasi publik yang akan ditampilkan di profil Anda</p>
+        <h1 class="text-3xl font-black text-navy tracking-tight">{{ t('profile.title') }}</h1>
+        <p class="text-gray-500 mt-1 font-medium">{{ t('profile.subtitle') }}</p>
       </div>
       <div class="flex gap-3">
         <BaseButton v-if="user?.username" variant="outline" size="sm" icon="ph:eye" @click="previewProfile">
-          Pratinjau Publik
+          {{ t('profile.preview') }}
         </BaseButton>
         <BaseButton variant="gold" size="sm" icon="ph:floppy-disk" @click="saveProfile" :loading="isSaving">
-          Simpan Profil
+          {{ t('profile.save_profile') }}
         </BaseButton>
       </div>
     </div>
@@ -34,17 +34,17 @@
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
             <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
               <Icon icon="ph:image-bold" class="text-primary text-xl" />
-              MEDIA PROFIL
+              {{ t('profile.media_title') }}
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
               <!-- Avatar -->
               <div class="space-y-4">
-                <p class="text-[10px] font-black text-navy/30 tracking-widest">Foto Profil</p>
+                <p class="text-[10px] font-black text-navy/30 tracking-widest">{{ t('profile.avatar_label') }}</p>
                 <div class="flex items-center gap-6">
                   <div
                     class="w-24 h-24 rounded-full bg-gray-50 border-4 border-white shadow-md overflow-hidden shrink-0 relative group">
                     <img :src="useImageOrDefault(accountForm.avatar_url, accountForm.full_name)"
-                      class="w-full h-full object-cover" />
+                       class="w-full h-full object-cover" />
                     <div
                       class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
                       @click="openMediaLibrary('avatar')">
@@ -52,24 +52,24 @@
                     </div>
                   </div>
                   <div class="space-y-2">
-                    <h5 class="text-xs font-black text-navy ">Profile Picture</h5>
-                    <p class="text-[10px] text-gray-500 max-w-[160px]">Rasio 1:1 direkomendasikan. Maksimal 10MB.</p>
+                    <h5 class="text-xs font-black text-navy ">{{ t('profile.picture_title') }}</h5>
+                    <p class="text-[10px] text-gray-500 max-w-[160px]">{{ t('profile.picture_desc') }}</p>
                     <BaseButton variant="outline" size="xs" icon="ph:pencil-simple" @click="openMediaLibrary('avatar')">
-                      Ganti Foto</BaseButton>
+                      {{ t('profile.change_photo') }}</BaseButton>
                   </div>
                 </div>
               </div>
 
               <!-- Banner -->
               <div class="space-y-4">
-                <p class="text-[10px] font-black text-navy/30 tracking-widest">Banner Profil (Hero)</p>
+                <p class="text-[10px] font-black text-navy/30 tracking-widest">{{ t('profile.banner_label') }}</p>
                 <div
                   class="w-full aspect-[21/9] rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden relative group">
                   <img v-if="accountForm.banner_url" :src="useImageOrDefault(accountForm.banner_url)"
                     class="w-full h-full object-cover" />
                   <div v-else class="w-full h-full flex flex-col items-center justify-center text-gray-400">
                     <Icon icon="ph:image-square" class="text-3xl mb-1" />
-                    <span class="text-[10px] font-bold">Belum ada banner</span>
+                    <span class="text-[10px] font-bold">{{ t('profile.no_banner') }}</span>
                   </div>
                   <div
                     class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
@@ -81,8 +81,7 @@
                     <Icon icon="ph:trash" />
                   </button>
                 </div>
-                <p class="text-[10px] text-gray-500">Akan digunakan sebagai latar belakang di profil publik Anda. Rasio
-                  lebar disarankan.</p>
+                <p class="text-[10px] text-gray-500">{{ t('profile.banner_desc') }}</p>
               </div>
             </div>
           </div>
@@ -90,44 +89,44 @@
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
             <h3 class="text-sm font-black text-navy  tracking-widest flex items-center gap-2">
               <Icon icon="ph:user-circle" class="text-black text-xl" />
-              Data Pribadi
+              {{ t('profile.personal_data') }}
             </h3>
             <p class="text-sm text-gray-600">
-              Informasi ini akan digunakan untuk keperluan administrasi event dan tampilan profil publik.
+              {{ t('profile.personal_desc') }}
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-              <BaseInput v-model="accountForm.full_name" label="Nama Lengkap" placeholder="Nama lengkap Anda"
+              <BaseInput v-model="accountForm.full_name" :label="t('profile.full_name')" :placeholder="t('profile.full_name_placeholder')"
                 required />
-              <BaseInput v-model="accountForm.username" label="Username" placeholder="username"
-                hint="Untuk URL profil publik" />
+              <BaseInput v-model="accountForm.username" :label="t('profile.username')" placeholder="username"
+                :hint="t('profile.username_hint')" />
 
-              <BaseInput v-model="accountForm.date_of_birth" label="Tanggal Lahir" type="date"
+              <BaseInput v-model="accountForm.date_of_birth" :label="t('profile.dob')" type="date"
                 icon="mingcute:calendar-line" />
-              <BaseSelect v-model="accountForm.gender" label="Jenis Kelamin" :items="[
-                { title: 'Laki-laki', value: 'male' },
-                { title: 'Perempuan', value: 'female' }
+              <BaseSelect v-model="accountForm.gender" :label="t('profile.gender')" :items="[
+                { title: t('profile.male'), value: 'male' },
+                { title: t('profile.female'), value: 'female' }
               ]" icon="ph:gender-intersex" />
 
-              <BaseInput v-model="accountForm.phone" label="Nomor Telepon" type="tel" placeholder="+62 812-3456-7890"
-                icon="ph:phone" numberOnly :rules="[v => !v || String(v).length >= 8 || 'Nomor HP minimal 8 digit']" />
-              <BaseSelect v-model="accountForm.city" label="Kota / Kabupaten" :items="cityOptions"
-                placeholder="Pilih kota" icon="mingcute:building-2-line" />
+              <BaseInput v-model="accountForm.phone" :label="t('profile.phone')" type="tel" placeholder="+62 812-3456-7890"
+                icon="ph:phone" numberOnly :rules="[v => !v || String(v).length >= 8 || t('profile.phone_error')]" />
+              <BaseSelect v-model="accountForm.city" :label="t('profile.city')" :items="cityOptions"
+                :placeholder="t('profile.select_city')" icon="mingcute:building-2-line" />
 
-              <BaseInput v-model="accountForm.school" label="Sekolah / Universitas"
-                placeholder="Nama sekolah / universitas" icon="ph:student" />
-              <BaseSelect v-model="accountForm.bow_type" label="Tipe Busur" :items="[
+              <BaseInput v-model="accountForm.school" :label="t('profile.school')"
+                :placeholder="t('profile.school_placeholder')" icon="ph:student" />
+              <BaseSelect v-model="accountForm.bow_type" :label="t('profile.bow_type')" :items="[
                 { title: 'Recurve', value: 'recurve' },
                 { title: 'Compound', value: 'compound' },
                 { title: 'Barebow', value: 'barebow' },
                 { title: 'Traditional', value: 'traditional' }
               ]" icon="hugeicons:archer" />
 
-              <BaseSelect v-model="accountForm.club_id" label="Klub" :items="clubOptions" placeholder="Pilih klub"
+              <BaseSelect v-model="accountForm.club_id" :label="t('profile.club')" :items="clubOptions" :placeholder="t('profile.select_club')"
                 icon="ph:buildings" />
 
               <div class="md:col-span-2">
-                <BaseTextarea v-model="accountForm.address" label="Alamat Lengkap" placeholder="Alamat lengkap Anda"
+                <BaseTextarea v-model="accountForm.address" :label="t('profile.address')" :placeholder="t('profile.address_placeholder')"
                   :rows="3" icon="ph:house" />
               </div>
             </div>
@@ -135,7 +134,7 @@
             <div class="flex justify-end mt-6 pt-6 border-t border-gray-100">
               <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveAccountInfo"
                 :loading="isSavingAccount">
-                Simpan Informasi
+                {{ t('profile.save_info') }}
               </BaseButton>
             </div>
           </div>
@@ -150,17 +149,17 @@
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
             <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
               <Icon icon="ph:identification-card-bold" class="text-primary text-xl" />
-              TENTANG SAYA
+              {{ t('profile.about_me') }}
             </h3>
             <div class="space-y-4">
               <div>
-                <label class="block text-sm font-bold text-navy mb-2">Deskripsi Diri</label>
+                <label class="block text-sm font-bold text-navy mb-2">{{ t('profile.self_desc') }}</label>
                 <TiptapEditor v-model="profile.bio"
-                  placeholder="Ceritakan sejarah panahan Anda, filosofi, atau informasi menarik lainnya..."
+                  :placeholder="t('profile.bio_placeholder')"
                   minHeight="180px" />
               </div>
               <p class="text-[10px] text-gray-400 font-medium italic">
-                * Bio akan ditampilkan di halaman profil publik Anda untuk dilihat oleh klub dan penyelenggara event.
+                {{ t('profile.bio_hint') }}
               </p>
             </div>
           </div>
@@ -169,7 +168,7 @@
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
             <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
               <Icon icon="ph:medal-bold" class="text-primary text-xl" />
-              PRESTASI & PENGHARGAAN
+              {{ t('profile.achievements') }}
             </h3>
             <div class="space-y-4">
               <div v-for="(ach, idx) in achievementsList" :key="idx" class="flex items-center gap-3">
@@ -179,7 +178,7 @@
                     :class="ach.is_highlighted ? 'bg-amber-100 text-amber-600' : 'bg-gray-50 text-gray-300 hover:text-gray-400'">
                     <Icon :icon="ach.is_highlighted ? 'ph:star-fill' : 'ph:star'" />
                   </button>
-                  <BaseInput v-model="ach.text" placeholder="Contoh: Juara 1 Kejurnas 2023" icon="ph:medal-bold"
+                  <BaseInput v-model="ach.text" :placeholder="t('profile.achievement_placeholder')" icon="ph:medal-bold"
                     class="flex-1" />
                 </div>
                 <button @click="achievementsList.splice(idx, 1)"
@@ -190,11 +189,11 @@
 
               <BaseButton variant="outline" size="sm" icon="ph:plus-bold"
                 @click="achievementsList.push({ text: '', is_highlighted: false })" class="w-full">
-                Tambah Prestasi
+                {{ t('profile.add_achievement') }}
               </BaseButton>
 
               <p class="text-[10px] text-gray-400 font-medium italic">
-                * Klik ikon bintang untuk menampilkan prestasi di bagian atas (maksimal 3).
+                {{ t('profile.star_hint') }}
               </p>
             </div>
           </div>
@@ -203,11 +202,11 @@
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
             <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
               <Icon icon="ph:bow-arrow-bold" class="text-primary text-xl" />
-              PERALATAN (GEAR)
+              {{ t('profile.gear') }}
             </h3>
             <div class="space-y-4">
               <div v-for="(eq, idx) in equipmentList" :key="idx" class="flex items-center gap-3">
-                <BaseInput v-model="equipmentList[idx]" placeholder="Contoh: Hoyt Formula XD, Easton X10" class="flex-1"
+                <BaseInput v-model="equipmentList[idx]" :placeholder="t('profile.gear_placeholder')" class="flex-1"
                   icon="ph:gear-bold" />
                 <button @click="equipmentList.splice(idx, 1)"
                   class="text-gray-400 hover:text-red-500 transition-colors p-2 mt-1">
@@ -217,11 +216,11 @@
 
               <BaseButton variant="outline" size="sm" icon="ph:plus-bold" @click="equipmentList.push('')"
                 class="w-full">
-                Tambah Peralatan
+                {{ t('profile.add_gear') }}
               </BaseButton>
 
               <p class="text-[10px] text-gray-400 font-medium italic">
-                * Daftar peralatan yang Anda gunakan saat ini.
+                {{ t('profile.gear_hint') }}
               </p>
             </div>
           </div>
@@ -230,15 +229,15 @@
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
             <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
               <Icon icon="ph:calendar-check-bold" class="text-primary text-xl" />
-              RIWAYAT EVENT
+              {{ t('profile.event_history') }}
             </h3>
             <div class="space-y-4">
               <p class="text-sm text-gray-600">
-                Riwayat event akan otomatis ditampilkan dari data event yang Anda ikuti.
+                {{ t('profile.event_history_desc') }}
               </p>
               <div class="p-4 bg-gray-50 rounded-xl">
                 <p class="text-sm text-gray-500">
-                  Total event yang diikuti: <span class="font-bold text-navy">{{ userStats.totalEvents || 0 }}</span>
+                  {{ t('profile.total_events_label') }} <span class="font-bold text-navy">{{ userStats.totalEvents || 0 }}</span>
                 </p>
               </div>
             </div>
@@ -251,12 +250,12 @@
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
                 <Icon icon="ph:share-network-bold" class="text-primary text-xl" />
-                MEDIA SOSIAL
+                {{ t('profile.social_media') }}
               </h3>
 
               <div class="relative group">
                 <BaseButton variant="outline" size="xs" icon="ph:plus-bold">
-                  Tambah Media Sosial
+                  {{ t('profile.add_social') }}
                 </BaseButton>
                 <!-- Dropdown for adding socials -->
                 <div
@@ -267,13 +266,13 @@
                     {{ plat.title }}
                   </button>
                   <p v-if="remainingPlatforms.length === 0" class="px-4 py-2 text-xs text-gray-400 italic">
-                    Semua platform sudah ditambahkan
+                    {{ t('profile.all_platforms_added') }}
                   </p>
                 </div>
               </div>
             </div>
 
-            <p class="text-sm text-gray-600">Tautkan akun media sosial Anda untuk dilihat oleh publik.</p>
+            <p class="text-sm text-gray-600">{{ t('profile.social_media_desc') }}</p>
 
             <div class="grid grid-cols-1 gap-4 mt-2">
               <div v-for="(social, idx) in userSocials" :key="social.platform"
@@ -300,7 +299,7 @@
               <div v-if="userSocials.length === 0"
                 class="py-12 text-center border-2 border-dashed border-gray-100 rounded-2xl">
                 <Icon icon="ph:share-network" class="text-4xl text-gray-200 mx-auto mb-3" />
-                <p class="text-sm text-gray-400 font-medium">Belum ada media sosial yang ditambahkan</p>
+                <p class="text-sm text-gray-400 font-medium">{{ t('profile.no_socials') }}</p>
               </div>
             </div>
           </div>
@@ -345,19 +344,19 @@
         <!-- Helpful Tips -->
         <div class="bg-navy rounded-2xl p-6 text-white shadow-md relative overflow-hidden">
           <Icon icon="ph:lightbulb" class="absolute -right-4 -bottom-4 text-8xl text-white/5 rotate-12" />
-          <h4 class="font-black text-white mb-3 flex items-center gap-2">Tips Profil</h4>
+          <h4 class="font-black text-white mb-3 flex items-center gap-2">{{ t('profile.tips_title') }}</h4>
           <ul class="text-xs space-y-3 text-gray-300 font-medium">
             <li class="flex gap-2">
               <Icon icon="ph:check-circle-fill" class="text-white shrink-0 text-base" />
-              Gunakan foto profil yang profesional dengan peralatan panah Anda.
+              {{ t('profile.tips_avatar') }}
             </li>
             <li class="flex gap-2">
               <Icon icon="ph:check-circle-fill" class="text-white shrink-0 text-base" />
-              Cantumkan prestasi terbaru di bagian paling atas.
+              {{ t('profile.tips_achievement') }}
             </li>
             <li class="flex gap-2">
               <Icon icon="ph:check-circle-fill" class="text-white shrink-0 text-base" />
-              Bio yang menarik membantu klub mengenal karakter Anda.
+              {{ t('profile.tips_bio') }}
             </li>
           </ul>
         </div>
@@ -373,13 +372,16 @@ import { ref, onMounted, watch, computed, nextTick } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
+const { t } = useI18n()
+
 useHead({
-  title: 'Profil Pemanah - Archeris Dashboard'
+  title: computed(() => `${t('profile.title')} - Archeris Dashboard`)
 })
 
 const { user, archerProfile } = useAuth()
@@ -436,7 +438,7 @@ const toggleHighlight = (index) => {
   if (!item.is_highlighted) {
     const activeHighlights = achievementsList.value.filter(a => a.is_highlighted).length
     if (activeHighlights >= 3) {
-      toast.warning('Maksimal 3 prestasi yang dapat di-highlight')
+      toast.warning(t('profile.toast_max_highlight'))
       return
     }
   }
@@ -533,11 +535,11 @@ const allSections = [
 ]
 
 const activeTab = ref('information')
-const tabs = [
-  { id: 'information', label: 'Informasi', icon: 'ph:user-circle-bold' },
-  { id: 'profile', label: 'Profil', icon: 'ph:identification-card-bold' },
-  { id: 'contact', label: 'Kontak', icon: 'ph:phone-bold' }
-]
+const tabs = computed(() => [
+  { id: 'information', label: t('profile.tab_information'), icon: 'ph:user-circle-bold' },
+  { id: 'profile', label: t('profile.tab_profile'), icon: 'ph:identification-card-bold' },
+  { id: 'contact', label: t('profile.tab_contact'), icon: 'ph:phone-bold' }
+])
 
 
 // Initialize from user data
@@ -639,10 +641,10 @@ const saveAccountInfo = async () => {
   isSavingAccount.value = true
   try {
     await put('/user/profile', accountForm.value)
-    toast.success('Informasi berhasil disimpan')
+    toast.success(t('profile.toast_save_success'))
   } catch (error) {
     console.error('Failed to save account info:', error)
-    toast.error('Gagal menyimpan informasi')
+    toast.error(t('profile.toast_save_failed'))
   } finally {
     isSavingAccount.value = false
   }
@@ -664,9 +666,9 @@ const saveProfile = async () => {
       banner_url: accountForm.value.banner_url
     }
     await put('/user/profile', payload)
-    toast.success('Profil berhasil disimpan')
+    toast.success(t('profile.toast_profile_success'))
   } catch (error) {
-    toast.error(error.message || 'Gagal menyimpan profil')
+    toast.error(error.message || t('profile.toast_profile_failed'))
   } finally {
     isSaving.value = false
   }
@@ -676,7 +678,7 @@ const previewProfile = () => {
   if (user.value?.username) {
     window.open(`/archers/${user.value.username}`, '_blank')
   } else {
-    toast.warning('Username profil belum diatur. Silakan simpan profil terlebih dahulu.')
+    toast.warning(t('profile.toast_username_required'))
   }
 }
 </script>

@@ -2,8 +2,8 @@
   <div class="space-y-6">
     <!-- Header -->
     <div>
-      <h1 class="text-3xl font-black text-navy">Pengaturan Akun</h1>
-      <p class="text-text-secondary mt-1 font-medium">Kelola kredensial dan keamanan akun Anda</p>
+      <h1 class="text-3xl font-black text-navy">{{ t('settings.title') }}</h1>
+      <p class="text-text-secondary mt-1 font-medium">{{ t('settings.subtitle') }}</p>
     </div>
 
     <!-- Settings Nav Tabs -->
@@ -21,19 +21,19 @@
       class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
 
       <div>
-        <h3 class="text-xl font-bold text-navy mb-2">Keamanan & Login</h3>
-        <p class="text-gray-500 text-sm mb-6">Kelola kredensial, email, dan metode login akun Anda</p>
+        <h3 class="text-xl font-bold text-navy mb-2">{{ t('settings.security_title') }}</h3>
+        <p class="text-gray-500 text-sm mb-6">{{ t('settings.security_subtitle') }}</p>
 
         <!-- Email Change Section -->
         <div class="mb-8">
           <h4 class="text-sm font-black text-navy tracking-widest mb-4 flex items-center gap-2">
             <Icon icon="ph:envelope-simple-open-bold" class="text-primary" />
-            Ubah Alamat Email
+            {{ t('settings.change_email') }}
           </h4>
 
           <div class="space-y-4 max-w-xl">
             <div>
-              <label class="label-xs">Email Saat Ini</label>
+              <label class="label-xs">{{ t('settings.current_email') }}</label>
               <div
                 class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-400 font-medium">
                 <Icon icon="ph:envelope-bold" />
@@ -42,31 +42,29 @@
             </div>
 
             <div v-if="!otpSent">
-              <label class="label-xs">Email Baru</label>
+              <label class="label-xs">{{ t('settings.new_email') }}</label>
               <div class="flex gap-2">
                 <div class="relative flex-1">
                   <Icon icon="ph:at-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input v-model="emailForm.new_email" type="email" placeholder="email-baru@example.com"
+                  <input v-model="emailForm.new_email" type="email" :placeholder="t('settings.new_email_placeholder')"
                     class="w-full pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-primary transition-all" />
                 </div>
                 <BaseButton variant="primary" size="md" @click="requestOTP" :loading="isRequestingOTP"
                   :disabled="!emailForm.new_email">
-                  Kirim OTP
+                  {{ t('settings.send_otp') }}
                 </BaseButton>
               </div>
-              <p class="text-[10px] text-gray-400 mt-2">Kami akan mengirimkan kode verifikasi ke email baru Anda untuk
-                memastikan kepemilikan.</p>
+              <p class="text-[10px] text-gray-400 mt-2">{{ t('settings.email_hint') }}</p>
             </div>
 
             <div v-else class="space-y-4 pt-2 animate-in fade-in slide-in-from-top-2">
               <div class="p-3 bg-primary/10 border border-primary/20 rounded-xl flex items-center gap-3">
                 <Icon icon="ph:info-bold" class="text-primary" />
-                <p class="text-xs text-primary-dark font-medium">Kode OTP telah dikirim ke <strong>{{
-                  emailForm.new_email }}</strong></p>
+                <p class="text-xs text-primary-dark font-medium" v-html="t('settings.otp_sent_to', { email: `<strong>${emailForm.new_email}</strong>` })"></p>
               </div>
 
               <div>
-                <label class="label-xs">Kode Verifikasi (6 Digit)</label>
+                <label class="label-xs">{{ t('settings.verification_code') }}</label>
                 <div class="flex gap-2">
                   <div class="relative flex-1">
                     <Icon icon="ph:key-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -75,14 +73,14 @@
                   </div>
                   <BaseButton variant="gold" size="md" @click="verifyEmailChange" :loading="isVerifyingOTP"
                     :disabled="emailForm.otp.length < 6">
-                    Verifikasi & Ubah
+                    {{ t('settings.verify_change') }}
                   </BaseButton>
                 </div>
               </div>
 
               <button @click="otpSent = false"
                 class="text-xs font-bold text-gray-400 hover:text-navy transition-colors">
-                Gunakan email lain
+                {{ t('settings.use_another_email') }}
               </button>
             </div>
           </div>
@@ -111,7 +109,7 @@
         <div class="mb-8">
           <h4 class="text-sm font-black text-navy  tracking-widest mb-4 flex items-center gap-2">
             <Icon icon="ph:link-bold" class="text-primary" />
-            Metode Login Terhubung
+            {{ t('settings.connected_methods') }}
           </h4>
           <div class="space-y-3">
             <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
@@ -120,18 +118,17 @@
                   <Icon icon="flat-color-icons:google" class="text-xl" />
                 </div>
                 <div>
-                  <p class="font-bold text-navy">Google Login</p>
-                  <p class="text-xs text-gray-400">Hubungkan untuk login lebih cepat</p>
+                  <p class="font-bold text-navy">{{ t('settings.google_login') }}</p>
+                  <p class="text-xs text-gray-400">{{ t('settings.google_login_desc') }}</p>
                 </div>
               </div>
               <div class="flex items-center gap-2">
                 <span v-if="userData?.google_id"
-                  class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">Terhubung</span>
+                  class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">{{ t('settings.connected') }}</span>
                 <template v-else>
-                  <span class="px-3 py-1 bg-gray-200 text-gray-500 text-xs font-bold rounded-full mr-2">Tidak
-                    Terhubung</span>
+                  <span class="px-3 py-1 bg-gray-200 text-gray-500 text-xs font-bold rounded-full mr-2">{{ t('settings.not_connected') }}</span>
                   <BaseButton variant="outline" size="sm" @click="linkGoogle">
-                    Hubungkan
+                    {{ t('settings.connect') }}
                   </BaseButton>
                 </template>
               </div>
@@ -142,14 +139,14 @@
                   <Icon icon="ph:envelope-bold" class="text-xl text-gray-400" />
                 </div>
                 <div>
-                  <p class="font-bold text-navy">Email & Password</p>
-                  <p class="text-xs text-gray-400">Login manual dengan password</p>
+                  <p class="font-bold text-navy">{{ t('settings.email_password') }}</p>
+                  <p class="text-xs text-gray-400">{{ t('settings.email_password_desc') }}</p>
                 </div>
               </div>
               <span
                 :class="hasPassword ? 'px-3 py-1 bg-green-100 text-green-600' : 'px-3 py-1 bg-gray-200 text-gray-500'"
                 class="text-xs font-bold rounded-full">
-                {{ hasPassword ? 'Aktif' : 'Belum Aktif' }}
+                {{ hasPassword ? t('settings.active') : t('settings.not_active') }}
               </span>
             </div>
           </div>
@@ -159,21 +156,21 @@
         <div class="pt-8 border-t border-gray-100">
           <h4 class="text-sm font-black text-navy tracking-widest mb-6 flex items-center gap-2">
             <Icon icon="ph:lock-key-bold" class="text-primary" />
-            {{ hasPassword ? 'Ganti Password' : 'Setel Password Akun' }}
+            {{ hasPassword ? t('settings.change_password') : t('settings.set_password') }}
           </h4>
 
           <div class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-              <BaseInput v-model="securityForm.new_password" label="Password Baru" type="password"
+              <BaseInput v-model="securityForm.new_password" :label="t('settings.new_password')" type="password"
                 placeholder="••••••••" required />
-              <BaseInput v-model="securityForm.confirm_password" label="Konfirmasi Password Baru" type="password"
+              <BaseInput v-model="securityForm.confirm_password" :label="t('settings.confirm_password')" type="password"
                 placeholder="••••••••" required />
             </div>
 
             <div class="pt-4 border-t border-gray-50">
               <BaseButton variant="primary" size="md" icon="ph:lock-key" @click="changePassword"
                 :loading="isChangingPassword" :disabled="!securityForm.new_password">
-                {{ hasPassword ? 'Perbarui Password' : 'Setel Password' }}
+                {{ hasPassword ? t('settings.update_password') : t('settings.save_password') }}
               </BaseButton>
             </div>
           </div>
@@ -183,10 +180,10 @@
     <!-- TAB: Tema -->
     <div v-show="activeTab === 'theme'" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
       <h3 class="text-xl font-black text-navy mb-2 flex items-center justify-between">
-        Tema Dashboard
+        {{ t('settings.theme_title') }}
         <Icon v-if="isSyncing" icon="ph:circle-notch" class="animate-spin text-primary" />
       </h3>
-      <p class="text-gray-500 text-sm mb-6">Pilih palet warna yang sesuai dengan preferensi Anda</p>
+      <p class="text-gray-500 text-sm mb-6">{{ t('settings.theme_subtitle') }}</p>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="(theme, key) in themes" :key="key" role="button"
@@ -222,7 +219,7 @@
                 <div class="size-3 rounded-full" :style="{ backgroundColor: theme.sidebarBg }"></div>
               </div>
             </div>
-            <p class="text-xs text-gray-400 capitalize">{{ key }} theme for professional look</p>
+            <p class="text-xs text-gray-400 capitalize">{{ t('settings.theme_look', { name: key }) }}</p>
           </div>
 
           <!-- Selection Indicator -->
@@ -238,10 +235,10 @@
   <!-- Save Button (Optional depending on tab) -->
   <div v-if="activeTab === 'theme'" class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
     <BaseButton variant="outline" size="md" @click="resetForm" :loading="isResetting">
-      Batal
+      {{ t('settings.cancel') }}
     </BaseButton>
     <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral">
-      Simpan Perubahan
+      {{ t('settings.save_changes') }}
     </BaseButton>
   </div>
 </template>
@@ -254,14 +251,17 @@ import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useTheme } from '~/composables/useTheme'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({
   title: 'Pengaturan',
   layout: 'dashboard'
 })
 
+const { t } = useI18n()
+
 useHead({
-  title: 'Pengaturan Akun - Archeris Dashboard'
+  title: computed(() => `${t('settings.title')} - Archeris Dashboard`)
 })
 
 const { login, user } = useAuth()
@@ -270,10 +270,10 @@ const toast = useToast()
 const { currentTheme, themes, isSyncing } = useTheme()
 const route = useRoute()
 
-const tabs = [
-  { label: 'Keamanan', value: 'security', icon: 'ph:shield-check' },
-  { label: 'Tema', value: 'theme', icon: 'ph:palette' },
-]
+const tabs = computed(() => [
+  { label: t('settings.tab_security'), value: 'security', icon: 'ph:shield-check' },
+  { label: t('settings.tab_theme'), value: 'theme', icon: 'ph:palette' },
+])
 
 const activeTab = ref('security')
 const isRequestingOTP = ref(false)
@@ -298,13 +298,13 @@ const securityForm = ref({
 const hasPassword = computed(() => !!userData.value?.has_password)
 
 const passwordStatusLabel = computed(() => {
-  return hasPassword.value ? 'Password Telah Diatur' : 'Password Belum Diatur'
+  return hasPassword.value ? t('settings.password_set') : t('settings.password_not_set')
 })
 
 const passwordStatusDescription = computed(() => {
   return hasPassword.value
-    ? 'Anda dapat login menggunakan kombinasi email dan password.'
-    : 'Anda saat ini login menggunakan Google. Setel password untuk mengaktifkan login manual.'
+    ? t('settings.password_set_desc')
+    : t('settings.password_not_set_desc')
 })
 
 // Determine user type
@@ -340,7 +340,7 @@ const linkGoogle = () => {
 onMounted(async () => {
   // Check for error in query params (e.g. from Google linking)
   if (route.query.error === 'email_mismatch') {
-    toast.error('Gagal menghubungkan: Email Google tidak cocok dengan email akun saat ini.')
+    toast.error(t('settings.toast_link_google_error'))
   }
 
   try {
@@ -361,7 +361,7 @@ onMounted(async () => {
     initialAccountForm.value = JSON.parse(JSON.stringify(accountForm.value))
   } catch (error) {
     console.error('Failed to load user data:', error)
-    toast.error('Gagal memuat data pengguna')
+    toast.error(t('settings.toast_load_error'))
   }
 })
 
@@ -379,7 +379,7 @@ const saveAccountInfo = async () => {
       school: accountForm.value.school,
       bow_type: accountForm.value.bow_type
     })
-    toast.success('Informasi akun berhasil disimpan')
+    toast.success(t('settings.toast_save_success'))
 
     // Update reset checkpoint
     initialAccountForm.value = JSON.parse(JSON.stringify(accountForm.value))
@@ -391,7 +391,7 @@ const saveAccountInfo = async () => {
     }
   } catch (error) {
     console.error('Failed to save account info:', error)
-    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal menyimpan informasi'
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || t('settings.toast_save_error')
     toast.error(errorMessage)
   } finally {
     isSavingAccount.value = false
@@ -406,7 +406,7 @@ const resetForm = async () => {
     // Simulate minor delay for UX
     await new Promise(resolve => setTimeout(resolve, 600))
     accountForm.value = JSON.parse(JSON.stringify(initialAccountForm.value))
-    toast.info('Formulir telah direset ke data asli')
+    toast.info(t('settings.toast_reset'))
   } finally {
     isResetting.value = false
   }
@@ -421,9 +421,9 @@ const saveSettings = async () => {
 
     // For now, simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500))
-    toast.success('Pengaturan umum berhasil disimpan')
+    toast.success(t('settings.toast_general_success'))
   } catch (error) {
-    toast.error('Gagal menyimpan pengaturan')
+    toast.error(t('settings.toast_general_error'))
   } finally {
     isSavingGeneral.value = false
   }
@@ -431,12 +431,12 @@ const saveSettings = async () => {
 
 const changePassword = async () => {
   if (securityForm.value.new_password !== securityForm.value.confirm_password) {
-    toast.error('Konfirmasi password tidak cocok')
+    toast.error(t('settings.toast_password_mismatch'))
     return
   }
 
   if (securityForm.value.new_password.length < 6) {
-    toast.error('Password minimal 6 karakter')
+    toast.error(t('settings.toast_password_length'))
     return
   }
 
@@ -446,7 +446,7 @@ const changePassword = async () => {
       new_password: securityForm.value.new_password
     })
 
-    toast.success('Password berhasil diperbarui')
+    toast.success(t('settings.toast_password_success'))
 
     // Reset form
     securityForm.value = {
@@ -461,7 +461,7 @@ const changePassword = async () => {
     }
   } catch (error) {
     console.error('Failed to change password:', error)
-    const errorMessage = error?.data?.error || error?.response?.data?.error || 'Gagal memperbarui password'
+    const errorMessage = error?.data?.error || error?.response?.data?.error || t('settings.toast_password_error')
     toast.error(errorMessage)
   } finally {
     isChangingPassword.value = false
@@ -477,9 +477,9 @@ const requestOTP = async () => {
       new_email: emailForm.value.new_email
     })
     otpSent.value = true
-    toast.success('Kode OTP telah dikirim ke email baru Anda')
+    toast.success(t('settings.toast_otp_sent'))
   } catch (error) {
-    const errorMsg = error?.data?.error || 'Gagal mengirim OTP'
+    const errorMsg = error?.data?.error || t('settings.toast_otp_error')
     toast.error(errorMsg)
   } finally {
     isRequestingOTP.value = false
@@ -505,7 +505,7 @@ const verifyEmailChange = async () => {
     otpSent.value = false
     emailForm.value = { new_email: '', otp: '' }
   } catch (error) {
-    const errorMsg = error?.data?.error || 'Gagal memverifikasi OTP'
+    const errorMsg = error?.data?.error || t('settings.toast_verify_error')
     toast.error(errorMsg)
   } finally {
     isVerifyingOTP.value = false

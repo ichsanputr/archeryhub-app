@@ -23,10 +23,10 @@
             <!-- Title Section -->
             <div class="min-w-0">
               <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                Event Saya
+                {{ t('my_events.title') }}
               </h1>
               <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
-                Pantau progres dan hasil kompetisi yang Anda ikuti
+                {{ t('my_events.subtitle') }}
               </p>
             </div>
           </div>
@@ -40,14 +40,13 @@
       <div class="flex items-center gap-3">
         <Icon icon="ph:bell-ringing-bold" class="text-amber-500 text-xl" />
         <div>
-          <h3 class="font-bold text-navy text-sm">Pemberitahuan Baru</h3>
-          <p class="text-amber-700 text-xs mt-0.5">Anda memiliki {{ invitations.length }} undangan klub baru yang belum
-            direspon.</p>
+          <h3 class="font-bold text-navy text-sm">{{ t('my_events.new_notification') }}</h3>
+          <p class="text-amber-700 text-xs mt-0.5">{{ t('my_events.invitation_desc', { count: invitations.length }) }}</p>
         </div>
       </div>
       <BaseButton :to="`/dashboard/${userPersona}/notifications`" variant="white" size="sm"
         class="h-9 px-4 font-black text-[10px] tracking-wider text-amber-700 border-amber-200">
-        Lihat Detail
+        {{ t('my_events.view_detail') }}
       </BaseButton>
     </div>
 
@@ -55,11 +54,11 @@
     <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
       <div class="flex-grow w-full">
         <BaseInput v-model="searchQuery" icon="ph:magnifying-glass-bold"
-          placeholder="Cari nama event, lokasi, atau kode..." label="Pencarian" />
+          :placeholder="t('my_events.search_placeholder')" :label="t('my_events.search_label')" />
       </div>
       <BaseButton variant="white" icon="ph:funnel-bold" @click="resetFilters"
         class="h-11 font-black tracking-widest text-xs">
-        Reset
+        {{ t('my_events.reset') }}
       </BaseButton>
     </div>
 
@@ -112,16 +111,16 @@
           <Icon icon="ph:calendar-x-bold" class="text-4xl" />
         </div>
         <div class="space-y-2">
-          <p class="text-lg font-black text-navy">Belum Ada Event</p>
+          <p class="text-lg font-black text-navy">{{ t('my_events.no_events') }}</p>
           <p class="text-sm text-slate-500 font-medium leading-relaxed">
             {{ emptyStateMessage }}
           </p>
         </div>
         <BaseButton v-if="searchQuery" variant="outline" size="sm" @click="resetFilters" class="w-full">
-          Hapus Filter
+          {{ t('my_events.clear_filter') }}
         </BaseButton>
         <BaseButton v-else to="/events" variant="primary" size="sm" icon="ph:magnifying-glass-bold" class="w-full">
-          Cari Event
+          {{ t('my_events.search_event') }}
         </BaseButton>
       </div>
     </div>
@@ -163,7 +162,7 @@
                 <Icon icon="ph:calendar-blank-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <p class="text-[9px] font-black text-slate-400 tracking-widest mb-0">Jadwal</p>
+                <p class="text-[9px] font-black text-slate-400 tracking-widest mb-0">{{ t('my_events.schedule') }}</p>
                 <p class="text-xs font-bold text-navy truncate">{{ formatDate(event.start_date) }}</p>
               </div>
             </div>
@@ -173,7 +172,7 @@
                 <Icon icon="ph:map-pin-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <p class="text-[9px] font-black text-slate-400 tracking-widest mb-0">Lokasi</p>
+                <p class="text-[9px] font-black text-slate-400 tracking-widest mb-0">{{ t('my_events.location') }}</p>
                 <p class="text-xs font-bold text-navy truncate">{{ event.venue }}</p>
               </div>
             </div>
@@ -192,7 +191,7 @@
           <div class="mt-auto pt-4 border-t border-slate-50 flex items-center gap-3">
             <BaseButton :to="`/dashboard/archer/events/${event.slug || event.id}/my-registration`" variant="primary"
               size="sm" class="flex-1 font-black tracking-widest text-[10px] h-10 shadow-sm shadow-primary/10">
-              Buka Event
+              {{ t('my_events.open_event') }}
             </BaseButton>
           </div>
         </div>
@@ -236,8 +235,7 @@
 
               <!-- Info -->
               <div class="text-center">
-                <p class="text-xs text-slate-400 font-bold tracking-widest">Tunjukkan QR ini saat registrasi
-                  ulang</p>
+                <p class="text-xs text-slate-400 font-bold tracking-widest">{{ t('my_events.qr_instructions') }}</p>
               </div>
             </div>
           </div>
@@ -253,7 +251,9 @@ import QrcodeVue from 'qrcode.vue'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
 import BasePagination from '~/components/common/BasePagination.vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const { get, post } = useApi()
 const toast = useToast()
 const { user } = useAuth()
@@ -308,7 +308,7 @@ const fetchEvents = async () => {
     totalItems.value = response?.total || 0
   } catch (error) {
     console.error('Failed to fetch events:', error)
-    toast.error(getApiErrorMessage(error, 'Gagal memuat daftar event'))
+    toast.error(getApiErrorMessage(error, t('my_events.toast_load_failed')))
   } finally {
     isLoading.value = false
   }
@@ -322,12 +322,12 @@ const respondInvitation = async (memberId, action) => {
   isResponding.value = memberId
   try {
     await post(`/clubs/invitations/${memberId}/respond`, { action })
-    toast.success(action === 'accept' ? 'Berhasil bergabung dengan klub!' : 'Undangan ditolak')
+    toast.success(action === 'accept' ? t('my_events.toast_join_success') : t('my_events.toast_invitation_rejected'))
     invitations.value = invitations.value.filter(i => i.uuid !== memberId)
     if (action === 'accept') window.location.reload()
   } catch (error) {
     console.error('Failed to respond to invitation:', error)
-    toast.error('Gagal memproses undangan')
+    toast.error(t('my_events.toast_process_failed'))
   } finally {
     isResponding.value = null
   }
@@ -355,9 +355,9 @@ const filteredEvents = computed(() => events.value)
 
 const emptyStateMessage = computed(() => {
   if (searchQuery.value) {
-    return 'Tidak ada event yang sesuai dengan pencarian Anda.'
+    return t('my_events.no_events_search_desc')
   }
-  return 'Anda belum terdaftar di event manapun.'
+  return t('my_events.no_events_registered_desc')
 })
 
 const formatDate = (dateStr) => {
@@ -400,12 +400,12 @@ const getPaymentStatusDotClass = (status) => {
 const getPaymentStatusLabel = (status) => {
   if (!status) return '-'
   const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc' || s === 'unpaid') return 'UNPAID'
+  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc' || s === 'unpaid') return t('my_events.status_unpaid')
   const labels = {
-    'belum_lunas': 'Belum Lunas',
-    'lunas': 'Lunas',
-    'paid': 'Terbayar',
-    'failed': 'Gagal'
+    'belum_lunas': t('my_events.status_unpaid'),
+    'lunas': t('my_events.status_paid'),
+    'paid': t('my_events.status_paid'),
+    'failed': t('my_events.status_failed')
   }
   return labels[s] || status
 }
@@ -439,13 +439,13 @@ const getStatusDotClass = (status) => {
 }
 
 const getStatusLabel = (status) => {
-  if (!status) return 'Belum Daftar'
+  if (!status) return t('my_events.status_not_registered')
   const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending' || s === 'unpaid') return 'UNPAID'
+  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending' || s === 'unpaid') return t('my_events.status_unpaid')
   const labels = {
-    'terdaftar': 'Terdaftar',
-    'approved': 'Diterima',
-    'rejected': 'Ditolak'
+    'terdaftar': t('my_events.status_registered'),
+    'approved': t('my_events.status_approved'),
+    'rejected': t('my_events.status_rejected')
   }
   return labels[s] || status
 }
@@ -453,7 +453,7 @@ const getStatusLabel = (status) => {
 const getMainStatusLabel = (event) => {
   const pStatus = (event.participant_status || '').toLowerCase()
   const payStatus = (event.payment_status || '').toLowerCase()
-  if (pStatus === 'rejected') return 'Ditolak'
+  if (pStatus === 'rejected') return t('my_events.status_rejected')
   if (payStatus !== 'lunas' && payStatus !== 'paid' && payStatus !== '-') {
     return getPaymentStatusLabel(event.payment_status)
   }

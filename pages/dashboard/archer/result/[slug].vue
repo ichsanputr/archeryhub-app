@@ -1,10 +1,13 @@
+
+
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { useHead, useAsyncData, useRuntimeConfig, useRoute } from '#app'
+import { ref, computed, watch, onMounted } from 'vue'
+import { useHead, useRuntimeConfig, useRoute } from '#app'
 import { useAuth } from '#imports'
 import { Icon } from '@iconify/vue'
 import { useFormattedDatePreset } from '~/composables/useDateHelper'
 import { useApi } from '~/composables/useApi'
+import { useI18n } from 'vue-i18n'
 import LoginRequired from '~/components/LoginRequired.vue'
 import CodeHiglighter from '~/components/CodeHiglighter.vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
@@ -13,6 +16,7 @@ defineOptions({
   name: 'ProblemResultsPage'
 })
 
+const { t } = useI18n()
 const route = useRoute()
 const problemSlug = route.params.slug
 
@@ -53,7 +57,7 @@ const statusOptions = [
 
 const statusFilterOptions = computed(() => {
   return [
-    { value: '', title: 'All Statuses' },
+    { value: '', title: t('problem_results.all_statuses') },
     ...statusOptions.map(s => ({ value: s.description, title: s.description }))
   ]
 })
@@ -75,7 +79,7 @@ const fetchResults = async () => {
       const totalSeconds = r.time_spent || 0
       const minutes = Math.floor(totalSeconds / 60)
       const seconds = totalSeconds % 60
-      const timeSpentFormatted = minutes > 0 ? `${minutes} Minutes ${seconds} Seconds` : `${seconds} Seconds`
+      const timeSpentFormatted = minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`
 
       return {
         id: r.id,
@@ -83,6 +87,7 @@ const fetchResults = async () => {
         problemTitle: r.problem_title || 'Unknown Problem',
         difficulty: r.difficulty || 'Unknown',
         completedAt: r.created_at,
+        timeSpentRaw: totalSeconds,
         timeSpent: timeSpentFormatted,
         status: r.status_description || 'Unknown',
         executionTime: r.execution_time_ms != null ? `${r.execution_time_ms}ms` : '-',
@@ -136,21 +141,7 @@ const paginatedResults = computed(() => {
 const averageTimeSpent = computed(() => {
   if (problemResults.value.length === 0) return '0s'
 
-  // Get the original time_spent values from ALL results (not just current page)
-  const sum = problemResults.value.reduce((acc, r) => {
-    // Extract seconds from formatted time string
-    const timeStr = r.timeSpent
-    if (timeStr.includes('Minutes')) {
-      const parts = timeStr.split(' Minutes ')
-      const minutes = parseInt(parts[0]) || 0
-      const seconds = parseInt(parts[1].replace(' Seconds', '')) || 0
-      return acc + (minutes * 60 + seconds)
-    } else {
-      const seconds = parseInt(timeStr.replace(' Seconds', '')) || 0
-      return acc + seconds
-    }
-  }, 0)
-
+  const sum = problemResults.value.reduce((acc, r) => acc + (r.timeSpentRaw || 0), 0)
   const averageSeconds = Math.round(sum / problemResults.value.length)
   const minutes = Math.floor(averageSeconds / 60)
   const seconds = averageSeconds % 60
@@ -171,9 +162,9 @@ const formatDate = (dateString) => {
 }
 
 useHead({
-  title: `Hasil Turnamen ${problemTitle.value} - Archeryhub.id`,
+  title: computed(() => t('problem_results.seo_title', { title: problemTitle.value })),
   meta: [
-    { name: 'description', content: `Lihat semua upaya dan hasil Anda untuk event ${problemTitle.value}.` },
+    { name: 'description', content: computed(() => t('problem_results.seo_desc', { title: problemTitle.value })) },
     { name: 'robots', content: 'noindex' }
   ]
 })
@@ -196,7 +187,7 @@ definePageMeta({
         <div class="mb-4">
           <BaseButton to="/dashboard/result" variant="ghost" size="sm" icon="ph:arrow-left"
             class="!text-yellow-100 hover:!text-white">
-            Kembali ke Daftar Hasil
+            {{ t('problem_results.back_to_list') }}
           </BaseButton>
         </div>
 
@@ -205,13 +196,13 @@ definePageMeta({
             <div
               class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-primary backdrop-blur mb-4">
               <Icon :ssr="true" icon="ph:trophy" class="h-4 w-4" />
-              <span>Hasil Event</span>
+              <span>{{ t('problem_results.event_results') }}</span>
             </div>
             <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-3 tracking-tight">
               {{ problemTitle }}
             </h1>
             <p class="text-slate-300 text-lg font-medium">
-              Pantau progres kamu dan analisa hasil skor setiap sesi.
+              {{ t('problem_results.header_desc') }}
             </p>
           </div>
 
@@ -219,15 +210,15 @@ definePageMeta({
           <div v-if="user && !loading && problemResults.length > 0" class="grid grid-cols-3 gap-4 lg:gap-6">
             <div class="bg-white/5 backdrop-blur rounded-2xl p-4 text-center border border-white/10 shadow-xl">
               <div class="text-2xl lg:text-3xl font-black text-primary">{{ totalAttempts }}</div>
-              <div class="text-xs font-bold text-slate-400  tracking-widest mt-1">Sesi</div>
+              <div class="text-xs font-bold text-slate-400  tracking-widest mt-1">{{ t('problem_results.sessions') }}</div>
             </div>
             <div class="bg-white/5 backdrop-blur rounded-2xl p-4 text-center border border-white/10 shadow-xl">
               <div class="text-2xl lg:text-3xl font-black text-primary">{{ averageTimeSpent }}</div>
-              <div class="text-xs font-bold text-slate-400  tracking-widest mt-1">Rata-rata</div>
+              <div class="text-xs font-bold text-slate-400  tracking-widest mt-1">{{ t('problem_results.average') }}</div>
             </div>
             <div class="bg-white/5 backdrop-blur rounded-2xl p-4 text-center border border-white/10 shadow-xl">
               <div class="text-2xl lg:text-3xl font-black text-primary">{{ bestExecutionTime }}ms</div>
-              <div class="text-xs font-bold text-slate-400  tracking-widest mt-1">Terbaik</div>
+              <div class="text-xs font-bold text-slate-400  tracking-widest mt-1">{{ t('problem_results.best') }}</div>
             </div>
           </div>
         </div>
@@ -246,8 +237,8 @@ definePageMeta({
           <div class="flex flex-col items-center gap-6">
             <div class="size-16 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
             <div class="space-y-2">
-              <h3 class="text-lg font-bold text-navy">Memuat hasil...</h3>
-              <p class="text-slate-500 text-sm">Sabar ya, lagi diproses datanya.</p>
+              <h3 class="text-lg font-bold text-navy">{{ t('problem_results.loading_title') }}</h3>
+              <p class="text-slate-500 text-sm">{{ t('problem_results.loading_desc') }}</p>
             </div>
           </div>
         </div>
@@ -262,7 +253,7 @@ definePageMeta({
             </div>
             <div class="text-center">
               <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Failed to Load Results
+                {{ t('problem_results.failed_load') }}
               </h3>
               <p class="text-gray-600 mb-6">
                 {{ error }}
@@ -271,11 +262,11 @@ definePageMeta({
 
             <div class="flex flex-col sm:flex-row gap-3 w-full">
               <BaseButton @click="fetchResults" variant="gold" block icon="ph:arrow-clockwise">
-                Coba Lagi
+                {{ t('problem_results.try_again') }}
               </BaseButton>
 
               <BaseButton to="/dashboard/result" variant="outline" block icon="ph:arrow-left">
-                Kembali ke Daftar Hasil
+                {{ t('problem_results.back_to_list') }}
               </BaseButton>
             </div>
           </div>
@@ -292,16 +283,16 @@ definePageMeta({
                 <div class="p-2 bg-blue-50 rounded-lg">
                   <Icon :ssr="true" icon="ph:funnel" class="w-5 h-5 text-blue-600" />
                 </div>
-                <h3 class="text-lg font-semibold text-gray-900">Filter Results</h3>
+                <h3 class="text-lg font-semibold text-gray-900">{{ t('problem_results.filter_title') }}</h3>
               </div>
-              <p class="text-gray-600">Filter submissions by status to analyze your performance</p>
+              <p class="text-gray-600">{{ t('problem_results.filter_desc') }}</p>
             </div>
             <div class="flex items-center gap-4">
               <div class="min-w-[220px]">
-                <BaseSelect v-model="filters.status" :items="statusFilterOptions" placeholder="All Statuses" />
+                <BaseSelect v-model="filters.status" :items="statusFilterOptions" :placeholder="t('problem_results.all_statuses')" />
               </div>
               <BaseButton v-if="filters.status" variant="outline" size="sm" icon="ph:x" @click="filters.status = ''">
-                Bersihkan
+                {{ t('problem_results.clear') }}
               </BaseButton>
             </div>
           </div>
@@ -322,7 +313,7 @@ definePageMeta({
                         <Icon :ssr="true" icon="ph:code" class="w-5 h-5 text-gray-600" />
                       </div>
                       <h3 class="text-lg font-semibold text-gray-900">
-                        Attempt #{{ (page - 1) * pageSize + index + 1 }}
+                        {{ t('problem_results.attempt_num', { val: (page - 1) * pageSize + index + 1 }) }}
                       </h3>
                     </div>
                     <span class="px-3 py-1 text-sm font-medium rounded-full border" :class="result.status === 'Accepted'
@@ -363,7 +354,7 @@ definePageMeta({
                     <Icon :ssr="true" icon="ph:lightning" class="w-4 h-4 text-green-600" />
                   </div>
                   <div>
-                    <div class="text-sm text-gray-600">Runtime</div>
+                    <div class="text-sm text-gray-600">{{ t('problem_results.runtime') }}</div>
                     <div class="font-semibold text-gray-900">{{ result.executionTime }}</div>
                   </div>
                 </div>
@@ -373,7 +364,7 @@ definePageMeta({
                     <Icon :ssr="true" icon="tdesign:time" class="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
-                    <div class="text-sm text-gray-600">Time Spent</div>
+                    <div class="text-sm text-gray-600">{{ t('problem_results.time_spent') }}</div>
                     <div class="font-semibold text-gray-900">{{ result.timeSpent }}</div>
                   </div>
                 </div>
@@ -383,7 +374,7 @@ definePageMeta({
                     <Icon :ssr="true" icon="ph:chart-bar" class="w-4 h-4 text-purple-600" />
                   </div>
                   <div>
-                    <div class="text-sm text-gray-600">Status</div>
+                    <div class="text-sm text-gray-600">{{ t('problem_results.status') }}</div>
                     <div class="font-semibold text-gray-900">{{ result.status }}</div>
                   </div>
                 </div>
@@ -395,7 +386,7 @@ definePageMeta({
               <div class="bg-red-50 border border-red-200 rounded-lg p-4">
                 <div class="flex items-center gap-2 mb-3">
                   <Icon :ssr="true" icon="ph:warning" class="w-5 h-5 text-red-600" />
-                  <span class="font-medium text-red-800">Error Output</span>
+                  <span class="font-medium text-red-800">{{ t('problem_results.error_output') }}</span>
                 </div>
                 <pre
                   class="text-sm text-red-700 font-mono whitespace-pre-wrap break-words bg-red-25 p-3 rounded border">{{ result.stderr }}</pre>
@@ -407,7 +398,7 @@ definePageMeta({
               <div class="flex items-center justify-between px-6 py-3 bg-gray-800">
                 <div class="flex items-center gap-2">
                   <Icon :ssr="true" icon="ph:code" class="w-4 h-4 text-gray-400" />
-                  <span class="text-sm font-medium text-gray-300">Your Solution</span>
+                  <span class="text-sm font-medium text-gray-300">{{ t('problem_results.your_solution') }}</span>
                 </div>
                 <div class="flex items-center gap-2">
                   <span class="text-xs text-gray-400" v-if="result.platform">{{ result.platform }}</span>
@@ -426,18 +417,18 @@ definePageMeta({
             aria-label="Pagination">
             <BaseButton variant="ghost" size="md" icon="ph:caret-left" :disabled="page === 1"
               class="rounded-none border-r border-gray-300" @click="page > 1 && (page = page - 1)">
-              Sebelumnya
+              {{ t('problem_results.previous') }}
             </BaseButton>
 
             <div class="flex items-center px-6 py-2 bg-gray-50 text-sm font-bold text-navy">
-              Halaman {{ page }} dari {{ Math.ceil(filteredResults.length / pageSize) }}
+              {{ t('problem_results.page_info', { page: page, total: Math.ceil(filteredResults.length / pageSize) }) }}
             </div>
 
             <BaseButton variant="ghost" size="md" icon-right="ph:caret-right"
               :disabled="page >= Math.ceil(filteredResults.length / pageSize)"
               class="rounded-none border-l border-gray-300"
               @click="page < Math.ceil(filteredResults.length / pageSize) && (page = page + 1)">
-              Selanjutnya
+              {{ t('problem_results.next') }}
             </BaseButton>
           </nav>
         </div>
@@ -445,10 +436,8 @@ definePageMeta({
         <!-- Results Summary -->
         <div v-if="user && !loading && paginatedResults.length > 0" class="mt-6 text-center">
           <p class="text-sm text-gray-600">
-            Showing <span class="font-medium">{{ (page - 1) * pageSize + 1 }}</span> to
-            <span class="font-medium">{{ Math.min(page * pageSize, filteredResults.length) }}</span> of
-            <span class="font-medium">{{ filteredResults.length }}</span> attempts
-            <span v-if="filters.status" class="text-blue-600">(filtered by {{ filters.status }})</span>
+            {{ t('problem_results.showing_info', { start: (page - 1) * pageSize + 1, end: Math.min(page * pageSize, filteredResults.length), total: filteredResults.length }) }}
+            <span v-if="filters.status" class="text-blue-600"> {{ t('problem_results.filtered_by', { status: filters.status }) }}</span>
           </p>
         </div>
 
@@ -459,17 +448,17 @@ definePageMeta({
               <Icon :ssr="true" icon="ph:code" class="w-12 h-12 text-gray-400" />
             </div>
             <h3 class="text-xl font-semibold text-gray-900 mb-3">
-              No attempts yet
+              {{ t('problem_results.no_attempts') }}
             </h3>
             <p class="text-gray-600 mb-8">
-              You haven't submitted any solutions for this problem. Start coding to see your results here!
+              {{ t('problem_results.no_attempts_desc') }}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
               <BaseButton :to="`/dashboard/${userPersona}/events`" variant="gold" icon="ph:trophy">
-                Lihat Turnamen
+                {{ t('problem_results.view_tournament') }}
               </BaseButton>
               <BaseButton to="/dashboard/result" variant="outline" icon="ph:arrow-left">
-                Kembali ke Hasil
+                {{ t('problem_results.back_to_results') }}
               </BaseButton>
             </div>
           </div>
@@ -483,13 +472,13 @@ definePageMeta({
               <Icon :ssr="true" icon="ph:funnel" class="w-8 h-8 text-gray-400" />
             </div>
             <h3 class="text-lg font-semibold text-gray-900 mb-2">
-              No results match your filter
+              {{ t('problem_results.no_filter_match') }}
             </h3>
             <p class="text-gray-600 mb-6">
-              Try adjusting your status filter to see more results.
+              {{ t('problem_results.no_filter_match_desc') }}
             </p>
             <BaseButton variant="gold" icon="ph:x" @click="filters.status = ''">
-              Bersihkan Filter
+              {{ t('problem_results.clear_filter') }}
             </BaseButton>
           </div>
         </div>

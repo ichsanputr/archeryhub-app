@@ -12,18 +12,19 @@
                 <div class="flex items-center justify-between gap-4">
                     <div>
                         <nav class="flex text-[10px] font-bold text-white/40 tracking-widest mb-1 items-center gap-1.5">
-                            <NuxtLink to="/dashboard/archer/events" class="hover:text-white transition-colors">Event
-                                Saya</NuxtLink>
+                            <NuxtLink to="/dashboard/archer/events" class="hover:text-white transition-colors">
+                                {{ t('my_registration.my_events') }}
+                            </NuxtLink>
                             <Icon icon="ph:caret-right-bold" class="text-[9px]" />
-                            <span class="text-white/70">Status Registrasi</span>
+                            <span class="text-white/70">{{ t('my_registration.registration_status') }}</span>
                         </nav>
-                        <h1 class="text-2xl font-black tracking-tight">Status Registrasi Saya</h1>
+                        <h1 class="text-2xl font-black tracking-tight">{{ t('my_registration.my_registration_status') }}</h1>
                     </div>
-                    <div v-if="participant && participant.payment_status !== 'lunas'">
-                        <BaseButton variant="danger-outline" @click="showCancelConfirm = true" :loading="isCancelling"
-                            class="h-9 font-black tracking-widest text-[10px] !border-red-400/50 !text-red-300 hover:!bg-red-500 hover:!text-white hover:!border-red-500">
+                    <div v-if="participant && participant.payment_status !== 'lunas' && participant.payment_status !== 'paid'">
+                        <BaseButton variant="danger" @click="showCancelConfirm = true" :loading="isCancelling"
+                            class="h-9 font-black tracking-widest text-[10px] shadow-md shadow-red-100/50">
                             <Icon icon="ph:x-circle-bold" class="mr-1.5" />
-                            Batalkan
+                            {{ t('my_registration.cancel') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -74,7 +75,7 @@
                                         class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-slate-500 dark:text-slate-400 font-bold text-sm">
                                         <div class="flex items-center gap-2">
                                             <Icon icon="ph:shield-check-bold" class="text-primary" />
-                                            {{ participant.club_name || 'Independent' }}
+                                            {{ participant.club_name || t('my_registration.independent') }}
                                         </div>
                                         <div class="size-1 rounded-full bg-slate-200 hidden md:block"></div>
                                         <div class="flex items-center gap-2">
@@ -97,11 +98,11 @@
                         <div class="flex items-center justify-between">
                             <h3 class="text-xl font-black text-navy dark:text-white flex items-center gap-3">
                                 <Icon icon="ph:stack-bold" class="text-primary" />
-                                Kategori Terdaftar
+                                {{ t('my_registration.registered_categories') }}
                             </h3>
                             <span
                                 class="px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 rounded-md text-[9px] font-black tracking-widest">
-                                {{ participant.categories?.length || 0 }} Kategori
+                                {{ t('my_registration.categories_count', { count: participant.categories?.length || 0 }) }}
                             </span>
                         </div>
 
@@ -128,7 +129,7 @@
                                 <div
                                     class="flex items-center justify-end pt-4 border-t border-slate-100 dark:border-slate-700">
                                     <div class="flex flex-col text-right">
-                                        <span class="text-[9px] text-slate-400 font-black tracking-widest">Biaya</span>
+                                        <span class="text-[9px] text-slate-400 font-black tracking-widest">{{ t('my_registration.fee') }}</span>
                                         <span class="text-sm font-black">Rp {{
                                             formatCurrency(cat.payment_amount) }}</span>
                                     </div>
@@ -147,8 +148,7 @@
 
                         <div class="relative flex flex-col items-center">
                             <div class="w-full flex justify-between items-center mb-6">
-                                <span class="text-[10px] font-black tracking-[0.2em] text-slate-400">Total
-                                    Tagihan</span>
+                                <span class="text-[10px] font-black tracking-[0.2em] text-slate-400">{{ t('my_registration.total_bill') }}</span>
                                 <span class="text-xl font-black">Rp {{
                                     formatCurrency(participant.payment_amount)
                                     }}</span>
@@ -157,7 +157,7 @@
                             <!-- QR Code Section -->
                             <div
                                 class="w-full bg-slate-50 dark:bg-slate-900 rounded-3xl p-6 flex flex-col items-center mb-6 border border-slate-100 dark:border-slate-700 shadow-sm">
-                                <div v-if="participant.payment_status === 'lunas'"
+                                <div v-if="participant.payment_status === 'lunas' || participant.payment_status === 'paid'"
                                     class="relative p-4 bg-white rounded-2xl shadow-sm border border-slate-100">
                                     <QrcodeVue :value="participant.categories?.[0]?.qr_raw || participant.id"
                                         :size="160" level="H" render-as="svg" background="#ffffff"
@@ -169,16 +169,16 @@
                                         <Icon icon="ph:lock-key-bold" class="text-3xl" />
                                     </div>
                                     <span
-                                        class="text-[10px] font-black tracking-widest text-center px-4 leading-relaxed">QR
-                                        Terkunci Hingga Pembayaran Lunas</span>
+                                        class="text-[10px] font-black tracking-widest text-center px-4 leading-relaxed">
+                                        {{ t('my_registration.qr_locked') }}
+                                    </span>
                                 </div>
                             </div>
 
                             <!-- Payment Actions / Status -->
                             <div class="w-full space-y-4">
                                 <div class="flex items-center justify-between px-1">
-                                    <span class="text-[10px] font-black tracking-widest text-slate-400">Status
-                                        Pembayaran</span>
+                                    <span class="text-[10px] font-black tracking-widest text-slate-400">{{ t('my_registration.payment_status') }}</span>
                                     <span :class="getStatusClass(participant.payment_status)"
                                         class="px-2.5 py-1 rounded-xl text-[10px] font-black tracking-widest border">
                                         {{ getDisplayStatus(participant.payment_status) }}
@@ -192,13 +192,14 @@
                                         <div class="flex items-center gap-2">
                                             <Icon icon="ph:credit-card-bold" class="text-primary" />
                                             <span
-                                                class="text-xs font-black text-navy dark:text-white tracking-tight">Metode:
-                                                {{ participant.transaction.payment_method }}</span>
+                                                class="text-xs font-black text-navy dark:text-white tracking-tight">
+                                                {{ t('my_registration.method') }} {{ participant.transaction.payment_method }}
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="pt-3 border-t border-slate-100 dark:border-slate-700 space-y-3">
                                         <div class="flex justify-between text-[10px] font-bold">
-                                            <span class="text-slate-400">No. Tagihan</span>
+                                            <span class="text-slate-400">{{ t('my_registration.invoice_no') }}</span>
                                             <span class="text-navy dark:text-white font-mono">{{
                                                 participant.transaction.reference }}</span>
                                         </div>
@@ -207,7 +208,7 @@
                                         <div v-if="participant.transaction.va_number || participant.transaction.pay_code"
                                             class="flex items-center justify-between bg-slate-50 dark:bg-slate-800 rounded-xl px-3 py-2.5 border border-slate-100 dark:border-slate-700">
                                             <span class="text-[10px] font-black text-slate-400 tracking-widest">
-                                                {{ participant.transaction.va_number ? 'Nomor VA' : 'Kode Bayar' }}
+                                                {{ participant.transaction.va_number ? t('my_registration.va_number') : t('my_registration.payment_code') }}
                                             </span>
                                             <span
                                                 class="text-sm font-black text-navy dark:text-white font-mono tracking-wider select-all">
@@ -225,7 +226,7 @@
                                         <BaseButton v-if="participant.transaction.status === 'pending'"
                                             :to="participant.transaction.checkout_url" target="_blank" variant="primary"
                                             block class="h-11 font-black tracking-widest text-xs shadow-sm">
-                                            Bayar Sekarang
+                                            {{ t('my_registration.pay_now') }}
                                             <Icon icon="ph:arrow-right-bold" class="ml-2" />
                                         </BaseButton>
 
@@ -233,8 +234,7 @@
                                         <template
                                             v-if="parseInstructionGroups(participant.transaction.instructions).length">
                                             <div class="pt-2 space-y-3">
-                                                <p class="text-[10px] font-black text-slate-400 tracking-widest">Cara
-                                                    Pembayaran</p>
+                                                <p class="text-[10px] font-black text-slate-400 tracking-widest">{{ t('my_registration.payment_instructions') }}</p>
                                                 <!-- Tab selector -->
                                                 <div v-if="parseInstructionGroups(participant.transaction.instructions).length > 1"
                                                     class="flex gap-2 flex-wrap">
@@ -269,16 +269,17 @@
                                     </div>
                                 </div>
 
-                                <div v-else-if="participant.payment_status !== 'lunas'"
+                                <div v-else-if="participant.payment_status !== 'lunas' && participant.payment_status !== 'paid'"
                                     class="bg-slate-50 dark:bg-slate-900 p-5 rounded-3xl border border-slate-100 dark:border-slate-700 space-y-4 shadow-sm">
                                     <p class="text-[10px] text-slate-500 font-bold text-center tracking-widest">
-                                        Lanjutkan ke Pembayaran</p>
+                                        {{ t('my_registration.proceed_to_payment') }}
+                                    </p>
                                     <div class="flex flex-col gap-2">
                                         <BaseButton variant="primary" block @click="initiatePaymentGateway"
                                             :loading="isProcessingPayment"
                                             class="h-12 font-black tracking-widest text-xs shadow-sm">
                                             <Icon icon="ph:lightning-bold" class="text-lg mr-2" />
-                                            Bayar Online (Otomatis)
+                                            {{ t('my_registration.pay_online_auto') }}
                                         </BaseButton>
                                     </div>
                                 </div>
@@ -297,32 +298,32 @@
                 class="size-24 bg-slate-50 dark:bg-slate-900 rounded-[32px] flex items-center justify-center text-slate-200 mx-auto mb-8 border border-slate-100 dark:border-slate-700">
                 <Icon icon="ph:user-circle-gear-light" class="text-5xl" />
             </div>
-            <h3 class="text-2xl font-black text-navy dark:text-white mb-3">Pendaftaran Tidak Ditemukan</h3>
-            <p class="text-slate-400 text-sm font-medium max-w-sm mx-auto">Anda mungkin belum terdaftar di event ini
-                atau sesi
-                anda telah berakhir.</p>
+            <h3 class="text-2xl font-black text-navy dark:text-white mb-3">{{ t('my_registration.registration_not_found') }}</h3>
+            <p class="text-slate-400 text-sm font-medium max-w-sm mx-auto">
+                {{ t('my_registration.session_expired_desc') }}
+            </p>
             <BaseButton to="/dashboard/archer/events" variant="outline"
                 class="mt-8 px-8 h-12 rounded-2xl font-black tracking-widest text-xs">
-                Kembali ke Dashboard
+                {{ t('my_registration.back_to_dashboard') }}
             </BaseButton>
         </div>
 
         <!-- Cancel Confirmation Dialog -->
-        <AppDialog v-model:show="showCancelConfirm" title="Batalkan Pendaftaran" type="danger"
+        <AppDialog v-model:show="showCancelConfirm" :title="t('my_registration.cancel_dialog_title')" type="danger"
             icon="ph:warning-circle-bold" size="sm">
             <template #default>
                 <p class="text-sm text-slate-600 dark:text-slate-300 text-center">
-                    Yakin ingin membatalkan pendaftaran ini? Tindakan ini tidak dapat dibatalkan.
+                    {{ t('my_registration.cancel_dialog_desc') }}
                 </p>
             </template>
             <template #actions>
                 <BaseButton variant="white" @click="showCancelConfirm = false"
                     class="flex-1 font-black tracking-widest text-xs">
-                    Kembali
+                    {{ t('my_registration.cancel_dialog_back') }}
                 </BaseButton>
                 <BaseButton variant="danger" @click="cancelRegistration" :loading="isCancelling"
                     class="flex-1 font-black tracking-widest text-xs">
-                    Ya, Batalkan
+                    {{ t('my_registration.cancel_dialog_confirm') }}
                 </BaseButton>
             </template>
         </AppDialog>
@@ -333,7 +334,13 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import QrcodeVue from 'qrcode.vue'
-const { get, del } = useApi()
+import { useI18n } from 'vue-i18n'
+
+import { useToast } from '~/composables/useToast'
+
+const { t } = useI18n()
+const toast = useToast()
+const { get, post, del } = useApi()
 const route = useRoute()
 const eventId = route.params.id
 
@@ -378,10 +385,11 @@ const cancelRegistration = async () => {
     try {
         await del(`/events/${eventId}/participants/me`)
         showCancelConfirm.value = false
+        toast.success(t('my_registration.toast_cancel_success'))
         navigateTo('/dashboard/archer/events')
     } catch (e) {
         console.error('Failed to cancel registration:', e)
-        toast.error('Gagal membatalkan pendaftaran')
+        toast.error(t('my_registration.toast_cancel_failed'))
     } finally {
         isCancelling.value = false
     }
@@ -397,7 +405,7 @@ const initiatePaymentGateway = async () => {
         }
     } catch (e) {
         console.error('Failed to initiate checkout:', e)
-        toast.error('Gagal memproses pembayaran')
+        toast.error(t('my_registration.toast_payment_failed'))
     } finally {
         isProcessingPayment.value = false
     }
@@ -406,14 +414,15 @@ const initiatePaymentGateway = async () => {
 
 const getStatusClass = (status, onNavy = false) => {
     const s = (status || '').toLowerCase()
-    if (s === 'lunas') return onNavy ? 'bg-primary text-navy border-primary' : 'bg-green-50 text-green-600 border-green-200'
+    if (s === 'lunas' || s === 'paid') return onNavy ? 'bg-primary text-navy border-primary' : 'bg-green-50 text-green-600 border-green-200'
     return onNavy ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : 'bg-amber-50 text-amber-600 border-amber-200'
 }
 
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
-    if (s === 'menunggu' || s === 'menunggu acc' || !s) return 'UNPAID'
-    return s.toUpperCase()
+    if (s === 'lunas' || s === 'paid') return t('my_registration.paid')
+    if (s === 'menunggu' || s === 'menunggu acc' || s === 'unpaid' || !s) return t('my_registration.unpaid')
+    return t('my_registration.pending')
 }
 
 const formatCurrency = (val) => {
