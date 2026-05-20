@@ -202,8 +202,6 @@
                   <BaseButton @click="handleManageEvent(event)" variant="primary" size="sm" class="h-9 font-bold">
                     Kelola
                   </BaseButton>
-                  <BaseButton variant="white" size="sm" icon="ph:trash" @click="confirmDeleteEvent(event)"
-                    class="h-9 w-9 p-0 text-red-500 hover:text-red-50 border-slate-200" />
                 </div>
               </td>
             </tr>
@@ -217,11 +215,6 @@
           :no-margin="true" @change-page="handlePageChange" />
       </div>
     </div>
-
-    <!-- Delete Confirmation Dialog -->
-    <AppDialog v-model:show="showDeleteDialog" title="Hapus Event"
-      :message="`Apakah Anda yakin ingin menghapus event '${eventToDelete?.name}'? Tindakan ini tidak dapat dibatalkan.`"
-      confirm-text="Ya, Hapus" type="danger" icon="ph:trash" @confirm="deleteEvent" @cancel="cancelDelete" />
   </div>
 </template>
 <script setup>
@@ -232,10 +225,9 @@ import { useRouter } from 'vue-router'
 import { useSubscription } from '~/composables/useSubscription'
 import { useTour } from '~/composables/useTour'
 import BasePagination from '~/components/common/BasePagination.vue'
-import AppDialog from '~/components/common/AppDialog.vue'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
-const { get, delete: del } = useApi()
+const { get } = useApi()
 const router = useRouter()
 const { setEvent } = useEventContext()
 const { isSubscriptionActive, canCreateEvent } = useSubscription()
@@ -246,8 +238,6 @@ const showPremiumModal = ref(false)
 const searchQuery = ref('')
 const events = ref([])
 const isLoading = ref(true)
-const showDeleteDialog = ref(false)
-const eventToDelete = ref(null)
 
 // Sorting and Pagination state
 const currentPage = ref(1)
@@ -373,30 +363,6 @@ const getStatusLabel = (status) => {
     'draft': 'Draft'
   }
   return labels[status] || status
-}
-
-const confirmDeleteEvent = (event) => {
-  eventToDelete.value = event
-  showDeleteDialog.value = true
-}
-
-const deleteEvent = async () => {
-  if (!eventToDelete.value) return
-  try {
-    await del(`/events/${eventToDelete.value.id}`)
-    events.value = events.value.filter(e => e.id !== eventToDelete.value.id)
-    showDeleteDialog.value = false
-    eventToDelete.value = null
-    toast.success('Event berhasil dihapus')
-  } catch (error) {
-    console.error('Failed to delete event:', error)
-    toast.error('Gagal menghapus event')
-  }
-}
-
-const cancelDelete = () => {
-  showDeleteDialog.value = false
-  eventToDelete.value = null
 }
 
 const handleManageEvent = (event) => {

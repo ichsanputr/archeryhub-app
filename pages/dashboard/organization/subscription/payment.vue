@@ -110,8 +110,12 @@ const handlePayment = async () => {
 
             // 2. Redirect user directly to Paddle secure hosted checkout page (adblocker immune!)
             if (res.checkout_url.includes('txn_mock_')) {
-                alert('mode simulasi terdeteksi! karena tidak ada paddle api key di backend, pembayaran disimulasikan secara lokal.\n\nanda akan diarahkan ke halaman simulator untuk memproses pembayaran sukses.')
-                router.push(`/test-paddle?ref=${res.reference}`)
+                alert('simulasi pembayaran berhasil! karena tidak ada paddle api key di backend, sistem secara otomatis menyelesaikan transaksi secara lokal.')
+                await $fetch(`${apiBaseUrl}/payment/simulate-success/${res.reference}`, {
+                    method: 'GET',
+                    credentials: 'include'
+                })
+                router.push('/dashboard/organization/subscription?status=success')
             } else {
                 if (window.Paddle && res.tripay_reference) {
                     window.Paddle.Checkout.open({

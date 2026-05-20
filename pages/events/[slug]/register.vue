@@ -1,10 +1,10 @@
 <template>
     <div class="min-h-screen bg-gray-50 font-body text-navy pb-16">
         <!-- Loading -->
-        <div v-if="pending" class="min-h-screen flex items-center justify-center">
+        <div v-if="showPageLoader" class="min-h-screen flex items-center justify-center">
             <div class="text-center">
                 <Icon icon="ph:circle-notch-bold" class="text-4xl text-primary animate-spin mb-4" />
-                <span class="text-gray-500 font-medium block">Loading data...</span>
+                <span class="text-gray-500 font-medium block">Preparing registration...</span>
             </div>
         </div>
 
@@ -114,10 +114,9 @@
                     </div>
                     <!-- Paddle overlay notice -->
                     <div v-if="paymentResult.payment_method === 'paddle'"
-                        class="flex items-center gap-2.5 bg-blue-500/10 border border-blue-400/20 rounded-xl p-3">
-                        <Icon icon="ph:credit-card-bold" class="text-blue-300 shrink-0" />
-                        <span class="text-xs text-white/70 font-medium block">Payment window is opening... complete your
-                            payment in the Paddle overlay.</span>
+                        class="flex items-center gap-2.5 bg-green-500/10 border border-green-400/20 rounded-xl p-3">
+                        <Icon icon="ph:check-circle-bold" class="text-green-300 shrink-0" />
+                        <span class="text-xs text-white/70 font-medium block">payment successful! your registration is complete.</span>
                     </div>
                     <!-- Manual payment proof uploaded notice -->
                     <div v-if="paymentResult.payment_method === 'manual'"
@@ -264,6 +263,8 @@
                                         <BaseSelect v-model="profileForm.bow_type" :items="bowTypeOptions"
                                             label="Bow Type" placeholder="Select bow type" required
                                             icon="ph:target-bold" />
+                                        <BaseInput v-model="profileForm.country" label="Country"
+                                            placeholder="Country" icon="ph:globe-hemisphere-east-bold" />
                                         <BaseSelect v-model="profileForm.city" :items="cityOptions"
                                             label="City / Regency" placeholder="Select city" icon="ph:map-pin-bold"
                                             class="relative z-20" />
@@ -911,6 +912,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 const loading = ref(false)
+const isClientPreparing = ref(true)
 const submitError = ref('')
 const registrationSuccess = ref(false)
 const channelInstructionsLoading = ref(null)
@@ -1052,6 +1054,7 @@ const profileForm = ref({
     full_name: '',
     gender: '',
     date_of_birth: '',
+    country: '',
     city: '',
     club_name: '',
     club_id: null,
@@ -1065,6 +1068,7 @@ const genderOptions = [
 ]
 
 const onlineChannels = computed(() => data.value?.onlineChannels || [])
+const showPageLoader = computed(() => pending.value || isClientPreparing.value)
 
 // No auto-select: user must explicitly choose payment method
 
@@ -1271,6 +1275,7 @@ watch(() => archerProfile.value, (profile) => {
             full_name: profile.full_name || profile.name || '',
             gender: profile.gender || '',
             date_of_birth: profile.date_of_birth ? new Date(profile.date_of_birth).toISOString().split('T')[0] : '',
+            country: profile.country || 'Indonesia',
             city: profile.city || '',
             club_name: profile.club_name || '',
             club_id: profile.club_id || null,
@@ -1340,6 +1345,7 @@ const handleSubmit = async () => {
                 full_name: profileForm.value.full_name,
                 gender: profileForm.value.gender,
                 date_of_birth: profileForm.value.date_of_birth,
+                country: profileForm.value.country,
                 city: profileForm.value.city,
                 bow_type: profileForm.value.bow_type,
                 club_id: profileForm.value.club_id
@@ -1397,8 +1403,13 @@ const handleSubmit = async () => {
                         }
                     })
                 } else if (payResult.checkout_url && payResult.checkout_url.includes('txn_mock_')) {
-                    // Redirect to simulator page for mock payments
-                    window.location.href = `/test-paddle?ref=${payResult.reference}`
+                    // Automatically simulate success for mock payments in dev
+                    alert('simulasi pembayaran berhasil! karena tidak ada paddle api key di backend, sistem secara otomatis menyelesaikan transaksi secara lokal.')
+                    await $fetch(`${apiBaseUrl}/payment/simulate-success/${payResult.reference}`, {
+                        method: 'GET',
+                        credentials: 'include'
+                    })
+                    registrationSuccess.value = true
                 } else {
                     // Fallback: show success if no Paddle SDK available
                     registrationSuccess.value = true
@@ -1423,6 +1434,11 @@ const handleSubmit = async () => {
 useSeoMeta({
     title: () => `Register ${event.value?.name || 'Event'} - Archeris.net`,
     description: () => `Confirm registration for ${event.value?.name || 'event'}`
+})
+
+onMounted(async () => {
+    await nextTick()
+    isClientPreparing.value = false
 })
 </script>
 

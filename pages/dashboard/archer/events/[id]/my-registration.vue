@@ -224,8 +224,9 @@
                                         </div>
 
                                         <BaseButton v-if="participant.transaction.status === 'pending'"
-                                            :to="participant.transaction.checkout_url" target="_blank" variant="primary"
-                                            block class="h-11 font-black tracking-widest text-xs shadow-sm">
+                                            variant="primary" block
+                                            class="h-11 font-black tracking-widest text-xs shadow-sm"
+                                            @click="handleTransactionPayment(participant.transaction)">
                                             {{ t('my_registration.pay_now') }}
                                             <Icon icon="ph:arrow-right-bold" class="ml-2" />
                                         </BaseButton>
@@ -327,6 +328,7 @@ import { useToast } from '~/composables/useToast'
 const { t } = useI18n()
 const toast = useToast()
 const { get, post, delete: del } = useApi()
+const apiBaseUrl = useApiBaseUrl()
 const route = useRoute()
 const eventId = route.params.id
 
@@ -366,6 +368,73 @@ const parseInstructionGroups = (raw) => {
     return []
 }
 
+const isPaddleTransaction = (transaction) => {
+    const method = (transaction?.payment_method || '').toLowerCase()
+    const checkoutUrl = transaction?.checkout_url || ''
+    return method === 'paddle' || checkoutUrl.includes('paddle.io')
+}
+
+const getPaddleTransactionId = (transaction) => {
+    if (transaction?.tripay_reference) return transaction.tripay_reference
+    const checkoutUrl = transaction?.checkout_url || ''
+    const match = checkoutUrl.match(/[?&]_ptxn=([^&]+)/)
+    return match ? decodeURIComponent(match[1]) : ''
+}
+
+const waitForPaddle = async () => {
+    if (!import.meta.client) return null
+    for (let i = 0; i < 20; i++) {
+        if (window.Paddle?.Checkout) return window.Paddle
+        await new Promise(resolve => setTimeout(resolve, 150))
+    }
+    return null
+}
+
+const openPaddleCheckout = async (transaction) => {
+    const txId = getPaddleTransactionId(transaction)
+    if (!txId) {
+        toast.error(t('my_registration.toast_payment_failed'))
+        return
+    }
+
+    if (txId.includes('mock')) {
+        await $fetch(`${apiBaseUrl}/payment/simulate-success/${transaction.reference}`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+        toast.success(t('my_registration.toast_payment_success') || 'Payment successful')
+        await fetchInitialData()
+        return
+    }
+
+    const paddle = await waitForPaddle()
+    if (!paddle) {
+        toast.error(t('my_registration.toast_payment_failed'))
+        return
+    }
+
+    paddle.Checkout.open({
+        transactionId: txId,
+        eventCallback: async (data) => {
+            if (data.name === 'checkout.completed') {
+                toast.success(t('my_registration.toast_payment_success') || 'Payment successful')
+                await fetchInitialData()
+            }
+        }
+    })
+}
+
+const handleTransactionPayment = async (transaction) => {
+    if (!transaction?.checkout_url && !transaction?.tripay_reference) return
+    if (isPaddleTransaction(transaction)) {
+        await openPaddleCheckout(transaction)
+        return
+    }
+    if (transaction.checkout_url) {
+        window.location.href = transaction.checkout_url
+    }
+}
+
 const cancelRegistration = async () => {
     isCancelling.value = true
     try {
@@ -385,8 +454,8 @@ const initiatePaymentGateway = async () => {
     isProcessingPayment.value = true
     try {
         const response = await post(`/events/${eventId}/participants/me/checkout`)
-        if (response?.checkout_url) {
-            window.open(response.checkout_url, '_blank')
+        if (response?.checkout_url || response?.tripay_reference) {
+            await handleTransactionPayment(response)
             await fetchInitialData()
         }
     } catch (e) {

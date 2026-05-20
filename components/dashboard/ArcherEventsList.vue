@@ -155,9 +155,9 @@
                 class="text-sm font-black text-navy leading-tight group-hover:text-primary transition-colors line-clamp-2 mb-0.5">
                 {{ event.name }}
               </h3>
-              <p v-if="event.organizer_name" class="text-[10px] text-slate-400 font-medium truncate">
+              <div v-if="event.organizer_name" class="text-[10px] text-slate-400 font-medium truncate">
                 <Icon icon="ph:buildings-bold" class="inline text-[9px]" /> {{ event.organizer_name }}
-              </p>
+              </div>
             </div>
           </div>
 
@@ -169,8 +169,8 @@
                 <Icon icon="ph:calendar-blank-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <p class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.schedule') }}</p>
-                <p class="text-[11px] font-bold text-navy truncate">{{ formatDate(event.start_date) }}</p>
+                <div class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.schedule') }}</div>
+                <div class="text-[11px] font-bold text-navy truncate">{{ formatDate(event.start_date) }}</div>
               </div>
             </div>
 
@@ -180,21 +180,12 @@
                 <Icon icon="ph:map-pin-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <p class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.location') }}</p>
-                <p class="text-[11px] font-bold text-navy truncate">{{ event.venue || event.location || '-' }}</p>
+                <div class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.location') }}</div>
+                <div class="text-[11px] font-bold text-navy truncate">{{ event.venue || event.location || '-' }}</div>
               </div>
             </div>
 
-            <!-- Category -->
-            <div class="flex items-start gap-2">
-              <div class="size-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                <Icon icon="ph:tag-bold" class="text-xs" />
-              </div>
-              <div class="min-w-0">
-                <p class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.category') }}</p>
-                <p class="text-[11px] font-bold text-navy truncate">{{ event.category_name || '-' }}</p>
-              </div>
-            </div>
+
 
             <!-- Registration Number -->
             <div v-if="event.back_number" class="flex items-start gap-2">
@@ -202,8 +193,8 @@
                 <Icon icon="ph:identification-badge-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <p class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.back_number') }}</p>
-                <p class="text-[11px] font-black text-navy">{{ event.back_number }}</p>
+                <div class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.back_number') }}</div>
+                <div class="text-[11px] font-black text-navy">{{ event.back_number }}</div>
               </div>
             </div>
           </div>
@@ -419,129 +410,73 @@ const formatDate = (dateStr) => {
 }
 
 const getPaymentStatusClass = (status) => {
-  if (!status) return 'bg-gray-50 text-gray-500 border-gray-100'
-  const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc' || s === 'unpaid') {
-    return 'bg-amber-50 text-amber-700 border-amber-100'
-  }
-  const classes = {
-    'belum_lunas': 'bg-yellow-50 text-yellow-700 border-yellow-100',
-    'lunas': 'bg-green-50 text-green-700 border-green-100',
-    'paid': 'bg-green-50 text-green-700 border-green-100',
-    'failed': 'bg-red-50 text-red-700 border-red-100'
-  }
-  return classes[s] || 'bg-gray-50 text-gray-500 border-gray-100'
+  const s = (status || '').toLowerCase()
+  if (s === 'paid' || s === 'lunas') return 'bg-green-50 text-green-700 border-green-100'
+  return 'bg-amber-50 text-amber-700 border-amber-100'
 }
 
 const getPaymentStatusDotClass = (status) => {
-  if (!status) return 'bg-gray-300'
-  const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc' || s === 'unpaid') {
-    return 'bg-amber-500'
-  }
-  const classes = {
-    'belum_lunas': 'bg-yellow-500',
-    'lunas': 'bg-green-500',
-    'paid': 'bg-green-500',
-    'failed': 'bg-red-500'
-  }
-  return classes[s] || 'bg-gray-300'
+  const s = (status || '').toLowerCase()
+  if (s === 'paid' || s === 'lunas') return 'bg-green-500'
+  return 'bg-amber-500'
 }
 
 const getPaymentStatusLabel = (status) => {
-  if (!status) return '-'
-  const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc' || s === 'unpaid') return t('my_events.status_unpaid')
-  const labels = {
-    'belum_lunas': t('my_events.status_unpaid'),
-    'lunas': t('my_events.status_paid'),
-    'paid': t('my_events.status_paid'),
-    'failed': t('my_events.status_failed')
-  }
-  return labels[s] || status
+  const s = (status || '').toLowerCase()
+  if (s === 'paid' || s === 'lunas') return 'Registered'
+  return 'Pending'
 }
 
 const getStatusClass = (status) => {
-  if (!status) return 'bg-gray-50 text-gray-500 border-gray-100'
-  const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending' || s === 'menunggu_acc' || s === 'unpaid') {
-    return 'bg-amber-50 text-amber-700 border-amber-100'
-  }
-  const classes = {
-    'terdaftar': 'bg-green-50 text-green-700 border-green-100',
-    'approved': 'bg-green-50 text-green-700 border-green-100',
-    'rejected': 'bg-red-50 text-red-700 border-red-100'
-  }
-  return classes[s] || 'bg-gray-50 text-gray-500 border-gray-100'
+  const s = (status || '').toLowerCase()
+  if (s === 'rejected') return 'bg-red-50 text-red-700 border-red-100'
+  if (s === 'approved' || s === 'terdaftar' || s === 'registered') return 'bg-green-50 text-green-700 border-green-100'
+  return 'bg-amber-50 text-amber-700 border-amber-100'
 }
 
 const getStatusDotClass = (status) => {
-  if (!status) return 'bg-gray-300'
-  const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending' || s === 'menunggu_acc' || s === 'unpaid') {
-    return 'bg-amber-500'
-  }
-  const classes = {
-    'terdaftar': 'bg-green-500',
-    'approved': 'bg-green-500',
-    'rejected': 'bg-red-500'
-  }
-  return classes[s] || 'bg-gray-300'
+  const s = (status || '').toLowerCase()
+  if (s === 'rejected') return 'bg-red-500'
+  if (s === 'approved' || s === 'terdaftar' || s === 'registered') return 'bg-green-500'
+  return 'bg-amber-500'
 }
 
 const getStatusLabel = (status) => {
-  if (!status) return t('my_events.status_not_registered')
-  const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending' || s === 'unpaid') return t('my_events.status_unpaid')
-  const labels = {
-    'terdaftar': t('my_events.status_registered'),
-    'approved': t('my_events.status_approved'),
-    'rejected': t('my_events.status_rejected')
-  }
-  return labels[s] || status
+  const s = (status || '').toLowerCase()
+  if (s === 'rejected') return 'Rejected'
+  if (s === 'approved' || s === 'terdaftar' || s === 'registered') return 'Registered'
+  return 'Pending'
 }
 
 const getMainStatusLabel = (event) => {
   const pStatus = (event.participant_status || '').toLowerCase()
   const payStatus = (event.payment_status || '').toLowerCase()
-  if (pStatus === 'rejected') return t('my_events.status_rejected')
-  if (payStatus !== 'lunas' && payStatus !== 'paid' && payStatus !== '-') {
-    return getPaymentStatusLabel(event.payment_status)
-  }
-  return getStatusLabel(event.participant_status)
+  if (pStatus === 'rejected') return 'Rejected'
+  if (payStatus === 'lunas' || payStatus === 'paid') return 'Registered'
+  return 'Pending'
 }
 
 const getMainStatusClass = (event) => {
   const pStatus = (event.participant_status || '').toLowerCase()
   const payStatus = (event.payment_status || '').toLowerCase()
   if (pStatus === 'rejected') return getStatusClass('rejected')
-  if (payStatus !== 'lunas' && payStatus !== 'paid' && payStatus !== '-') {
-    return getPaymentStatusClass(event.payment_status)
-  }
-  return getStatusClass(event.participant_status)
+  if (payStatus === 'lunas' || payStatus === 'paid') return getStatusClass('approved')
+  return getStatusClass('pending')
 }
 
 const getMainStatusTextClass = (event) => {
   const pStatus = (event.participant_status || '').toLowerCase()
   const payStatus = (event.payment_status || '').toLowerCase()
   if (pStatus === 'rejected') return 'text-red-600'
-  if (payStatus !== 'lunas' && payStatus !== 'paid' && payStatus !== '-') {
-    if (payStatus === 'menunggu' || payStatus === 'menunggu_acc' || payStatus === 'pending' || payStatus === 'menunggu acc' || payStatus === 'unpaid') {
-      return 'text-amber-600'
-    }
-    return 'text-yellow-600'
-  }
-  if (pStatus === 'terdaftar' || pStatus === 'approved') return 'text-green-600'
-  return 'text-slate-600'
+  if (payStatus === 'lunas' || payStatus === 'paid') return 'text-green-600'
+  return 'text-amber-600'
 }
 
 const getMainStatusDotClass = (event) => {
   const pStatus = (event.participant_status || '').toLowerCase()
   const payStatus = (event.payment_status || '').toLowerCase()
   if (pStatus === 'rejected') return getStatusDotClass('rejected')
-  if (payStatus !== 'lunas' && payStatus !== 'paid' && payStatus !== '-') {
-    return getPaymentStatusDotClass(event.payment_status)
-  }
-  return getStatusDotClass(event.participant_status)
+  if (payStatus === 'lunas' || payStatus === 'paid') return getStatusDotClass('approved')
+  return getStatusDotClass('pending')
 }
 </script>

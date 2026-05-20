@@ -73,13 +73,10 @@
                             {{ getStatusLabel(payment.status) }}
                         </span>
                         <BaseButton v-if="payment.status === 'pending' && payment.checkout_url"
-                            :to="payment.checkout_url" target="_blank" variant="primary" size="sm"
+                            variant="primary" size="sm" @click="handlePayNow(payment)"
                             class="h-9 px-4 font-black text-[10px] tracking-wider">
                             {{ $t('payments.pay_now') }}
                         </BaseButton>
-                        <BaseButton v-else-if="payment.status === 'paid'" :to="getInvoiceUrl(payment.reference)"
-                            target="_blank" variant="white" size="sm" icon="ph:file-pdf"
-                            class="h-9 w-9 p-0 border-slate-200 text-slate-500 hover:text-primary hover:border-primary/20" />
                         <button
                             v-if="payment.status === 'pending' && (payment.va_number || payment.pay_code || payment.qr_url || payment.instructions)"
                             @click="toggleInstructions(payment.uuid)"
@@ -160,7 +157,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { get } = useApi()
-const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const { t } = useI18n()
 
 definePageMeta({ layout: 'dashboard' })
@@ -241,11 +238,6 @@ const getPaymentIcon = (payment) => {
     return 'ph:credit-card-bold'
 }
 
-const getInvoiceUrl = (ref) => {
-    const baseUrl = config.public.apiBase || ''
-    return `${baseUrl}/payment/invoice/${ref}`
-}
-
 const toggleInstructions = (uuid) => {
     if (expandedPayments.value.has(uuid)) {
         expandedPayments.value.delete(uuid)
@@ -263,6 +255,64 @@ const setActiveGroup = (uuid, index) => {
 
 const getActiveGroup = (uuid) => {
     return activeGroups.value.get(uuid) ?? 0
+}
+
+const isPaddlePayment = (payment) => {
+    const method = (payment?.payment_method || '').toLowerCase()
+    const checkoutUrl = payment?.checkout_url || ''
+    return method === 'paddle' || checkoutUrl.includes('paddle.io')
+}
+
+const getPaddleTransactionId = (payment) => {
+    if (payment?.tripay_reference) return payment.tripay_reference
+    const checkoutUrl = payment?.checkout_url || ''
+    const match = checkoutUrl.match(/[?&]_ptxn=([^&]+)/)
+    return match ? decodeURIComponent(match[1]) : ''
+}
+
+const waitForPaddle = async () => {
+    if (!import.meta.client) return null
+    for (let i = 0; i < 20; i++) {
+        if (window.Paddle?.Checkout) return window.Paddle
+        await new Promise(resolve => setTimeout(resolve, 150))
+    }
+    return null
+}
+
+const openPaddleCheckout = async (payment) => {
+    const transactionId = getPaddleTransactionId(payment)
+    if (!transactionId) return
+
+    if (transactionId.includes('mock')) {
+        await $fetch(`${apiBaseUrl}/payment/simulate-success/${payment.reference}`, {
+            method: 'GET',
+            credentials: 'include'
+        })
+        await fetchPayments()
+        return
+    }
+
+    const paddle = await waitForPaddle()
+    if (!paddle) return
+
+    paddle.Checkout.open({
+        transactionId,
+        eventCallback: async (data) => {
+            if (data.name === 'checkout.completed') {
+                await fetchPayments()
+            }
+        }
+    })
+}
+
+const handlePayNow = async (payment) => {
+    if (isPaddlePayment(payment)) {
+        await openPaddleCheckout(payment)
+        return
+    }
+    if (payment.checkout_url) {
+        window.location.href = payment.checkout_url
+    }
 }
 
 // Parses Tripay instructions JSON into [{title, steps[]}] groups.
