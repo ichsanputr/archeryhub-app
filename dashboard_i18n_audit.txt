@@ -6,12 +6,10 @@ Scanned files: 88
 Count: 0
 
 2) No obvious i18n usage (no t( and no $t() found)
-Count: 44
+Count: 39
 - app/components/dashboard/StatsCard.vue
 - app/pages/dashboard/archer/events/[id].vue
 - app/pages/dashboard/archer/events/[id]/index.vue
-- app/pages/dashboard/organization/balance.vue
-- app/pages/dashboard/organization/bank-accounts.vue
 - app/pages/dashboard/organization/earnings/[id].vue
 - app/pages/dashboard/organization/earnings/index.vue
 - app/pages/dashboard/organization/events/[id].vue
@@ -32,8 +30,6 @@ Count: 44
 - app/pages/dashboard/organization/events/[id]/printout/qualification/index.vue
 - app/pages/dashboard/organization/events/[id]/printout/statistics.vue
 - app/pages/dashboard/organization/events/[id]/reset/index.vue
-- app/pages/dashboard/organization/profile.vue
-- app/pages/dashboard/organization/scorekeepers.vue
 - app/pages/dashboard/organization/teams/index.vue
 - app/pages/dashboard/profile/[id].vue
 - app/pages/dashboard/profile/[username].vue
@@ -49,11 +45,10 @@ Count: 44
 - app/pages/dashboard/seller/products/[id].vue
 - app/pages/dashboard/seller/products/add.vue
 - app/pages/dashboard/seller/products/index.vue
-- app/pages/dashboard/seller/settings.vue
 - app/pages/dashboard/seller/store/index.vue
 
 3) Calls t( but no obvious useI18n() setup (heuristic; may be false positives)
-Count: 17
+Count: 22
 - app/components/dashboard/DText.vue
 - app/components/dashboard/OrganizationEventsList.vue
 - app/components/dashboard/subscription/SubscriptionBillingHistory.vue
@@ -64,11 +59,16 @@ Count: 17
 - app/components/dashboard/subscription/SubscriptionPromo.vue
 - app/components/dashboard/subscription/SubscriptionStatus.vue
 - app/pages/dashboard/index.vue
+- app/pages/dashboard/organization/balance.vue
+- app/pages/dashboard/organization/bank-accounts.vue
 - app/pages/dashboard/organization/events/index.vue
 - app/pages/dashboard/organization/news/[slug]/edit.vue
 - app/pages/dashboard/organization/news/[slug]/index.vue
 - app/pages/dashboard/organization/news/create.vue
 - app/pages/dashboard/organization/news/index.vue
+- app/pages/dashboard/organization/profile.vue
+- app/pages/dashboard/organization/scorekeepers.vue
 - app/pages/dashboard/organization/subscription/index.vue
 - app/pages/dashboard/seller/index.vue
+- app/pages/dashboard/seller/settings.vue
 
