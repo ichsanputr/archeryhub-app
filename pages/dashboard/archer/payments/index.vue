@@ -12,8 +12,8 @@
                     </div>
                     <div>
                         <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 text-white">
-                            {{ $t('payments.title') }}</h1>
-                        <p class="text-slate-300 text-xs sm:text-sm">{{ $t('payments.desc') }}
+                            {{ t('payments.title') }}</h1>
+                        <p class="text-slate-300 text-xs sm:text-sm">{{ t('payments.desc') }}
                         </p>
                     </div>
                 </div>
@@ -35,8 +35,8 @@
         <div v-else-if="payments.length === 0" class="bg-white border border-slate-100 rounded-3xl p-12 text-center">
             <div class="max-w-xs mx-auto space-y-4">
                 <Icon icon="ph:receipt-x-bold" class="text-5xl text-slate-200 mx-auto" />
-                <p class="text-lg font-black text-navy">{{ $t('payments.no_transactions') }}</p>
-                <p class="text-sm text-slate-500 font-medium">{{ $t('payments.no_transactions_desc') }}</p>
+                <p class="text-lg font-black text-navy">{{ t('payments.no_transactions') }}</p>
+                <p class="text-sm text-slate-500 font-medium">{{ t('payments.no_transactions_desc') }}</p>
             </div>
         </div>
 
@@ -54,7 +54,7 @@
                             <p class="text-[10px] font-black text-slate-400 tracking-widest mb-1">{{
                                 formatDate(payment.created_at) }} • {{ payment.reference }}</p>
                             <h3 class="text-base font-black text-navy dark:text-white leading-tight mb-1">
-                                {{ payment.event_name || payment.plan_name || $t('payments.payment_title_default') }}</h3>
+                                {{ payment.event_name || payment.plan_name || t('payments.payment_title_default') }}</h3>
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="text-sm font-bold text-navy/70 dark:text-white/70">{{
                                     formatCurrency(payment.total_amount) }}</span>
@@ -75,7 +75,7 @@
                         <BaseButton v-if="payment.status === 'pending' && payment.checkout_url"
                             variant="primary" size="sm" @click="handlePayNow(payment)"
                             class="h-9 px-4 font-black text-[10px] tracking-wider">
-                            {{ $t('payments.pay_now') }}
+                            {{ t('payments.pay_now') }}
                         </BaseButton>
                         <button
                             v-if="payment.status === 'pending' && (payment.va_number || payment.pay_code || payment.qr_url || payment.instructions)"
@@ -95,7 +95,7 @@
                     <div v-if="payment.va_number || payment.pay_code"
                         class="flex items-center justify-between p-3 bg-white dark:bg-slate-800 rounded-xl border border-primary/20">
                         <span class="text-[10px] font-black text-slate-400 tracking-widest">
-                            {{ payment.va_number ? $t('payments.va_number') : $t('payments.pay_code') }}
+                            {{ payment.va_number ? t('payments.va_number') : t('payments.pay_code') }}
                         </span>
                         <span class="text-sm font-black text-navy dark:text-white font-mono tracking-wider select-all font-bold">
                             {{ payment.va_number || payment.pay_code }}
@@ -110,7 +110,7 @@
 
                     <!-- Instruction groups -->
                     <template v-if="parseInstructionGroups(payment.instructions).length">
-                        <div class="text-[10px] font-black text-slate-400 tracking-widest pt-1">{{ $t('payments.how_to_pay') }}</div>
+                        <div class="text-[10px] font-black text-slate-400 tracking-widest pt-1">{{ t('payments.how_to_pay') }}</div>
                         <!-- Tab selector when multiple groups -->
                         <div v-if="parseInstructionGroups(payment.instructions).length > 1"
                             class="flex gap-2 flex-wrap">

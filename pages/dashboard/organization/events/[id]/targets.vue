@@ -26,10 +26,10 @@
             <!-- Title Section -->
             <div class="flex-1">
               <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
-                {{ $t('event_targets.title') }}
+                {{ t('event_targets.title') }}
               </h1>
               <p class="text-slate-300 text-sm max-w-2xl">
-                {{ $t('event_targets.manage_desc', { event: eventName }) }}
+                {{ t('event_targets.manage_desc', { event: eventName }) }}
               </p>
             </div>
           </div>
@@ -41,19 +41,19 @@
               <button @click="viewMode = 'grid'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
                 :class="viewMode === 'grid' ? 'bg-primary text-btn-text shadow-md' : 'text-slate-300 hover:text-white'">
                 <Icon icon="ph:grid-four-bold" />
-                <span class="text-[10px] font-black tracking-wider">{{ $t('event_targets.view_grid') }}</span>
+                <span class="text-[10px] font-black tracking-wider">{{ t('event_targets.view_grid') }}</span>
               </button>
               <button @click="viewMode = 'table'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
                 :class="viewMode === 'table' ? 'bg-primary text-btn-text shadow-md' : 'text-slate-300 hover:text-white'">
                 <Icon icon="ph:table-bold" />
-                <span class="text-[10px] font-black tracking-wider">{{ $t('event_targets.view_table') }}</span>
+                <span class="text-[10px] font-black tracking-wider">{{ t('event_targets.view_table') }}</span>
               </button>
             </div>
 
             <BaseButton @click="showCreateDialog = true" variant="primary" icon="ph:plus-bold"
               class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all">
-              <span class="hidden sm:inline">{{ $t('event_targets.add_target') }}</span>
-              <span class="sm:hidden">{{ $t('event_targets.add') }}</span>
+              <span class="hidden sm:inline">{{ t('event_targets.add_target') }}</span>
+              <span class="sm:hidden">{{ t('event_targets.add') }}</span>
             </BaseButton>
           </div>
         </div>
@@ -106,13 +106,13 @@
             <Icon icon="ph:target-bold" class="text-5xl" />
           </div>
           <div class="space-y-2">
-            <h3 class="text-xl font-black text-navy">{{ $t('event_targets.no_targets') }}</h3>
+            <h3 class="text-xl font-black text-navy">{{ t('event_targets.no_targets') }}</h3>
             <p class="text-sm text-gray-500 font-medium leading-relaxed">
-              {{ $t('event_targets.no_targets_desc') }}
+              {{ t('event_targets.no_targets_desc') }}
             </p>
           </div>
           <BaseButton @click="showCreateDialog = true" variant="primary" icon="ph:plus-bold" class="w-full">
-            {{ $t('event_targets.add_target') }}
+            {{ t('event_targets.add_target') }}
           </BaseButton>
         </div>
       </div>
@@ -125,7 +125,7 @@
           <!-- Board Header -->
           <div class="px-6 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <span class="text-[10px] font-black text-gray-400 tracking-[0.2em] ">{{ $t('event_targets.board') }}</span>
+              <span class="text-[10px] font-black text-gray-400 tracking-[0.2em] ">{{ t('event_targets.board') }}</span>
               <span
                 class="size-8 rounded-lg bg-navy text-white flex items-center justify-center font-black text-sm font-mono shadow-sm">
                 {{ target.target_number }}
@@ -178,7 +178,7 @@
           <!-- Quick Footer Info -->
           <div class="px-6 py-3 bg-gray-50/30 text-center">
             <p class="text-[10px] font-bold text-gray-400 tracking-widest">
-              {{ $t('event_targets.targets_count', { count: target.letters.split(',').length }) }}
+              {{ t('event_targets.targets_count', { count: target.letters.split(',').length }) }}
             </p>
           </div>
         </div>
@@ -191,9 +191,9 @@
         <table class="w-full text-left">
           <thead class="bg-gray-50/50 border-b border-gray-100">
             <tr class="text-[10px] font-black text-gray-400  tracking-widest">
-              <th class="px-6 py-4">{{ $t('event_targets.number') }}</th>
-              <th class="px-6 py-4">{{ $t('event_targets.target_number') }}</th>
-              <th class="px-6 py-4 text-right">{{ $t('event_targets.action') }}</th>
+              <th class="px-6 py-4">{{ t('event_targets.number') }}</th>
+              <th class="px-6 py-4">{{ t('event_targets.target_number') }}</th>
+              <th class="px-6 py-4 text-right">{{ t('event_targets.action') }}</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50 relative min-h-[200px]">
@@ -281,7 +281,7 @@
                     <Icon icon="ph:target" class="text-xl text-navy" />
                   </div>
                   <h3 class="text-xl font-black text-navy">
-                    {{ showEditDialog ? $t('event_targets.edit_target') : $t('event_targets.add_target') }}
+                    {{ showEditDialog ? t('event_targets.edit_target') : t('event_targets.add_target') }}
                   </h3>
                 </div>
                 <button @click="closeDialog" class="text-gray-400 hover:text-navy transition-colors">
@@ -294,7 +294,7 @@
             <form @submit.prevent="submitForm" class="p-6 space-y-5">
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">
-                  {{ showEditDialog ? $t('event_targets.base_target_number') : $t('event_targets.target_quantity') }}
+                  {{ showEditDialog ? t('event_targets.base_target_number') : t('event_targets.target_quantity') }}
                 </label>
                 <input v-if="showEditDialog" v-model.number="form.target_name" type="number" min="1" required
                   class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
@@ -302,19 +302,19 @@
                 <input v-else v-model.number="form.target_total" type="number" min="1" required
                   class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   placeholder="4" />
-                <p v-if="showEditDialog" class="text-xs text-gray-500 mt-1.5">{{ $t('event_targets.base_target_desc') }}</p>
-                <p v-else class="text-xs text-gray-500 mt-1.5" v-html="$t('event_targets.create_target_desc', { total: totalCreatedTargets })"></p>
+                <p v-if="showEditDialog" class="text-xs text-gray-500 mt-1.5">{{ t('event_targets.base_target_desc') }}</p>
+                <p v-else class="text-xs text-gray-500 mt-1.5" v-html="t('event_targets.create_target_desc', { total: totalCreatedTargets })"></p>
               </div>
 
               <div>
-                <BaseSelect v-model="form.target_count" :label="$t('event_targets.target_face_count')" :items="targetCountOptions" required />
-                <p class="text-xs text-gray-500 mt-1.5">{{ $t('event_targets.target_face_count_desc') }}</p>
+                <BaseSelect v-model="form.target_count" :label="t('event_targets.target_face_count')" :items="targetCountOptions" required />
+                <p class="text-xs text-gray-500 mt-1.5">{{ t('event_targets.target_face_count_desc') }}</p>
 
                 <div v-if="!showEditDialog" class="mt-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
                   <div class="flex items-center justify-between gap-2 mb-2">
-                    <p class=" text-xs font-bold text-navy tracking-wider">{{ $t('event_targets.preview_title') }}</p>
+                    <p class=" text-xs font-bold text-navy tracking-wider">{{ t('event_targets.preview_title') }}</p>
                     <span class=" text-xs font-bold text-gray-500">
-                      {{ $t('event_targets.targets_count', { count: totalCreatedTargets }) }}
+                      {{ t('event_targets.targets_count', { count: totalCreatedTargets }) }}
                     </span>
                   </div>
 
@@ -327,7 +327,7 @@
                   </div>
 
                   <p class="text-[10px] text-gray-400 mt-2 font-medium">
-                    {{ $t('event_targets.sample') }}: <strong class="text-navy">{{ previewTargets[0] || '-' }}</strong> {{ $t('event_targets.to') }}
+                    {{ t('event_targets.sample') }}: <strong class="text-navy">{{ previewTargets[0] || '-' }}</strong> {{ t('event_targets.to') }}
                     <strong class="text-navy">{{ previewTargets[previewTargets.length - 1] || '-' }}</strong>
                   </p>
                 </div>
@@ -337,11 +337,11 @@
               <div class="flex gap-3 pt-4 border-t border-gray-100">
                 <button type="button" @click="closeDialog"
                   class="flex-1 px-4 py-3 border-2 border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-all">
-                  {{ $t('event_targets.cancel') }}
+                  {{ t('event_targets.cancel') }}
                 </button>
                 <BaseButton type="submit" :disabled="submitting" :loading="submitting" variant="primary"
                   class="flex-1 px-4 py-3 rounded-xl font-bold shadow-lg shadow-primary/30">
-                  {{ showEditDialog ? $t('event_targets.update_target') : $t('event_targets.create_target') }}
+                  {{ showEditDialog ? t('event_targets.update_target') : t('event_targets.create_target') }}
                 </BaseButton>
               </div>
             </form>
@@ -365,18 +365,18 @@
                   <Icon icon="ph:warning" class="text-2xl text-red-600" />
                 </div>
                 <div>
-                  <h3 class="text-xl font-black text-navy mb-2">{{ $t('event_targets.confirm_delete') }}</h3>
-                  <p class="text-gray-600" v-html="$t('event_targets.confirm_delete_desc', { target: targetToDelete?.target_name })"></p>
+                  <h3 class="text-xl font-black text-navy mb-2">{{ t('event_targets.confirm_delete') }}</h3>
+                  <p class="text-gray-600" v-html="t('event_targets.confirm_delete_desc', { target: targetToDelete?.target_name })"></p>
                 </div>
               </div>
               <div class="flex gap-3">
                 <button type="button" @click="showDeleteDialog = false"
                   class="flex-1 px-4 py-2.5 border-2 border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-all">
-                  {{ $t('event_targets.cancel') }}
+                  {{ t('event_targets.cancel') }}
                 </button>
                 <button @click="deleteTarget" :disabled="submitting"
                   class="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-all disabled:opacity-50">
-                  {{ submitting ? $t('event_targets.deleting') : $t('event_targets.delete') }}
+                  {{ submitting ? t('event_targets.deleting') : t('event_targets.delete') }}
                 </button>
               </div>
             </div>

@@ -10,8 +10,7 @@
     "profile": "프로필",
     "settings": "설정",
     "sign_out": "로그아웃"
-  }
-  ,
+  },
   "common": {
     "loading_dashboard": "대시보드 로딩 중...",
     "view_all": "모두 보기",
@@ -35,14 +34,12 @@
       "draft": "임시",
       "delivered": "고객에게 배송된 항목",
       "page_views": "제품 페이지 방문"
-    }
-    ,
+    },
     "sections": {
       "top_selling": "가장 많이 판매된 제품",
       "latest": "최신 제품"
     }
-  }
-  ,
+  },
   "organization": {
     "events": {
       "title": "이벤트 목록 - Archeris 대시보드"
@@ -130,8 +127,7 @@
         "cat_other": "기타"
       }
     }
-  }
-  ,
+  },
   "subscription": {
     "success": {
       "title": "결제 성공!",
@@ -174,7 +170,11 @@
       "elite_title": "Elite 플랜",
       "current_package": "현재 패키지",
       "upgrade_now": "지금 업그레이드",
-      "choose_package": "패키지 선택"
+      "choose_package": "패키지 선택",
+      "premium_features": "Fitur Premium",
+      "priority_support": "Support Prioritas",
+      "recommended_for": "Direkomendasikan untuk",
+      "title": "Pilihan Paket"
     },
     "packageTitle": "Event Optimizer",
     "promoBadge": "신규 주최자",
@@ -186,8 +186,7 @@
     "seo": {
       "title": "구독 대시보드 - Archeris.net",
       "description": "Archeris.net 대시보드에서 구독, 사용 한도 및 청구 내역을 관리하세요."
-    }
-    ,
+    },
     "comparison": {
       "title": "상세 비교",
       "feature_header": "주요 기능",
@@ -215,6 +214,17 @@
     "promo": {
       "extra": "초기 설정 비용과 약정이 없습니다.",
       "total_value": "총 가치"
+    }
+  },
+  "events": {
+    "list": {
+      "empty_state": {},
+      "reset_filters": "",
+      "search_label": "",
+      "search_placeholder": "",
+      "subtitle": "",
+      "table_headers": {},
+      "title": ""
     }
   }
 }

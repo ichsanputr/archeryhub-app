@@ -5,18 +5,18 @@
       <nav class="flex flex-wrap gap-2 items-center">
         <NuxtLink to="/dashboard/organization"
           class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">
-          {{ $t('dashboard.sidebar.overview') }}</NuxtLink>
+          {{ t('dashboard.sidebar.overview') }}</NuxtLink>
         <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
         <NuxtLink to="/dashboard/organization/events"
-          class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">{{ $t('dashboard.sidebar.event') }}</NuxtLink>
+          class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">{{ t('dashboard.sidebar.event') }}</NuxtLink>
         <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
-        <span class="text-navy text-sm font-bold">{{ $t('event_create.breadcrumb_new') }}</span>
+        <span class="text-navy text-sm font-bold">{{ t('event_create.breadcrumb_new') }}</span>
       </nav>
 
       <div class="flex flex-wrap justify-between gap-6 items-end">
         <div class="flex flex-col gap-3">
-          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">{{ $t('event_create.title') }}</h1>
-          <p class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">{{ $t('event_create.subtitle') }}</p>
+          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">{{ t('event_create.title') }}</h1>
+          <p class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">{{ t('event_create.subtitle') }}</p>
         </div>
       </div>
     </div>
@@ -27,31 +27,31 @@
 
         <!-- Single Step: Event Info -->
         <div class="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4">
-          <FormSection icon="ph:identification-card" :title="$t('event_create.section_identity')">
+          <FormSection icon="ph:identification-card" :title="t('event_create.section_identity')">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="md:col-span-2">
-                <BaseInput v-model="form.name" :label="$t('event_create.field_name')"
-                  :placeholder="$t('event_create.field_name_placeholder')" required :error="errors.name"
+                <BaseInput v-model="form.name" :label="t('event_create.field_name')"
+                  :placeholder="t('event_create.field_name_placeholder')" required :error="errors.name"
                   @blur="validate('name', form.name, [rules.required()])" />
               </div>
               <div class="md:col-span-2">
-                <BaseInput v-model="form.slug" :label="$t('event_create.field_slug')"
-                  :placeholder="$t('event_create.field_slug_placeholder')" required :error="errors.slug"
+                <BaseInput v-model="form.slug" :label="t('event_create.field_slug')"
+                  :placeholder="t('event_create.field_slug_placeholder')" required :error="errors.slug"
                   @input="onSlugInput"
-                  @blur="validate('slug', form.slug, [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, $t('event_create.slug_validation'))])" />
+                  @blur="validate('slug', form.slug, [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, t('event_create.slug_validation'))])" />
                 <p class="text-xs text-gray-500 mt-1.5">
-                  {{ $t('event_create.slug_hint') }}
+                  {{ t('event_create.slug_hint') }}
                 </p>
               </div>
-              <BaseInput v-model="form.venue" :label="$t('event_create.field_venue')" :placeholder="$t('event_create.field_venue_placeholder')"
+              <BaseInput v-model="form.venue" :label="t('event_create.field_venue')" :placeholder="t('event_create.field_venue_placeholder')"
                 icon="la:place-of-worship" />
-              <BaseSelect v-model="form.country" :label="$t('event_create.field_country')" :items="countryItems" required :error="errors.country"
+              <BaseSelect v-model="form.country" :label="t('event_create.field_country')" :items="countryItems" required :error="errors.country"
                 @blur="validate('country', form.country, [rules.required()])" />
-              <BaseSelect v-model="form.type" :label="$t('event_create.field_location_type')" :items="disciplineItems" required :error="errors.type"
+              <BaseSelect v-model="form.type" :label="t('event_create.field_location_type')" :items="disciplineItems" required :error="errors.type"
                 @blur="validate('type', form.type, [rules.required()])" />
 
               <div class="md:col-span-2">
-                <BaseInput v-model="form.gmapsLink" :label="$t('event_create.field_gmaps')" :placeholder="$t('event_create.field_gmaps_placeholder')"
+                <BaseInput v-model="form.gmapsLink" :label="t('event_create.field_gmaps')" :placeholder="t('event_create.field_gmaps_placeholder')"
                   icon="ph:map-pin" @blur="validateGmapsLink" />
 
                 <!-- Gmaps Preview -->
@@ -62,36 +62,36 @@
                   </iframe>
                 </div>
                 <p v-else-if="form.gmapsLink && !isValidGmaps" class="text-red-500 text-xs font-bold mt-1">
-                  {{ $t('event_create.gmaps_invalid') }}
+                  {{ t('event_create.gmaps_invalid') }}
                 </p>
               </div>
             </div>
           </FormSection>
 
-          <FormSection icon="ant-design:schedule-outlined" :title="$t('event_create.section_schedule')">
+          <FormSection icon="ant-design:schedule-outlined" :title="t('event_create.section_schedule')">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.startDate" :label="$t('event_create.field_start_date')" type="datetime-local" required
+              <BaseInput v-model="form.startDate" :label="t('event_create.field_start_date')" type="datetime-local" required
                 :error="errors.startDate" @blur="validate('startDate', form.startDate, [rules.required()])" />
-              <BaseInput v-model="form.endDate" :label="$t('event_create.field_end_date')" type="datetime-local" required
+              <BaseInput v-model="form.endDate" :label="t('event_create.field_end_date')" type="datetime-local" required
                 :error="errors.endDate" @blur="validate('endDate', form.endDate, [rules.required()])" />
-              <BaseInput v-model="form.registrationDeadline" :label="$t('event_create.field_registration_deadline')" type="datetime-local" />
+              <BaseInput v-model="form.registrationDeadline" :label="t('event_create.field_registration_deadline')" type="datetime-local" />
             </div>
           </FormSection>
 
-          <FormSection icon="ph:article" :title="$t('event_create.section_details')">
+          <FormSection icon="ph:article" :title="t('event_create.section_details')">
             <div class="flex flex-col gap-1.5">
-              <label class="text-navy text-sm font-bold ml-1">{{ $t('event_create.field_description') }}</label>
+              <label class="text-navy text-sm font-bold ml-1">{{ t('event_create.field_description') }}</label>
               <div class="min-h-[300px]">
                 <TiptapEditor v-model="form.description" />
               </div>
             </div>
           </FormSection>
 
-          <FormSection icon="ph:gear" :title="$t('event_create.section_settings')">
+          <FormSection icon="ph:gear" :title="t('event_create.section_settings')">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <BaseSelect v-model="form.status" :label="$t('event_create.field_initial_status')" :items="[
-                { title: $t('event_create.status_draft'), value: 'draft' },
-                { title: $t('event_create.status_published'), value: 'published' }
+              <BaseSelect v-model="form.status" :label="t('event_create.field_initial_status')" :items="[
+                { title: t('event_create.status_draft'), value: 'draft' },
+                { title: t('event_create.status_published'), value: 'published' }
               ]" />
             </div>
           </FormSection>
@@ -102,10 +102,10 @@
         <div
           class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-8 border-t border-gray-100 mt-4">
           <BaseButton to="/dashboard/organization/events" variant="ghost" class="px-8 whitespace-nowrap">
-            {{ $t('event_create.button_cancel') }}
+            {{ t('event_create.button_cancel') }}
           </BaseButton>
           <BaseButton type="submit" variant="primary" :loading="isSubmitting" class="px-10 whitespace-nowrap">
-            {{ $t('event_create.button_create') }}
+            {{ t('event_create.button_create') }}
           </BaseButton>
         </div>
       </form>

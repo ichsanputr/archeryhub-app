@@ -25,10 +25,10 @@
             <!-- Title Section -->
             <div class="min-w-0">
               <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                {{ $t('event_qualification.title') }}
+                {{ t('event_qualification.title') }}
               </h1>
               <div class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
-                {{ $t('event_qualification.manage_desc', { event: eventName }) }}
+                {{ t('event_qualification.manage_desc', { event: eventName }) }}
               </div>
             </div>
           </div>
@@ -38,7 +38,7 @@
             <BaseButton variant="primary" icon="ph:plus-bold"
               class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
               @click="openCreateModal">
-              {{ $t('event_qualification.add_session') }}
+              {{ t('event_qualification.add_session') }}
             </BaseButton>
           </div>
         </div>
@@ -50,7 +50,7 @@
       <!-- Sessions List (event-level) -->
       <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-base font-bold text-navy">{{ $t('event_qualification.session_list') }}</h2>
+          <h2 class="text-base font-bold text-navy">{{ t('event_qualification.session_list') }}</h2>
         </div>
 
         <div v-if="loadingSessions" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -68,10 +68,10 @@
         <div v-else-if="qualificationSessions.length === 0"
           class="text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
           <Icon icon="ph:calendar-blank" class="text-4xl text-gray-300 mx-auto mb-3" />
-          <div class="text-sm font-bold text-gray-600 mb-1">{{ $t('event_qualification.no_session') }}</div>
-          <div class="text-xs text-gray-400 mb-4">{{ $t('event_qualification.no_session_desc') }}</div>
+          <div class="text-sm font-bold text-gray-600 mb-1">{{ t('event_qualification.no_session') }}</div>
+          <div class="text-xs text-gray-400 mb-4">{{ t('event_qualification.no_session_desc') }}</div>
           <BaseButton variant="primary" icon="ph:plus-bold" @click="openCreateModal">
-            {{ $t('event_qualification.create_first_session') }}
+            {{ t('event_qualification.create_first_session') }}
           </BaseButton>
         </div>
 
@@ -114,7 +114,7 @@
                   <Icon icon="ph:calendar-bold" class="text-lg" />
                 </div>
                 <span class="text-sm font-bold text-gray-600">{{ session.session_date ? formatDate(session.session_date)
-                  : $t('event_qualification.not_set') }}</span>
+                  : t('event_qualification.not_set') }}</span>
               </div>
 
               <div class="flex items-center gap-3">
@@ -124,17 +124,17 @@
                 <span v-if="session.start_time || session.end_time" class="text-sm font-bold text-gray-600">
                   {{ formatTime(session.start_time) }} - {{ formatTime(session.end_time) }}
                 </span>
-                <span v-else class="text-sm font-medium text-gray-400 italic">{{ $t('event_qualification.time_not_set') }}</span>
+                <span v-else class="text-sm font-medium text-gray-400 italic">{{ t('event_qualification.time_not_set') }}</span>
               </div>
 
               <div class="grid grid-cols-2 gap-3 pt-2">
                 <div class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border border-gray-100">
                   <Icon icon="ph:arrow-clockwise-bold" class="text-primary text-lg" />
-                  <span class="text-xs font-black text-navy">{{ session.total_ends }} {{ $t('event_qualification.ends') }}</span>
+                  <span class="text-xs font-black text-navy">{{ session.total_ends }} {{ t('event_qualification.ends') }}</span>
                 </div>
                 <div class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border border-gray-100">
                   <Icon icon="ph:crosshair-bold" class="text-primary text-lg" />
-                  <span class="text-xs font-black text-navy">{{ session.arrows_per_end }} {{ $t('event_qualification.arrows') }}</span>
+                  <span class="text-xs font-black text-navy">{{ session.arrows_per_end }} {{ t('event_qualification.arrows') }}</span>
                 </div>
               </div>
             </div>
@@ -143,12 +143,12 @@
               <div class="flex items-center gap-2 px-3 py-1.5 bg-navy/5 rounded-xl">
                 <Icon icon="ph:users-three-bold" class="text-navy text-base" />
                 <span class="text-xs font-bold text-navy">
-                  <span class="text-sm">{{ session.participant_count || 0 }}</span> {{ $t('event_qualification.archers') }}
+                  <span class="text-sm">{{ session.participant_count || 0 }}</span> {{ t('event_qualification.archers') }}
                 </span>
               </div>
               <div
                 class="flex items-center gap-1 font-black text-[10px]  tracking-widest group-hover:gap-2 transition-all">
-                <span>{{ $t('event_qualification.manage') }}</span>
+                <span>{{ t('event_qualification.manage') }}</span>
                 <Icon icon="ph:arrow-right-bold" class="text-sm" />
               </div>
             </div>
@@ -159,7 +159,7 @@
       <!-- Results Section -->
       <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-base font-bold text-navy">{{ $t('event_qualification.qualification_results') }}</h2>
+          <h2 class="text-base font-bold text-navy">{{ t('event_qualification.qualification_results') }}</h2>
         </div>
 
         <!-- Category Selection -->
@@ -178,8 +178,8 @@
         <div v-else-if="categories.length === 0"
           class="text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
           <Icon icon="ph:folder-notch-open" class="text-4xl text-gray-300 mx-auto mb-3" />
-          <div class="text-sm font-bold text-gray-600 mb-1">{{ $t('event_qualification.no_category') }}</div>
-          <div class="text-xs text-gray-400">{{ $t('event_qualification.no_category_desc') }}</div>
+          <div class="text-sm font-bold text-gray-600 mb-1">{{ t('event_qualification.no_category') }}</div>
+          <div class="text-xs text-gray-400">{{ t('event_qualification.no_category_desc') }}</div>
         </div>
 
         <div v-else>
@@ -206,7 +206,7 @@
                     {{ getCategoryName(category) }}</div>
                   <div class="flex items-center gap-2 text-xs text-gray-500">
                     <Icon icon="ph:users-three" class="text-base" />
-                    <span class="font-semibold">{{ category.participant_count || 0 }} {{ $t('event_qualification.archers').toLowerCase() }}</span>
+                    <span class="font-semibold">{{ category.participant_count || 0 }} {{ t('event_qualification.archers').toLowerCase() }}</span>
                   </div>
                 </div>
               </div>
@@ -218,7 +218,7 @@
             <div class="animate-spin inline-block">
               <Icon icon="ph:circle-notch" class="text-4xl text-primary" />
             </div>
-            <div class="text-gray-500 mt-4">{{ $t('event_qualification.loading_report') }}</div>
+            <div class="text-gray-500 mt-4">{{ t('event_qualification.loading_report') }}</div>
           </div>
 
           <div v-else-if="selectedCategory && reportEntries.length > 0"
@@ -227,13 +227,13 @@
               <thead>
                 <tr class="bg-gray-50/50 border-b border-gray-100">
                   <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400  tracking-widest w-24">
-                    {{ $t('event_qualification.position') }}</th>
+                    {{ t('event_qualification.position') }}</th>
                   <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 tracking-widest min-w-[350px]">
-                    {{ $t('event_qualification.archer_name') }}</th>
+                    {{ t('event_qualification.archer_name') }}</th>
                   <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 tracking-widest min-w-[400px]">
-                    {{ $t('event_qualification.scores_per_end') }}</th>
+                    {{ t('event_qualification.scores_per_end') }}</th>
                   <th class="px-6 py-4 text-right text-[10px] font-black text-gray-400  tracking-widest w-32">
-                    {{ $t('event_qualification.total_score') }}</th>
+                    {{ t('event_qualification.total_score') }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -255,7 +255,7 @@
                           <div class="text-[10px] text-gray-400 font-bold tracking-tighter">{{
                             archer.club_name
                             ||
-                            $t('event_qualification.independent') }}</div>
+                            t('event_qualification.independent') }}</div>
                         </div>
                       </div>
                     </div>
@@ -297,7 +297,7 @@
                     </div>
                     <div v-else
                       class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border-2 border-dashed border-gray-100 max-w-[150px]">
-                      <span class=" text-xs text-gray-400 font-black italic tracking-widest">{{ $t('event_qualification.empty') }}</span>
+                      <span class=" text-xs text-gray-400 font-black italic tracking-widest">{{ t('event_qualification.empty') }}</span>
                     </div>
                   </td>
                   <td class="px-6 py-4 text-right">
@@ -311,7 +311,7 @@
             <div v-if="totalPages > 1"
               class="px-6 py-4 bg-gray-50/30 border-t border-gray-100 flex items-center justify-between">
               <div class="text-xs text-gray-400 font-bold">
-                {{ $t('event_qualification.showing_pagination', { start: (currentPage - 1) * pageSize + 1, end: Math.min(currentPage * pageSize, reportEntries.length), total: reportEntries.length }) }}
+                {{ t('event_qualification.showing_pagination', { start: (currentPage - 1) * pageSize + 1, end: Math.min(currentPage * pageSize, reportEntries.length), total: reportEntries.length }) }}
               </div>
               <div class="flex items-center gap-2">
                 <button @click="currentPage = Math.max(1, currentPage - 1)" :disabled="currentPage === 1"
@@ -342,12 +342,12 @@
           <div v-else-if="selectedCategory"
             class="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
             <Icon icon="ph:users-three" class="text-5xl text-gray-300 mx-auto mb-4" />
-            <div class="text-gray-500">{{ $t('event_qualification.no_archer_in_category') }}</div>
+            <div class="text-gray-500">{{ t('event_qualification.no_archer_in_category') }}</div>
           </div>
 
           <div v-else class="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
             <Icon icon="ph:selection" class="text-5xl text-gray-300 mx-auto mb-4" />
-            <div class="text-gray-500">{{ $t('event_qualification.select_category_to_view') }}</div>
+            <div class="text-gray-500">{{ t('event_qualification.select_category_to_view') }}</div>
           </div>
         </div>
       </div>
@@ -370,7 +370,7 @@
               </div>
               <div>
                 <h3 class="text-xl font-black text-white leading-tight">{{ modalTitle }}</h3>
-                <div class="text-gray-400 text-xs mt-0.5">{{ $t('event_qualification.configure_schedule_desc') }}</div>
+                <div class="text-gray-400 text-xs mt-0.5">{{ t('event_qualification.configure_schedule_desc') }}</div>
               </div>
             </div>
             <button @click="showSessionDialog = false"
@@ -383,17 +383,17 @@
           <div class="p-8 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
             <div class="space-y-4">
               <div>
-                <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ $t('event_qualification.session_title_label') }}</label>
+                <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ t('event_qualification.session_title_label') }}</label>
                 <div class="relative group">
                   <Icon icon="ph:text-t-bold"
                     class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" />
-                  <input v-model="newSessionName" type="text" :placeholder="$t('event_qualification.session_title_placeholder')"
+                  <input v-model="newSessionName" type="text" :placeholder="t('event_qualification.session_title_placeholder')"
                     class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:outline-none focus:border-primary focus:bg-white transition-all text-navy font-bold placeholder:font-normal placeholder:text-gray-300" />
                 </div>
               </div>
 
               <div>
-                <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ $t('event_qualification.session_date_label') }}</label>
+                <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ t('event_qualification.session_date_label') }}</label>
                 <div class="relative group">
                   <Icon icon="ph:calendar-bold"
                     class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" />
@@ -404,7 +404,7 @@
 
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ $t('event_qualification.start_time_label') }}</label>
+                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ t('event_qualification.start_time_label') }}</label>
                   <div class="relative group">
                     <Icon icon="ph:clock-bold"
                       class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" />
@@ -413,7 +413,7 @@
                   </div>
                 </div>
                 <div>
-                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ $t('event_qualification.end_time_label') }}</label>
+                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ t('event_qualification.end_time_label') }}</label>
                   <div class="relative group">
                     <Icon icon="ph:clock-afternoon-bold"
                       class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" />
@@ -426,7 +426,7 @@
               <div class="grid grid-cols-2 gap-4 pt-2">
                 <div
                   class="p-4 bg-gray-50 rounded-2xl border-2 border-transparent hover:border-gray-100 transition-all">
-                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-3 text-center">{{ $t('event_qualification.number_of_ends') }}</label>
+                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-3 text-center">{{ t('event_qualification.number_of_ends') }}</label>
                   <div class="flex items-center justify-between gap-3">
                     <button @click="newSessionEnds = Math.max(1, newSessionEnds - 1)"
                       class="size-8 rounded-lg bg-white shadow-sm border border-gray-100 flex items-center justify-center text-navy hover:text-primary transition-colors">
@@ -441,7 +441,7 @@
                 </div>
                 <div
                   class="p-4 bg-gray-50 rounded-2xl border-2 border-transparent hover:border-gray-100 transition-all">
-                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-3 text-center">{{ $t('event_qualification.arrows_per_end') }}</label>
+                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-3 text-center">{{ t('event_qualification.arrows_per_end') }}</label>
                   <div class="flex items-center justify-between gap-3">
                     <button @click="newSessionArrows = Math.max(1, newSessionArrows - 1)"
                       class="size-8 rounded-lg bg-white shadow-sm border border-gray-100 flex items-center justify-center text-navy hover:text-primary transition-colors">
@@ -458,7 +458,7 @@
 
               <!-- Category Selection -->
               <div>
-                <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-3 px-1 ">{{ $t('event_qualification.event_category_label') }}</label>
+                <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-3 px-1 ">{{ t('event_qualification.event_category_label') }}</label>
                 <div
                   class="bg-gray-50 rounded-2xl p-4 border border-gray-100 max-h-48 overflow-y-auto space-y-2 custom-scrollbar">
                   <div v-for="category in categories" :key="category.id"
@@ -472,7 +472,7 @@
                     <span class="text-xs font-bold text-navy">{{ getCategoryName(category) }}</span>
                   </div>
                   <div v-if="categories.length === 0" class="text-center py-4 text-xs text-gray-400 font-medium italic">
-                    {{ $t('event_qualification.loading_categories') }}
+                    {{ t('event_qualification.loading_categories') }}
                   </div>
                 </div>
               </div>
@@ -482,7 +482,7 @@
           <div class="p-8 bg-gray-50 flex gap-4">
             <BaseButton variant="white" class="flex-1 !py-4 !rounded-2xl font-black !tracking-widest !text-xs "
               @click="showSessionDialog = false">
-              {{ $t('event_qualification.cancel') }}
+              {{ t('event_qualification.cancel') }}
             </BaseButton>
             <BaseButton :disabled="creatingSession || !newSessionName || selectedSessionCategoryIds.length === 0"
               :loading="creatingSession" variant="primary"
@@ -502,7 +502,7 @@
           <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
             <Icon icon="ph:trash-bold" class="text-xl text-red-600" />
           </div>
-          <h2 class="text-xl font-black text-navy">{{ $t('event_qualification.delete_session_confirm') }}</h2>
+          <h2 class="text-xl font-black text-navy">{{ t('event_qualification.delete_session_confirm') }}</h2>
         </div>
       </template>
       <div class="space-y-6 pt-2">
@@ -512,14 +512,14 @@
             <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-600" />
           </div>
           <div class="relative z-10">
-            <h4 class="text-sm font-black text-red-700 tracking-widest mb-2">{{ $t('event_qualification.delete_warning') }}</h4>
+            <h4 class="text-sm font-black text-red-700 tracking-widest mb-2">{{ t('event_qualification.delete_warning') }}</h4>
             <div class="text-xs font-bold text-red-600/80 leading-relaxed mb-4">
-              {{ $t('event_qualification.delete_warning_desc') }}
+              {{ t('event_qualification.delete_warning_desc') }}
             </div>
 
             <div class="flex items-center gap-2 px-3 py-1.5 bg-red-100 rounded-xl w-fit">
               <Icon icon="ph:info-bold" class="text-red-600" />
-              <span class="text-[10px] font-black tracking-wider text-red-700">{{ $t('event_qualification.data_deleted_forever') }}</span>
+              <span class="text-[10px] font-black tracking-wider text-red-700">{{ t('event_qualification.data_deleted_forever') }}</span>
             </div>
           </div>
         </div>
@@ -530,13 +530,13 @@
             style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);">
           </div>
           <div class="relative z-10">
-            <h4 class="text-[9px] font-black text-primary tracking-[0.2em] mb-2">{{ $t('event_qualification.session_info') }}</h4>
+            <h4 class="text-[9px] font-black text-primary tracking-[0.2em] mb-2">{{ t('event_qualification.session_info') }}</h4>
             <div class="text-lg font-black leading-tight mb-1">
               {{ sessionToDelete?.name }}
             </div>
             <div class="text-xs font-bold text-slate-300">
-              {{ $t('event_qualification.code') }}: {{ sessionToDelete?.session_code }} • {{ sessionToDelete?.session_date ?
-                formatDate(sessionToDelete.session_date) : $t('event_qualification.no_date') }}
+              {{ t('event_qualification.code') }}: {{ sessionToDelete?.session_code }} • {{ sessionToDelete?.session_date ?
+                formatDate(sessionToDelete.session_date) : t('event_qualification.no_date') }}
             </div>
           </div>
         </div>
@@ -544,10 +544,10 @@
         <!-- Impact Grid -->
         <div class="grid grid-cols-2 gap-4">
           <div v-for="stat in [
-            { label: $t('event_qualification.archers'), count: sessionToDelete?.participant_count || 0, icon: 'ph:users-bold' },
-            { label: $t('event_qualification.board_assignments'), count: sessionToDelete?.participant_count || 0, icon: 'ph:target-bold' },
-            { label: $t('event_qualification.total_score'), count: $t('event_qualification.entire'), icon: 'ph:rows-bold', isWarning: true },
-            { label: $t('event_qualification.scoring_code'), count: $t('event_qualification.all'), icon: 'ph:lock-key-bold', isWarning: true }
+            { label: t('event_qualification.archers'), count: sessionToDelete?.participant_count || 0, icon: 'ph:users-bold' },
+            { label: t('event_qualification.board_assignments'), count: sessionToDelete?.participant_count || 0, icon: 'ph:target-bold' },
+            { label: t('event_qualification.total_score'), count: t('event_qualification.entire'), icon: 'ph:rows-bold', isWarning: true },
+            { label: t('event_qualification.scoring_code'), count: t('event_qualification.all'), icon: 'ph:lock-key-bold', isWarning: true }
           ]" :key="stat.label" class="p-4 rounded-2xl border transition-all duration-300 shadow-sm"
             :class="stat.count !== 0 ? 'bg-red-50 border-red-100' : 'bg-gray-50 border-gray-50 opacity-60'">
             <div class="flex items-center justify-between mb-2">
@@ -566,11 +566,11 @@
 
       <template #action>
         <BaseButton variant="white" @click="showDeleteDialog = false" class="px-6 font-bold tracking-wider text-xs">
-          {{ $t('event_qualification.cancel') }}
+          {{ t('event_qualification.cancel') }}
         </BaseButton>
         <BaseButton variant="danger" @click="handleDeleteSession" :disabled="savingDelete" :loading="savingDelete"
           icon="ph:trash-bold" class="px-8 font-black tracking-wider text-xs shadow-lg shadow-red-200">
-          {{ $t('event_qualification.delete_permanently') }}
+          {{ t('event_qualification.delete_permanently') }}
         </BaseButton>
       </template>
     </BaseDialogForm>

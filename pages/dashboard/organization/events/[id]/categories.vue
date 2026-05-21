@@ -26,10 +26,10 @@
                         <!-- Title Section -->
                         <div class="flex-1">
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
-                                {{ $t('event_categories.title') }}
+                                {{ t('event_categories.title') }}
                             </h1>
                             <p class="text-slate-300 text-sm max-w-2xl">
-                                {{ $t('event_categories.desc') }}
+                                {{ t('event_categories.desc') }}
                             </p>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                         <BaseButton variant="primary" icon="ph:plus-bold"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
                             @click="openCreateDialog">
-                            {{ $t('event_categories.add_category') }}
+                            {{ t('event_categories.add_category') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -50,13 +50,13 @@
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div
                 class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <h2 class="text-lg font-bold text-navy">{{ $t('event_categories.category_list') }}</h2>
+                <h2 class="text-lg font-bold text-navy">{{ t('event_categories.category_list') }}</h2>
                 <div class="flex items-center gap-3">
-                    <span class="text-sm font-medium text-gray-500 hidden sm:inline">{{ $t('event_categories.filter_bow') }}</span>
-                    <BaseSelect v-model="selectedBowType" :items="bowFilterOptions" :placeholder="$t('event_categories.all_bows')"
+                    <span class="text-sm font-medium text-gray-500 hidden sm:inline">{{ t('event_categories.filter_bow') }}</span>
+                    <BaseSelect v-model="selectedBowType" :items="bowFilterOptions" :placeholder="t('event_categories.all_bows')"
                         class="w-full sm:w-48" />
-                    <span class="text-sm font-medium text-gray-500 hidden sm:inline">{{ $t('event_categories.team_type') }}</span>
-                    <BaseSelect v-model="selectedTeamType" :items="teamTypeFilterOptions" :placeholder="$t('event_categories.all_team_types')"
+                    <span class="text-sm font-medium text-gray-500 hidden sm:inline">{{ t('event_categories.team_type') }}</span>
+                    <BaseSelect v-model="selectedTeamType" :items="teamTypeFilterOptions" :placeholder="t('event_categories.all_team_types')"
                         class="w-full sm:w-48" />
                 </div>
             </div>
@@ -80,10 +80,10 @@
             </div>
             <div v-else-if="categories.length === 0" class="p-12 text-center">
                 <Icon icon="ph:tag-simple" class="text-5xl text-gray-300 mx-auto mb-4" />
-                <p class="text-gray-500 font-medium mb-2">{{ $t('event_categories.no_categories') }}</p>
-                <p class="text-sm text-gray-400 mb-6">{{ $t('event_categories.no_categories_desc') }}</p>
+                <p class="text-gray-500 font-medium mb-2">{{ t('event_categories.no_categories') }}</p>
+                <p class="text-sm text-gray-400 mb-6">{{ t('event_categories.no_categories_desc') }}</p>
                 <BaseButton variant="primary" icon="ph:plus-bold" @click="openCreateDialog">
-                    {{ $t('event_categories.add_first_category') }}
+                    {{ t('event_categories.add_first_category') }}
                 </BaseButton>
             </div>
             <div v-else class="divide-y divide-gray-100">
@@ -109,7 +109,7 @@
                                     <span
                                         :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
                                         class="px-2.5 py-0.5 rounded-full text-xs font-bold shrink-0">
-                                        {{ category.status === 'active' ? $t('event_categories.status_active') : $t('event_categories.status_inactive') }}
+                                        {{ category.status === 'active' ? t('event_categories.status_active') : t('event_categories.status_inactive') }}
                                     </span>
                                 </div>
                                 <div
@@ -117,19 +117,19 @@
                                     <div class="flex items-center gap-2 min-w-0">
                                         <Icon icon="ph:users" class="text-base shrink-0" />
                                         <span class="break-words">
-                                            {{ $t('event_categories.max_participants', { count: category.max_participants || $t('event_categories.unlimited') }) }}
+                                            {{ t('event_categories.max_participants', { count: category.max_participants || t('event_categories.unlimited') }) }}
                                         </span>
                                     </div>
                                     <div v-if="category.team_size > 0" class="flex items-center gap-2 min-w-0">
                                         <Icon icon="ph:users-three" class="text-base shrink-0" />
                                         <span class="break-words">
-                                            {{ $t('event_categories.team_capacity', { count: category.team_size }) }}
+                                            {{ t('event_categories.team_capacity', { count: category.team_size }) }}
                                         </span>
                                     </div>
                                     <div class="flex items-center gap-2 min-w-0">
                                         <Icon icon="ph:calendar" class="text-base shrink-0" />
                                         <span class="break-words">
-                                            {{ $t('event_categories.created', { date: formatDate(category.created_at) }) }}
+                                            {{ t('event_categories.created', { date: formatDate(category.created_at) }) }}
                                         </span>
                                     </div>
                                 </div>
@@ -137,16 +137,16 @@
                         </div>
                         <div
                             class="flex items-center justify-end sm:justify-start shrink-0 pt-2 sm:pt-0 border-t border-gray-100 sm:border-t-0 gap-2">
-                            <BaseButton variant="white" size="sm" icon="ph:eye" :title="$t('event_categories.view_participants')"
+                            <BaseButton variant="white" size="sm" icon="ph:eye" :title="t('event_categories.view_participants')"
                                 :to="`/dashboard/organization/events/${eventId}/categories/${category.id}`">
-                                {{ $t('event_categories.view') }}
+                                {{ t('event_categories.view') }}
                             </BaseButton>
                             <BaseButton variant="white" size="sm" icon="ph:pencil" @click="openEditDialog(category)">
-                                {{ $t('event_categories.edit') }}
+                                {{ t('event_categories.edit') }}
                             </BaseButton>
                             <button @click="deleteCategory(category)"
                                 class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors group/del"
-                                :title="$t('event_categories.delete_category')">
+                                :title="t('event_categories.delete_category')">
                                 <Icon icon="ph:trash" class="text-lg group-hover/del:scale-110 transition-transform" />
                             </button>
                         </div>
@@ -160,38 +160,38 @@
         </div>
 
         <!-- Create/Edit Dialog -->
-        <BaseDialogForm v-model="showDialog" :header="editingCategory ? $t('event_categories.edit_category') : $t('event_categories.add_category_new')">
+        <BaseDialogForm v-model="showDialog" :header="editingCategory ? t('event_categories.edit_category') : t('event_categories.add_category_new')">
             <template #default>
                 <div class="space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <BaseSelect v-model="form.division_uuid" :items="bowOptions" :label="$t('event_categories.bow_type_label')"
-                                :placeholder="$t('event_categories.select_bow_type')" required teleport />
+                            <BaseSelect v-model="form.division_uuid" :items="bowOptions" :label="t('event_categories.bow_type_label')"
+                                :placeholder="t('event_categories.select_bow_type')" required teleport />
                         </div>
                         <div>
-                            <BaseSelect v-model="form.category_uuid" :items="ageOptions" :label="$t('event_categories.age_group_label')"
-                                :placeholder="$t('event_categories.select_age_group')" required teleport />
+                            <BaseSelect v-model="form.category_uuid" :items="ageOptions" :label="t('event_categories.age_group_label')"
+                                :placeholder="t('event_categories.select_age_group')" required teleport />
                         </div>
                         <div v-if="isCustomAgeGroup" class="md:col-span-2">
-                            <label class="text-sm font-bold text-gray-700 block mb-2">{{ $t('event_categories.custom_age_group_label') }}</label>
+                            <label class="text-sm font-bold text-gray-700 block mb-2">{{ t('event_categories.custom_age_group_label') }}</label>
                             <input v-model="form.category_name_custom" type="text"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                :placeholder="$t('event_categories.custom_age_group_placeholder')" required />
+                                :placeholder="t('event_categories.custom_age_group_placeholder')" required />
                         </div>
                         <div>
-                            <BaseSelect v-model="form.event_type_uuid" :items="eventTypeOptions" :label="$t('event_categories.team_type_label')"
-                                :placeholder="$t('event_categories.select_team_type')" required teleport />
+                            <BaseSelect v-model="form.event_type_uuid" :items="eventTypeOptions" :label="t('event_categories.team_type_label')"
+                                :placeholder="t('event_categories.select_team_type')" required teleport />
                         </div>
                         <div v-if="!isMixedTeam">
-                            <BaseSelect v-model="form.gender_division_uuid" :items="genderOptions" :label="$t('event_categories.gender_division_label')"
-                                :placeholder="$t('event_categories.select_gender_division')" required teleport />
+                            <BaseSelect v-model="form.gender_division_uuid" :items="genderOptions" :label="t('event_categories.gender_division_label')"
+                                :placeholder="t('event_categories.select_gender_division')" required teleport />
                         </div>
                         <div v-else>
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700 block">{{ $t('event_categories.gender_division_label') }}</label>
+                                <label class="text-sm font-bold text-gray-700 block">{{ t('event_categories.gender_division_label') }}</label>
                                 <div
                                     class="px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-500 text-sm font-medium">
-                                    {{ $t('event_categories.mixed_auto') }}
+                                    {{ t('event_categories.mixed_auto') }}
                                 </div>
                             </div>
                         </div>
@@ -199,16 +199,16 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">{{ $t('event_categories.max_participants_label') }}</label>
+                            <label class="text-sm font-bold text-gray-700">{{ t('event_categories.max_participants_label') }}</label>
                             <input v-model.number="form.max_participants" type="number" min="0"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                :placeholder="$t('event_categories.unlimited_placeholder')" />
-                            <p class="text-[10px] text-gray-400">{{ $t('event_categories.max_participants_desc') }}</p>
+                                :placeholder="t('event_categories.unlimited_placeholder')" />
+                            <p class="text-[10px] text-gray-400">{{ t('event_categories.max_participants_desc') }}</p>
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">{{ $t('event_categories.members_per_team') }}</label>
+                            <label class="text-sm font-bold text-gray-700">{{ t('event_categories.members_per_team') }}</label>
                             <div class="px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-navy font-bold">
-                                {{ $t('event_categories.people_count', { count: form.team_size || (isTeamEvent ? (isMixedTeam ? 2 : 3) : 1) }) }}
+                                {{ t('event_categories.people_count', { count: form.team_size || (isTeamEvent ? (isMixedTeam ? 2 : 3) : 1) }) }}
                             </div>
                             <p class="text-[10px] text-gray-400">
                                 {{ teamTypeDescription }}
@@ -218,9 +218,9 @@
                 </div>
             </template>
             <template #action>
-                <BaseButton variant="white" @click="closeDialog">{{ $t('event_categories.cancel') }}</BaseButton>
+                <BaseButton variant="white" @click="closeDialog">{{ t('event_categories.cancel') }}</BaseButton>
                 <BaseButton variant="primary" @click="saveCategory" :loading="saving">
-                    {{ editingCategory ? $t('event_categories.save_changes') : $t('event_categories.add_category') }}
+                    {{ editingCategory ? t('event_categories.save_changes') : t('event_categories.add_category') }}
                 </BaseButton>
             </template>
         </BaseDialogForm>
@@ -232,18 +232,18 @@
                     <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
                         <Icon icon="ph:trash-bold" class="text-xl text-red-600" />
                     </div>
-                    <h2 class="text-xl font-black text-navy">{{ $t('event_categories.delete_category_confirm') }}</h2>
+                    <h2 class="text-xl font-black text-navy">{{ t('event_categories.delete_category_confirm') }}</h2>
                 </div>
             </template>
 
             <div v-if="fetchingDetails" class="py-12 flex flex-col items-center justify-center gap-4 text-center">
                 <Icon icon="ph:circle-notch-bold" class="text-4xl text-primary animate-spin" />
-                <p class="text-sm font-bold text-gray-400 tracking-widest">{{ $t('event_categories.analyzing_relations') }}</p>
+                <p class="text-sm font-bold text-gray-400 tracking-widest">{{ t('event_categories.analyzing_relations') }}</p>
             </div>
 
             <div v-else-if="categoryDetails" class="space-y-6">
                 <p class="text-slate-500 font-medium leading-relaxed">
-                    {{ $t('event_categories.permanent_action_desc') }}
+                    {{ t('event_categories.permanent_action_desc') }}
                 </p>
 
                 <!-- Category Summary Card -->
@@ -252,7 +252,7 @@
                         style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);">
                     </div>
                     <div class="relative z-10">
-                        <h4 class="text-[9px] font-black text-primary tracking-[0.2em] mb-2">{{ $t('event_categories.category_id_label') }}</h4>
+                        <h4 class="text-[9px] font-black text-primary tracking-[0.2em] mb-2">{{ t('event_categories.category_id_label') }}</h4>
                         <div class="text-lg font-black leading-tight mb-1">
                             {{ categoryDetails.category.division_name }} - {{ categoryDetails.category.category_name }}
                         </div>
@@ -271,10 +271,10 @@
                 <!-- Statistics Grid -->
                 <div class="grid grid-cols-2 gap-4">
                     <div v-for="stat in [
-                        { label: $t('event_categories.stat_participants'), count: categoryDetails.participant_count, icon: 'ph:users-bold' },
-                        { label: $t('event_categories.stat_teams'), count: categoryDetails.team_count, icon: 'ph:users-three-bold' },
-                        { label: $t('event_categories.stat_sessions'), count: categoryDetails.session_count, icon: 'ph:hourglass-bold' },
-                        { label: $t('event_categories.stat_brackets'), count: categoryDetails.bracket_count, icon: 'ph:stack-bold' }
+                        { label: t('event_categories.stat_participants'), count: categoryDetails.participant_count, icon: 'ph:users-bold' },
+                        { label: t('event_categories.stat_teams'), count: categoryDetails.team_count, icon: 'ph:users-three-bold' },
+                        { label: t('event_categories.stat_sessions'), count: categoryDetails.session_count, icon: 'ph:hourglass-bold' },
+                        { label: t('event_categories.stat_brackets'), count: categoryDetails.bracket_count, icon: 'ph:stack-bold' }
                     ]" :key="stat.label" class="p-4 rounded-2xl border transition-all duration-300 shadow-sm"
                         :class="stat.count > 0 ? 'bg-red-50 border-red-100' : 'bg-gray-50 border-gray-50 opacity-60'">
                         <div class="flex items-center justify-between mb-2">
@@ -295,11 +295,11 @@
             <template #action>
                 <BaseButton variant="white" @click="showDeleteDialog = false"
                     class="px-6 font-bold tracking-wider text-xs">
-                    {{ $t('event_categories.cancel') }}
+                    {{ t('event_categories.cancel') }}
                 </BaseButton>
                 <BaseButton variant="danger" @click="confirmDeleteCategory" :disabled="saving" :loading="saving"
                     icon="ph:trash-bold" class="px-8 font-black tracking-wider text-xs shadow-lg shadow-red-200">
-                    {{ $t('event_categories.confirm_delete_button') }}
+                    {{ t('event_categories.confirm_delete_button') }}
                 </BaseButton>
             </template>
         </BaseDialogForm>

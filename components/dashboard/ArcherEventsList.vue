@@ -169,7 +169,7 @@
                 <Icon icon="ph:calendar-blank-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <div class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.schedule') }}</div>
+                <div class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ t('my_events.schedule') }}</div>
                 <div class="text-[11px] font-bold text-navy truncate">{{ formatDate(event.start_date) }}</div>
               </div>
             </div>
@@ -180,7 +180,7 @@
                 <Icon icon="ph:map-pin-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <div class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.location') }}</div>
+                <div class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ t('my_events.location') }}</div>
                 <div class="text-[11px] font-bold text-navy truncate">{{ event.venue || event.location || '-' }}</div>
               </div>
             </div>
@@ -193,7 +193,7 @@
                 <Icon icon="ph:identification-badge-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <div class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ $t('my_events.back_number') }}</div>
+                <div class="text-[8px] font-black text-slate-400 tracking-widest mb-0.5">{{ t('my_events.back_number') }}</div>
                 <div class="text-[11px] font-black text-navy">{{ event.back_number }}</div>
               </div>
             </div>
@@ -227,7 +227,7 @@
             <BaseButton :to="`/dashboard/archer/events/${event.slug || event.id}/my-registration`" variant="primary"
               size="sm" class="flex-1 font-black tracking-widest text-[10px] h-9 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all">
               <Icon icon="ph:arrow-right-bold" class="text-sm" />
-              {{ $t('my_events.open_event') }}
+              {{ t('my_events.open_event') }}
             </BaseButton>
             
             <!-- QR Code Button if available -->

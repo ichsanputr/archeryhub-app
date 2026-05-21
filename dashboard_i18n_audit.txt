@@ -3,22 +3,7 @@ Repo: C:\E\ichsan\startup\archeryhub.id
 Scanned files: 88
 
 1) Legacy $t usage (should migrate to useI18n().t)
-Count: 15
-- app/components/dashboard/ArcherEventsList.vue
-- app/components/dashboard/OrganizationEventsList.vue
-- app/pages/dashboard/archer/cart/index.vue
-- app/pages/dashboard/archer/cart/payment/index.vue
-- app/pages/dashboard/archer/chat/index.vue
-- app/pages/dashboard/archer/payments/index.vue
-- app/pages/dashboard/organization/events/[id]/categories.vue
-- app/pages/dashboard/organization/events/[id]/elimination/[bracketId].vue
-- app/pages/dashboard/organization/events/[id]/elimination/index.vue
-- app/pages/dashboard/organization/events/[id]/qualification/[session].vue
-- app/pages/dashboard/organization/events/[id]/qualification/index.vue
-- app/pages/dashboard/organization/events/[id]/targets.vue
-- app/pages/dashboard/organization/events/[id]/teams.vue
-- app/pages/dashboard/organization/events/create.vue
-- app/pages/dashboard/organization/index.vue
+Count: 0
 
 2) No obvious i18n usage (no t( and no $t() found)
 Count: 44
@@ -68,8 +53,9 @@ Count: 44
 - app/pages/dashboard/seller/store/index.vue
 
 3) Calls t( but no obvious useI18n() setup (heuristic; may be false positives)
-Count: 16
+Count: 17
 - app/components/dashboard/DText.vue
+- app/components/dashboard/OrganizationEventsList.vue
 - app/components/dashboard/subscription/SubscriptionBillingHistory.vue
 - app/components/dashboard/subscription/SubscriptionComparison.vue
 - app/components/dashboard/subscription/SubscriptionHeader.vue

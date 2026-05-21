@@ -10,8 +10,7 @@
     "profile": "Profil",
     "settings": "Pengaturan",
     "sign_out": "Keluar"
-  }
-  ,
+  },
   "common": {
     "loading_dashboard": "Memuat dashboard...",
     "view_all": "Lihat Semua",
@@ -35,14 +34,12 @@
       "draft": "draft",
       "delivered": "Item terkirim ke pelanggan",
       "page_views": "Kunjungan halaman produk"
-    }
-    ,
+    },
     "sections": {
       "top_selling": "Produk paling banyak dibeli",
       "latest": "Produk terbaru"
     }
-  }
-  ,
+  },
   "organization": {
     "events": {
       "title": "Daftar Event - Archeris Dashboard"
@@ -130,8 +127,7 @@
         "cat_other": "Lainnya"
       }
     }
-  }
-  ,
+  },
   "subscription": {
     "success": {
       "title": "Pembayaran Berhasil!",
@@ -174,7 +170,11 @@
       "elite_title": "Paket Elite",
       "current_package": "Paket Aktif",
       "upgrade_now": "Upgrade Sekarang",
-      "choose_package": "Pilih Paket"
+      "choose_package": "Pilih Paket",
+      "premium_features": "Fitur Premium",
+      "priority_support": "Support Prioritas",
+      "recommended_for": "Direkomendasikan untuk",
+      "title": "Pilihan Paket"
     },
     "packageTitle": "Event Optimizer",
     "promoBadge": "Penyelenggara Baru",
@@ -186,8 +186,7 @@
     "seo": {
       "title": "Dashboard Berlangganan - Archeris.net",
       "description": "Kelola langganan, batas penggunaan, dan riwayat tagihan di dashboard Archeris.net."
-    }
-    ,
+    },
     "comparison": {
       "title": "Perbandingan Detail",
       "feature_header": "Fitur Utama",
@@ -215,6 +214,17 @@
     "promo": {
       "extra": "Tanpa biaya pendaftaran, tanpa komitmen.",
       "total_value": "Total Nilai"
+    }
+  },
+  "events": {
+    "list": {
+      "empty_state": {},
+      "reset_filters": "",
+      "search_label": "",
+      "search_placeholder": "",
+      "subtitle": "",
+      "table_headers": {},
+      "title": ""
     }
   }
 }

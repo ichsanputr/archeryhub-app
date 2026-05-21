@@ -10,8 +10,7 @@
     "profile": "Profile",
     "settings": "Settings",
     "sign_out": "Sign Out"
-  }
-  ,
+  },
   "common": {
     "loading_dashboard": "Loading dashboard...",
     "view_all": "View All",
@@ -35,14 +34,12 @@
       "draft": "draft",
       "delivered": "Items delivered to customers",
       "page_views": "Product page visits"
-    }
-    ,
+    },
     "sections": {
       "top_selling": "Top selling products",
       "latest": "Latest products"
     }
-  }
-  ,
+  },
   "organization": {
     "events": {
       "title": "Events List - Archeris Dashboard"
@@ -130,8 +127,7 @@
         "cat_other": "Other"
       }
     }
-  }
-  ,
+  },
   "subscription": {
     "success": {
       "title": "Payment Successful!",
@@ -174,7 +170,11 @@
       "elite_title": "Elite Plan",
       "current_package": "Current Package",
       "upgrade_now": "Upgrade Now",
-      "choose_package": "Choose Package"
+      "choose_package": "Choose Package",
+      "premium_features": "Fitur Premium",
+      "priority_support": "Support Prioritas",
+      "recommended_for": "Direkomendasikan untuk",
+      "title": "Pilihan Paket"
     },
     "packageTitle": "Event Optimizer",
     "promoBadge": "New Organizer",
@@ -186,8 +186,7 @@
     "seo": {
       "title": "Subscription Dashboard - Archeris.net",
       "description": "Manage subscriptions, usage limits, and billing history in the Archeris.net dashboard."
-    }
-    ,
+    },
     "comparison": {
       "title": "Detailed Comparison",
       "feature_header": "Main Features",
@@ -215,6 +214,17 @@
     "promo": {
       "extra": "No setup fees, no commitment.",
       "total_value": "Total Value"
+    }
+  },
+  "events": {
+    "list": {
+      "empty_state": {},
+      "reset_filters": "",
+      "search_label": "",
+      "search_placeholder": "",
+      "subtitle": "",
+      "table_headers": {},
+      "title": ""
     }
   }
 }

@@ -24,10 +24,10 @@
             <!-- Title Section -->
             <div class="min-w-0">
               <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                {{ $t('events.list.title') }}
+                {{ t('events.list.title') }}
               </h1>
               <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
-                {{ $t('events.list.subtitle') }}
+                {{ t('events.list.subtitle') }}
               </p>
             </div>
           </div>
@@ -38,7 +38,7 @@
               variant="primary" icon="ph:plus-bold" @click="!canCreateEvent && (showPremiumModal = true)"
               class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
               :class="{ 'opacity-50 grayscale cursor-not-allowed': !canCreateEvent }">
-              {{ $t('events.list.create_event') }}
+              {{ t('events.list.create_event') }}
             </BaseButton>
           </div>
         </div>
@@ -50,11 +50,11 @@
     <div id="tour-search-filter"
       class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
       <div class="flex-grow w-full">
-        <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" :placeholder="$t('events.list.search_placeholder')"
-          :label="$t('events.list.search_label')" />
+        <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" :placeholder="t('events.list.search_placeholder')"
+          :label="t('events.list.search_label')" />
       </div>
       <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
-        {{ $t('events.list.reset_filters') }}
+        {{ t('events.list.reset_filters') }}
       </BaseButton>
     </div>
 
@@ -67,7 +67,7 @@
               <th @click="toggleSort('name')"
                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
-                  {{ $t('events.list.table_headers.event_info') }}
+                  {{ t('events.list.table_headers.event_info') }}
                   <Icon v-if="sortBy === 'name'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                     class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
@@ -136,7 +136,7 @@
                   </BaseButton>
                   <BaseButton v-else :to="`/dashboard/${userPersona}/events/create`" variant="primary" size="sm"
                     icon="ph:plus-bold">
-                    {{ $t('events.list.empty_state.create_first') }}
+                    {{ t('events.list.empty_state.create_first') }}
                   </BaseButton>
                 </div>
               </td>
@@ -224,6 +224,7 @@ import { useToast } from '~/composables/useToast'
 import { useRouter } from 'vue-router'
 import { useSubscription } from '~/composables/useSubscription'
 import { useTour } from '~/composables/useTour'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 import BasePagination from '~/components/common/BasePagination.vue'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
@@ -233,6 +234,7 @@ const { setEvent } = useEventContext()
 const { isSubscriptionActive, canCreateEvent } = useSubscription()
 const toast = useToast()
 const { startTour } = useTour()
+const { t } = useDashboardI18n()
 
 const showPremiumModal = ref(false)
 const searchQuery = ref('')

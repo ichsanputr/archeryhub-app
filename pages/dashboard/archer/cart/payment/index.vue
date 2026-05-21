@@ -8,10 +8,10 @@
             </div>
             <div class="relative p-6 sm:p-8">
                 <div class="flex items-center gap-2 text-sm text-white/60 mb-4">
-                    <NuxtLink to="/dashboard/archer/cart" class="hover:text-white transition-colors">{{ $t('cart.title') }}
+                    <NuxtLink to="/dashboard/archer/cart" class="hover:text-white transition-colors">{{ t('cart.title') }}
                     </NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-base" />
-                    <span class="text-primary font-medium">{{ $t('cart.checkout_title') }}</span>
+                    <span class="text-primary font-medium">{{ t('cart.checkout_title') }}</span>
                 </div>
                 <div class="flex items-start gap-4">
                     <div
@@ -19,9 +19,9 @@
                         <Icon icon="ph:credit-card-bold" class="text-primary text-2xl" />
                     </div>
                     <div>
-                        <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">{{ $t('cart.checkout_title') }}
+                        <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">{{ t('cart.checkout_title') }}
                         </h1>
-                        <p class="text-slate-300 text-sm mt-1">{{ $t('cart.checkout_desc') }}
+                        <p class="text-slate-300 text-sm mt-1">{{ t('cart.checkout_desc') }}
                         </p>
                     </div>
                 </div>
@@ -31,14 +31,14 @@
         <div v-if="isLoadingCart"
             class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
             <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
-            <p class="text-gray-500 font-medium">{{ $t('cart.loading_order') }}</p>
+            <p class="text-gray-500 font-medium">{{ t('cart.loading_order') }}</p>
         </div>
 
         <div v-else-if="productCart.length === 0"
             class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
             <Icon icon="ph:shopping-cart" class="text-5xl text-gray-200 mb-4" />
-            <p class="text-gray-500 font-medium">{{ $t('cart.empty_cart') }}</p>
-            <NuxtLink to="/dashboard/archer/cart" class="mt-4 text-primary font-bold">{{ $t('cart.back_to_cart') }}</NuxtLink>
+            <p class="text-gray-500 font-medium">{{ t('cart.empty_cart') }}</p>
+            <NuxtLink to="/dashboard/archer/cart" class="mt-4 text-primary font-bold">{{ t('cart.back_to_cart') }}</NuxtLink>
         </div>
 
         <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -48,15 +48,15 @@
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                     <h3 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
                         <Icon icon="ph:map-pin-bold" class="text-primary" />
-                        {{ $t('cart.shipping_address') }}
+                        {{ t('cart.shipping_address') }}
                     </h3>
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-xs font-black text-slate-400 tracking-widest mb-2">{{ $t('cart.full_address') }}</label>
+                            <label class="block text-xs font-black text-slate-400 tracking-widest mb-2">{{ t('cart.full_address') }}</label>
                             <textarea v-model="form.shipping_address" rows="3"
                                 class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none resize-none text-sm"
-                                :placeholder="$t('cart.address_placeholder')"></textarea>
-                            <p class="mt-2 text-[10px] text-slate-400 italic">{{ $t('cart.address_desc') }}</p>
+                                :placeholder="t('cart.address_placeholder')"></textarea>
+                            <p class="mt-2 text-[10px] text-slate-400 italic">{{ t('cart.address_desc') }}</p>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                 <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                     <h3 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
                         <Icon icon="ph:wallet-bold" class="text-primary" />
-                        {{ $t('cart.payment_method') }}
+                        {{ t('cart.payment_method') }}
                     </h3>
 
                     <div v-if="isLoadingChannels" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -105,7 +105,7 @@
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 ring-4 ring-primary/5">
                         <h4 class="font-bold text-navy mb-6 flex items-center gap-2">
                             <Icon icon="ph:receipt-bold" class="text-primary" />
-                            {{ $t('cart.payment_summary') }}
+                            {{ t('cart.payment_summary') }}
                         </h4>
 
                         <div class="space-y-4 mb-8">
@@ -126,11 +126,11 @@
                                     <span class="font-bold text-navy">Rp {{ formatPrice(totalSubtotal) }}</span>
                                 </div>
                                 <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500 font-medium">{{ $t('cart.service_fee') }}</span>
+                                    <span class="text-gray-500 font-medium">{{ t('cart.service_fee') }}</span>
                                     <span class="font-bold text-navy">Rp 0</span>
                                 </div>
                                 <div class="pt-4 border-t border-gray-200 flex justify-between items-center">
-                                    <span class="font-bold text-navy tracking-widest text-xs">{{ $t('cart.total') }}</span>
+                                    <span class="font-bold text-navy tracking-widest text-xs">{{ t('cart.total') }}</span>
                                     <span class="text-2xl font-black text-navy">Rp {{ formatPrice(totalSubtotal)
                                         }}</span>
                                 </div>
@@ -140,13 +140,13 @@
                         <BaseButton class="w-full" variant="primary" size="lg" icon="ph:lock-key-bold"
                             @click="handleCheckout" :loading="isProcessing"
                             :disabled="!form.method || !form.shipping_address">
-                            {{ $t('cart.pay_now') }}
+                            {{ t('cart.pay_now') }}
                         </BaseButton>
 
                         <div
                             class="mt-6 flex items-center justify-center gap-2 text-[10px] text-slate-400 tracking-widest font-black">
                             <Icon icon="ph:shield-check-fill" class="text-primary text-sm" />
-                            {{ $t('cart.secure_payment') }}
+                            {{ t('cart.secure_payment') }}
                         </div>
                     </div>
                 </div>

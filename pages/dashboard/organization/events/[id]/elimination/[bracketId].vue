@@ -112,7 +112,7 @@
                                         <span class="truncate hidden sm:inline">{{ categoryInfo.category_name }}</span>
                                         <span class="opacity-40 hidden sm:inline">•</span>
                                         <span class="truncate hidden sm:inline">{{ bracket.bracket_size }}
-                                            {{ $t('event_elimination.participants') }}</span>
+                                            {{ t('event_elimination.participants') }}</span>
                                     </template>
                                 </div>
 
@@ -124,7 +124,7 @@
                                         <Icon icon="ph:chart-bar-fill" class="text-primary text-[10px] sm:text-xs" />
                                         <span
                                             class="text-[8px] sm:text-[10px] font-black tracking-wide sm:tracking-widest text-white/60 whitespace-nowrap">
-                                            {{ finishedMatchesCount }}/{{ matches.length }} {{ $t('event_elimination.done') }}
+                                            {{ finishedMatchesCount }}/{{ matches.length }} {{ t('event_elimination.done') }}
                                         </span>
                                     </div>
                                     <div v-if="currentRoundNo"
@@ -164,7 +164,7 @@
                             <BaseButton v-if="!currentRoundNo && Object.keys(rounds).length === 0"
                                 @click="generateBracket" variant="primary" icon="ph:magic-wand-bold"
                                 class="h-10 sm:h-11 shadow-lg shadow-primary/30 tracking-[0.2em] font-black text-[10px] sm:text-xs">
-                                {{ $t('event_elimination.create_bracket') }}
+                                {{ t('event_elimination.create_bracket') }}
                             </BaseButton>
 
                         </div>
@@ -199,11 +199,11 @@
         <!-- Not Found / Error State -->
         <div v-else class="text-center py-20 bg-white rounded-[40px] border border-gray-100 shadow-sm">
             <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-50 mb-4 mx-auto" />
-            <h2 class="text-3xl font-black text-navy tracking-tight">{{ $t('event_elimination.bracket_not_found') }}</h2>
-            <p class="text-gray-400 mt-2">{{ $t('event_elimination.bracket_invalid_desc') }}</p>
+            <h2 class="text-3xl font-black text-navy tracking-tight">{{ t('event_elimination.bracket_not_found') }}</h2>
+            <p class="text-gray-400 mt-2">{{ t('event_elimination.bracket_invalid_desc') }}</p>
             <button @click="navigateTo(`/dashboard/events/${eventId}/elimination`)"
                 class="mt-10 px-6 py-3 rounded-2xl border-2 border-navy text-navy font-black tracking-widest hover:bg-navy hover:text-white transition-all">
-                {{ $t('event_elimination.back_to_list') }}
+                {{ t('event_elimination.back_to_list') }}
             </button>
         </div>
     </div>
@@ -227,8 +227,8 @@
 
                         <div class="relative p-6 sm:p-8 text-center">
                             <div class="mb-4 sm:mb-6">
-                                <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">{{ $t('event_elimination.end_match_confirm') }}</h2>
-                                <p class="text-white/60 text-[10px] sm:text-sm mt-1">{{ $t('event_elimination.end_match_confirm_desc') }}</p>
+                                <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">{{ t('event_elimination.end_match_confirm') }}</h2>
+                                <p class="text-white/60 text-[10px] sm:text-sm mt-1">{{ t('event_elimination.end_match_confirm_desc') }}</p>
                             </div>
 
                             <!-- Battle Display -->
@@ -253,7 +253,7 @@
                                         <div v-if="getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id"
                                             class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[8px] sm:text-[10px] font-black tracking-wider shrink-0 sm:mt-2">
                                             <Icon icon="ph:crown-simple-fill" class="text-[10px]" />
-                                            <span class="hidden sm:inline">{{ $t('event_elimination.winner') }}</span>
+                                            <span class="hidden sm:inline">{{ t('event_elimination.winner') }}</span>
                                         </div>
                                     </div>
 
@@ -284,7 +284,7 @@
                                         <div v-if="getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id"
                                             class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[8px] sm:text-[10px] font-black tracking-wider shrink-0 sm:mt-2">
                                             <Icon icon="ph:crown-simple-fill" class="text-[10px]" />
-                                            <span class="hidden sm:inline">{{ $t('event_elimination.winner') }}</span>
+                                            <span class="hidden sm:inline">{{ t('event_elimination.winner') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -295,10 +295,10 @@
                                 class="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl text-left">
                                 <div class="flex items-center gap-2 mb-3">
                                     <Icon icon="ph:info-bold" class="text-yellow-500" />
-                                    <span class="text-xs font-black text-yellow-500 tracking-widest">{{ $t('event_elimination.manual_winner_desc') }}</span>
+                                    <span class="text-xs font-black text-yellow-500 tracking-widest">{{ t('event_elimination.manual_winner_desc') }}</span>
                                 </div>
                                 <p class="text-[10px] text-white/40 mb-4 leading-relaxed">
-                                    {{ $t('event_elimination.shoot_off_tie_desc') }}
+                                    {{ t('event_elimination.shoot_off_tie_desc') }}
                                 </p>
 
                                 <div class="space-y-2">
@@ -328,13 +328,13 @@
                             <div class="flex gap-3">
                                 <button @click="showEndMatchDialog = false"
                                     class="flex-1 px-6 py-3 rounded-xl bg-white/10 border border-white/20 text-white font-bold hover:bg-white/20 transition-all">
-                                    {{ $t('event_elimination.cancel') }}
+                                    {{ t('event_elimination.cancel') }}
                                 </button>
                                 <BaseButton @click="confirmEndMatch"
                                     :disabled="isEndingMatch || (selectedScoringMatch && getMatchScore(selectedScoringMatch, 'A') === getMatchScore(selectedScoringMatch, 'B') && !manualWinnerId)"
                                     variant="primary" :loading="isEndingMatch" icon="ph:check-bold"
                                     class="flex-1 px-6 py-3 rounded-xl font-black tracking-wide">
-                                    {{ isEndingMatch ? $t('event_elimination.processing') : $t('event_elimination.confirm') }}
+                                    {{ isEndingMatch ? t('event_elimination.processing') : t('event_elimination.confirm') }}
                                 </BaseButton>
                             </div>
                         </div>
