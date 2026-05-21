@@ -15,15 +15,17 @@
                         <Icon icon="ph:credit-card-bold" class="text-primary text-2xl sm:text-3xl" />
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">Rekening Bank</h1>
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">
+                            {{ t('organization.bank_accounts.title', 'Rekening Bank') }}
+                        </h1>
                         <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">Kelola rekening
-                            tujuan pencairan dana Anda</p>
+                            {{ t('organization.bank_accounts.subtitle', 'Kelola rekening tujuan pencairan dana Anda') }}</p>
                     </div>
                 </div>
                 <div>
                     <BaseButton @click="openAddModal" variant="primary" icon="ph:plus-bold"
                         class="font-black tracking-widest text-[10px] h-11 px-6 shadow-lg shadow-primary/20 !rounded-xl">
-                        Tambah Rekening
+                        {{ t('organization.bank_accounts.add', 'Tambah Rekening') }}
                     </BaseButton>
                 </div>
             </div>
@@ -53,13 +55,16 @@
                     </div>
                 </div>
 
-                <div class="space-y-4">
+                    <div class="space-y-4">
                     <div>
-                        <p class="text-[10px] font-black text-gray-400 tracking-widest mb-1">Nama Bank</p>
+                        <p class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
+                            {{ t('organization.bank_accounts.fields.bank_name', 'Nama Bank') }}
+                        </p>
                         <p class="text-sm font-black text-navy">{{ account.bank_name }}</p>
                     </div>
                     <div>
-                        <div class="text-[10px] font-black text-gray-400 tracking-widest mb-1">Nomor Rekening
+                        <div class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
+                            {{ t('organization.bank_accounts.fields.account_number', 'Nomor Rekening') }}
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="text-lg font-black text-navy tracking-tight">{{ account.account_number }}</div>
@@ -69,7 +74,9 @@
                         </div>
                     </div>
                     <div>
-                        <p class="text-[10px] font-black text-gray-400 tracking-widest mb-1">Nama Pemilik</p>
+                        <p class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
+                            {{ t('organization.bank_accounts.fields.account_name', 'Nama Pemilik') }}
+                        </p>
                         <p class="text-sm font-bold text-gray-700 truncate">{{ account.account_name }}</p>
                     </div>
                 </div>
@@ -90,10 +97,13 @@
         </div>
 
         <!-- Add/Edit Modal -->
-        <BaseDialogForm v-model="modal.show" :header="modal.isEdit ? 'Edit Rekening' : 'Tambah Rekening Bank'">
+        <BaseDialogForm v-model="modal.show"
+            :header="modal.isEdit ? t('organization.bank_accounts.modal.edit_title', 'Edit Rekening') : t('organization.bank_accounts.modal.add_title', 'Tambah Rekening Bank')">
             <div class="space-y-4">
                 <div class="space-y-2">
-                    <label class="text-xs font-black text-gray-400 tracking-widest">Pilih Bank</label>
+                    <label class="text-xs font-black text-gray-400 tracking-widest">
+                        {{ t('organization.bank_accounts.modal.pick_bank', 'Pilih Bank') }}
+                    </label>
                     <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
                         <button v-for="bank in supportedBanks" :key="bank.id" type="button"
                             @click="form.bankName = bank.name"
@@ -104,32 +114,38 @@
                         </button>
                     </div>
                 </div>
-                <BaseInput v-model="form.bankName" label="Nama Bank Kustom" placeholder="Jika bank tidak ada di list" />
-                <BaseInput v-model="form.accountNumber" label="Nomor Rekening" placeholder="Masukkan nomor rekening"
+                <BaseInput v-model="form.bankName" :label="t('organization.bank_accounts.modal.custom_bank_label', 'Nama Bank Kustom')"
+                    :placeholder="t('organization.bank_accounts.modal.custom_bank_placeholder', 'Jika bank tidak ada di list')" />
+                <BaseInput v-model="form.accountNumber" :label="t('organization.bank_accounts.modal.account_number_label', 'Nomor Rekening')"
+                    :placeholder="t('organization.bank_accounts.modal.account_number_placeholder', 'Masukkan nomor rekening')"
                     required />
-                <BaseInput v-model="form.accountName" label="Nama Pemilik Rekening" placeholder="Sesuai buku tabungan"
+                <BaseInput v-model="form.accountName" :label="t('organization.bank_accounts.modal.account_name_label', 'Nama Pemilik Rekening')"
+                    :placeholder="t('organization.bank_accounts.modal.account_name_placeholder', 'Sesuai buku tabungan')"
                     required />
 
                 <div class="flex items-center gap-2 mt-2">
                     <input type="checkbox" v-model="form.isPrimary" id="isPrimary"
                         class="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4">
                     <label for="isPrimary" class="text-xs font-bold text-navy tracking-widest">Jadikan
-                        Rekening Utama</label>
+                        {{ t('organization.bank_accounts.modal.set_primary', 'Rekening Utama') }}</label>
                 </div>
             </div>
 
             <template #action>
                 <div class="flex gap-3">
-                    <BaseButton variant="white" @click="modal.show = false">Batal</BaseButton>
-                    <BaseButton variant="primary" :loading="modal.loading" @click="handleSubmit">Simpan Rekening
+                    <BaseButton variant="white" @click="modal.show = false">{{ t('common.cancel', 'Batal') }}</BaseButton>
+                    <BaseButton variant="primary" :loading="modal.loading" @click="handleSubmit">
+                        {{ t('organization.bank_accounts.modal.save', 'Simpan Rekening') }}
                     </BaseButton>
                 </div>
             </template>
         </BaseDialogForm>
 
         <!-- Delete Confirmation -->
-        <AppDialog v-model:show="deleteState.show" title="Hapus Rekening?"
-            message="Rekening ini akan dihapus dari daftar tujuan pencairan Anda." type="danger"
+        <AppDialog v-model:show="deleteState.show"
+            :title="t('organization.bank_accounts.delete.title', 'Hapus Rekening?')"
+            :message="t('organization.bank_accounts.delete.message', 'Rekening ini akan dihapus dari daftar tujuan pencairan Anda.')"
+            type="danger"
             @confirm="handleDelete" />
     </div>
 </template>
@@ -139,11 +155,13 @@ import { Icon } from '@iconify/vue'
 import { ref, onMounted, reactive } from 'vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 import BaseDialogForm from '~/components/common/BaseDialogForm.vue'
 import AppDialog from '~/components/common/AppDialog.vue'
 
 const api = useApi()
 const toast = useToast()
+const { t } = useDashboardI18n()
 
 definePageMeta({
     layout: 'dashboard'

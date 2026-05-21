@@ -6,8 +6,12 @@
                 <Icon icon="ph:gear-six-bold" class="text-primary text-2xl" />
             </div>
             <div>
-                <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none capitalize">Pengaturan akun</h1>
-                <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wide capitalize">Kelola kredensial dan keamanan akun Anda</div>
+                <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none capitalize">
+                    {{ t('seller.settings.title', 'Pengaturan akun') }}
+                </h1>
+                <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wide capitalize">
+                    {{ t('seller.settings.subtitle', 'Kelola kredensial dan keamanan akun Anda') }}
+                </div>
             </div>
         </div>
 
@@ -26,19 +30,21 @@
             class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
 
             <div>
-                <h3 class="text-xl font-bold text-navy mb-2">Keamanan & Login</h3>
-                <div class="text-gray-500 text-sm mb-6">Kelola kredensial, email, dan metode login akun Anda</div>
+                <h3 class="text-xl font-bold text-navy mb-2">{{ t('seller.settings.security.title', 'Keamanan & Login') }}</h3>
+                <div class="text-gray-500 text-sm mb-6">
+                    {{ t('seller.settings.security.subtitle', 'Kelola kredensial, email, dan metode login akun Anda') }}
+                </div>
 
                 <!-- Email Change Section -->
                 <div class="mb-8">
                     <h4 class="text-sm font-black text-navy tracking-widest mb-4 flex items-center gap-2">
                         <Icon icon="ph:envelope-simple-open-bold" class="text-primary" />
-                        Ubah Alamat Email
+                        {{ t('seller.settings.security.change_email', 'Ubah Alamat Email') }}
                     </h4>
 
                     <div class="space-y-4 max-w-xl">
                         <div>
-                            <label class="label-xs">Email Saat Ini</label>
+                            <label class="label-xs">{{ t('seller.settings.security.current_email', 'Email Saat Ini') }}</label>
                             <div
                                 class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-400 font-medium">
                                 <Icon icon="ph:envelope-bold" />
@@ -47,23 +53,22 @@
                         </div>
 
                         <div v-if="!otpSent">
-                            <label class="label-xs">Email Baru</label>
+                            <label class="label-xs">{{ t('seller.settings.security.new_email', 'Email Baru') }}</label>
                             <div class="flex gap-2">
                                 <div class="relative flex-1">
                                     <Icon icon="ph:at-bold"
                                         class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                                     <input v-model="emailForm.new_email" type="email"
-                                        placeholder="email-baru@example.com"
+                                        :placeholder="t('seller.settings.security.new_email_placeholder', 'email-baru@example.com')"
                                         class="w-full pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-primary transition-all" />
                                 </div>
                                 <BaseButton variant="primary" size="md" @click="requestOTP" :loading="isRequestingOTP"
                                     :disabled="!emailForm.new_email">
-                                    Kirim OTP
+                                    {{ t('seller.settings.security.send_otp', 'Kirim OTP') }}
                                 </BaseButton>
                             </div>
                             <div class="text-[10px] text-gray-400 mt-2">Kami akan mengirimkan kode verifikasi ke email
-                                baru Anda untuk
-                                memastikan kepemilikan.</div>
+                                {{ t('seller.settings.security.otp_desc', 'baru Anda untuk memastikan kepemilikan.') }}</div>
                         </div>
 
                         <div v-else class="space-y-4 pt-2 animate-in fade-in slide-in-from-top-2">
@@ -74,7 +79,7 @@
                             </div>
 
                             <div>
-                                <label class="label-xs">Kode Verifikasi (6 Digit)</label>
+                                <label class="label-xs">{{ t('seller.settings.security.otp_label', 'Kode Verifikasi (6 Digit)') }}</label>
                                 <div class="flex gap-2">
                                     <div class="relative flex-1">
                                         <Icon icon="ph:key-bold"
@@ -193,10 +198,10 @@
         <!-- TAB: Tema -->
         <div v-show="activeTab === 'theme'" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
             <h3 class="text-xl font-black text-navy mb-2 flex items-center justify-between">
-                Tema Dashboard
+                {{ t('seller.settings.theme.title', 'Tema Dashboard') }}
                 <Icon v-if="isSyncing" icon="ph:circle-notch" class="animate-spin text-primary" />
             </h3>
-            <div class="text-gray-500 text-sm mb-6">Pilih palet warna yang sesuai dengan preferensi Anda</div>
+            <div class="text-gray-500 text-sm mb-6">{{ t('seller.settings.theme.subtitle', 'Pilih palet warna yang sesuai dengan preferensi Anda') }}</div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div v-for="(theme, key) in themes" :key="key" role="button"
@@ -247,10 +252,10 @@
     <!-- Save Button (Optional depending on tab) -->
     <div v-if="activeTab === 'theme'" class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
         <BaseButton variant="outline" size="md" @click="resetForm" :loading="isResetting">
-            Batal
+            {{ t('common.cancel', 'Batal') }}
         </BaseButton>
         <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral">
-            Simpan Perubahan
+            {{ t('common.save_changes', 'Simpan Perubahan') }}
         </BaseButton>
     </div>
 </template>
@@ -262,6 +267,7 @@ import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useTheme } from '~/composables/useTheme'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 
 definePageMeta({
     title: 'Pengaturan',
@@ -277,10 +283,11 @@ const { get, put } = useApi()
 const toast = useToast()
 const { currentTheme, themes, isSyncing } = useTheme()
 const route = useRoute()
+const { t } = useDashboardI18n()
 
 const tabs = [
-    { label: 'Keamanan', value: 'security', icon: 'ph:shield-check' },
-    { label: 'Tema', value: 'theme', icon: 'ph:palette' },
+    { label: t('seller.settings.tabs.security', 'Keamanan'), value: 'security', icon: 'ph:shield-check' },
+    { label: t('seller.settings.tabs.theme', 'Tema'), value: 'theme', icon: 'ph:palette' },
 ]
 
 const activeTab = ref('security')
@@ -306,13 +313,15 @@ const securityForm = ref({
 const hasPassword = computed(() => !!userData.value?.has_password)
 
 const passwordStatusLabel = computed(() => {
-    return hasPassword.value ? 'Password Telah Diatur' : 'Password Belum Diatur'
+    return hasPassword.value
+        ? t('seller.settings.security.password_set', 'Password Telah Diatur')
+        : t('seller.settings.security.password_not_set', 'Password Belum Diatur')
 })
 
 const passwordStatusDescription = computed(() => {
     return hasPassword.value
-        ? 'Anda dapat login menggunakan kombinasi email dan password.'
-        : 'Anda saat ini login menggunakan Google. Setel password untuk mengaktifkan login manual.'
+        ? t('seller.settings.security.password_set_desc', 'Anda dapat login menggunakan kombinasi email dan password.')
+        : t('seller.settings.security.password_not_set_desc', 'Anda saat ini login menggunakan Google. Setel password untuk mengaktifkan login manual.')
 })
 
 const linkGoogle = () => {

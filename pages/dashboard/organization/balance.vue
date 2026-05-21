@@ -19,20 +19,23 @@
                     </div>
 
                     <div class="space-y-2">
-                        <h2 class="text-2xl font-black text-navy tracking-tight ">Verifikasi Keamanan</h2>
+                        <h2 class="text-2xl font-black text-navy tracking-tight ">
+                            {{ t('organization.balance.security.title', 'Verifikasi Keamanan') }}
+                        </h2>
                         <p
                             class=" text-xs text-gray-400 font-bold leading-relaxed max-w-[240px] mx-auto tracking-wider">
-                            Masukkan password akun Anda untuk mengakses fitur keuangan
+                            {{ t('organization.balance.security.desc', 'Masukkan password akun Anda untuk mengakses fitur keuangan') }}
                         </p>
                     </div>
 
                     <div class="space-y-4 pt-2">
-                        <BaseInput v-model="password" type="password" placeholder="Password Akun"
+                        <BaseInput v-model="password" type="password"
+                            :placeholder="t('organization.balance.security.password_placeholder', 'Password Akun')"
                             class="!rounded-2xl border-gray-100 focus:!border-primary/30" icon="ph:lock-bold"
                             @keyup.enter="verifyPassword" />
                         <BaseButton @click="verifyPassword" variant="primary" block :loading="verifying"
                             class="h-11 !rounded-xl font-black tracking-widest text-[10px] shadow-lg shadow-primary/20">
-                            Buka Akses Keamanan
+                            {{ t('organization.balance.security.open_access', 'Buka Akses Keamanan') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -56,10 +59,12 @@
                             <Icon icon="ph:bank-bold" class="text-primary text-2xl sm:text-3xl" />
                         </div>
                         <div>
-                            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">Saldo & Penarikan
+                            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">
+                                {{ t('organization.balance.header.title', 'Saldo & Penarikan') }}
                             </h1>
-                            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">Kelola saldo
-                                Anda dan ajukan penarikan</p>
+                            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">
+                                {{ t('organization.balance.header.subtitle', 'Kelola saldo Anda dan ajukan penarikan') }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -73,7 +78,8 @@
                         <div class="absolute top-0 right-0 p-8 opacity-10">
                             <Icon icon="ph:coins-bold" class="text-8xl" />
                         </div>
-                        <p class="text-primary text-[10px] font-black tracking-[0.2em] mb-3">Saldo Tersedia
+                        <p class="text-primary text-[10px] font-black tracking-[0.2em] mb-3">
+                            {{ t('organization.balance.available', 'Saldo Tersedia') }}
                         </p>
                         <h2 class="text-3xl sm:text-4xl font-black tracking-tight mb-10 leading-none tabular-nums">
                             <span class="text-lg font-bold opacity-40 mr-1">Rp</span>{{ balance.toLocaleString('id-ID')
@@ -161,7 +167,7 @@
                                                 <Icon icon="ph:clock-counter-clockwise" class="text-4xl mx-auto" />
                                             </div>
                                             <p class="text-gray-400 text-sm font-bold tracking-tight">Belum ada riwayat
-                                                penarikan</p>
+                                                {{ t('organization.balance.withdrawals.empty', 'Belum ada riwayat penarikan') }}</p>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -183,7 +189,7 @@
                     <div class="size-10 bg-primary/10 rounded-xl flex items-center justify-center shadow-inner">
                         <Icon icon="ph:bank-bold" class="text-xl text-primary" />
                     </div>
-                    <h2 class="text-xl font-black text-navy">Tarik Saldo</h2>
+                    <h2 class="text-xl font-black text-navy">{{ t('organization.balance.withdrawals.title', 'Tarik Saldo') }}</h2>
                 </div>
             </template>
 
@@ -192,14 +198,16 @@
                 <div v-if="!otpSent" class="space-y-3 text-center py-4 bg-gray-50/50 border border-gray-100 rounded-2xl">
                     <Icon icon="ph:envelope-open-bold" class="text-4xl text-primary mx-auto animate-bounce" />
                     <div class="space-y-1">
-                        <h3 class="text-xs font-black text-navy">Request Verification Code</h3>
+                        <h3 class="text-xs font-black text-navy">
+                            {{ t('organization.balance.otp.request_title', 'Request Verification Code') }}
+                        </h3>
                         <p class="text-[10px] text-gray-500 max-w-xs mx-auto font-medium">
-                            A 6-digit OTP verification code will be sent to your email to authorize this withdrawal.
+                            {{ t('organization.balance.otp.request_desc', 'A 6-digit OTP verification code will be sent to your email to authorize this withdrawal.') }}
                         </p>
                     </div>
                     <BaseButton variant="primary" class="font-black text-xs h-9 tracking-wider shadow-md"
                         :loading="sendingOtp" @click="requestWithdrawalOTP">
-                        Send Code to Email
+                        {{ t('organization.balance.otp.send', 'Send Code to Email') }}
                     </BaseButton>
                 </div>
 
@@ -212,10 +220,12 @@
                             <Icon icon="ph:shield-check-fill" class="text-2xl text-green-600" />
                         </div>
                         <div>
-                            <h4 class="text-xs font-black text-green-900">Email Verified</h4>
+                            <h4 class="text-xs font-black text-green-900">
+                                {{ t('organization.balance.otp.verified_title', 'Email Verified') }}
+                            </h4>
                             <p class="text-[10px] text-green-700 mt-0.5 font-medium font-sans">
-                                You can perform additional withdrawals without requesting another OTP for the next <span
-                                    class="font-black font-mono text-green-800">{{ formattedRemainingTime }}</span>
+                                {{ t('organization.balance.otp.verified_desc', 'You can perform additional withdrawals without requesting another OTP for the next') }}
+                                <span class="font-black font-mono text-green-800">{{ formattedRemainingTime }}</span>
                             </p>
                         </div>
                     </div>
@@ -281,10 +291,12 @@ import { ref, onMounted, watch, computed, onUnmounted } from 'vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 
 const api = useApi()
 const toast = useToast()
 const { user } = useAuth()
+const { t } = useDashboardI18n()
 
 definePageMeta({
     layout: 'dashboard'

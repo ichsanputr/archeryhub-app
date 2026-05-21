@@ -15,7 +15,12 @@
     "loading_dashboard": "Loading dashboard...",
     "view_all": "View All",
     "no_data_sales": "No sales data yet.",
-    "no_products": "No products yet."
+    "no_products": "No products yet.",
+    "active": "Aktif",
+    "cancel": "Batal",
+    "inactive": "Nonaktif",
+    "reset": "Reset",
+    "save_changes": "Simpan Perubahan"
   },
   "seller": {
     "header": {
@@ -38,6 +43,33 @@
     "sections": {
       "top_selling": "Top selling products",
       "latest": "Latest products"
+    },
+    "settings": {
+      "security": {
+        "change_email": "Ubah Alamat Email",
+        "current_email": "Email Saat Ini",
+        "new_email": "Email Baru",
+        "new_email_placeholder": "email-baru@example.com",
+        "otp_desc": "baru Anda untuk memastikan kepemilikan.",
+        "otp_label": "Kode Verifikasi (6 Digit)",
+        "password_not_set": "Password Belum Diatur",
+        "password_not_set_desc": "Anda saat ini login menggunakan Google. Setel password untuk mengaktifkan login manual.",
+        "password_set": "Password Telah Diatur",
+        "password_set_desc": "Anda dapat login menggunakan kombinasi email dan password.",
+        "send_otp": "Kirim OTP",
+        "subtitle": "Kelola kredensial, email, dan metode login akun Anda",
+        "title": "Keamanan & Login"
+      },
+      "subtitle": "Kelola kredensial dan keamanan akun Anda",
+      "tabs": {
+        "security": "Keamanan",
+        "theme": "Tema"
+      },
+      "theme": {
+        "subtitle": "Pilih palet warna yang sesuai dengan preferensi Anda",
+        "title": "Tema Dashboard"
+      },
+      "title": "Pengaturan akun"
     }
   },
   "organization": {
@@ -126,6 +158,89 @@
         "cat_achievement": "Achievement",
         "cat_other": "Other"
       }
+    },
+    "balance": {
+      "header": {
+        "subtitle": "Kelola saldo Anda dan ajukan penarikan",
+        "title": "Saldo & Penarikan"
+      },
+      "otp": {
+        "request_desc": "A 6-digit OTP verification code will be sent to your email to authorize this withdrawal.",
+        "request_title": "Request Verification Code",
+        "send": "Send Code to Email",
+        "verified_desc": "You can perform additional withdrawals without requesting another OTP for the next",
+        "verified_title": "Email Verified"
+      },
+      "security": {
+        "desc": "Masukkan password akun Anda untuk mengakses fitur keuangan",
+        "open_access": "Buka Akses Keamanan",
+        "password_placeholder": "Password Akun",
+        "title": "Verifikasi Keamanan"
+      },
+      "withdrawals": {
+        "empty": "Belum ada riwayat penarikan",
+        "title": "Tarik Saldo"
+      },
+      "available": "Saldo Tersedia"
+    },
+    "profile": {
+      "tabs": {
+        "about": "Visi & Misi",
+        "contact": "Kontak & Sosmed",
+        "faq": "FAQ",
+        "general": "Info Umum"
+      },
+      "title": "Profil Organisasi",
+      "save": "Simpan Profil",
+      "saving": "Menyimpan...",
+      "subtitle": "Kelola identitas publik organisasi Anda"
+    },
+    "bank_accounts": {
+      "add": "Tambah Rekening",
+      "delete": {
+        "message": "Rekening ini akan dihapus dari daftar tujuan pencairan Anda.",
+        "title": "Hapus Rekening?"
+      },
+      "fields": {
+        "account_name": "Nama Pemilik",
+        "account_number": "Nomor Rekening",
+        "bank_name": "Nama Bank"
+      },
+      "modal": {
+        "account_name_label": "Nama Pemilik Rekening",
+        "account_name_placeholder": "Sesuai buku tabungan",
+        "account_number_label": "Nomor Rekening",
+        "account_number_placeholder": "Masukkan nomor rekening",
+        "add_title": "Tambah Rekening Bank",
+        "custom_bank_label": "Nama Bank Kustom",
+        "custom_bank_placeholder": "Jika bank tidak ada di list",
+        "edit_title": "Edit Rekening",
+        "pick_bank": "Pilih Bank",
+        "save": "Simpan Rekening",
+        "set_primary": "Rekening Utama"
+      },
+      "subtitle": "Kelola rekening tujuan pencairan dana Anda",
+      "title": "Rekening Bank"
+    },
+    "scorekeepers": {
+      "add": "Tambah Staff",
+      "delete": {
+        "confirm": "Ya, Hapus Akun",
+        "message": "Tindakan ini permanen. Scorekeeper akan kehilangan akses ke akun mereka segera setelah dihapus.",
+        "title": "Hapus Scorekeeper?"
+      },
+      "modal": {
+        "add_title": "Tambah Scorekeeper",
+        "edit_title": "Edit Scorekeeper",
+        "generate": "Generate Akun",
+        "info_generate": "Kode akses login mobile apps akan digenerate secara otomatis setelah Anda menyimpan data staff ini.",
+        "name_label": "Nama Lengkap Staff",
+        "name_placeholder": "e.g. Budi Santoso",
+        "status_label": "Akun"
+      },
+      "search_placeholder": "Cari nama atau kode staff...",
+      "subtitle": "Kelola akun staff pencatat skor organisasi",
+      "title": "Scorekeeper"
     }
   },
   "subscription": {
@@ -218,13 +333,18 @@
   },
   "events": {
     "list": {
-      "empty_state": {},
+      "empty_state": {
+        "create_first": ""
+      },
       "reset_filters": "",
       "search_label": "",
       "search_placeholder": "",
       "subtitle": "",
-      "table_headers": {},
-      "title": ""
+      "table_headers": {
+        "event_info": ""
+      },
+      "title": "",
+      "create_event": ""
     }
   }
 }

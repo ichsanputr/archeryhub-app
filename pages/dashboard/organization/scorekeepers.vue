@@ -20,9 +20,11 @@
                             <Icon icon="ph:user-focus-bold" class="text-primary text-2xl sm:text-3xl" />
                         </div>
                         <div>
-                            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">Scorekeeper</h1>
+                            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">
+                                {{ t('organization.scorekeepers.title', 'Scorekeeper') }}
+                            </h1>
                             <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">Kelola akun
-                                staff pencatat skor organisasi</p>
+                                {{ t('organization.scorekeepers.subtitle', 'Kelola akun staff pencatat skor organisasi') }}</p>
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3">
@@ -30,7 +32,7 @@
                             variant="primary" icon="ph:plus-bold"
                             class="w-full sm:w-auto h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl"
                             :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
-                            Tambah Staff
+                            {{ t('organization.scorekeepers.add', 'Tambah Staff') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -41,12 +43,13 @@
         <div
             class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
             <div class="flex-grow w-full">
-                <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" placeholder="Cari nama atau kode staff..."
+                <BaseInput v-model="searchQuery" icon="ph:magnifying-glass"
+                    :placeholder="t('organization.scorekeepers.search_placeholder', 'Cari nama atau kode staff...')"
                     class="!mb-0" />
             </div>
             <BaseButton variant="white" icon="ph:funnel" @click="searchQuery = ''"
                 class="h-11 px-6 !rounded-xl text-[10px] font-black tracking-widest">
-                Reset
+                {{ t('common.reset', 'Reset') }}
             </BaseButton>
         </div>
 
@@ -214,32 +217,35 @@
         </div>
 
         <!-- Modal Form -->
-        <BaseDialogForm v-model="modal.show" :header="modal.isEdit ? 'Edit Scorekeeper' : 'Tambah Scorekeeper'">
+        <BaseDialogForm v-model="modal.show"
+            :header="modal.isEdit ? t('organization.scorekeepers.modal.edit_title', 'Edit Scorekeeper') : t('organization.scorekeepers.modal.add_title', 'Tambah Scorekeeper')">
             <div class="flex flex-col gap-4">
-                <BaseInput v-model="form.name" label="Nama Lengkap Staff" placeholder="e.g. Budi Santoso" required />
+                <BaseInput v-model="form.name"
+                    :label="t('organization.scorekeepers.modal.name_label', 'Nama Lengkap Staff')"
+                    :placeholder="t('organization.scorekeepers.modal.name_placeholder', 'e.g. Budi Santoso')"
+                    required />
 
                 <div v-if="!modal.isEdit"
                     class="bg-primary/5 border border-primary/20 p-4 rounded-xl flex gap-3 items-start">
                     <Icon icon="ph:info-bold" class="text-primary text-lg flex-shrink-0 mt-0.5" />
                     <p class=" text-xs text-navy/70 leading-relaxed font-medium">
-                        Kode akses login mobile apps akan digenerate secara otomatis setelah Anda menyimpan data staff
-                        ini.
+                        {{ t('organization.scorekeepers.modal.info_generate', 'Kode akses login mobile apps akan digenerate secara otomatis setelah Anda menyimpan data staff ini.') }}
                     </p>
                 </div>
 
                 <div v-if="modal.isEdit" class="mt-2">
                     <label class="block text-xs font-black text-gray-500 tracking-widest mb-2">Status
-                        Akun</label>
+                        {{ t('organization.scorekeepers.modal.status_label', 'Akun') }}</label>
                     <div class="flex gap-4">
                         <button type="button" @click="form.status = 'active'"
                             class="flex-1 py-3 rounded-xl border-2 font-bold transition-all"
                             :class="form.status === 'active' ? 'border-primary bg-primary/10 text-primary' : 'border-white/5 bg-white/5 text-gray-500'">
-                            Aktif
+                            {{ t('common.active', 'Aktif') }}
                         </button>
                         <button type="button" @click="form.status = 'inactive'"
                             class="flex-1 py-3 rounded-xl border-2 font-bold transition-all"
                             :class="form.status === 'inactive' ? 'border-red-500/50 bg-red-500/10 text-red-500' : 'border-white/5 bg-white/5 text-gray-500'">
-                            Nonaktif
+                            {{ t('common.inactive', 'Nonaktif') }}
                         </button>
                     </div>
                 </div>
@@ -247,18 +253,20 @@
 
             <template #action>
                 <div class="flex items-center justify-end gap-3 w-full">
-                    <BaseButton variant="white" @click="modal.show = false">Batal</BaseButton>
+                    <BaseButton variant="white" @click="modal.show = false">{{ t('common.cancel', 'Batal') }}</BaseButton>
                     <BaseButton :loading="modal.loading" @click="handleSubmit" class="bg-primary text-btn-text">
-                        {{ modal.isEdit ? 'Simpan Perubahan' : 'Generate Akun' }}
+                        {{ modal.isEdit ? t('common.save_changes', 'Simpan Perubahan') : t('organization.scorekeepers.modal.generate', 'Generate Akun') }}
                     </BaseButton>
                 </div>
             </template>
         </BaseDialogForm>
 
         <!-- Delete Confirmation -->
-        <AppDialog v-model:show="deleteState.show" title="Hapus Scorekeeper?"
-            message="Tindakan ini permanen. Scorekeeper akan kehilangan akses ke akun mereka segera setelah dihapus."
-            confirm-text="Ya, Hapus Akun" type="danger" @confirm="handleDelete" />
+        <AppDialog v-model:show="deleteState.show"
+            :title="t('organization.scorekeepers.delete.title', 'Hapus Scorekeeper?')"
+            :message="t('organization.scorekeepers.delete.message', 'Tindakan ini permanen. Scorekeeper akan kehilangan akses ke akun mereka segera setelah dihapus.')"
+            :confirm-text="t('organization.scorekeepers.delete.confirm', 'Ya, Hapus Akun')"
+            type="danger" @confirm="handleDelete" />
     </div>
 </template>
 
@@ -267,6 +275,7 @@ import { ref, onMounted, reactive, computed, watch } from 'vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useSubscription } from '~/composables/useSubscription'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 import LoadingSpinner from '~/components/common/LoadingSpinner.vue'
 import BaseDialogForm from '~/components/common/BaseDialogForm.vue'
 import BaseInput from '~/components/common/BaseInput.vue'
@@ -283,6 +292,7 @@ useHead({
 })
 
 const { isSubscriptionActive } = useSubscription()
+const { t } = useDashboardI18n()
 const api = useApi()
 const toast = useToast()
 

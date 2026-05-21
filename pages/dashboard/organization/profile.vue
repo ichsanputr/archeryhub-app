@@ -7,15 +7,18 @@
           <Icon icon="ph:buildings-bold" class="text-primary text-2xl" />
         </div>
         <div>
-          <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none ">Profil Organisasi</h1>
-          <p class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider ">Kelola identitas publik organisasi Anda
+          <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none ">
+            {{ t('organization.profile.title', 'Profil Organisasi') }}
+          </h1>
+          <p class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider ">
+            {{ t('organization.profile.subtitle', 'Kelola identitas publik organisasi Anda') }}
           </p>
         </div>
       </div>
       <div class="flex gap-3">
         <BaseButton variant="primary" :loading="saving" @click="saveProfile" icon="ph:floppy-disk"
           class="h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl">
-          {{ saving ? 'Menyimpan...' : 'Simpan Profil' }}
+          {{ saving ? t('organization.profile.saving', 'Menyimpan...') : t('organization.profile.save', 'Simpan Profil') }}
         </BaseButton>
       </div>
     </div>
@@ -314,6 +317,7 @@ import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 
 const countries = ref([
@@ -344,15 +348,16 @@ const router = useRouter()
 const { get, put } = useApi()
 const { user, organizationProfile } = useAuth()
 const toast = useToast()
+const { t } = useDashboardI18n()
 
 const saving = ref(false)
 const activeTab = ref('general')
 
 const tabs = [
-  { id: 'general', label: 'Info Umum', icon: 'ph:identification-badge-bold' },
-  { id: 'contact', label: 'Kontak & Sosmed', icon: 'ph:phone-bold' },
-  { id: 'about', label: 'Visi & Misi', icon: 'ph:eye-bold' },
-  { id: 'faq', label: 'FAQ', icon: 'ph:question-bold' }
+  { id: 'general', label: t('organization.profile.tabs.general', 'Info Umum'), icon: 'ph:identification-badge-bold' },
+  { id: 'contact', label: t('organization.profile.tabs.contact', 'Kontak & Sosmed'), icon: 'ph:phone-bold' },
+  { id: 'about', label: t('organization.profile.tabs.about', 'Visi & Misi'), icon: 'ph:eye-bold' },
+  { id: 'faq', label: t('organization.profile.tabs.faq', 'FAQ'), icon: 'ph:question-bold' }
 ]
 
 const pageSettings = reactive({
