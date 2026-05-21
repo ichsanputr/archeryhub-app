@@ -30,7 +30,7 @@ import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 
 const route = useRoute()
-const { handleCallback, user } = useAuth()
+const { handleCallback, user, fetchProfileSSR } = useAuth()
 
 useHead({
   title: 'Connecting Account... - Archeris.net'
@@ -40,6 +40,35 @@ const loading = ref(true)
 const error = ref(null)
 
 onMounted(async () => {
+  // The backend may complete the OAuth flow server-side and redirect back to the app with ?token=...
+  // Support both styles:
+  // 1) Frontend-first: /auth/callback?code=...&state=... -> POST to API to exchange code
+  // 2) API-first:       /auth/callback?token=...        -> store cookie and continue
+  const token = route.query.token
+  if (token && typeof token === 'string') {
+    try {
+      // Best-effort cookie set for local/dev flows (cannot set HttpOnly from JS).
+      // In production the API may also set an HttpOnly cookie on .archeris.net.
+      const secure = window.location.protocol === 'https:' ? '; Secure' : ''
+      document.cookie = `auth_token=${encodeURIComponent(token)}; Path=/; SameSite=Lax${secure}`
+
+      // Load user state from cookie
+      await fetchProfileSSR()
+
+      let redirect = route.query.redirect || '/dashboard'
+      if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
+        redirect = '/dashboard/archer/events'
+      }
+      window.location.href = redirect
+      return
+    } catch (err) {
+      console.error('Token callback processing failed:', err)
+      error.value = 'Failed to complete login.'
+      loading.value = false
+      return
+    }
+  }
+
   const code = route.query.code
   const state = route.query.state
 
