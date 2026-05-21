@@ -464,7 +464,7 @@ const handleDownload = async (file, index) => {
     downloadingIndex.value = index
     try {
         const filename = file.url.split('/').pop()
-        const downloadUrl = `${apiBaseUrl}/media/download/${filename}`
+        const downloadUrl = `${apiBaseUrl}/media-download/${filename}`
 
         const blob = await $fetch(downloadUrl, {
             responseType: 'blob'

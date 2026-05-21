@@ -153,10 +153,7 @@
                 </div>
             </div>
 
-            <!-- YouTube -->
-            <TBtn @click="openYoutubeDialog" title="Embed YouTube">
-                <Icon icon="ph:youtube-logo-bold" />
-            </TBtn>
+            <!-- YouTube embed disabled -->
 
             <div class="w-px bg-gray-200 mx-1 self-stretch my-1"></div>
 
@@ -344,33 +341,7 @@
         </Teleport>
 
         <!-- ── YouTube Dialog ──────────────────────────────────── -->
-        <Teleport to="body">
-            <div v-if="youtubeDialogOpen"
-                class="fixed inset-0 z-[200] flex items-center justify-center bg-black/40 backdrop-blur-sm"
-                @mousedown.self="youtubeDialogOpen = false">
-                <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 w-full max-w-md mx-4">
-                    <h3 class="text-base font-black text-navy mb-4 flex items-center gap-2">
-                        <Icon icon="ph:youtube-logo-bold" class="text-red-500" /> Embed YouTube
-                    </h3>
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 mb-1 block">URL Video YouTube</label>
-                        <input v-model="youtubeUrl" type="url" placeholder="https://www.youtube.com/watch?v=..."
-                            class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
-                            @keydown.enter="insertYoutube" @keydown.escape="youtubeDialogOpen = false" />
-                    </div>
-                    <div class="flex gap-2 mt-5">
-                        <button type="button" @click="insertYoutube" :disabled="!youtubeUrl"
-                            class="flex-1 px-4 py-2.5 bg-primary text-btn-text rounded-xl font-black text-sm hover:opacity-90 transition-opacity disabled:opacity-40">
-                            Sisipkan
-                        </button>
-                        <button type="button" @click="youtubeDialogOpen = false"
-                            class="px-4 py-2.5 bg-gray-50 text-gray-600 rounded-xl font-black text-sm hover:bg-gray-100 transition-colors">
-                            Batal
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </Teleport>
+
 
         <!-- Media Library -->
         <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
@@ -401,7 +372,6 @@ import Highlight from '@tiptap/extension-highlight'
 import { TextStyle } from '@tiptap/extension-text-style'
 import Color from '@tiptap/extension-color'
 import CharacterCount from '@tiptap/extension-character-count'
-import Youtube from '@tiptap/extension-youtube'
 import Placeholder from '@tiptap/extension-placeholder'
 import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'
@@ -468,8 +438,6 @@ const imageUrlError = ref(false)
 const imageFileInput = ref<HTMLInputElement | null>(null)
 const uploading = ref(false)
 
-const youtubeDialogOpen = ref(false)
-const youtubeUrl = ref('')
 
 const showMediaLibrary = ref(false)
 
@@ -518,7 +486,6 @@ const editor = useEditor({
         TextStyle,
         Color,
         CharacterCount,
-        Youtube.configure({ width: '100%', height: 360, nocookie: true }),
         Placeholder.configure({ placeholder: props.placeholder }),
         TaskList,
         TaskItem.configure({ nested: true }),
@@ -617,15 +584,7 @@ const handleMediaSelect = (media: { url: string; caption?: string }) => {
 }
 
 // ── YouTube ───────────────────────────────────────────────────────────────────
-const openYoutubeDialog = () => {
-    youtubeUrl.value = ''
-    youtubeDialogOpen.value = true
-}
-const insertYoutube = () => {
-    if (!youtubeUrl.value) return
-    editor.value?.commands.setYoutubeVideo({ src: youtubeUrl.value, width: '100%', height: 360 } as any)
-    youtubeDialogOpen.value = false
-}
+
 
 // ── Table ─────────────────────────────────────────────────────────────────────
 const insertTable = () => {

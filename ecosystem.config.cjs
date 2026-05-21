@@ -16,10 +16,10 @@ module.exports = {
         
         // --- 🎯 DUAL-DOMAIN API ARCHITECTURE ---
         // Public domain for client-side navigation (XHR/Fetch in browser)
-        NUXT_PUBLIC_API_BASE_URL: 'https://api.archeris.net/api/v1',
+        NUXT_PUBLIC_API_BASE_URL: 'https://api.archeris.net',
         // Internal IP/local network address for Server-Side Rendering (SSR)
         // This makes SSR much faster by bypassing the public internet round-trip.
-        NUXT_API_BASE_URL: 'http://localhost:8001/api/v1',
+        NUXT_API_BASE_URL: 'http://localhost:8001',
         
         // --- 🌐 SITE URL ---
         NUXT_PUBLIC_SITE_URL: 'https://archeris.net'
