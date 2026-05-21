@@ -12,8 +12,8 @@
                     <Icon icon="ph:check-circle-bold" class="text-2xl text-primary" />
                 </div>
                 <div>
-                    <h4 class="text-[10px] font-black tracking-widest text-white">SISTEM ROOT</h4>
-                    <div class="text-xs font-bold text-primary/80">Akun baru telah berhasil dibuat</div>
+                    <h4 class="text-[10px] font-black tracking-widest text-white">{{ t('root.index.title') }}</h4>
+                    <div class="text-xs font-bold text-primary/80">{{ t('root.index.success_message', 'New account has been successfully created') }}</div>
                 </div>
                 <button @click="showSuccessToast = false"
                     class="ml-4 text-white/40 hover:text-white transition-colors p-1 hover:bg-white/10 rounded-lg">
@@ -32,9 +32,9 @@
                 <div class="space-y-4">
                     <div
                         class="flex items-center gap-2 text-[10px] sm:text-xs font-black tracking-widest text-primary/80">
-                        <span class="text-white">Root Terminal</span>
+                        <span class="text-white">{{ t('root.index.root_terminal') }}</span>
                         <Icon icon="ph:caret-right-bold" class="text-[8px] opacity-50" />
-                        <span class="text-primary">Manajemen Akun</span>
+                        <span class="text-primary">{{ t('root.index.title') }}</span>
                     </div>
                     <div class="flex items-center gap-4">
                         <div
@@ -42,9 +42,9 @@
                             <Icon icon="ph:users-four-bold" class="text-primary text-2xl sm:text-3xl" />
                         </div>
                         <div>
-                            <h1 class="text-xl sm:text-3xl font-black tracking-tight">Manajemen Akun</h1>
+                            <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ t('root.index.title') }}</h1>
                             <div class="text-slate-300 text-[10px] sm:text-sm font-medium mt-1">
-                                Kelola semua pengguna terdaftar di Archeris.net
+                                {{ t('root.index.subtitle') }}
                             </div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                 <NuxtLink to="/dashboard/root/create-account"
                     class="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-navy rounded-xl text-[10px] sm:text-xs font-black tracking-widest transition-all shadow-lg shadow-primary/20 shrink-0">
                     <Icon icon="ph:plus-bold" />
-                    Buat Akun Baru
+                    {{ t('root.index.create_account') }}
                 </NuxtLink>
             </div>
         </div>
@@ -76,27 +76,27 @@
         <div
             class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
             <div class="flex-grow w-full">
-                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider ">Pencarian</label>
+                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider ">{{ t('root.index.search_label') }}</label>
                 <div class="relative">
                     <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input v-model="searchQuery" type="text" placeholder="Cari nama atau email..."
+                    <input v-model="searchQuery" type="text" :placeholder="t('root.index.search_placeholder')"
                         class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/30 outline-none transition-all" />
                 </div>
             </div>
             <div class="w-full md:w-48">
-                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider ">Tipe Akun</label>
+                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider ">{{ t('root.index.type_filter') }}</label>
                 <select v-model="typeFilter"
                     class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                    <option value="">Semua Tipe</option>
-                    <option value="archer">Archer</option>
-                    <option value="club">Club</option>
-                    <option value="organization">Organisasi</option>
-                    <option value="seller">Seller</option>
+                    <option value="">{{ t('root.index.type_all') }}</option>
+                    <option value="archer">{{ t('root.index.type_archer') }}</option>
+                    <option value="club">{{ t('root.index.type_club') }}</option>
+                    <option value="organization">{{ t('root.index.type_organization') }}</option>
+                    <option value="seller">{{ t('root.index.type_seller') }}</option>
                 </select>
             </div>
             <button @click="searchQuery = ''; typeFilter = ''"
                 class="h-11 px-6 font-semibold text-sm text-navy bg-white border border-gray-200 hover:bg-gray-50 rounded-xl transition-all shrink-0">
-                Reset
+                {{ t('root.index.reset') }}
             </button>
         </div>
 
@@ -107,16 +107,16 @@
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
-                                Identitas</th>
+                                {{ t('root.index.table_header_identity') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-center">
-                                Tipe
+                                {{ t('root.index.table_header_type') }}
                             </th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-center">
-                                Status</th>
+                                {{ t('root.index.table_header_status') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
-                                Terdaftar</th>
+                                {{ t('root.index.table_header_registered') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right">
-                                Aksi</th>
+                                {{ t('root.index.table_header_actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
@@ -159,13 +159,13 @@
                                     <button v-if="user.status !== 'suspended' && user.type !== 'archer'"
                                         @click="confirmAction(user, 'suspend')"
                                         class="p-2 text-red-400 hover:bg-red-50 hover:text-red-500 rounded-xl transition-all"
-                                        title="Suspend Akun">
+                                        :title="t('root.index.suspend_account_title')">
                                         <Icon icon="ph:prohibit-bold" class="text-xl" />
                                     </button>
                                     <button v-else-if="user.status === 'suspended'"
                                         @click="confirmAction(user, 'activate')"
                                         class="p-2 text-green-500 hover:bg-green-50 rounded-xl transition-all"
-                                        title="Aktifkan Kembali">
+                                        :title="t('root.index.activate_account_title')">
                                         <Icon icon="ph:check-circle-bold" class="text-xl" />
                                     </button>
                                 </div>
@@ -179,10 +179,8 @@
                                         <Icon icon="ph:user-focus-bold" class="text-3xl" />
                                     </div>
                                     <div>
-                                        <div class="text-sm font-bold text-gray-400 tracking-tight">Tidak ada pengguna
-                                            ditemukan</div>
-                                        <div class="text-xs text-gray-300 mt-1">Coba ubah filter atau kata kunci
-                                            pencarian
+                                        <div class="text-sm font-bold text-gray-400 tracking-tight">{{ t('root.index.no_users') }}</div>
+                                        <div class="text-xs text-gray-300 mt-1">{{ t('common.no_results_desc') }}
                                         </div>
                                     </div>
                                 </div>
@@ -206,11 +204,11 @@
                             class="text-4xl" />
                     </div>
                     <div>
-                        <h3 class="text-lg font-black text-navy">{{ pendingAction === 'suspend' ? 'Suspend Akun?' :
-                            'Aktifkan Akun?' }}</h3>
+                        <h3 class="text-lg font-black text-navy">{{ pendingAction === 'suspend' ? t('root.index.suspend_title', 'Suspend Account?') :
+                            t('root.index.activate_title', 'Activate Account?') }}</h3>
                         <div class="text-gray-400 text-xs mt-2 leading-relaxed">
-                            Apakah Anda yakin ingin {{ pendingAction === 'suspend' ? 'menonaktifkan' : 'mengaktifkan' }}
-                            akses untuk <span class="font-bold text-navy">{{ selectedUser?.name }}</span>?
+                            {{ pendingAction === 'suspend' ? t('root.index.suspend_desc', 'Are you sure you want to deactivate access for') : t('root.index.activate_desc', 'Are you sure you want to activate access for') }}
+                            <span class="font-bold text-navy">{{ selectedUser?.name }}</span>?
                         </div>
                     </div>
                 </div>
@@ -218,13 +216,13 @@
                 <div class="flex gap-3">
                     <button @click="showConfirmModal = false"
                         class="flex-1 py-3 border border-gray-200 rounded-xl text-xs font-black text-gray-500 hover:bg-gray-50 transition-all tracking-widest">
-                        Batal
+                        {{ t('root.create_account.cancel') }}
                     </button>
                     <button @click="executeAction" :disabled="actionLoading"
                         class="flex-1 py-3 rounded-xl text-xs font-black transition-all disabled:opacity-50 flex items-center justify-center gap-2 tracking-widest shadow-lg"
                         :class="pendingAction === 'suspend' ? 'bg-red-500 text-white hover:bg-red-600 shadow-red-200' : 'bg-navy text-primary hover:bg-navy/90 shadow-navy/20'">
                         <Icon v-if="actionLoading" icon="ph:spinner-bold" class="animate-spin" />
-                        {{ pendingAction === 'suspend' ? 'Ya, Suspend' : 'Ya, Aktifkan' }}
+                        {{ pendingAction === 'suspend' ? t('root.index.confirm_suspend', 'Yes, Suspend') : t('root.index.confirm_activate', 'Yes, Activate') }}
                     </button>
                 </div>
             </div>
@@ -235,14 +233,16 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
 const route = useRoute()
+const { t } = useI18n()
 
 definePageMeta({ layout: 'dashboard', middleware: ['auth'] })
-useHead({ title: 'Manajemen Akun — Root Terminal' })
+useHead({ title: t('root.index.title') + ' — Root Terminal' })
 
 // ── Data ──────────────────────────────────────────────────────────────
 const searchQuery = ref('')
@@ -267,10 +267,10 @@ const filteredUsers = computed(() => {
 const stats = computed(() => {
     const all = usersData.value || []
     return [
-        { label: 'Total Pengguna', value: all.length, icon: 'ph:users-four', color: 'text-primary' },
-        { label: 'Archer', value: all.filter(u => u.type === 'archer').length, icon: 'ph:person', color: 'text-blue-500' },
-        { label: 'Club', value: all.filter(u => u.type === 'club').length, icon: 'ph:buildings', color: 'text-navy' },
-        { label: 'Organisasi', value: all.filter(u => u.type === 'organization').length, icon: 'ph:building-office', color: 'text-purple-500' },
+        { label: t('root.index.stats_total_users'), value: all.length, icon: 'ph:users-four', color: 'text-primary' },
+        { label: t('root.index.stats_archers'), value: all.filter(u => u.type === 'archer').length, icon: 'ph:person', color: 'text-blue-500' },
+        { label: t('root.index.stats_clubs'), value: all.filter(u => u.type === 'club').length, icon: 'ph:buildings', color: 'text-navy' },
+        { label: t('root.index.stats_organizations'), value: all.filter(u => u.type === 'organization').length, icon: 'ph:building-office', color: 'text-purple-500' },
     ]
 })
 
@@ -298,7 +298,7 @@ const executeAction = async () => {
         showConfirmModal.value = false
         await refresh()
     } catch (err) {
-        alert(err.data?.error || 'Gagal mengubah status akun')
+        alert(err.data?.error || t('root.index.error_message', 'Failed to change account status'))
     } finally {
         actionLoading.value = false
     }

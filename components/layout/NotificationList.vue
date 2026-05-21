@@ -3,10 +3,10 @@
         class="absolute right-0 mt-3 w-80 md:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-[100] transform transition-all duration-300 origin-top-right">
         <!-- Header -->
         <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">
-            <h3 class="font-black text-navy text-base">Notifikasi</h3>
+            <h3 class="font-black text-navy text-base">{{ t('notifications.title') }}</h3>
             <button @click="$emit('mark-all-read')"
                 class="text-xs font-bold text-primary hover:text-primary-dark transition-colors">
-                Tandai semua dibaca
+                {{ t('notifications.mark_all_read') }}
             </button>
         </div>
 
@@ -43,9 +43,8 @@
                 <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Icon icon="ph:bell-slash" class="text-3xl text-gray-200" />
                 </div>
-                <p class="text-navy font-black text-base">Belum Ada Notifikasi</p>
-                <p class="text-gray-400 text-xs mt-1">Kami akan memberitahu Anda saat ada berita atau aktivitas baru.
-                </p>
+                <p class="text-navy font-black text-base">{{ t('notifications.empty_title') }}</p>
+                <p class="text-gray-400 text-xs mt-1">{{ t('notifications.empty_desc') }}</p>
             </div>
         </div>
 
@@ -53,7 +52,7 @@
         <div class="px-5 py-3 border-t border-gray-100 bg-gray-50/50 text-center">
             <NuxtLink :to="`/dashboard/${userPersona}/notifications`"
                 class="text-xs font-black text-navy hover:text-primary transition-colors flex items-center justify-center gap-2">
-                Lihat Semua Notifikasi
+                {{ t('notifications.view_all') }}
                 <Icon icon="ph:arrow-right-bold" />
             </NuxtLink>
         </div>
@@ -62,6 +61,8 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const { userPersona } = useAuth()
 
 const props = defineProps({

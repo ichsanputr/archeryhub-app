@@ -14,14 +14,13 @@
             <Icon icon="ph:shopping-cart-bold" class="text-primary text-3xl sm:text-4xl" />
           </div>
           <div>
-            <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight capitalize">Pesanan masuk</h1>
-            <div class="text-slate-300 text-xs sm:text-sm font-bold mt-1 tracking-wide capitalize">Kelola dan proses
-              pesanan dari pembeli anda</div>
+            <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight capitalize">{{ t('seller_orders.title') }}</h1>
+            <div class="text-slate-300 text-xs sm:text-sm font-bold mt-1 tracking-wide capitalize">{{ t('seller_orders.subtitle') }}</div>
           </div>
         </div>
         <BaseButton variant="primary" icon="ph:download-bold" @click="exportOrders" :loading="isExporting"
           class="h-12 px-8 font-black capitalize tracking-widest text-xs shadow-lg shadow-primary/20">
-          Ekspor laporan
+          {{ t('seller_orders.export_button') }}
         </BaseButton>
       </div>
     </div>
@@ -29,10 +28,10 @@
     <!-- Filters -->
     <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-wrap gap-4 items-end">
       <div class="w-full md:w-64">
-        <BaseSelect v-model="statusFilter" :items="statusOptions" label="Status Pesanan" />
+        <BaseSelect v-model="statusFilter" :items="statusOptions" :label="t('seller_orders.status_filter')" />
       </div>
       <BaseButton variant="white" icon="ph:funnel" @click="statusFilter = 'all'" class="h-11">
-        Reset Filter
+        {{ t('seller_orders.reset_filter') }}
       </BaseButton>
     </div>
 
@@ -40,22 +39,22 @@
     <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
       <div v-if="isLoading" class="py-20 flex flex-col items-center gap-4">
         <LoadingSpinner size="lg" />
-        <div class="text-gray-400 font-bold">Memuat pesanan...</div>
+        <div class="text-gray-400 font-bold">{{ t('seller_orders.loading') }}</div>
       </div>
       <div v-else-if="orders.length === 0" class="text-center py-20">
         <Icon icon="ph:package-bold" class="text-6xl text-gray-100 mx-auto mb-4" />
-        <div class="text-gray-400 font-bold">Tidak ada pesanan ditemukan</div>
+        <div class="text-gray-400 font-bold">{{ t('seller_orders.no_orders') }}</div>
       </div>
       <div v-else class="overflow-x-auto">
         <table class="w-full border-collapse min-w-[1000px]">
           <thead>
             <tr class="text-left bg-gray-50/50 border-b border-gray-100">
               <th class="px-8 py-5  text-xs font-black tracking-widest text-gray-400">
-                ID Pesanan</th>
+                {{ t('seller_orders.table_order_id') }}</th>
               <th @click="toggleSort('created_at')"
                 class="px-8 py-5  text-xs font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2">
-                  Tanggal
+                  {{ t('seller_orders.table_date') }}
                   <Icon v-if="sortBy === 'created_at'"
                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
@@ -64,7 +63,7 @@
               <th @click="toggleSort('buyer_name')"
                 class="px-8 py-5  text-xs font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2">
-                  Pelanggan
+                  {{ t('seller_orders.table_customer') }}
                   <Icon v-if="sortBy === 'buyer_name'"
                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
@@ -73,7 +72,7 @@
               <th @click="toggleSort('total_amount')"
                 class="px-8 py-5  text-xs font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2">
-                  Total
+                  {{ t('seller_orders.table_total') }}
                   <Icon v-if="sortBy === 'total_amount'"
                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
@@ -82,13 +81,13 @@
               <th @click="toggleSort('status')"
                 class="px-8 py-5  text-xs font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2">
-                  Status
+                  {{ t('seller_orders.table_status') }}
                   <Icon v-if="sortBy === 'status'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                     class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                 </div>
               </th>
-              <th class="px-8 py-5  text-xs font-black tracking-widest text-gray-400 text-right">Aksi</th>
+              <th class="px-8 py-5  text-xs font-black tracking-widest text-gray-400 text-right">{{ t('seller_orders.table_actions') }}</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
@@ -118,7 +117,7 @@
                 <BaseButton variant="white" size="md" icon="ph:arrow-right-bold"
                   class="h-11 px-5 !rounded-xl border-gray-100 text-gray-400 hover:text-white hover:bg-navy hover:border-navy transition-all shadow-sm"
                   :to="`/dashboard/seller/orders/${order.id}`">
-                  Detail
+                  {{ t('seller_orders.detail_button') }}
                 </BaseButton>
               </td>
             </tr>
@@ -132,9 +131,13 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, onMounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({ layout: 'dashboard' })
-useHead({ title: 'Pesanan Masuk - Dashboard Seller' })
+
+const { t } = useI18n()
+
+useHead({ title: computed(() => `${t('seller_orders.title')} - Dashboard Seller`) })
 
 const { get } = useApi()
 const toast = useToast()
@@ -146,14 +149,14 @@ const statusFilter = ref('all')
 const sortBy = ref('created_at')
 const order = ref('DESC')
 
-const statusOptions = [
-  { label: 'Semua Status', value: 'all' },
-  { label: 'Menunggu', value: 'pending' },
-  { label: 'Lunas', value: 'paid' },
-  { label: 'Dikirim', value: 'shipping' },
-  { label: 'Selesai', value: 'completed' },
-  { label: 'Dibatalkan', value: 'cancelled' }
-]
+const statusOptions = computed(() => [
+  { label: t('seller_orders.status_all'), value: 'all' },
+  { label: t('seller_orders.status_pending'), value: 'pending' },
+  { label: t('seller_orders.status_paid'), value: 'paid' },
+  { label: t('seller_orders.status_shipping'), value: 'shipping' },
+  { label: t('seller_orders.status_completed'), value: 'completed' },
+  { label: t('seller_orders.status_cancelled'), value: 'cancelled' }
+])
 
 const fetchOrders = async () => {
   isLoading.value = true
@@ -167,7 +170,7 @@ const fetchOrders = async () => {
     })
     orders.value = response.data || []
   } catch (error) {
-    toast.error('Gagal mengambil data pesanan')
+    toast.error(t('seller_orders.fetch_error'))
   } finally {
     isLoading.value = false
   }
@@ -214,11 +217,11 @@ const formatPrice = (price) => {
 
 const getStatusLabel = (status) => {
   const labels = {
-    pending: 'Menunggu',
-    paid: 'Lunas',
-    shipping: 'Dikirim',
-    completed: 'Selesai',
-    cancelled: 'Batal'
+    pending: t('seller_orders.status_pending'),
+    paid: t('seller_orders.status_paid'),
+    shipping: t('seller_orders.status_shipping'),
+    completed: t('seller_orders.status_completed'),
+    cancelled: t('seller_orders.status_cancelled')
   }
   return labels[status] || status
 }

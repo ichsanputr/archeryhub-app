@@ -33,12 +33,12 @@
                         <div class="flex flex-col sm:flex-row gap-3">
                             <button @click="handleCancel"
                                 class="flex-1 px-6 py-3 rounded-xl border border-gray-200 text-text-secondary font-bold text-sm hover:bg-gray-50 hover:border-gray-300 transition-all">
-                                {{ cancelText || 'Batal' }}
+                                {{ cancelText || t('common.cancel') }}
                             </button>
                             <button @click="handleConfirm"
                                 :class="type === 'danger' ? 'bg-red-500 hover:bg-red-600 shadow-red-500/20 text-white' : 'bg-primary text-btn-text hover:bg-primary-hover shadow-primary/10'"
                                 class="flex-1 px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-lg">
-                                {{ confirmText || 'Ya, Lanjutkan' }}
+                                {{ confirmText || t('common.confirm') }}
                             </button>
                         </div>
                     </div>
@@ -55,6 +55,9 @@
 
 <script setup>
 import { gsap } from 'gsap'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
     show: Boolean,

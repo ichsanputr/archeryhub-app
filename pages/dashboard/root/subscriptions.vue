@@ -12,7 +12,7 @@
                         class="flex items-center gap-2 text-[10px] sm:text-xs font-black tracking-widest text-primary/80">
                         <span class="text-white">Root Terminal</span>
                         <Icon icon="ph:caret-right-bold" class="text-[8px] opacity-50" />
-                        <span class="text-primary">Subscription</span>
+                        <span class="text-primary">{{ t('root.subscriptions.title') }}</span>
                     </div>
                     <div class="flex items-center gap-4">
                         <div
@@ -20,9 +20,9 @@
                             <Icon icon="ph:credit-card-bold" class="text-primary text-2xl sm:text-3xl" />
                         </div>
                         <div>
-                            <h1 class="text-xl sm:text-3xl font-black tracking-tight">Manajemen Subscription</h1>
+                            <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ t('root.subscriptions.title') }}</h1>
                             <div class="text-slate-300 text-[10px] sm:text-sm font-medium mt-1">
-                                Kelola paket langganan club & organisasi
+                                {{ t('root.subscriptions.subtitle') }}
                             </div>
                         </div>
                     </div>
@@ -50,36 +50,36 @@
         <div
             class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
             <div class="flex-grow w-full">
-                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">Pencarian</label>
+                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">{{ t('root.subscriptions.search_label') }}</label>
                 <div class="relative">
                     <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input v-model="subSearch" type="text" placeholder="Cari nama atau email..."
+                    <input v-model="subSearch" type="text" :placeholder="t('root.subscriptions.search_placeholder')"
                         class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/30 outline-none transition-all" />
                 </div>
             </div>
             <div class="w-full md:w-44">
-                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">Tipe</label>
+                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">{{ t('root.subscriptions.type_filter') }}</label>
                 <select v-model="subTypeFilter"
                     class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                    <option value="">Semua Tipe</option>
-                    <option value="club">Club</option>
-                    <option value="organization">Organisasi</option>
+                    <option value="">{{ t('root.subscriptions.type_all') }}</option>
+                    <option value="club">{{ t('root.subscriptions.type_club') }}</option>
+                    <option value="organization">{{ t('root.subscriptions.type_organization') }}</option>
                 </select>
             </div>
             <div class="w-full md:w-44">
-                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">Status</label>
+                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">{{ t('root.subscriptions.status_filter') }}</label>
                 <select v-model="subStatusFilter"
                     class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                    <option value="">Semua Status</option>
-                    <option value="active">Aktif</option>
-                    <option value="trial">Trial</option>
-                    <option value="expired">Expired</option>
-                    <option value="canceled">Canceled</option>
+                    <option value="">{{ t('root.subscriptions.status_all') }}</option>
+                    <option value="active">{{ t('root.subscriptions.status_active') }}</option>
+                    <option value="trial">{{ t('root.subscriptions.status_trial') }}</option>
+                    <option value="expired">{{ t('root.subscriptions.status_expired') }}</option>
+                    <option value="canceled">{{ t('root.subscriptions.status_canceled') }}</option>
                 </select>
             </div>
             <button @click="subSearch = ''; subTypeFilter = ''; subStatusFilter = ''"
                 class="h-11 px-6 font-semibold text-sm text-navy bg-white border border-gray-200 hover:bg-gray-50 rounded-xl transition-all shrink-0">
-                Reset
+                {{ t('root.subscriptions.reset') }}
             </button>
         </div>
 
@@ -90,17 +90,17 @@
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
-                                Akun</th>
+                                {{ t('root.subscriptions.table_header_account') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-center">
-                                Tipe</th>
+                                {{ t('root.subscriptions.table_header_type') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
-                                Paket</th>
+                                {{ t('root.subscriptions.table_header_plan') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-center">
-                                Status</th>
+                                {{ t('root.subscriptions.table_header_status') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
-                                Expires</th>
+                                {{ t('root.subscriptions.table_header_expires') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right">
-                                Aksi</th>
+                                {{ t('root.subscriptions.table_header_actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
@@ -162,9 +162,8 @@
                                         <Icon icon="ph:credit-card-bold" class="text-3xl" />
                                     </div>
                                     <div>
-                                        <div class="text-sm font-bold text-gray-400">Tidak ada data subscription</div>
-                                        <div class="text-xs text-gray-300 mt-1">Coba ubah filter atau kata kunci
-                                            pencarian</div>
+                                        <div class="text-sm font-bold text-gray-400">{{ t('root.subscriptions.no_data') }}</div>
+                                        <div class="text-xs text-gray-300 mt-1">{{ t('common.no_results_desc') }}</div>
                                     </div>
                                 </div>
                             </td>
@@ -177,9 +176,7 @@
             <div v-if="filteredSubs.length > 0"
                 class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="text-xs font-bold text-gray-400 tracking-widest">
-                    Menampilkan <span class="text-navy">{{ subStartIndex + 1 }} - {{ Math.min(subEndIndex,
-                        filteredSubs.length) }}</span>
-                    dari <span class="text-navy">{{ filteredSubs.length }}</span> Langganan
+                    {{ t('root.subscriptions.pagination_showing', { from: subStartIndex + 1, to: Math.min(subEndIndex, filteredSubs.length), total: filteredSubs.length }) }}
                 </div>
                 <div class="flex items-center gap-2">
                     <button @click="currentPage--" :disabled="currentPage === 1"
@@ -211,27 +208,25 @@
                         <Icon icon="ph:pencil-simple-line-bold" class="text-navy text-2xl" />
                     </div>
                     <div>
-                        <h3 class="text-lg font-black text-navy tracking-tight">Edit Subscription</h3>
+                        <h3 class="text-lg font-black text-navy tracking-tight">{{ t('root.subscriptions.edit_modal_title') }}</h3>
                         <div class="text-[10px] font-bold text-gray-400 mt-0.5">{{ selectedSub?.name }}</div>
                     </div>
                 </div>
 
                 <div class="space-y-4">
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Status
-                            Langganan</label>
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">{{ t('root.subscriptions.edit_status_label') }}</label>
                         <select v-model="editStatus"
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all">
-                            <option value="active">Active</option>
-                            <option value="trial">Trial</option>
-                            <option value="expired">Expired</option>
-                            <option value="canceled">Canceled</option>
+                            <option value="active">{{ t('root.subscriptions.status_active') }}</option>
+                            <option value="trial">{{ t('root.subscriptions.status_trial') }}</option>
+                            <option value="expired">{{ t('root.subscriptions.status_expired') }}</option>
+                            <option value="canceled">{{ t('root.subscriptions.status_canceled') }}</option>
                         </select>
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Pilih
-                            Paket</label>
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">{{ t('root.subscriptions.edit_plan_label') }}</label>
                         <select v-model.number="editPlanId"
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all">
                             <option v-for="p in availablePlansForEdit" :key="p.id" :value="p.id">
@@ -242,14 +237,12 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Tgl
-                                Kadaluarsa</label>
+                            <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">{{ t('root.subscriptions.edit_expires_label') }}</label>
                             <input v-model="editExpiresAt" type="date"
                                 class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
                         </div>
                         <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Perpanjang
-                                (Hari)</label>
+                            <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">{{ t('root.subscriptions.edit_extend_label') }}</label>
                             <input v-model.number="editExtendDays" type="number" min="0" placeholder="+0"
                                 class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
                         </div>
@@ -259,12 +252,12 @@
                 <div class="flex gap-3">
                     <button @click="showEditModal = false"
                         class="flex-1 py-3 border border-gray-200 rounded-xl text-xs font-black text-gray-500 hover:bg-gray-50 transition-all tracking-widest">
-                        Batal
+                        {{ t('root.subscriptions.edit_cancel') }}
                     </button>
                     <button @click="submitEdit" :disabled="editLoading"
                         class="flex-1 py-3 bg-navy text-primary rounded-xl text-xs font-black hover:bg-navy/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2 tracking-widest shadow-lg shadow-navy/20">
                         <Icon v-if="editLoading" icon="ph:spinner-bold" class="animate-spin" />
-                        Simpan
+                        {{ t('root.subscriptions.edit_save') }}
                     </button>
                 </div>
             </div>
@@ -275,13 +268,15 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
 const route = useRoute()
+const { t } = useI18n()
 
 definePageMeta({ layout: 'dashboard', middleware: ['auth'] })
-useHead({ title: 'Manajemen Subscription — Root Terminal' })
+useHead({ title: t('root.subscriptions.title') + ' — Root Terminal' })
 
 // ── Data ───────────────────────────────────────────────────────────────
 const subSearch = ref('')
@@ -350,10 +345,10 @@ const paginatedSubs = computed(() => filteredSubs.value.slice(subStartIndex.valu
 const subStats = computed(() => {
     const all = subs.value
     return [
-        { label: 'Total', value: all.length, icon: 'ph:credit-card-bold', color: 'text-primary' },
-        { label: 'Aktif', value: all.filter(s => s.subscription_status === 'active').length, icon: 'ph:seal-check-bold', color: 'text-green-500' },
-        { label: 'Trial', value: all.filter(s => s.subscription_status === 'trial').length, icon: 'ph:clock-countdown-bold', color: 'text-yellow-500' },
-        { label: 'Expired', value: all.filter(s => s.subscription_status === 'expired').length, icon: 'ph:warning-circle-bold', color: 'text-red-500' },
+        { label: t('root.subscriptions.stats_total'), value: all.length, icon: 'ph:credit-card-bold', color: 'text-primary' },
+        { label: t('root.subscriptions.stats_active'), value: all.filter(s => s.subscription_status === 'active').length, icon: 'ph:seal-check-bold', color: 'text-green-500' },
+        { label: t('root.subscriptions.stats_trial'), value: all.filter(s => s.subscription_status === 'trial').length, icon: 'ph:clock-countdown-bold', color: 'text-yellow-500' },
+        { label: t('root.subscriptions.stats_expired'), value: all.filter(s => s.subscription_status === 'expired').length, icon: 'ph:warning-circle-bold', color: 'text-red-500' },
     ]
 })
 
@@ -397,7 +392,7 @@ const submitEdit = async () => {
         showEditModal.value = false
         await refreshSubs()
     } catch (err) {
-        alert(err.data?.error || 'Gagal update subscription')
+        alert(err.data?.error || t('root.subscriptions.error_message', 'Failed to update subscription'))
     } finally {
         editLoading.value = false
     }

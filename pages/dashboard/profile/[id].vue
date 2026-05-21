@@ -42,27 +42,26 @@
                         </div>
                         <div class="flex flex-wrap justify-center md:justify-start gap-4">
                             <BaseButton variant="primary" size="md" icon="ph:plus-bold">
-                                Ikuti Atlet
+                                {{ t('profile_public.follow_athlete') }}
                             </BaseButton>
                             <BaseButton variant="ghost" size="md" icon="ph:share-network-bold"
                                 class="bg-white/10 !text-white hover:bg-white/20 backdrop-blur-sm border border-white/10">
-                                Bagikan Profil
+                                {{ t('profile_public.share_profile') }}
                             </BaseButton>
                         </div>
                     </div>
                     <div
                         class="hidden lg:block bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 w-64 text-white">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-white/40 text-xs font-bold  tracking-wider">Status Saat
-                                Ini</span>
+                            <span class="text-white/40 text-xs font-bold  tracking-wider">{{ t('profile_public.current_status') }}</span>
                             <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                         </div>
-                        <p class="font-bold mb-1">Persiapan PON 2024</p>
+                        <p class="font-bold mb-1">{{ t('profile_public.preparation_pon') }}</p>
                         <div class="w-full bg-white/10 rounded-full h-1.5 mt-2">
                             <div class="bg-primary h-1.5 rounded-full" :style="{ width: athlete.readiness + '%' }">
                             </div>
                         </div>
-                        <p class="text-right text-xs text-primary mt-1">{{ athlete.readiness }}% Kesiapan</p>
+                        <p class="text-right text-xs text-primary mt-1">{{ athlete.readiness }}% {{ t('profile_public.readiness') }}</p>
                     </div>
                 </div>
             </div>
@@ -99,7 +98,7 @@
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-lg font-bold text-navy flex items-center gap-2 font-display">
                             <span class="material-symbols-outlined text-primary">monitoring</span>
-                            Tren Performa
+                            {{ t('profile_public.performance_trend') }}
                         </h3>
                     </div>
                     <div class="relative h-64 w-full flex items-end justify-between gap-4 pt-8 pb-6 px-2">
@@ -110,7 +109,7 @@
                                 class="w-full rounded-t-sm transition-all relative">
                                 <div
                                     class="absolute -top-8 left-1/2 -translate-x-1/2 bg-navy text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                    Score: {{ bar.score }}
+                                    {{ t('profile_public.score_label') }}: {{ bar.score }}
                                 </div>
                             </div>
                             <span class="text-[10px] text-text-sub font-bold mt-2">{{ bar.month }}</span>
@@ -122,7 +121,7 @@
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                     <h3 class="text-lg font-bold text-navy flex items-center gap-2 mb-6 font-display">
                         <span class="material-symbols-outlined text-primary">build</span>
-                        Spesifikasi Alat
+                        {{ t('profile_public.equipment_specs') }}
                     </h3>
                     <div class="space-y-4">
                         <div v-for="item in equipment" :key="item.label"
@@ -145,21 +144,21 @@
                 <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                     <h3 class="text-lg font-bold text-navy flex items-center gap-2 font-display">
                         <Icon icon="ph:history-bold" class="text-primary" />
-                        Hasil Turnamen Terakhir
+                        {{ t('profile_public.recent_results') }}
                     </h3>
                     <BaseButton variant="ghost" size="sm" class="!text-navy font-bold">
-                        Lihat Semua Riwayat
+                        {{ t('profile_public.view_all_history') }}
                     </BaseButton>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
                         <thead>
                             <tr class="bg-gray-50 border-b border-gray-100 text-xs  text-text-sub">
-                                <th class="px-6 py-4 font-bold">Turnamen</th>
-                                <th class="px-6 py-4 font-bold">Tanggal</th>
-                                <th class="px-6 py-4 font-bold">Kategori</th>
-                                <th class="px-6 py-4 font-bold">Skor Kul.</th>
-                                <th class="px-6 py-4 font-bold">Peringkat Akhir</th>
+                                <th class="px-6 py-4 font-bold">{{ t('profile_public.table_tournament') }}</th>
+                                <th class="px-6 py-4 font-bold">{{ t('profile_public.table_date') }}</th>
+                                <th class="px-6 py-4 font-bold">{{ t('profile_public.table_category') }}</th>
+                                <th class="px-6 py-4 font-bold">{{ t('profile_public.table_score') }}</th>
+                                <th class="px-6 py-4 font-bold">{{ t('profile_public.table_rank') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
@@ -190,6 +189,10 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
 const athlete = {
     name: 'Arif Dwi Pangestu',
     avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAJXWL-Z7f7fP24_IyBjI_e-q_jYcMbzRtaKiOpKP8TxgqwSxRrCqNcE-GXJXbiCEv6rlwlNJzTmbbgAdQFWHH4Jk_Fw-aslTiT3Qezy8bbmGRG0WoRA-yD8tykZuxYObytzJ6Yf7yNL8poFU6vWlyEuFjbHcIzwfoLAMru-bfdw4GXezmv71SwRPYw_-Ct6ZP3f6AqglpvBIhCSrp9g13uTQpj69_-hzZqp1wSqJJ-9PdZqp0CYWgFWsajdRos9QmU7eeyuFhFPH0',

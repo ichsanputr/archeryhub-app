@@ -8,11 +8,11 @@
                     <Icon icon="ph:caret-left-bold" class="text-xl" />
                 </NuxtLink>
                 <div>
-                    <h1 class="text-2xl font-black text-navy tracking-tight">Buat Akun Baru</h1>
+                    <h1 class="text-2xl font-black text-navy tracking-tight">{{ t('root.create_account.title') }}</h1>
                     <div class="flex items-center gap-2 text-[10px] font-black tracking-widest text-gray-400 mt-0.5">
-                        <span>Root Terminal</span>
+                        <span>{{ t('root.create_account.root_terminal') }}</span>
                         <Icon icon="ph:caret-right-bold" class="text-[8px]" />
-                        <span class="text-primary-dark font-black tracking-[0.2em]">Registrasi Manual</span>
+                        <span class="text-primary-dark font-black tracking-[0.2em]">{{ t('root.create_account.title') }}</span>
                     </div>
                 </div>
             </div>
@@ -36,13 +36,12 @@
         <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden p-8 sm:p-10 transition-all">
             <div class="mb-8 border-b border-gray-50 pb-6 flex items-center justify-between">
                 <div>
-                    <h3 class="text-lg font-black text-navy">Informasi Akun</h3>
-                    <div class="text-sm text-gray-400 mt-1">Lengkapi data untuk membuat akun <span
-                            class="text-navy font-bold">{{ form.user_type }}</span> baru.</div>
+                    <h3 class="text-lg font-black text-navy">{{ t('root.create_account.account_info') }}</h3>
+                    <div class="text-sm text-gray-400 mt-1">{{ t('root.create_account.account_info_desc', { userType: form.user_type }) }}</div>
                 </div>
                 <div class="px-4 py-2 bg-primary/10 rounded-xl border border-primary/20 flex items-center gap-2">
                     <Icon icon="ph:info-bold" class="text-navy" />
-                    <span class="text-[10px] font-black tracking-widest text-navy">Mode Root</span>
+                    <span class="text-[10px] font-black tracking-widest text-navy">{{ t('root.create_account.root_mode') }}</span>
                 </div>
             </div>
 
@@ -51,13 +50,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-1.5">
                         <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">
-                            {{ form.user_type === 'seller' ? 'Nama Toko' : 'Nama Lengkap' }}
+                            {{ form.user_type === 'seller' ? t('root.create_account.name_label') : t('root.create_account.name_label') }}
                         </label>
                         <div class="relative group">
                             <Icon :icon="form.user_type === 'seller' ? 'ph:storefront' : 'ph:user'"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-200" />
                             <input v-model="form.name" type="text"
-                                :placeholder="form.user_type === 'seller' ? 'Contoh: Archery Shop Jakarta' : 'Contoh: Club Panahan Elite'"
+                                :placeholder="form.user_type === 'seller' ? t('root.create_account.name_placeholder_seller') : t('root.create_account.name_placeholder_archer')"
                                 class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl text-sm font-semibold focus:bg-white focus:border-primary/40 focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-200"
                                 required />
                         </div>
@@ -66,11 +65,11 @@
                     <!-- Unique Field for Organization -->
                     <div v-if="form.user_type === 'organization'"
                         class="space-y-1.5 animate-in fade-in slide-in-from-left-2 duration-300">
-                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">Akronim</label>
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">{{ t('root.create_account.acronym_label') }}</label>
                         <div class="relative group">
                             <Icon icon="ph:file-text"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-200" />
-                            <input v-model="form.acronym" type="text" placeholder="Contoh: PPLM / PERPANI"
+                            <input v-model="form.acronym" type="text" :placeholder="t('root.create_account.acronym_placeholder')"
                                 class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl text-sm font-semibold focus:bg-white focus:border-primary/40 focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-200" />
                         </div>
                     </div>
@@ -78,39 +77,36 @@
                     <!-- Phone Field (Hidden for Org if Acronym takes spot, but user type change might cause issues) -->
                     <!-- I'll keep Phone for everyone for simplicity and usefulness -->
                     <div v-if="form.user_type !== 'organization'" class="space-y-1.5">
-                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">Nomor
-                            Telepon</label>
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">{{ t('root.create_account.phone_label') }}</label>
                         <div class="relative group">
                             <Icon icon="ph:phone"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-200" />
                             <input :value="form.phone" @input="form.phone = $event.target.value.replace(/\D/g, '')"
-                                type="text" inputmode="numeric" placeholder="08xxxxxxxxxx"
+                                type="text" inputmode="numeric" :placeholder="t('root.create_account.phone_placeholder')"
                                 class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl text-sm font-semibold focus:bg-white focus:border-primary/40 focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-200"
                                 :class="form.phone && form.phone.length < 8 ? 'border-red-400' : ''" />
                         </div>
                         <div v-if="form.phone && form.phone.length < 8" class="text-red-500 text-xs font-bold ml-1">
-                            Nomor HP minimal 8 digit</div>
+                            {{ t('root.create_account.phone_min_digits') }}</div>
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">Email
-                            Registrasi</label>
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">{{ t('root.create_account.email_label') }}</label>
                         <div class="relative group">
                             <Icon icon="ph:envelope"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-200" />
-                            <input v-model="form.email" type="email" placeholder="email@contoh.com"
+                            <input v-model="form.email" type="email" :placeholder="t('root.create_account.email_placeholder')"
                                 class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl text-sm font-semibold focus:bg-white focus:border-primary/40 focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-200"
                                 required />
                         </div>
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">Password
-                            Inisial</label>
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">{{ t('root.create_account.password_label') }}</label>
                         <div class="relative group">
                             <Icon icon="ph:lock"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-200" />
-                            <input v-model="form.password" type="text" placeholder="Masukkan password kuat..."
+                            <input v-model="form.password" type="text" :placeholder="t('root.create_account.password_placeholder')"
                                 class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl text-sm font-semibold focus:bg-white focus:border-primary/40 focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-200"
                                 required />
                         </div>
@@ -121,27 +117,24 @@
                 <div v-if="form.user_type !== 'seller'"
                     class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 animate-in fade-in slide-in-from-bottom-2 duration-500">
                     <div v-if="form.user_type === 'organization'" class="space-y-1.5">
-                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">Kota /
-                            Domisili</label>
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">{{ t('root.create_account.city_label') }}</label>
                         <div class="relative group">
                             <Icon icon="ph:map-pin"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-200" />
-                            <input v-model="form.city" type="text" placeholder="Contoh: Jakarta Selatan"
+                            <input v-model="form.city" type="text" :placeholder="t('root.create_account.city_placeholder')"
                                 class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl text-sm font-semibold focus:bg-white focus:border-primary/40 focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-200" />
                         </div>
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">Masa Trial
-                            (Hari)</label>
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">{{ t('root.create_account.trial_days_label') }}</label>
                         <div class="relative group">
                             <Icon icon="ph:calendar"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-200" />
                             <input v-model.number="form.trial_days" type="number" min="1" max="365"
                                 class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl text-sm font-bold text-navy focus:bg-white focus:border-primary/40 focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-200" />
                         </div>
-                        <div class="text-[10px] text-gray-400 ml-1 font-medium italic">Akun akan aktif otomatis dengan
-                            paket trial.</div>
+                        <div class="text-[10px] text-gray-400 ml-1 font-medium italic">{{ t('root.create_account.trial_days_hint') }}</div>
                     </div>
                 </div>
 
@@ -149,13 +142,13 @@
                 <div class="flex flex-col sm:flex-row gap-4 pt-10 border-t border-gray-50">
                     <NuxtLink to="/dashboard/root"
                         class="flex-1 py-4 text-center border border-gray-200 rounded-2xl text-sm font-bold text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-all tracking-widest">
-                        Batalkan
+                        {{ t('root.create_account.cancel') }}
                     </NuxtLink>
                     <button type="submit" :disabled="loading"
                         class="flex-1 py-4 bg-navy text-primary rounded-2xl text-sm font-black hover:bg-navy/90 transition-all shadow-sm shadow-navy/20 disabled:opacity-50 flex items-center justify-center gap-3 tracking-widest">
                         <Icon v-if="loading" icon="ph:spinner-bold" class="animate-spin text-lg" />
                         <Icon v-else icon="ph:check-circle-bold" class="text-lg" />
-                        Simpan Akun
+                        {{ t('root.create_account.save') }}
                     </button>
                 </div>
 
@@ -175,18 +168,20 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
 const router = useRouter()
+const { t } = useI18n()
 
 definePageMeta({ layout: 'dashboard', middleware: ['auth'] })
-useHead({ title: 'Buat Akun Baru — Root Terminal' })
+useHead({ title: t('root.create_account.title') + ' — Root Terminal' })
 
 const types = [
-    { id: 'club', label: 'Club', icon: 'ph:buildings-bold' },
-    { id: 'organization', label: 'Organisasi', icon: 'ph:building-office-bold' },
-    { id: 'seller', label: 'Seller', icon: 'ph:storefront-bold' }
+    { id: 'club', label: t('root.index.type_club'), icon: 'ph:buildings-bold' },
+    { id: 'organization', label: t('root.index.type_organization'), icon: 'ph:building-office-bold' },
+    { id: 'seller', label: t('root.index.type_seller'), icon: 'ph:storefront-bold' }
 ]
 
 const loading = ref(false)
@@ -215,7 +210,7 @@ const submitForm = async () => {
         // Success: Back to list
         router.push('/dashboard/root?success=created')
     } catch (err) {
-        error.value = err.data?.error || 'Gagal membuat akun baru. Pastikan email belum terdaftar.'
+        error.value = err.data?.error || t('root.create_account.error_message', 'Failed to create new account. Make sure email is not already registered.')
     } finally {
         loading.value = false
     }

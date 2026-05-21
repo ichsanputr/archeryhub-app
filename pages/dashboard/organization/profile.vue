@@ -345,7 +345,7 @@ const router = useRouter()
 const { get, put } = useApi()
 const { user, organizationProfile } = useAuth()
 const toast = useToast()
-const { t } = useDashboardI18n()
+const { t } = useI18n()
 
 const saving = ref(false)
 const activeTab = ref('general')
@@ -557,7 +557,7 @@ const loadProfile = async () => {
     }
   } catch (error) {
     console.error('Load profile error:', error)
-    toast.error('Gagal memuat profil organisasi')
+    toast.error(t('organization.profile.load_error'))
   }
 }
 
@@ -582,11 +582,11 @@ const saveProfile = async () => {
       social_media: form.socialMedia,
       page_settings: JSON.stringify(pageSettings)
     })
-    toast.success('Profil organisasi berhasil disimpan!')
+    toast.success(t('organization.profile.save_success'))
   } catch (error) {
     console.error('Save profile error:', error)
     const errData = error?.data || error?.response?.data || {}
-    const errorMessage = errData.error || error?.message || 'Gagal menyimpan profil'
+    const errorMessage = errData.error || error?.message || t('organization.profile.save_error')
     const details = errData.details ? ` (${errData.details})` : ''
     toast.error(errorMessage + details)
   } finally {

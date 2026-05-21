@@ -8,12 +8,12 @@
         <Icon icon="ph:list-numbers-bold" class="text-xl text-black/60" />
       </div>
       <div class="flex flex-col">
-        <span class=" text-xs font-black tracking-widest text-gray-400">Statistik Data</span>
+        <span class=" text-xs font-black tracking-widest text-gray-400">{{ t('pagination.stats_label') }}</span>
         <p class="text-xs sm:text-sm text-gray-500 font-bold leading-tight">
-          Menampilkan <span class="text-navy underline decoration-primary decoration-2 underline-offset-2">{{ startItem
+          {{ t('pagination.showing') }} <span class="text-navy underline decoration-primary decoration-2 underline-offset-2">{{ startItem
           }}</span>
           - <span class="text-navy underline decoration-primary decoration-2 underline-offset-2">{{ endItem }}</span>
-          dari <span class="text-navy font-black tabular-nums">{{ totalItems }}</span> Entri
+          {{ t('pagination.of') }} <span class="text-navy font-black tabular-nums">{{ totalItems }}</span> {{ t('pagination.entries') }}
         </p>
       </div>
     </div>
@@ -22,7 +22,7 @@
     <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
       <!-- Rows Per Page -->
       <div v-if="showPageSize" class="mr-4 hidden lg:flex items-center gap-3">
-        <span class="text-xs font-black tracking-widest text-gray-400">Baris:</span>
+        <span class="text-xs font-black tracking-widest text-gray-400">{{ t('pagination.rows') }}</span>
         <select :value="itemsPerPage" @change="$emit('update:itemsPerPage', parseInt($event.target.value))"
           class="h-10 px-3 pr-8 rounded-xl bg-white border border-gray-200 text-navy text-sm font-bold focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all appearance-none cursor-pointer"
           style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23161c2d%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 8px center; background-size: 16px;">
@@ -35,7 +35,7 @@
         <!-- Previous Button -->
         <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1"
           class="h-10 w-10 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-navy hover:bg-navy hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-sm active:scale-95 group"
-          aria-label="Halaman Sebelumnya">
+          :aria-label="t('pagination.prev_page')">
           <Icon icon="ph:caret-left-bold" class="group-hover:-translate-x-0.5 transition-transform" />
         </button>
 
@@ -59,14 +59,14 @@
         <!-- Next Button -->
         <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages"
           class="h-10 w-10 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-navy hover:bg-navy hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-sm active:scale-95 group"
-          aria-label="Halaman Berikutnya">
+          :aria-label="t('pagination.next_page')">
           <Icon icon="ph:caret-right-bold" class="group-hover:translate-x-0.5 transition-transform" />
         </button>
       </div>
 
       <!-- Quick Jump (Mobile/Small Desktop) -->
       <div v-if="totalPages > 5" class="ml-2 flex items-center gap-2 lg:hidden">
-        <input type="number" min="1" :max="totalPages" placeholder="Lompat..."
+        <input type="number" min="1" :max="totalPages" :placeholder="t('pagination.jump_placeholder')"
           class="h-10 w-20 px-3 rounded-xl bg-white border border-gray-200 text-navy text-xs font-bold focus:border-primary outline-none transition-all"
           @keydown.enter="jumpToPage" />
       </div>
@@ -76,6 +76,9 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   currentPage: {

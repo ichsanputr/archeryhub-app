@@ -18,11 +18,11 @@
                         <h2
                             class="text-base sm:text-xl font-black text-navy-dark tracking-tight flex items-center gap-2 min-w-0">
                             <Icon icon="ph:images-square-bold" class="text-primary shrink-0 text-lg sm:text-xl" />
-                            <span class="truncate">Media Library</span>
+                            <span class="truncate">{{ t('media_library.title') }}</span>
                         </h2>
                         <button type="button" @click="handleClose"
                             class="shrink-0 p-2 -m-2 text-gray-400 hover:text-navy-dark rounded-xl hover:bg-gray-100 transition-colors touch-manipulation"
-                            aria-label="Tutup">
+                            :aria-label="t('media_library.close')">
                             <Icon icon="ph:x-bold" class="text-xl" />
                         </button>
                     </div>
@@ -34,13 +34,13 @@
                                 class="px-4 py-3 flex items-center text-sm font-bold border-b-2 transition-colors whitespace-nowrap touch-manipulation min-h-[48px]"
                                 :class="activeTab === 'browse' ? 'border-primary text-navy-dark' : 'border-transparent text-text-secondary hover:text-navy-dark'">
                                 <Icon icon="ph:folder-open" class="mr-2 shrink-0" />
-                                <span>Pilih dari Library</span>
+                                <span>{{ t('media_library.browse_tab') }}</span>
                             </button>
                             <button @click="activeTab = 'upload'"
                                 class="px-4 py-3 flex items-center text-sm font-bold border-b-2 transition-colors whitespace-nowrap touch-manipulation min-h-[48px]"
                                 :class="activeTab === 'upload' ? 'border-primary text-navy-dark' : 'border-transparent text-text-secondary hover:text-navy-dark'">
                                 <Icon icon="ph:upload-simple" class="mr-2 shrink-0" />
-                                <span>Upload Baru</span>
+                                <span>{{ t('media_library.upload_tab') }}</span>
                             </button>
                         </div>
                     </div>
@@ -62,11 +62,11 @@
                                 <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
                                     <Icon icon="ph:image-broken" class="text-3xl text-gray-400" />
                                 </div>
-                                <p class="text-gray-600 font-medium">Belum ada media</p>
-                                <p class="text-gray-400 text-sm mt-1">Upload gambar pertama Anda</p>
+                                <p class="text-gray-600 font-medium">{{ t('media_library.empty_title') }}</p>
+                                <p class="text-gray-400 text-sm mt-1">{{ t('media_library.empty_desc') }}</p>
                                 <button @click="activeTab = 'upload'"
                                     class="mt-4 px-4 py-2 bg-primary text-navy font-bold text-sm rounded-lg hover:bg-primary-hover transition-colors">
-                                    Upload Sekarang
+                                    {{ t('media_library.upload_now') }}
                                 </button>
                             </div>
 
@@ -140,14 +140,14 @@
                                     <Icon icon="ph:cloud-arrow-up"
                                         class="text-4xl sm:text-5xl text-gray-400 mx-auto mb-3 sm:mb-4" />
                                     <p class="text-gray-600 font-medium text-sm sm:text-base">{{ uploadZoneText }}</p>
-                                    <p class="text-xs text-gray-400 mt-2">Gambar, PDF, DOC, XLS (maks. 10MB)</p>
+                                    <p class="text-xs text-gray-400 mt-2">{{ t('media_library.upload_hint') }}</p>
                                 </div>
 
                                 <!-- Uploading State -->
                                 <div v-else-if="isUploading" class="py-8">
                                     <Icon icon="ph:spinner" class="text-5xl text-primary animate-spin mx-auto mb-4" />
-                                    <p class="text-gray-600 font-medium">Mengupload...</p>
-                                    <p class="text-xs text-gray-400 mt-1">Mohon tunggu sebentar</p>
+                                    <p class="text-gray-600 font-medium">{{ t('media_library.uploading') }}</p>
+                                    <p class="text-xs text-gray-400 mt-1">{{ t('media_library.uploading_wait') }}</p>
                                 </div>
 
                                 <!-- Upload Success Preview -->
@@ -165,7 +165,7 @@
 
                                     <div class="mt-4 flex items-center justify-center gap-2 text-green-600">
                                         <Icon icon="ph:check-circle-fill" class="text-xl" />
-                                        <span class="text-sm font-medium">Upload berhasil!</span>
+                                        <span class="text-sm font-medium">{{ t('media_library.upload_success') }}</span>
                                     </div>
 
                                     <!-- Remove/Cancel Button -->
@@ -191,18 +191,17 @@
                             class="text-sm font-medium text-text-secondary truncate order-2 sm:order-1">
                             <span class="text-navy-dark">{{ selectedMedia.filename }}</span>
                         </p>
-                        <p v-else class="text-sm font-medium text-gray-400 order-2 sm:order-1">Pilih file atau upload
-                            baru</p>
+                        <p v-else class="text-sm font-medium text-gray-400 order-2 sm:order-1">{{ t('media_library.select_hint') }}</p>
 
                         <div class="flex gap-3 order-1 sm:order-2 w-full sm:w-auto">
                             <button type="button" @click="handleClose"
                                 class="flex-1 sm:flex-none px-5 py-3 sm:py-2.5 border border-gray-200 rounded-xl text-sm font-bold text-text-secondary hover:bg-white hover:border-gray-300 transition-all touch-manipulation min-h-[44px]">
-                                Batal
+                                {{ t('common.cancel') }}
                             </button>
                             <button type="button" @click="handleConfirmSelection"
                                 :disabled="!selectedMedia && !uploadedUrl"
                                 class="flex-1 sm:flex-none px-7 py-3 sm:py-2.5 bg-navy-dark hover:bg-navy-light text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-navy-dark/10 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation min-h-[44px]">
-                                Pilih
+                                {{ t('media_library.select_button') }}
                             </button>
                         </div>
                     </div>
@@ -214,6 +213,9 @@
 
 <script setup>
 import { gsap } from 'gsap'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 const props = defineProps({
     show: {
         type: Boolean,
@@ -281,7 +283,7 @@ const getFileExt = (url) => {
 
 // Computed for upload zone text
 const uploadZoneText = computed(() => {
-    return uploadCaption.value ? 'Drag & drop gambar atau klik untuk pilih' : 'Isi caption terlebih dahulu'
+    return uploadCaption.value ? t('media_library.drag_drop') : t('media_library.fill_caption_first')
 })
 
 // Load media library

@@ -8,7 +8,7 @@
             <div class="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
             <div class="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <p class="text-navy font-bold animate-pulse">Memuat profil...</p>
+          <p class="text-navy font-bold animate-pulse">{{ t('profile_public.loading_profile') }}</p>
         </div>
 
         <!-- Error State -->
@@ -16,10 +16,10 @@
           <div class="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
             <Icon icon="ph:user-focus" class="w-10 h-10" />
           </div>
-          <h2 class="text-2xl font-black text-navy mb-2">Profil Tidak Ditemukan</h2>
+          <h2 class="text-2xl font-black text-navy mb-2">{{ t('profile_public.profile_not_found') }}</h2>
           <p class="text-text-secondary mb-8 max-w-sm mx-auto">{{ error }}</p>
           <BaseButton :to="`/dashboard/${userPersona}/events`" variant="primary" icon="ph:arrow-left">
-            Kembali ke Beranda
+            {{ t('profile_public.back_to_home') }}
           </BaseButton>
         </div>
 
@@ -46,7 +46,7 @@
                   <p class="text-gray-600 mt-1">@{{ profile.username }}</p>
                   <p class="text-sm text-gray-500 mt-2">
                     <Icon icon="ph:calendar" class="inline w-4 h-4 mr-1" />
-                    Joined {{ formatDate(profile.created_at) }}
+                    {{ t('profile_public.joined') }} {{ formatDate(profile.created_at) }}
                   </p>
                 </div>
 
@@ -70,7 +70,7 @@
                 <Icon icon="ph:check-circle-fill" class="w-6 h-6 text-primary group-hover:text-navy" />
               </div>
               <p class="text-3xl font-black text-navy">{{ profile.total_solved }}</p>
-              <p class="text-sm text-text-secondary mt-1 font-medium">Event Diikuti</p>
+              <p class="text-sm text-text-secondary mt-1 font-medium">{{ t('profile_public.events_participated') }}</p>
             </div>
 
             <div
@@ -79,7 +79,7 @@
                 <Icon icon="ph:fire-fill" class="w-6 h-6 text-green-600" />
               </div>
               <p class="text-3xl font-bold text-gray-900">{{ profile.current_streak }}</p>
-              <p class="text-sm text-gray-600 mt-1">Current Streak</p>
+              <p class="text-sm text-gray-600 mt-1">{{ t('profile_public.current_streak') }}</p>
             </div>
 
             <div
@@ -89,7 +89,7 @@
                 <Icon icon="ph:trophy-fill" class="w-6 h-6 text-orange-600 group-hover:text-white" />
               </div>
               <p class="text-3xl font-black text-navy">{{ profile.longest_streak }}</p>
-              <p class="text-sm text-text-secondary mt-1 font-medium">Prestasi Terbaik</p>
+              <p class="text-sm text-text-secondary mt-1 font-medium">{{ t('profile_public.best_achievement') }}</p>
             </div>
 
             <div
@@ -98,7 +98,7 @@
                 <Icon icon="ph:percent-fill" class="w-6 h-6 text-purple-600" />
               </div>
               <p class="text-3xl font-bold text-gray-900">{{ Math.round(profile.success_rate) }}%</p>
-              <p class="text-sm text-gray-600 mt-1">Success Rate</p>
+              <p class="text-sm text-gray-600 mt-1">{{ t('profile_public.success_rate') }}</p>
             </div>
           </div>
 
@@ -108,22 +108,22 @@
               :current-streak="profile.current_streak" :longest-streak="profile.longest_streak" />
             <div v-else class="text-center py-16 bg-gray-50 rounded-xl border border-dashed border-gray-200">
               <Icon icon="ph:calendar-blank" class="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p class="text-text-secondary font-medium">Belum ada data aktivitas. Mulai ikuti event!</p>
+              <p class="text-text-secondary font-medium">{{ t('profile_public.no_activity_data') }}</p>
             </div>
           </div>
 
           <!-- Problem Breakdown -->
           <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-            <h2 class="text-xl font-bold text-gray-900 mb-6">Problems by Difficulty</h2>
+            <h2 class="text-xl font-bold text-gray-900 mb-6">{{ t('profile_public.problems_by_difficulty') }}</h2>
             <div class="space-y-4">
               <!-- Easy -->
               <div>
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center gap-2">
                     <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span class="font-semibold text-gray-900">Easy</span>
+                    <span class="font-semibold text-gray-900">{{ t('profile_public.difficulty_easy') }}</span>
                   </div>
-                  <span class="text-gray-600">{{ profile.easy_solved }} solved</span>
+                  <span class="text-gray-600">{{ profile.easy_solved }} {{ t('profile_public.solved') }}</span>
                 </div>
                 <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div class="h-full bg-green-500 transition-all duration-500"
@@ -136,9 +136,9 @@
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center gap-2">
                     <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <span class="font-semibold text-gray-900">Medium</span>
+                    <span class="font-semibold text-gray-900">{{ t('profile_public.difficulty_medium') }}</span>
                   </div>
-                  <span class="text-gray-600">{{ profile.medium_solved }} solved</span>
+                  <span class="text-gray-600">{{ profile.medium_solved }} {{ t('profile_public.solved') }}</span>
                 </div>
                 <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div class="h-full bg-yellow-500 transition-all duration-500"
@@ -151,9 +151,9 @@
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center gap-2">
                     <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                    <span class="font-semibold text-gray-900">Hard</span>
+                    <span class="font-semibold text-gray-900">{{ t('profile_public.difficulty_hard') }}</span>
                   </div>
-                  <span class="text-gray-600">{{ profile.hard_solved }} solved</span>
+                  <span class="text-gray-600">{{ profile.hard_solved }} {{ t('profile_public.solved') }}</span>
                 </div>
                 <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div class="h-full bg-red-500 transition-all duration-500"
@@ -165,19 +165,19 @@
 
           <!-- Submission Stats -->
           <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-            <h2 class="text-xl font-bold text-gray-900 mb-6">Submission Statistics</h2>
+            <h2 class="text-xl font-bold text-gray-900 mb-6">{{ t('profile_public.submission_statistics') }}</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div class="text-center p-4 bg-blue-50 rounded-xl">
                 <p class="text-4xl font-bold text-blue-600">{{ profile.total_submissions }}</p>
-                <p class="text-sm text-gray-600 mt-2">Total Submissions</p>
+                <p class="text-sm text-gray-600 mt-2">{{ t('profile_public.total_submissions') }}</p>
               </div>
               <div class="text-center p-4 bg-green-50 rounded-xl">
                 <p class="text-4xl font-bold text-green-600">{{ profile.total_solved }}</p>
-                <p class="text-sm text-gray-600 mt-2">Accepted</p>
+                <p class="text-sm text-gray-600 mt-2">{{ t('profile_public.accepted') }}</p>
               </div>
               <div class="text-center p-4 bg-red-50 rounded-xl">
                 <p class="text-4xl font-bold text-red-600">{{ profile.total_submissions - profile.total_solved }}</p>
-                <p class="text-sm text-gray-600 mt-2">Failed</p>
+                <p class="text-sm text-gray-600 mt-2">{{ t('profile_public.failed') }}</p>
               </div>
             </div>
           </div>
@@ -190,6 +190,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
 import Container from '~/components/Container.vue'
 import UserLevelBadge from '~/components/UserLevelBadge.vue'
@@ -199,6 +200,7 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const route = useRoute()
 const { apiBaseUrl } = useApi()
+const { t } = useI18n()
 
 const username = route.params.username
 const profile = ref(null)

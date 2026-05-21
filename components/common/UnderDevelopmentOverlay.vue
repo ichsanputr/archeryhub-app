@@ -30,13 +30,11 @@
                 </div>
 
                 <h2 class="text-3xl font-black text-navy mb-4 tracking-tight leading-tight">
-                    Fitur Ini <br />
-                    <span class="text-primar">Sedang Dikembangkan</span>
+                    {{ t('under_development.title') }}
                 </h2>
 
                 <p class="text-gray-500 mb-8 leading-relaxed font-medium">
-                    Kami sedang bekerja keras membangun fitur terbaik untuk Anda. Nantikan fitur ini kedepannya dengan
-                    tetap update di Instagram kami.
+                    {{ t('under_development.desc') }}
                 </p>
 
                 <a href="https://www.instagram.com/archeris.net/" target="_blank"
@@ -50,7 +48,9 @@
 </template>
 
 <script setup>
-
+import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 </script>
 
 <style scoped>

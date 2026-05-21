@@ -4,7 +4,7 @@
             <li class="flex items-center gap-2">
                 <NuxtLink to="/" class="text-gray-400 hover:text-primary transition-colors flex items-center gap-1">
                     <Icon icon="ph:house-bold" class="text-lg" />
-                    <span class="hidden md:inline">Beranda</span>
+                    <span class="hidden md:inline">{{ t('nav.home') }}</span>
                 </NuxtLink>
                 <Icon icon="ph:caret-right-bold" class="text-[10px] text-gray-300 flex-shrink-0" />
             </li>
@@ -33,7 +33,8 @@
 </template>
 
 <script setup>
-
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 defineProps({
     items: {

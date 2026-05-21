@@ -31,7 +31,7 @@
                   <div class="grid grid-cols-12 gap-0 min-h-[350px]">
                     <!-- Featured Event -->
                     <div class="col-span-5 bg-gradient-to-br from-navy to-navy-light p-6 flex flex-col">
-                      <span class="text-primary text-xs font-bold tracking-wider ">Event Unggulan</span>
+                      <span class="text-primary text-xs font-bold tracking-wider ">{{ t('nav.featured_event') }}</span>
                       <div class="mt-3 flex-1 flex flex-col justify-center" v-if="featuredEvent">
                         <div class="aspect-video bg-white/10 rounded-lg overflow-hidden mb-3">
                           <img :src="featuredEvent.image" :alt="featuredEvent.name"
@@ -44,24 +44,23 @@
                           featuredEvent.date }}</p>
                         <NuxtLink :to="`/events/${featuredEvent.slug || featuredEvent.id}`"
                           class="inline-flex items-center gap-1 mt-3 text-primary text-xs font-bold hover:text-white transition-colors tracking-widest">
-                          Cek Detailnya
+                          {{ t('nav.check_details') }}
                           <Icon icon="ph:arrow-right" />
                         </NuxtLink>
                       </div>
                       <div v-else class="flex-1 flex flex-col items-center justify-center text-center">
                         <Icon icon="ph:calendar-blank-light" class="text-4xl text-white/20 mb-3" />
-                        <p class="text-white/40 text-xs">Belum ada event unggulan.</p>
+                        <p class="text-white/40 text-xs">{{ t('nav.no_featured_event') }}</p>
                       </div>
                     </div>
 
                     <!-- Latest Events -->
                     <div class="col-span-7 p-6 flex flex-col">
                       <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-2">
-                        <span class="text-gray-400 text-[10px] font-black tracking-widest ">Event
-                          Terakhir</span>
+                        <span class="text-gray-400 text-[10px] font-black tracking-widest ">{{ t('nav.latest_events') }}</span>
                         <NuxtLink to="/events"
                           class="text-navy hover:text-primary text-[10px] font-black tracking-widest transition-colors">
-                          Lihat Semua
+                          {{ t('nav.view_all') }}
                         </NuxtLink>
                       </div>
                       <div v-if="latestEvents.length > 0" class="space-y-2 flex-1 flex flex-col justify-start">
@@ -83,7 +82,7 @@
                       </div>
                       <div v-else class="flex-1 flex flex-col items-center justify-center text-center">
                         <Icon icon="ph:calendar-blank-light" class="text-4xl text-gray-100 mb-2" />
-                        <p class="text-gray-400 text-xs">Belum ada event terbaru.</p>
+                        <p class="text-gray-400 text-xs">{{ t('nav.no_latest_events') }}</p>
                       </div>
                     </div>
                   </div>
@@ -96,15 +95,15 @@
           <NuxtLink to="/archers"
             class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
             :class="{ '!text-primary font-bold': isActive('/archers') }">
-            Pemanah</NuxtLink>
+            {{ t('nav.archers') }}</NuxtLink>
           <NuxtLink to="/blog"
             class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
             :class="{ '!text-primary font-bold': isActive('/blog') }">
-            Blog</NuxtLink>
+            {{ t('nav.blog') }}</NuxtLink>
           <NuxtLink to="/products"
             class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
             :class="{ '!text-primary font-bold': isActive('/products') }">
-            Marketplace
+            {{ t('nav.marketplace') }}
           </NuxtLink>
         </nav>
 
@@ -149,13 +148,13 @@
                   <NuxtLink :to="`/dashboard/${userPersona}/settings`" @click="showUserMenu = false"
                     class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-navy transition-colors">
                     <Icon icon="ph:gear" class="text-lg" />
-                    Pengaturan
+                    {{ t('nav.settings') }}
                   </NuxtLink>
                   <div class="border-t border-gray-100 mt-2 pt-2">
                     <button @click="handleLogout"
                       class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors w-full">
                       <Icon icon="ph:sign-out" class="text-lg" />
-                      Keluar
+                      {{ t('nav.logout') }}
                     </button>
                   </div>
                 </div>
@@ -165,11 +164,11 @@
           <template v-else>
             <NuxtLink to="/auth/login"
               class="text-sm font-bold px-4 py-2 rounded-lg transition-colors border border-gray-200 text-navy hover:bg-gray-50">
-              Masuk
+              {{ t('nav.login') }}
             </NuxtLink>
             <NuxtLink to="/auth/register"
               class="bg-primary hover:bg-primary-hover text-primary-text text-sm font-bold px-4 py-2 rounded-lg transition-colors">
-              Daftar
+              {{ t('nav.register') }}
             </NuxtLink>
           </template>
         </div>
@@ -246,10 +245,10 @@
           <!-- Navigation Links -->
           <div class="p-4 space-y-1">
             <NuxtLink v-for="link in [
-              { to: '/', label: 'Beranda', icon: 'ph:house-bold' },
-              { to: '/archers', label: 'Pemanah', icon: 'ph:users-bold' },
-              { to: '/blog', label: 'Blog', icon: 'ph:newspaper-bold' },
-              { to: '/products', label: 'Marketplace', icon: 'ph:shopping-bag-bold' },
+              { to: '/', label: t('nav.home'), icon: 'ph:house-bold' },
+              { to: '/archers', label: t('nav.archers'), icon: 'ph:users-bold' },
+              { to: '/blog', label: t('nav.blog'), icon: 'ph:newspaper-bold' },
+              { to: '/products', label: t('nav.marketplace'), icon: 'ph:shopping-bag-bold' },
             ]" :key="link.to" :to="link.to" @click="mobileMenuOpen = false"
               class="flex items-center gap-4 p-4 rounded-2xl transition-all group"
               :class="isActive(link.to) ? 'bg-primary text-primary-text font-black' : 'text-gray-500 hover:bg-gray-50 hover:text-navy'">
@@ -282,7 +281,7 @@
                   <NuxtLink to="/events" @click="mobileMenuOpen = false"
                     class="flex items-center gap-3 py-3 text-navy text-xs font-black transition-colors border-t border-gray-50 mt-2">
                     <Icon icon="ph:list-bullets-bold" class="text-sm" />
-                    Semua Event
+                    {{ t('nav.all_events') }}
                   </NuxtLink>
                 </div>
               </Transition>
@@ -301,17 +300,17 @@
             <button @click="handleLogout(); mobileMenuOpen = false"
               class="flex items-center justify-center gap-2 w-full py-3.5 border-2 border-red-50 text-red-500 rounded-2xl text-sm font-black tracking-widest hover:bg-red-50 transition-all">
               <Icon icon="ph:sign-out-bold" />
-              Keluar
+              {{ t('nav.logout') }}
             </button>
           </div>
           <div v-else class="grid grid-cols-2 gap-3">
             <NuxtLink to="/auth/login" @click="mobileMenuOpen = false"
               class="flex items-center justify-center py-3.5 border-2 border-gray-50 text-navy rounded-2xl text-[10px] font-black tracking-widest hover:bg-gray-50 transition-all">
-              Masuk
+              {{ t('nav.login') }}
             </NuxtLink>
             <NuxtLink to="/auth/register" @click="mobileMenuOpen = false"
               class="flex items-center justify-center py-3.5 bg-primary text-primary-text rounded-2xl text-[10px] font-black tracking-widest shadow-lg shadow-primary/20 transition-all">
-              Daftar
+              {{ t('nav.register') }}
             </NuxtLink>
           </div>
         </div>
@@ -326,6 +325,9 @@ import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const route = useRoute()
 const { isLoggedIn, user, userPersona, logout } = useAuth()

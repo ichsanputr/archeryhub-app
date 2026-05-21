@@ -7,19 +7,18 @@
           <Icon icon="ph:storefront-bold" class="text-primary text-2xl" />
         </div>
         <div>
-          <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none capitalize">Profil Toko</h1>
-          <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wide capitalize">Atur data publik dan tampilan
-            toko anda</div>
+          <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none capitalize">{{ t('seller_store.title') }}</h1>
+          <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wide capitalize">{{ t('seller_store.subtitle') }}</div>
         </div>
       </div>
       <div class="flex gap-3">
         <BaseButton variant="outline" size="sm" icon="ph:eye" @click="viewStore"
           class="h-11 px-6 font-black capitalize tracking-widest text-[10px] !rounded-xl">
-          Pratinjau toko
+          {{ t('seller_store.preview_button') }}
         </BaseButton>
         <BaseButton variant="primary" :loading="loading" @click="handleUpdate" icon="ph:floppy-disk"
           class="h-11 px-6 shadow-lg shadow-primary/20 font-black capitalize tracking-widest text-[10px] !rounded-xl">
-          {{ loading ? 'Menyimpan...' : 'Simpan perubahan' }}
+          {{ loading ? t('seller_store.saving') : t('seller_store.save_button') }}
         </BaseButton>
       </div>
     </div>
@@ -42,7 +41,7 @@
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
             <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2 capitalize">
               <Icon icon="ph:image-bold" class="text-primary text-xl" />
-              Identitas visual
+              {{ t('seller_store.visual_identity') }}
             </h3>
 
             <div class="space-y-6">
@@ -50,12 +49,12 @@
               <div class="space-y-4">
                 <div class="flex items-center justify-between">
                   <div>
-                    <div class="text-[10px] font-black text-navy/30 capitalize tracking-widest">Banner profil (hero)
+                    <div class="text-[10px] font-black text-navy/30 capitalize tracking-widest">{{ t('seller_store.banner_label') }}
                     </div>
                   </div>
                   <BaseButton @click="openMedia('banner')" variant="outline" size="xs" icon="ph:pencil-simple"
                     class="h-8 px-4 font-black text-[9px] tracking-widest !rounded-lg">
-                    Ganti Banner
+                    {{ t('seller_store.banner_change') }}
                   </BaseButton>
                 </div>
                 <div
@@ -63,14 +62,14 @@
                   <img v-if="form.banner" :src="form.banner" class="w-full h-full object-cover" />
                   <div v-else class="text-center">
                     <Icon icon="ph:image-square-bold" class="text-3xl text-gray-200 mx-auto mb-2" />
-                    <div class="text-[9px] font-black text-gray-300 tracking-tighter">Format 21:9 disarankan</div>
+                    <div class="text-[9px] font-black text-gray-300 tracking-tighter">{{ t('seller_store.banner_format_hint') }}</div>
                   </div>
                 </div>
               </div>
 
               <!-- Logo Selection -->
               <div class="space-y-4 pt-4 border-t border-gray-50">
-                <div class="text-[10px] font-black text-navy/30 capitalize tracking-widest">Logo toko</div>
+                <div class="text-[10px] font-black text-navy/30 capitalize tracking-widest">{{ t('seller_store.logo_label') }}</div>
                 <div class="flex items-center gap-6">
                   <div
                     class="size-24 rounded-2xl bg-gray-50 border-4 border-white shadow-md overflow-hidden shrink-0 relative group flex items-center justify-center">
@@ -83,11 +82,10 @@
                     </div>
                   </div>
                   <div class="space-y-2">
-                    <h5 class="text-xs font-black text-navy capitalize">Store logo</h5>
-                    <div class="text-[10px] text-gray-500 max-w-[160px]">Rasio 1:1 direkomendasikan. Format transparan
-                      (PNG) lebih baik.</div>
+                    <h5 class="text-xs font-black text-navy capitalize">{{ t('seller_store.logo_title') }}</h5>
+                    <div class="text-[10px] text-gray-500 max-w-[160px]">{{ t('seller_store.logo_hint') }}</div>
                     <BaseButton variant="outline" size="xs" icon="ph:pencil-simple" @click="openMedia('logo')">
-                      Ganti Logo
+                      {{ t('seller_store.logo_change') }}
                     </BaseButton>
                   </div>
                 </div>
@@ -99,19 +97,19 @@
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
             <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2 capitalize">
               <Icon icon="ph:user-circle" class="text-navy text-xl" />
-              Data toko
+              {{ t('seller_store.store_info') }}
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="md:col-span-2">
-                <BaseInput v-model="form.name" label="Nama Toko" placeholder="Nama brand atau toko anda" required />
+                <BaseInput v-model="form.name" :label="t('seller_store.name_label')" :placeholder="t('seller_store.name_placeholder')" required />
               </div>
               <div class="md:col-span-2">
-                <BaseInput v-model="form.username" label="Username / Link Toko" placeholder="toko-saya" required
-                  prefix="Archeris.net/s/" />
+                <BaseInput v-model="form.username" :label="t('seller_store.username_label')" :placeholder="t('seller_store.username_placeholder')" required
+                  :prefix="t('seller_store.username_prefix')" />
               </div>
               <div class="md:col-span-2">
-                <BaseTextarea v-model="form.description" label="Deskripsi Toko"
-                  placeholder="Ceritakan tentang toko anda..." rows="4" />
+                <BaseTextarea v-model="form.description" :label="t('seller_store.description_label')"
+                  :placeholder="t('seller_store.description_placeholder')" rows="4" />
               </div>
             </div>
           </div>
@@ -122,12 +120,12 @@
           class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2 capitalize">
             <Icon icon="ph:share-network-bold" class="text-primary text-xl" />
-            Kontak & sosial
+            {{ t('seller_store.contact_social') }}
           </h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <BaseInput v-model="form.email" label="Email Bisnis" placeholder="email@toko.com"
+            <BaseInput v-model="form.email" :label="t('seller_store.email_label')" :placeholder="t('seller_store.email_placeholder')"
               icon="ph:envelope-simple-bold" />
-            <BaseInput v-model="form.phone" label="Nomor WhatsApp" placeholder="0812xxxx"
+            <BaseInput v-model="form.phone" :label="t('seller_store.phone_label')" :placeholder="t('seller_store.phone_placeholder')"
               icon="ph:whatsapp-logo-bold" />
           </div>
         </div>
@@ -146,7 +144,7 @@
               <Icon v-else icon="ph:storefront-bold" class="text-primary text-4xl" />
             </div>
 
-            <h4 class="font-black text-navy text-lg leading-tight capitalize">{{ form.name || 'Nama toko' }}</h4>
+            <h4 class="font-black text-navy text-lg leading-tight capitalize">{{ form.name || t('seller_store.preview_title') }}</h4>
             <div class="flex items-center justify-center gap-1.5 mt-1">
               <span class="text-gray-400 text-xs font-bold tracking-tighter">@{{ form.username || 'username' }}</span>
               <Icon icon="ph:seal-check-fill" class="text-primary text-sm" />
@@ -160,11 +158,11 @@
 
             <div class="grid grid-cols-2 w-full gap-4">
               <div class="text-center">
-                <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">Produk</div>
+                <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">{{ t('seller_store.preview_products') }}</div>
                 <div class="text-navy font-black">-</div>
               </div>
               <div class="text-center border-l border-gray-50">
-                <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">Rating</div>
+                <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">{{ t('seller_store.preview_rating') }}</div>
                 <div class="flex items-center justify-center gap-1">
                   <div class="text-navy font-black">5.0</div>
                   <Icon icon="ph:star-fill" class="text-amber-400 text-[10px]" />
@@ -177,16 +175,15 @@
         <!-- Helpful Tips -->
         <div class="bg-navy rounded-2xl p-6 text-white shadow-md relative overflow-hidden">
           <Icon icon="ph:lightbulb" class="absolute -right-4 -bottom-4 text-8xl text-white/5 rotate-12" />
-          <h4 class="font-black text-white mb-3 flex items-center gap-2 capitalize text-xs tracking-widest">Tips
-            optimasi</h4>
+          <h4 class="font-black text-white mb-3 flex items-center gap-2 capitalize text-xs tracking-widest">{{ t('seller_store.tips_title') }}</h4>
           <ul class="text-[10px] space-y-3 text-gray-300 font-bold capitalize tracking-wide">
             <li class="flex gap-2">
               <Icon icon="ph:check-circle-fill" class="text-primary shrink-0 text-base" />
-              Gunakan banner resolusi tinggi (21:9) untuk kesan premium.
+              {{ t('seller_store.tips_banner') }}
             </li>
             <li class="flex gap-2">
               <Icon icon="ph:check-circle-fill" class="text-primary shrink-0 text-base" />
-              Lengkapi deskripsi toko untuk meningkatkan kepercayaan pembeli.
+              {{ t('seller_store.tips_description') }}
             </li>
           </ul>
         </div>
@@ -201,21 +198,25 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { onMounted, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 
 definePageMeta({ layout: 'dashboard' })
-useHead({ title: 'Pengaturan Toko - Dashboard Seller' })
+
+const { t } = useI18n()
+
+useHead({ title: computed(() => `${t('seller_store.title')} - Dashboard Seller`) })
 
 const api = useApi()
 const toast = useToast()
 
 const activeTab = ref('basic')
-const tabs = [
-  { id: 'basic', label: 'Profil Dasar', icon: 'ph:storefront-bold' },
-  { id: 'contact', label: 'Kontak & Sosial', icon: 'ph:phone-bold' }
-]
+const tabs = computed(() => [
+  { id: 'basic', label: t('seller_store.tab_basic'), icon: 'ph:storefront-bold' },
+  { id: 'contact', label: t('seller_store.tab_contact'), icon: 'ph:phone-bold' }
+])
 
 const loading = ref(false)
 const media = reactive({
@@ -266,9 +267,9 @@ const handleUpdate = async () => {
   loading.value = true
   try {
     await api.put('/sellers/profile', form)
-    toast.success('Pengaturan toko berhasil diperbarui')
+    toast.success(t('seller_store.success_message'))
   } catch (error) {
-    toast.error(error?.response?.data?.error || 'Gagal memperbarui pengaturan')
+    toast.error(error?.response?.data?.error || t('seller_store.error_message'))
   } finally {
     loading.value = false
   }
@@ -278,7 +279,7 @@ const viewStore = () => {
   if (form.username) {
     window.open(`/s/${form.username}`, '_blank')
   } else {
-    toast.warning('Username toko belum diatur')
+    toast.warning(t('seller_store.warning_username'))
   }
 }
 

@@ -22,12 +22,12 @@
                     <div v-if="isOpen && searchable" class="w-full">
                         <input ref="searchInput" v-model="searchQuery" type="text"
                             class="w-full bg-transparent border-none outline-none text-navy p-0 placeholder:text-gray-400 h-full"
-                            :placeholder="selectedLabel || placeholder || 'Cari...'" @click.stop
+                            :placeholder="selectedLabel || placeholder || t('common.search')" @click.stop
                             @keydown.esc="closeDropdown" />
                     </div>
                     <div v-else :class="!selectedLabel ? 'text-gray-400' : 'text-black'" class="truncate flex items-center gap-2">
                         <Icon v-if="selectedItemIcon" :icon="selectedItemIcon" class="text-base flex-shrink-0" />
-                        <span>{{ selectedLabel || placeholder || 'Pilih opsi' }}</span>
+                        <span>{{ selectedLabel || placeholder || t('common.select_option') }}</span>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                     <div class="overflow-y-auto p-1.5 space-y-1 custom-scrollbar">
                         <div v-if="filteredItems.length === 0" class="p-8 text-center">
                             <Icon icon="ph:magnifying-glass-slash" class="text-3xl text-gray-200 mx-auto mb-2" />
-                            <p class="text-gray-400 text-xs font-medium">Tidak ada hasil ditemukan</p>
+                            <p class="text-gray-400 text-xs font-medium">{{ t('common.no_results') }}</p>
                         </div>
 
                         <button v-for="item in filteredItems" :key="getItemValue(item)" type="button"
@@ -110,6 +110,9 @@
 <script setup>
 import { ref, computed, watch, nextTick } from 'vue'
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
     modelValue: [String, Number, Boolean, Object, Array],
