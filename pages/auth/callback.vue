@@ -90,6 +90,11 @@ onMounted(async () => {
   } catch (err) {
     const statusCode = err?.statusCode ?? err?.status
     const data = err?.data ?? err?.response?._data ?? {}
+    if (statusCode === 404 && (data?.code === 'account_not_found' || data?.error)) {
+      // Google login attempted with an email that doesn't exist in our system
+      window.location.href = `/auth/login?error=account_not_found`
+      return
+    }
     if (statusCode === 409 && data?.already_registered) {
       const email = data.email || ''
       const userType = data.user_type || ''

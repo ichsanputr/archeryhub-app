@@ -121,7 +121,11 @@ export const useAuth = () => {
     params.append('user_type', userType)
 
     // Add all metadata fields as separate query params
-    Object.entries(metadata).forEach(([key, value]) => {
+    // Default: Google sign-in from login page should NOT auto-create accounts.
+    // Registration flow sets oauth_mode=register explicitly.
+    const finalMetadata = { oauth_mode: 'login', ...metadata }
+
+    Object.entries(finalMetadata).forEach(([key, value]) => {
       if (value) params.append(key, value)
     })
 

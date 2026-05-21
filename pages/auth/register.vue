@@ -397,6 +397,7 @@ const handleGoogleRegister = async () => {
         // Prepare metadata from form
         const metadata = {
             full_name: getName(),
+            oauth_mode: 'register',
         }
 
         // Add Archer fields if applicable
