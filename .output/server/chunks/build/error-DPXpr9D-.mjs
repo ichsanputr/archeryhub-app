@@ -1,2 +1,0 @@
-const getApiErrorMessage=(a,e="Terjadi kesalahan sistem")=>{var r,l,o,d;return(null==(r=null==a?void 0:a.data)?void 0:r.error)?a.data.error:(null==(l=null==a?void 0:a.data)?void 0:l.message)?a.data.message:(null==(d=null==(o=null==a?void 0:a.response)?void 0:o._data)?void 0:d.error)?a.response._data.error:(null==a?void 0:a.message)||e};export{getApiErrorMessage as g};
-//# sourceMappingURL=error-DPXpr9D-.mjs.map
