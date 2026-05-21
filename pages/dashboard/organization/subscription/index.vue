@@ -7,7 +7,7 @@
             </div>
             <div class="flex-1">
                 <h4 class="text-lg font-black text-emerald-800 leading-none">Pembayaran Berhasil!</h4>
-                <p class="text-xs font-semibold text-emerald-600 mt-2">Langganan Anda telah berhasil diperbarui dan masa aktif telah diperpanjang. Terima kasih telah berlangganan!</p>
+                <div class="text-xs font-semibold text-emerald-600 mt-2">Langganan Anda telah berhasil diperbarui dan masa aktif telah diperpanjang. Terima kasih telah berlangganan!</div>
             </div>
             <button @click="showSuccessAlert = false" class="size-8 rounded-xl hover:bg-emerald-100/50 flex items-center justify-center text-emerald-700 transition-colors shrink-0">
                 <Icon icon="ph:x-bold" class="text-lg" />
@@ -135,8 +135,8 @@ const availablePlans = computed(() => {
 
     if (uniquePlans.length === 0) {
         return [
-            { id: 3, name: 'Standar', priceLabel: 'Rp 29.999', priceRaw: 29999, billing: 'bln', features: currentPlanDetails[0].features, isCurrent: false, isUpgrade: false },
-            { id: 4, name: 'Elite', priceLabel: 'Rp 49.999', priceRaw: 49999, billing: 'bln', features: currentPlanDetails[1].features, isCurrent: false, isUpgrade: true }
+            { id: 3, name: 'Standar', priceLabel: 'Rp 30.000', priceRaw: 30000, billing: 'bln', features: currentPlanDetails[0].features, isCurrent: false, isUpgrade: false },
+            { id: 4, name: 'Elite', priceLabel: 'Rp 80.000', priceRaw: 80000, billing: 'bln', features: currentPlanDetails[1].features, isCurrent: false, isUpgrade: true }
         ]
     }
 
@@ -160,9 +160,9 @@ const availablePlans = computed(() => {
 
         let finalPrice = plan.price
         if (localizedName === 'Standar' || plan.name.toLowerCase().includes('basic')) {
-            finalPrice = 29999
+            finalPrice = 30000
         } else if (localizedName === 'Elite' || plan.name.toLowerCase().includes('premium')) {
-            finalPrice = 49999
+            finalPrice = 80000
         }
 
         return {

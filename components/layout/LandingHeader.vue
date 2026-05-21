@@ -154,7 +154,7 @@
 
                     <!-- Cart Icon (For Archers) -->
                     <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'"
-                        :to="localePath('/dashboard/archer/cart')"
+                        to="/dashboard/archer/cart"
                         class="relative p-2 rounded-xl transition-all duration-300 group"
                         :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
                         <Icon icon="ph:shopping-bag-bold" class="text-2xl" />

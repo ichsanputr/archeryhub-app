@@ -20,9 +20,9 @@
                         class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         {{ $t('subscription_page.title') }}
                     </h1>
-                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-2xl">
+                    <div class="text-white/90 text-sm md:text-lg leading-relaxed max-w-2xl">
                         {{ $t('subscription_page.description') }}
-                    </p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -40,12 +40,12 @@
                                 <Icon icon="ph:lightning-bold" class="text-2xl" />
                             </div>
                             <h3 class="text-2xl font-black text-navy mb-2">{{ $t('subscription_page.basic_title') }}</h3>
-                            <p class="text-gray-500 text-sm font-medium">{{ $t('subscription_page.basic_desc') }}</p>
+                            <div class="text-gray-500 text-sm font-medium">{{ $t('subscription_page.basic_desc') }}</div>
                         </div>
                         <div class="mb-10">
                             <div class="flex items-baseline gap-1">
                                 <span class="text-xl font-bold text-navy opacity-40">Rp</span>
-                                <span class="text-5xl font-black text-navy tracking-tighter">29.999</span>
+                                <span class="text-5xl font-black text-navy tracking-tighter">30.000</span>
                                 <span class="text-gray-400 font-bold tracking-wider text-xs">{{ $t('subscription_page.month_unit') }}</span>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                             </li>
                         </ul>
                         <button
-                            @click="handleSelectPlan(3, 'Standar', 29999)"
+                            @click="handleSelectPlan(3, 'Standar', 30000)"
                             class="w-full py-4 px-6 rounded-2xl border-2 border-navy text-navy font-black hover:bg-navy hover:text-white transition-all duration-300">
                             {{ $t('subscription_page.select_plan') }}
                         </button>
@@ -76,12 +76,12 @@
                                 <Icon icon="ph:crown-simple-fill" class="text-3xl" />
                             </div>
                             <h3 class="text-3xl font-black text-white mb-2">{{ $t('subscription_page.elite_title') }}</h3>
-                            <p class="text-slate-400 text-sm font-medium">{{ $t('subscription_page.elite_desc') }}</p>
+                            <div class="text-slate-400 text-sm font-medium">{{ $t('subscription_page.elite_desc') }}</div>
                         </div>
                         <div class="mb-10">
                             <div class="flex items-baseline gap-1">
                                 <span class="text-xl font-bold text-white opacity-40">Rp</span>
-                                <span class="text-5xl font-black text-white tracking-tighter">49.999</span>
+                                <span class="text-5xl font-black text-white tracking-tighter">80.000</span>
                                 <span class="text-slate-400 font-bold tracking-wider text-xs">{{ $t('subscription_page.month_unit') }}</span>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
                             </li>
                         </ul>
                         <button
-                            @click="handleSelectPlan(4, 'Elite', 49999)"
+                            @click="handleSelectPlan(4, 'Elite', 80000)"
                             class="w-full py-4 px-6 rounded-2xl bg-primary text-navy font-black hover:scale-[1.03] active:scale-95 transition-all shadow-primary/20">
                             {{ $t('subscription_page.activate_elite') }}
                         </button>
@@ -222,10 +222,60 @@ const handleSelectPlan = (planId, planName, planPrice) => {
 }
 
 // ─── Localized EO feature lists ─────────────────────────────────────────
-const eoBasicFeatures = computed(() => tm('subscription_page.basic_features_list') || [])
-const eoEliteFeatures = computed(() => tm('subscription_page.elite_features_list') || [])
-const eoComparisonData = computed(() => tm('subscription_page.comparison_list') || [])
-const faqs = computed(() => tm('subscription_page.faqs_list') || [])
+// Some i18n message loaders return compiled AST objects for complex messages.
+// Normalize them into plain strings/objects for rendering.
+function unwrapMessage(msg) {
+    if (msg == null) return msg
+    if (typeof msg === 'string') return msg
+    if (Array.isArray(msg)) return msg.map(unwrapMessage)
+    if (typeof msg === 'object') {
+        if (typeof msg.source === 'string' && msg.source.trim() !== '') return msg.source
+        if (typeof msg.body === 'string' && msg.body.trim() !== '') return msg.body
+        // Fallback: try common nested fields
+        if (msg.body && typeof msg.body === 'object') {
+            if (typeof msg.body.source === 'string') return msg.body.source
+            if (Array.isArray(msg.body)) return msg.body.map(unwrapMessage).join('')
+        }
+        // If it's an object representing a localized row (feature/basic/elite), keep it
+        return msg
+    }
+    return String(msg)
+}
+
+const eoBasicFeatures = computed(() => {
+    const raw = t('subscription_page.basic_features_list') || []
+    if (!Array.isArray(raw)) return Array.isArray(unwrapMessage(raw)) ? unwrapMessage(raw) : [unwrapMessage(raw)]
+    return raw.map(unwrapMessage)
+})
+
+const eoEliteFeatures = computed(() => {
+    const raw = t('subscription_page.elite_features_list') || []
+    if (!Array.isArray(raw)) return Array.isArray(unwrapMessage(raw)) ? unwrapMessage(raw) : [unwrapMessage(raw)]
+    return raw.map(unwrapMessage)
+})
+
+const eoComparisonData = computed(() => {
+    const raw = t('subscription_page.comparison_list') || []
+    if (!Array.isArray(raw)) return []
+    return raw.map(r => {
+        // Some fields may be compiled ASTs; unwrap them
+        const feature = unwrapMessage(r.feature)
+        const basic = unwrapMessage(r.basic)
+        const elite = unwrapMessage(r.elite)
+        return {
+            feature,
+            basic,
+            elite,
+            icon: r.icon
+        }
+    })
+})
+
+const faqs = computed(() => {
+    const raw = t('subscription_page.faqs_list') || []
+    if (!Array.isArray(raw)) return []
+    return raw.map(f => ({ question: unwrapMessage(f.question), answer: unwrapMessage(f.answer) }))
+})
 
 useSeoMeta({
     title: () => `${t('subscription_page.title')} - Archeris.net`,

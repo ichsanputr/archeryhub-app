@@ -99,63 +99,78 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { Icon } from '@iconify/vue'
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const sectionRef = ref(null)
 const scrollContainer = ref(null)
+let scrollTimer = null
+let ctx = null
 
-onMounted(() => {
+onMounted(async () => {
+    await nextTick()
+
     gsap.registerPlugin(ScrollTrigger)
     const el = sectionRef.value
     if (!el) return
 
-    gsap.from(el.querySelector('.reveal-title'), {
-        scrollTrigger: {
-            trigger: el,
-            start: 'top 80%',
-            toggleActions: 'play none none none'
-        },
-        opacity: 0,
-        y: 35,
-        duration: 1.1,
-        ease: 'power3.out'
-    })
+    ctx = gsap.context(() => {
+        gsap.from(el.querySelector('.reveal-title'), {
+            scrollTrigger: {
+                trigger: el,
+                start: 'top 80%',
+                toggleActions: 'play none none none'
+            },
+            opacity: 0,
+            y: 35,
+            duration: 1.1,
+            ease: 'power3.out'
+        })
 
-    gsap.from(el.querySelector('.reveal-desc'), {
-        scrollTrigger: {
-            trigger: el,
-            start: 'top 80%',
-            toggleActions: 'play none none none'
-        },
-        opacity: 0,
-        y: 20,
-        duration: 1.1,
-        delay: 0.18,
-        ease: 'power3.out'
-    })
+        gsap.from(el.querySelector('.reveal-desc'), {
+            scrollTrigger: {
+                trigger: el,
+                start: 'top 80%',
+                toggleActions: 'play none none none'
+            },
+            opacity: 0,
+            y: 20,
+            duration: 1.1,
+            delay: 0.18,
+            ease: 'power3.out'
+        })
+    }, el)
 
     // scroll the second card (step 2) to the center of the screen
-    if (scrollContainer.value) {
-        setTimeout(() => {
-            const container = scrollContainer.value
-            const children = container.children
-            if (children && children.length >= 2) {
-                const secondChild = children[1]
-                const containerWidth = container.clientWidth
-                const childWidth = secondChild.clientWidth
-                const childOffset = secondChild.offsetLeft
-                
-                const scrollPosition = childOffset - (containerWidth / 2) + (childWidth / 2)
-                container.scrollTo({
-                    left: scrollPosition,
-                    behavior: 'instant'
-                })
-            }
-        }, 150)
+    scrollTimer = window.setTimeout(() => {
+        const container = scrollContainer.value
+        if (!container) return
+
+        const children = container.children
+        if (!children || children.length < 2) return
+
+        const secondChild = children[1]
+        const containerWidth = container.clientWidth
+        const childWidth = secondChild.clientWidth
+        const childOffset = secondChild.offsetLeft
+        const scrollPosition = childOffset - (containerWidth / 2) + (childWidth / 2)
+
+        container.scrollTo({
+            left: scrollPosition,
+            behavior: 'auto'
+        })
+    }, 150)
+})
+
+onBeforeUnmount(() => {
+    if (scrollTimer) {
+        clearTimeout(scrollTimer)
+        scrollTimer = null
     }
+
+    ctx?.revert()
+    ctx = null
 })
 </script>
 

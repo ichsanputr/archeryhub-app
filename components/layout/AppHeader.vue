@@ -98,7 +98,7 @@
           leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
           <div v-if="showLangMenu" class="absolute right-0 top-full pt-2 w-40 z-[99]">
             <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-gray-100 dark:border-slate-800 overflow-hidden py-2">
-              <button v-for="loc in locales" :key="loc.code" @click="setLocale(loc.code)"
+              <button v-for="loc in locales" :key="loc.code" @click="changeDashboardLocale(loc.code)"
                 class="flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold transition-colors hover:bg-gray-50 dark:hover:bg-slate-800"
                 :class="locale === loc.code ? 'text-primary' : 'text-gray-700 dark:text-slate-300'">
                 <Icon :icon="langFlags[loc.code] || 'ph:globe-bold'"
@@ -149,12 +149,19 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const config = useRuntimeConfig()
 
-const { locale, locales, setLocale, t } = useI18n()
+const { locale, locales, setLocaleCookie, loadLocaleMessages, t } = useI18n()
 const showLangMenu = ref(false)
 const langFlags = {
   en: 'circle-flags:us',
   id: 'circle-flags:id',
   kr: 'circle-flags:kr'
+}
+
+const changeDashboardLocale = async (code) => {
+  await loadLocaleMessages(code)
+  locale.value = code
+  setLocaleCookie(code)
+  showLangMenu.value = false
 }
 
 const props = defineProps({

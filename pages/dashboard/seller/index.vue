@@ -13,22 +13,21 @@
             <Icon icon="ph:storefront-bold" class="text-primary text-2xl sm:text-3xl" />
           </div>
           <div>
-            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none text-white">Ringkasan Seller</h1>
-            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">Pantau performa
-              dan operasional toko anda</div>
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none text-white">{{ t('seller.header.title', 'Ringkasan Seller') }}</h1>
+            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">{{ t('seller.header.subtitle', 'Pantau performa dan operasional toko anda') }}</div>
           </div>
         </div>
         <div class="flex flex-col sm:flex-row gap-3">
           <NuxtLink to="/dashboard/seller/products/add">
             <BaseButton variant="primary" icon="ph:plus-bold"
               class="h-11 px-5 font-black text-[10px] capitalize tracking-widest !rounded-xl shadow-lg shadow-primary/20">
-              Tambah Produk
+              {{ t('seller.buttons.add_product', 'Tambah Produk') }}
             </BaseButton>
           </NuxtLink>
           <NuxtLink to="/dashboard/seller/store">
             <BaseButton variant="white" icon="ph:storefront-bold"
               class="h-11 px-5 font-black text-[10px] capitalize tracking-widest !rounded-xl border-white/10">
-              Profil toko
+              {{ t('seller.buttons.store_profile', 'Profil toko') }}
             </BaseButton>
           </NuxtLink>
         </div>
@@ -38,15 +37,13 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-2">
         <div class="flex items-center justify-between">
-          <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">Total produk</div>
+          <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">{{ t('seller.stats.total_products', 'Total produk') }}</div>
           <Icon icon="ph:package-bold" class="text-primary text-xl" />
         </div>
         <div class="text-3xl font-black text-navy">{{ products.length }}</div>
         <div class="flex items-center gap-2">
-          <span class="text-[9px] font-black text-green-500 bg-green-50 px-1.5 py-0.5 rounded capitalize">{{
-            products.filter(p => p.status === 'active').length }} aktif</span>
-          <span class="text-[9px] font-black text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded capitalize">{{
-            products.filter(p => p.status === 'draft').length }} draft</span>
+          <span class="text-[9px] font-black text-green-500 bg-green-50 px-1.5 py-0.5 rounded capitalize">{{ products.filter(p => p.status === 'active').length }} {{ t('seller.stats.active', 'aktif') }}</span>
+          <span class="text-[9px] font-black text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded capitalize">{{ products.filter(p => p.status === 'draft').length }} {{ t('seller.stats.draft', 'draft') }}</span>
         </div>
       </div>
 
@@ -56,7 +53,7 @@
           <Icon icon="ph:shopping-bag-open-bold" class="text-primary text-xl" />
         </div>
         <div class="text-3xl font-black text-navy">{{ totalSold }}</div>
-        <div class="text-[9px] text-gray-400 font-bold capitalize tracking-wide">Item terkirim ke pelanggan</div>
+        <div class="text-[9px] text-gray-400 font-bold capitalize tracking-wide">{{ t('seller.stats.delivered', 'Item terkirim ke pelanggan') }}</div>
       </div>
 
       <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-2">
@@ -65,7 +62,7 @@
           <Icon icon="ph:eye-bold" class="text-primary text-xl" />
         </div>
         <div class="text-3xl font-black text-navy">{{ totalViews.toLocaleString('id-ID') }}</div>
-        <div class="text-[9px] text-gray-400 font-bold capitalize tracking-wide">Kunjungan halaman produk</div>
+        <div class="text-[9px] text-gray-400 font-bold capitalize tracking-wide">{{ t('seller.stats.page_views', 'Kunjungan halaman produk') }}</div>
       </div>
     </div>
 
@@ -73,9 +70,9 @@
       <!-- Best Selling Products -->
       <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
         <div class="p-5 px-6 border-b border-gray-100 flex items-center justify-between">
-          <h2 class="text-xs font-black text-navy capitalize tracking-widest flex items-center gap-2">
+            <h2 class="text-xs font-black text-navy capitalize tracking-widest flex items-center gap-2">
             <Icon icon="ph:fire-bold" class="text-primary" />
-            Produk paling banyak dibeli
+            {{ t('seller.sections.top_selling', 'Produk paling banyak dibeli') }}
           </h2>
         </div>
         <div class="divide-y divide-gray-50">
@@ -95,7 +92,7 @@
             </div>
           </div>
           <div v-if="!loading && topSellingProducts.length === 0" class="p-12 text-center text-gray-400 text-sm">
-            Belum ada data penjualan.
+            {{ t('common.no_data_sales', 'Belum ada data penjualan.') }}
           </div>
         </div>
       </div>
@@ -103,12 +100,12 @@
       <!-- Latest Products -->
       <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
         <div class="p-5 px-6 border-b border-gray-100 flex items-center justify-between">
-          <h2 class="text-xs font-black text-navy capitalize tracking-widest flex items-center gap-2">
+            <h2 class="text-xs font-black text-navy capitalize tracking-widest flex items-center gap-2">
             <Icon icon="ph:clock-bold" class="text-primary" />
-            Produk terbaru
+            {{ t('seller.sections.latest', 'Produk terbaru') }}
           </h2>
           <NuxtLink to="/dashboard/seller/products">
-            <BaseButton variant="ghost" class="text-[10px] font-black tracking-widest text-primary">Lihat Semua
+            <BaseButton variant="ghost" class="text-[10px] font-black tracking-widest text-primary">{{ t('common.view_all', 'Lihat Semua') }}
             </BaseButton>
           </NuxtLink>
         </div>
@@ -129,7 +126,7 @@
             </div>
           </div>
           <div v-if="!loading && latestProducts.length === 0" class="p-12 text-center text-gray-400 text-sm">
-            Belum ada produk.
+            {{ t('common.no_products', 'Belum ada produk.') }}
           </div>
         </div>
       </div>
@@ -141,6 +138,9 @@
 import { Icon } from '@iconify/vue'
 import { computed, onMounted, ref } from 'vue'
 import { useApi } from '~/composables/useApi'
+import useDashboardI18n from '~/composables/useDashboardI18n'
+
+const { t } = useDashboardI18n()
 
 definePageMeta({ layout: 'dashboard' })
 useHead({ title: 'Dashboard Ringkasan Toko - Archeris' })

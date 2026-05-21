@@ -9,7 +9,7 @@
                     </div>
                     <div>
                         <h1 class="text-sm font-bold text-slate-900">ArcheryHub.id</h1>
-                        <p class="text-[9px] font-bold text-teal-600 uppercase tracking-wider leading-none">Paddle Sandbox Test</p>
+                        <div class="text-[9px] font-bold text-teal-600 uppercase tracking-wider leading-none">Paddle Sandbox Test</div>
                     </div>
                 </div>
 
@@ -33,7 +33,7 @@
                         </div>
                         <div>
                             <h2 class="text-sm font-bold text-slate-900">1. Uji Checkout Paddle</h2>
-                            <p class="text-xs text-slate-500">Pilih paket & durasi untuk menginisiasi checkout.</p>
+                            <div class="text-xs text-slate-500">Pilih paket & durasi untuk menginisiasi checkout.</div>
                         </div>
                     </div>
 
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                             <h4 class="font-bold text-slate-900 text-sm">Standard EO</h4>
-                            <p class="text-xs font-medium text-slate-500 mt-1">Rp 29.999 / bulan</p>
+                            <div class="text-xs font-medium text-slate-500 mt-1">Rp 30.000 / bulan</div>
                         </div>
 
                         <!-- Elite Card -->
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                             <h4 class="font-bold text-slate-900 text-sm">Elite EO</h4>
-                            <p class="text-xs font-medium text-slate-500 mt-1">Rp 49.999 / bulan</p>
+                            <div class="text-xs font-medium text-slate-500 mt-1">Rp 80.000 / bulan</div>
                         </div>
                     </div>
 

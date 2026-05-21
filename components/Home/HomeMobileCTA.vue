@@ -43,9 +43,9 @@
                         {{ $t('home.mobile.title1') }}<br />
                         {{ $t('home.mobile.title2') }}
                     </h2>
-                    <p class="text-navy/70 text-lg sm:text-xl font-light leading-relaxed mb-10 max-w-xl reveal-desc">
+                    <div class="text-navy/70 text-lg sm:text-xl font-light leading-relaxed mb-10 max-w-xl reveal-desc">
                         {{ $t('home.mobile.description') }}
-                    </p>
+                    </div>
 
                     <div class="flex flex-wrap gap-4">
                         <a href="#"

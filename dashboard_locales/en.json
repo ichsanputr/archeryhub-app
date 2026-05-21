@@ -1,0 +1,51 @@
+{
+  "header": {
+    "back_to_dashboard": "Back to Dashboard",
+    "search_pages": "Search pages"
+  },
+  "sidebar": {
+    "overview": "Overview",
+    "event": "Events",
+    "my_events": "My Events",
+    "profile": "Profile",
+    "settings": "Settings",
+    "sign_out": "Sign Out"
+  }
+  ,
+  "common": {
+    "loading_dashboard": "Loading dashboard...",
+    "view_all": "View All",
+    "no_data_sales": "No sales data yet.",
+    "no_products": "No products yet."
+  },
+  "seller": {
+    "header": {
+      "title": "Seller Summary",
+      "subtitle": "Monitor your store performance and operations"
+    },
+    "buttons": {
+      "add_product": "Add Product",
+      "store_profile": "Store Profile"
+    },
+    "stats": {
+      "total_products": "Total products",
+      "total_sold": "Total sold",
+      "total_views": "Total views",
+      "active": "active",
+      "draft": "draft",
+      "delivered": "Items delivered to customers",
+      "page_views": "Product page visits"
+    }
+    ,
+    "sections": {
+      "top_selling": "Top selling products",
+      "latest": "Latest products"
+    }
+  }
+  ,
+  "organization": {
+    "events": {
+      "title": "Events List - Archeris Dashboard"
+    }
+  }
+}

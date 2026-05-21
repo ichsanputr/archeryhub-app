@@ -62,7 +62,7 @@
           <!-- Section label (no group) -->
           <template v-else-if="section.type === 'label'">
             <div v-if="!isSidebarCollapsed" class="px-3 mt-3 mb-1">
-              <p class="text-xs font-bold text-gray-500">{{ section.label }}</p>
+              <div class="text-xs font-bold text-gray-500">{{ section.label }}</div>
             </div>
           </template>
 
@@ -92,7 +92,7 @@
         :class="isOnEventSubPage ? '' : 'mt-4'">
         <div v-if="!isOnEventSubPage && !isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
         <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
-          <p class="text-xs font-bold text-gray-500">{{ t('dashboard.sidebar.event_management') }}</p>
+          <div class="text-xs font-bold text-gray-500">{{ t('dashboard.sidebar.event_management') }}</div>
         </div>
         <NuxtLink v-for="item in eventLinks" :key="item.path" :to="item.path"
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group" :class="isActive(item.path)

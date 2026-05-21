@@ -6,8 +6,11 @@
         <Icon icon="ph:gear-six-bold" class="text-primary text-2xl" />
       </div>
       <div>
-        <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none ">Pengaturan Akun</h1>
-        <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider ">Kelola kredensial dan keamanan akun Anda
+        <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none">
+          {{ t('organization_settings_page.title') }}
+        </h1>
+        <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider">
+          {{ t('organization_settings_page.subtitle') }}
         </div>
       </div>
     </div>
@@ -27,19 +30,19 @@
       class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
 
       <div>
-        <h3 class="text-xl font-bold text-navy mb-2">Keamanan & Login</h3>
-        <div class="text-gray-500 text-sm mb-6">Kelola kredensial, email, dan metode login akun Anda</div>
+        <h3 class="text-xl font-bold text-navy mb-2">{{ t('organization_settings_page.security_title') }}</h3>
+        <div class="text-gray-500 text-sm mb-6">{{ t('organization_settings_page.security_subtitle') }}</div>
 
         <!-- Email Change Section -->
         <div class="mb-8">
           <h4 class="text-sm font-black text-navy tracking-widest mb-4 flex items-center gap-2">
             <Icon icon="ph:envelope-simple-open-bold" class="text-primary" />
-            Ubah Alamat Email
+            {{ t('organization_settings_page.email_change_title') }}
           </h4>
 
           <div class="space-y-4 max-w-xl">
             <div>
-              <label class="label-xs">Email Saat Ini</label>
+              <label class="label-xs">{{ t('organization_settings_page.email_current') }}</label>
               <div
                 class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-400 font-medium">
                 <Icon icon="ph:envelope-bold" />
@@ -48,7 +51,7 @@
             </div>
 
             <div v-if="!otpSent">
-              <label class="label-xs">Email Baru</label>
+              <label class="label-xs">{{ t('organization_settings_page.email_new') }}</label>
               <div class="flex gap-2">
                 <div class="relative flex-1">
                   <Icon icon="ph:at-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -57,22 +60,24 @@
                 </div>
                 <BaseButton variant="primary" size="md" @click="requestOTP" :loading="isRequestingOTP"
                   :disabled="!emailForm.new_email">
-                  Kirim OTP
+                  {{ t('organization_settings_page.send_otp') }}
                 </BaseButton>
               </div>
-              <div class="text-[10px] text-gray-400 mt-2">Kami akan mengirimkan kode verifikasi ke email baru Anda untuk
-                memastikan kepemilikan.</div>
+              <div class="text-[10px] text-gray-400 mt-2">
+                {{ t('organization_settings_page.otp_sent_info', { email: emailForm.new_email || '...' }) }}
+              </div>
             </div>
 
             <div v-else class="space-y-4 pt-2 animate-in fade-in slide-in-from-top-2">
               <div class="p-3 bg-primary/10 border border-primary/20 rounded-xl flex items-center gap-3">
                 <Icon icon="ph:info-bold" class="text-primary" />
-                <div class="text-xs text-primary-dark font-medium">Kode OTP telah dikirim ke <strong>{{
-                  emailForm.new_email }}</strong></div>
+                <div class="text-xs text-primary-dark font-medium">
+                  {{ t('organization_settings_page.otp_sent_info', { email: emailForm.new_email }) }}
+                </div>
               </div>
 
               <div>
-                <label class="label-xs">Kode Verifikasi (6 Digit)</label>
+                <label class="label-xs">{{ t('organization_settings_page.otp_label') }}</label>
                 <div class="flex gap-2">
                   <div class="relative flex-1">
                     <Icon icon="ph:key-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -81,20 +86,18 @@
                   </div>
                   <BaseButton variant="gold" size="md" @click="verifyEmailChange" :loading="isVerifyingOTP"
                     :disabled="emailForm.otp.length < 6">
-                    Verifikasi & Ubah
+                    {{ t('organization_settings_page.verify_and_change') }}
                   </BaseButton>
                 </div>
               </div>
 
               <button @click="otpSent = false"
                 class="text-xs font-bold text-gray-400 hover:text-navy transition-colors">
-                Gunakan email lain
+                {{ t('organization_settings_page.use_another_email') }}
               </button>
             </div>
           </div>
         </div>
-
-        <!-- Password Status -->
 
         <!-- Password Status -->
         <div class="p-4 rounded-xl border-2 mb-6"
@@ -115,9 +118,9 @@
 
         <!-- Connected Login Methods -->
         <div class="mb-8">
-          <h4 class="text-sm font-black text-navy  tracking-widest mb-4 flex items-center gap-2">
+          <h4 class="text-sm font-black text-navy tracking-widest mb-4 flex items-center gap-2">
             <Icon icon="ph:link-bold" class="text-primary" />
-            Metode Login Terhubung
+            {{ t('organization_settings_page.connected_methods_title') }}
           </h4>
           <div class="space-y-3">
             <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
@@ -126,18 +129,21 @@
                   <Icon icon="flat-color-icons:google" class="text-xl" />
                 </div>
                 <div>
-                  <div class="font-bold text-navy">Google Login</div>
-                  <div class="text-xs text-gray-400">Hubungkan untuk login lebih cepat</div>
+                  <div class="font-bold text-navy">{{ t('organization_settings_page.google_login') }}</div>
+                  <div class="text-xs text-gray-400">{{ t('organization_settings_page.google_login_desc') }}</div>
                 </div>
               </div>
               <div class="flex items-center gap-2">
                 <span v-if="userData?.google_id"
-                  class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">Terhubung</span>
+                  class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">
+                  {{ t('organization_settings_page.connected') }}
+                </span>
                 <template v-else>
-                  <span class="px-3 py-1 bg-gray-200 text-gray-500 text-xs font-bold rounded-full mr-2">Tidak
-                    Terhubung</span>
+                  <span class="px-3 py-1 bg-gray-200 text-gray-500 text-xs font-bold rounded-full mr-2">
+                    {{ t('organization_settings_page.not_connected') }}
+                  </span>
                   <BaseButton variant="outline" size="sm" @click="linkGoogle">
-                    Hubungkan
+                    {{ t('organization_settings_page.connect') }}
                   </BaseButton>
                 </template>
               </div>
@@ -148,14 +154,14 @@
                   <Icon icon="ph:envelope-bold" class="text-xl text-gray-400" />
                 </div>
                 <div>
-                  <div class="font-bold text-navy">Email & Password</div>
-                  <div class="text-xs text-gray-400">Login manual dengan password</div>
+                  <div class="font-bold text-navy">{{ t('organization_settings_page.email_password') }}</div>
+                  <div class="text-xs text-gray-400">{{ t('organization_settings_page.email_password_desc') }}</div>
                 </div>
               </div>
               <span
                 :class="hasPassword ? 'px-3 py-1 bg-green-100 text-green-600' : 'px-3 py-1 bg-gray-200 text-gray-500'"
                 class="text-xs font-bold rounded-full">
-                {{ hasPassword ? 'Aktif' : 'Belum Aktif' }}
+                {{ hasPassword ? t('organization_settings_page.active') : t('organization_settings_page.inactive') }}
               </span>
             </div>
           </div>
@@ -165,34 +171,35 @@
         <div class="pt-8 border-t border-gray-100">
           <h4 class="text-sm font-black text-navy tracking-widest mb-6 flex items-center gap-2">
             <Icon icon="ph:lock-key-bold" class="text-primary" />
-            {{ hasPassword ? 'Ganti Password' : 'Setel Password Akun' }}
+            {{ hasPassword ? t('organization_settings_page.change_password_title') : t('organization_settings_page.set_password_title') }}
           </h4>
 
           <div class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-              <BaseInput v-model="securityForm.new_password" label="Password Baru" type="password"
+              <BaseInput v-model="securityForm.new_password" :label="t('organization_settings_page.new_password')" type="password"
                 placeholder="••••••••" required />
-              <BaseInput v-model="securityForm.confirm_password" label="Konfirmasi Password Baru" type="password"
+              <BaseInput v-model="securityForm.confirm_password" :label="t('organization_settings_page.confirm_new_password')" type="password"
                 placeholder="••••••••" required />
             </div>
 
             <div class="pt-4 border-t border-gray-50">
               <BaseButton variant="primary" size="md" icon="ph:lock-key" @click="changePassword"
                 :loading="isChangingPassword" :disabled="!securityForm.new_password">
-                {{ hasPassword ? 'Perbarui Password' : 'Setel Password' }}
+                {{ hasPassword ? t('organization_settings_page.update_password') : t('organization_settings_page.set_password') }}
               </BaseButton>
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <!-- TAB: Tema -->
     <div v-show="activeTab === 'theme'" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
       <h3 class="text-xl font-black text-navy mb-2 flex items-center justify-between">
-        Tema Dashboard
+        {{ t('organization_settings_page.theme_title') }}
         <Icon v-if="isSyncing" icon="ph:circle-notch" class="animate-spin text-primary" />
       </h3>
-      <div class="text-gray-500 text-sm mb-6">Pilih palet warna yang sesuai dengan preferensi Anda</div>
+      <div class="text-gray-500 text-sm mb-6">{{ t('organization_settings_page.theme_subtitle') }}</div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="(theme, key) in themes" :key="key" role="button"
@@ -228,7 +235,9 @@
                 <div class="size-3 rounded-full" :style="{ backgroundColor: theme.sidebarBg }"></div>
               </div>
             </div>
-            <div class="text-xs text-gray-400 capitalize">{{ key }} theme for professional look</div>
+            <div class="text-xs text-gray-400 capitalize">
+              {{ t('organization_settings_page.theme_desc', { key: key }) }}
+            </div>
           </div>
 
           <!-- Selection Indicator -->
@@ -243,34 +252,36 @@
     <!-- Tab: Metode Pembayaran -->
     <div v-show="activeTab === 'payment'" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
       <h3 class="text-xl font-black text-navy mb-2 flex items-center justify-between">
-        Metode Pembayaran Manual
+        {{ t('organization_settings_page.payment_title') }}
         <Icon v-if="savingPayment" icon="ph:circle-notch" class="animate-spin text-primary" />
       </h3>
-      <div class="text-gray-500 text-sm mb-6">Kelola informasi rekening/e-wallet untuk pembayaran transfer manual</div>
+      <div class="text-gray-500 text-sm mb-6">{{ t('organization_settings_page.payment_subtitle') }}</div>
 
       <!-- Currency Configuration -->
       <div class="mb-8 p-6 bg-navy/5 border border-navy/10 rounded-2xl">
         <h4 class="text-sm font-black text-navy tracking-widest mb-2 flex items-center gap-2">
           <Icon icon="ph:currency-circle-dollar-bold" class="text-primary text-lg" />
-          Mata Uang Organisasi (Organization Currency)
+          {{ t('organization_settings_page.org_currency_title') }}
         </h4>
-        <p class="text-xs text-gray-500 mb-4">Pilih mata uang default yang akan digunakan untuk seluruh pendaftaran event organisasi Anda.</p>
+        <div class="text-xs text-gray-500 mb-4">
+          {{ t('organization_settings_page.org_currency_desc') }}
+        </div>
         <div class="max-w-xs">
           <BaseSelect v-model="selectedCurrency" :items="currencies"
-            item-title="title" item-value="value" placeholder="Pilih Mata Uang" />
+            item-title="title" item-value="value" :placeholder="t('organization_settings_page.currency_placeholder')" />
         </div>
       </div>
 
       <div class="space-y-4">
         <div class="flex items-center justify-between">
-          <label class="text-sm font-bold text-gray-700">Daftar Metode Pembayaran</label>
+          <label class="text-sm font-bold text-gray-700">{{ t('organization_settings_page.payment_methods_list') }}</label>
           <BaseButton variant="outline" size="xs" @click="addPaymentMethodField">
-            <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Metode
+            <Icon icon="ph:plus-bold" class="mr-1" /> {{ t('organization_settings_page.add_method') }}
           </BaseButton>
         </div>
         <div v-if="!paymentMethods || paymentMethods.length === 0"
           class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-          <p class="text-xs text-gray-400">Belum ada metode pembayaran. Tambahkan untuk informasi peserta.</p>
+          <div class="text-xs text-gray-400">{{ t('organization_settings_page.empty_methods') }}</div>
         </div>
         <div v-else class="space-y-3">
           <div v-for="(method, index) in paymentMethods" :key="index"
@@ -286,40 +297,40 @@
             <div class="flex-grow space-y-4 w-full">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-1">
-                  <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nama Bank / Provider</label>
+                  <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">{{ t('organization_settings_page.bank_provider_label') }}</label>
                   <BaseSelect v-model="method.bank_name" :items="paymentMethodOptions"
-                    item-title="title" item-value="value" placeholder="Pilih Bank/Provider"
+                    item-title="title" item-value="value" :placeholder="t('organization_settings_page.select_bank_placeholder')"
                     @update:model-value="(val) => updatePaymentType(index, val)" />
                 </div>
                 <div class="space-y-1">
-                  <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nomor Rekening / Akun</label>
+                  <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">{{ t('organization_settings_page.account_number_label') }}</label>
                   <input v-model="method.account_number" type="text" placeholder="8000xxxxxxx"
                     class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all" />
                 </div>
               </div>
               <div v-if="method.bank_name === 'Custom'" class="grid grid-cols-1 gap-4">
                 <div class="space-y-1">
-                  <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nama Provider Kustom (Custom Provider Name)</label>
-                  <input v-model="method.custom_name" type="text" placeholder="Contoh: Wise, Revolut, Stripe, dll."
+                  <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">{{ t('organization_settings_page.custom_provider_label') }}</label>
+                  <input v-model="method.custom_name" type="text" :placeholder="t('organization_settings_page.custom_provider_placeholder')"
                     class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all" />
                 </div>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-1">
-                  <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nama Pemilik Rekening</label>
+                  <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">{{ t('organization_settings_page.account_name_label') }}</label>
                   <input v-model="method.account_name" type="text" placeholder="Contoh: Muhammad Ali"
                     class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all" />
                 </div>
                 <div class="space-y-1 text-right pt-4 flex flex-col justify-center">
-                  <span class="text-[10px] font-black text-gray-400 tracking-widest mb-1">Tipe Metode</span>
+                  <span class="text-[10px] font-black text-gray-400 tracking-widest mb-1">{{ t('organization_settings_page.method_type_label') }}</span>
                   <span class="px-3 py-1 bg-navy text-primary rounded-full text-[10px] font-black w-fit ml-auto capitalize shadow-sm">
                     {{ method.type === 'bank' ? 'Bank Transfer' : method.type === 'qris' ? 'QRIS' : method.type === 'ewallet' ? 'E-Wallet' : method.type === 'international' ? 'International' : 'Custom' }}
                   </span>
                 </div>
               </div>
               <div class="space-y-1">
-                <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Instruksi Tambahan (Opsional)</label>
-                <input v-model="method.instructions" type="text" placeholder="Contoh: Lampirkan bukti transfer di form konfirmasi"
+                <label class="text-[10px] font-black text-gray-400 tracking-widest pl-1">{{ t('organization_settings_page.instructions_label') }}</label>
+                <input v-model="method.instructions" type="text" :placeholder="t('organization_settings_page.instructions_placeholder')"
                   class="w-full px-4 py-2 rounded-xl border border-gray-200 text-xs text-gray-500 bg-white" />
               </div>
             </div>
@@ -336,10 +347,10 @@
   <!-- Save Button (Optional depending on tab) -->
   <div v-if="activeTab === 'theme' || activeTab === 'payment'" class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
     <BaseButton variant="outline" size="md" @click="resetForm" :loading="isResetting">
-      Batal
+      {{ t('organization_settings_page.btn_cancel') }}
     </BaseButton>
     <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral || savingPayment">
-      Simpan Perubahan
+      {{ t('organization_settings_page.btn_save') }}
     </BaseButton>
   </div>
 </template>
@@ -352,6 +363,7 @@ import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useTheme } from '~/composables/useTheme'
+import { useI18n } from 'vue-i18n'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 
 definePageMeta({
@@ -363,17 +375,18 @@ useHead({
   title: 'Pengaturan Akun - Archeris Dashboard'
 })
 
+const { t } = useI18n()
 const { login, user, organizationProfile } = useAuth()
 const { get, put } = useApi()
 const toast = useToast()
 const { currentTheme, themes, isSyncing } = useTheme()
 const route = useRoute()
 
-const tabs = [
-  { label: 'Keamanan', value: 'security', icon: 'ph:shield-check' },
-  { label: 'Tema', value: 'theme', icon: 'ph:palette' },
-  { label: 'Metode Pembayaran', value: 'payment', icon: 'ph:credit-card' },
-]
+const tabs = computed(() => [
+  { label: t('organization_settings_page.tab_security'), value: 'security', icon: 'ph:shield-check' },
+  { label: t('organization_settings_page.tab_theme'), value: 'theme', icon: 'ph:palette' },
+  { label: t('organization_settings_page.tab_payment'), value: 'payment', icon: 'ph:credit-card' },
+])
 
 const paymentMethodOptions = [
   // Indonesian Banks
@@ -477,33 +490,40 @@ const loadOrgSettings = async () => {
       org = response?.data || response
     }
     if (org) {
+      // 1. Load Currency from page_settings
       const rawPageSettings = org.page_settings
       if (rawPageSettings) {
         try {
           const parsed = typeof rawPageSettings === 'string' ? JSON.parse(rawPageSettings) : rawPageSettings
-          if (parsed.currency) {
-            selectedCurrency.value = parsed.currency
-          } else {
-            selectedCurrency.value = countryToCurrency[org.country] || 'IDR'
-          }
-          if (parsed.payment_methods) {
-            paymentMethods.value = parsed.payment_methods.map(m => ({
-              uuid: m.uuid || Math.random().toString(36).substring(2, 15),
-              bank_name: m.bank_name || '',
-              custom_name: m.custom_name || '',
-              account_number: m.account_number || '',
-              account_name: m.account_name || '',
-              type: m.type || 'bank',
-              instructions: m.instructions || ''
-            }))
-          } else {
-            paymentMethods.value = []
-          }
+          selectedCurrency.value = parsed.currency || countryToCurrency[org.country] || 'IDR'
         } catch (e) {
           console.error('Failed to parse page settings', e)
+          selectedCurrency.value = countryToCurrency[org.country] || 'IDR'
         }
       } else {
         selectedCurrency.value = countryToCurrency[org.country] || 'IDR'
+      }
+
+      // 2. Load Payment Methods from own table bank_accounts
+      try {
+        const bankResponse = await get('/organizations/bank-accounts')
+        const accounts = bankResponse?.data || bankResponse
+        if (Array.isArray(accounts)) {
+          paymentMethods.value = accounts.map(m => ({
+            uuid: m.id || m.uuid || Math.random().toString(36).substring(2, 15),
+            bank_name: m.bank_name || '',
+            custom_name: m.custom_name || '',
+            account_number: m.account_number || '',
+            account_name: m.account_name || '',
+            type: m.type || 'bank',
+            instructions: m.instructions || ''
+          }))
+        } else {
+          paymentMethods.value = []
+        }
+      } catch (bankErr) {
+        console.error('Failed to load bank accounts:', bankErr)
+        paymentMethods.value = []
       }
     }
   } catch (error) {
@@ -514,6 +534,7 @@ const loadOrgSettings = async () => {
 const savePaymentSettings = async () => {
   savingPayment.value = true
   try {
+    // 1. Save Currency in page_settings
     const response = await get('/organizations/me')
     const org = response?.data || response
     
@@ -526,17 +547,32 @@ const savePaymentSettings = async () => {
       }
     }
     
-    currentSettings.payment_methods = paymentMethods.value
+    // Remove legacy payment_methods field from page_settings
+    delete currentSettings.payment_methods
     currentSettings.currency = selectedCurrency.value
     
     await put('/organizations/me', {
       page_settings: JSON.stringify(currentSettings)
     })
     
-    toast.success('Metode pembayaran berhasil disimpan')
+    // 2. Sync payment methods to the separate table bank_accounts
+    const payload = paymentMethods.value.map((m, idx) => ({
+      id: m.uuid,
+      bank_name: m.bank_name,
+      custom_name: m.custom_name || null,
+      account_number: m.account_number,
+      account_name: m.account_name,
+      type: m.type || 'bank',
+      instructions: m.instructions || null,
+      is_primary: idx === 0
+    }))
+
+    await put('/organizations/bank-accounts', payload)
+    
+    toast.success(t('organization_settings_page.payment_save_success'))
   } catch (error) {
     console.error('Failed to save payment settings:', error)
-    toast.error('Gagal menyimpan metode pembayaran')
+    toast.error(t('organization_settings_page.payment_save_error'))
   } finally {
     savingPayment.value = false
   }
@@ -565,13 +601,13 @@ const securityForm = ref({
 const hasPassword = computed(() => !!userData.value?.has_password)
 
 const passwordStatusLabel = computed(() => {
-  return hasPassword.value ? 'Password Telah Diatur' : 'Password Belum Diatur'
+  return hasPassword.value ? t('organization_settings_page.password_set_label') : t('organization_settings_page.password_unset_label')
 })
 
 const passwordStatusDescription = computed(() => {
   return hasPassword.value
-    ? 'Anda dapat login menggunakan kombinasi email dan password.'
-    : 'Anda saat ini login menggunakan Google. Setel password untuk mengaktifkan login manual.'
+    ? t('organization_settings_page.password_set_desc')
+    : t('organization_settings_page.password_unset_desc')
 })
 
 // Determine user type
@@ -607,7 +643,7 @@ const linkGoogle = () => {
 onMounted(async () => {
   // Check for error in query params (e.g. from Google linking)
   if (route.query.error === 'email_mismatch') {
-    toast.error('Gagal menghubungkan: Email Google tidak cocok dengan email akun saat ini.')
+    toast.error(t('organization_settings_page.google_mismatch_error'))
   }
 
   try {
@@ -628,7 +664,7 @@ onMounted(async () => {
     initialAccountForm.value = JSON.parse(JSON.stringify(accountForm.value))
   } catch (error) {
     console.error('Failed to load user data:', error)
-    toast.error('Gagal memuat data pengguna')
+    toast.error(t('organization_settings_page.load_user_error'))
   }
 
   await loadOrgSettings()
@@ -648,7 +684,7 @@ const saveAccountInfo = async () => {
       school: accountForm.value.school,
       bow_type: accountForm.value.bow_type
     })
-    toast.success('Informasi akun berhasil disimpan')
+    toast.success(t('organization_settings_page.save_success'))
 
     // Update reset checkpoint
     initialAccountForm.value = JSON.parse(JSON.stringify(accountForm.value))
@@ -660,7 +696,7 @@ const saveAccountInfo = async () => {
     }
   } catch (error) {
     console.error('Failed to save account info:', error)
-    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal menyimpan informasi'
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || t('organization_settings_page.general_save_error')
     toast.error(errorMessage)
   } finally {
     isSavingAccount.value = false
@@ -672,7 +708,7 @@ const resetForm = async () => {
     isResetting.value = true
     try {
       await loadOrgSettings()
-      toast.info('Formulir telah direset ke data asli')
+      toast.info(t('organization_settings_page.reset_info'))
     } finally {
       isResetting.value = false
     }
@@ -686,7 +722,7 @@ const resetForm = async () => {
     // Simulate minor delay for UX
     await new Promise(resolve => setTimeout(resolve, 600))
     accountForm.value = JSON.parse(JSON.stringify(initialAccountForm.value))
-    toast.info('Formulir telah direset ke data asli')
+    toast.info(t('organization_settings_page.reset_info'))
   } finally {
     isResetting.value = false
   }
@@ -699,16 +735,12 @@ const saveSettings = async () => {
   }
 
   isSavingGeneral.value = true
-  // This is for general settings like language, timezone, notifications
   try {
-    // In the future, this should save to /user/settings
-    // await put('/user/settings', settings.value)
-
-    // For now, simulate API call
+    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500))
-    toast.success('Pengaturan umum berhasil disimpan')
+    toast.success(t('organization_settings_page.general_save_success'))
   } catch (error) {
-    toast.error('Gagal menyimpan pengaturan')
+    toast.error(t('organization_settings_page.general_save_error'))
   } finally {
     isSavingGeneral.value = false
   }
@@ -716,12 +748,12 @@ const saveSettings = async () => {
 
 const changePassword = async () => {
   if (securityForm.value.new_password !== securityForm.value.confirm_password) {
-    toast.error('Konfirmasi password tidak cocok')
+    toast.error(t('organization_settings_page.password_mismatch'))
     return
   }
 
   if (securityForm.value.new_password.length < 6) {
-    toast.error('Password minimal 6 karakter')
+    toast.error(t('organization_settings_page.password_length_error'))
     return
   }
 
@@ -731,7 +763,7 @@ const changePassword = async () => {
       new_password: securityForm.value.new_password
     })
 
-    toast.success('Password berhasil diperbarui')
+    toast.success(t('organization_settings_page.password_success'))
 
     // Reset form
     securityForm.value = {
@@ -746,7 +778,7 @@ const changePassword = async () => {
     }
   } catch (error) {
     console.error('Failed to change password:', error)
-    const errorMessage = error?.data?.error || error?.response?.data?.error || 'Gagal memperbarui password'
+    const errorMessage = error?.data?.error || error?.response?.data?.error || t('organization_settings_page.password_error')
     toast.error(errorMessage)
   } finally {
     isChangingPassword.value = false
@@ -762,9 +794,9 @@ const requestOTP = async () => {
       new_email: emailForm.value.new_email
     })
     otpSent.value = true
-    toast.success('Kode OTP telah dikirim ke email baru Anda')
+    toast.success(t('organization_settings_page.otp_send_success'))
   } catch (error) {
-    const errorMsg = error?.data?.error || 'Gagal mengirim OTP'
+    const errorMsg = error?.data?.error || t('organization_settings_page.otp_send_error')
     toast.error(errorMsg)
   } finally {
     isRequestingOTP.value = false
@@ -790,12 +822,11 @@ const verifyEmailChange = async () => {
     otpSent.value = false
     emailForm.value = { new_email: '', otp: '' }
   } catch (error) {
-    const errorMsg = error?.data?.error || 'Gagal memverifikasi OTP'
+    const errorMsg = error?.data?.error || t('organization_settings_page.otp_verify_error')
     toast.error(errorMsg)
   } finally {
     isVerifyingOTP.value = false
   }
 }
-
 
 </script>

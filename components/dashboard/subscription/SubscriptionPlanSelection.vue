@@ -12,9 +12,9 @@
                     </span>
                     <h3 class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">Paket Elite</h3>
                     <div class="h-1.5 w-24 bg-primary mx-auto mb-8 rounded-full"></div>
-                    <p class="text-slate-400 text-sm font-medium max-w-[220px] mx-auto leading-relaxed">
+                    <div class="text-slate-400 text-sm font-medium max-w-[220px] mx-auto leading-relaxed">
                         {{ eliteDescription }}
-                    </p>
+                    </div>
 
                     <div class="mt-12 space-y-4">
                         <div class="flex items-center gap-3 justify-center text-primary/80">

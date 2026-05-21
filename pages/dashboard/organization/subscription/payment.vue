@@ -4,6 +4,8 @@ definePageMeta({
 })
 import { Icon } from '@iconify/vue'
 import { computed, ref, watch, onBeforeMount } from 'vue'
+
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
@@ -12,7 +14,7 @@ const { user } = useAuth()
 const payment = usePayment()
 
 const planId = computed(() => route.query.plan_id)
-const planName = computed(() => route.query.plan_name || 'Paket Langganan')
+const planName = computed(() => route.query.plan_name || t('subscription_payment_page.default_plan_name'))
 const planPrice = computed(() => route.query.plan_price || '0')
 
 // Redirect back if no plan selected (client-side only for safety)
@@ -33,10 +35,10 @@ const channels = computed(() => {
     const list = [
         {
             code: 'paddle',
-            name: 'Kartu Kredit / PayPal (Global)',
+            name: t('subscription_payment_page.paddle_name'),
             icon_url: 'https://cdn.paddle.com/paddle/assets/images/logos/paddle-logo-dark.svg',
-            feeLabel: 'Terintegrasi',
-            group: 'Kartu Kredit & Internasional',
+            feeLabel: t('subscription_payment_page.fee_integrated'),
+            group: t('subscription_payment_page.paddle_group'),
             active: true
         }
     ]
@@ -85,7 +87,7 @@ const totalAmount = computed(() => {
 
 const handlePayment = async () => {
     if (!selectedChannel.value) {
-        errorMessage.value = 'Silakan pilih metode pembayaran'
+        errorMessage.value = t('subscription_payment_page.select_method_error')
         return
     }
 
@@ -105,12 +107,12 @@ const handlePayment = async () => {
             })
 
             if (!res || !res.checkout_url) {
-                throw new Error('Gagal mendapatkan tautan pembayaran Paddle dari server')
+                throw new Error(t('subscription_payment_page.paddle_link_error'))
             }
 
             // 2. Redirect user directly to Paddle secure hosted checkout page (adblocker immune!)
             if (res.checkout_url.includes('txn_mock_')) {
-                alert('simulasi pembayaran berhasil! karena tidak ada paddle api key di backend, sistem secara otomatis menyelesaikan transaksi secara lokal.')
+                alert(t('subscription_payment_page.paddle_success_simulation'))
                 await $fetch(`${apiBaseUrl}/payment/simulate-success/${res.reference}`, {
                     method: 'GET',
                     credentials: 'include'
@@ -133,7 +135,7 @@ const handlePayment = async () => {
 
         } catch (err) {
             console.error('Paddle payment initiation failed:', err)
-            errorMessage.value = err.data?.error || err.message || 'Gagal memproses pembayaran via Paddle'
+            errorMessage.value = err.data?.error || err.message || t('subscription_payment_page.paddle_process_error')
         } finally {
             isProcessing.value = false
         }
@@ -156,18 +158,18 @@ const handlePayment = async () => {
         if (res.checkout_url) {
             window.location.href = res.checkout_url
         } else {
-            errorMessage.value = 'Gagal mendapatkan tautan pembayaran'
+            errorMessage.value = t('subscription_payment_page.generic_payment_error')
         }
     } catch (err) {
         console.error('Payment failed:', err)
-        errorMessage.value = err.data?.error || 'Terjadi kesalahan saat memproses pembayaran'
+        errorMessage.value = err.data?.error || t('subscription_payment_page.generic_payment_error')
     } finally {
         isProcessing.value = false
     }
 }
 
 useHead({
-    title: 'Pilih Metode Pembayaran - Archeris.net'
+    title: t('subscription_payment_page.page_title')
 })
 </script>
 
@@ -178,7 +180,7 @@ useHead({
             <nuxt-link to="/dashboard/organization/subscription"
                 class="inline-flex items-center gap-2 text-navy hover:text-primary transition-all font-bold text-sm mb-6 group">
                 <Icon icon="ph:arrow-left-bold" />
-                Kembali ke Subscription
+                {{ t('subscription_payment_page.back') }}
             </nuxt-link>
 
             <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
@@ -197,9 +199,8 @@ useHead({
                             <Icon icon="ph:credit-card-bold" class="text-primary text-2xl sm:text-3xl" />
                         </div>
                         <div>
-                            <h1 class="text-xl sm:text-3xl font-black tracking-tight">Pembayaran</h1>
-                            <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Selesaikan transaksi untuk
-                                mengaktifkan paket Anda.</p>
+                            <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ t('subscription_payment_page.title') }}</h1>
+                            <div class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('subscription_payment_page.subtitle') }}</div>
                         </div>
                     </div>
 
@@ -212,8 +213,7 @@ useHead({
                             </div>
                         </div>
                         <div class="pt-3 border-t border-white/10 flex justify-between items-center">
-                            <span class="text-slate-400 text-[10px] font-black tracking-widest">Total
-                                Bayar</span>
+                            <span class="text-slate-400 text-[10px] font-black tracking-widest">{{ t('subscription_payment_page.total_pay') }}</span>
                             <span class="text-primary font-black text-xl">Rp {{ totalAmount.toLocaleString('id-ID')
                             }}</span>
                         </div>
@@ -230,9 +230,8 @@ useHead({
                         <Icon icon="ph:calendar-bold" class="text-navy text-xl" />
                     </div>
                     <div>
-                        <h3 class="text-lg font-black text-navy leading-none">Pilih Durasi Berlangganan</h3>
-                        <p class=" text-xs font-bold text-gray-400 tracking-widest mt-2">Berapa lama Anda
-                            ingin berlangganan?</p>
+                        <h3 class="text-lg font-black text-navy leading-none">{{ t('subscription_payment_page.choose_duration') }}</h3>
+                        <div class=" text-xs font-bold text-gray-400 tracking-widest mt-2">{{ t('subscription_payment_page.duration_desc') }}</div>
                     </div>
                 </div>
 
@@ -240,13 +239,13 @@ useHead({
                     <button v-for="m in [1, 3, 6, 12]" :key="m" @click="selectedMonths = m"
                         class="px-6 py-3 rounded-2xl border-2 font-black text-xs tracking-widest transition-all"
                         :class="selectedMonths === m ? 'border-primary bg-primary/5 text-navy ring-4 ring-primary/5' : 'border-gray-100 text-gray-400 hover:border-gray-200 hover:text-navy'">
-                        {{ m === 12 ? '1 Tahun' : `${m} Bulan` }}
+                        {{ m === 12 ? t('subscription_payment_page.year') : t('subscription_payment_page.months', { n: m }) }}
                         <span v-if="m >= 6"
-                            class="ml-2 px-2 py-0.5 bg-green-500 text-white text-[9px] rounded-full">Hemat</span>
+                            class="ml-2 px-2 py-0.5 bg-green-500 text-white text-[9px] rounded-full">{{ t('subscription_payment_page.save') }}</span>
                     </button>
 
                     <div class="flex items-center gap-3 ml-4">
-                        <span class="text-[10px] font-black text-gray-400 tracking-widest">Kustom:</span>
+                        <span class="text-[10px] font-black text-gray-400 tracking-widest">{{ t('subscription_payment_page.custom') }}</span>
                         <div class="flex items-center bg-slate-50 rounded-xl border border-gray-100 p-1">
                             <button @click="selectedMonths > 1 && selectedMonths--"
                                 class="size-8 flex items-center justify-center text-navy hover:bg-white rounded-lg transition-colors">
@@ -290,7 +289,7 @@ useHead({
                                     <div>
                                         <h4 class="text-sm font-black text-navy">{{ method.name }}</h4>
                                         <p class="text-[10px] font-bold text-gray-400 tracking-widest mt-1">
-                                            Biaya: {{ method.feeLabel }}</p>
+                                            {{ t('subscription_payment_page.fee') }} {{ method.feeLabel }}</p>
                                     </div>
                                 </div>
 
@@ -302,65 +301,29 @@ useHead({
                             </div>
                         </div>
                     </div>
-
-                    <!-- Payment Instructions -->
-                    <div v-if="selectedChannel" class="bg-white rounded-[32px] border border-gray-100 shadow-sm p-8">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                <Icon icon="ph:list-checks-bold" class="text-navy text-xl" />
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-black text-navy leading-none">Cara Pembayaran</h3>
-                                <p class=" text-xs font-bold text-gray-400 tracking-widest mt-2">Langkah-langkah
-                                    pembayaran</p>
-                            </div>
-                        </div>
-                        <div v-if="loadingInstructions" class="flex items-center gap-3 py-4">
-                            <div class="animate-spin size-5 border-2 border-navy border-t-transparent rounded-full">
-                            </div>
-                            <span class="text-xs font-bold text-gray-400">Memuat panduan...</span>
-                        </div>
-                        <div v-else-if="instructions.length === 0" class="text-sm text-gray-400 font-bold py-4">
-                            Panduan tidak tersedia untuk metode ini.
-                        </div>
-                        <div v-else class="space-y-6">
-                            <div v-for="(section, si) in instructions" :key="si" class="space-y-3">
-                                <h4 class="text-sm font-black text-navy">{{ section.title }}</h4>
-                                <ol class="space-y-2">
-                                    <li v-for="(step, idx) in section.steps" :key="idx"
-                                        class="flex items-start gap-3 text-sm text-gray-600">
-                                        <span
-                                            class="shrink-0 size-5 rounded-full bg-navy text-white text-[10px] font-black flex items-center justify-center mt-0.5">{{
-                                            idx + 1 }}</span>
-                                        <span class="font-medium leading-snug">{{ step.description }}</span>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Order Summary -->
                 <div class="lg:col-span-1">
                     <div class="bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm sticky top-24">
-                        <h3 class="text-lg font-black text-navy mb-6">Ringkasan Pesanan</h3>
+                        <h3 class="text-lg font-black text-navy mb-6">{{ t('subscription_payment_page.order_summary') }}</h3>
 
                         <div class="space-y-4 mb-8">
                             <div class="flex justify-between items-center py-2 border-b border-dashed border-gray-100">
-                                <span class="text-gray-500 text-sm font-medium">Paket</span>
+                                <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.plan') }}</span>
                                 <span class="text-navy font-bold text-sm">{{ planName }}</span>
                             </div>
                             <div class="flex justify-between items-center py-2 border-b border-dashed border-gray-100">
-                                <span class="text-gray-500 text-sm font-medium">Durasi</span>
-                                <span class="text-navy font-bold text-sm">{{ selectedMonths }} Bulan</span>
+                                <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.duration') }}</span>
+                                <span class="text-navy font-bold text-sm">{{ t('subscription_payment_page.months', { n: selectedMonths }) }}</span>
                             </div>
                             <div class="flex justify-between items-center py-2 border-b border-dashed border-gray-100">
-                                <span class="text-gray-500 text-sm font-medium">Subtotal</span>
+                                <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.subtotal') }}</span>
                                 <span class="text-navy font-bold text-sm">Rp {{ (parseInt(planPrice?.toString() || '0')
                                     * selectedMonths).toLocaleString('id-ID') }}</span>
                             </div>
                             <div v-if="selectedChannel" class="flex justify-between items-center py-2">
-                                <span class="text-gray-500 text-sm font-medium">Metode</span>
+                                <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.method') }}</span>
                                 <span class="text-navy font-bold text-sm">{{channels.find(c => c.code ===
                                     selectedChannel)?.name}}</span>
                             </div>
@@ -376,13 +339,13 @@ useHead({
                             class="w-full h-12 mt-2 bg-navy text-white rounded-xl font-black text-sm tracking-wide transition-all flex items-center justify-center gap-2 disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200 shadow-sm hover:opacity-90 active:scale-95">
                             <Icon v-if="isProcessing" icon="ph:spinner-gap-bold" class="animate-spin text-xl" />
                             <template v-else>
-                                Bayar Sekarang
+                                {{ t('subscription_payment_page.pay_now') }}
                                 <Icon icon="ph:arrow-right-bold" />
                             </template>
                         </button>
 
                         <p class="text-[10px] text-center text-gray-400 font-bold tracking-widest mt-6">
-                            Transaksi aman & terenkripsi oleh {{ selectedChannel === 'paddle' ? 'Paddle' : 'Tripay' }}
+                            {{ t('subscription_payment_page.secure_transaction', { gateway: selectedChannel === 'paddle' ? 'Paddle' : 'Tripay' }) }}
                         </p>
                     </div>
                 </div>

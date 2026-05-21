@@ -1,0 +1,51 @@
+{
+  "header": {
+    "back_to_dashboard": "대시보드로 돌아가기",
+    "search_pages": "페이지 검색"
+  },
+  "sidebar": {
+    "overview": "개요",
+    "event": "이벤트",
+    "my_events": "내 이벤트",
+    "profile": "프로필",
+    "settings": "설정",
+    "sign_out": "로그아웃"
+  }
+  ,
+  "common": {
+    "loading_dashboard": "대시보드 로딩 중...",
+    "view_all": "모두 보기",
+    "no_data_sales": "판매 데이터가 없습니다.",
+    "no_products": "제품이 없습니다."
+  },
+  "seller": {
+    "header": {
+      "title": "판매자 요약",
+      "subtitle": "스토어 성과 및 운영 모니터링"
+    },
+    "buttons": {
+      "add_product": "제품 추가",
+      "store_profile": "상점 프로필"
+    },
+    "stats": {
+      "total_products": "총 제품",
+      "total_sold": "총 판매",
+      "total_views": "총 조회수",
+      "active": "활성",
+      "draft": "임시",
+      "delivered": "고객에게 배송된 항목",
+      "page_views": "제품 페이지 방문"
+    }
+    ,
+    "sections": {
+      "top_selling": "가장 많이 판매된 제품",
+      "latest": "최신 제품"
+    }
+  }
+  ,
+  "organization": {
+    "events": {
+      "title": "이벤트 목록 - Archeris 대시보드"
+    }
+  }
+}

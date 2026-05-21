@@ -15,7 +15,7 @@ export const paket_berlangganan = {
                     <div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
                         <div class="border border-gray-100 rounded-2xl p-5 bg-white shadow-sm border-t-4 border-t-navy">
                             <div class="font-bold text-navy h-8">💼 Paket Standar</div>
-                            <div class="text-2xl font-black text-navy mb-2">Rp 29.999<span class="text-xs font-normal text-gray-400">/bln</span></div>
+                            <div class="text-2xl font-black text-navy mb-2">Rp 30.000<span class="text-xs font-normal text-gray-400">/bln</span></div>
                             <p class="text-xs text-gray-500 mb-4">Cocok untuk klub lokal atau kejuaraan internal dengan peserta terbatas.</p>
                             <ul class="text-xs space-y-2 text-gray-600">
                                 <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Maks. 50 Peserta / Event</li>
@@ -27,7 +27,7 @@ export const paket_berlangganan = {
                         <div class="border border-primary/30 rounded-2xl p-5 bg-primary/5 shadow-md border-t-4 border-t-primary relative overflow-hidden">
                             <div class="absolute top-2 right-2 bg-primary text-navy text-[10px] font-black px-2 py-0.5 rounded-full ">Paling Populer</div>
                             <div class="font-bold text-navy h-8">👑 Paket Elite</div>
-                            <div class="text-2xl font-black text-navy mb-2">Rp 49.999<span class="text-xs font-normal text-gray-400">/bln</span></div>
+                            <div class="text-2xl font-black text-navy mb-2">Rp 80.000<span class="text-xs font-normal text-gray-400">/bln</span></div>
                             <p class="text-xs text-navy/70 mb-4">Solusi profesional untuk turnamen besar, open tournament, dan skala nasional.</p>
                             <ul class="text-xs space-y-2 text-navy/80">
                                 <li class="flex items-center gap-2"><span class="text-primary font-bold">✓</span> Peserta Tak Terbatas</li>

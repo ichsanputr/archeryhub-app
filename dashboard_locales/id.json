@@ -1,0 +1,51 @@
+{
+  "header": {
+    "back_to_dashboard": "Kembali ke Dashboard",
+    "search_pages": "Cari halaman"
+  },
+  "sidebar": {
+    "overview": "Ringkasan",
+    "event": "Acara",
+    "my_events": "Acara Saya",
+    "profile": "Profil",
+    "settings": "Pengaturan",
+    "sign_out": "Keluar"
+  }
+  ,
+  "common": {
+    "loading_dashboard": "Memuat dashboard...",
+    "view_all": "Lihat Semua",
+    "no_data_sales": "Belum ada data penjualan.",
+    "no_products": "Belum ada produk."
+  },
+  "seller": {
+    "header": {
+      "title": "Ringkasan Seller",
+      "subtitle": "Pantau performa dan operasional toko Anda"
+    },
+    "buttons": {
+      "add_product": "Tambah Produk",
+      "store_profile": "Profil toko"
+    },
+    "stats": {
+      "total_products": "Total produk",
+      "total_sold": "Total terjual",
+      "total_views": "Total views",
+      "active": "aktif",
+      "draft": "draft",
+      "delivered": "Item terkirim ke pelanggan",
+      "page_views": "Kunjungan halaman produk"
+    }
+    ,
+    "sections": {
+      "top_selling": "Produk paling banyak dibeli",
+      "latest": "Produk terbaru"
+    }
+  }
+  ,
+  "organization": {
+    "events": {
+      "title": "Daftar Event - Archeris Dashboard"
+    }
+  }
+}

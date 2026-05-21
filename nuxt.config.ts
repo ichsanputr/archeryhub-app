@@ -26,6 +26,26 @@ function getDashboardPages(dir: string, base: string = 'dashboard'): Record<stri
 
 const dashboardPages = getDashboardPages(path.resolve(__dirname, 'pages/dashboard'))
 
+function makeNonLocalizedPages(pages: Record<string, boolean>, locales: string[] = ['en', 'id', 'kr']) {
+  const out: Record<string, Record<string, string>> = {}
+  for (const key of Object.keys(pages)) {
+    // ensure we produce a normalized path starting with '/'
+    // examples: 'dashboard/index' -> '/dashboard', 'dashboard/foo' -> '/dashboard/foo'
+    let routePath = '/' + key.replace(/index$/, '').replace(/^\/+/, '')
+    routePath = routePath.replace(/\/$/, '')
+    if (routePath === '') routePath = '/'
+
+    const mapping: Record<string, string> = {}
+    for (const loc of locales) {
+      mapping[loc] = routePath
+    }
+    out[key] = mapping
+  }
+  return out
+}
+
+const dashboardI18nPages = makeNonLocalizedPages(dashboardPages)
+
 export default defineNuxtConfig({
   ssr: true,
   devServer: {
@@ -46,7 +66,9 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
     detectBrowserLanguage: false,
-    pages: dashboardPages,
+    customRoutes: 'config',
+    // keep dashboard routes identical across locales (no prefix change)
+    pages: dashboardI18nPages,
     compilation: {
       strictMessage: false
     }
@@ -64,7 +86,6 @@ export default defineNuxtConfig({
     "~/assets/scss/main.scss",
   ],
   runtimeConfig: {
-    apiBaseUrl: process.env.NUXT_API_BASE_URL || 'http://localhost:8001/api/v1',
     public: {
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://api.archeris.net/api/v1',
       siteUrl: 'https://archeris.net',

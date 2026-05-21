@@ -29,10 +29,10 @@
                   class="w-10 h-10 rounded-full mr-3 border-2 border-yellow-500" loading="lazy" />
                 <div>
                   <h4 class="font-semibold text-gray-800">{{ t.name }}</h4>
-                  <p class="text-xs text-gray-600">{{ t.role }}</p>
+                  <div class="text-xs text-gray-600">{{ t.role }}</div>
                 </div>
               </div>
-              <p class="text-gray-600 leading-relaxed mb-3">"{{ t.content }}"</p>
+              <div class="text-gray-600 leading-relaxed mb-3">"{{ t.content }}"</div>
               <div class="mt-auto flex items-center gap-3 text-xs text-yellow-600 font-medium">
                 <span>{{ t.company }}</span>
                 <span>•</span>
