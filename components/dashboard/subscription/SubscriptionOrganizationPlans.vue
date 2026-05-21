@@ -7,7 +7,7 @@
                     class="size-8 bg-navy border border-navy rounded-lg flex items-center justify-center text-btn-inverse shadow-sm">
                     <Icon icon="ph:trophy-bold" class="text-lg" />
                 </div>
-                <h2 class="text-lg font-extrabold text-navy">Pilihan Paket Event Optimizer</h2>
+                <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.org_plans.title', 'Pilihan Paket Event Optimizer') }}</h2>
             </div>
             <div
                 class="flex flex-col lg:flex-row overflow-hidden rounded-[32px] border border-gray-100 shadow-sm bg-white min-h-[500px]">
@@ -16,9 +16,9 @@
                     class="lg:w-4/12 bg-navy relative flex flex-col justify-center items-center px-8 py-16 text-center overflow-hidden text-white">
                     <div class="relative z-10">
                         <span class="text-primary/60 font-black tracking-[0.3em] text-[10px] mb-4 block">
-                            Direkomendasikan untuk EO Profesional
+                            {{ t('subscription.org_plans.recommended_for', 'Direkomendasikan untuk EO Profesional') }}
                         </span>
-                        <h3 class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">Paket Elite</h3>
+                        <h3 class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">{{ t('subscription.plans.elite_title', 'Paket Elite') }}</h3>
                         <div class="h-1.5 w-24 bg-primary mx-auto mb-8 rounded-full"></div>
                         <div class="text-slate-400 text-sm font-medium max-w-[220px] mx-auto leading-relaxed">
                             Solusi lengkap untuk turnamen skala besar dengan peserta tak terbatas dan analitik lanjutan.
@@ -26,13 +26,11 @@
                         <div class="mt-12 space-y-4">
                             <div class="flex items-center gap-3 justify-center text-primary/80">
                                 <Icon icon="ph:users-three-fill" class="text-xl" />
-                                <span class="text-xs font-black tracking-widest text-white/80">Peserta Tak
-                                    Terbatas</span>
+                                <span class="text-xs font-black tracking-widest text-white/80">{{ t('subscription.org_plans.unlimited_participants', 'Peserta Tak Terbatas') }}</span>
                             </div>
                             <div class="flex items-center gap-3 justify-center text-primary/80">
                                 <Icon icon="ph:chart-bar-fill" class="text-xl" />
-                                <span class="text-xs font-black tracking-widest text-white/80">Analitik
-                                    Lanjutan</span>
+                                <span class="text-xs font-black tracking-widest text-white/80">{{ t('subscription.org_plans.advanced_analytics', 'Analitik Lanjutan') }}</span>
                             </div>
                         </div>
                     </div>
@@ -49,7 +47,7 @@
 
                             <div v-if="plan.isCurrent"
                                 class="absolute -top-3 left-6 bg-navy text-btn-inverse text-[10px] font-black px-4 py-1.5 rounded-full capitalize tracking-widest shadow-sm">
-                                Aktif
+                                {{ t('subscription.status.active', 'Aktif') }}
                             </div>
 
                             <div class="mb-6">
@@ -80,11 +78,11 @@
                             <button v-if="plan.isCurrent"
                                 class="w-full py-4 text-[10px] font-black bg-slate-100 text-slate-400 rounded-2xl cursor-not-allowed tracking-widest border border-slate-200"
                                 disabled>
-                                Paket Aktif
+                                {{ t('subscription.plans.current_package', 'Paket Aktif') }}
                             </button>
                             <button v-else @click="$emit('select', plan)"
                                 class="w-full py-4 text-[10px] font-black bg-navy text-white rounded-2xl hover:bg-primary hover:text-btn-text transition-all tracking-widest shadow-sm active:scale-95">
-                                {{ plan.isUpgrade ? 'Upgrade Sekarang' : 'Pilih Paket' }}
+                                {{ plan.isUpgrade ? t('subscription.plans.upgrade_now', 'Upgrade Sekarang') : t('subscription.plans.choose_package', 'Pilih Paket') }}
                             </button>
                         </div>
                     </div>
@@ -94,25 +92,24 @@
 
         <!-- Comparison Table -->
         <div class="space-y-6">
-            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3">
                 <div
                     class="size-8 bg-navy border border-navy rounded-lg flex items-center justify-center text-btn-inverse shadow-sm">
                     <Icon icon="ph:scales-bold" class="text-lg" />
                 </div>
-                <h2 class="text-lg font-extrabold text-navy">Perbandingan Detail</h2>
+                <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.comparison.title', 'Perbandingan Detail') }}</h2>
             </div>
             <div class="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden overflow-x-auto">
                 <table class="w-full text-left min-w-[600px]">
                     <thead>
                         <tr class="bg-slate-50/50 border-b border-gray-100">
-                            <th class="px-8 py-5 text-[10px] font-black text-gray-400 tracking-[0.2em]">Fitur
-                                Utama</th>
+                            <th class="px-8 py-5 text-[10px] font-black text-gray-400 tracking-[0.2em]">{{ t('subscription.comparison.feature_header', 'Fitur Utama') }}</th>
                             <th
                                 class="px-8 py-5 text-center text-xs font-black text-navy tracking-widest border-l border-gray-50">
-                                Standar</th>
+                                {{ t('subscription.comparison.standard_header', 'Standar') }}</th>
                             <th
                                 class="px-8 py-5 text-center text-xs font-black text-primary tracking-widest border-l border-gray-50 bg-primary/5">
-                                Elite</th>
+                                {{ t('subscription.comparison.elite_header', 'Elite') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
@@ -150,6 +147,9 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import useDashboardI18n from '~/composables/useDashboardI18n'
+
+const { t } = useDashboardI18n()
 
 defineProps({
     plans: Array,

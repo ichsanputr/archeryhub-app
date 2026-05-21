@@ -1,0 +1,88 @@
+Dashboard i18n audit
+Repo: C:\E\ichsan\startup\archeryhub.id
+Scanned files: 88
+
+1) Legacy $t usage (should migrate to useI18n().t)
+Count: 15
+- app/components/dashboard/ArcherEventsList.vue
+- app/components/dashboard/OrganizationEventsList.vue
+- app/pages/dashboard/archer/cart/index.vue
+- app/pages/dashboard/archer/cart/payment/index.vue
+- app/pages/dashboard/archer/chat/index.vue
+- app/pages/dashboard/archer/payments/index.vue
+- app/pages/dashboard/organization/events/[id]/categories.vue
+- app/pages/dashboard/organization/events/[id]/elimination/[bracketId].vue
+- app/pages/dashboard/organization/events/[id]/elimination/index.vue
+- app/pages/dashboard/organization/events/[id]/qualification/[session].vue
+- app/pages/dashboard/organization/events/[id]/qualification/index.vue
+- app/pages/dashboard/organization/events/[id]/targets.vue
+- app/pages/dashboard/organization/events/[id]/teams.vue
+- app/pages/dashboard/organization/events/create.vue
+- app/pages/dashboard/organization/index.vue
+
+2) No obvious i18n usage (no t( and no $t() found)
+Count: 44
+- app/components/dashboard/StatsCard.vue
+- app/pages/dashboard/archer/events/[id].vue
+- app/pages/dashboard/archer/events/[id]/index.vue
+- app/pages/dashboard/organization/balance.vue
+- app/pages/dashboard/organization/bank-accounts.vue
+- app/pages/dashboard/organization/earnings/[id].vue
+- app/pages/dashboard/organization/earnings/index.vue
+- app/pages/dashboard/organization/events/[id].vue
+- app/pages/dashboard/organization/events/[id]/categories/[categoryId].vue
+- app/pages/dashboard/organization/events/[id]/categories/index.vue
+- app/pages/dashboard/organization/events/[id]/checkout.vue
+- app/pages/dashboard/organization/events/[id]/my-elimination.vue
+- app/pages/dashboard/organization/events/[id]/my-qualification.vue
+- app/pages/dashboard/organization/events/[id]/my-registration.vue
+- app/pages/dashboard/organization/events/[id]/overview.vue
+- app/pages/dashboard/organization/events/[id]/page.vue
+- app/pages/dashboard/organization/events/[id]/participants/[participantId]/edit.vue
+- app/pages/dashboard/organization/events/[id]/participants/[participantId]/index.vue
+- app/pages/dashboard/organization/events/[id]/participants/add.vue
+- app/pages/dashboard/organization/events/[id]/participants/index.vue
+- app/pages/dashboard/organization/events/[id]/printout/index.vue
+- app/pages/dashboard/organization/events/[id]/printout/participants/index.vue
+- app/pages/dashboard/organization/events/[id]/printout/qualification/index.vue
+- app/pages/dashboard/organization/events/[id]/printout/statistics.vue
+- app/pages/dashboard/organization/events/[id]/reset/index.vue
+- app/pages/dashboard/organization/profile.vue
+- app/pages/dashboard/organization/scorekeepers.vue
+- app/pages/dashboard/organization/teams/index.vue
+- app/pages/dashboard/profile/[id].vue
+- app/pages/dashboard/profile/[username].vue
+- app/pages/dashboard/profile/edit.vue
+- app/pages/dashboard/root/create-account.vue
+- app/pages/dashboard/root/index.vue
+- app/pages/dashboard/root/subscriptions.vue
+- app/pages/dashboard/seller/chat.vue
+- app/pages/dashboard/seller/finance/balance/index.vue
+- app/pages/dashboard/seller/finance/transactions/index.vue
+- app/pages/dashboard/seller/orders/[id].vue
+- app/pages/dashboard/seller/orders/index.vue
+- app/pages/dashboard/seller/products/[id].vue
+- app/pages/dashboard/seller/products/add.vue
+- app/pages/dashboard/seller/products/index.vue
+- app/pages/dashboard/seller/settings.vue
+- app/pages/dashboard/seller/store/index.vue
+
+3) Calls t( but no obvious useI18n() setup (heuristic; may be false positives)
+Count: 16
+- app/components/dashboard/DText.vue
+- app/components/dashboard/subscription/SubscriptionBillingHistory.vue
+- app/components/dashboard/subscription/SubscriptionComparison.vue
+- app/components/dashboard/subscription/SubscriptionHeader.vue
+- app/components/dashboard/subscription/SubscriptionOrganizationPlans.vue
+- app/components/dashboard/subscription/SubscriptionPlanSelection.vue
+- app/components/dashboard/subscription/SubscriptionPromo.vue
+- app/components/dashboard/subscription/SubscriptionStatus.vue
+- app/pages/dashboard/index.vue
+- app/pages/dashboard/organization/events/index.vue
+- app/pages/dashboard/organization/news/[slug]/edit.vue
+- app/pages/dashboard/organization/news/[slug]/index.vue
+- app/pages/dashboard/organization/news/create.vue
+- app/pages/dashboard/organization/news/index.vue
+- app/pages/dashboard/organization/subscription/index.vue
+- app/pages/dashboard/seller/index.vue
+

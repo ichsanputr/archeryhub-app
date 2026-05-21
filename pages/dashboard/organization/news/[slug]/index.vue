@@ -268,6 +268,7 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 import AppDialog from '~/components/common/AppDialog.vue'
 import { gsap } from 'gsap'
 
@@ -283,6 +284,7 @@ useHead({
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
+const { t } = useDashboardI18n()
 const { get, delete: del, put } = useApi()
 
 // States
@@ -356,7 +358,7 @@ const fetchArticle = async () => {
             article.value = response.data
         }
     } catch (error) {
-        toast.error('Gagal memuat berita')
+        toast.error(t('organization.news.form.toast_load_failed', 'Gagal memuat berita'))
         router.push('/dashboard/news')
     } finally {
         isLoading.value = false
@@ -396,10 +398,10 @@ const publishArticle = async () => {
             status: 'published'
         })
         article.value.status = 'published'
-        toast.success('Berita berhasil dipublikasikan!')
+        toast.success(t('organization.news.form.toast_create_ok_published', 'Berita berhasil dipublikasikan!'))
         fetchArticle()
     } catch (error) {
-        toast.error('Gagal mempublikasikan berita')
+        toast.error(t('organization.news.detail.toast_publish_failed', 'Gagal mempublikasikan berita'))
     }
 }
 
@@ -410,10 +412,10 @@ const unpublishArticle = async () => {
             status: 'draft'
         })
         article.value.status = 'draft'
-        toast.info('Berita ditarik ke draft')
+        toast.info(t('organization.news.detail.toast_unpublish_ok', 'Berita ditarik ke draft'))
         fetchArticle()
     } catch (error) {
-        toast.error('Gagal menarik berita')
+        toast.error(t('organization.news.detail.toast_unpublish_failed', 'Gagal menarik berita'))
     }
 }
 
@@ -455,12 +457,12 @@ const copyPublicUrl = async () => {
     try {
         await navigator.clipboard.writeText(publicNewsUrl.value)
         copySuccess.value = true
-        toast.success('Link berita tersalin!')
+        toast.success(t('organization.news.detail.toast_link_copied', 'Link berita tersalin!'))
         setTimeout(() => {
             copySuccess.value = false
         }, 2000)
     } catch (e) {
-        toast.error('Gagal menyalin link')
+        toast.error(t('organization.news.detail.toast_copy_failed', 'Gagal menyalin link'))
     }
 }
 
@@ -492,10 +494,10 @@ const confirmDelete = () => {
 const deleteArticle = async () => {
     try {
         await del(`/news/${article.value.uuid}`)
-        toast.success('Berita berhasil dihapus')
+        toast.success(t('organization.news.index.toast_delete_ok', 'Berita berhasil dihapus'))
         router.push('/dashboard/organization/news')
     } catch (error) {
-        toast.error('Gagal menghapus berita')
+        toast.error(t('organization.news.index.toast_delete_failed', 'Gagal menghapus berita'))
     }
 }
 

@@ -1,38 +1,81 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 const LS_KEY_LOCALE = 'dashboard_locale'
-const LS_KEY_MESSAGES = (loc: string) => `dashboard_messages_${loc}`
+const localeLoaders = import.meta.glob('../dashboard_locales/*.json')
 
 export function useDashboardI18n(defaultLocale = 'en') {
   const locale = ref<string>(defaultLocale)
   const messages = ref<Record<string, any> | null>(null)
 
-  if (process.client) {
-    const saved = localStorage.getItem(LS_KEY_LOCALE)
-    if (saved) locale.value = saved
+  // Try to read the app's global i18n locale (SSR + client). If found,
+  // prefer it. Only fall back to `localStorage` when global i18n isn't available.
+  let globalLocaleFound = false
+  try {
+    // Prefer composable `useNuxtApp()` when available in Nuxt runtime.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const maybeUseNuxt = (globalThis as any).useNuxtApp || (typeof useNuxtApp === 'function' ? useNuxtApp : undefined)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const nuxt = maybeUseNuxt ? (maybeUseNuxt as any)() : undefined
+    const globalI18n = nuxt && (nuxt.$i18n || nuxt.app?.$i18n || nuxt.$i18n)
+    if (globalI18n) {
+      if (typeof globalI18n.locale === 'string') {
+        locale.value = globalI18n.locale
+        globalLocaleFound = true
+      } else if (globalI18n.locale && typeof globalI18n.locale.value === 'string') {
+        locale.value = globalI18n.locale.value
+        globalLocaleFound = true
+      }
+    }
+  } catch (e) {
+    // ignore safe failure
+  }
+
+  // Only use localStorage as a fallback when global i18n isn't present
+  if (!globalLocaleFound && process.client) {
+    try {
+      const saved = localStorage.getItem(LS_KEY_LOCALE)
+      if (saved) locale.value = saved
+    } catch (e) {
+      // ignore localStorage errors
+    }
+  }
+
+  // If we did detect a global locale on the client, persist it to dashboard localStorage.
+  if (process.client && globalLocaleFound) {
+    try {
+      localStorage.setItem(LS_KEY_LOCALE, locale.value)
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  // Watch for runtime changes to global i18n locale and update dashboard locale accordingly
+  try {
+    if (process.client) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const nuxt = typeof useNuxtApp === 'function' ? (useNuxtApp() as any) : (globalThis as any).useNuxtApp && (globalThis as any).useNuxtApp()
+      const globalI18n = nuxt && (nuxt.$i18n || nuxt.app?.$i18n)
+      if (globalI18n && globalI18n.locale && typeof globalI18n.locale === 'object' && 'value' in globalI18n.locale) {
+        watch(() => (globalI18n.locale as any).value, (v: string) => {
+          if (v && v !== locale.value) {
+            setLocale(v)
+          }
+        })
+      }
+    }
+  } catch (e) {
+    // ignore
   }
 
   async function loadMessages(loc = locale.value) {
-    if (!process.client) return
-    const cached = localStorage.getItem(LS_KEY_MESSAGES(loc))
-    if (cached) {
-      try {
-        messages.value = JSON.parse(cached)
-        return
-      } catch (e) {
-        // fallthrough to reload
-      }
-    }
-
     try {
-      // lazy import packaged dashboard-local messages stored separately
-      const mod = await import(`~/dashboard_locales/${loc}.json`)
-      messages.value = (mod && (mod.default || mod)) || {}
-      try {
-        localStorage.setItem(LS_KEY_MESSAGES(loc), JSON.stringify(messages.value))
-      } catch (e) {
-        // ignore localStorage quota errors
+      const loader = localeLoaders[`../dashboard_locales/${loc}.json`]
+      if (!loader) {
+        messages.value = {}
+        return
       }
+      const mod = await loader() as any
+      messages.value = (mod && (mod.default || mod)) || {}
     } catch (e) {
       messages.value = {}
     }
@@ -43,7 +86,7 @@ export function useDashboardI18n(defaultLocale = 'en') {
     if (process.client) {
       try { localStorage.setItem(LS_KEY_LOCALE, loc) } catch {}
     }
-    loadMessages(loc)
+    void loadMessages(loc)
   }
 
   function t(path: string, fallback = ''): string {
@@ -57,8 +100,8 @@ export function useDashboardI18n(defaultLocale = 'en') {
     return typeof cur === 'string' ? cur : fallback
   }
 
-  // initial load on client
-  if (process.client) loadMessages()
+  // initial load (server and client) using the resolved locale
+  void loadMessages(locale.value)
 
   return {
     locale: computed(() => locale.value),

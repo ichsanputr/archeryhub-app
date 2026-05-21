@@ -108,6 +108,7 @@ import { useRouter } from 'vue-router'
 import { useToast } from '~/composables/useToast'
 import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 
 definePageMeta({
     title: 'Buat Berita',
@@ -121,6 +122,7 @@ useHead({
 const { post } = useApi()
 const router = useRouter()
 const toast = useToast()
+const { t } = useDashboardI18n()
 const isSubmitting = ref(false)
 const showMediaLibrary = ref(false)
 
@@ -158,12 +160,12 @@ const statusOptions = [
 ]
 
 const previewNews = () => {
-    toast.info('Preview belum tersedia')
+    toast.info(t('organization.news.form.preview', 'Preview'))
 }
 
 const submitNews = async () => {
     if (!form.value.title) {
-        toast.error('Judul berita wajib diisi')
+        toast.error(t('organization.news.form.toast_title_required', 'Judul berita wajib diisi'))
         return
     }
 
@@ -184,10 +186,12 @@ const submitNews = async () => {
 
         await post('/news', payload)
 
-        toast.success(form.value.status === 'published' ? 'Berita berhasil dipublikasikan!' : 'Draft berhasil disimpan!')
+        toast.success(form.value.status === 'published'
+            ? t('organization.news.form.toast_create_ok_published', 'Berita berhasil dipublikasikan!')
+            : t('organization.news.form.toast_create_ok_draft', 'Draft berhasil disimpan!'))
         router.push('/dashboard/organization/news')
     } catch (error) {
-        toast.error('Gagal menyimpan berita')
+        toast.error(t('organization.news.form.toast_create_failed', 'Gagal menyimpan berita'))
     } finally {
         isSubmitting.value = false
     }

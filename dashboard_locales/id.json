@@ -46,6 +46,175 @@
   "organization": {
     "events": {
       "title": "Daftar Event - Archeris Dashboard"
+    },
+    "news": {
+      "index": {
+        "title": "Manajemen Berita",
+        "subtitle": "Kelola berita dan pengumuman organisasi Anda.",
+        "create": "Buat Berita Baru",
+        "stats_total": "Total Berita",
+        "stats_published": "Dipublikasi",
+        "stats_draft": "Draft",
+        "stats_views": "Total Views",
+        "search_placeholder": "Cari judul...",
+        "filter_status": "Status",
+        "filter_category": "Kategori",
+        "reset_filters": "Reset",
+        "empty_title": "Belum Ada Berita",
+        "empty_desc": "Buat berita pertama Anda untuk berbagi informasi dengan pemanah dan peserta event.",
+        "delete_title": "Hapus Berita",
+        "delete_confirm": "Apakah Anda yakin ingin menghapus berita \"{title}\"? Tindakan ini tidak dapat dibatalkan.",
+        "delete_yes": "Ya, Hapus",
+        "delete_no": "Batal",
+        "toast_fetch_failed": "Gagal mengambil data berita",
+        "toast_delete_ok": "Berita berhasil dihapus",
+        "toast_delete_failed": "Gagal menghapus berita"
+      },
+      "common": {
+        "dashboard": "Dashboard",
+        "news": "Berita",
+        "create": "Buat Baru",
+        "detail": "Detail",
+        "edit": "Edit",
+        "back": "Kembali",
+        "cancel": "Batal",
+        "delete": "Hapus"
+      },
+      "form": {
+        "create_title": "Buat Berita Baru",
+        "create_subtitle": "Tulis dan publikasikan berita untuk organisasi Anda.",
+        "edit_title": "Edit Berita",
+        "edit_subtitle": "Perbarui konten berita Anda.",
+        "featured_image": "Gambar Utama",
+        "pick_image": "Klik untuk pilih gambar",
+        "pick_image_hint": "Pilih dari library atau upload baru",
+        "info_title": "Informasi Berita",
+        "title_label": "Judul Berita",
+        "title_placeholder": "Masukkan judul berita yang menarik...",
+        "category_label": "Kategori",
+        "status_label": "Status Publikasi",
+        "tags_label": "Tags",
+        "tags_placeholder": "Contoh: event, turnamen, sleman",
+        "excerpt_label": "Kutipan Singkat",
+        "excerpt_placeholder": "Tulis ringkasan singkat berita (akan ditampilkan di preview)...",
+        "content_title": "Konten Berita",
+        "content_placeholder": "Tulis konten berita Anda di sini...",
+        "preview": "Preview",
+        "publish": "Publikasikan",
+        "save_draft": "Simpan Draft",
+        "update_publish": "Perbarui & Publikasikan",
+        "save_changes": "Simpan Perubahan",
+        "toast_title_required": "Judul berita wajib diisi",
+        "toast_create_ok_published": "Berita berhasil dipublikasikan!",
+        "toast_create_ok_draft": "Draft berhasil disimpan!",
+        "toast_create_failed": "Gagal menyimpan berita",
+        "toast_update_ok": "Berita berhasil diperbarui!",
+        "toast_update_failed": "Gagal memperbarui berita",
+        "toast_load_failed": "Gagal memuat data berita"
+      },
+      "detail": {
+        "toast_publish_failed": "Gagal mempublikasikan berita",
+        "toast_unpublish_ok": "Berita ditarik ke draft",
+        "toast_unpublish_failed": "Gagal menarik berita",
+        "toast_link_copied": "Link berita tersalin!",
+        "toast_copy_failed": "Gagal menyalin link"
+      },
+      "options": {
+        "status_all": "Semua Status",
+        "status_draft": "Draft",
+        "status_published": "Publik",
+        "cat_all": "Semua Kategori",
+        "cat_event": "Event",
+        "cat_announcement": "Pengumuman",
+        "cat_achievement": "Prestasi",
+        "cat_other": "Lainnya"
+      }
+    }
+  }
+  ,
+  "subscription": {
+    "success": {
+      "title": "Pembayaran Berhasil!",
+      "message": "Langganan Anda telah berhasil diperbarui dan masa aktif telah diperpanjang. Terima kasih telah berlangganan!"
+    },
+    "member_label": "Peserta per Event",
+    "header": {
+      "badge_expired": "Kedaluwarsa",
+      "badge_canceled": "Dibatalkan",
+      "inactive_title": "Subscription Anda Tidak Aktif",
+      "inactive_subtext": "Nikmati kembali akses penuh fitur premium dengan memperbarui paket Anda.",
+      "choose_new": "Pilih Paket Baru",
+      "my_subscription": "Subscription Saya",
+      "subtitle": "Kelola paket, pemakaian, dan riwayat tagihan Anda."
+    },
+    "status": {
+      "trial_active": "Trial 3 Bulan Aktif",
+      "active": "Aktif",
+      "expired": "Expired",
+      "current_plan_title": "Paket Saat Ini",
+      "billed": "Ditagih",
+      "price": "Harga",
+      "next_billing": "Tagihan Berikutnya"
+    },
+    "usage": {
+      "title": "Pemakaian & Batas",
+      "locked": "Data Terkunci",
+      "unlock_message": "Perbarui subscription Anda untuk membuka kembali statistik pemakaian.",
+      "media_storage": "Penyimpanan Media",
+      "total_members": "Total Anggota",
+      "active_period": "Masa Aktif"
+    },
+    "org_plans": {
+      "title": "Pilihan Paket Event Optimizer",
+      "recommended_for": "Direkomendasikan untuk EO Profesional",
+      "unlimited_participants": "Peserta Tak Terbatas",
+      "advanced_analytics": "Analitik Lanjutan"
+    },
+    "plans": {
+      "elite_title": "Paket Elite",
+      "current_package": "Paket Aktif",
+      "upgrade_now": "Upgrade Sekarang",
+      "choose_package": "Pilih Paket"
+    },
+    "packageTitle": "Event Optimizer",
+    "promoBadge": "Penyelenggara Baru",
+    "promoTitle": "Mulai Turnamen Anda Gratis 3 Bulan!",
+    "promoDesc": "Daftarkan organisasi Anda sekarang dan dapatkan paket Standard secara gratis selama 3 bulan pertama.",
+    "savings": "104.997",
+    "recommendationBadge": "EO Profesional",
+    "eliteDescription": "Solusi lengkap untuk turnamen skala besar dengan fitur kustom pendaftaran.",
+    "seo": {
+      "title": "Dashboard Berlangganan - Archeris.net",
+      "description": "Kelola langganan, batas penggunaan, dan riwayat tagihan di dashboard Archeris.net."
+    }
+    ,
+    "comparison": {
+      "title": "Perbandingan Detail",
+      "feature_header": "Fitur Utama",
+      "standard_header": "Standar",
+      "elite_header": "Elite",
+      "downgrade_note": "* Downgrade akan berlaku setelah periode tagihan berjalan berakhir."
+    },
+    "billing": {
+      "title": "Riwayat Tagihan",
+      "invoice_label": "Invoice",
+      "download_report": "Download Report",
+      "date": "Tanggal",
+      "description": "Deskripsi",
+      "amount": "Jumlah",
+      "status": "Status",
+      "actions": "Aksi",
+      "pay_now": "Bayar Sekarang",
+      "empty": "Belum Ada Transaksi",
+      "download_failed": "Gagal mengunduh laporan. Silakan coba lagi.",
+      "status_paid": "Lunas",
+      "status_pending": "Pending",
+      "status_expired": "Kedaluwarsa",
+      "status_failed": "Gagal"
+    },
+    "promo": {
+      "extra": "Tanpa biaya pendaftaran, tanpa komitmen.",
+      "total_value": "Total Nilai"
     }
   }
 }

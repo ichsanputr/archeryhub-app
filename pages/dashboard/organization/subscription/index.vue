@@ -6,8 +6,8 @@
                 <Icon icon="ph:check-circle-bold" class="text-2xl" />
             </div>
             <div class="flex-1">
-                <h4 class="text-lg font-black text-emerald-800 leading-none">Pembayaran Berhasil!</h4>
-                <div class="text-xs font-semibold text-emerald-600 mt-2">Langganan Anda telah berhasil diperbarui dan masa aktif telah diperpanjang. Terima kasih telah berlangganan!</div>
+                <h4 class="text-lg font-black text-emerald-800 leading-none">{{ t('subscription.success.title', 'Pembayaran Berhasil!') }}</h4>
+                <div class="text-xs font-semibold text-emerald-600 mt-2">{{ t('subscription.success.message', 'Langganan Anda telah berhasil diperbarui dan masa aktif telah diperpanjang. Terima kasih telah berlangganan!') }}</div>
             </div>
             <button @click="showSuccessAlert = false" class="size-8 rounded-xl hover:bg-emerald-100/50 flex items-center justify-center text-emerald-700 transition-colors shrink-0">
                 <Icon icon="ph:x-bold" class="text-lg" />
@@ -24,7 +24,7 @@
             :next-billing="subscriptionRes?.current?.next_billing_date" :usage-media="usageMedia"
             :usage-members="usageMembers" :remaining-days-label="remainingDaysLabel" :expiry-percent="expiryPercent"
             :is-expired="headerStatus === 'expired' || headerStatus === 'canceled'" :show-members="true"
-            member-label="Peserta per Event" />
+            :member-label="t('subscription.member_label', 'Peserta per Event')" />
 
         <div class="space-y-8">
             <!-- Organization Plans -->
@@ -45,12 +45,14 @@ import SubscriptionHeader from '~/components/dashboard/subscription/Subscription
 import SubscriptionStatus from '~/components/dashboard/subscription/SubscriptionStatus.vue'
 import SubscriptionOrganizationPlans from '~/components/dashboard/subscription/SubscriptionOrganizationPlans.vue'
 import SubscriptionBillingHistory from '~/components/dashboard/subscription/SubscriptionBillingHistory.vue'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 const { user } = useAuth()
+const { t } = useDashboardI18n()
 const { subscriptionData, fetchSubscription } = useSubscription()
 const router = useRouter()
 const route = useRoute()
@@ -299,19 +301,19 @@ const expiryPercent = computed(() => {
 
 const roleContent = computed(() => {
     return {
-        packageTitle: 'Event Optimizer',
-        promoBadge: 'Penyelenggara Baru',
-        promoTitle: 'Mulai Turnamen Anda Gratis 3 Bulan!',
-        promoDesc: 'Daftarkan organisasi Anda sekarang and dapatkan paket Standard secara gratis selama 3 bulan pertama.',
-        savings: '104.997',
-        recommendationBadge: 'EO Profesional',
-        eliteDescription: 'Solusi lengkap untuk turnamen skala besar dengan fitur kustom pendaftaran.'
+        packageTitle: t('subscription.packageTitle', 'Event Optimizer'),
+        promoBadge: t('subscription.promoBadge', 'Penyelenggara Baru'),
+        promoTitle: t('subscription.promoTitle', 'Mulai Turnamen Anda Gratis 3 Bulan!'),
+        promoDesc: t('subscription.promoDesc', 'Daftarkan organisasi Anda sekarang and dapatkan paket Standard secara gratis selama 3 bulan pertama.'),
+        savings: t('subscription.savings', '104.997'),
+        recommendationBadge: t('subscription.recommendationBadge', 'EO Profesional'),
+        eliteDescription: t('subscription.eliteDescription', 'Solusi lengkap untuk turnamen skala besar dengan fitur kustom pendaftaran.')
     }
 })
 
 useSeoMeta({
-    title: 'Dashboard Berlangganan - Archeris.net',
-    description: 'Kelola langganan, batas penggunaan, dan riwayat tagihan di dashboard Archeris.net.'
+    title: t('subscription.seo.title', 'Dashboard Berlangganan - Archeris.net'),
+    description: t('subscription.seo.description', 'Kelola langganan, batas penggunaan, dan riwayat tagihan di dashboard Archeris.net.')
 })
 </script>
 

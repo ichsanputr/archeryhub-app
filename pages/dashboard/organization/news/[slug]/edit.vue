@@ -106,6 +106,7 @@ import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
 import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 
 definePageMeta({
     title: 'Edit Berita',
@@ -120,6 +121,7 @@ const route = useRoute()
 const router = useRouter()
 const toast = useToast()
 const { get, put } = useApi()
+const { t } = useDashboardI18n()
 
 const isSubmitting = ref(false)
 const showMediaLibrary = ref(false)
@@ -166,7 +168,7 @@ const loadNews = async () => {
             }
         }
     } catch (error) {
-        toast.error('Gagal memuat data berita')
+        toast.error(t('organization.news.form.toast_load_failed', 'Gagal memuat data berita'))
         router.push('/dashboard/news')
     }
 }
@@ -182,7 +184,7 @@ const handleMediaSelect = (media) => {
 
 const submitNews = async () => {
     if (!form.value.title) {
-        toast.error('Judul berita wajib diisi')
+        toast.error(t('organization.news.form.toast_title_required', 'Judul berita wajib diisi'))
         return
     }
 
@@ -203,10 +205,10 @@ const submitNews = async () => {
 
         await put(`/news/${route.params.slug}`, payload)
 
-        toast.success('Berita berhasil diperbarui!')
+        toast.success(t('organization.news.form.toast_update_ok', 'Berita berhasil diperbarui!'))
         router.push('/dashboard/news')
     } catch (error) {
-        toast.error('Gagal memperbarui berita')
+        toast.error(t('organization.news.form.toast_update_failed', 'Gagal memperbarui berita'))
     } finally {
         isSubmitting.value = false
     }

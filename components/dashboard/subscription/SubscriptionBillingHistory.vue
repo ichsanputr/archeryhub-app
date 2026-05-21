@@ -1,13 +1,13 @@
 <template>
     <div class="space-y-5">
-        <h2 class="text-lg font-extrabold text-navy">Riwayat Tagihan</h2>
+        <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.billing.title', 'Riwayat Tagihan') }}</h2>
         <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
             <div class="p-6 border-b border-gray-100 bg-slate-50/50 flex items-center justify-between">
-                <span class="text-[10px] font-black text-gray-400 tracking-widest">Invoice</span>
+                <span class="text-[10px] font-black text-gray-400 tracking-widest">{{ t('subscription.billing.invoice_label', 'Invoice') }}</span>
                 <button v-if="invoices?.length" @click="handleDownload"
                     class="flex items-center gap-2 px-4 py-2 text-[10px] font-black tracking-widest text-navy bg-white border border-gray-200 rounded-xl hover:border-primary hover:shadow-md transition-all group">
                     <Icon icon="ph:download-simple-bold" class="text-lg group-hover:text-primary transition-colors" />
-                    <span>Download Report</span>
+                    <span>{{ t('subscription.billing.download_report', 'Download Report') }}</span>
                 </button>
             </div>
 
@@ -16,11 +16,11 @@
                     <thead
                         class="bg-gray-50/50 text-gray-400 font-black text-[10px] tracking-widest border-b border-gray-100">
                         <tr>
-                            <th class="px-8 py-4">Tanggal</th>
-                            <th class="px-8 py-4">Deskripsi</th>
-                            <th class="px-8 py-4">Jumlah</th>
-                            <th class="px-8 py-4">Status</th>
-                            <th class="px-8 py-4 text-right">Aksi</th>
+                            <th class="px-8 py-4">{{ t('subscription.billing.date', 'Tanggal') }}</th>
+                            <th class="px-8 py-4">{{ t('subscription.billing.description', 'Deskripsi') }}</th>
+                            <th class="px-8 py-4">{{ t('subscription.billing.amount', 'Jumlah') }}</th>
+                            <th class="px-8 py-4">{{ t('subscription.billing.status', 'Status') }}</th>
+                            <th class="px-8 py-4 text-right">{{ t('subscription.billing.actions', 'Aksi') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
@@ -44,7 +44,7 @@
                                     <a v-if="invoice.status === 'pending' && invoice.checkout_url"
                                         :href="invoice.checkout_url"
                                         class="px-4 py-2 bg-primary text-btn-text text-[10px] font-black tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-sm">
-                                        Bayar Sekarang
+                                        {{ t('subscription.billing.pay_now', 'Bayar Sekarang') }}
                                     </a>
                                     <a v-else-if="invoice.status === 'paid'"
                                         :href="`${apiBaseUrl}/payment/invoice/${invoice.reference}`" target="_blank"
@@ -59,7 +59,7 @@
             </div>
             <div v-else class="flex flex-col items-center justify-center p-16 text-center text-gray-300">
                 <Icon icon="ph:receipt-bold" class="text-4xl mb-4 opacity-20" />
-                <div class="text-xs font-black tracking-widest">Belum Ada Transaksi</div>
+                <div class="text-xs font-black tracking-widest">{{ t('subscription.billing.empty', 'Belum Ada Transaksi') }}</div>
             </div>
         </div>
     </div>
@@ -68,6 +68,9 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { useApi } from '~/composables/useApi'
+import useDashboardI18n from '~/composables/useDashboardI18n'
+
+const { t } = useDashboardI18n()
 
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
@@ -97,16 +100,16 @@ const handleDownload = async () => {
         window.URL.revokeObjectURL(url)
     } catch (err) {
         console.error('Failed to download report:', err)
-        alert('Gagal mengunduh laporan. Silakan coba lagi.')
+        alert(t('subscription.billing.download_failed', 'Gagal mengunduh laporan. Silakan coba lagi.'))
     }
 }
 
 const getStatusLabel = (status) => {
     const labels = {
-        paid: 'Lunas',
-        pending: 'Pending',
-        expired: 'Kedaluwarsa',
-        failed: 'Gagal'
+        paid: t('subscription.billing.status_paid', 'Lunas'),
+        pending: t('subscription.billing.status_pending', 'Pending'),
+        expired: t('subscription.billing.status_expired', 'Kedaluwarsa'),
+        failed: t('subscription.billing.status_failed', 'Gagal')
     }
     return labels[status] || status
 }

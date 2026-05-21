@@ -17,14 +17,13 @@
                         <Icon icon="ph:newspaper-bold" class="text-primary text-2xl sm:text-3xl" />
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-3xl font-black tracking-tight">Manajemen Berita</h1>
-                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Kelola berita dan pengumuman
-                            organisasi Anda.</p>
+                        <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ t('organization.news.index.title', 'Manajemen Berita') }}</h1>
+                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('organization.news.index.subtitle', 'Kelola berita dan pengumuman organisasi Anda.') }}</p>
                     </div>
                 </div>
                 <BaseButton to="/dashboard/organization/news/create" variant="primary" icon="ph:plus-bold"
                     class="h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-xs">
-                    Buat Berita Baru
+                    {{ t('organization.news.index.create', 'Buat Berita Baru') }}
                 </BaseButton>
             </div>
         </div>
@@ -39,7 +38,7 @@
                         <Icon icon="ph:newspaper-bold" class="text-lg" />
                     </div>
                     <div class="min-w-0">
-                        <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase">Total Berita</p>
+                        <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase">{{ t('organization.news.index.stats_total', 'Total Berita') }}</p>
                         <p class="text-2xl font-black text-navy tabular-nums">{{ news.length }}</p>
                     </div>
                 </div>
@@ -52,7 +51,7 @@
                         <Icon icon="ph:check-circle-bold" class="text-lg" />
                     </div>
                     <div class="min-w-0">
-                        <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase">Dipublikasi</p>
+                        <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase">{{ t('organization.news.index.stats_published', 'Dipublikasi') }}</p>
                         <p class="text-2xl font-black text-navy tabular-nums">{{news.filter(n => n.status === 'published').length}}</p>
                     </div>
                 </div>
@@ -65,7 +64,7 @@
                         <Icon icon="ph:file-text-bold" class="text-lg" />
                     </div>
                     <div class="min-w-0">
-                        <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase">Draft</p>
+                        <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase">{{ t('organization.news.index.stats_draft', 'Draft') }}</p>
                         <p class="text-2xl font-black text-navy tabular-nums">{{news.filter(n => n.status === 'draft').length}}</p>
                     </div>
                 </div>
@@ -188,17 +187,16 @@
                         class="h-20 w-20 mx-auto bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300 mb-6">
                         <Icon icon="ph:newspaper" class="text-5xl" />
                     </div>
-                    <h3 class="text-xl font-bold text-navy mb-2">Belum Ada Berita</h3>
-                    <p class="text-gray-500 mb-6 max-w-sm mx-auto">Buat berita pertama Anda untuk berbagi informasi
-                        dengan pemanah dan peserta event.</p>
+                    <h3 class="text-xl font-bold text-navy mb-2">{{ t('organization.news.index.empty_title', 'Belum Ada Berita') }}</h3>
+                    <p class="text-gray-500 mb-6 max-w-sm mx-auto">{{ t('organization.news.index.empty_desc', 'Buat berita pertama Anda untuk berbagi informasi dengan pemanah dan peserta event.') }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Delete Confirmation Dialog -->
-        <AppDialog :show="showDeleteDialog" title="Hapus Berita"
-            :message="`Apakah Anda yakin ingin menghapus berita &quot;${newsToDelete?.title}&quot;? Tindakan ini tidak dapat dibatalkan.`"
-            confirm-text="Ya, Hapus" cancel-text="Batal" type="danger" icon="ph:trash-bold" @confirm="executeDelete"
+        <AppDialog :show="showDeleteDialog" :title="t('organization.news.index.delete_title', 'Hapus Berita')"
+            :message="deleteConfirmMessage"
+            :confirm-text="t('organization.news.index.delete_yes', 'Ya, Hapus')" :cancel-text="t('organization.news.index.delete_no', 'Batal')" type="danger" icon="ph:trash-bold" @confirm="executeDelete"
             @cancel="showDeleteDialog = false" @update:show="showDeleteDialog = $event" />
     </div>
 </template>
@@ -206,6 +204,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 
 definePageMeta({
     title: 'Berita',
@@ -220,6 +219,7 @@ import { useApi } from '~/composables/useApi'
 
 const { get, delete: del } = useApi()
 const toast = useToast()
+const { t } = useDashboardI18n()
 
 const news = ref([])
 const isLoading = ref(true)
@@ -228,22 +228,31 @@ const statusFilter = ref('all')
 const categoryFilter = ref('all')
 
 const statusOptions = [
-    { title: 'Semua Status', value: 'all' },
-    { title: 'Draft', value: 'draft' },
-    { title: 'Publik', value: 'published' }
+    { title: t('organization.news.options.status_all', 'Semua Status'), value: 'all' },
+    { title: t('organization.news.options.status_draft', 'Draft'), value: 'draft' },
+    { title: t('organization.news.options.status_published', 'Publik'), value: 'published' }
 ]
 
 const categoryOptions = [
-    { title: 'Semua Kategori', value: 'all' },
-    { title: 'Event', value: 'event' },
-    { title: 'Pengumuman', value: 'pengumuman' },
-    { title: 'Prestasi', value: 'prestasi' },
-    { title: 'Lainnya', value: 'lainnya' }
+    { title: t('organization.news.options.cat_all', 'Semua Kategori'), value: 'all' },
+    { title: t('organization.news.options.cat_event', 'Event'), value: 'event' },
+    { title: t('organization.news.options.cat_announcement', 'Pengumuman'), value: 'pengumuman' },
+    { title: t('organization.news.options.cat_achievement', 'Prestasi'), value: 'prestasi' },
+    { title: t('organization.news.options.cat_other', 'Lainnya'), value: 'lainnya' }
 ]
 
 const showDeleteDialog = ref(false)
 const newsToDelete = ref(null)
 const isDeleting = ref(false)
+
+const deleteConfirmMessage = computed(() => {
+    const title = newsToDelete.value?.title || ''
+    const fallback =
+        'Apakah Anda yakin ingin menghapus berita "' +
+        title +
+        '"? Tindakan ini tidak dapat dibatalkan.'
+    return t('organization.news.index.delete_confirm', fallback, { title })
+})
 
 const fetchNews = async () => {
     isLoading.value = true
@@ -251,7 +260,7 @@ const fetchNews = async () => {
         const response = await get('/news/my')
         news.value = response.data || []
     } catch (error) {
-        toast.error('Gagal mengambil data berita')
+        toast.error(t('organization.news.index.toast_fetch_failed', 'Gagal mengambil data berita'))
     } finally {
         isLoading.value = false
     }
@@ -287,10 +296,10 @@ const executeDelete = async () => {
     isDeleting.value = true
     try {
         await del(`/news/${newsToDelete.value.id}`)
-        toast.success('Berita berhasil dihapus')
+        toast.success(t('organization.news.index.toast_delete_ok', 'Berita berhasil dihapus'))
         fetchNews()
     } catch (error) {
-        toast.error('Gagal menghapus berita')
+        toast.error(t('organization.news.index.toast_delete_failed', 'Gagal menghapus berita'))
     } finally {
         isDeleting.value = false
         showDeleteDialog.value = false

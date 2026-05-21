@@ -46,6 +46,175 @@
   "organization": {
     "events": {
       "title": "Events List - Archeris Dashboard"
+    },
+    "news": {
+      "index": {
+        "title": "News Management",
+        "subtitle": "Manage your organization news and announcements.",
+        "create": "Create New Article",
+        "stats_total": "Total Articles",
+        "stats_published": "Published",
+        "stats_draft": "Draft",
+        "stats_views": "Total Views",
+        "search_placeholder": "Search title...",
+        "filter_status": "Status",
+        "filter_category": "Category",
+        "reset_filters": "Reset",
+        "empty_title": "No Articles Yet",
+        "empty_desc": "Create your first article to share information with archers and event participants.",
+        "delete_title": "Delete Article",
+        "delete_confirm": "Are you sure you want to delete \"{title}\"? This action cannot be undone.",
+        "delete_yes": "Yes, Delete",
+        "delete_no": "Cancel",
+        "toast_fetch_failed": "Failed to fetch articles",
+        "toast_delete_ok": "Article deleted",
+        "toast_delete_failed": "Failed to delete article"
+      },
+      "common": {
+        "dashboard": "Dashboard",
+        "news": "News",
+        "create": "Create",
+        "detail": "Detail",
+        "edit": "Edit",
+        "back": "Back",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "form": {
+        "create_title": "Create New Article",
+        "create_subtitle": "Write and publish news for your organization.",
+        "edit_title": "Edit Article",
+        "edit_subtitle": "Update your article content.",
+        "featured_image": "Featured Image",
+        "pick_image": "Click to choose an image",
+        "pick_image_hint": "Pick from library or upload a new one",
+        "info_title": "Article Information",
+        "title_label": "Title",
+        "title_placeholder": "Enter an engaging title...",
+        "category_label": "Category",
+        "status_label": "Publication Status",
+        "tags_label": "Tags",
+        "tags_placeholder": "Example: event, tournament, sleman",
+        "excerpt_label": "Short Excerpt",
+        "excerpt_placeholder": "Write a short summary (shown on preview)...",
+        "content_title": "Article Content",
+        "content_placeholder": "Write your article here...",
+        "preview": "Preview",
+        "publish": "Publish",
+        "save_draft": "Save Draft",
+        "update_publish": "Update & Publish",
+        "save_changes": "Save Changes",
+        "toast_title_required": "Title is required",
+        "toast_create_ok_published": "Article published!",
+        "toast_create_ok_draft": "Draft saved!",
+        "toast_create_failed": "Failed to save article",
+        "toast_update_ok": "Article updated!",
+        "toast_update_failed": "Failed to update article",
+        "toast_load_failed": "Failed to load article"
+      },
+      "detail": {
+        "toast_publish_failed": "Failed to publish article",
+        "toast_unpublish_ok": "Moved back to draft",
+        "toast_unpublish_failed": "Failed to unpublish article",
+        "toast_link_copied": "Link copied!",
+        "toast_copy_failed": "Failed to copy link"
+      },
+      "options": {
+        "status_all": "All Statuses",
+        "status_draft": "Draft",
+        "status_published": "Published",
+        "cat_all": "All Categories",
+        "cat_event": "Event",
+        "cat_announcement": "Announcement",
+        "cat_achievement": "Achievement",
+        "cat_other": "Other"
+      }
+    }
+  }
+  ,
+  "subscription": {
+    "success": {
+      "title": "Payment Successful!",
+      "message": "Your subscription has been updated and the active period has been extended. Thank you for subscribing!"
+    },
+    "member_label": "Participants per Event",
+    "header": {
+      "badge_expired": "Expired",
+      "badge_canceled": "Canceled",
+      "inactive_title": "Your Subscription Is Inactive",
+      "inactive_subtext": "Restore full access to premium features by renewing your plan.",
+      "choose_new": "Choose New Plan",
+      "my_subscription": "My Subscription",
+      "subtitle": "Manage your plan, usage, and billing history."
+    },
+    "status": {
+      "trial_active": "3-Month Trial Active",
+      "active": "Active",
+      "expired": "Expired",
+      "current_plan_title": "Current Plan",
+      "billed": "Billed",
+      "price": "Price",
+      "next_billing": "Next Billing"
+    },
+    "usage": {
+      "title": "Usage & Limits",
+      "locked": "Data Locked",
+      "unlock_message": "Renew your subscription to unlock usage statistics again.",
+      "media_storage": "Media Storage",
+      "total_members": "Total Members",
+      "active_period": "Active Period"
+    },
+    "org_plans": {
+      "title": "Event Optimizer Plans",
+      "recommended_for": "Recommended for Professional EOs",
+      "unlimited_participants": "Unlimited Participants",
+      "advanced_analytics": "Advanced Analytics"
+    },
+    "plans": {
+      "elite_title": "Elite Plan",
+      "current_package": "Current Package",
+      "upgrade_now": "Upgrade Now",
+      "choose_package": "Choose Package"
+    },
+    "packageTitle": "Event Optimizer",
+    "promoBadge": "New Organizer",
+    "promoTitle": "Start your tournament free for 3 months!",
+    "promoDesc": "Register your organization now and get the Standard package free for the first 3 months.",
+    "savings": "104,997",
+    "recommendationBadge": "Pro EO",
+    "eliteDescription": "Complete solution for large-scale tournaments with custom registration features.",
+    "seo": {
+      "title": "Subscription Dashboard - Archeris.net",
+      "description": "Manage subscriptions, usage limits, and billing history in the Archeris.net dashboard."
+    }
+    ,
+    "comparison": {
+      "title": "Detailed Comparison",
+      "feature_header": "Main Features",
+      "standard_header": "Standard",
+      "elite_header": "Elite",
+      "downgrade_note": "* Downgrade will apply after the current billing period ends."
+    },
+    "billing": {
+      "title": "Billing History",
+      "invoice_label": "Invoice",
+      "download_report": "Download Report",
+      "date": "Date",
+      "description": "Description",
+      "amount": "Amount",
+      "status": "Status",
+      "actions": "Actions",
+      "pay_now": "Pay Now",
+      "empty": "No transactions yet",
+      "download_failed": "Failed to download report. Please try again.",
+      "status_paid": "Paid",
+      "status_pending": "Pending",
+      "status_expired": "Expired",
+      "status_failed": "Failed"
+    },
+    "promo": {
+      "extra": "No setup fees, no commitment.",
+      "total_value": "Total Value"
     }
   }
 }

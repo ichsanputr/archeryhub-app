@@ -46,6 +46,175 @@
   "organization": {
     "events": {
       "title": "이벤트 목록 - Archeris 대시보드"
+    },
+    "news": {
+      "index": {
+        "title": "뉴스 관리",
+        "subtitle": "조직의 뉴스 및 공지사항을 관리하세요.",
+        "create": "새 글 작성",
+        "stats_total": "전체 글",
+        "stats_published": "게시됨",
+        "stats_draft": "초안",
+        "stats_views": "총 조회수",
+        "search_placeholder": "제목 검색...",
+        "filter_status": "상태",
+        "filter_category": "카테고리",
+        "reset_filters": "초기화",
+        "empty_title": "아직 글이 없습니다",
+        "empty_desc": "첫 글을 작성하여 참가자에게 정보를 공유하세요.",
+        "delete_title": "글 삭제",
+        "delete_confirm": "\"{title}\"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+        "delete_yes": "삭제",
+        "delete_no": "취소",
+        "toast_fetch_failed": "글을 불러오지 못했습니다",
+        "toast_delete_ok": "삭제되었습니다",
+        "toast_delete_failed": "삭제하지 못했습니다"
+      },
+      "common": {
+        "dashboard": "대시보드",
+        "news": "뉴스",
+        "create": "작성",
+        "detail": "상세",
+        "edit": "수정",
+        "back": "뒤로",
+        "cancel": "취소",
+        "delete": "삭제"
+      },
+      "form": {
+        "create_title": "새 글 작성",
+        "create_subtitle": "조직 소식을 작성하고 게시하세요.",
+        "edit_title": "글 수정",
+        "edit_subtitle": "글 내용을 업데이트하세요.",
+        "featured_image": "대표 이미지",
+        "pick_image": "이미지를 선택하려면 클릭",
+        "pick_image_hint": "라이브러리에서 선택하거나 새로 업로드",
+        "info_title": "글 정보",
+        "title_label": "제목",
+        "title_placeholder": "흥미로운 제목을 입력하세요...",
+        "category_label": "카테고리",
+        "status_label": "게시 상태",
+        "tags_label": "태그",
+        "tags_placeholder": "예: event, tournament, sleman",
+        "excerpt_label": "짧은 요약",
+        "excerpt_placeholder": "짧은 요약을 작성하세요(미리보기 표시)...",
+        "content_title": "본문",
+        "content_placeholder": "여기에 내용을 작성하세요...",
+        "preview": "미리보기",
+        "publish": "게시",
+        "save_draft": "초안 저장",
+        "update_publish": "수정 후 게시",
+        "save_changes": "변경 저장",
+        "toast_title_required": "제목은 필수입니다",
+        "toast_create_ok_published": "게시되었습니다!",
+        "toast_create_ok_draft": "초안이 저장되었습니다!",
+        "toast_create_failed": "저장하지 못했습니다",
+        "toast_update_ok": "업데이트되었습니다!",
+        "toast_update_failed": "업데이트하지 못했습니다",
+        "toast_load_failed": "글을 불러오지 못했습니다"
+      },
+      "detail": {
+        "toast_publish_failed": "게시하지 못했습니다",
+        "toast_unpublish_ok": "초안으로 되돌렸습니다",
+        "toast_unpublish_failed": "초안으로 되돌리지 못했습니다",
+        "toast_link_copied": "링크가 복사되었습니다!",
+        "toast_copy_failed": "링크를 복사하지 못했습니다"
+      },
+      "options": {
+        "status_all": "전체 상태",
+        "status_draft": "초안",
+        "status_published": "게시됨",
+        "cat_all": "전체 카테고리",
+        "cat_event": "이벤트",
+        "cat_announcement": "공지",
+        "cat_achievement": "성과",
+        "cat_other": "기타"
+      }
+    }
+  }
+  ,
+  "subscription": {
+    "success": {
+      "title": "결제 성공!",
+      "message": "구독이 업데이트되었고 활성 기간이 연장되었습니다. 구독해 주셔서 감사합니다!"
+    },
+    "member_label": "이벤트당 참가자",
+    "header": {
+      "badge_expired": "만료",
+      "badge_canceled": "취소됨",
+      "inactive_title": "구독이 활성 상태가 아닙니다",
+      "inactive_subtext": "플랜을 갱신하여 프리미엄 기능 전체를 다시 이용하세요.",
+      "choose_new": "새 플랜 선택",
+      "my_subscription": "내 구독",
+      "subtitle": "플랜, 사용량, 청구 내역을 관리하세요."
+    },
+    "status": {
+      "trial_active": "3개월 체험 활성",
+      "active": "활성",
+      "expired": "만료",
+      "current_plan_title": "현재 플랜",
+      "billed": "청구",
+      "price": "가격",
+      "next_billing": "다음 청구"
+    },
+    "usage": {
+      "title": "사용량 및 한도",
+      "locked": "데이터 잠김",
+      "unlock_message": "사용 통계를 다시 보려면 구독을 갱신하세요.",
+      "media_storage": "미디어 저장소",
+      "total_members": "전체 회원",
+      "active_period": "활성 기간"
+    },
+    "org_plans": {
+      "title": "Event Optimizer 플랜",
+      "recommended_for": "전문 EO에게 추천",
+      "unlimited_participants": "참가자 무제한",
+      "advanced_analytics": "고급 분석"
+    },
+    "plans": {
+      "elite_title": "Elite 플랜",
+      "current_package": "현재 패키지",
+      "upgrade_now": "지금 업그레이드",
+      "choose_package": "패키지 선택"
+    },
+    "packageTitle": "Event Optimizer",
+    "promoBadge": "신규 주최자",
+    "promoTitle": "3개월 무료로 토너먼트를 시작하세요!",
+    "promoDesc": "지금 조직을 등록하고 첫 3개월 동안 Standard 패키지를 무료로 받으세요.",
+    "savings": "104,997",
+    "recommendationBadge": "프로 EO",
+    "eliteDescription": "맞춤 등록 기능을 갖춘 대규모 토너먼트를 위한 완벽한 솔루션.",
+    "seo": {
+      "title": "구독 대시보드 - Archeris.net",
+      "description": "Archeris.net 대시보드에서 구독, 사용 한도 및 청구 내역을 관리하세요."
+    }
+    ,
+    "comparison": {
+      "title": "상세 비교",
+      "feature_header": "주요 기능",
+      "standard_header": "표준",
+      "elite_header": "엘리트",
+      "downgrade_note": "* 다운그레이드는 현재 청구 주기가 종료된 후 적용됩니다."
+    },
+    "billing": {
+      "title": "청구 내역",
+      "invoice_label": "송장",
+      "download_report": "보고서 다운로드",
+      "date": "날짜",
+      "description": "설명",
+      "amount": "금액",
+      "status": "상태",
+      "actions": "작업",
+      "pay_now": "지금 결제",
+      "empty": "거래가 없습니다",
+      "download_failed": "보고서를 다운로드하지 못했습니다. 다시 시도하세요.",
+      "status_paid": "결제 완료",
+      "status_pending": "대기",
+      "status_expired": "만료",
+      "status_failed": "실패"
+    },
+    "promo": {
+      "extra": "초기 설정 비용과 약정이 없습니다.",
+      "total_value": "총 가치"
     }
   }
 }
