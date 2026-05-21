@@ -8,17 +8,17 @@
         </div>
         <div>
           <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none ">
-            {{ t('organization.profile.title', 'Profil Organisasi') }}
+            {{ t('organization.profile.title') }}
           </h1>
           <p class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider ">
-            {{ t('organization.profile.subtitle', 'Kelola identitas publik organisasi Anda') }}
+            {{ t('organization.profile.subtitle') }}
           </p>
         </div>
       </div>
       <div class="flex gap-3">
         <BaseButton variant="primary" :loading="saving" @click="saveProfile" icon="ph:floppy-disk"
           class="h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl">
-          {{ saving ? t('organization.profile.saving', 'Menyimpan...') : t('organization.profile.save', 'Simpan Profil') }}
+          {{ saving ? t('organization.profile.saving') : t('organization.profile.save') }}
         </BaseButton>
       </div>
     </div>
@@ -44,37 +44,37 @@
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
               <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-                <Icon icon="ph:identification-badge-bold" class="text-primary text-lg" /> Identitas Utama
+                <Icon icon="ph:identification-badge-bold" class="text-primary text-lg" /> {{ t('organization.profile.identity_section') }}
               </h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.name" label="Nama Organisasi" placeholder="Nama resmi organisasi" required />
+              <BaseInput v-model="form.name" :label="t('organization.profile.name_label')" :placeholder="t('organization.profile.name_placeholder')" required />
 
               <!-- Slug URL -->
-              <BaseInput v-model="form.slug" label="Slug URL" placeholder="perpani-indonesia"
-                helper="Digunakan untuk URL profil publik (Archeris.net/organization/slug)" />
+              <BaseInput v-model="form.slug" :label="t('organization.profile.slug_label')" :placeholder="t('organization.profile.slug_placeholder')"
+                :helper="t('organization.profile.slug_helper')" />
 
               <!-- Country Select -->
-              <BaseSelect v-model="form.country" label="Negara (Country)" placeholder="Pilih Negara..." required
+              <BaseSelect v-model="form.country" :label="t('organization.profile.country_label')" :placeholder="t('organization.profile.country_placeholder')" required
                 :items="countries" searchable />
             </div>
             <div>
-              <label class="block text-sm font-bold text-navy mb-2">Tentang Organisasi</label>
+              <label class="block text-sm font-bold text-navy mb-2">{{ t('organization.profile.about_label') }}</label>
               <TiptapEditor v-model="form.description"
-                placeholder="Berikan deskripsi singkat dan menarik tentang organisasi Anda..." minHeight="180px" />
+                :placeholder="t('organization.profile.about_placeholder')" minHeight="180px" />
             </div>
           </div>
 
           <!-- Logo & Banner -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8">
             <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-              <Icon icon="ph:image-bold" class="text-primary text-lg" /> Branding Visual
+              <Icon icon="ph:image-bold" class="text-primary text-lg" /> {{ t('organization.profile.branding_section') }}
             </h3>
 
             <div class="space-y-8">
               <!-- Logo Upload -->
               <div class="space-y-4">
-                <label class="block text-sm font-black text-navy">Logo Organisasi</label>
+                <label class="block text-sm font-black text-navy">{{ t('organization.profile.logo_label') }}</label>
                 <div class="flex flex-col items-center gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100">
                   <div
                     class="w-32 h-32 rounded-2xl bg-white border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center shadow-inner group">
@@ -84,7 +84,7 @@
                   <div class="flex gap-2 w-full">
                     <BaseButton @click="openMediaLibrary('logo')" variant="primary" size="sm"
                       icon="ph:cloud-arrow-up-bold" class="flex-1 h-10 font-black tracking-widest text-[10px]">
-                      Pilih Logo
+                      {{ t('organization.profile.choose_logo') }}
                     </BaseButton>
                     <BaseButton v-if="form.logoUrl" @click="form.logoUrl = ''" variant="white" size="sm"
                       icon="ph:trash-bold"
@@ -95,7 +95,7 @@
 
               <!-- Banner Upload -->
               <div class="space-y-4">
-                <label class="block text-sm font-black text-navy">Banner Profil</label>
+                <label class="block text-sm font-black text-navy">{{ t('organization.profile.banner_label') }}</label>
                 <div class="relative group">
                   <div
                     class="h-44 rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center shadow-inner">
@@ -103,13 +103,13 @@
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div v-else class="text-center p-6">
                       <Icon icon="ph:image-square-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
-                      <p class="text-[10px] text-gray-400 font-bold  tracking-wider">Upload banner 1200x400</p>
+                      <p class="text-[10px] text-gray-400 font-bold  tracking-wider">{{ t('organization.profile.banner_desc') }}</p>
                     </div>
                   </div>
                   <div class="mt-4 flex gap-2">
                     <BaseButton @click="openMediaLibrary('banner')" variant="primary" size="sm" icon="ph:image-bold"
                       class="flex-1 h-10 font-black tracking-widest text-[10px]">
-                      Ganti Banner
+                      {{ t('organization.profile.choose_banner') }}
                     </BaseButton>
                     <BaseButton v-if="form.bannerUrl" @click="form.bannerUrl = ''" variant="white" size="sm"
                       icon="ph:trash-bold"
@@ -125,29 +125,29 @@
         <div v-if="activeTab === 'contact'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-              <Icon icon="ph:phone-bold" class="text-primary text-xl" /> Informasi Kontak
+              <Icon icon="ph:phone-bold" class="text-primary text-xl" /> {{ t('organization.profile.contact_section') }}
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.whatsapp_no" label="Nomor WhatsApp" placeholder="Contoh: 08xx-xxxx-xxxx"
+              <BaseInput v-model="form.whatsapp_no" :label="t('organization.profile.whatsapp_label')" :placeholder="t('organization.profile.whatsapp_placeholder')"
                 required />
-              <BaseInput v-model="form.email" label="Alamat Email" type="email" placeholder="info@organisasi.id"
+              <BaseInput v-model="form.email" :label="t('organization.profile.email_label')" type="email" :placeholder="t('organization.profile.email_placeholder')"
                 disabled />
-              <BaseInput v-model="form.website" label="Website Resmi" placeholder="https://www.organisasi.id" />
+              <BaseInput v-model="form.website" :label="t('organization.profile.website_label')" :placeholder="t('organization.profile.website_placeholder')" />
             </div>
-            <BaseTextarea v-model="form.address" label="Alamat Lengkap (Kantor)" rows="3"
-              placeholder="Tuliskan alamat lengkap kantor sekretariat..." />
+            <BaseTextarea v-model="form.address" :label="t('organization.profile.address_label')" rows="3"
+              :placeholder="t('organization.profile.address_placeholder')" />
           </div>
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
               <h3 class=" text-xs font-black text-navy tracking-[0.2em] flex items-center gap-2">
-                <Icon icon="ph:share-network-bold" class="text-primary text-xl" /> Kehadiran Media Sosial
+                <Icon icon="ph:share-network-bold" class="text-primary text-xl" /> {{ t('organization.profile.social_section') }}
               </h3>
 
               <div class="relative group">
                 <BaseButton variant="white" size="xs" icon="ph:plus-bold"
                   class="border-dashed border-2 hover:border-primary hover:text-primary transition-all">
-                  Tambah Media Sosial
+                  {{ t('organization.profile.add_social') }}
                 </BaseButton>
                 <!-- Dropdown for adding socials -->
                 <div
@@ -158,14 +158,13 @@
                     {{ plat.title }}
                   </button>
                   <p v-if="remainingPlatforms.length === 0" class="px-4 py-2 text-xs text-gray-400 italic">
-                    Semua platform sudah ditambahkan
+                    {{ t('organization.profile.all_platforms_added') }}
                   </p>
                 </div>
               </div>
             </div>
 
-            <p class="text-sm text-gray-500 font-medium">Hubungkan organisasi dengan anggota melalui platform sosial
-              favorit.</p>
+            <p class="text-sm text-gray-500 font-medium">{{ t('organization.profile.social_desc') }}</p>
 
             <div class="grid grid-cols-1 gap-4 mt-2">
               <div v-for="(social, idx) in form.socialMedia" :key="social.platform"
@@ -193,7 +192,7 @@
               <div v-if="form.socialMedia.length === 0"
                 class="py-12 text-center border-2 border-dashed border-gray-100 rounded-2xl">
                 <Icon icon="ph:share-network" class="text-4xl text-gray-200 mx-auto mb-3" />
-                <p class="text-sm text-gray-400 font-bold tracking-widest">Belum ada media sosial yang ditambahkan</p>
+                <p class="text-sm text-gray-400 font-bold tracking-widest">{{ t('organization.profile.no_social_added') }}</p>
               </div>
             </div>
           </div>
@@ -203,26 +202,26 @@
         <div v-if="activeTab === 'about'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-              <Icon icon="ph:eye-bold" class="text-primary text-xl" /> Visi & Misi
+              <Icon icon="ph:eye-bold" class="text-primary text-xl" /> {{ t('organization.profile.vision_section') }}
             </h3>
             <div>
-              <label class="block text-sm font-bold text-navy mb-2">Visi</label>
-              <TiptapEditor v-model="form.vision" placeholder="Tuliskan visi organisasi..." minHeight="120px" />
+              <label class="block text-sm font-bold text-navy mb-2">{{ t('organization.profile.vision_label') }}</label>
+              <TiptapEditor v-model="form.vision" :placeholder="t('organization.profile.vision_placeholder')" minHeight="120px" />
             </div>
             <div>
-              <label class="block text-sm font-bold text-navy mb-2">Misi</label>
-              <TiptapEditor v-model="form.mission" placeholder="Tuliskan misi organisasi (bisa per poin)..."
+              <label class="block text-sm font-bold text-navy mb-2">{{ t('organization.profile.mission_label') }}</label>
+              <TiptapEditor v-model="form.mission" :placeholder="t('organization.profile.mission_placeholder')"
                 minHeight="180px" />
             </div>
           </div>
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-              <Icon icon="ph:book-open-bold" class="text-primary text-xl" /> Sejarah Organisasi
+              <Icon icon="ph:book-open-bold" class="text-primary text-xl" /> {{ t('organization.profile.history_section') }}
             </h3>
             <div>
-              <label class="block text-sm font-bold text-navy mb-2">Sejarah Singkat</label>
-              <TiptapEditor v-model="form.history" placeholder="Ceritakan sejarah berdirinya organisasi..."
+              <label class="block text-sm font-bold text-navy mb-2">{{ t('organization.profile.history_label') }}</label>
+              <TiptapEditor v-model="form.history" :placeholder="t('organization.profile.history_placeholder')"
                 minHeight="240px" />
             </div>
           </div>
@@ -233,11 +232,11 @@
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
               <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-                <Icon icon="ph:question-bold" class="text-primary text-xl" /> Pertanyaan Sering Diajukan (FAQ)
+                <Icon icon="ph:question-bold" class="text-primary text-xl" /> {{ t('organization.profile.faq_section') }}
               </h3>
               <button @click="addFAQ"
                 class="text-xs font-black text-primary hover:text-primary-dark flex items-center gap-1 transition">
-                <Icon icon="ph:plus-circle-bold" /> Tambah FAQ
+                <Icon icon="ph:plus-circle-bold" /> {{ t('organization.profile.add_faq') }}
               </button>
             </div>
 
@@ -248,21 +247,20 @@
                   class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors">
                   <Icon icon="ph:trash-bold" />
                 </button>
-                <BaseInput v-model="item.question" label="Pertanyaan"
-                  placeholder="Contoh: Bagaimana cara menjadi anggota?" />
+                <BaseInput v-model="item.question" :label="t('organization.profile.faq_question_label')"
+                  :placeholder="t('organization.profile.faq_question_placeholder')" />
                 <div>
-                  <label class="block text-sm font-bold text-navy mb-2">Jawaban</label>
-                  <TiptapEditor v-model="item.answer" placeholder="Tuliskan jawaban lengkap..." minHeight="120px" />
+                  <label class="block text-sm font-bold text-navy mb-2">{{ t('organization.profile.faq_answer_label') }}</label>
+                  <TiptapEditor v-model="item.answer" :placeholder="t('organization.profile.faq_answer_placeholder')" minHeight="120px" />
                 </div>
               </div>
 
               <div v-if="form.faq.length === 0"
                 class="text-center py-12 border-2 border-dashed border-gray-100 rounded-3xl">
                 <Icon icon="ph:chat-centered-dots-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
-                <p class="text-sm text-gray-400 font-bold  tracking-widest">Belum ada FAQ</p>
+                <p class="text-sm text-gray-400 font-bold  tracking-widest">{{ t('organization.profile.no_faq') }}</p>
                 <button @click="addFAQ"
-                  class="mt-4 px-4 py-2 bg-navy text-white text-xs font-black rounded-xl shadow-md hover:bg-navy-dark transition">Buat
-                  FAQ Pertama</button>
+                  class="mt-4 px-4 py-2 bg-navy text-white text-xs font-black rounded-xl shadow-md hover:bg-navy-dark transition">{{ t('organization.profile.create_first_faq') }}</button>
               </div>
             </div>
           </div>
@@ -273,14 +271,14 @@
       <div class="space-y-4">
         <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-5">
           <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-            <Icon icon="ph:gear-six-bold" class="text-primary text-lg" /> Visibilitas Halaman
+            <Icon icon="ph:gear-six-bold" class="text-primary text-lg" /> {{ t('organization.profile.visibility_section') }}
           </h3>
-          <p class="text-xs text-gray-500 font-medium">Atur bagian mana yang dapat dilihat publik.</p>
+          <p class="text-xs text-gray-500 font-medium">{{ t('organization.profile.visibility_desc') }}</p>
           <div class="space-y-4 pt-2">
-            <BaseCheckbox v-model="pageSettings.sections.identity" label="Identitas Organisasi" />
-            <BaseCheckbox v-model="pageSettings.sections.contact" label="Kontak & Sosmed" />
-            <BaseCheckbox v-model="pageSettings.sections.about" label="Visi, Misi & Sejarah" />
-            <BaseCheckbox v-model="pageSettings.sections.faq" label="FAQ" />
+            <BaseCheckbox v-model="pageSettings.sections.identity" :label="t('organization.profile.visibility_identity')" />
+            <BaseCheckbox v-model="pageSettings.sections.contact" :label="t('organization.profile.visibility_contact')" />
+            <BaseCheckbox v-model="pageSettings.sections.about" :label="t('organization.profile.visibility_about')" />
+            <BaseCheckbox v-model="pageSettings.sections.faq" :label="t('organization.profile.visibility_faq')" />
           </div>
         </div>
 
@@ -290,16 +288,15 @@
           <Icon icon="ph:broadcast-bold"
             class="absolute -right-4 -top-4 text-8xl text-white/5 -rotate-12 group-hover:rotate-0 transition-transform duration-700" />
           <h3 class="font-black mb-2 flex items-center gap-2 relative z-10">
-            Profil Publik
+            {{ t('organization.profile.public_profile') }}
             <Icon icon="ph:check-circle-fill" class="text-primary" />
           </h3>
-          <p class="text-xs text-blue-200 mb-6 relative z-10 leading-relaxed font-medium">Profil Anda aktif dan dapat
-            diakses publik melalui URL unik Archery Hub.</p>
+          <p class="text-xs text-blue-200 mb-6 relative z-10 leading-relaxed font-medium">{{ t('organization.profile.public_profile_desc') }}</p>
           <NuxtLink v-if="form.slug" :to="`/organization/${form.slug}`" target="_blank"
             class="relative z-10 block w-full py-3.5 bg-primary text-navy font-black rounded-2xl text-center hover:bg-primary-hover hover:scale-[1.02] transition-all shadow-md active:scale-95">
-            Lihat Halaman Publik
+            {{ t('organization.profile.view_public_page') }}
           </NuxtLink>
-          <p v-else class="text-xs text-blue-300 italic relative z-10">Slug belum diatur</p>
+          <p v-else class="text-xs text-blue-300 italic relative z-10">{{ t('organization.profile.slug_not_set') }}</p>
         </div>
       </div>
     </div>
@@ -311,13 +308,13 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, reactive, onMounted, watch } from 'vue'
+import { ref, reactive, onMounted, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
 import { useImageOrDefault } from '~/composables/useImageHelper'
-import useDashboardI18n from '~/composables/useDashboardI18n'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 
 const countries = ref([
@@ -354,10 +351,10 @@ const saving = ref(false)
 const activeTab = ref('general')
 
 const tabs = [
-  { id: 'general', label: t('organization.profile.tabs.general', 'Info Umum'), icon: 'ph:identification-badge-bold' },
-  { id: 'contact', label: t('organization.profile.tabs.contact', 'Kontak & Sosmed'), icon: 'ph:phone-bold' },
-  { id: 'about', label: t('organization.profile.tabs.about', 'Visi & Misi'), icon: 'ph:eye-bold' },
-  { id: 'faq', label: t('organization.profile.tabs.faq', 'FAQ'), icon: 'ph:question-bold' }
+  { id: 'general', label: t('organization.profile.general_tab'), icon: 'ph:identification-badge-bold' },
+  { id: 'contact', label: t('organization.profile.contact_tab'), icon: 'ph:phone-bold' },
+  { id: 'about', label: t('organization.profile.about_tab'), icon: 'ph:eye-bold' },
+  { id: 'faq', label: t('organization.profile.faq_tab'), icon: 'ph:question-bold' }
 ]
 
 const pageSettings = reactive({

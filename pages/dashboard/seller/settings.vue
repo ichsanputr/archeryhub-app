@@ -7,10 +7,10 @@
             </div>
             <div>
                 <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none capitalize">
-                    {{ t('seller.settings.title', 'Pengaturan akun') }}
+                    {{ t('seller.settings.title') }}
                 </h1>
                 <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wide capitalize">
-                    {{ t('seller.settings.subtitle', 'Kelola kredensial dan keamanan akun Anda') }}
+                    {{ t('seller.settings.subtitle') }}
                 </div>
             </div>
         </div>
@@ -30,21 +30,21 @@
             class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
 
             <div>
-                <h3 class="text-xl font-bold text-navy mb-2">{{ t('seller.settings.security.title', 'Keamanan & Login') }}</h3>
+                <h3 class="text-xl font-bold text-navy mb-2">{{ t('seller.settings.security.title') }}</h3>
                 <div class="text-gray-500 text-sm mb-6">
-                    {{ t('seller.settings.security.subtitle', 'Kelola kredensial, email, dan metode login akun Anda') }}
+                    {{ t('seller.settings.security.subtitle') }}
                 </div>
 
                 <!-- Email Change Section -->
                 <div class="mb-8">
                     <h4 class="text-sm font-black text-navy tracking-widest mb-4 flex items-center gap-2">
                         <Icon icon="ph:envelope-simple-open-bold" class="text-primary" />
-                        {{ t('seller.settings.security.change_email', 'Ubah Alamat Email') }}
+                        {{ t('seller.settings.security.change_email') }}
                     </h4>
 
                     <div class="space-y-4 max-w-xl">
                         <div>
-                            <label class="label-xs">{{ t('seller.settings.security.current_email', 'Email Saat Ini') }}</label>
+                            <label class="label-xs">{{ t('seller.settings.security.current_email') }}</label>
                             <div
                                 class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-400 font-medium">
                                 <Icon icon="ph:envelope-bold" />
@@ -53,33 +53,31 @@
                         </div>
 
                         <div v-if="!otpSent">
-                            <label class="label-xs">{{ t('seller.settings.security.new_email', 'Email Baru') }}</label>
+                            <label class="label-xs">{{ t('seller.settings.security.new_email') }}</label>
                             <div class="flex gap-2">
                                 <div class="relative flex-1">
                                     <Icon icon="ph:at-bold"
                                         class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                                     <input v-model="emailForm.new_email" type="email"
-                                        :placeholder="t('seller.settings.security.new_email_placeholder', 'email-baru@example.com')"
+                                        :placeholder="t('seller.settings.security.new_email_placeholder')"
                                         class="w-full pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-primary transition-all" />
                                 </div>
                                 <BaseButton variant="primary" size="md" @click="requestOTP" :loading="isRequestingOTP"
                                     :disabled="!emailForm.new_email">
-                                    {{ t('seller.settings.security.send_otp', 'Kirim OTP') }}
+                                    {{ t('seller.settings.security.send_otp') }}
                                 </BaseButton>
                             </div>
-                            <div class="text-[10px] text-gray-400 mt-2">Kami akan mengirimkan kode verifikasi ke email
-                                {{ t('seller.settings.security.otp_desc', 'baru Anda untuk memastikan kepemilikan.') }}</div>
+                            <div class="text-[10px] text-gray-400 mt-2">{{ t('settings.email_hint') }}</div>
                         </div>
 
                         <div v-else class="space-y-4 pt-2 animate-in fade-in slide-in-from-top-2">
                             <div class="p-3 bg-primary/10 border border-primary/20 rounded-xl flex items-center gap-3">
                                 <Icon icon="ph:info-bold" class="text-primary" />
-                                <div class="text-xs text-primary-dark font-medium">Kode OTP telah dikirim ke <strong>{{
-                                        emailForm.new_email }}</strong></div>
+                                <div class="text-xs text-primary-dark font-medium">{{ t('settings.otp_sent_to', { email: emailForm.new_email }) }}</div>
                             </div>
 
                             <div>
-                                <label class="label-xs">{{ t('seller.settings.security.otp_label', 'Kode Verifikasi (6 Digit)') }}</label>
+                                <label class="label-xs">{{ t('seller.settings.security.otp_label') }}</label>
                                 <div class="flex gap-2">
                                     <div class="relative flex-1">
                                         <Icon icon="ph:key-bold"
@@ -89,14 +87,14 @@
                                     </div>
                                     <BaseButton variant="gold" size="md" @click="verifyEmailChange"
                                         :loading="isVerifyingOTP" :disabled="emailForm.otp.length < 6">
-                                        Verifikasi & Ubah
+                                        {{ t('settings.verify_change') }}
                                     </BaseButton>
                                 </div>
                             </div>
 
                             <button @click="otpSent = false"
                                 class="text-xs font-bold text-gray-400 hover:text-navy transition-colors">
-                                Gunakan email lain
+                                {{ t('settings.use_different_email') }}
                             </button>
                         </div>
                     </div>
@@ -123,7 +121,7 @@
                 <div class="mb-8">
                     <h4 class="text-sm font-black text-navy  tracking-widest mb-4 flex items-center gap-2">
                         <Icon icon="ph:link-bold" class="text-primary" />
-                        Metode Login Terhubung
+                        {{ t('settings.connected_methods') }}
                     </h4>
                     <div class="space-y-3">
                         <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
@@ -133,19 +131,18 @@
                                     <Icon icon="flat-color-icons:google" class="text-xl" />
                                 </div>
                                 <div>
-                                    <div class="font-bold text-navy">Google Login</div>
-                                    <div class="text-xs text-gray-400">Hubungkan untuk login lebih cepat</div>
+                                    <div class="font-bold text-navy">{{ t('settings.google_login') }}</div>
+                                    <div class="text-xs text-gray-400">Google Account</div>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span v-if="userData?.google_id"
-                                    class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">Terhubung</span>
+                                    class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">Connected</span>
                                 <template v-else>
                                     <span
-                                        class="px-3 py-1 bg-gray-200 text-gray-500 text-xs font-bold rounded-full mr-2">Tidak
-                                        Terhubung</span>
+                                        class="px-3 py-1 bg-gray-200 text-gray-500 text-xs font-bold rounded-full mr-2">Not Connected</span>
                                     <BaseButton variant="outline" size="sm" @click="linkGoogle">
-                                        Hubungkan
+                                        Connect
                                     </BaseButton>
                                 </template>
                             </div>

@@ -76,7 +76,7 @@
               <th @click="toggleSort('start_date')"
                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
-                  Jadwal & Lokasi
+                  {{ t('events.list.headers.schedule_location', 'Jadwal & Lokasi') }}
                   <Icon v-if="sortBy === 'start_date'"
                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
@@ -85,7 +85,7 @@
               <th @click="toggleSort('participant_count')"
                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
-                  Peserta / Kategori
+                  {{ t('events.list.headers.participants_categories', 'Peserta / Kategori') }}
                   <Icon v-if="sortBy === 'participant_count'"
                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
@@ -94,13 +94,13 @@
               <th @click="toggleSort('status')"
                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
-                  Status
+                  {{ t('events.list.headers.status', 'Status') }}
                   <Icon v-if="sortBy === 'status'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                     class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                 </div>
               </th>
-              <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right ">Aksi
+              <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right "> {{ t('events.list.headers.actions', 'Aksi') }}
               </th>
             </tr>
           </thead>
@@ -111,8 +111,8 @@
                 <div class="flex flex-col items-center justify-center gap-4">
                   <div class="h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
                   <div class="flex flex-col gap-1">
-                    <p class="text-navy font-bold">Memuat Event...</p>
-                    <p class="text-xs text-gray-400 font-medium">Menyiapkan data kompetisi Anda</p>
+                    <p class="text-navy font-bold">{{ t('events.list.loading_title', 'Memuat Event...') }}</p>
+                    <p class="text-xs text-gray-400 font-medium">{{ t('events.list.loading_subtext', 'Menyiapkan data kompetisi Anda') }}</p>
                   </div>
                 </div>
               </td>
@@ -126,13 +126,13 @@
                     <Icon icon="ph:calendar-x" class="text-4xl" />
                   </div>
                   <div class="space-y-1">
-                    <p class="text-lg font-bold text-navy">Event Tidak Ditemukan</p>
+                    <p class="text-lg font-bold text-navy">{{ t('events.list.empty_state.title', 'Event Tidak Ditemukan') }}</p>
                     <p class="text-sm text-gray-500 font-medium leading-relaxed">
-                      Belum ada event yang sesuai dengan kriteria pencarian Anda.
+                      {{ t('events.list.empty_state.description', 'Belum ada event yang sesuai dengan kriteria pencarian Anda.') }}
                     </p>
                   </div>
                   <BaseButton v-if="searchQuery" variant="outline" size="sm" @click="resetFilters">
-                    Hapus Filter
+                    {{ t('events.list.clear_filters', 'Hapus Filter') }}
                   </BaseButton>
                   <BaseButton v-else :to="`/dashboard/${userPersona}/events/create`" variant="primary" size="sm"
                     icon="ph:plus-bold">
@@ -182,11 +182,11 @@
                 <div class="flex flex-col gap-1.5">
                   <div class="flex items-center gap-2 text-navy text-sm font-bold">
                     <Icon icon="ph:users-three" class="text-gray-400" />
-                    {{ event.participant_count || 0 }} <span class="text-gray-400 font-medium">Peserta</span>
+                    {{ event.participant_count || 0 }} <span class="text-gray-400 font-medium">{{ t('events.list.participants_label', 'Peserta') }}</span>
                   </div>
                   <div class="flex items-center gap-2 text-gray-500 text-xs font-semibold">
                     <Icon icon="ph:stack" class="text-gray-400" />
-                    {{ event.event_count || 0 }} <span class="text-gray-400 font-medium">Kategori</span>
+                    {{ event.event_count || 0 }} <span class="text-gray-400 font-medium">{{ t('events.list.categories_label', 'Kategori') }}</span>
                   </div>
                 </div>
               </td>
@@ -200,7 +200,7 @@
               <td class="px-6 py-5 text-right">
                 <div class="flex items-center justify-end gap-2">
                   <BaseButton @click="handleManageEvent(event)" variant="primary" size="sm" class="h-9 font-bold">
-                    Kelola
+                    {{ t('events.list.manage', 'Kelola') }}
                   </BaseButton>
                 </div>
               </td>
@@ -361,8 +361,8 @@ const getStatusDotClass = (status) => {
 
 const getStatusLabel = (status) => {
   const labels = {
-    'active': 'Aktif',
-    'draft': 'Draft'
+    'active': t('events.status.active', 'Aktif'),
+    'draft': t('events.status.draft', 'Draft')
   }
   return labels[status] || status
 }

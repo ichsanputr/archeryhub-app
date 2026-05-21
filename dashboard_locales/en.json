@@ -184,6 +184,26 @@
       "available": "Saldo Tersedia"
     },
     "profile": {
+      "edit": {
+        "head_title": "Edit Profile - Archeris Dashboard",
+        "back_to_profile": "Back to Profile",
+        "title": "Edit Profile",
+        "subtitle": "Update your personal information and preferences.",
+        "basic_info": "Basic Information",
+        "basic_info_sub": "Personal details that will be shown publicly.",
+        "category_discipline": "Category & Discipline",
+        "category_sub": "Select your competition level.",
+        "equipment_setup": "Equipment Setup",
+        "equipment_sub": "Record the equipment you currently use.",
+        "privacy_settings": "Privacy Settings",
+        "privacy_sub": "Control who can see your profile.",
+        "privacy_public": "Public Profile",
+        "privacy_public_sub": "Allow anyone to view your profile and achievements.",
+        "privacy_stats": "Show Statistics",
+        "privacy_stats_sub": "Display your tournament results and equipment publicly.",
+        "cancel": "Cancel",
+        "save_changes": "Save Changes"
+      },
       "tabs": {
         "about": "Visi & Misi",
         "contact": "Kontak & Sosmed",
@@ -333,18 +353,30 @@
   },
   "events": {
     "list": {
-      "empty_state": {
-        "create_first": ""
-      },
-      "reset_filters": "",
-      "search_label": "",
-      "search_placeholder": "",
-      "subtitle": "",
+      "title": "Events",
+      "subtitle": "Manage your tournaments, registrations, and results.",
+      "create_event": "Create Event",
+      "search_label": "Search events",
+      "search_placeholder": "Search by name, code, or location",
+      "reset_filters": "Clear Filters",
       "table_headers": {
-        "event_info": ""
+        "event_info": "Event Info",
+        "schedule_location": "Schedule & Location",
+        "participants_categories": "Participants / Categories",
+        "status": "Status",
+        "actions": "Actions"
       },
-      "title": "",
-      "create_event": ""
+      "loading_title": "Loading events...",
+      "loading_subtext": "Preparing your competition data",
+      "empty_state": {
+        "title": "No events found",
+        "description": "No events match your search criteria.",
+        "create_first": "Create your first event"
+      },
+      "clear_filters": "Clear Filters",
+      "participants_label": "Participants",
+      "categories_label": "Categories",
+      "manage": "Manage"
     }
   }
 }

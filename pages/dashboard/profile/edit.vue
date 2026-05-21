@@ -11,11 +11,11 @@
                         <span class="text-navy text-xl font-black tracking-tight font-display">Archeris.net</span>
                     </NuxtLink>
                 </div>
-                <div class="flex items-center gap-4">
-                    <BaseButton :to="`/dashboard/${userPersona}/profile`" variant="ghost" size="sm" icon="ph:arrow-left">
-                        Kembali ke Profil
-                    </BaseButton>
-                </div>
+                        <div class="flex items-center gap-4">
+                            <BaseButton :to="`/dashboard/${userPersona}/profile`" variant="ghost" size="sm" icon="ph:arrow-left">
+                                {{ t('profile.edit.back_to_profile', 'Kembali ke Profil') }}
+                            </BaseButton>
+                        </div>
             </div>
         </nav>
 
@@ -52,9 +52,8 @@
                         <div class="ml-6 mb-16 md:mb-4 pb-2">
                             <h1
                                 class="text-2xl md:text-3xl font-black text-white tracking-tight drop-shadow-md font-display">
-                                Edit Profil</h1>
-                            <p class="text-white/60 text-xs md:text-sm font-medium drop-shadow-sm">Perbarui informasi
-                                pribadi dan preferensi Anda.</p>
+                                {{ t('profile.edit.title', 'Edit Profil') }}</h1>
+                            <p class="text-white/60 text-xs md:text-sm font-medium drop-shadow-sm">{{ t('profile.edit.subtitle', 'Perbarui informasi pribadi dan preferensi Anda.') }}</p>
                         </div>
                     </div>
                 </div>
@@ -70,8 +69,8 @@
                             <Icon icon="ph:user" class="text-xl" />
                         </span>
                         <div>
-                            <h2 class="text-lg font-bold text-navy font-display">Informasi Dasar</h2>
-                            <p class="text-sm text-text-sub">Detail pribadi yang akan ditampilkan secara publik.</p>
+                            <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.basic_info', 'Informasi Dasar') }}</h2>
+                            <p class="text-sm text-text-sub">{{ t('profile.edit.basic_info_sub', 'Detail pribadi yang akan ditampilkan secara publik.') }}</p>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -101,8 +100,8 @@
                             <Icon icon="ph:identification-card" class="text-xl" />
                         </span>
                         <div>
-                            <h2 class="text-lg font-bold text-navy font-display">Kategori & Disiplin</h2>
-                            <p class="text-sm text-text-sub">Tentukan level kompetisi Anda.</p>
+                            <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.category_discipline', 'Kategori & Disiplin') }}</h2>
+                            <p class="text-sm text-text-sub">{{ t('profile.edit.category_sub', 'Tentukan level kompetisi Anda.') }}</p>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -132,8 +131,8 @@
                             <Icon icon="ph:wrench" class="text-xl" />
                         </span>
                         <div>
-                            <h2 class="text-lg font-bold text-navy font-display">Konfigurasi Alat</h2>
-                            <p class="text-sm text-text-sub">Catat perlengkapan yang Anda gunakan saat ini.</p>
+                            <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.equipment_setup', 'Konfigurasi Alat') }}</h2>
+                            <p class="text-sm text-text-sub">{{ t('profile.edit.equipment_sub', 'Catat perlengkapan yang Anda gunakan saat ini.') }}</p>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -151,25 +150,23 @@
                             <Icon icon="ph:lock-bold" />
                         </span>
                         <div>
-                            <h2 class="text-lg font-bold text-navy font-display">Pengaturan Privasi</h2>
-                            <p class="text-sm text-text-sub">Kontrol siapa yang dapat melihat profil Anda.</p>
+                            <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.privacy_settings', 'Pengaturan Privasi') }}</h2>
+                            <p class="text-sm text-text-sub">{{ t('profile.edit.privacy_sub', 'Kontrol siapa yang dapat melihat profil Anda.') }}</p>
                         </div>
                     </div>
                     <div class="space-y-6">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-sm font-bold text-navy">Profil Publik</h3>
-                                <p class="text-xs text-text-sub mt-1">Izinkan siapa saja melihat profil dan prestasi
-                                    Anda.</p>
+                                <h3 class="text-sm font-bold text-navy">{{ t('profile.edit.privacy_public', 'Profil Publik') }}</h3>
+                                <p class="text-xs text-text-sub mt-1">{{ t('profile.edit.privacy_public_sub', 'Izinkan siapa saja melihat profil dan prestasi Anda.') }}</p>
                             </div>
                             <BaseCheckbox v-model="profileData.isPublic" />
                         </div>
                         <div class="border-t border-gray-50"></div>
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-sm font-bold text-navy">Tampilkan Statistik</h3>
-                                <p class="text-xs text-text-sub mt-1">Tampilkan hasil turnamen dan peralatan Anda secara
-                                    publik.</p>
+                                <h3 class="text-sm font-bold text-navy">{{ t('profile.edit.privacy_stats', 'Tampilkan Statistik') }}</h3>
+                                <p class="text-xs text-text-sub mt-1">{{ t('profile.edit.privacy_stats_sub', 'Tampilkan hasil turnamen dan peralatan Anda secara publik.') }}</p>
                             </div>
                             <BaseCheckbox v-model="profileData.showStats" />
                         </div>
@@ -182,10 +179,10 @@
                 class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-100 p-4 z-40 transition-transform duration-300">
                 <div class="max-w-4xl mx-auto flex items-center justify-end gap-3">
                     <BaseButton :to="`/dashboard/${userPersona}/profile`" variant="ghost" size="md">
-                        Batal
+                        {{ t('profile.edit.cancel', 'Batal') }}
                     </BaseButton>
                     <BaseButton type="submit" variant="gold" size="lg" icon="ph:floppy-disk">
-                        Simpan Perubahan
+                        {{ t('profile.edit.save_changes', 'Simpan Perubahan') }}
                     </BaseButton>
                 </div>
             </div>
@@ -195,9 +192,12 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import useDashboardI18n from '~/composables/useDashboardI18n'
+
+const { t } = useDashboardI18n()
 
 useHead({
-    title: 'Edit Profil - Archeris Dashboard'
+    title: t('profile.edit.head_title', 'Edit Profil - Archeris Dashboard')
 })
 
 const profileData = ref({

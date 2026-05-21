@@ -184,6 +184,26 @@
       "available": "Saldo Tersedia"
     },
     "profile": {
+      "edit": {
+        "head_title": "Edit Profil - Archeris Dashboard",
+        "back_to_profile": "Kembali ke Profil",
+        "title": "Edit Profil",
+        "subtitle": "Perbarui informasi pribadi dan preferensi Anda.",
+        "basic_info": "Informasi Dasar",
+        "basic_info_sub": "Detail pribadi yang akan ditampilkan secara publik.",
+        "category_discipline": "Kategori & Disiplin",
+        "category_sub": "Tentukan level kompetisi Anda.",
+        "equipment_setup": "Konfigurasi Alat",
+        "equipment_sub": "Catat perlengkapan yang Anda gunakan saat ini.",
+        "privacy_settings": "Pengaturan Privasi",
+        "privacy_sub": "Kontrol siapa yang dapat melihat profil Anda.",
+        "privacy_public": "Profil Publik",
+        "privacy_public_sub": "Izinkan siapa saja melihat profil dan prestasi Anda.",
+        "privacy_stats": "Tampilkan Statistik",
+        "privacy_stats_sub": "Tampilkan hasil turnamen dan peralatan Anda secara publik.",
+        "cancel": "Batal",
+        "save_changes": "Simpan Perubahan"
+      },
       "tabs": {
         "about": "Visi & Misi",
         "contact": "Kontak & Sosmed",
@@ -333,18 +353,30 @@
   },
   "events": {
     "list": {
-      "empty_state": {
-        "create_first": ""
-      },
-      "reset_filters": "",
-      "search_label": "",
-      "search_placeholder": "",
-      "subtitle": "",
+      "title": "Daftar Event",
+      "subtitle": "Kelola turnamen, pendaftaran, dan hasil Anda.",
+      "create_event": "Buat Event",
+      "search_label": "Cari acara",
+      "search_placeholder": "Cari berdasarkan nama, kode, atau lokasi",
+      "reset_filters": "Hapus Filter",
       "table_headers": {
-        "event_info": ""
+        "event_info": "Info Event",
+        "schedule_location": "Jadwal & Lokasi",
+        "participants_categories": "Peserta / Kategori",
+        "status": "Status",
+        "actions": "Aksi"
       },
-      "title": "",
-      "create_event": ""
+      "loading_title": "Memuat Event...",
+      "loading_subtext": "Menyiapkan data kompetisi Anda",
+      "empty_state": {
+        "title": "Event Tidak Ditemukan",
+        "description": "Belum ada event yang sesuai dengan kriteria pencarian Anda.",
+        "create_first": "Buat Event Pertama Anda"
+      },
+      "clear_filters": "Hapus Filter",
+      "participants_label": "Peserta",
+      "categories_label": "Kategori",
+      "manage": "Kelola"
     }
   }
 }

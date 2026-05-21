@@ -7,10 +7,10 @@
       </div>
       <div>
         <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none">
-          {{ t('organization_settings_page.title') }}
+          {{ t('settings.title') }}
         </h1>
         <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider">
-          {{ t('organization_settings_page.subtitle') }}
+          {{ t('settings.subtitle') }}
         </div>
       </div>
     </div>
@@ -30,19 +30,19 @@
       class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
 
       <div>
-        <h3 class="text-xl font-bold text-navy mb-2">{{ t('organization_settings_page.security_title') }}</h3>
-        <div class="text-gray-500 text-sm mb-6">{{ t('organization_settings_page.security_subtitle') }}</div>
+        <h3 class="text-xl font-bold text-navy mb-2">{{ t('settings.security_title') }}</h3>
+        <div class="text-gray-500 text-sm mb-6">{{ t('settings.security_subtitle') }}</div>
 
         <!-- Email Change Section -->
         <div class="mb-8">
           <h4 class="text-sm font-black text-navy tracking-widest mb-4 flex items-center gap-2">
             <Icon icon="ph:envelope-simple-open-bold" class="text-primary" />
-            {{ t('organization_settings_page.email_change_title') }}
+            {{ t('settings.change_email') }}
           </h4>
 
           <div class="space-y-4 max-w-xl">
             <div>
-              <label class="label-xs">{{ t('organization_settings_page.email_current') }}</label>
+              <label class="label-xs">{{ t('settings.current_email') }}</label>
               <div
                 class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-400 font-medium">
                 <Icon icon="ph:envelope-bold" />
@@ -51,20 +51,20 @@
             </div>
 
             <div v-if="!otpSent">
-              <label class="label-xs">{{ t('organization_settings_page.email_new') }}</label>
+              <label class="label-xs">{{ t('settings.new_email') }}</label>
               <div class="flex gap-2">
                 <div class="relative flex-1">
                   <Icon icon="ph:at-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input v-model="emailForm.new_email" type="email" placeholder="email-baru@example.com"
+                  <input v-model="emailForm.new_email" type="email" :placeholder="t('settings.new_email_placeholder')"
                     class="w-full pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-primary transition-all" />
                 </div>
                 <BaseButton variant="primary" size="md" @click="requestOTP" :loading="isRequestingOTP"
                   :disabled="!emailForm.new_email">
-                  {{ t('organization_settings_page.send_otp') }}
+                  {{ t('settings.send_otp') }}
                 </BaseButton>
               </div>
               <div class="text-[10px] text-gray-400 mt-2">
-                {{ t('organization_settings_page.otp_sent_info', { email: emailForm.new_email || '...' }) }}
+                {{ t('settings.email_hint') }}
               </div>
             </div>
 
@@ -72,12 +72,12 @@
               <div class="p-3 bg-primary/10 border border-primary/20 rounded-xl flex items-center gap-3">
                 <Icon icon="ph:info-bold" class="text-primary" />
                 <div class="text-xs text-primary-dark font-medium">
-                  {{ t('organization_settings_page.otp_sent_info', { email: emailForm.new_email }) }}
+                  {{ t('settings.otp_sent_to', { email: emailForm.new_email }) }}
                 </div>
               </div>
 
               <div>
-                <label class="label-xs">{{ t('organization_settings_page.otp_label') }}</label>
+                <label class="label-xs">{{ t('settings.verification_code') }}</label>
                 <div class="flex gap-2">
                   <div class="relative flex-1">
                     <Icon icon="ph:key-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -86,14 +86,14 @@
                   </div>
                   <BaseButton variant="gold" size="md" @click="verifyEmailChange" :loading="isVerifyingOTP"
                     :disabled="emailForm.otp.length < 6">
-                    {{ t('organization_settings_page.verify_and_change') }}
+                    {{ t('settings.verify_change') }}
                   </BaseButton>
                 </div>
               </div>
 
               <button @click="otpSent = false"
                 class="text-xs font-bold text-gray-400 hover:text-navy transition-colors">
-                {{ t('organization_settings_page.use_another_email') }}
+                {{ t('settings.use_different_email') }}
               </button>
             </div>
           </div>
@@ -120,7 +120,7 @@
         <div class="mb-8">
           <h4 class="text-sm font-black text-navy tracking-widest mb-4 flex items-center gap-2">
             <Icon icon="ph:link-bold" class="text-primary" />
-            {{ t('organization_settings_page.connected_methods_title') }}
+            {{ t('settings.connected_methods') }}
           </h4>
           <div class="space-y-3">
             <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
@@ -129,21 +129,21 @@
                   <Icon icon="flat-color-icons:google" class="text-xl" />
                 </div>
                 <div>
-                  <div class="font-bold text-navy">{{ t('organization_settings_page.google_login') }}</div>
-                  <div class="text-xs text-gray-400">{{ t('organization_settings_page.google_login_desc') }}</div>
+                  <div class="font-bold text-navy">{{ t('settings.google_login') }}</div>
+                  <div class="text-xs text-gray-400">Google Account</div>
                 </div>
               </div>
               <div class="flex items-center gap-2">
                 <span v-if="userData?.google_id"
                   class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">
-                  {{ t('organization_settings_page.connected') }}
+                  Connected
                 </span>
                 <template v-else>
                   <span class="px-3 py-1 bg-gray-200 text-gray-500 text-xs font-bold rounded-full mr-2">
-                    {{ t('organization_settings_page.not_connected') }}
+                    Not Connected
                   </span>
                   <BaseButton variant="outline" size="sm" @click="linkGoogle">
-                    {{ t('organization_settings_page.connect') }}
+                    Connect
                   </BaseButton>
                 </template>
               </div>
@@ -154,14 +154,14 @@
                   <Icon icon="ph:envelope-bold" class="text-xl text-gray-400" />
                 </div>
                 <div>
-                  <div class="font-bold text-navy">{{ t('organization_settings_page.email_password') }}</div>
-                  <div class="text-xs text-gray-400">{{ t('organization_settings_page.email_password_desc') }}</div>
+                  <div class="font-bold text-navy">{{ t('settings.email_password') }}</div>
+                  <div class="text-xs text-gray-400">Email & Password</div>
                 </div>
               </div>
               <span
                 :class="hasPassword ? 'px-3 py-1 bg-green-100 text-green-600' : 'px-3 py-1 bg-gray-200 text-gray-500'"
                 class="text-xs font-bold rounded-full">
-                {{ hasPassword ? t('organization_settings_page.active') : t('organization_settings_page.inactive') }}
+                {{ hasPassword ? 'Active' : 'Inactive' }}
               </span>
             </div>
           </div>
@@ -171,21 +171,21 @@
         <div class="pt-8 border-t border-gray-100">
           <h4 class="text-sm font-black text-navy tracking-widest mb-6 flex items-center gap-2">
             <Icon icon="ph:lock-key-bold" class="text-primary" />
-            {{ hasPassword ? t('organization_settings_page.change_password_title') : t('organization_settings_page.set_password_title') }}
+            {{ hasPassword ? t('settings.change_password') : t('settings.set_password') }}
           </h4>
 
           <div class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-              <BaseInput v-model="securityForm.new_password" :label="t('organization_settings_page.new_password')" type="password"
+              <BaseInput v-model="securityForm.new_password" :label="t('settings.new_password')" type="password"
                 placeholder="••••••••" required />
-              <BaseInput v-model="securityForm.confirm_password" :label="t('organization_settings_page.confirm_new_password')" type="password"
+              <BaseInput v-model="securityForm.confirm_password" :label="t('settings.confirm_password')" type="password"
                 placeholder="••••••••" required />
             </div>
 
             <div class="pt-4 border-t border-gray-50">
               <BaseButton variant="primary" size="md" icon="ph:lock-key" @click="changePassword"
                 :loading="isChangingPassword" :disabled="!securityForm.new_password">
-                {{ hasPassword ? t('organization_settings_page.update_password') : t('organization_settings_page.set_password') }}
+                {{ hasPassword ? t('settings.change_password') : t('settings.set_password') }}
               </BaseButton>
             </div>
           </div>
@@ -196,10 +196,10 @@
     <!-- TAB: Tema -->
     <div v-show="activeTab === 'theme'" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
       <h3 class="text-xl font-black text-navy mb-2 flex items-center justify-between">
-        {{ t('organization_settings_page.theme_title') }}
+        {{ t('settings.theme_title') }}
         <Icon v-if="isSyncing" icon="ph:circle-notch" class="animate-spin text-primary" />
       </h3>
-      <div class="text-gray-500 text-sm mb-6">{{ t('organization_settings_page.theme_subtitle') }}</div>
+      <div class="text-gray-500 text-sm mb-6">{{ t('settings.theme_subtitle') }}</div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="(theme, key) in themes" :key="key" role="button"
@@ -252,10 +252,10 @@
     <!-- Tab: Metode Pembayaran -->
     <div v-show="activeTab === 'payment'" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
       <h3 class="text-xl font-black text-navy mb-2 flex items-center justify-between">
-        {{ t('organization_settings_page.payment_title') }}
+        Payment Methods
         <Icon v-if="savingPayment" icon="ph:circle-notch" class="animate-spin text-primary" />
       </h3>
-      <div class="text-gray-500 text-sm mb-6">{{ t('organization_settings_page.payment_subtitle') }}</div>
+      <div class="text-gray-500 text-sm mb-6">Manage bank accounts and payment methods for your organization</div>
 
       <!-- Currency Configuration -->
       <div class="mb-8 p-6 bg-navy/5 border border-navy/10 rounded-2xl">
@@ -347,10 +347,10 @@
   <!-- Save Button (Optional depending on tab) -->
   <div v-if="activeTab === 'theme' || activeTab === 'payment'" class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
     <BaseButton variant="outline" size="md" @click="resetForm" :loading="isResetting">
-      {{ t('organization_settings_page.btn_cancel') }}
+      {{ t('settings.security_tab') }}
     </BaseButton>
     <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral || savingPayment">
-      {{ t('organization_settings_page.btn_save') }}
+      Save Changes
     </BaseButton>
   </div>
 </template>
@@ -372,7 +372,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Pengaturan Akun - Archeris Dashboard'
+  title: t('settings.title') + ' - Archeris Dashboard'
 })
 
 const { t } = useI18n()
@@ -383,9 +383,9 @@ const { currentTheme, themes, isSyncing } = useTheme()
 const route = useRoute()
 
 const tabs = computed(() => [
-  { label: t('organization_settings_page.tab_security'), value: 'security', icon: 'ph:shield-check' },
-  { label: t('organization_settings_page.tab_theme'), value: 'theme', icon: 'ph:palette' },
-  { label: t('organization_settings_page.tab_payment'), value: 'payment', icon: 'ph:credit-card' },
+  { label: t('settings.security_tab'), value: 'security', icon: 'ph:shield-check' },
+  { label: t('settings.theme_tab'), value: 'theme', icon: 'ph:palette' },
+  { label: t('settings.theme_tab'), value: 'payment', icon: 'ph:credit-card' },
 ])
 
 const paymentMethodOptions = [
@@ -601,13 +601,13 @@ const securityForm = ref({
 const hasPassword = computed(() => !!userData.value?.has_password)
 
 const passwordStatusLabel = computed(() => {
-  return hasPassword.value ? t('organization_settings_page.password_set_label') : t('organization_settings_page.password_unset_label')
+  return hasPassword.value ? t('settings.password_set') : t('settings.password_not_set')
 })
 
 const passwordStatusDescription = computed(() => {
   return hasPassword.value
-    ? t('organization_settings_page.password_set_desc')
-    : t('organization_settings_page.password_unset_desc')
+    ? t('settings.password_set_desc')
+    : t('settings.password_not_set_desc')
 })
 
 // Determine user type

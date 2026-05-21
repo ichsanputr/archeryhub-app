@@ -15,9 +15,8 @@
                         <Icon icon="ph:wallet-bold" class="text-primary text-2xl sm:text-3xl" />
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-3xl font-black tracking-tight">Penghasilan Saya</h1>
-                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Lacak semua pendapatan dari event
-                            Anda</p>
+                        <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ t('earnings.title') }}</h1>
+                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('earnings.subtitle') }}</p>
                     </div>
                 </div>
             </div>
@@ -27,9 +26,9 @@
         <!-- Earnings Table -->
         <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
             <div class="p-6 border-b border-gray-100 flex items-center justify-between">
-                <h3 class="font-black text-navy tracking-widest text-sm">Riwayat Penghasilan Event</h3>
+                <h3 class="font-black text-navy tracking-widest text-sm">{{ t('earnings.table_header_event') }}</h3>
                 <div class="flex gap-2">
-                    <BaseButton variant="outline" size="xs" icon="ph:download-simple-bold">Export</BaseButton>
+                    <BaseButton variant="outline" size="xs" icon="ph:download-simple-bold">{{ t('earnings.export_button') }}</BaseButton>
                 </div>
             </div>
             <div class="overflow-x-auto">
@@ -37,11 +36,11 @@
                     <thead>
                         <tr
                             class="bg-gray-50/50 text-gray-500 font-bold text-[10px] tracking-widest border-b border-gray-100">
-                            <th class="px-6 py-4">Event</th>
-                            <th class="px-6 py-4">Tanggal Selesai</th>
-                            <th class="px-6 py-4">Peserta</th>
-                            <th class="px-6 py-4 text-right">Penghasilan Bersih</th>
-                            <th class="px-6 py-4 text-center">Aksi</th>
+                            <th class="px-6 py-4">{{ t('earnings.table_header_event') }}</th>
+                            <th class="px-6 py-4">{{ t('earnings.table_header_date') }}</th>
+                            <th class="px-6 py-4">{{ t('earnings.table_header_participants') }}</th>
+                            <th class="px-6 py-4 text-right">{{ t('earnings.table_header_earnings') }}</th>
+                            <th class="px-6 py-4 text-center">{{ t('earnings.table_header_actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -59,7 +58,7 @@
                             <td class="px-6 py-4">
                                 <span class="px-2 py-1 bg-navy/5 text-navy text-[10px] font-black rounded-lg">{{
                                     item.participants
-                                    }} Peserta</span>
+                                    }} {{ t('earnings.participants_label') }}</span>
                             </td>
                             <td class="px-6 py-4 text-right font-bold text-navy">
                                 Rp {{ item.amount.toLocaleString('id-ID') }}
@@ -76,7 +75,7 @@
                     </tbody>
                 </table>
             </div>
-            <div v-if="loading" class="p-12 text-center text-gray-400">Loading earnings data...</div>
+            <div v-if="loading" class="p-12 text-center text-gray-400">{{ t('earnings.loading') }}</div>
         </div>
     </div>
 </template>
@@ -87,16 +86,18 @@ import { ref, onMounted, computed } from 'vue'
 import { useApi } from '~/composables/useApi'
 import { useRouter } from 'vue-router'
 import { useDateFormat } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 
 const api = useApi()
 const router = useRouter()
+const { t } = useI18n()
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 useHead({
-    title: 'Penghasilan Saya - Archeris'
+    title: t('earnings.title') + ' - Archeris'
 })
 
 const earningsHistoryData = ref([])

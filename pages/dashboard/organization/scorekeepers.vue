@@ -21,10 +21,11 @@
                         </div>
                         <div>
                             <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">
-                                {{ t('organization.scorekeepers.title', 'Scorekeeper') }}
+                                {{ t('organization.scorekeepers.title') }}
                             </h1>
-                            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">Kelola akun
-                                {{ t('organization.scorekeepers.subtitle', 'Kelola akun staff pencatat skor organisasi') }}</p>
+                            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">
+                                {{ t('organization.scorekeepers.subtitle') }}
+                            </p>
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3">
@@ -32,7 +33,7 @@
                             variant="primary" icon="ph:plus-bold"
                             class="w-full sm:w-auto h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl"
                             :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
-                            {{ t('organization.scorekeepers.add', 'Tambah Staff') }}
+                            {{ t('organization.scorekeepers.add') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -44,12 +45,12 @@
             class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
             <div class="flex-grow w-full">
                 <BaseInput v-model="searchQuery" icon="ph:magnifying-glass"
-                    :placeholder="t('organization.scorekeepers.search_placeholder', 'Cari nama atau kode staff...')"
+                    :placeholder="t('organization.scorekeepers.search_placeholder')"
                     class="!mb-0" />
             </div>
             <BaseButton variant="white" icon="ph:funnel" @click="searchQuery = ''"
                 class="h-11 px-6 !rounded-xl text-[10px] font-black tracking-widest">
-                {{ t('common.reset', 'Reset') }}
+                {{ t('common.reset') }}
             </BaseButton>
         </div>
 
@@ -67,8 +68,8 @@
                 class="flex flex-col items-center justify-center py-24 gap-4">
                 <div class="h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
                 <div class="text-center">
-                    <p class="text-navy font-bold">Memuat Data...</p>
-                    <p class="text-xs text-gray-400 font-medium">Menyiapkan profil staff Anda</p>
+                    <p class="text-navy font-bold">{{ t('common.loading') }}</p>
+                    <p class="text-xs text-gray-400 font-medium">{{ t('organization.scorekeepers.loading_desc') }}</p>
                 </div>
             </div>
 
@@ -87,15 +88,14 @@
                     </div>
                 </div>
                 <div class="space-y-2 mb-10 max-w-sm">
-                    <h3 class="text-2xl font-black text-navy tracking-tight">Belum Ada Staff</h3>
+                    <h3 class="text-2xl font-black text-navy tracking-tight">{{ t('organization.scorekeepers.empty_title') }}</h3>
                     <p class="text-sm text-gray-500 leading-relaxed">
-                        Daftarkan akun staff pencatat skor untuk membantu organisasi Anda dalam mengelola nilai dan
-                        hasil pertandingan di lapangan.
+                        {{ t('organization.scorekeepers.empty_desc') }}
                     </p>
                 </div>
                 <BaseButton @click="openAddModal" variant="primary" icon="ph:plus-bold"
                     class="px-8 h-12 shadow-xl shadow-primary/20">
-                    Tambah Scorekeeper Pertama
+                    {{ t('organization.scorekeepers.add_first') }}
                 </BaseButton>
             </div>
 
@@ -106,14 +106,14 @@
                     <Icon icon="ph:magnifying-glass-duotone" class="text-4xl" />
                 </div>
                 <div class="space-y-1 mb-8">
-                    <h3 class="text-lg font-bold text-navy">Hasil Tidak Ditemukan</h3>
+                    <h3 class="text-lg font-bold text-navy">{{ t('common.no_results') }}</h3>
                     <p class="text-sm text-gray-500 max-w-xs mx-auto">
-                        Tidak ada staff yang cocok dengan kata kunci "<span class="font-bold text-navy">{{ searchQuery
+                        {{ t('common.no_results_desc') }} "<span class="font-bold text-navy">{{ searchQuery
                             }}</span>".
                     </p>
                 </div>
                 <BaseButton @click="searchQuery = ''" variant="white" size="sm" class="font-bold">
-                    Hapus Pencarian
+                    {{ t('common.clear_search') }}
                 </BaseButton>
             </div>
 
@@ -125,7 +125,7 @@
                             <th @click="toggleSort('name')"
                                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
-                                    Profil Staff
+                                    {{ t('organization.scorekeepers.table_profile') }}
                                     <Icon v-if="sortBy === 'name'"
                                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                                         class="text-primary" />
@@ -135,7 +135,7 @@
                             <th @click="toggleSort('code')"
                                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
-                                    Kode Login
+                                    {{ t('organization.scorekeepers.table_code') }}
                                     <Icon v-if="sortBy === 'code'"
                                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                                         class="text-primary" />
@@ -145,7 +145,7 @@
                             <th @click="toggleSort('status')"
                                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
-                                    Status Akun
+                                    {{ t('organization.scorekeepers.table_status') }}
                                     <Icon v-if="sortBy === 'status'"
                                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                                         class="text-primary" />
@@ -155,7 +155,7 @@
                             <th @click="toggleSort('created_at')"
                                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
-                                    Tgl Bergabung
+                                    {{ t('organization.scorekeepers.table_joined') }}
                                     <Icon v-if="sortBy === 'created_at'"
                                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                                         class="text-primary" />
@@ -163,7 +163,7 @@
                                 </div>
                             </th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right">
-                                Aksi</th>
+                                {{ t('common.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
@@ -190,7 +190,7 @@
                                     class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg  text-xs font-bold border capitalize tracking-wider">
                                     <span :class="sk.status === 'active' ? 'bg-green-500' : 'bg-red-500'"
                                         class="h-1.5 w-1.5 rounded-full"></span>
-                                    {{ sk.status === 'active' ? 'Aktif' : 'Nonaktif' }}
+                                    {{ sk.status === 'active' ? t('common.active') : t('common.inactive') }}
                                 </span>
                             </td>
                             <td class="px-6 py-5 text-gray-500 text-xs font-semibold">
@@ -218,34 +218,35 @@
 
         <!-- Modal Form -->
         <BaseDialogForm v-model="modal.show"
-            :header="modal.isEdit ? t('organization.scorekeepers.modal.edit_title', 'Edit Scorekeeper') : t('organization.scorekeepers.modal.add_title', 'Tambah Scorekeeper')">
+            :header="modal.isEdit ? t('organization.scorekeepers.modal.edit_title') : t('organization.scorekeepers.modal.add_title')">
             <div class="flex flex-col gap-4">
                 <BaseInput v-model="form.name"
-                    :label="t('organization.scorekeepers.modal.name_label', 'Nama Lengkap Staff')"
-                    :placeholder="t('organization.scorekeepers.modal.name_placeholder', 'e.g. Budi Santoso')"
+                    :label="t('organization.scorekeepers.modal.name_label')"
+                    :placeholder="t('organization.scorekeepers.modal.name_placeholder')"
                     required />
 
                 <div v-if="!modal.isEdit"
                     class="bg-primary/5 border border-primary/20 p-4 rounded-xl flex gap-3 items-start">
                     <Icon icon="ph:info-bold" class="text-primary text-lg flex-shrink-0 mt-0.5" />
                     <p class=" text-xs text-navy/70 leading-relaxed font-medium">
-                        {{ t('organization.scorekeepers.modal.info_generate', 'Kode akses login mobile apps akan digenerate secara otomatis setelah Anda menyimpan data staff ini.') }}
+                        {{ t('organization.scorekeepers.modal.info_generate') }}
                     </p>
                 </div>
 
                 <div v-if="modal.isEdit" class="mt-2">
-                    <label class="block text-xs font-black text-gray-500 tracking-widest mb-2">Status
-                        {{ t('organization.scorekeepers.modal.status_label', 'Akun') }}</label>
+                    <label class="block text-xs font-black text-gray-500 tracking-widest mb-2">
+                        {{ t('organization.scorekeepers.modal.status_label') }}
+                    </label>
                     <div class="flex gap-4">
                         <button type="button" @click="form.status = 'active'"
                             class="flex-1 py-3 rounded-xl border-2 font-bold transition-all"
                             :class="form.status === 'active' ? 'border-primary bg-primary/10 text-primary' : 'border-white/5 bg-white/5 text-gray-500'">
-                            {{ t('common.active', 'Aktif') }}
+                            {{ t('common.active') }}
                         </button>
                         <button type="button" @click="form.status = 'inactive'"
                             class="flex-1 py-3 rounded-xl border-2 font-bold transition-all"
                             :class="form.status === 'inactive' ? 'border-red-500/50 bg-red-500/10 text-red-500' : 'border-white/5 bg-white/5 text-gray-500'">
-                            {{ t('common.inactive', 'Nonaktif') }}
+                            {{ t('common.inactive') }}
                         </button>
                     </div>
                 </div>
@@ -253,9 +254,9 @@
 
             <template #action>
                 <div class="flex items-center justify-end gap-3 w-full">
-                    <BaseButton variant="white" @click="modal.show = false">{{ t('common.cancel', 'Batal') }}</BaseButton>
+                    <BaseButton variant="white" @click="modal.show = false">{{ t('common.cancel') }}</BaseButton>
                     <BaseButton :loading="modal.loading" @click="handleSubmit" class="bg-primary text-btn-text">
-                        {{ modal.isEdit ? t('common.save_changes', 'Simpan Perubahan') : t('organization.scorekeepers.modal.generate', 'Generate Akun') }}
+                        {{ modal.isEdit ? t('common.save_changes') : t('organization.scorekeepers.modal.generate') }}
                     </BaseButton>
                 </div>
             </template>
@@ -263,19 +264,19 @@
 
         <!-- Delete Confirmation -->
         <AppDialog v-model:show="deleteState.show"
-            :title="t('organization.scorekeepers.delete.title', 'Hapus Scorekeeper?')"
-            :message="t('organization.scorekeepers.delete.message', 'Tindakan ini permanen. Scorekeeper akan kehilangan akses ke akun mereka segera setelah dihapus.')"
-            :confirm-text="t('organization.scorekeepers.delete.confirm', 'Ya, Hapus Akun')"
+            :title="t('organization.scorekeepers.delete.title')"
+            :message="t('organization.scorekeepers.delete.message')"
+            :confirm-text="t('organization.scorekeepers.delete.confirm')"
             type="danger" @confirm="handleDelete" />
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted, reactive, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useSubscription } from '~/composables/useSubscription'
-import useDashboardI18n from '~/composables/useDashboardI18n'
 import LoadingSpinner from '~/components/common/LoadingSpinner.vue'
 import BaseDialogForm from '~/components/common/BaseDialogForm.vue'
 import BaseInput from '~/components/common/BaseInput.vue'
@@ -292,7 +293,7 @@ useHead({
 })
 
 const { isSubscriptionActive } = useSubscription()
-const { t } = useDashboardI18n()
+const { t } = useI18n()
 const api = useApi()
 const toast = useToast()
 
@@ -326,7 +327,7 @@ const fetchScorekeepers = async () => {
         scorekeepers.value = res.scorekeepers || []
         totalItems.value = res.meta?.total_items || 0
     } catch (error) {
-        toast.error('Gagal memuat data scorekeeper')
+        toast.error(t('organization.scorekeepers.fetch_error'))
     } finally {
         loading.value = false
     }
@@ -365,7 +366,7 @@ const deleteState = reactive({
 const copyCode = (code) => {
     if (!code) return
     navigator.clipboard.writeText(code)
-    toast.success(`Kode ${code} disalin ke clipboard`)
+    toast.success(t('organization.scorekeepers.code_copied'))
 }
 
 const formatDate = (dateStr) => {
@@ -393,7 +394,7 @@ const openEditModal = (sk) => {
 
 const handleSubmit = async () => {
     if (!form.name) {
-        toast.error('Mohon lengkapi semua field wajib')
+        toast.error(t('common.fill_required_fields'))
         return
     }
 
@@ -404,17 +405,17 @@ const handleSubmit = async () => {
                 name: form.name,
                 status: form.status
             })
-            toast.success('Akun scorekeeper berhasil diperbarui')
+            toast.success(t('organization.scorekeepers.update_success'))
         } else {
             const res = await api.post('/organizations/scorekeepers', {
                 name: form.name
             })
-            toast.success(`Akun scorekeeper berhasil dibuat! Kode: ${res.code}`)
+            toast.success(t('organization.scorekeepers.create_success'))
         }
         modal.show = false
         fetchScorekeepers()
     } catch (error) {
-        const msg = error.response?.data?.error || 'Gagal menyimpan data'
+        const msg = error.response?.data?.error || t('common.error_saving')
         toast.error(msg)
     } finally {
         modal.loading = false
@@ -431,10 +432,10 @@ const handleDelete = async () => {
 
     try {
         await api.delete(`/organizations/scorekeepers/${deleteState.target.uuid}`)
-        toast.success('Scorekeeper berhasil dihapus')
+        toast.success(t('organization.scorekeepers.delete_success'))
         fetchScorekeepers()
     } catch (error) {
-        toast.error('Gagal menghapus scorekeeper')
+        toast.error(t('organization.scorekeepers.delete_error'))
     } finally {
         deleteState.show = false
     }

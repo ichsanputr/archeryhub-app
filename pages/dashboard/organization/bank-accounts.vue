@@ -16,16 +16,17 @@
                     </div>
                     <div>
                         <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">
-                            {{ t('organization.bank_accounts.title', 'Rekening Bank') }}
+                            {{ t('organization.bank_accounts.title') }}
                         </h1>
-                        <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">Kelola rekening
-                            {{ t('organization.bank_accounts.subtitle', 'Kelola rekening tujuan pencairan dana Anda') }}</p>
+                        <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">
+                            {{ t('organization.bank_accounts.subtitle') }}
+                        </p>
                     </div>
                 </div>
                 <div>
                     <BaseButton @click="openAddModal" variant="primary" icon="ph:plus-bold"
                         class="font-black tracking-widest text-[10px] h-11 px-6 shadow-lg shadow-primary/20 !rounded-xl">
-                        {{ t('organization.bank_accounts.add', 'Tambah Rekening') }}
+                        {{ t('organization.bank_accounts.add') }}
                     </BaseButton>
                 </div>
             </div>
@@ -58,13 +59,13 @@
                     <div class="space-y-4">
                     <div>
                         <p class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
-                            {{ t('organization.bank_accounts.fields.bank_name', 'Nama Bank') }}
+                            {{ t('organization.bank_accounts.fields.bank_name') }}
                         </p>
                         <p class="text-sm font-black text-navy">{{ account.bank_name }}</p>
                     </div>
                     <div>
                         <div class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
-                            {{ t('organization.bank_accounts.fields.account_number', 'Nomor Rekening') }}
+                            {{ t('organization.bank_accounts.fields.account_number') }}
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="text-lg font-black text-navy tracking-tight">{{ account.account_number }}</div>
@@ -75,7 +76,7 @@
                     </div>
                     <div>
                         <p class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
-                            {{ t('organization.bank_accounts.fields.account_name', 'Nama Pemilik') }}
+                            {{ t('organization.bank_accounts.fields.account_name') }}
                         </p>
                         <p class="text-sm font-bold text-gray-700 truncate">{{ account.account_name }}</p>
                     </div>
@@ -90,19 +91,19 @@
                     <Icon icon="ph:plus-bold" class="text-2xl" />
                 </div>
                 <div class="text-center">
-                    <p class="text-sm font-black text-navy tracking-widest">Tambah Rekening Baru</p>
-                    <p class="text-xs text-gray-400 font-medium mt-1">Gunakan rekening lain untuk pencairan</p>
+                    <p class="text-sm font-black text-navy tracking-widest">{{ t('organization.bank_accounts.add_new') }}</p>
+                    <p class="text-xs text-gray-400 font-medium mt-1">{{ t('organization.bank_accounts.add_new_desc') }}</p>
                 </div>
             </button>
         </div>
 
         <!-- Add/Edit Modal -->
         <BaseDialogForm v-model="modal.show"
-            :header="modal.isEdit ? t('organization.bank_accounts.modal.edit_title', 'Edit Rekening') : t('organization.bank_accounts.modal.add_title', 'Tambah Rekening Bank')">
+            :header="modal.isEdit ? t('organization.bank_accounts.modal.edit_title') : t('organization.bank_accounts.modal.add_title')">
             <div class="space-y-4">
                 <div class="space-y-2">
                     <label class="text-xs font-black text-gray-400 tracking-widest">
-                        {{ t('organization.bank_accounts.modal.pick_bank', 'Pilih Bank') }}
+                        {{ t('organization.bank_accounts.modal.pick_bank') }}
                     </label>
                     <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
                         <button v-for="bank in supportedBanks" :key="bank.id" type="button"
@@ -114,28 +115,29 @@
                         </button>
                     </div>
                 </div>
-                <BaseInput v-model="form.bankName" :label="t('organization.bank_accounts.modal.custom_bank_label', 'Nama Bank Kustom')"
-                    :placeholder="t('organization.bank_accounts.modal.custom_bank_placeholder', 'Jika bank tidak ada di list')" />
-                <BaseInput v-model="form.accountNumber" :label="t('organization.bank_accounts.modal.account_number_label', 'Nomor Rekening')"
-                    :placeholder="t('organization.bank_accounts.modal.account_number_placeholder', 'Masukkan nomor rekening')"
+                <BaseInput v-model="form.bankName" :label="t('organization.bank_accounts.modal.custom_bank_label')"
+                    :placeholder="t('organization.bank_accounts.modal.custom_bank_placeholder')" />
+                <BaseInput v-model="form.accountNumber" :label="t('organization.bank_accounts.modal.account_number_label')"
+                    :placeholder="t('organization.bank_accounts.modal.account_number_placeholder')"
                     required />
-                <BaseInput v-model="form.accountName" :label="t('organization.bank_accounts.modal.account_name_label', 'Nama Pemilik Rekening')"
-                    :placeholder="t('organization.bank_accounts.modal.account_name_placeholder', 'Sesuai buku tabungan')"
+                <BaseInput v-model="form.accountName" :label="t('organization.bank_accounts.modal.account_name_label')"
+                    :placeholder="t('organization.bank_accounts.modal.account_name_placeholder')"
                     required />
 
                 <div class="flex items-center gap-2 mt-2">
                     <input type="checkbox" v-model="form.isPrimary" id="isPrimary"
                         class="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4">
-                    <label for="isPrimary" class="text-xs font-bold text-navy tracking-widest">Jadikan
-                        {{ t('organization.bank_accounts.modal.set_primary', 'Rekening Utama') }}</label>
+                    <label for="isPrimary" class="text-xs font-bold text-navy tracking-widest">
+                        {{ t('organization.bank_accounts.modal.set_primary_label') }}
+                    </label>
                 </div>
             </div>
 
             <template #action>
                 <div class="flex gap-3">
-                    <BaseButton variant="white" @click="modal.show = false">{{ t('common.cancel', 'Batal') }}</BaseButton>
+                    <BaseButton variant="white" @click="modal.show = false">{{ t('common.cancel') }}</BaseButton>
                     <BaseButton variant="primary" :loading="modal.loading" @click="handleSubmit">
-                        {{ t('organization.bank_accounts.modal.save', 'Simpan Rekening') }}
+                        {{ t('organization.bank_accounts.modal.save') }}
                     </BaseButton>
                 </div>
             </template>
@@ -143,8 +145,8 @@
 
         <!-- Delete Confirmation -->
         <AppDialog v-model:show="deleteState.show"
-            :title="t('organization.bank_accounts.delete.title', 'Hapus Rekening?')"
-            :message="t('organization.bank_accounts.delete.message', 'Rekening ini akan dihapus dari daftar tujuan pencairan Anda.')"
+            :title="t('organization.bank_accounts.delete.title')"
+            :message="t('organization.bank_accounts.delete.message')"
             type="danger"
             @confirm="handleDelete" />
     </div>
@@ -153,6 +155,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, onMounted, reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import useDashboardI18n from '~/composables/useDashboardI18n'

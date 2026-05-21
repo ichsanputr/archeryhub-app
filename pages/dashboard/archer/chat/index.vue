@@ -202,8 +202,8 @@
                   class="size-16 rounded-3xl bg-white border-2 border-dashed border-gray-200 flex items-center justify-center mb-3">
                   <Icon icon="ph:chat-circle-bold" class="text-3xl text-gray-300" />
                 </div>
-                <div class="text-sm font-bold text-gray-400">{{ t('chat.no_messages') }}</div>
-                <div class="text-xs text-gray-300 font-medium mt-1">{{ t('chat.no_messages_desc') }}</div>
+            <div class="text-sm font-bold text-gray-400">{{ t('chat.no_messages') }}</div>
+                <div class="text-xs text-gray-300 font-medium mt-1">{{ t('chat.reply_to_start') }}</div>
               </div>
 
               <template v-else>
@@ -245,7 +245,7 @@
             <div class="flex items-end gap-2.5 max-w-4xl mx-auto">
               <div
                 class="flex-grow bg-gray-50 rounded-2xl border-2 border-gray-200 focus-within:border-primary/40 focus-within:bg-white transition-all flex items-end overflow-hidden">
-                <textarea v-model="newMessage" :placeholder="t('chat.write_placeholder')" rows="1"
+                <textarea v-model="newMessage" :placeholder="t('chat.type_reply')" rows="1"
                   @keydown.enter.exact.prevent="sendMessage"
                   class="flex-grow bg-transparent border-none focus:ring-0 text-sm font-medium px-4 py-3 max-h-32 resize-none no-scrollbar text-navy placeholder:text-gray-300 outline-none" />
               </div>
@@ -255,7 +255,7 @@
                 <Icon v-else icon="ph:paper-plane-right-fill" class="text-primary text-lg" />
               </button>
             </div>
-            <div class="text-[9px] text-gray-300 font-semibold text-center mt-2">{{ t('chat.input_tips') }}
+            <div class="text-[9px] text-gray-300 font-semibold text-center mt-2">{{ t('chat.send_hint') }}
             </div>
           </div>
         </template>
