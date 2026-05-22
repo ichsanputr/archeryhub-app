@@ -130,3 +130,40 @@
 .fade-leave-to {
     opacity: 0;
 }
+
+/* ── Global link hover: underline slide-in with primary (lime) color ──
+   Applies to plain <a> tags that don't already carry a bg/button class.
+   Buttons, nav items, and utility links override this via their own classes. */
+@layer base {
+    a:not([class]):hover,
+    a.link-hover:hover {
+        text-decoration: none;
+    }
+
+    a:not([class]) {
+        text-decoration: none;
+        background-image: linear-gradient(var(--color-primary), var(--color-primary));
+        background-position: 0% 100%;
+        background-repeat: no-repeat;
+        background-size: 0% 2px;
+        transition: background-size 0.25s ease;
+    }
+
+    a:not([class]):hover {
+        background-size: 100% 2px;
+    }
+}
+
+/* Opt-in class for styled links inside prose / content areas */
+.link-underline {
+    text-decoration: none;
+    background-image: linear-gradient(var(--color-primary), var(--color-primary));
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size 0.25s ease;
+}
+
+.link-underline:hover {
+    background-size: 100% 2px;
+}

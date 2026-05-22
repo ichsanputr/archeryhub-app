@@ -187,10 +187,14 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
 
 definePageMeta({ layout: 'dashboard' })
-useHead({ title: 'Riwayat Transaksi - Dashboard Seller' })
+
+const { t } = useI18n()
+
+useHead({ title: computed(() => `${t('seller_transactions.title')} - Dashboard Seller`) })
 
 const { get } = useApi()
 const toast = useToast()

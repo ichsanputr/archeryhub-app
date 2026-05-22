@@ -83,7 +83,7 @@
                                     </template>
                                 </div>
                                 <h2
-                                    class="text-white text-xl sm:text-2xl md:text-3xl font-black mt-4 leading-tight group-hover:text-primary transition-colors">
+                                    class="text-white text-xl sm:text-2xl md:text-3xl font-black mt-4 leading-tight underline-link-white">
                                     {{ featuredArticle.title }}
                                 </h2>
                                 <p class="text-gray-300 mt-3 line-clamp-2 max-w-2xl">{{ featuredArticle.excerpt }}</p>
@@ -138,7 +138,7 @@
                                             </div>
                                         </div>
                                         <h3
-                                            class="font-black text-navy text-xl leading-snug group-hover:text-primary transition-colors line-clamp-2 mb-3">
+                                            class="font-black text-navy text-xl leading-snug line-clamp-2 mb-3 underline-link">
                                             {{ article.title }}
                                         </h3>
                                         <p class="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4">{{
@@ -155,9 +155,9 @@
                                             <span class="text-xs font-bold text-navy">{{ article.author }}</span>
                                         </div>
                                         <span
-                                            class="text-primary font-black text-xs tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-transform self-start sm:self-auto">
+                                            class="text-navy font-black text-xs tracking-wider flex items-center gap-1.5 self-start sm:self-auto border-b border-navy/30 pb-px group-hover:border-navy transition-colors">
                                             {{ $t('news_page.read_more') }}
-                                            <Icon icon="ph:arrow-right-bold" />
+                                            <Icon icon="ph:arrow-right-bold" class="transition-transform group-hover:translate-x-0.5" />
                                         </span>
                                     </div>
                                 </div>
@@ -204,7 +204,7 @@
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <h4
-                                            class="font-bold text-navy text-sm leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                                            class="font-bold text-navy text-sm leading-snug line-clamp-2 underline-link">
                                             {{ article.title }}
                                         </h4>
                                         <span class="text-[10px] text-gray-400 mt-1 block font-medium">{{ article.date
@@ -436,5 +436,29 @@ useSeoMeta({
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+/* Underline-slide link effect — lime underline on hover */
+.underline-link {
+    background-image: linear-gradient(var(--color-primary, #D9FF00), var(--color-primary, #D9FF00));
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size 0.3s ease;
+}
+.group:hover .underline-link {
+    background-size: 100% 2px;
+}
+
+/* Same for white text (featured article) */
+.underline-link-white {
+    background-image: linear-gradient(#fff, #fff);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size 0.3s ease;
+}
+.group:hover .underline-link-white {
+    background-size: 100% 2px;
 }
 </style>

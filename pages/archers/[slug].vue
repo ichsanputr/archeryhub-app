@@ -1,103 +1,103 @@
 <template>
-    <div class="bg-navy-dark min-h-screen flex flex-col selection:bg-primary selection:text-navy-dark">
+    <div class="bg-white min-h-screen flex flex-col selection:bg-primary selection:text-navy-dark">
         <Transition name="fade" mode="out-in">
             <ArcherPageSkeleton v-if="isLoading || !archerResponse" key="skeleton" />
             <div v-else key="content">
-                <!-- ── Premium Hero Section (ATP / PGA Tour Inspired) ── -->
-                <section class="relative min-h-[36rem] w-full overflow-hidden bg-navy pt-28 sm:pt-36 pb-16 flex items-end">
-                    <!-- Dynamic Immersive Backdrop -->
+                <!-- ── Hero Section ── -->
+                <section class="relative w-full overflow-hidden bg-navy pt-20 sm:pt-24 pb-0 flex items-end">
+                    <!-- Backdrop image -->
                     <img :src="useImageOrDefault(archer.banner_url || archer.avatar_url, archer.full_name)"
-                        class="absolute inset-0 w-full h-full object-cover object-top opacity-30 mix-blend-overlay pointer-events-none scale-105 filter blur-[2px]"
+                        class="absolute inset-0 w-full h-full object-cover object-top opacity-20 mix-blend-overlay pointer-events-none scale-105 filter blur-sm"
                         :alt="archer.full_name" />
-                    <!-- Visual motif grid -->
-                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(15,23,42,0.1),rgba(15,23,42,0.9))]"></div>
-                    <div class="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-navy-dark to-transparent pointer-events-none"></div>
+                    <!-- Radial vignette -->
+                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_0%,rgba(15,23,42,0.3),rgba(15,23,42,0.95))]"></div>
+                    <!-- Bottom fade into white -->
+                    <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none z-10"></div>
 
-                    <div class="relative w-full px-6 md:px-12 max-w-7xl mx-auto z-10">
-                        <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-12">
-                            <!-- Left: Identity Details -->
-                            <div class="flex flex-col md:flex-row items-center md:items-end gap-6 sm:gap-8 text-center md:text-left">
-                                <!-- Glassmorphic Avatar Frame -->
-                                <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl border-[6px] border-white/10 shadow-2xl overflow-hidden shrink-0 group relative bg-navy/50 backdrop-blur-md">
-                                    <img :src="useImageOrDefault(archer.avatar_url, archer.full_name)"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                        :alt="archer.full_name" />
+                    <div class="relative w-full px-4 sm:px-6 md:px-12 max-w-7xl mx-auto z-10 pb-16">
+                        <div class="flex flex-col md:flex-row items-start md:items-end gap-6 md:gap-10">
+                            <!-- Avatar -->
+                            <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl border-4 border-white/10 shadow-2xl overflow-hidden shrink-0 bg-navy/50 backdrop-blur-md">
+                                <img :src="useImageOrDefault(archer.avatar_url, archer.full_name)"
+                                    class="w-full h-full object-cover"
+                                    :alt="archer.full_name" />
+                            </div>
+
+                            <!-- Identity -->
+                            <div class="flex-1 min-w-0 space-y-3">
+                                <!-- Badges row -->
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="px-3 py-1 bg-primary text-navy text-[9px] font-black rounded-lg uppercase tracking-widest">
+                                        Pro Archer
+                                    </span>
+                                    <div v-if="archer.club_name" class="flex items-center gap-1.5 px-3 py-1 bg-white/8 backdrop-blur-sm border border-white/10 rounded-lg">
+                                        <Icon icon="ph:shield-star-fill" class="text-primary text-xs" />
+                                        <span class="text-[9px] font-black tracking-widest text-white/80 uppercase">{{ archer.club_name }}</span>
+                                    </div>
                                 </div>
-                                <div class="space-y-4">
-                                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-3">
-                                        <span class="px-4 py-1.5 bg-primary text-navy-dark text-[9px] font-black rounded-xl uppercase tracking-widest shadow-lg shadow-primary/20">
-                                            Pro Archer
-                                        </span>
-                                        <div v-if="archer.club_name" class="flex items-center gap-1.5 px-3 py-1 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-primary">
-                                            <Icon icon="ph:shield-star-fill" class="text-sm" />
-                                            <span class="text-[9px] font-black tracking-widest uppercase">{{ archer.club_name }}</span>
-                                        </div>
-                                    </div>
-                                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter leading-none text-white uppercase">
-                                        {{ archer.full_name?.split(' ')[0] }} <br />
-                                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-white font-black">
-                                            {{ archer.full_name?.split(' ').slice(1).join(' ') }}
-                                        </span>
-                                    </h1>
-                                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-6 text-sm text-slate-300 font-bold pt-2">
-                                        <span class="flex items-center gap-2">
-                                            <Icon icon="ph:map-pin-bold" class="text-primary text-base" />
-                                            {{ archer.city || 'Indonesia' }} 🇮🇩
-                                        </span>
-                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-500 hidden sm:inline-block"></span>
-                                        <span v-if="bowTypeLabel" class="flex items-center gap-2">
-                                            <Icon icon="ph:target-bold" class="text-primary text-base" />
-                                            {{ bowTypeLabel }}
-                                        </span>
-                                    </div>
+
+                                <!-- Name -->
+                                <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-none text-white">
+                                    {{ archer.full_name }}
+                                </h1>
+
+                                <!-- Meta row -->
+                                <div class="flex flex-wrap items-center gap-4 text-sm text-white/50 font-bold">
+                                    <span class="flex items-center gap-1.5">
+                                        <Icon icon="ph:map-pin-bold" class="text-primary text-sm" />
+                                        {{ archer.city || 'Indonesia' }}
+                                    </span>
+                                    <span v-if="bowTypeLabel" class="flex items-center gap-1.5">
+                                        <Icon icon="ph:target-bold" class="text-primary text-sm" />
+                                        {{ bowTypeLabel }}
+                                    </span>
                                 </div>
                             </div>
 
-                            <!-- Right: High-Impact Performance Metrics Card (NBA / PGA Style) -->
-                            <div class="w-full lg:w-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 sm:p-8 grid grid-cols-3 gap-6 sm:gap-10 shrink-0">
-                                <div class="text-center">
-                                    <div class="text-[9px] font-black text-slate-400 tracking-widest uppercase mb-1">Cuts Made</div>
-                                    <div class="text-2xl sm:text-3xl font-black text-white italic">{{ statsSummary.totalEvents }}</div>
-                                    <div class="text-[9px] font-bold text-slate-400 mt-1">Tournaments</div>
+                            <!-- Stats pill row — right side on desktop -->
+                            <div class="flex items-center gap-px bg-white/5 border border-white/10 rounded-2xl overflow-hidden shrink-0 backdrop-blur-md">
+                                <div class="text-center px-6 py-4">
+                                    <div class="text-[9px] font-black text-white/40 tracking-widest uppercase mb-1">Events</div>
+                                    <div class="text-2xl font-black text-white">{{ statsSummary.totalEvents }}</div>
                                 </div>
-                                <div class="text-center border-x border-white/10 px-6 sm:px-10">
+                                <div class="w-px h-12 bg-white/10"></div>
+                                <div class="text-center px-6 py-4">
                                     <div class="text-[9px] font-black text-primary tracking-widest uppercase mb-1">Wins</div>
-                                    <div class="text-2xl sm:text-3xl font-black text-primary italic">{{ statsSummary.wins }}</div>
-                                    <div class="text-[9px] font-bold text-slate-400 mt-1">Gold Medals</div>
+                                    <div class="text-2xl font-black text-primary">{{ statsSummary.wins }}</div>
                                 </div>
-                                <div class="text-center">
-                                    <div class="text-[9px] font-black text-slate-400 tracking-widest uppercase mb-1">Avg Rank</div>
-                                    <div class="text-2xl sm:text-3xl font-black text-white italic">#{{ statsSummary.avgRank }}</div>
-                                    <div class="text-[9px] font-bold text-slate-400 mt-1">Leaderboard</div>
+                                <div class="w-px h-12 bg-white/10"></div>
+                                <div class="text-center px-6 py-4">
+                                    <div class="text-[9px] font-black text-white/40 tracking-widest uppercase mb-1">Avg Rank</div>
+                                    <div class="text-2xl font-black text-white">#{{ statsSummary.avgRank }}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- ── Elegant Sticky Sub-Navigation ── -->
+                <!-- ── Sticky Sub-Navigation ── -->
                 <div class="border-b border-gray-100 bg-white sticky top-0 z-40 shadow-sm">
-                    <div class="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-                        <div class="flex gap-8 overflow-x-auto scrollbar-none">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex items-center justify-between">
+                        <div class="flex gap-6 sm:gap-8 overflow-x-auto scrollbar-none">
                             <button v-for="tab in ['overview', 'results', 'bio']" :key="tab"
                                 @click="activeTab = tab"
-                                class="py-5 font-black text-xs tracking-widest uppercase transition-all duration-300 relative shrink-0"
-                                :class="activeTab === tab ? 'text-navy-dark' : 'text-gray-400 hover:text-navy-dark'">
+                                class="py-4 font-black text-xs tracking-widest uppercase transition-all duration-300 relative shrink-0"
+                                :class="activeTab === tab ? 'text-navy' : 'text-gray-400 hover:text-navy'">
                                 {{ tab }}
-                                <span v-if="activeTab === tab" class="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full"></span>
+                                <span v-if="activeTab === tab" class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-t-full"></span>
                             </button>
                         </div>
                         <button @click="openShareDialog"
-                            class="flex items-center gap-2 py-2 px-4 bg-gray-50 border border-gray-200 rounded-xl text-[10px] font-black tracking-widest text-navy-dark hover:bg-gray-100 transition-all uppercase shrink-0">
+                            class="flex items-center gap-2 py-2 px-3 sm:px-4 bg-gray-50 border border-gray-200 rounded-xl text-[10px] font-black tracking-widest text-navy hover:bg-gray-100 transition-all uppercase shrink-0">
                             <Icon icon="ph:share-network-bold" class="text-sm text-primary" />
-                            Share Profile
+                            <span class="hidden sm:inline">Share</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- ── Immersive Main Content Tabs ── -->
+                <!-- ── Main Content ── -->
                 <div class="bg-gray-50/50 min-h-[40rem] pb-24">
-                    <div class="max-w-7xl mx-auto px-6 md:px-12 pt-12">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 pt-10">
                         <Transition name="fade" mode="out-in">
                             <div v-if="activeTab === 'overview'" key="overview" class="grid grid-cols-1 lg:grid-cols-12 gap-10">
                                 <!-- Left Column: Bio & Analytics -->
@@ -174,7 +174,7 @@
                                                         <span class="text-base font-black text-white leading-none">{{ formatDate(event.date, 'DD') }}</span>
                                                     </div>
                                                     <div class="min-w-0 flex-1">
-                                                        <h4 class="font-black text-navy group-hover:text-primary transition-colors truncate text-sm uppercase">{{ event.name }}</h4>
+                                                        <h4 class="font-black text-navy truncate text-sm uppercase">{{ event.name }}</h4>
                                                         <p class="text-xs text-slate-400 mt-0.5 truncate">{{ event.city }}</p>
                                                     </div>
                                                 </div>
@@ -187,7 +187,7 @@
                                                     </div>
                                                     <div class="text-right">
                                                         <span class="text-[8px] font-black text-slate-300 tracking-wider block uppercase">Rank</span>
-                                                        <span class="text-lg font-black text-navy group-hover:text-primary transition-colors">#{{ event.rank || '-' }}</span>
+                                                        <span class="text-lg font-black text-navy">#{{ event.rank || '-' }}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -299,7 +299,7 @@
                                                 @click="router.push(`/events/${event.slug}`)">
                                                 <td class="px-8 py-4 font-mono text-xs text-slate-400">{{ formatDate(event.date, 'DD MMM YYYY') }}</td>
                                                 <td class="px-8 py-4">
-                                                    <div class="font-black text-navy group-hover:text-primary transition-colors text-sm uppercase">{{ event.name }}</div>
+                                                    <div class="font-black text-navy transition-colors text-sm uppercase">{{ event.name }}</div>
                                                     <div class="text-[10px] text-slate-400 font-bold tracking-wider mt-0.5 uppercase">{{ event.city }}</div>
                                                 </td>
                                                 <td class="px-8 py-4">

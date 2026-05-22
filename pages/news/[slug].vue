@@ -9,13 +9,13 @@
         <section class="relative w-full bg-navy overflow-hidden">
             <!-- Background Elements -->
             <div class="absolute inset-0 z-0 text-white">
-                <img v-if="article.image" :src="article.image" class="w-full h-full object-cover opacity-30" />
+                <img v-if="article.image" :src="article.image" class="w-full h-full object-cover opacity-25" />
                 <div v-else class="w-full h-full bg-gradient-to-br from-navy to-navy-light opacity-80"></div>
                 <!-- Dynamic Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-navy/30"></div>
             </div>
 
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40 pb-10 sm:pb-16 relative z-10 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 pb-10 sm:pb-14 relative z-10 text-white">
                 <!-- Back nav -->
                 <NuxtLink :to="localePath('/news')"
                     class="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-white/50 hover:text-primary transition-colors mb-8 sm:mb-12">
@@ -240,7 +240,7 @@
                                 </div>
                                 <div>
                                     <h4
-                                        class="font-bold text-navy dark:text-white text-sm leading-snug mb-1 group-hover:text-primary transition-colors line-clamp-2">
+                                        class="font-bold text-navy text-sm leading-snug mb-1 line-clamp-2 underline-link">
                                         {{ item.title }}
                                     </h4>
                                     <span class="text-xs text-slate-400">{{ item.date }}</span>
@@ -549,7 +549,32 @@ useSeoMeta({
 :deep(.prose) {
     --tw-prose-body: #0f172a;
     --tw-prose-headings: #0f172a;
-    --tw-prose-links: #f59e0b;
+    --tw-prose-links: #0f172a;
     --tw-prose-bold: #0f172a;
+}
+
+:deep(.prose a) {
+    text-decoration: none;
+    background-image: linear-gradient(#D9FF00, #D9FF00);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size 0.25s ease;
+}
+
+:deep(.prose a:hover) {
+    background-size: 100% 2px;
+}
+
+/* Underline-slide link effect for sidebar */
+.underline-link {
+    background-image: linear-gradient(var(--color-primary, #D9FF00), var(--color-primary, #D9FF00));
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1.5px;
+    transition: background-size 0.3s ease;
+}
+.group:hover .underline-link {
+    background-size: 100% 1.5px;
 }
 </style>

@@ -2,9 +2,8 @@
     <section class="bg-white py-16 md:py-20 border-t border-gray-100">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-8">
-                <h2 class="text-lg sm:text-2xl font-black text-navy font-display">Kabar Terbaru</h2>
-                <NuxtLink class="text-gray-500 hover:text-navy font-bold text-xs sm:text-sm" to="/news">Cek Berita
-                    Lainnya
+                <h2 class="text-lg sm:text-2xl font-black text-navy font-display">{{ $t('home.news.title') }}</h2>
+                <NuxtLink class="text-gray-500 hover:text-navy font-bold text-xs sm:text-sm" to="/news">{{ $t('home.news.view_more') }}
                 </NuxtLink>
             </div>
 
@@ -33,15 +32,15 @@
                             </span>
                         </div>
                         <h3
-                            class="text-lg sm:text-xl font-bold text-navy mb-3 group-hover:text-primary line-clamp-2 font-display transition-colors">
+                            class="text-lg sm:text-xl font-bold text-navy mb-3 line-clamp-2 font-display underline-link">
                             {{ news.title }}
                         </h3>
                         <div class="text-gray-500 mb-4 line-clamp-2 text-sm sm:text-base">
                             {{ news.excerpt }}
                         </div>
                         <span
-                            class="text-navy group-hover:text-primary font-bold text-xs sm:text-sm flex items-center gap-1 transition-colors">
-                            Simak Selengkapnya <span class="material-symbols-outlined text-sm">arrow_right_alt</span>
+                            class="text-navy font-bold text-xs sm:text-sm flex items-center gap-1">
+                            {{ $t('home.news.read_more') }} <span class="material-symbols-outlined text-sm">arrow_right_alt</span>
                         </span>
                     </div>
                 </NuxtLink>
@@ -49,7 +48,7 @@
 
             <div v-else class="text-center py-16">
                 <Icon icon="ph:newspaper-light" class="text-7xl text-gray-200 mb-4 mx-auto" />
-                <p class="text-sm text-gray-400 font-medium">Belum ada berita terbaru.</p>
+                <p class="text-sm text-gray-400 font-medium">{{ $t('home.news.empty') }}</p>
             </div>
         </div>
     </section>
@@ -83,4 +82,15 @@ const articles = computed(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.underline-link {
+    background-image: linear-gradient(#D9FF00, #D9FF00);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size 0.3s ease;
+}
+.group:hover .underline-link {
+    background-size: 100% 2px;
+}
+</style>

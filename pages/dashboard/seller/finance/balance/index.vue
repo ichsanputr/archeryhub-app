@@ -14,9 +14,8 @@
             <Icon icon="ph:bank-bold" class="text-primary text-2xl sm:text-3xl" />
           </div>
           <div>
-            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none capitalize">Saldo & rekening</h1>
-            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">Kelola dana masuk
-              dan akun penarikan anda</div>
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none capitalize">{{ t('seller_balance.title') }}</h1>
+            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">{{ t('seller_balance.subtitle') }}</div>
           </div>
         </div>
       </div>
@@ -35,7 +34,7 @@
           <div class="relative z-10">
             <div class="flex items-center gap-2 mb-4">
               <div class="size-1.5 bg-primary animate-pulse rounded-full"></div>
-              <div class="text-primary text-[9px] font-black tracking-[0.2em]">Saldo tersedia</div>
+              <div class="text-primary text-[9px] font-black tracking-[0.2em]">{{ t('seller_balance.available_balance') }}</div>
             </div>
 
             <h2 class="text-3xl sm:text-4xl font-black tracking-tighter mb-8 leading-none">
@@ -45,12 +44,12 @@
             <div class="space-y-3">
               <BaseButton variant="primary" block
                 class="font-black text-[10px] tracking-widest h-11 !rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
-                Tarik Saldo Ke Bank
+                {{ t('seller_balance.withdraw_button') }}
               </BaseButton>
               <div class="flex items-center justify-center gap-2 bg-white/5 rounded-lg py-2.5 border border-white/5">
                 <Icon icon="ph:info-bold" class="text-primary text-xs" />
                 <div class="text-[8px] text-slate-400 font-black tracking-widest">
-                  Proses penarikan 1-3 hari kerja
+                  {{ t('seller_balance.withdraw_info') }}
                 </div>
               </div>
             </div>
@@ -68,25 +67,25 @@
               <div class="size-9 rounded-xl bg-primary/10 flex items-center justify-center">
                 <Icon icon="ph:credit-card-bold" class="text-primary text-lg" />
               </div>
-              <h2 class="text-sm font-black text-navy tracking-widest">Rekening bank</h2>
+              <h2 class="text-sm font-black text-navy tracking-widest">{{ t('seller_balance.bank_accounts') }}</h2>
             </div>
             <BaseButton @click="openAddModal" variant="primary" icon="ph:plus-bold"
               class="h-9 px-4 !rounded-lg font-black tracking-widest text-[9px]">
-              Tambah Rekening
+              {{ t('seller_balance.add_account') }}
             </BaseButton>
           </div>
 
           <div class="p-4 overflow-x-auto no-scrollbar">
             <div v-if="loading" class="p-10 text-center">
               <Icon icon="ph:circle-notched-bold" class="text-3xl text-primary animate-spin mx-auto mb-3" />
-              <div class="text-[10px] font-bold text-gray-400 tracking-widest">Memuat rekening...</div>
+              <div class="text-[10px] font-bold text-gray-400 tracking-widest">{{ t('seller_balance.loading_accounts') }}</div>
             </div>
 
             <div v-else-if="bankAccounts.length === 0"
               class="p-10 text-center border-2 border-dashed border-gray-50 rounded-2xl m-2">
               <Icon icon="ph:bank-bold" class="text-4xl text-gray-100 mx-auto mb-3" />
-              <div class="text-sm font-bold text-gray-400">Belum ada rekening bank</div>
-              <div class="text-[9px] text-gray-300 font-medium mt-1">Tambahkan rekening untuk pencairan saldo</div>
+              <div class="text-sm font-bold text-gray-400">{{ t('seller_balance.no_accounts') }}</div>
+              <div class="text-[9px] text-gray-300 font-medium mt-1">{{ t('seller_balance.no_accounts_desc') }}</div>
             </div>
 
             <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -117,8 +116,7 @@
                   <div class="flex items-center gap-2 mb-1">
                     <div class=" text-xs font-black tracking-widest opacity-40">{{ account.bank_name }}</div>
                     <span v-if="account.is_primary"
-                      class="text-[8px] font-black tracking-widest bg-primary text-navy px-1.5 py-0.5 rounded">Rekening
-                      Utama</span>
+                      class="text-[8px] font-black tracking-widest bg-primary text-navy px-1.5 py-0.5 rounded">{{ t('seller_balance.primary_account') }}</span>
                   </div>
                   <div class="text-sm font-black tracking-widest mb-1">{{ account.account_number }}</div>
                   <div class="text-[10px] font-bold opacity-60 truncate">{{ account.account_name }}</div>
@@ -135,7 +133,7 @@
               <div class="size-9 rounded-xl bg-navy/5 flex items-center justify-center">
                 <Icon icon="ph:clock-counter-clockwise-bold" class="text-navy/60 text-lg" />
               </div>
-              <h2 class="text-sm font-black text-navy tracking-widest">Riwayat pencairan</h2>
+              <h2 class="text-sm font-black text-navy tracking-widest">{{ t('seller_balance.withdrawal_history') }}</h2>
             </div>
           </div>
 
@@ -147,7 +145,7 @@
                   <th @click="toggleSort('status')"
                     class="px-8 py-5 text-left cursor-pointer hover:text-navy transition-colors">
                     <div class="flex items-center gap-2">
-                      Status
+                      {{ t('seller_balance.col_status') }}
                       <Icon v-if="sortBy === 'status'"
                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                         class="text-primary  text-xs" />
@@ -157,18 +155,18 @@
                   <th @click="toggleSort('created_at')"
                     class="px-8 py-5 text-left cursor-pointer hover:text-navy transition-colors">
                     <div class="flex items-center gap-2">
-                      Tanggal
+                      {{ t('seller_balance.col_date') }}
                       <Icon v-if="sortBy === 'created_at'"
                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                         class="text-primary  text-xs" />
                       <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                     </div>
                   </th>
-                  <th class="px-8 py-5 text-left">ID Referensi</th>
+                  <th class="px-8 py-5 text-left">{{ t('seller_balance.col_reference') }}</th>
                   <th @click="toggleSort('amount')"
                     class="px-8 py-5 text-right cursor-pointer hover:text-navy transition-colors">
                     <div class="flex items-center justify-end gap-2">
-                      Nominal
+                      {{ t('seller_balance.col_amount') }}
                       <Icon v-if="sortBy === 'amount'"
                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                         class="text-primary  text-xs" />
@@ -201,7 +199,7 @@
                       class="size-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100">
                       <Icon icon="ph:empty-bold" class="text-gray-200 text-3xl" />
                     </div>
-                    <div class="text-sm font-bold text-gray-400">Belum ada riwayat penarikan</div>
+                    <div class="text-sm font-bold text-gray-400">{{ t('seller_balance.no_withdrawals') }}</div>
                   </td>
                 </tr>
               </tbody>
@@ -216,7 +214,7 @@
     </div>
 
     <!-- Redesigned Bank Account Modal -->
-    <BaseDialogForm v-model="modal.show" :header="modal.isEdit ? 'Ubah Rekening' : 'Rekening Bank Baru'"
+    <BaseDialogForm v-model="modal.show" :header="modal.isEdit ? t('seller_balance.edit_account') : t('seller_balance.new_account')"
       class="rounded-[2.5rem] !max-w-xl overflow-hidden shadow-2xl">
       <div v-if="!modal.isEdit"
         class="bg-primary/5 p-6 rounded-3xl mb-8 border border-primary/10 flex items-start gap-4">
@@ -224,20 +222,19 @@
           <Icon icon="ph:info-bold" class="text-primary text-xl" />
         </div>
         <div class=" text-xs font-bold text-navy/60 leading-relaxed tracking-tighter">
-          Pastikan nomor rekening dan nama pemilik sesuai dengan buku tabungan untuk kelancaran proses pencairan dana
-          toko anda.
+          {{ t('seller_balance.account_info_hint') }}
         </div>
       </div>
 
       <div class="space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <BaseInput v-model="form.bankName" label="Nama Bank" placeholder="Contoh: BCA, Mandiri" required
+          <BaseInput v-model="form.bankName" :label="t('seller_balance.bank_name')" :placeholder="t('seller_balance.bank_name_placeholder')" required
             class="!rounded-2xl" icon="ph:bank-bold" />
-          <BaseInput v-model="form.accountNumber" label="Nomor Rekening" placeholder="Masukkan angka saja" required
+          <BaseInput v-model="form.accountNumber" :label="t('seller_balance.account_number')" :placeholder="t('seller_balance.account_number_placeholder')" required
             class="!rounded-2xl" icon="ph:hash-bold" numberOnly />
         </div>
 
-        <BaseInput v-model="form.accountName" label="Nama Lengkap Pemilik" placeholder="Sesuai Buku Tabungan" required
+        <BaseInput v-model="form.accountName" :label="t('seller_balance.account_name')" :placeholder="t('seller_balance.account_name_placeholder')" required
           class="!rounded-2xl" icon="ph:user-focus-bold" />
 
         <div class="bg-gray-50 p-5 rounded-3xl border border-gray-100 transition-all hover:border-primary/20 group">
@@ -252,8 +249,8 @@
               </div>
             </div>
             <div>
-              <div class="text-xs font-black text-navy tracking-widest">Jadikan Rekening Utama</div>
-              <div class="text-[10px] text-gray-400 font-medium">Rekening ini akan dipilih otomatis saat penarikan saldo
+              <div class="text-xs font-black text-navy tracking-widest">{{ t('seller_balance.set_primary') }}</div>
+              <div class="text-[10px] text-gray-400 font-medium">{{ t('seller_balance.set_primary_desc') }}
               </div>
             </div>
           </label>
@@ -264,32 +261,36 @@
         <div class="flex items-center justify-end gap-3 w-full pt-2">
           <button @click="modal.show = false"
             class="px-5 py-3 text-[10px] font-black tracking-widest text-gray-400 hover:text-navy transition-colors">
-            Batalkan
+            {{ t('common.cancel') }}
           </button>
           <BaseButton variant="primary" :loading="modal.loading" @click="handleSubmit"
             class="h-11 px-8 !rounded-xl font-black tracking-widest text-[10px] shadow-lg shadow-primary/20">
-            {{ modal.isEdit ? 'Simpan Perubahan' : 'Daftarkan Rekening' }}
+            {{ modal.isEdit ? t('seller_balance.save_changes') : t('seller_balance.register_account') }}
           </BaseButton>
         </div>
       </template>
     </BaseDialogForm>
 
-    <AppDialog v-model:show="deleteState.show" title="Hapus Rekening?"
-      message="Rekening ini akan dihapus dari daftar. Anda tetap dapat menambahkannya kembali nanti." type="danger"
-      confirm-text="Ya, Hapus" cancel-text="Kembali" @confirm="handleDelete" />
+    <AppDialog v-model:show="deleteState.show" :title="t('seller_balance.delete_title')"
+      :message="t('seller_balance.delete_message')" type="danger"
+      :confirm-text="t('seller_balance.delete_confirm')" :cancel-text="t('seller_balance.delete_cancel')" @confirm="handleDelete" />
   </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
 import { onMounted, reactive, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import AppDialog from '~/components/common/AppDialog.vue'
 import BaseDialogForm from '~/components/common/BaseDialogForm.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 
 definePageMeta({ layout: 'dashboard' })
-useHead({ title: 'Saldo & Rekening - Dashboard Seller' })
+
+const { t } = useI18n()
+
+useHead({ title: computed(() => `${t('seller_balance.title')} - Dashboard Seller`) })
 
 const api = useApi()
 const toast = useToast()
@@ -403,7 +404,7 @@ const openEditModal = (account) => {
 
 const handleSubmit = async () => {
   if (!form.bankName || !form.accountNumber || !form.accountName) {
-    toast.error('Mohon lengkapi semua data rekening')
+    toast.error(t('seller_balance.fill_all_fields'))
     return
   }
 
@@ -418,16 +419,16 @@ const handleSubmit = async () => {
 
     if (modal.isEdit) {
       await api.put(`/sellers/bank-accounts/${modal.currentId}`, payload)
-      toast.success('Rekening berhasil diperbarui')
+      toast.success(t('seller_balance.account_updated'))
     } else {
       await api.post('/sellers/bank-accounts', payload)
-      toast.success('Rekening berhasil ditambahkan')
+      toast.success(t('seller_balance.account_added'))
     }
 
     modal.show = false
     await fetchBankAccounts()
   } catch (error) {
-    toast.error(error?.response?.data?.error || 'Gagal menyimpan rekening')
+    toast.error(error?.response?.data?.error || t('seller_balance.save_error'))
   } finally {
     modal.loading = false
   }
@@ -443,10 +444,10 @@ const handleDelete = async () => {
 
   try {
     await api.delete(`/sellers/bank-accounts/${deleteState.target.id}`)
-    toast.success('Rekening berhasil dihapus')
+    toast.success(t('seller_balance.account_deleted'))
     await fetchBankAccounts()
   } catch (error) {
-    toast.error(error?.response?.data?.error || 'Gagal menghapus rekening')
+    toast.error(error?.response?.data?.error || t('seller_balance.delete_error'))
   } finally {
     deleteState.show = false
     deleteState.target = null

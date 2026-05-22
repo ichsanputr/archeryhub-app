@@ -4,12 +4,12 @@
             <div class="flex items-center justify-between mb-8">
                 <h2 class="text-lg sm:text-2xl font-black text-navy flex items-center gap-2 sm:gap-3 font-display">
                     <span class="w-2.5 h-2.5 sm:w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
-                    Lagi Berlangsung Nih!
+                    {{ $t('home.live_events.title') }}
                 </h2>
                 <NuxtLink to="/events"
                     class="text-navy hover:text-primary font-bold text-xs sm:text-sm flex items-center gap-1 group">
-                    <span class="hidden sm:inline">Cek Jadwalnya</span>
-                    <span class="sm:hidden">Jadwal</span>
+                    <span class="hidden sm:inline">{{ $t('home.live_events.check_schedule') }}</span>
+                    <span class="sm:hidden">{{ $t('home.live_events.schedule_short') }}</span>
                     <span
                         class="material-symbols-outlined text-base sm:text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
                 </NuxtLink>
@@ -28,11 +28,11 @@
                             class="w-full h-full object-cover transition-transform duration-500" />
                         <span v-if="live.isOngoing"
                             class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-red-500 text-white text-[10px] font-black capitalize tracking-wider shadow-md">
-                            Berlangsung
+                            {{ $t('home.live_events.status_ongoing') }}
                         </span>
                         <span v-else
                             class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-gray-600/90 text-white text-[10px] font-black capitalize tracking-wider shadow-md">
-                            Selesai
+                            {{ $t('home.live_events.status_ended') }}
                         </span>
                     </div>
                     <div class="p-5 flex-1 flex flex-col">
@@ -48,7 +48,7 @@
                             <NuxtLink :to="`/events/${live.slug || live.uuid}`"
                                 class="w-full h-10 rounded-lg border-2 border-navy text-navy hover:bg-navy hover:text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
                                 <span class="material-symbols-outlined text-lg">visibility</span>
-                                Lihat Event
+                                {{ $t('home.live_events.view_event') }}
                             </NuxtLink>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
 
             <div v-else class="text-center py-16">
                 <Icon icon="ph:video-camera-slash-light" class="text-7xl text-gray-200 mb-4 mx-auto" />
-                <p class="text-sm text-gray-400 font-medium">Saat ini belum ada event yang sedang berlangsung.</p>
+                <p class="text-sm text-gray-400 font-medium">{{ $t('home.live_events.empty') }}</p>
             </div>
         </div>
     </section>
