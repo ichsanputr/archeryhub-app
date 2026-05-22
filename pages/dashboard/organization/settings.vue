@@ -366,16 +366,16 @@ import { useTheme } from '~/composables/useTheme'
 import { useI18n } from 'vue-i18n'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 
+const { t } = useI18n()
+
 definePageMeta({
   title: 'Pengaturan',
   layout: 'dashboard'
 })
 
 useHead({
-  title: t('settings.title') + ' - Archeris Dashboard'
+  title: () => t('settings.title') + ' - Archeris Dashboard'
 })
-
-const { t } = useI18n()
 const { login, user, organizationProfile } = useAuth()
 const { get, put } = useApi()
 const toast = useToast()

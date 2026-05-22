@@ -35,10 +35,9 @@
 
                     <div>
                         <div class="text-5xl sm:text-7xl font-black text-navy font-display tracking-tight leading-none mb-2 reveal-title">
-                            2,800+
+                            {{ t('home.testimonials.count') }}
                         </div>
-                        <p class="text-base sm:text-lg font-bold text-slate-500 tracking-tight leading-normal reveal-desc">
-                            sports organizations trust <span class="text-navy font-black">Archeris</span>
+                        <p class="text-base sm:text-lg font-bold text-slate-500 tracking-tight leading-normal reveal-desc" v-html="t('home.testimonials.trust_desc', { brand: '<span class=\'text-navy font-black\'>Archeris</span>' })">
                         </p>
                     </div>
                 </div>
@@ -52,7 +51,7 @@
                                 <Icon icon="simple-icons:g2" class="text-base" />
                             </div>
                             <span class="text-xs sm:text-sm font-semibold text-slate-600">
-                                <span class="font-black text-navy">4.7</span> stars <span class="font-black text-navy">215+</span> reviews
+                                <span class="font-black text-navy">4.7</span> {{ t('home.testimonials.stars') }} <span class="font-black text-navy">215+</span> {{ t('home.testimonials.reviews') }}
                             </span>
                         </div>
                         <Icon icon="ph:caret-right-bold" class="text-slate-400 group-hover:text-navy transition-colors text-sm" />
@@ -65,7 +64,7 @@
                                 <Icon icon="ph:star-fill" class="text-base" />
                             </div>
                             <span class="text-xs sm:text-sm font-semibold text-slate-600">
-                                <span class="font-black text-navy">5.0</span> stars <span class="font-black text-navy">1,000+</span> reviews
+                                <span class="font-black text-navy">5.0</span> {{ t('home.testimonials.stars') }} <span class="font-black text-navy">1,000+</span> {{ t('home.testimonials.reviews') }}
                             </span>
                         </div>
                         <Icon icon="ph:caret-right-bold" class="text-slate-400 group-hover:text-navy transition-colors text-sm" />
@@ -97,7 +96,7 @@
                             <img :src="item.avatar" :alt="item.name + ' Avatar'" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/50 shrink-0" />
                             <div>
                                 <h4 class="font-black text-xs text-navy leading-none">{{ item.name }}</h4>
-                                <span class="text-[9px] font-black text-slate-400 mt-1 block uppercase tracking-wider">
+                                <span class="text-[9px] font-black text-slate-400 mt-1 block capitalize tracking-wider">
                                     {{ item.org }}
                                 </span>
                             </div>
@@ -119,7 +118,7 @@
                             <img :src="item.avatar" :alt="item.name + ' Avatar'" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/50 shrink-0" />
                             <div>
                                 <h4 class="font-black text-xs text-navy leading-none">{{ item.name }}</h4>
-                                <span class="text-[9px] font-black text-slate-400 mt-1 block uppercase tracking-wider">
+                                <span class="text-[9px] font-black text-slate-400 mt-1 block capitalize tracking-wider">
                                     {{ item.org }}
                                 </span>
                             </div>
@@ -133,45 +132,47 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+const { t } = useI18n()
+
 const sectionRef = ref(null)
 
-const testimonials = [
+const testimonials = computed(() => [
     {
-        quote: "Our youth football program went from 23 players to 124 players in one season due to this platform.",
-        name: "Coach Farhan",
-        org: "Shabbona Park Saints",
+        quote: t('home.testimonials.items.0.quote'),
+        name: t('home.testimonials.items.0.name'),
+        org: t('home.testimonials.items.0.org'),
         avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Farhan"
     },
     {
-        quote: "The easy-to-use software, affordability, and first-class customer service make Archeris a must-use for sports organizations.",
-        name: "Rania Nabilla",
-        org: "Thunder Soccer Club",
+        quote: t('home.testimonials.items.1.quote'),
+        name: t('home.testimonials.items.1.name'),
+        org: t('home.testimonials.items.1.org'),
         avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rania"
     },
     {
-        quote: "Archeris is extremely easy to use and they helped us every step of the way to get us setup very quickly.",
-        name: "Budi Santoso",
-        org: "Shadyside Youth Sports",
+        quote: t('home.testimonials.items.2.quote'),
+        name: t('home.testimonials.items.2.name'),
+        org: t('home.testimonials.items.2.org'),
         avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Budi"
     },
     {
-        quote: "Spring registration was approaching fast and the move to Archeris could not have gone more smoothly.",
-        name: "Jessica Lim",
-        org: "Hueytown Youth Baseball",
+        quote: t('home.testimonials.items.3.quote'),
+        name: t('home.testimonials.items.3.name'),
+        org: t('home.testimonials.items.3.org'),
         avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jessica"
     },
     {
-        quote: "I was navigating the site as an admin for the first time last year and the amount of support they've provided speaks volumes.",
-        name: "Marcus Vance",
-        org: "Columbia Wrestling Club",
+        quote: t('home.testimonials.items.4.quote'),
+        name: t('home.testimonials.items.4.name'),
+        org: t('home.testimonials.items.4.org'),
         avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus"
     }
-]
+])
 
 onMounted(() => {
     gsap.registerPlugin(ScrollTrigger)

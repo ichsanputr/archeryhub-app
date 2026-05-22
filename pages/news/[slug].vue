@@ -137,7 +137,6 @@
 
                         <!-- Comment Form -->
                         <div class="bg-white rounded-3xl p-8 border border-navy/10 mb-12 relative overflow-hidden">
-                            <div class="absolute top-0 left-0 w-1.5 h-full bg-navy/20"></div>
                             <h4 class="font-bold text-navy tracking-widest text-[10px] mb-6 opacity-40">{{ $t('news_detail_page.write_comment') }}</h4>
 
                             <form @submit.prevent="submitComment" class="space-y-6">

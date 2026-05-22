@@ -6,11 +6,19 @@
             <div class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-navy/5 blur-[100px] rounded-full"></div>
         </div>
 
+        <!-- Decorative vector watermarks -->
+        <div class="absolute bottom-0 right-0 w-[180px] sm:w-[280px] md:w-[350px] opacity-15 pointer-events-none transform translate-y-8 translate-x-8 z-0">
+            <img src="/vector-pricing-1.png" alt="Pricing Vector Right" class="w-full h-auto object-contain select-none pointer-events-none" />
+        </div>
+        <div class="absolute bottom-0 left-0 w-[180px] sm:w-[280px] md:w-[350px] opacity-15 pointer-events-none transform translate-y-8 -translate-x-8 z-0">
+            <img src="/vector-pricing-2.png" alt="Pricing Vector Left" class="w-full h-auto object-contain select-none pointer-events-none" />
+        </div>
+
         <div class="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Section Header -->
             <div class="text-center mb-16 sm:mb-20">
                 <span class="inline-block px-4 py-1.5 bg-primary text-navy text-[10px] font-black tracking-[0.2em] rounded-md mb-6 reveal-badge">
-                    PRICING
+                    Pricing
                 </span>
                 <h2 class="text-navy font-black font-display text-4xl sm:text-5xl lg:text-6xl leading-[1.05] mb-6 reveal-title">
                     {{ $t('home.pricing.title') }}
@@ -33,7 +41,7 @@
                     <div class="relative z-10">
                         <!-- Plan badge -->
                         <div class="flex items-center justify-between mb-8">
-                            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/8 text-white/70 text-[10px] font-black tracking-[0.15em] rounded-lg uppercase border border-white/10">
+                            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/8 text-white/70 text-[10px] font-black tracking-[0.15em] rounded-lg capitalize border border-white/10">
                                 <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
                                 {{ $t('home.pricing.standard.name') }}
                             </span>
@@ -74,7 +82,7 @@
                 </div>
 
                 <!-- Free / Starter Plan — Center, featured with primary accent -->
-                <div class="reveal-card group relative bg-white rounded-[2rem] p-8 flex flex-col justify-between border border-gray-200 hover:border-primary/40 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 overflow-hidden shadow-lg">
+                <div class="reveal-card group relative bg-white rounded-[2rem] p-8 flex flex-col justify-between border border-gray-200 hover:border-primary/40 transition-all duration-500 hover:shadow-md hover:-translate-y-1 overflow-hidden shadow-sm">
                     <!-- Top accent bar -->
                     <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary/60 via-primary to-primary/60 rounded-t-[2rem]"></div>
                     <!-- Glow behind card -->
@@ -83,12 +91,12 @@
                     <div>
                         <!-- Plan badge -->
                         <div class="flex items-center justify-between mb-8">
-                            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 text-navy text-[10px] font-black tracking-[0.15em] rounded-lg uppercase">
+                            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 text-navy text-[10px] font-black tracking-[0.15em] rounded-lg capitalize">
                                 <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
                                 {{ $t('home.pricing.free.name') }}
                             </span>
                             <span class="px-2.5 py-1 bg-primary text-navy text-[9px] font-black tracking-widest rounded-md">
-                                POPULER
+                                Populer
                             </span>
                         </div>
 
@@ -137,7 +145,7 @@
                     <div class="relative z-10">
                         <!-- Plan badge -->
                         <div class="flex items-center justify-between mb-8">
-                            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/15 text-primary text-[10px] font-black tracking-[0.15em] rounded-lg uppercase border border-primary/20">
+                            <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/15 text-primary text-[10px] font-black tracking-[0.15em] rounded-lg capitalize border border-primary/20">
                                 <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
                                 {{ $t('home.pricing.elite.name') }}
                             </span>

@@ -107,6 +107,39 @@
       "title2": "ke mana saja.",
       "description": "Dapatkan pengalaman skoring digital terbaik langsung di genggaman Anda. Download aplikasi Archeris sekarang dan mulai pantau prestasi Anda secara real-time."
     },
+    "testimonials": {
+      "count": "2.800+",
+      "trust_desc": "organisasi olahraga mempercayai {brand}",
+      "stars": "bintang",
+      "reviews": "ulasan",
+      "items": [
+        {
+          "quote": "Program sepak bola remaja kami berkembang dari 23 menjadi 124 pemain dalam satu musim berkat platform ini.",
+          "name": "Coach Farhan",
+          "org": "Shabbona Park Saints"
+        },
+        {
+          "quote": "Perangkat lunak yang mudah digunakan, harga terjangkau, dan layanan pelanggan kelas satu membuat Archeris wajib digunakan oleh organisasi olahraga.",
+          "name": "Rania Nabilla",
+          "org": "Thunder Soccer Club"
+        },
+        {
+          "quote": "Archeris sangat mudah digunakan dan mereka membantu kami di setiap langkah untuk melakukan persiapan dengan sangat cepat.",
+          "name": "Budi Santoso",
+          "org": "Shadyside Youth Sports"
+        },
+        {
+          "quote": "Pendaftaran musim semi mendekat dengan cepat dan transisi ke Archeris berjalan sangat lancar.",
+          "name": "Jessica Lim",
+          "org": "Hueytown Youth Baseball"
+        },
+        {
+          "quote": "Tahun lalu saya baru pertama kali menggunakan situs ini sebagai admin, dan dukungan yang mereka berikan sangat luar biasa.",
+          "name": "Marcus Vance",
+          "org": "Columbia Wrestling Club"
+        }
+      ]
+    },
     "meta_title": "Archeris.net - Platform Manajemen Panahan Indonesia",
     "meta_desc": "Archeris.net - Platform manajemen panahan terpadu untuk turnamen, scoring real-time, dan pengembangan atlet profesional di Indonesia."
   },

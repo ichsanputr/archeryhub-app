@@ -107,6 +107,39 @@
       "title2": "어디서나 즐기세요.",
       "description": "최고의 디지털 스코어링 경험을 손안에서 만나보세요. 지금 Archeris 앱을 다운로드하고 실시간으로 성적을 모니터링하세요."
     },
+    "testimonials": {
+      "count": "2,800+",
+      "trust_desc": "개 스포츠 단체가 {brand}를 신뢰합니다",
+      "stars": "별점",
+      "reviews": "개 리뷰",
+      "items": [
+        {
+          "quote": "이 플랫폼 덕분에 유소년 축구 프로그램 참가자가 한 시즌 만에 23명에서 124명으로 늘어났습니다.",
+          "name": "Coach Farhan",
+          "org": "Shabbona Park Saints"
+        },
+        {
+          "quote": "사용하기 쉬운 소프트웨어, 합리적인 가격, 그리고 최고의 고객 서비스 덕분에 Archeris는 스포츠 단체에 필수적인 플랫폼입니다.",
+          "name": "Rania Nabilla",
+          "org": "Thunder Soccer Club"
+        },
+        {
+          "quote": "Archeris는 사용하기 매우 쉽고, 우리가 빠르게 설정을 완료할 수 있도록 모든 단계를 도와주었습니다.",
+          "name": "Budi Santoso",
+          "org": "Shadyside Youth Sports"
+        },
+        {
+          "quote": "봄 등록 기간이 다가오고 있었는데, Archeris로의 이전이 이보다 더 매끄럽게 진행될 수 없었습니다.",
+          "name": "Jessica Lim",
+          "org": "Hueytown Youth Baseball"
+        },
+        {
+          "quote": "작년에 처음으로 관리자로서 사이트를 사용해 보았는데, 그들이 제공해 준 전폭적인 지원이 모든 것을 증명해 줍니다.",
+          "name": "Marcus Vance",
+          "org": "Columbia Wrestling Club"
+        }
+      ]
+    },
     "meta_title": "Archeris.net - 인도네시아 통합 양궁 관리 플랫폼",
     "meta_desc": "Archeris.net - 토너먼트, 실시간 스코어링 및 전문 선수 개발을 위한 인도네시아 최고의 통합 양궁 플랫폼입니다."
   },

@@ -107,6 +107,39 @@
       "title2": "anywhere.",
       "description": "Get the best digital scoring experience right in your hand. Download the Archeris app now and start tracking your achievements in real-time."
     },
+    "testimonials": {
+      "count": "2,800+",
+      "trust_desc": "sports organizations trust {brand}",
+      "stars": "stars",
+      "reviews": "reviews",
+      "items": [
+        {
+          "quote": "Our youth football program went from 23 players to 124 players in one season due to this platform.",
+          "name": "Coach Farhan",
+          "org": "Shabbona Park Saints"
+        },
+        {
+          "quote": "The easy-to-use software, affordability, and first-class customer service make Archeris a must-use for sports organizations.",
+          "name": "Rania Nabilla",
+          "org": "Thunder Soccer Club"
+        },
+        {
+          "quote": "Archeris is extremely easy to use and they helped us every step of the way to get us setup very quickly.",
+          "name": "Budi Santoso",
+          "org": "Shadyside Youth Sports"
+        },
+        {
+          "quote": "Spring registration was approaching fast and the move to Archeris could not have gone more smoothly.",
+          "name": "Jessica Lim",
+          "org": "Hueytown Youth Baseball"
+        },
+        {
+          "quote": "I was navigating the site as an admin for the first time last year and the amount of support they've provided speaks volumes.",
+          "name": "Marcus Vance",
+          "org": "Columbia Wrestling Club"
+        }
+      ]
+    },
     "meta_title": "Archeris.net - Archery Management Platform Indonesia",
     "meta_desc": "Archeris.net - Integrated archery management platform for tournaments, real-time scoring, and professional athlete development in Indonesia."
   },

@@ -83,9 +83,9 @@
                                     <div v-if="tournament.technical_guidebook_url"
                                         class="bg-blue-50 p-4 rounded-xl border border-blue-100 mt-4">
                                         <h4 class="font-bold text-navy !mt-0 mb-2">Buku Panduan Teknis</h4>
-                                        <p class="text-sm text-gray-600 mb-3">Unduh buku panduan teknis lengkap yang
+                                        <div class="text-sm text-gray-600 mb-3">Unduh buku panduan teknis lengkap yang
                                             berisi
-                                            peraturan, regulasi, dan jadwal detail.</p>
+                                            peraturan, regulasi, dan jadwal detail.</div>
                                         <a :href="tournament.technical_guidebook_url" target="_blank"
                                             class="text-navy font-bold text-sm hover:underline inline-flex items-center gap-1">
                                             Unduh PDF
@@ -111,7 +111,7 @@
                                             </div>
                                             {{ $t('event_detail.competition_categories') }}
                                         </h2>
-                                        <p class="text-sm text-gray-400 font-medium">{{ $t('event_detail.competition_categories_desc') }}</p>
+                                        <div class="text-sm text-gray-400 font-medium">{{ $t('event_detail.competition_categories_desc') }}</div>
                                     </div>
                                     <div v-if="divisionsData.length > 2" class="hidden md:flex gap-2">
                                         <button @click="scroll('left')"
@@ -184,11 +184,11 @@
                                             </div>
                                             Biaya Pendaftaran
                                         </h2>
-                                        <p class="text-sm text-gray-400 font-medium">
+                                        <div class="text-sm text-gray-400 font-medium">
                                             <template v-if="tournament.fee_mode === 'per_category'">Biaya berbeda per kategori lomba</template>
                                             <template v-else-if="tournament.fee_mode === 'per_type'">Biaya berbeda per tipe peserta (individu / tim)</template>
                                             <template v-else>Pilih kategori yang sesuai dengan divisi dan level peserta</template>
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -210,7 +210,7 @@
                                             Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}
                                             <span class="text-sm text-gray-400 font-semibold">/ kategori</span>
                                         </div>
-                                        <p class="text-xs text-gray-500">{{ fee.description }}</p>
+                                        <div class="text-xs text-gray-500">{{ fee.description }}</div>
                                     </div>
                                 </div>
 
@@ -225,12 +225,12 @@
                                             <Icon v-else icon="ph:target-bold" class="text-navy text-lg" />
                                         </div>
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-sm font-black text-navy truncate">{{ fee.name }}</p>
-                                            <p class="text-[10px] text-gray-400">{{ fee.typeLabel }}</p>
+                                            <div class="text-sm font-black text-navy truncate">{{ fee.name }}</div>
+                                            <div class="text-[10px] text-gray-400">{{ fee.typeLabel }}</div>
                                         </div>
                                         <div class="text-right shrink-0">
-                                            <p class="text-base font-black text-navy tabular-nums">Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}</p>
-                                            <p class="text-[10px] text-gray-400">/ peserta</p>
+                                            <div class="text-base font-black text-navy tabular-nums">Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}</div>
+                                            <div class="text-[10px] text-gray-400">/ peserta</div>
                                         </div>
                                     </div>
                                 </div>
@@ -246,7 +246,7 @@
                                                 Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}
                                                 <span class="text-sm text-gray-400 font-semibold">/ peserta</span>
                                             </div>
-                                            <p v-if="fee.description" class="text-sm text-gray-500">{{ fee.description }}</p>
+                                            <div v-if="fee.description" class="text-sm text-gray-500">{{ fee.description }}</div>
                                         </div>
                                     </template>
                                     <template v-else>
@@ -305,9 +305,9 @@
                                         <h2 class="text-navy text-4xl md:text-5xl font-black leading-none mb-4">Rp {{
                                             (tournament.total_prize || 0).toLocaleString('id-ID') }}</h2>
                                         <div class="h-2 w-40 bg-navy mx-auto mb-6"></div>
-                                        <p class="text-navy font-bold text-base tracking-widest">Perebutkan
+                                        <div class="text-navy font-bold text-base tracking-widest">Perebutkan
                                             Podium Terbaik
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div
@@ -337,9 +337,9 @@
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
                                                     <div class="h-full bg-primary w-full"></div>
                                                 </div>
-                                                <p v-if="tournament.prizes?.first_caption"
+                                                <div v-if="tournament.prizes?.first_caption"
                                                     class="text-white/60 text-xs mt-2">{{
-                                                        tournament.prizes.first_caption }}</p>
+                                                        tournament.prizes.first_caption }}</div>
                                             </div>
                                             <div>
                                                 <div class="flex justify-between items-end mb-3">
@@ -357,9 +357,9 @@
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
                                                     <div class="h-full bg-white/60 w-1/2"></div>
                                                 </div>
-                                                <p v-if="tournament.prizes?.second_caption"
+                                                <div v-if="tournament.prizes?.second_caption"
                                                     class="text-white/60 text-xs mt-2">{{
-                                                        tournament.prizes.second_caption }}</p>
+                                                        tournament.prizes.second_caption }}</div>
                                             </div>
                                             <div>
                                                 <div class="flex justify-between items-end mb-3">
@@ -377,9 +377,9 @@
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
                                                     <div class="h-full bg-white/30 w-1/4"></div>
                                                 </div>
-                                                <p v-if="tournament.prizes?.third_caption"
+                                                <div v-if="tournament.prizes?.third_caption"
                                                     class="text-white/60 text-xs mt-2">{{
-                                                        tournament.prizes.third_caption }}</p>
+                                                        tournament.prizes.third_caption }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -410,7 +410,7 @@
                                     </div>
                                     <div>
                                         <h2 class="font-black text-navy text-lg md:text-2xl">Galeri Event</h2>
-                                        <p class="text-sm text-gray-400 font-medium">Foto dan dokumentasi event</p>
+                                        <div class="text-sm text-gray-400 font-medium">Foto dan dokumentasi event</div>
                                     </div>
                                 </div>
 
@@ -471,7 +471,7 @@
                                         class="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-4">
                                         <Icon icon="ph:camera-slash" class="text-4xl text-gray-200" />
                                     </div>
-                                    <p class="text-gray-400 font-bold">Belum ada foto untuk event ini</p>
+                                    <div class="text-gray-400 font-bold">Belum ada foto untuk event ini</div>
                                 </div>
                             </section>
                         </div>
@@ -495,8 +495,8 @@
                                             </div>
                                             Tanya Jawab (FAQ)
                                         </h2>
-                                        <p class="text-sm text-gray-400 font-medium">Informasi penting seputar event
-                                            ini</p>
+                                        <div class="text-sm text-gray-400 font-medium">Informasi penting seputar event
+                                            ini</div>
                                     </div>
                                 </div>
 
@@ -522,9 +522,9 @@
                                             <div
                                                 class="h-px w-full bg-gradient-to-r from-primary/20 to-transparent mb-6">
                                             </div>
-                                            <p class="text-gray-600 text-lg leading-relaxed whitespace-pre-line">
+                                            <div class="text-gray-600 text-lg leading-relaxed whitespace-pre-line">
                                                 {{ faq.answer }}
-                                            </p>
+                                            </div>
                                         </div>
                                     </details>
                                 </div>
@@ -649,9 +649,9 @@
                                         {{ tournament.organizer }}
                                     </NuxtLink>
                                     <h4 v-else class="font-bold text-navy text-sm">{{ tournament.organizer }}</h4>
-                                    <p class="text-xs text-gray-500">Penyelenggara Terverifikasi <span
+                                    <div class="text-xs text-gray-500">Penyelenggara Terverifikasi <span
                                             class="material-symbols-outlined text-[14px] align-middle text-blue-500">verified</span>
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="flex gap-2">
@@ -689,35 +689,35 @@
                             </div>
                             <div class="p-5">
                                 <h3 class="font-bold text-navy mb-1">{{ displayValue(tournament.venue) }}</h3>
-                                <p class="text-sm text-gray-500">{{ displayValue(tournament.address) }}</p>
+                                <div class="text-sm text-gray-500">{{ displayValue(tournament.address) }}</div>
                             </div>
                         </div>
 
                         <!-- Share Section -->
                         <div
-                            class="flex flex-col items-center gap-4 justify-center bg-gray-50/50 p-6 rounded-2xl border border-gray-100">
-                            <span class="text-xs font-black text-gray-400  tracking-widest">Bagikan Event
-                                Ini</span>
-                            <div class="flex gap-4">
+                            class="flex flex-col items-center gap-4 justify-center bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+                            <span class="text-xs font-black text-gray-400 tracking-[0.25em] capitalize">Bagikan Event Ini</span>
+                            <div class="grid grid-cols-4 gap-3 w-full">
                                 <button @click="shareTo('whatsapp')"
-                                    class="w-12 h-12 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-[#25D366] hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+                                    class="w-full aspect-square rounded-2xl bg-green-50/50 border border-green-100/50 flex items-center justify-center text-[#25D366] hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-all duration-300 shadow-sm active:scale-95">
                                     <Icon icon="ph:whatsapp-logo-fill" class="text-2xl" />
                                 </button>
                                 <button @click="shareTo('facebook')"
-                                    class="w-12 h-12 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-[#1877F2] hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+                                    class="w-full aspect-square rounded-2xl bg-blue-50/50 border border-blue-100/50 flex items-center justify-center text-[#1877F2] hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-all duration-300 shadow-sm active:scale-95">
                                     <Icon icon="ph:facebook-logo-fill" class="text-2xl" />
                                 </button>
                                 <button @click="shareTo('twitter')"
-                                    class="w-12 h-12 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-black hover:bg-black hover:text-white hover:border-black transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+                                    class="w-full aspect-square rounded-2xl bg-gray-50/50 border border-gray-100 flex items-center justify-center text-navy hover:bg-navy hover:text-white hover:border-navy transition-all duration-300 shadow-sm active:scale-95">
                                     <Icon icon="ph:twitter-logo-fill" class="text-2xl" />
                                 </button>
                                 <button @click="copyPublicUrl"
-                                    class="w-12 h-12 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-navy hover:bg-navy hover:text-white hover:border-navy transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+                                    class="w-full aspect-square rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-navy hover:bg-primary transition-all duration-300 shadow-sm active:scale-95">
                                     <Icon icon="ph:link-bold" class="text-2xl" />
                                 </button>
                             </div>
-                            <p v-if="copySuccess" class="text-[10px] font-bold text-green-600">Link berhasil disalin!
-                            </p>
+                            <div v-if="copySuccess" class="text-[10px] font-bold text-green-600 transition-all animate-fade-in">
+                                Link berhasil disalin!
+                            </div>
                         </div>
                     </aside>
                 </div>
