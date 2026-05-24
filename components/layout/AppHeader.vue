@@ -31,14 +31,20 @@
       <nav v-if="transparent || !isDashboard" class="hidden lg:flex items-center gap-6 xl:gap-8 ml-4">
         <NuxtLink to="/"
           :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-primary' : 'text-white/80 hover:text-primary', { '!text-primary font-bold': route.path === '/' }]"
-          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">{{ t('nav.home') }}</NuxtLink>
+          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">
+          <span class="link-underline" :style="route.path === '/' ? 'background-size: 100% 2px' : ''">{{ t('nav.home') }}</span>
+        </NuxtLink>
         <NuxtLink to="/events"
           :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-primary' : 'text-white/80 hover:text-primary', { '!text-primary font-bold': route.path.startsWith('/events') }]"
-          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">{{ t('nav.features') }}</NuxtLink>
+          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">
+          <span class="link-underline" :style="route.path.startsWith('/events') ? 'background-size: 100% 2px' : ''">{{ t('nav.features') }}</span>
+        </NuxtLink>
 
         <NuxtLink to="/news"
           :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-primary' : 'text-white/80 hover:text-primary', { '!text-primary font-bold': route.path.startsWith('/news') }]"
-          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">{{ t('nav.news') }}</NuxtLink>
+          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">
+          <span class="link-underline" :style="route.path.startsWith('/news') ? 'background-size: 100% 2px' : ''">{{ t('nav.news') }}</span>
+        </NuxtLink>
       </nav>
 
       <!-- Event Manage Mode (For All Personas) -->

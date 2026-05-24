@@ -44,7 +44,13 @@
                                 <img :src="article.author.avatar" alt="Author" class="w-full h-full object-cover" />
                             </div>
                             <div>
-                                <div class="text-sm font-black text-white">{{ article.author.name }}</div>
+                                <div class="flex items-center gap-2">
+                                    <div class="text-sm font-black text-white">{{ article.author.name }}</div>
+                                    <span v-if="!article.organization_id && !article.club_id"
+                                        class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] font-black tracking-widest uppercase shrink-0">
+                                        {{ $t('news_page.official_badge') }}
+                                    </span>
+                                </div>
                                 <div class="text-[10px] font-bold text-white/50 tracking-widest">{{
                                     article.author.role }}</div>
                             </div>
@@ -426,7 +432,9 @@ const article = computed(() => {
         image: useImageOrDefault(data.image_url),
         imageCredit: 'Archery Hub Documentation',
         content: data.content || '',
-        tags: ['Panahan', 'Indonesia', 'ArcheryHub'] // Fake tags for design since API lacks them
+        tags: ['Panahan', 'Indonesia', 'ArcheryHub'], // Fake tags for design since API lacks them
+        organization_id: data.organization_id,
+        club_id: data.club_id
     }
 })
 

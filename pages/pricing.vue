@@ -187,11 +187,11 @@
                     </div>
 
                     <!-- Simple Comparison Table with custom columns order (Free, Standar, Elite) -->
-                    <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm p-6 sm:p-10 relative overflow-hidden">
+                    <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm p-6 sm:p-10 relative overflow-hidden">
                         <div class="overflow-x-auto">
                             <table class="w-full min-w-[700px] border-collapse">
                                 <thead>
-                                    <tr class="border-b border-slate-100 text-xs font-black tracking-widest text-slate-400 capitalize">
+                                    <tr class="border-b border-slate-200 text-xs font-black tracking-widest text-slate-400 capitalize">
                                         <th class="pb-6 text-left w-[40%]">{{ $t('subscription_page.feature_header', 'Fitur') }}</th>
                                         <th class="pb-6 text-center w-[20%]">
                                             <span class="inline-block px-3 py-1 bg-slate-100 text-navy rounded-lg">
@@ -202,7 +202,7 @@
                                         <th class="pb-6 text-center w-[20%] text-navy">{{ $t('subscription_page.elite_title', 'Elite') }}</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-50">
+                                <tbody class="divide-y divide-slate-200">
                                     <tr v-for="row in eoComparisonData" :key="row.feature"
                                         class="group hover:bg-slate-50/50 transition-all duration-300">
                                         <!-- Feature Column (Simple, no icons) -->

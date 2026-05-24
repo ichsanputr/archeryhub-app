@@ -234,7 +234,27 @@
             "reregistration": "Daftar Ulang",
             "reregistered": "Sudah Daftar Ulang",
             "not_reregistered": "Belum Daftar Ulang",
-            "reregistration_success": "Berhasil memperbarui status daftar ulang"
+            "reregistration_success": "Berhasil memperbarui status daftar ulang",
+            "title": "Daftar Peserta",
+            "subtitle": "Lihat dan kelola semua peserta yang terdaftar dalam event ini.",
+            "export_csv": "Ekspor CSV",
+            "add_participant": "Tambah Peserta",
+            "search_placeholder": "Cari nama peserta atau email...",
+            "status_options": {
+                "all": "Semua Status",
+                "paid": "Terdaftar",
+                "pending": "Menunggu"
+            },
+            "archers_unit": "Peserta",
+            "table": {
+                "name_email": "Nama Peserta / Email",
+                "club_city": "Klub / Kota",
+                "category": "Kategori Event",
+                "payment_status": "Status Pembayaran",
+                "action": "Aksi"
+            },
+            "no_participants": "Tidak ada peserta yang ditemukan.",
+            "view_details": "Lihat Detail Profil"
         },
         "reports": {
             "title": "Dasbor Laporan",
@@ -664,7 +684,13 @@
             "pengumuman": "Pengumuman",
             "prestasi": "Prestasi",
             "tips": "Tips & Tutorial"
-        }
+        },
+        "sources": {
+            "all": "Semua",
+            "official": "Resmi",
+            "community": "Komunitas"
+        },
+        "official_badge": "Resmi"
     },
     "news_detail_page": {
         "back_to_news": "Kembali ke Berita",

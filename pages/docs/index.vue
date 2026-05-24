@@ -64,28 +64,28 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <NuxtLink v-for="doc in filteredDocs(cat.id)" :key="doc.slug" :to="`/docs/${doc.slug}`"
-                        class="group bg-navy border border-white/10 rounded-2.5xl p-6 hover:border-primary/45 hover:bg-navy-light/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden h-full">
+                        class="group bg-white border border-gray-200/60 rounded-2.5xl p-6 hover:border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden h-full">
                         <!-- Subtle Glow Effect -->
-                        <div class="absolute -top-12 -right-12 w-24 h-24 bg-primary/5 group-hover:bg-primary/10 blur-xl rounded-full transition-all duration-300"></div>
+                        <div class="absolute -top-12 -right-12 w-24 h-24 bg-primary/10 group-hover:bg-primary/20 blur-xl rounded-full transition-all duration-300"></div>
 
                         <div class="flex items-start gap-4">
                             <div
-                                class="w-11 h-11 rounded-2xl bg-white/5 group-hover:bg-primary/10 border border-white/10 group-hover:border-primary/25 flex items-center justify-center text-slate-400 group-hover:text-primary transition-all duration-300 shrink-0">
-                                <Icon :icon="doc.icon" class="text-xl" />
+                                class="w-11 h-11 rounded-2xl bg-gray-50 group-hover:bg-primary border border-gray-100 group-hover:border-primary flex items-center justify-center text-navy transition-all duration-300 shrink-0">
+                                <Icon :icon="doc.icon" class="text-xl text-navy" />
                             </div>
                             <div class="flex-1 min-w-0">
                                 <h3
-                                    class="font-black text-white text-base group-hover:text-primary transition-colors mb-2 leading-snug">
+                                    class="font-black text-navy text-base mb-2 leading-snug group-hover:text-navy transition-colors">
                                     {{ doc.title }}</h3>
-                                <p class="text-slate-300 text-xs leading-relaxed line-clamp-2 font-medium">{{ doc.excerpt }}</p>
+                                <p class="text-gray-500 text-xs leading-relaxed line-clamp-2 font-medium">{{ doc.excerpt }}</p>
                             </div>
                         </div>
-                        <div class="flex items-center mt-5 pt-4 border-t border-white/5">
-                            <span class="text-xs text-slate-400 font-semibold flex items-center gap-1.5">
+                        <div class="flex items-center mt-5 pt-4 border-t border-gray-100">
+                            <span class="text-xs text-gray-400 font-semibold flex items-center gap-1.5">
                                 <Icon icon="ph:clock-bold" class="text-sm" /> {{ doc.readTime }}
                             </span>
                             <span
-                                class="ml-auto flex items-center gap-1 text-xs font-black text-primary opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-300">
+                                class="ml-auto flex items-center gap-1 text-xs font-black text-navy opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-300">
                                 {{ $t('docs.read') }}
                                 <Icon icon="ph:arrow-right-bold" class="text-xs" />
                             </span>
@@ -133,11 +133,18 @@ const openSearch = () => {
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }))
 }
 
-const searchQuery = ref(route.query.q || '')
+const getQueryString = (val: any): string => {
+    if (!val) return ''
+    if (Array.isArray(val)) return String(val[0] || '')
+    return String(val)
+}
+
+const searchQuery = ref<string>(getQueryString(route.query.q))
 
 watch(searchQuery, (newVal) => {
-    if (newVal.trim() !== '') {
-        router.replace({ query: { ...route.query, q: newVal } })
+    const trimmed = newVal.trim()
+    if (trimmed !== '') {
+        router.replace({ query: { ...route.query, q: trimmed } })
     } else {
         const q = { ...route.query }
         delete q.q
@@ -146,8 +153,9 @@ watch(searchQuery, (newVal) => {
 })
 
 watch(() => route.query.q, (newQ) => {
-    if (newQ !== undefined && newQ !== searchQuery.value) {
-        searchQuery.value = newQ
+    const newQStr = getQueryString(newQ)
+    if (newQStr !== searchQuery.value) {
+        searchQuery.value = newQStr
     }
 })
 
@@ -174,7 +182,7 @@ const filteredCategories = computed(() => {
     return cats.filter(cat => filteredDocs(cat.id).length > 0)
 })
 
-const filteredDocs = (categoryId) => {
+const filteredDocs = (categoryId: string) => {
     return docs.filter(d => {
         const matchCat = d.category === categoryId
         const matchSearch = searchQuery.value === '' ||

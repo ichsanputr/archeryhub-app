@@ -19,7 +19,7 @@
                         <button
                             class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary px-3 py-1.5 rounded-lg"
                             :class="[navLinkClasses, { '!text-primary font-bold': isActive('/events') }]">
-                            {{ $t('nav.features') }}
+                            <span class="link-underline" :style="isActive('/events') ? 'background-size: 100% 2px' : ''">{{ $t('nav.features') }}</span>
                             <Icon icon="ph:caret-down" class="text-xs transition-transform"
                                 :class="{ 'rotate-180': showMegaMenu }" />
                         </button>
@@ -109,19 +109,19 @@
                     <NuxtLink :to="localePath('/archers')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
                         :class="[navLinkClasses, { '!text-primary font-bold': isActive('/archers') }]">
-                        {{ $t('nav.archers') }}</NuxtLink>
+                        <span class="link-underline" :style="isActive('/archers') ? 'background-size: 100% 2px' : ''">{{ $t('nav.archers') }}</span></NuxtLink>
                     <NuxtLink :to="localePath('/news')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
                         :class="[navLinkClasses, { '!text-primary font-bold': isActive('/news') }]">
-                        {{ $t('nav.news') }}</NuxtLink>
+                        <span class="link-underline" :style="isActive('/news') ? 'background-size: 100% 2px' : ''">{{ $t('nav.news') }}</span></NuxtLink>
                     <NuxtLink :to="localePath('/docs')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
                         :class="[navLinkClasses, { '!text-primary font-bold': isActive('/docs') }]">
-                        {{ $t('nav.docs') }}</NuxtLink>
+                        <span class="link-underline" :style="isActive('/docs') ? 'background-size: 100% 2px' : ''">{{ $t('nav.docs') }}</span></NuxtLink>
                     <NuxtLink :to="localePath('/pricing')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
                         :class="[navLinkClasses, { '!text-primary font-bold': isActive('/pricing') }]">
-                        {{ $t('nav.pricing') }}
+                        <span class="link-underline" :style="isActive('/pricing') ? 'background-size: 100% 2px' : ''">{{ $t('nav.pricing') }}</span>
                     </NuxtLink>
                 </nav>
 

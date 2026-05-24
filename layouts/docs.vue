@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen flex flex-col bg-gray-50 font-body text-navy overflow-x-hidden">
+    <div class="min-h-screen flex flex-col bg-gray-50 font-body text-navy overflow-x-clip">
         <!-- Docs Header — always white -->
         <header
             class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-sm h-16 flex items-center">
@@ -11,7 +11,7 @@
                             <img src="/logo.png" alt="archeris.net" class="w-5 h-5 object-contain" />
                         </div>
                         <span class="text-lg font-black tracking-tight text-navy">Archeris<span
-                                class="text-[#D9FF00]">.id</span></span>
+                                class="text-[#D9FF00]">.net</span></span>
                     </NuxtLink>
                     <div class="items-center gap-2">
                         <span class="text-gray-200 text-lg font-light select-none">/</span>

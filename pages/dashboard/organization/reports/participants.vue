@@ -1,13 +1,24 @@
 <template>
   <div class="space-y-8">
-    <!-- Back Header -->
-    <div class="flex items-center gap-3">
-      <NuxtLink :to="getBackLink()" class="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-navy-dark transition-all flex items-center justify-center">
-        <Icon icon="ph:arrow-left-bold" class="text-lg" />
-      </NuxtLink>
-      <div>
-        <h1 class="text-xl sm:text-2xl font-black text-navy-dark">{{ t('dashboard.reports.participants_title') }}</h1>
-        <p class="text-gray-500 text-xs font-bold leading-none mt-1">Analyze Registration Splits, Check-in Status, and Registration Timeline.</p>
+    <!-- Header Section -->
+    <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+      <div class="absolute inset-0"
+        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
+      </div>
+      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+
+      <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex items-center gap-5">
+          <NuxtLink :to="getBackLink()"
+            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner text-white hover:bg-white/20 transition-all">
+            <Icon icon="ph:arrow-left-bold" class="text-primary text-xl sm:text-2xl" />
+          </NuxtLink>
+          <div>
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none">{{ t('dashboard.reports.participants_title') }}</h1>
+            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider">Analyze Registration Splits, Check-in Status, and Registration Timeline.</p>
+          </div>
+        </div>
       </div>
     </div>
 

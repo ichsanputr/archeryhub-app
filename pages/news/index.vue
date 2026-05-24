@@ -31,21 +31,36 @@
         <!-- Category Tabs & Search -->
         <section class="sticky top-16 z-20 bg-white border-b border-gray-200 shadow-sm">
             <div class="container mx-auto px-4 max-w-7xl">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 py-4">
-                    <!-- Categories -->
-                    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
-                        <button v-for="cat in categories" :key="cat.value" @click="activeCategory = cat.value" :class="[
-                            'px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all',
-                            activeCategory === cat.value
-                                ? 'bg-navy text-white shadow-lg'
-                                : 'text-gray-600 hover:bg-gray-100'
-                        ]">
-                            {{ cat.label }}
-                        </button>
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-4">
+                    <!-- Categories and Sources -->
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-4 overflow-x-auto no-scrollbar">
+                        <div class="flex items-center gap-2">
+                            <button v-for="cat in categories" :key="cat.value" @click="activeCategory = cat.value" :class="[
+                                'px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all',
+                                activeCategory === cat.value
+                                    ? 'bg-navy text-white shadow-lg'
+                                    : 'text-gray-600 hover:bg-gray-100'
+                            ]">
+                                {{ cat.label }}
+                            </button>
+                        </div>
+                        
+                        <div class="h-6 w-px bg-gray-200 hidden sm:block"></div>
+                        
+                        <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-xl self-start sm:self-auto shrink-0">
+                            <button v-for="src in sources" :key="src.value" @click="activeSource = src.value" :class="[
+                                'px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap',
+                                activeSource === src.value
+                                    ? 'bg-white text-navy shadow-sm'
+                                    : 'text-gray-500 hover:text-navy'
+                            ]">
+                                {{ src.label }}
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Search -->
-                    <div class="relative w-full md:w-72">
+                    <div class="relative w-full lg:w-72">
                         <Icon icon="ph:magnifying-glass"
                             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input v-model="searchQuery" type="text" :placeholder="$t('news_page.search_placeholder')"
@@ -91,6 +106,15 @@
                                     <span class="flex items-center gap-1.5">
                                         <Icon icon="ph:calendar" />
                                         {{ featuredArticle.date }}
+                                    </span>
+                                    <div class="w-px h-4 bg-white/20"></div>
+                                    <span class="flex items-center gap-1.5 text-white">
+                                        <Icon icon="ph:user-bold" />
+                                        {{ featuredArticle.author }}
+                                    </span>
+                                    <span v-if="!featuredArticle.organization_id && !featuredArticle.club_id"
+                                        class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] font-black tracking-widest uppercase">
+                                        {{ $t('news_page.official_badge') }}
                                     </span>
                                 </div>
                             </div>
@@ -153,6 +177,10 @@
                                                 <Icon icon="ph:user-bold" class="text-xs text-primary" />
                                             </div>
                                             <span class="text-xs font-bold text-navy">{{ article.author }}</span>
+                                            <span v-if="!article.organization_id && !article.club_id"
+                                                class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] font-black tracking-widest uppercase">
+                                                {{ $t('news_page.official_badge') }}
+                                            </span>
                                         </div>
                                         <span
                                             class="text-navy font-black text-xs tracking-wider flex items-center gap-1.5 self-start sm:self-auto border-b border-navy/30 pb-px group-hover:border-navy transition-colors">
@@ -297,6 +325,7 @@ const toast = useToast()
 
 const searchQuery = ref('')
 const activeCategory = ref('all')
+const activeSource = ref('all')
 const isLoadingMore = ref(false)
 const isSubscribing = ref(false)
 const subscribeEmail = ref('')
@@ -310,6 +339,12 @@ const categories = computed(() => [
     { label: t('news_page.categories.pengumuman'), value: 'pengumuman' },
     { label: t('news_page.categories.prestasi'), value: 'prestasi' },
     { label: t('news_page.categories.tips'), value: 'tips' },
+])
+
+const sources = computed(() => [
+    { label: t('news_page.sources.all'), value: 'all' },
+    { label: t('news_page.sources.official'), value: 'official' },
+    { label: t('news_page.sources.community'), value: 'community' },
 ])
 
 const { data: newsResponse, pending: isLoading } = await useAsyncData('news', () =>
@@ -332,18 +367,33 @@ const articles = computed(() => {
         date: article.published_at ? new Date(article.published_at).toLocaleDateString(lang, { day: 'numeric', month: 'short', year: 'numeric' }) : new Date(article.created_at).toLocaleDateString(lang, { day: 'numeric', month: 'short', year: 'numeric' }),
         author: article.author_name || 'Tim Redaksi',
         views: article.views || 0,
-        image: article.image_url
+        image: article.image_url,
+        organization_id: article.organization_id,
+        club_id: article.club_id
     }))
 })
 
-const featuredArticle = computed(() => articles.value[0] || null)
-
-const filteredArticles = computed(() => {
-    return articles.value.slice(1).filter(article => {
+const allFilteredArticles = computed(() => {
+    return articles.value.filter(article => {
         const matchesSearch = article.title.toLowerCase().includes(searchQuery.value.toLowerCase())
         const matchesCategory = activeCategory.value === 'all' || article.category === activeCategory.value
-        return matchesSearch && matchesCategory
+        
+        let matchesSource = true
+        const isOfficial = !article.organization_id && !article.club_id
+        if (activeSource.value === 'official') {
+            matchesSource = isOfficial
+        } else if (activeSource.value === 'community') {
+            matchesSource = !isOfficial
+        }
+        
+        return matchesSearch && matchesCategory && matchesSource
     })
+})
+
+const featuredArticle = computed(() => allFilteredArticles.value[0] || null)
+
+const filteredArticles = computed(() => {
+    return allFilteredArticles.value.slice(1)
 })
 
 const popularArticles = computed(() => {

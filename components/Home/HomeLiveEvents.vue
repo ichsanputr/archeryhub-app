@@ -8,8 +8,8 @@
                 </h2>
                 <NuxtLink to="/events"
                     class="text-navy hover:text-primary font-bold text-xs sm:text-sm flex items-center gap-1 group">
-                    <span class="hidden sm:inline">{{ $t('home.live_events.check_schedule') }}</span>
-                    <span class="sm:hidden">{{ $t('home.live_events.schedule_short') }}</span>
+                    <span class="hidden sm:inline"><span class="link-underline">{{ $t('home.live_events.check_schedule') }}</span></span>
+                    <span class="sm:hidden"><span class="link-underline">{{ $t('home.live_events.schedule_short') }}</span></span>
                     <span
                         class="material-symbols-outlined text-base sm:text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
                 </NuxtLink>

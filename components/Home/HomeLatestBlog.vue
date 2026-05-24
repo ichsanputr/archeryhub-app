@@ -25,7 +25,7 @@
                     </button>
                     <NuxtLink :to="localePath('/blog')"
                         class="ml-4 inline-flex items-center gap-2 text-white/60 font-bold tracking-widest text-sm hover:text-primary transition-colors">
-                        {{ $t('home.blog.view_all') }}
+                        <span class="link-underline">{{ $t('home.blog.view_all') }}</span>
                         <Icon icon="ph:arrow-right-bold" />
                     </NuxtLink>
                 </div>
@@ -58,7 +58,7 @@
                         </span>
                     </div>
                     
-                    <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                    <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors line-clamp-2 leading-snug underline-link inline-block">
                         {{ article.title }}
                     </h3>
                     
@@ -153,5 +153,16 @@ const scrollRight = () => {
 .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+.underline-link {
+    background-image: linear-gradient(#D9FF00, #D9FF00);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size 0.3s ease;
+}
+.group:hover .underline-link {
+    background-size: 100% 2px;
 }
 </style>

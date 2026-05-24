@@ -9,8 +9,8 @@
             </div>
             <NuxtLink to="/events"
                 class="flex items-center gap-1 text-navy text-xs sm:text-sm font-semibold hover:text-primary transition-colors group">
-                <span class="hidden sm:inline">Cek Semua</span>
-                <span class="sm:hidden">Semua</span>
+                <span class="hidden sm:inline"><span class="link-underline">Cek Semua</span></span>
+                <span class="sm:hidden"><span class="link-underline">Semua</span></span>
                 <span
                     class="material-symbols-outlined text-base sm:text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </NuxtLink>

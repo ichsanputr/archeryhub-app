@@ -5,12 +5,12 @@
 
         <!-- Badminton Player Decorative Watermark Graphic in Bottom Corner -->
         <div class="absolute bottom-0 right-0 w-[180px] sm:w-[280px] md:w-[350px] opacity-15 pointer-events-none transform translate-y-8 translate-x-8 z-0">
-            <img src="/badminton_vector.png" alt="Badminton Players Watermark" class="w-full h-auto object-contain select-none pointer-events-none" />
+            <img src="/archery_vector.png" alt="Badminton Players Watermark" class="w-full h-auto object-contain select-none pointer-events-none" />
         </div>
 
         <!-- Second Badminton Player Decorative Watermark Graphic in Left Corner -->
         <div class="absolute bottom-0 left-0 w-[180px] sm:w-[280px] md:w-[350px] opacity-15 pointer-events-none transform translate-y-8 -translate-x-8 z-0">
-            <img src="/badminton_vector_2.png" alt="Badminton Players Watermark Left" class="w-full h-auto object-contain select-none pointer-events-none" />
+            <img src="/archery_vector_2.png" alt="Badminton Players Watermark Left" class="w-full h-auto object-contain select-none pointer-events-none" />
         </div>
 
         <div class="max-w-[1280px] mx-auto px-6 md:px-12">

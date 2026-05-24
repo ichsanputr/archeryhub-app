@@ -234,7 +234,27 @@
             "reregistration": "Re-registration",
             "reregistered": "Already Re-registered",
             "not_reregistered": "Not Yet Re-registered",
-            "reregistration_success": "Successfully updated re-registration status"
+            "reregistration_success": "Successfully updated re-registration status",
+            "title": "Participant List",
+            "subtitle": "View and manage all participants registered in this event.",
+            "export_csv": "Export CSV",
+            "add_participant": "Add Participant",
+            "search_placeholder": "Search participant name or email...",
+            "status_options": {
+                "all": "All Statuses",
+                "paid": "Registered",
+                "pending": "Pending"
+            },
+            "archers_unit": "Archers",
+            "table": {
+                "name_email": "Participant Name / Email",
+                "club_city": "Club / City",
+                "category": "Event Category",
+                "payment_status": "Payment Status",
+                "action": "Action"
+            },
+            "no_participants": "No participants found.",
+            "view_details": "View Profile Details"
         },
         "reports": {
             "title": "Reports Dashboard",
@@ -664,7 +684,13 @@
             "pengumuman": "Announcement",
             "prestasi": "Achievement",
             "tips": "Tips & Tutorials"
-        }
+        },
+        "sources": {
+            "all": "All",
+            "official": "Official",
+            "community": "Community"
+        },
+        "official_badge": "Official"
     },
     "news_detail_page": {
         "back_to_news": "Back to News",

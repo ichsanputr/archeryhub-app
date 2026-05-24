@@ -3,7 +3,8 @@
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-8">
                 <h2 class="text-lg sm:text-2xl font-black text-navy font-display">{{ $t('home.news.title') }}</h2>
-                <NuxtLink class="text-gray-500 hover:text-navy font-bold text-xs sm:text-sm" to="/news">{{ $t('home.news.view_more') }}
+                <NuxtLink class="text-gray-500 hover:text-navy font-bold text-xs sm:text-sm" to="/news">
+                    <span class="link-underline">{{ $t('home.news.view_more') }}</span>
                 </NuxtLink>
             </div>
 

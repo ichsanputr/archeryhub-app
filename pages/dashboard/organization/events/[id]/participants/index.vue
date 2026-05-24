@@ -28,10 +28,10 @@
                         <!-- Title Section -->
                         <div class="flex-1">
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
-                                Daftar Peserta
+                                {{ t('dashboard.participants_list.title') }}
                             </h1>
                             <p class="text-slate-300 text-sm max-w-2xl">
-                                Lihat dan kelola semua peserta yang terdaftar dalam event ini.
+                                {{ t('dashboard.participants_list.subtitle') }}
                             </p>
                         </div>
                     </div>
@@ -41,14 +41,14 @@
                         <BaseButton variant="white" icon="ph:download" class="h-11 px-5"
                             @click="canExportData ? exportCSV() : (showPremiumModal = true)"
                             :class="{ 'opacity-50 grayscale cursor-not-allowed': !canExportData }">
-                            <span class="hidden sm:inline">Export CSV</span>
+                            <span class="hidden sm:inline">{{ t('dashboard.participants_list.export_csv') }}</span>
                             <span class="sm:hidden">Export</span>
                         </BaseButton>
                         <BaseButton :to="canCreateEvent ? `/dashboard/events/${eventId}/participants/add` : undefined"
                             variant="primary" icon="ph:plus-bold" @click="!canCreateEvent && (showPremiumModal = true)"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
                             :class="{ 'opacity-50 grayscale cursor-not-allowed': !canCreateEvent }">
-                            <span class="hidden sm:inline">Tambah Peserta</span>
+                            <span class="hidden sm:inline">{{ t('dashboard.participants_list.add_participant') }}</span>
                             <span class="sm:hidden">Tambah</span>
                         </BaseButton>
                     </div>
@@ -64,7 +64,7 @@
                 <div class="relative flex-1">
                     <Icon icon="ph:magnifying-glass"
                         class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
-                    <input v-model="searchQuery" type="text" placeholder="Cari nama peserta atau email..."
+                    <input v-model="searchQuery" type="text" :placeholder="t('dashboard.participants_list.search_placeholder')"
                         class="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium"
                         @input="handleSearch" />
                 </div>
@@ -81,7 +81,7 @@
             <div class="flex items-center gap-2">
                 <span class="text-xs font-bold text-gray-400 tracking-widest hidden sm:inline">Total:</span>
                 <div class="px-3 py-1.5 bg-navy/5 text-navy rounded-lg font-black text-xs border border-navy/10">
-                    {{ total }} Peserta
+                    {{ total }} {{ t('dashboard.participants_list.archers_unit') }}
                 </div>
             </div>
         </div>
@@ -93,12 +93,12 @@
                     <thead class="bg-gray-50/50 border-b border-gray-100">
                         <tr class="text-[10px] font-black text-gray-400  tracking-widest capitalize">
                             <th class="px-6 py-4">No</th>
-                            <th class="px-6 py-4">Nama Peserta / Email</th>
-                            <th class="px-6 py-4">Klub / Kota</th>
-                            <th v-if="hasActiveCategoryFilter" class="px-6 py-4 min-w-[240px]">Kategori Event</th>
-                            <th class="px-6 py-4 min-w-[160px]">Status Pembayaran</th>
+                            <th class="px-6 py-4">{{ t('dashboard.participants_list.table.name_email') }}</th>
+                            <th class="px-6 py-4">{{ t('dashboard.participants_list.table.club_city') }}</th>
+                            <th v-if="hasActiveCategoryFilter" class="px-6 py-4 min-w-[240px]">{{ t('dashboard.participants_list.table.category') }}</th>
+                            <th class="px-6 py-4 min-w-[160px]">{{ t('dashboard.participants_list.table.payment_status') }}</th>
                             <th class="px-6 py-4 min-w-[180px]">{{ t('dashboard.participants_list.reregistration') }}</th>
-                            <th class="px-6 py-4 text-right">Aksi</th>
+                            <th class="px-6 py-4 text-right">{{ t('dashboard.participants_list.table.action') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
@@ -205,14 +205,14 @@
                                             :to="`/dashboard/events/${eventId}/participants/${participant.athlete_code || participant.archer_id}`"
                                             variant="white" size="sm" icon="ph:eye-bold"
                                             class="h-10 w-10 p-0 text-gray-400 hover:text-navy border-gray-100 hover:border-navy/20 shadow-none"
-                                            title="Lihat Detail Profil" />
+                                            :title="t('dashboard.participants_list.view_details')" />
                                     </div>
                                 </td>
                             </tr>
                             <tr v-if="filteredParticipants.length === 0">
                                 <td :colspan="hasActiveCategoryFilter ? 7 : 6"
                                     class="px-6 py-12 text-center text-gray-400 italic font-medium">
-                                    Tidak ada peserta yang ditemukan.
+                                    {{ t('dashboard.participants_list.no_participants') }}
                                 </td>
                             </tr>
                         </template>
@@ -313,11 +313,11 @@ const isLoading = ref(true)
 
 const statusFilter = ref('Semua')
 const categoryFilter = ref([])
-const statusOptions = [
-    { title: 'All Statuses', value: 'Semua' },
-    { title: 'Registered', value: 'paid' },
-    { title: 'Pending', value: 'pending' }
-]
+const statusOptions = computed(() => [
+    { title: t('dashboard.participants_list.status_options.all'), value: 'Semua' },
+    { title: t('dashboard.participants_list.status_options.paid'), value: 'paid' },
+    { title: t('dashboard.participants_list.status_options.pending'), value: 'pending' }
+])
 
 const categoryFilterOptions = computed(() => {
     const mapped = categories.value.map(category => ({
