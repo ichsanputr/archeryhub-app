@@ -1,12 +1,10 @@
 <template>
   <div
-    class="relative overflow-hidden bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col justify-between min-h-[110px]"
-    :class="colorClasses[color]?.border || 'hover:border-primary/30'"
+    class="relative overflow-hidden bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col justify-between min-h-[110px] hover:border-primary/30"
   >
     <!-- Background Watermark Icon Overlay -->
     <div
-      class="absolute right-3 -bottom-3 opacity-[0.06] group-hover:opacity-[0.12] group-hover:scale-110 transition-all duration-500 pointer-events-none"
-      :class="colorClasses[color]?.text || 'text-primary'"
+      class="absolute right-3 -bottom-3 opacity-[0.06] group-hover:opacity-[0.12] group-hover:scale-110 transition-all duration-500 pointer-events-none text-primary"
     >
       <Icon :icon="icon" class="text-7xl sm:text-8xl" />
     </div>
@@ -23,8 +21,7 @@
       </div>
       <!-- Top-right Icon Badge -->
       <div
-        class="size-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0 shadow-sm"
-        :class="colorClasses[color]?.bg || 'bg-primary/10 text-primary'"
+        class="size-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0 shadow-sm bg-primary/10 text-primary group-hover:bg-primary group-hover:text-btn-text"
       >
         <Icon :icon="icon" class="text-xl" />
       </div>
@@ -44,7 +41,6 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { computed } from 'vue'
 
 const props = defineProps({
   title: {
@@ -72,62 +68,5 @@ const props = defineProps({
     default: ''
   }
 })
-
-const colorClasses = {
-  primary: {
-    text: 'text-primary',
-    bg: 'bg-primary/10 text-primary group-hover:bg-primary group-hover:text-navy',
-    border: 'hover:border-primary/30'
-  },
-  success: {
-    text: 'text-green-500',
-    bg: 'bg-green-500/10 text-green-600 group-hover:bg-green-500 group-hover:text-white',
-    border: 'hover:border-green-500/30'
-  },
-  green: {
-    text: 'text-green-500',
-    bg: 'bg-green-500/10 text-green-600 group-hover:bg-green-500 group-hover:text-white',
-    border: 'hover:border-green-500/30'
-  },
-  warning: {
-    text: 'text-amber-500',
-    bg: 'bg-amber-500/10 text-amber-600 group-hover:bg-amber-500 group-hover:text-white',
-    border: 'hover:border-amber-500/30'
-  },
-  amber: {
-    text: 'text-amber-500',
-    bg: 'bg-amber-500/10 text-amber-600 group-hover:bg-amber-500 group-hover:text-white',
-    border: 'hover:border-amber-500/30'
-  },
-  info: {
-    text: 'text-blue-500',
-    bg: 'bg-blue-500/10 text-blue-600 group-hover:bg-blue-500 group-hover:text-white',
-    border: 'hover:border-blue-500/30'
-  },
-  blue: {
-    text: 'text-blue-500',
-    bg: 'bg-blue-500/10 text-blue-600 group-hover:bg-blue-500 group-hover:text-white',
-    border: 'hover:border-blue-500/30'
-  },
-  danger: {
-    text: 'text-red-500',
-    bg: 'bg-red-500/10 text-red-600 group-hover:bg-red-500 group-hover:text-white',
-    border: 'hover:border-red-500/30'
-  },
-  red: {
-    text: 'text-red-500',
-    bg: 'bg-red-500/10 text-red-600 group-hover:bg-red-500 group-hover:text-white',
-    border: 'hover:border-red-500/30'
-  },
-  slate: {
-    text: 'text-slate-400',
-    bg: 'bg-slate-100 text-slate-500 group-hover:bg-slate-500 group-hover:text-white',
-    border: 'hover:border-slate-300'
-  },
-  gray: {
-    text: 'text-slate-400',
-    bg: 'bg-slate-100 text-slate-500 group-hover:bg-slate-500 group-hover:text-white',
-    border: 'hover:border-slate-300'
-  }
-}
 </script>
+

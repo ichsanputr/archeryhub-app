@@ -26,7 +26,6 @@
 
 <script setup>
 import HomeHero from '~/components/Home/HomeHero.vue'
-import HomeStats from '~/components/Home/HomeStats.vue'
 import HomeLearnToUse from '~/components/Home/HomeLearnToUse.vue'
 import HomeTrustTestimonials from '~/components/Home/HomeTrustTestimonials.vue'
 import HomeFeaturesDemo from '~/components/Home/HomeFeaturesDemo.vue'

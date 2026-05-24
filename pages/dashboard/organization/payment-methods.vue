@@ -24,7 +24,7 @@
       <div class="text-gray-500 text-sm mb-6">{{ t('organization_settings_page.payment_subtitle') }}</div>
 
       <!-- Currency Configuration -->
-      <div class="mb-8 p-6 bg-navy/5 border border-navy/10 rounded-2xl">
+      <div class="mb-8 p-6 border border-gray-100 rounded-2xl">
         <h4 class="text-sm font-black text-navy tracking-widest mb-2 flex items-center gap-2">
           <Icon icon="ph:currency-circle-dollar-bold" class="text-primary text-lg" />
           {{ t('organization_settings_page.org_currency_title') }}
