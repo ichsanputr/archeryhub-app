@@ -35,15 +35,17 @@
 
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-3">
-            <BaseButton variant="primary" icon="ph:plus-bold"
-              class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
-              @click="openCreateModal">
-              {{ t('event_qualification.add_session') }}
-            </BaseButton>
-          </div>
+             <BaseButton variant="primary" icon="ph:plus-bold"
+               class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
+               :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+               @click="isSubscriptionActive ? openCreateModal() : (showPremiumModal = true)">
+               {{ t('event_qualification.add_session') }}
+             </BaseButton>
+           </div>
         </div>
       </div>
     </div>
+    <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
     <!-- Sessions List View -->
     <div class="space-y-6">
@@ -70,7 +72,9 @@
           <Icon icon="ph:calendar-blank" class="text-4xl text-gray-300 mx-auto mb-3" />
           <div class="text-sm font-bold text-gray-600 mb-1">{{ t('event_qualification.no_session') }}</div>
           <div class="text-xs text-gray-400 mb-4">{{ t('event_qualification.no_session_desc') }}</div>
-          <BaseButton variant="primary" icon="ph:plus-bold" @click="openCreateModal">
+          <BaseButton variant="primary" icon="ph:plus-bold"
+            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+            @click="isSubscriptionActive ? openCreateModal() : (showPremiumModal = true)">
             {{ t('event_qualification.create_first_session') }}
           </BaseButton>
         </div>
@@ -84,10 +88,10 @@
               class="absolute top-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
               <BaseButton variant="white" size="sm" icon="ph:pencil-simple-bold"
                 class="!size-9 !p-0 !rounded-xl text-gray-400 hover:!text-navy hover:scale-110 active:scale-95 shadow-md"
-                @click.stop="editSession(session)" />
+                @click.stop="isSubscriptionActive ? editSession(session) : (showPremiumModal = true)" />
               <BaseButton variant="white" size="sm" icon="ph:trash-bold"
                 class="!size-9 !p-0 !rounded-xl text-gray-400 hover:!text-red-500 hover:scale-110 active:scale-95 shadow-md"
-                @click.stop="confirmDeleteSession(session)" />
+                @click.stop="isSubscriptionActive ? confirmDeleteSession(session) : (showPremiumModal = true)" />
             </div>
 
             <div class="flex items-start justify-between mb-4">
@@ -583,6 +587,8 @@ import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -590,6 +596,8 @@ const router = useRouter()
 const { get, post, patch, delete: del } = useApi()
 const toast = useToast()
 const eventId = computed(() => route.params.id)
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 definePageMeta({
   layout: 'dashboard'

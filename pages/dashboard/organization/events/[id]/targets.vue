@@ -50,8 +50,9 @@
               </button>
             </div>
 
-            <BaseButton @click="showCreateDialog = true" variant="primary" icon="ph:plus-bold"
-              class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all">
+            <BaseButton @click="isSubscriptionActive ? (showCreateDialog = true) : (showPremiumModal = true)" variant="primary" icon="ph:plus-bold"
+              class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
+              :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
               <span class="hidden sm:inline">{{ t('event_targets.add_target') }}</span>
               <span class="sm:hidden">{{ t('event_targets.add') }}</span>
             </BaseButton>
@@ -59,6 +60,7 @@
         </div>
       </div>
     </div>
+    <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
     <!-- Grid View -->
     <div v-if="viewMode === 'grid'" class="space-y-6">
@@ -111,7 +113,8 @@
               {{ t('event_targets.no_targets_desc') }}
             </p>
           </div>
-          <BaseButton @click="showCreateDialog = true" variant="primary" icon="ph:plus-bold" class="w-full">
+          <BaseButton @click="isSubscriptionActive ? (showCreateDialog = true) : (showPremiumModal = true)" variant="primary" icon="ph:plus-bold" class="w-full"
+            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
             {{ t('event_targets.add_target') }}
           </BaseButton>
         </div>
@@ -134,11 +137,11 @@
 
             <!-- Actions Hover Menu -->
             <div class="flex gap-1">
-              <button @click="editTarget(target)"
+              <button @click="isSubscriptionActive ? editTarget(target) : (showPremiumModal = true)"
                 class="size-8 flex items-center justify-center rounded-lg bg-white border border-gray-100 text-blue-600 hover:bg-blue-50 transition-colors shadow-sm">
                 <Icon icon="ph:pencil-simple-bold" />
               </button>
-              <button @click="confirmDelete(target)"
+              <button @click="isSubscriptionActive ? confirmDelete(target) : (showPremiumModal = true)"
                 class="size-8 flex items-center justify-center rounded-lg bg-white border border-gray-100 text-red-500 hover:bg-red-50 transition-colors shadow-sm">
                 <Icon icon="ph:trash-bold" />
               </button>
@@ -240,11 +243,11 @@
               </td>
               <td class="px-6 py-4">
                 <div class="flex items-center justify-end gap-2">
-                  <button @click="editTarget(target)"
+                  <button @click="isSubscriptionActive ? editTarget(target) : (showPremiumModal = true)"
                     class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors group/btn">
                     <Icon icon="ph:pencil-simple" class="text-lg group-hover/btn:scale-110 transition-transform" />
                   </button>
-                  <button @click="confirmDelete(target)"
+                  <button @click="isSubscriptionActive ? confirmDelete(target) : (showPremiumModal = true)"
                     class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors group/btn">
                     <Icon icon="ph:trash" class="text-lg group-hover/btn:scale-110 transition-transform" />
                   </button>
@@ -389,7 +392,12 @@
 
 <script setup>
 import { useI18n } from 'vue-i18n'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+
 const { t } = useI18n()
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 const viewMode = ref('grid')
 const route = useRoute()
 const { get, post, put, delete: deleteApi } = useApi()

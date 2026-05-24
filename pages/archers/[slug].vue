@@ -4,7 +4,7 @@
             <ArcherPageSkeleton v-if="isLoading || !archerResponse" key="skeleton" />
             <div v-else key="content">
                 <!-- ── Hero Section ── -->
-                <section class="relative w-full overflow-hidden bg-navy pt-20 sm:pt-24 pb-0 flex items-end">
+                <section class="relative w-full overflow-hidden bg-gradient-to-br from-[#1a365d] via-[#0f172a] to-[#1e3a8a] pt-24 sm:pt-36 pb-0 flex items-end">
                     <!-- Backdrop image -->
                     <img :src="useImageOrDefault(archer.banner_url || archer.avatar_url, archer.full_name)"
                         class="absolute inset-0 w-full h-full object-cover object-top opacity-20 mix-blend-overlay pointer-events-none scale-105 filter blur-sm"
@@ -12,11 +12,11 @@
                     <!-- Motif Pattern from settings -->
                     <div class="absolute inset-0 pointer-events-none z-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.08);"></div>
                     <!-- Radial vignette -->
-                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_0%,rgba(15,23,42,0.3),rgba(15,23,42,0.95))]"></div>
+                    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_0%,rgba(30,58,138,0.25),rgba(15,23,42,0.85))]"></div>
                     <!-- Bottom fade into white -->
                     <div class="absolute inset-x-0 bottom-0 h-4 bg-gradient-to-t from-white to-transparent pointer-events-none z-10"></div>
 
-                    <div class="relative w-full px-4 sm:px-6 md:px-12 max-w-7xl mx-auto z-10 pb-16">
+                    <div class="relative w-full px-4 sm:px-6 md:px-12 max-w-7xl mx-auto z-10 pb-20 sm:pb-24">
                         <div class="flex flex-col md:flex-row items-start md:items-end gap-6 md:gap-10">
                             <!-- Avatar -->
                             <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl border-4 border-white/10 shadow-2xl overflow-hidden shrink-0 bg-navy/50 backdrop-blur-md">
@@ -166,7 +166,7 @@
                                         <h3 class="text-xs font-black tracking-[0.3em] text-navy/40 flex items-center gap-4 capitalize">
                                             Recent Competition <span class="h-px flex-1 bg-gray-100"></span>
                                         </h3>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div v-if="groupedEventHistory.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div v-for="event in groupedEventHistory.slice(0, 2)" :key="event.id"
                                                 class="bg-white border border-gray-200/60 rounded-3xl p-6 hover:shadow-lg transition-all group cursor-pointer"
                                                 @click="router.push(`/events/${event.slug}`)">
@@ -194,13 +194,22 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div v-else class="bg-white border border-gray-200/60 rounded-3xl p-8 text-center shadow-sm">
+                                            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-50 text-gray-400">
+                                                <Icon icon="ph:target-bold" class="text-xl" />
+                                            </div>
+                                            <h4 class="font-black text-navy text-sm capitalize">Belum ada riwayat kompetisi</h4>
+                                            <p class="mt-1.5 text-xs text-slate-400 max-w-sm mx-auto leading-relaxed">
+                                                Atlet ini belum memiliki catatan riwayat keikutsertaan turnamen resmi.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <!-- Right Column: Sidebar (Highlights, Equipment, Socials) -->
                                 <div class="lg:col-span-4 space-y-10">
                                     <!-- Trophy Showcase -->
-                                    <div v-if="processedAchievements.highlights.length" class="bg-navy rounded-3xl p-8 text-white relative overflow-hidden shadow-xl border border-white/5">
+                                    <div class="bg-navy rounded-3xl p-8 text-white relative overflow-hidden shadow-xl border border-white/5">
                                         <div class="absolute -right-12 -bottom-12 opacity-5 pointer-events-none">
                                             <Icon icon="ph:trophy-bold" class="text-[14rem]" />
                                         </div>
@@ -208,21 +217,25 @@
                                             <Icon icon="ph:crown-bold" class="text-primary text-base" />
                                             Top Highlights
                                         </h3>
-                                        <div class="space-y-5">
+                                        <div v-if="processedAchievements.highlights.length" class="space-y-5">
                                             <div v-for="(ach, idx) in processedAchievements.highlights" :key="idx"
                                                 class="flex items-start gap-3 bg-white/5 border border-white/10 rounded-2xl p-4">
                                                 <Icon icon="ph:medal-fill" class="text-primary text-xl shrink-0 mt-0.5" />
                                                 <div class="text-xs font-black leading-relaxed text-slate-200 capitalize tracking-wider">{{ ach }}</div>
                                             </div>
                                         </div>
+                                        <div v-else class="text-center py-6 border border-white/10 rounded-2xl bg-white/5 backdrop-blur-sm">
+                                            <Icon icon="ph:shield-warning-bold" class="text-2xl text-white/30 mx-auto mb-2" />
+                                            <div class="text-[10px] font-black text-white/40 tracking-wider">Belum ada highlight prestasi</div>
+                                        </div>
                                     </div>
 
                                     <!-- Equipment Locker -->
-                                    <div v-if="archer.equipment" class="bg-white rounded-3xl border border-gray-200/60 p-8 shadow-sm space-y-5">
+                                    <div class="bg-white rounded-3xl border border-gray-200/60 p-8 shadow-sm space-y-5">
                                         <h3 class="text-xs font-black tracking-[0.3em] text-navy/40 capitalize">
                                             Equipment Locker
                                         </h3>
-                                        <div class="space-y-3">
+                                        <div v-if="archer.equipment && archer.equipment.trim()" class="space-y-3">
                                             <template v-for="(gear, idx) in archer.equipment.split('\n')" :key="idx">
                                                 <div v-if="gear.trim()"
                                                     class="p-4 border border-gray-100 rounded-2xl bg-gray-50/50 flex items-center justify-between">
@@ -233,6 +246,10 @@
                                                     <Icon icon="ph:shield-check-fill" class="text-primary text-lg" />
                                                 </div>
                                             </template>
+                                        </div>
+                                        <div v-else class="p-6 border border-dashed border-gray-200 rounded-2xl text-center">
+                                            <Icon icon="ph:shield-warning-bold" class="text-2xl text-slate-300 mx-auto mb-2" />
+                                            <div class="text-[10px] font-black text-slate-400 tracking-wider">Belum ada data peralatan</div>
                                         </div>
                                     </div>
 

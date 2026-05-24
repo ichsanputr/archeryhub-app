@@ -1,5 +1,6 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
         <!-- Enhanced Header -->
         <div
             class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
@@ -38,7 +39,8 @@
                     <div class="flex gap-3 flex-shrink-0">
                         <BaseButton variant="primary" icon="ph:floppy-disk"
                             class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all font-black"
-                            @click="handleSubmit" :loading="isSubmitting">
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                            @click="isSubscriptionActive ? handleSubmit() : (showPremiumModal = true)" :loading="isSubmitting">
                             <span class="hidden sm:inline">Simpan Perubahan</span>
                             <span class="sm:hidden">Simpan</span>
                         </BaseButton>
@@ -249,7 +251,8 @@
                         </div>
                         <BaseButton variant="danger" block icon="ph:user-minus"
                             class="h-10 text-xs shadow-lg shadow-red-200" :disabled="participant.in_elimination"
-                            @click="showKickDialog = true">
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                            @click="isSubscriptionActive ? (showKickDialog = true) : (showPremiumModal = true)">
                             {{ participant.in_elimination ? 'Tidak Dapat Dikeluarkan' : 'Keluarkan Peserta' }}
                         </BaseButton>
                     </div>
@@ -323,6 +326,11 @@ import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { definePageMeta } from '#imports'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 definePageMeta({
     layout: 'dashboard'

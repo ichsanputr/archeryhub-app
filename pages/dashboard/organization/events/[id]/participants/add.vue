@@ -309,6 +309,7 @@ import { useApi } from '~/composables/useApi'
 import { useEventContext } from '~/composables/useEventContext'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
+import { useSubscription } from '~/composables/useSubscription'
 
 definePageMeta({
     layout: 'dashboard',
@@ -325,6 +326,7 @@ const { get, post } = useApi()
 const toast = useToast()
 const { user } = useAuth()
 const { setEvent, clearEvent } = useEventContext()
+const { isSubscriptionActive } = useSubscription()
 
 const event = ref(null)
 const archers = ref([])
@@ -704,6 +706,11 @@ watch(searchArcherQuery, (newVal) => {
 })
 
 onMounted(() => {
+    if (!isSubscriptionActive.value) {
+        toast.error('subscription expired. upgrade your plan to add participants.')
+        router.replace(`/dashboard/events/${route.params.id}/participants`)
+        return
+    }
     fetchEventDetails()
     fetchCategories()
     fetchClubs()

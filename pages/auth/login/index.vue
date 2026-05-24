@@ -21,12 +21,9 @@
                     <span class="text-white text-3xl font-black tracking-tight font-display">Archeris<span
                             class="text-logo-id">.id</span></span>
                 </div>
-                <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display">
-                    Elevate <br />
-                    Indonesian Archery
-                </h1>
+                <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display" v-html="t('auth.login.title')"></h1>
                 <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
-                    Join the number one digital archery platform to manage tournaments, athletes, and real-time scoring.
+                    {{ t('auth.login.desc') }}
                 </p>
                 <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
                     <div class="flex -space-x-2">
@@ -40,7 +37,7 @@
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
                     </div>
-                    <span>Archers have joined Archeris.net</span>
+                    <span>{{ t('auth.login.archers_joined') }}</span>
                 </div>
             </div>
         </div>
@@ -69,8 +66,8 @@
                             </div>
                         </div>
                     </div>
-                    <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display">Welcome Back!</h2>
-                    <p class="mt-2 text-slate-500 text-sm font-body">Please enter your email and password to continue.</p>
+                    <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display">{{ t('auth.login.welcome') }}</h2>
+                    <p class="mt-2 text-slate-500 text-sm font-body">{{ t('auth.login.welcome_sub') }}</p>
                 </div>
 
                 <form @submit.prevent="handleEmailAuth" class="space-y-6">
@@ -91,29 +88,29 @@
                         </select>
                     </div>
 
-                    <BaseInput v-model="form.email" label="Email Address" placeholder="name@company.com" type="email"
+                    <BaseInput v-model="form.email" :label="t('auth.login.email_label')" :placeholder="t('auth.login.email_placeholder')" type="email"
                         icon="mail" required :error="errors.email"
                         @update:model-value="validate('email', form.email, [rules.required(), rules.email()])" />
 
                     <div class="space-y-2">
                         <div class="flex items-center justify-between px-1">
-                            <label class="text-xs font-bold text-navy  tracking-wider">Password</label>
+                            <label class="text-xs font-bold text-navy  tracking-wider">{{ t('auth.login.password_label') }}</label>
                             <NuxtLink to="/auth/forgot-password" class="text-xs font-bold transition-colors">
-                                Forgot password?
+                                {{ t('auth.login.forgot_password') }}
                             </NuxtLink>
                         </div>
-                        <BaseInput v-model="form.password" placeholder="••••••••" type="password" icon="lock" required
+                        <BaseInput v-model="form.password" :placeholder="t('auth.login.password_placeholder')" type="password" icon="lock" required
                             :error="errors.password"
                             @update:model-value="validate('password', form.password, [rules.required()])" />
                     </div>
 
                     <div class="flex items-center">
-                        <BaseCheckbox v-model="form.rememberMe" label="Remember me" />
+                        <BaseCheckbox v-model="form.rememberMe" :label="t('auth.login.remember_me')" />
                     </div>
 
                     <div>
                         <BaseButton type="submit" variant="gold" block :loading="isLoading" icon-right="ph:arrow-right">
-                            Login Now
+                            {{ t('auth.login.login_now') }}
                         </BaseButton>
                     </div>
                 </form>
@@ -123,21 +120,21 @@
                         <div class="w-full border-t border-gray-200"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-4 bg-white text-slate-500 font-medium font-body">Or login with</span>
+                        <span class="px-4 bg-white text-slate-500 font-medium font-body">{{ t('auth.login.or_login_with') }}</span>
                     </div>
                 </div>
 
                 <div class="mt-6">
                     <BaseButton variant="outline" block icon="logos:google-icon" @click="handleGoogleLogin"
                         :loading="isLoading && !form.email">
-                        Login with Google
+                        {{ t('auth.login.login_with_google') }}
                     </BaseButton>
                 </div>
 
                 <p class="mt-8 text-center text-sm text-slate-600 font-body">
-                    Don't have an account?
+                    {{ t('auth.login.dont_have_account') }}
                     <NuxtLink to="/auth/register"
-                        class="font-black text-navy hover:text-primary-hover hover:underline transition-all">Register here!
+                        class="font-black text-navy hover:text-primary-hover hover:underline transition-all">{{ t('auth.login.register_here') }}
                     </NuxtLink>
                 </p>
             </div>
@@ -148,11 +145,13 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useAuth } from '~/composables/useAuth'
 import { useFormValidation } from '~/composables/useFormValidation'
 import { useToast } from '~/composables/useToast'
  
 const route = useRoute()
+const { t } = useI18n()
 const { login, loginWithEmail, isLoggedIn, user } = useAuth()
 const toast = useToast()
 

@@ -1,5 +1,6 @@
 <template>
     <div class="space-y-6">
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h2 class="text-xl font-black text-navy leading-tight">Pengaturan Target</h2>
@@ -11,14 +12,14 @@
                 <BaseButton variant="white" icon="ph:trash-bold"
                     :disabled="isReseting || isAssigning || props.archers.length === unassignedArchersCount"
                     :loading="isReseting" class="!text-red-500 !border-red-100 hover:!bg-red-50"
-                    @click="resetAssignments">
+                    @click="isSubscriptionActive ? resetAssignments() : (showPremiumModal = true)">
                     Atur Ulang
                 </BaseButton>
 
                 <div class="relative dropdown-container">
                     <BaseButton variant="primary" icon="fa7-solid:random"
                         :disabled="isAssigning || isReseting || props.archers.length === 0" :loading="isAssigning"
-                        @click="showAutoAssignMenu = !showAutoAssignMenu">
+                        @click="isSubscriptionActive ? (showAutoAssignMenu = !showAutoAssignMenu) : (showPremiumModal = true)">
                         Penempatan Otomatis
                         <Icon icon="ph:caret-down-bold" class="ml-2 text-xs" />
                     </BaseButton>
@@ -102,7 +103,7 @@
                                 <div class="flex-1 h-[1px] bg-gray-200"></div>
                             </div>
 
-                            <div v-for="archer in group.archers" :key="archer.uuid" draggable="true"
+                            <div v-for="archer in group.archers" :key="archer.uuid" :draggable="isSubscriptionActive"
                                 @dragstart="(e) => handleDragStart(e, archer)" @dragend="handleDragEnd"
                                 class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm cursor-grab active:cursor-grabbing hover:border-primary/50 hover:shadow-md transition-all flex items-center gap-3 group mx-1">
                                 <div
@@ -158,8 +159,8 @@
 
                         <div class="p-4 space-y-3">
                             <div v-for="pos in target.availableLetters" :key="pos" class="group" @dragover.prevent
-                                @drop="handleDropOnTarget(target, pos)">
-                                <div v-if="target.slots[pos]" draggable="true"
+                                @drop="isSubscriptionActive ? handleDropOnTarget(target, pos) : null">
+                                <div v-if="target.slots[pos]" :draggable="isSubscriptionActive"
                                     @dragstart="(e) => handleDragStart(e, target.slots[pos], target, pos)"
                                     @dragend="handleDragEnd"
                                     class="flex items-center gap-3 p-2.5 rounded-xl bg-gray-50 border border-transparent hover:border-primary/30 transition-all cursor-grab active:cursor-grabbing shadow-sm group/slot-filled"
@@ -183,7 +184,7 @@
                                     </div>
                                     <BaseButton variant="white" size="sm" icon="ph:x-bold"
                                         class="!size-6 !p-0 !rounded-lg text-gray-400 hover:!text-red-500 hover:!bg-red-50 opacity-0 group-hover/slot-filled:opacity-100"
-                                        @click="unassignArcherFromTarget(target.slots[pos].assignmentId)" />
+                                        @click="isSubscriptionActive ? unassignArcherFromTarget(target.slots[pos].assignmentId) : (showPremiumModal = true)" />
                                 </div>
 
                                 <!-- Custom Archer Dropdown -->
@@ -208,7 +209,7 @@
                                         </div>
                                     </div>
 
-                                    <div v-else @click.stop="toggleDropdown(target.name, pos)"
+                                    <div v-else @click.stop="isSubscriptionActive ? toggleDropdown(target.name, pos) : (showPremiumModal = true)"
                                         class="flex items-center gap-3 p-2.5 rounded-xl border border-dashed border-gray-200 bg-white hover:bg-gray-50/50 hover:border-primary/50 transition-all cursor-pointer group/slot"
                                         :class="{ 'border-primary bg-primary/5 ring-4 ring-primary/10 shadow-inner': isDragging }"
                                         @dragover.prevent="(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move' }">
@@ -296,6 +297,11 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import AppDialog from '~/components/common/AppDialog.vue'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 const props = defineProps({
     eventId: { type: String, required: true },

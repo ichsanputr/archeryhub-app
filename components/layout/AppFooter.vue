@@ -33,7 +33,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-20">
           <!-- Column 2: Navigation -->
           <div class="flex flex-col gap-5">
-            <h4 class="text-xs font-black  tracking-widest text-white border-b border-white/10 pb-2">
+            <h4 class="text-sm font-black  tracking-widest text-white border-b border-white/10 pb-2">
               Navigation
             </h4>
             <div class="flex flex-col gap-3">
@@ -50,9 +50,9 @@
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Marketplace
               </NuxtLink>
-              <NuxtLink to="/subscription"
+              <NuxtLink to="/pricing"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Subscription
+                Pricing
               </NuxtLink>
             </div>
           </div>
@@ -88,7 +88,7 @@
 
           <!-- Column 4: Support -->
           <div class="flex flex-col gap-5">
-            <h4 class="text-xs font-black  tracking-widest text-white border-b border-white/10 pb-2">
+            <h4 class="text-sm font-black  tracking-widest text-white border-b border-white/10 pb-2">
               Support
             </h4>
             <div class="flex flex-col gap-3">
@@ -110,8 +110,8 @@
       </div>
 
       <!-- Bottom Bar -->
-      <div class="py-8 border-t border-white/5">
-        <p class="text-xs text-gray-500 font-medium text-center sm:text-left">
+      <div class="pt-4 pb-2 border-t border-white/5">
+        <p class="text-gray-500 font-medium text-center">
           &copy; {{ new Date().getFullYear() }} archeris.net. All rights reserved.
         </p>
       </div>

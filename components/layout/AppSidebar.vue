@@ -345,10 +345,8 @@ const navSections = computed(() => {
   // Root admin — clean minimal nav
   if (role === 'root') {
     return [
-      { type: 'label', label: t('dashboard.sidebar.profile') },
-      { label: t('dashboard.sidebar.organization'), icon: 'ph:users-four-bold', path: '/dashboard/root' },
-      { type: 'label', label: t('dashboard.sidebar.subscription') },
-      { label: t('dashboard.sidebar.subscription'), icon: 'ph:credit-card-bold', path: '/dashboard/root/subscriptions' },
+      { type: 'label', label: t('root.index.title', 'Organizations') },
+      { label: t('root.index.title', 'Organizations'), icon: 'ph:users-four-bold', path: '/dashboard/root' },
     ]
   }
 

@@ -64,25 +64,28 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <NuxtLink v-for="doc in filteredDocs(cat.id)" :key="doc.slug" :to="`/docs/${doc.slug}`"
-                        class="group bg-white rounded-2xl border border-gray-100 p-5 hover:border-primary/30 hover:shadow-md transition-all">
+                        class="group bg-navy border border-white/10 rounded-2.5xl p-6 hover:border-primary/45 hover:bg-navy-light/40 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden h-full">
+                        <!-- Subtle Glow Effect -->
+                        <div class="absolute -top-12 -right-12 w-24 h-24 bg-primary/5 group-hover:bg-primary/10 blur-xl rounded-full transition-all duration-300"></div>
+
                         <div class="flex items-start gap-4">
                             <div
-                                class="w-9 h-9 rounded-xl bg-gray-50 group-hover:bg-primary/10 flex items-center justify-center text-gray-400 group-hover:text-primary transition-all shrink-0">
-                                <Icon :icon="doc.icon" class="text-lg" />
+                                class="w-11 h-11 rounded-2xl bg-white/5 group-hover:bg-primary/10 border border-white/10 group-hover:border-primary/25 flex items-center justify-center text-slate-400 group-hover:text-primary transition-all duration-300 shrink-0">
+                                <Icon :icon="doc.icon" class="text-xl" />
                             </div>
                             <div class="flex-1 min-w-0">
                                 <h3
-                                    class="font-bold text-navy text-sm group-hover:text-primary transition-colors mb-1 leading-snug">
+                                    class="font-black text-white text-base group-hover:text-primary transition-colors mb-2 leading-snug">
                                     {{ doc.title }}</h3>
-                                <p class="text-gray-400 text-xs leading-relaxed line-clamp-2">{{ doc.excerpt }}</p>
+                                <p class="text-slate-300 text-xs leading-relaxed line-clamp-2 font-medium">{{ doc.excerpt }}</p>
                             </div>
                         </div>
-                        <div class="flex items-center mt-4 pt-3 border-t border-gray-50">
-                            <span class="text-xs text-gray-300 flex items-center gap-1">
-                                <Icon icon="ph:clock-bold" class="text-xs" /> {{ doc.readTime }}
+                        <div class="flex items-center mt-5 pt-4 border-t border-white/5">
+                            <span class="text-xs text-slate-400 font-semibold flex items-center gap-1.5">
+                                <Icon icon="ph:clock-bold" class="text-sm" /> {{ doc.readTime }}
                             </span>
                             <span
-                                class="ml-auto flex items-center gap-1 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                class="ml-auto flex items-center gap-1 text-xs font-black text-primary opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-300">
                                 {{ $t('docs.read') }}
                                 <Icon icon="ph:arrow-right-bold" class="text-xs" />
                             </span>

@@ -92,7 +92,7 @@
 
         <!-- Comparison Table -->
         <div class="space-y-6">
-                <div class="flex items-center gap-3">
+                 <div class="flex items-center gap-3">
                 <div
                     class="size-8 bg-navy border border-navy rounded-lg flex items-center justify-center text-btn-inverse shadow-sm">
                     <Icon icon="ph:scales-bold" class="text-lg" />
@@ -100,42 +100,58 @@
                 <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.comparison.title', 'Perbandingan Detail') }}</h2>
             </div>
             <div class="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden overflow-x-auto">
-                <table class="w-full text-left min-w-[600px]">
+                <table class="w-full text-left min-w-[700px]">
                     <thead>
-                        <tr class="bg-slate-50/50 border-b border-gray-100">
-                            <th class="px-8 py-5 text-[10px] font-black text-gray-400 tracking-[0.2em]">{{ t('subscription.comparison.feature_header', 'Fitur Utama') }}</th>
-                            <th
-                                class="px-8 py-5 text-center text-xs font-black text-navy tracking-widest border-l border-gray-50">
-                                {{ t('subscription.comparison.standard_header', 'Standar') }}</th>
-                            <th
-                                class="px-8 py-5 text-center text-xs font-black text-primary tracking-widest border-l border-gray-50 bg-primary/5">
-                                {{ t('subscription.comparison.elite_header', 'Elite') }}</th>
+                        <tr class="bg-slate-50/50 border-b border-gray-100 text-[10px] font-black text-gray-400 tracking-[0.2em]">
+                            <th class="px-8 py-5 w-[40%]">{{ t('subscription.comparison.feature_header', 'Fitur Utama') }}</th>
+                            <th class="px-8 py-5 text-center w-[20%] border-l border-gray-50 text-navy">
+                                <span class="inline-block px-2 py-0.5 bg-slate-100 rounded text-[9px] font-black">
+                                    {{ $t('subscription_page.free_title', 'Free') }}
+                                </span>
+                            </th>
+                            <th class="px-8 py-5 text-center w-[20%] border-l border-gray-50 text-navy">
+                                {{ t('subscription.comparison.standard_header', 'Standar') }}
+                            </th>
+                            <th class="px-8 py-5 text-center w-[20%] border-l border-gray-50 bg-primary/5 text-primary">
+                                {{ t('subscription.comparison.elite_header', 'Elite') }}
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
-                        <tr v-for="row in comparisonData" :key="row.feature"
+                        <tr v-for="row in comparisonData" :key="row.feature_key"
                             class="group hover:bg-slate-50/30 transition-colors">
                             <td class="px-8 py-4">
                                 <div class="flex items-center gap-4">
-                                    <Icon :icon="row.icon"
+                                    <Icon :icon="getFeatureIcon(row.feature_key)"
                                         class="text-lg text-gray-400 group-hover:text-primary transition-colors" />
-                                    <span class="text-sm font-bold text-navy/80">{{ row.feature }}</span>
+                                    <span class="text-sm font-bold text-navy/80">{{ $t('subscription_page.comparison_features.' + row.feature_key, row.feature_name) }}</span>
                                 </div>
                             </td>
+                            <!-- Free Column -->
                             <td class="px-8 py-4 text-center border-l border-gray-100">
-                                <template v-if="typeof row.basic === 'boolean'">
-                                    <Icon :icon="row.basic ? 'ph:check-circle-fill' : 'ph:minus-bold'"
+                                <template v-if="typeof row.free === 'boolean'">
+                                    <Icon :icon="row.free ? 'ph:check-circle-fill' : 'ph:minus-bold'"
                                         class="text-xl mx-auto"
-                                        :class="row.basic ? 'text-green-500' : 'text-gray-200'" />
+                                        :class="row.free ? 'text-green-500' : 'text-gray-200'" />
                                 </template>
-                                <span v-else class="text-xs font-black text-navy/60">{{ row.basic }}</span>
+                                <span v-else class="text-xs font-black text-navy/60">{{ translateValue(row.free) }}</span>
                             </td>
+                            <!-- Standar Column -->
+                            <td class="px-8 py-4 text-center border-l border-gray-100">
+                                <template v-if="typeof row.standar === 'boolean'">
+                                    <Icon :icon="row.standar ? 'ph:check-circle-fill' : 'ph:minus-bold'"
+                                        class="text-xl mx-auto"
+                                        :class="row.standar ? 'text-green-500' : 'text-gray-200'" />
+                                </template>
+                                <span v-else class="text-xs font-black text-navy/60">{{ translateValue(row.standar) }}</span>
+                            </td>
+                            <!-- Elite Column -->
                             <td class="px-8 py-4 text-center border-l border-gray-100 bg-primary/5">
                                 <template v-if="typeof row.elite === 'boolean'">
                                     <Icon :icon="row.elite ? 'ph:check-circle-fill' : 'ph:minus-bold'"
                                         class="text-xl mx-auto" :class="row.elite ? 'text-primary' : 'text-gray-200'" />
                                 </template>
-                                <span v-else class="text-xs font-black text-navy">{{ row.elite }}</span>
+                                <span v-else class="text-xs font-black text-navy">{{ translateValue(row.elite) }}</span>
                             </td>
                         </tr>
                     </tbody>
@@ -147,24 +163,58 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 import useDashboardI18n from '~/composables/useDashboardI18n'
 
-const { t } = useDashboardI18n()
+const { t } = useI18n()
+const { t: td } = useDashboardI18n()
 
 defineProps({
     plans: Array,
+    comparisonData: Array
 })
 
 defineEmits(['select'])
 
-const comparisonData = [
-    { feature: 'Maksimum Peserta', basic: '50 / Event', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
-    { feature: 'Sistem Digital Scoring', basic: true, elite: true, icon: 'ph:target-bold' },
-    { feature: 'Publikasi Berita', basic: true, elite: true, icon: 'ph:newspaper-bold' },
-    { feature: 'Manajemen Match Finals', basic: false, elite: true, icon: 'ph:trophy-bold' },
-    { feature: 'Integrasi Pembayaran', basic: false, elite: true, icon: 'ph:credit-card-bold' },
-    { feature: 'Penyimpanan Media', basic: '1 GB', elite: '5 GB', icon: 'ph:hard-drives-bold' },
-    { feature: 'Analitik Lanjutan', basic: false, elite: true, icon: 'ph:chart-bar-bold' },
-    { feature: 'Dukungan Prioritas', basic: true, elite: true, icon: 'ph:headset-bold' },
-]
+const translateValue = (val) => {
+    if (typeof val === 'boolean') return val
+    const keys = [
+        'unlimited', 'auto_local', 'manual', 'auto_global', 'scoring_elimination',
+        'scoring_basic', 'scoring_full', 'cert_basic', 'cert_custom', 'wa_system',
+        'wa_custom', 'referee_5', 'referee_1', 'export_standard', 'export_basic',
+        'export_elite', 'support_standard', 'support_priority', 'standard_template',
+        'custom_domain', 'standard_team', 'mixed_teams', 'standard_allocation',
+        'visual_drag_drop', 'yes_obs_widget', 'summary_only', 'full_graphs_xls'
+    ]
+    if (keys.includes(val)) {
+        return t('subscription_page.' + val)
+    }
+    return val
+}
+
+const getFeatureIcon = (key) => {
+    const icons = {
+        participants_limit: 'ph:users-three-bold',
+        online_reg: 'ph:clipboard-text-bold',
+        scoring_methods: 'ph:target-bold',
+        cert_designer: 'ph:scroll-bold',
+        wa_notifications: 'ph:whatsapp-logo-bold',
+        referees_limit: 'ph:user-gear-bold',
+        offline_sync: 'ph:clock-countdown-bold',
+        media_storage: 'ph:hard-drives-bold',
+        exports_reports: 'ph:file-csv-bold',
+        priority_support: 'ph:headset-bold',
+        landing_page_seo: 'ph:globe-bold',
+        team_club_mgmt: 'ph:users-bold',
+        target_allocation: 'ph:grid-four-bold',
+        obs_overlay: 'ph:broadcast-bold',
+        direct_payout: 'ph:bank-bold',
+        custom_whatsapp: 'ph:chat-teardrop-text-bold',
+        digital_cert_sign: 'ph:signature-bold',
+        finance_analytics: 'ph:chart-line-up-bold',
+        ticket_management: 'ph:ticket-bold',
+        mass_print_score: 'ph:printer-bold'
+    }
+    return icons[key] || 'ph:star-bold'
+}
 </script>

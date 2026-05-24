@@ -353,6 +353,11 @@ const handleKickUser = async () => {
 }
 
 onMounted(() => {
+    if (!isSubscriptionActive.value) {
+        toast.error('subscription expired. upgrade your plan to edit participant.')
+        router.replace(`/dashboard/events/${route.params.id}/participants/${route.params.participantId}`)
+        return
+    }
     fetchParticipant()
 })
 </script>

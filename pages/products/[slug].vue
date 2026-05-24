@@ -3,9 +3,9 @@
         <section class="sticky top-16 z-30 border-b border-black/5 bg-white/95 backdrop-blur">
             <div class="container mx-auto max-w-7xl px-4 py-3">
                 <Breadcrumbs :items="[
-                    { label: 'Produk', path: '/products' },
+                    { label: t('products.category'), path: '/products' },
                     { label: breadcrumbCategory }
-                ]" :current="product?.name || 'Detail Produk'" />
+                ]" :current="product?.name || t('products.not_found')" />
             </div>
         </section>
 
@@ -18,13 +18,13 @@
                         class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-red-500">
                         <Icon icon="ph:package-bold" class="text-2xl" />
                     </div>
-                    <h2 class="text-2xl font-black text-navy">Produk tidak ditemukan</h2>
+                    <h2 class="text-2xl font-black text-navy">{{ t('products.not_found') }}</h2>
                     <p class="mt-2 text-sm text-gray-500">
-                        {{ fetchError?.data?.error || 'Produk yang Anda cari tidak tersedia atau sudah dihapus.' }}
+                        {{ fetchError?.data?.error || t('products.not_found') }}
                     </p>
                     <NuxtLink href="/products"
                         class="mt-5 inline-flex items-center rounded-xl bg-navy px-5 py-2.5 text-xs font-black tracking-widest text-white hover:bg-navy/90">
-                        Kembali ke Produk
+                        {{ t('products.back_to_products') }}
                     </NuxtLink>
                 </section>
             </div>
@@ -70,8 +70,9 @@
 
                         <aside class="space-y-5 lg:sticky lg:top-28 lg:h-fit">
                             <div class="rounded-[2rem] border border-black/5 bg-white p-5 sm:p-6 shadow-sm">
-                                <div class="text-[10px] font-black tracking-[0.2em] text-gray-400">Pilihan
-                                    Terbaik</div>
+                                <div class="text-[10px] font-black tracking-[0.2em] text-gray-400">
+                                    {{ t('products.best_choice') }}
+                                </div>
                                 <h1 class="mt-2 text-xl sm:text-2xl lg:text-3xl font-black leading-tight text-navy">{{
                                     product.name }}</h1>
 
@@ -80,7 +81,7 @@
                                         class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1  text-xs font-bold text-emerald-700">
                                         <span class="h-1.5 w-1.5 rounded-full"
                                             :class="product.stock > 0 ? 'bg-emerald-600' : 'bg-red-500'" />
-                                        {{ product.stock > 0 ? `Stok ${product.stock}` : 'Stok Habis' }}
+                                        {{ product.stock > 0 ? t('products.stock', { count: product.stock }) : t('products.out_of_stock') }}
                                     </span>
                                     <span
                                         class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1  text-xs font-bold text-amber-700">
@@ -89,7 +90,8 @@
                                 </div>
 
                                 <div class="mt-4 rounded-2xl bg-[#0f172a] p-4 sm:p-5 text-white">
-                                    <div class="text-[10px] tracking-[0.18em] text-white/70">Harga Spesial
+                                    <div class="text-[10px] tracking-[0.18em] text-white/70">
+                                        {{ t('products.special_price') }}
                                     </div>
                                     <div class="mt-1 flex items-end gap-2.5">
                                         <div class="text-2xl sm:text-3xl font-black">Rp {{ formatPrice(finalPrice) }}
@@ -101,7 +103,7 @@
 
                                 <div v-if="product.colors?.length" class="mt-5">
                                     <div class="mb-2 text-[10px] font-black tracking-wider text-gray-400">
-                                        Pilihan Warna</div>
+                                        {{ t('products.color_options') }}</div>
                                     <div class="flex flex-wrap gap-2">
                                         <button v-for="color in product.colors" :key="color"
                                             @click="selectedColor = color" :class="[
@@ -115,7 +117,7 @@
 
                                 <div
                                     class="mt-5 flex items-center justify-between rounded-xl border border-black/5 bg-[#fafafa] p-3">
-                                    <div class=" text-xs font-black text-navy tracking-widest">Jumlah</div>
+                                    <div class=" text-xs font-black text-navy tracking-widest">{{ t('products.quantity') }}</div>
                                     <div
                                         class="flex items-center rounded-lg border border-black/10 bg-white overflow-hidden">
                                         <button @click="quantity = Math.max(1, quantity - 1)"
@@ -138,20 +140,20 @@
                                         <Icon v-if="isAddingToCart" icon="ph:spinner"
                                             class="animate-spin text-lg shrink-0" />
                                         <Icon v-else icon="ph:shopping-cart-simple-bold" class="text-lg shrink-0" />
-                                        <span class="uppercase tracking-wide">Keranjang</span>
+                                        <span class="uppercase tracking-wide">{{ t('products.add_to_cart') }}</span>
                                     </button>
                                     <button type="button" @click="openChatDialog" :disabled="isChatStarting"
                                         class="w-full flex items-center justify-center gap-2 rounded-2xl border-2 border-navy py-3.5  text-xs font-black text-navy transition hover:bg-navy hover:text-white active:scale-95 disabled:opacity-60">
                                         <Icon v-if="isChatStarting" icon="ph:spinner"
                                             class="animate-spin text-lg shrink-0" />
                                         <Icon v-else icon="ph:chat-circle-dots-bold" class="text-lg shrink-0" />
-                                        <span class="uppercase tracking-wide">Chat</span>
+                                        <span class="uppercase tracking-wide">{{ t('products.chat') }}</span>
                                     </button>
                                 </div>
 
                                 <div
                                     class="mt-4 flex items-center justify-between rounded-xl border border-black/5 bg-white p-3">
-                                    <div class="text-[10px] font-black text-gray-400 tracking-widest ">Bagikan</div>
+                                    <div class="text-[10px] font-black text-gray-400 tracking-widest ">{{ t('products.share') }}</div>
                                     <div class="flex items-center gap-2">
                                         <button @click="share('facebook')"
                                             class="rounded-lg bg-blue-50 p-2 text-blue-600 hover:bg-blue-100 transition">
@@ -174,8 +176,9 @@
                             </div>
 
                             <div class="rounded-[2rem] border border-black/5 bg-white p-5 sm:p-6 shadow-sm">
-                                <div class="text-[10px] font-black tracking-[0.2em] text-gray-400">Informasi
-                                    Penjual</div>
+                                <div class="text-[10px] font-black tracking-[0.2em] text-gray-400">
+                                    {{ t('products.seller_info') }}
+                                </div>
                                 <template v-if="product.seller">
                                     <div class="mt-3 flex items-center gap-3">
                                         <template v-if="product.seller.avatar_url">
@@ -202,7 +205,7 @@
                                             <div v-if="product.seller.chat_response_rate"
                                                 class="flex items-center gap-1">
                                                 <Icon icon="ph:check-circle-bold" class="text-emerald-500 text-sm" />
-                                                {{ product.seller.chat_response_rate }} respon
+                                                {{ product.seller.chat_response_rate }} {{ t('products.response') }}
                                             </div>
                                             <div v-if="product.seller.chat_response_time && product.seller.chat_response_time.toLowerCase() !== 'hitungan jam'"
                                                 class="flex items-center gap-1">
@@ -222,7 +225,7 @@
                                         class="h-12 w-12 rounded-full border-2 border-gray-100 bg-gray-100 flex items-center justify-center shrink-0">
                                         <Icon icon="ph:storefront-bold" class="text-gray-400 text-xl" />
                                     </div>
-                                    <div class=" text-xs text-gray-500 font-medium">Data penjual tidak tersedia</div>
+                                    <div class=" text-xs text-gray-500 font-medium">{{ t('products.seller_not_available') }}</div>
                                 </div>
                             </div>
                         </aside>
@@ -237,15 +240,14 @@
                         </div>
                         <h2 class="text-lg font-black text-navy tracking-tight flex items-center gap-2">
                             <div class="w-1.5 h-6 bg-primary rounded-full"></div>
-                            Deskripsi Produk
+                            {{ t('products.description') }}
                         </h2>
                         <div class="mt-6 whitespace-pre-line leading-relaxed text-gray-600 text-sm sm:text-base">
-                            {{ product.description || 'Belum ada deskripsi detail untuk produk ini.' }}
+                            {{ product.description || t('products.no_description') }}
                         </div>
 
                         <div v-if="Object.keys(product.specifications || {}).length" class="mt-8">
-                            <h3 class=" text-xs font-black tracking-[0.2em] text-gray-400 mb-4">Spesifikasi
-                                Detail</h3>
+                            <h3 class=" text-xs font-black tracking-[0.2em] text-gray-400 mb-4">{{ t('products.specifications') }}</h3>
                             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <div v-for="(value, key) in product.specifications" :key="key"
                                     class="rounded-2xl border border-gray-50 bg-[#fafafa] p-4 flex flex-col gap-1">
@@ -265,8 +267,8 @@
                                     <Icon icon="ph:seal-check-bold" class="text-2xl" />
                                 </div>
                                 <div>
-                                    <div class="font-black text-navy text-sm leading-tight">100% Ori</div>
-                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">Sudah Dicek
+                                    <div class="font-black text-navy text-sm leading-tight">{{ t('products.badge_original') }}</div>
+                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">{{ t('products.badge_original_desc') }}
                                     </div>
                                 </div>
                             </div>
@@ -277,8 +279,8 @@
                                     <Icon icon="ph:shield-check-bold" class="text-2xl" />
                                 </div>
                                 <div>
-                                    <div class="font-black text-navy text-sm leading-tight">Garansi 7 Hari</div>
-                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">Tukar Produk
+                                    <div class="font-black text-navy text-sm leading-tight">{{ t('products.badge_warranty') }}</div>
+                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">{{ t('products.badge_warranty_desc') }}
                                     </div>
                                 </div>
                             </div>
@@ -289,18 +291,17 @@
                                     <Icon icon="ph:rocket-launch-bold" class="text-2xl" />
                                 </div>
                                 <div>
-                                    <div class="font-black text-navy text-sm leading-tight">Pengiriman Cepat</div>
-                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">Estimasi 1-3
-                                        Hari</div>
+                                    <div class="font-black text-navy text-sm leading-tight">{{ t('products.badge_shipping') }}</div>
+                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">{{ t('products.badge_shipping_desc') }}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="rounded-[2rem] border border-black/5 bg-white shadow-sm overflow-hidden h-fit">
-                        <div class="bg-navy px-6 py-5 flex items-center gap-3">
+                        <div class="bg-white px-6 py-5 flex items-center gap-3 border-b border-black/5">
                             <Icon icon="ph:clipboard-text-bold" class="text-primary text-xl" />
-                            <h3 class="text-xs font-black text-white tracking-[0.15em] ">Ringkasan</h3>
+                            <h3 class="text-xs font-black text-navy tracking-[0.15em] ">{{ t('products.summary') }}</h3>
                         </div>
                         <ul class="divide-y divide-gray-50">
                             <li class="flex items-center justify-between px-5 py-3.5">
@@ -313,23 +314,23 @@
                             </li>
                             <li class="flex items-center justify-between px-5 py-3.5">
                                 <span class="flex items-center gap-2 text-xs text-gray-400">
-                                    <Icon icon="ph:tag-bold" class="text-sm" /> Kategori
+                                    <Icon icon="ph:tag-bold" class="text-sm" /> {{ t('products.category') }}
                                 </span>
                                 <span class="font-bold text-navy text-xs">{{ breadcrumbCategory }}</span>
                             </li>
                             <li class="flex items-center justify-between px-5 py-3.5">
                                 <span class="flex items-center gap-2 text-xs text-gray-400">
-                                    <Icon icon="ph:currency-circle-dollar-bold" class="text-sm" /> Harga Jual
+                                    <Icon icon="ph:currency-circle-dollar-bold" class="text-sm" /> {{ t('products.selling_price') }}
                                 </span>
                                 <span class="font-black text-navy text-sm">Rp {{ formatPrice(finalPrice) }}</span>
                             </li>
                             <li class="flex items-center justify-between px-5 py-3.5">
                                 <span class="flex items-center gap-2 text-xs text-gray-400">
-                                    <Icon icon="ph:sparkle-bold" class="text-sm" /> Kondisi
+                                    <Icon icon="ph:sparkle-bold" class="text-sm" /> {{ t('products.condition') }}
                                 </span>
                                 <span
                                     class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
-                                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> Baru
+                                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> {{ t('products.new') }}
                                 </span>
                             </li>
                         </ul>
@@ -404,8 +405,8 @@
                     <div v-else-if="chatMessages.length === 0"
                         class="flex flex-col items-center justify-center h-full text-center py-6">
                         <Icon icon="ph:chat-circle-bold" class="text-4xl text-gray-200 mb-2" />
-                        <p class="text-xs font-bold text-gray-400">Mulai percakapan</p>
-                        <p class="text-[10px] text-gray-300 mt-0.5">Tanyakan tentang produk ini</p>
+                        <p class="text-xs font-bold text-gray-400">{{ t('products.start_conversation') }}</p>
+                        <p class="text-[10px] text-gray-300 mt-0.5">{{ t('products.ask_about_product') }}</p>
                     </div>
 
                     <!-- Messages -->
@@ -431,7 +432,7 @@
                     <div class="flex items-end gap-2">
                         <div
                             class="flex-grow bg-gray-50 rounded-2xl border-2 border-gray-200 focus-within:border-primary/40 focus-within:bg-white transition-all overflow-hidden">
-                            <textarea v-model="chatInput" placeholder="Tulis pesan..." rows="1"
+                            <textarea v-model="chatInput" :placeholder="t('products.write_message')" rows="1"
                                 @keydown.enter.exact.prevent="sendChatMessage"
                                 class="w-full bg-transparent border-none focus:ring-0 text-sm font-medium px-3.5 py-2.5 max-h-20 resize-none no-scrollbar text-navy placeholder:text-gray-300 outline-none" />
                         </div>
@@ -458,6 +459,9 @@ import { computed, ref, watchEffect, nextTick, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 definePageMeta({
     layout: 'landing',
@@ -568,7 +572,7 @@ const sellerSubtitle = computed(() => {
     const s = product.value?.seller
     if (!s) return ''
     const parts = []
-    if (s.is_verified) parts.push('Terverifikasi')
+    if (s.is_verified) parts.push(t('products.badge_original_desc'))
     if (s.city) parts.push(s.city)
     return parts.join(' • ') || ''
 })
@@ -588,10 +592,13 @@ watchEffect(() => {
 
 const breadcrumbCategory = computed(() => {
     const cat = product.value?.category || ''
-    return categoryLabels[cat] || 'Produk'
+    return t('products.categories.' + cat, t('products.category'))
 })
 
-const productCategoryLabel = computed(() => categoryLabels[product.value?.category] || 'Produk')
+const productCategoryLabel = computed(() => {
+    const cat = product.value?.category || ''
+    return t('products.categories.' + cat, t('products.category'))
+})
 
 const finalPrice = computed(() => product.value?.sale_price || product.value?.price || 0)
 const maxQty = computed(() => Math.max(0, Number(product.value?.stock || 0)))

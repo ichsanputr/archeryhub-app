@@ -46,11 +46,18 @@
                                         class="px-4 py-2 bg-primary text-btn-text text-[10px] font-black tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-sm">
                                         {{ t('subscription.billing.pay_now', 'Bayar Sekarang') }}
                                     </a>
-                                    <a v-else-if="invoice.status === 'paid'"
-                                        :href="`${apiBaseUrl}/payment/invoice/${invoice.reference}`" target="_blank"
-                                        class="p-2 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-navy hover:border-primary hover:shadow-md transition-all">
-                                        <Icon icon="ph:file-pdf-bold" class="text-lg" />
-                                    </a>
+                                    <template v-else-if="invoice.status === 'paid'">
+                                        <a :href="`${apiBaseUrl}/payment/invoice/${invoice.reference}`" target="_blank"
+                                            title="View Invoice"
+                                            class="p-2 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-navy hover:border-primary hover:shadow-md transition-all">
+                                            <Icon icon="ph:file-pdf-bold" class="text-lg" />
+                                        </a>
+                                        <a :href="`${apiBaseUrl}/payment/invoice/${invoice.reference}?download=true`" download
+                                            title="Download Invoice"
+                                            class="p-2 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-navy hover:border-primary hover:shadow-md transition-all">
+                                            <Icon icon="ph:download-simple-bold" class="text-lg" />
+                                        </a>
+                                    </template>
                                 </div>
                             </td>
                         </tr>

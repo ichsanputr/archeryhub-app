@@ -38,19 +38,23 @@
                     <!-- Action Buttons -->
                     <div class="flex flex-col sm:flex-row gap-3 shrink-0" v-if="selectedCategory">
                         <BaseButton variant="white" icon="ph:arrows-clockwise"
-                            class="h-10 sm:h-11 px-5 w-full sm:w-auto text-xs sm:text-sm" @click="handleSyncTeams"
+                            class="h-10 sm:h-11 px-5 w-full sm:w-auto text-xs sm:text-sm"
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                            @click="isSubscriptionActive ? handleSyncTeams() : (showPremiumModal = true)"
                             :loading="isSyncing">
                             {{ t('event_teams.auto_sync') }}
                         </BaseButton>
                         <BaseButton variant="primary" icon="ph:plus-bold"
                             class="h-10 sm:h-11 px-5 w-full sm:w-auto shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all text-xs sm:text-sm"
-                            @click="openAddTeamModal">
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                            @click="isSubscriptionActive ? openAddTeamModal() : (showPremiumModal = true)">
                             {{ t('event_teams.add_manual') }}
                         </BaseButton>
                     </div>
                 </div>
             </div>
         </div>
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
         <!-- Category Selection -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
@@ -184,11 +188,11 @@
 
                         <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                             <div class="flex gap-2">
-                                <button @click="openEditTeamModal(team)"
+                                <button @click="isSubscriptionActive ? openEditTeamModal(team) : (showPremiumModal = true)"
                                     class="p-2 text-gray-400 hover:text-navy transition-colors">
                                     <Icon icon="ph:pencil-simple" class="text-lg" />
                                 </button>
-                                <button @click="teamToDelete = team; showDeleteConfirm = true"
+                                <button @click="isSubscriptionActive ? (teamToDelete = team; showDeleteConfirm = true) : (showPremiumModal = true)"
                                     class="p-2 text-gray-400 hover:text-red-500 transition-colors">
                                     <Icon icon="ph:trash" class="text-lg" />
                                 </button>
@@ -463,12 +467,16 @@ import BaseDialogForm from '~/components/common/BaseDialogForm.vue'
 import LoadingSpinner from '~/components/common/LoadingSpinner.vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useI18n } from 'vue-i18n'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 const route = useRoute()
 const eventId = route.params.id
 const { get, post, put, delete: del } = useApi()
 const toast = useToast()
 const { t } = useI18n()
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 definePageMeta({
     layout: 'dashboard'

@@ -35,15 +35,17 @@
 
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-3">
-            <BaseButton variant="primary" icon="ph:plus-bold"
-              class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
-              @click="resetForm(); showCreateDialog = true">
-              {{ t('event_elimination.create_bracket') }}
-            </BaseButton>
-          </div>
+             <BaseButton variant="primary" icon="ph:plus-bold"
+               class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
+               :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+               @click="isSubscriptionActive ? (resetForm(), showCreateDialog = true) : (showPremiumModal = true)">
+               {{ t('event_elimination.create_bracket') }}
+             </BaseButton>
+           </div>
         </div>
       </div>
     </div>
+    <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
     <!-- Brackets List -->
     <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
@@ -93,11 +95,11 @@
               </div>
             </div>
             <div class="flex items-center gap-2">
-              <button @click.stop.prevent="openEditBracket(bracket)"
+              <button @click.stop.prevent="isSubscriptionActive ? openEditBracket(bracket) : (showPremiumModal = true)"
                 class="p-2 rounded-lg bg-gray-100 text-gray-400 hover:bg-primary/20 hover:text-primary transition-all">
                 <Icon icon="ph:pencil-simple-bold" class="text-lg" />
               </button>
-              <button @click.stop.prevent="confirmDeleteBracket(bracket)"
+              <button @click.stop.prevent="isSubscriptionActive ? confirmDeleteBracket(bracket) : (showPremiumModal = true)"
                 class="p-2 rounded-lg bg-gray-100 text-gray-400 hover:bg-red-50/80 hover:text-red-500 transition-all">
                 <Icon icon="ph:trash-bold" class="text-lg" />
               </button>
@@ -174,7 +176,7 @@
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div v-for="cat in filteredCategoriesWithoutBracket" :key="cat.id"
           class="p-4 bg-gray-50 hover:bg-white rounded-xl border border-gray-200 hover:border-primary hover:shadow-md transition-all cursor-pointer group"
-          @click="openCreateForCategory(cat)">
+          @click="isSubscriptionActive ? openCreateForCategory(cat) : (showPremiumModal = true)">
           <div class="flex items-center gap-3">
             <div
               class="w-10 h-10 bg-white rounded-lg border border-gray-100 flex items-center justify-center group-hover:bg-navy transition-all overflow-hidden p-1.5">
@@ -435,12 +437,16 @@ import BaseInput from '~/components/common/BaseInput.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
 const { t } = useI18n()
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 useHead({
   title: computed(() => `${t('event_elimination.title')} - Dashboard`)

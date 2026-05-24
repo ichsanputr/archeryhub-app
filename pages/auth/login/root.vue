@@ -58,8 +58,8 @@
                 </div>
 
                 <form @submit.prevent="handleLogin" class="space-y-6">
-                    <BaseInput v-model="form.email" label="Root Identity (Email)" placeholder="admin@Archeris.net"
-                        type="email" icon="ph:envelope-simple-fill" required
+                    <BaseInput v-model="form.email" label="Root Identity" placeholder="root"
+                        type="text" icon="ph:envelope-simple-fill" required
                         :error="error && error.includes('Email') ? error : ''" />
 
                     <div class="space-y-2">

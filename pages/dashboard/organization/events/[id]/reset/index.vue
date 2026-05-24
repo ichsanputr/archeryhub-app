@@ -35,6 +35,7 @@
         </div>
       </div>
     </div>
+    <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
     <!-- Loading State -->
     <div v-if="isLoading" class="space-y-6">
@@ -111,7 +112,8 @@
                 </div>
               </div>
               <BaseButton variant="danger" class="shrink-0 h-9 font-bold text-xs shadow-md shadow-red-100/50"
-                @click="openConfirmDialog('qualification', 'Reset Qualification')">
+                :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                @click="isSubscriptionActive ? openConfirmDialog('qualification', 'Reset Qualification') : (showPremiumModal = true)">
                 <Icon icon="ph:arrow-counter-clockwise-bold" class="mr-1.5 text-sm" />
                 Reset Qualification
               </BaseButton>
@@ -133,7 +135,8 @@
                 </div>
               </div>
               <BaseButton variant="danger" class="shrink-0 h-9 font-bold text-xs shadow-md shadow-red-100/50"
-                @click="openConfirmDialog('elimination', 'Reset Elimination & Brackets')">
+                :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                @click="isSubscriptionActive ? openConfirmDialog('elimination', 'Reset Elimination & Brackets') : (showPremiumModal = true)">
                 <Icon icon="ph:arrow-counter-clockwise-bold" class="mr-1.5 text-sm" />
                 Reset Bracket
               </BaseButton>
@@ -155,7 +158,8 @@
                 </div>
               </div>
               <BaseButton variant="danger" class="shrink-0 h-9 font-bold text-xs shadow-md shadow-red-100/50"
-                @click="openConfirmDialog('participants', 'Delete All Participants')">
+                :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                @click="isSubscriptionActive ? openConfirmDialog('participants', 'Delete All Participants') : (showPremiumModal = true)">
                 <Icon icon="ph:user-minus-bold" class="mr-1.5 text-sm" />
                 Delete Participants
               </BaseButton>
@@ -177,7 +181,8 @@
                 </div>
               </div>
               <BaseButton variant="danger" class="shrink-0 h-9 font-bold text-xs shadow-md shadow-red-100/50"
-                @click="openConfirmDialog('all', 'Factory Reset (Full Reset)')">
+                :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                @click="isSubscriptionActive ? openConfirmDialog('all', 'Factory Reset (Full Reset)') : (showPremiumModal = true)">
                 <Icon icon="ph:trash-bold" class="mr-1.5 text-sm" />
                 Factory Reset
               </BaseButton>
@@ -273,6 +278,8 @@ import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { definePageMeta, useHead } from '#imports'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 definePageMeta({
   layout: 'dashboard'
@@ -285,6 +292,8 @@ useHead({
 const route = useRoute()
 const { get, post } = useApi()
 const toast = useToast()
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 const eventId = route.params.id
 const eventName = ref('Loading...')

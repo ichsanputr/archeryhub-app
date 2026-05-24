@@ -114,10 +114,14 @@
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
                         :class="[navLinkClasses, { '!text-primary font-bold': isActive('/news') }]">
                         {{ $t('nav.news') }}</NuxtLink>
-                    <NuxtLink :to="localePath('/products')"
+                    <NuxtLink :to="localePath('/docs')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { '!text-primary font-bold': isActive('/products') }]">
-                        {{ $t('nav.marketplace') }}
+                        :class="[navLinkClasses, { '!text-primary font-bold': isActive('/docs') }]">
+                        {{ $t('nav.docs') }}</NuxtLink>
+                    <NuxtLink :to="localePath('/pricing')"
+                        class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
+                        :class="[navLinkClasses, { '!text-primary font-bold': isActive('/pricing') }]">
+                        {{ $t('nav.pricing') }}
                     </NuxtLink>
                 </nav>
 
@@ -331,7 +335,8 @@
                             { to: '/', label: $t('nav.home'), icon: 'ph:house-bold' },
                             { to: '/archers', label: $t('nav.archers'), icon: 'ph:users-bold' },
                             { to: '/news', label: $t('nav.news'), icon: 'ph:newspaper-bold' },
-                            { to: '/products', label: $t('nav.marketplace'), icon: 'ph:shopping-bag-bold' },
+                            { to: '/docs', label: $t('nav.docs'), icon: 'ph:book-open-bold' },
+                            { to: '/pricing', label: $t('nav.pricing'), icon: 'ph:credit-card-bold' },
                         ]" :key="link.to" :to="localePath(link.to)" @click="mobileMenuOpen = false"
                             class="flex items-center gap-4 p-4 rounded-2xl transition-all group"
                             :class="isActive(link.to) ? 'bg-primary text-primary-text' : 'text-gray-500 hover:bg-gray-50 hover:text-navy'">

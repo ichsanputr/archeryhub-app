@@ -1,5 +1,6 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
         <!-- Loading Skeleton -->
         <div v-if="isLoading" class="animate-pulse space-y-6">
             <!-- Header Skeleton -->
@@ -162,7 +163,7 @@
                             </div>
 
                             <BaseButton v-if="!currentRoundNo && Object.keys(rounds).length === 0"
-                                @click="generateBracket" variant="primary" icon="ph:magic-wand-bold"
+                                @click="isSubscriptionActive ? generateBracket() : (showPremiumModal = true)" variant="primary" icon="ph:magic-wand-bold"
                                 class="h-10 sm:h-11 shadow-lg shadow-primary/30 tracking-[0.2em] font-black text-[10px] sm:text-xs">
                                 {{ t('event_elimination.create_bracket') }}
                             </BaseButton>
@@ -193,7 +194,7 @@
 
             <!-- BRACKET VIEW MODE -->
             <EliminationBracketView v-else :bracket="bracket" :rounds="rounds" :selected-match="selectedMatch"
-                @generate-bracket="generateBracket" @navigate-to-round="navigateToRound" @select-match="selectMatch" />
+                @generate-bracket="isSubscriptionActive ? generateBracket() : (showPremiumModal = true)" @navigate-to-round="navigateToRound" @select-match="selectMatch" />
         </template>
 
         <!-- Not Found / Error State -->
@@ -349,10 +350,15 @@
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 import EliminationBracketView from '~/components/elimination/EliminationBracketView.vue'
 import EliminationTargetMode from '~/components/elimination/EliminationTargetMode.vue'
 import EliminationScoringMode from '~/components/elimination/EliminationScoringMode.vue'
+
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 definePageMeta({
     layout: 'dashboard'
@@ -931,6 +937,10 @@ const selectArrowBox = (side, index) => {
 }
 
 const saveAndNext = async () => {
+    if (!isSubscriptionActive.value) {
+        showPremiumModal.value = true
+        return
+    }
     if (!selectedScoringMatch.value || isMatchFinished.value) return
     isSaving.value = true
     try {
@@ -965,6 +975,10 @@ const saveAndNext = async () => {
 }
 
 const resetMatch = async () => {
+    if (!isSubscriptionActive.value) {
+        showPremiumModal.value = true
+        return
+    }
     if (!selectedScoringMatch.value) return
     const confirmed = confirm(t('event_elimination.confirm_reset_match'))
     if (!confirmed) return
@@ -998,6 +1012,10 @@ const endMatch = () => {
 }
 
 const confirmEndMatch = async () => {
+    if (!isSubscriptionActive.value) {
+        showPremiumModal.value = true
+        return
+    }
     if (!selectedScoringMatch.value) return
 
     isEndingMatch.value = true
@@ -1029,6 +1047,10 @@ const confirmEndMatch = async () => {
 }
 
 const updateTarget = async (match) => {
+    if (!isSubscriptionActive.value) {
+        showPremiumModal.value = true
+        return
+    }
     try {
         await put(`/events/${eventId}/elimination/brackets/${bracketId}/targets`, {
             assignments: [
@@ -1045,6 +1067,10 @@ const updateTarget = async (match) => {
 }
 
 const autoAssignTargets = async () => {
+    if (!isSubscriptionActive.value) {
+        showPremiumModal.value = true
+        return
+    }
     isAutoAssigning.value = true
     try {
         const roundNo = currentRoundNo.value || 1
@@ -1071,6 +1097,10 @@ const canFinishMatch = (match) => {
 }
 
 const finishMatchAction = async (match) => {
+    if (!isSubscriptionActive.value) {
+        showPremiumModal.value = true
+        return
+    }
     try {
         const isRecurve = bracket.value?.format === 'recurve_set'
         let winnerId;

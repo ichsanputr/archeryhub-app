@@ -18,12 +18,10 @@
                     <span class="text-white text-3xl font-black tracking-tight font-display">Archeris<span
                             class="text-logo-id">.id</span></span>
                 </div>
-                <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display">
-                    Join the Digital <br />
-                    Archery Revolution
+                <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display" v-html="t('auth.register.desktop_title')">
                 </h1>
                 <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
-                    Join the largest archery community in Indonesia to manage clubs, track scores, and participate in tournaments.
+                    {{ t('auth.register.desktop_desc') }}
                 </p>
                 <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
                     <div class="flex -space-x-2">
@@ -37,7 +35,7 @@
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
                     </div>
-                    <span>Archers have joined Archeris.net</span>
+                    <span>{{ t('auth.login.archers_joined') }}</span>
                 </div>
             </div>
         </div>
@@ -58,8 +56,8 @@
                 </div>
 
                 <div class="text-center lg:text-left">
-                    <h2 class="text-3xl font-black tracking-tight text-navy font-display">Create New Account</h2>
-                    <p class="mt-2 text-sm text-slate-500 font-body">Join the largest archery community in Indonesia.</p>
+                    <h2 class="text-3xl font-black tracking-tight text-navy font-display">{{ t('auth.register.welcome') }}</h2>
+                    <p class="mt-2 text-sm text-slate-500 font-body">{{ t('auth.register.subtitle') }}</p>
                 </div>
 
                 <!-- User Type Tabs -->
@@ -68,7 +66,7 @@
                         class="flex-1 py-3 px-4 rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2"
                         :class="form.userType === type.value ? 'bg-white text-navy shadow-md' : 'text-gray-500 hover:text-navy'">
                         <Icon :icon="type.icon" class="text-lg" />
-                        <span class="hidden sm:inline">{{ type.label }}</span>
+                        <span class="hidden sm:inline">{{ t('auth.register.' + type.value + '_tab') }}</span>
                     </button>
                 </div>
 
@@ -80,80 +78,80 @@
                             <div v-if="form.userType === 'archer'" class="space-y-4">
                                 <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:user-bold" class="text-primary text-lg" />
-                                    Archer Info
+                                    {{ t('auth.register.archer_info') }}
                                 </h4>
-                                <BaseInput v-model="form.fullName" label="Full Name" placeholder="Enter your name"
+                                <BaseInput v-model="form.fullName" :label="t('auth.register.full_name_label')" :placeholder="t('auth.register.full_name_placeholder')"
                                     required
-                                    :error="errors.fullName || (isNameTaken ? 'Athlete name is already registered' : '')"
+                                    :error="errors.fullName || (isNameTaken ? t('auth.register.name_taken_archer') : '')"
                                     @update:model-value="validate('fullName', form.fullName, [rules.required(), rules.minLength(3)])" />
 
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="space-y-1">
-                                        <label class="text-sm font-bold text-navy">Gender</label>
+                                        <label class="text-sm font-bold text-navy">{{ t('auth.register.gender_label') }}</label>
                                         <select v-model="form.gender"
                                             class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
+                                            <option value="male">{{ t('auth.register.gender_male') }}</option>
+                                            <option value="female">{{ t('auth.register.gender_female') }}</option>
                                         </select>
                                     </div>
-                                    <BaseInput v-model="form.dateOfBirth" label="Date of Birth" type="date" required
+                                    <BaseInput v-model="form.dateOfBirth" :label="t('auth.register.birth_date_label')" type="date" required
                                         :error="errors.dateOfBirth"
                                         @update:model-value="validate('dateOfBirth', form.dateOfBirth, [rules.required()])" />
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-4">
-                                    <BaseSelect v-model="form.city" :items="cities" label="City"
-                                        placeholder="Select City" required :error="errors.city" searchable
+                                    <BaseSelect v-model="form.city" :items="cities" :label="t('auth.register.city_label')"
+                                        :placeholder="t('auth.register.city_placeholder')" required :error="errors.city" searchable
                                         @update:model-value="validate('city', form.city, [rules.required()])" />
                                     <div class="space-y-1">
-                                        <label class="text-sm font-bold text-navy">Main Bow Type</label>
+                                        <label class="text-sm font-bold text-navy">{{ t('auth.register.bow_label') }}</label>
                                         <select v-model="form.bowType"
                                             class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-                                            <option value="recurve">Recurve</option>
-                                            <option value="recurve">Standard</option>
-                                            <option value="compound">Compound</option>
-                                            <option value="barebow">Barebow</option>
-                                            <option value="traditional">Traditional</option>
+                                            <option value="recurve">{{ t('auth.register.bow_recurve') }}</option>
+                                            <option value="recurve">{{ t('auth.register.bow_standard') }}</option>
+                                            <option value="compound">{{ t('auth.register.bow_compound') }}</option>
+                                            <option value="barebow">{{ t('auth.register.bow_barebow') }}</option>
+                                            <option value="traditional">{{ t('auth.register.bow_traditional') }}</option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <BaseInput v-model="form.school" label="School / Institution"
-                                    placeholder="Enter school or institution name" />
+                                <BaseInput v-model="form.school" :label="t('auth.register.school_label')"
+                                    :placeholder="t('auth.register.school_placeholder')" />
 
-                                <p class="mt-2 text-xs text-gray-400 font-body italic">* This data is important for determining tournament categories.</p>
+                                <p class="mt-2 text-xs text-gray-400 font-body italic">{{ t('auth.register.archer_note') }}</p>
                             </div>
 
                             <!-- Organization: Nama Organisasi -->
                             <div v-if="form.userType === 'organization'" class="space-y-4">
                                 <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:buildings-bold" class="text-primary text-lg" />
-                                    Organization Info
+                                    {{ t('auth.register.org_info') }}
                                 </h4>
-                                <BaseInput v-model="form.organizationName" label="Organization Name"
-                                    placeholder="Official organization name" required
-                                    :error="errors.organizationName || (isNameTaken ? 'Organization name is already registered' : '')"
+                                <BaseInput v-model="form.organizationName" :label="t('auth.register.org_name_label')"
+                                    :placeholder="t('auth.register.org_name_placeholder')" required
+                                    :error="errors.organizationName || (isNameTaken ? t('auth.register.name_taken_org') : '')"
                                     @update:model-value="validate('organizationName', form.organizationName, [rules.required(), rules.minLength(3)])" />
 
                                 <div class="grid grid-cols-2 gap-4">
-                                    <BaseInput v-model="form.acronym" label="Acronym"
-                                        placeholder="Example: PERPANI" :error="errors.acronym"
+                                    <BaseInput v-model="form.acronym" :label="t('auth.register.acronym_label')"
+                                        :placeholder="t('auth.register.acronym_placeholder')" :error="errors.acronym"
                                         @update:model-value="validate('acronym', form.acronym, [rules.minLength(2)])" />
-                                    <BaseInput v-model="form.whatsappNo" label="WhatsApp Number"
-                                        placeholder="081234567XXX" required number-only :error="errors.whatsappNo"
+                                    <BaseInput v-model="form.whatsappNo" :label="t('auth.register.whatsapp_label')"
+                                        :placeholder="t('auth.register.whatsapp_placeholder')" required number-only :error="errors.whatsappNo"
                                         @update:model-value="validate('whatsappNo', form.whatsappNo, [rules.required(), rules.minLength(10)])" />
                                 </div>
 
-                                <BaseSelect v-model="form.country" label="Country" placeholder="Select Country" required
+                                <BaseSelect v-model="form.country" :label="t('auth.register.country_label')" :placeholder="t('auth.register.country_placeholder')" required
                                     :items="countries" :error="errors.country" searchable
                                     @update:model-value="validate('country', form.country, [rules.required()])" />
 
                                 <div class="space-y-1">
-                                    <label class="text-sm font-bold text-navy">Full Address</label>
+                                    <label class="text-sm font-bold text-navy">{{ t('auth.register.address_label_full') }}</label>
                                     <textarea v-model="form.address"
                                         class="w-full p-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all min-h-[80px]"
                                         :class="{ 'border-red-500': errors.address }"
-                                        placeholder="Office or secretariat address"
+                                        :placeholder="t('auth.register.address_label')"
                                         @input="validate('address', form.address, [rules.required()])"></textarea>
                                     <p v-if="errors.address" class="text-red-500  text-xs font-bold ml-1">{{
                                         errors.address }}</p>
@@ -164,24 +162,24 @@
                             <div v-if="form.userType === 'seller'">
                                 <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:storefront-bold" class="text-primary text-lg" />
-                                    Shop Info
+                                    {{ t('auth.register.shop_info') }}
                                 </h4>
-                                <BaseInput v-model="form.storeName" label="Shop Name" placeholder="Your shop name"
+                                <BaseInput v-model="form.storeName" :label="t('auth.register.shop_name_label')" :placeholder="t('auth.register.shop_name_placeholder')"
                                     required
-                                    :error="errors.storeName || (isNameTaken ? 'Shop name is already registered' : '')"
+                                    :error="errors.storeName || (isNameTaken ? t('auth.register.name_taken_shop') : '')"
                                     @update:model-value="validate('storeName', form.storeName, [rules.required(), rules.minLength(3)])" />
-                                <p class="mt-2 text-xs text-gray-400">Shop address and details can be completed in the profile page.</p>
+                                <p class="mt-2 text-xs text-gray-400">{{ t('auth.register.shop_note') }}</p>
                             </div>
                         </div>
 
                         <div class="flex flex-col gap-2 pt-6 border-t border-gray-100">
                             <BaseCheckbox v-model="form.terms" required :error="errors.terms"
-                                @update:model-value="validate('terms', form.terms, [rules.required('You must agree to the terms & conditions')])">
-                                I agree to the
+                                @update:model-value="validate('terms', form.terms, [rules.required(t('auth.register.terms_required_error'))])">
+                                {{ t('auth.register.agree_to') }}
                                 <NuxtLink class="font-bold underline text-navy hover:text-primary-hover" to="/terms">
-                                    Terms & Conditions</NuxtLink> and
+                                    {{ t('auth.register.terms_conditions') }}</NuxtLink> {{ t('auth.register.and') }}
                                 <NuxtLink class="font-bold underline text-navy hover:text-primary-hover" to="/privacy">
-                                    Privacy Policy</NuxtLink>
+                                    {{ t('auth.register.privacy_policy') }}</NuxtLink>
                             </BaseCheckbox>
                         </div>
 
@@ -190,20 +188,20 @@
                             <BaseButton variant="gold" block size="lg" icon="logos:google-icon"
                                 @click="handleGoogleRegister" :loading="isGoogleLoading || isValidating"
                                 :disabled="!isNameValid || !form.terms || isNameTaken || isValidating">
-                                Register with Google
+                                {{ t('auth.register.register_with_google') }}
                             </BaseButton>
                             <p class="mt-4 text-xs text-center text-gray-400">
-                                Select account type above, enter name, then click this button.
+                                {{ t('auth.register.google_instruction') }}
                             </p>
                         </div>
                     </form>
 
                     <div class="mt-8 text-center font-body">
                         <p class="text-sm text-slate-600">
-                            Already have an account?
+                            {{ t('auth.register.already_have_account') }}
                             <NuxtLink class="font-black text-navy hover:text-primary-hover transition-colors"
                                 to="/auth/login">
-                                Login here
+                                {{ t('auth.register.login_here') }}
                             </NuxtLink>
                         </p>
                     </div>
@@ -217,6 +215,7 @@
 import { Icon } from '@iconify/vue'
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useFormValidation } from '~/composables/useFormValidation'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
@@ -226,9 +225,10 @@ const route = useRoute()
 const isLoading = ref(false)
 const toast = useToast()
 const cities = ref([])
+const { t } = useI18n()
 
 useHead({
-    title: 'Register - Archeris.net'
+    title: t('auth.register.welcome') + ' - Archeris.net'
 })
 
 const userTypes = [
@@ -317,7 +317,7 @@ const checkNameUnique = async (name) => {
         const response = await get(`/auth/check-name?type=${form.value.userType}&name=${encodeURIComponent(name)}`)
         isNameTaken.value = response.exists
         if (response.exists) {
-            toast.error('This name is already registered. Please use another name.')
+            toast.error(t('auth.register.name_taken_toast'))
         }
     } catch (err) {
         console.error('Failed to check name:', err)
@@ -382,12 +382,12 @@ const handleRegister = () => {
 
 const handleGoogleRegister = async () => {
     if (!isNameValid.value) {
-        toast.error('Please enter a valid name (minimum 3 characters)')
+        toast.error(t('auth.register.name_invalid_toast'))
         return
     }
 
     if (!form.value.terms) {
-        toast.error('You must agree to the terms and conditions')
+        toast.error(t('auth.register.terms_toast'))
         return
     }
 

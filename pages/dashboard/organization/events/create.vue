@@ -120,6 +120,7 @@ import FormSection from '~/components/common/FormSection.vue'
 import { useFormValidation } from '~/composables/useFormValidation'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
+import { useSubscription } from '~/composables/useSubscription'
 
 definePageMeta({
   layout: 'dashboard'
@@ -134,6 +135,7 @@ useHead({
 const router = useRouter()
 const { get, post } = useApi()
 const toast = useToast()
+const { isSubscriptionActive } = useSubscription()
 
 const isSubmitting = ref(false)
 
@@ -200,6 +202,11 @@ const countries = [
 const countryItems = computed(() => countries.map(country => ({ title: country, value: country })))
 
 onMounted(async () => {
+  if (!isSubscriptionActive.value) {
+    toast.error('subscription expired. upgrade your plan to create event.')
+    router.replace('/dashboard/organization/events')
+    return
+  }
   try {
     const res = await get('/disciplines')
     if (res?.disciplines) {

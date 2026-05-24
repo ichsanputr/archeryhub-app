@@ -100,10 +100,14 @@
             class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
             :class="{ '!text-primary font-bold': isActive('/blog') }">
             {{ t('nav.blog') }}</NuxtLink>
-          <NuxtLink to="/products"
+          <NuxtLink to="/docs"
             class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
-            :class="{ '!text-primary font-bold': isActive('/products') }">
-            {{ t('nav.marketplace') }}
+            :class="{ '!text-primary font-bold': isActive('/docs') }">
+            {{ t('nav.docs') }}</NuxtLink>
+          <NuxtLink to="/pricing"
+            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
+            :class="{ '!text-primary font-bold': isActive('/pricing') }">
+            {{ t('nav.pricing') }}
           </NuxtLink>
         </nav>
 
@@ -248,7 +252,8 @@
               { to: '/', label: t('nav.home'), icon: 'ph:house-bold' },
               { to: '/archers', label: t('nav.archers'), icon: 'ph:users-bold' },
               { to: '/blog', label: t('nav.blog'), icon: 'ph:newspaper-bold' },
-              { to: '/products', label: t('nav.marketplace'), icon: 'ph:shopping-bag-bold' },
+              { to: '/docs', label: t('nav.docs'), icon: 'ph:book-open-bold' },
+              { to: '/pricing', label: t('nav.pricing'), icon: 'ph:credit-card-bold' },
             ]" :key="link.to" :to="link.to" @click="mobileMenuOpen = false"
               class="flex items-center gap-4 p-4 rounded-2xl transition-all group"
               :class="isActive(link.to) ? 'bg-primary text-primary-text font-black' : 'text-gray-500 hover:bg-gray-50 hover:text-navy'">

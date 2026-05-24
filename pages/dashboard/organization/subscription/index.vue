@@ -28,7 +28,7 @@
 
         <div class="space-y-8">
             <!-- Organization Plans -->
-            <SubscriptionOrganizationPlans :plans="availablePlans" @select="handleSelectPlan" />
+            <SubscriptionOrganizationPlans :plans="availablePlans" :comparison-data="comparisonData" @select="handleSelectPlan" />
 
             <!-- Riwayat Tagihan Section -->
             <SubscriptionBillingHistory :invoices="invoices" />
@@ -51,11 +51,24 @@ definePageMeta({
     layout: 'dashboard'
 })
 
-const { user } = useAuth()
+const { user, organizationProfile } = useAuth()
 const { t } = useDashboardI18n()
 const { subscriptionData, fetchSubscription } = useSubscription()
 const router = useRouter()
 const route = useRoute()
+
+const isUSD = computed(() => {
+    return organizationProfile.value?.country !== 'Indonesia'
+})
+
+const apiBaseUrl = useApiBaseUrl()
+
+// Fetch comparison features dynamically from backend
+const { data: comparisonData } = await useFetch(`${apiBaseUrl}/public/subscription/comparison`, {
+    key: 'dashboard-subscription-comparison',
+    lazy: true,
+    server: false
+})
 const userType = computed(() => user.value?.user_type || user.value?.role || 'organization')
 const showSuccessAlert = ref(false)
 
@@ -63,10 +76,15 @@ onBeforeMount(async () => {
     await fetchSubscription()
 })
 
+const toast = useToast()
+
 onMounted(() => {
     fetchSubscription(true)
     if (route.query.status === 'success') {
         showSuccessAlert.value = true
+        router.replace({ path: route.path, query: {} })
+    } else if (route.query.expired === 'true') {
+        toast.error(t('subscription.expired_warning', 'Masa aktif paket langganan Anda telah berakhir. Silakan perbarui paket Anda untuk melanjutkan.'))
         router.replace({ path: route.path, query: {} })
     }
 })
@@ -105,22 +123,13 @@ const orgPlanDetails = [
     }
 ]
 
-const comparisonData = [
-    { feature: 'Pendaftaran Online', basic: true, elite: true, icon: 'ph:clipboard-text-bold' },
-    { feature: 'Sistem Digital Scoring', basic: true, elite: true, icon: 'ph:target-bold' },
-    { feature: 'Manajemen Match Finals', basic: false, elite: true, icon: 'ph:trophy-bold' },
-    { feature: 'Penyimpanan Media', basic: '1 GB', elite: '5 GB', icon: 'ph:hard-drives-bold' },
-    { feature: 'Analitik Lanjutan', basic: false, elite: true, icon: 'ph:chart-bar-bold' },
-    { feature: 'Integrasi Pembayaran', basic: false, elite: true, icon: 'ph:credit-card-bold' },
-    { feature: 'Dukungan Prioritas', basic: true, elite: true, icon: 'ph:headset-bold' },
-]
-
 const isSubscribed = computed(() => !!subscriptionRes.value?.current?.plan_id)
 
 const availablePlans = computed(() => {
     const plansFromApi = subscriptionRes.value?.plans || []
     const currentPlanId = subscriptionRes.value?.current?.plan_id
     const currentPlanDetails = orgPlanDetails
+    const isUSDVal = isUSD.value
 
     const uniquePlans = []
     const seenNames = new Set()
@@ -137,8 +146,8 @@ const availablePlans = computed(() => {
 
     if (uniquePlans.length === 0) {
         return [
-            { id: 3, name: 'Standar', priceLabel: 'Rp 30.000', priceRaw: 30000, billing: 'bln', features: currentPlanDetails[0].features, isCurrent: false, isUpgrade: false },
-            { id: 4, name: 'Elite', priceLabel: 'Rp 80.000', priceRaw: 80000, billing: 'bln', features: currentPlanDetails[1].features, isCurrent: false, isUpgrade: true }
+            { id: 3, name: 'Standar', priceLabel: isUSDVal ? '$2' : 'Rp 30.000', priceRaw: isUSDVal ? 2 : 30000, billing: 'bln', features: currentPlanDetails[0].features, isCurrent: false, isUpgrade: false },
+            { id: 4, name: 'Elite', priceLabel: isUSDVal ? '$5' : 'Rp 80.000', priceRaw: isUSDVal ? 5 : 80000, billing: 'bln', features: currentPlanDetails[1].features, isCurrent: false, isUpgrade: true }
         ]
     }
 
@@ -162,15 +171,15 @@ const availablePlans = computed(() => {
 
         let finalPrice = plan.price
         if (localizedName === 'Standar' || plan.name.toLowerCase().includes('basic')) {
-            finalPrice = 30000
+            finalPrice = isUSDVal ? 2 : 30000
         } else if (localizedName === 'Elite' || plan.name.toLowerCase().includes('premium')) {
-            finalPrice = 80000
+            finalPrice = isUSDVal ? 5 : 80000
         }
 
         return {
             id: plan.id,
             name: localizedName,
-            priceLabel: finalPrice < 1000 ? 'Gratis' : `Rp ${new Intl.NumberFormat('id-ID').format(finalPrice)}`,
+            priceLabel: finalPrice === 0 ? (isUSDVal ? 'Free' : 'Gratis') : (isUSDVal ? `$${finalPrice}` : `Rp ${new Intl.NumberFormat('id-ID').format(finalPrice)}`),
             priceRaw: finalPrice,
             billing: plan.type === 'yearly' ? 'thn' : 'bln',
             features: detail ? detail.features : (function () {

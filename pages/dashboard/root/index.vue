@@ -13,7 +13,7 @@
                 </div>
                 <div>
                     <h4 class="text-[10px] font-black tracking-widest text-white">{{ t('root.index.title') }}</h4>
-                    <div class="text-xs font-bold text-primary/80">{{ t('root.index.success_message', 'New account has been successfully created') }}</div>
+                    <div class="text-xs font-bold text-primary/80">{{ successMessage }}</div>
                 </div>
                 <button @click="showSuccessToast = false"
                     class="ml-4 text-white/40 hover:text-white transition-colors p-1 hover:bg-white/10 rounded-lg">
@@ -39,35 +39,15 @@
                     <div class="flex items-center gap-4">
                         <div
                             class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
-                            <Icon icon="ph:users-four-bold" class="text-primary text-2xl sm:text-3xl" />
+                            <Icon icon="ph:buildings-bold" class="text-primary text-2xl sm:text-3xl" />
                         </div>
                         <div>
                             <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ t('root.index.title') }}</h1>
                             <div class="text-slate-300 text-[10px] sm:text-sm font-medium mt-1">
-                                {{ t('root.index.subtitle') }}
+                                {{ t('root.subscriptions.subtitle') }}
                             </div>
                         </div>
                     </div>
-                </div>
-                <NuxtLink to="/dashboard/root/create-account"
-                    class="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-navy rounded-xl text-[10px] sm:text-xs font-black tracking-widest transition-all shadow-lg shadow-primary/20 shrink-0">
-                    <Icon icon="ph:plus-bold" />
-                    {{ t('root.index.create_account') }}
-                </NuxtLink>
-            </div>
-        </div>
-
-        <!-- Stats -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div v-for="stat in stats" :key="stat.label"
-                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg group-hover:bg-primary group-hover:text-navy-dark transition-colors"
-                    :class="stat.color">
-                    <Icon :icon="stat.icon" class="text-xl" />
-                </div>
-                <div>
-                    <div class="text-xs text-gray-400 font-bold tracking-wider ">{{ stat.label }}</div>
-                    <div class="text-lg font-bold text-navy">{{ stat.value }}</div>
                 </div>
             </div>
         </div>
@@ -83,18 +63,17 @@
                         class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/30 outline-none transition-all" />
                 </div>
             </div>
-            <div class="w-full md:w-48">
-                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider ">{{ t('root.index.type_filter') }}</label>
-                <select v-model="typeFilter"
+            <div class="w-full md:w-56">
+                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider ">{{ t('root.subscriptions.status_filter') }}</label>
+                <select v-model="statusFilter"
                     class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                    <option value="">{{ t('root.index.type_all') }}</option>
-                    <option value="archer">{{ t('root.index.type_archer') }}</option>
-                    <option value="club">{{ t('root.index.type_club') }}</option>
-                    <option value="organization">{{ t('root.index.type_organization') }}</option>
-                    <option value="seller">{{ t('root.index.type_seller') }}</option>
+                    <option value="">{{ t('root.subscriptions.status_all') }}</option>
+                    <option value="active">{{ t('root.subscriptions.status_active') }}</option>
+                    <option value="expired">{{ t('root.subscriptions.status_expired') }}</option>
+                    <option value="canceled">{{ t('root.subscriptions.status_canceled') }}</option>
                 </select>
             </div>
-            <button @click="searchQuery = ''; typeFilter = ''"
+            <button @click="searchQuery = ''; statusFilter = ''"
                 class="h-11 px-6 font-semibold text-sm text-navy bg-white border border-gray-200 hover:bg-gray-50 rounded-xl transition-all shrink-0">
                 {{ t('root.index.reset') }}
             </button>
@@ -103,16 +82,18 @@
         <!-- Table -->
         <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse min-w-[750px]">
+                <table class="w-full text-left border-collapse min-w-[850px]">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
-                                {{ t('root.index.table_header_identity') }}</th>
+                                {{ t('root.subscriptions.table_header_account') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-center">
-                                {{ t('root.index.table_header_type') }}
+                                {{ t('root.subscriptions.table_header_plan') }}
                             </th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-center">
-                                {{ t('root.index.table_header_status') }}</th>
+                                {{ t('root.subscriptions.table_header_status') }}</th>
+                            <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
+                                {{ t('root.subscriptions.table_header_expires') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
                                 {{ t('root.index.table_header_registered') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right">
@@ -120,7 +101,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
-                        <tr v-for="user in filteredUsers" :key="user.uuid"
+                        <tr v-for="user in paginatedUsers" :key="user.uuid"
                             class="hover:bg-primary/5 transition-colors group">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-4">
@@ -131,38 +112,51 @@
                                     </div>
                                     <div>
                                         <div
-                                            class="font-bold text-navy group-hover:text-primary transition-colors line-clamp-1 truncate max-w-[200px]">
-                                            {{
-                                                user.name || '—' }}</div>
-                                        <div class="text-xs text-gray-400 line-clamp-1 truncate max-w-[200px]">{{
+                                            class="font-bold text-navy group-hover:text-primary transition-colors line-clamp-1 truncate max-w-[220px]">
+                                            {{ user.name || '—' }}
+                                        </div>
+                                        <div class="text-xs text-gray-400 line-clamp-1 truncate max-w-[220px]">{{
                                             user.email || '—' }}</div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 text-center">
-                                <span
-                                    class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize tracking-widest border"
-                                    :class="getTypeBadgeClass(user.type)">
-                                    {{ user.type }}
-                                </span>
+                            <td class="px-6 py-4 text-center text-sm font-semibold text-navy">
+                                {{ user.plan_name || '—' }}
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <span class="px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest border"
-                                    :class="getStatusBadgeClass(user.status)">
-                                    {{ user.status || 'inactive' }}
+                                    :class="getStatusBadgeClass(user.subscription_status)">
+                                    {{ (user.subscription_status || 'active').charAt(0).toUpperCase() + (user.subscription_status || 'active').slice(1) }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-xs font-semibold text-navy">{{ formatDate(user.created_at) }}
+                            <td class="px-6 py-4 text-xs font-semibold"
+                                :class="isExpiredSoon(user.expires_at) ? 'text-red-500 font-bold' : 'text-navy'">
+                                {{ user.expires_at ? formatDate(user.expires_at) : '—' }}
+                            </td>
+                            <td class="px-6 py-4 text-xs font-semibold text-gray-400">{{ formatDate(user.created_at) }}
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <button v-if="user.status !== 'suspended' && user.type !== 'archer'"
+                                    <!-- Edit Package -->
+                                    <button @click="openEditSubscription(user)"
+                                        class="p-2 text-navy hover:bg-gray-100 hover:text-navy-dark rounded-xl transition-all"
+                                        :title="t('root.subscriptions.edit_modal_title')">
+                                        <Icon icon="ph:pencil-simple-bold" class="text-xl" />
+                                    </button>
+                                    <!-- Change Password -->
+                                    <button @click="openChangePassword(user)"
+                                        class="p-2 text-navy hover:bg-gray-100 hover:text-navy-dark rounded-xl transition-all"
+                                        :title="t('root.index.change_password_title')">
+                                        <Icon icon="ph:key-bold" class="text-xl" />
+                                    </button>
+                                    <!-- Suspend/Activate -->
+                                    <button v-if="user.subscription_status !== 'suspended'"
                                         @click="confirmAction(user, 'suspend')"
                                         class="p-2 text-red-400 hover:bg-red-50 hover:text-red-500 rounded-xl transition-all"
                                         :title="t('root.index.suspend_account_title')">
                                         <Icon icon="ph:prohibit-bold" class="text-xl" />
                                     </button>
-                                    <button v-else-if="user.status === 'suspended'"
+                                    <button v-else
                                         @click="confirmAction(user, 'activate')"
                                         class="p-2 text-green-500 hover:bg-green-50 rounded-xl transition-all"
                                         :title="t('root.index.activate_account_title')">
@@ -172,11 +166,11 @@
                             </td>
                         </tr>
                         <tr v-if="!filteredUsers.length">
-                            <td colspan="5" class="px-6 py-24 text-center">
+                            <td colspan="6" class="px-6 py-24 text-center">
                                 <div class="flex flex-col items-center gap-4 max-w-xs mx-auto">
                                     <div
                                         class="h-16 w-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300">
-                                        <Icon icon="ph:user-focus-bold" class="text-3xl" />
+                                        <Icon icon="ph:building-office-bold" class="text-3xl" />
                                     </div>
                                     <div>
                                         <div class="text-sm font-bold text-gray-400 tracking-tight">{{ t('root.index.no_users') }}</div>
@@ -189,9 +183,32 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Pagination -->
+            <div v-if="filteredUsers.length > 0"
+                class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-xs font-bold text-gray-400 tracking-widest">
+                    {{ t('root.subscriptions.pagination_showing', { from: subStartIndex + 1, to: Math.min(subEndIndex, filteredUsers.length), total: filteredUsers.length }) }}
+                </div>
+                <div class="flex items-center gap-2">
+                    <button @click="currentPage--" :disabled="currentPage === 1"
+                        class="size-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-500 hover:border-primary hover:text-primary transition-all disabled:opacity-30 disabled:pointer-events-none shadow-sm">
+                        <Icon icon="ph:caret-left-bold" />
+                    </button>
+                    <div class="flex items-center gap-1 px-3">
+                        <span class="text-xs font-black text-navy">{{ currentPage }}</span>
+                        <span class="text-[10px] font-bold text-gray-300">/</span>
+                        <span class="text-[10px] font-bold text-gray-400">{{ totalPages }}</span>
+                    </div>
+                    <button @click="currentPage++" :disabled="currentPage === totalPages"
+                        class="size-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-500 hover:border-primary hover:text-primary transition-all disabled:opacity-30 disabled:pointer-events-none shadow-sm">
+                        <Icon icon="ph:caret-right-bold" />
+                    </button>
+                </div>
+            </div>
         </div>
 
-        <!-- Confirmation Modal -->
+        <!-- Suspend/Activate Confirmation Modal -->
         <div v-if="showConfirmModal"
             class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
             @click.self="showConfirmModal = false">
@@ -227,12 +244,103 @@
                 </div>
             </div>
         </div>
+
+        <!-- Change Password Modal -->
+        <div v-if="showPasswordModal"
+            class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+            @click.self="showPasswordModal = false">
+            <div
+                class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-8 space-y-6 animate-in zoom-in-95 duration-200">
+                <div class="flex flex-col items-center text-center gap-4">
+                    <div class="size-16 rounded-3xl flex items-center justify-center bg-primary/10 text-navy border border-primary/20">
+                        <Icon icon="ph:lock-key-bold" class="text-4xl text-navy" />
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-black text-navy">{{ t('root.index.change_password_title') }}</h3>
+                        <div class="text-gray-400 text-xs mt-2 leading-relaxed">
+                            {{ t('root.index.change_password_desc') }}
+                            <span class="font-bold text-navy">{{ selectedUser?.name }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">{{ t('root.index.new_password_label') }}</label>
+                        <input v-model="newPassword" type="password" placeholder="••••••••"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button @click="showPasswordModal = false"
+                        class="flex-1 py-3 border border-gray-200 rounded-xl text-xs font-black text-gray-500 hover:bg-gray-50 transition-all tracking-widest">
+                        {{ t('root.create_account.cancel') }}
+                    </button>
+                    <button @click="executeChangePassword" :disabled="passwordLoading || newPassword.length < 5"
+                        class="flex-1 py-3 rounded-xl text-xs font-black transition-all disabled:opacity-50 flex items-center justify-center gap-2 tracking-widest shadow-lg bg-navy text-primary hover:bg-navy/90 shadow-navy/20">
+                        <Icon v-if="passwordLoading" icon="ph:spinner-bold" class="animate-spin" />
+                        {{ t('root.index.save_password') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Subscription Modal -->
+        <div v-if="showEditSubModal"
+            class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+            @click.self="showEditSubModal = false">
+            <div
+                class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-8 space-y-6 animate-in zoom-in-95 duration-200">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="size-14 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:pencil-simple-line-bold" class="text-navy text-2xl" />
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-black text-navy tracking-tight">{{ t('root.subscriptions.edit_modal_title') }}</h3>
+                        <div class="text-[10px] font-bold text-gray-400 mt-0.5">{{ selectedUser?.name }}</div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">{{ t('root.subscriptions.edit_plan_label') }}</label>
+                        <select v-model="editPlanId"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all">
+                            <option :value="null">Free</option>
+                            <option v-for="p in availablePlansForEdit" :key="p.id" :value="p.id">
+                                {{ p.name }} ({{ formatCurrency(p.price) }})
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">{{ t('root.subscriptions.edit_expires_label') }}</label>
+                        <input v-model="editExpiresAt" type="date" :disabled="editPlanId === null"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all disabled:opacity-40 disabled:cursor-not-allowed" />
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button @click="showEditSubModal = false"
+                        class="flex-1 py-3 border border-gray-200 rounded-xl text-xs font-black text-gray-500 hover:bg-gray-50 transition-all tracking-widest">
+                        {{ t('root.subscriptions.edit_cancel') }}
+                    </button>
+                    <button @click="submitEditSubscription" :disabled="editLoading"
+                        class="flex-1 py-3 bg-navy text-primary rounded-xl text-xs font-black hover:bg-navy/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2 tracking-widest shadow-lg shadow-navy/20">
+                        <Icon v-if="editLoading" icon="ph:spinner-bold" class="animate-spin" />
+                        {{ t('root.subscriptions.edit_save') }}
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 
@@ -246,32 +354,60 @@ useHead({ title: t('root.index.title') + ' — Root Terminal' })
 
 // ── Data ──────────────────────────────────────────────────────────────
 const searchQuery = ref('')
-const typeFilter = ref('')
+const statusFilter = ref('')
 const showSuccessToast = ref(false)
+const successMessage = ref('')
 
-const { data: usersData, refresh } = await useFetch(
-    `${apiBaseUrl}/root/dashboard/users`,
-    { credentials: 'include' }
+// Pagination state
+const currentPage = ref(1)
+const itemsPerPage = 8
+
+// Reset to page 1 when filters change
+watch([searchQuery, statusFilter], () => {
+    currentPage.value = 1
+})
+
+// Fetch Organization Subscriptions
+const { data: subData, refresh: refreshSubs } = await useFetch(
+    `${apiBaseUrl}/root/dashboard/subscriptions?type=organization`,
+    {
+        key: 'root-subscriptions-organizations',
+        credentials: 'include'
+    }
 )
 
+// Fetch Plans (target_type is handled by backend)
+const { data: plansData } = await useFetch(
+    `${apiBaseUrl}/root/dashboard/plans`,
+    {
+        key: 'root-subscription-plans',
+        credentials: 'include'
+    }
+)
+
+const users = computed(() => {
+    const list = subData.value?.subscriptions || []
+    return [...list].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+})
+const plans = computed(() => plansData.value?.plans || [])
+
 const filteredUsers = computed(() => {
-    if (!usersData.value) return []
     const q = searchQuery.value.toLowerCase()
-    return usersData.value.filter(u => {
-        const mQ = !q || (u.name || '').toLowerCase().includes(q) || (u.email || '').toLowerCase().includes(q)
-        const mT = !typeFilter.value || u.type === typeFilter.value
-        return mQ && mT
+    return users.value.filter(s => {
+        const mQ = !q || s.name?.toLowerCase().includes(q) || s.email?.toLowerCase().includes(q)
+        const mS = !statusFilter.value || s.subscription_status === statusFilter.value
+        return mQ && mS
     })
 })
 
-const stats = computed(() => {
-    const all = usersData.value || []
-    return [
-        { label: t('root.index.stats_total_users'), value: all.length, icon: 'ph:users-four', color: 'text-primary' },
-        { label: t('root.index.stats_archers'), value: all.filter(u => u.type === 'archer').length, icon: 'ph:person', color: 'text-blue-500' },
-        { label: t('root.index.stats_clubs'), value: all.filter(u => u.type === 'club').length, icon: 'ph:buildings', color: 'text-navy' },
-        { label: t('root.index.stats_organizations'), value: all.filter(u => u.type === 'organization').length, icon: 'ph:building-office', color: 'text-purple-500' },
-    ]
+// Pagination Calculation
+const totalPages = computed(() => Math.ceil(filteredUsers.value.length / itemsPerPage) || 1)
+const subStartIndex = computed(() => (currentPage.value - 1) * itemsPerPage)
+const subEndIndex = computed(() => subStartIndex.value + itemsPerPage)
+const paginatedUsers = computed(() => filteredUsers.value.slice(subStartIndex.value, subEndIndex.value))
+
+onMounted(() => {
+    refreshSubs()
 })
 
 // ── Actions (Suspend/Activate) ─────────────────────────────────────────
@@ -290,13 +426,16 @@ const executeAction = async () => {
     if (!selectedUser.value) return
     actionLoading.value = true
     try {
-        await $fetch(`${apiBaseUrl}/root/dashboard/users/${selectedUser.value.type}/${selectedUser.value.uuid}/terminate`, {
+        await $fetch(`${apiBaseUrl}/root/dashboard/users/${selectedUser.value.user_type}/${selectedUser.value.uuid}/terminate`, {
             method: 'PATCH',
             body: { action: pendingAction.value },
             credentials: 'include'
         })
         showConfirmModal.value = false
-        await refresh()
+        successMessage.value = t('root.index.success_message')
+        showSuccessToast.value = true
+        setTimeout(() => { showSuccessToast.value = false }, 5000)
+        await refreshSubs()
     } catch (err) {
         alert(err.data?.error || t('root.index.error_message', 'Failed to change account status'))
     } finally {
@@ -304,38 +443,117 @@ const executeAction = async () => {
     }
 }
 
-onMounted(() => {
-    if (route.query.success === 'created') {
+// ── Password Reset Actions ──────────────────────────────────────────────
+const showPasswordModal = ref(false)
+const newPassword = ref('')
+const passwordLoading = ref(false)
+
+const openChangePassword = (user) => {
+    selectedUser.value = user
+    newPassword.value = ''
+    showPasswordModal.value = true
+}
+
+const executeChangePassword = async () => {
+    if (!selectedUser.value || newPassword.value.length < 5) return
+    passwordLoading.value = true
+    try {
+        await $fetch(`${apiBaseUrl}/root/dashboard/users/${selectedUser.value.user_type}/${selectedUser.value.uuid}/password`, {
+            method: 'PUT',
+            body: { password: newPassword.value },
+            credentials: 'include'
+        })
+        showPasswordModal.value = false
+        successMessage.value = t('root.index.change_password_success')
         showSuccessToast.value = true
-        // Remove the query param without refreshing
-        window.history.replaceState({}, document.title, window.location.pathname)
         setTimeout(() => { showSuccessToast.value = false }, 5000)
+    } catch (err) {
+        alert(err.data?.error || t('root.index.change_password_error'))
+    } finally {
+        passwordLoading.value = false
+    }
+}
+
+// ── Edit Subscription Actions ──────────────────────────────────────────
+const showEditSubModal = ref(false)
+const editStatus = ref('')
+const editPlanId = ref(null)
+const editExpiresAt = ref('')
+const editExtendDays = ref(0)
+const editLoading = ref(false)
+
+const availablePlansForEdit = computed(() => {
+    if (!selectedUser.value) return []
+    return plans.value.filter(p => p.user_type === selectedUser.value.user_type)
+})
+
+const openEditSubscription = (sub) => {
+    selectedUser.value = sub
+    editStatus.value = sub.subscription_status
+    editPlanId.value = sub.plan_id
+    editExpiresAt.value = sub.expires_at ? sub.expires_at.slice(0, 10) : ''
+    editExtendDays.value = 0
+    showEditSubModal.value = true
+}
+
+const submitEditSubscription = async () => {
+    editLoading.value = true
+    try {
+        const body = {
+            plan_id: editPlanId.value,
+            expires_at: editPlanId.value === null ? null : (editExpiresAt.value || null)
+        }
+
+        await $fetch(
+            `${apiBaseUrl}/root/dashboard/subscriptions/${selectedUser.value.user_type}/${selectedUser.value.uuid}`,
+            { method: 'PUT', body, credentials: 'include' }
+        )
+        showEditSubModal.value = false
+        successMessage.value = t('root.subscriptions.edit_success', 'Subscription updated successfully')
+        showSuccessToast.value = true
+        setTimeout(() => { showSuccessToast.value = false }, 5000)
+        await refreshSubs()
+    } catch (err) {
+        alert(err.data?.error || t('root.subscriptions.error_message', 'Failed to update subscription'))
+    } finally {
+        editLoading.value = false
+    }
+}
+
+watch(editPlanId, (newPlanId) => {
+    if (newPlanId === null) {
+        editExpiresAt.value = ''
     }
 })
 
 // ── Helpers ────────────────────────────────────────────────────────────
-const getTypeBadgeClass = (type) => {
-    switch (type) {
-        case 'archer': return 'bg-blue-50 text-blue-600 border-blue-100'
-        case 'club': return 'bg-primary/10 text-navy border-primary/20'
-        case 'organization': return 'bg-purple-50 text-purple-600 border-purple-100'
-        case 'seller': return 'bg-orange-50 text-orange-600 border-orange-100'
-        default: return 'bg-gray-50 text-gray-500 border-gray-200'
-    }
-}
-
 const getStatusBadgeClass = (status) => {
     switch (status) {
         case 'active': return 'bg-green-50 text-green-600 border-green-100'
         case 'trial': return 'bg-blue-50 text-blue-600 border-blue-100'
         case 'suspended': return 'bg-red-50 text-red-500 border-red-100'
         case 'expired': return 'bg-orange-50 text-orange-600 border-orange-100'
+        case 'canceled': return 'bg-gray-50 text-gray-400 border-gray-200'
         default: return 'bg-gray-50 text-gray-400 border-gray-200'
     }
 }
 
+const isExpiredSoon = (exp) => {
+    if (!exp) return false
+    const d = new Date(exp)
+    if (isNaN(d.getTime())) return false
+    return (d - new Date()) < 7 * 86400000
+}
+
 const formatDate = (d) => {
     if (!d || d.startsWith('1970')) return '—'
-    return new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(d))
+    try {
+        return new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(d))
+    } catch (e) {
+        return '—'
+    }
 }
+
+const formatCurrency = (v) =>
+    new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(v)
 </script>

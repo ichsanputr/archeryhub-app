@@ -10,12 +10,29 @@ const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
-const { user } = useAuth()
+const { user, organizationProfile } = useAuth()
 const payment = usePayment()
 
 const planId = computed(() => route.query.plan_id)
 const planName = computed(() => route.query.plan_name || t('subscription_payment_page.default_plan_name'))
-const planPrice = computed(() => route.query.plan_price || '0')
+
+const isUSD = computed(() => {
+    return organizationProfile.value?.country !== 'Indonesia'
+})
+
+const planPrice = computed(() => {
+    const isUSDVal = isUSD.value
+    const id = parseInt(planId.value || '0')
+    const name = (planName.value || '').toLowerCase()
+    
+    if (name.includes('standar') || name.includes('standard') || name.includes('basic') || id === 3 || id === 5) {
+        return isUSDVal ? '2' : '30000'
+    } else if (name.includes('elite') || name.includes('premium') || id === 4 || id === 6) {
+        return isUSDVal ? '5' : '80000'
+    }
+    
+    return route.query.plan_price || '0'
+})
 
 // Redirect back if no plan selected (client-side only for safety)
 onBeforeMount(() => {
@@ -45,7 +62,8 @@ const channels = computed(() => {
     if (!channelsRes.value) return list
     const data = channelsRes.value.data || channelsRes.value || []
     if (Array.isArray(data)) {
-        return [...list, ...data.filter((c) => c.active)]
+        const filteredData = isUSD.value ? [] : data.filter((c) => c.active)
+        return [...list, ...filteredData]
     }
     return list
 })
@@ -66,7 +84,7 @@ const groupedChannels = computed(() => {
     return groups
 })
 
-const selectedChannel = ref(null)
+const selectedChannel = ref(route.query.gateway || (organizationProfile.value?.country !== 'Indonesia' ? 'paddle' : null))
 const selectedMonths = ref(1)
 const isProcessing = ref(false)
 const errorMessage = ref('')
@@ -214,8 +232,9 @@ useHead({
                         </div>
                         <div class="pt-3 border-t border-white/10 flex justify-between items-center">
                             <span class="text-slate-400 text-[10px] font-black tracking-widest">{{ t('subscription_payment_page.total_pay') }}</span>
-                            <span class="text-primary font-black text-xl">Rp {{ totalAmount.toLocaleString('id-ID')
-                            }}</span>
+                            <span class="text-primary font-black text-xl">
+                                {{ isUSD ? `$${totalAmount}` : `Rp ${totalAmount.toLocaleString('id-ID')}` }}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -319,8 +338,9 @@ useHead({
                             </div>
                             <div class="flex justify-between items-center py-2 border-b border-dashed border-gray-100">
                                 <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.subtotal') }}</span>
-                                <span class="text-navy font-bold text-sm">Rp {{ (parseInt(planPrice?.toString() || '0')
-                                    * selectedMonths).toLocaleString('id-ID') }}</span>
+                                <span class="text-navy font-bold text-sm">
+                                    {{ isUSD ? `$${(parseInt(planPrice?.toString() || '0') * selectedMonths)}` : `Rp ${(parseInt(planPrice?.toString() || '0') * selectedMonths).toLocaleString('id-ID')}` }}
+                                </span>
                             </div>
                             <div v-if="selectedChannel" class="flex justify-between items-center py-2">
                                 <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.method') }}</span>

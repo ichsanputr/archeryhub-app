@@ -1,5 +1,6 @@
 <template>
     <div class="space-y-8">
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
         <!-- Scoring Interface -->
         <div v-if="selectedCategory && targetAssignments.length > 0"
             class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
@@ -92,7 +93,7 @@
 
                                 <div class="flex flex-wrap gap-2 sm:gap-3 py-2 pl-1 sm:pl-3">
                                     <div v-for="(score, i) in sessionData?.arrows_per_end || 0" :key="i"
-                                        @click.stop="selectArrowBox(assignment, i)" :class="[
+                                        @click.stop="isSubscriptionActive ? selectArrowBox(assignment, i) : (showPremiumModal = true)" :class="[
                                             'size-12 sm:size-16 rounded-xl shadow-sm flex items-center justify-center text-base sm:text-xl font-black cursor-pointer transition-all duration-300 relative border-4',
                                             currentScoringAssignment?.uuid === assignment.uuid && selectedArrowIndex === i
                                                 ? 'border-primary bg-white shadow-sm scale-110 z-10 border-solid'
@@ -148,7 +149,7 @@
                     <!-- Score Buttons Grid -->
                     <div class="grid grid-cols-3 gap-3 mb-6">
                         <BaseButton v-for="val in ['X', 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'M']" :key="val"
-                            @click="addScore(val)" :disabled="!currentScoringAssignment" variant="white"
+                            @click="isSubscriptionActive ? addScore(val) : (showPremiumModal = true)" :disabled="!currentScoringAssignment" variant="white"
                             class="aspect-square !rounded-2xl border-b-[6px] text-lg font-black transition-all active:border-b-0 active:translate-y-[6px] disabled:opacity-30 disabled:cursor-not-allowed hover:-translate-y-0.5 shadow-sm !p-0"
                             :class="[getScoreKeypadClass(val)]">
                             {{ val }}
@@ -160,13 +161,13 @@
                         <BaseButton variant="white" icon="ph:backspace-bold"
                             :disabled="!currentScoringAssignment || !currentScoringAssignment.currentEndScores?.some(v => v !== undefined)"
                             class="!h-14 !rounded-xl border-2 border-slate-100 bg-white text-navy hover:!bg-red-50 hover:!text-red-500 hover:!border-red-100"
-                            @click="deleteLastScore">
+                            @click="isSubscriptionActive ? deleteLastScore() : (showPremiumModal = true)">
                             <span class="text-[10px] tracking-widest ">HAPUS</span>
                         </BaseButton>
                         <BaseButton variant="primary" iconRight="ph:paper-plane-right-fill"
                             :disabled="saving || !currentScoringAssignment" :loading="saving"
                             class="!h-14 !rounded-xl bg-primary text-primary-text hover:bg-primary/90 shadow-sm"
-                            @click="saveEndAndNext">
+                            @click="isSubscriptionActive ? saveEndAndNext() : (showPremiumModal = true)">
                             <span class="text-[10px] tracking-widest ">SIMPAN</span>
                         </BaseButton>
                     </div>
@@ -193,7 +194,7 @@
 
                 <div class="grid grid-cols-6 gap-2 mb-3">
                     <BaseButton v-for="val in ['X', 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'M']" :key="val"
-                        @click="addScore(val)" :disabled="!currentScoringAssignment" variant="white"
+                        @click="isSubscriptionActive ? addScore(val) : (showPremiumModal = true)" :disabled="!currentScoringAssignment" variant="white"
                         class="h-11 !rounded-xl border-b-4 text-sm font-black transition-all active:border-b-0 active:translate-y-[4px] disabled:opacity-30 disabled:cursor-not-allowed shadow-sm !p-0"
                         :class="[getScoreKeypadClass(val)]">
                         {{ val }}
@@ -203,11 +204,11 @@
                 <div class="grid grid-cols-2 gap-2">
                     <BaseButton variant="white" icon="ph:backspace-bold"
                         :disabled="!currentScoringAssignment || !currentScoringAssignment.currentEndScores?.some(v => v !== undefined)"
-                        class="!h-11 !rounded-xl border border-slate-200" @click="deleteLastScore">
+                        class="!h-11 !rounded-xl border border-slate-200" @click="isSubscriptionActive ? deleteLastScore() : (showPremiumModal = true)">
                         <span class="text-[10px] tracking-widest ">Hapus</span>
                     </BaseButton>
                     <BaseButton variant="primary" :disabled="saving || !currentScoringAssignment" :loading="saving"
-                        class="!h-11 !rounded-xl" @click="saveEndAndNext">
+                        class="!h-11 !rounded-xl" @click="isSubscriptionActive ? saveEndAndNext() : (showPremiumModal = true)">
                         <span class="text-[10px] tracking-widest ">Simpan</span>
                     </BaseButton>
                 </div>
@@ -237,6 +238,11 @@ import { ref, watch, computed } from 'vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 const props = defineProps({
     sessionData: { type: Object, required: true },

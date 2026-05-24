@@ -38,13 +38,15 @@
                     <div class="flex gap-3 flex-shrink-0">
                         <BaseButton variant="primary" icon="ph:plus-bold"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
-                            @click="openCreateDialog">
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                            @click="isSubscriptionActive ? openCreateDialog() : (showPremiumModal = true)">
                             {{ t('event_categories.add_category') }}
                         </BaseButton>
                     </div>
                 </div>
             </div>
         </div>
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
         <!-- Categories List -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -82,7 +84,9 @@
                 <Icon icon="ph:tag-simple" class="text-5xl text-gray-300 mx-auto mb-4" />
                 <p class="text-gray-500 font-medium mb-2">{{ t('event_categories.no_categories') }}</p>
                 <p class="text-sm text-gray-400 mb-6">{{ t('event_categories.no_categories_desc') }}</p>
-                <BaseButton variant="primary" icon="ph:plus-bold" @click="openCreateDialog">
+                <BaseButton variant="primary" icon="ph:plus-bold"
+                    :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                    @click="isSubscriptionActive ? openCreateDialog() : (showPremiumModal = true)">
                     {{ t('event_categories.add_first_category') }}
                 </BaseButton>
             </div>
@@ -141,10 +145,11 @@
                                 :to="`/dashboard/organization/events/${eventId}/categories/${category.id}`">
                                 {{ t('event_categories.view') }}
                             </BaseButton>
-                            <BaseButton variant="white" size="sm" icon="ph:pencil" @click="openEditDialog(category)">
+                            <BaseButton variant="white" size="sm" icon="ph:pencil"
+                                @click="isSubscriptionActive ? openEditDialog(category) : (showPremiumModal = true)">
                                 {{ t('event_categories.edit') }}
                             </BaseButton>
-                            <button @click="deleteCategory(category)"
+                            <button @click="isSubscriptionActive ? deleteCategory(category) : (showPremiumModal = true)"
                                 class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors group/del"
                                 :title="t('event_categories.delete_category')">
                                 <Icon icon="ph:trash" class="text-lg group-hover/del:scale-110 transition-transform" />
@@ -314,6 +319,8 @@ import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { getCategoryIcon, getCategoryColorClass } from '~/utils/logoArcheryCategory'
 import { useI18n } from 'vue-i18n'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 const { t, locale } = useI18n()
 
@@ -329,6 +336,8 @@ const route = useRoute()
 const eventId = route.params.id
 const { get, post, put, delete: delApi } = useApi()
 const toast = useToast()
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 const isLoading = ref(true)
 const saving = ref(false)
