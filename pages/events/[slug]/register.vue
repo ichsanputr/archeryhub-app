@@ -828,19 +828,17 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
                 : (eventResponse.page_settings_raw || eventResponse.page_settings || {})
         } catch (e) {}
 
-        // Also fetch org page_settings payment methods (from /organizations/me via event organizer)
-        let orgManualMethods = []
-        try {
-            const orgRes = await $fetch(`${apiBaseUrl}/organizations/${eventResponse.organizer_id || eventResponse.organizer_slug || 'me'}`).catch(() => null)
-            const orgSettings = orgRes?.organization?.page_settings || orgRes?.page_settings || orgRes?.data?.page_settings || orgRes?.data?.organization?.page_settings
-            let parsedOrgSettings = {}
-            if (typeof orgSettings === 'string') {
-                try { parsedOrgSettings = JSON.parse(orgSettings) } catch (e) {}
-            } else if (orgSettings && typeof orgSettings === 'object') {
-                parsedOrgSettings = orgSettings
+        // fetch event payment methods if manual payment is enabled (enabled by default)
+        let paymentMethodsData = []
+        if (pageSettings.enable_manual_payment !== false && eventId) {
+            try {
+                const pmRes = await $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`, fetchOptions).catch(() => [])
+                paymentMethodsData = (Array.isArray(pmRes) ? pmRes : pmRes?.data || []).filter(m => m.is_active !== false)
+            } catch (e) {
+                console.error('failed to fetch event payment methods:', e)
             }
-            orgManualMethods = (parsedOrgSettings.payment_methods || []).filter(m => m.bank_name && m.account_number)
-        } catch (e) {}
+        }
+        const orgManualMethods = paymentMethodsData
 
         const eventData = {
             id: eventId,
@@ -874,11 +872,6 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             } catch (e) { }
         }
 
-        let paymentMethodsData = []
-        if (token && eventId) {
-            const pmRes = await $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`, fetchOptions).catch(() => [])
-            paymentMethodsData = (Array.isArray(pmRes) ? pmRes : pmRes?.data || []).filter(m => m.is_active !== false)
-        }
 
         const categoriesData = (categoriesResponse.events || categoriesResponse.categories || []).map(cat => ({
             id: cat.id || cat.uuid,

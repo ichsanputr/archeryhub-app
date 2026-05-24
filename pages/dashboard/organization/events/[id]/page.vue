@@ -307,6 +307,70 @@
                     </div>
                 </section>
 
+                <!-- Manual Payment Method Section -->
+                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:credit-card" class="text-primary text-lg sm:text-xl" />
+                            Metode Pembayaran Manual
+                        </h2>
+                    </div>
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-center justify-between gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div>
+                                <h3 class="text-sm font-black text-navy text-left">Metode Pembayaran Manual</h3>
+                                <p class="text-xs text-gray-500 mt-1 text-left">
+                                    Izinkan peserta mendaftar menggunakan metode transfer manual (bank transfer/e-wallet) yang dikonfigurasi di organisasi Anda.
+                                </p>
+                            </div>
+                            <button type="button"
+                                @click="form.page_settings.enable_manual_payment = !form.page_settings.enable_manual_payment"
+                                :class="form.page_settings.enable_manual_payment ? 'bg-primary' : 'bg-gray-200'"
+                                class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none">
+                                <span :class="form.page_settings.enable_manual_payment ? 'translate-x-5 bg-navy' : 'translate-x-0 bg-white'"
+                                    class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out">
+                                </span>
+                            </button>
+                        </div>
+
+                        <!-- Preview of configured bank accounts -->
+                        <div v-if="form.page_settings.enable_manual_payment" class="mt-4 border-t border-gray-100 pt-4 animate-in fade-in duration-200">
+                            <h4 class="text-xs font-black text-gray-400 tracking-wider mb-3 text-left uppercase">Daftar Rekening Pembayaran Organisasi</h4>
+                            <div v-if="orgBankAccounts.length === 0" class="text-xs text-amber-600 bg-amber-50 border border-amber-100 p-4 rounded-2xl text-left flex items-start gap-2.5">
+                                <Icon icon="ph:warning-circle-bold" class="text-lg shrink-0 mt-0.5" />
+                                <div>
+                                    <span class="font-bold">Perhatian:</span> Belum ada rekening bank/e-wallet aktif yang dikonfigurasi di organisasi Anda. Peserta tidak akan bisa memilih opsi pembayaran manual saat mendaftar.
+                                    <NuxtLink to="/dashboard/organization/payment-methods" class="font-bold underline text-primary hover:text-navy block mt-1">Konfigurasi Rekening Pembayaran</NuxtLink>
+                                </div>
+                            </div>
+                            <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div v-for="bank in orgBankAccounts" :key="bank.uuid || bank.id"
+                                    @click="togglePaymentMethod(bank.uuid || bank.id)"
+                                    :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'border-primary/40 bg-primary/5' : 'border-gray-100 bg-gray-50/50 opacity-60'"
+                                    class="flex items-center justify-between p-4 rounded-2xl border cursor-pointer hover:border-primary/20 transition-all shadow-sm">
+                                    <div class="flex items-center gap-3.5 min-w-0">
+                                        <div class="size-11 bg-white rounded-xl flex items-center justify-center border border-gray-100 shrink-0 p-1.5 shadow-sm">
+                                            <img v-if="getPaymentMethodImage(bank.bank_name)" :src="getPaymentMethodImage(bank.bank_name)" class="w-full h-full object-contain" :alt="bank.bank_name" />
+                                            <Icon v-else icon="ph:credit-card" class="text-xl text-navy" />
+                                        </div>
+                                        <div class="text-left min-w-0">
+                                            <div class="text-sm font-black text-navy truncate">{{ bank.bank_name }} - {{ bank.account_number }}</div>
+                                            <div class="text-xs text-gray-400 font-bold mt-0.5 truncate">a.n. {{ bank.account_name }}</div>
+                                        </div>
+                                    </div>
+                                    <button type="button"
+                                        :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'bg-primary' : 'bg-gray-200'"
+                                        class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none">
+                                        <span :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'translate-x-5 bg-navy' : 'translate-x-0 bg-white'"
+                                            class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out">
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
@@ -812,6 +876,8 @@ const eventId = route.params.id
 const { get, put, post } = useApi()
 const saving = ref(false)
 const eventCategories = ref([])
+const orgBankAccounts = ref([])
+
 
 // Tab state
 const tabs = [
@@ -933,6 +999,7 @@ const form = ref({
         third_caption: ''
     },
     page_settings: {
+        enable_manual_payment: true,
         sections: {
             about: true,
             divisions: true,
@@ -1244,6 +1311,7 @@ const fetchEventData = async () => {
             }
 
             const pageSettings = {
+                enable_manual_payment: parsedPageSettings.enable_manual_payment !== false,
                 ...parsedPageSettings,
                 sections: {
                     ...sectionDefaults,
@@ -1268,7 +1336,7 @@ const fetchEventData = async () => {
 
             const normalizedPaymentMethods = Array.isArray(pageSettings.payment_methods)
                 ? pageSettings.payment_methods
-                : (Array.isArray(data.payment_methods) ? data.payment_methods : [])
+                : (orgBankAccounts.value.length > 0 ? orgBankAccounts.value.map(b => b.uuid || b.id) : [])
 
             const normalizedPrizes = (pageSettings.prizes && typeof pageSettings.prizes === 'object')
                 ? pageSettings.prizes
@@ -1484,6 +1552,59 @@ const groupedDivisions = computed(() => {
     return Object.values(groups)
 })
 
+// Helper functions for payment methods
+const paymentMethodOptions = [
+    { title: 'BCA (Bank Central Asia)', value: 'BCA', image: '/payment-method/bca.png', type: 'bank' },
+    { title: 'Mandiri', value: 'Mandiri', image: '/payment-method/mandiri.png', type: 'bank' },
+    { title: 'BNI (Bank Negara Indonesia)', value: 'BNI', image: '/payment-method/bni.png', type: 'bank' },
+    { title: 'BRI (Bank Rakyat Indonesia)', value: 'BRI', image: '/payment-method/bri.png', type: 'bank' },
+    { title: 'BSI (Bank Syariah Indonesia)', value: 'BSI', image: '/payment-method/bsi.png', type: 'bank' },
+    { title: 'Bank Danamon', value: 'Danamon', image: '/payment-method/danamon.png', type: 'bank' },
+    { title: 'GoPay', value: 'GoPay', image: '/payment-method/gopay.png', type: 'ewallet' },
+    { title: 'OVO', value: 'OVO', image: '/payment-method/ovo.png', type: 'ewallet' },
+    { title: 'DANA', value: 'DANA', image: '/payment-method/dana.png', type: 'ewallet' },
+    { title: 'PayPal', value: 'PayPal', icon: 'ph:paypal-logo-bold', type: 'international' },
+    { title: 'Wise', value: 'Wise', icon: 'ph:globe-bold', type: 'international' },
+    { title: 'Revolut', value: 'Revolut', icon: 'ph:credit-card-bold', type: 'international' },
+    { title: 'Payoneer', value: 'Payoneer', icon: 'ph:credit-card-bold', type: 'international' },
+    { title: 'Bank Transfer (International / SWIFT)', value: 'International Transfer', icon: 'ph:bank-bold', type: 'bank' },
+    { title: 'Credit / Debit Card', value: 'Credit Card', icon: 'ph:credit-card-bold', type: 'international' },
+    { title: 'Lainnya / Custom', value: 'Custom', icon: 'ph:dots-three-circle-bold', type: 'custom' }
+]
+
+const getPaymentMethodImage = (bankName) => {
+    const method = paymentMethodOptions.find(m => m.value === bankName)
+    return method ? method.image : null
+}
+
+const fetchOrgBankAccounts = async () => {
+    try {
+        const bankRes = await get('/organizations/bank-accounts')
+        orgBankAccounts.value = bankRes?.data || bankRes || []
+    } catch (err) {
+        console.error('Failed to fetch organization bank accounts:', err)
+        orgBankAccounts.value = []
+    }
+}
+
+const isPaymentMethodEnabled = (bankUuid) => {
+    if (!form.value.payment_methods) return false
+    return form.value.payment_methods.includes(bankUuid)
+}
+
+const togglePaymentMethod = (bankUuid) => {
+    if (!form.value.payment_methods) {
+        form.value.payment_methods = []
+    }
+    const index = form.value.payment_methods.indexOf(bankUuid)
+    if (index > -1) {
+        form.value.payment_methods.splice(index, 1)
+    } else {
+        form.value.payment_methods.push(bankUuid)
+    }
+}
+
+
 onMounted(async () => {
     // Fetch disciplines for location_type dropdown
     try {
@@ -1494,7 +1615,8 @@ onMounted(async () => {
     } catch (err) {
         console.error('Failed to fetch disciplines:', err)
     }
-    fetchEventData()
+    await fetchOrgBankAccounts()
+    await fetchEventData()
 })
 
 useSeoMeta({

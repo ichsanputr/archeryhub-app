@@ -860,7 +860,7 @@ const decodeTabName = (tab) => {
     return decodeURIComponent(String(tab).replace(/\+/g, ' '))
 }
 
-const transformEventData = (data) => {
+const transformEventData = (data, paymentMethodsData = null) => {
     if (!data) return fallbackTournament
 
     let pg = {}
@@ -883,6 +883,21 @@ const transformEventData = (data) => {
         location: true,
         faq: true,
         payment_methods: true
+    }
+
+    const enableManual = pg.enable_manual_payment !== false
+    let paymentMethodsList = []
+    if (enableManual) {
+        if (paymentMethodsData) {
+            paymentMethodsList = (Array.isArray(paymentMethodsData) ? paymentMethodsData : paymentMethodsData?.data || []).map(m => ({
+                bank_name: m.payment_method || m.bank_name || '',
+                account_number: m.account_number,
+                account_name: m.account_name,
+                instructions: m.instructions
+            }))
+        } else if (pg.payment_methods) {
+            paymentMethodsList = pg.payment_methods
+        }
     }
 
     return {
@@ -924,7 +939,7 @@ const transformEventData = (data) => {
         prizes: pg.prizes || { first: '-', second: '-', third: '-' },
         fees: pg.fees || [],
         results: pg.results || [],
-        payment_methods: pg.payment_methods || [],
+        payment_methods: paymentMethodsList,
         location_accessibility: pg.location_accessibility || [],
         entry_fee: data.entry_fee || 0,
         fee_mode: pg.fee_mode || 'per_type',
@@ -1026,19 +1041,21 @@ const getPaymentIcon = (method) => {
 const { data: eventData, error: eventError, pending: isPageLoading } = useAsyncData(
     `event-${slug}`,
     async () => {
-        const [eventRes, categoriesRes, schedulesRes, participantsRes, imagesRes] = await Promise.all([
+        const [eventRes, categoriesRes, schedulesRes, participantsRes, imagesRes, paymentMethodsRes] = await Promise.all([
             $fetch(`${apiBaseUrl}/events/${slug}`),
             $fetch(`${apiBaseUrl}/events/${slug}/categories`).catch(() => null),
             $fetch(`${apiBaseUrl}/events/${slug}/schedule`).catch(() => null),
             $fetch(`${apiBaseUrl}/events/${slug}/participants?limit=2000`).catch(() => null),
-            $fetch(`${apiBaseUrl}/events/${slug}/images`).catch(() => null)
+            $fetch(`${apiBaseUrl}/events/${slug}/images`).catch(() => null),
+            $fetch(`${apiBaseUrl}/events/${slug}/payment-methods`).catch(() => null)
         ])
         return {
             event: eventRes,
             categories: categoriesRes,
             schedules: schedulesRes,
             participants: participantsRes,
-            images: imagesRes
+            images: imagesRes,
+            paymentMethods: paymentMethodsRes
         }
     },
     { lazy: true, server: true }
@@ -1047,7 +1064,7 @@ const { data: eventData, error: eventError, pending: isPageLoading } = useAsyncD
 // Initialize data reactively
 const tournament = computed(() => {
     if (eventData.value?.event) {
-        return transformEventData(eventData.value.event.data || eventData.value.event)
+        return transformEventData(eventData.value.event.data || eventData.value.event, eventData.value.paymentMethods)
     }
     return fallbackTournament
 })

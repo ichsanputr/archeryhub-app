@@ -242,29 +242,33 @@ const removePaymentMethodField = (index) => {
 
 const loadOrgSettings = async () => {
   try {
-    let org = organizationProfile.value
-    if (!org) {
-      const response = await get('/organizations/me')
-      org = response?.data || response
-    }
+    console.log('[PaymentMethods] Loading organization settings...')
+    const response = await get('/organizations/me')
+    const org = response?.data || response
+    
     if (org) {
+      console.log('[PaymentMethods] Organization profile loaded:', org)
       // 1. Load Currency from page_settings
       const rawPageSettings = org.page_settings
       if (rawPageSettings) {
         try {
           const parsed = typeof rawPageSettings === 'string' ? JSON.parse(rawPageSettings) : rawPageSettings
           selectedCurrency.value = parsed.currency || countryToCurrency[org.country] || 'IDR'
+          console.log('[PaymentMethods] Currency set to:', selectedCurrency.value)
         } catch (e) {
-          console.error('Failed to parse page settings', e)
+          console.error('[PaymentMethods] Failed to parse page settings', e)
           selectedCurrency.value = countryToCurrency[org.country] || 'IDR'
         }
       } else {
         selectedCurrency.value = countryToCurrency[org.country] || 'IDR'
+        console.log('[PaymentMethods] No page settings found, default currency:', selectedCurrency.value)
       }
 
       // 2. Load Payment Methods from bank_accounts table
       try {
+        console.log('[PaymentMethods] Fetching bank accounts...')
         const bankResponse = await get('/organizations/bank-accounts')
+        console.log('[PaymentMethods] Raw bank accounts response:', bankResponse)
         const accounts = bankResponse?.data || bankResponse
         if (Array.isArray(accounts)) {
           paymentMethods.value = accounts.map(m => ({
@@ -276,16 +280,20 @@ const loadOrgSettings = async () => {
             type: m.type || 'bank',
             instructions: m.instructions || ''
           }))
+          console.log('[PaymentMethods] Mapped payment methods:', paymentMethods.value)
         } else {
+          console.warn('[PaymentMethods] Bank accounts response is not an array:', accounts)
           paymentMethods.value = []
         }
       } catch (bankErr) {
-        console.error('Failed to load bank accounts:', bankErr)
+        console.error('[PaymentMethods] Failed to load bank accounts:', bankErr)
         paymentMethods.value = []
       }
+    } else {
+      console.warn('[PaymentMethods] No organization details returned from API.')
     }
   } catch (error) {
-    console.error('Failed to load organization settings:', error)
+    console.error('[PaymentMethods] Failed to load organization settings:', error)
   }
 }
 
