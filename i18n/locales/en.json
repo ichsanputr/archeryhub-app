@@ -228,6 +228,12 @@
       "active": "Active",
       "peserta": "participants",
       "kategori": "categories"
+    },
+    "participants_list": {
+      "reregistration": "Re-registration",
+      "reregistered": "Already Re-registered",
+      "not_reregistered": "Not Yet Re-registered",
+      "reregistration_success": "Successfully updated re-registration status"
     }
   },
   "archers": {
@@ -2255,8 +2261,8 @@
       "welcome": "Create New Account",
       "subtitle": "Join the largest archery community in Indonesia.",
       "archer_tab": "Archer",
-      "organization_tab": "Organization / Club",
-      "seller_tab": "Seller / Shop",
+      "organization_tab": "Organization",
+      "seller_tab": "Seller",
       "full_name_label": "Full Name",
       "full_name_placeholder": "Enter your name",
       "gender_label": "Gender",
@@ -2306,7 +2312,9 @@
       "bow_standard": "Standard",
       "bow_compound": "Compound",
       "bow_barebow": "Barebow",
-      "bow_traditional": "Traditional"
+      "bow_traditional": "Traditional",
+      "currency_label": "Currency",
+      "currency_placeholder": "Select Currency"
     },
     "forgot": {
       "reset_title": "Reset <br /> Your Access",

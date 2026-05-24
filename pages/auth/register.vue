@@ -16,7 +16,7 @@
                         <img src="/logo.png" alt="Logo" class="w-12 h-12 object-contain" />
                     </div>
                     <span class="text-white text-3xl font-black tracking-tight font-display">Archeris<span
-                            class="text-logo-id">.id</span></span>
+                            class="text-logo-id">.net</span></span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display" v-html="t('auth.register.desktop_title')">
                 </h1>
@@ -51,7 +51,7 @@
                             <img src="/logo.png" alt="Logo" class="w-10 h-10 object-contain" />
                         </div>
                         <span class="text-navy text-2xl font-black tracking-tight font-display">Archeris<span
-                                class="text-logo-id">.id</span></span>
+                                class="text-logo-id">.net</span></span>
                     </div>
                 </div>
 
@@ -142,9 +142,16 @@
                                         @update:model-value="validate('whatsappNo', form.whatsappNo, [rules.required(), rules.minLength(10)])" />
                                 </div>
 
-                                <BaseSelect v-model="form.country" :label="t('auth.register.country_label')" :placeholder="t('auth.register.country_placeholder')" required
-                                    :items="countries" :error="errors.country" searchable
-                                    @update:model-value="validate('country', form.country, [rules.required()])" />
+                                <div class="grid grid-cols-2 gap-4">
+                                    <BaseSelect v-model="form.country" :label="t('auth.register.country_label')" :placeholder="t('auth.register.country_placeholder')" required
+                                        :items="countries" :error="errors.country" searchable
+                                        @update:model-value="handleCountryChange" />
+                                    
+                                    <BaseSelect v-model="form.currency" :label="t('auth.register.currency_label')" :placeholder="t('auth.register.currency_placeholder')" required
+                                        :items="currencies" :error="errors.currency"
+                                        item-title="title" item-value="value"
+                                        @update:model-value="validate('currency', form.currency, [rules.required()])" />
+                                </div>
 
                                 <div class="space-y-1">
                                     <label class="text-sm font-bold text-navy">{{ t('auth.register.address_label_full') }}</label>
@@ -271,6 +278,7 @@ const form = ref({
     dateOfBirth: '',
     city: '',
     country: 'Indonesia',
+    currency: 'IDR',
     school: '',
     bowType: 'recurve',
     acronym: '',
@@ -291,6 +299,42 @@ const countries = ref([
     { title: 'United Kingdom', value: 'United Kingdom', icon: 'circle-flags:gb' },
     { title: 'United States', value: 'United States', icon: 'circle-flags:us' }
 ])
+
+const currencies = ref([
+  { title: 'IDR - Rupiah Indonesia', value: 'IDR', icon: 'circle-flags:id' },
+  { title: 'MYR - Ringgit Malaysia', value: 'MYR', icon: 'circle-flags:my' },
+  { title: 'SGD - Dolar Singapura', value: 'SGD', icon: 'circle-flags:sg' },
+  { title: 'THB - Baht Thailand', value: 'THB', icon: 'circle-flags:th' },
+  { title: 'PHP - Peso Filipina', value: 'PHP', icon: 'circle-flags:ph' },
+  { title: 'VND - Dong Vietnam', value: 'VND', icon: 'circle-flags:vn' },
+  { title: 'AUD - Dolar Australia', value: 'AUD', icon: 'circle-flags:au' },
+  { title: 'JPY - Yen Jepang', value: 'JPY', icon: 'circle-flags:jp' },
+  { title: 'KRW - Won Korea Selatan', value: 'KRW', icon: 'circle-flags:kr' },
+  { title: 'GBP - Pound Sterling', value: 'GBP', icon: 'circle-flags:gb' },
+  { title: 'USD - Dolar Amerika Serikat', value: 'USD', icon: 'circle-flags:us' }
+])
+
+const countryToCurrency = {
+  'Indonesia': 'IDR',
+  'Malaysia': 'MYR',
+  'Singapore': 'SGD',
+  'Thailand': 'THB',
+  'Philippines': 'PHP',
+  'Vietnam': 'VND',
+  'Australia': 'AUD',
+  'Japan': 'JPY',
+  'South Korea': 'KRW',
+  'United Kingdom': 'GBP',
+  'United States': 'USD'
+}
+
+const handleCountryChange = (countryName) => {
+    validate('country', countryName, [rules.required()])
+    const currency = countryToCurrency[countryName]
+    if (currency) {
+        form.value.currency = currency
+    }
+}
 
 const { register, login } = useAuth()
 const { get } = useApi()
@@ -400,7 +444,6 @@ const handleGoogleRegister = async () => {
             oauth_mode: 'register',
         }
 
-        // Add Archer fields if applicable
         if (form.value.userType === 'archer') {
             Object.assign(metadata, {
                 gender: form.value.gender,
@@ -409,23 +452,19 @@ const handleGoogleRegister = async () => {
                 school: form.value.school,
                 bow_type: form.value.bowType
             })
-        }
-
-        // Add Organization fields if applicable
-        if (form.value.userType === 'organization') {
+        } else if (form.value.userType === 'organization') {
             Object.assign(metadata, {
-                organization_name: form.value.organizationName,
                 acronym: form.value.acronym,
+                whatsapp_no: form.value.whatsappNo,
                 country: form.value.country,
-                address: form.value.address,
-                whatsapp_no: form.value.whatsappNo
+                currency: form.value.currency,
+                address: form.value.address
             })
         }
 
-        // Pass user type and metadata to Google OAuth
         await login(form.value.userType, metadata)
     } catch (err) {
-        console.error('Google registration failed:', err)
+        console.error('Google register failed:', err)
         let errorMessage = 'Failed to connect to Google. Please try again.'
 
         // Handle different error types

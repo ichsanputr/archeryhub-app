@@ -296,7 +296,7 @@
 
 
                             <section v-if="tournament.total_prize > 0 || tournament.prizes?.first"
-                                class="min-h-screen flex flex-col lg:flex-row overflow-hidden rounded-3xl border border-gray-100 shadow-sm">
+                                class="flex flex-col lg:flex-row overflow-hidden rounded-3xl border border-gray-100 shadow-sm">
                                 <div
                                     class="lg:w-1/2 bg-primary relative flex flex-col justify-center items-center px-8 md:px-12 py-16 target-texture">
                                     <div class="relative z-10 text-center">
@@ -537,7 +537,9 @@
                         <!-- Registration Card -->
                         <div class="bg-white rounded-2xl p-6 shadow-sm border-t-4 border-primary relative">
                             <h3 class="text-lg font-bold text-navy mb-4">
-                                {{ countdown.isClosed ? 'Pendaftaran Telah Ditutup' : 'Pendaftaran Ditutup Dalam' }}
+                                <template v-if="countdown.isNotStarted">Pendaftaran Dimulai Dalam</template>
+                                <template v-else-if="countdown.isClosed">Pendaftaran Telah Ditutup</template>
+                                <template v-else>Pendaftaran Ditutup Dalam</template>
                             </h3>
                             <div class="flex gap-3 mb-6">
                                 <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
@@ -609,7 +611,16 @@
                             </div>
                             <!-- Auth-aware registration CTA: Only show for non-logged-in or logged-in archers -->
                             <template v-if="(!isLoggedIn || isArcher)">
-                                <template v-if="countdown.isClosed">
+                                <template v-if="registrationStatus.status === 'not_started'">
+                                    <div
+                                        class="w-full py-4 bg-gray-100 text-gray-400 font-bold rounded-xl text-center cursor-not-allowed border border-gray-200">
+                                        Pendaftaran Belum Dimulai
+                                    </div>
+                                    <div class="text-[10px] text-center text-gray-400 font-bold mt-2">
+                                        Dibuka pada {{ useDateFormat(registrationStatus.startTime, 'DD MMM YYYY, HH:mm', { locales: 'id-ID' }).value }}
+                                    </div>
+                                </template>
+                                <template v-else-if="registrationStatus.status === 'closed'">
                                     <div
                                         class="w-full py-4 bg-gray-100 text-gray-400 font-bold rounded-xl text-center cursor-not-allowed">
                                         Pendaftaran Ditutup
@@ -885,19 +896,16 @@ const transformEventData = (data, paymentMethodsData = null) => {
         payment_methods: true
     }
 
-    const enableManual = pg.enable_manual_payment !== false
     let paymentMethodsList = []
-    if (enableManual) {
-        if (paymentMethodsData) {
-            paymentMethodsList = (Array.isArray(paymentMethodsData) ? paymentMethodsData : paymentMethodsData?.data || []).map(m => ({
-                bank_name: m.payment_method || m.bank_name || '',
-                account_number: m.account_number,
-                account_name: m.account_name,
-                instructions: m.instructions
-            }))
-        } else if (pg.payment_methods) {
-            paymentMethodsList = pg.payment_methods
-        }
+    if (paymentMethodsData) {
+        paymentMethodsList = (Array.isArray(paymentMethodsData) ? paymentMethodsData : paymentMethodsData?.data || []).map(m => ({
+            bank_name: m.payment_method || m.bank_name || '',
+            account_number: m.account_number,
+            account_name: m.account_name,
+            instructions: m.instructions
+        }))
+    } else if (pg.payment_methods) {
+        paymentMethodsList = pg.payment_methods
     }
 
     return {
@@ -1235,10 +1243,52 @@ const shareTo = (platform) => {
 }
 
 // Event countdown/status logic
-const countdown = computed(() => {
-    if (!tournament.value.registration_deadline) return { days: 0, hours: 0, minutes: 0, isClosed: false }
-    const deadline = new Date(tournament.value.registration_deadline)
+const registrationStatus = computed(() => {
+    const start = tournament.value.page_settings?.registration_start 
+        ? new Date(tournament.value.page_settings.registration_start) 
+        : null
+    const deadline = tournament.value.registration_deadline 
+        ? new Date(tournament.value.registration_deadline) 
+        : null
     const now = new Date()
+
+    if (start && now < start) {
+        return {
+            status: 'not_started',
+            startTime: start,
+            text: 'Pendaftaran Belum Dimulai'
+        }
+    }
+    if (deadline && now > deadline) {
+        return {
+            status: 'closed',
+            text: 'Pendaftaran Ditutup'
+        }
+    }
+    return {
+        status: 'open',
+        text: 'Pendaftaran Dibuka'
+    }
+})
+
+const countdown = computed(() => {
+    const start = tournament.value.page_settings?.registration_start 
+        ? new Date(tournament.value.page_settings.registration_start) 
+        : null
+    const deadline = tournament.value.registration_deadline 
+        ? new Date(tournament.value.registration_deadline) 
+        : null
+    const now = new Date()
+
+    if (start && now < start) {
+        const diff = start - now
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+        return { days, hours, minutes, isClosed: false, isNotStarted: true }
+    }
+
+    if (!tournament.value.registration_deadline) return { days: 0, hours: 0, minutes: 0, isClosed: false }
     const diff = deadline - now
 
     if (diff <= 0) return { days: 0, hours: 0, minutes: 0, isClosed: true }

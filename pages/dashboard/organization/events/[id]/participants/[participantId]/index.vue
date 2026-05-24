@@ -193,50 +193,7 @@
                 <!-- Sidebar -->
                 <div class="space-y-6">
 
-                    <!-- Registration QR & Quick Info -->
-                    <div
-                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden relative group">
-                        <!-- Top Accent -->
-                        <div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
 
-                        <div class="flex flex-col items-center text-center">
-                            <h3 class="text-sm font-black text-navy tracking-widest mb-4">QR Daftar Ulang</h3>
-
-                            <div class="relative p-3 bg-white border-2 border-primary rounded-2xl shadow-lg mb-4">
-                                <!-- Use local qrcode.vue when qr_raw exists -->
-                                <QrcodeVue v-if="participant?.qr_raw" :value="participant.qr_raw" :size="128"
-                                    :level="'M'" background="#ffffff" foreground="#1a2e4d" render-as="svg" />
-                                <div v-else
-                                    class="w-32 h-32 flex flex-col items-center justify-center bg-gray-50 rounded-lg text-gray-400">
-                                    <Icon icon="ph:qr-code" class="text-4xl mb-1" />
-                                    <span class="text-[10px] font-bold">Unpaid</span>
-                                </div>
-
-                                <!-- Corner Accents -->
-                                <div class="absolute -top-1 -left-1 size-3 border-t-2 border-l-2 border-primary"></div>
-                                <div class="absolute -top-1 -right-1 size-3 border-t-2 border-r-2 border-primary"></div>
-                                <div class="absolute -bottom-1 -left-1 size-3 border-b-2 border-l-2 border-primary">
-                                </div>
-                                <div class="absolute -bottom-1 -right-1 size-3 border-b-2 border-r-2 border-primary">
-                                </div>
-                            </div>
-
-                            <div v-if="participant?.qr_raw"
-                                class="text-[10px] font-bold text-gray-500 max-w-[180px] leading-relaxed mb-3">
-                                Tunjukkan QR ini kepada panitia saat melakukan daftar ulang di lokasi.
-                            </div>
-                            <div v-else class="text-[10px] font-bold text-amber-600 max-w-[180px] leading-relaxed mb-3">
-                                QR will appear after payment status is changed to <strong>Paid</strong>.
-                            </div>
-
-                            <!-- Raw QR value copy -->
-                            <button v-if="participant?.qr_raw" @click="copyQrRaw"
-                                class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-[10px] font-bold text-gray-500 transition-colors">
-                                <Icon icon="ph:copy" class="text-sm" />
-                                Salin Kode QR
-                            </button>
-                        </div>
-                    </div>
 
                     <!-- Kick Participant -->
                     <div class="bg-red-50 rounded-2xl border border-red-100 shadow-sm p-6">
@@ -320,7 +277,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
-import QrcodeVue from 'qrcode.vue'
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
@@ -508,15 +464,7 @@ const getSourceIcon = (source) => {
     }
 }
 
-const copyQrRaw = async () => {
-    if (!participant.value?.qr_raw) return
-    try {
-        await navigator.clipboard.writeText(participant.value.qr_raw)
-        toast.success('Kode QR berhasil disalin!')
-    } catch {
-        toast.error('Gagal menyalin kode QR.')
-    }
-}
+
 
 const handleSubmit = async () => {
     isSubmitting.value = true

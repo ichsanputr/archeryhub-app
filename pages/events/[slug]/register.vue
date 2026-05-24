@@ -191,6 +191,38 @@
                 </div>
             </main>
 
+            <!-- Registration Not Started -->
+            <main v-else-if="registrationStatus === 'not_started'" class="max-w-2xl mx-auto px-4 py-12 text-center">
+                <div class="bg-white rounded-3xl p-10 border border-gray-200 shadow-sm">
+                    <div class="h-20 w-20 bg-amber-50 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                        <Icon icon="ph:calendar-blank-bold" class="text-4xl text-amber-500" />
+                    </div>
+                    <h2 class="text-2xl font-black text-navy mb-3">Pendaftaran Belum Dimulai</h2>
+                    <span class="text-gray-500 mb-8 leading-relaxed block">
+                        Pendaftaran untuk event <strong>{{ event.name }}</strong> baru akan dibuka pada <strong>{{ formatDateTime(event.registration_start) }}</strong>.
+                    </span>
+                    <div class="flex justify-center">
+                        <BaseButton :to="`/events/${slug}`" variant="navy" size="lg" class="px-8">Kembali ke Event</BaseButton>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Registration Closed -->
+            <main v-else-if="registrationStatus === 'closed'" class="max-w-2xl mx-auto px-4 py-12 text-center">
+                <div class="bg-white rounded-3xl p-10 border border-gray-200 shadow-sm">
+                    <div class="h-20 w-20 bg-red-50 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                        <Icon icon="ph:calendar-x-bold" class="text-4xl text-red-500" />
+                    </div>
+                    <h2 class="text-2xl font-black text-navy mb-3">Pendaftaran Telah Ditutup</h2>
+                    <span class="text-gray-500 mb-8 leading-relaxed block">
+                        Batas akhir pendaftaran untuk event <strong>{{ event.name }}</strong> telah berlalu.
+                    </span>
+                    <div class="flex justify-center">
+                        <BaseButton :to="`/events/${slug}`" variant="navy" size="lg" class="px-8">Kembali ke Event</BaseButton>
+                    </div>
+                </div>
+            </main>
+
             <!-- ─────────────────────────────────────────── -->
             <!-- MAIN 2-COLUMN LAYOUT                        -->
             <!-- ─────────────────────────────────────────── -->
@@ -357,8 +389,8 @@
                                             <span v-else-if="event.fee_mode !== 'per_type'" class="text-xs text-gray-400 shrink-0">Free</span>
                                         </div>
 
-                                        <!-- Team partner section (per_type + team/mixed, when category is selected) -->
-                                        <div v-if="form.category_ids.includes(category.id) && event.fee_mode === 'per_type' && getCategoryType(category) !== 'individual'"
+                                        <!-- Team partner section (per_type + mixed_team, when category is selected) -->
+                                        <div v-if="form.category_ids.includes(category.id) && event.fee_mode === 'per_type' && getCategoryType(category) === 'mixed_team'"
                                             class="border-t border-primary/20 px-3.5 pb-3.5 pt-3 space-y-2"
                                             @click.stop>
                                             <div class="flex items-center justify-between">
@@ -828,9 +860,9 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
                 : (eventResponse.page_settings_raw || eventResponse.page_settings || {})
         } catch (e) {}
 
-        // fetch event payment methods if manual payment is enabled (enabled by default)
+        // fetch event payment methods
         let paymentMethodsData = []
-        if (pageSettings.enable_manual_payment !== false && eventId) {
+        if (eventId) {
             try {
                 const pmRes = await $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`, fetchOptions).catch(() => [])
                 paymentMethodsData = (Array.isArray(pmRes) ? pmRes : pmRes?.data || []).filter(m => m.is_active !== false)
@@ -861,7 +893,9 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
                 team: 0,
                 mixed_team: 0
             },
-            fee_per_category: pageSettings.fee_per_category || {}
+            fee_per_category: pageSettings.fee_per_category || {},
+            registration_deadline: eventResponse.registration_deadline || null,
+            registration_start: pageSettings.registration_start || null
         }
 
         let archerProfileData = profileResponse?.data || profileResponse
@@ -1030,9 +1064,9 @@ const isPartnerComplete = (categoryId) => {
     const category = categories.value.find(c => c.id === categoryId)
     const type = category ? getCategoryType(category) : 'individual'
     if (type === 'individual') return true
+    if (type === 'team') return true
     const partners = getPartnersForCategory(categoryId)
     if (type === 'mixed_team') return partners.length >= 1
-    if (type === 'team') return partners.length >= 2
     return true
 }
 
@@ -1162,6 +1196,25 @@ const isAlreadyRegistered = computed(() => {
     )
 })
 
+const registrationStatus = computed(() => {
+    const start = event.value.registration_start ? new Date(event.value.registration_start) : null
+    const deadline = event.value.registration_deadline ? new Date(event.value.registration_deadline) : null
+    const now = new Date()
+
+    if (start && now < start) {
+        return 'not_started'
+    }
+    if (deadline && now > deadline) {
+        return 'closed'
+    }
+    return 'open'
+})
+
+const formatDateTime = (d) => {
+    if (!d) return ''
+    return useDateFormat(d, 'DD MMM YYYY, HH:mm', { locales: 'id-ID' }).value
+}
+
 const isFormValid = computed(() => {
     const categoriesSelected = form.value.category_ids.length > 0
     const archerProfileExists = !!archerProfile.value
@@ -1180,7 +1233,7 @@ const isFormValid = computed(() => {
     const paymentSelected = totalFee.value > 0
         ? (form.value.payment_type === 'online' ? !!form.value.online_channel : (!!form.value.manual_method_id && !!proofFileUrl.value))
         : true
-    return categoriesSelected && archerProfileExists && profileComplete && partnersComplete && paymentSelected
+    return categoriesSelected && archerProfileExists && profileComplete && partnersComplete && paymentSelected && registrationStatus.value === 'open'
 })
 
 const buttonText = computed(() => {

@@ -228,6 +228,12 @@
       "active": "Aktif",
       "peserta": "peserta",
       "kategori": "kategori"
+    },
+    "participants_list": {
+      "reregistration": "Daftar Ulang",
+      "reregistered": "Sudah Daftar Ulang",
+      "not_reregistered": "Belum Daftar Ulang",
+      "reregistration_success": "Berhasil memperbarui status daftar ulang"
     }
   },
   "archers": {
@@ -2306,7 +2312,9 @@
       "bow_standard": "Standard",
       "bow_compound": "Compound",
       "bow_barebow": "Barebow",
-      "bow_traditional": "Tradisional"
+      "bow_traditional": "Tradisional",
+      "currency_label": "Mata Uang",
+      "currency_placeholder": "Pilih Mata Uang"
     },
     "forgot": {
       "reset_title": "Atur Ulang <br /> Akses Anda",

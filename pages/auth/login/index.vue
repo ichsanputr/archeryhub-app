@@ -19,7 +19,7 @@
                         <img src="/logo.png" alt="Logo" class="w-12 h-12 object-contain" />
                     </div>
                     <span class="text-white text-3xl font-black tracking-tight font-display">Archeris<span
-                            class="text-logo-id">.id</span></span>
+                            class="text-logo-id">.net</span></span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display" v-html="t('auth.login.title')"></h1>
                 <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
@@ -52,7 +52,7 @@
                             <img src="/logo.png" alt="Logo" class="w-10 h-10 object-contain" />
                         </div>
                         <span class="text-navy text-2xl font-black tracking-tight font-display">Archeris<span
-                                class="text-logo-id">.id</span></span>
+                                class="text-logo-id">.net</span></span>
                     </div>
                 </div>
 

@@ -97,6 +97,7 @@
                             <th class="px-6 py-4">Klub / Kota</th>
                             <th v-if="hasActiveCategoryFilter" class="px-6 py-4 min-w-[240px]">Kategori Event</th>
                             <th class="px-6 py-4 min-w-[160px]">Status Pembayaran</th>
+                            <th class="px-6 py-4 min-w-[180px]">{{ t('dashboard.participants_list.reregistration') }}</th>
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
                     </thead>
@@ -119,11 +120,14 @@
                                 <td class="px-6 py-4">
                                     <div class="h-4 w-24 bg-gray-100 animate-pulse rounded"></div>
                                 </td>
+                                <td v-if="hasActiveCategoryFilter" class="px-6 py-4 min-w-[240px]">
+                                    <div class="h-4 w-40 bg-gray-50 animate-pulse rounded"></div>
+                                </td>
                                 <td class="px-6 py-4 min-w-[160px]">
                                     <div class="h-6 w-28 bg-gray-100 animate-pulse rounded-lg"></div>
                                 </td>
-                                <td v-if="hasActiveCategoryFilter" class="px-6 py-4 min-w-[240px]">
-                                    <div class="h-4 w-40 bg-gray-50 animate-pulse rounded"></div>
+                                <td class="px-6 py-4 min-w-[180px]">
+                                    <div class="h-6 w-28 bg-gray-100 animate-pulse rounded-lg"></div>
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex justify-end gap-2">
@@ -180,6 +184,21 @@
                                         {{ getDisplayStatus(participant.payment_status || participant.status) }}
                                     </span>
                                 </td>
+                                <td class="px-6 py-4 align-top min-w-[180px]">
+                                    <button
+                                        type="button"
+                                        @click="toggleReregister(participant)"
+                                        :disabled="isTogglingReregister[participant.athlete_code || participant.archer_id]"
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black border transition-all cursor-pointer select-none"
+                                        :class="participant.last_reregistration_at 
+                                            ? 'bg-green-50 text-green-600 border-green-200 hover:bg-green-100/70 hover:border-green-300' 
+                                            : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100 hover:border-gray-300 hover:text-navy'">
+                                        <Icon v-if="isTogglingReregister[participant.athlete_code || participant.archer_id]" icon="ph:circle-notch" class="animate-spin text-sm" />
+                                        <Icon v-else-if="participant.last_reregistration_at" icon="ph:check-bold" class="text-sm" />
+                                        <Icon v-else icon="ph:minus-bold" class="text-sm" />
+                                        <span>{{ participant.last_reregistration_at ? t('dashboard.participants_list.reregistered') : t('dashboard.participants_list.not_reregistered') }}</span>
+                                    </button>
+                                </td>
                                 <td class="px-6 py-4 text-right align-top w-20">
                                     <div class="flex items-center justify-end">
                                         <BaseButton
@@ -191,7 +210,7 @@
                                 </td>
                             </tr>
                             <tr v-if="filteredParticipants.length === 0">
-                                <td :colspan="hasActiveCategoryFilter ? 6 : 5"
+                                <td :colspan="hasActiveCategoryFilter ? 7 : 6"
                                     class="px-6 py-12 text-center text-gray-400 italic font-medium">
                                     Tidak ada peserta yang ditemukan.
                                 </td>
@@ -218,6 +237,8 @@ import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useEventContext } from '~/composables/useEventContext'
+import { useToast } from '~/composables/useToast'
+import { useI18n } from 'vue-i18n'
 import BasePagination from '~/components/common/BasePagination.vue'
 
 definePageMeta({
@@ -230,7 +251,37 @@ useHead({
 
 const route = useRoute()
 const eventId = computed(() => route.params.id)
-const { get } = useApi()
+const { get, put } = useApi()
+const toast = useToast()
+const { t } = useI18n()
+
+const isTogglingReregister = ref({})
+
+const toggleReregister = async (participant) => {
+    const id = participant.athlete_code || participant.archer_id
+    if (!id) return
+    
+    isTogglingReregister.value[id] = true
+    try {
+        const isCurrentlyRegistered = !!participant.last_reregistration_at
+        const payload = {
+            reregistered: !isCurrentlyRegistered,
+            athlete_id: participant.archer_id
+        }
+        
+        await put(`/events/${eventId.value}/participants/${id}`, payload)
+        
+        // Update local status directly so we don't reload the table
+        participant.last_reregistration_at = isCurrentlyRegistered ? null : new Date().toISOString()
+        
+        toast.success(t('dashboard.participants_list.reregistration_success'))
+    } catch (error) {
+        console.error('Failed to toggle re-registration status:', error)
+        toast.error(error?.data?.error || t('common.error_saving'))
+    } finally {
+        isTogglingReregister.value[id] = false
+    }
+}
 const { setEvent, clearEvent } = useEventContext()
 const apiBaseUrl = useApiBaseUrl()
 const { isSubscriptionActive, canExportData, canCreateEvent } = useSubscription()

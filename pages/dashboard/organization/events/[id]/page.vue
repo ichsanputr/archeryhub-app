@@ -127,19 +127,26 @@
             <!-- Pendaftaran Tab -->
             <div v-if="activeTab === 'pendaftaran'" class="space-y-6">
 
-                <!-- Registration Deadline -->
+                <!-- Waktu Pendaftaran -->
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:calendar-check" class="text-primary text-lg sm:text-xl" />
-                            Batas Pendaftaran
+                            Waktu Pendaftaran
                         </h2>
                     </div>
                     <div class="p-4 sm:p-6">
-                        <div class="max-w-xs space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Tanggal & Waktu Batas Pendaftaran</label>
-                            <input v-model="form.registration_deadline" type="datetime-local"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" />
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">Tanggal & Waktu Mulai Pendaftaran</label>
+                                <input v-model="form.page_settings.registration_start" type="datetime-local"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">Tanggal & Waktu Batas Pendaftaran</label>
+                                <input v-model="form.registration_deadline" type="datetime-local"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" />
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -316,25 +323,12 @@
                         </h2>
                     </div>
                     <div class="p-4 sm:p-6 space-y-4">
-                        <div class="flex items-center justify-between gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <div>
-                                <h3 class="text-sm font-black text-navy text-left">Metode Pembayaran Manual</h3>
-                                <p class="text-xs text-gray-500 mt-1 text-left">
-                                    Izinkan peserta mendaftar menggunakan metode transfer manual (bank transfer/e-wallet) yang dikonfigurasi di organisasi Anda.
-                                </p>
-                            </div>
-                            <button type="button"
-                                @click="form.page_settings.enable_manual_payment = !form.page_settings.enable_manual_payment"
-                                :class="form.page_settings.enable_manual_payment ? 'bg-primary' : 'bg-gray-200'"
-                                class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none">
-                                <span :class="form.page_settings.enable_manual_payment ? 'translate-x-5 bg-navy' : 'translate-x-0 bg-white'"
-                                    class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out">
-                                </span>
-                            </button>
+                        <div class="text-xs text-gray-500 text-left">
+                            Aktifkan rekening bank atau e-wallet organisasi Anda yang dapat digunakan peserta untuk melakukan transfer manual pada event ini.
                         </div>
 
                         <!-- Preview of configured bank accounts -->
-                        <div v-if="form.page_settings.enable_manual_payment" class="mt-4 border-t border-gray-100 pt-4 animate-in fade-in duration-200">
+                        <div class="mt-4 border-t border-gray-100 pt-4">
                             <h4 class="text-xs font-black text-gray-400 tracking-wider mb-3 text-left uppercase">Daftar Rekening Pembayaran Organisasi</h4>
                             <div v-if="orgBankAccounts.length === 0" class="text-xs text-amber-600 bg-amber-50 border border-amber-100 p-4 rounded-2xl text-left flex items-start gap-2.5">
                                 <Icon icon="ph:warning-circle-bold" class="text-lg shrink-0 mt-0.5" />
@@ -503,7 +497,10 @@
                     </div>
                     <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
                         <div class="space-y-3">
-                            <label class="text-sm font-bold text-gray-700">Banner (Header)</label>
+                            <label class="text-sm font-bold text-gray-700 flex items-center justify-between">
+                                <span>Banner (Header)</span>
+                                <span class="text-xs font-bold text-gray-400 font-body">(Rasio 16:9 / 1200x675 px)</span>
+                            </label>
                             <div v-if="form.banner_url" class="relative rounded-xl overflow-hidden aspect-video group">
                                 <img :src="form.banner_url" class="w-full h-full object-cover" />
                                 <div
@@ -521,7 +518,10 @@
                             </button>
                         </div>
                         <div class="space-y-3">
-                            <label class="text-sm font-bold text-gray-700">Poster Event</label>
+                            <label class="text-sm font-bold text-gray-700 flex items-center justify-between">
+                                <span>Poster Event</span>
+                                <span class="text-xs font-bold text-gray-400 font-body">(Rasio A4 / 4:5 / 1000x1250 px)</span>
+                            </label>
                             <div v-if="form.logo_url" class="relative rounded-xl overflow-hidden aspect-video group">
                                 <img :src="form.logo_url" class="w-full h-full object-cover" />
                                 <div
@@ -1313,6 +1313,7 @@ const fetchEventData = async () => {
             const pageSettings = {
                 enable_manual_payment: parsedPageSettings.enable_manual_payment !== false,
                 ...parsedPageSettings,
+                registration_start: parsedPageSettings.registration_start ? formatToDatetimeLocal(parsedPageSettings.registration_start) : '',
                 sections: {
                     ...sectionDefaults,
                     ...(parsedPageSettings.sections || {})
@@ -1458,6 +1459,7 @@ const saveEventPage = async () => {
             })),
             page_settings: JSON.stringify({
                 ...form.value.page_settings,
+                registration_start: form.value.page_settings.registration_start ? formatFromDatetimeLocal(form.value.page_settings.registration_start) : null,
                 location_accessibility: form.value.location_accessibility || [],
                 fees: form.value.fees || [],
                 payment_methods: form.value.payment_methods || [],
