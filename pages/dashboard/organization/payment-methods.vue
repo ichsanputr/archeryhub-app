@@ -264,11 +264,11 @@ const loadOrgSettings = async () => {
         console.log('[PaymentMethods] No page settings found, default currency:', selectedCurrency.value)
       }
 
-      // 2. Load Payment Methods from bank_accounts table
+      // 2. Load Payment Methods from organization_payment_methods table
       try {
-        console.log('[PaymentMethods] Fetching bank accounts...')
-        const bankResponse = await get('/organizations/bank-accounts')
-        console.log('[PaymentMethods] Raw bank accounts response:', bankResponse)
+        console.log('[PaymentMethods] Fetching payment methods...')
+        const bankResponse = await get('/organizations/payment-methods')
+        console.log('[PaymentMethods] Raw payment methods response:', bankResponse)
         const accounts = bankResponse?.data || bankResponse
         if (Array.isArray(accounts)) {
           paymentMethods.value = accounts.map(m => ({
@@ -282,11 +282,11 @@ const loadOrgSettings = async () => {
           }))
           console.log('[PaymentMethods] Mapped payment methods:', paymentMethods.value)
         } else {
-          console.warn('[PaymentMethods] Bank accounts response is not an array:', accounts)
+          console.warn('[PaymentMethods] Payment methods response is not an array:', accounts)
           paymentMethods.value = []
         }
       } catch (bankErr) {
-        console.error('[PaymentMethods] Failed to load bank accounts:', bankErr)
+        console.error('[PaymentMethods] Failed to load payment methods:', bankErr)
         paymentMethods.value = []
       }
     } else {
@@ -321,7 +321,7 @@ const savePaymentSettings = async () => {
       page_settings: JSON.stringify(currentSettings)
     })
     
-    // 2. Sync payment methods to the separate table bank_accounts
+    // 2. Sync payment methods to the separate table organization_payment_methods
     const payload = paymentMethods.value.map((m, idx) => ({
       id: m.uuid,
       bank_name: m.bank_name,
@@ -333,7 +333,7 @@ const savePaymentSettings = async () => {
       is_primary: idx === 0
     }))
 
-    await put('/organizations/bank-accounts', payload)
+    await put('/organizations/payment-methods', payload)
     
     toast.success(t('organization_settings_page.payment_save_success'))
   } catch (error) {

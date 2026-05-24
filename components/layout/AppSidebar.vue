@@ -233,6 +233,9 @@ const eventLinks = computed(() => {
     { label: t('dashboard.sidebar.elimination'), icon: 'mdi:bracket', path: `${prefix}/events/${eventId.value}/elimination` },
     { label: t('dashboard.sidebar.printout'), icon: 'ph:printer-bold', path: `${prefix}/events/${eventId.value}/printout` },
     { label: t('dashboard.sidebar.scan_qr'), icon: 'ph:qr-code', path: '/scan/qr' },
+  )
+
+  links.push(
     { label: t('dashboard.sidebar.reset_data'), icon: 'ph:arrow-counter-clockwise', path: `${prefix}/events/${eventId.value}/reset` },
   )
 
@@ -323,6 +326,7 @@ const navSections = computed(() => {
           { label: t('dashboard.sidebar.profile'), icon: 'icomoon-free:profile', path: '/dashboard/organization/profile' },
           { label: t('dashboard.sidebar.scorekeeper'), icon: 'ph:user-focus', path: '/dashboard/organization/scorekeepers' },
           { label: t('dashboard.sidebar.payment_methods'), icon: 'ph:credit-card', path: '/dashboard/organization/payment-methods' },
+          { label: t('dashboard.sidebar.reports'), icon: 'ph:chart-bar', path: '/dashboard/organization/reports' },
         ]
       },
       { type: 'label', label: t('dashboard.sidebar.finance') },
@@ -348,6 +352,7 @@ const navSections = computed(() => {
     return [
       { type: 'label', label: t('root.index.title', 'Organizations') },
       { label: t('root.index.title', 'Organizations'), icon: 'ph:users-four-bold', path: '/dashboard/root' },
+      { label: t('dashboard.sidebar.news'), icon: 'ph:newspaper', path: '/dashboard/root/news' },
     ]
   }
 
