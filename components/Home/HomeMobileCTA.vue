@@ -71,7 +71,7 @@
                 <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
                     <div class="relative w-full max-w-[500px]">
                         <img src="/archery_mobile_app_download_1778934899178.png" alt="Archeris Mobile App"
-                            class="w-full h-auto object-contain drop-shadow-2xl" />
+                            class="w-full h-auto object-contain drop-shadow-lg" />
                     </div>
                 </div>
             </div>

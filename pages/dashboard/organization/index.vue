@@ -37,97 +37,63 @@
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             <!-- Total Archers -->
-            <div
-                class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">{{ t('dashboard.org.total_archers') }}</p>
-                        <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ dashboardStats.totalArchers }}
-                        </p>
-                    </div>
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
-                        <Icon icon="ph:users" class="text-xl" />
-                    </div>
-                </div>
-                <div class="mt-auto">
-                    <p class="text-slate-400 text-[10px] font-bold flex items-center gap-1">
-                        <Icon icon="ph:info-bold" class="text-[12px]" />
-                        {{ t('dashboard.org.archers_info') }}
-                    </p>
-                </div>
-            </div>
+            <StatCard
+                :title="t('dashboard.org.total_archers')"
+                :value="dashboardStats.totalArchers"
+                icon="ph:users"
+                color="primary"
+                :description="t('dashboard.org.archers_info')"
+                description-icon="ph:info-bold"
+            />
 
             <!-- Active Targets -->
-            <div
-                class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">{{ t('dashboard.org.active_targets') }}</p>
-                        <p class="text-navy-dark text-3xl font-extrabold tracking-tight">
-                            {{ dashboardStats.activeTargets }}
-                            <span v-if="dashboardStats.activeTotalTargets > 0"
-                                class="text-lg text-gray-400 font-medium ml-1">/ {{ dashboardStats.activeTotalTargets }}</span>
-                        </p>
-                    </div>
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
-                        <Icon icon="ph:target" class="text-xl" />
-                    </div>
-                </div>
-                <div class="mt-auto">
+            <StatCard
+                :title="t('dashboard.org.active_targets')"
+                :value="dashboardStats.activeTotalTargets > 0 ? `${dashboardStats.activeTargets} / ${dashboardStats.activeTotalTargets}` : dashboardStats.activeTargets"
+                icon="ph:target"
+                color="primary"
+            >
+                <template #footer>
                     <p class="text-text-secondary text-[10px] font-medium flex items-center gap-1">
                         <span class="w-1.5 h-1.5 rounded-full"
                             :class="dashboardStats.activeTotalTargets > 0 ? 'bg-green-500' : 'bg-slate-300'"></span>
                         {{ dashboardStats.activeTotalTargets > 0 ? t('dashboard.org.event_ongoing') : t('dashboard.org.no_event_active') }}
                     </p>
-                </div>
-            </div>
+                </template>
+            </StatCard>
 
             <!-- Completion -->
-            <div
-                class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">{{ t('dashboard.org.completion') }}</p>
-                        <p class="text-navy-dark text-3xl font-extrabold tracking-tight">
-                            {{ Math.round(dashboardStats.completionRate || 0) }}%
-                        </p>
+            <StatCard
+                :title="t('dashboard.org.completion')"
+                :value="Math.round(dashboardStats.completionRate || 0) + '%'"
+                icon="ph:check-square-offset"
+                color="primary"
+            >
+                <template #footer>
+                    <div class="w-full bg-gray-100 rounded-full h-1.5 mt-auto">
+                        <div class="bg-primary h-1.5 rounded-full transition-all duration-1000"
+                            :style="{ width: `${dashboardStats.completionRate || 0}%` }"></div>
                     </div>
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
-                        <Icon icon="ph:check-square-offset" class="text-xl" />
-                    </div>
-                </div>
-                <div class="w-full bg-gray-100 rounded-full h-1.5 mt-auto">
-                    <div class="bg-primary h-1.5 rounded-full transition-all duration-1000"
-                        :style="{ width: `${dashboardStats.completionRate || 0}%` }"></div>
-                </div>
-            </div>
+                </template>
+            </StatCard>
 
             <!-- Revenue Status -->
-            <div
-                class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-[10px] text-gray-400 font-bold tracking-widest mb-1">{{ t('dashboard.org.total_revenue') }}</p>
-                        <p class="text-navy-dark text-xl font-black tracking-tight tabular-nums">
-                            Rp {{ formatPrice(dashboardStats.totalRevenue || 0) }}
-                        </p>
+            <StatCard
+                :title="t('dashboard.org.total_revenue')"
+                :value="'Rp ' + formatPrice(dashboardStats.totalRevenue || 0)"
+                icon="ph:wallet-bold"
+                color="success"
+            >
+                <template #footer>
+                    <div class="flex items-center justify-between text-[9px] font-black tracking-widest w-full">
+                        <span class="text-orange-500 flex items-center gap-1">
+                            <Icon icon="ph:clock-bold" />
+                            {{ dashboardStats.pendingPayments || 0 }} {{ t('dashboard.org.pending') }}
+                        </span>
+                        <NuxtLink to="/dashboard/organization/balance" class="text-primary hover:underline">{{ t('dashboard.org.detail') }}</NuxtLink>
                     </div>
-                    <div
-                        class="bg-green-50 p-2 rounded-lg text-green-600 group-hover:bg-green-500 group-hover:text-white transition-colors">
-                        <Icon icon="ph:wallet-bold" class="text-xl" />
-                    </div>
-                </div>
-                <div class="mt-auto flex items-center justify-between text-[9px] font-black tracking-widest">
-                    <span class="text-orange-500 flex items-center gap-1">
-                        <Icon icon="ph:clock-bold" />
-                        {{ dashboardStats.pendingPayments || 0 }} {{ t('dashboard.org.pending') }}
-                    </span>
-                    <NuxtLink to="/dashboard/organization/balance" class="text-primary hover:underline">{{ t('dashboard.org.detail') }}</NuxtLink>
-                </div>
-            </div>
+                </template>
+            </StatCard>
         </div>
 
         <!-- Revenue & Registration Analytics -->

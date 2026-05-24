@@ -137,94 +137,61 @@
             <div v-if="activeTab === 'overview'" class="space-y-8">
                 <!-- Stats Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                    <div
-                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
-                                    {{ t('event_overview.total_archers') }}
-                                </p>
-                                <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{
-                                    event?.participant_count || 0 }}</p>
-                            </div>
-                            <div
-                                class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                                <Icon icon="ph:users" class="text-xl" />
-                            </div>
-                        </div>
-                        <div class="mt-auto">
+                    <!-- Total Pemanah -->
+                    <StatCard
+                        :title="t('event_overview.total_archers')"
+                        :value="event?.participant_count || 0"
+                        icon="ph:users"
+                        color="primary"
+                    >
+                        <template #footer>
                             <p class="text-green-600 text-xs font-bold flex items-center gap-1">
                                 <Icon icon="ph:trend-up" class="text-[14px]" />
                                 {{ participants.length }} {{ t('event_overview.registered') }}
                             </p>
-                        </div>
-                    </div>
+                        </template>
+                    </StatCard>
 
-                    <div
-                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
-                                    {{ t('event_overview.active_targets') }}
-                                </p>
-                                <p class="text-navy-dark text-3xl font-extrabold tracking-tight">
-                                    {{ event?.active_target_count || 0 }}<span
-                                        class="text-lg text-gray-400 font-medium ml-1">/
-                                        {{ event?.target_count || 0
-                                        }}</span></p>
-                            </div>
-                            <div
-                                class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                                <Icon icon="ph:target" class="text-xl" />
-                            </div>
-                        </div>
-                        <div class="mt-auto">
+                    <!-- Active Targets -->
+                    <StatCard
+                        :title="t('event_overview.active_targets')"
+                        :value="event?.active_target_count || 0 + ' / ' + (event?.target_count || 0)"
+                        icon="ph:target"
+                        color="primary"
+                    >
+                        <template #footer>
                             <p class="text-text-secondary text-xs font-medium flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
                                 {{ t('event_overview.system_normal') }}
                             </p>
-                        </div>
-                    </div>
+                        </template>
+                    </StatCard>
 
-                    <div
-                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
-                                    {{ t('event_overview.completion') }}
-                                </p>
-                                <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                    }}%</p>
+                    <!-- Completion -->
+                    <StatCard
+                        :title="t('event_overview.completion')"
+                        :value="completionPercentage + '%'"
+                        icon="ph:check-square-offset"
+                        color="primary"
+                    >
+                        <template #footer>
+                            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-auto">
+                                <div class="bg-primary h-1.5 rounded-full" :style="`width: ${completionPercentage}%`"></div>
                             </div>
-                            <div
-                                class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                                <Icon icon="ph:check-square-offset" class="text-xl" />
-                            </div>
-                        </div>
-                        <div class="w-full bg-gray-100 rounded-full h-1.5 mt-auto">
-                            <div class="bg-primary h-1.5 rounded-full" :style="`width: ${completionPercentage}%`"></div>
-                        </div>
-                    </div>
+                        </template>
+                    </StatCard>
 
-                    <div
-                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
-                                    {{ t('event_overview.time_left') }}
-                                </p>
-                                <p class="text-navy-dark text-3xl font-extrabold tracking-tight tabular-nums">{{
-                                    timeLeft }}</p>
-                            </div>
-                            <div
-                                class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                                <Icon icon="ph:timer" class="text-xl" />
-                            </div>
-                        </div>
-                        <div class="mt-auto">
+                    <!-- Time Left -->
+                    <StatCard
+                        :title="t('event_overview.time_left')"
+                        :value="timeLeft"
+                        icon="ph:timer"
+                        color="primary"
+                    >
+                        <template #footer>
                             <p class="text-text-secondary text-xs font-medium">{{ t('event_overview.estimated_end', { time: estimatedEnd }) }}</p>
-                        </div>
-                    </div>
+                        </template>
+                    </StatCard>
                 </div>
 
                 <!-- Main Content Grid -->

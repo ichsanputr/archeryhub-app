@@ -1,5 +1,6 @@
 <template>
     <div class="flex flex-col gap-8">
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -13,7 +14,10 @@
                     class="flex-1 sm:flex-none">
                     Lihat
                 </BaseButton>
-                <BaseButton variant="primary" icon="ph:floppy-disk" @click="saveEventPage" :loading="saving" size="md"
+                <BaseButton variant="primary" icon="ph:floppy-disk"
+                    @click="isSubscriptionActive ? saveEventPage() : (showPremiumModal = true)"
+                    :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                    :loading="saving" size="md"
                     class="flex-1 sm:flex-none">
                     Simpan
                 </BaseButton>
@@ -782,6 +786,11 @@ import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 import { useApi } from '~/composables/useApi'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 const statusOptions = [
     { value: 'draft', title: 'Draft (Belum dipublikasi)' },

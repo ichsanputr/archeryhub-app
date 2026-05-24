@@ -9,38 +9,11 @@
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 items-end">
-                <!-- Stat 1 -->
-                <NuxtLink :to="localePath('/blog/tips-for-choosing-the-right-bow-for-beginners')" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
-                    <div class="text-4xl sm:text-6xl font-black text-primary mb-2 font-display tracking-tighter group-hover:translate-x-1 transition-transform inline-block">10K+</div>
+                <!-- Stat Item -->
+                <NuxtLink v-for="(stat, index) in stats" :key="index" :to="localePath(stat.path)" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
+                    <div class="text-4xl sm:text-6xl font-black text-primary mb-2 font-display tracking-tighter group-hover:translate-x-1 transition-transform inline-block">{{ stat.value }}</div>
                     <div class="text-white/60 text-xs sm:text-sm tracking-widest font-bold flex items-center gap-1.5">
-                        Archery Athletes 
-                        <Icon icon="ph:arrow-up-right-bold" class="opacity-0 group-hover:opacity-100 transition-all duration-300 text-xs text-primary" />
-                    </div>
-                </NuxtLink>
-
-                <!-- Stat 2 -->
-                <NuxtLink :to="localePath('/blog/essential-physical-preparation-tips-before-major-tournaments')" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
-                    <div class="text-4xl sm:text-6xl font-black text-primary mb-2 font-display tracking-tighter group-hover:translate-x-1 transition-transform inline-block">500+</div>
-                    <div class="text-white/60 text-xs sm:text-sm tracking-widest font-bold flex items-center gap-1.5">
-                        Tournaments Organized 
-                        <Icon icon="ph:arrow-up-right-bold" class="opacity-0 group-hover:opacity-100 transition-all duration-300 text-xs text-primary" />
-                    </div>
-                </NuxtLink>
-
-                <!-- Stat 3 -->
-                <NuxtLink :to="localePath('/blog/how-archery-improves-your-focus-and-mental-well-being')" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
-                    <div class="text-4xl sm:text-6xl font-black text-primary mb-2 font-display tracking-tighter group-hover:translate-x-1 transition-transform inline-block">4.9</div>
-                    <div class="text-white/60 text-xs sm:text-sm tracking-widest font-bold flex items-center gap-1.5">
-                        App Store Rating 
-                        <Icon icon="ph:arrow-up-right-bold" class="opacity-0 group-hover:opacity-100 transition-all duration-300 text-xs text-primary" />
-                    </div>
-                </NuxtLink>
-
-                <!-- Stat 4 -->
-                <NuxtLink :to="localePath('/blog/tips-for-choosing-the-right-bow-for-beginners')" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
-                    <div class="text-4xl sm:text-6xl font-black text-primary mb-2 font-display tracking-tighter group-hover:translate-x-1 transition-transform inline-block">1M+</div>
-                    <div class="text-white/60 text-xs sm:text-sm tracking-widest font-bold flex items-center gap-1.5">
-                        Arrows Scored 
+                        {{ stat.label }} 
                         <Icon icon="ph:arrow-up-right-bold" class="opacity-0 group-hover:opacity-100 transition-all duration-300 text-xs text-primary" />
                     </div>
                 </NuxtLink>
@@ -51,8 +24,39 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { computed } from 'vue'
 
 const localePath = useLocalePath()
+const apiBaseUrl = useApiBaseUrl()
+
+const { data: newsResponse } = await useAsyncData('home-stats-news', () =>
+    $fetch(`${apiBaseUrl}/news`),
+    { server: true }
+)
+
+const articles = computed(() => {
+    const rawData = newsResponse.value?.data || newsResponse.value || []
+    return Array.isArray(rawData) ? rawData : []
+})
+
+const stats = computed(() => {
+    const list = articles.value.slice(0, 4)
+    const defaultStats = [
+        { value: '10K+', label: 'Archery Athletes', path: '/news' },
+        { value: '500+', label: 'Tournaments Organized', path: '/news' },
+        { value: '4.9', label: 'App Store Rating', path: '/news' },
+        { value: '1M+', label: 'Arrows Scored', path: '/news' },
+    ]
+
+    return defaultStats.map((item, index) => {
+        const article = list[index]
+        return {
+            value: item.value,
+            label: item.label,
+            path: article ? `/news/${article.slug || article.uuid}` : '/news'
+        }
+    })
+})
 </script>
 
 <style scoped>

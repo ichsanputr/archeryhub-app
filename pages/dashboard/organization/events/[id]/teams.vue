@@ -192,7 +192,7 @@
                                     class="p-2 text-gray-400 hover:text-navy transition-colors">
                                     <Icon icon="ph:pencil-simple" class="text-lg" />
                                 </button>
-                                <button @click="isSubscriptionActive ? (teamToDelete = team; showDeleteConfirm = true) : (showPremiumModal = true)"
+                                <button @click="isSubscriptionActive ? (teamToDelete = team, showDeleteConfirm = true) : (showPremiumModal = true)"
                                     class="p-2 text-gray-400 hover:text-red-500 transition-colors">
                                     <Icon icon="ph:trash" class="text-lg" />
                                 </button>

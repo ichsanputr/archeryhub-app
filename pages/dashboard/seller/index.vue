@@ -35,35 +35,35 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-2">
-        <div class="flex items-center justify-between">
-          <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">{{ t('seller.stats.total_products', 'Total produk') }}</div>
-          <Icon icon="ph:package-bold" class="text-primary text-xl" />
-        </div>
-        <div class="text-3xl font-black text-navy">{{ products.length }}</div>
-        <div class="flex items-center gap-2">
-          <span class="text-[9px] font-black text-green-500 bg-green-50 px-1.5 py-0.5 rounded capitalize">{{ products.filter(p => p.status === 'active').length }} {{ t('seller.stats.active', 'aktif') }}</span>
-          <span class="text-[9px] font-black text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded capitalize">{{ products.filter(p => p.status === 'draft').length }} {{ t('seller.stats.draft', 'draft') }}</span>
-        </div>
-      </div>
+      <StatCard
+        :title="t('seller.stats.total_products', 'Total produk')"
+        :value="products.length"
+        icon="ph:package-bold"
+        color="primary"
+      >
+        <template #footer>
+          <div class="flex items-center gap-2">
+            <span class="text-[9px] font-black text-green-500 bg-green-50 px-1.5 py-0.5 rounded capitalize">{{ products.filter(p => p.status === 'active').length }} {{ t('seller.stats.active', 'aktif') }}</span>
+            <span class="text-[9px] font-black text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded capitalize">{{ products.filter(p => p.status === 'draft').length }} {{ t('seller.stats.draft', 'draft') }}</span>
+          </div>
+        </template>
+      </StatCard>
 
-      <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-2">
-        <div class="flex items-center justify-between">
-          <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">Total terjual</div>
-          <Icon icon="ph:shopping-bag-open-bold" class="text-primary text-xl" />
-        </div>
-        <div class="text-3xl font-black text-navy">{{ totalSold }}</div>
-        <div class="text-[9px] text-gray-400 font-bold capitalize tracking-wide">{{ t('seller.stats.delivered', 'Item terkirim ke pelanggan') }}</div>
-      </div>
+      <StatCard
+        title="Total terjual"
+        :value="totalSold"
+        icon="ph:shopping-bag-open-bold"
+        color="primary"
+        :description="t('seller.stats.delivered', 'Item terkirim ke pelanggan')"
+      />
 
-      <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-2">
-        <div class="flex items-center justify-between">
-          <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">Total views</div>
-          <Icon icon="ph:eye-bold" class="text-primary text-xl" />
-        </div>
-        <div class="text-3xl font-black text-navy">{{ totalViews.toLocaleString('id-ID') }}</div>
-        <div class="text-[9px] text-gray-400 font-bold capitalize tracking-wide">{{ t('seller.stats.page_views', 'Kunjungan halaman produk') }}</div>
-      </div>
+      <StatCard
+        title="Total views"
+        :value="totalViews.toLocaleString('id-ID')"
+        icon="ph:eye-bold"
+        color="primary"
+        :description="t('seller.stats.page_views', 'Kunjungan halaman produk')"
+      />
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

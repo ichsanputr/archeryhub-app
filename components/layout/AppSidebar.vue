@@ -311,7 +311,7 @@ const navSections = computed(() => {
         icon: 'ph:trophy',
         type: 'group',
         children: [
-          { label: t('dashboard.sidebar.my_events'), icon: 'material-symbols:event-list-outline', path: '/dashboard/organization/events', isLocked: !isActiveSub },
+          { label: t('dashboard.sidebar.my_events'), icon: 'material-symbols:event-list-outline', path: '/dashboard/organization/events' },
         ]
       },
       { type: 'label', label: t('dashboard.sidebar.organization') },
@@ -321,7 +321,8 @@ const navSections = computed(() => {
         type: 'group',
         children: [
           { label: t('dashboard.sidebar.profile'), icon: 'icomoon-free:profile', path: '/dashboard/organization/profile' },
-          { label: t('dashboard.sidebar.scorekeeper'), icon: 'ph:user-focus', path: '/dashboard/organization/scorekeepers', isLocked: !isActiveSub },
+          { label: t('dashboard.sidebar.scorekeeper'), icon: 'ph:user-focus', path: '/dashboard/organization/scorekeepers' },
+          { label: t('dashboard.sidebar.payment_methods'), icon: 'ph:credit-card', path: '/dashboard/organization/payment-methods' },
         ]
       },
       { type: 'label', label: t('dashboard.sidebar.finance') },
@@ -330,9 +331,9 @@ const navSections = computed(() => {
         icon: 'ph:coins',
         type: 'group',
         children: [
-          { label: t('dashboard.sidebar.earnings'), icon: 'ph:wallet', path: '/dashboard/organization/earnings', isLocked: !isActiveSub },
-          { label: t('dashboard.sidebar.balance'), icon: 'ph:bank', path: '/dashboard/organization/balance', isLocked: !isActiveSub },
-          { label: t('dashboard.sidebar.bank_accounts'), icon: 'ph:credit-card', path: '/dashboard/organization/bank-accounts', isLocked: !isActiveSub },
+          { label: t('dashboard.sidebar.earnings'), icon: 'ph:wallet', path: '/dashboard/organization/earnings' },
+          { label: t('dashboard.sidebar.balance'), icon: 'ph:bank', path: '/dashboard/organization/balance' },
+          { label: t('dashboard.sidebar.bank_accounts'), icon: 'ph:credit-card', path: '/dashboard/organization/bank-accounts' },
         ]
       },
       { type: 'label', label: t('dashboard.sidebar.settings') },

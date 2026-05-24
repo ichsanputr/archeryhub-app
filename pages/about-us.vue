@@ -1,98 +1,78 @@
 <template>
-    <div class="min-h-screen bg-background-light relative overflow-hidden">
+    <div class="min-h-screen bg-[#F8FAFC] relative overflow-hidden pb-24">
         <!-- Blueprint Grid Background -->
-        <div class="fixed inset-0 -z-10 pointer-events-none opacity-[0.035]"
-            style="background-image: radial-gradient(circle, #0f172a 1px, transparent 1px); background-size: 40px 40px;">
+        <div class="fixed inset-0 -z-10 pointer-events-none opacity-[0.02]"
+            style="background-image: radial-gradient(circle, #0f172a 1px, transparent 1px); background-size: 30px 30px;">
         </div>
 
-        <!-- ── HERO SECTION ── -->
-        <section class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden bg-navy">
-            <div class="absolute inset-0 opacity-20 pointer-events-none">
-                <div class="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full blur-[120px] -mr-48 -mt-48"></div>
-                <div class="absolute bottom-0 left-0 w-96 h-96 bg-primary rounded-full blur-[120px] -ml-48 -mb-48">
-                </div>
-            </div>
-
-            <div class="container mx-auto px-4 max-w-7xl relative z-10 text-center">
-                <div
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-primary text-[10px] font-black tracking-widest mb-8 border border-white/10">
-                    <Icon icon="ph:users-four-bold" />
-                    <span>ABOUT Archeris</span>
-                </div>
-                <h1
-                    class="text-white text-4xl md:text-7xl font-black tracking-tighter leading-tight max-w-5xl mx-auto mb-8">
-                    Building the Future of <br />
-                    <span class="text-primary italic">Modern Archery.</span>
+        <!-- ── MAIN HEADER & INTRO ── -->
+        <section class="relative pt-36 pb-16 md:pt-48 md:pb-24">
+            <div class="container mx-auto px-4 max-w-6xl text-center">
+                <h1 class="text-navy text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter leading-none mb-8">
+                    Digitizing the <br />
+                    <span class="text-primary-text bg-navy px-6 py-2 rounded-2xl inline-block mt-2 transform -rotate-1">Future</span> of Archery.
                 </h1>
-                <p class="text-white/60 text-lg md:text-xl font-medium max-w-3xl mx-auto leading-relaxed">
-                    We are here to digitize every shot, ensure every score is recorded with precision, and connect the archery community across the globe.
+                <p class="text-slate-600 text-lg md:text-xl font-bold max-w-3xl mx-auto leading-relaxed mt-6">
+                    We build modern digital infrastructure for tournament organizers, athletes, and archery communities worldwide. Recording every score, sorting brackets, and mapping targets with absolute precision.
                 </p>
             </div>
         </section>
 
-        <!-- ── VISION & MISSION (GLASS CARDS) ── -->
-        <section class="py-24 md:py-32 relative">
-            <div class="container mx-auto px-4 max-w-7xl">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
-                    <!-- Vision -->
-                    <div class="p-12 bg-white rounded-[40px] border border-navy/5 relative group overflow-hidden">
-                        <div
-                            class="absolute top-0 right-0 p-8 text-navy/5 text-8xl font-black group-hover:text-primary/10 transition-colors pointer-events-none">
-                            V</div>
-                        <h2 class="text-3xl font-black text-navy tracking-tight mb-8">Our Vision.</h2>
-                        <p class="text-navy/50 text-lg leading-relaxed font-medium">
-                            To become the number one digital infrastructure platform empowering the archery ecosystem through accurate data, tournament transparency, and seamless accessibility for all athletes.
-                        </p>
-                    </div>
-                    <!-- Mission -->
-                    <div class="p-12 bg-navy rounded-[40px] relative group overflow-hidden text-white">
-                        <div
-                            class="absolute top-0 right-0 p-8 text-white/5 text-8xl font-black group-hover:text-primary/10 transition-colors pointer-events-none">
-                            M</div>
-                        <h2 class="text-3xl font-black text-white tracking-tight mb-8">Our Mission.</h2>
-                        <ul class="space-y-6">
-                            <li class="flex gap-4">
-                                <div class="w-2 h-2 rounded-full bg-primary mt-3 flex-shrink-0"></div>
-                                <p class="text-white/60 font-medium">Provide a sophisticated and easy-to-use real-time scoring system.</p>
-                            </li>
-                            <li class="flex gap-4">
-                                <div class="w-2 h-2 rounded-full bg-primary mt-3 flex-shrink-0"></div>
-                                <p class="text-white/60 font-medium">Build an integrated and prestigious national athlete database.</p>
-                            </li>
-                            <li class="flex gap-4">
-                                <div class="w-2 h-2 rounded-full bg-primary mt-3 flex-shrink-0"></div>
-                                <p class="text-white/60 font-medium">Support tournament organizers with professional-grade management tools.</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- ── VISION, MISSION & STORY (UNIFIED SECTION) ── -->
+        <section class="py-12 relative">
+            <div class="container mx-auto px-4 max-w-6xl">
+                <!-- Vision & Mission Column Layout (No heavy cards) -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start border-t border-gray-100 pt-16">
+                    <!-- Left: Core Mission & Vision -->
+                    <div class="lg:col-span-5 space-y-12">
+                        <div>
+                            <span class="text-xs font-black tracking-widest text-primary bg-navy px-3 py-1 rounded-full uppercase">Our Vision</span>
+                            <p class="text-navy text-2xl font-black tracking-tight mt-4 leading-snug">
+                                To serve as the definitive digital foundation for modern archery—fostering transparent tournaments, accurate rankings, and global accessibility.
+                            </p>
+                        </div>
 
-        <!-- ── STORY SECTION ── -->
-        <section class="pb-32">
-            <div class="container mx-auto px-4 max-w-7xl">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-                    <div class="lg:col-span-7">
-                        <div class="relative rounded-[48px] overflow-hidden bg-slate-200 aspect-[4/3] shadow-2xl">
-                            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&q=80&w=1200"
-                                class="w-full h-full object-cover" />
-                            <div class="absolute inset-0 bg-navy/20"></div>
-                            <!-- Floating Stat -->
-                            <div
-                                class="absolute bottom-12 right-12 bg-white p-8 rounded-3xl border border-navy/5 shadow-2xl max-w-xs">
-                                <div class="text-navy text-4xl font-black leading-none mb-2">500+</div>
-                                <div class="text-[10px] font-black text-navy/40 tracking-widest">Tournaments Managed</div>
-                            </div>
+                        <div>
+                            <span class="text-xs font-black tracking-widest text-primary bg-navy px-3 py-1 rounded-full uppercase">Our Mission</span>
+                            <ul class="mt-6 space-y-4 text-slate-600 font-medium">
+                                <li class="flex items-start gap-3">
+                                    <Icon icon="ph:check-circle-fill" class="text-navy text-xl shrink-0 mt-0.5" />
+                                    <span>Engineering real-time digital scoring systems that eliminate manual scorekeeper overhead.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <Icon icon="ph:check-circle-fill" class="text-navy text-xl shrink-0 mt-0.5" />
+                                    <span>Establishing a standardized, verifiable national database for athletes and their achievements.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <Icon icon="ph:check-circle-fill" class="text-navy text-xl shrink-0 mt-0.5" />
+                                    <span>Providing tournament organizers with professional-grade configuration tools for target maps and brackets.</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="lg:col-span-5">
-                        <h2 class="text-4xl md:text-5xl font-black text-navy leading-tight tracking-tighter mb-8 ">
-                            Starting from a <br /> <span class="text-primary italic">Small Garage.</span></h2>
-                        <div class="space-y-6 text-navy/50 text-lg leading-relaxed font-medium">
-                            <p>Archeris began with a simple vision to solve the problems of manual scorekeeping on traditional archery ranges.</p>
-                            <p>Today, we have grown into a complete ecosystem serving thousands of athletes and hundreds of archery organizations worldwide.</p>
-                            <p>Every line of code we write is dedicated to precision, transparency, and the global advancement of modern archery.</p>
+
+                    <!-- Right: Story & Milestones (Clean layout with image) -->
+                    <div class="lg:col-span-7 lg:pl-8 space-y-8">
+                        <div class="relative rounded-3xl overflow-hidden bg-slate-200 aspect-[16/10] shadow-xl border border-gray-100">
+                            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&q=80&w=1200"
+                                class="w-full h-full object-cover" alt="Archery range" />
+                            <div class="absolute inset-0 bg-navy/10"></div>
+                            
+                            <!-- Small overlay badge -->
+                            <div class="absolute bottom-6 right-6 bg-navy text-white px-6 py-4 rounded-2xl border border-white/10 shadow-lg">
+                                <div class="text-primary text-3xl font-black leading-none">500+</div>
+                                <div class="text-[9px] font-bold uppercase tracking-widest text-white/50 mt-1">Tournaments Managed</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 text-slate-600 font-medium text-base sm:text-lg leading-relaxed">
+                            <h3 class="text-2xl font-black text-navy tracking-tight mb-4">Precision in Every Line of Code.</h3>
+                            <p>
+                                What started as a simple concept to replace paper scorecards has evolved into a comprehensive digital ecosystem. Today, we empower tournament administrators, line operators, and archery athletes.
+                            </p>
+                            <p>
+                                Every detail, from age division classifications to dynamic head-to-head elimination matching, is optimized to support the growth and professionalism of the sport.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -100,19 +80,24 @@
         </section>
 
         <!-- ── CTA SECTION ── -->
-        <section class="pb-32 section-padding px-4">
-            <div
-                class="max-w-7xl mx-auto bg-primary rounded-[48px] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl shadow-primary/20">
-                <div class="absolute inset-0 bg-navy/5 transform skew-y-12 translate-y-20"></div>
-                <h2 class="text-navy text-4xl md:text-6xl font-black tracking-tighter mb-6 relative z-10">
-                    Be Part of the <br /> Archery Digital Revolution.</h2>
-                <p class="text-navy/60 text-lg font-bold mb-12 relative z-10">Register your club or organization today.</p>
-                <div class="flex flex-col sm:flex-row gap-6 justify-center relative z-10">
-                    <button
-                        class="px-12 py-5 bg-navy text-white rounded-2xl font-black tracking-widest text-sm hover:scale-105 transition-transform active:scale-95 shadow-xl shadow-navy/20">Register Now</button>
-                    <NuxtLink to="/contact"
-                        class="px-12 py-5 bg-white text-navy rounded-2xl font-black tracking-widest text-sm border-2 border-transparent hover:border-navy transition-all active:scale-95">
-                        Contact Us</NuxtLink>
+        <section class="pt-16 px-4">
+            <div class="max-w-6xl mx-auto bg-navy text-white rounded-[32px] p-8 md:p-16 text-center relative overflow-hidden shadow-xl border border-white/5">
+                <div class="absolute inset-0 opacity-[0.02]" style="background-image: var(--motif-pattern);"></div>
+                <h2 class="text-white text-3xl md:text-5xl font-black tracking-tight mb-4 relative z-10">
+                    Empower Your Next Tournament.
+                </h2>
+                <p class="text-slate-400 text-sm md:text-base font-medium mb-8 relative z-10 max-w-xl mx-auto">
+                    register your organization to access real-time score keeping, target map configuration, and dynamic brackets.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
+                    <NuxtLink :to="localePath('/auth/login')"
+                        class="px-8 py-3.5 bg-primary text-navy rounded-xl font-black tracking-wider text-xs hover:bg-primary-hover hover:scale-[1.02] transition-all active:scale-[0.98] shadow-lg shadow-primary/10">
+                        Get Started
+                    </NuxtLink>
+                    <NuxtLink to="/news"
+                        class="px-8 py-3.5 bg-white/5 text-white rounded-xl font-bold tracking-wider text-xs border border-white/10 hover:bg-white/10 transition-all">
+                        Read Latest News
+                    </NuxtLink>
                 </div>
             </div>
         </section>
@@ -125,6 +110,8 @@ import { Icon } from '@iconify/vue'
 definePageMeta({
     layout: 'landing'
 })
+
+const localePath = useLocalePath()
 
 useHead({
     title: 'About Us - Archeris',

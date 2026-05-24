@@ -1,5 +1,6 @@
 <template>
     <div class="relative">
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
         <!-- Security Overlay -->
         <div v-if="!isVerified"
             class="absolute inset-0 z-50 backdrop-blur-md bg-white/40 flex items-center justify-center p-6 rounded-3xl min-h-[600px]">
@@ -87,7 +88,9 @@
                         </h2>
 
                         <div class="space-y-3">
-                            <BaseButton variant="primary" block @click="openWithdrawDialog"
+                            <BaseButton variant="primary" block
+                                @click="isSubscriptionActive ? openWithdrawDialog() : (showPremiumModal = true)"
+                                :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
                                 class="font-black tracking-widest text-[10px] h-11 !rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
                                 {{ t('organization.balance.withdraw_button') }}
                             </BaseButton>
@@ -292,6 +295,11 @@ import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
 import useDashboardI18n from '~/composables/useDashboardI18n'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 const api = useApi()
 const toast = useToast()

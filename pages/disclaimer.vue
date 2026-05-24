@@ -1,68 +1,83 @@
 <template>
-    <div class="min-h-screen flex flex-col">
-        <!-- Hero Section -->
-        <div class="bg-navy pt-32 pb-20 relative overflow-hidden">
-            <div class="absolute inset-0 z-0">
-                <img src="/hero-homepage.jpeg" class="w-full h-full object-cover" />
-                <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
-                </div>
-            </div>
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div>
-                    <div
-                        class="flex items-center gap-2 text-primary text-[10px] sm:text-sm font-bold tracking-wider mb-3">
-                        <Icon icon="ph:warning-circle" class="text-base sm:text-lg" />
-                        Legal
-                    </div>
-                    <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-white leading-tight mb-4">
-                        Disclaimer
-                    </h1>
-                    <p class="text-slate-300 text-sm md:text-lg leading-relaxed">
-                        Important information regarding the use of services and content on Archery Hub Indonesia.
-                    </p>
-                    <p class="text-slate-400 text-sm mt-6">
-                        Last updated: February 18, 2026
-                    </p>
-                </div>
-            </div>
+  <div class="min-h-screen flex flex-col bg-gray-50">
+    <!-- Hero Section -->
+    <div class="bg-navy pt-32 pb-20 relative overflow-hidden">
+      <div class="absolute inset-0 z-0">
+        <img src="/hero-homepage.jpeg" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90"></div>
+      </div>
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div>
+          <div class="flex items-center gap-2 text-primary text-[10px] sm:text-sm font-bold tracking-wider mb-3">
+            <Icon icon="ph:warning-circle" class="text-base sm:text-lg" />
+            Legal
+          </div>
+          <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-white leading-tight mb-4">
+            Disclaimer
+          </h1>
+          <p class="text-slate-300 text-sm md:text-lg leading-relaxed">
+            Important information regarding the use of services, tournament scoring, and e-commerce listings on Archeris.
+          </p>
+          <p class="text-slate-400 text-sm mt-6">
+            Last updated: May 24, 2026
+          </p>
         </div>
-
-        <!-- Main Content -->
-        <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 mb-20 relative z-20">
-            <div
-                class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
-                <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
-                    <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. General Information</h3>
-                    <p>
-                        All information provided on the Archery Hub Indonesia website ("Site") is published in good faith and for general information purposes only. Archery Hub Indonesia does not make any warranties about the completeness, reliability, and accuracy of this information.
-                    </p>
-                    <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. User Responsibility</h3>
-                    <p>
-                        Any action you take upon the information you find on this Site is strictly at your own risk. Archery Hub Indonesia will not be liable for any losses and/or damages in connection with the use of our Site.
-                    </p>
-                    <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. External Links</h3>
-                    <p>
-                        From our Site, you can visit other websites by following hyperlinks to such external sites. While we strive to provide only quality links to useful and ethical websites, we have no control over the content and nature of these sites. These links to other websites do not imply a recommendation for all the content found on these sites.
-                    </p>
-                    <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Consent</h3>
-                    <p>
-                        By using our Site, you hereby consent to our disclaimer and agree to its terms.
-                    </p>
-                </div>
-            </div>
-        </main>
+      </div>
     </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 mb-20 relative z-20">
+      <div
+        class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
+        <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed space-y-6">
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Accuracy of Scores and Rankings</h3>
+          <p>
+            archeris provides digital scoring logs, qualification tables, and elimination bracket maps. all scores are entered directly by the event organizers, appointed scorekeepers, or athletes. we do not physically audit tournament targets or verify arrow entries on site.
+          </p>
+          <p>
+            therefore, we make no warranties regarding the absolute correctness, validity, or authenticity of any scores, statistics, or rankings published on the site. organizers are solely responsible for ensuring scorekeeping integrity.
+          </p>
+
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Match Operations and Service Uptime</h3>
+          <p>
+            while we strive to maintain high availability and real-time synchronization during active tournaments, we do not guarantee uninterrupted access to the platform. internet connectivity issues at target lines, browser malfunctions, or server latency may impact scoring.
+          </p>
+          <p>
+            organizers are strongly advised to maintain paper fallback scorecards at each target board. archeris will not be held liable for match delays, scoring disputes, or tournament scheduling conflicts caused by platform downtime.
+          </p>
+
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. E-commerce and Product Liability</h3>
+          <p>
+            gear and merchandise listed on archeris are uploaded, priced, and sold by independent sellers. we do not inspect, warrant, or guarantee the quality, safety, legality, or suitability of any archery equipment purchased through our platform.
+          </p>
+          <p>
+            any disputes regarding item defects, shipping delays, customs fees, or returns must be resolved directly between the buyer and the seller. archeris is not a party to these transactions and bears no liability for equipment performance.
+          </p>
+
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Payment Processing</h3>
+          <p>
+            all checkout payments, registrations, invoices, and payouts are handled by third-party processors (paddle and tripay). we do not store full credit card details. any transaction failures, merchant account freezes, or payout delays are subject to the terms of those respective payment processors.
+          </p>
+
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">5. Consent</h3>
+          <p>
+            by registering and using the platform, you acknowledge and agree that you access all tournament data, scoring tools, and e-commerce listings at your own risk.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
 
 definePageMeta({
-    layout: 'landing'
+  layout: 'landing'
 })
 
 useHead({
-    title: 'Disclaimer - Archeris.net'
+  title: 'Disclaimer - Archeris.net'
 })
 </script>

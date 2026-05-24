@@ -24,13 +24,15 @@
                     </div>
                 </div>
                 <div>
-                    <BaseButton @click="openAddModal" variant="primary" icon="ph:plus-bold"
+                    <BaseButton @click="isSubscriptionActive ? openAddModal() : (showPremiumModal = true)" variant="primary" icon="ph:plus-bold"
+                        :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
                         class="font-black tracking-widest text-[10px] h-11 px-6 shadow-lg shadow-primary/20 !rounded-xl">
                         {{ t('organization.bank_accounts.add') }}
                     </BaseButton>
                 </div>
             </div>
         </div>
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
         <!-- Bank Accounts Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -45,11 +47,11 @@
                         <Icon v-else :icon="getBankIcon(account.bank_name)" class="text-2xl" />
                     </div>
                     <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button @click="openEditModal(account)"
+                        <button @click="isSubscriptionActive ? openEditModal(account) : (showPremiumModal = true)"
                             class="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-navy transition-colors">
                             <Icon icon="ph:pencil-simple-bold" />
                         </button>
-                        <button @click="confirmDelete(account)"
+                        <button @click="isSubscriptionActive ? confirmDelete(account) : (showPremiumModal = true)"
                             class="p-2 hover:bg-red-50 rounded-lg text-gray-400 hover:text-red-500 transition-colors">
                             <Icon icon="ph:trash-bold" />
                         </button>
@@ -84,7 +86,7 @@
             </div>
 
             <!-- Empty State / Add Card -->
-            <button @click="openAddModal"
+            <button @click="isSubscriptionActive ? openAddModal() : (showPremiumModal = true)"
                 class="border-2 border-dotted border-gray-200 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/5 transition-all group min-h-[280px]">
                 <div
                     class="size-14 rounded-full bg-gray-50 flex items-center justify-center text-gray-300 group-hover:bg-primary group-hover:text-white transition-all">
@@ -161,6 +163,11 @@ import { useToast } from '~/composables/useToast'
 import useDashboardI18n from '~/composables/useDashboardI18n'
 import BaseDialogForm from '~/components/common/BaseDialogForm.vue'
 import AppDialog from '~/components/common/AppDialog.vue'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 const api = useApi()
 const toast = useToast()

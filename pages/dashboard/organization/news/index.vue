@@ -30,59 +30,30 @@
 
         <!-- Quick Stats -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div
-                class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all group">
-                <div class="flex items-center gap-3 mb-3">
-                    <div
-                        class="size-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-navy transition-all shrink-0">
-                        <Icon icon="ph:newspaper-bold" class="text-lg" />
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase">{{ t('organization_news.index.stats_total') }}</p>
-                        <p class="text-2xl font-black text-navy tabular-nums">{{ news.length }}</p>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all group">
-                <div class="flex items-center gap-3 mb-3">
-                    <div
-                        class="size-10 rounded-xl bg-green-500/10 flex items-center justify-center text-green-600 group-hover:bg-green-500 group-hover:text-white transition-all shrink-0">
-                        <Icon icon="ph:check-circle-bold" class="text-lg" />
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase">{{ t('organization_news.index.stats_published') }}</p>
-                        <p class="text-2xl font-black text-navy tabular-nums">{{news.filter(n => n.status === 'published').length}}</p>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all group">
-                <div class="flex items-center gap-3 mb-3">
-                    <div
-                        class="size-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-600 group-hover:bg-amber-500 group-hover:text-white transition-all shrink-0">
-                        <Icon icon="ph:file-text-bold" class="text-lg" />
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase">{{ t('organization_news.index.stats_draft') }}</p>
-                        <p class="text-2xl font-black text-navy tabular-nums">{{news.filter(n => n.status === 'draft').length}}</p>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all group">
-                <div class="flex items-center gap-3 mb-3">
-                    <div
-                        class="size-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600 group-hover:bg-blue-500 group-hover:text-white transition-all shrink-0">
-                        <Icon icon="ph:eye-bold" class="text-lg" />
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase">Total View</p>
-                        <p class="text-2xl font-black text-navy tabular-nums">{{news.reduce((acc, n) => acc + (n.views || 0),
-                        0).toLocaleString() }}</p>
-                    </div>
-                </div>
-            </div>
+            <StatCard
+                :title="t('organization_news.index.stats_total')"
+                :value="news.length"
+                icon="ph:newspaper-bold"
+                color="primary"
+            />
+            <StatCard
+                :title="t('organization_news.index.stats_published')"
+                :value="news.filter(n => n.status === 'published').length"
+                icon="ph:check-circle-bold"
+                color="success"
+            />
+            <StatCard
+                :title="t('organization_news.index.stats_draft')"
+                :value="news.filter(n => n.status === 'draft').length"
+                icon="ph:file-text-bold"
+                color="warning"
+            />
+            <StatCard
+                title="Total View"
+                :value="news.reduce((acc, n) => acc + (n.views || 0), 0).toLocaleString()"
+                icon="ph:eye-bold"
+                color="info"
+            />
         </div>
 
         <!-- Search & Filter -->

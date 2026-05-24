@@ -220,21 +220,7 @@ h1, h2, h3, h4, h5, h6 {
   @apply inline-block w-6 h-6 border-4 border-brand-border border-t-primary rounded-full animate-spin;
 }
 
-/* Page transitions */
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.3s ease;
-}
-
-.page-enter-from {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.page-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
+/* Page transitions - Handled globally in main.css */
 
 /* Rank colors for leaderboard */
 .rank-gold {

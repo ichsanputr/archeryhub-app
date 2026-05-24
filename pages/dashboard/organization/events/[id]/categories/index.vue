@@ -26,11 +26,10 @@
                         <!-- Title Section -->
                         <div class="flex-1">
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
-                                Kategori Lomba
+                                {{ t('event_categories.title') }}
                             </h1>
                             <p class="text-slate-300 text-sm max-w-2xl">
-                                Kelola kategori lomba untuk event ini. Setiap kategori dapat memiliki maksimal peserta
-                                yang berbeda.
+                                {{ t('event_categories.desc') }}
                             </p>
                         </div>
                     </div>
@@ -39,25 +38,27 @@
                     <div class="flex gap-3 flex-shrink-0">
                         <BaseButton variant="primary" icon="ph:plus-bold"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
-                            @click="openCreateDialog">
-                            Tambah Kategori
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                            @click="isSubscriptionActive ? openCreateDialog() : (showPremiumModal = true)">
+                            {{ t('event_categories.add_category') }}
                         </BaseButton>
                     </div>
                 </div>
             </div>
         </div>
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
         <!-- Categories List -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div
                 class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <h2 class="text-lg font-bold text-navy">Daftar Kategori</h2>
+                <h2 class="text-lg font-bold text-navy">{{ t('event_categories.category_list') }}</h2>
                 <div class="flex items-center gap-3">
-                    <span class="text-sm font-medium text-gray-500 hidden sm:inline">Filter Busur:</span>
-                    <BaseSelect v-model="selectedBowType" :items="bowFilterOptions" placeholder="Semua Busur"
+                    <span class="text-sm font-medium text-gray-500 hidden sm:inline">{{ t('event_categories.filter_bow') }}</span>
+                    <BaseSelect v-model="selectedBowType" :items="bowFilterOptions" :placeholder="t('event_categories.all_bows')"
                         class="w-full sm:w-48" />
-                    <span class="text-sm font-medium text-gray-500 hidden sm:inline">Jenis Team:</span>
-                    <BaseSelect v-model="selectedTeamType" :items="teamTypeFilterOptions" placeholder="Semua Jenis Team"
+                    <span class="text-sm font-medium text-gray-500 hidden sm:inline">{{ t('event_categories.team_type') }}</span>
+                    <BaseSelect v-model="selectedTeamType" :items="teamTypeFilterOptions" :placeholder="t('event_categories.all_team_types')"
                         class="w-full sm:w-48" />
                 </div>
             </div>
@@ -81,10 +82,12 @@
             </div>
             <div v-else-if="categories.length === 0" class="p-12 text-center">
                 <Icon icon="ph:tag-simple" class="text-5xl text-gray-300 mx-auto mb-4" />
-                <p class="text-gray-500 font-medium mb-2">Belum ada kategori</p>
-                <p class="text-sm text-gray-400 mb-6">Tambahkan kategori pertama untuk event ini</p>
-                <BaseButton variant="primary" icon="ph:plus-bold" @click="openCreateDialog">
-                    Tambah Kategori Pertama
+                <p class="text-gray-500 font-medium mb-2">{{ t('event_categories.no_categories') }}</p>
+                <p class="text-sm text-gray-400 mb-6">{{ t('event_categories.no_categories_desc') }}</p>
+                <BaseButton variant="primary" icon="ph:plus-bold"
+                    :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                    @click="isSubscriptionActive ? openCreateDialog() : (showPremiumModal = true)">
+                    {{ t('event_categories.add_first_category') }}
                 </BaseButton>
             </div>
             <div v-else class="divide-y divide-gray-100">
@@ -110,40 +113,45 @@
                                     <span
                                         :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
                                         class="px-2.5 py-0.5 rounded-full text-xs font-bold shrink-0">
-                                        {{ category.status === 'active' ? 'Aktif' : 'Nonaktif' }}
+                                        {{ category.status === 'active' ? t('event_categories.status_active') : t('event_categories.status_inactive') }}
                                     </span>
                                 </div>
                                 <div
                                     class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-6 text-sm text-gray-500">
                                     <div class="flex items-center gap-2 min-w-0">
                                         <Icon icon="ph:users" class="text-base shrink-0" />
-                                        <span class="break-words">Maks. Peserta: <strong class="text-navy">{{
-                                            category.max_participants || 'Tidak terbatas' }}</strong></span>
+                                        <span class="break-words">
+                                            {{ t('event_categories.max_participants', { count: category.max_participants || t('event_categories.unlimited') }) }}
+                                        </span>
                                     </div>
                                     <div v-if="category.team_size > 0" class="flex items-center gap-2 min-w-0">
                                         <Icon icon="ph:users-three" class="text-base shrink-0" />
-                                        <span class="break-words">Kapasitas Tim: <strong class="text-navy">{{
-                                            category.team_size }} Orang</strong></span>
+                                        <span class="break-words">
+                                            {{ t('event_categories.team_capacity', { count: category.team_size }) }}
+                                        </span>
                                     </div>
                                     <div class="flex items-center gap-2 min-w-0">
                                         <Icon icon="ph:calendar" class="text-base shrink-0" />
-                                        <span class="break-words">Dibuat: {{ formatDate(category.created_at) }}</span>
+                                        <span class="break-words">
+                                            {{ t('event_categories.created', { date: formatDate(category.created_at) }) }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div
                             class="flex items-center justify-end sm:justify-start shrink-0 pt-2 sm:pt-0 border-t border-gray-100 sm:border-t-0 gap-2">
-                            <BaseButton variant="white" size="sm" icon="ph:eye" title="Lihat Peserta"
+                            <BaseButton variant="white" size="sm" icon="ph:eye" :title="t('event_categories.view_participants')"
                                 :to="`/dashboard/organization/events/${eventId}/categories/${category.id}`">
-                                Lihat
+                                {{ t('event_categories.view') }}
                             </BaseButton>
-                            <BaseButton variant="white" size="sm" icon="ph:pencil" @click="openEditDialog(category)">
-                                Edit
+                            <BaseButton variant="white" size="sm" icon="ph:pencil"
+                                @click="isSubscriptionActive ? openEditDialog(category) : (showPremiumModal = true)">
+                                {{ t('event_categories.edit') }}
                             </BaseButton>
-                            <button @click="deleteCategory(category)"
+                            <button @click="isSubscriptionActive ? deleteCategory(category) : (showPremiumModal = true)"
                                 class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors group/del"
-                                title="Hapus Kategori">
+                                :title="t('event_categories.delete_category')">
                                 <Icon icon="ph:trash" class="text-lg group-hover/del:scale-110 transition-transform" />
                             </button>
                         </div>
@@ -157,38 +165,38 @@
         </div>
 
         <!-- Create/Edit Dialog -->
-        <BaseDialogForm v-model="showDialog" :header="editingCategory ? 'Edit Kategori' : 'Tambah Kategori Baru'">
+        <BaseDialogForm v-model="showDialog" :header="editingCategory ? t('event_categories.edit_category') : t('event_categories.add_category_new')">
             <template #default>
                 <div class="space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <BaseSelect v-model="form.division_uuid" :items="bowOptions" label="Jenis Busur"
-                                placeholder="Pilih Jenis Busur" required teleport />
+                            <BaseSelect v-model="form.division_uuid" :items="bowOptions" :label="t('event_categories.bow_type_label')"
+                                :placeholder="t('event_categories.select_bow_type')" required teleport />
                         </div>
                         <div>
-                            <BaseSelect v-model="form.category_uuid" :items="ageOptions" label="Kelompok Umur"
-                                placeholder="Pilih Kelompok Umur" required teleport />
+                            <BaseSelect v-model="form.category_uuid" :items="ageOptions" :label="t('event_categories.age_group_label')"
+                                :placeholder="t('event_categories.select_age_group')" required teleport />
                         </div>
                         <div v-if="isCustomAgeGroup" class="md:col-span-2">
-                            <label class="text-sm font-bold text-gray-700 block mb-2">Nama Kustom Kelompok Umur</label>
+                            <label class="text-sm font-bold text-gray-700 block mb-2">{{ t('event_categories.custom_age_group_label') }}</label>
                             <input v-model="form.category_name_custom" type="text"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                placeholder="Contoh: Barebow 50m, U-9, etc." required />
+                                :placeholder="t('event_categories.custom_age_group_placeholder')" required />
                         </div>
                         <div>
-                            <BaseSelect v-model="form.event_type_uuid" :items="eventTypeOptions" label="Jenis Team"
-                                placeholder="Pilih Jenis Team" required teleport />
+                            <BaseSelect v-model="form.event_type_uuid" :items="eventTypeOptions" :label="t('event_categories.team_type_label')"
+                                :placeholder="t('event_categories.select_team_type')" required teleport />
                         </div>
                         <div v-if="!isMixedTeam">
-                            <BaseSelect v-model="form.gender_division_uuid" :items="genderOptions" label="Divisi Gender"
-                                placeholder="Pilih Divisi Gender" required teleport />
+                            <BaseSelect v-model="form.gender_division_uuid" :items="genderOptions" :label="t('event_categories.gender_division_label')"
+                                :placeholder="t('event_categories.select_gender_division')" required teleport />
                         </div>
                         <div v-else>
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700 block">Divisi Gender</label>
+                                <label class="text-sm font-bold text-gray-700 block">{{ t('event_categories.gender_division_label') }}</label>
                                 <div
                                     class="px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-500 text-sm font-medium">
-                                    Mixed (Otomatis)
+                                    {{ t('event_categories.mixed_auto') }}
                                 </div>
                             </div>
                         </div>
@@ -196,16 +204,16 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Maksimal Peserta (Pemanah)</label>
+                            <label class="text-sm font-bold text-gray-700">{{ t('event_categories.max_participants_label') }}</label>
                             <input v-model.number="form.max_participants" type="number" min="0"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                placeholder="Kosongkan untuk tidak terbatas" />
-                            <p class="text-[10px] text-gray-400">Total kuota pendaftar individu</p>
+                                :placeholder="t('event_categories.unlimited_placeholder')" />
+                            <p class="text-[10px] text-gray-400">{{ t('event_categories.max_participants_desc') }}</p>
                         </div>
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Anggota Per Tim</label>
+                            <label class="text-sm font-bold text-gray-700">{{ t('event_categories.members_per_team') }}</label>
                             <div class="px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-navy font-bold">
-                                {{ form.team_size || (isTeamEvent ? (isMixedTeam ? 2 : 3) : 1) }} Orang
+                                {{ t('event_categories.people_count', { count: form.team_size || (isTeamEvent ? (isMixedTeam ? 2 : 3) : 1) }) }}
                             </div>
                             <p class="text-[10px] text-gray-400">
                                 {{ teamTypeDescription }}
@@ -215,9 +223,9 @@
                 </div>
             </template>
             <template #action>
-                <BaseButton variant="white" @click="closeDialog">Batal</BaseButton>
+                <BaseButton variant="white" @click="closeDialog">{{ t('event_categories.cancel') }}</BaseButton>
                 <BaseButton variant="primary" @click="saveCategory" :loading="saving">
-                    {{ editingCategory ? 'Simpan Perubahan' : 'Tambah Kategori' }}
+                    {{ editingCategory ? t('event_categories.save_changes') : t('event_categories.add_category') }}
                 </BaseButton>
             </template>
         </BaseDialogForm>
@@ -229,18 +237,18 @@
                     <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
                         <Icon icon="ph:trash-bold" class="text-xl text-red-600" />
                     </div>
-                    <h2 class="text-xl font-black text-navy">Hapus Kategori?</h2>
+                    <h2 class="text-xl font-black text-navy">{{ t('event_categories.delete_category_confirm') }}</h2>
                 </div>
             </template>
 
             <div v-if="fetchingDetails" class="py-12 flex flex-col items-center justify-center gap-4 text-center">
                 <Icon icon="ph:circle-notch-bold" class="text-4xl text-primary animate-spin" />
-                <p class="text-sm font-bold text-gray-400 tracking-widest">Menganalisa keterkaitan data...</p>
+                <p class="text-sm font-bold text-gray-400 tracking-widest">{{ t('event_categories.analyzing_relations') }}</p>
             </div>
 
             <div v-else-if="categoryDetails" class="space-y-6">
                 <p class="text-slate-500 font-medium leading-relaxed">
-                    Tindakan ini permanen. Mohon periksa detail keterkaitan data di bawah ini sebelum melanjutkan.
+                    {{ t('event_categories.permanent_action_desc') }}
                 </p>
 
                 <!-- Category Summary Card -->
@@ -249,7 +257,7 @@
                         style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);">
                     </div>
                     <div class="relative z-10">
-                        <h4 class="text-[9px] font-black text-primary tracking-[0.2em] mb-2">ID Kategori</h4>
+                        <h4 class="text-[9px] font-black text-primary tracking-[0.2em] mb-2">{{ t('event_categories.category_id_label') }}</h4>
                         <div class="text-lg font-black leading-tight mb-1">
                             {{ categoryDetails.category.division_name }} - {{ categoryDetails.category.category_name }}
                         </div>
@@ -268,10 +276,10 @@
                 <!-- Statistics Grid -->
                 <div class="grid grid-cols-2 gap-4">
                     <div v-for="stat in [
-                        { label: 'Peserta', count: categoryDetails.participant_count, icon: 'ph:users-bold' },
-                        { label: 'Tim', count: categoryDetails.team_count, icon: 'ph:users-three-bold' },
-                        { label: 'Sesi', count: categoryDetails.session_count, icon: 'ph:hourglass-bold' },
-                        { label: 'Bagan', count: categoryDetails.bracket_count, icon: 'ph:stack-bold' }
+                        { label: t('event_categories.stat_participants'), count: categoryDetails.participant_count, icon: 'ph:users-bold' },
+                        { label: t('event_categories.stat_teams'), count: categoryDetails.team_count, icon: 'ph:users-three-bold' },
+                        { label: t('event_categories.stat_sessions'), count: categoryDetails.session_count, icon: 'ph:hourglass-bold' },
+                        { label: t('event_categories.stat_brackets'), count: categoryDetails.bracket_count, icon: 'ph:stack-bold' }
                     ]" :key="stat.label" class="p-4 rounded-2xl border transition-all duration-300 shadow-sm"
                         :class="stat.count > 0 ? 'bg-red-50 border-red-100' : 'bg-gray-50 border-gray-50 opacity-60'">
                         <div class="flex items-center justify-between mb-2">
@@ -292,11 +300,11 @@
             <template #action>
                 <BaseButton variant="white" @click="showDeleteDialog = false"
                     class="px-6 font-bold tracking-wider text-xs">
-                    Batal
+                    {{ t('event_categories.cancel') }}
                 </BaseButton>
                 <BaseButton variant="danger" @click="confirmDeleteCategory" :disabled="saving" :loading="saving"
                     icon="ph:trash-bold" class="px-8 font-black tracking-wider text-xs shadow-lg shadow-red-200">
-                    Konfirmasi Hapus
+                    {{ t('event_categories.confirm_delete_button') }}
                 </BaseButton>
             </template>
         </BaseDialogForm>
@@ -310,19 +318,26 @@ import BasePagination from '~/components/common/BasePagination.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { getCategoryIcon, getCategoryColorClass } from '~/utils/logoArcheryCategory'
+import { useI18n } from 'vue-i18n'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+
+const { t, locale } = useI18n()
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 useHead({
-    title: 'Kategori Lomba - Dashboard'
+    title: computed(() => `${t('event_categories.title')} - Dashboard`)
 })
 
 const route = useRoute()
 const eventId = route.params.id
 const { get, post, put, delete: delApi } = useApi()
 const toast = useToast()
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 const isLoading = ref(true)
 const saving = ref(false)
@@ -347,14 +362,14 @@ const selectedTeamType = ref('all')
 
 const bowFilterOptions = computed(() => {
     return [
-        { value: 'all', title: 'Semua Busur' },
+        { value: 'all', title: t('event_categories.all_bows') },
         ...bowTypes.value.map(bow => ({ value: bow.code, title: bow.name }))
     ]
 })
 
 const teamTypeFilterOptions = computed(() => {
     return [
-        { value: 'all', title: 'Semua Jenis Team' },
+        { value: 'all', title: t('event_categories.all_team_types') },
         ...eventTypes.value.map(type => ({ value: type.id, title: type.name }))
     ]
 })
@@ -414,9 +429,9 @@ const isTeamEvent = computed(() => {
 })
 
 const teamTypeDescription = computed(() => {
-    if (isMixedTeam.value) return 'Tim campuran (1 Putra + 1 Putri)'
-    if (isTeamEvent.value) return 'Tim dengan gender yang sama'
-    return 'Pemanah individu'
+    if (isMixedTeam.value) return t('event_categories.desc_mixed_team')
+    if (isTeamEvent.value) return t('event_categories.desc_same_gender')
+    return t('event_categories.desc_individual')
 })
 
 watch(() => form.value.event_type_uuid, (newId) => {
@@ -453,7 +468,8 @@ const totalQuota = computed(() => {
 const formatDate = (dateStr) => {
     if (!dateStr) return '-'
     try {
-        return new Date(dateStr).toLocaleDateString('id-ID', {
+        const localeCode = locale.value === 'id' ? 'id-ID' : locale.value === 'kr' ? 'ko-KR' : 'en-US'
+        return new Date(dateStr).toLocaleDateString(localeCode, {
             day: 'numeric',
             month: 'short',
             year: 'numeric'
@@ -495,7 +511,7 @@ const fetchCategories = async () => {
         genderDivisions.value = genderDivisions.value.length > 0 ? genderDivisions.value : (genderRes?.gender_divisions || genderRes?.data?.gender_divisions || [])
     } catch (error) {
         console.error('Failed to fetch categories:', error)
-        toast.error(getApiErrorMessage(error, 'Gagal memuat kategori'))
+        toast.error(getApiErrorMessage(error, t('event_categories.toast_load_failed')))
     } finally {
         isLoading.value = false
     }
@@ -550,7 +566,7 @@ const deleteCategory = async (category) => {
         categoryDetails.value = res?.data || res
     } catch (error) {
         console.error('Failed to fetch category details:', error)
-        toast.error('Gagal memuat detail kategori untuk penghapusan')
+        toast.error(t('event_categories.toast_load_details_failed'))
         showDeleteDialog.value = false
     } finally {
         fetchingDetails.value = false
@@ -563,12 +579,12 @@ const confirmDeleteCategory = async () => {
     saving.value = true
     try {
         await delApi(`/events/${eventId}/categories/${categoryToDelete.value.id}`)
-        toast.success('Kategori berhasil dihapus')
+        toast.success(t('event_categories.toast_delete_success'))
         showDeleteDialog.value = false
         await fetchCategories()
     } catch (error) {
         console.error('Failed to delete category:', error)
-        toast.error(getApiErrorMessage(error, 'Gagal menghapus kategori'))
+        toast.error(getApiErrorMessage(error, t('event_categories.toast_delete_failed')))
     } finally {
         saving.value = false
     }
@@ -581,17 +597,17 @@ const getApiErrorMessage = (error, defaultMsg) => {
 const saveCategory = async () => {
     const isMixed = isMixedTeam.value
     if (!form.value.division_uuid || !form.value.category_uuid || !form.value.event_type_uuid || (!isMixed && !form.value.gender_division_uuid)) {
-        toast.error('Harap lengkapi semua field yang wajib diisi')
+        toast.error(t('event_categories.toast_fill_required'))
         return
     }
 
     if (isCustomAgeGroup.value && !form.value.category_name_custom) {
-        toast.error('Harap isi nama kustom kelompok umur')
+        toast.error(t('event_categories.toast_custom_age_required'))
         return
     }
 
     if (isTeamEvent.value && (!form.value.team_size || form.value.team_size <= 1)) {
-        toast.error('Jumlah anggota per tim harus lebih dari 1 bagi kategori beregu/mixed')
+        toast.error(t('event_categories.toast_team_size_invalid'))
         return
     }
 
@@ -609,16 +625,16 @@ const saveCategory = async () => {
 
         if (editingCategory.value) {
             await put(`/events/${eventId}/categories/${editingCategory.value.id}`, payload)
-            toast.success('Kategori berhasil diperbarui')
+            toast.success(t('event_categories.toast_update_success'))
         } else {
             await post(`/events/${eventId}/categories`, payload)
-            toast.success('Kategori berhasil ditambahkan')
+            toast.success(t('event_categories.toast_create_success'))
         }
         await fetchCategories()
         closeDialog()
     } catch (error) {
         console.error('Failed to save category:', error)
-        toast.error(getApiErrorMessage(error, 'Gagal menyimpan kategori'))
+        toast.error(getApiErrorMessage(error, t('event_categories.toast_save_failed')))
     } finally {
         saving.value = false
     }
