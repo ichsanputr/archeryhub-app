@@ -1413,7 +1413,36 @@
     "theme_title": "대시보드 테마",
     "theme_subtitle": "선호도에 맞는 색상 팔레트를 선택하세요",
     "security_tab": "보안",
-    "theme_tab": "테마"
+    "theme_tab": "테마",
+    "use_another_email": "다른 이메일 사용",
+    "google_login_desc": "Google 계정으로 빠른 로그인",
+    "connected": "연결됨",
+    "not_connected": "연결되지 않음",
+    "connect": "연결",
+    "email_password_desc": "이메일 주소와 비밀번호로 로그인",
+    "active": "활성",
+    "not_active": "비활성",
+    "update_password": "비밀번호 업데이트",
+    "save_password": "비밀번호 저장",
+    "theme_look": "{name} 테마 스타일",
+    "cancel": "취소",
+    "save_changes": "변경 사항 저장",
+    "tab_security": "보안",
+    "tab_theme": "테마",
+    "toast_link_google_error": "Google 계정 이메일이 현재 계정 이메일과 일치하지 않습니다.",
+    "toast_load_error": "설정 데이터를 불러오지 못했습니다.",
+    "toast_save_success": "설정이 성공적으로 저장되었습니다!",
+    "toast_save_error": "설정 저장에 실패했습니다.",
+    "toast_reset": "설정이 기본값으로 재설정되었습니다.",
+    "toast_general_success": "일반 설정이 성공적으로 저장되었습니다!",
+    "toast_general_error": "일반 설정 저장에 실패했습니다.",
+    "toast_password_mismatch": "비밀번호 확인이 일치하지 않습니다.",
+    "toast_password_length": "비밀번호는 최소 6자 이상이어야 합니다.",
+    "toast_password_success": "비밀번호가 성공적으로 변경되었습니다!",
+    "toast_password_error": "비밀번호 변경에 실패했습니다.",
+    "toast_otp_sent": "새 이메일로 인증 코드가 전송되었습니다.",
+    "toast_otp_error": "인증 코드 전송에 실패했습니다.",
+    "toast_verify_error": "인증 코드가 잘못되었거나 만료되었습니다."
   },
   "result": {
     "meta_title": "{title} 토너먼트 결과 - archeryhub.id",
@@ -2494,5 +2523,55 @@
       "success_desc": "축하합니다! 계정 비밀번호가 업데이트되었습니다. 새 비밀번호로 로그인해 주세요.",
       "login_now": "지금 로그인"
     }
+  },
+  "dashboard_event_overview": {
+    "meta_title": "이벤트 대시보드 - ArcheryHub",
+    "payment_status_heading": "결제 상태",
+    "payment_paid": "결제 완료",
+    "payment_paid_desc": "결제 확인됨",
+    "payment_pending": "대기 중",
+    "payment_pending_desc": "확인 대기 중",
+    "payment_unpaid": "미결제",
+    "payment_unpaid_desc": "미결제 청구서",
+    "total_score_label": "총 점수",
+    "share_button": "공유",
+    "summary_title": "이벤트 요약",
+    "venue_fallback": "이벤트 장소",
+    "address_fallback": "주소",
+    "stats": {
+      "total_archers": "총 인원",
+      "total_teams": "총 공식 팀",
+      "completion": "완료율",
+      "time_left": "남은 시간"
+    },
+    "registered": "등록됨",
+    "manage_teams": "팀 관리",
+    "registration_analysis": "등록 분석",
+    "view_all_participants": "모든 참가자 보기",
+    "category_distribution": "카테고리 분포",
+    "no_category_data": "카테고리 데이터 없음",
+    "showing_top_categories": "상위 5개 카테고리 표시 중",
+    "leaderboard": {
+      "title": "리더보드",
+      "no_scores": "아직 점수가 없습니다"
+    },
+    "share_dialog": {
+      "title": "이벤트 공유",
+      "desc": "이 이벤트의 공개 페이지 링크를 소셜 미디어에 공유하거나 참가자를 위해 링크를 복사하세요.",
+      "public_link_label": "공개 이벤트 링크",
+      "copy": "복사",
+      "copied": "복사됨",
+      "share_to_social": "소셜 미디어에 공유"
+    },
+    "alerts": {
+      "unassigned_participants_title": "배정되지 않은 참가자",
+      "unassigned_participants_message": "{count}명의 참가자가 과녁 번호가 배정되지 않았습니다."
+    },
+    "estimated_end": "예상 종료 시간",
+    "unassigned_category": "카테고리 없음",
+    "completed": "완료됨",
+    "archery_event": "양궁 이벤트",
+    "active": "활성",
+    "draft": "초안"
   }
 }

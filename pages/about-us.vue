@@ -71,6 +71,9 @@
                                 What started as a simple concept to replace paper scorecards has evolved into a comprehensive digital ecosystem. Today, we empower tournament administrators, line operators, and archery athletes.
                             </p>
                             <p>
+                                At its core, Archeris replicate 100% of the tournament configuration and management features of Ianseo—the global World Archery scoring software—including qualification rounds, target face assignments, and head-to-head elimination matching. We take it a step further by offering a fully centralized, cloud-native platform with real-time public leaderboards, unified athlete profiles, and digital payments in a sleek, user-friendly UI.
+                            </p>
+                            <p>
                                 Every detail, from age division classifications to dynamic head-to-head elimination matching, is optimized to support the growth and professionalism of the sport.
                             </p>
                         </div>

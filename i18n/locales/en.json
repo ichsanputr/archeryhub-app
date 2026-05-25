@@ -48,7 +48,7 @@
     "hero": {
       "title_part1": "Digitalize Your",
       "title_part2": "Archery Experience",
-      "description": "Archeris.net is an integrated archery management platform designed specifically to ease tournament management, real-time scoring, and the development of the archery sports ecosystem in Indonesia.",
+      "description": "Archeris.net is an integrated archery event management platform designed specifically to ease tournament management, real-time scoring, and the development of the archery sports ecosystem.",
       "cta_primary": "Get Started",
       "cta_secondary": "Learn More"
     },
@@ -170,8 +170,8 @@
         }
       ]
     },
-    "meta_title": "Archeris.net - Archery Management Platform Indonesia",
-    "meta_desc": "Archeris.net - Integrated archery management platform for tournaments, real-time scoring, and professional athlete development in Indonesia."
+    "meta_title": "Archeris.net - Archery Management Platform",
+    "meta_desc": "Archeris.net - Integrated archery management platform for tournaments, real-time scoring, and professional athlete development."
   },
   "dashboard": {
     "header": {
@@ -348,10 +348,9 @@
     "loading": "Loading products...",
     "views": "views"
   },
-  
   "archers": {
     "badge": "Archery Community",
-    "title": "Discover Inspiration & Indonesian Archers",
+    "title": "Discover Inspiration & Archers",
     "description": "Explore profiles of talented archers from across the archipelago. View their achievements, clubs, and dedication to the sport.",
     "search_placeholder": "Search archer, city, or club...",
     "count_unit": "archers",
@@ -369,8 +368,8 @@
       "barebow": "Barebow",
       "traditional": "Traditional"
     },
-    "seo_title": "Indonesia Archery Community — Archeris.net",
-    "seo_desc": "Discover and explore profiles of talented archers from across Indonesia. View their achievements, clubs, and dedication on Archeris.net."
+    "seo_title": "Archery Community – Archeris.net",
+    "seo_desc": "Discover and explore profiles of talented archers. View their achievements, clubs, and dedication on Archeris.net."
   },
   "docs": {
     "official_docs": "OFFICIAL DOCUMENTATION",
@@ -538,7 +537,7 @@
     "gateway_modal_title": "Choose Payment Method",
     "gateway_modal_desc": "Select the payment system you want to use for the subscription.",
     "tripay_name": "Tripay (Rupiah)",
-    "tripay_desc": "Local Indonesian payments via Bank Transfer (BCA, Mandiri, BNI, BRI), QRIS, GoPay, OVO, DANA, etc.",
+    "tripay_desc": "Payments via Bank Transfer (BCA, Mandiri, BNI, BRI), QRIS, GoPay, OVO, DANA, etc.",
     "paddle_name": "Paddle (Global / USD)",
     "paddle_desc": "Global payments via Credit Card, Debit Card, PayPal, Apple Pay, Google Pay, etc.",
     "cancel": "Cancel",
@@ -623,7 +622,7 @@
   "events_page": {
     "badge": "ARCHERY EVENTS",
     "title": "Find Your Victory Target",
-    "description": "Join prestigious archery tournaments across Indonesia. From club level to national level, all available in one platform.",
+    "description": "Join prestigious archery tournaments. From club level to world level, all available in one platform.",
     "register_event": "Register Event",
     "search_title": "Search Event",
     "search_placeholder": "Search event name...",
@@ -653,7 +652,7 @@
   "products_page": {
     "badge": "ARCHERY CATALOG",
     "title": "Equip Your Best Archery Gear",
-    "description": "Discover quality equipment from trusted clubs and organizations across Indonesia.",
+    "description": "Discover quality equipment from trusted clubs and organizations.",
     "search_placeholder_hero": "Search products like bows, arrows...",
     "search_placeholder_sticky": "Search archery products...",
     "search_button": "Search",
@@ -1210,8 +1209,7 @@
     "toast_team_size_invalid": "Number of members per team must be greater than 1 for team/mixed categories",
     "toast_update_success": "Category updated successfully",
     "toast_create_success": "Category added successfully",
-    "toast_save_failed": "Failed to save category"
-    ,
+    "toast_save_failed": "Failed to save category",
     "back_to_categories": "Back to categories",
     "detail_title": "Category Details",
     "category_participants_desc": "List of participants registered specifically in this category.",
@@ -1579,7 +1577,36 @@
     "theme_title": "Dashboard Theme",
     "theme_subtitle": "Choose a color palette that suits your preference",
     "security_tab": "Security",
-    "theme_tab": "Theme"
+    "theme_tab": "Theme",
+    "use_another_email": "Use another email",
+    "google_login_desc": "Sign in quickly using your Google account",
+    "connected": "Connected",
+    "not_connected": "Not connected",
+    "connect": "Connect",
+    "email_password_desc": "Sign in using email address and password",
+    "active": "Active",
+    "not_active": "Inactive",
+    "update_password": "Update Password",
+    "save_password": "Save Password",
+    "theme_look": "{name} theme appearance",
+    "cancel": "Cancel",
+    "save_changes": "Save Changes",
+    "tab_security": "Security",
+    "tab_theme": "Theme",
+    "toast_link_google_error": "Google account email does not match your current account email",
+    "toast_load_error": "Failed to load settings data",
+    "toast_save_success": "Settings saved successfully!",
+    "toast_save_error": "Failed to save settings",
+    "toast_reset": "Settings reset to default",
+    "toast_general_success": "General settings saved successfully!",
+    "toast_general_error": "Failed to save general settings",
+    "toast_password_mismatch": "Password confirmation does not match",
+    "toast_password_length": "Password must be at least 6 characters",
+    "toast_password_success": "Password changed successfully!",
+    "toast_password_error": "Failed to change password",
+    "toast_otp_sent": "Verification code has been sent to your new email",
+    "toast_otp_error": "Failed to send verification code",
+    "toast_verify_error": "Invalid or expired verification code"
   },
   "result": {
     "meta_title": "Tournament results {title} - archeryhub.id",
@@ -2315,8 +2342,7 @@
       "edit_cancel": "Cancel",
       "edit_save": "Save",
       "edit_success": "Subscription updated successfully"
-    }
-    ,
+    },
     "participants_list": {
       "page_title": "Participants",
       "export_short": "Export",
@@ -2559,7 +2585,7 @@
   },
   "auth": {
     "login": {
-      "title": "Elevate <br /> Indonesian Archery",
+      "title": "Elevate <br /> Archery",
       "desc": "Join the number one digital archery platform to manage tournaments, athletes, and real-time scoring.",
       "archers_joined": "Archers have joined Archeris.net",
       "welcome": "Welcome Back!",
@@ -2577,9 +2603,9 @@
       "register_here": "Register here!"
     },
     "register": {
-      "title": "Join the largest archery community in Indonesia.",
+      "title": "Join the largest archery community.",
       "welcome": "Create New Account",
-      "subtitle": "Join the largest archery community in Indonesia.",
+      "subtitle": "Join the largest archery community.",
       "archer_tab": "Archer",
       "organization_tab": "Organization",
       "seller_tab": "Seller",
@@ -2615,7 +2641,7 @@
       "already_have_account": "Already have an account?",
       "login_here": "Login here!",
       "desktop_title": "Join the Digital <br /> Archery Revolution",
-      "desktop_desc": "Join the largest archery community in Indonesia to manage clubs, track scores, and participate in tournaments.",
+      "desktop_desc": "Join the largest archery community to manage clubs, track scores, and participate in tournaments.",
       "archer_info": "Archer Info",
       "org_info": "Organization Info",
       "shop_info": "Shop Info",
@@ -2660,8 +2686,7 @@
       "success_title": "Password Reset Successfully!",
       "success_desc": "Congratulations! Your account password has been updated. Please log in with your new password.",
       "login_now": "Log In Now"
-      }
-    ,
+    },
     "detail": {
       "title_short": "Detail",
       "status_heading": "Status",
@@ -2688,8 +2713,7 @@
       "delete": "Delete",
       "edit": "Edit",
       "read_time_unit": "min read"
-    }
-    ,
+    },
     "create": {
       "title_short": "New",
       "title": "Create News Article",
@@ -2727,15 +2751,15 @@
     }
   },
   "dashboard_event_overview": {
-      "meta_title": "Event Dashboard - ArcheryHub",
-      "payment_status_heading": "Payment Status",
-      "payment_paid": "Paid",
-      "payment_paid_desc": "Payment Verified",
-      "payment_pending": "Pending",
-      "payment_pending_desc": "Awaiting Verification",
-      "payment_unpaid": "Unpaid",
-      "payment_unpaid_desc": "Outstanding Invoices",
-      "total_score_label": "Total Score",
+    "meta_title": "Event Dashboard - ArcheryHub",
+    "payment_status_heading": "Payment Status",
+    "payment_paid": "Paid",
+    "payment_paid_desc": "Payment Verified",
+    "payment_pending": "Pending",
+    "payment_pending_desc": "Awaiting Verification",
+    "payment_unpaid": "Unpaid",
+    "payment_unpaid_desc": "Outstanding Invoices",
+    "total_score_label": "Total Score",
     "share_button": "Share",
     "summary_title": "Event Summary",
     "venue_fallback": "Event Venue",
@@ -2768,6 +2792,12 @@
     "alerts": {
       "unassigned_participants_title": "Unassigned Participants",
       "unassigned_participants_message": "{count} participants do not have a target number assigned."
-    }
+    },
+    "estimated_end": "Estimated End",
+    "unassigned_category": "No Category",
+    "completed": "Completed",
+    "archery_event": "Archery Event",
+    "active": "Active",
+    "draft": "Draft"
   }
 }

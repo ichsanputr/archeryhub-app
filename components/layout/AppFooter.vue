@@ -24,7 +24,7 @@
               </div>
             </div>
             <p class="text-gray-400 leading-relaxed text-sm sm:text-base">
-              An integrated digital infrastructure platform for real-time scoring and more efficient professional archery tournaments. Archeris is here to connect and empower all archery enthusiasts in Indonesia, from beginner athletes to national event organizers.
+              An integrated digital infrastructure platform for real-time scoring and more efficient professional archery tournaments. Archeris is here to connect and empower all archery enthusiasts globally, from beginner athletes to professional event organizers.
             </p>
           </div>
         </div>

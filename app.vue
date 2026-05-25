@@ -30,6 +30,35 @@ useHead({
 })
 
 const route = useRoute()
+const router = useRouter()
+const isPageLoading = useState('pageLoadingState', () => false)
+const nuxtApp = useNuxtApp()
+
+// Show loader on page transition (front page only)
+router.beforeEach((to, from, next) => {
+  const isDashboard = to.path.startsWith('/dashboard')
+  const isDocs = to.path.startsWith('/docs')
+  if (!isDashboard && !isDocs && to.path !== from.path) {
+    isPageLoading.value = true
+  }
+  next()
+})
+
+// Hide loader when Nuxt has finished loading and mounting the page
+nuxtApp.hook('page:finish', () => {
+  setTimeout(() => {
+    isPageLoading.value = false
+  }, 150)
+})
+
+// Safety fallback for aborted/errored navigations
+router.afterEach(() => {
+  setTimeout(() => {
+    if (isPageLoading.value) {
+      isPageLoading.value = false
+    }
+  }, 1000)
+})
 
 // Force page to remount when route changes (fixes blank page on browser back / touchpad back)
 // We use path instead of fullPath to avoid unnecessary remounts when query parameters change

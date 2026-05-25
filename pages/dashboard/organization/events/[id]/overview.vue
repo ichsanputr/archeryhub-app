@@ -189,7 +189,7 @@
                         color="primary"
                     >
                         <template #footer>
-                            <p class="text-text-secondary text-xs font-medium">Estimasi Selesai: {{ estimatedEnd }}</p>
+                            <p class="text-text-secondary text-xs font-medium">{{ t('dashboard_event_overview.estimated_end') }}: {{ estimatedEnd }}</p>
                         </template>
                     </StatCard>
                 </div>
@@ -550,7 +550,7 @@ const timeLeft = computed(() => {
     if (!event.value?.end_date) return 'N/A'
     const end = new Date(event.value.end_date)
     const diff = end - now.value
-    if (diff < 0) return 'Selesai'
+    if (diff < 0) return t('dashboard_event_overview.completed')
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24))
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
@@ -590,7 +590,7 @@ const registrationStats = computed(() => {
         const catId = p.category_id || 'unassigned'
         if (!stats.byCategory[catId]) {
             stats.byCategory[catId] = {
-                name: p.category_name || 'Tanpa Kategori',
+                name: p.category_name || t('dashboard_event_overview.unassigned_category'),
                 division: p.division_name || 'N/A',
                 event_type: p.event_type_name || '',
                 gender: p.gender_division_name || '',
@@ -660,7 +660,7 @@ const copyPublicUrl = async () => {
 
 const shareTo = (platform) => {
     const url = encodeURIComponent(publicEventUrl.value)
-    const text = encodeURIComponent(event.value?.name || 'Event Panahan')
+    const text = encodeURIComponent(event.value?.name || t('dashboard_event_overview.archery_event'))
 
     let shareUrl = ''
     if (platform === 'whatsapp') {
@@ -770,8 +770,8 @@ const getStatusDotClass = (status) => {
 
 const getStatusLabel = (status) => {
     const labels = {
-        'active': 'Aktif',
-        'draft': 'Draft'
+        'active': t('dashboard_event_overview.active'),
+        'draft': t('dashboard_event_overview.draft')
     }
     return labels[status] || status
 }

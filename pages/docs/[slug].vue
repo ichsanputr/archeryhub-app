@@ -85,6 +85,29 @@
                     <!-- Doc body -->
                     <div class="px-6 md:px-10 py-8 doc-content" v-html="currentDoc.content"></div>
 
+                    <!-- Share Social Media -->
+                    <div class="px-6 md:px-10 pb-8 pt-4 border-t border-gray-100">
+                        <h4 class="text-xs font-black text-gray-400 tracking-widest uppercase mb-3">{{ $t('docs.share_title') || 'Share this article' }}</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <button @click="shareTo('twitter')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 hover:bg-primary/10 text-navy text-xs font-bold transition-all border border-gray-100 hover:border-primary/30">
+                                <Icon icon="simple-icons:x" class="text-sm" />
+                                X
+                            </button>
+                            <button @click="shareTo('facebook')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 hover:bg-primary/10 text-navy text-xs font-bold transition-all border border-gray-100 hover:border-primary/30">
+                                <Icon icon="logos:facebook" class="text-sm" />
+                                Facebook
+                            </button>
+                            <button @click="shareTo('whatsapp')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 hover:bg-primary/10 text-navy text-xs font-bold transition-all border border-gray-100 hover:border-primary/30">
+                                <Icon icon="logos:whatsapp-icon" class="text-sm" />
+                                WhatsApp
+                            </button>
+                            <button @click="copyLink" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 hover:bg-primary/10 text-navy text-xs font-bold transition-all border border-gray-100 hover:border-primary/30">
+                                <Icon icon="ph:link-bold" class="text-sm" />
+                                {{ linkCopied ? ($t('docs.copied') || 'Copied!') : ($t('docs.copy_link') || 'Copy Link') }}
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Navigation buttons -->
                     <div
                         class="px-6 md:px-10 py-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -114,7 +137,6 @@
                     </div>
                 </div>
 
-                <!-- Not found -->
                 <div v-else class="bg-white rounded-3xl border border-gray-100 shadow-sm p-16 text-center">
                     <Icon icon="ph:file-x-bold" class="text-5xl text-gray-300 mb-4" />
                     <h2 class="text-xl font-black text-navy mb-2">{{ $t('docs.not_found_title') }}</h2>
@@ -124,6 +146,72 @@
                         <Icon icon="ph:arrow-left-bold" />
                         {{ $t('docs.back_to_docs') }}
                     </NuxtLink>
+                </div>
+
+                <!-- Comments Section -->
+                <div v-if="currentDoc" class="mt-8 bg-white rounded-3xl border border-gray-100 shadow-sm p-6 md:p-10">
+                    <h3 class="text-lg font-black text-navy mb-6 flex items-center gap-2">
+                        <Icon icon="ph:chat-circle-dots-bold" class="text-primary text-xl" />
+                        {{ $t('docs.comments_title') || 'Discussion' }} ({{ comments.length }})
+                    </h3>
+
+                    <!-- Comment Form -->
+                    <form @submit.prevent="submitComment" class="mb-8 space-y-4">
+                        <div v-if="!isLoggedIn" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-400 uppercase mb-2">{{ $t('docs.comment_name') || 'Your Name' }}</label>
+                                <input v-model="commentForm.guest_name" type="text" required
+                                    class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors text-navy placeholder:text-gray-400 font-medium"
+                                    :placeholder="$t('docs.comment_name_placeholder') || 'Enter your name...'" />
+                            </div>
+                        </div>
+                        <div v-else class="text-xs text-gray-500 font-bold mb-2">
+                            {{ $t('docs.commenting_as') || 'Commenting as' }}: <span class="text-navy font-bold">{{ user?.full_name }}</span>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-2">{{ $t('docs.comment_message') || 'Comment' }}</label>
+                            <textarea v-model="commentForm.content" rows="4" required
+                                class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors text-navy placeholder:text-gray-400 font-medium"
+                                :placeholder="$t('docs.comment_message_placeholder') || 'Write your thoughts...'"></textarea>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="submit" :disabled="isSubmittingComment || !commentForm.content"
+                                class="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover disabled:bg-gray-100 disabled:text-gray-400 text-navy font-bold px-6 py-3 rounded-2xl transition-all text-sm">
+                                <Icon v-if="isSubmittingComment" icon="ph:spinner-bold" class="animate-spin text-base" />
+                                {{ isSubmittingComment ? ($t('docs.submitting') || 'Submitting...') : ($t('docs.submit_comment') || 'Submit Comment') }}
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Comments List -->
+                    <div v-if="isCommentsLoading" class="flex flex-col items-center py-10 text-gray-300">
+                        <Icon icon="ph:spinner-bold" class="animate-spin text-3xl mb-2" />
+                        <span class="text-xs font-bold tracking-wider">{{ $t('docs.loading_comments') || 'Loading comments...' }}</span>
+                    </div>
+
+                    <div v-else-if="comments.length === 0" class="text-center py-10 border border-dashed border-gray-100 rounded-2xl">
+                        <Icon icon="ph:chat-circle-dots-light" class="text-4xl text-gray-300 mb-2" />
+                        <p class="text-gray-400 text-xs font-bold tracking-wider">{{ $t('docs.no_comments') || 'No comments yet. Be the first to share your thoughts!' }}</p>
+                    </div>
+
+                    <div v-else class="space-y-6">
+                        <div v-for="comment in comments" :key="comment.id" class="flex gap-4 p-4 rounded-2xl hover:bg-gray-50/50 transition-colors border border-gray-50">
+                            <!-- Avatar -->
+                            <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center shrink-0 border border-gray-200 overflow-hidden font-bold text-navy text-sm">
+                                <Icon icon="ph:user-bold" class="text-gray-400" />
+                            </div>
+                            <!-- Comment Content -->
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between gap-2 mb-1">
+                                    <h5 class="font-bold text-sm text-navy truncate">{{ comment.user_name }}</h5>
+                                    <span class="text-[10px] font-medium text-gray-400 whitespace-nowrap">{{ formatDate(comment.created_at) }}</span>
+                                </div>
+                                <p class="text-gray-600 text-sm leading-relaxed whitespace-pre-line">{{ comment.content }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
 
@@ -226,6 +314,104 @@ const sidebarVisibleCategories = computed(() => {
 const translateHeadingText = (text) => {
     return translateText(text, locale.value, currentSlug.value)
 }
+
+// Authentication & API
+const { isLoggedIn, user } = useAuth()
+const api = useApi()
+
+// Social Sharing
+const linkCopied = ref(false)
+const shareTo = (platform) => {
+    if (!import.meta.client) return
+    const url = encodeURIComponent(window.location.href)
+    const title = encodeURIComponent(currentDoc.value?.title || 'Archeris.net Documentation')
+    
+    let shareUrl = ''
+    if (platform === 'twitter') {
+        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`
+    } else if (platform === 'facebook') {
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`
+    } else if (platform === 'whatsapp') {
+        shareUrl = `https://api.whatsapp.com/send?text=${title}%20${url}`
+    }
+    
+    if (shareUrl) {
+        window.open(shareUrl, '_blank')
+    }
+}
+
+const copyLink = () => {
+    if (!import.meta.client) return
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        linkCopied.value = true
+        setTimeout(() => {
+            linkCopied.value = false
+        }, 2000)
+    })
+}
+
+// Comments
+const isCommentsLoading = ref(false)
+const isSubmittingComment = ref(false)
+const comments = ref([])
+const commentForm = ref({
+    guest_name: '',
+    content: ''
+})
+
+const fetchComments = async () => {
+    if (!currentSlug.value) return
+    isCommentsLoading.value = true
+    try {
+        const response = await api.get(`/docs/${currentSlug.value}/comments`)
+        comments.value = response?.comments || []
+    } catch (error) {
+        console.error('Failed to fetch doc comments:', error)
+    } finally {
+        isCommentsLoading.value = false
+    }
+}
+
+const submitComment = async () => {
+    if (!commentForm.value.content) return
+    if (!isLoggedIn.value && !commentForm.value.guest_name) return
+    
+    isSubmittingComment.value = true
+    try {
+        await api.post(`/docs/${currentSlug.value}/comments`, {
+            guest_name: commentForm.value.guest_name,
+            content: commentForm.value.content
+        })
+        commentForm.value.content = ''
+        commentForm.value.guest_name = ''
+        await fetchComments()
+    } catch (error) {
+        console.error('Failed to submit comment:', error)
+    } finally {
+        isSubmittingComment.value = false
+    }
+}
+
+const formatDate = (dateStr) => {
+    if (!dateStr) return ''
+    try {
+        const date = new Date(dateStr)
+        return date.toLocaleDateString(locale.value === 'id' ? 'id-ID' : 'en-US', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        })
+    } catch (e) {
+        return dateStr
+    }
+}
+
+// Watch for slug changes to re-fetch comments
+watch(currentSlug, () => {
+    fetchComments()
+}, { immediate: true })
 
 useHead(computed(() => ({
     title: currentDoc.value ? `${currentDoc.value.title} - Archeris` : 'Dokumentasi - Archeris',

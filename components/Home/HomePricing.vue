@@ -205,7 +205,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useI18n } from 'vue-i18n'
 
-const { tm } = useI18n()
+const { tm, t } = useI18n()
 const localePath = useLocalePath()
 const sectionRef = ref(null)
 
@@ -244,19 +244,29 @@ onMounted(() => {
     }, '-=0.3')
 })
 
+const resolveMessage = (path, val) => {
+    if (typeof val === 'function') {
+        return val()
+    }
+    if (typeof val === 'string') {
+        return val
+    }
+    return t(path)
+}
+
 const standardFeatures = computed(() => {
-    const list = tm('home.pricing.features.standard')
-    return Array.isArray(list) ? list : []
+    const list = tm('home.pricing.features.standard') || []
+    return Array.isArray(list) ? list.map((item, idx) => resolveMessage(`home.pricing.features.standard.${idx}`, item)) : []
 })
 
 const eliteFeatures = computed(() => {
-    const list = tm('home.pricing.features.elite')
-    return Array.isArray(list) ? list : []
+    const list = tm('home.pricing.features.elite') || []
+    return Array.isArray(list) ? list.map((item, idx) => resolveMessage(`home.pricing.features.elite.${idx}`, item)) : []
 })
 
 const freeFeatures = computed(() => {
-    const list = tm('home.pricing.features.free')
-    return Array.isArray(list) ? list : []
+    const list = tm('home.pricing.features.free') || []
+    return Array.isArray(list) ? list.map((item, idx) => resolveMessage(`home.pricing.features.free.${idx}`, item)) : []
 })
 
 </script>

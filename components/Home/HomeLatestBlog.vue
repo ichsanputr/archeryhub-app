@@ -23,7 +23,7 @@
                         <Icon icon="ph:caret-right-bold"
                             class="text-xl group-hover/btn:translate-x-0.5 transition-transform" />
                     </button>
-                    <NuxtLink :to="localePath('/blog')"
+                    <NuxtLink :to="localePath('/news')"
                         class="ml-4 inline-flex items-center gap-2 text-white/60 font-bold tracking-widest text-sm hover:text-primary transition-colors">
                         <span class="link-underline">{{ $t('home.blog.view_all') }}</span>
                         <Icon icon="ph:arrow-right-bold" />
@@ -31,14 +31,14 @@
                 </div>
             </div>
 
-            <!-- dynamic carousel of actual english blog posts -->
+            <!-- dynamic carousel of actual news posts -->
             <div ref="blogScrollContainer"
                 class="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-6 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 
                 <NuxtLink 
                     v-for="article in articles" 
                     :key="article.slug" 
-                    :to="localePath('/blog/' + article.slug)"
+                    :to="localePath('/news/' + article.slug)"
                     class="w-[280px] sm:w-[350px] md:w-[400px] flex-shrink-0 snap-start group cursor-pointer blog-card block"
                 >
                     <div class="aspect-[16/10] rounded-3xl overflow-hidden mb-6 bg-white/5 border border-white/10 shadow-lg relative">
@@ -51,7 +51,7 @@
                     
                     <div class="flex items-center gap-4 mb-4">
                         <span class="px-3 py-1 bg-white/10 text-primary text-[10px] font-bold rounded-full tracking-widest uppercase">
-                            {{ article.category }}
+                            {{ $t('news_page.categories.' + article.category) || article.category }}
                         </span>
                         <span class="text-white/40 text-xs font-bold tracking-widest">
                             {{ article.date }}
@@ -73,15 +73,39 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { articles } from '~/data/articles/index'
 
 const localePath = useLocalePath()
 const sectionRef = ref(null)
 const blogScrollContainer = ref(null)
+const apiBaseUrl = useApiBaseUrl()
+const { locale } = useI18n()
+
+const { data: newsResponse } = await useAsyncData('home-news', () =>
+    $fetch(`${apiBaseUrl}/news`, {
+        query: { limit: 6 }
+    }),
+    { server: true }
+)
+
+const articles = computed(() => {
+    const rawData = newsResponse.value?.data || newsResponse.value || []
+    const newsData = Array.isArray(rawData) ? rawData : []
+    const lang = locale.value === 'id' ? 'id-ID' : locale.value === 'kr' ? 'ko-KR' : 'en-US'
+
+    return newsData.slice(0, 6).map(article => ({
+        id: article.id || article.uuid,
+        slug: article.slug || article.id || article.uuid,
+        title: article.title,
+        excerpt: article.excerpt || '',
+        category: article.category || 'event',
+        date: article.published_at ? new Date(article.published_at).toLocaleDateString(lang, { day: 'numeric', month: 'short', year: 'numeric' }) : new Date(article.created_at).toLocaleDateString(lang, { day: 'numeric', month: 'short', year: 'numeric' }),
+        image: article.image_url || 'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=400&h=250&fit=crop'
+    }))
+})
 
 onMounted(() => {
     gsap.registerPlugin(ScrollTrigger)

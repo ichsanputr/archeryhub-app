@@ -161,6 +161,9 @@
     transition: background-size 0.25s ease;
 }
 
+.group:hover .link-underline,
+a:hover .link-underline,
+button:hover .link-underline,
 .link-underline:hover {
     background-size: 100% 2px;
 }
