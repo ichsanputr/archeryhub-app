@@ -28,22 +28,22 @@
       </div>
 
       <!-- Main Navigation (Visible only on Landing/Home context) -->
-      <nav v-if="transparent || !isDashboard" class="hidden lg:flex items-center gap-6 xl:gap-8 ml-4">
+      <nav v-if="transparent || !isDashboard" class="hidden lg:flex items-center gap-6 xl:gap-8 ml-4 h-full">
         <NuxtLink to="/"
-          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-primary' : 'text-white/80 hover:text-primary', { '!text-primary font-bold': route.path === '/' }]"
-          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">
-          <span class="link-underline" :style="route.path === '/' ? 'background-size: 100% 2px' : ''">{{ t('nav.home') }}</span>
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-primary' : 'text-white/80 hover:text-primary', { '!text-primary font-bold !border-primary': route.path === '/' }]"
+          class="font-black text-sm transition-all h-full flex items-center px-1 border-b-2 border-transparent hover:border-primary">
+          {{ t('nav.home') }}
         </NuxtLink>
         <NuxtLink to="/events"
-          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-primary' : 'text-white/80 hover:text-primary', { '!text-primary font-bold': route.path.startsWith('/events') }]"
-          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">
-          <span class="link-underline" :style="route.path.startsWith('/events') ? 'background-size: 100% 2px' : ''">{{ t('nav.features') }}</span>
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-primary' : 'text-white/80 hover:text-primary', { '!text-primary font-bold !border-primary': route.path.startsWith('/events') }]"
+          class="font-black text-sm transition-all h-full flex items-center px-1 border-b-2 border-transparent hover:border-primary">
+          {{ t('nav.features') }}
         </NuxtLink>
 
         <NuxtLink to="/news"
-          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-primary' : 'text-white/80 hover:text-primary', { '!text-primary font-bold': route.path.startsWith('/news') }]"
-          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">
-          <span class="link-underline" :style="route.path.startsWith('/news') ? 'background-size: 100% 2px' : ''">{{ t('nav.news') }}</span>
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-primary' : 'text-white/80 hover:text-primary', { '!text-primary font-bold !border-primary': route.path.startsWith('/news') }]"
+          class="font-black text-sm transition-all h-full flex items-center px-1 border-b-2 border-transparent hover:border-primary">
+          {{ t('nav.news') }}
         </NuxtLink>
       </nav>
 

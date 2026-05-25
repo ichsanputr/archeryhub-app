@@ -4,7 +4,7 @@
 
         <!-- Toolbar -->
         <div v-if="editor"
-            class="toolbar flex flex-wrap gap-0.5 p-2 bg-gray-50 border-b border-gray-200 rounded-t-xl sticky top-0 z-20">
+            class="toolbar flex flex-wrap gap-0.5 p-2 bg-gray-50 border-b border-gray-200 rounded-t-xl z-20">
 
             <!-- Undo / Redo -->
             <div class="flex gap-0.5">

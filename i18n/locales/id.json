@@ -487,6 +487,19 @@
     "not_found_desc": "Dokumentasi yang kamu cari mungkin telah dipindahkan atau belum tersedia.",
     "back_to_docs": "Kembali ke Docs",
     "updated_at": "Diperbarui Maret 2026",
+    "share_title": "Bagikan artikel ini",
+    "copied": "Tersalin!",
+    "copy_link": "Salin Link",
+    "comments_title": "Diskusi",
+    "comment_name": "Nama Anda",
+    "comment_name_placeholder": "Masukkan nama Anda...",
+    "commenting_as": "Berkomentar sebagai",
+    "comment_message": "Komentar",
+    "comment_message_placeholder": "Tulis pikiran Anda di sini...",
+    "submitting": "Mengirim...",
+    "submit_comment": "Kirim Komentar",
+    "loading_comments": "Memuat komentar...",
+    "no_comments": "Belum ada komentar. Jadilah yang pertama membagikan pemikiran Anda!",
     "categories": {
       "all": "Semua",
       "platform": "Platform",
@@ -2104,7 +2117,8 @@
       "visibility_faq": "FAQ",
       "view_public_page": "Lihat Halaman Publik",
       "slug_not_set": "Slug belum diatur",
-      "banner_desc": "Unggah gambar banner untuk header profil Anda"
+      "banner_desc": "Unggah gambar banner (rasio aspek antara 1.8 dan 3.2, ideal 21:9)",
+      "logo_desc": "Unggah logo persegi (rasio aspek antara 0.8 dan 1.2, ideal 1:1)"
     },
     "bank_accounts": {
       "title": "Rekening Bank",
@@ -2607,6 +2621,7 @@
       "gender_label": "Jenis Kelamin",
       "gender_male": "Laki-laki",
       "gender_female": "Perempuan",
+      "gender_select": "Pilih Jenis Kelamin",
       "birth_date_label": "Tanggal Lahir",
       "city_label": "Kota",
       "city_placeholder": "Pilih Kota",

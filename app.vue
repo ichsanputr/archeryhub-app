@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
 nuxtApp.hook('page:finish', () => {
   setTimeout(() => {
     isPageLoading.value = false
-  }, 150)
+  }, 2500)
 })
 
 // Safety fallback for aborted/errored navigations
@@ -57,7 +57,7 @@ router.afterEach(() => {
     if (isPageLoading.value) {
       isPageLoading.value = false
     }
-  }, 1000)
+  }, 2500)
 })
 
 // Force page to remount when route changes (fixes blank page on browser back / touchpad back)

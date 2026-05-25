@@ -12,13 +12,13 @@
         </NuxtLink>
 
         <!-- Desktop Navigation -->
-        <nav class="hidden md:flex items-center gap-8">
+        <nav class="hidden md:flex items-center gap-8 h-full">
           <!-- Turnamen with Mega Menu -->
-          <div class="relative" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
+          <div class="relative h-full flex items-center" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
             <button
-            class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary px-3 py-1.5 rounded-lg text-gray-600"
-              :class="{ '!text-primary font-bold': isActive('/events') }">
-              <span class="link-underline" :style="isActive('/events') ? 'background-size: 100% 2px' : ''">Event</span>
+            class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary px-1 h-full border-b-2 border-transparent hover:border-primary text-gray-600"
+              :class="{ '!text-primary !border-primary font-bold': isActive('/events') }">
+              <span>Event</span>
               <Icon icon="ph:caret-down" class="text-xs transition-transform" :class="{ 'rotate-180': showMegaMenu }" />
             </button>
 
@@ -93,21 +93,21 @@
 
 
           <NuxtLink to="/archers"
-            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
-            :class="{ '!text-primary font-bold': isActive('/archers') }">
-            <span class="link-underline" :style="isActive('/archers') ? 'background-size: 100% 2px' : ''">{{ t('nav.archers') }}</span></NuxtLink>
+            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-primary"
+            :class="{ '!text-primary !border-primary font-bold': isActive('/archers') }">
+            {{ t('nav.archers') }}</NuxtLink>
           <NuxtLink to="/blog"
-            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
-            :class="{ '!text-primary font-bold': isActive('/blog') }">
-            <span class="link-underline" :style="isActive('/blog') ? 'background-size: 100% 2px' : ''">{{ t('nav.blog') }}</span></NuxtLink>
+            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-primary"
+            :class="{ '!text-primary !border-primary font-bold': isActive('/blog') }">
+            {{ t('nav.blog') }}</NuxtLink>
           <NuxtLink to="/docs"
-            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
-            :class="{ '!text-primary font-bold': isActive('/docs') }">
-            <span class="link-underline" :style="isActive('/docs') ? 'background-size: 100% 2px' : ''">{{ t('nav.docs') }}</span></NuxtLink>
+            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-primary"
+            :class="{ '!text-primary !border-primary font-bold': isActive('/docs') }">
+            {{ t('nav.docs') }}</NuxtLink>
           <NuxtLink to="/pricing"
-            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-3 py-1.5 rounded-lg hover:text-primary"
-            :class="{ '!text-primary font-bold': isActive('/pricing') }">
-            <span class="link-underline" :style="isActive('/pricing') ? 'background-size: 100% 2px' : ''">{{ t('nav.pricing') }}</span>
+            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-primary"
+            :class="{ '!text-primary !border-primary font-bold': isActive('/pricing') }">
+            {{ t('nav.pricing') }}
           </NuxtLink>
         </nav>
 

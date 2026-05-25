@@ -52,6 +52,31 @@
             </div>
         </div>
 
+        <!-- Tabs & Add Button -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-200 gap-4">
+            <div class="flex">
+                <button @click="currentTab = 'organization'"
+                    class="px-6 py-3 text-sm font-bold border-b-2 transition-all flex items-center gap-2"
+                    :class="currentTab === 'organization' ? 'border-navy text-navy font-black' : 'border-transparent text-gray-400 hover:text-gray-600'">
+                    <Icon icon="ph:buildings-bold" />
+                    <span>Organizations</span>
+                </button>
+                <button @click="currentTab = 'club'"
+                    class="px-6 py-3 text-sm font-bold border-b-2 transition-all flex items-center gap-2"
+                    :class="currentTab === 'club' ? 'border-navy text-navy font-black' : 'border-transparent text-gray-400 hover:text-gray-600'">
+                    <Icon icon="ph:shield-bold" />
+                    <span>Clubs</span>
+                </button>
+            </div>
+            <div class="flex items-center gap-2 sm:pb-2">
+                <button v-if="currentTab === 'club'" @click="openAddClub"
+                    class="h-10 px-4 rounded-xl bg-primary text-navy font-bold text-xs hover:bg-primary-hover shadow-md hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                    <Icon icon="ph:plus-bold" />
+                    <span>Add Club</span>
+                </button>
+            </div>
+        </div>
+
         <!-- Filters -->
         <div
             class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
@@ -335,6 +360,63 @@
                 </div>
             </div>
         </div>
+
+        <!-- Add Club Modal -->
+        <div v-if="showAddClubModal"
+            class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+            @click.self="showAddClubModal = false">
+            <div
+                class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 space-y-6 animate-in zoom-in-95 duration-200">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="size-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:shield-bold" class="text-navy text-xl" />
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-black text-navy tracking-tight">Add New Club</h3>
+                        <div class="text-[10px] font-bold text-gray-400 mt-0.5">Register a new club data master</div>
+                    </div>
+                </div>
+
+                <form @submit.prevent="submitAddClub" class="space-y-4">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Club Name</label>
+                        <input v-model="clubForm.name" type="text" required placeholder="e.g. Archery Club Elite"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Abbreviation / Acronym</label>
+                        <input v-model="clubForm.acronym" type="text" placeholder="e.g. ACE"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Registration Email</label>
+                        <input v-model="clubForm.email" type="email" required placeholder="e.g. contact@club.com"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Password</label>
+                        <input v-model="clubForm.password" type="password" required placeholder="••••••••"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
+                    </div>
+
+                    <div class="flex gap-3 pt-4">
+                        <button type="button" @click="showAddClubModal = false"
+                            class="flex-1 py-3 border border-gray-200 rounded-xl text-xs font-black text-gray-500 hover:bg-gray-50 transition-all tracking-widest">
+                            Cancel
+                        </button>
+                        <button type="submit" :disabled="addClubLoading || !clubForm.name || !clubForm.email || !clubForm.password"
+                            class="flex-1 py-3 bg-navy text-primary rounded-xl text-xs font-black hover:bg-navy/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2 tracking-widest shadow-lg shadow-navy/20">
+                            <Icon v-if="addClubLoading" icon="ph:spinner-bold" class="animate-spin" />
+                            Save Club
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -367,12 +449,59 @@ watch([searchQuery, statusFilter], () => {
     currentPage.value = 1
 })
 
-// Fetch Organization Subscriptions
+const currentTab = ref('organization')
+const showAddClubModal = ref(false)
+const addClubLoading = ref(false)
+const clubForm = ref({
+    name: '',
+    acronym: '',
+    email: '',
+    password: ''
+})
+
+const openAddClub = () => {
+    clubForm.value = {
+        name: '',
+        acronym: '',
+        email: '',
+        password: ''
+    }
+    showAddClubModal.value = true
+}
+
+const submitAddClub = async () => {
+    addClubLoading.value = true
+    try {
+        await $fetch(`${apiBaseUrl}/root/dashboard/users`, {
+            method: 'POST',
+            body: {
+                user_type: 'club',
+                name: clubForm.value.name,
+                acronym: clubForm.value.acronym,
+                email: clubForm.value.email,
+                password: clubForm.value.password
+            },
+            credentials: 'include'
+        })
+        showAddClubModal.value = false
+        successMessage.value = 'Club added successfully'
+        showSuccessToast.value = true
+        setTimeout(() => { showSuccessToast.value = false }, 5000)
+        await refreshSubs()
+    } catch (err) {
+        alert(err.data?.error || 'Failed to add club')
+    } finally {
+        addClubLoading.value = false
+    }
+}
+
+// Fetch Subscriptions (dependent on currentTab)
 const { data: subData, refresh: refreshSubs } = await useFetch(
-    `${apiBaseUrl}/root/dashboard/subscriptions?type=organization`,
+    () => `${apiBaseUrl}/root/dashboard/subscriptions?type=${currentTab.value}`,
     {
-        key: 'root-subscriptions-organizations',
-        credentials: 'include'
+        key: 'root-subscriptions-dynamic',
+        credentials: 'include',
+        watch: [currentTab]
     }
 )
 

@@ -391,6 +391,19 @@
     "not_found_desc": "The documentation you are looking for might have been moved or is not yet available.",
     "back_to_docs": "Back to Docs",
     "updated_at": "Updated March 2026",
+    "share_title": "Share this article",
+    "copied": "Copied!",
+    "copy_link": "Copy Link",
+    "comments_title": "Discussion",
+    "comment_name": "Your Name",
+    "comment_name_placeholder": "Enter your name...",
+    "commenting_as": "Commenting as",
+    "comment_message": "Comment",
+    "comment_message_placeholder": "Write your thoughts...",
+    "submitting": "Submitting...",
+    "submit_comment": "Submit Comment",
+    "loading_comments": "Loading comments...",
+    "no_comments": "No comments yet. Be the first to share your thoughts!",
     "categories": {
       "all": "All",
       "platform": "Platform",
@@ -2016,7 +2029,8 @@
       "visibility_faq": "FAQ",
       "view_public_page": "View Public Page",
       "slug_not_set": "Slug not yet configured",
-      "banner_desc": "Upload a banner image for your profile header"
+      "banner_desc": "Upload a banner image (aspect ratio between 1.8 and 3.2, ideal 21:9)",
+      "logo_desc": "Upload a square logo (aspect ratio between 0.8 and 1.2, ideal 1:1)"
     },
     "bank_accounts": {
       "title": "Bank Accounts",
@@ -2614,6 +2628,7 @@
       "gender_label": "Gender",
       "gender_male": "Male",
       "gender_female": "Female",
+      "gender_select": "Select Gender",
       "birth_date_label": "Date of Birth",
       "city_label": "City",
       "city_placeholder": "Select City",

@@ -3,7 +3,7 @@
     <!-- Header -->
     <div>
       <h1 class="text-3xl font-black text-navy">{{ t('settings.title') }}</h1>
-      <p class="text-text-secondary mt-1 font-medium">{{ t('settings.subtitle') }}</p>
+      <div class="text-text-secondary mt-1 font-medium">{{ t('settings.subtitle') }}</div>
     </div>
 
     <!-- Settings Nav Tabs -->
@@ -22,7 +22,7 @@
 
       <div>
         <h3 class="text-xl font-bold text-navy mb-2">{{ t('settings.security_title') }}</h3>
-        <p class="text-gray-500 text-sm mb-6">{{ t('settings.security_subtitle') }}</p>
+        <div class="text-gray-500 text-sm mb-6">{{ t('settings.security_subtitle') }}</div>
 
         <!-- Email Change Section -->
         <div class="mb-8">
@@ -54,13 +54,13 @@
                   {{ t('settings.send_otp') }}
                 </BaseButton>
               </div>
-              <p class="text-[10px] text-gray-400 mt-2">{{ t('settings.email_hint') }}</p>
+              <div class="text-[10px] text-gray-400 mt-2">{{ t('settings.email_hint') }}</div>
             </div>
 
             <div v-else class="space-y-4 pt-2 animate-in fade-in slide-in-from-top-2">
               <div class="p-3 bg-primary/10 border border-primary/20 rounded-xl flex items-center gap-3">
                 <Icon icon="ph:info-bold" class="text-primary" />
-                <p class="text-xs text-primary-dark font-medium" v-html="t('settings.otp_sent_to', { email: `<strong>${emailForm.new_email}</strong>` })"></p>
+                <div class="text-xs text-primary-dark font-medium" v-html="t('settings.otp_sent_to', { email: `<strong>${emailForm.new_email}</strong>` })"></div>
               </div>
 
               <div>
@@ -95,12 +95,12 @@
             <Icon :icon="hasPassword ? 'ph:check-circle-fill' : 'ph:warning-circle-fill'"
               :class="hasPassword ? 'text-green-500' : 'text-amber-500'" class="text-2xl" />
             <div>
-              <p class="font-bold" :class="hasPassword ? 'text-green-700' : 'text-amber-700'">
+              <div class="font-bold" :class="hasPassword ? 'text-green-700' : 'text-amber-700'">
                 {{ passwordStatusLabel }}
-              </p>
-              <p class="text-sm" :class="hasPassword ? 'text-green-600' : 'text-amber-600'">
+              </div>
+              <div class="text-sm" :class="hasPassword ? 'text-green-600' : 'text-amber-600'">
                 {{ passwordStatusDescription }}
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -118,8 +118,8 @@
                   <Icon icon="flat-color-icons:google" class="text-xl" />
                 </div>
                 <div>
-                  <p class="font-bold text-navy">{{ t('settings.google_login') }}</p>
-                  <p class="text-xs text-gray-400">{{ t('settings.google_login_desc') }}</p>
+                  <div class="font-bold text-navy">{{ t('settings.google_login') }}</div>
+                  <div class="text-xs text-gray-400">{{ t('settings.google_login_desc') }}</div>
                 </div>
               </div>
               <div class="flex items-center gap-2">
@@ -139,8 +139,8 @@
                   <Icon icon="ph:envelope-bold" class="text-xl text-gray-400" />
                 </div>
                 <div>
-                  <p class="font-bold text-navy">{{ t('settings.email_password') }}</p>
-                  <p class="text-xs text-gray-400">{{ t('settings.email_password_desc') }}</p>
+                  <div class="font-bold text-navy">{{ t('settings.email_password') }}</div>
+                  <div class="text-xs text-gray-400">{{ t('settings.email_password_desc') }}</div>
                 </div>
               </div>
               <span
@@ -183,7 +183,7 @@
         {{ t('settings.theme_title') }}
         <Icon v-if="isSyncing" icon="ph:circle-notch" class="animate-spin text-primary" />
       </h3>
-      <p class="text-gray-500 text-sm mb-6">{{ t('settings.theme_subtitle') }}</p>
+      <div class="text-gray-500 text-sm mb-6">{{ t('settings.theme_subtitle') }}</div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="(theme, key) in themes" :key="key" role="button"
@@ -219,7 +219,7 @@
                 <div class="size-3 rounded-full" :style="{ backgroundColor: theme.sidebarBg }"></div>
               </div>
             </div>
-            <p class="text-xs text-gray-400 capitalize">{{ t('settings.theme_look', { name: key }) }}</p>
+            <div class="text-xs text-gray-400 capitalize">{{ t('settings.theme_look', { name: key }) }}</div>
           </div>
 
           <!-- Selection Indicator -->
@@ -327,7 +327,6 @@ const accountForm = ref({
   gender: '',
   city: '',
   address: '',
-  school: '',
   bow_type: ''
 })
 
@@ -354,7 +353,6 @@ onMounted(async () => {
     accountForm.value.gender = response.gender || ''
     accountForm.value.city = response.city || ''
     accountForm.value.address = response.address || ''
-    accountForm.value.school = response.school || ''
     accountForm.value.bow_type = response.bow_type || ''
 
     // Store for reset
@@ -376,7 +374,6 @@ const saveAccountInfo = async () => {
       gender: accountForm.value.gender,
       city: accountForm.value.city,
       address: accountForm.value.address,
-      school: accountForm.value.school,
       bow_type: accountForm.value.bow_type
     })
     toast.success(t('settings.toast_save_success'))

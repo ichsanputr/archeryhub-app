@@ -361,6 +361,19 @@
     "not_found_desc": "찾으시는 문서가 다른 곳으로 이동되었거나 아직 제공되지 않았을 수 있습니다.",
     "back_to_docs": "문서 목록으로 돌아가기",
     "updated_at": "2026년 3월 업데이트됨",
+    "share_title": "이 문서 공유하기",
+    "copied": "복사 완료!",
+    "copy_link": "링크 복사",
+    "comments_title": "토론",
+    "comment_name": "이름",
+    "comment_name_placeholder": "이름을 입력하세요...",
+    "commenting_as": "댓글 작성자",
+    "comment_message": "댓글",
+    "comment_message_placeholder": "생각을 입력하세요...",
+    "submitting": "전송 중...",
+    "submit_comment": "댓글 등록",
+    "loading_comments": "댓글을 불러오는 중...",
+    "no_comments": "아직 댓글이 없습니다. 첫 번째 의견을 공유해 보세요!",
     "categories": {
       "all": "전체",
       "platform": "플랫폼",
@@ -1887,7 +1900,8 @@
       "visibility_faq": "FAQ",
       "view_public_page": "공개 페이지 보기",
       "slug_not_set": "슬러그가 아직 설정되지 않음",
-      "banner_desc": "프로필 헤더용 배너 이미지를 업로드하세요"
+      "banner_desc": "배너 이미지 업로드 (가로세로 비율 1.8 ~ 3.2, 권장 21:9)",
+      "logo_desc": "정사각형 로고 업로드 (가로세로 비율 0.8 ~ 1.2, 권장 1:1)"
     },
     "bank_accounts": {
       "title": "은행 계좌",
@@ -2450,6 +2464,7 @@
       "gender_label": "성별",
       "gender_male": "남성",
       "gender_female": "여성",
+      "gender_select": "성별 선택",
       "birth_date_label": "생년월일",
       "city_label": "도시",
       "city_placeholder": "도시 선택",

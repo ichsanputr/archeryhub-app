@@ -64,7 +64,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <NuxtLink v-for="doc in filteredDocs(cat.id)" :key="doc.slug" :to="`/docs/${doc.slug}`"
-                        class="group bg-white border border-gray-200/60 rounded-2.5xl p-6 hover:border-primary hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden h-full">
+                        class="group bg-white border border-gray-200/60 rounded-3xl p-6 hover:border-primary hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative overflow-hidden h-full">
                         <!-- Subtle Glow Effect -->
                         <div class="absolute -top-12 -right-12 w-24 h-24 bg-primary/10 group-hover:bg-primary/20 blur-xl rounded-full transition-all duration-300"></div>
 
@@ -77,7 +77,7 @@
                                 <h3
                                     class="font-black text-navy text-base mb-2 leading-snug group-hover:text-navy transition-colors">
                                     {{ doc.title }}</h3>
-                                <p class="text-gray-500 text-xs leading-relaxed line-clamp-2 font-medium">{{ doc.excerpt }}</p>
+                                <div class="text-gray-500 text-xs leading-relaxed line-clamp-2 font-medium">{{ doc.excerpt }}</div>
                             </div>
                         </div>
                         <div class="flex items-center mt-5 pt-4 border-t border-gray-100">

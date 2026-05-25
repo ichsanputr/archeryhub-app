@@ -87,9 +87,10 @@
 
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="space-y-1">
-                                        <label class="text-sm font-bold text-navy">{{ t('auth.register.gender_label') }}</label>
-                                        <select v-model="form.gender"
+                                        <label class="text-sm font-bold text-navy">{{ t('auth.register.gender_label') }} <span class="text-red-500">*</span></label>
+                                        <select v-model="form.gender" required
                                             class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+                                            <option value="">{{ t('auth.register.gender_select') || 'Select Gender' }}</option>
                                             <option value="male">{{ t('auth.register.gender_male') }}</option>
                                             <option value="female">{{ t('auth.register.gender_female') }}</option>
                                         </select>
@@ -99,25 +100,18 @@
                                         @update:model-value="validate('dateOfBirth', form.dateOfBirth, [rules.required()])" />
                                 </div>
 
-                                <div class="grid grid-cols-2 gap-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <BaseSelect v-model="form.city" :items="cities" :label="t('auth.register.city_label')"
                                         :placeholder="t('auth.register.city_placeholder')" required :error="errors.city" searchable
                                         @update:model-value="validate('city', form.city, [rules.required()])" />
-                                    <div class="space-y-1">
-                                        <label class="text-sm font-bold text-navy">{{ t('auth.register.bow_label') }}</label>
-                                        <select v-model="form.bowType"
-                                            class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-                                            <option value="recurve">{{ t('auth.register.bow_recurve') }}</option>
-                                            <option value="recurve">{{ t('auth.register.bow_standard') }}</option>
-                                            <option value="compound">{{ t('auth.register.bow_compound') }}</option>
-                                            <option value="barebow">{{ t('auth.register.bow_barebow') }}</option>
-                                            <option value="traditional">{{ t('auth.register.bow_traditional') }}</option>
-                                        </select>
-                                    </div>
+                                    
+                                    <ClubSelector
+                                        v-model="form.clubID"
+                                        v-model:newClubName="form.newClubName"
+                                        v-model:newClubAcronym="form.newClubAcronym"
+                                        required
+                                        label="Club" />
                                 </div>
-
-                                <BaseInput v-model="form.school" :label="t('auth.register.school_label')"
-                                    :placeholder="t('auth.register.school_placeholder')" />
 
                                 <p class="mt-2 text-xs text-gray-400 font-body italic">{{ t('auth.register.archer_note') }}</p>
                             </div>
@@ -133,14 +127,7 @@
                                     :error="errors.organizationName || (isNameTaken ? t('auth.register.name_taken_org') : '')"
                                     @update:model-value="validate('organizationName', form.organizationName, [rules.required(), rules.minLength(3)])" />
 
-                                <div class="grid grid-cols-2 gap-4">
-                                    <BaseInput v-model="form.acronym" :label="t('auth.register.acronym_label')"
-                                        :placeholder="t('auth.register.acronym_placeholder')" :error="errors.acronym"
-                                        @update:model-value="validate('acronym', form.acronym, [rules.minLength(2)])" />
-                                    <BaseInput v-model="form.whatsappNo" :label="t('auth.register.whatsapp_label')"
-                                        :placeholder="t('auth.register.whatsapp_placeholder')" required number-only :error="errors.whatsappNo"
-                                        @update:model-value="validate('whatsappNo', form.whatsappNo, [rules.required(), rules.minLength(10)])" />
-                                </div>
+                                <!-- Acronym and WhatsApp fields removed -->
 
                                 <div class="grid grid-cols-2 gap-4">
                                     <BaseSelect v-model="form.country" :label="t('auth.register.country_label')" :placeholder="t('auth.register.country_placeholder')" required
@@ -274,17 +261,18 @@ const form = ref({
     terms: false,
 
     // New Fields
-    gender: 'male',
+    gender: '',
     dateOfBirth: '',
     city: '',
-    country: 'Indonesia',
-    currency: 'IDR',
-    school: '',
-    bowType: 'recurve',
-    acronym: '',
-    whatsappNo: '',
+    country: '',
+    currency: '',
+    clubID: '',
+    newClubName: '',
+    newClubAcronym: '',
     address: ''
 })
+
+// Club variables removed
 
 const countries = ref([
     { title: 'Indonesia', value: 'Indonesia', icon: 'circle-flags:id' },
@@ -445,17 +433,53 @@ const handleGoogleRegister = async () => {
         }
 
         if (form.value.userType === 'archer') {
+            if (!form.value.gender) {
+                toast.error('Gender is required')
+                isGoogleLoading.value = false
+                return
+            }
+            if (!form.value.dateOfBirth) {
+                toast.error('Birth date is required')
+                isGoogleLoading.value = false
+                return
+            }
+            if (!form.value.city) {
+                toast.error('City is required')
+                isGoogleLoading.value = false
+                return
+            }
+            if (!form.value.clubID && !form.value.newClubName) {
+                toast.error('Club is required')
+                isGoogleLoading.value = false
+                return
+            }
+
             Object.assign(metadata, {
                 gender: form.value.gender,
                 date_of_birth: form.value.dateOfBirth,
                 city: form.value.city,
-                school: form.value.school,
-                bow_type: form.value.bowType
+                club_id: form.value.clubID || '',
+                new_club_name: form.value.newClubName || '',
+                new_club_acronym: form.value.newClubAcronym || ''
             })
         } else if (form.value.userType === 'organization') {
+            if (!form.value.country) {
+                toast.error('Country is required')
+                isGoogleLoading.value = false
+                return
+            }
+            if (!form.value.currency) {
+                toast.error('Currency is required')
+                isGoogleLoading.value = false
+                return
+            }
+            if (!form.value.address) {
+                toast.error('Address is required')
+                isGoogleLoading.value = false
+                return
+            }
+
             Object.assign(metadata, {
-                acronym: form.value.acronym,
-                whatsapp_no: form.value.whatsappNo,
                 country: form.value.country,
                 currency: form.value.currency,
                 address: form.value.address

@@ -10,9 +10,9 @@
           <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none ">
             {{ t('organization.profile.title') }}
           </h1>
-          <p class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider ">
+          <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider ">
             {{ t('organization.profile.subtitle') }}
-          </p>
+          </div>
         </div>
       </div>
       <div class="flex gap-3">
@@ -74,7 +74,10 @@
             <div class="space-y-8">
               <!-- Logo Upload -->
               <div class="space-y-4">
-                <label class="block text-sm font-black text-navy">{{ t('organization.profile.logo_label') }}</label>
+                <div>
+                  <label class="block text-sm font-black text-navy">{{ t('organization.profile.logo_label') }}</label>
+                  <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider">{{ t('organization.profile.logo_desc') }}</div>
+                </div>
                 <div class="flex flex-col items-center gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100">
                   <div
                     class="w-32 h-32 rounded-2xl bg-white border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center shadow-inner group">
@@ -95,7 +98,10 @@
 
               <!-- Banner Upload -->
               <div class="space-y-4">
-                <label class="block text-sm font-black text-navy">{{ t('organization.profile.banner_label') }}</label>
+                <div>
+                  <label class="block text-sm font-black text-navy">{{ t('organization.profile.banner_label') }}</label>
+                  <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider">{{ t('organization.profile.banner_desc') }}</div>
+                </div>
                 <div class="relative group">
                   <div
                     class="h-44 rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center shadow-inner">
@@ -103,7 +109,7 @@
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div v-else class="text-center p-6">
                       <Icon icon="ph:image-square-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
-                      <p class="text-[10px] text-gray-400 font-bold  tracking-wider">{{ t('organization.profile.banner_desc') }}</p>
+                      <div class="text-[10px] text-gray-400 font-bold  tracking-wider">{{ t('organization.profile.banner_desc') }}</div>
                     </div>
                   </div>
                   <div class="mt-4 flex gap-2">
@@ -157,14 +163,14 @@
                     <Icon :icon="plat.icon" :class="plat.iconColor" />
                     {{ plat.title }}
                   </button>
-                  <p v-if="remainingPlatforms.length === 0" class="px-4 py-2 text-xs text-gray-400 italic">
+                  <div v-if="remainingPlatforms.length === 0" class="px-4 py-2 text-xs text-gray-400 italic">
                     {{ t('organization.profile.all_platforms_added') }}
-                  </p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <p class="text-sm text-gray-500 font-medium">{{ t('organization.profile.social_desc') }}</p>
+            <div class="text-sm text-gray-500 font-medium">{{ t('organization.profile.social_desc') }}</div>
 
             <div class="grid grid-cols-1 gap-4 mt-2">
               <div v-for="(social, idx) in form.socialMedia" :key="social.platform"
@@ -192,7 +198,7 @@
               <div v-if="form.socialMedia.length === 0"
                 class="py-12 text-center border-2 border-dashed border-gray-100 rounded-2xl">
                 <Icon icon="ph:share-network" class="text-4xl text-gray-200 mx-auto mb-3" />
-                <p class="text-sm text-gray-400 font-bold tracking-widest">{{ t('organization.profile.no_social_added') }}</p>
+                <div class="text-sm text-gray-400 font-bold tracking-widest">{{ t('organization.profile.no_social_added') }}</div>
               </div>
             </div>
           </div>
@@ -258,7 +264,7 @@
               <div v-if="form.faq.length === 0"
                 class="text-center py-12 border-2 border-dashed border-gray-100 rounded-3xl">
                 <Icon icon="ph:chat-centered-dots-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
-                <p class="text-sm text-gray-400 font-bold  tracking-widest">{{ t('organization.profile.no_faq') }}</p>
+                <div class="text-sm text-gray-400 font-bold  tracking-widest">{{ t('organization.profile.no_faq') }}</div>
                 <button @click="addFAQ"
                   class="mt-4 px-4 py-2 bg-navy text-white text-xs font-black rounded-xl shadow-md hover:bg-navy-dark transition">{{ t('organization.profile.create_first_faq') }}</button>
               </div>
@@ -273,7 +279,7 @@
           <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
             <Icon icon="ph:gear-six-bold" class="text-primary text-lg" /> {{ t('organization.profile.visibility_section') }}
           </h3>
-          <p class="text-xs text-gray-500 font-medium">{{ t('organization.profile.visibility_desc') }}</p>
+          <div class="text-xs text-gray-500 font-medium">{{ t('organization.profile.visibility_desc') }}</div>
           <div class="space-y-4 pt-2">
             <BaseCheckbox v-model="pageSettings.sections.identity" :label="t('organization.profile.visibility_identity')" />
             <BaseCheckbox v-model="pageSettings.sections.contact" :label="t('organization.profile.visibility_contact')" />
@@ -291,12 +297,12 @@
             {{ t('organization.profile.public_profile') }}
             <Icon icon="ph:check-circle-fill" class="text-primary" />
           </h3>
-          <p class="text-xs text-blue-200 mb-6 relative z-10 leading-relaxed font-medium">{{ t('organization.profile.public_profile_desc') }}</p>
+          <div class="text-xs text-blue-200 mb-6 relative z-10 leading-relaxed font-medium">{{ t('organization.profile.public_profile_desc') }}</div>
           <NuxtLink v-if="form.slug" :to="`/organization/${form.slug}`" target="_blank"
             class="relative z-10 block w-full py-3.5 bg-primary text-navy font-black rounded-2xl text-center hover:bg-primary-hover hover:scale-[1.02] transition-all shadow-md active:scale-95">
             {{ t('organization.profile.view_public_page') }}
           </NuxtLink>
-          <p v-else class="text-xs text-blue-300 italic relative z-10">{{ t('organization.profile.slug_not_set') }}</p>
+          <div v-else class="text-xs text-blue-300 italic relative z-10">{{ t('organization.profile.slug_not_set') }}</div>
         </div>
       </div>
     </div>
@@ -484,11 +490,38 @@ const openMediaLibrary = (target) => {
 
 const handleMediaSelect = (media) => {
   if (mediaTarget.value === 'logo') {
-    form.logoUrl = media.url
+    const img = new Image()
+    img.src = media.url
+    img.onload = () => {
+      const ratio = img.width / img.height
+      if (ratio < 0.8 || ratio > 1.2) {
+        toast.error('Logo image must be approximately square (aspect ratio between 0.8 and 1.2, ideal 1:1)')
+        return
+      }
+      form.logoUrl = media.url
+      showMediaLibrary.value = false
+    }
+    img.onerror = () => {
+      form.logoUrl = media.url
+      showMediaLibrary.value = false
+    }
   } else if (mediaTarget.value === 'banner') {
-    form.bannerUrl = media.url
+    const img = new Image()
+    img.src = media.url
+    img.onload = () => {
+      const ratio = img.width / img.height
+      if (ratio < 1.8 || ratio > 3.2) {
+        toast.error('Banner image must be wide (aspect ratio between 1.8 and 3.2, ideal 21:9)')
+        return
+      }
+      form.bannerUrl = media.url
+      showMediaLibrary.value = false
+    }
+    img.onerror = () => {
+      form.bannerUrl = media.url
+      showMediaLibrary.value = false
+    }
   }
-  showMediaLibrary.value = false
 }
 
 // Social media handlers
