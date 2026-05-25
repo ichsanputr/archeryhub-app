@@ -1,0 +1,2 @@
+import{a1 as s,c as n,a as e,b as o,t as c,u as i,o as _,a2 as r,a3 as l}from"./aBkB_kbd.js";const p=r(l),d={class:"flex items-center justify-center min-h-[60vh]"},m={class:"flex flex-col items-center gap-4"},x={class:"text-gray-400 font-bold animate-pulse"},b={__name:"index",setup(f){const{t}=s();return(u,h)=>{const a=p;return _(),n("div",d,[e("div",m,[o(a,{icon:"ph:spinner-gap-bold",class:"text-4xl text-primary animate-spin"}),e("p",x,c(i(t)("common.loading_dashboard","Loading...")),1)])])}}};export{b as default};
+//# sourceMappingURL=gwopZ0Sn.js.map

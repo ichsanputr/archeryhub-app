@@ -1,0 +1,2 @@
+import{i as o,J as n,k as c,c as r,a as e,b as i,u as s,t as l,o as d,I as p}from"./aBkB_kbd.js";const _={class:"flex items-center justify-center min-h-[60vh]"},u={class:"flex flex-col items-center gap-4"},m={class:"text-gray-400 font-bold animate-pulse"},g={__name:"index",setup(h){const{t}=o(),a=n();return c(()=>{a.replace("/dashboard/archer/events")}),(x,f)=>(d(),r("div",_,[e("div",u,[i(s(p),{icon:"ph:spinner-gap-bold",class:"text-4xl text-primary animate-spin"}),e("p",m,l(s(t)("loading_dashboard")),1)])]))}};export{g as default};
+//# sourceMappingURL=D6cJTpJh.js.map
