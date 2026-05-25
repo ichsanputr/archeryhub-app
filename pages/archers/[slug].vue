@@ -520,7 +520,7 @@ definePageMeta({ layout: 'landing' })
 const router = useRouter()
 const route = useRoute()
 const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
+const apiBaseUrl = useApiBaseUrl()
 const { t } = useI18n()
 
 onMounted(() => {

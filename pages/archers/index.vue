@@ -207,7 +207,7 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
+const apiBaseUrl = useApiBaseUrl()
 
 const route = useRoute()
 const router = useRouter()

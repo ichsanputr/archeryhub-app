@@ -14,7 +14,7 @@ const filters = ref({
   offset: 0
 })
 
-const apiBaseUrl = useRuntimeConfig().public.apiBaseUrl
+const apiBaseUrl = useApiBaseUrl()
 
 // Fetch categories with pagination
 const { data: categoriesData, pending: categoriesPending, error: categoriesError } = await useAsyncData('categories-section', async () => {

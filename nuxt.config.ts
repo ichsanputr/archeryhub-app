@@ -92,6 +92,7 @@ export default defineNuxtConfig({
     "~/assets/scss/main.scss",
   ],
   runtimeConfig: {
+    apiBaseUrl: '', // server-side internal api url override
     public: {
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://api.archeris.net',
       siteUrl: 'https://archeris.net',
