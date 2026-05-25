@@ -1,260 +1,76 @@
 <template>
-    <div class="flex flex-col gap-8">
-        <!-- Header Section -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                        <NuxtLink to="/dashboard/organization/news" class="hover:text-primary transition-colors">{{ t('organization_news.index.title') }}
-                    </NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">Detail</span>
-                </div>
-                <h1 class="text-3xl font-extrabold text-navy tracking-tight">{{ article.title }}</h1>
-            </div>
-            <div class="flex items-center gap-3">
-                <NuxtLink :to="`/dashboard/organization/news/${route.params.slug}/edit`">
-                    <BaseButton variant="outline" icon="ph:pencil-simple">
-                        Edit
-                    </BaseButton>
-                </NuxtLink>
-                <BaseButton variant="white" icon="ph:trash" @click="confirmDelete" class="text-red-500 hover:bg-red-50">
-                    {{ t('organization_news.detail.delete') }}
-                </BaseButton>
+  <div class="flex flex-col gap-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="text-sm text-gray-500 mb-2">
+          <NuxtLink to="/dashboard">Dashboard</NuxtLink>
+          <span class="mx-2">/</span>
+          <NuxtLink to="/dashboard/organization/news">{{ t('organization_news.index.title') }}</NuxtLink>
+          <span class="mx-2">/</span>
+          <span class="font-bold">Detail</span>
         </div>
-
-        <!-- Main Content -->
-            <!-- Article Content -->
-            <div class="lg:col-span-2">
-                <article class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                    <!-- Featured Image -->
-                    <div class="relative h-80 bg-gradient-to-br from-navy to-blue-800">
-                        <img v-if="article.image_url" :src="article.image_url" class="w-full h-full object-cover" />
-                        <div v-else class="w-full h-full flex items-center justify-center">
-                            <Icon icon="ph:newspaper" class="text-7xl text-white/20" />
-                        </div>
-
-                        <!-- Category Badge -->
-                        <div class="absolute top-6 left-6">
-                            <span :class="[
-                                'px-4 py-1.5 rounded-full text-sm font-bold  tracking-wider backdrop-blur-sm',
-                                articleCategoryLower === 'event' ? 'bg-blue-500/90 text-white' :
-                                    articleCategoryLower === 'pengumuman' ? 'bg-amber-500/90 text-white' :
-                                        articleCategoryLower === 'prestasi' ? 'bg-green-500/90 text-white' :
-                                            'bg-gray-500/90 text-white'
-                            ]">
-                                {{ capitalizeChip(article.category) }}
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Content -->
-                    <div class="p-8">
-                        <!-- Meta Info -->
-                        <div class="flex items-center gap-4 text-sm text-gray-400 mb-6 pb-6 border-b border-gray-100">
-                            <div class="flex items-center gap-2">
-                                <div
-                                    class="h-8 w-8 rounded-full bg-navy text-white flex items-center justify-center text-sm font-bold">
-                                    {{ (article.author_name || 'A').charAt(0) }}
-                                </div>
-                                <span class="font-medium text-gray-600">{{ article.author_name || 'Admin' }}</span>
-                            </div>
-                            <div class="h-4 w-px bg-gray-200"></div>
-                            <div class="flex items-center gap-1.5">
-                                <Icon icon="ph:calendar" />
-                                <span>{{ formatDate(article.published_at || article.created_at) }}</span>
-                            </div>
-                            <div class="h-4 w-px bg-gray-200"></div>
-                            <div class="flex items-center gap-1.5">
-                                <Icon icon="ph:clock" />
-                                <span>{{ article.readTime || 5 }} menit baca</span>
-                            </div>
-                        </div>
-
-                                    <div class="flex items-center gap-1.5">
-                                        <Icon icon="ph:clock" />
-                                        <span>{{ article.readTime || 5 }} {{ t('organization_news.detail.read_time_unit') }}</span>
-
-                            <div v-html="article.content"></div>
-                        </div>
-
-                        <!-- Tags -->
-                        <div class="mt-8 pt-6 border-t border-gray-100">
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <span class="text-sm text-gray-400 font-medium">Tags:</span>
-                                <span v-for="tag in parsedTags" :key="tag"
-                                    class="px-3 py-1 bg-gray-100 text-gray-600 text-sm font-medium rounded-full hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">
-                                    {{ capitalizeChip(tag) }}
-                                </span>
-                                <span v-if="parsedTags.length === 0" class="text-sm text-gray-400">-</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            </div>
-
-            <!-- Sidebar -->
-            <div class="space-y-6">
-                <!-- Status Card -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h3 class="font-bold text-navy mb-4 flex items-center gap-2">
-                        <Icon icon="ph:info" class="text-primary" />
-                        Status Berita
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">{{ t('organization_news.detail.created_label') }}</span>
-                            <span class="text-sm font-medium text-gray-700">{{ formatDate(article.created_at, true) }}</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">{{ t('organization_news.detail.updated_label') }}</span>
-                            <span class="text-sm font-medium text-gray-700">{{ formatDate(article.updated_at, true) }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Stats Card -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h3 class="font-bold text-navy mb-4 flex items-center gap-2">
-                        <Icon icon="ph:chart-line-up" class="text-primary" />
-                        Statistik
-                    </h3>
-                    <div class="space-y-3">
-                        <div class="grid grid-cols-3 gap-3">
-                                {{ t('organization_news.detail.stats_heading') }}
-                                <p class="text-[10px] font-black tracking-widest text-gray-400">Views</p>
-                                <p class="text-xl font-black text-navy mt-1">{{ article.views?.toLocaleString() || 0 }}
-                                </p>
-                            </div>
-                                        <p class="text-[10px] font-black tracking-widest text-gray-400">{{ t('organization_news.detail.stats_views') }}</p>
-                                <p class="text-[10px] font-black tracking-widest text-gray-400">Words</p>
-                                <p class="text-xl font-black text-navy mt-1">{{ wordCount.toLocaleString() }}</p>
-                            </div>
-                                        <p class="text-[10px] font-black tracking-widest text-gray-400">{{ t('organization_news.detail.stats_words') }}</p>
-                                <p class="text-[10px] font-black tracking-widest text-gray-400">Read Time</p>
-                                <p class="text-xl font-black text-navy mt-1">{{ readTimeMinutes }}m</p>
-                            </div>
-                                        <p class="text-[10px] font-black tracking-widest text-gray-400">{{ t('organization_news.detail.stats_read_time') }}</p>
-
-                        <div class="rounded-xl border border-gray-100 bg-gray-50 p-3">
-                            <div class="flex items-center justify-between text-xs font-bold">
-                                <span class="text-gray-500 tracking-widest">Status</span>
-                                <span :class="article.status === 'published' ? 'text-green-600' : 'text-amber-600'">
-                                    {{ article.status === 'published' ? 'Published' : 'Draft' }}
-                                </span>
-                            </div>
-                                            {{ article.status === 'published' ? t('organization_news.detail.status_published') : t('organization_news.detail.status_draft') }}
-                                <div class="h-full rounded-full transition-all duration-500"
-                                    :class="article.status === 'published' ? 'bg-green-500 w-full' : 'bg-amber-400 w-2/3'" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h3 class="font-bold text-navy mb-4 flex items-center gap-2">
-                        <Icon icon="ph:lightning" class="text-primary" />
-                        Aksi Cepat
-                    </h3>
-                    <div class="space-y-2">
-                                {{ t('organization_news.detail.quick_actions') }}
-                            @click="publishArticle">
-                            Publikasikan
-                        </BaseButton>
-                        <BaseButton v-else variant="outline" block icon="ph:archive" @click="unpublishArticle">
-                                    {{ t('organization_news.detail.publish') }}
-                        </BaseButton>
-                        <BaseButton variant="white" block icon="ph:share-network" @click="openShareDialog">
-                                    {{ t('organization_news.detail.unpublish') }}
-                        </BaseButton>
-                    </div>
-                                    {{ t('organization_news.detail.share') }}
-            </div>
-        </div>
-
-        <!-- Share Dialog -->
-        <ClientOnly>
-            <Teleport to="body">
-                <div v-if="showShareDialog" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <!-- Backdrop -->
-                    <div class="share-dialog-backdrop absolute inset-0 bg-navy-dark/80 backdrop-blur-sm"
-                        @click="closeShareDialog"></div>
-
-                    <!-- Dialog Card -->
-                    <div
-                        class="share-dialog-card bg-white rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden border border-gray-100">
-                        <!-- Decorative Border Top -->
-                        <div class="bg-primary h-1.5 w-full"></div>
-
-                        <div class="p-8">
-                            <!-- Close Button -->
-                            <button class="absolute right-6 top-6 text-gray-400 hover:text-navy transition-colors"
-                                @click="closeShareDialog">
-                                <Icon icon="ph:x-bold" class="text-xl" />
-                            </button>
-
-                            <!-- Header -->
-                            <div class="flex items-start gap-4 mb-8">
-                                <div class="p-3 bg-primary/10 text-primary rounded-2xl shrink-0">
-                                    <Icon icon="ph:share-network-bold" class="text-3xl" />
-                                </div>
-                                <div>
-                                    <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">Bagikan Berita
-                                    </h3>
-                                    <p class="text-text-secondary text-sm font-medium leading-relaxed">
-                                            <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">{{ t('organization_news.detail.share_title') }}
-                                    </p>
-                                </div>
-                                                {{ t('organization_news.detail.share_desc') }}
-
-                            <!-- Link Copy Segment -->
-                            <div class="space-y-3 mb-8">
-                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">Link Berita</label>
-                                <div class="flex items-center gap-2">
-                                    <div
-                                        class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-xs text-gray-600 font-mono truncate">
-                                        {{ publicNewsUrl }}
-                                    </div>
-                                    <button @click="copyPublicUrl"
-                                        class="px-4 py-3 bg-navy text-primary rounded-xl font-bold text-xs hover:bg-navy-light transition-all flex items-center gap-2 shrink-0">
-                                        <Icon :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'" />
-                                        {{ copySuccess ? 'Tersalin' : 'Salin' }}
-                                    </button>
-                                </div>
-                                                {{ copySuccess ? t('organization_news.detail.copied') : t('organization_news.detail.copy') }}
-
-                            <!-- Social Sharing -->
-                            <div class="space-y-4">
-                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">Bagikan Ke Sosial
-                                    Media</label>
-                                <div class="grid grid-cols-4 gap-3">
-                                    <button v-for="social in [
-                                        { id: 'whatsapp', icon: 'ph:whatsapp-logo-fill', color: 'text-green-500', bg: 'bg-green-50', hover: 'hover:bg-green-500' },
-                                        { id: 'telegram', icon: 'ph:telegram-logo-fill', color: 'text-sky-500', bg: 'bg-sky-50', hover: 'hover:bg-sky-500' },
-                                        { id: 'twitter', icon: 'ph:twitter-logo-fill', color: 'text-black', bg: 'bg-gray-100', hover: 'hover:bg-black' },
-                                        { id: 'facebook', icon: 'ph:facebook-logo-fill', color: 'text-blue-600', bg: 'bg-blue-50', hover: 'hover:bg-blue-600' }
-                                    ]" :key="social.id" @click="shareTo(social.id)"
-                                        class="flex flex-col items-center gap-2 group">
-                                        <div :class="[social.bg, social.color, social.hover]"
-                                            class="size-12 rounded-2xl flex items-center justify-center group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                                            <Icon :icon="social.icon" class="text-2xl" />
-                                        </div>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Teleport>
-        </ClientOnly>
-
-        <!-- Delete Confirmation -->
-        <AppDialog v-model:show="showDeleteConfirm" title="Hapus Berita"
-            :message="`Apakah Anda yakin ingin menghapus berita '${article.title}'? Tindakan ini tidak dapat dibatalkan.`"
-            confirm-text="Ya, Hapus" type="danger" icon="ph:trash" @confirm="deleteArticle" />
+        <h1 class="text-2xl font-extrabold">{{ article.title }}</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <NuxtLink :to="`/dashboard/organization/news/${route.params.slug}/edit`">
+          <BaseButton variant="outline" icon="ph:pencil-simple">Edit</BaseButton>
+        </NuxtLink>
+        <BaseButton variant="white" icon="ph:trash" @click="confirmDelete">{{ t('organization_news.detail.delete') }}</BaseButton>
+      </div>
     </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <main class="md:col-span-2 bg-white rounded-2xl p-6">
+        <div v-if="article.image_url" class="mb-4">
+          <img :src="article.image_url" class="w-full h-64 object-cover rounded-lg" />
+        </div>
+        <div v-html="article.content" class="prose"></div>
+        <div class="mt-6">
+          <div class="flex gap-2 flex-wrap">
+            <span v-for="tag in parsedTags" :key="tag" class="px-3 py-1 bg-gray-100 rounded-full">{{ capitalizeChip(tag) }}</span>
+          </div>
+        </div>
+      </main>
+
+      <aside class="space-y-4">
+        <div class="bg-white rounded-2xl p-4">
+          <div class="text-sm text-gray-500">{{ t('organization_news.detail.created_label') }}</div>
+          <div class="font-medium">{{ formatDate(article.created_at, true) }}</div>
+        </div>
+        <div class="bg-white rounded-2xl p-4">
+          <div class="text-sm text-gray-500">{{ t('organization_news.detail.status') }}</div>
+          <div class="font-medium">{{ article.status }}</div>
+        </div>
+        <div class="bg-white rounded-2xl p-4">
+          <BaseButton variant="primary" block @click="publishArticle" v-if="article.status !== 'published'">{{ t('organization_news.detail.publish') }}</BaseButton>
+          <BaseButton variant="outline" block @click="unpublishArticle" v-else>{{ t('organization_news.detail.unpublish') }}</BaseButton>
+          <BaseButton variant="white" block @click="openShareDialog">{{ t('organization_news.detail.share') }}</BaseButton>
+        </div>
+      </aside>
+    </div>
+
+    <ClientOnly>
+      <Teleport to="body">
+        <div v-if="showShareDialog" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <div class="flex justify-between items-start mb-4">
+              <h3 class="font-bold">{{ t('organization_news.detail.share_title') }}</h3>
+              <button @click="closeShareDialog"><Icon icon="ph:x-bold" /></button>
+            </div>
+            <div class="mb-4">
+              <div class="bg-gray-50 p-3 rounded">{{ publicNewsUrl }}</div>
+            </div>
+            <div class="flex gap-2">
+              <button @click="copyPublicUrl" class="px-4 py-2 bg-navy text-white rounded">{{ copySuccess ? t('organization_news.detail.copied') : t('organization_news.detail.copy') }}</button>
+              <button @click="closeShareDialog" class="px-4 py-2 border rounded">{{ t('common.close') || 'Close' }}</button>
+            </div>
+          </div>
+        </div>
+      </Teleport>
+    </ClientOnly>
+
+    <AppDialog v-model:show="showDeleteConfirm" title="Hapus Berita" :message="`Apakah Anda yakin ingin menghapus berita '${article.title}'?`" confirm-text="Ya" type="danger" @confirm="deleteArticle" />
+  </div>
 </template>
 
 

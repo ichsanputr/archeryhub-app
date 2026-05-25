@@ -1,8 +1,5 @@
 {
-  "common": {
-    "loading": "Memuat...",
-    "error": "Terjadi kesalahan",
-    "all": "SEMUA",
+  "dashboard_event_main": {
     "reset": "Reset",
     "cancel": "Batal",
     "confirm": "Ya, Lanjutkan",
@@ -2797,9 +2794,7 @@
     "no_archers_available": "Tidak ada pemanah tersedia",
     "independent": "Independen",
     "no_club_archers": "Tidak ada pemanah terdaftar di klub ini"
-  }
-}
-,
+  },
   "dashboard_event_main": {
     "tabs": {
       "overview": "Ringkasan",
@@ -2965,4 +2960,5 @@
       "self_registered_alt": "Daftar Sendiri"
     }
   }
-  }
+}
+}

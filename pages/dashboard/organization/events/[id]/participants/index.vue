@@ -14,7 +14,6 @@
             <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary">
             </div>
-                                {{ t('dashboard.participants_list.title') }}
             <!-- Header Content -->
             <div class="relative p-6 sm:p-8">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
@@ -32,8 +31,9 @@
                             </h1>
                             <p class="text-slate-300 text-sm max-w-2xl">
                                 {{ t('dashboard.participants_list.subtitle') }}
-                            <span class="hidden sm:inline">{{ t('dashboard.participants_list.add_participant') }}</span>
-                            <span class="sm:hidden">{{ t('dashboard.participants_list.add_short') }}</span>
+                                <span class="hidden sm:inline">{{ t('dashboard.participants_list.add_participant') }}</span>
+                                <span class="sm:hidden">{{ t('dashboard.participants_list.add_short') }}</span>
+                            </p>
                     </div>
 
                     <!-- Action Buttons -->

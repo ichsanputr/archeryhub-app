@@ -348,44 +348,7 @@
     "loading": "Loading products...",
     "views": "views"
   },
-  "organization_news": {
-    "index": {
-      "title": "News"
-    },
-    "create": {
-      "featured_image": "Featured Image",
-      "info_heading": "News Information",
-      "label_title": "Title",
-      "placeholder_title": "Enter an engaging news title...",
-      "label_category": "Category",
-      "label_status": "Publication Status",
-      "label_tags": "Tags",
-      "placeholder_tags": "e.g. event, tournament, local",
-      "label_excerpt": "Short Excerpt",
-      "content_heading": "Content",
-      "placeholder_content": "Write the news content here..."
-    },
-    "edit": {
-      "title": "Edit News",
-      "title_short": "Edit",
-      "subtitle": "Update your news content.",
-      "cancel": "Cancel",
-      "update_publish": "Update & Publish",
-      "save_changes": "Save Changes"
-    },
-    "form": {
-      "toast_load_failed": "Failed to load news data",
-      "toast_title_required": "News title is required",
-      "toast_update_ok": "News updated successfully",
-      "toast_update_failed": "Failed to update news"
-    }
-  },
-  "organization_news": {
-    "detail": {
-      "created_label": "Created",
-      "updated_label": "Last updated"
-    }
-  },
+  
   "archers": {
     "badge": "Archery Community",
     "title": "Discover Inspiration & Indonesian Archers",
@@ -2440,47 +2403,6 @@
     "error_message": "Failed to update store settings",
     "warning_username": "Store username not set yet"
   },
-  "seller_products": {
-    "title": "Product Management",
-    "subtitle": "Manage your product catalog",
-    "add_button": "Add Product",
-    "stats_total": "Total Products",
-    "stats_active": "Active Products",
-    "stats_low_stock": "Low Stock",
-    "stats_views": "Total Views",
-    "search_label": "Search",
-    "search_placeholder": "Search product name...",
-    "status_filter": "Status",
-    "category_filter": "Category",
-    "reset_filters": "Reset",
-    "table_header_name": "Product Name",
-    "table_header_category": "Category",
-    "table_header_price": "Price",
-    "table_header_stock": "Stock",
-    "table_header_status": "Status",
-    "table_header_actions": "Actions",
-    "status_active": "Active",
-    "status_draft": "Draft",
-    "status_sold_out": "Sold Out",
-    "status_archived": "Archived",
-    "status_all": "All Status",
-    "cat_all": "All Categories",
-    "cat_equipment": "Equipment",
-    "cat_apparel": "Apparel",
-    "cat_accessories": "Accessories",
-    "cat_training": "Training",
-    "cat_other": "Other",
-    "no_products": "No products found",
-    "no_products_desc": "Add your first product to start selling in the marketplace.",
-    "add_first": "Add First Product",
-    "loading": "Loading products...",
-    "fetch_error": "Failed to fetch product data",
-    "delete_title": "Delete Product?",
-    "delete_message": "Product will be permanently deleted from your catalog:",
-    "delete_confirm": "Yes, Delete",
-    "delete_success": "Product deleted successfully",
-    "delete_error": "Failed to delete product"
-  },
   "seller_orders": {
     "title": "Incoming Orders",
     "subtitle": "Manage and process orders from your buyers",
@@ -2797,16 +2719,13 @@
       "toast_create_ok_draft": "Draft saved successfully!",
       "toast_create_failed": "Failed to save news"
     }
-    }
-  }
-,
+  },
   "dashboard_event_main": {
     "tabs": {
       "overview": "Overview",
       "participants": "Participants"
     }
-  }
-,
+  },
   "dashboard_event_overview": {
       "meta_title": "Event Dashboard - ArcheryHub",
       "payment_status_heading": "Payment Status",
@@ -2851,118 +2770,4 @@
       "unassigned_participants_message": "{count} participants do not have a target number assigned."
     }
   }
-,
-  "dashboard_events_page": {
-    "title": "Event Page",
-    "subtitle": "Manage what is shown on the event public page.",
-    "view_button": "View",
-    "save_button": "Save",
-    "faq": {
-      "title": "Frequently Asked Questions (FAQ)",
-      "add": "Add",
-      "no_items": "No FAQs added yet.",
-      "question_label": "Question",
-      "answer_label": "Answer",
-      "question_placeholder": "e.g. What is the registration fee?",
-      "answer_placeholder": "Write a detailed answer..."
-    },
-    "information": {
-      "basic_title": "Basic Information",
-      "name_label": "Event Name",
-      "name_placeholder": "Your event name",
-      "description_label": "Description (About Event)",
-      "start_date_label": "Start Date",
-      "end_date_label": "End Date",
-      "location_type_label": "Location Type",
-      "location_type_placeholder": "Select Location Type",
-      "status_label": "Event Status"
-    }
-  ,
-  "breadcrumbs": {
-    "dashboard": "Dashboard",
-    "events": "Events"
-  },
-  "participant": {
-    "list": {
-      "title": "Participants"
-    },
-    "detail": {
-      "title": "Participant Detail",
-      "subtitle": "View full participant information and registration status",
-      "save_button": "Save Changes",
-      "save_short": "Save",
-      "loading": "Loading participant...",
-      "loading_short": "Loading...",
-      "info_title": "Participant Information",
-      "division_label": "Division & Category",
-      "search_placeholder": "Search division or category...",
-      "category_not_found": "Category not found",
-      "multiple_selection_note": "An archer may join multiple categories",
-      "payment_title": "Payment & Status",
-      "payment_status_label": "Payment Status",
-      "payment_amount_label": "Payment Amount",
-      "kick": {
-        "title": "Remove Participant",
-        "description": "Remove a participant permanently from this event. This will also delete target and score data.",
-        "cannot_remove": "Cannot Remove",
-        "remove_button": "Remove Participant",
-        "confirm_title": "Remove Participant?",
-        "confirm_heading": "Remove Participant?",
-        "confirm_message": "Are you sure you want to remove {name} from this event?",
-        "confirm_warning": "This action will delete all related target and score data and cannot be undone."
-      },
-      "not_found_title": "Participant Not Found",
-      "not_found_message": "The participant you are looking for was not found or has been deleted.",
-      "back_to_list": "Back to Participant List",
-      "tbd": "TBD",
-      "category_fallback": "Category",
-      "select_category": "Select Category",
-      "toast": {
-        "load_failed": "Failed to load participant data",
-        "update_success": "Participant data updated successfully",
-        "update_failed": "Failed to update participant data",
-        "kick_success": "Participant removed from event successfully",
-        "kick_failed": "Failed to remove participant"
-      }
-    },
-      "edit": {
-        "title": "Edit Participant",
-        "title_short": "Edit",
-        "subtitle": "Update participant registration information",
-        "actions": {
-          "save_changes": "Save Changes"
-        },
-        "competition_info": "Competition Information",
-        "select_category": "Event Category",
-        "select_category_placeholder": "Select Category",
-        "payment_amount_label": "Payment Amount",
-        "payment_amount_placeholder": "0",
-        "event": "Event",
-        "tips_title": "Tips",
-        "tips": {
-          "1": "Ensure the selected category matches the participant's division",
-          "2": "Target lane numbers will be assigned in the target module"
-        },
-        "kick": {
-          "title": "Remove Participant",
-          "description": "Remove a participant permanently from this event. This will also delete target and score data.",
-          "button": "Remove Participant",
-          "confirm_message": "Are you sure you want to remove this participant from the event? This action cannot be undone."
-        },
-        "errors": {
-          "select_category": "Please select an event category first"
-        },
-        "subscription_expired": "Your subscription has expired. Upgrade your plan to edit participants."
-      },
-    "status": {
-      "registered": "Registered",
-      "pending": "Pending"
-    },
-    "source": {
-      "invited": "Invited",
-      "admin_created": "Created by Admin",
-      "self_registered": "Self Registered",
-      "self_registered_alt": "Self Registered"
-    }
-  }
-  }
+}

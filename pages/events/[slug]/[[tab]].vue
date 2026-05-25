@@ -47,7 +47,7 @@
                     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar -mb-px">
                         <NuxtLink v-for="tab in tabs" :key="tab" :to="getTabLink(tab)" replace
                             class="px-4 md:px-6 py-3 md:py-4 font-semibold text-sm md:text-base transition-colors whitespace-nowrap border-b-2"
-                            :class=\"activeTab === tab ? 'text-navy border-primary bg-primary/5' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'\">
+                            :class="activeTab === tab ? 'text-navy border-primary bg-primary/5' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
                             {{ t('event_detail.tabs.' + tab, tab) }}
                         </NuxtLink>
                     </div>
@@ -638,7 +638,7 @@
 
                         <!-- Organizer Card -->
                         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                            <h3 class=\"text-lg font-bold text-navy mb-4\">{{ t('event_detail.organizer') }}</h3>
+                            <h3 class="text-lg font-bold text-navy mb-4">{{ t('event_detail.organizer') }}</h3>
                             <div class="flex items-center gap-4 mb-4">
                                 <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
                                     <img alt="Logo Penyelenggara" class="w-full h-full object-cover"

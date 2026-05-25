@@ -259,6 +259,8 @@ const freeFeatures = computed(() => {
     return Array.isArray(list) ? list : []
 })
 
+</script>
+
 <style scoped>
 /* Cards are always visible — GSAP animates from opacity:0 but we reset inline
    so if ScrollTrigger never fires the cards still show */
