@@ -20,16 +20,16 @@
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-1">
                                 <NuxtLink :to="`/dashboard/organization/events/${eventId}/categories`"
-                                    class="text-xs font-bold text-primary hover:underline tracking-widest flex items-center gap-1">
-                                    <Icon icon="ph:arrow-left-bold" />
-                                    Kembali ke Kategori
-                                </NuxtLink>
+                                        class="text-xs font-bold text-primary hover:underline tracking-widest flex items-center gap-1">
+                                        <Icon icon="ph:arrow-left-bold" />
+                                        {{ t('event_categories.back_to_categories') }}
+                                    </NuxtLink>
                             </div>
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
-                                {{ categoryName || 'Detail Kategori' }}
+                                {{ categoryName || t('event_categories.detail_title') }}
                             </h1>
                             <p class="text-slate-300 text-sm max-w-2xl">
-                                Daftar peserta yang terdaftar khusus dalam kategori ini.
+                                {{ t('event_categories.category_participants_desc') }}
                             </p>
                         </div>
                     </div>
@@ -41,11 +41,11 @@
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div
                 class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <h2 class="text-lg font-bold text-navy">Peserta Terdaftar</h2>
+                <h2 class="text-lg font-bold text-navy">{{ t('event_categories.participants_title') }}</h2>
                 <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold text-gray-400">TOTAL:</span>
+                    <span class="text-xs font-bold text-gray-400">{{ t('event_categories.total_label') }}</span>
                     <span class="px-3 py-1 bg-navy/5 text-navy rounded-lg font-black text-xs border border-navy/10">
-                        {{ participants.length }} Peserta
+                        {{ t('event_categories.participants_count_unit', { count: participants.length }) }}
                     </span>
                 </div>
             </div>
@@ -54,20 +54,20 @@
                 <div v-for="i in 5" :key="i" class="h-16 bg-gray-50 animate-pulse rounded-xl"></div>
             </div>
 
-            <div v-else-if="participants.length === 0" class="p-20 text-center">
+                <div v-else-if="participants.length === 0" class="p-20 text-center">
                 <Icon icon="ph:user-circle-minus" class="text-6xl text-gray-200 mx-auto mb-4" />
-                <h3 class="text-xl font-bold text-navy mb-1">Belum Ada Peserta</h3>
-                <p class="text-gray-400 text-sm">Belum ada peserta yang terdaftar di kategori ini.</p>
+                <h3 class="text-xl font-bold text-navy mb-1">{{ t('event_categories.no_participants') }}</h3>
+                <p class="text-gray-400 text-sm">{{ t('event_categories.no_participants_desc') }}</p>
             </div>
 
             <div v-else class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="bg-gray-50/50 border-b border-gray-100">
                         <tr class="text-[10px] font-black text-gray-400 tracking-widest">
-                            <th class="px-6 py-4 w-16">No</th>
-                            <th class="px-6 py-4">Nama Pemanah</th>
-                            <th class="px-6 py-4">Klub / Kota</th>
-                            <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4 w-16">{{ t('event_categories.table.no') }}</th>
+                            <th class="px-6 py-4">{{ t('event_categories.table.name') }}</th>
+                            <th class="px-6 py-4">{{ t('event_categories.table.club_city') }}</th>
+                            <th class="px-6 py-4">{{ t('event_categories.table.status') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
@@ -89,7 +89,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-sm font-bold text-navy leading-tight">{{ p.club_name || 'Independen' }}
+                                <div class="text-sm font-bold text-navy leading-tight">{{ p.club_name || t('event_categories.independent') }}
                                 </div>
                                 <div class=" text-xs text-gray-400 mt-0.5">{{ p.city || '-' }}</div>
                             </td>
@@ -97,7 +97,7 @@
                                 <span
                                     :class="p.payment_status === 'Terbayar' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'"
                                     class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-tighter">
-                                    {{ p.payment_status }}
+                                    {{ p.payment_status === 'Terbayar' ? t('event_categories.status_paid') : t('event_categories.status_pending') }}
                                 </span>
                             </td>
                         </tr>
@@ -114,6 +114,7 @@ import { useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { useApi } from '~/composables/useApi'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const eventId = route.params.id
@@ -127,6 +128,7 @@ definePageMeta({
 const isLoading = ref(true)
 const categoryName = ref('')
 const participants = ref([])
+const { t } = useI18n()
 
 const fetchData = async () => {
     isLoading.value = true

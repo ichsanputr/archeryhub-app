@@ -14,10 +14,8 @@
                         <Icon icon="ph:arrow-left" class="text-xl" />
                     </NuxtLink>
                     <div>
-                        <h1 class="text-2xl font-black tracking-tight mb-1 capitalize">Daftar peserta</h1>
-                        <p class="text-slate-300 text-sm">Cetak list nama peserta sesuai kategori dan pengelompokan yang
-                            diinginkan.
-                        </p>
+                        <h1 class="text-2xl font-black tracking-tight mb-1 capitalize">{{ t('event_printout.participants.title') }}</h1>
+                        <p class="text-slate-300 text-sm">{{ t('event_printout.participants.page_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -32,20 +30,16 @@
                         <div class="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
                             <Icon icon="ph:file-pdf-bold" class="text-2xl text-navy" />
                         </div>
-                        <h2 class="text-lg font-black text-navy">Berdasarkan abjad</h2>
+                        <h2 class="text-lg font-black text-navy">{{ t('event_printout.participants.by_alphabet') }}</h2>
                     </div>
 
-                    <p class="text-gray-500 text-sm mb-8 leading-relaxed">
-                        Mencetak seluruh daftar peserta lomba diurutkan berdasarkan alfabet nama lengkap mereka.
-                        Digunakan untuk
-                        pemeriksaan data saat pendaftaran ulang.
-                    </p>
+                    <p class="text-gray-500 text-sm mb-8 leading-relaxed">{{ t('event_printout.participants.by_alphabet_desc') }}</p>
 
                     <div class="flex flex-wrap gap-4">
                         <button @click="printList('alphabetical')"
                             class="px-6 py-3 bg-navy text-white rounded-xl font-black text-xs tracking-widest hover:bg-primary transition-colors flex items-center gap-2">
                             <Icon icon="ph:file-pdf-bold" class="text-lg" />
-                            Cetak PDF
+                            {{ t('event_printout.print_pdf') }}
                         </button>
                     </div>
                 </div>
@@ -59,20 +53,16 @@
                         <div class="h-12 w-12 rounded-xl bg-yellow-400/10 flex items-center justify-center">
                             <Icon icon="ph:file-pdf-bold" class="text-2xl text-navy" />
                         </div>
-                        <h2 class="text-lg font-black text-navy">Berdasarka organisasi</h2>
+                        <h2 class="text-lg font-black text-navy">{{ t('event_printout.participants.by_club') }}</h2>
                     </div>
 
-                    <p class="text-gray-500 text-sm mb-8 leading-relaxed">
-                        Menampilkan daftar peserta yang dikelompokkan berdasarkan Klub atau Organisasi asal mereka.
-                        Memudahkan
-                        pembagian nomor dada atau ID card per klub.
-                    </p>
+                    <p class="text-gray-500 text-sm mb-8 leading-relaxed">{{ t('event_printout.participants.by_club_desc') }}</p>
 
                     <div class="flex flex-wrap gap-4">
                         <button @click="printList('by-club')"
                             class="px-6 py-3 bg-navy text-white rounded-xl font-black text-xs tracking-widest hover:bg-primary transition-colors flex items-center gap-2">
                             <Icon icon="ph:file-pdf-bold" class="text-lg" />
-                            Cetak PDF
+                            {{ t('event_printout.print_pdf') }}
                         </button>
                     </div>
                 </div>
@@ -84,6 +74,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const eventId = route.params.id
@@ -92,8 +83,10 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+const { t } = useI18n()
+
 useHead({
-    title: 'Daftar Peserta - Printout'
+    title: t('event_printout.participants.page_title')
 })
 
 const printList = (type, preview = false) => {

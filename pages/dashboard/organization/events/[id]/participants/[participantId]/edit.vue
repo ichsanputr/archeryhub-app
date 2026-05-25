@@ -28,22 +28,22 @@
                             <div class="flex items-center gap-2 text-sm text-slate-300 mb-2 font-bold tracking-tight">
                                 <NuxtLink :to="`/dashboard/events/${route.params.id}/participants`"
                                     class="hover:text-white transition-colors">
-                                    Daftar Peserta
+                                    {{ t('participant.list.title') }}
                                 </NuxtLink>
                                 <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                                 <NuxtLink
                                     :to="`/dashboard/events/${route.params.id}/participants/${route.params.participantId}`"
                                     class="hover:text-white transition-colors">
-                                    Detail
+                                    {{ t('participant.detail.title') }}
                                 </NuxtLink>
                                 <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                                <span class="text-white">Edit</span>
+                                <span class="text-white">{{ t('participant.edit.title_short') }}</span>
                             </div>
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
-                                Edit Peserta
+                                {{ t('participant.edit.title') }}
                             </h1>
                             <p class="text-slate-300 text-sm max-w-2xl">
-                                Ubah informasi peserta event
+                                {{ t('participant.edit.subtitle') }}
                             </p>
                         </div>
                     </div>
@@ -52,14 +52,14 @@
                     <div class="flex gap-3 flex-shrink-0">
                         <BaseButton variant="white" icon="ph:arrow-left" class="h-11 px-5"
                             @click="$router.push(`/dashboard/events/${route.params.id}/participants/${route.params.participantId}`)">
-                            Batal
+                            {{ t('common.cancel') }}
                         </BaseButton>
                         <BaseButton variant="primary" icon="ph:floppy-disk"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
                             @click="isSubscriptionActive ? handleSubmit() : (showPremiumModal = true)"
                             :loading="isSubmitting"
                             :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
-                            Simpan Perubahan
+                            {{ t('participant.edit.actions.save_changes') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -68,10 +68,10 @@
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="participant_update" />
 
         <!-- Loading State -->
-        <div v-if="isLoading" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
+            <div v-if="isLoading" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
             <div class="inline-block h-8 w-8 border-4 border-primary border-t-transparent animate-spin rounded-full">
             </div>
-            <p class="text-gray-500 mt-4 font-medium">Memuat data peserta...</p>
+            <p class="text-gray-500 mt-4 font-medium">{{ t('participant.detail.loading') }}</p>
         </div>
 
         <!-- Edit Form -->
@@ -82,7 +82,7 @@
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
                         <Icon icon="ph:user" class="text-primary" />
-                        Informasi Profil Peserta
+                        {{ t('participant.detail.info_title') }}
                     </h2>
                     <div class="space-y-6">
                         <!-- Participant Profile Info (Read-only for now) -->
@@ -106,10 +106,10 @@
                         </div>
 
                         <div class="pt-6 border-t border-gray-50">
-                            <h3 class="text-sm font-bold text-navy mb-4">Informasi Lomba</h3>
+                            <h3 class="text-sm font-bold text-navy mb-4">{{ t('participant.edit.competition_info') }}</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <BaseSelect v-model="form.category_id" label="Kategori Event" required
-                                    placeholder="Pilih Kategori" icon="ph:trophy" :items="categories" item-title="label"
+                                <BaseSelect v-model="form.category_id" :label="t('participant.edit.select_category')" required
+                                    :placeholder="t('participant.edit.select_category_placeholder')" icon="ph:trophy" :items="categories" item-title="label"
                                     item-value="id" />
                             </div>
                         </div>
@@ -120,14 +120,14 @@
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
                         <Icon icon="ph:currency-circle-dollar" class="text-primary" />
-                        Informasi Pembayaran
+                        {{ t('participant.detail.payment_title') }}
                     </h2>
                     <div class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <BaseSelect v-model="form.status" label="Status Pendaftaran" required icon="ph:checks"
+                            <BaseSelect v-model="form.status" :label="t('participant.detail.payment_status_label')" required icon="ph:checks"
                                 :items="statusOptions" />
 
-                            <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
+                            <BaseInput v-model="form.payment_amount" :label="t('participant.edit.payment_amount_label')" :placeholder="t('participant.edit.payment_amount_placeholder')"
                                 icon="ph:money" kind="currency" />
                         </div>
 
@@ -139,7 +139,7 @@
             <div class="space-y-6">
                 <!-- Info Card -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h3 class="text-sm font-bold text-navy mb-4">Event</h3>
+                    <h3 class="text-sm font-bold text-navy mb-4">{{ t('participant.edit.event') }}</h3>
                     <div v-if="event" class="space-y-3">
                         <p class="font-bold text-navy text-sm">{{ event.name }}</p>
                         <div class="space-y-2 text-xs text-gray-500">
@@ -157,15 +157,15 @@
 
                 <!-- Tips -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h3 class="text-sm font-bold text-navy mb-3">Tips</h3>
+                    <h3 class="text-sm font-bold text-navy mb-3">{{ t('participant.edit.tips_title') }}</h3>
                     <ul class="space-y-2 text-xs text-gray-500">
                         <li class="flex items-start gap-2">
                             <Icon icon="ph:check-circle" class="text-green-500 mt-0.5 flex-shrink-0" />
-                            <span>Pastikan kategori yang dipilih sesuai dengan divisi peserta</span>
+                            <span>{{ t('participant.edit.tips.1') }}</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <Icon icon="ph:check-circle" class="text-green-500 mt-0.5 flex-shrink-0" />
-                            <span>Nomor target akan diassign pada modul khusus target</span>
+                            <span>{{ t('participant.edit.tips.2') }}</span>
                         </li>
                     </ul>
                 </div>
@@ -173,18 +173,17 @@
                 <div class="bg-red-50 rounded-2xl border border-red-100 shadow-sm p-6">
                     <h3 class="text-sm font-bold text-red-600 mb-2 flex items-center gap-2">
                         <Icon icon="ph:warning-circle" class="text-lg" />
-                        Kick Participant
+                        {{ t('participant.edit.kick.title') }}
                     </h3>
                     <p class="text-[10px] text-red-500/80 mb-4 leading-relaxed font-bold">
-                        Hapus peserta dari event ini secara permanen. Tindakan ini juga akan menghapus data target dan
-                        skor yang terkait.
+                        {{ t('participant.edit.kick.description') }}
                     </p>
                     <BaseButton variant="danger" block icon="ph:user-minus"
                         class="h-10 text-xs shadow-lg shadow-red-200"
                         @click="isSubscriptionActive ? handleKickUser() : (showPremiumModal = true)"
                         :loading="isKicking"
                         :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
-                        Keluarkan Peserta
+                        {{ t('participant.edit.kick.button') }}
                     </BaseButton>
                 </div>
             </div>
@@ -193,10 +192,10 @@
         <!-- Error State -->
         <div v-else class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
             <Icon icon="ph:warning-circle" class="text-5xl text-gray-300 mx-auto mb-4" />
-            <h3 class="text-lg font-bold text-navy mb-2">Peserta Tidak Ditemukan</h3>
-            <p class="text-gray-500 mb-4">Peserta yang Anda cari tidak ditemukan atau telah dihapus.</p>
+            <h3 class="text-lg font-bold text-navy mb-2">{{ t('participant.detail.not_found_title') }}</h3>
+            <p class="text-gray-500 mb-4">{{ t('participant.detail.not_found_message') }}</p>
             <BaseButton variant="primary" :to="`/dashboard/events/${route.params.id}/participants`">
-                Kembali ke Daftar Peserta
+                {{ t('participant.detail.back_to_list') }}
             </BaseButton>
         </div>
     </div>
@@ -205,6 +204,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, reactive, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
@@ -232,6 +232,8 @@ const clubs = ref([])
 const showPremiumModal = ref(false)
 const isSubmitting = ref(false)
 const isKicking = ref(false)
+
+const { t } = useI18n()
 
 const statusOptions = [
     { title: 'Paid', value: 'paid', icon: 'ph:check-circle' },
@@ -279,8 +281,8 @@ const fetchParticipant = async () => {
         clubs.value = clubsRes.clubs || []
     } catch (error) {
         console.error('Failed to fetch participant:', error)
-        const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal memuat data peserta'
-        toast.error(errorMessage)
+            const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || t('participant.detail.toast.load_failed')
+            toast.error(errorMessage)
     } finally {
         isLoading.value = false
     }
@@ -306,7 +308,7 @@ const formatDate = (dateStr) => {
 
 const handleSubmit = async () => {
     if (!form.category_id) {
-        toast.error('Pilih kategori event terlebih dahulu')
+        toast.error(t('participant.edit.errors.select_category'))
         return
     }
 
@@ -322,11 +324,11 @@ const handleSubmit = async () => {
         // Use stable UUID if available, otherwise fallback to route param
         const targetId = participant.value?.id || participantId
         await put(`/events/${eventId}/participants/${targetId}`, payload)
-        toast.success('Peserta berhasil diupdate')
+        toast.success(t('participant.detail.toast.update_success'))
         router.push(`/dashboard/events/${eventId}/participants/${targetId}`)
     } catch (error) {
         console.error('Failed to update participant:', error)
-        const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal mengupdate peserta'
+        const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || t('participant.detail.toast.update_failed')
         toast.error(errorMessage)
     } finally {
         isSubmitting.value = false
@@ -334,7 +336,7 @@ const handleSubmit = async () => {
 }
 
 const handleKickUser = async () => {
-    if (!confirm('Apakah Anda yakin ingin mengeluarkan peserta ini dari event? Semua data pendaftaran dan skor akan dihapus secara permanen.')) {
+    if (!confirm(t('participant.edit.kick.confirm_message'))) {
         return
     }
 
@@ -342,11 +344,11 @@ const handleKickUser = async () => {
     try {
         const { delete: del } = useApi()
         await del(`/events/${eventId}/participants/${participantId}`)
-        toast.success('Peserta berhasil dikeluarkan')
+        toast.success(t('participant.detail.toast.kick_success'))
         router.push(`/dashboard/events/${eventId}/participants`)
     } catch (error) {
         console.error('Failed to kick user:', error)
-        toast.error(error.response?.data?.error || 'Gagal mengeluarkan peserta')
+        toast.error(error.response?.data?.error || t('participant.detail.toast.kick_failed'))
     } finally {
         isKicking.value = false
     }
@@ -354,7 +356,7 @@ const handleKickUser = async () => {
 
 onMounted(() => {
     if (!isSubscriptionActive.value) {
-        toast.error('subscription expired. upgrade your plan to edit participant.')
+        toast.error(t('participant.edit.subscription_expired'))
         router.replace(`/dashboard/events/${route.params.id}/participants/${route.params.participantId}`)
         return
     }

@@ -265,6 +265,9 @@
       "not_reregistered": "Belum Daftar Ulang",
       "reregistration_success": "Berhasil memperbarui status daftar ulang",
       "title": "Daftar Peserta",
+      "meta_title": "Daftar Peserta - Dashboard ArcheryHub",
+      "export_short": "Ekspor",
+      "add_short": "Tambah",
       "subtitle": "Lihat dan kelola semua peserta yang terdaftar dalam event ini.",
       "export_csv": "Ekspor CSV",
       "add_participant": "Tambah Peserta",
@@ -278,6 +281,7 @@
       "table": {
         "name_email": "Nama Peserta / Email",
         "club_city": "Klub / Kota",
+        "no": "No",
         "category": "Kategori Event",
         "payment_status": "Status Pembayaran",
         "action": "Aksi"
@@ -1184,6 +1188,83 @@
     "toast_update_success": "Kategori berhasil diperbarui",
     "toast_create_success": "Kategori berhasil ditambahkan",
     "toast_save_failed": "Gagal menyimpan kategori"
+    ,
+    "back_to_categories": "Kembali ke Kategori",
+    "detail_title": "Detail Kategori",
+    "category_participants_desc": "Daftar peserta yang terdaftar khusus dalam kategori ini.",
+    "participants_title": "Peserta Terdaftar",
+    "total_label": "TOTAL:",
+    "participants_count_unit": "{count} Peserta",
+    "no_participants": "Belum Ada Peserta",
+    "no_participants_desc": "Belum ada peserta yang terdaftar di kategori ini.",
+    "table": {
+      "no": "No",
+      "name": "Nama Pemanah",
+      "club_city": "Klub / Kota",
+      "status": "Status"
+    },
+    "independent": "Independen",
+    "status_paid": "Terbayar",
+    "status_pending": "Menunggu"
+  },
+  "event_printout": {
+    "page_title": "Printout - Event",
+    "title": "Cetak Dokumen Event",
+    "desc": "Laporan dan dokumen administrasi untuk {name}",
+    "view_more": "Lihat Selengkapnya",
+    "print_pdf": "Cetak PDF",
+    "scoresheet": {
+      "title": "Scoresheet Kualifikasi",
+      "desc": "Cetak lembar skor kualifikasi per sesi atau per kategori dengan template Ianseo.",
+      "page_title": "Scoresheet Kualifikasi - Printout",
+      "page_desc": "Atur dan cetak lembar skor untuk babak kualifikasi.",
+      "parameters_title": "Parameter cetak",
+      "session_label": "Sesi kualifikasi",
+      "select_session_placeholder": "Pilih sesi",
+      "select_session_desc": "Pilih sesi kualifikasi yang akan dicetak scoresheet-nya.",
+      "filter_category_label": "Filter kategori (opsional)",
+      "select_all_categories": "Semua kategori",
+      "select_all_categories_desc": "Kosongkan untuk mencetak seluruh kategori dalam sesi tersebut.",
+      "target_range_label": "Rentang target (opsional)",
+      "placeholder_from": "Dari (contoh: 01)",
+      "placeholder_to": "Sampai (contoh: 10)",
+      "additional_content_title": "Konten tambahan",
+      "add_competition_header": "Tambah header kompetisi",
+      "add_competition_images": "Tambah gambar kompetisi",
+      "add_country_club_flags": "Tambah bendera negara/klub",
+      "collect_birthdate_email": "Cetak tgl lahir & email",
+      "print_barcode": "Cetak barcode pada scoresheet",
+      "print_options_title": "Opsi pencetakan",
+      "auto_print_label": "Auto print",
+      "auto_print_desc": "Munculkan dialog cetak otomatis saat halaman dibuka",
+      "blank_label": "Scoresheet kosong",
+      "blank_desc": "Hanya cetak template scoresheet tanpa data peserta",
+      "document_summary_title": "Ringkasan dokumen",
+      "document_summary_desc": "Dokumen akan dirender dalam format PDF dengan ukuran A4 standar Ianseo.",
+      "paper_size_label": "Ukuran kertas",
+      "layout_label": "Layout",
+      "barcode_status_label": "Status barcode",
+      "process_info": "Data akan diproses oleh layanan printout internal ArcheryHub."
+    },
+    "participants": {
+      "title": "Daftar Peserta",
+      "page_desc": "Cetak daftar nama peserta sesuai kategori dan pengelompokan yang diinginkan.",
+      "desc": "Cetak daftar peserta lomba berdasarkan abjad atau dikelompokkan per organisasi/klub.",
+      "by_alphabet": "Berdasarkan abjad",
+      "by_alphabet_desc": "Mencetak seluruh daftar peserta diurutkan berdasarkan alfabet nama lengkap mereka.",
+      "by_club": "Berdasarkan organisasi",
+      "by_club_desc": "Menampilkan daftar peserta yang dikelompokkan berdasarkan Klub atau Organisasi asal mereka.",
+      "page_title": "Daftar Peserta - Printout"
+    },
+    "statistics": {
+      "title": "Statistik Event",
+      "page_title": "Statistik - Printout",
+      "page_desc": "Cetak ringkasan statistik peserta untuk keperluan laporan dan administrasi.",
+      "classes_title": "Kelas dan Divisi",
+      "classes_desc": "Laporan matriks jumlah peserta berdasarkan kategori usia (Kelas) dan jenis busur (Divisi).",
+      "clubs_title": "Klub / Organisasi",
+      "clubs_desc": "Ringkasan jumlah peserta yang terdaftar dari setiap klub atau organisasi pendukung."
+    }
   },
   "event_teams": {
     "title": "Manajemen Tim Resmi",
@@ -2155,6 +2236,17 @@
       "edit_save": "Simpan",
       "edit_success": "Langganan berhasil diperbarui"
     }
+    ,
+    "participants_list": {
+      "page_title": "Daftar Peserta",
+      "export_short": "Ekspor",
+      "add_short": "Tambah",
+      "total_label": "Total:",
+      "status": {
+        "registered": "Terdaftar",
+        "pending": "Menunggu"
+      }
+    }
   },
   "profile_public": {
     "loading_profile": "Memuat profil...",
@@ -2521,5 +2613,220 @@
       "success_desc": "Selamat! Kata sandi akun Anda telah diperbarui. Silakan masuk dengan kata sandi baru Anda.",
       "login_now": "Masuk Sekarang"
     }
+  },
+  "event_teams": {
+    "title": "Tim",
+    "subtitle": "Kelola tim resmi untuk kategori terpilih",
+    "auto_sync": "Sinkron otomatis dari peserta",
+    "add_manual": "Tambah Tim (Manual)",
+    "select_category": "Pilih Kategori",
+    "category_not_found": "Kategori tim tidak ditemukan.",
+    "team_count_badge": "{count} tim",
+    "official_team_list": "Tim Resmi",
+    "team_list_desc": "Kelola tim yang terdaftar resmi pada event ini.",
+    "no_teams": "Belum ada tim resmi",
+    "no_teams_desc": "Anda dapat membuat tim secara manual atau sinkron dari peserta terdaftar.",
+    "members_and_scores": "Anggota & Skor",
+    "no_members": "Belum ada anggota",
+    "total_score": "Total Skor",
+    "edit_team_detail": "Edit Detail Tim",
+    "add_team_manual": "Tambah Tim (Manual)",
+    "new_team": "Tim Baru",
+    "identity_and_category": "Identitas & Kategori",
+    "team_name": "Nama Tim",
+    "team_name_placeholder": "Masukkan nama tim",
+    "category_label": "Kategori",
+    "select_category_placeholder": "Pilih kategori",
+    "club": "Klub",
+    "select_club_placeholder": "Pilih klub",
+    "select_members": "Pilih Anggota ({current}/{max})",
+    "slot_full": "Slot Penuh",
+    "loading_archers": "Memuat pemanah...",
+    "please_select_club": "Silakan pilih klub terlebih dahulu",
+    "same_club_rule": "Anggota harus berasal dari klub yang sama",
+    "archers_not_found": "Pemanah tidak ditemukan",
+    "no_archers_registered_desc": "Belum ada pemanah yang terdaftar untuk klub ini.",
+    "cancel": "Batal",
+    "save_changes": "Simpan Perubahan",
+    "create_team": "Buat Tim",
+    "delete_team_confirm": "Hapus Tim",
+    "delete_confirm_title": "Konfirmasi Hapus",
+    "delete_warning": "Apakah Anda yakin ingin menghapus <strong>{name}</strong>? Aksi ini tidak dapat dibatalkan.",
+    "yes_delete": "Ya, Hapus",
+    "sync_teams_confirm": "Sinkron Tim",
+    "destructive_action": "Aksi Berisiko",
+    "sync_warning": "Sinkron akan menimpa tim yang ada. Lanjutkan dengan hati-hati.",
+    "yes_sync": "Ya, Sinkron",
+    "total_participants_sync": "{count} total peserta",
+    "clubs_involved_sync": "{count} klub terlibat",
+    "male_sync": "{count} putra",
+    "female_sync": "{count} putri",
+    "eligible_groups_sync": "{count} grup yang memenuhi syarat",
+    "toast_sync_count": "{count} tim dibuat",
+    "toast_sync_success": "Tim berhasil disinkronkan ({count})",
+    "toast_sync_no_teams": "Tidak ada tim yang dibuat saat sinkron",
+    "toast_sync_failed": "Gagal menyinkron tim",
+    "archers_available": "{count} pemanah tersedia",
+    "no_archers_available": "Tidak ada pemanah tersedia",
+    "independent": "Independen",
+    "no_club_archers": "Tidak ada pemanah terdaftar di klub ini"
   }
 }
+,
+  "dashboard_event_main": {
+    "tabs": {
+      "overview": "Ringkasan",
+      "participants": "Daftar Atlet"
+    }
+  }
+,
+  "dashboard_event_overview": {
+    "share_button": "Bagikan",
+    "summary_title": "Ringkasan Event",
+    "venue_fallback": "Lokasi Event",
+    "address_fallback": "Alamat",
+    "stats": {
+      "total_archers": "Total Pemanah",
+      "total_teams": "Total Tim Resmi",
+      "completion": "Penyelesaian",
+      "time_left": "Sisa Waktu"
+    },
+    "registered": "terdaftar",
+    "manage_teams": "Kelola Tim",
+    "registration_analysis": "Analisis Pendaftaran",
+    "view_all_participants": "Lihat Semua Peserta",
+    "category_distribution": "Sebaran Kategori",
+    "no_category_data": "Belum ada data kategori",
+    "showing_top_categories": "Menampilkan 5 kategori terbanyak",
+    "leaderboard": {
+      "title": "Papan Peringkat",
+      "no_scores": "Belum ada skor tersedia"
+    },
+    "share_dialog": {
+      "title": "Bagikan Event",
+      "desc": "Sebarkan link halaman publik event ini ke sosial media atau salin link untuk peserta.",
+      "public_link_label": "Link Publik Event",
+      "copy": "Salin",
+      "copied": "Tersalin",
+      "share_to_social": "Bagikan Ke Sosial Media"
+    },
+    "alerts": {
+      "unassigned_participants_title": "Peserta Belum Diatur",
+      "unassigned_participants_message": "{count} peserta belum memiliki nomor bantalan."
+    }
+  }
+,
+  "dashboard_events_page": {
+    "title": "Halaman Event",
+    "subtitle": "Kelola informasi yang ditampilkan di halaman publik event.",
+    "view_button": "Lihat",
+    "save_button": "Simpan",
+    "faq": {
+      "title": "Pertanyaan Sering Diajukan (FAQ)",
+      "add": "Tambah",
+      "no_items": "Belum ada FAQ yang ditambahkan.",
+      "question_label": "Pertanyaan",
+      "answer_label": "Jawaban",
+      "question_placeholder": "Contoh: Berapa biaya pendaftaran?",
+      "answer_placeholder": "Tuliskan jawaban yang detail..."
+    },
+    "information": {
+      "basic_title": "Informasi Dasar",
+      "name_label": "Nama Event",
+      "name_placeholder": "Nama event Anda",
+      "description_label": "Deskripsi (Tentang Event)",
+      "start_date_label": "Tanggal Mulai",
+      "end_date_label": "Tanggal Selesai",
+      "location_type_label": "Tipe Lokasi",
+      "location_type_placeholder": "Pilih Tipe Lokasi",
+      "status_label": "Status Event"
+    }
+  ,
+  "breadcrumbs": {
+    "dashboard": "Dashboard",
+    "events": "Event"
+  },
+  "participant": {
+    "list": {
+      "title": "Peserta"
+    },
+    "detail": {
+      "title": "Detail Peserta",
+      "subtitle": "Lihat informasi lengkap dan status pendaftaran peserta",
+      "save_button": "Simpan Perubahan",
+      "save_short": "Simpan",
+      "loading": "Memuat data peserta...",
+      "loading_short": "Memuat...",
+      "info_title": "Informasi Peserta",
+      "division_label": "Divisi & Kategori Lomba",
+      "search_placeholder": "Cari divisi atau kategori...",
+      "category_not_found": "Kategori tidak ditemukan",
+      "multiple_selection_note": "Pemanah dapat mengikuti lebih dari satu kategori",
+      "payment_title": "Status & Pembayaran",
+      "payment_status_label": "Status Pembayaran",
+      "payment_amount_label": "Jumlah Pembayaran",
+      "kick": {
+        "title": "Keluarkan Peserta",
+        "description": "Hapus peserta dari event ini secara permanen. Tindakan ini juga akan menghapus data target dan skor yang terkait.",
+        "cannot_remove": "Tidak Dapat Dikeluarkan",
+        "remove_button": "Keluarkan Peserta",
+        "confirm_title": "Keluarkan Peserta?",
+        "confirm_heading": "Keluarkan Peserta?",
+        "confirm_message": "Apakah Anda yakin ingin mengeluarkan {name} dari event ini?",
+        "confirm_warning": "Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat dibatalkan."
+      },
+      "not_found_title": "Peserta Tidak Ditemukan",
+      "not_found_message": "Peserta yang Anda cari tidak ditemukan atau telah dihapus.",
+      "back_to_list": "Kembali ke Daftar Peserta",
+      "tbd": "TBD",
+      "category_fallback": "Kategori",
+      "select_category": "Pilih Kategori",
+      "toast": {
+        "load_failed": "Gagal memuat data peserta",
+        "update_success": "Data peserta berhasil diperbarui",
+        "update_failed": "Gagal memperbarui data peserta",
+        "kick_success": "Peserta berhasil dikeluarkan dari event",
+        "kick_failed": "Gagal mengeluarkan peserta"
+      }
+    },
+    "edit": {
+      "title": "Edit Peserta",
+      "title_short": "Edit",
+      "subtitle": "Ubah informasi pendaftaran peserta",
+      "actions": {
+        "save_changes": "Simpan Perubahan"
+      },
+      "competition_info": "Informasi Lomba",
+      "select_category": "Kategori Event",
+      "select_category_placeholder": "Pilih Kategori",
+      "payment_amount_label": "Jumlah Pembayaran",
+      "payment_amount_placeholder": "0",
+      "event": "Event",
+      "tips_title": "Tips",
+      "tips": {
+        "1": "Pastikan kategori yang dipilih sesuai dengan divisi peserta",
+        "2": "Nomor target akan diassign pada modul khusus target"
+      },
+      "kick": {
+        "title": "Keluarkan Peserta",
+        "description": "Hapus peserta dari event ini secara permanen. Tindakan ini juga akan menghapus data target dan skor yang terkait.",
+        "button": "Keluarkan Peserta",
+        "confirm_message": "Apakah Anda yakin ingin mengeluarkan peserta ini dari event? Semua data pendaftaran dan skor akan dihapus secara permanen."
+      },
+      "errors": {
+        "select_category": "Pilih kategori event terlebih dahulu"
+      },
+      "subscription_expired": "Paket Anda sudah kedaluwarsa. Perpanjang paket untuk mengedit peserta."
+    },
+    "status": {
+      "registered": "Terdaftar",
+      "pending": "Menunggu"
+    },
+    "source": {
+      "invited": "Diundang",
+      "admin_created": "Dibuat oleh Admin",
+      "self_registered": "Daftar Sendiri",
+      "self_registered_alt": "Daftar Sendiri"
+    }
+  }
+  }

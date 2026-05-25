@@ -265,6 +265,9 @@
       "not_reregistered": "Not Yet Re-registered",
       "reregistration_success": "Successfully updated re-registration status",
       "title": "Participant List",
+      "meta_title": "Participant List - ArcheryHub Dashboard",
+      "export_short": "Export",
+      "add_short": "Add",
       "subtitle": "View and manage all participants registered in this event.",
       "export_csv": "Export CSV",
       "add_participant": "Add Participant",
@@ -278,6 +281,7 @@
       "table": {
         "name_email": "Participant Name / Email",
         "club_city": "Club / City",
+        "no": "No",
         "category": "Event Category",
         "payment_status": "Payment Status",
         "action": "Action"
@@ -1184,6 +1188,83 @@
     "toast_update_success": "Category updated successfully",
     "toast_create_success": "Category added successfully",
     "toast_save_failed": "Failed to save category"
+    ,
+    "back_to_categories": "Back to categories",
+    "detail_title": "Category Details",
+    "category_participants_desc": "List of participants registered specifically in this category.",
+    "participants_title": "Registered Participants",
+    "total_label": "TOTAL:",
+    "participants_count_unit": "{count} Participants",
+    "no_participants": "No Participants",
+    "no_participants_desc": "No participants have registered in this category.",
+    "table": {
+      "no": "No",
+      "name": "Name",
+      "club_city": "Club / City",
+      "status": "Status"
+    },
+    "independent": "Independent",
+    "status_paid": "Paid",
+    "status_pending": "Pending"
+  },
+  "event_printout": {
+    "page_title": "Printouts - Event",
+    "title": "Event Printouts",
+    "desc": "Reports and administrative documents for {name}",
+    "view_more": "View more",
+    "print_pdf": "Print PDF",
+    "scoresheet": {
+      "title": "Qualification Scoresheet",
+      "desc": "Print qualification scoresheets per session or per category using Ianseo template.",
+      "page_title": "Qualification Scoresheet - Printout",
+      "page_desc": "Configure and print scoresheet documents for qualification rounds.",
+      "parameters_title": "Print Parameters",
+      "session_label": "Qualification Session",
+      "select_session_placeholder": "Select session",
+      "select_session_desc": "Select the qualification session to print scoresheets for.",
+      "filter_category_label": "Filter category (optional)",
+      "select_all_categories": "All categories",
+      "select_all_categories_desc": "Leave blank to print all categories within the selected session.",
+      "target_range_label": "Target Range (optional)",
+      "placeholder_from": "From (e.g. 01)",
+      "placeholder_to": "To (e.g. 10)",
+      "additional_content_title": "Additional Content",
+      "add_competition_header": "Add competition header",
+      "add_competition_images": "Add competition images",
+      "add_country_club_flags": "Add country/club flags",
+      "collect_birthdate_email": "Include birthdate & email",
+      "print_barcode": "Print barcode on scoresheet",
+      "print_options_title": "Print Options",
+      "auto_print_label": "Auto print",
+      "auto_print_desc": "Show the print dialog automatically when the page opens",
+      "blank_label": "Blank scoresheet",
+      "blank_desc": "Print only the template without participant data",
+      "document_summary_title": "Document Summary",
+      "document_summary_desc": "The document will be rendered as a PDF using A4 size (Ianseo standard).",
+      "paper_size_label": "Paper Size",
+      "layout_label": "Layout",
+      "barcode_status_label": "Barcode Status",
+      "process_info": "Data will be processed by the ArcheryHub internal printout service."
+    },
+    "participants": {
+      "title": "Participant List",
+      "page_desc": "Print participant lists according to category and grouping preferences.",
+      "desc": "Print participant lists alphabetically or grouped by club/organization.",
+      "by_alphabet": "Alphabetical",
+      "by_alphabet_desc": "Print the participant list sorted by full name alphabetical order. Useful for re-check during re-registration.",
+      "by_club": "By Club",
+      "by_club_desc": "Display participant lists grouped by their Club/Organization for easier bib assignment.",
+      "page_title": "Participants - Printout"
+    },
+    "statistics": {
+      "title": "Event Statistics",
+      "page_title": "Statistics - Printout",
+      "page_desc": "Print summary statistics per category and per club for reporting and administration.",
+      "classes_title": "Classes & Divisions",
+      "classes_desc": "Matrix report of participant counts by age class and bow division.",
+      "clubs_title": "Clubs / Organizations",
+      "clubs_desc": "Summary of participant counts per club or supporting organization."
+    }
   },
   "event_teams": {
     "title": "Official Teams Management",
@@ -1994,6 +2075,63 @@
         "title": "Delete Scorekeeper?",
         "message": "This action is permanent. The scorekeeper will lose access to their account immediately after deletion.",
         "confirm": "Yes, Delete Account"
+      },
+      "event_teams": {
+        "title": "Teams",
+        "subtitle": "Manage official teams for selected categories",
+        "auto_sync": "Auto-sync from participants",
+        "add_manual": "Add Team (Manual)",
+        "select_category": "Select Category",
+        "category_not_found": "No team categories found.",
+        "team_count_badge": "{count} teams",
+        "official_team_list": "Official Teams",
+        "team_list_desc": "Manage teams registered officially for this event.",
+        "no_teams": "No official teams yet",
+        "no_teams_desc": "You can create teams manually or sync from registered participants.",
+        "members_and_scores": "Members & Scores",
+        "no_members": "No members added",
+        "total_score": "Total Score",
+        "edit_team_detail": "Edit Team Details",
+        "add_team_manual": "Add Team (Manual)",
+        "new_team": "New Team",
+        "identity_and_category": "Identity & Category",
+        "team_name": "Team Name",
+        "team_name_placeholder": "Enter team name",
+        "category_label": "Category",
+        "select_category_placeholder": "Select category",
+        "club": "Club",
+        "select_club_placeholder": "Select club",
+        "select_members": "Select Members ({current}/{max})",
+        "slot_full": "Slot Full",
+        "loading_archers": "Loading archers...",
+        "please_select_club": "Please select a club first",
+        "same_club_rule": "Members must belong to the same club",
+        "archers_not_found": "No archers found",
+        "no_archers_registered_desc": "No archers have registered for this club.",
+        "cancel": "Cancel",
+        "save_changes": "Save Changes",
+        "create_team": "Create Team",
+        "delete_team_confirm": "Delete Team",
+        "delete_confirm_title": "Confirm Delete",
+        "delete_warning": "Are you sure you want to delete <strong>{name}</strong>? This action cannot be undone.",
+        "yes_delete": "Yes, Delete",
+        "sync_teams_confirm": "Sync Teams",
+        "destructive_action": "Destructive Action",
+        "sync_warning": "Sync will overwrite existing teams. Proceed with caution.",
+        "yes_sync": "Yes, Sync",
+        "total_participants_sync": "{count} total participants",
+        "clubs_involved_sync": "{count} clubs involved",
+        "male_sync": "{count} male",
+        "female_sync": "{count} female",
+        "eligible_groups_sync": "{count} eligible groups",
+        "toast_sync_count": "{count} teams created",
+        "toast_sync_success": "Teams synced successfully ({count})",
+        "toast_sync_no_teams": "No teams were created during sync",
+        "toast_sync_failed": "Failed to sync teams",
+        "archers_available": "{count} archers available",
+        "no_archers_available": "No archers available",
+        "independent": "Independent",
+        "no_club_archers": "No registered archers in this club"
       }
     }
   },
@@ -2154,6 +2292,17 @@
       "edit_cancel": "Cancel",
       "edit_save": "Save",
       "edit_success": "Subscription updated successfully"
+    }
+    ,
+    "participants_list": {
+      "page_title": "Participants",
+      "export_short": "Export",
+      "add_short": "Add",
+      "total_label": "Total:",
+      "status": {
+        "registered": "Registered",
+        "pending": "Pending"
+      }
     }
   },
   "profile_public": {
@@ -2520,6 +2669,164 @@
       "success_title": "Password Reset Successfully!",
       "success_desc": "Congratulations! Your account password has been updated. Please log in with your new password.",
       "login_now": "Log In Now"
+      }
     }
   }
-}
+,
+  "dashboard_event_main": {
+    "tabs": {
+      "overview": "Overview",
+      "participants": "Participants"
+    }
+  }
+,
+  "dashboard_event_overview": {
+    "share_button": "Share",
+    "summary_title": "Event Summary",
+    "venue_fallback": "Event Venue",
+    "address_fallback": "Address",
+    "stats": {
+      "total_archers": "Total Archers",
+      "total_teams": "Total Official Teams",
+      "completion": "Completion",
+      "time_left": "Time Left"
+    },
+    "registered": "registered",
+    "manage_teams": "Manage Teams",
+    "registration_analysis": "Registration Analysis",
+    "view_all_participants": "View All Participants",
+    "category_distribution": "Category Distribution",
+    "no_category_data": "No category data available",
+    "showing_top_categories": "Showing top 5 categories",
+    "leaderboard": {
+      "title": "Leaderboard",
+      "no_scores": "No scores available yet"
+    },
+    "share_dialog": {
+      "title": "Share Event",
+      "desc": "Share this event's public page link to social media or copy the link for participants.",
+      "public_link_label": "Public Event Link",
+      "copy": "Copy",
+      "copied": "Copied",
+      "share_to_social": "Share To Social Media"
+    },
+    "alerts": {
+      "unassigned_participants_title": "Unassigned Participants",
+      "unassigned_participants_message": "{count} participants do not have a target number assigned."
+    }
+  }
+,
+  "dashboard_events_page": {
+    "title": "Event Page",
+    "subtitle": "Manage what is shown on the event public page.",
+    "view_button": "View",
+    "save_button": "Save",
+    "faq": {
+      "title": "Frequently Asked Questions (FAQ)",
+      "add": "Add",
+      "no_items": "No FAQs added yet.",
+      "question_label": "Question",
+      "answer_label": "Answer",
+      "question_placeholder": "e.g. What is the registration fee?",
+      "answer_placeholder": "Write a detailed answer..."
+    },
+    "information": {
+      "basic_title": "Basic Information",
+      "name_label": "Event Name",
+      "name_placeholder": "Your event name",
+      "description_label": "Description (About Event)",
+      "start_date_label": "Start Date",
+      "end_date_label": "End Date",
+      "location_type_label": "Location Type",
+      "location_type_placeholder": "Select Location Type",
+      "status_label": "Event Status"
+    }
+  ,
+  "breadcrumbs": {
+    "dashboard": "Dashboard",
+    "events": "Events"
+  },
+  "participant": {
+    "list": {
+      "title": "Participants"
+    },
+    "detail": {
+      "title": "Participant Detail",
+      "subtitle": "View full participant information and registration status",
+      "save_button": "Save Changes",
+      "save_short": "Save",
+      "loading": "Loading participant...",
+      "loading_short": "Loading...",
+      "info_title": "Participant Information",
+      "division_label": "Division & Category",
+      "search_placeholder": "Search division or category...",
+      "category_not_found": "Category not found",
+      "multiple_selection_note": "An archer may join multiple categories",
+      "payment_title": "Payment & Status",
+      "payment_status_label": "Payment Status",
+      "payment_amount_label": "Payment Amount",
+      "kick": {
+        "title": "Remove Participant",
+        "description": "Remove a participant permanently from this event. This will also delete target and score data.",
+        "cannot_remove": "Cannot Remove",
+        "remove_button": "Remove Participant",
+        "confirm_title": "Remove Participant?",
+        "confirm_heading": "Remove Participant?",
+        "confirm_message": "Are you sure you want to remove {name} from this event?",
+        "confirm_warning": "This action will delete all related target and score data and cannot be undone."
+      },
+      "not_found_title": "Participant Not Found",
+      "not_found_message": "The participant you are looking for was not found or has been deleted.",
+      "back_to_list": "Back to Participant List",
+      "tbd": "TBD",
+      "category_fallback": "Category",
+      "select_category": "Select Category",
+      "toast": {
+        "load_failed": "Failed to load participant data",
+        "update_success": "Participant data updated successfully",
+        "update_failed": "Failed to update participant data",
+        "kick_success": "Participant removed from event successfully",
+        "kick_failed": "Failed to remove participant"
+      }
+    },
+      "edit": {
+        "title": "Edit Participant",
+        "title_short": "Edit",
+        "subtitle": "Update participant registration information",
+        "actions": {
+          "save_changes": "Save Changes"
+        },
+        "competition_info": "Competition Information",
+        "select_category": "Event Category",
+        "select_category_placeholder": "Select Category",
+        "payment_amount_label": "Payment Amount",
+        "payment_amount_placeholder": "0",
+        "event": "Event",
+        "tips_title": "Tips",
+        "tips": {
+          "1": "Ensure the selected category matches the participant's division",
+          "2": "Target lane numbers will be assigned in the target module"
+        },
+        "kick": {
+          "title": "Remove Participant",
+          "description": "Remove a participant permanently from this event. This will also delete target and score data.",
+          "button": "Remove Participant",
+          "confirm_message": "Are you sure you want to remove this participant from the event? This action cannot be undone."
+        },
+        "errors": {
+          "select_category": "Please select an event category first"
+        },
+        "subscription_expired": "Your subscription has expired. Upgrade your plan to edit participants."
+      },
+    "status": {
+      "registered": "Registered",
+      "pending": "Pending"
+    },
+    "source": {
+      "invited": "Invited",
+      "admin_created": "Created by Admin",
+      "self_registered": "Self Registered",
+      "self_registered_alt": "Self Registered"
+    }
+  }
+  }

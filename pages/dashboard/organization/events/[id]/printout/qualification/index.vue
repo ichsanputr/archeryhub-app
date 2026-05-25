@@ -4,9 +4,9 @@
         <div class="flex flex-col gap-4">
             <div class="flex items-center gap-2 text-xs font-bold text-slate-400">
                 <NuxtLink :to="`/dashboard/events/${eventId}/printout`" class="hover:text-primary transition-colors">
-                    Printout</NuxtLink>
+                    {{ t('event_printout.title') }}</NuxtLink>
                 <Icon icon="ph:caret-right-bold" />
-                <span class="text-navy">Sesi kualifikasi</span>
+                <span class="text-navy">{{ t('event_printout.scoresheet.title') }}</span>
             </div>
 
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -15,8 +15,8 @@
                         class="!rounded-xl border border-gray-100 hover:border-primary/30 shadow-sm"
                         @click="navigateTo(`/dashboard/events/${eventId}/printout`)" />
                     <div>
-                        <h1 class="text-3xl font-black text-navy tracking-tight">Cetak scoresheet kualifikasi</h1>
-                        <p class="text-gray-500 text-sm">Atur dan cetak lembar skor untuk babak kualifikasi.</p>
+                        <h1 class="text-3xl font-black text-navy tracking-tight">{{ t('event_printout.scoresheet.title') }}</h1>
+                        <p class="text-gray-500 text-sm">{{ t('event_printout.scoresheet.page_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -31,42 +31,37 @@
                         <div class="size-10 bg-navy rounded-xl flex items-center justify-center">
                             <Icon icon="ph:gear-six-bold" class="text-white text-xl" />
                         </div>
-                        <h2 class="text-lg font-black text-navy">Parameter cetak</h2>
+                        <h2 class="text-lg font-black text-navy">{{ t('event_printout.scoresheet.parameters_title') }}</h2>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <!-- Session Selection -->
                         <div class="space-y-4">
                             <div>
-                                <label class="block text-xs font-bold text-slate-400 mb-2 px-1">Sesi kualifikasi</label>
-                                <BaseSelect v-model="form.session" placeholder="Pilih sesi" :items="sessionOptions"
+                                <label class="block text-xs font-bold text-slate-400 mb-2 px-1">{{ t('event_printout.scoresheet.session_label') }}</label>
+                                <BaseSelect v-model="form.session" :placeholder="t('event_printout.scoresheet.select_session_placeholder')" :items="sessionOptions"
                                     class="!border-gray-100 !rounded-2xl" />
                             </div>
-                            <p class="text-[10px] text-slate-400 px-1 leading-relaxed italic">
-                                Pilih sesi kualifikasi yang akan dicetak scoresheet-nya.
-                            </p>
+                            <p class="text-[10px] text-slate-400 px-1 leading-relaxed italic">{{ t('event_printout.scoresheet.select_session_desc') }}</p>
                         </div>
 
                         <!-- Category Selection -->
                         <div class="space-y-4">
                             <div>
-                                <label class="block text-xs font-bold text-slate-400 mb-2 px-1">Filter kategori
-                                    (opsional)</label>
-                                <BaseSelect v-model="form.category" placeholder="Semua kategori"
+                                <label class="block text-xs font-bold text-slate-400 mb-2 px-1">{{ t('event_printout.scoresheet.filter_category_label') }}</label>
+                                <BaseSelect v-model="form.category" :placeholder="t('event_printout.scoresheet.select_all_categories')"
                                     :items="categoryOptions" class="!border-gray-100 !rounded-2xl" />
                             </div>
-                            <p class="text-[10px] text-slate-400 px-1 leading-relaxed italic">
-                                Kosongkan untuk mencetak seluruh kategori dalam sesi tersebut.
-                            </p>
+                            <p class="text-[10px] text-slate-400 px-1 leading-relaxed italic">{{ t('event_printout.scoresheet.select_all_categories_desc') }}</p>
                         </div>
 
                         <!-- Target Range -->
                         <div class="space-y-4 md:col-span-2">
-                            <label class="block text-xs font-bold text-slate-400 px-1">Rentang target (opsional)</label>
+                            <label class="block text-xs font-bold text-slate-400 px-1">{{ t('event_printout.scoresheet.target_range_label') }}</label>
                             <div class="grid grid-cols-2 gap-4">
-                                <BaseInput v-model="form.targetFrom" placeholder="Dari (contoh: 01)"
+                                <BaseInput v-model="form.targetFrom" :placeholder="t('event_printout.scoresheet.placeholder_from')"
                                     class="!border-gray-100 !rounded-2xl" />
-                                <BaseInput v-model="form.targetTo" placeholder="Sampai (contoh: 10)"
+                                <BaseInput v-model="form.targetTo" :placeholder="t('event_printout.scoresheet.placeholder_to')"
                                     class="!border-gray-100 !rounded-2xl" />
                             </div>
                         </div>
@@ -79,34 +74,34 @@
                         <div class="size-10 bg-navy rounded-xl flex items-center justify-center">
                             <Icon icon="ph:list-checks-bold" class="text-white text-xl" />
                         </div>
-                        <h2 class="text-lg font-black text-navy">Konten tambahan</h2>
+                        <h2 class="text-lg font-black text-navy">{{ t('event_printout.scoresheet.additional_content_title') }}</h2>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="flex items-center gap-3 p-3 rounded-xl border border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer"
+                            <div class="flex items-center gap-3 p-3 rounded-xl border border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer"
                             @click="form.addCompetitionHeader = !form.addCompetitionHeader">
                             <BaseCheckbox v-model="form.addCompetitionHeader" />
-                            <span class="text-sm font-medium text-navy">Tambah header kompetisi</span>
+                            <span class="text-sm font-medium text-navy">{{ t('event_printout.scoresheet.add_competition_header') }}</span>
                         </div>
-                        <div class="flex items-center gap-3 p-3 rounded-xl border border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer"
+                            <div class="flex items-center gap-3 p-3 rounded-xl border border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer"
                             @click="form.addCompetitionImages = !form.addCompetitionImages">
                             <BaseCheckbox v-model="form.addCompetitionImages" />
-                            <span class="text-sm font-medium text-navy">Tambah gambar kompetisi</span>
+                            <span class="text-sm font-medium text-navy">{{ t('event_printout.scoresheet.add_competition_images') }}</span>
                         </div>
-                        <div class="flex items-center gap-3 p-3 rounded-xl border border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer"
+                            <div class="flex items-center gap-3 p-3 rounded-xl border border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer"
                             @click="form.addCountryClubFlags = !form.addCountryClubFlags">
                             <BaseCheckbox v-model="form.addCountryClubFlags" />
-                            <span class="text-sm font-medium text-navy">Tambah bendera negara/klub</span>
+                            <span class="text-sm font-medium text-navy">{{ t('event_printout.scoresheet.add_country_club_flags') }}</span>
                         </div>
-                        <div class="flex items-center gap-3 p-3 rounded-xl border border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer"
+                            <div class="flex items-center gap-3 p-3 rounded-xl border border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer"
                             @click="form.collectArchersBirthdateEmail = !form.collectArchersBirthdateEmail">
                             <BaseCheckbox v-model="form.collectArchersBirthdateEmail" />
-                            <span class="text-sm font-medium text-navy">Cetak tgl lahir & email</span>
+                            <span class="text-sm font-medium text-navy">{{ t('event_printout.scoresheet.collect_birthdate_email') }}</span>
                         </div>
-                        <div class="flex items-center gap-3 p-3 rounded-xl border border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer"
+                            <div class="flex items-center gap-3 p-3 rounded-xl border border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer"
                             @click="form.printBarcode = !form.printBarcode">
                             <BaseCheckbox v-model="form.printBarcode" />
-                            <span class="text-sm font-medium text-navy">Cetak barcode pada scoresheet</span>
+                            <span class="text-sm font-medium text-navy">{{ t('event_printout.scoresheet.print_barcode') }}</span>
                         </div>
                     </div>
                 </div>
@@ -117,7 +112,7 @@
                         <div class="size-10 bg-navy rounded-xl flex items-center justify-center">
                             <Icon icon="ph:printer-bold" class="text-white text-xl" />
                         </div>
-                        <h2 class="text-lg font-black text-navy">Opsi pencetakan</h2>
+                        <h2 class="text-lg font-black text-navy">{{ t('event_printout.scoresheet.print_options_title') }}</h2>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -127,9 +122,8 @@
                                 <BaseCheckbox v-model="form.autoPrint" />
                             </div>
                             <div>
-                                <h4 class="text-sm font-black text-navy">Auto print</h4>
-                                <p class="text-[10px] text-gray-400 font-bold">Munculkan dialog cetak otomatis saat
-                                    halaman dibuka</p>
+                                <h4 class="text-sm font-black text-navy">{{ t('event_printout.scoresheet.auto_print_label') }}</h4>
+                                <p class="text-[10px] text-gray-400 font-bold">{{ t('event_printout.scoresheet.auto_print_desc') }}</p>
                             </div>
                         </div>
 
@@ -139,9 +133,8 @@
                                 <BaseCheckbox v-model="form.blankScoresheet" />
                             </div>
                             <div>
-                                <h4 class="text-sm font-black text-navy">Scoresheet kosong</h4>
-                                <p class="text-[10px] text-gray-400 font-bold">Hanya cetak template scoresheet tanpa
-                                    data peserta</p>
+                                <h4 class="text-sm font-black text-navy">{{ t('event_printout.scoresheet.blank_label') }}</h4>
+                                <p class="text-[10px] text-gray-400 font-bold">{{ t('event_printout.scoresheet.blank_desc') }}</p>
                             </div>
                         </div>
                     </div>
@@ -160,22 +153,21 @@
                             <Icon icon="ph:file-pdf-bold" class="text-5xl text-primary" />
                         </div>
 
-                        <h3 class="text-2xl font-black mb-2">Ringkasan dokumen</h3>
-                        <p class="text-xs text-slate-300 mb-8 max-w-[200px]">Dokumen akan dirender dalam format PDF
-                            dengan ukuran A4 standar Ianseo.</p>
+                        <h3 class="text-2xl font-black mb-2">{{ t('event_printout.scoresheet.document_summary_title') }}</h3>
+                        <p class="text-xs text-slate-300 mb-8 max-w-[200px]">{{ t('event_printout.scoresheet.document_summary_desc') }}</p>
 
                         <div class="w-full space-y-4 pt-6 border-t border-white/10 text-[10px] font-bold">
                             <div class="flex justify-between items-center text-slate-400 tracking-widest">
-                                <span>Ukuran kertas</span>
+                                <span>{{ t('event_printout.scoresheet.paper_size_label') }}</span>
                                 <span class="text-white">A4 (Portrait)</span>
                             </div>
                             <div class="flex justify-between items-center text-slate-400 tracking-widest">
-                                <span>Layout</span>
+                                <span>{{ t('event_printout.scoresheet.layout_label') }}</span>
                                 <span class="text-white">2 Scoresheets/Page</span>
                             </div>
                             <div class="flex justify-between items-center text-slate-400 tracking-widest">
-                                <span>Status barcode</span>
-                                <span class="text-white">{{ form.printBarcode ? 'Aktif' : 'Nonaktif' }}</span>
+                                <span>{{ t('event_printout.scoresheet.barcode_status_label') }}</span>
+                                <span class="text-white">{{ form.printBarcode ? t('common.active') : t('common.inactive') }}</span>
                             </div>
                         </div>
                     </div>
@@ -185,12 +177,10 @@
                 <BaseButton variant="primary" icon="ph:printer-bold"
                     class="w-full !py-6 !rounded-3xl font-black tracking-widest text-sm shadow-sm"
                     :disabled="!form.session || isProcessing" :loading="isProcessing" @click="handlePrint">
-                    Cetak PDF
+                    {{ t('event_printout.print_pdf') }}
                 </BaseButton>
 
-                <p class="text-[10px] text-center text-slate-400 font-bold">
-                    Data akan diproses oleh layanan printout internal ArcheryHub.
-                </p>
+                <p class="text-[10px] text-center text-slate-400 font-bold">{{ t('event_printout.scoresheet.process_info') }}</p>
             </div>
         </div>
     </div>
@@ -199,6 +189,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const { get } = useApi()
@@ -210,6 +201,7 @@ const eventId = route.params.id
 const sessions = ref([])
 const categories = ref([])
 const isProcessing = ref(false)
+const { t } = useI18n()
 
 const form = ref({
     session: null,
@@ -230,7 +222,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Cetak scoresheet kualifikasi - ArcheryHub.id'
+    title: t('event_printout.scoresheet.page_title')
 })
 
 const sessionOptions = computed(() => {

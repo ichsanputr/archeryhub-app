@@ -4,22 +4,20 @@
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h1 class="text-2xl sm:text-3xl font-black text-navy tracking-tight text-center sm:text-left">Halaman
-                    Event</h1>
-                <div class="text-gray-500 mt-1 text-sm text-center sm:text-left">Kelola informasi yang ditampilkan di
-                    halaman publik event.</div>
+                <h1 class="text-2xl sm:text-3xl font-black text-navy tracking-tight text-center sm:text-left">{{ $t('dashboard_events_page.title') }}</h1>
+                <div class="text-gray-500 mt-1 text-sm text-center sm:text-left">{{ $t('dashboard_events_page.subtitle') }}</div>
             </div>
             <div class="flex items-center justify-center sm:justify-end gap-2 sm:gap-3">
                 <BaseButton variant="outline" icon="ph:eye" :to="`/events/${eventData.slug}`" target="_blank" size="md"
                     class="flex-1 sm:flex-none">
-                    Lihat
+                    {{ $t('dashboard_events_page.view_button') }}
                 </BaseButton>
                 <BaseButton variant="primary" icon="ph:floppy-disk"
                     @click="isSubscriptionActive ? saveEventPage() : (showPremiumModal = true)"
                     :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
                     :loading="saving" size="md"
                     class="flex-1 sm:flex-none">
-                    Simpan
+                    {{ $t('dashboard_events_page.save_button') }}
                 </BaseButton>
             </div>
         </div>
@@ -39,16 +37,16 @@
                 <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
                     <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                         <Icon icon="ph:question" class="text-primary text-lg sm:text-xl" />
-                        Pertanyaan Sering Diajukan (FAQ)
+                        {{ $t('dashboard_events_page.faq.title') }}
                     </h2>
                     <BaseButton variant="outline" size="xs" @click="addFAQField">
-                        <Icon icon="ph:plus-bold" class="mr-1" /> Tambah
+                        <Icon icon="ph:plus-bold" class="mr-1" /> {{ $t('dashboard_events_page.faq.add') }}
                     </BaseButton>
                 </div>
-                <div class="p-4 sm:p-6 space-y-4">
-                    <div v-if="form.faq?.length === 0"
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div v-if="form.faq?.length === 0"
                         class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                        <div class="text-sm text-gray-500">Belum ada FAQ yang ditambahkan.</div>
+                        <div class="text-sm text-gray-500">{{ $t('dashboard_events_page.faq.no_items') }}</div>
                     </div>
                     <div v-else class="space-y-4">
                         <div v-for="(item, index) in form.faq" :key="index"
@@ -58,18 +56,18 @@
                                 <Icon icon="ph:trash" />
                             </button>
                             <div class="space-y-4">
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-gray-400  tracking-widest">Pertanyaan</label>
-                                    <input v-model="item.question" type="text"
-                                        placeholder="Contoh: Berapa biaya pendaftaran?"
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-gray-400  tracking-widest">Jawaban</label>
-                                    <textarea v-model="item.answer" rows="3"
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all"
-                                        placeholder="Tuliskan jawaban yang detail..."></textarea>
-                                </div>
+                                            <div class="space-y-2">
+                                                <label class="text-xs font-bold text-gray-400  tracking-widest">{{ $t('dashboard_events_page.faq.question_label') }}</label>
+                                                <input v-model="item.question" type="text"
+                                                    :placeholder="$t('dashboard_events_page.faq.question_placeholder')"
+                                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                                            </div>
+                                            <div class="space-y-2">
+                                                <label class="text-xs font-bold text-gray-400  tracking-widest">{{ $t('dashboard_events_page.faq.answer_label') }}</label>
+                                                <textarea v-model="item.answer" rows="3"
+                                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all"
+                                                    :placeholder="$t('dashboard_events_page.faq.answer_placeholder')"></textarea>
+                                            </div>
                             </div>
                         </div>
                     </div>
@@ -85,28 +83,28 @@
                     <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 rounded-t-2xl overflow-hidden">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:info" class="text-primary text-lg sm:text-xl" />
-                            Informasi Dasar
+                            {{ $t('dashboard_events_page.information.basic_title') }}
                         </h2>
                     </div>
                     <div class="p-4 sm:p-6 space-y-5">
                         <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Nama Event</label>
+                            <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.information.name_label') }}</label>
                             <input v-model="form.name" type="text"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                placeholder="Nama event Anda" />
+                                :placeholder="$t('dashboard_events_page.information.name_placeholder')" />
                         </div>
                         <div class="flex flex-col gap-2">
-                            <label class="text-sm font-bold text-gray-700">Deskripsi (Tentang Event)</label>
+                            <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.information.description_label') }}</label>
                             <TiptapEditor v-model="form.description" class="min-h-[300px]" />
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">Tanggal Mulai</label>
+                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.information.start_date_label') }}</label>
                                 <input v-model="form.start_date" type="datetime-local"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                             </div>
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">Tanggal Selesai</label>
+                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.information.end_date_label') }}</label>
                                 <input v-model="form.end_date" type="datetime-local"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                             </div>
@@ -114,10 +112,10 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <BaseSelect v-model="form.location_type" :items="disciplines" item-value="name"
-                                    item-title="name" label="Tipe Lokasi" placeholder="Pilih Tipe Lokasi" />
+                                    item-title="name" :label="$t('dashboard_events_page.information.location_type_label')" :placeholder="$t('dashboard_events_page.information.location_type_placeholder')" />
                             </div>
                             <div>
-                                <BaseSelect v-model="form.status" :items="statusOptions" label="Status Event" />
+                                <BaseSelect v-model="form.status" :items="statusOptions" :label="$t('dashboard_events_page.information.status_label')" />
                             </div>
                         </div>
                     </div>

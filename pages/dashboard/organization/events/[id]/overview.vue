@@ -33,11 +33,11 @@
                             <template v-else>
                                 <div class="flex items-center gap-3 mb-2">
                                     <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">
-                                        {{ event?.name || 'Ringkasan Event' }}
+                                        {{ event?.name || $t('dashboard_event_overview.summary_title') }}
                                     </h1>
                                 </div>
                                 <p v-if="event" class="text-slate-300 text-sm mb-2">
-                                    {{ event.venue || 'Lokasi Event' }} • {{ event.location || 'Alamat' }}
+                                    {{ event.venue || $t('dashboard_event_overview.venue_fallback') }} • {{ event.location || $t('dashboard_event_overview.address_fallback') }}
                                 </p>
                                 <div class="flex flex-wrap items-center gap-4">
                                     <div
@@ -54,7 +54,7 @@
                     <div class="flex flex-wrap gap-3 flex-shrink-0">
                         <BaseButton variant="white" icon="ph:share-network-bold"
                             class="h-11 px-5 border-white/20 shadow-sm font-bold" @click="openShareDialog">
-                            Bagikan
+                            {{ $t('dashboard_event_overview.share_button') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -138,30 +138,30 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                     <!-- Total Pemanah -->
                     <StatCard
-                        title="Total Pemanah"
+                        :title="$t('dashboard_event_overview.stats.total_archers')"
                         :value="event?.participant_count || 0"
                         icon="ph:users"
                         color="primary"
                     >
                         <template #footer>
-                            <p class="text-green-600 text-xs font-bold flex items-center gap-1">
+                                <p class="text-green-600 text-xs font-bold flex items-center gap-1">
                                 <Icon icon="ph:trend-up" class="text-[14px]" />
-                                {{ participants.length }} terdaftar
+                                {{ participants.length }} {{ $t('dashboard_event_overview.registered') }}
                             </p>
                         </template>
                     </StatCard>
 
                     <!-- Total Tim Resmi -->
                     <StatCard
-                        title="Total Tim Resmi"
+                        :title="$t('dashboard_event_overview.stats.total_teams')"
                         :value="totalTeams"
                         icon="ph:users-three"
                         color="primary"
                     >
                         <template #footer>
-                            <NuxtLink :to="`/dashboard/organization/events/${route.params.id}/teams`"
+                                <NuxtLink :to="`/dashboard/organization/events/${route.params.id}/teams`"
                                 class="text-primary text-[10px] font-black tracking-widest hover:underline flex items-center gap-1">
-                                Kelola Tim
+                                {{ $t('dashboard_event_overview.manage_teams') }}
                                 <Icon icon="ph:arrow-right-bold" />
                             </NuxtLink>
                         </template>
@@ -169,7 +169,7 @@
 
                     <!-- Penyelesaian -->
                     <StatCard
-                        title="Penyelesaian"
+                        :title="$t('dashboard_event_overview.stats.completion')"
                         :value="completionPercentage + '%'"
                         icon="ph:check-square-offset"
                         color="primary"
@@ -183,7 +183,7 @@
 
                     <!-- Sisa Waktu -->
                     <StatCard
-                        title="Sisa Waktu"
+                        :title="$t('dashboard_event_overview.stats.time_left')"
                         :value="timeLeft"
                         icon="ph:timer"
                         color="primary"
@@ -200,17 +200,15 @@
                     <div
                         class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Analisis Pendaftaran
+                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">{{ $t('dashboard_event_overview.registration_analysis') }}
                             </h3>
                             <NuxtLink :to="`/dashboard/events/${route.params.id}/participants`"
-                                class="text-xs text-navy font-bold hover:text-primary transition-colors">Lihat Semua
-                                Peserta</NuxtLink>
+                                class="text-xs text-navy font-bold hover:text-primary transition-colors">{{ $t('dashboard_event_overview.view_all_participants') }}</NuxtLink>
                         </div>
                         <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/30">
                             <!-- By Category -->
                             <div>
-                                <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">Sebaran
-                                    Kategori</h4>
+                                <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">{{ $t('dashboard_event_overview.category_distribution') }}</h4>
                                 <div class="space-y-4">
                                     <div v-for="cat in registrationStats.categories.slice(0, 5)" :key="cat.name"
                                         class="space-y-1.5">
@@ -233,11 +231,11 @@
                                     </div>
                                     <div v-if="registrationStats.categories.length === 0"
                                         class="py-10 text-center text-gray-400 italic text-xs">
-                                        Belum ada data kategori
+                                        {{ $t('dashboard_event_overview.no_category_data') }}
                                     </div>
                                     <p v-if="registrationStats.categories.length > 5"
                                         class="text-[10px] text-gray-400 italic text-center pt-2">
-                                        Menampilkan 5 kategori terbanyak
+                                        {{ $t('dashboard_event_overview.showing_top_categories') }}
                                     </p>
                                 </div>
                             </div>
@@ -304,7 +302,7 @@
                     <!-- Leaderboard -->
                     <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Papan Peringkat</h3>
+                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">{{ $t('dashboard_event_overview.leaderboard.title') }}</h3>
                         </div>
                         <div class="flex-1 overflow-y-auto max-h-[440px] p-4">
                             <div class="space-y-3">
@@ -361,7 +359,7 @@
 
                                 <div v-if="topParticipants.length === 0"
                                     class="py-12 text-center text-gray-400 italic font-medium bg-gray-50/50 rounded-2xl">
-                                    Belum ada skor tersedia
+                                    {{ $t('dashboard_event_overview.leaderboard.no_scores') }}
                                 </div>
                             </div>
                         </div>
@@ -398,18 +396,16 @@
                                     <Icon icon="ph:share-network-bold" class="text-3xl" />
                                 </div>
                                 <div>
-                                    <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">Bagikan Event</h3>
+                                    <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">{{ $t('dashboard_event_overview.share_dialog.title') }}</h3>
                                     <p class="text-text-secondary text-sm font-medium leading-relaxed">
-                                        Sebarkan link halaman publik event ini ke sosial media atau salin link untuk
-                                        peserta.
+                                        {{ $t('dashboard_event_overview.share_dialog.desc') }}
                                     </p>
                                 </div>
                             </div>
 
                             <!-- Link Copy Segment -->
                             <div class="space-y-3 mb-8">
-                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">Link
-                                    Publik Event</label>
+                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">{{ $t('dashboard_event_overview.share_dialog.public_link_label') }}</label>
                                 <div class="flex items-center gap-2">
                                     <div
                                         class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-xs text-gray-600 font-mono truncate">
@@ -418,16 +414,14 @@
                                     <BaseButton @click="copyPublicUrl" variant="primary" size="sm"
                                         :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'"
                                         class="px-5 h-10 font-bold tracking-widest text-[10px] shrink-0 shadow-md">
-                                        {{ copySuccess ? 'Tersalin' : 'Salin' }}
+                                        {{ copySuccess ? $t('dashboard_event_overview.share_dialog.copied') : $t('dashboard_event_overview.share_dialog.copy') }}
                                     </BaseButton>
                                 </div>
                             </div>
 
                             <!-- Social Sharing -->
                             <div class="space-y-4">
-                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">Bagikan
-                                    Ke
-                                    Sosial Media</label>
+                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">{{ $t('dashboard_event_overview.share_dialog.share_to_social') }}</label>
                                 <div class="grid grid-cols-4 gap-3">
                                     <div v-for="social in [
                                         { id: 'whatsapp', icon: 'ph:whatsapp-logo-fill', color: 'text-green-500', bg: 'bg-green-50', hover: 'hover:bg-green-500' },
@@ -465,6 +459,7 @@ import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useEventContext } from '~/composables/useEventContext'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({
     layout: 'dashboard'
@@ -473,6 +468,8 @@ definePageMeta({
 useHead({
     title: 'Panel Kontrol Event - ArcheryHub Dashboard'
 })
+
+const { t } = useI18n()
 
 import { gsap } from 'gsap'
 
@@ -691,12 +688,13 @@ const alerts = computed(() => {
     // Generate alerts based on event status
     const alertList = []
     if (participants.value.filter(p => !p.target_name).length > 0) {
+        const count = participants.value.filter(p => !p.target_name).length
         alertList.push({
             id: 1,
             type: 'info',
             icon: 'ph:user-plus',
-            title: 'Peserta Belum Diatur',
-            message: `${participants.value.filter(p => !p.target_name).length} peserta belum memiliki nomor bantalan.`
+            title: t('dashboard_event_overview.alerts.unassigned_participants_title'),
+            message: t('dashboard_event_overview.alerts.unassigned_participants_message', { count })
         })
     }
     return alertList

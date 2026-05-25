@@ -18,10 +18,10 @@
             </div>
             <div class="min-w-0 text-left">
               <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2 truncate capitalize">
-                Cetak dokumen event
+                {{ t('event_printout.title') }}
               </h1>
               <p class="text-slate-300 text-sm max-w-2xl">
-                Laporan dan administrasi lomba untuk {{ eventName || 'Event' }}
+                {{ t('event_printout.desc', { name: eventName || 'Event' }) }}
               </p>
             </div>
           </div>
@@ -39,15 +39,11 @@
           <Icon icon="ph:file-pdf-bold" class="text-3xl text-navy group-hover:text-white" />
         </div>
 
-        <h3 class="text-xl font-black text-navy mb-3 group-hover:text-primary transition-colors capitalize">Scoresheet
-          kualifikasi
-        </h3>
-        <p class="text-sm text-gray-500 mb-8 flex-1 leading-relaxed">
-          Pengaturan cetak lembar skor kualifikasi per sesi atau per kategori dengan template standar Ianseo.
-        </p>
+        <h3 class="text-xl font-black text-navy mb-3 group-hover:text-primary transition-colors capitalize">{{ t('event_printout.scoresheet.title') }}</h3>
+        <p class="text-sm text-gray-500 mb-8 flex-1 leading-relaxed">{{ t('event_printout.scoresheet.desc') }}</p>
 
         <div class="flex items-center gap-2 text-primary font-black text-xs tracking-widest">
-          <span>Lihat Selengkapnya</span>
+          <span>{{ t('event_printout.view_more') }}</span>
           <Icon icon="ph:arrow-right-bold" class="text-lg group-hover:translate-x-1 transition-transform" />
         </div>
       </NuxtLink>
@@ -60,15 +56,11 @@
           <Icon icon="ph:file-pdf-bold" class="text-3xl text-navy group-hover:text-white" />
         </div>
 
-        <h3 class="text-xl font-black text-navy mb-3 group-hover:text-primary transition-colors capitalize">Daftar
-          peserta
-        </h3>
-        <p class="text-sm text-gray-500 mb-8 flex-1 leading-relaxed">
-          Cetak daftar peserta lomba berdasarkan abjad atau dikelompokkan per organisasi/klub.
-        </p>
+        <h3 class="text-xl font-black text-navy mb-3 group-hover:text-primary transition-colors capitalize">{{ t('event_printout.participants.title') }}</h3>
+        <p class="text-sm text-gray-500 mb-8 flex-1 leading-relaxed">{{ t('event_printout.participants.desc') }}</p>
 
         <div class="flex items-center gap-2 text-primary font-black text-xs tracking-widest">
-          <span>Lihat Selengkapnya</span>
+          <span>{{ t('event_printout.view_more') }}</span>
           <Icon icon="ph:arrow-right-bold" class="text-lg group-hover:translate-x-1 transition-transform" />
         </div>
       </NuxtLink>
@@ -81,15 +73,11 @@
           <Icon icon="ph:file-pdf-bold" class="text-3xl text-navy group-hover:text-white" />
         </div>
 
-        <h3 class="text-xl font-black text-navy mb-3 group-hover:text-primary transition-colors capitalize">Statistik
-          event
-        </h3>
-        <p class="text-sm text-gray-500 mb-8 flex-1 leading-relaxed">
-          Cetak ringkasan statistik peserta berdasarkan kategori lomba (divisi & kelas) dan statistik per klub.
-        </p>
+        <h3 class="text-xl font-black text-navy mb-3 group-hover:text-primary transition-colors capitalize">{{ t('event_printout.statistics.title') }}</h3>
+        <p class="text-sm text-gray-500 mb-8 flex-1 leading-relaxed">{{ t('event_printout.statistics.desc') }}</p>
 
         <div class="flex items-center gap-2 text-primary font-black text-xs tracking-widest">
-          <span>Lihat Selengkapnya</span>
+          <span>{{ t('event_printout.view_more') }}</span>
           <Icon icon="ph:arrow-right-bold" class="text-lg group-hover:translate-x-1 transition-transform" />
         </div>
       </NuxtLink>
@@ -102,19 +90,21 @@
 import { Icon } from '@iconify/vue'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const { get } = useApi()
 
 const eventId = route.params.id
 const eventName = ref('')
+const { t } = useI18n()
 
 definePageMeta({
   layout: 'dashboard'
 })
 
 useHead({
-  title: 'Printout - Manajemen event'
+  title: t('event_printout.page_title')
 })
 
 const fetchEventData = async () => {

@@ -27,22 +27,22 @@
                         <!-- Title Section -->
                         <div class="flex-1 min-w-0">
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2 truncate">
-                                Detail Peserta
+                                {{ t('participant.detail.title') }}
                             </h1>
                             <div class="text-slate-300 text-sm max-w-2xl">
-                                Lihat informasi lengkap dan status pendaftaran peserta
+                                {{ t('participant.detail.subtitle') }}
                             </div>
                         </div>
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
-                        <BaseButton variant="primary" icon="ph:floppy-disk"
+                            <BaseButton variant="primary" icon="ph:floppy-disk"
                             class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all font-black"
                             :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
                             @click="isSubscriptionActive ? handleSubmit() : (showPremiumModal = true)" :loading="isSubmitting">
-                            <span class="hidden sm:inline">Simpan Perubahan</span>
-                            <span class="sm:hidden">Simpan</span>
+                            <span class="hidden sm:inline">{{ t('participant.detail.save_button') }}</span>
+                            <span class="sm:hidden">{{ t('participant.detail.save_short') }}</span>
                         </BaseButton>
                     </div>
                 </div>
@@ -51,11 +51,11 @@
 
         <template v-if="isLoading">
             <!-- Loading State -->
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
                 <div
                     class="inline-block h-8 w-8 border-4 border-primary border-t-transparent animate-spin rounded-full">
                 </div>
-                <div class="text-gray-500 mt-4 font-medium">Memuat data peserta...</div>
+                <div class="text-gray-500 mt-4 font-medium">{{ t('participant.detail.loading') }}</div>
             </div>
         </template>
 
@@ -73,9 +73,9 @@
                             <Icon icon="ph:seal-check-fill" class="text-[200px]" />
                         </div>
 
-                        <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
+                            <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
                             <Icon icon="ph:user" class="text-primary" />
-                            Informasi Peserta
+                            {{ t('participant.detail.info_title') }}
                         </h2>
 
                         <div class="space-y-6">
@@ -119,12 +119,12 @@
                                 <label
                                     class="block text-sm font-black text-navy tracking-widest flex items-center gap-2">
                                     <Icon icon="ph:trophy-bold" class="text-primary" />
-                                    Divisi & Kategori Lomba
+                                    {{ t('participant.detail.division_label') }}
                                 </label>
 
                                 <div class="relative">
                                     <input v-model="categorySearch" type="text"
-                                        placeholder="Cari divisi atau kategori..."
+                                        :placeholder="t('participant.detail.search_placeholder')"
                                         class="w-full h-10 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium" />
                                     <Icon icon="ph:magnifying-glass"
                                         class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -159,13 +159,13 @@
                                     <div v-if="filteredCategories.length === 0" class="py-12 text-center text-gray-400">
                                         <Icon icon="ph:magnifying-glass-slash"
                                             class="text-3xl mx-auto mb-2 opacity-50" />
-                                        <p class="text-xs font-bold tracking-widest">Kategori tidak ditemukan
+                                        <p class="text-xs font-bold tracking-widest">{{ t('participant.detail.category_not_found') }}
                                         </p>
                                     </div>
                                 </div>
                                 <div class=" text-xs text-gray-500 font-medium px-1 flex items-center gap-2">
                                     <Icon icon="ph:info-bold" class="text-navy" />
-                                    Pemanah dapat mengikuti lebih dari satu kategori (Multiple Selection)
+                                    {{ t('participant.detail.multiple_selection_note') }}
                                 </div>
                             </div>
                         </div>
@@ -175,15 +175,15 @@
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                         <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
                             <Icon icon="ph:currency-circle-dollar" class="text-primary" />
-                            Status & Pembayaran
+                            {{ t('participant.detail.payment_title') }}
                         </h2>
                         <div class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <BaseSelect v-model="form.payment_status" label="Status Pembayaran" required
+                                <BaseSelect v-model="form.payment_status" :label="t('participant.detail.payment_status_label')" required
                                     icon="ph:currency-circle-dollar" :items="paymentStatusOptions" item-title="label"
                                     item-value="value" />
 
-                                <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
+                                <BaseInput v-model="form.payment_amount" :label="t('participant.detail.payment_amount_label')" placeholder="0"
                                     icon="ph:money" kind="currency" required />
                             </div>
                         </div>
@@ -199,18 +199,16 @@
                     <div class="bg-red-50 rounded-2xl border border-red-100 shadow-sm p-6">
                         <h3 class="text-sm font-bold text-red-600 mb-2 flex items-center gap-2">
                             <Icon icon="ph:warning-circle" class="text-lg" />
-                            Kick Participant
+                            {{ t('participant.detail.kick.title') }}
                         </h3>
                         <div class="text-[10px] text-red-500/80 mb-4 leading-relaxed font-bold">
-                            Hapus peserta dari event ini secara permanen. Tindakan ini juga akan menghapus data target
-                            dan
-                            skor yang terkait.
+                            {{ t('participant.detail.kick.description') }}
                         </div>
                         <BaseButton variant="danger" block icon="ph:user-minus"
                             class="h-10 text-xs shadow-lg shadow-red-200" :disabled="participant.in_elimination"
                             :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
                             @click="isSubscriptionActive ? (showKickDialog = true) : (showPremiumModal = true)">
-                            {{ participant.in_elimination ? 'Tidak Dapat Dikeluarkan' : 'Keluarkan Peserta' }}
+                            {{ participant.in_elimination ? t('participant.detail.kick.cannot_remove') : t('participant.detail.kick.remove_button') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -223,7 +221,7 @@
                         <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
                             <Icon icon="ph:user-minus-bold" class="text-xl text-red-600" />
                         </div>
-                        <h2 class="text-xl font-black text-navy">Keluarkan Peserta?</h2>
+                        <h2 class="text-xl font-black text-navy">{{ t('participant.detail.kick.confirm_title') }}</h2>
                     </div>
                 </template>
                 <div class="space-y-4">
@@ -234,25 +232,22 @@
                                 class="w-full h-full object-cover">
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-navy mb-2">Keluarkan Peserta?</h3>
+                            <h3 class="text-lg font-bold text-navy mb-2">{{ t('participant.detail.kick.confirm_heading') }}</h3>
                             <p class="text-gray-500 text-sm leading-relaxed">
-                                Apakah Anda yakin ingin mengeluarkan <span class="font-bold text-navy">{{
-                                    participant?.full_name
-                                }}</span> dari event ini?
+                                {{ t('participant.detail.kick.confirm_message', { name: participant?.full_name }) }}
                             </p>
                             <p class="text-red-600 text-xs mt-2 font-semibold">
-                                Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat
-                                dibatalkan.
+                                {{ t('participant.detail.kick.confirm_warning') }}
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <template #action>
-                    <BaseButton variant="white" @click="showKickDialog = false">Batal</BaseButton>
+                    <BaseButton variant="white" @click="showKickDialog = false">{{ t('common.cancel') }}</BaseButton>
                     <BaseButton variant="danger" @click="handleKickUser" :loading="isKicking">
                         <Icon icon="ph:user-minus" class="mr-2" />
-                        Keluarkan Peserta
+                        {{ t('participant.detail.kick.remove_button') }}
                     </BaseButton>
                 </template>
             </BaseDialogForm>
@@ -262,10 +257,10 @@
         <template v-else>
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
                 <Icon icon="ph:warning-circle" class="text-5xl text-gray-300 mx-auto mb-4" />
-                <h3 class="text-lg font-bold text-navy mb-2">Peserta Tidak Ditemukan</h3>
-                <div class="text-gray-500 mb-4">Peserta yang Anda cari tidak ditemukan atau telah dihapus.</div>
+                <h3 class="text-lg font-bold text-navy mb-2">{{ t('participant.detail.not_found_title') }}</h3>
+                <div class="text-gray-500 mb-4">{{ t('participant.detail.not_found_message') }}</div>
                 <BaseButton variant="primary" :to="`/dashboard/events/${route.params.id}/participants`">
-                    Kembali ke Daftar Peserta
+                    {{ t('participant.detail.back_to_list') }}
                 </BaseButton>
             </div>
         </template>
@@ -278,6 +273,7 @@
 import { Icon } from '@iconify/vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import { ref, reactive, onMounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
@@ -293,7 +289,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Detail Peserta - ArcheryHub Dashboard'
+    title: `${t('participant.detail.title')} - ArcheryHub Dashboard`
 })
 
 const route = useRoute()
@@ -301,10 +297,12 @@ const router = useRouter()
 const { get, put, delete: del } = useApi()
 const toast = useToast()
 
+const { t } = useI18n()
+
 const breadcrumbItems = computed(() => [
-    { label: 'Dashboard', path: '/dashboard' },
-    { label: 'Events', path: '/dashboard/events' },
-    { label: 'Peserta', path: `/dashboard/events/${route.params.id}/participants` }
+    { label: t('breadcrumbs.dashboard'), path: '/dashboard' },
+    { label: t('breadcrumbs.events'), path: '/dashboard/events' },
+    { label: t('participant.list.title'), path: `/dashboard/events/${route.params.id}/participants` }
 ])
 
 const eventId = route.params.id
@@ -357,7 +355,7 @@ const paymentStatusOptions = [
 ]
 
 const targetNumberText = computed(() => {
-    return participant.value?.target_name || 'Belum Ditentukan'
+    return participant.value?.target_name || t('participant.detail.tbd')
 })
 
 const fetchParticipant = async () => {
@@ -388,7 +386,7 @@ const fetchParticipant = async () => {
         }))
     } catch (error) {
         console.error('Failed to fetch participant:', error)
-        toast.error('Gagal memuat data peserta')
+        toast.error(t('participant.detail.toast.load_failed'))
     } finally {
         isLoading.value = false
     }
@@ -401,11 +399,11 @@ const formatCategoryName = (category) => {
         category.category_name || category.category || category.age_category || category.class_category,
         category.event_type_name || category.event_type,
         category.gender_division_name || category.gender
-    ].filter(Boolean).join(' - ') || 'Kategori'
+    ].filter(Boolean).join(' - ') || t('participant.detail.category_fallback')
 }
 
 const formatDate = (dateStr) => {
-    if (!dateStr) return 'TBD'
+    if (!dateStr) return t('participant.detail.tbd')
     return new Date(dateStr).toLocaleDateString('id-ID', {
         day: 'numeric',
         month: 'long',
@@ -418,15 +416,15 @@ const formatCurrency = (value) => {
 }
 
 const getCategoryName = (p) => {
-    if (!p) return 'Sedang memuat...'
+    if (!p) return t('participant.detail.loading_short')
     const cat = categories.value.find(c => c.id === p.category_id)
-    return cat ? cat.label : 'Pilih Kategori'
+    return cat ? cat.label : t('participant.detail.select_category')
 }
 
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
-    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return 'Registered'
-    return 'Pending'
+    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return t('participant.status.registered')
+    return t('participant.status.pending')
 }
 
 const getStatusClass = (status) => {
@@ -439,10 +437,10 @@ const getStatusClass = (status) => {
 
 const getSourceLabel = (source) => {
     switch (source) {
-        case 'invited': return 'Invited'
-        case 'admin_created': return 'Created by Admin'
+        case 'invited': return t('participant.source.invited')
+        case 'admin_created': return t('participant.source.admin_created')
         case 'self_register':
-        default: return 'Self Registered'
+        default: return t('participant.source.self_registered')
     }
 }
 
@@ -476,11 +474,11 @@ const handleSubmit = async () => {
             athlete_id: participant.value?.archer_id // Or participant.value?.athlete_code
         }
         await put(`/events/${eventId}/participants/${participantId}`, payload)
-        toast.success('Data peserta berhasil diperbarui')
+        toast.success(t('participant.detail.toast.update_success'))
         await fetchParticipant()
     } catch (error) {
         console.error('Failed to update participant:', error)
-        toast.error(error?.data?.error || 'Gagal memperbarui data peserta')
+        toast.error(error?.data?.error || t('participant.detail.toast.update_failed'))
     } finally {
         isSubmitting.value = false
     }
@@ -490,12 +488,12 @@ const handleKickUser = async () => {
     isKicking.value = true
     try {
         await del(`/events/${eventId}/participants/${participantId}`)
-        toast.success('Peserta berhasil dikeluarkan dari event')
+        toast.success(t('participant.detail.toast.kick_success'))
         showKickDialog.value = false
         router.push(`/dashboard/events/${eventId}/participants`)
     } catch (error) {
         console.error('Failed to kick participant:', error)
-        toast.error(error?.data?.error || 'Gagal mengeluarkan peserta')
+        toast.error(error?.data?.error || t('participant.detail.toast.kick_failed'))
     } finally {
         isKicking.value = false
     }

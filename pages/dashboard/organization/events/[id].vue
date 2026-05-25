@@ -11,12 +11,16 @@
 </template>
 
 <script setup>
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
 const route = useRoute()
+const { t } = useI18n()
 const tId = route.params.id || '1'
 
 const tabs = [
-    { id: 'overview', name: 'Ringkasan', path: `/dashboard/events/${tId}` },
-    { id: 'participants', name: 'Daftar Atlet', path: `/dashboard/events/${tId}/participants` }
+    { id: 'overview', name: t('dashboard_event_main.tabs.overview'), path: `/dashboard/events/${tId}` },
+    { id: 'participants', name: t('dashboard_event_main.tabs.participants'), path: `/dashboard/events/${tId}/participants` }
 ]
 
 const isTabActive = (tab) => {

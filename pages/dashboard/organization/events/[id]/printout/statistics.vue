@@ -14,10 +14,8 @@
                         <Icon icon="ph:arrow-left" class="text-xl" />
                     </NuxtLink>
                     <div>
-                        <h1 class="text-2xl font-black tracking-tight mb-1 capitalize">Statistik event</h1>
-                        <p class="text-slate-300 text-sm">Cetak ringkasan statistik peserta untuk keperluan laporan dan
-                            administrasi.
-                        </p>
+                        <h1 class="text-2xl font-black tracking-tight mb-1 capitalize">{{ t('event_printout.statistics.title') }}</h1>
+                        <p class="text-slate-300 text-sm">{{ t('event_printout.statistics.page_desc') }}</p>
                     </div>
                 </div>
             </div>
@@ -31,19 +29,16 @@
                     <div class="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
                         <Icon icon="ph:chart-bar-bold" class="text-2xl text-navy" />
                     </div>
-                    <h2 class="text-lg font-black text-navy">Kelas dan Divisi</h2>
+                    <h2 class="text-lg font-black text-navy">{{ t('event_printout.statistics.classes_title') }}</h2>
                 </div>
 
-                <p class="text-gray-500 text-sm mb-8 leading-relaxed flex-1">
-                    Laporan matriks jumlah peserta berdasarkan kategori usia (Kelas) dan jenis busur (Divisi).
-                    Memudahkan panitia dalam memantau kuota dan logistik setiap kategori.
-                </p>
+                <p class="text-gray-500 text-sm mb-8 leading-relaxed flex-1">{{ t('event_printout.statistics.classes_desc') }}</p>
 
                 <div class="flex flex-wrap gap-4 mt-auto">
                     <button @click="printStat('classes')"
                         class="px-6 py-3 bg-navy text-white rounded-xl font-black text-xs tracking-widest hover:bg-primary transition-colors flex items-center gap-2">
                         <Icon icon="ph:file-pdf-bold" class="text-lg" />
-                        Cetak PDF
+                        {{ t('event_printout.print_pdf') }}
                     </button>
                 </div>
             </div>
@@ -55,19 +50,16 @@
                     <div class="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
                         <Icon icon="ph:castle-turret-bold" class="text-2xl text-navy" />
                     </div>
-                    <h2 class="text-lg font-black text-navy">Klub / Organisasi</h2>
+                    <h2 class="text-lg font-black text-navy">{{ t('event_printout.statistics.clubs_title') }}</h2>
                 </div>
 
-                <p class="text-gray-500 text-sm mb-8 leading-relaxed flex-1">
-                    Daftar ringkasan jumlah peserta yang terdaftar dari setiap klub atau organisasi pendukung.
-                    Bermanfaat untuk laporan distribusi asal peserta.
-                </p>
+                <p class="text-gray-500 text-sm mb-8 leading-relaxed flex-1">{{ t('event_printout.statistics.clubs_desc') }}</p>
 
                 <div class="flex flex-wrap gap-4 mt-auto">
                     <button @click="printStat('clubs')"
                         class="px-6 py-3 bg-navy text-white rounded-xl font-black text-xs tracking-widest hover:bg-primary transition-colors flex items-center gap-2">
                         <Icon icon="ph:file-pdf-bold" class="text-lg" />
-                        Cetak PDF
+                        {{ t('event_printout.print_pdf') }}
                     </button>
                 </div>
             </div>
@@ -78,6 +70,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const eventId = route.params.id
@@ -86,8 +79,10 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+const { t } = useI18n()
+
 useHead({
-    title: 'Statistik Event - Printout'
+    title: t('event_printout.statistics.page_title')
 })
 
 const printStat = (type) => {

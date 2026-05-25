@@ -14,7 +14,7 @@
             <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary">
             </div>
-
+                                {{ t('dashboard.participants_list.title') }}
             <!-- Header Content -->
             <div class="relative p-6 sm:p-8">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
@@ -25,15 +25,15 @@
                             <Icon icon="ph:users" class="text-white text-2xl" />
                         </div>
 
-                        <!-- Title Section -->
-                        <div class="flex-1">
+                            <span class="hidden sm:inline">{{ t('dashboard.participants_list.export_csv') }}</span>
+                            <span class="sm:hidden">{{ t('dashboard.participants_list.export_short') }}</span>
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
                                 {{ t('dashboard.participants_list.title') }}
                             </h1>
                             <p class="text-slate-300 text-sm max-w-2xl">
                                 {{ t('dashboard.participants_list.subtitle') }}
-                            </p>
-                        </div>
+                            <span class="hidden sm:inline">{{ t('dashboard.participants_list.add_participant') }}</span>
+                            <span class="sm:hidden">{{ t('dashboard.participants_list.add_short') }}</span>
                     </div>
 
                     <!-- Action Buttons -->
@@ -42,14 +42,14 @@
                             @click="canExportData ? exportCSV() : (showPremiumModal = true)"
                             :class="{ 'opacity-50 grayscale cursor-not-allowed': !canExportData }">
                             <span class="hidden sm:inline">{{ t('dashboard.participants_list.export_csv') }}</span>
-                            <span class="sm:hidden">Export</span>
+                            <span class="sm:hidden">{{ t('dashboard.participants_list.export_short') }}</span>
                         </BaseButton>
                         <BaseButton :to="canCreateEvent ? `/dashboard/events/${eventId}/participants/add` : undefined"
                             variant="primary" icon="ph:plus-bold" @click="!canCreateEvent && (showPremiumModal = true)"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
                             :class="{ 'opacity-50 grayscale cursor-not-allowed': !canCreateEvent }">
                             <span class="hidden sm:inline">{{ t('dashboard.participants_list.add_participant') }}</span>
-                            <span class="sm:hidden">Tambah</span>
+                            <span class="sm:hidden">{{ t('dashboard.participants_list.add_short') }}</span>
                         </BaseButton>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
             </div>
 
             <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-gray-400 tracking-widest hidden sm:inline">Total:</span>
+                <span class="text-xs font-bold text-gray-400 tracking-widest hidden sm:inline">{{ t('dashboard.participants_list.total_label') }}</span>
                 <div class="px-3 py-1.5 bg-navy/5 text-navy rounded-lg font-black text-xs border border-navy/10">
                     {{ total }} {{ t('dashboard.participants_list.archers_unit') }}
                 </div>
@@ -92,7 +92,7 @@
                 <table class="w-full text-left">
                     <thead class="bg-gray-50/50 border-b border-gray-100">
                         <tr class="text-[10px] font-black text-gray-400  tracking-widest capitalize">
-                            <th class="px-6 py-4">No</th>
+                            <th class="px-6 py-4">{{ t('dashboard.participants_list.table.no') }}</th>
                             <th class="px-6 py-4">{{ t('dashboard.participants_list.table.name_email') }}</th>
                             <th class="px-6 py-4">{{ t('dashboard.participants_list.table.club_city') }}</th>
                             <th v-if="hasActiveCategoryFilter" class="px-6 py-4 min-w-[240px]">{{ t('dashboard.participants_list.table.category') }}</th>
@@ -246,7 +246,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Daftar Peserta - ArcheryHub Dashboard'
+    title: t('dashboard.participants_list.meta_title')
 })
 
 const route = useRoute()
@@ -452,8 +452,8 @@ const getFilteredCategoryLabels = (participant) => {
 
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
-    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return 'Registered'
-    return 'Pending'
+    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return t('dashboard.participants_list.status.registered')
+    return t('dashboard.participants_list.status.pending')
 }
 
 const getStatusClass = (status) => {
