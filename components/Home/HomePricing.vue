@@ -96,7 +96,7 @@
                                 {{ $t('home.pricing.free.name') }}
                             </span>
                             <span class="px-2.5 py-1 bg-primary text-navy text-[9px] font-black tracking-widest rounded-md">
-                                Populer
+                                {{ $t('home.pricing.popular') }}
                             </span>
                         </div>
 
@@ -191,7 +191,7 @@
             <div class="mt-12 text-center reveal-note">
                 <p class="text-navy/35 text-sm flex items-center justify-center gap-2">
                     <Icon icon="ph:shield-check-bold" class="text-base text-primary/60" />
-                    Tidak ada biaya tersembunyi. Batalkan kapan saja.
+                    {{ $t('home.pricing.trust_note') }}
                 </p>
             </div>
         </div>
@@ -199,11 +199,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useI18n } from 'vue-i18n'
 
+const { tm } = useI18n()
 const localePath = useLocalePath()
 const sectionRef = ref(null)
 
@@ -242,30 +244,20 @@ onMounted(() => {
     }, '-=0.3')
 })
 
-const standardFeatures = [
-    'Maksimum 50 Peserta / Event',
-    'Manajemen Pendaftaran Online',
-    'Sistem Digital Scoring',
-    'Live Results (Public)',
-    'Penyimpanan Media 1 GB'
-]
+const standardFeatures = computed(() => {
+    const list = tm('home.pricing.features.standard')
+    return Array.isArray(list) ? list : []
+})
 
-const eliteFeatures = [
-    'Semua fitur Standar EO',
-    'Maksimum Peserta Tak Terbatas',
-    'Manajemen Match Finals',
-    'Integrasi Pembayaran Otomatis',
-    'Analitik & Laporan Lanjutan',
-    'Penyimpanan Media 5 GB'
-]
+const eliteFeatures = computed(() => {
+    const list = tm('home.pricing.features.elite')
+    return Array.isArray(list) ? list : []
+})
 
-const freeFeatures = [
-    'Akses ke fitur inti platform',
-    'Buat 1 Event hingga 50 peserta',
-    'Penyimpanan Media 1 GB (shared)',
-    'Pendaftaran & Live Results Dasar',
-]
-</script>
+const freeFeatures = computed(() => {
+    const list = tm('home.pricing.features.free')
+    return Array.isArray(list) ? list : []
+})
 
 <style scoped>
 /* Cards are always visible — GSAP animates from opacity:0 but we reset inline

@@ -24,15 +24,14 @@
                         <Icon icon="ph:warning-circle" class="text-white text-lg" />
                     </div>
                     <div class="text-white">
-                        <div class="font-bold text-sm">Lengkapi Profil Anda</div>
-                        <div class="text-xs text-white/80">Data profil perlu dilengkapi untuk mengakses fitur lengkap
-                        </div>
+                        <div class="font-bold text-sm">{{ t('dashboard.profile_banner.title') }}</div>
+                        <div class="text-xs text-white/80">{{ t('dashboard.profile_banner.description') }}</div>
                     </div>
                 </div>
                 <NuxtLink :to="`/dashboard/${userPersona}/settings`"
                     class="bg-white text-orange-600 font-bold text-sm px-4 py-2 rounded-lg hover:bg-white/90 transition-colors shadow-sm flex items-center gap-2 whitespace-nowrap">
                     <Icon icon="ph:pencil-simple" />
-                    Lengkapi Sekarang
+                    {{ t('dashboard.profile_banner.action') }}
                 </NuxtLink>
             </div>
 
@@ -48,17 +47,18 @@
                         </div>
                         <div class="text-white min-w-0">
                             <div class="font-black text-xs sm:text-sm tracking-tight leading-tight">
-                                Paket Anda Sudah Kedaluwarsa
+                                {{ t('dashboard.expired_banner.title') }}
                             </div>
                             <div class="text-[10px] sm:text-xs text-slate-400 font-medium mt-0.5 leading-tight">
-                                Perpanjang paket untuk melanjutkan fitur penuh dashboard.</div>
+                                {{ t('dashboard.expired_banner.description') }}
+                            </div>
                         </div>
                     </div>
                     <NuxtLink :to="`/dashboard/${userPersona}/subscription`"
                         class="bg-primary hover:bg-white text-navy font-black text-[10px] sm:text-xs px-4 sm:px-5 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2 whitespace-nowrap tracking-widest active:scale-95 shrink-0">
                         <Icon icon="ph:crown-bold" class="text-xs sm:text-sm" />
-                        <span class="hidden xs:inline">Perpanjang Sekarang</span>
-                        <span class="xs:hidden">Perpanjang</span>
+                        <span class="hidden xs:inline">{{ t('dashboard.expired_banner.action') }}</span>
+                        <span class="xs:hidden">{{ t('dashboard.expired_banner.action_short') }}</span>
                     </NuxtLink>
                 </div>
             </div>
@@ -70,9 +70,9 @@
         </div>
 
         <!-- Global Dialogs & Toasts -->
-        <AppDialog v-model:show="showLogoutDialog" title="Keluar dari Sistem"
-            message="Apakah Anda yakin ingin mengakhiri sesi ini? Anda perlu masuk kembali untuk mengakses panel kontrol."
-            confirm-text="Ya, Keluar" cancel-text="Tetap di Sini" type="danger" icon="ph:sign-out"
+        <AppDialog v-model:show="showLogoutDialog" :title="t('dashboard.logout_dialog.title')"
+            :message="t('dashboard.logout_dialog.message')"
+            :confirm-text="t('dashboard.logout_dialog.confirm')" :cancel-text="t('dashboard.logout_dialog.cancel')" type="danger" icon="ph:sign-out"
             @confirm="handleConfirmedLogout" />
 
         <BaseToast />
@@ -85,6 +85,7 @@
 import { useAuth } from '~/composables/useAuth'
 import { useSubscription } from '~/composables/useSubscription'
 
+const { t } = useI18n()
 const route = useRoute()
 const { user, userPersona, logout } = useAuth()
 const isMobileMenuOpen = useState('mobile-sidebar-open', () => false)

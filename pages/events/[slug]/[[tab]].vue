@@ -47,8 +47,8 @@
                     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar -mb-px">
                         <NuxtLink v-for="tab in tabs" :key="tab" :to="getTabLink(tab)" replace
                             class="px-4 md:px-6 py-3 md:py-4 font-semibold text-sm md:text-base transition-colors whitespace-nowrap border-b-2"
-                            :class="activeTab === tab ? 'text-navy border-primary bg-primary/5' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
-                            {{ tab }}
+                            :class=\"activeTab === tab ? 'text-navy border-primary bg-primary/5' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'\">
+                            {{ t('event_detail.tabs.' + tab, tab) }}
                         </NuxtLink>
                     </div>
                 </div>
@@ -70,25 +70,25 @@
                                         class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
                                         <Icon icon="ph:info-bold" class="text-base md:text-xl text-navy" />
                                     </div>
-                                    Tentang Event
+                                    {{ t('event_detail.about_event') }}
                                 </h2>
                                 <div class="tentang-event prose max-w-none text-gray-600 leading-relaxed space-y-4">
                                     <div v-if="tournament.description" v-html="tournament.description"
                                         class="event-description text-sm sm:text-base leading-relaxed">
                                     </div>
                                     <div v-else class="italic text-gray-400">
-                                        Belum ada deskripsi untuk event ini.
+                                        {{ t('event_detail.no_description') }}
                                     </div>
 
                                     <div v-if="tournament.technical_guidebook_url"
                                         class="bg-blue-50 p-4 rounded-xl border border-blue-100 mt-4">
-                                        <h4 class="font-bold text-navy !mt-0 mb-2">Buku Panduan Teknis</h4>
+                                        <h4 class="font-bold text-navy !mt-0 mb-2">{{ t('event_detail.technical_handbook') }}</h4>
                                         <div class="text-sm text-gray-600 mb-3">Unduh buku panduan teknis lengkap yang
                                             berisi
                                             peraturan, regulasi, dan jadwal detail.</div>
                                         <a :href="tournament.technical_guidebook_url" target="_blank"
                                             class="text-navy font-bold text-sm hover:underline inline-flex items-center gap-1">
-                                            Unduh PDF
+                                            {{ t('event_detail.download_pdf') }}
                                             <Icon icon="ph:download-simple" class="text-lg" />
                                         </a>
                                     </div>
@@ -182,12 +182,12 @@
                                             <div class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
                                                 <Icon icon="ph:wallet-bold" class="text-base md:text-xl text-navy" />
                                             </div>
-                                            Biaya Pendaftaran
+                                            {{ t('event_detail.registration_fee') }}
                                         </h2>
                                         <div class="text-sm text-gray-400 font-medium">
-                                            <template v-if="tournament.fee_mode === 'per_category'">Biaya berbeda per kategori lomba</template>
-                                            <template v-else-if="tournament.fee_mode === 'per_type'">Biaya berbeda per tipe peserta (individu / tim)</template>
-                                            <template v-else>Pilih kategori yang sesuai dengan divisi dan level peserta</template>
+                                            <template v-if="tournament.fee_mode === 'per_category'">{{ t('event_detail.fee_per_category') }}</template>
+                                            <template v-else-if="tournament.fee_mode === 'per_type'">{{ t('event_detail.fee_per_type') }}</template>
+                                            <template v-else>{{ t('event_detail.fee_general_desc') }}</template>
                                         </div>
                                     </div>
                                 </div>
@@ -208,7 +208,7 @@
                                         </div>
                                         <div class="text-2xl sm:text-3xl font-black text-navy mb-2 tracking-tight">
                                             Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}
-                                            <span class="text-sm text-gray-400 font-semibold">/ kategori</span>
+                                            <span class="text-sm text-gray-400 font-semibold">{{ t('event_detail.per_category') }}</span>
                                         </div>
                                         <div class="text-xs text-gray-500">{{ fee.description }}</div>
                                     </div>
@@ -230,7 +230,7 @@
                                         </div>
                                         <div class="text-right shrink-0">
                                             <div class="text-base font-black text-navy tabular-nums">Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}</div>
-                                            <div class="text-[10px] text-gray-400">/ peserta</div>
+                                            <div class="text-[10px] text-gray-400">{{ t('event_detail.per_participant') }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -244,27 +244,27 @@
                                             <h3 class="text-lg font-black text-navy mb-4">{{ fee.name }}</h3>
                                             <div class="text-2xl sm:text-3xl font-black text-navy mb-4 tracking-tight">
                                                 Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}
-                                                <span class="text-sm text-gray-400 font-semibold">/ peserta</span>
+                                                <span class="text-sm text-gray-400 font-semibold">{{ t('event_detail.per_participant') }}</span>
                                             </div>
                                             <div v-if="fee.description" class="text-sm text-gray-500">{{ fee.description }}</div>
                                         </div>
                                     </template>
                                     <template v-else>
                                         <div class="bg-white border border-gray-200 p-6 rounded-2xl">
-                                            <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2">Biaya Tetap</div>
-                                            <h3 class="text-lg font-black text-navy mb-4">Semua Kategori</h3>
+                                            <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2">{{ t('event_detail.flat_fee') }}</div>
+                                            <h3 class="text-lg font-black text-navy mb-4">{{ t('event_detail.all_categories') }}</h3>
                                             <div class="text-2xl sm:text-3xl font-black text-navy mb-4 tracking-tight">
                                                 Rp {{ (tournament.entry_fee || 0).toLocaleString('id-ID') }}
-                                                <span class="text-sm text-gray-400 font-semibold">/ peserta</span>
+                                                <span class="text-sm text-gray-400 font-semibold">{{ t('event_detail.per_participant') }}</span>
                                             </div>
                                             <ul class="space-y-2 text-sm text-gray-600">
                                                 <li class="flex items-start gap-2">
                                                     <Icon icon="ph:check-circle-fill" class="text-primary mt-0.5" />
-                                                    <span>Berlaku untuk seluruh kategori event</span>
+                                                    <span>{{ t('event_detail.applies_to_all_categories') }}</span>
                                                 </li>
                                                 <li class="flex items-start gap-2">
                                                     <Icon icon="ph:check-circle-fill" class="text-primary mt-0.5" />
-                                                    <span>Pembayaran per peserta per kategori</span>
+                                                    <span>{{ t('event_detail.payment_per_participant') }}</span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -274,7 +274,7 @@
                                 <!-- Integrated Payment Methods inside Fee Section -->
                                 <div v-if="tournament.payment_methods && tournament.payment_methods.length > 0"
                                     class="pt-8 mt-8 border-t border-gray-200">
-                                    <h3 class="text-xs font-black text-gray-400 tracking-[0.2em] mb-5">Metode Pembayaran</h3>
+                                    <h3 class="text-xs font-black text-gray-400 tracking-[0.2em] mb-5">{{ t('event_detail.payment_methods') }}</h3>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                         <div v-for="(method, idx) in tournament.payment_methods" :key="idx"
                                             class="p-4 rounded-2xl bg-white border border-gray-200 flex items-center gap-4">
@@ -300,13 +300,11 @@
                                 <div
                                     class="lg:w-1/2 bg-primary relative flex flex-col justify-center items-center px-8 md:px-12 py-16 target-texture">
                                     <div class="relative z-10 text-center">
-                                        <span class="text-navy/40 font-black tracking-[0.3em] text-xs mb-4 block">Total
-                                            Hadiah</span>
+                                        <span class="text-navy/40 font-black tracking-[0.3em] text-xs mb-4 block">{{ t('event_detail.total_prize') }}</span>
                                         <h2 class="text-navy text-4xl md:text-5xl font-black leading-none mb-4">Rp {{
                                             (tournament.total_prize || 0).toLocaleString('id-ID') }}</h2>
                                         <div class="h-2 w-40 bg-navy mx-auto mb-6"></div>
-                                        <div class="text-navy font-bold text-base tracking-widest">Perebutkan
-                                            Podium Terbaik
+                                        <div class="text-navy font-bold text-base tracking-widest">{{ t('event_detail.fight_for_best_podium') }}
                                         </div>
                                     </div>
                                 </div>
@@ -318,16 +316,15 @@
                                     <div class="relative z-10 w-full">
                                         <h3 class="text-white text-lg sm:text-2xl mb-10 flex items-center gap-3">
                                             <Icon icon="ph:trophy-bold" class="text-primary text-2xl md:text-3xl" />
-                                            Rincian Hadiah
+                                            {{ t('event_detail.prize_details') }}
                                         </h3>
                                         <div class="space-y-10">
                                             <div>
                                                 <div class="flex justify-between items-end mb-3">
                                                     <div>
                                                         <span
-                                                            class="text-primary font-black text-xs tracking-widest ">Juara
-                                                            Utama</span>
-                                                        <h4 class="text-white text-lg sm:text-xl font-black">Juara 1
+                                                            class="text-primary font-black text-xs tracking-widest ">{{ t('event_detail.main_champion') }}</span>
+                                                        <h4 class="text-white text-lg sm:text-xl font-black">{{ t('event_detail.champion_1') }}
                                                         </h4>
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
@@ -345,9 +342,8 @@
                                                 <div class="flex justify-between items-end mb-3">
                                                     <div>
                                                         <span
-                                                            class="text-white/40 font-black text-xs tracking-widest ">Peringkat
-                                                            Kedua</span>
-                                                        <h4 class="text-white text-lg sm:text-xl font-black">Juara 2
+                                                            class="text-white/40 font-black text-xs tracking-widest ">{{ t('event_detail.second_place') }}</span>
+                                                        <h4 class="text-white text-lg sm:text-xl font-black">{{ t('event_detail.champion_2') }}
                                                         </h4>
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
@@ -365,9 +361,8 @@
                                                 <div class="flex justify-between items-end mb-3">
                                                     <div>
                                                         <span
-                                                            class="text-white/40 font-black text-xs tracking-widest ">Peringkat
-                                                            Ketiga</span>
-                                                        <h4 class="text-white text-lg sm:text-xl font-black">Juara 3
+                                                            class="text-white/40 font-black text-xs tracking-widest ">{{ t('event_detail.third_place') }}</span>
+                                                        <h4 class="text-white text-lg sm:text-xl font-black">{{ t('event_detail.champion_3') }}
                                                         </h4>
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
@@ -409,8 +404,8 @@
                                         <Icon icon="ph:images-bold" class="text-base md:text-xl text-navy" />
                                     </div>
                                     <div>
-                                        <h2 class="font-black text-navy text-lg md:text-2xl">Galeri Event</h2>
-                                        <div class="text-sm text-gray-400 font-medium">Foto dan dokumentasi event</div>
+                                        <h2 class="font-black text-navy text-lg md:text-2xl">{{ t('event_detail.event_gallery') }}</h2>
+                                        <div class="text-sm text-gray-400 font-medium">{{ t('event_detail.event_gallery_desc') }}</div>
                                     </div>
                                 </div>
 
@@ -424,8 +419,7 @@
                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                         <div
                                             class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                                            <span class="text-white text-xs font-black tracking-wider ">Banner
-                                                Event</span>
+                                            <span class="text-white text-xs font-black tracking-wider ">{{ t('event_detail.event_banner') }}</span>
                                         </div>
                                     </div>
                                     <div v-if="tournament.thumbnail"
@@ -435,8 +429,7 @@
                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                         <div
                                             class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                                            <span class="text-white text-xs font-black tracking-wider ">Poster
-                                                Event</span>
+                                            <span class="text-white text-xs font-black tracking-wider ">{{ t('event_detail.event_poster') }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -471,7 +464,7 @@
                                         class="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-4">
                                         <Icon icon="ph:camera-slash" class="text-4xl text-gray-200" />
                                     </div>
-                                    <div class="text-gray-400 font-bold">Belum ada foto untuk event ini</div>
+                                    <div class="text-gray-400 font-bold">{{ t('event_detail.no_photos') }}</div>
                                 </div>
                             </section>
                         </div>
@@ -493,7 +486,7 @@
                                                 class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
                                                 <Icon icon="ph:question-bold" class="text-base md:text-xl text-navy" />
                                             </div>
-                                            Tanya Jawab (FAQ)
+                                            {{ t('event_detail.faq') }}
                                         </h2>
                                         <div class="text-sm text-gray-400 font-medium">Informasi penting seputar event
                                             ini</div>
@@ -537,9 +530,9 @@
                         <!-- Registration Card -->
                         <div class="bg-white rounded-2xl p-6 shadow-sm border-t-4 border-primary relative">
                             <h3 class="text-lg font-bold text-navy mb-4">
-                                <template v-if="countdown.isNotStarted">Pendaftaran Dimulai Dalam</template>
-                                <template v-else-if="countdown.isClosed">Pendaftaran Telah Ditutup</template>
-                                <template v-else>Pendaftaran Ditutup Dalam</template>
+                                <template v-if="countdown.isNotStarted">{{ t('event_detail.registration_starts_in') }}</template>
+                                <template v-else-if="countdown.isClosed">{{ t('event_detail.registration_closed_past') }}</template>
+                                <template v-else>{{ t('event_detail.registration_closes_in') }}</template>
                             </h3>
                             <div class="flex gap-3 mb-6">
                                 <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
@@ -547,31 +540,29 @@
                                     <span class="block text-xl sm:text-2xl font-bold text-navy">{{
                                         String(countdown.days).padStart(2,
                                             '0') }}</span>
-                                    <span class="text-xs text-gray-500 ">Hari</span>
+                                    <span class="text-xs text-gray-500 ">{{ t('common.days') }}</span>
                                 </div>
                                 <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                     :class="{ 'opacity-50': countdown.isClosed }">
                                     <span class="block text-xl sm:text-2xl font-bold text-navy">{{
                                         String(countdown.hours).padStart(2,
                                             '0') }}</span>
-                                    <span class="text-xs text-gray-500 ">Jam</span>
+                                    <span class="text-xs text-gray-500 ">{{ t('common.hours') }}</span>
                                 </div>
                                 <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                     :class="{ 'opacity-50': countdown.isClosed }">
                                     <span class="block text-xl sm:text-2xl font-bold text-navy">{{
                                         String(countdown.minutes).padStart(2, '0') }}</span>
-                                    <span class="text-xs text-gray-500 ">Menit</span>
+                                    <span class="text-xs text-gray-500 ">{{ t('common.minutes') }}</span>
                                 </div>
                             </div>
                             <!-- New Per-Category Quota Section -->
                             <!-- New Per-Category Quota Section (Always Scrollable) -->
                             <div class="mb-6">
                                 <div class="flex items-center justify-between mb-3 px-1">
-                                    <span class="text-xs font-black text-gray-400  tracking-widest">Ketersediaan
-                                        Slot</span>
+                                    <span class="text-xs font-black text-gray-400  tracking-widest">{{ t('event_detail.slot_availability') }}</span>
                                     <span class="text-xs font-bold text-navy bg-gray-100 px-2 py-1 rounded-md">
-                                        {{ tournament.participant_count || 0 }} Terdaftar
-                                    </span>
+                                        {{ tournament.participant_count || 0 }} {{ t('event_detail.registered') }}</span>
                                 </div>
 
                                 <div v-if="categoriesList && categoriesList.length > 0"
@@ -586,7 +577,7 @@
                                             <div class="text-right shrink-0">
                                                 <div class="text-[10px] font-black text-navy">
                                                     {{ cat.participant_count }} / {{ cat.max_participants > 0 ?
-                                                        cat.max_participants : 'Tidak Terbatas' }}
+                                                        cat.max_participants : t('common.unlimited') }}
                                                 </div>
                                                 <div class="text-[9px] text-gray-400 font-bold  tracking-tighter">
                                                     Peserta</div>
@@ -606,7 +597,7 @@
                                 </div>
                                 <div v-else
                                     class="text-xs text-gray-400 italic text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                                    Informasi kuota belum tersedia.
+                                    {{ t('event_detail.quota_info_unavailable') }}
                                 </div>
                             </div>
                             <!-- Auth-aware registration CTA: Only show for non-logged-in or logged-in archers -->
@@ -614,7 +605,7 @@
                                 <template v-if="registrationStatus.status === 'not_started'">
                                     <div
                                         class="w-full py-4 bg-gray-100 text-gray-400 font-bold rounded-xl text-center cursor-not-allowed border border-gray-200">
-                                        Pendaftaran Belum Dimulai
+                                        {{ t('event_detail.registration_not_started') }}
                                     </div>
                                     <div class="text-[10px] text-center text-gray-400 font-bold mt-2">
                                         Dibuka pada {{ useDateFormat(registrationStatus.startTime, 'DD MMM YYYY, HH:mm', { locales: 'id-ID' }).value }}
@@ -623,13 +614,13 @@
                                 <template v-else-if="registrationStatus.status === 'closed'">
                                     <div
                                         class="w-full py-4 bg-gray-100 text-gray-400 font-bold rounded-xl text-center cursor-not-allowed">
-                                        Pendaftaran Ditutup
+                                        {{ t('event_detail.registration_closed') }}
                                     </div>
                                 </template>
                                 <template v-else-if="!isLoggedIn">
                                     <NuxtLink :to="registerUrl"
                                         class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
-                                        Daftar Sekarang
+                                        {{ t('event_detail.register_now') }}
                                     </NuxtLink>
                                 </template>
                                 <template v-else>
@@ -647,7 +638,7 @@
 
                         <!-- Organizer Card -->
                         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                            <h3 class="text-lg font-bold text-navy mb-4">Penyelenggara</h3>
+                            <h3 class=\"text-lg font-bold text-navy mb-4\">{{ t('event_detail.organizer') }}</h3>
                             <div class="flex items-center gap-4 mb-4">
                                 <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
                                     <img alt="Logo Penyelenggara" class="w-full h-full object-cover"
@@ -766,7 +757,9 @@ import { useAuth } from '~/composables/useAuth'
 import { definePageMeta, useSeoMeta, useHead, useRequestURL, createError, useRuntimeConfig, useAsyncData, navigateTo } from '#imports'
 import { useDateFormat } from '@vueuse/core'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 const slug = route.params.slug
 const config = useRuntimeConfig()
@@ -1256,18 +1249,18 @@ const registrationStatus = computed(() => {
         return {
             status: 'not_started',
             startTime: start,
-            text: 'Pendaftaran Belum Dimulai'
+            text: t('event_detail.registration_not_started')
         }
     }
     if (deadline && now > deadline) {
         return {
             status: 'closed',
-            text: 'Pendaftaran Ditutup'
+            text: t('event_detail.registration_closed')
         }
     }
     return {
         status: 'open',
-        text: 'Pendaftaran Dibuka'
+        text: t('event_detail.registration_opened')
     }
 })
 

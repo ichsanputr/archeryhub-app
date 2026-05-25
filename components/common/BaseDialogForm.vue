@@ -34,7 +34,7 @@
                         <!-- Footer Actions -->
                         <div class="flex items-center justify-end gap-3 p-6 border-t border-gray-100 flex-shrink-0">
                             <slot name="action">
-                                <BaseButton variant="white" @click="handleClose">Batal</BaseButton>
+                                <BaseButton variant="white" @click="handleClose">{{ t('common.cancel') }}</BaseButton>
                             </slot>
                         </div>
                     </div>
@@ -45,7 +45,9 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 
 const props = defineProps({
     modelValue: {
