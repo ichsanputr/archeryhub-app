@@ -3,15 +3,7 @@
         <!-- Subtle Vector Graphic in Background for aesthetics -->
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#DEFEBD]/30 via-transparent to-transparent pointer-events-none"></div>
 
-        <!-- Badminton Player Decorative Watermark Graphic in Bottom Corner -->
-        <div class="absolute bottom-0 right-0 w-[180px] sm:w-[280px] md:w-[350px] opacity-15 pointer-events-none transform translate-y-8 translate-x-8 z-0">
-            <img src="/archery_vector.png" alt="Badminton Players Watermark" class="w-full h-auto object-contain select-none pointer-events-none" />
-        </div>
-
-        <!-- Second Badminton Player Decorative Watermark Graphic in Left Corner -->
-        <div class="absolute bottom-0 left-0 w-[180px] sm:w-[280px] md:w-[350px] opacity-15 pointer-events-none transform translate-y-8 -translate-x-8 z-0">
-            <img src="/archery_vector_2.png" alt="Badminton Players Watermark Left" class="w-full h-auto object-contain select-none pointer-events-none" />
-        </div>
+        
 
         <div class="max-w-[1280px] mx-auto px-6 md:px-12">
             <!-- ── Top Header Section: Metric and Badges (Exact Same layout as image) ── -->

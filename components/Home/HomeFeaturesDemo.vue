@@ -1,6 +1,15 @@
 <template>
-    <section ref="sectionRef" class="py-24 sm:py-32 bg-white overflow-hidden">
-        <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref="sectionRef" class="relative py-24 sm:py-32 bg-white overflow-hidden">
+        <!-- Decorative Border Features on Left & Right Sides -->
+        <div class="absolute top-0 bottom-0 left-0 w-[100px] sm:w-[140px] md:w-[160px] lg:w-[200px] opacity-[0.3] sm:opacity-[0.2] pointer-events-none z-0 transform rotate-180 mix-blend-multiply"
+             style="background-image: url('/border%20feature.jpg'); background-repeat: repeat-y; background-size: 100% auto;">
+        </div>
+
+        <div class="absolute top-0 bottom-0 right-0 w-[100px] sm:w-[140px] md:w-[160px] lg:w-[200px] opacity-[0.3] sm:opacity-[0.2] pointer-events-none z-0 mix-blend-multiply"
+             style="background-image: url('/border%20feature.jpg'); background-repeat: repeat-y; background-size: 100% auto;">
+        </div>
+
+        <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <!-- Main Heading -->
             <div class="text-center mb-24">
                 <h2 class="text-navy mb-6 reveal-title">
