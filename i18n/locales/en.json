@@ -326,6 +326,66 @@
       "action_short": "Renew"
     }
   },
+  "seller_products": {
+    "title": "Products",
+    "subtitle": "Manage your marketplace products",
+    "add_button": "Add Product",
+    "stats_total": "Total Products",
+    "stats_active": "Active",
+    "stats_low_stock": "Low Stock",
+    "stats_views": "Views",
+    "search_placeholder": "Search products...",
+    "search_label": "Search",
+    "status_filter": "Status",
+    "category_filter": "Category",
+    "reset_filters": "Reset Filters",
+    "table_header_name": "Product",
+    "table_header_category": "Category",
+    "table_header_price": "Price",
+    "table_header_stock": "Stock",
+    "table_header_status": "Status",
+    "table_header_actions": "Actions",
+    "loading": "Loading products...",
+    "views": "views"
+  },
+  "organization_news": {
+    "index": {
+      "title": "News"
+    },
+    "create": {
+      "featured_image": "Featured Image",
+      "info_heading": "News Information",
+      "label_title": "Title",
+      "placeholder_title": "Enter an engaging news title...",
+      "label_category": "Category",
+      "label_status": "Publication Status",
+      "label_tags": "Tags",
+      "placeholder_tags": "e.g. event, tournament, local",
+      "label_excerpt": "Short Excerpt",
+      "content_heading": "Content",
+      "placeholder_content": "Write the news content here..."
+    },
+    "edit": {
+      "title": "Edit News",
+      "title_short": "Edit",
+      "subtitle": "Update your news content.",
+      "cancel": "Cancel",
+      "update_publish": "Update & Publish",
+      "save_changes": "Save Changes"
+    },
+    "form": {
+      "toast_load_failed": "Failed to load news data",
+      "toast_title_required": "News title is required",
+      "toast_update_ok": "News updated successfully",
+      "toast_update_failed": "Failed to update news"
+    }
+  },
+  "organization_news": {
+    "detail": {
+      "created_label": "Created",
+      "updated_label": "Last updated"
+    }
+  },
   "archers": {
     "badge": "Archery Community",
     "title": "Discover Inspiration & Indonesian Archers",
@@ -2483,6 +2543,15 @@
       "title": "News Management",
       "subtitle": "Manage your organization's news and announcements.",
       "create": "Create New Article",
+      "meta_title": "News Management - ArcheryHub Dashboard",
+      "stats_total_view": "Total Views",
+      "search_placeholder": "Search news title...",
+      "search_label": "Search",
+      "filter_status": "Status",
+      "filter_category": "Category",
+      "reset": "Reset",
+      "view": "View",
+      "edit": "Edit",
       "stats_total": "Total Articles",
       "stats_published": "Published",
       "stats_draft": "Draft",
@@ -2670,6 +2739,64 @@
       "success_desc": "Congratulations! Your account password has been updated. Please log in with your new password.",
       "login_now": "Log In Now"
       }
+    ,
+    "detail": {
+      "title_short": "Detail",
+      "status_heading": "Status",
+      "stats_heading": "Statistics",
+      "stats_views": "Views",
+      "stats_words": "Words",
+      "stats_read_time": "Read Time",
+      "status_label": "Status",
+      "status_published": "Published",
+      "status_draft": "Draft",
+      "quick_actions": "Quick Actions",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "share": "Share",
+      "share_title": "Share Article",
+      "share_desc": "Share this article link on social media or copy the link to share.",
+      "share_link_label": "Article Link",
+      "copy": "Copy",
+      "copied": "Copied",
+      "share_to_label": "Share To",
+      "delete_dialog_title": "Delete Article",
+      "delete_dialog_message": "Are you sure you want to delete \"{title}\"? This action cannot be undone.",
+      "delete_dialog_confirm": "Yes, Delete",
+      "delete": "Delete",
+      "edit": "Edit",
+      "read_time_unit": "min read"
+    }
+    ,
+    "create": {
+      "title_short": "New",
+      "title": "Create News Article",
+      "subtitle": "Write and publish news for your organization.",
+      "meta_title": "Create News - ArcheryHub Dashboard",
+      "featured_image": "Featured Image",
+      "click_to_select_image": "Click to select image",
+      "select_or_upload": "Choose from library or upload new",
+      "info_heading": "News Information",
+      "label_title": "News Title",
+      "placeholder_title": "Enter an engaging news title...",
+      "label_category": "Category",
+      "label_status": "Publication Status",
+      "label_tags": "Tags",
+      "placeholder_tags": "e.g. event, tournament",
+      "label_excerpt": "Short Excerpt",
+      "placeholder_excerpt": "Write a short summary for preview...",
+      "content_heading": "Content",
+      "placeholder_content": "Write your news content here...",
+      "back": "Back",
+      "preview": "Preview",
+      "publish": "Publish",
+      "save_draft": "Save Draft",
+      "toast_preview": "Preview opened",
+      "toast_title_required": "News title is required",
+      "toast_create_ok_published": "News published successfully!",
+      "toast_create_ok_draft": "Draft saved successfully!",
+      "toast_create_failed": "Failed to save news"
+    }
     }
   }
 ,
@@ -2681,6 +2808,15 @@
   }
 ,
   "dashboard_event_overview": {
+      "meta_title": "Event Dashboard - ArcheryHub",
+      "payment_status_heading": "Payment Status",
+      "payment_paid": "Paid",
+      "payment_paid_desc": "Payment Verified",
+      "payment_pending": "Pending",
+      "payment_pending_desc": "Awaiting Verification",
+      "payment_unpaid": "Unpaid",
+      "payment_unpaid_desc": "Outstanding Invoices",
+      "total_score_label": "Total Score",
     "share_button": "Share",
     "summary_title": "Event Summary",
     "venue_fallback": "Event Venue",

@@ -6,12 +6,12 @@
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink :to="`/dashboard/${userPersona}/news`" class="hover:text-primary transition-colors">Berita</NuxtLink>
+                    <NuxtLink :to="`/dashboard/${userPersona}/news`" class="hover:text-primary transition-colors">{{ t('organization_news.index.title') }}</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">Edit</span>
+                    <span class="text-navy">{{ t('organization_news.edit.title_short') }}</span>
                 </div>
-                <h1 class="text-3xl font-extrabold text-navy tracking-tight">Edit Berita</h1>
-                <p class="text-gray-500 font-medium mt-1">Perbarui konten berita Anda.</p>
+                <h1 class="text-3xl font-extrabold text-navy tracking-tight">{{ t('organization_news.edit.title') }}</h1>
+                <p class="text-gray-500 font-medium mt-1">{{ t('organization_news.edit.subtitle') }}</p>
             </div>
         </div>
 
@@ -22,7 +22,7 @@
                 <div class="p-8 border-b border-gray-100">
                     <h3 class="text-lg font-bold text-navy mb-4 flex items-center gap-2">
                         <Icon icon="ph:image" class="text-primary" />
-                        Gambar Utama
+                        {{ t('organization_news.create.featured_image') }}
                     </h3>
                     <div class="relative h-64 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 hover:border-primary hover:bg-primary/5 transition-colors cursor-pointer overflow-hidden"
                         @click="openMediaLibrary">
@@ -43,23 +43,23 @@
                 <div class="p-8 border-b border-gray-100 space-y-6">
                     <h3 class="text-lg font-bold text-navy mb-4 flex items-center gap-2">
                         <Icon icon="ph:info" class="text-primary" />
-                        Informasi Berita
+                        {{ t('organization_news.create.info_heading') }}
                     </h3>
 
-                    <BaseInput v-model="form.title" label="Judul Berita"
-                        placeholder="Masukkan judul berita yang menarik..." required />
+                    <BaseInput v-model="form.title" :label="t('organization_news.create.label_title')"
+                        :placeholder="t('organization_news.create.placeholder_title')" required />
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <BaseSelect v-model="form.category" :items="categoryOptions" label="Kategori" required />
-                        <BaseSelect v-model="form.status" :items="statusOptions" label="Status Publikasi" required />
+                        <BaseSelect v-model="form.category" :items="categoryOptions" :label="t('organization_news.create.label_category')" required />
+                        <BaseSelect v-model="form.status" :items="statusOptions" :label="t('organization_news.create.label_status')" required />
                     </div>
 
-                    <BaseInput v-model="form.tags" label="Tags" placeholder="Contoh: event, turnamen, sleman"
+                    <BaseInput v-model="form.tags" :label="t('organization_news.create.label_tags')" :placeholder="t('organization_news.create.placeholder_tags')"
                         icon="ph:tag" />
 
                     <div>
                         <label class="block text-xs font-bold text-navy  tracking-wider mb-2">
-                            Kutipan Singkat
+                            {{ t('organization_news.create.label_excerpt') }}
                         </label>
                         <textarea v-model="form.excerpt"
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
@@ -72,21 +72,21 @@
                 <div class="p-8 border-b border-gray-100">
                     <h3 class="text-lg font-bold text-navy mb-4 flex items-center gap-2">
                         <Icon icon="ph:text-aa" class="text-primary" />
-                        Konten Berita
+                        {{ t('organization_news.create.content_heading') }}
                     </h3>
-                    <TiptapEditor v-model="form.content" placeholder="Tulis konten berita Anda di sini..." />
+                    <TiptapEditor v-model="form.content" :placeholder="t('organization_news.create.placeholder_content')" />
                 </div>
 
                 <!-- Actions -->
                 <div class="p-8 bg-gray-50/50 flex items-center justify-between gap-4">
                     <NuxtLink :to="`/dashboard/${userPersona}/news`">
                         <BaseButton variant="white" icon="ph:arrow-left">
-                            Batal
+                            {{ t('organization_news.edit.cancel') }}
                         </BaseButton>
                     </NuxtLink>
                     <div class="flex items-center gap-3">
                         <BaseButton variant="gold" type="submit" icon="ph:floppy-disk" :loading="isSubmitting">
-                            {{ form.status === 'published' ? 'Perbarui & Publikasikan' : 'Simpan Perubahan' }}
+                            {{ form.status === 'published' ? t('organization_news.edit.update_publish') : t('organization_news.edit.save_changes') }}
                         </BaseButton>
                     </div>
                 </div>

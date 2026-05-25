@@ -326,6 +326,66 @@
       "action_short": "Perpanjang"
     }
   },
+  "seller_products": {
+    "title": "Produk",
+    "subtitle": "Kelola produk marketplace Anda",
+    "add_button": "Tambah Produk",
+    "stats_total": "Total Produk",
+    "stats_active": "Aktif",
+    "stats_low_stock": "Stok Menipis",
+    "stats_views": "Dilihat",
+    "search_placeholder": "Cari produk...",
+    "search_label": "Cari",
+    "status_filter": "Status",
+    "category_filter": "Kategori",
+    "reset_filters": "Reset Filter",
+    "table_header_name": "Produk",
+    "table_header_category": "Kategori",
+    "table_header_price": "Harga",
+    "table_header_stock": "Stok",
+    "table_header_status": "Status",
+    "table_header_actions": "Aksi",
+    "loading": "Memuat produk...",
+    "views": "dilihat"
+  },
+  "organization_news": {
+    "index": {
+      "title": "Berita"
+    },
+    "create": {
+      "featured_image": "Gambar Utama",
+      "info_heading": "Informasi Berita",
+      "label_title": "Judul Berita",
+      "placeholder_title": "Masukkan judul berita yang menarik...",
+      "label_category": "Kategori",
+      "label_status": "Status Publikasi",
+      "label_tags": "Tags",
+      "placeholder_tags": "Contoh: event, turnamen, sleman",
+      "label_excerpt": "Kutipan Singkat",
+      "content_heading": "Konten Berita",
+      "placeholder_content": "Tulis konten berita Anda di sini..."
+    },
+    "edit": {
+      "title": "Edit Berita",
+      "title_short": "Edit",
+      "subtitle": "Perbarui konten berita Anda.",
+      "cancel": "Batal",
+      "update_publish": "Perbarui & Publikasikan",
+      "save_changes": "Simpan Perubahan"
+    },
+    "form": {
+      "toast_load_failed": "Gagal memuat data berita",
+      "toast_title_required": "Judul berita wajib diisi",
+      "toast_update_ok": "Berita berhasil diperbarui!",
+      "toast_update_failed": "Gagal memperbarui berita"
+    }
+  },
+  "organization_news": {
+    "detail": {
+      "created_label": "Dibuat",
+      "updated_label": "Terakhir diubah"
+    }
+  },
   "archers": {
     "badge": "Komunitas Pemanah",
     "title": "Temukan Inspirasi & Koneksi Pemanah Indonesia",
@@ -2426,6 +2486,15 @@
       "title": "Manajemen Berita",
       "subtitle": "Kelola berita dan pengumuman organisasi Anda.",
       "create": "Buat Berita Baru",
+      "meta_title": "Manajemen Berita - Dashboard ArcheryHub",
+      "stats_total_view": "Total Tayangan",
+      "search_placeholder": "Cari judul berita...",
+      "search_label": "Pencarian",
+      "filter_status": "Status",
+      "filter_category": "Kategori",
+      "reset": "Reset",
+      "view": "Lihat",
+      "edit": "Edit",
       "stats_total": "Total Berita",
       "stats_published": "Dipublikasi",
       "stats_draft": "Draft",
@@ -2448,6 +2517,64 @@
       "cat_announcement": "Pengumuman",
       "cat_achievement": "Prestasi",
       "cat_other": "Lainnya"
+    }
+    ,
+    "detail": {
+      "title_short": "Detail",
+      "status_heading": "Status Berita",
+      "stats_heading": "Statistik",
+      "stats_views": "Views",
+      "stats_words": "Words",
+      "stats_read_time": "Read Time",
+      "status_label": "Status",
+      "status_published": "Publik",
+      "status_draft": "Draft",
+      "quick_actions": "Aksi Cepat",
+      "publish": "Publikasikan",
+      "unpublish": "Tarik ke Draft",
+      "share": "Bagikan",
+      "share_title": "Bagikan Berita",
+      "share_desc": "Sebarkan link berita ini ke sosial media atau salin link untuk dibagikan.",
+      "share_link_label": "Link Berita",
+      "copy": "Salin",
+      "copied": "Tersalin",
+      "share_to_label": "Bagikan Ke",
+      "delete_dialog_title": "Hapus Berita",
+      "delete_dialog_message": "Apakah Anda yakin ingin menghapus berita \"{title}\"? Tindakan ini tidak dapat dibatalkan.",
+      "delete_dialog_confirm": "Ya, Hapus",
+      "delete": "Hapus",
+      "edit": "Edit",
+      "read_time_unit": "menit baca"
+    }
+    ,
+    "create": {
+      "title_short": "Baru",
+      "title": "Buat Berita Baru",
+      "subtitle": "Tulis dan publikasikan berita untuk organisasi Anda.",
+      "meta_title": "Buat Berita - Dashboard ArcheryHub",
+      "featured_image": "Gambar Utama",
+      "click_to_select_image": "Klik untuk pilih gambar",
+      "select_or_upload": "Pilih dari library atau upload baru",
+      "info_heading": "Informasi Berita",
+      "label_title": "Judul Berita",
+      "placeholder_title": "Masukkan judul berita yang menarik...",
+      "label_category": "Kategori",
+      "label_status": "Status Publikasi",
+      "label_tags": "Tags",
+      "placeholder_tags": "Contoh: event, turnamen",
+      "label_excerpt": "Kutipan Singkat",
+      "placeholder_excerpt": "Tulis ringkasan singkat berita (akan ditampilkan di preview)...",
+      "content_heading": "Konten Berita",
+      "placeholder_content": "Tulis konten berita Anda di sini...",
+      "back": "Kembali",
+      "preview": "Pratinjau",
+      "publish": "Publikasikan",
+      "save_draft": "Simpan Draft",
+      "toast_preview": "Pratinjau dibuka",
+      "toast_title_required": "Judul berita wajib diisi",
+      "toast_create_ok_published": "Berita berhasil dipublikasikan!",
+      "toast_create_ok_draft": "Draft berhasil disimpan!",
+      "toast_create_failed": "Gagal menyimpan berita"
     }
   },
   "under_development": {
@@ -2681,6 +2808,15 @@
   }
 ,
   "dashboard_event_overview": {
+      "meta_title": "Panel Kontrol Event - Dashboard ArcheryHub",
+      "payment_status_heading": "Status Pembayaran",
+      "payment_paid": "Dibayar",
+      "payment_paid_desc": "Pembayaran Terverifikasi",
+      "payment_pending": "Menunggu",
+      "payment_pending_desc": "Butuh Verifikasi",
+      "payment_unpaid": "Belum Dibayar",
+      "payment_unpaid_desc": "Tagihan Terbuka",
+      "total_score_label": "Total Skor",
     "share_button": "Bagikan",
     "summary_title": "Ringkasan Event",
     "venue_fallback": "Lokasi Event",

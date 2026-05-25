@@ -184,7 +184,7 @@
                                             <div class="flex items-center gap-3 text-xs text-gray-400 mt-1">
                                                 <span class="flex items-center gap-1">
                                                     <Icon icon="ph:eye" />
-                                                    {{ product.views }} views
+                                                    {{ product.views }} {{ t('seller_products.views') }}
                                                 </span>
                                             </div>
                                         </div>

@@ -13,7 +13,7 @@ definePageMeta({
 })
 
 useHead({
-  title: useDashboardI18n().t('organization.events.title', 'Daftar Event - Archeris Dashboard')
+  title: useDashboardI18n().t('organization.events.meta_title')
 })
 
 const { user } = useAuth()

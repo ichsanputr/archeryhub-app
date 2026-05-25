@@ -203,7 +203,7 @@ const countryItems = computed(() => countries.map(country => ({ title: country, 
 
 onMounted(async () => {
   if (!isSubscriptionActive.value) {
-    toast.error('subscription expired. upgrade your plan to create event.')
+    toast.error(t('premium.msg_create_event'))
     router.replace('/dashboard/organization/events')
     return
   }

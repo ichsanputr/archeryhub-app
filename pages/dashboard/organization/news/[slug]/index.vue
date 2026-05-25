@@ -6,7 +6,7 @@
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink to="/dashboard/organization/news" class="hover:text-primary transition-colors">Berita
+                        <NuxtLink to="/dashboard/organization/news" class="hover:text-primary transition-colors">{{ t('organization_news.index.title') }}
                     </NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Detail</span>
@@ -20,13 +20,11 @@
                     </BaseButton>
                 </NuxtLink>
                 <BaseButton variant="white" icon="ph:trash" @click="confirmDelete" class="text-red-500 hover:bg-red-50">
-                    Hapus
+                    {{ t('organization_news.detail.delete') }}
                 </BaseButton>
-            </div>
         </div>
 
         <!-- Main Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Article Content -->
             <div class="lg:col-span-2">
                 <article class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -74,9 +72,9 @@
                             </div>
                         </div>
 
-                        <!-- Article Body -->
-                        <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                            <p class="text-xl text-gray-600 font-medium mb-6">{{ article.excerpt }}</p>
+                                    <div class="flex items-center gap-1.5">
+                                        <Icon icon="ph:clock" />
+                                        <span>{{ article.readTime || 5 }} {{ t('organization_news.detail.read_time_unit') }}</span>
 
                             <div v-html="article.content"></div>
                         </div>
@@ -106,14 +104,12 @@
                     </h3>
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Dibuat</span>
-                            <span class="text-sm font-medium text-gray-700">{{ formatDate(article.created_at, true)
-                                }}</span>
+                            <span class="text-sm text-gray-500">{{ t('organization_news.detail.created_label') }}</span>
+                            <span class="text-sm font-medium text-gray-700">{{ formatDate(article.created_at, true) }}</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Terakhir diubah</span>
-                            <span class="text-sm font-medium text-gray-700">{{ formatDate(article.updated_at, true)
-                                }}</span>
+                            <span class="text-sm text-gray-500">{{ t('organization_news.detail.updated_label') }}</span>
+                            <span class="text-sm font-medium text-gray-700">{{ formatDate(article.updated_at, true) }}</span>
                         </div>
                     </div>
                 </div>
@@ -126,20 +122,20 @@
                     </h3>
                     <div class="space-y-3">
                         <div class="grid grid-cols-3 gap-3">
-                            <div class="rounded-xl border border-navy/10 bg-navy/5 p-3 text-center">
+                                {{ t('organization_news.detail.stats_heading') }}
                                 <p class="text-[10px] font-black tracking-widest text-gray-400">Views</p>
                                 <p class="text-xl font-black text-navy mt-1">{{ article.views?.toLocaleString() || 0 }}
                                 </p>
                             </div>
-                            <div class="rounded-xl border border-primary/20 bg-primary/5 p-3 text-center">
+                                        <p class="text-[10px] font-black tracking-widest text-gray-400">{{ t('organization_news.detail.stats_views') }}</p>
                                 <p class="text-[10px] font-black tracking-widest text-gray-400">Words</p>
                                 <p class="text-xl font-black text-navy mt-1">{{ wordCount.toLocaleString() }}</p>
                             </div>
-                            <div class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-center">
+                                        <p class="text-[10px] font-black tracking-widest text-gray-400">{{ t('organization_news.detail.stats_words') }}</p>
                                 <p class="text-[10px] font-black tracking-widest text-gray-400">Read Time</p>
                                 <p class="text-xl font-black text-navy mt-1">{{ readTimeMinutes }}m</p>
                             </div>
-                        </div>
+                                        <p class="text-[10px] font-black tracking-widest text-gray-400">{{ t('organization_news.detail.stats_read_time') }}</p>
 
                         <div class="rounded-xl border border-gray-100 bg-gray-50 p-3">
                             <div class="flex items-center justify-between text-xs font-bold">
@@ -148,7 +144,7 @@
                                     {{ article.status === 'published' ? 'Published' : 'Draft' }}
                                 </span>
                             </div>
-                            <div class="mt-2 h-2 rounded-full bg-gray-200 overflow-hidden">
+                                            {{ article.status === 'published' ? t('organization_news.detail.status_published') : t('organization_news.detail.status_draft') }}
                                 <div class="h-full rounded-full transition-all duration-500"
                                     :class="article.status === 'published' ? 'bg-green-500 w-full' : 'bg-amber-400 w-2/3'" />
                             </div>
@@ -163,18 +159,18 @@
                         Aksi Cepat
                     </h3>
                     <div class="space-y-2">
-                        <BaseButton v-if="article.status === 'draft'" variant="gold" block icon="ph:paper-plane-tilt"
+                                {{ t('organization_news.detail.quick_actions') }}
                             @click="publishArticle">
                             Publikasikan
                         </BaseButton>
                         <BaseButton v-else variant="outline" block icon="ph:archive" @click="unpublishArticle">
-                            Tarik ke Draft
+                                    {{ t('organization_news.detail.publish') }}
                         </BaseButton>
                         <BaseButton variant="white" block icon="ph:share-network" @click="openShareDialog">
-                            Bagikan
+                                    {{ t('organization_news.detail.unpublish') }}
                         </BaseButton>
                     </div>
-                </div>
+                                    {{ t('organization_news.detail.share') }}
             </div>
         </div>
 
@@ -208,10 +204,10 @@
                                     <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">Bagikan Berita
                                     </h3>
                                     <p class="text-text-secondary text-sm font-medium leading-relaxed">
-                                        Sebarkan link berita ini ke sosial media atau salin link untuk dibagikan.
+                                            <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">{{ t('organization_news.detail.share_title') }}
                                     </p>
                                 </div>
-                            </div>
+                                                {{ t('organization_news.detail.share_desc') }}
 
                             <!-- Link Copy Segment -->
                             <div class="space-y-3 mb-8">
@@ -227,7 +223,7 @@
                                         {{ copySuccess ? 'Tersalin' : 'Salin' }}
                                     </button>
                                 </div>
-                            </div>
+                                                {{ copySuccess ? t('organization_news.detail.copied') : t('organization_news.detail.copy') }}
 
                             <!-- Social Sharing -->
                             <div class="space-y-4">

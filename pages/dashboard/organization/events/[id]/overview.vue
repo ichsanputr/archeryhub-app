@@ -241,8 +241,7 @@
                             </div>
                             <!-- Payment Status -->
                             <div>
-                                <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">Status
-                                    Pembayaran</h4>
+                                <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">{{ t('dashboard_event_overview.payment_status_heading') }}</h4>
                                 <div class="space-y-3">
                                     <div
                                         class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm transition-transform hover:-translate-y-0.5">
@@ -253,9 +252,8 @@
                                             </div>
                                             <div>
                                                 <span
-                                                    class="block text-sm font-bold text-navy-dark leading-tight">Paid</span>
-                                                <span class="text-[10px] text-gray-400 font-medium">Pembayaran
-                                                    Terverifikasi</span>
+                                                    class="block text-sm font-bold text-navy-dark leading-tight">{{ t('dashboard_event_overview.payment_paid') }}</span>
+                                                <span class="text-[10px] text-gray-400 font-medium">{{ t('dashboard_event_overview.payment_paid_desc') }}</span>
                                             </div>
                                         </div>
                                         <span class="text-2xl font-black text-green-600 font-mono">{{
@@ -270,9 +268,8 @@
                                             </div>
                                             <div>
                                                 <span
-                                                    class="block text-sm font-bold text-navy-dark leading-tight">Pending</span>
-                                                <span class="text-[10px] text-gray-400 font-medium">Butuh
-                                                    Verifikasi</span>
+                                                    class="block text-sm font-bold text-navy-dark leading-tight">{{ t('dashboard_event_overview.payment_pending') }}</span>
+                                                <span class="text-[10px] text-gray-400 font-medium">{{ t('dashboard_event_overview.payment_pending_desc') }}</span>
                                             </div>
                                         </div>
                                         <span class="text-2xl font-black text-amber-600 font-mono">{{
@@ -286,9 +283,8 @@
                                                 <Icon icon="ph:warning-circle-fill" class="text-xl" />
                                             </div>
                                             <div>
-                                                <span class="block text-sm font-bold text-navy-dark leading-tight">Unpaid</span>
-                                                <span class="text-[10px] text-gray-400 font-medium">Tagihan
-                                                    Terbuka</span>
+                                                <span class="block text-sm font-bold text-navy-dark leading-tight">{{ t('dashboard_event_overview.payment_unpaid') }}</span>
+                                                <span class="text-[10px] text-gray-400 font-medium">{{ t('dashboard_event_overview.payment_unpaid_desc') }}</span>
                                             </div>
                                         </div>
                                         <span class="text-2xl font-black text-red-600 font-mono">{{
@@ -351,9 +347,7 @@
                                             class="text-xl font-black text-navy group-hover:scale-110 transition-transform tabular-nums">
                                             {{ participant.total_score || 0 }}
                                         </div>
-                                        <div class="text-[9px] font-black text-gray-400 tracking-tighter">
-                                            Total
-                                            Skor</div>
+                                            <div class="text-[9px] font-black text-gray-400 tracking-tighter">{{ t('dashboard_event_overview.total_score_label') }}</div>
                                     </div>
                                 </div>
 
@@ -466,7 +460,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Panel Kontrol Event - ArcheryHub Dashboard'
+    title: t('dashboard_event_overview.meta_title')
 })
 
 const { t } = useI18n()
@@ -481,8 +475,8 @@ const { user } = useAuth()
 const userRole = computed(() => user.value?.role || 'archer')
 
 const breadcrumbItems = computed(() => [
-    { label: 'Dashboard', path: '/dashboard' },
-    { label: 'Events', path: userRole.value === 'archer' ? '/dashboard/archers/events' : '/dashboard/events' }
+    { label: t('dashboard.breadcrumbs.dashboard'), path: '/dashboard' },
+    { label: t('dashboard.sidebar.event'), path: userRole.value === 'archer' ? '/dashboard/archers/events' : '/dashboard/events' }
 ])
 
 const event = ref(null)

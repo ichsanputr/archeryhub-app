@@ -194,12 +194,12 @@ const { t } = useI18n()
 
 const news = ref([])
 const isLoading = ref(true)
-const searchQuery = ref('')
+    title: t('organization_news.index.meta_title'),
 const statusFilter = ref('all')
 const categoryFilter = ref('all')
 
 const statusOptions = computed(() => [
-    { title: t('organization_news.options.status_all'), value: 'all' },
+    title: t('organization_news.index.meta_title')
     { title: t('organization_news.options.status_draft'), value: 'draft' },
     { title: t('organization_news.options.status_published'), value: 'published' }
 ])
@@ -222,40 +222,46 @@ const deleteConfirmMessage = computed(() => {
 })
 
 const fetchNews = async () => {
-    isLoading.value = true
-    try {
-        const response = await get('/news/my')
-        news.value = response.data || []
-    } catch (error) {
-        toast.error(t('organization_news.index.toast_fetch_failed'))
+            <StatCard
+                :title="t('organization_news.index.stats_total_view')"
+                :value="news.reduce((acc, n) => acc + (n.views || 0), 0).toLocaleString()"
+                icon="ph:eye-bold"
+                color="info"
+            />
     } finally {
         isLoading.value = false
     }
 }
 
-onMounted(() => {
+                        :placeholder="t('organization_news.index.search_placeholder')"
+                        :label="t('organization_news.index.search_label')" />
     fetchNews()
 })
 
+                    <BaseSelect v-model="statusFilter" :items="statusOptions" :label="t('organization_news.index.filter_status')" />
 const filteredNews = computed(() => {
     return news.value.filter(item => {
         const matchesSearch = item.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+                    <BaseSelect v-model="categoryFilter" :items="categoryOptions" :label="t('organization_news.index.filter_category')" />
         const matchesStatus = statusFilter.value === 'all' || item.status === statusFilter.value
         const matchesCategory = categoryFilter.value === 'all' || item.category.toLowerCase() === categoryFilter.value.toLowerCase()
         return matchesSearch && matchesStatus && matchesCategory
     })
+                <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
+                    {{ t('organization_news.index.reset') }}
+                </BaseButton>
 })
 
 const resetFilters = () => {
     searchQuery.value = ''
-    statusFilter.value = 'all'
-    categoryFilter.value = 'all'
-}
+                    <BaseButton variant="white" size="sm" icon="ph:eye" block class="!h-9">
+                        {{ t('organization_news.index.view') }}
+                    </BaseButton>
 
 const confirmDelete = (item) => {
-    newsToDelete.value = item
-    showDeleteDialog.value = true
-}
+                    <BaseButton variant="outline" size="sm" icon="ph:pencil-simple" block class="!h-9">
+                        {{ t('organization_news.index.edit') }}
+                    </BaseButton>
 
 const executeDelete = async () => {
     if (!newsToDelete.value) return
