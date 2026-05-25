@@ -9,7 +9,7 @@
                         <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
                     </div>
                     <span class="text-xl font-black tracking-tight font-display transition-colors duration-300"
-                        :class="logoTextClasses">Archeris<span class="text-logo-id">.net</span></span>
+                        :class="logoTextClasses">Archeris</span>
                 </NuxtLink>
 
                 <!-- Desktop Navigation -->
@@ -17,8 +17,8 @@
                     <!-- Turnamen with Mega Menu -->
                     <div class="relative h-full flex items-center" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
                         <button
-                            class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary px-1 h-full border-b-2 border-transparent hover:border-primary"
-                            :class="[navLinkClasses, { '!text-primary !border-primary font-bold': isActive('/events') }]">
+                            class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 px-1 h-full border-b-2 border-transparent hover:border-primary"
+                            :class="[navLinkClasses, { '!border-primary font-bold': isActive('/events') }]">
                             <span>{{ $t('nav.features') }}</span>
                             <Icon icon="ph:caret-down" class="text-xs transition-transform"
                                 :class="{ 'rotate-185': showMegaMenu }" />
@@ -107,19 +107,19 @@
 
                     <NuxtLink :to="localePath('/archers')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary"
-                        :class="[navLinkClasses, { '!text-primary !border-primary font-bold': isActive('/archers') }]">
+                        :class="[navLinkClasses, { '!border-primary font-bold': isActive('/archers') }]">
                         {{ $t('nav.archers') }}</NuxtLink>
                     <NuxtLink :to="localePath('/news')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary"
-                        :class="[navLinkClasses, { '!text-primary !border-primary font-bold': isActive('/news') }]">
+                        :class="[navLinkClasses, { '!border-primary font-bold': isActive('/news') }]">
                         {{ $t('nav.news') }}</NuxtLink>
                     <NuxtLink :to="localePath('/docs')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary"
-                        :class="[navLinkClasses, { '!text-primary !border-primary font-bold': isActive('/docs') }]">
+                        :class="[navLinkClasses, { '!border-primary font-bold': isActive('/docs') }]">
                         {{ $t('nav.docs') }}</NuxtLink>
                     <NuxtLink :to="localePath('/pricing')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary"
-                        :class="[navLinkClasses, { '!text-primary !border-primary font-bold': isActive('/pricing') }]">
+                        :class="[navLinkClasses, { '!border-primary font-bold': isActive('/pricing') }]">
                         {{ $t('nav.pricing') }}
                     </NuxtLink>
                 </nav>
@@ -296,8 +296,7 @@
                         <div class="w-8 h-8 rounded-lg bg-navy flex items-center justify-center">
                             <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
                         </div>
-                        <span class="text-lg font-black tracking-tight text-navy">Archeris<span
-                                class="text-logo-id">.net</span></span>
+                        <span class="text-lg font-black tracking-tight text-navy">Archeris</span>
                     </NuxtLink>
                     <button @click="mobileMenuOpen = false"
                         class="p-2 hover:bg-gray-100 rounded-xl transition-all scale-100">

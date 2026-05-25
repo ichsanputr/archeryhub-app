@@ -7,8 +7,7 @@
           <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-navy transition-all duration-300">
             <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
           </div>
-          <span class="text-xl font-black tracking-tight font-display text-navy">Archeris<span
-              class="text-logo-id">.net</span></span>
+          <span class="text-xl font-black tracking-tight font-display text-navy">Archeris</span>
         </NuxtLink>
 
         <!-- Desktop Navigation -->
@@ -16,8 +15,8 @@
           <!-- Turnamen with Mega Menu -->
           <div class="relative h-full flex items-center" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
             <button
-            class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary px-1 h-full border-b-2 border-transparent hover:border-primary text-gray-600"
-              :class="{ '!text-primary !border-primary font-bold': isActive('/events') }">
+            class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-navy px-1 h-full border-b-2 border-transparent hover:border-primary text-gray-600"
+              :class="{ '!border-primary font-bold text-navy': isActive('/events') }">
               <span>Event</span>
               <Icon icon="ph:caret-down" class="text-xs transition-transform" :class="{ 'rotate-180': showMegaMenu }" />
             </button>
@@ -93,20 +92,20 @@
 
 
           <NuxtLink to="/archers"
-            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-primary"
-            :class="{ '!text-primary !border-primary font-bold': isActive('/archers') }">
+            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-navy"
+            :class="{ '!border-primary font-bold text-navy': isActive('/archers') }">
             {{ t('nav.archers') }}</NuxtLink>
           <NuxtLink to="/blog"
-            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-primary"
-            :class="{ '!text-primary !border-primary font-bold': isActive('/blog') }">
+            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-navy"
+            :class="{ '!border-primary font-bold text-navy': isActive('/blog') }">
             {{ t('nav.blog') }}</NuxtLink>
           <NuxtLink to="/docs"
-            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-primary"
-            :class="{ '!text-primary !border-primary font-bold': isActive('/docs') }">
+            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-navy"
+            :class="{ '!border-primary font-bold text-navy': isActive('/docs') }">
             {{ t('nav.docs') }}</NuxtLink>
           <NuxtLink to="/pricing"
-            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-primary"
-            :class="{ '!text-primary !border-primary font-bold': isActive('/pricing') }">
+            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-navy"
+            :class="{ '!border-primary font-bold text-navy': isActive('/pricing') }">
             {{ t('nav.pricing') }}
           </NuxtLink>
         </nav>
@@ -216,8 +215,7 @@
             <div class="w-8 h-8 rounded-lg bg-navy flex items-center justify-center">
               <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
             </div>
-            <span class="text-lg font-black tracking-tight text-navy ">Archeris<span
-                class="text-logo-id">.net</span></span>
+            <span class="text-lg font-black tracking-tight text-navy ">Archeris</span>
           </NuxtLink>
           <button @click="mobileMenuOpen = false" class="p-2 hover:bg-gray-100 rounded-xl transition-all scale-100">
             <Icon icon="ph:x-bold" class="text-xl text-navy" />

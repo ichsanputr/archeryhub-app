@@ -10,8 +10,7 @@
                         <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center">
                             <img src="/logo.png" alt="archeris.net" class="w-5 h-5 object-contain" />
                         </div>
-                        <span class="text-lg font-black tracking-tight text-navy">Archeris<span
-                                class="text-[#D9FF00]">.net</span></span>
+                        <span class="text-lg font-black tracking-tight text-navy">Archeris</span>
                     </NuxtLink>
                     <div class="items-center gap-2">
                         <span class="text-gray-200 text-lg font-light select-none">/</span>

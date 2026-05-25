@@ -14,7 +14,7 @@
         <div ref="lottieContainer" class="w-32 h-32 sm:w-40 sm:h-40"></div>
         
         <!-- Text with wide tracking -->
-        <div class="text-center mt-6">
+        <div class="text-center">
           <h2 class="text-white text-sm font-black tracking-[0.3em] opacity-80">Archeris<span class="text-primary font-black">.net</span></h2>
         </div>
       </div>

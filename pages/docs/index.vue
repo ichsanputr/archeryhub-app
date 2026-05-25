@@ -64,7 +64,7 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <NuxtLink v-for="doc in filteredDocs(cat.id)" :key="doc.slug" :to="`/docs/${doc.slug}`"
-                        class="group bg-white border border-gray-200/60 rounded-3xl p-6 hover:border-primary hover:shadow-xl transition-all duration-300 flex flex-col justify-between relative overflow-hidden h-full">
+                        class="group bg-white border border-gray-200/60 rounded-3xl p-6 hover:border-primary transition-all duration-300 flex flex-col justify-between relative overflow-hidden h-full">
                         <!-- Subtle Glow Effect -->
                         <div class="absolute -top-12 -right-12 w-24 h-24 bg-primary/10 group-hover:bg-primary/20 blur-xl rounded-full transition-all duration-300"></div>
 
@@ -85,7 +85,7 @@
                                 <Icon icon="ph:clock-bold" class="text-sm" /> {{ doc.readTime }}
                             </span>
                             <span
-                                class="ml-auto flex items-center gap-1 text-xs font-black text-navy opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-300">
+                                class="ml-auto flex items-center gap-1 text-xs font-black text-navy opacity-0 group-hover:opacity-100 transition-all duration-300">
                                 {{ $t('docs.read') }}
                                 <Icon icon="ph:arrow-right-bold" class="text-xs" />
                             </span>

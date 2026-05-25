@@ -18,8 +18,7 @@
                     <div class="w-12 h-12 flex items-center justify-center transition-all duration-300">
                         <img src="/logo.png" alt="Logo" class="w-12 h-12 object-contain" />
                     </div>
-                    <span class="text-white text-3xl font-black tracking-tight font-display">Archeris<span
-                            class="text-logo-id">.id</span></span>
+                    <span class="text-white text-3xl font-black tracking-tight font-display">Archeris</span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display" v-html="t('auth.forgot.reset_title')"></h1>
                 <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">

@@ -32,12 +32,12 @@
                         <!-- badges row -->
                         <div class="flex flex-wrap items-center gap-2">
                             <span class="px-3 py-1 bg-primary text-navy-dark text-[9px] font-black rounded-lg capitalize tracking-widest">
-                                profil resmi organisasi
+                                {{ t('organization.public.official_profile') }}
                             </span>
                             <div v-if="org.verification_status === 'verified'"
                                 class="flex items-center gap-1.5 px-3 py-1 bg-white/8 backdrop-blur-sm border border-white/10 rounded-lg">
                                 <Icon icon="ph:seal-check-fill" class="text-primary text-xs" />
-                                <span class="text-[9px] font-black tracking-widest text-white/85 capitalize">terverifikasi</span>
+                                <span class="text-[9px] font-black tracking-widest text-white/85 capitalize">{{ t('organization.public.verified') }}</span>
                             </div>
                         </div>
 
@@ -54,7 +54,7 @@
                             </span>
                             <span v-if="org.established_date" class="flex items-center gap-1.5">
                                 <Icon icon="ph:calendar-blank-bold" class="text-primary text-sm" />
-                                berdiri {{ new Date(org.established_date).getFullYear() }}
+                                {{ t('organization.public.established') }} {{ new Date(org.established_date).getFullYear() }}
                             </span>
                             <span v-if="org.country" class="flex items-center gap-1.5">
                                 <Icon icon="ph:globe-bold" class="text-primary text-sm" />
@@ -66,12 +66,12 @@
                     <!-- stats pill row -->
                     <div class="flex items-center gap-px bg-white/5 border border-white/10 rounded-2xl overflow-hidden shrink-0 backdrop-blur-md text-white">
                         <div class="text-center px-6 py-4">
-                            <div class="text-[9px] font-black text-white/40 tracking-widest capitalize mb-1">event</div>
+                            <div class="text-[9px] font-black text-white/40 tracking-widest capitalize mb-1">{{ t('organization.public.events') }}</div>
                             <div class="text-2xl font-black text-white">{{ totalEvents || 0 }}</div>
                         </div>
                         <div class="w-px h-12 bg-white/10"></div>
                         <div class="text-center px-6 py-4">
-                            <div class="text-[9px] font-black text-primary tracking-widest capitalize mb-1">klub</div>
+                            <div class="text-[9px] font-black text-primary tracking-widest capitalize mb-1">{{ t('organization.public.clubs') }}</div>
                             <div class="text-2xl font-black text-primary">{{ clubs.length || 0 }}</div>
                         </div>
                     </div>
@@ -81,20 +81,20 @@
 
         <!-- main content (consolidated inside exactly one card) -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 -mt-12 relative z-20 pb-24 w-full">
-            <div class="bg-white rounded-3xl border border-gray-200/60 shadow-xl overflow-hidden">
+            <div class="bg-white rounded-3xl border border-gray-200/60 shadow-md overflow-hidden">
                 <!-- inner sub-navigation tab bar -->
                 <div class="border-b border-gray-100 bg-gray-50/50 px-6 sm:px-10 py-4 flex flex-wrap items-center justify-between gap-4">
                     <div class="flex gap-6 sm:gap-8 overflow-x-auto scrollbar-none">
                         <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-                            class="py-2.5 font-black text-xs tracking-widest uppercase transition-all duration-300 relative shrink-0"
+                            class="py-2.5 font-black text-xs tracking-widest capitalize transition-all duration-300 relative shrink-0"
                             :class="activeTab === tab.id ? 'text-navy border-b-2 border-primary' : 'text-gray-400 hover:text-navy'">
                             {{ tab.label }}
                         </button>
                     </div>
                     <button @click="isShareOpen = true"
-                        class="flex items-center gap-2 py-2 px-4 bg-white border border-gray-200 rounded-xl text-[10px] font-black tracking-widest text-navy hover:bg-gray-50 transition-all uppercase shrink-0">
+                        class="flex items-center gap-2 py-2 px-4 bg-white border border-gray-200 rounded-xl text-[10px] font-black tracking-widest text-navy hover:bg-gray-50 transition-all capitalize shrink-0">
                         <Icon icon="ph:share-network-bold" class="text-sm text-primary" />
-                        <span>bagikan</span>
+                        <span>{{ t('organization.public.share') }}</span>
                     </button>
                 </div>
 
@@ -107,8 +107,8 @@
                             <div class="lg:col-span-8 space-y-10">
                                 <!-- biography -->
                                 <div v-if="pageSettings.sections.about" class="space-y-4">
-                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 uppercase">
-                                        profil organisasi <span class="h-px flex-1 bg-gray-100"></span>
+                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 capitalize">
+                                        {{ t('organization.public.org_profile') }} <span class="h-px flex-1 bg-gray-100"></span>
                                     </h3>
                                     <div class="text-sm sm:text-base text-navy/70 leading-relaxed font-light whitespace-pre-line" v-html="org.description || displayDescription">
                                     </div>
@@ -116,7 +116,7 @@
                                         class="inline-flex items-center gap-3 px-4 py-2.5 bg-gray-50 border border-gray-100 rounded-2xl mt-4">
                                         <Icon icon="ph:fingerprint-bold" class="text-navy/30 text-lg shrink-0" />
                                         <div>
-                                            <div class="text-[9px] font-black text-navy/40 tracking-widest uppercase">nomor registrasi resmi</div>
+                                            <div class="text-[9px] font-black text-navy/40 tracking-widest capitalize">{{ t('organization.public.official_reg_num') }}</div>
                                             <div class="font-black text-navy text-sm">{{ org.registration_number }}</div>
                                         </div>
                                     </div>
@@ -124,8 +124,8 @@
 
                                 <!-- visi & misi -->
                                 <div v-if="pageSettings.sections.about && (org.vision || org.mission)" class="space-y-4 pt-6">
-                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 uppercase">
-                                        visi &amp; misi <span class="h-px flex-1 bg-gray-100"></span>
+                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 capitalize">
+                                        {{ t('organization.public.vision_mission') }} <span class="h-px flex-1 bg-gray-100"></span>
                                     </h3>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                         <div v-if="org.vision" class="p-6 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
@@ -133,7 +133,7 @@
                                                 <div class="size-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                                                     <Icon icon="ph:eye-fill" class="text-base text-primary" />
                                                 </div>
-                                                <span class="text-[9px] font-black text-navy/40 tracking-widest uppercase">visi organisasi</span>
+                                                <span class="text-[9px] font-black text-navy/40 tracking-widest capitalize">{{ t('organization.public.org_vision') }}</span>
                                             </div>
                                             <div class="text-sm font-bold text-navy leading-relaxed italic whitespace-pre-line" v-html="org.vision">
                                             </div>
@@ -144,7 +144,7 @@
                                                 <div class="size-8 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                                                     <Icon icon="ph:target-fill" class="text-base text-primary" />
                                                 </div>
-                                                <span class="text-[9px] font-black text-white/30 tracking-widest uppercase">misi strategis</span>
+                                                <span class="text-[9px] font-black text-white/30 tracking-widest capitalize">{{ t('organization.public.strategic_mission') }}</span>
                                             </div>
                                             <div class="text-xs sm:text-sm text-white/80 leading-relaxed font-medium whitespace-pre-line" v-html="org.mission">
                                             </div>
@@ -154,8 +154,8 @@
 
                                 <!-- sejarah singkat -->
                                 <div v-if="pageSettings.sections.about && org.history" class="space-y-4 pt-6">
-                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 uppercase">
-                                        sejarah singkat <span class="h-px flex-1 bg-gray-100"></span>
+                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 capitalize">
+                                        {{ t('organization.public.brief_history') }} <span class="h-px flex-1 bg-gray-100"></span>
                                     </h3>
                                     <div class="text-sm sm:text-base text-navy/70 leading-relaxed font-light whitespace-pre-line" v-html="org.history">
                                     </div>
@@ -163,8 +163,8 @@
 
                                 <!-- faq -->
                                 <div v-if="pageSettings.sections.faq && org.faq?.length > 0" class="space-y-4 pt-6">
-                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 uppercase">
-                                        tanya jawab (faq) <span class="h-px flex-1 bg-gray-100"></span>
+                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 capitalize">
+                                        {{ t('organization.public.faq') }} <span class="h-px flex-1 bg-gray-100"></span>
                                     </h3>
                                     <div class="grid grid-cols-1 gap-4">
                                         <div v-for="(item, idx) in org.faq" :key="idx"
@@ -189,21 +189,21 @@
                             <div class="lg:col-span-4 space-y-8 border-t lg:border-t-0 lg:border-l border-gray-100 pt-8 lg:pt-0 lg:pl-8">
                                 <!-- info box -->
                                 <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4">
-                                    <h4 class="text-xs font-black text-navy/40 tracking-widest uppercase flex items-center gap-2">
+                                    <h4 class="text-xs font-black text-navy/40 tracking-widest capitalize flex items-center gap-2">
                                         <Icon icon="ph:info-bold" class="text-primary text-base" />
-                                        informasi organisasi
+                                        {{ t('organization.public.org_info') }}
                                     </h4>
                                     <div class="space-y-3 text-xs">
                                         <div class="flex justify-between items-center py-2 border-b border-gray-200/50">
-                                            <span class="text-slate-400 font-bold">wilayah</span>
+                                            <span class="text-slate-400 font-bold">{{ t('organization.public.region') }}</span>
                                             <span class="font-black text-navy">{{ org.city || '-' }}</span>
                                         </div>
                                         <div class="flex justify-between items-center py-2 border-b border-gray-200/50">
-                                            <span class="text-slate-400 font-bold">berdiri</span>
+                                            <span class="text-slate-400 font-bold">{{ t('organization.public.established') }}</span>
                                             <span class="font-black text-navy">{{ org.established_date ? new Date(org.established_date).getFullYear() : '-' }}</span>
                                         </div>
                                         <div class="flex justify-between items-center py-2">
-                                            <span class="text-slate-400 font-bold">negara</span>
+                                            <span class="text-slate-400 font-bold">{{ t('organization.public.country') }}</span>
                                             <span class="font-black text-navy">{{ org.country || 'indonesia' }}</span>
                                         </div>
                                     </div>
@@ -211,9 +211,9 @@
 
                                 <!-- maps embed -->
                                 <div v-if="org.address || org.gmaps_link" class="space-y-3">
-                                    <h4 class="text-xs font-black text-navy/40 tracking-widest uppercase flex items-center gap-2">
+                                    <h4 class="text-xs font-black text-navy/40 tracking-widest capitalize flex items-center gap-2">
                                         <Icon icon="ph:map-trifold-bold" class="text-primary text-base" />
-                                        lokasi kantor
+                                        {{ t('organization.public.office_location') }}
                                     </h4>
                                     <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
                                         <div class="h-44 w-full bg-gray-50">
@@ -224,7 +224,7 @@
                                             <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
                                                 <div class="text-center p-4">
                                                     <Icon icon="ph:map-pin-light" class="text-3xl text-gray-300 mb-1 mx-auto" />
-                                                    <div class="text-[9px] font-black text-navy/20 tracking-wider">peta belum tersedia</div>
+                                                    <div class="text-[9px] font-black text-navy/20 tracking-wider">{{ t('organization.public.map_unavailable') }}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -232,7 +232,7 @@
                                             <div class="text-xs font-black text-navy leading-tight line-clamp-2 mb-2">{{ org.address || 'sekretariat utama' }}</div>
                                             <a v-if="org.gmaps_link" :href="org.gmaps_link" target="_blank"
                                                 class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 text-navy rounded-xl text-[10px] font-black tracking-widest border border-gray-100 hover:bg-gray-100 transition-colors w-full justify-center">
-                                                buka di google maps
+                                                {{ t('organization.public.open_in_gmaps') }}
                                                 <Icon icon="ph:arrow-square-out-bold" class="text-xs" />
                                             </a>
                                         </div>
@@ -241,48 +241,48 @@
 
                                 <!-- contact channels -->
                                 <div class="space-y-3">
-                                    <h4 class="text-xs font-black text-navy/40 tracking-widest uppercase flex items-center gap-2">
+                                    <h4 class="text-xs font-black text-navy/40 tracking-widest capitalize flex items-center gap-2">
                                         <Icon icon="ph:phone-bold" class="text-primary text-base" />
-                                        kontak resmi
+                                        {{ t('organization.public.official_contacts') }}
                                     </h4>
                                     <div class="grid grid-cols-1 gap-2">
                                         <a v-if="org.whatsapp_no" :href="`https://wa.me/${org.whatsapp_no.replace(/\D/g, '')}`"
-                                            target="_blank" class="flex items-center gap-3 p-3 bg-green-50/50 hover:bg-green-50 border border-green-100/50 rounded-xl group transition-all">
-                                            <Icon icon="ph:whatsapp-logo-fill" class="text-lg text-green-600" />
-                                            <span class="text-[10px] font-black text-green-700 tracking-wider truncate">{{ org.whatsapp_no }}</span>
+                                            target="_blank" class="flex items-center gap-3 p-3 bg-gray-50 hover:bg-gray-100 border border-gray-200/50 rounded-xl group transition-all">
+                                            <Icon icon="ph:whatsapp-logo-fill" class="text-lg text-gray-400 group-hover:text-green-600 transition-colors" />
+                                            <span class="text-[10px] font-black text-navy tracking-wider truncate">{{ org.whatsapp_no }}</span>
                                         </a>
                                         <a v-if="org.email" :href="`mailto:${org.email}`"
-                                            class="flex items-center gap-3 p-3 bg-blue-50/50 hover:bg-blue-50 border border-blue-100/50 rounded-xl group transition-all">
-                                            <Icon icon="ph:envelope-fill" class="text-lg text-blue-600" />
-                                            <span class="text-[10px] font-black text-blue-700 tracking-wider truncate">{{ org.email }}</span>
+                                            class="flex items-center gap-3 p-3 bg-gray-50 hover:bg-gray-100 border border-gray-200/50 rounded-xl group transition-all">
+                                            <Icon icon="ph:envelope-fill" class="text-lg text-gray-400 group-hover:text-blue-600 transition-colors" />
+                                            <span class="text-[10px] font-black text-navy tracking-wider truncate">{{ org.email }}</span>
                                         </a>
                                     </div>
                                 </div>
 
                                 <!-- social channels -->
                                 <div v-if="hasSocialMedia" class="space-y-3">
-                                    <h4 class="text-xs font-black text-navy/40 tracking-widest uppercase flex items-center gap-2">
+                                    <h4 class="text-xs font-black text-navy/40 tracking-widest capitalize flex items-center gap-2">
                                         <Icon icon="ph:share-network-bold" class="text-primary text-base" />
-                                        media sosial
+                                        {{ t('organization.public.social_media') }}
                                     </h4>
                                     <div class="flex flex-wrap gap-2">
                                         <a v-if="org.social_instagram"
                                             :href="`https://instagram.com/${org.social_instagram.replace('@', '')}`"
                                             target="_blank"
-                                            class="flex items-center gap-1.5 px-3 py-2 bg-pink-50/50 hover:bg-pink-50 border border-pink-100/50 rounded-xl group transition-all text-[10px] font-black text-pink-700">
-                                            <Icon icon="ph:instagram-logo-bold" class="text-sm" />
+                                            class="flex items-center gap-1.5 px-3 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200/50 rounded-xl group transition-all text-[10px] font-black text-navy">
+                                            <Icon icon="ph:instagram-logo-bold" class="text-sm text-gray-400 group-hover:text-pink-600 transition-colors" />
                                             <span>instagram</span>
                                         </a>
                                         <a v-if="org.social_facebook" :href="org.social_facebook" target="_blank"
-                                            class="flex items-center gap-1.5 px-3 py-2 bg-blue-50/50 hover:bg-blue-50 border border-blue-100/50 rounded-xl group transition-all text-[10px] font-black text-blue-700">
-                                            <Icon icon="ph:facebook-logo-bold" class="text-sm" />
+                                            class="flex items-center gap-1.5 px-3 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200/50 rounded-xl group transition-all text-[10px] font-black text-blue-700">
+                                            <Icon icon="ph:facebook-logo-bold" class="text-sm text-gray-400 group-hover:text-blue-600 transition-colors" />
                                             <span>facebook</span>
                                         </a>
                                         <a v-if="org.social_twitter" :href="`https://twitter.com/${org.social_twitter}`"
                                             target="_blank"
-                                            class="flex items-center gap-1.5 px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200/50 rounded-xl group transition-all text-[10px] font-black text-slate-800">
-                                            <Icon icon="ph:x-logo-bold" class="text-sm" />
-                                            <span>X</span>
+                                            class="flex items-center gap-1.5 px-3 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-200/50 rounded-xl group transition-all text-[10px] font-black text-navy">
+                                            <Icon icon="ph:x-logo-bold" class="text-sm text-gray-400 group-hover:text-slate-800 transition-colors" />
+                                            <span>twitter / X</span>
                                         </a>
                                     </div>
                                 </div>
@@ -293,15 +293,15 @@
                         <div v-else-if="activeTab === 'events'" key="events" class="space-y-6">
                             <div class="flex items-center justify-between pb-4 border-b border-gray-100">
                                 <div>
-                                    <h3 class="text-base font-black text-navy uppercase tracking-widest">daftar event</h3>
-                                    <div class="text-xs text-slate-400">semua event resmi yang diselenggarakan oleh organisasi</div>
+                                    <h3 class="text-base font-black text-navy capitalize tracking-widest">{{ t('organization.public.event_list') }}</h3>
+                                    <div class="text-xs text-slate-400">{{ t('organization.public.events_subtitle') }}</div>
                                 </div>
                             </div>
 
                             <div v-if="events.length === 0"
                                 class="py-16 text-center border border-dashed border-gray-200 rounded-3xl">
                                 <Icon icon="ph:calendar-blank-light" class="text-5xl text-gray-200 mx-auto mb-3" />
-                                <div class="text-xs font-black text-navy/30 tracking-widest uppercase">belum ada event terjadwal</div>
+                                <div class="text-xs font-black text-navy/30 tracking-widest capitalize">{{ t('organization.public.no_events') }}</div>
                             </div>
 
                             <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -340,8 +340,8 @@
                         <div v-else-if="activeTab === 'news'" key="news" class="space-y-10">
                             <!-- prestasi section -->
                             <div v-if="achievements.length > 0" class="space-y-4">
-                                <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 uppercase">
-                                    prestasi organisasi <span class="h-px flex-1 bg-gray-100"></span>
+                                <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 capitalize">
+                                    {{ t('organization.public.org_achievements') }} <span class="h-px flex-1 bg-gray-100"></span>
                                 </h3>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                                     <div v-for="item in achievements" :key="item.id"
@@ -360,8 +360,8 @@
 
                             <!-- berita section -->
                             <div v-if="news.length > 0" class="space-y-4 pt-4">
-                                <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 uppercase">
-                                    berita &amp; artikel <span class="h-px flex-1 bg-gray-100"></span>
+                                <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 capitalize">
+                                    {{ t('organization.public.news_articles') }} <span class="h-px flex-1 bg-gray-100"></span>
                                 </h3>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                                     <div v-for="item in news" :key="item.id"
@@ -382,7 +382,7 @@
                             <div v-if="achievements.length === 0 && news.length === 0"
                                 class="py-16 text-center border border-dashed border-gray-200 rounded-3xl">
                                 <Icon icon="ph:newspaper-clipping-light" class="text-5xl text-gray-200 mx-auto mb-3" />
-                                <div class="text-xs font-black text-navy/30 tracking-widest uppercase">belum ada berita atau prestasi</div>
+                                <div class="text-xs font-black text-navy/30 tracking-widest capitalize">{{ t('organization.public.no_news_achievements') }}</div>
                             </div>
                         </div>
 
@@ -391,15 +391,15 @@
                             <!-- left column: details & secretary info -->
                             <div class="lg:col-span-8 space-y-8">
                                 <div class="space-y-4">
-                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 uppercase">
-                                        sekretariat utama <span class="h-px flex-1 bg-gray-100"></span>
+                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 capitalize">
+                                        {{ t('organization.public.main_secretariat') }} <span class="h-px flex-1 bg-gray-100"></span>
                                     </h3>
                                     <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex items-start gap-4">
                                         <div class="p-3 bg-white rounded-xl shadow-sm border border-gray-100 shrink-0">
                                             <Icon icon="ph:map-pin-bold" class="text-xl text-navy" />
                                         </div>
                                         <div>
-                                            <div class="text-[9px] font-black text-slate-400 tracking-widest uppercase">alamat kantor</div>
+                                            <div class="text-[9px] font-black text-slate-400 tracking-widest capitalize">{{ t('organization.public.office_address') }}</div>
                                             <h5 class="font-black text-navy mt-1 text-sm leading-relaxed">{{ org.address || '-' }}</h5>
                                             <div class="text-xs text-slate-500 font-bold mt-1">{{ org.city }}, {{ org.province }}, {{ org.country }}</div>
                                         </div>
@@ -411,7 +411,7 @@
                                                 <Icon icon="ph:fingerprint-bold" class="text-xl text-navy" />
                                             </div>
                                             <div>
-                                                <div class="text-[9px] font-black text-slate-400 tracking-widest uppercase">id registrasi</div>
+                                                <div class="text-[9px] font-black text-slate-400 tracking-widest capitalize">{{ t('organization.public.reg_id') }}</div>
                                                 <h5 class="font-mono text-navy mt-1 text-sm font-black">{{ org.id || org.uuid || '-' }}</h5>
                                             </div>
                                         </div>
@@ -421,7 +421,7 @@
                                                 <Icon icon="ph:calendar-blank-bold" class="text-xl text-navy" />
                                             </div>
                                             <div>
-                                                <div class="text-[9px] font-black text-slate-400 tracking-widest uppercase">tahun berdiri</div>
+                                                <div class="text-[9px] font-black text-slate-400 tracking-widest capitalize">{{ t('organization.public.established_year') }}</div>
                                                 <h5 class="font-black text-navy mt-1 text-sm">{{ org.established_date ? new Date(org.established_date).getFullYear() : '-' }}</h5>
                                             </div>
                                         </div>
@@ -430,8 +430,8 @@
 
                                 <!-- maps embed large -->
                                 <div v-if="org.address || org.gmaps_link" class="space-y-4 pt-4">
-                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 uppercase">
-                                        peta petunjuk lokasi <span class="h-px flex-1 bg-gray-100"></span>
+                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 capitalize">
+                                        {{ t('organization.public.location_map') }} <span class="h-px flex-1 bg-gray-100"></span>
                                     </h3>
                                     <div class="bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-sm h-72">
                                         <iframe v-if="gmapsEmbedUrl" :src="gmapsEmbedUrl" width="100%" height="100%"
@@ -441,7 +441,7 @@
                                         <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
                                             <div class="text-center">
                                                 <Icon icon="ph:map-pin-light" class="text-4xl text-gray-200 mb-2 mx-auto" />
-                                                <div class="text-[10px] font-black text-navy/20 tracking-widest uppercase">peta belum tersedia</div>
+                                                <div class="text-[10px] font-black text-navy/20 tracking-widest capitalize">{{ t('organization.public.map_unavailable') }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -452,8 +452,8 @@
                             <div class="lg:col-span-4 space-y-8">
                                 <div class="bg-navy p-6 sm:p-8 rounded-[2rem] text-white shadow-sm relative overflow-hidden space-y-6">
                                     <div>
-                                        <h4 class="text-xs font-black tracking-[0.2em] text-primary uppercase">hubungi kami</h4>
-                                        <div class="text-[10px] text-white/50 font-bold mt-1">hubungi langsung melalui nomor telepon resmi</div>
+                                        <h4 class="text-xs font-black tracking-[0.2em] text-primary capitalize">{{ t('organization.public.contact_tab') }}</h4>
+                                        <div class="text-[10px] text-white/50 font-bold mt-1">{{ t('organization.public.contact_desc') }}</div>
                                     </div>
                                     <div class="space-y-4">
                                         <a v-if="org.whatsapp_no" :href="`https://wa.me/${org.whatsapp_no.replace(/\D/g, '')}`"
@@ -470,29 +470,29 @@
                                             <span class="font-bold text-xs sm:text-sm truncate">{{ org.email }}</span>
                                         </a>
                                         <div v-if="!org.whatsapp_no && !org.email"
-                                            class="text-white/30 text-xs font-black tracking-widest uppercase">belum tersedia</div>
+                                            class="text-white/30 text-xs font-black tracking-widest capitalize">{{ t('organization.public.not_available') }}</div>
                                     </div>
                                 </div>
 
                                 <div v-if="hasSocialMedia" class="bg-gray-50 p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-6">
-                                    <h4 class="text-xs font-black tracking-[0.2em] text-navy/30 uppercase">jejaring sosial</h4>
+                                    <h4 class="text-xs font-black tracking-[0.2em] text-navy/30 capitalize">{{ t('organization.public.social_network') }}</h4>
                                     <div class="grid grid-cols-1 gap-2">
                                         <a v-if="org.social_instagram"
                                             :href="`https://instagram.com/${org.social_instagram.replace('@', '')}`"
                                             target="_blank"
-                                            class="flex items-center gap-3 p-3 bg-pink-50/50 hover:bg-pink-50 border border-pink-100/50 rounded-xl group transition-all text-[10px] font-black text-pink-700">
-                                            <Icon icon="ph:instagram-logo-bold" class="text-base shrink-0" />
+                                            class="flex items-center gap-3 p-3 bg-gray-50 hover:bg-gray-100 border border-gray-200/50 rounded-xl group transition-all text-[10px] font-black text-navy">
+                                            <Icon icon="ph:instagram-logo-bold" class="text-base shrink-0 text-gray-400 group-hover:text-pink-600 transition-colors" />
                                             <span class="truncate">instagram</span>
                                         </a>
                                         <a v-if="org.social_facebook" :href="org.social_facebook" target="_blank"
-                                            class="flex items-center gap-3 p-3 bg-blue-50/50 hover:bg-blue-50 border border-blue-100/50 rounded-xl group transition-all text-[10px] font-black text-blue-700">
-                                            <Icon icon="ph:facebook-logo-bold" class="text-base shrink-0" />
+                                            class="flex items-center gap-3 p-3 bg-gray-50 hover:bg-gray-100 border border-gray-200/50 rounded-xl group transition-all text-[10px] font-black text-blue-700">
+                                            <Icon icon="ph:facebook-logo-bold" class="text-base shrink-0 text-gray-400 group-hover:text-blue-600 transition-colors" />
                                             <span class="truncate">facebook</span>
                                         </a>
                                         <a v-if="org.social_twitter" :href="`https://twitter.com/${org.social_twitter}`"
                                             target="_blank"
-                                            class="flex items-center gap-3 p-3 bg-slate-50 hover:bg-slate-100 border border-slate-200/50 rounded-xl group transition-all text-[10px] font-black text-slate-800">
-                                            <Icon icon="ph:x-logo-bold" class="text-base shrink-0" />
+                                            class="flex items-center gap-3 p-3 bg-gray-50 hover:bg-gray-100 border border-gray-200/50 rounded-xl group transition-all text-[10px] font-black text-navy">
+                                            <Icon icon="ph:x-logo-bold" class="text-base shrink-0 text-gray-400 group-hover:text-slate-800 transition-colors" />
                                             <span class="truncate">twitter / X</span>
                                         </a>
                                     </div>
@@ -510,7 +510,7 @@
                 <div @click="isShareOpen = false" class="absolute inset-0 bg-navy/80 backdrop-blur-sm"></div>
                 <div class="relative w-full max-w-md bg-white rounded-2xl p-6 shadow-2xl border border-gray-100 z-10">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-base font-black text-navy tracking-tighter uppercase">bagikan profil</h3>
+                        <h3 class="text-base font-black text-navy tracking-tighter capitalize">{{ t('organization.public.share_profile') }}</h3>
                         <button @click="isShareOpen = false"
                             class="size-9 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
                             <Icon icon="ph:x-bold" class="text-sm" />
@@ -524,7 +524,7 @@
                                 class="w-full h-full object-cover" />
                         </div>
                         <div>
-                            <div class="text-[9px] font-black text-navy/40 tracking-widest uppercase mb-0.5">organisasi resmi</div>
+                            <div class="text-[9px] font-black text-navy/40 tracking-widest capitalize mb-0.5">{{ t('organization.public.official_profile') }}</div>
                             <div class="font-black text-navy text-sm leading-none">{{ org.name }}</div>
                         </div>
                     </div>
@@ -543,7 +543,7 @@
                             class="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-navy/40 outline-none" />
                         <button @click="copyLink"
                             class="px-5 py-3 bg-navy text-white rounded-xl text-xs font-black tracking-widest hover:bg-navy-dark transition-all">
-                            {{ copied ? 'tersalin' : 'salin' }}
+                            {{ copied ? t('organization.public.copied') : t('organization.public.copy') }}
                         </button>
                     </div>
                 </div>
@@ -579,6 +579,9 @@ import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 definePageMeta({ layout: 'landing' })
 
@@ -594,10 +597,10 @@ const shareUrl = computed(() => typeof window !== 'undefined' ? window.location.
 const activeTab = ref('overview')
 
 const tabs = computed(() => [
-    { id: 'overview', label: 'profil' },
-    { id: 'events', label: `event (${totalEvents.value || 0})` },
-    { id: 'news', label: 'berita & prestasi' },
-    { id: 'contact', label: 'hubungi kami' }
+    { id: 'overview', label: t('organization.public.profile_tab') },
+    { id: 'events', label: `${t('organization.public.events')} (${totalEvents.value || 0})` },
+    { id: 'news', label: t('organization.public.news_achievements_tab') },
+    { id: 'contact', label: t('organization.public.contact_tab') }
 ])
 
 const { data: orgResponse } = await useAsyncData(

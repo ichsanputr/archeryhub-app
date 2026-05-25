@@ -65,7 +65,13 @@ export default defineNuxtConfig({
     langDir: 'locales',
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
-    detectBrowserLanguage: false,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+      alwaysRedirect: false,
+      fallbackLocale: 'en'
+    },
     customRoutes: 'config',
     // keep dashboard routes identical across locales (no prefix change)
     pages: dashboardI18nPages,
