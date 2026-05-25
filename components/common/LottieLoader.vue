@@ -15,7 +15,7 @@
         
         <!-- Text with wide tracking -->
         <div class="text-center mt-6">
-          <h2 class="text-white text-sm font-black tracking-[0.3em] opacity-80">archeris<span class="text-primary font-black">.net</span></h2>
+          <h2 class="text-white text-sm font-black tracking-[0.3em] opacity-80">Archeris<span class="text-primary font-black">.net</span></h2>
         </div>
       </div>
     </div>

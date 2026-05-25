@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
 nuxtApp.hook('page:finish', () => {
   setTimeout(() => {
     isPageLoading.value = false
-  }, 2500)
+  }, 1400)
 })
 
 // Safety fallback for aborted/errored navigations
