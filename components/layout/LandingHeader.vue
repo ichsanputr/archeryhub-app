@@ -1,14 +1,14 @@
 <template>
     <nav class="fixed top-0 z-50 w-full transition-all duration-500" :class="navClasses">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
+            <div class="flex items-center justify-between h-14 md:h-16">
                 <!-- Logo -->
-                <NuxtLink :to="localePath('/')" class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300"
+                <NuxtLink :to="localePath('/')" class="flex items-center gap-2 md:gap-3">
+                    <div class="w-7 h-7 md:w-8 md:h-8 rounded-lg flex items-center justify-center transition-all duration-300"
                         :class="logoBoxClasses">
-                        <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
+                        <img src="/logo.png" alt="Logo" class="w-4 h-4 md:w-5 md:h-5 object-contain" />
                     </div>
-                    <span class="text-xl font-black tracking-tight font-display transition-colors duration-300"
+                    <span class="text-lg md:text-xl font-black tracking-tight font-display transition-colors duration-300"
                         :class="logoTextClasses">Archeris</span>
                 </NuxtLink>
 
@@ -226,25 +226,25 @@
                 </div>
 
                 <!-- Mobile Menu Toggle -->
-                <div class="flex items-center gap-2 md:hidden">
+                <div class="flex items-center gap-1 md:gap-2 md:hidden">
                     <!-- Mobile Cart (For Archers) -->
                     <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/archer/cart"
-                        class="relative p-2 rounded-xl transition-all duration-300 mr-1"
+                        class="relative p-1.5 rounded-lg transition-all duration-300 mr-0.5"
                         :class="showSolid ? 'text-navy' : 'text-white'">
-                        <Icon icon="ph:shopping-bag-bold" class="text-2xl" />
+                        <Icon icon="ph:shopping-bag-bold" class="text-xl" />
                         <span v-if="cartCount > 0"
-                            class="absolute top-1 right-1 w-5 h-5 bg-primary text-navy text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-primary/20">
+                            class="absolute top-0.5 right-0.5 w-4 h-4 bg-primary text-navy text-[9px] font-black rounded-full flex items-center justify-center border border-white shadow-sm ring-1 ring-primary/20">
                             {{ cartCount }}
                         </span>
                     </NuxtLink>
 
                     <!-- Mobile Language Switcher -->
-                    <div class="relative mr-1" @click.stop="showLangMenuMobile = !showLangMenuMobile">
+                    <div class="relative mr-0.5" @click.stop="showLangMenuMobile = !showLangMenuMobile">
                         <button
-                            class="flex items-center gap-1.5 p-2 rounded-xl transition-all duration-300 text-xs font-bold "
+                            class="flex items-center gap-1 p-1.5 rounded-lg transition-all duration-300 text-xs font-bold "
                             :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
                             <Icon :icon="langFlags[locale] || 'ph:globe-bold'"
-                                class="text-xl rounded-full overflow-hidden border border-white/20" />
+                                class="text-lg rounded-full overflow-hidden border border-white/20" />
                         </button>
 
                         <Transition enter-active-class="transition duration-200 ease-out"
@@ -267,9 +267,9 @@
                         </Transition>
                     </div>
 
-                    <button class="p-2 transition-colors duration-300" :class="mobileToggleClasses"
+                    <button class="p-1.5 transition-colors duration-300" :class="mobileToggleClasses"
                         @click="mobileMenuOpen = !mobileMenuOpen">
-                        <Icon :icon="mobileMenuOpen ? 'ph:x-bold' : 'ph:list-bold'" class="text-2xl" />
+                        <Icon :icon="mobileMenuOpen ? 'ph:x-bold' : 'ph:list-bold'" class="text-xl" />
                     </button>
                 </div>
             </div>

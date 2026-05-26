@@ -1,13 +1,13 @@
 <template>
   <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
+      <div class="flex items-center justify-between h-14 md:h-16">
         <!-- Logo -->
-        <NuxtLink to="/" class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-navy transition-all duration-300">
-            <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
+        <NuxtLink to="/" class="flex items-center gap-2 md:gap-3">
+          <div class="w-7 h-7 md:w-8 md:h-8 rounded-lg flex items-center justify-center bg-navy transition-all duration-300">
+            <img src="/logo.png" alt="Logo" class="w-4 h-4 md:w-5 md:h-5 object-contain" />
           </div>
-          <span class="text-xl font-black tracking-tight font-display text-navy">Archeris</span>
+          <span class="text-lg md:text-xl font-black tracking-tight font-display text-navy">Archeris</span>
         </NuxtLink>
 
         <!-- Desktop Navigation -->
@@ -177,19 +177,19 @@
         </div>
 
         <!-- Mobile Menu Toggle -->
-        <div class="flex items-center gap-2 md:hidden">
+        <div class="flex items-center gap-1 md:gap-2 md:hidden">
           <!-- Mobile Cart (For Archers) -->
           <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/archer/cart"
-            class="relative p-2 rounded-xl text-navy transition-all duration-300">
-            <Icon icon="ph:shopping-bag-bold" class="text-2xl" />
+            class="relative p-1.5 rounded-lg text-navy transition-all duration-300 mr-0.5">
+            <Icon icon="ph:shopping-bag-bold" class="text-xl" />
             <span v-if="cartCount > 0"
-              class="absolute top-1 right-1 w-5 h-5 bg-primary text-navy text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-primary/20">
+              class="absolute top-0.5 right-0.5 w-4 h-4 bg-primary text-navy text-[9px] font-black rounded-full flex items-center justify-center border border-white shadow-sm ring-1 ring-primary/20">
               {{ cartCount }}
             </span>
           </NuxtLink>
 
-          <button class="p-2 text-navy transition-colors duration-300" @click="mobileMenuOpen = !mobileMenuOpen">
-            <Icon :icon="mobileMenuOpen ? 'ph:x-bold' : 'ph:list-bold'" class="text-2xl" />
+          <button class="p-1.5 text-navy transition-colors duration-300" @click="mobileMenuOpen = !mobileMenuOpen">
+            <Icon :icon="mobileMenuOpen ? 'ph:x-bold' : 'ph:list-bold'" class="text-xl" />
           </button>
         </div>
       </div>

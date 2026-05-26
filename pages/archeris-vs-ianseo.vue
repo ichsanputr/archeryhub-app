@@ -52,59 +52,78 @@
 
         <!-- ── MAIN CONTENT (GRID COMPARISON) ── -->
         <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 mb-20 relative z-20">
-            <div class="text-center mb-10">
-                <span class="text-xs font-black tracking-widest text-primary bg-navy px-3 py-1 rounded-full uppercase">
-                    {{ $t('home.comparison_page.section_features_title') }}
-                </span>
-                <p class="text-slate-500 text-sm font-medium mt-4">
-                    {{ $t('home.comparison_page.section_features_desc') }}
-                </p>
+            <!-- Summary Header Card using Logos -->
+            <div class="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm mb-12">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-8">
+                    <!-- Archeris Side -->
+                    <div class="flex-1 flex flex-col items-center text-center">
+                        <div class="w-20 h-20 flex items-center justify-center p-3 bg-navy rounded-2xl mb-4">
+                            <img src="/logo.png" class="h-10 w-auto object-contain" alt="Archeris Logo" />
+                        </div>
+                        <h4 class="text-lg font-black text-navy">{{ $t('home.comparison.col_archeris') }}</h4>
+                        <span class="text-xs text-primary font-black tracking-widest bg-navy px-2.5 py-0.5 rounded-full mt-2">Modern & Cloud-Native</span>
+                    </div>
+
+                    <!-- VS Divider -->
+                    <div class="flex flex-col items-center">
+                        <div class="size-12 rounded-full bg-navy flex items-center justify-center border-2 border-primary/20 shadow-md">
+                            <span class="text-xs font-black text-primary tracking-widest">VS</span>
+                        </div>
+                    </div>
+
+                    <!-- Ianseo Side -->
+                    <div class="flex-1 flex flex-col items-center text-center">
+                        <div class="w-20 h-20 flex items-center justify-center p-3 bg-gray-50 rounded-2xl border border-gray-100 mb-4">
+                            <img src="/ianseo-logo.png" class="h-10 w-auto object-contain" alt="Ianseo Logo" />
+                        </div>
+                        <h4 class="text-lg font-black text-slate-500">{{ $t('home.comparison.col_ianseo') }}</h4>
+                        <span class="text-xs text-gray-400 font-bold tracking-widest bg-gray-100 px-2.5 py-0.5 rounded-full mt-2">Legacy Desktop</span>
+                    </div>
+                </div>
             </div>
 
-            <!-- Features Cards List -->
-            <div class="space-y-6">
-                <div v-for="i in 6" :key="i"
-                    class="bg-white rounded-3xl border border-gray-100 p-6 md:p-8 hover:shadow-sm transition-all duration-300">
-                    
-                    <!-- Feature Title -->
-                    <h3 class="text-lg md:text-xl font-black text-navy mb-6 flex items-center gap-2">
-                        <span class="w-1 h-5 bg-navy rounded-full"></span>
-                        {{ $t(`home.comparison.f${i}_name`) }}
+            <!-- Detailed Table Comparison -->
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mb-12">
+                <div class="p-6 md:p-8 border-b border-gray-100 bg-gray-50/50">
+                    <h3 class="text-lg font-black text-navy flex items-center gap-2">
+                        <Icon icon="ph:list-checks-bold" class="text-primary text-xl" />
+                        {{ $t('home.comparison_page.section_features_title') }}
                     </h3>
+                    <p class="text-slate-500 text-xs mt-1">{{ $t('home.comparison_page.section_features_desc') }}</p>
+                </div>
 
-                    <!-- Comparison Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-50">
-                        <!-- Archeris.net Column -->
-                        <div class="bg-[#E2F9C2]/15 rounded-2xl p-5 border border-primary/20 flex flex-col justify-between">
-                            <div>
-                                <div class="flex items-center gap-2 mb-3">
-                                    <img src="/logo.png" class="h-6 w-auto object-contain" alt="Archeris Logo" />
-                                    <span class="text-sm font-black text-navy">{{ $t('home.comparison.col_archeris') }}</span>
+                <div class="divide-y divide-gray-100">
+                    <!-- Table Rows -->
+                    <div v-for="i in 6" :key="i" class="p-6 md:p-8 hover:bg-gray-50/30 transition-colors">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                            <!-- Feature Name -->
+                            <div class="md:col-span-3">
+                                <h4 class="font-black text-navy text-sm md:text-base flex items-center gap-2">
+                                    <span class="w-1.5 h-3.5 bg-navy rounded-full"></span>
+                                    {{ $t(`home.comparison.f${i}_name`) }}
+                                </h4>
+                            </div>
+
+                            <!-- Archeris.net Info -->
+                            <div class="md:col-span-5 bg-[#E2F9C2]/10 rounded-xl p-4 border border-primary/10">
+                                <div class="flex items-center gap-1.5 text-navy font-bold text-xs mb-1.5">
+                                    <Icon icon="ph:check-circle-fill" class="text-primary text-sm" />
+                                    <span>Archeris.net</span>
                                 </div>
-                                <p class="text-sm text-slate-600 leading-relaxed font-medium">
+                                <p class="text-xs text-slate-600 leading-relaxed font-medium">
                                     {{ $t(`home.comparison.f${i}_archeris`) }}
                                 </p>
                             </div>
-                            <div class="flex items-center gap-1.5 text-primary text-xs font-bold mt-4">
-                                <Icon icon="ph:check-circle-fill" class="text-base" />
-                                <span>Modern Solution</span>
-                            </div>
-                        </div>
 
-                        <!-- Ianseo.net Column -->
-                        <div class="bg-gray-50/50 rounded-2xl p-5 border border-gray-100 flex flex-col justify-between">
-                            <div>
-                                <div class="flex items-center gap-2 mb-3">
-                                    <img src="/ianseo-logo.png" class="h-6 w-auto object-contain" alt="Ianseo Logo" />
-                                    <span class="text-sm font-bold text-gray-500">{{ $t('home.comparison.col_ianseo') }}</span>
+                            <!-- Ianseo.net Info -->
+                            <div class="md:col-span-4 bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                <div class="flex items-center gap-1.5 text-gray-400 font-bold text-xs mb-1.5">
+                                    <Icon icon="ph:minus-circle" class="text-sm" />
+                                    <span>Ianseo.net</span>
                                 </div>
-                                <p class="text-sm text-gray-500 leading-relaxed font-light">
+                                <p class="text-xs text-gray-500 leading-relaxed font-light">
                                     {{ $t(`home.comparison.f${i}_ianseo`) }}
                                 </p>
-                            </div>
-                            <div class="flex items-center gap-1.5 text-gray-400 text-xs font-medium mt-4">
-                                <Icon icon="ph:minus-circle" class="text-base" />
-                                <span>Legacy Standard</span>
                             </div>
                         </div>
                     </div>
