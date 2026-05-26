@@ -28,6 +28,7 @@
     "pricing": "Pricing",
     "blog": "Blog",
     "archers": "Archers",
+    "archeris_vs_ianseo": "Archeris vs Ianseo",
     "news": "News",
     "marketplace": "Marketplace",
     "login": "Login",
@@ -171,7 +172,44 @@
       ]
     },
     "meta_title": "Archeris.net - Archery Management Platform",
-    "meta_desc": "Archeris.net - Integrated archery management platform for tournaments, real-time scoring, and professional athlete development."
+    "meta_desc": "Archeris.net - Integrated archery management platform for tournaments, real-time scoring, and professional athlete development.",
+    "comparison": {
+      "title": "Why Choose Archeris.net?",
+      "subtitle": "How we compare with traditional solutions like Ianseo",
+      "description": "Archeris is built from the ground up to modernize event management and scoring, bringing a modern cloud-native approach to archery tournaments.",
+      "col_feature": "Feature",
+      "col_archeris": "Archeris.net",
+      "col_ianseo": "Ianseo.net",
+      "f1_name": "Deployment",
+      "f1_archeris": "Cloud-native, 100% web-based. No installation required. Access anywhere.",
+      "f1_ianseo": "Offline/desktop application. Requires local database (MySQL) and manual installation.",
+      "f2_name": "Payments & Registration",
+      "f2_archeris": "Integrated online registration and payment gateways (QRIS, VA, credit cards).",
+      "f2_ianseo": "Manual payment collection. Registrations are usually handled via external spreadsheets/forms.",
+      "f3_name": "User Experience",
+      "f3_archeris": "Modern, sleek, and fully mobile-responsive interface.",
+      "f3_ianseo": "Legacy 90s-style desktop layout, not optimized for mobile devices.",
+      "f4_name": "Athlete Profiles",
+      "f4_archeris": "Persistent athlete accounts with historical stats, performance charts, and digital certificates.",
+      "f4_ianseo": "No persistent athlete accounts. Results are stored per-tournament.",
+      "f5_name": "Live Broadcast & Widgets",
+      "f5_archeris": "Real-time live push results with easy OBS overlay widgets for streaming.",
+      "f5_ianseo": "Requires local network setups and specialized TV graphics plugins.",
+      "f6_name": "Club & Team Management",
+      "f6_archeris": "Multi-tenant dashboards for clubs, allowing member rosters and target butt tracking.",
+      "f6_ianseo": "Single tournament focus, no long-term club roster management."
+    },
+    "comparison_page": {
+      "hero_title": "Archeris vs Ianseo",
+      "hero_subtitle": "Why modern archery organizations choose Archeris.net over traditional legacy software.",
+      "hero_desc": "Explore the comparison between the world's leading offline tournament system and our next-generation cloud-native platform.",
+      "section_features_title": "feature comparison",
+      "section_features_desc": "a side-by-side detailed breakdown of the features and capabilities of both systems.",
+      "cta_title": "ready to upgrade your tournament experience?",
+      "cta_desc": "create your organization profile and launch your first event in less than 5 minutes.",
+      "cta_btn": "get started free",
+      "back_home": "back to home"
+    }
   },
   "dashboard": {
     "header": {

@@ -105,10 +105,10 @@
                         </Transition>
                     </div>
 
-                    <NuxtLink :to="localePath('/archers')"
+                    <NuxtLink :to="localePath('/archeris-vs-ianseo')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary"
-                        :class="[navLinkClasses, { '!border-primary font-bold': isActive('/archers') }]">
-                        {{ $t('nav.archers') }}</NuxtLink>
+                        :class="[navLinkClasses, { '!border-primary font-bold': isActive('/archeris-vs-ianseo') }]">
+                        {{ $t('nav.archeris_vs_ianseo') }}</NuxtLink>
                     <NuxtLink :to="localePath('/news')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary"
                         :class="[navLinkClasses, { '!border-primary font-bold': isActive('/news') }]">
@@ -331,7 +331,7 @@
                     <div class="p-4 space-y-1">
                         <NuxtLink v-for="link in [
                             { to: '/', label: $t('nav.home'), icon: 'ph:house-bold' },
-                            { to: '/archers', label: $t('nav.archers'), icon: 'ph:users-bold' },
+                            { to: '/archeris-vs-ianseo', label: $t('nav.archeris_vs_ianseo'), icon: 'ph:scales-bold' },
                             { to: '/news', label: $t('nav.news'), icon: 'ph:newspaper-bold' },
                             { to: '/docs', label: $t('nav.docs'), icon: 'ph:book-open-bold' },
                             { to: '/pricing', label: $t('nav.pricing'), icon: 'ph:credit-card-bold' },

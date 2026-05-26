@@ -28,6 +28,7 @@
     "pricing": "요금",
     "blog": "블로그",
     "archers": "궁사",
+    "archeris_vs_ianseo": "Archeris 대 Ianseo",
     "news": "뉴스",
     "marketplace": "마켓플레이스",
     "login": "로그인",
@@ -171,7 +172,44 @@
       ]
     },
     "meta_title": "Archeris.net - 인도네시아 통합 양궁 관리 플랫폼",
-    "meta_desc": "Archeris.net - 토너먼트, 실시간 스코어링 및 전문 선수 개발을 위한 인도네시아 최고의 통합 양궁 플랫폼입니다."
+    "meta_desc": "Archeris.net - 토너먼트, 실시간 스코어링 및 전문 선수 개발을 위한 인도네시아 최고의 통합 양궁 플랫폼입니다.",
+    "comparison": {
+      "title": "왜 Archeris.net인가요?",
+      "subtitle": "Ianseo와 같은 기존 솔루션과의 비교",
+      "description": "Archeris는 이벤트 관리 및 스코어링을 현대화하여 양궁 토너먼트에 현대적인 클라우드 네이티브 접근 방식을 제공하도록 처음부터 구축되었습니다.",
+      "col_feature": "기능",
+      "col_archeris": "Archeris.net",
+      "col_ianseo": "Ianseo.net",
+      "f1_name": "설치 및 배포",
+      "f1_archeris": "클라우드 네이티브, 100% 웹 기반. 설치 불필요. 어디서나 접속 가능.",
+      "f1_ianseo": "오프라인/데스크톱 애플리케이션. 로컬 데이터베이스(MySQL) 및 수동 설치 필요.",
+      "f2_name": "결제 및 등록",
+      "f2_archeris": "통합 온라인 등록 및 자동 결제 게이트웨이(QRIS, 가상 계좌, 신용카드).",
+      "f2_ianseo": "수동 참가비 수집. 등록은 주로 별도의 양식/스프레드시트를 통해 처리됨.",
+      "f3_name": "사용자 경험",
+      "f3_archeris": "현대적이고 세련되며 완벽한 모바일 반응형 인터페이스.",
+      "f3_ianseo": "90년대 스타일의 기존 데스크톱 레이아웃, 모바일 기기에 최적화되지 않음.",
+      "f4_name": "선수 프로필",
+      "f4_archeris": "기록 통계, 성능 차트 및 디지털 인증서가 포함된 영구 선수 계정.",
+      "f4_ianseo": "영구 선수 계정 없음. 결과는 토너먼트별로 저장됨.",
+      "f5_name": "실시간 방송 및 위젯",
+      "f5_archeris": "스트리밍을 위한 간편한 OBS 오버레이 위젯이 포함된 실시간 결과 제공.",
+      "f5_ianseo": "로컬 네트워크 설정 및 특수 TV 그래픽 플러그인 필요.",
+      "f6_name": "클럽 및 팀 관리",
+      "f6_archeris": "클럽용 멀티 테넌트 대시보드, 회원 명부 및 타겟 배정 관리.",
+      "f6_ianseo": "단일 토너먼트 중심, 장기적인 클럽 명단 관리 없음."
+    },
+    "comparison_page": {
+      "hero_title": "Archeris 대 Ianseo",
+      "hero_subtitle": "현대 양궁 단체가 기존의 레거시 소프트웨어 대신 Archeris.net을 선택하는 이유.",
+      "hero_desc": "세계 최고의 오프라인 토너먼트 시스템과 차세대 클라우드 네이티브 플랫폼의 상세 비교를 확인해 보세요.",
+      "section_features_title": "기능 비교",
+      "section_features_desc": "두 시스템의 기능과 역량에 대한 상세한 비교 분석입니다.",
+      "cta_title": "토너먼트 경험을 업그레이드할 준비가 되셨나요?",
+      "cta_desc": "5분 안에 조직 프로필을 생성하고 첫 번째 이벤트를 시작해 보세요.",
+      "cta_btn": "무료로 시작하기",
+      "back_home": "홈으로 돌아가기"
+    }
   },
   "dashboard": {
     "header": {

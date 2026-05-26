@@ -39,20 +39,28 @@
             <div class="flex flex-col gap-3">
               <NuxtLink to="/events"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Tournaments
+                {{ $t('nav.features') }}
               </NuxtLink>
 
               <NuxtLink to="/news"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                News
+                {{ $t('nav.news') }}
               </NuxtLink>
               <NuxtLink to="/products"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Marketplace
+                {{ $t('nav.marketplace') }}
               </NuxtLink>
               <NuxtLink to="/pricing"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Pricing
+                {{ $t('nav.pricing') }}
+              </NuxtLink>
+              <NuxtLink to="/archers"
+                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
+                {{ $t('nav.archers') }}
+              </NuxtLink>
+              <NuxtLink to="/archeris-vs-ianseo"
+                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
+                {{ $t('nav.archeris_vs_ianseo') }}
               </NuxtLink>
             </div>
           </div>

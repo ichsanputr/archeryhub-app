@@ -91,10 +91,10 @@
           </div>
 
 
-          <NuxtLink to="/archers"
+          <NuxtLink to="/archeris-vs-ianseo"
             class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-navy"
-            :class="{ '!border-primary font-bold text-navy': isActive('/archers') }">
-            {{ t('nav.archers') }}</NuxtLink>
+            :class="{ '!border-primary font-bold text-navy': isActive('/archeris-vs-ianseo') }">
+            {{ t('nav.archeris_vs_ianseo') }}</NuxtLink>
           <NuxtLink to="/blog"
             class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-navy"
             :class="{ '!border-primary font-bold text-navy': isActive('/blog') }">
@@ -248,7 +248,7 @@
           <div class="p-4 space-y-1">
             <NuxtLink v-for="link in [
               { to: '/', label: t('nav.home'), icon: 'ph:house-bold' },
-              { to: '/archers', label: t('nav.archers'), icon: 'ph:users-bold' },
+              { to: '/archeris-vs-ianseo', label: t('nav.archeris_vs_ianseo'), icon: 'ph:scales-bold' },
               { to: '/blog', label: t('nav.blog'), icon: 'ph:newspaper-bold' },
               { to: '/docs', label: t('nav.docs'), icon: 'ph:book-open-bold' },
               { to: '/pricing', label: t('nav.pricing'), icon: 'ph:credit-card-bold' },

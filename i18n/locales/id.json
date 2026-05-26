@@ -11,6 +11,7 @@
     "pricing": "Harga",
     "blog": "Blog",
     "archers": "Pemanah",
+    "archeris_vs_ianseo": "Archeris vs Ianseo",
     "news": "Berita",
     "marketplace": "Marketplace",
     "login": "Masuk",
@@ -154,7 +155,44 @@
       ]
     },
     "meta_title": "Archeris.net - Platform Manajemen Panahan",
-    "meta_desc": "Archeris.net - Platform manajemen panahan terpadu untuk turnamen, scoring real-time, dan pengembangan atlet profesional."
+    "meta_desc": "Archeris.net - Platform manajemen panahan terpadu untuk turnamen, scoring real-time, dan pengembangan atlet profesional.",
+    "comparison": {
+      "title": "Mengapa Memilih Archeris.net?",
+      "subtitle": "Perbandingan kami dengan solusi tradisional seperti Ianseo",
+      "description": "Archeris dibangun dari awal untuk memodernisasi manajemen event dan skor, menghadirkan pendekatan cloud-native modern untuk turnamen panahan.",
+      "col_feature": "Fitur",
+      "col_archeris": "Archeris.net",
+      "col_ianseo": "Ianseo.net",
+      "f1_name": "Penerapan",
+      "f1_archeris": "Berbasis cloud, 100% web-based. Tanpa instalasi. Akses di mana saja.",
+      "f1_ianseo": "Aplikasi offline/desktop. Memerlukan database lokal (MySQL) dan instalasi manual.",
+      "f2_name": "Pembayaran & Pendaftaran",
+      "f2_archeris": "Pendaftaran online terintegrasi dengan gerbang pembayaran otomatis (QRIS, VA, kartu kredit).",
+      "f2_ianseo": "Koleksi pembayaran manual. Pendaftaran biasanya dikelola via form/spreadsheet terpisah.",
+      "f3_name": "Pengalaman Pengguna",
+      "f3_archeris": "Antarmuka modern, ramping, dan sepenuhnya responsif di perangkat seluler.",
+      "f3_ianseo": "Tata letak desktop gaya lama era 90-an, tidak dioptimalkan untuk perangkat seluler.",
+      "f4_name": "Profil Atlet",
+      "f4_archeris": "Akun atlet persisten dengan riwayat statistik, grafik performa, dan e-sertifikat.",
+      "f4_ianseo": "Tidak ada akun atlet persisten. Hasil hanya disimpan per turnamen.",
+      "f5_name": "Siaran Langsung & Widget",
+      "f5_archeris": "Hasil langsung real-time dengan widget overlay OBS untuk streaming langsung.",
+      "f5_ianseo": "Memerlukan konfigurasi jaringan lokal dan plugin grafis TV khusus.",
+      "f6_name": "Manajemen Klub & Tim",
+      "f6_archeris": "Dasbor multi-tenant untuk klub, manajemen anggota, dan alokasi bantalan target.",
+      "f6_ianseo": "Fokus pada satu turnamen, tidak ada manajemen roster klub jangka panjang."
+    },
+    "comparison_page": {
+      "hero_title": "Archeris vs Ianseo",
+      "hero_subtitle": "Mengapa organisasi panahan modern memilih Archeris.net daripada perangkat lunak lama tradisional.",
+      "hero_desc": "Jelajahi perbandingan antara sistem turnamen offline terkemuka di dunia dan platform cloud-native generasi berikutnya kami.",
+      "section_features_title": "perbandingan fitur",
+      "section_features_desc": "analisis mendalam berdampingan tentang fitur dan kemampuan kedua sistem.",
+      "cta_title": "siap meningkatkan pengalaman turnamen anda?",
+      "cta_desc": "buat profil organisasi anda dan luncurkan event pertama anda kurang dari 5 menit.",
+      "cta_btn": "mulai gratis",
+      "back_home": "kembali ke beranda"
+    }
   },
   "dashboard": {
     "header": {
