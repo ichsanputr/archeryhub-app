@@ -454,18 +454,17 @@ import { useApi } from '~/composables/useApi'
 import { useEventContext } from '~/composables/useEventContext'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useI18n } from 'vue-i18n'
+import { gsap } from 'gsap'
 
 definePageMeta({
     layout: 'dashboard'
 })
 
+const { t } = useI18n()
+
 useHead({
     title: t('dashboard_event_overview.meta_title')
 })
-
-const { t } = useI18n()
-
-import { gsap } from 'gsap'
 
 const route = useRoute()
 const { get, post } = useApi()

@@ -169,7 +169,11 @@
         "request_title": "Request Verification Code",
         "send": "Send Code to Email",
         "verified_desc": "You can perform additional withdrawals without requesting another OTP for the next",
-        "verified_title": "Email Verified"
+        "verified_title": "Email Verified",
+        "code_sent": "OTP code has been sent to your email.",
+        "code_label": "OTP Code",
+        "code_placeholder": "Enter 6-digit code",
+        "invalid_length": "OTP code must be 6 digits"
       },
       "security": {
         "desc": "Masukkan password akun Anda untuk mengakses fitur keuangan",
@@ -181,7 +185,23 @@
         "empty": "Belum ada riwayat penarikan",
         "title": "Tarik Saldo"
       },
-      "available": "Saldo Tersedia"
+      "available": "Saldo Tersedia",
+      "withdraw_button": "Withdraw Balance",
+      "withdraw_info": "Disbursement process takes 1-3 business days.",
+      "amount_label": "Withdrawal Amount",
+      "amount_placeholder": "Minimum Rp 100,000",
+      "available_balance": "Available Balance",
+      "destination_account": "Destination Account",
+      "submit_withdrawal": "Submit Withdrawal",
+      "minimum_balance_error": "Minimum balance of Rp 100,000 is required to withdraw",
+      "no_account_error": "You have not added a bank account yet",
+      "password_error": "Incorrect password",
+      "otp_sent_success": "OTP code sent successfully",
+      "otp_sent_error": "Failed to send OTP code",
+      "amount_minimum_error": "Minimum withdrawal amount is Rp 100,000",
+      "amount_exceeds_error": "Withdrawal amount exceeds your available balance",
+      "withdrawal_success": "Withdrawal request submitted successfully",
+      "withdrawal_error": "Failed to submit withdrawal request"
     },
     "profile": {
       "edit": {
@@ -237,10 +257,13 @@
         "edit_title": "Edit Rekening",
         "pick_bank": "Pilih Bank",
         "save": "Simpan Rekening",
-        "set_primary": "Rekening Utama"
+        "set_primary": "Rekening Utama",
+        "set_primary_label": "Set as Primary Account"
       },
       "subtitle": "Kelola rekening tujuan pencairan dana Anda",
-      "title": "Rekening Bank"
+      "title": "Rekening Bank",
+      "add_new": "Add New Account",
+      "add_new_desc": "Add a bank account to receive withdrawals"
     },
     "scorekeepers": {
       "add": "Tambah Staff",

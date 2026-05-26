@@ -169,7 +169,11 @@
         "request_title": "Request Verification Code",
         "send": "Send Code to Email",
         "verified_desc": "You can perform additional withdrawals without requesting another OTP for the next",
-        "verified_title": "Email Verified"
+        "verified_title": "Email Verified",
+        "code_sent": "이메일로 OTP 코드가 전송되었습니다.",
+        "code_label": "OTP 코드",
+        "code_placeholder": "6자리 코드 입력",
+        "invalid_length": "OTP 코드는 6자리여야 합니다"
       },
       "security": {
         "desc": "Masukkan password akun Anda untuk mengakses fitur keuangan",
@@ -181,7 +185,23 @@
         "empty": "Belum ada riwayat penarikan",
         "title": "Tarik Saldo"
       },
-      "available": "Saldo Tersedia"
+      "available": "Saldo Tersedia",
+      "withdraw_button": "잔액 출금",
+      "withdraw_info": "출금 처리는 영업일 기준 1-3일이 소요됩니다.",
+      "amount_label": "출금 금액",
+      "amount_placeholder": "최소 Rp 100,000",
+      "available_balance": "출금 가능 잔액",
+      "destination_account": "입금 계좌",
+      "submit_withdrawal": "출금 신청",
+      "minimum_balance_error": "출금하려면 최소 Rp 100,000의 잔액이 필요합니다",
+      "no_account_error": "아직 은행 계좌를 등록하지 않았습니다",
+      "password_error": "잘못된 비밀번호입니다",
+      "otp_sent_success": "OTP 코드가 성공적으로 전송되었습니다",
+      "otp_sent_error": "OTP 코드 전송에 실패했습니다",
+      "amount_minimum_error": "최소 출금 금액은 Rp 100,000입니다",
+      "amount_exceeds_error": "출금 금액이 출금 가능 잔액을 초과합니다",
+      "withdrawal_success": "출금 신청이 성공적으로 제출되었습니다",
+      "withdrawal_error": "출금 신청 제출에 실패했습니다"
     },
     "profile": {
       "edit": {
@@ -237,10 +257,13 @@
         "edit_title": "Edit Rekening",
         "pick_bank": "Pilih Bank",
         "save": "Simpan Rekening",
-        "set_primary": "Rekening Utama"
+        "set_primary": "Rekening Utama",
+        "set_primary_label": "기본 계정으로 설정"
       },
       "subtitle": "Kelola rekening tujuan pencairan dana Anda",
-      "title": "Rekening Bank"
+      "title": "Rekening Bank",
+      "add_new": "새 계정 추가",
+      "add_new_desc": "출금을 받을 은행 계정을 추가하세요"
     },
     "scorekeepers": {
       "add": "Tambah Staff",

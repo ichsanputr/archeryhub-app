@@ -357,14 +357,11 @@ import EliminationBracketView from '~/components/elimination/EliminationBracketV
 import EliminationTargetMode from '~/components/elimination/EliminationTargetMode.vue'
 import EliminationScoringMode from '~/components/elimination/EliminationScoringMode.vue'
 
-const { isSubscriptionActive } = useSubscription()
-const showPremiumModal = ref(false)
+const { t } = useI18n()
 
 definePageMeta({
     layout: 'dashboard'
 })
-
-const { t } = useI18n()
 
 const route = useRoute()
 const router = useRouter()
@@ -372,8 +369,11 @@ const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
 const eventId = route.params.id
 const bracketId = route.params.bracketId
-const { get, post, put } = useApi()
+const { post, get, put } = useApi()
 const toast = useToast()
+
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
 
 const isLoading = ref(true)
 const isSaving = ref(false)

@@ -110,19 +110,20 @@ import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import useDashboardI18n from '~/composables/useDashboardI18n'
 
+const { t } = useDashboardI18n()
+
 definePageMeta({
-    title: t('organization_news.create.meta_title'),
+    title: 'Create News - Archeris Dashboard',
     layout: 'dashboard'
 })
 
 useHead({
     title: t('organization_news.create.meta_title')
 })
-
 const { post } = useApi()
 const router = useRouter()
 const toast = useToast()
-const { t } = useDashboardI18n()
+
 const isSubmitting = ref(false)
 const showMediaLibrary = ref(false)
 

@@ -183,7 +183,7 @@
                                             </span>
                                         </div>
                                         <span
-                                            class="text-navy font-black text-xs tracking-wider flex items-center gap-1.5 self-start sm:self-auto border-b border-navy/30 pb-px group-hover:border-navy transition-colors">
+                                            class="text-navy font-black text-xs tracking-wider flex items-center gap-1.5 self-start sm:self-auto pb-px">
                                             {{ $t('news_page.read_more') }}
                                             <Icon icon="ph:arrow-right-bold" class="transition-transform group-hover:translate-x-0.5" />
                                         </span>
@@ -200,13 +200,13 @@
                         <p class="text-gray-500 max-w-md mx-auto">{{ $t('news_page.no_news_desc') }}</p>
                     </div>
 
-                    <!-- Load More -->
-                    <div v-if="filteredArticles.length > 0 && hasMoreArticles" class="text-center mt-10">
-                        <BaseButton variant="outline" size="lg" icon="ph:arrow-down" :loading="isLoadingMore"
-                            @click="loadMore">
-                            {{ $t('news_page.load_more') }}
-                        </BaseButton>
-                    </div>
+                    <!-- Pagination -->
+                    <CommonFrontpagePagination
+                        v-if="remainingFilteredArticles.length > 0"
+                        v-model:currentPage="currentPage"
+                        :totalPages="totalPages"
+                        :totalItems="totalItems"
+                        :itemsPerPage="pageSize" />
                 </div>
 
                 <!-- Sidebar -->
@@ -223,7 +223,7 @@
                                 class="group flex flex-col items-center text-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-all">
                                 <div class="flex items-center gap-3 w-full text-left">
                                     <div
-                                        class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-black text-sm flex-shrink-0">
+                                        class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-navy font-black text-sm flex-shrink-0">
                                         {{ index + 1 }}
                                     </div>
                                     <div class="w-14 h-14 bg-gray-100 rounded-xl overflow-hidden shrink-0">
@@ -347,8 +347,12 @@ const sources = computed(() => [
     { label: t('news_page.sources.community'), value: 'community' },
 ])
 
+import { watch } from 'vue'
+
 const { data: newsResponse, pending: isLoading } = await useAsyncData('news', () =>
-    $fetch(`${apiBaseUrl}/news`),
+    $fetch(`${apiBaseUrl}/news`, {
+        query: { limit: 1000 }
+    }),
     { server: true }
 )
 
@@ -392,8 +396,21 @@ const allFilteredArticles = computed(() => {
 
 const featuredArticle = computed(() => allFilteredArticles.value[0] || null)
 
-const filteredArticles = computed(() => {
+const remainingFilteredArticles = computed(() => {
     return allFilteredArticles.value.slice(1)
+})
+
+const filteredArticles = computed(() => {
+    const start = (currentPage.value - 1) * pageSize.value
+    const end = start + pageSize.value
+    return remainingFilteredArticles.value.slice(start, end)
+})
+
+const totalItems = computed(() => remainingFilteredArticles.value.length)
+const totalPages = computed(() => Math.ceil(totalItems.value / pageSize.value) || 1)
+
+watch([activeCategory, searchQuery, activeSource], () => {
+    currentPage.value = 1
 })
 
 const popularArticles = computed(() => {
@@ -424,28 +441,6 @@ const upcomingEvents = computed(() => {
         }
     })
 })
-
-const loadMore = async () => {
-    if (isLoadingMore.value || !hasMoreArticles.value) return
-    isLoadingMore.value = true
-    try {
-        currentPage.value++
-        const response = await $fetch(`${apiBaseUrl}/news`, {
-            query: {
-                page: currentPage.value,
-                limit: pageSize.value
-            }
-        })
-        const newRawData = response?.data || response || []
-        if (newRawData.length < pageSize.value) {
-            hasMoreArticles.value = false
-        }
-    } catch (e) {
-        console.error(e)
-    } finally {
-        isLoadingMore.value = false
-    }
-}
 
 const subscribe = async () => {
     if (!subscribeEmail.value) return

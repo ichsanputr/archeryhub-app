@@ -1618,7 +1618,10 @@
     "unassigned_participants_desc": "Ada {count} atlet terdaftar yang belum mendapatkan nomor target bantalan.",
     "no_category": "Kategori Tidak Ditentukan",
     "status_active": "Aktif",
-    "status_draft": "Draft"
+    "status_draft": "Draft",
+    "registration_analysis": "Analisis Pendaftaran",
+    "payment_status": "Status Pembayaran",
+    "total_score": "Total Skor"
   },
   "qualification": {
     "nav_event": "Event",

@@ -245,6 +245,8 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+const { t } = useI18n()
+
 useHead({
     title: t('dashboard.participants_list.meta_title')
 })
@@ -253,7 +255,6 @@ const route = useRoute()
 const eventId = computed(() => route.params.id)
 const { get, put } = useApi()
 const toast = useToast()
-const { t } = useI18n()
 
 const isTogglingReregister = ref({})
 

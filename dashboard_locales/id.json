@@ -169,7 +169,11 @@
         "request_title": "Request Verification Code",
         "send": "Send Code to Email",
         "verified_desc": "You can perform additional withdrawals without requesting another OTP for the next",
-        "verified_title": "Email Verified"
+        "verified_title": "Email Verified",
+        "code_sent": "Kode OTP telah dikirim ke email Anda.",
+        "code_label": "Kode OTP",
+        "code_placeholder": "Masukkan 6 digit kode",
+        "invalid_length": "Kode OTP harus 6 digit"
       },
       "security": {
         "desc": "Masukkan password akun Anda untuk mengakses fitur keuangan",
@@ -181,7 +185,23 @@
         "empty": "Belum ada riwayat penarikan",
         "title": "Tarik Saldo"
       },
-      "available": "Saldo Tersedia"
+      "available": "Saldo Tersedia",
+      "withdraw_button": "Tarik Saldo",
+      "withdraw_info": "Proses pencairan dana membutuhkan waktu 1-3 hari kerja.",
+      "amount_label": "Nominal Penarikan",
+      "amount_placeholder": "Minimal Rp 100.000",
+      "available_balance": "Saldo Tersedia",
+      "destination_account": "Rekening Tujuan",
+      "submit_withdrawal": "Ajukan Penarikan",
+      "minimum_balance_error": "Saldo minimal Rp 100.000 untuk melakukan penarikan",
+      "no_account_error": "Anda belum menambahkan rekening bank",
+      "password_error": "Password yang Anda masukkan salah",
+      "otp_sent_success": "Kode OTP berhasil dikirim",
+      "otp_sent_error": "Gagal mengirim kode OTP",
+      "amount_minimum_error": "Nominal penarikan minimal Rp 100.000",
+      "amount_exceeds_error": "Nominal penarikan melebihi saldo Anda",
+      "withdrawal_success": "Pengajuan penarikan berhasil dikirim",
+      "withdrawal_error": "Gagal mengajukan penarikan"
     },
     "profile": {
       "edit": {
@@ -237,10 +257,13 @@
         "edit_title": "Edit Rekening",
         "pick_bank": "Pilih Bank",
         "save": "Simpan Rekening",
-        "set_primary": "Rekening Utama"
+        "set_primary": "Rekening Utama",
+        "set_primary_label": "Atur Sebagai Rekening Utama"
       },
       "subtitle": "Kelola rekening tujuan pencairan dana Anda",
-      "title": "Rekening Bank"
+      "title": "Rekening Bank",
+      "add_new": "Tambah Rekening Baru",
+      "add_new_desc": "Tambahkan rekening bank untuk penarikan dana"
     },
     "scorekeepers": {
       "add": "Tambah Staff",
