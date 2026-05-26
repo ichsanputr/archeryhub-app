@@ -178,7 +178,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Rekening Bank - Archeris'
+    title: () => `${t('organization.bank_accounts.title')} - Archeris`
 })
 
 const bankAccounts = ref([])
@@ -249,7 +249,7 @@ const openEditModal = (account) => {
 
 const handleSubmit = async () => {
     if (!form.bankName || !form.accountNumber || !form.accountName) {
-        toast.error('Mohon lengkapi semua data')
+        toast.error(t('organization.bank_accounts.messages.please_complete_all_fields'))
         return
     }
 
@@ -264,15 +264,15 @@ const handleSubmit = async () => {
 
         if (modal.isEdit) {
             await api.put(`/organizations/bank-accounts/${modal.currentId}`, payload)
-            toast.success('Rekening berhasil diperbarui')
+            toast.success(t('organization.bank_accounts.messages.account_updated'))
         } else {
             await api.post('/organizations/bank-accounts', payload)
-            toast.success('Rekening berhasil ditambahkan')
+            toast.success(t('organization.bank_accounts.messages.account_added'))
         }
         modal.show = false
         fetchBankAccounts()
     } catch (error) {
-        toast.error(error.response?.data?.error || 'Gagal menyimpan rekening')
+        toast.error(error.response?.data?.error || t('organization.bank_accounts.messages.failed_to_save_account'))
     } finally {
         modal.loading = false
     }
@@ -287,10 +287,10 @@ const handleDelete = async () => {
     if (!deleteState.target) return
     try {
         await api.delete(`/organizations/bank-accounts/${deleteState.target.id}`)
-        toast.success('Rekening berhasil dihapus')
+        toast.success(t('organization.bank_accounts.messages.account_deleted'))
         fetchBankAccounts()
     } catch (error) {
-        toast.error('Gagal menghapus rekening')
+        toast.error(t('organization.bank_accounts.messages.failed_to_delete_account'))
     } finally {
         deleteState.show = false
     }
@@ -318,6 +318,6 @@ const getBankIcon = (bankName) => {
 
 const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text)
-    toast.success('Nomor rekening disalin')
+    toast.success(t('organization.bank_accounts.copy_success'))
 }
 </script>

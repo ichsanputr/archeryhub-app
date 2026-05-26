@@ -2849,6 +2849,136 @@
         "self_registered": "Daftar Sendiri",
         "self_registered_alt": "Daftar Sendiri"
       }
+    },
+    "tabs": {
+      "informasi": "정보",
+      "pendaftaran": "등록",
+      "lokasi": "위치",
+      "media": "미디어",
+      "jadwal": "일정",
+      "hasil": "결과",
+      "faq": "자주 묻는 질문 (FAQ)"
+    },
+    "registration": {
+      "timeline_title": "등록 기간",
+      "start_label": "등록 시작 일시",
+      "end_label": "등록 마감 일시",
+      "fee_title": "등록 비용",
+      "fee_mode_label": "등록 비용 모드",
+      "mode_per_type_title": "참가자 유형별",
+      "mode_per_type_desc": "개인, 단체, 혼성 단체별 비용 상이",
+      "mode_per_cat_title": "카테고리별",
+      "mode_per_cat_desc": "이벤트 카테고리마다 고유 비용 설정",
+      "individual": "개인",
+      "individual_desc": "개인 참가자의 카테고리당 비용",
+      "team": "단체",
+      "team_desc": "단체 참가자의 카테고리당 비용 (3인)",
+      "mixed_team": "혼성 단체",
+      "mixed_team_desc": "혼성 단체 참가자의 카테고리당 비용 (2인)",
+      "no_categories": "등록된 카테고리가 없습니다.",
+      "no_categories_desc": "카테고리 메뉴에서 먼저 카테고리를 추가해 주세요.",
+      "add_category": "카테고리 추가",
+      "default_fee_label": "기본 비용 (특정 가격이 없는 카테고리용)",
+      "default_fee_desc": "카테고리에 특정 비용이 설정되지 않은 경우 사용됩니다."
+    },
+    "manual_payment": {
+      "title": "수동 결제 방법",
+      "description": "참가자가 이 이벤트에서 수동 이체를 위해 사용할 수 있는 단체 은행 계좌 또는 간편결제를 활성화합니다.",
+      "list_title": "단체 결제 계좌 목록",
+      "warning": "주의:",
+      "no_accounts_warning": "단체에 활성화된 은행 계좌/간편결제가 아직 설정되지 않았습니다. 참가자는 등록 중 수동 결제 옵션을 선택할 수 없습니다.",
+      "configure_link": "결제 계좌 설정"
+    },
+    "prizes": {
+      "title": "상금 및 가이드북",
+      "total_prize_label": "총 상금 (IDR)",
+      "guidebook_label": "기술 가이드북 (PDF)",
+      "no_file": "파일 없음",
+      "upload": "업로드",
+      "detail_title": "상금 상세 정보 (공개 페이지에 표시)",
+      "first_place": "1위",
+      "second_place": "2위",
+      "third_place": "3위",
+      "placeholder_prize": "Rp 15,000,000",
+      "placeholder_caption": "예: 금메달 및 상장"
+    },
+    "location": {
+      "title": "위치 및 지도",
+      "venue_label": "경기장 이름",
+      "venue_placeholder": "예: GBK 양궁 경기장",
+      "address_label": "상세 주소",
+      "gmaps_label": "구글 지도 링크",
+      "accessibility_title": "경기장 접근성",
+      "accessibility_desc": "이 위치에서 사용 가능한 옵션을 선택하세요",
+      "options": {
+        "car_motorcycle": "자동차/오토바이 접근 가능",
+        "public_transport": "대중교통 접근성",
+        "spacious_parking": "넓은 주차 공간",
+        "toilet": "화장실 시설",
+        "food_area": "식사 구역",
+        "seating": "관람석 구역",
+        "disability_access": "장애인 접근성",
+        "motorcycle_parking": "오토바이 주차장",
+        "car_parking": "자동차 주차장"
+      }
+    },
+    "media": {
+      "title": "배너 및 로고",
+      "banner_label": "배너 (헤더)",
+      "banner_ratio": "(비율 16:9 / 1200x675 px)",
+      "change": "변경",
+      "delete": "삭제",
+      "select_banner": "배너 선택",
+      "poster_label": "이벤트 포스터",
+      "poster_ratio": "(비율 A4 / 4:5 / 1000x1250 px)",
+      "select_poster": "포스터 선택",
+      "gallery_title": "이벤트 갤러리"
+    },
+    "schedule": {
+      "title": "이벤트 일정",
+      "add": "추가",
+      "empty": "등록된 일정이 없습니다.",
+      "session_title": "세션 제목",
+      "day_order": "일차",
+      "start_time": "시작",
+      "end_time": "종료",
+      "location": "위치",
+      "description_optional": "설명 (선택 사항)"
+    },
+    "results": {
+      "source_title": "이벤트 결과 소스",
+      "source_desc": "공개 페이지에 토너먼트 결과를 표시하는 방법을 선택하세요.",
+      "from_system": "시스템 데이터 사용",
+      "from_system_desc": "채점 시스템의 예선 및 본선 결과 실시간 표시.",
+      "manual_upload": "수동 업로드",
+      "manual_upload_desc": "결과의 PDF 또는 이미지 파일을 수동으로 업로드합니다.",
+      "upload_doc_title": "결과 문서 업로드",
+      "upload_doc_desc": "PDF 파일, 이미지 또는 토너먼트 결과 문서를 업로드합니다.",
+      "add_file": "파일 추가",
+      "upload_result_label": "결과 업로드",
+      "drag_drop_hint": "여기에 파일을 드래그 앤 드롭 하세요. PDF, JPG, PNG 지원.",
+      "max_size_hint": "파일당 최대 10MB",
+      "display_title": "표시 제목",
+      "download_name": "다운로드 파일 이름",
+      "add_more": "파일 추가하기",
+      "system_scoring_title": "채점 시스템 결과",
+      "system_scoring_desc": "예선 결과와 대진표는 채점 메뉴를 통해 입력된 채점 데이터에서 자동으로 표시됩니다. 점수가 올바르게 입력되었는지 확인하세요."
+    },
+    "status_options": {
+      "draft": "초안 (비공개)",
+      "active": "활성 (공개)"
+    },
+    "toasts": {
+      "fill_required": "경기장 이름, 주소, 구글 지도 링크를 완성해 주세요",
+      "only_pdf": "PDF 파일만 허용됩니다",
+      "guidebook_success": "가이드북이 성공적으로 업로드되었습니다",
+      "guidebook_failed": "가이드북 업로드에 실패했습니다",
+      "invalid_format": "{name} 파일은 허용되는 형식(PDF, JPG, PNG)이 아닙니다",
+      "file_too_large": "{name} 파일 크기가 너무 큽니다 (최대 10MB)",
+      "file_success": "{name} 파일이 성공적으로 업로드되었습니다",
+      "file_failed": "{name} 파일 업로드에 실패했습니다",
+      "save_success": "이벤트 페이지가 성공적으로 업데이트되었습니다",
+      "save_failed": "이벤트 저장에 실패했습니다"
     }
   }
 }

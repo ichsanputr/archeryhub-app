@@ -161,47 +161,51 @@
     },
     "balance": {
       "header": {
-        "subtitle": "Kelola saldo Anda dan ajukan penarikan",
-        "title": "Saldo & Penarikan"
-      },
-      "otp": {
-        "request_desc": "A 6-digit OTP verification code will be sent to your email to authorize this withdrawal.",
-        "request_title": "Request Verification Code",
-        "send": "Send Code to Email",
-        "verified_desc": "You can perform additional withdrawals without requesting another OTP for the next",
-        "verified_title": "Email Verified",
-        "code_sent": "Kode OTP telah dikirim ke email Anda.",
-        "code_label": "Kode OTP",
-        "code_placeholder": "Masukkan 6 digit kode",
-        "invalid_length": "Kode OTP harus 6 digit"
+        "title": "Saldo & Penarikan",
+        "subtitle": "Kelola saldo Anda dan ajukan penarikan"
       },
       "security": {
+        "title": "Verifikasi Keamanan",
         "desc": "Masukkan password akun Anda untuk mengakses fitur keuangan",
-        "open_access": "Buka Akses Keamanan",
         "password_placeholder": "Password Akun",
-        "title": "Verifikasi Keamanan"
-      },
-      "withdrawals": {
-        "empty": "Belum ada riwayat penarikan",
-        "title": "Tarik Saldo"
+        "open_access": "Buka Akses Keamanan"
       },
       "available": "Saldo Tersedia",
+      "withdrawals": {
+        "title": "Tarik Saldo",
+        "empty": "Belum ada riwayat penarikan",
+        "table_tx_id": "ID Transaksi",
+        "table_date": "Tanggal",
+        "table_status": "Status",
+        "table_amount": "Nominal"
+      },
+      "otp": {
+        "request_title": "Minta Kode Verifikasi",
+        "request_desc": "Kode OTP verifikasi 6 digit akan dikirim ke email Anda untuk mengotorisasi penarikan ini.",
+        "send": "Kirim Kode ke Email",
+        "verified_title": "Email Terverifikasi",
+        "verified_desc": "Anda dapat melakukan penarikan tambahan tanpa meminta OTP lagi untuk",
+        "code_sent": "Kode verifikasi telah dikirim ke email terdaftar Anda. Berlaku selama 15 menit.",
+        "code_label": "Masukkan Kode OTP 6 Digit *",
+        "code_placeholder": "Masukkan kode OTP 6 digit",
+        "invalid_length": "Kode OTP harus 6 digit",
+        "sent_success": "Kode verifikasi dikirim ke email Anda",
+        "sent_error": "Gagal mengirim kode verifikasi"
+      },
       "withdraw_button": "Tarik Saldo",
-      "withdraw_info": "Proses pencairan dana membutuhkan waktu 1-3 hari kerja.",
-      "amount_label": "Nominal Penarikan",
-      "amount_placeholder": "Minimal Rp 100.000",
+      "withdraw_info": "Min. Penarikan Rp 100.000<br />Proses 1-3 hari kerja",
+      "amount_label": "Jumlah Penarikan (Rp) *",
+      "amount_placeholder": "Minimum Rp 100.000",
       "available_balance": "Saldo Tersedia",
       "destination_account": "Rekening Tujuan",
       "submit_withdrawal": "Ajukan Penarikan",
-      "minimum_balance_error": "Saldo minimal Rp 100.000 untuk melakukan penarikan",
-      "no_account_error": "Anda belum menambahkan rekening bank",
-      "password_error": "Password yang Anda masukkan salah",
-      "otp_sent_success": "Kode OTP berhasil dikirim",
-      "otp_sent_error": "Gagal mengirim kode OTP",
-      "amount_minimum_error": "Nominal penarikan minimal Rp 100.000",
-      "amount_exceeds_error": "Nominal penarikan melebihi saldo Anda",
-      "withdrawal_success": "Pengajuan penarikan berhasil dikirim",
-      "withdrawal_error": "Gagal mengajukan penarikan"
+      "password_error": "Password salah. Silakan coba lagi.",
+      "minimum_balance_error": "Saldo minimum untuk penarikan adalah Rp 100.000",
+      "no_account_error": "Anda belum memiliki rekening bank. Silakan tambahkan rekening terlebih dahulu.",
+      "amount_minimum_error": "Jumlah penarikan minimum adalah Rp 100.000",
+      "amount_exceeds_error": "Jumlah penarikan melebihi saldo tersedia",
+      "withdrawal_success": "Permintaan penarikan berhasil diajukan",
+      "withdrawal_error": "Gagal mengajukan permintaan penarikan"
     },
     "profile": {
       "edit": {
@@ -236,34 +240,43 @@
       "subtitle": "Kelola identitas publik organisasi Anda"
     },
     "bank_accounts": {
+      "title": "Rekening Bank",
+      "subtitle": "Kelola rekening tujuan pencairan dana Anda",
       "add": "Tambah Rekening",
-      "delete": {
-        "message": "Rekening ini akan dihapus dari daftar tujuan pencairan Anda.",
-        "title": "Hapus Rekening?"
-      },
       "fields": {
-        "account_name": "Nama Pemilik",
+        "bank_name": "Nama Bank",
         "account_number": "Nomor Rekening",
-        "bank_name": "Nama Bank"
+        "account_name": "Nama Pemilik Rekening"
       },
       "modal": {
+        "add_title": "Tambah Rekening Bank",
+        "edit_title": "Edit Rekening",
+        "pick_bank": "Pilih Bank",
+        "custom_bank_label": "Nama Bank Kustom",
+        "custom_bank_placeholder": "Jika bank tidak ada di daftar",
         "account_name_label": "Nama Pemilik Rekening",
         "account_name_placeholder": "Sesuai buku tabungan",
         "account_number_label": "Nomor Rekening",
         "account_number_placeholder": "Masukkan nomor rekening",
-        "add_title": "Tambah Rekening Bank",
-        "custom_bank_label": "Nama Bank Kustom",
-        "custom_bank_placeholder": "Jika bank tidak ada di list",
-        "edit_title": "Edit Rekening",
-        "pick_bank": "Pilih Bank",
+        "set_primary": "Jadikan Rekening Utama",
         "save": "Simpan Rekening",
-        "set_primary": "Rekening Utama",
-        "set_primary_label": "Atur Sebagai Rekening Utama"
+        "set_primary_label": "Jadikan Rekening Utama"
       },
-      "subtitle": "Kelola rekening tujuan pencairan dana Anda",
-      "title": "Rekening Bank",
+      "delete": {
+        "title": "Hapus Rekening?",
+        "message": "Rekening ini akan dihapus dari daftar tujuan pencairan Anda."
+      },
       "add_new": "Tambah Rekening Baru",
-      "add_new_desc": "Tambahkan rekening bank untuk penarikan dana"
+      "add_new_desc": "Gunakan rekening lain untuk pencairan",
+      "copy_success": "Nomor rekening disalin",
+      "messages": {
+        "please_complete_all_fields": "Mohon lengkapi semua data",
+        "account_updated": "Rekening berhasil diperbarui",
+        "account_added": "Rekening berhasil ditambahkan",
+        "failed_to_save_account": "Gagal menyimpan rekening",
+        "account_deleted": "Rekening berhasil dihapus",
+        "failed_to_delete_account": "Gagal menghapus rekening"
+      }
     },
     "scorekeepers": {
       "add": "Tambah Staff",
@@ -400,6 +413,192 @@
       "participants_label": "Peserta",
       "categories_label": "Kategori",
       "manage": "Kelola"
+    }
+  },
+  "dashboard_events_page": {
+    "seo_title": "Pengaturan Halaman Event",
+    "registration": {
+      "default_fee_label": "Biaya Default (untuk kategori tanpa harga khusus)",
+      "default_fee_desc": "Digunakan jika kategori tidak memiliki biaya khusus."
+    },
+    "manual_payment": {
+      "title": "Metode Pembayaran Manual",
+      "description": "Aktifkan rekening bank atau e-wallet organisasi Anda yang dapat digunakan peserta untuk melakukan transfer manual pada event ini.",
+      "list_title": "Daftar Rekening Pembayaran Organisasi",
+      "warning": "Perhatian:",
+      "no_accounts_warning": "Belum ada rekening bank/e-wallet aktif yang dikonfigurasi di organisasi Anda. Peserta tidak akan bisa memilih opsi pembayaran manual saat mendaftar.",
+      "configure_link": "Konfigurasi Rekening Pembayaran"
+    },
+    "prizes": {
+      "title": "Hadiah & Guidebook",
+      "total_prize_label": "Total Hadiah (IDR)",
+      "guidebook_label": "Buku Panduan Teknis (PDF)",
+      "no_file": "Belum ada file",
+      "upload": "Upload",
+      "detail_title": "Detail Hadiah (Ditampilkan di halaman publik)",
+      "first_place": "Juara 1",
+      "placeholder_prize": "Rp 15.000.000",
+      "placeholder_caption": "Contoh: Medali emas dan sertifikat",
+      "second_place": "Juara 2",
+      "third_place": "Juara 3"
+    },
+    "location": {
+      "title": "Lokasi & Peta",
+      "venue_label": "Nama Venue",
+      "venue_placeholder": "Contoh: Lapangan Panahan GBK",
+      "address_label": "Alamat Lengkap",
+      "address_placeholder": "Tuliskan alamat lengkap lokasi event...",
+      "gmaps_label": "Link Google Maps",
+      "accessibility_title": "Aksesibilitas Lokasi",
+      "accessibility_desc": "Pilih opsi yang tersedia untuk lokasi ini",
+      "options": {
+        "car_motorcycle": "Terjangkau Mobil/Motor",
+        "public_transport": "Akses Transportasi Umum",
+        "spacious_parking": "Parkir Luas",
+        "toilet": "Fasilitas Toilet",
+        "food_area": "Area Makan",
+        "seating": "Tempat Duduk",
+        "disability_access": "Akses Disabilitas",
+        "motorcycle_parking": "Area Parkir Motor",
+        "car_parking": "Area Parkir Mobil"
+      }
+    },
+    "media": {
+      "title": "Banner & Logo",
+      "banner_label": "Banner (Header)",
+      "banner_ratio": "(Rasio 16:9 / 1200x675 px)",
+      "change": "Ganti",
+      "delete": "Hapus",
+      "select_banner": "Pilih Banner",
+      "poster_label": "Poster Event",
+      "poster_ratio": "(Rasio A4 / 4:5 / 1000x1250 px)",
+      "select_poster": "Pilih Poster",
+      "gallery_title": "Galeri Event"
+    },
+    "schedule": {
+      "title": "Jadwal Lomba",
+      "add": "Tambah",
+      "empty": "Belum ada jadwal yang ditambahkan.",
+      "session_title": "Judul Sesi",
+      "day_order": "Hari Ke-",
+      "start_time": "Mulai",
+      "end_time": "Selesai",
+      "location": "Lokasi",
+      "description_optional": "Deskripsi (Opsional)"
+    },
+    "results": {
+      "source_title": "Sumber Hasil Lomba",
+      "source_desc": "Pilih bagaimana hasil lomba ditampilkan di halaman publik event.",
+      "from_system": "Dari Sistem",
+      "from_system_desc": "Hasil kualifikasi & eliminasi dari scoring system.",
+      "manual_upload": "Upload Manual",
+      "manual_upload_desc": "Upload file PDF/gambar hasil lomba secara manual.",
+      "upload_doc_title": "Upload Dokumen Hasil",
+      "upload_doc_desc": "Upload file PDF, gambar, atau dokumen hasil lomba.",
+      "add_file": "Tambah File",
+      "upload_result_label": "Upload Hasil Lomba",
+      "drag_drop_hint": "Drag & drop beberapa file di sini. Mendukung PDF, JPG, & PNG.",
+      "max_size_hint": "Max 10MB/file",
+      "display_title": "Judul Tampilan",
+      "download_name": "Nama File Download",
+      "add_more": "Tambah File Lagi",
+      "system_scoring_title": "Hasil Dari Sistem Scoring",
+      "system_scoring_desc": "Hasil kualifikasi dan bagan eliminasi akan ditampilkan secara otomatis dari data scoring yang telah diinput melalui menu Scoring. Pastikan skor sudah diinput dengan benar."
+    },
+    "toasts": {
+      "only_pdf": "Hanya file PDF yang diperbolehkan",
+      "guidebook_success": "Buku panduan berhasil diupload",
+      "guidebook_failed": "Gagal mengupload buku panduan",
+      "invalid_format": "File {name} bukan format yang diizinkan (PDF, JPG, PNG)",
+      "file_too_large": "File {name} terlalu besar (max 10MB)",
+      "file_success": "File {name} berhasil diupload",
+      "file_failed": "Gagal mengupload file {name}",
+      "fill_required": "Mohon lengkapi Nama Venue, Alamat, dan Link Google Maps",
+      "save_success": "Halaman event berhasil diperbarui",
+      "save_failed": "Gagal menyimpan event"
+    }
+  },
+  "dashboard_events_participants_add": {
+    "title": "Tambah Peserta",
+    "subtitle": "Daftarkan satu atau beberapa pemanah sekaligus atau buat yang baru.",
+    "cancel": "Batal",
+    "save": "Simpan",
+    "save_participant": "Simpan Peserta",
+    "select_archer": "Pilih Pemanah",
+    "select_registered": "Pilih Pemanah Terdaftar",
+    "create_new": "Buat Pemanah Baru",
+    "create_new_short": "Buat Baru",
+    "search_placeholder": "Cari nama lengkap atau email pemanah...",
+    "search_label": "Cari Pemanah",
+    "not_found": "Pemanah tidak ditemukan",
+    "not_found_desc": "Coba kata kunci lain atau buat pemanah baru",
+    "initial_search_title": "Cari Pemanah Terdaftar",
+    "initial_search_desc": "Ketik nama atau email untuk mencari dan pilih beberapa pemanah",
+    "searching": "Mencari pemanah...",
+    "selected_title": "Pemanah Terpilih ({count})",
+    "clear_all": "Hapus Semua",
+    "password_terms_title": "Ketentuan Password:",
+    "password_terms_phone": "Isi No. Telepon → Password wajib diisi",
+    "password_terms_email": "Isi Email → Password opsional (peserta bisa buat/reset sendiri)",
+    "profile_photo": "Foto Profil",
+    "change_photo": "Ganti Foto",
+    "upload_photo": "Upload Foto",
+    "delete": "Hapus",
+    "full_name": "Nama Lengkap",
+    "full_name_placeholder": "Nama sesuai identitas",
+    "email": "Email",
+    "email_placeholder": "email@example.com (opsional)",
+    "phone": "No. Telepon",
+    "phone_placeholder": "08xxxxxxxxxx (opsional)",
+    "phone_error": "Nomor HP minimal 8 digit",
+    "password": "Password Akun",
+    "password_placeholder": "Buat password minimal 6 karakter",
+    "date_of_birth": "Tanggal Lahir",
+    "gender": "Jenis Kelamin",
+    "gender_placeholder": "Pilih Jenis Kelamin",
+    "gender_male": "Laki-laki",
+    "gender_female": "Perempuan",
+    "bow_type": "Jenis Busur",
+    "bow_type_placeholder": "Pilih Jenis Busur",
+    "city": "Kota",
+    "city_placeholder": "Pilih Kota",
+    "school": "Sekolah",
+    "school_placeholder": "Nama sekolah (opsional)",
+    "club": "Klub",
+    "club_placeholder": "Pilih Klub",
+    "address": "Alamat",
+    "address_placeholder": "Alamat lengkap",
+    "required_fields_hint": "Field bertanda * wajib diisi untuk membuat pemanah baru.",
+    "competition_category": "Kategori Lomba",
+    "selected": "Terpilih",
+    "category_schedule_hint": "Anda dapat memilih lebih dari satu kategori jika jadwal memungkinkan",
+    "no_categories_warning": "Kategori untuk event ini belum tersedia. Tambahkan kategori di halaman event terlebih dahulu.",
+    "additional_info": "Informasi Tambahan",
+    "payment_status": "Status Pembayaran",
+    "payment_amount": "Jumlah Pembayaran",
+    "payment_amount_placeholder": "0",
+    "registration_source": "Sumber Pendaftaran",
+    "notes": "Catatan",
+    "notes_placeholder": "Catatan tambahan (opsional)",
+    "source_options": {
+      "admin_created": "Dibuat Admin",
+      "invited": "Diundang"
+    },
+    "toasts": {
+      "category_required": "Pilih minimal satu kategori event",
+      "archer_required": "Pilih minimal satu pemanah",
+      "amount_error": "Jumlah Pembayaran harus berupa angka >= 0",
+      "batch_success": "{count} peserta berhasil ditambahkan",
+      "batch_success_with_skipped": "{count} peserta berhasil ditambahkan, {skipped} sudah terdaftar (dilewati)",
+      "single_success": "Peserta berhasil ditambahkan",
+      "save_failed": "Gagal menambahkan peserta",
+      "name_required": "Nama lengkap pemanah wajib diisi",
+      "email_invalid": "Format email tidak valid",
+      "password_required_for_phone": "Password wajib diisi jika menggunakan No. Telepon",
+      "password_length": "Password minimal 6 karakter",
+      "gender_required": "Pilih jenis kelamin pemanah",
+      "bow_type_required": "Pilih jenis busur pemanah",
+      "club_required": "Pilih klub pemanah"
     }
   }
 }

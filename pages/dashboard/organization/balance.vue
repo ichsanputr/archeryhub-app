@@ -113,11 +113,11 @@
                                 <thead>
                                     <tr
                                         class="bg-gray-50/50 text-gray-500 font-black text-[10px] tracking-widest border-b border-gray-100">
-                                        <th class="px-6 py-4">ID Transaksi</th>
+                                        <th class="px-6 py-4">{{ t('organization.balance.withdrawals.table_tx_id') }}</th>
                                         <th @click="toggleSort('created_at')"
                                             class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
                                             <div class="flex items-center gap-2">
-                                                Tanggal
+                                                {{ t('organization.balance.withdrawals.table_date') }}
                                                 <Icon v-if="sortBy === 'created_at'"
                                                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                                                     class="text-primary  text-xs" />
@@ -127,7 +127,7 @@
                                         <th @click="toggleSort('status')"
                                             class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
                                             <div class="flex items-center gap-2">
-                                                Status
+                                                {{ t('organization.balance.withdrawals.table_status') }}
                                                 <Icon v-if="sortBy === 'status'"
                                                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                                                     class="text-primary  text-xs" />
@@ -137,7 +137,7 @@
                                         <th @click="toggleSort('amount')"
                                             class="px-6 py-4 text-right cursor-pointer hover:text-navy transition-colors">
                                             <div class="flex items-center justify-end gap-2">
-                                                Nominal
+                                                {{ t('organization.balance.withdrawals.table_amount') }}
                                                 <Icon v-if="sortBy === 'amount'"
                                                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                                                     class="text-primary  text-xs" />
@@ -305,13 +305,14 @@ const api = useApi()
 const toast = useToast()
 const { user } = useAuth()
 const { t } = useDashboardI18n()
+const { locale } = useI18n()
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 useHead({
-    title: 'Saldo & Penarikan - Archeris'
+    title: () => `${t('organization.balance.header.title')} - Archeris`
 })
 
 // Security State
@@ -422,7 +423,7 @@ const fetchWithdrawals = async () => {
         withdrawalHistory.value = data.map(wd => ({
             id: wd.id,
             txId: wd.reference_no,
-            date: new Date(wd.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
+            date: new Date(wd.created_at).toLocaleDateString(locale.value === 'id' ? 'id-ID' : locale.value === 'kr' ? 'ko-KR' : 'en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
             status: wd.status.toUpperCase(),
             amount: wd.amount
         }))

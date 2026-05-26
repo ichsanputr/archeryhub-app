@@ -3006,6 +3006,136 @@
         "self_registered": "Daftar Sendiri",
         "self_registered_alt": "Daftar Sendiri"
       }
+    },
+    "tabs": {
+      "informasi": "Informasi",
+      "pendaftaran": "Pendaftaran",
+      "lokasi": "Lokasi",
+      "media": "Media",
+      "jadwal": "Jadwal",
+      "hasil": "Hasil",
+      "faq": "FAQ"
+    },
+    "registration": {
+      "timeline_title": "Waktu Pendaftaran",
+      "start_label": "Tanggal & Waktu Mulai Pendaftaran",
+      "end_label": "Tanggal & Waktu Batas Pendaftaran",
+      "fee_title": "Biaya Pendaftaran",
+      "fee_mode_label": "Mode Biaya Pendaftaran",
+      "mode_per_type_title": "Per Tipe Peserta",
+      "mode_per_type_desc": "Biaya berbeda untuk Individu, Tim, dan Tim Campuran",
+      "mode_per_cat_title": "Per Kategori",
+      "mode_per_cat_desc": "Setiap kategori lomba memiliki biaya sendiri",
+      "individual": "Individu",
+      "individual_desc": "Biaya per kategori untuk peserta individu",
+      "team": "Tim",
+      "team_desc": "Biaya per kategori untuk tim (3 pemanah)",
+      "mixed_team": "Tim Campuran",
+      "mixed_team_desc": "Biaya per kategori untuk tim campuran (2 pemanah)",
+      "no_categories": "Belum ada kategori lomba.",
+      "no_categories_desc": "Tambahkan kategori terlebih dahulu di menu Kategori.",
+      "add_category": "Tambah Kategori",
+      "default_fee_label": "Biaya Default (untuk kategori tanpa harga khusus)",
+      "default_fee_desc": "Digunakan jika kategori tidak memiliki biaya khusus."
+    },
+    "manual_payment": {
+      "title": "Metode Pembayaran Manual",
+      "description": "Aktifkan rekening bank atau e-wallet organisasi Anda yang dapat digunakan peserta untuk melakukan transfer manual pada event ini.",
+      "list_title": "Daftar Rekening Pembayaran Organisasi",
+      "warning": "Perhatian:",
+      "no_accounts_warning": "Belum ada rekening bank/e-wallet aktif yang dikonfigurasi di organisasi Anda. Peserta tidak akan bisa memilih opsi pembayaran manual saat mendaftar.",
+      "configure_link": "Konfigurasi Rekening Pembayaran"
+    },
+    "prizes": {
+      "title": "Hadiah & Guidebook",
+      "total_prize_label": "Total Hadiah (IDR)",
+      "guidebook_label": "Buku Panduan Teknis (PDF)",
+      "no_file": "Belum ada file",
+      "upload": "Upload",
+      "detail_title": "Detail Hadiah (Ditampilkan di halaman publik)",
+      "first_place": "Juara 1",
+      "second_place": "Juara 2",
+      "third_place": "Juara 3",
+      "placeholder_prize": "Rp 15.000.000",
+      "placeholder_caption": "Contoh: Medali emas dan sertifikat"
+    },
+    "location": {
+      "title": "Lokasi & Peta",
+      "venue_label": "Nama Venue",
+      "venue_placeholder": "Contoh: Lapangan Panahan GBK",
+      "address_label": "Alamat Lengkap",
+      "gmaps_label": "Link Google Maps",
+      "accessibility_title": "Aksesibilitas Lokasi",
+      "accessibility_desc": "Pilih opsi yang tersedia untuk lokasi ini",
+      "options": {
+        "car_motorcycle": "Terjangkau Mobil/Motor",
+        "public_transport": "Akses Transportasi Umum",
+        "spacious_parking": "Parkir Luas",
+        "toilet": "Fasilitas Toilet",
+        "food_area": "Area Makan",
+        "seating": "Tempat Duduk",
+        "disability_access": "Akses Disabilitas",
+        "motorcycle_parking": "Area Parkir Motor",
+        "car_parking": "Area Parkir Mobil"
+      }
+    },
+    "media": {
+      "title": "Banner & Logo",
+      "banner_label": "Banner (Header)",
+      "banner_ratio": "(Rasio 16:9 / 1200x675 px)",
+      "change": "Ganti",
+      "delete": "Hapus",
+      "select_banner": "Pilih Banner",
+      "poster_label": "Poster Event",
+      "poster_ratio": "(Rasio A4 / 4:5 / 1000x1250 px)",
+      "select_poster": "Pilih Poster",
+      "gallery_title": "Galeri Event"
+    },
+    "schedule": {
+      "title": "Jadwal Lomba",
+      "add": "Tambah",
+      "empty": "Belum ada jadwal yang ditambahkan.",
+      "session_title": "Judul Sesi",
+      "day_order": "Hari Ke-",
+      "start_time": "Mulai",
+      "end_time": "Selesai",
+      "location": "Lokasi",
+      "description_optional": "Deskripsi (Opsional)"
+    },
+    "results": {
+      "source_title": "Sumber Hasil Lomba",
+      "source_desc": "Pilih bagaimana hasil lomba ditampilkan di halaman publik event.",
+      "from_system": "Dari Sistem",
+      "from_system_desc": "Hasil kualifikasi & kualifikasi dari scoring system.",
+      "manual_upload": "Upload Manual",
+      "manual_upload_desc": "Upload file PDF/gambar hasil lomba secara manual.",
+      "upload_doc_title": "Upload Dokumen Hasil",
+      "upload_doc_desc": "Upload file PDF, gambar, atau dokumen hasil lomba.",
+      "add_file": "Tambah File",
+      "upload_result_label": "Upload Hasil Lomba",
+      "drag_drop_hint": "Drag & drop beberapa file di sini. Mendukung PDF, JPG, & PNG.",
+      "max_size_hint": "Max 10MB/file",
+      "display_title": "Judul Tampilan",
+      "download_name": "Nama File Download",
+      "add_more": "Tambah File Lagi",
+      "system_scoring_title": "Hasil Dari Sistem Scoring",
+      "system_scoring_desc": "Hasil kualifikasi dan bagan kualifikasi akan ditampilkan secara otomatis dari data scoring yang telah diinput melalui menu Scoring. Pastikan skor sudah diinput dengan benar."
+    },
+    "status_options": {
+      "draft": "Draft (Belum dipublikasi)",
+      "active": "Aktif (Dipublikasikan)"
+    },
+    "toasts": {
+      "fill_required": "Mohon lengkapi Nama Venue, Alamat, dan Link Google Maps",
+      "only_pdf": "Hanya file PDF yang diperbolehkan",
+      "guidebook_success": "Buku panduan berhasil diupload",
+      "guidebook_failed": "Gagal mengupload buku panduan",
+      "invalid_format": "File {name} bukan format yang diizinkan (PDF, JPG, PNG)",
+      "file_too_large": "File {name} terlalu besar (max 10MB)",
+      "file_success": "File {name} berhasil diupload",
+      "file_failed": "Gagal mengupload file {name}",
+      "save_success": "Halaman event berhasil diperbarui",
+      "save_failed": "Gagal menyimpan event"
     }
   }
 }

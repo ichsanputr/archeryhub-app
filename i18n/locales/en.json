@@ -3075,6 +3075,136 @@
         "self_registered": "Daftar Sendiri",
         "self_registered_alt": "Daftar Sendiri"
       }
+    },
+    "tabs": {
+      "informasi": "Information",
+      "pendaftaran": "Registration",
+      "lokasi": "Location",
+      "media": "Media",
+      "jadwal": "Schedule",
+      "hasil": "Results",
+      "faq": "FAQ"
+    },
+    "registration": {
+      "timeline_title": "Registration Period",
+      "start_label": "Registration Start Date & Time",
+      "end_label": "Registration Deadline Date & Time",
+      "fee_title": "Registration Fee",
+      "fee_mode_label": "Registration Fee Mode",
+      "mode_per_type_title": "Per Participant Type",
+      "mode_per_type_desc": "Different fees for Individual, Team, and Mixed Team",
+      "mode_per_cat_title": "Per Category",
+      "mode_per_cat_desc": "Each event category has its own fee",
+      "individual": "Individual",
+      "individual_desc": "Fee per category for individual archers",
+      "team": "Team",
+      "team_desc": "Fee per category for teams (3 archers)",
+      "mixed_team": "Mixed Team",
+      "mixed_team_desc": "Fee per category for mixed teams (2 archers)",
+      "no_categories": "No event categories yet.",
+      "no_categories_desc": "Add categories first in the Categories menu.",
+      "add_category": "Add Category",
+      "default_fee_label": "Default Fee (for categories without specific price)",
+      "default_fee_desc": "Used if a category does not have a specific fee."
+    },
+    "manual_payment": {
+      "title": "Manual Payment Method",
+      "description": "Enable your organization bank accounts or e-wallets that participants can use for manual transfer for this event.",
+      "list_title": "Organization Payment Account List",
+      "warning": "Attention:",
+      "no_accounts_warning": "No active bank account/e-wallet configured in your organization yet. Participants will not be able to choose manual payment option during registration.",
+      "configure_link": "Configure Payment Accounts"
+    },
+    "prizes": {
+      "title": "Prizes & Guidebook",
+      "total_prize_label": "Total Prize (IDR)",
+      "guidebook_label": "Technical Guidebook (PDF)",
+      "no_file": "No file yet",
+      "upload": "Upload",
+      "detail_title": "Prize Details (Displayed on public page)",
+      "first_place": "1st Place",
+      "second_place": "2nd Place",
+      "third_place": "3rd Place",
+      "placeholder_prize": "Rp 15,000,000",
+      "placeholder_caption": "e.g. Gold medal and certificate"
+    },
+    "location": {
+      "title": "Location & Map",
+      "venue_label": "Venue Name",
+      "venue_placeholder": "e.g. GBK Archery Field",
+      "address_label": "Full Address",
+      "gmaps_label": "Google Maps Link",
+      "accessibility_title": "Location Accessibility",
+      "accessibility_desc": "Select options available for this location",
+      "options": {
+        "car_motorcycle": "Car/Motorcycle Accessible",
+        "public_transport": "Public Transport Access",
+        "spacious_parking": "Spacious Parking",
+        "toilet": "Toilet Facilities",
+        "food_area": "Food Area",
+        "seating": "Seating Area",
+        "disability_access": "Disability Access",
+        "motorcycle_parking": "Motorcycle Parking Area",
+        "car_parking": "Car Parking Area"
+      }
+    },
+    "media": {
+      "title": "Banner & Logo",
+      "banner_label": "Banner (Header)",
+      "banner_ratio": "(Ratio 16:9 / 1200x675 px)",
+      "change": "Change",
+      "delete": "Delete",
+      "select_banner": "Select Banner",
+      "poster_label": "Event Poster",
+      "poster_ratio": "(Ratio A4 / 4:5 / 1000x1250 px)",
+      "select_poster": "Select Poster",
+      "gallery_title": "Event Gallery"
+    },
+    "schedule": {
+      "title": "Event Schedule",
+      "add": "Add",
+      "empty": "No schedule added yet.",
+      "session_title": "Session Title",
+      "day_order": "Day No.",
+      "start_time": "Start",
+      "end_time": "End",
+      "location": "Location",
+      "description_optional": "Description (Optional)"
+    },
+    "results": {
+      "source_title": "Event Results Source",
+      "source_desc": "Choose how tournament results are displayed on the public page.",
+      "from_system": "From System",
+      "from_system_desc": "Qualification & elimination results directly from the scoring system.",
+      "manual_upload": "Manual Upload",
+      "manual_upload_desc": "Manually upload PDF or image files of the results.",
+      "upload_doc_title": "Upload Results Document",
+      "upload_doc_desc": "Upload PDF files, images, or tournament results documents.",
+      "add_file": "Add File",
+      "upload_result_label": "Upload Results",
+      "drag_drop_hint": "Drag & drop files here. Supports PDF, JPG, & PNG.",
+      "max_size_hint": "Max 10MB/file",
+      "display_title": "Display Title",
+      "download_name": "Download Filename",
+      "add_more": "Add More Files",
+      "system_scoring_title": "Results From Scoring System",
+      "system_scoring_desc": "Qualification results and elimination brackets will be automatically displayed from the scoring data inputted via the Scoring menu. Make sure the scores are correctly inputted."
+    },
+    "status_options": {
+      "draft": "Draft (Not published)",
+      "active": "Active (Published)"
+    },
+    "toasts": {
+      "fill_required": "Please complete Venue Name, Address, and Google Maps Link",
+      "only_pdf": "Only PDF files are allowed",
+      "guidebook_success": "Guidebook successfully uploaded",
+      "guidebook_failed": "Failed to upload guidebook",
+      "invalid_format": "File {name} is not in an allowed format (PDF, JPG, PNG)",
+      "file_too_large": "File {name} is too large (max 10MB)",
+      "file_success": "File {name} uploaded successfully",
+      "file_failed": "Failed to upload file {name}",
+      "save_success": "Event page successfully updated",
+      "save_failed": "Failed to save event"
     }
   }
 }

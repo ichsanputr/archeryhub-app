@@ -4,19 +4,18 @@
         <div class="flex flex-col gap-4">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-extrabold text-navy tracking-tight">Tambah Peserta</h1>
-                    <p class="text-gray-500 font-medium mt-1 text-sm md:text-base">Daftarkan satu atau beberapa pemanah
-                        sekaligus atau buat yang baru.</p>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-navy tracking-tight">{{ $t('dashboard_events_participants_add.title') }}</h1>
+                    <p class="text-gray-500 font-medium mt-1 text-sm md:text-base">{{ $t('dashboard_events_participants_add.subtitle') }}</p>
                 </div>
                 <div class="flex gap-3">
                     <BaseButton variant="white" :to="`/dashboard/events/${route.params.id}/participants`"
                         class="h-10 md:h-11 px-4 md:px-6">
-                        Batal
+                        {{ $t('dashboard_events_participants_add.cancel') }}
                     </BaseButton>
                     <BaseButton variant="primary" @click="submit" :loading="isSubmitting"
                         class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/20">
-                        <span class="hidden sm:inline">Simpan Peserta</span>
-                        <span class="sm:hidden">Simpan</span>
+                        <span class="hidden sm:inline">{{ $t('dashboard_events_participants_add.save_participant') }}</span>
+                        <span class="sm:hidden">{{ $t('dashboard_events_participants_add.save') }}</span>
                     </BaseButton>
                 </div>
             </div>
@@ -27,20 +26,20 @@
             <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6">
                 <!-- Step 1: Select Archer -->
                 <div>
-                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Pilih Pemanah</h3>
+                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">{{ $t('dashboard_events_participants_add.select_archer') }}</h3>
                     <div class="space-y-4">
                         <div class="flex gap-3">
                             <BaseButton @click="archerMode = 'existing'"
                                 :variant="archerMode === 'existing' ? 'primary' : 'white'"
                                 class="flex-1 h-12 font-bold text-sm">
-                                <span class="hidden sm:inline">Pilih Pemanah Terdaftar</span>
-                                <span class="sm:hidden">Pilih Pemanah</span>
+                                <span class="hidden sm:inline">{{ $t('dashboard_events_participants_add.select_registered') }}</span>
+                                <span class="sm:hidden">{{ $t('dashboard_events_participants_add.select_archer') }}</span>
                             </BaseButton>
                             <BaseButton @click="archerMode = 'new'"
                                 :variant="archerMode === 'new' ? 'primary' : 'white'"
                                 class="flex-1 h-12 font-bold text-sm">
-                                <span class="hidden sm:inline">Buat Pemanah Baru</span>
-                                <span class="sm:hidden">Buat Baru</span>
+                                <span class="hidden sm:inline">{{ $t('dashboard_events_participants_add.create_new') }}</span>
+                                <span class="sm:hidden">{{ $t('dashboard_events_participants_add.create_new_short') }}</span>
                             </BaseButton>
                         </div>
 
@@ -49,7 +48,7 @@
                             <!-- Search Input (Always visible) -->
                             <div class="space-y-4">
                                 <BaseInput v-model="searchArcherQuery" icon="ph:magnifying-glass"
-                                    placeholder="Cari nama lengkap atau email pemanah..." label="Cari Pemanah" />
+                                    :placeholder="$t('dashboard_events_participants_add.search_placeholder')" :label="$t('dashboard_events_participants_add.search_label')" />
 
                                 <!-- Search Results -->
                                 <div v-if="searchArcherQuery && searchArcherQuery.length >= 2"
@@ -92,9 +91,8 @@
                                     <!-- Empty Result State -->
                                     <div v-else class="p-8 text-center">
                                         <Icon icon="ph:user-minus" class="text-3xl text-gray-300 mx-auto mb-2" />
-                                        <p class="text-sm font-bold text-gray-500">Pemanah tidak ditemukan</p>
-                                        <p class="text-xs text-gray-400 mt-1">Coba kata kunci lain atau buat pemanah
-                                            baru</p>
+                                        <p class="text-sm font-bold text-gray-500">{{ $t('dashboard_events_participants_add.not_found') }}</p>
+                                        <p class="text-xs text-gray-400 mt-1">{{ $t('dashboard_events_participants_add.not_found_desc') }}</p>
                                     </div>
                                 </div>
 
@@ -105,28 +103,25 @@
                                         class="h-12 w-12 rounded-full bg-gray-50 flex items-center justify-center mb-3">
                                         <Icon icon="ph:magnifying-glass" class="text-2xl text-gray-300" />
                                     </div>
-                                    <p class="text-sm font-bold text-gray-500">Cari Pemanah Terdaftar</p>
-                                    <p class="text-xs text-gray-400 max-w-[200px] mt-1">Ketik nama atau email untuk
-                                        mencari dan pilih beberapa pemanah
-                                    </p>
+                                    <p class="text-sm font-bold text-gray-500">{{ $t('dashboard_events_participants_add.initial_search_title') }}</p>
+                                    <p class="text-xs text-gray-400 max-w-[200px] mt-1">{{ $t('dashboard_events_participants_add.initial_search_desc') }}</p>
                                 </div>
 
                                 <div v-if="isSearchingArchers"
                                     class="flex items-center justify-center py-8 gap-2 text-sm text-gray-400 font-medium">
                                     <span
                                         class="inline-block h-4 w-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
-                                    Mencari pemanah...
+                                    {{ $t('dashboard_events_participants_add.searching') }}
                                 </div>
                             </div>
 
                             <!-- Selected Archers (at bottom) -->
                             <div v-if="selectedArchers.length > 0" class="space-y-3">
                                 <div class="flex items-center justify-between">
-                                    <p class="text-sm font-bold text-navy">Pemanah Terpilih ({{ selectedArchers.length
-                                    }})</p>
+                                    <p class="text-sm font-bold text-navy">{{ $t('dashboard_events_participants_add.selected_title', { count: selectedArchers.length }) }}</p>
                                     <BaseButton @click="selectedArchers = []" variant="white" size="xs"
                                         class="text-red-500 font-bold border-none shadow-none hover:underline p-0 h-auto">
-                                        Hapus Semua
+                                        {{ $t('dashboard_events_participants_add.clear_all') }}
                                     </BaseButton>
                                 </div>
                                 <div class="space-y-2 max-h-48 overflow-y-auto">
@@ -159,12 +154,10 @@
                                 class="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-4 border border-blue-100 bg-blue-50/50 rounded-xl">
                                 <Icon icon="ph:info-bold" class="text-2xl text-primary flex-shrink-0" />
                                 <div class="text-xs sm:text-sm text-navy font-medium leading-relaxed">
-                                    <p class="font-bold mb-1">Ketentuan Password:</p>
+                                    <p class="font-bold mb-1">{{ $t('dashboard_events_participants_add.password_terms_title') }}</p>
                                     <ul class="space-y-1 ml-4 list-disc">
-                                        <li><strong>Isi No. Telepon</strong> → Password <strong>wajib</strong> diisi
-                                        </li>
-                                        <li><strong>Isi Email</strong> → Password opsional (peserta bisa buat/reset
-                                            sendiri)</li>
+                                        <li>{{ $t('dashboard_events_participants_add.password_terms_phone') }}</li>
+                                        <li>{{ $t('dashboard_events_participants_add.password_terms_email') }}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -181,48 +174,48 @@
                                     </div>
                                 </div>
                                 <div class="flex-1">
-                                    <p class="text-sm font-bold text-navy mb-1">Foto Profil</p>
+                                    <p class="text-sm font-bold text-navy mb-1">{{ $t('dashboard_events_participants_add.profile_photo') }}</p>
                                     <div class="flex gap-2">
                                         <BaseButton @click="showMediaLibrary = true" variant="white" size="xs"
                                             class="text-primary font-bold border-none shadow-none hover:underline p-0 h-auto">
-                                            {{ newArcherForm.avatar_url ? 'Ganti Foto' : 'Upload Foto' }}
+                                            {{ newArcherForm.avatar_url ? $t('dashboard_events_participants_add.change_photo') : $t('dashboard_events_participants_add.upload_photo') }}
                                         </BaseButton>
                                         <BaseButton v-if="newArcherForm.avatar_url"
                                             @click="newArcherForm.avatar_url = ''" variant="white" size="xs"
                                             class="text-red-500 font-bold border-none shadow-none hover:underline p-0 h-auto">
-                                            Hapus
+                                            {{ $t('dashboard_events_participants_add.delete') }}
                                         </BaseButton>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <BaseInput v-model="newArcherForm.full_name" label="Nama Lengkap"
-                                    placeholder="Nama sesuai identitas" required @input="generateUsername" />
-                                <BaseInput v-model="newArcherForm.email" label="Email" type="email"
-                                    placeholder="email@example.com (opsional)" />
-                                <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
-                                    placeholder="08xxxxxxxxxx (opsional)" numberOnly
-                                    :rules="[v => !v || String(v).length >= 8 || 'Nomor HP minimal 8 digit']" />
-                                <BaseInput v-model="newArcherForm.password" label="Password Akun" type="password"
-                                    placeholder="Buat password minimal 6 karakter"
+                                <BaseInput v-model="newArcherForm.full_name" :label="$t('dashboard_events_participants_add.full_name')"
+                                    :placeholder="$t('dashboard_events_participants_add.full_name_placeholder')" required @input="generateUsername" />
+                                <BaseInput v-model="newArcherForm.email" :label="$t('dashboard_events_participants_add.email')" type="email"
+                                    :placeholder="$t('dashboard_events_participants_add.email_placeholder')" />
+                                <BaseInput v-model="newArcherForm.phone" :label="$t('dashboard_events_participants_add.phone')" type="tel"
+                                    :placeholder="$t('dashboard_events_participants_add.phone_placeholder')" numberOnly
+                                    :rules="[v => !v || String(v).length >= 8 || $t('dashboard_events_participants_add.phone_error')]" />
+                                <BaseInput v-model="newArcherForm.password" :label="$t('dashboard_events_participants_add.password')" type="password"
+                                    :placeholder="$t('dashboard_events_participants_add.password_placeholder')"
                                     :required="!!newArcherForm.phone && !newArcherForm.email" />
-                                <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
-                                <BaseSelect v-model="newArcherForm.gender" label="Jenis Kelamin" :items="genderOptions"
+                                <BaseInput v-model="newArcherForm.date_of_birth" :label="$t('dashboard_events_participants_add.date_of_birth')" type="date" />
+                                <BaseSelect v-model="newArcherForm.gender" :label="$t('dashboard_events_participants_add.gender')" :items="genderOptions"
                                     required />
-                                <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions"
+                                <BaseSelect v-model="newArcherForm.bow_type" :label="$t('dashboard_events_participants_add.bow_type')" :items="bowOptions"
                                     required />
-                                <BaseSelect v-model="newArcherForm.city" label="Kota" placeholder="Pilih Kota"
+                                <BaseSelect v-model="newArcherForm.city" :label="$t('dashboard_events_participants_add.city')" :placeholder="$t('dashboard_events_participants_add.city_placeholder')"
                                     :items="cityOptions" searchable />
-                                <BaseInput v-model="newArcherForm.school" label="Sekolah"
-                                    placeholder="Nama sekolah (opsional)" />
-                                <BaseSelect v-model="newArcherForm.club_id" label="Klub" :items="clubOptions" required
+                                <BaseInput v-model="newArcherForm.school" :label="$t('dashboard_events_participants_add.school')"
+                                    :placeholder="$t('dashboard_events_participants_add.school_placeholder')" />
+                                <BaseSelect v-model="newArcherForm.club_id" :label="$t('dashboard_events_participants_add.club')" :items="clubOptions" required
                                     searchable />
                             </div>
-                            <BaseTextarea v-model="newArcherForm.address" label="Alamat" placeholder="Alamat lengkap"
+                            <BaseTextarea v-model="newArcherForm.address" :label="$t('dashboard_events_participants_add.address')" :placeholder="$t('dashboard_events_participants_add.address_placeholder')"
                                 :rows="2" />
                             <p class="text-xs text-gray-400">
-                                Field bertanda * wajib diisi untuk membuat pemanah baru.
+                                {{ $t('dashboard_events_participants_add.required_fields_hint') }}
                             </p>
                         </div>
                     </div>
@@ -233,7 +226,7 @@
             <div class="lg:col-span-1 space-y-6">
                 <!-- Step 2: Select Category (same style as events/[slug]/register.vue) -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Kategori Lomba</h3>
+                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">{{ $t('dashboard_events_participants_add.competition_category') }}</h3>
                     <div class="space-y-4">
                         <div class="grid grid-cols-1 gap-3">
                             <div v-for="category in categories" :key="category.id || category.uuid"
@@ -256,20 +249,19 @@
                                 </div>
                                 <div v-if="form.category_ids.includes(category.id || category.uuid)"
                                     class="px-2 py-1 bg-primary text-navy text-[10px] font-black tracking-widest rounded-md">
-                                    Terpilih
+                                    {{ $t('dashboard_events_participants_add.selected') }}
                                 </div>
                             </div>
                         </div>
                         <p class=" text-xs text-gray-500 font-medium px-1 flex items-center gap-2">
                             <Icon icon="ph:info-bold" class="text-navy" />
-                            Anda dapat memilih lebih dari satu kategori jika jadwal memungkinkan
+                            {{ $t('dashboard_events_participants_add.category_schedule_hint') }}
                         </p>
                         <div v-if="categories.length === 0" class="p-4 bg-amber-50 border border-amber-100 rounded-xl">
                             <div class="flex items-center gap-2">
                                 <Icon icon="ph:info-bold" class="text-amber-500 text-xl shrink-0" />
                                 <p class="text-sm text-amber-700 font-medium">
-                                    Kategori untuk event ini belum tersedia. Tambahkan kategori di halaman event
-                                    terlebih dahulu.
+                                    {{ $t('dashboard_events_participants_add.no_categories_warning') }}
                                 </p>
                             </div>
                         </div>
@@ -278,17 +270,16 @@
 
                 <!-- Step 3: Additional Info -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Informasi Tambahan
-                    </h3>
+                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">{{ $t('dashboard_events_participants_add.additional_info') }}</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <BaseSelect v-model="form.payment_status" label="Status Pembayaran"
+                        <BaseSelect v-model="form.payment_status" :label="$t('dashboard_events_participants_add.payment_status')"
                             :items="paymentStatusOptions" />
-                        <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
+                        <BaseInput v-model="form.payment_amount" :label="$t('dashboard_events_participants_add.payment_amount')" :placeholder="$t('dashboard_events_participants_add.payment_amount_placeholder')"
                             kind="currency" />
-                        <BaseSelect v-model="form.registration_source" label="Sumber Pendaftaran" :items="sourceOptions"
+                        <BaseSelect v-model="form.registration_source" :label="$t('dashboard_events_participants_add.registration_source')" :items="sourceOptions"
                             class="md:col-span-2" disabled />
                     </div>
-                    <BaseTextarea v-model="form.notes" label="Catatan" placeholder="Catatan tambahan (opsional)"
+                    <BaseTextarea v-model="form.notes" :label="$t('dashboard_events_participants_add.notes')" :placeholder="$t('dashboard_events_participants_add.notes_placeholder')"
                         :rows="3" class="mt-4" />
                 </div>
             </div>
@@ -310,6 +301,9 @@ import { useEventContext } from '~/composables/useEventContext'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
 import { useSubscription } from '~/composables/useSubscription'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 definePageMeta({
     layout: 'dashboard',
@@ -317,7 +311,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Tambah Peserta - ArcheryHub Dashboard'
+    title: () => `${t('dashboard_events_participants_add.title')} - ArcheryHub Dashboard`
 })
 
 const route = useRoute()
@@ -379,31 +373,31 @@ const newArcherForm = reactive({
     avatar_url: ''
 })
 
-const genderOptions = [
-    { title: 'Pilih Jenis Kelamin', value: '' },
-    { title: 'Laki-laki', value: 'M' },
-    { title: 'Perempuan', value: 'F' }
-]
+const genderOptions = computed(() => [
+    { title: t('dashboard_events_participants_add.gender_placeholder'), value: '' },
+    { title: t('dashboard_events_participants_add.gender_male'), value: 'M' },
+    { title: t('dashboard_events_participants_add.gender_female'), value: 'F' }
+])
 
-const bowOptions = [
-    { title: 'Pilih Jenis Busur', value: '' },
+const bowOptions = computed(() => [
+    { title: t('dashboard_events_participants_add.bow_type_placeholder'), value: '' },
     { title: 'Standard', value: 'standard' },
     { title: 'Recurve', value: 'recurve' },
     { title: 'Compound', value: 'compound' },
     { title: 'Barebow', value: 'barebow' },
     { title: 'Traditional', value: 'traditional' }
-]
+])
 
-const paymentStatusOptions = [
+const paymentStatusOptions = computed(() => [
     { title: 'Paid', value: 'paid' },
     { title: 'Pending', value: 'pending' },
     { title: 'Unpaid', value: 'unpaid' }
-]
+])
 
-const sourceOptions = [
-    { title: 'Dibuat Admin', value: 'admin_created' },
-    { title: 'Diundang', value: 'invited' },
-]
+const sourceOptions = computed(() => [
+    { title: t('dashboard_events_participants_add.source_options.admin_created'), value: 'admin_created' },
+    { title: t('dashboard_events_participants_add.source_options.invited'), value: 'invited' },
+])
 
 const isSearchingArchers = ref(false)
 
@@ -549,16 +543,14 @@ const generateUsername = () => {
 
 const validateNewArcherForm = () => {
     if (!newArcherForm.full_name.trim()) {
-        toast.error('Nama lengkap pemanah wajib diisi')
+        toast.error(t('dashboard_events_participants_add.toasts.name_required'))
         return false
     }
-
-
 
     if (newArcherForm.email && newArcherForm.email.trim()) {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         if (!emailPattern.test(newArcherForm.email)) {
-            toast.error('Format email tidak valid')
+            toast.error(t('dashboard_events_participants_add.toasts.email_invalid'))
             return false
         }
     }
@@ -567,24 +559,24 @@ const validateNewArcherForm = () => {
     // - If phone is filled → password required
     // - If email is filled (no phone) → password optional
     if (newArcherForm.phone && newArcherForm.phone.trim() && !(newArcherForm.password && newArcherForm.password.trim())) {
-        toast.error('Password wajib diisi jika menggunakan No. Telepon')
+        toast.error(t('dashboard_events_participants_add.toasts.password_required_for_phone'))
         return false
     }
     if (newArcherForm.password && newArcherForm.password.trim() && newArcherForm.password.length < 6) {
-        toast.error('Password minimal 6 karakter')
+        toast.error(t('dashboard_events_participants_add.toasts.password_length'))
         return false
     }
 
     if (!newArcherForm.gender) {
-        toast.error('Pilih jenis kelamin pemanah')
+        toast.error(t('dashboard_events_participants_add.toasts.gender_required'))
         return false
     }
     if (!newArcherForm.bow_type) {
-        toast.error('Pilih jenis busur pemanah')
+        toast.error(t('dashboard_events_participants_add.toasts.bow_type_required'))
         return false
     }
     if (!newArcherForm.club_id) {
-        toast.error('Pilih klub pemanah')
+        toast.error(t('dashboard_events_participants_add.toasts.club_required'))
         return false
     }
     return true
@@ -592,12 +584,12 @@ const validateNewArcherForm = () => {
 
 const submit = async () => {
     if (!Array.isArray(form.category_ids) || form.category_ids.length === 0) {
-        toast.error('Pilih minimal satu kategori event')
+        toast.error(t('dashboard_events_participants_add.toasts.category_required'))
         return
     }
 
     if (archerMode.value === 'existing' && selectedArchers.value.length === 0) {
-        toast.error('Pilih minimal satu pemanah')
+        toast.error(t('dashboard_events_participants_add.toasts.archer_required'))
         return
     }
 
@@ -610,7 +602,7 @@ const submit = async () => {
     try {
         // validate payment amount
         if (isNaN(Number(form.payment_amount)) || Number(form.payment_amount) < 0) {
-            toast.error('Jumlah Pembayaran harus berupa angka >= 0')
+            toast.error(t('dashboard_events_participants_add.toasts.amount_error'))
             isSubmitting.value = false
             return
         }
@@ -628,8 +620,8 @@ const submit = async () => {
             const count = result?.registered ?? selectedArchers.value.length
             const skipped = result?.skipped ?? 0
             const msg = skipped > 0
-                ? `${count} peserta berhasil ditambahkan, ${skipped} sudah terdaftar (dilewati)`
-                : `${count} peserta berhasil ditambahkan`
+                ? t('dashboard_events_participants_add.toasts.batch_success_with_skipped', { count, skipped }).replace('{count}', String(count)).replace('{skipped}', String(skipped))
+                : t('dashboard_events_participants_add.toasts.batch_success', { count }).replace('{count}', String(count))
             toast.success(msg)
         } else {
             // Create new archer and register
@@ -665,13 +657,13 @@ const submit = async () => {
                 registration_source: form.registration_source || 'admin_created'
             }
             await post(`/events/${route.params.id}/participants`, payload)
-            toast.success('Peserta berhasil ditambahkan')
+            toast.success(t('dashboard_events_participants_add.toasts.single_success'))
         }
 
         router.push(`/dashboard/events/${route.params.id}/participants`)
     } catch (error) {
         console.error('Failed to add participant:', error)
-        const errorMessage = error?.data?.error || error?.response?.data?.error || error?.response?._data?.error || error?.message || 'Gagal menambahkan peserta'
+        const errorMessage = error?.data?.error || error?.response?.data?.error || error?.response?._data?.error || error?.message || t('dashboard_events_participants_add.toasts.save_failed')
         toast.error(errorMessage)
     } finally {
         isSubmitting.value = false

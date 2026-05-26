@@ -28,7 +28,7 @@
                 :class="activeTab === tab.id ? 'bg-white shadow text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
                 class="flex items-center justify-center gap-2 flex-1 min-w-[120px] px-5 py-2.5 rounded-xl text-sm font-black transition-all">
                 <Icon :icon="tab.icon" class="text-lg sm:text-xl shrink-0" />
-                <span>{{ tab.name }}</span>
+                <span>{{ $t(`dashboard_events_page.tabs.${tab.id}`) }}</span>
             </button>
         </div>
 
@@ -130,18 +130,18 @@
                     <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:calendar-check" class="text-primary text-lg sm:text-xl" />
-                            Waktu Pendaftaran
+                            {{ $t('dashboard_events_page.registration.timeline_title') }}
                         </h2>
                     </div>
                     <div class="p-4 sm:p-6">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">Tanggal & Waktu Mulai Pendaftaran</label>
+                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.registration.start_label') }}</label>
                                 <input v-model="form.page_settings.registration_start" type="datetime-local"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" />
                             </div>
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">Tanggal & Waktu Batas Pendaftaran</label>
+                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.registration.end_label') }}</label>
                                 <input v-model="form.registration_deadline" type="datetime-local"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" />
                             </div>
@@ -154,14 +154,14 @@
                     <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:ticket" class="text-primary text-lg sm:text-xl" />
-                            Biaya Pendaftaran
+                            {{ $t('dashboard_events_page.registration.fee_title') }}
                         </h2>
                     </div>
                     <div class="p-4 sm:p-6 space-y-6">
 
                         <!-- Mode Selector -->
                         <div class="space-y-3">
-                            <label class="text-sm font-bold text-gray-700">Mode Biaya Pendaftaran</label>
+                            <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.registration.fee_mode_label') }}</label>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <!-- Mode: Per Participant Type -->
                                 <button type="button"
@@ -175,8 +175,8 @@
                                         <Icon icon="ph:users-three-bold" class="text-xl" />
                                     </div>
                                     <div>
-                                        <div class="text-sm font-black text-navy">Per Tipe Peserta</div>
-                                        <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">Biaya berbeda untuk Individu, Tim, dan Tim Campuran</div>
+                                        <div class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.mode_per_type_title') }}</div>
+                                        <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">{{ $t('dashboard_events_page.registration.mode_per_type_desc') }}</div>
                                     </div>
                                     <div v-if="form.fee_mode === 'per_type'" class="ml-auto shrink-0">
                                         <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
@@ -195,8 +195,8 @@
                                         <Icon icon="ph:stack-bold" class="text-xl" />
                                     </div>
                                     <div>
-                                        <div class="text-sm font-black text-navy">Per Kategori</div>
-                                        <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">Setiap kategori lomba memiliki biaya sendiri</div>
+                                        <div class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.mode_per_cat_title') }}</div>
+                                        <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">{{ $t('dashboard_events_page.registration.mode_per_cat_desc') }}</div>
                                     </div>
                                     <div v-if="form.fee_mode === 'per_category'" class="ml-auto shrink-0">
                                         <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
@@ -214,7 +214,7 @@
                                         <div class="size-8 rounded-lg bg-navy/10 flex items-center justify-center">
                                             <Icon icon="ph:user-bold" class="text-navy text-sm" />
                                         </div>
-                                        <label class="text-sm font-black text-navy">Individu</label>
+                                        <label class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.individual') }}</label>
                                     </div>
                                     <div class="relative">
                                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
@@ -222,7 +222,7 @@
                                             placeholder="0"
                                             class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                                     </div>
-                                    <div class="text-[10px] text-gray-400">Biaya per kategori untuk peserta individu</div>
+                                    <div class="text-[10px] text-gray-400">{{ $t('dashboard_events_page.registration.individual_desc') }}</div>
                                 </div>
                                 <!-- Team -->
                                 <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
@@ -230,7 +230,7 @@
                                         <div class="size-8 rounded-lg bg-navy/10 flex items-center justify-center">
                                             <Icon icon="ph:users-bold" class="text-navy text-sm" />
                                         </div>
-                                        <label class="text-sm font-black text-navy">Tim</label>
+                                        <label class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.team') }}</label>
                                     </div>
                                     <div class="relative">
                                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
@@ -238,7 +238,7 @@
                                             placeholder="0"
                                             class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                                     </div>
-                                    <div class="text-[10px] text-gray-400">Biaya per kategori untuk tim (3 pemanah)</div>
+                                    <div class="text-[10px] text-gray-400">{{ $t('dashboard_events_page.registration.team_desc') }}</div>
                                 </div>
                                 <!-- Mixed Team -->
                                 <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
@@ -246,7 +246,7 @@
                                         <div class="size-8 rounded-lg bg-navy/10 flex items-center justify-center">
                                             <Icon icon="ph:users-three-bold" class="text-navy text-sm" />
                                         </div>
-                                        <label class="text-sm font-black text-navy">Tim Campuran</label>
+                                        <label class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.mixed_team') }}</label>
                                     </div>
                                     <div class="relative">
                                         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
@@ -254,7 +254,7 @@
                                             placeholder="0"
                                             class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                                     </div>
-                                    <div class="text-[10px] text-gray-400">Biaya per kategori untuk tim campuran (2 pemanah)</div>
+                                    <div class="text-[10px] text-gray-400">{{ $t('dashboard_events_page.registration.mixed_team_desc') }}</div>
                                 </div>
                             </div>
                             <!-- entry_fee fallback note removed -->
@@ -265,10 +265,10 @@
                             <div v-if="eventCategories.length === 0"
                                 class="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                                 <Icon icon="ph:stack" class="text-3xl text-gray-300 mx-auto mb-2" />
-                                <div class="text-xs text-gray-400 font-bold">Belum ada kategori lomba.</div>
-                                <div class="text-xs text-gray-400 mt-1">Tambahkan kategori terlebih dahulu di menu Kategori.</div>
+                                <div class="text-xs text-gray-400 font-bold">{{ $t('dashboard_events_page.registration.no_categories') }}</div>
+                                <div class="text-xs text-gray-400 mt-1">{{ $t('dashboard_events_page.registration.no_categories_desc') }}</div>
                                 <BaseButton variant="outline" size="xs" class="mt-3" :to="`/dashboard/events/${eventId}/categories`">
-                                    <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Kategori
+                                    <Icon icon="ph:plus-bold" class="mr-1" /> {{ $t('dashboard_events_page.registration.add_category') }}
                                 </BaseButton>
                             </div>
 
@@ -300,13 +300,13 @@
 
                             <!-- Default fallback fee -->
                             <div class="pt-4 border-t border-gray-100 space-y-2">
-                                <label class="text-sm font-bold text-gray-700">Biaya Default (untuk kategori tanpa harga khusus)</label>
+                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.registration.default_fee_label') }}</label>
                                 <div class="relative max-w-xs">
                                     <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
                                     <input v-model.number="form.entry_fee" type="number" min="0" placeholder="0"
                                         class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                                 </div>
-                                <div class="text-[10px] text-gray-400">Digunakan jika kategori tidak memiliki biaya khusus.</div>
+                                <div class="text-[10px] text-gray-400">{{ $t('dashboard_events_page.registration.default_fee_desc') }}</div>
                             </div>
                         </div>
                     </div>
@@ -317,22 +317,22 @@
                     <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:credit-card" class="text-primary text-lg sm:text-xl" />
-                            Metode Pembayaran Manual
+                            {{ $t('dashboard_events_page.manual_payment.title') }}
                         </h2>
                     </div>
                     <div class="p-4 sm:p-6 space-y-4">
                         <div class="text-xs text-gray-500 text-left">
-                            Aktifkan rekening bank atau e-wallet organisasi Anda yang dapat digunakan peserta untuk melakukan transfer manual pada event ini.
+                            {{ $t('dashboard_events_page.manual_payment.description') }}
                         </div>
 
                         <!-- Preview of configured bank accounts -->
                         <div class="mt-4 border-t border-gray-100 pt-4">
-                            <h4 class="text-xs font-black text-gray-400 tracking-wider mb-3 text-left uppercase">Daftar Rekening Pembayaran Organisasi</h4>
+                            <h4 class="text-xs font-black text-gray-400 tracking-wider mb-3 text-left uppercase">{{ $t('dashboard_events_page.manual_payment.list_title') }}</h4>
                             <div v-if="orgBankAccounts.length === 0" class="text-xs text-amber-600 bg-amber-50 border border-amber-100 p-4 rounded-2xl text-left flex items-start gap-2.5">
                                 <Icon icon="ph:warning-circle-bold" class="text-lg shrink-0 mt-0.5" />
                                 <div>
-                                    <span class="font-bold">Perhatian:</span> Belum ada rekening bank/e-wallet aktif yang dikonfigurasi di organisasi Anda. Peserta tidak akan bisa memilih opsi pembayaran manual saat mendaftar.
-                                    <NuxtLink to="/dashboard/organization/payment-methods" class="font-bold underline text-primary hover:text-navy block mt-1">Konfigurasi Rekening Pembayaran</NuxtLink>
+                                    <span class="font-bold">{{ $t('dashboard_events_page.manual_payment.warning') }}</span> {{ $t('dashboard_events_page.manual_payment.no_accounts_warning') }}
+                                    <NuxtLink to="/dashboard/organization/payment-methods" class="font-bold underline text-primary hover:text-navy block mt-1">{{ $t('dashboard_events_page.manual_payment.configure_link') }}</NuxtLink>
                                 </div>
                             </div>
                             <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -367,56 +367,55 @@
                     <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:emoji-events" class="text-primary text-lg sm:text-xl" />
-                            Hadiah & Guidebook
+                            {{ $t('dashboard_events_page.prizes.title') }}
                         </h2>
                     </div>
                     <div class="p-4 sm:p-6 space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">Total Hadiah (IDR)</label>
+                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.prizes.total_prize_label') }}</label>
                                 <input v-model.number="form.total_prize" type="number"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                             </div>
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">Buku Panduan Teknis (PDF)</label>
+                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.prizes.guidebook_label') }}</label>
                                 <div class="flex items-center gap-2">
                                     <input type="text" :value="form.technical_guidebook_url ? 'Guidebook.pdf' : ''"
                                         readonly
                                         class="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm italic"
-                                        placeholder="Belum ada file" />
+                                        :placeholder="$t('dashboard_events_page.prizes.no_file')" />
                                     <input type="file" ref="guidebookInput" class="hidden" accept=".pdf"
                                         @change="handleGuidebookUpload" />
                                     <BaseButton variant="outline" size="sm" @click="$refs.guidebookInput.click()"
-                                        :loading="uploadingGuidebook">Upload</BaseButton>
+                                        :loading="uploadingGuidebook">{{ $t('dashboard_events_page.prizes.upload') }}</BaseButton>
                                 </div>
                             </div>
                         </div>
                         <div class="pt-4 border-t border-gray-100">
-                            <label class="text-sm font-bold text-gray-700 mb-3 block">Detail Hadiah (Ditampilkan di
-                                halaman publik)</label>
+                            <label class="text-sm font-bold text-gray-700 mb-3 block">{{ $t('dashboard_events_page.prizes.detail_title') }}</label>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div class="space-y-2">
-                                    <label class="text-xs font-bold text-gray-600">Juara 1</label>
-                                    <input v-model="form.prizes.first" type="text" placeholder="Rp 15.000.000"
+                                    <label class="text-xs font-bold text-gray-600">{{ $t('dashboard_events_page.prizes.first_place') }}</label>
+                                    <input v-model="form.prizes.first" type="text" :placeholder="$t('dashboard_events_page.prizes.placeholder_prize')"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
                                     <textarea v-model="form.prizes.first_caption" rows="2"
-                                        placeholder="Contoh: Medali emas dan sertifikat"
+                                        :placeholder="$t('dashboard_events_page.prizes.placeholder_caption')"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs resize-none"></textarea>
                                 </div>
                                 <div class="space-y-2">
-                                    <label class="text-xs font-bold text-gray-600">Juara 2</label>
-                                    <input v-model="form.prizes.second" type="text" placeholder="Rp 10.000.000"
+                                    <label class="text-xs font-bold text-gray-600">{{ $t('dashboard_events_page.prizes.second_place') }}</label>
+                                    <input v-model="form.prizes.second" type="text" :placeholder="$t('dashboard_events_page.prizes.placeholder_prize')"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
                                     <textarea v-model="form.prizes.second_caption" rows="2"
-                                        placeholder="Contoh: Medali perak dan sertifikat"
+                                        :placeholder="$t('dashboard_events_page.prizes.placeholder_caption')"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs resize-none"></textarea>
                                 </div>
                                 <div class="space-y-2">
-                                    <label class="text-xs font-bold text-gray-600">Juara 3</label>
-                                    <input v-model="form.prizes.third" type="text" placeholder="Rp 7.500.000"
+                                    <label class="text-xs font-bold text-gray-600">{{ $t('dashboard_events_page.prizes.third_place') }}</label>
+                                    <input v-model="form.prizes.third" type="text" :placeholder="$t('dashboard_events_page.prizes.placeholder_prize')"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
                                     <textarea v-model="form.prizes.third_caption" rows="2"
-                                        placeholder="Contoh: Medali perunggu dan sertifikat"
+                                        :placeholder="$t('dashboard_events_page.prizes.placeholder_caption')"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs resize-none"></textarea>
                                 </div>
                             </div>
@@ -431,45 +430,45 @@
                 <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
                     <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                         <Icon icon="ph:map-pin" class="text-primary text-lg sm:text-xl" />
-                        Lokasi & Peta
+                        {{ $t('dashboard_events_page.location.title') }}
                     </h2>
                 </div>
                 <div class="p-4 sm:p-6 space-y-5">
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
-                            Nama Venue
+                            {{ $t('dashboard_events_page.location.venue_label') }}
                             <span class="text-red-500">*</span>
                         </label>
                         <input v-model="form.venue" type="text" required
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
-                            placeholder="Contoh: Lapangan Panahan GBK" />
+                            :placeholder="$t('dashboard_events_page.location.venue_placeholder')" />
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
-                            Alamat Lengkap
+                            {{ $t('dashboard_events_page.location.address_label') }}
                             <span class="text-red-500">*</span>
                         </label>
                         <textarea v-model="form.address" rows="2" required
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all font-medium"
-                            placeholder="Tuliskan alamat lengkap lokasi event..."></textarea>
+                            :placeholder="$t('dashboard_events_page.location.address_placeholder') || 'Tuliskan alamat lengkap lokasi event...'"></textarea>
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
-                            Link Google Maps
+                            {{ $t('dashboard_events_page.location.gmaps_label') }}
                             <span class="text-red-500">*</span>
                         </label>
                         <input v-model="form.gmaps_link" type="url" required
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
                             placeholder="https://maps.app.goo.gl/pxDpbaZ1GTtXHTD28" />
                         <div v-if="gmapsEmbedUrl"
-                            class="mt-4 rounded-xl overflow-hidden border border-gray-200 aspect-video">
+                             class="mt-4 rounded-xl overflow-hidden border border-gray-200 aspect-video">
                             <iframe width="100%" height="100%" style="border:0" loading="lazy"
-                                :src="gmapsEmbedUrl"></iframe>
+                                    :src="gmapsEmbedUrl"></iframe>
                         </div>
                     </div>
                     <div class="space-y-3">
-                        <label class="text-sm font-bold text-gray-700">Aksesibilitas Lokasi</label>
-                        <div class="text-xs text-gray-500 mb-3">Pilih opsi yang tersedia untuk lokasi ini</div>
+                        <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.location.accessibility_title') }}</label>
+                        <div class="text-xs text-gray-500 mb-3">{{ $t('dashboard_events_page.location.accessibility_desc') }}</div>
                         <div class="flex flex-wrap gap-2">
                             <button v-for="option in locationAccessibilityOptions" :key="option" type="button"
                                 @click="toggleLocationAccessibility(option)"
@@ -477,7 +476,7 @@
                                     ? 'bg-primary text-navy border-primary shadow-sm'
                                     : 'bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-navy'">
                                 <Icon :icon="getLocationAccessibilityIcon(option)" class="inline-block mr-1.5" />
-                                {{ option }}
+                                {{ $t('dashboard_events_page.location.options.' + locationAccessibilityOptionKeys[option]) }}
                             </button>
                         </div>
                     </div>
@@ -490,50 +489,50 @@
                     <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:image" class="text-primary text-lg sm:text-xl" />
-                            Banner & Logo
+                            {{ $t('dashboard_events_page.media.title') }}
                         </h2>
                     </div>
                     <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
                         <div class="space-y-3">
                             <label class="text-sm font-bold text-gray-700 flex items-center justify-between">
-                                <span>Banner (Header)</span>
-                                <span class="text-xs font-bold text-gray-400 font-body">(Rasio 16:9 / 1200x675 px)</span>
+                                <span>{{ $t('dashboard_events_page.media.banner_label') }}</span>
+                                <span class="text-xs font-bold text-gray-400 font-body">{{ $t('dashboard_events_page.media.banner_ratio') }}</span>
                             </label>
                             <div v-if="form.banner_url" class="relative rounded-xl overflow-hidden aspect-video group">
                                 <img :src="form.banner_url" class="w-full h-full object-cover" />
                                 <div
                                     class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                                     <button @click="openMediaLibrary('banner')"
-                                        class="p-2 bg-white rounded-lg text-navy font-bold text-xs">Ganti</button>
+                                        class="p-2 bg-white rounded-lg text-navy font-bold text-xs">{{ $t('dashboard_events_page.media.change') }}</button>
                                     <button @click="form.banner_url = ''"
-                                        class="p-2 bg-red-500 rounded-lg text-white font-bold text-xs">Hapus</button>
+                                        class="p-2 bg-red-500 rounded-lg text-white font-bold text-xs">{{ $t('dashboard_events_page.media.delete') }}</button>
                                 </div>
                             </div>
                             <button v-else @click="openMediaLibrary('banner')"
                                 class="w-full aspect-video rounded-xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400">
                                 <Icon icon="material-symbols:image-outline" class="text-3xl mb-2" />
-                                <span class="text-xs font-bold">Pilih Banner</span>
+                                <span class="text-xs font-bold">{{ $t('dashboard_events_page.media.select_banner') }}</span>
                             </button>
                         </div>
                         <div class="space-y-3">
                             <label class="text-sm font-bold text-gray-700 flex items-center justify-between">
-                                <span>Poster Event</span>
-                                <span class="text-xs font-bold text-gray-400 font-body">(Rasio A4 / 4:5 / 1000x1250 px)</span>
+                                <span>{{ $t('dashboard_events_page.media.poster_label') }}</span>
+                                <span class="text-xs font-bold text-gray-400 font-body">{{ $t('dashboard_events_page.media.poster_ratio') }}</span>
                             </label>
                             <div v-if="form.logo_url" class="relative rounded-xl overflow-hidden aspect-video group">
                                 <img :src="form.logo_url" class="w-full h-full object-cover" />
                                 <div
                                     class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                                     <button @click="openMediaLibrary('logo')"
-                                        class="p-2 bg-white rounded-lg text-navy font-bold text-xs">Ganti</button>
+                                        class="p-2 bg-white rounded-lg text-navy font-bold text-xs">{{ $t('dashboard_events_page.media.change') }}</button>
                                     <button @click="form.logo_url = ''"
-                                        class="p-2 bg-red-500 rounded-lg text-white font-bold text-xs">Hapus</button>
+                                        class="p-2 bg-red-500 rounded-lg text-white font-bold text-xs">{{ $t('dashboard_events_page.media.delete') }}</button>
                                 </div>
                             </div>
                             <button v-else @click="openMediaLibrary('logo')"
                                 class="w-full aspect-video rounded-xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400">
                                 <Icon icon="ph:image-square-bold" class="text-3xl mb-2" />
-                                <span class="text-xs font-bold">Pilih Poster</span>
+                                <span class="text-xs font-bold">{{ $t('dashboard_events_page.media.select_poster') }}</span>
                             </button>
                         </div>
                     </div>
@@ -543,7 +542,7 @@
                     <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:images" class="text-primary text-lg sm:text-xl" />
-                            Galeri Event
+                            {{ $t('dashboard_events_page.media.gallery_title') }}
                         </h2>
                     </div>
                     <div class="p-4 sm:p-6 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
@@ -569,16 +568,16 @@
                 <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
                     <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                         <Icon icon="ph:calendar-bold" class="text-primary text-lg sm:text-xl" />
-                        Jadwal Lomba
+                        {{ $t('dashboard_events_page.schedule.title') }}
                     </h2>
                     <BaseButton variant="outline" size="xs" @click="addScheduleField">
-                        <Icon icon="ph:plus-bold" class="mr-1" /> Tambah
+                        <Icon icon="ph:plus-bold" class="mr-1" /> {{ $t('dashboard_events_page.schedule.add') }}
                     </BaseButton>
                 </div>
                 <div class="p-4 sm:p-6 space-y-4">
                     <div v-if="form.schedules.length === 0"
                         class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                        <div class="text-sm text-gray-400">Belum ada jadwal yang ditambahkan.</div>
+                        <div class="text-sm text-gray-400">{{ $t('dashboard_events_page.schedule.empty') }}</div>
                     </div>
                     <div v-else class="space-y-4">
                         <div v-for="(session, index) in form.schedules" :key="index"
@@ -589,33 +588,32 @@
                             </button>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                 <div class="lg:col-span-2 space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 ">Judul Sesi</label>
+                                    <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.session_title') }}</label>
                                     <input v-model="session.title" type="text" placeholder="Contoh: Kualifikasi Recurve"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 ">Hari Ke-</label>
+                                    <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.day_order') }}</label>
                                     <input v-model.number="session.day_order" type="number"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 ">Mulai</label>
+                                    <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.start_time') }}</label>
                                     <input v-model="session.start_time" type="datetime-local"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 ">Selesai</label>
+                                    <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.end_time') }}</label>
                                     <input v-model="session.end_time" type="datetime-local"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 ">Lokasi</label>
+                                    <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.location') }}</label>
                                     <input v-model="session.location" type="text"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
                                 <div class="lg:col-span-3 space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 ">Deskripsi
-                                        (Opsional)</label>
+                                    <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.description_optional') }}</label>
                                     <textarea v-model="session.description" rows="2"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm resize-none"
                                         placeholder="Deskripsi sesi..."></textarea>
@@ -636,9 +634,9 @@
                         <div class="p-1.5 sm:p-2 bg-primary/10 rounded-lg">
                             <Icon icon="iconoir:leaderboard" class="text-lg sm:text-xl" />
                         </div>
-                        Sumber Hasil Lomba
+                        {{ $t('dashboard_events_page.results.source_title') }}
                     </h2>
-                    <div class="text-xs text-gray-400 mt-1.5 font-medium">Pilih bagaimana hasil lomba ditampilkan di
+                    <div class="text-xs text-gray-400 mt-1.5 font-medium">{{ $t('dashboard_events_page.results.source_desc') }}
                         halaman publik event.</div>
                 </div>
                 <div class="p-4 sm:p-6">
@@ -657,9 +655,8 @@
                                         class="w-2.5 h-2.5 rounded-full bg-primary"></div>
                                 </div>
                             </div>
-                            <h4 class="font-bold text-sm text-navy">Dari Sistem</h4>
-                            <div class=" text-xs text-gray-400 mt-0.5 leading-relaxed">Hasil kualifikasi & eliminasi
-                                dari scoring system.</div>
+                            <h4 class="font-bold text-sm text-navy">{{ $t('dashboard_events_page.results.from_system') }}</h4>
+                            <div class=" text-xs text-gray-400 mt-0.5 leading-relaxed">{{ $t('dashboard_events_page.results.from_system_desc') }}</div>
                         </button>
                         <button @click="form.page_settings.results_type = 'manual'" type="button"
                             class="relative p-4 sm:p-5 rounded-2xl border-2 text-left transition-all group"
@@ -675,9 +672,8 @@
                                         class="w-2.5 h-2.5 rounded-full bg-primary"></div>
                                 </div>
                             </div>
-                            <h4 class="font-bold text-sm text-navy">Upload Manual</h4>
-                            <div class=" text-xs text-gray-400 mt-0.5 leading-relaxed">Upload file PDF/gambar hasil
-                                lomba secara manual.</div>
+                            <h4 class="font-bold text-sm text-navy">{{ $t('dashboard_events_page.results.manual_upload') }}</h4>
+                            <div class=" text-xs text-gray-400 mt-0.5 leading-relaxed">{{ $t('dashboard_events_page.results.manual_upload_desc') }}</div>
                         </button>
                     </div>
                 </div>
@@ -693,14 +689,13 @@
                             <div class="p-1.5 sm:p-2 bg-primary/10 rounded-lg">
                                 <Icon icon="ph:file-arrow-up-bold" class="text-lg sm:text-xl" />
                             </div>
-                            Upload Dokumen Hasil
+                            {{ $t('dashboard_events_page.results.upload_doc_title') }}
                         </h2>
-                        <div class="text-xs sm:text-sm text-gray-500 mt-1 font-medium">Upload file PDF, gambar, atau
-                            dokumen hasil lomba.</div>
+                        <div class="text-xs sm:text-sm text-gray-500 mt-1 font-medium">{{ $t('dashboard_events_page.results.upload_doc_desc') }}</div>
                     </div>
                     <BaseButton variant="primary" size="sm" icon="ph:plus-bold"
                         @click="$refs.resultsFileInput?.click()">
-                        Tambah File
+                        {{ $t('dashboard_events_page.results.add_file') }}
                     </BaseButton>
                 </div>
 
@@ -719,14 +714,12 @@
                             </div>
                             <div class="max-w-xs mx-auto">
                                 <div class="text-base font-black text-navy group-hover:text-primary transition-colors">
-                                    Upload Hasil Lomba</div>
-                                <div class="text-sm text-gray-500 mt-1 font-medium italic">Drag & drop beberapa file di
-                                    sini. Mendukung PDF, JPG, & PNG.</div>
+                                    {{ $t('dashboard_events_page.results.upload_result_label') }}</div>
+                                <div class="text-sm text-gray-500 mt-1 font-medium italic">{{ $t('dashboard_events_page.results.drag_drop_hint') }}</div>
                             </div>
                             <div class="flex gap-2">
                                 <span
-                                    class="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-black  text-gray-400">Max
-                                    10MB/file</span>
+                                    class="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-black  text-gray-400">{{ $t('dashboard_events_page.results.max_size_hint') }}</span>
                             </div>
                         </div>
                     </div>
@@ -752,8 +745,7 @@
                                             <!-- Title Input -->
                                             <div class="space-y-1">
                                                 <label
-                                                    class="text-[10px] font-black text-gray-400  tracking-widest pl-1">Judul
-                                                    Tampilan</label>
+                                                    class="text-[10px] font-black text-gray-400  tracking-widest pl-1">{{ $t('dashboard_events_page.results.display_title') }}</label>
                                                 <input v-model="file.title" type="text"
                                                     placeholder="Contoh: Hasil Kualifikasi Recurve"
                                                     class="w-full px-3 py-2 text-sm font-bold text-navy bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-lg outline-none transition-all" />
@@ -762,8 +754,7 @@
                                             <!-- Filename Input -->
                                             <div class="space-y-1">
                                                 <label
-                                                    class="text-[10px] font-black text-gray-400  tracking-widest pl-1">Nama
-                                                    File Download</label>
+                                                    class="text-[10px] font-black text-gray-400  tracking-widest pl-1">{{ $t('dashboard_events_page.results.download_name') }}</label>
                                                 <div class="flex items-center gap-2">
                                                     <input v-model="file.name" type="text" placeholder="nama-file"
                                                         class="flex-1 px-3 py-2  text-xs font-medium text-gray-500 bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-lg outline-none transition-all" />
@@ -805,7 +796,7 @@
                                 </div>
                                 <div
                                                     class="text-xs font-black text-gray-400 mt-3  tracking-widest group-hover:text-primary">
-                                                    Tambah File Lagi</div>
+                                                    {{ $t('dashboard_events_page.results.add_more') }}</div>
                             </div>
                         </div>
                     </div>
@@ -824,11 +815,9 @@
                             <Icon icon="ph:info-bold" class="text-2xl text-blue-500" />
                         </div>
                         <div>
-                            <h4 class="font-bold text-navy text-sm">Hasil Dari Sistem Scoring</h4>
+                            <h4 class="font-bold text-navy text-sm">{{ $t('dashboard_events_page.results.system_scoring_title') }}</h4>
                             <div class="text-xs text-gray-500 mt-1 leading-relaxed">
-                                Hasil kualifikasi dan bagan eliminasi akan ditampilkan secara otomatis dari data scoring
-                                yang telah diinput melalui menu <strong>Scoring</strong>. Pastikan skor sudah diinput
-                                dengan benar.
+                                {{ $t('dashboard_events_page.results.system_scoring_desc') }}
                             </div>
                         </div>
                     </div>
@@ -850,21 +839,23 @@ import { useApi } from '~/composables/useApi'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+import { useI18n } from 'vue-i18n'
 
 const { isSubscriptionActive } = useSubscription()
 const showPremiumModal = ref(false)
+const { t } = useI18n()
 
-const statusOptions = [
-    { value: 'draft', title: 'Draft (Belum dipublikasi)' },
-    { value: 'active', title: 'Aktif (Dipublikasikan)' }
-]
+const statusOptions = computed(() => [
+    { value: 'draft', title: t('dashboard_events_page.status_options.draft') },
+    { value: 'active', title: t('dashboard_events_page.status_options.active') }
+])
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 useHead({
-    title: 'Edit Event - Dashboard'
+    title: () => `${t('dashboard_events_page.title')} - Dashboard`
 })
 
 const route = useRoute()
@@ -932,6 +923,18 @@ const locationAccessibilityOptions = [
     'Area Parkir Motor',
     'Area Parkir Mobil'
 ]
+
+const locationAccessibilityOptionKeys = {
+    'Terjangkau Mobil/Motor': 'car_motorcycle',
+    'Akses Transportasi Umum': 'public_transport',
+    'Parkir Luas': 'spacious_parking',
+    'Fasilitas Toilet': 'toilet',
+    'Area Makan': 'food_area',
+    'Tempat Duduk': 'seating',
+    'Akses Disabilitas': 'disability_access',
+    'Area Parkir Motor': 'motorcycle_parking',
+    'Area Parkir Mobil': 'car_parking'
+}
 
 const getLocationAccessibilityIcon = (option) => {
     const icons = {
@@ -1072,7 +1075,7 @@ const handleGuidebookUpload = async (event) => {
 
     if (file.type !== 'application/pdf') {
         const toast = useToast()
-        toast.error('Hanya file PDF yang diperbolehkan')
+        toast.error(t('dashboard_events_page.toasts.only_pdf'))
         return
     }
 
@@ -1090,11 +1093,11 @@ const handleGuidebookUpload = async (event) => {
 
         form.value.technical_guidebook_url = response.url
         const toast = useToast()
-        toast.success('Buku panduan berhasil diupload')
+        toast.success(t('dashboard_events_page.toasts.guidebook_success'))
     } catch (err) {
         console.error('Upload failed:', err)
         const toast = useToast()
-        toast.error('Gagal mengupload buku panduan')
+        toast.error(t('dashboard_events_page.toasts.guidebook_failed'))
     } finally {
         uploadingGuidebook.value = false
     }
@@ -1123,13 +1126,13 @@ const uploadResultFiles = async (files) => {
     for (const file of files) {
         // Validate file type
         if (!allowedTypes.includes(file.type)) {
-            toast.error(`File ${file.name} bukan format yang diizinkan (PDF, JPG, PNG)`)
+            toast.error(t('dashboard_events_page.toasts.invalid_format', { name: file.name }).replace('{name}', file.name))
             continue
         }
 
         // Validate file size
         if (file.size > maxSize) {
-            toast.error(`File ${file.name} terlalu besar (max 10MB)`)
+            toast.error(t('dashboard_events_page.toasts.file_too_large', { name: file.name }).replace('{name}', file.name))
             continue
         }
 
@@ -1156,10 +1159,10 @@ const uploadResultFiles = async (files) => {
                 type: file.type
             })
 
-            toast.success(`File ${file.name} berhasil diupload`)
+            toast.success(t('dashboard_events_page.toasts.file_success', { name: file.name }).replace('{name}', file.name))
         } catch (err) {
             console.error('Upload failed:', err)
-            toast.error(`Gagal mengupload file ${file.name}`)
+            toast.error(t('dashboard_events_page.toasts.file_failed', { name: file.name }).replace('{name}', file.name))
         }
     }
 
@@ -1419,7 +1422,7 @@ const saveEventPage = async () => {
     // Validation
     const toast = useToast()
     if (!form.value.venue || !form.value.address || !form.value.gmaps_link) {
-        toast.error('Mohon lengkapi Nama Venue, Alamat, dan Link Google Maps')
+        toast.error(t('dashboard_events_page.toasts.fill_required'))
         activeTab.value = 'lokasi' // Switch to location tab if any of these are missing
         return
     }
@@ -1504,14 +1507,14 @@ const saveEventPage = async () => {
 
         // Show success notification
         const toast = useToast()
-        toast.success('Halaman event berhasil diperbarui')
+        toast.success(t('dashboard_events_page.toasts.save_success'))
 
         // Refresh data to show updated values
         await fetchEventData()
     } catch (error) {
         console.error('Failed to save:', error)
         const toast = useToast()
-        const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal menyimpan event'
+        const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || t('dashboard_events_page.toasts.save_failed')
         toast.error(errorMessage)
     } finally {
         saving.value = false
@@ -1620,6 +1623,6 @@ onMounted(async () => {
 })
 
 useSeoMeta({
-    title: 'Halaman Event - Dashboard'
+    title: () => `${t('dashboard_events_page.seo_title')} - Dashboard`
 })
 </script>
