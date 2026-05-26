@@ -4,7 +4,7 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
+                    <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">{{ t('common.dashboard') }}</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <NuxtLink :to="`/dashboard/${userPersona}/news`" class="hover:text-primary transition-colors">{{ t('organization_news.index.title') }}</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
@@ -32,8 +32,8 @@
                                 <Icon icon="ph:upload-simple" class="text-3xl text-gray-400" />
                             </div>
                             <div class="text-center">
-                                <p class="font-bold text-navy">Klik untuk pilih gambar</p>
-                                <p class="text-sm text-gray-400">Pilih dari library atau upload baru</p>
+                                <p class="font-bold text-navy">{{ t('organization_news.create.click_to_select_image') }}</p>
+                                <p class="text-sm text-gray-400">{{ t('organization_news.create.select_or_upload') }}</p>
                             </div>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                         <textarea v-model="form.excerpt"
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
                             rows="3"
-                            placeholder="Tulis ringkasan singkat berita (akan ditampilkan di preview)..."></textarea>
+                            :placeholder="t('organization_news.create.placeholder_excerpt')"></textarea>
                     </div>
                 </div>
 
@@ -113,15 +113,15 @@ definePageMeta({
     layout: 'dashboard'
 })
 
-useHead({
-    title: 'Edit Berita - ArcheryHub Dashboard'
-})
-
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
 const { get, put } = useApi()
 const { t } = useDashboardI18n()
+
+useHead({
+    title: () => `${t('organization_news.form.edit_title')} - ArcheryHub Dashboard`
+})
 
 const isSubmitting = ref(false)
 const showMediaLibrary = ref(false)
@@ -138,17 +138,17 @@ const form = ref({
     metaDescription: ''
 })
 
-const categoryOptions = [
-    { title: 'Event', value: 'event' },
-    { title: 'Pengumuman', value: 'pengumuman' },
-    { title: 'Prestasi', value: 'prestasi' },
-    { title: 'Lainnya', value: 'lainnya' }
-]
+const categoryOptions = computed(() => [
+    { title: t('organization_news.options.cat_event'), value: 'event' },
+    { title: t('organization_news.options.cat_announcement'), value: 'pengumuman' },
+    { title: t('organization_news.options.cat_achievement'), value: 'prestasi' },
+    { title: t('organization_news.options.cat_other'), value: 'lainnya' }
+])
 
-const statusOptions = [
-    { title: 'Draft', value: 'draft' },
-    { title: 'Publik', value: 'published' }
-]
+const statusOptions = computed(() => [
+    { title: t('organization_news.options.status_draft'), value: 'draft' },
+    { title: t('organization_news.options.status_published'), value: 'published' }
+])
 
 const loadNews = async () => {
     try {

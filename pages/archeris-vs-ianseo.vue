@@ -33,18 +33,15 @@
             </div>
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div>
-                    <div class="flex items-center gap-2 text-primary text-[10px] sm:text-sm font-bold tracking-wider mb-3">
+                    <div class="flex items-center gap-2 text-primary text-xs sm:text-sm font-bold tracking-wider mb-3">
                         <Icon icon="ph:scales" class="text-base sm:text-lg" />
                         Comparison
                     </div>
                     <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-white leading-tight mb-4">
                         {{ $t('home.comparison_page.hero_title') }}
                     </h1>
-                    <p class="text-slate-300 text-sm md:text-lg leading-relaxed">
-                        {{ $t('home.comparison_page.hero_subtitle') }}
-                    </p>
-                    <p class="text-slate-400 text-sm mt-6">
-                        {{ $t('home.comparison_page.hero_desc') }}
+                    <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+                        {{ $t('home.comparison_page.hero_subtitle') }} {{ $t('home.comparison_page.hero_desc') }}
                     </p>
                 </div>
             </div>
@@ -61,7 +58,7 @@
                             <img src="/logo.png" class="h-10 w-auto object-contain" alt="Archeris Logo" />
                         </div>
                         <h4 class="text-lg font-black text-navy">{{ $t('home.comparison.col_archeris') }}</h4>
-                        <span class="text-xs text-primary font-black tracking-widest bg-navy px-2.5 py-0.5 rounded-full mt-2">Modern & Cloud-Native</span>
+                        <span class="text-xs text-navy font-black tracking-widest bg-navy/10 px-2.5 py-0.5 rounded-full mt-2">Modern & Cloud-Native</span>
                     </div>
 
                     <!-- VS Divider -->
@@ -95,35 +92,41 @@
                 <div class="divide-y divide-gray-100">
                     <!-- Table Rows -->
                     <div v-for="i in 6" :key="i" class="p-6 md:p-8 hover:bg-gray-50/30 transition-colors">
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
                             <!-- Feature Name -->
                             <div class="md:col-span-3">
-                                <h4 class="font-black text-navy text-sm md:text-base flex items-center gap-2">
-                                    <span class="w-1.5 h-3.5 bg-navy rounded-full"></span>
-                                    {{ $t(`home.comparison.f${i}_name`) }}
-                                </h4>
+                                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-2xl">
+                                    <Icon icon="ph:star-four-bold" class="text-primary text-xs shrink-0" />
+                                    <h4 class="font-black text-navy text-xs sm:text-sm">
+                                        {{ $t(`home.comparison.f${i}_name`) }}
+                                    </h4>
+                                </div>
                             </div>
 
                             <!-- Archeris.net Info -->
-                            <div class="md:col-span-5 bg-[#E2F9C2]/10 rounded-xl p-4 border border-primary/10">
-                                <div class="flex items-center gap-1.5 text-navy font-bold text-xs mb-1.5">
-                                    <Icon icon="ph:check-circle-fill" class="text-primary text-sm" />
-                                    <span>Archeris.net</span>
+                            <div class="md:col-span-5 bg-[#E2F9C2]/10 rounded-xl p-4 border border-primary/10 h-full flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center gap-1.5 text-navy font-bold text-xs mb-1.5">
+                                        <Icon icon="ph:check-circle-fill" class="text-primary text-sm" />
+                                        <span>Archeris.net</span>
+                                    </div>
+                                    <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                                        {{ $t(`home.comparison.f${i}_archeris`) }}
+                                    </p>
                                 </div>
-                                <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                                    {{ $t(`home.comparison.f${i}_archeris`) }}
-                                </p>
                             </div>
 
                             <!-- Ianseo.net Info -->
-                            <div class="md:col-span-4 bg-gray-50 rounded-xl p-4 border border-gray-100">
-                                <div class="flex items-center gap-1.5 text-gray-400 font-bold text-xs mb-1.5">
-                                    <Icon icon="ph:minus-circle" class="text-sm" />
-                                    <span>Ianseo.net</span>
+                            <div class="md:col-span-4 bg-gray-50 rounded-xl p-4 border border-gray-100 h-full flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center gap-1.5 text-gray-400 font-bold text-xs mb-1.5">
+                                        <Icon icon="ph:minus-circle" class="text-sm" />
+                                        <span>Ianseo.net</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500 leading-relaxed font-light">
+                                        {{ $t(`home.comparison.f${i}_ianseo`) }}
+                                    </p>
                                 </div>
-                                <p class="text-xs text-gray-500 leading-relaxed font-light">
-                                    {{ $t(`home.comparison.f${i}_ianseo`) }}
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -167,7 +170,7 @@ const localePath = useLocalePath()
 useHead({
     title: 'Archeris vs Ianseo - Archeris',
     meta: [
-        { name: 'description', content: 'detailed comparison between archeris.net and ianseo.net tournament management platforms.' }
+        { name: 'description', content: 'Detailed comparison between Archeris.net and Ianseo.net tournament management platforms.' }
     ]
 })
 </script>

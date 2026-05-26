@@ -308,7 +308,8 @@
         "action": "Aksi"
       },
       "no_participants": "Tidak ada peserta yang ditemukan.",
-      "view_details": "Lihat Detail Profil"
+      "view_details": "Lihat Detail Profil",
+      "total_label": "Total:"
     },
     "reports": {
       "title": "Dasbor Laporan",
@@ -1084,7 +1085,9 @@
       "FAQ": "FAQ"
     },
     "quota_info_unavailable": "Informasi kuota belum tersedia.",
-    "organizer": "Penyelenggara"
+    "organizer": "Penyelenggara",
+    "archers": "Atlet",
+    "teams": "Tim"
   },
   "event_create": {
     "breadcrumb_new": "Buat Baru",
@@ -2924,89 +2927,6 @@
       "dashboard": "Dashboard",
       "events": "Event"
     },
-    "participant": {
-      "list": {
-        "title": "Peserta"
-      },
-      "detail": {
-        "title": "Detail Peserta",
-        "subtitle": "Lihat informasi lengkap dan status pendaftaran peserta",
-        "save_button": "Simpan Perubahan",
-        "save_short": "Simpan",
-        "loading": "Memuat data peserta...",
-        "loading_short": "Memuat...",
-        "info_title": "Informasi Peserta",
-        "division_label": "Divisi & Kategori Lomba",
-        "search_placeholder": "Cari divisi atau kategori...",
-        "category_not_found": "Kategori tidak ditemukan",
-        "multiple_selection_note": "Pemanah dapat mengikuti lebih dari satu kategori",
-        "payment_title": "Status & Pembayaran",
-        "payment_status_label": "Status Pembayaran",
-        "payment_amount_label": "Jumlah Pembayaran",
-        "kick": {
-          "title": "Keluarkan Peserta",
-          "description": "Hapus peserta dari event ini secara permanen. Tindakan ini juga akan menghapus data target dan skor yang terkait.",
-          "cannot_remove": "Tidak Dapat Dikeluarkan",
-          "remove_button": "Keluarkan Peserta",
-          "confirm_title": "Keluarkan Peserta?",
-          "confirm_heading": "Keluarkan Peserta?",
-          "confirm_message": "Apakah Anda yakin ingin mengeluarkan {name} dari event ini?",
-          "confirm_warning": "Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat dibatalkan."
-        },
-        "not_found_title": "Peserta Tidak Ditemukan",
-        "not_found_message": "Peserta yang Anda cari tidak ditemukan atau telah dihapus.",
-        "back_to_list": "Kembali ke Daftar Peserta",
-        "tbd": "TBD",
-        "category_fallback": "Kategori",
-        "select_category": "Pilih Kategori",
-        "toast": {
-          "load_failed": "Gagal memuat data peserta",
-          "update_success": "Data peserta berhasil diperbarui",
-          "update_failed": "Gagal memperbarui data peserta",
-          "kick_success": "Peserta berhasil dikeluarkan dari event",
-          "kick_failed": "Gagal mengeluarkan peserta"
-        }
-      },
-      "edit": {
-        "title": "Edit Peserta",
-        "title_short": "Edit",
-        "subtitle": "Ubah informasi pendaftaran peserta",
-        "actions": {
-          "save_changes": "Simpan Perubahan"
-        },
-        "competition_info": "Informasi Lomba",
-        "select_category": "Kategori Event",
-        "select_category_placeholder": "Pilih Kategori",
-        "payment_amount_label": "Jumlah Pembayaran",
-        "payment_amount_placeholder": "0",
-        "event": "Event",
-        "tips_title": "Tips",
-        "tips": {
-          "1": "Pastikan kategori yang dipilih sesuai dengan divisi peserta",
-          "2": "Nomor target akan diassign pada modul khusus target"
-        },
-        "kick": {
-          "title": "Keluarkan Peserta",
-          "description": "Hapus peserta dari event ini secara permanen. Tindakan ini juga akan menghapus data target dan skor yang terkait.",
-          "button": "Keluarkan Peserta",
-          "confirm_message": "Apakah Anda yakin ingin mengeluarkan peserta ini dari event? Semua data pendaftaran dan skor akan dihapus secara permanen."
-        },
-        "errors": {
-          "select_category": "Pilih kategori event terlebih dahulu"
-        },
-        "subscription_expired": "Paket Anda sudah kedaluwarsa. Perpanjang paket untuk mengedit peserta."
-      },
-      "status": {
-        "registered": "Terdaftar",
-        "pending": "Menunggu"
-      },
-      "source": {
-        "invited": "Diundang",
-        "admin_created": "Dibuat oleh Admin",
-        "self_registered": "Daftar Sendiri",
-        "self_registered_alt": "Daftar Sendiri"
-      }
-    },
     "tabs": {
       "informasi": "Informasi",
       "pendaftaran": "Pendaftaran",
@@ -3137,5 +3057,8 @@
       "save_success": "Halaman event berhasil diperbarui",
       "save_failed": "Gagal menyimpan event"
     }
+  },
+  "common": {
+    "error_saving": "Gagal menyimpan perubahan"
   }
 }

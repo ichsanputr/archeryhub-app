@@ -26,71 +26,78 @@
         <!-- Grid Matches -->
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             <div v-for="match in roundMatches" :key="match.id"
-                class="group bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-md hover:shadow-navy/5 transition-all duration-500 overflow-hidden flex flex-col">
+                class="group bg-white rounded-[2rem] border-t-4 transition-all duration-500 overflow-hidden flex flex-col shadow-sm hover:shadow-xl hover:-translate-y-1"
+                :class="[
+                    match.winner_entry_id 
+                        ? 'border-t-green-500 border-x border-b border-gray-100 bg-green-50/5' 
+                        : (match.target_name ? 'border-t-primary border-x border-b border-gray-100' : 'border-t-navy/20 border-x border-b border-gray-100')
+                ]">
 
                 <!-- Header: Match Info -->
-                <div class="px-6 py-5 bg-navy/[0.02] border-b border-gray-50 flex items-center justify-between">
+                <div class="px-6 py-4.5 bg-gradient-to-b from-navy/[0.03] to-transparent border-b border-gray-50 flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div
-                            class="size-9 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center text-navy font-black text-xs">
+                            class="size-8 rounded-xl bg-navy text-white shadow-sm flex items-center justify-center font-black text-xs">
                             {{ match.match_no }}
                         </div>
                         <div>
-                            <div class="text-[10px] font-black text-navy/30 tracking-[0.2em] leading-none mb-1">
+                            <div class="text-[9px] font-black text-navy/30 tracking-[0.2em] leading-none mb-0.5">
                                 {{ $t('event_elimination.match') }}</div>
                             <div class="text-xs font-black text-navy/80 ">Match {{ match.match_no }}</div>
                         </div>
                     </div>
 
                     <div v-if="match.winner_entry_id"
-                        class="size-8 rounded-full bg-green-50 flex items-center justify-center text-green-500">
-                        <Icon icon="ph:check-circle-fill" class="text-xl" />
+                        class="size-7 rounded-full bg-green-100 flex items-center justify-center text-green-600 shadow-sm">
+                        <Icon icon="ph:check-bold" class="text-sm" />
                     </div>
                     <div v-else-if="match.target_name"
-                        class="px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
-                        <span class="text-[10px] font-black text-primary-hover tracking-widest ">{{ $t('event_elimination.plotted') }}</span>
+                        class="px-2.5 py-0.5 bg-primary/20 rounded-full border border-primary/30">
+                        <span class="text-[9px] font-black text-navy tracking-widest ">{{ $t('event_elimination.plotted') }}</span>
                     </div>
                 </div>
 
                 <!-- Body: Participants -->
-                <div class="p-6 flex-1 space-y-4">
+                <div class="p-5 flex-1 space-y-3">
                     <div v-for="side in ['a', 'b']" :key="side"
-                        class="flex items-center justify-between p-3 rounded-2xl border transition-all" :class="[
-                            match[`entry_${side}_name`] ? 'bg-gray-50/50 border-gray-100' : 'bg-slate-50 border-dashed border-gray-200 opacity-60'
+                        class="flex items-center justify-between p-3 rounded-xl border transition-all" :class="[
+                            match[`entry_${side}_name`] 
+                                ? 'bg-gradient-to-r from-gray-50 to-white border-gray-100 shadow-sm' 
+                                : 'bg-slate-50/50 border-dashed border-gray-200 opacity-60'
                         ]">
                         <div class="flex items-center gap-3 min-w-0">
                             <div class="relative shrink-0">
                                 <img :src="getAvatarUrl(match[`entry_${side}_name`])"
-                                    class="size-10 rounded-xl border-2 border-white shadow-sm object-cover" />
+                                    class="size-9 rounded-xl border-2 border-white shadow-sm object-cover" />
                                 <div v-if="match[`entry_${side}_seed`]"
-                                    class="absolute -top-1.5 -left-1.5 size-5 rounded-lg bg-navy text-primary text-[8px] font-black flex items-center justify-center shadow-lg border-2 border-white">
+                                    class="absolute -top-1 -left-1 size-4.5 rounded bg-navy text-primary text-[8px] font-black flex items-center justify-center shadow border border-white">
                                     {{ match[`entry_${side}_seed`] }}
                                 </div>
                             </div>
                             <div class="min-w-0">
-                                <p class="text-[10px] font-black text-gray-400 tracking-tighter mb-0.5">
-                                    Side {{ side.toUpperCase() }}
-                                </p>
-                                <p class="text-xs font-black text-navy truncate">
+                                <div class="text-[9px] font-black text-gray-400 tracking-wider mb-0.5">
+                                    SIDE {{ side.toUpperCase() }}
+                                </div>
+                                <div class="text-xs font-bold text-navy truncate">
                                     {{ match[`entry_${side}_name`] || (match.is_bye && side === 'b' ? 'BYE' : 'TBD') }}
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Footer: Target Selection -->
-                <div class="p-6 pt-0 mt-auto">
+                <div class="p-5 pt-0 mt-auto">
                     <div
-                        class="p-1 px-3 bg-navy/5 rounded-2xl border border-navy/5 group/sel focus-within:bg-white focus-within:border-primary/30 transition-all">
-                        <div class="flex items-center justify-between mb-1 mt-1">
-                            <label class="text-[9px] font-black text-navy/30 tracking-widest block">{{ $t('event_elimination.target_line') }}</label>
+                        class="p-2.5 px-4 bg-navy/[0.03] rounded-2xl border border-navy/5 group/sel focus-within:bg-white focus-within:border-primary/50 transition-all shadow-inner">
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="text-[9px] font-black text-navy/40 tracking-widest block">{{ $t('event_elimination.target_line') }}</label>
                             <span v-if="match.board_code"
                                 class="text-[8px] font-black bg-navy text-primary px-1.5 py-0.5 rounded shadow-sm">{{
                                     match.board_code }}</span>
                         </div>
                         <select :value="match.target_id"
-                            class="w-full bg-transparent border-none focus:ring-0 text-sm font-black text-navy outline-none py-1.5 cursor-pointer"
+                            class="w-full bg-transparent border-none focus:ring-0 text-xs font-black text-navy outline-none py-1 cursor-pointer"
                             @change="e => { match.target_id = e.target.value; $emit('update-target', match) }">
                             <option value="">-- {{ $t('event_elimination.select_target_option') }} --</option>
                             <option v-for="opt in getFilteredOptions(match.id)" :key="opt.id" :value="opt.id">

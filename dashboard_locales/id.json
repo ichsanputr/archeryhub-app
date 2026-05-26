@@ -20,7 +20,8 @@
     "cancel": "Batal",
     "inactive": "Nonaktif",
     "reset": "Reset",
-    "save_changes": "Simpan Perubahan"
+    "save_changes": "Simpan Perubahan",
+    "dashboard": "Dashboard"
   },
   "seller": {
     "header": {
@@ -321,7 +322,12 @@
       "current_plan_title": "Paket Saat Ini",
       "billed": "Ditagih",
       "price": "Harga",
-      "next_billing": "Tagihan Berikutnya"
+      "next_billing": "Tagihan Berikutnya",
+      "per_usage": "per penggunaan",
+      "monthly": "bulanan",
+      "yearly": "tahunan",
+      "unlimited": "Tak Terbatas",
+      "days_remaining": "{days} Hari Tersisa"
     },
     "usage": {
       "title": "Pemakaian & Batas",
@@ -385,7 +391,8 @@
     "promo": {
       "extra": "Tanpa biaya pendaftaran, tanpa komitmen.",
       "total_value": "Total Nilai"
-    }
+    },
+    "expired_warning": "Masa aktif paket langganan Anda telah berakhir. Silakan perbarui paket Anda untuk melanjutkan."
   },
   "events": {
     "list": {
@@ -516,7 +523,11 @@
       "fill_required": "Mohon lengkapi Nama Venue, Alamat, dan Link Google Maps",
       "save_success": "Halaman event berhasil diperbarui",
       "save_failed": "Gagal menyimpan event"
-    }
+    },
+    "title": "Halaman Event",
+    "subtitle": "Kelola informasi yang ditampilkan di halaman publik event.",
+    "view_button": "Lihat Halaman",
+    "save_button": "Simpan Perubahan"
   },
   "dashboard_events_participants_add": {
     "title": "Tambah Peserta",
@@ -600,5 +611,353 @@
       "bow_type_required": "Pilih jenis busur pemanah",
       "club_required": "Pilih klub pemanah"
     }
+  },
+  "organization_news": {
+    "index": {
+      "title": "Manajemen Berita",
+      "subtitle": "Kelola berita dan pengumuman organisasi Anda.",
+      "create": "Buat Berita Baru",
+      "meta_title": "Manajemen Berita - Dashboard ArcheryHub",
+      "stats_total_view": "Total Tayangan",
+      "search_placeholder": "Cari judul berita...",
+      "search_label": "Pencarian",
+      "filter_status": "Status",
+      "filter_category": "Kategori",
+      "reset": "Reset",
+      "view": "Lihat",
+      "edit": "Edit",
+      "stats_total": "Total Berita",
+      "stats_published": "Dipublikasi",
+      "stats_draft": "Draft",
+      "empty_title": "Belum Ada Berita",
+      "empty_desc": "Buat berita pertama Anda untuk berbagi informasi dengan pemanah dan peserta event.",
+      "delete_title": "Hapus Berita",
+      "delete_yes": "Ya, Hapus",
+      "delete_no": "Batal",
+      "delete_confirm": "Apakah Anda yakin ingin menghapus berita \"{title}\"? Tindakan ini tidak dapat dibatalkan.",
+      "toast_fetch_failed": "Gagal mengambil data berita",
+      "toast_delete_ok": "Berita berhasil dihapus",
+      "toast_delete_failed": "Gagal menghapus berita"
+    },
+    "options": {
+      "status_all": "Semua Status",
+      "status_draft": "Draft",
+      "status_published": "Publik",
+      "cat_all": "Semua Kategori",
+      "cat_event": "Event",
+      "cat_announcement": "Pengumuman",
+      "cat_achievement": "Prestasi",
+      "cat_other": "Lainnya"
+    },
+    "detail": {
+      "title_short": "Detail",
+      "status_heading": "Status Berita",
+      "stats_heading": "Statistik",
+      "stats_views": "Views",
+      "stats_words": "Words",
+      "stats_read_time": "Read Time",
+      "status_label": "Status",
+      "status_published": "Publik",
+      "status_draft": "Draft",
+      "quick_actions": "Aksi Cepat",
+      "publish": "Publikasikan",
+      "unpublish": "Tarik ke Draft",
+      "share": "Bagikan",
+      "share_title": "Bagikan Berita",
+      "share_desc": "Sebarkan link berita ini ke sosial media atau salin link untuk dibagikan.",
+      "share_link_label": "Link Berita",
+      "copy": "Salin",
+      "copied": "Tersalin",
+      "share_to_label": "Bagikan Ke",
+      "delete_dialog_title": "Hapus Berita",
+      "delete_dialog_message": "Apakah Anda yakin ingin menghapus berita \"{title}\"? Tindakan ini tidak dapat dibatalkan.",
+      "delete_dialog_confirm": "Ya, Hapus",
+      "delete": "Hapus",
+      "edit": "Edit",
+      "read_time_unit": "menit baca"
+    },
+    "create": {
+      "title_short": "Baru",
+      "title": "Buat Berita Baru",
+      "subtitle": "Tulis dan publikasikan berita untuk organisasi Anda.",
+      "meta_title": "Buat Berita - Dashboard ArcheryHub",
+      "featured_image": "Gambar Utama",
+      "click_to_select_image": "Klik untuk pilih gambar",
+      "select_or_upload": "Pilih dari library atau upload baru",
+      "info_heading": "Informasi Berita",
+      "label_title": "Judul Berita",
+      "placeholder_title": "Masukkan judul berita yang menarik...",
+      "label_category": "Kategori",
+      "label_status": "Status Publikasi",
+      "label_tags": "Tags",
+      "placeholder_tags": "Contoh: event, turnamen",
+      "label_excerpt": "Kutipan Singkat",
+      "placeholder_excerpt": "Tulis ringkasan singkat berita (akan ditampilkan di preview)...",
+      "content_heading": "Konten Berita",
+      "placeholder_content": "Tulis konten berita Anda di sini...",
+      "back": "Kembali",
+      "preview": "Pratinjau",
+      "publish": "Publikasikan",
+      "save_draft": "Simpan Draft",
+      "toast_preview": "Pratinjau dibuka",
+      "toast_title_required": "Judul berita wajib diisi",
+      "toast_create_ok_published": "Berita berhasil dipublikasikan!",
+      "toast_create_ok_draft": "Draft berhasil disimpan!",
+      "toast_create_failed": "Gagal menyimpan berita"
+    },
+    "edit": {
+      "title_short": "Edit",
+      "title": "Edit Berita",
+      "subtitle": "Ubah informasi berita organisasi Anda.",
+      "cancel": "Batal",
+      "update_publish": "Perbarui & Publikasikan",
+      "save_changes": "Simpan Perubahan"
+    },
+    "form": {
+      "edit_title": "Edit Berita",
+      "toast_load_failed": "Gagal memuat data berita",
+      "toast_title_required": "Judul berita wajib diisi",
+      "toast_update_ok": "Berita berhasil diperbarui!",
+      "toast_update_failed": "Gagal memperbarui berita"
+    }
+  },
+  "subscription_page": {
+    "badge": "PAKET BERLANGGANAN",
+    "title": "Skalakan Manajemen Panahan Anda",
+    "description": "Opsi fleksibel untuk penyelenggara turnamen skala kecil sampai skala internasional. Dapatkan 3 bulan gratis paket Standard untuk pendaftaran organisasi baru.",
+    "detail_comparison": "Perbandingan Detail",
+    "feature_header": "Fitur",
+    "basic_title": "Standar Eo",
+    "basic_desc": "Solusi digital lengkap untuk turnamen skala kecil & menengah.",
+    "elite_title": "Elite Eo",
+    "elite_desc": "Fitur kustom dan prioritas untuk penyelenggara turnamen profesional.",
+    "select_plan": "Pilih Paket",
+    "activate_elite": "Aktifkan Elite Eo",
+    "professional": "Profesional",
+    "month_unit": "/BLN",
+    "limit_promo": "Promo Terbatas",
+    "promo_title": "Mulai Turnamen Anda Gratis 3 Bulan!",
+    "promo_desc": "Daftarkan organisasi Anda sekarang dan nikmati akses penuh paket Standard tanpa biaya selama tiga bulan pertama.",
+    "saving_text": "Hemat Rp 90.000",
+    "promo_extra": "Tanpa biaya pendaftaran, tanpa komitmen.",
+    "total_value": "Total Nilai",
+    "faq_title": "FAQ",
+    "faq_subtitle": "Punya Pertanyaan?",
+    "basic_features_list": [
+      "Maksimal 50 Peserta / Event",
+      "Penyimpanan Media 1 GB",
+      "Hingga 5 Wasit / Scorekeeper",
+      "Pembayaran Registrasi Otomatis",
+      "Scoring Kualifikasi & Live",
+      "Unduh Laporan Keuangan"
+    ],
+    "elite_features_list": [
+      "Peserta Tanpa Batas / Event",
+      "Penyimpanan Media 5 GB",
+      "Wasit & Scorekeeper Tanpa Batas",
+      "Pembayaran Global & Paddle",
+      "Skema Eliminasi Match Finals",
+      "Laporan Lanjutan & Excel"
+    ],
+    "comparison_list": [
+      {
+        "feature": "Maksimum Peserta",
+        "basic": "40 / Event",
+        "elite": "Tak Terbatas",
+        "icon": "ph:users-three-bold"
+      },
+      {
+        "feature": "Penyimpanan Media",
+        "basic": "1 GB",
+        "elite": "3 GB",
+        "icon": "ph:hard-drives-bold"
+      },
+      {
+        "feature": "Buat Berita (News)",
+        "basic": true,
+        "elite": true,
+        "icon": "ph:newspaper-bold"
+      },
+      {
+        "feature": "Profil Organisasi",
+        "basic": "Lengkap & Kustom",
+        "elite": "Lengkap & Kustom",
+        "icon": "ph:buildings-bold"
+      },
+      {
+        "feature": "Promosi Event",
+        "basic": true,
+        "elite": true,
+        "icon": "ph:megaphone-bold"
+      },
+      {
+        "feature": "Analitik Lanjutan",
+        "basic": true,
+        "elite": true,
+        "icon": "ph:chart-bar-bold"
+      },
+      {
+        "feature": "Dukungan Prioritas",
+        "basic": true,
+        "elite": true,
+        "icon": "ph:headset-bold"
+      }
+    ],
+    "faqs_list": [
+      {
+        "question": "Apakah paket bisa upgrade atau downgrade kapan saja?",
+        "answer": "Tentu saja! Fleksibilitas adalah kunci. Anda bisa mengubah paket kapan pun. Upgrade akan dihitung prorata dari sisa hari bulan berjalan, sedangkan downgrade akan efektif di siklus tagihan berikutnya."
+      },
+      {
+        "question": "Apa yang terjadi setelah masa uji coba selesai?",
+        "answer": "Data Anda tetap aman di server kami. Anda akan diminta memilih paket berbayar untuk tetap menggunakan fitur premium. Jika tidak memilih dalam 7 hari, akun akan otomatis kembali ke paket Gratis."
+      },
+      {
+        "question": "Bagaimana cara kerja skema bayar Paket EO?",
+        "answer": "Paket EO menggunakan sistem langganan bulanan yang flat. Tidak ada lagi biaya per atlet, sehingga Anda bisa mengelola budget turnamen dengan lebih pasti dan efisien."
+      },
+      {
+        "question": "Berapa lama waktu implementasi untuk paket Elite?",
+        "answer": "Untuk paket Elite, kami biasanya menyiapkan semua konfigurasi dalam waktu 3-5 hari kerja. Anda juga akan mendapatkan sesi training khusus untuk seluruh staf admin organisasi."
+      }
+    ],
+    "benefits_title": "Keunggulan Layanan Premium",
+    "benefit_activation_title": "Aktivasi Instan",
+    "benefit_activation_desc": "Paket langganan Anda langsung aktif secara otomatis setelah pembayaran berhasil diverifikasi.",
+    "benefit_analytics_title": "Analitik Lanjutan",
+    "benefit_analytics_desc": "Pantau performa turnamen, statistik pendaftaran, dan data keuangan organisasi secara real-time.",
+    "benefit_cert_title": "E-Sertifikat Otomatis",
+    "benefit_cert_desc": "Buat sertifikat digital otomatis untuk seluruh peserta dan pemenang dengan desain kustom.",
+    "benefit_support_title": "Dukungan Prioritas",
+    "benefit_support_desc": "Tim support kami siap membantu Anda menyukseskan turnamen 24/7 via jalur khusus.",
+    "payment_title": "Metode Pembayaran",
+    "payment_subtitle": "Mendukung Berbagai Metode Pembayaran Instan",
+    "payment_desc": "Kami bekerja sama dengan payment gateway terpercaya untuk memproses pembayaran Anda dengan aman, cepat, dan terverifikasi otomatis.",
+    "starter_badge": "Starter",
+    "free_title": "Free Eo",
+    "free_desc": "Mulai kelola turnamen pertama Anda secara instan tanpa biaya.",
+    "get_started_free": "Mulai Gratis",
+    "choose_plan": "Pilih Paket",
+    "active_modal_title": "Paket Aktif Ditemukan",
+    "active_modal_desc": "Anda sudah memiliki paket langganan yang sedang berjalan.",
+    "active_modal_detail": "Anda saat ini terdaftar dengan paket:",
+    "active_modal_expires": "Masa aktif berlaku hingga:",
+    "close": "Tutup",
+    "to_dashboard": "Ke Dashboard",
+    "gateway_modal_title": "Pilih Metode Pembayaran",
+    "gateway_modal_desc": "Pilih sistem pembayaran yang ingin Anda gunakan untuk memproses langganan.",
+    "tripay_name": "Tripay (Rupiah)",
+    "tripay_desc": "Pembayaran via Bank Transfer (BCA, Mandiri, BNI, BRI), QRIS, GoPay, OVO, DANA, dll.",
+    "paddle_name": "Paddle (Global / USD)",
+    "paddle_desc": "Pembayaran global via Credit Card, Debit Card, PayPal, Apple Pay, Google Pay, dll.",
+    "cancel": "Batal",
+    "features": {
+      "free": {
+        "participants": "Maksimal 10 Peserta / Event",
+        "storage": "Penyimpanan Media 250 MB",
+        "profile": "Profil Organisasi Dasar",
+        "create": "Buat Event Baru",
+        "scoring": "Scoring Digital"
+      }
+    },
+    "comparison_features": {
+      "participants_limit": "Batas Peserta",
+      "online_reg": "Pendaftaran & Pembayaran",
+      "scoring_methods": "Metode Scoring",
+      "cert_designer": "Desainer E-Sertifikat",
+      "wa_notifications": "Notifikasi WhatsApp",
+      "referees_limit": "Wasit & Scorekeeper",
+      "offline_sync": "Aplikasi Scoring Offline",
+      "media_storage": "Penyimpanan Media",
+      "exports_reports": "Ekspor Data & Laporan",
+      "priority_support": "Dukungan Prioritas",
+      "landing_page_seo": "Landing Page Kustom & SEO",
+      "team_club_mgmt": "Manajemen Tim & Klub",
+      "target_allocation": "Alokasi Target Bantalan Visual",
+      "obs_overlay": "Overlay Live Streaming OBS",
+      "direct_payout": "Rekening Bank Organisasi Langsung",
+      "custom_whatsapp": "Nama Pengirim WA Kustom",
+      "digital_cert_sign": "Tanda Tangan Sertifikat Digital",
+      "finance_analytics": "Analitik Keuangan & Pendaftaran",
+      "ticket_management": "Manajemen Tiket Penonton",
+      "mass_print_score": "Cetak Scorecard Massal",
+      "events_categories": "Turnamen & Kategori",
+      "elimination_finals": "Babak Kualifikasi & Eliminasi",
+      "news_publishing": "Berita & Pengumuman"
+    },
+    "unlimited": "Tak Terbatas",
+    "manual": "Manual",
+    "auto_local": "Otomatis (Tripay)",
+    "auto_global": "Otomatis & Global (Tripay / Paddle)",
+    "scoring_basic": "Kualifikasi Dasar",
+    "scoring_elimination": "Kualifikasi & Eliminasi",
+    "scoring_full": "Set Play / Kumulatif + Live",
+    "cert_none": "Tidak Tersedia",
+    "cert_basic": "Templat Standar",
+    "cert_custom": "Kustom Layout Sendiri",
+    "wa_none": "Tidak Tersedia",
+    "wa_system": "Notifikasi Sistem",
+    "wa_custom": "Kustom Broadcast & Nama Pengirim",
+    "referee_1": "1 Orang",
+    "referee_5": "Hingga 5 Orang",
+    "export_basic": "Hasil PDF Dasar",
+    "export_standard": "PDF & CSV Lengkap",
+    "export_elite": "Analitik Grafis + Keuangan",
+    "support_none": "Tidak Tersedia",
+    "support_standard": "Email & Chat",
+    "support_priority": "Prioritas 24/7 + Live Support",
+    "custom_domain": "Domain Kustom & SEO",
+    "mixed_teams": "Beregu Campuran & Klub",
+    "visual_drag_drop": "Drag & Drop Interaktif",
+    "live_push_wa": "Real-time Push & WhatsApp",
+    "yes_obs_widget": "Widget Broadcast OBS",
+    "logo_barcode": "Logo Kustom & Barcode",
+    "verified_hash": "Verifikasi Hash Digital",
+    "full_graphs_xls": "Grafik & Ekspor XLS",
+    "yes_spectator_tix": "Tiket Penonton",
+    "standard_template": "Templat Standar",
+    "standard_team": "Beregu Standar",
+    "standard_allocation": "Alokasi Bantalan Standar",
+    "basic_print": "Cetak Dasar",
+    "summary_only": "Hanya Ringkasan",
+    "free_features_list": [
+      "Maksimal 10 Peserta / Event",
+      "Penyimpanan Media 250 MB",
+      "1 Akun Wasit / Scorekeeper",
+      "Buat Turnamen & Kategori",
+      "Digital Scoring Sederhana",
+      "Laporan Hasil Dasar (PDF)"
+    ]
+  },
+  "subscription_payment_page": {
+    "back": "Kembali ke Subscription",
+    "title": "Pembayaran",
+    "subtitle": "Selesaikan transaksi untuk mengaktifkan paket Anda.",
+    "default_plan_name": "Paket Langganan",
+    "total_pay": "Total Bayar",
+    "choose_duration": "Pilih Durasi Berlangganan",
+    "duration_desc": "Berapa lama Anda ingin berlangganan?",
+    "year": "1 Tahun",
+    "months": "{n} Bulan",
+    "save": "Hemat",
+    "custom": "Kustom:",
+    "fee": "Biaya:",
+    "fee_integrated": "Terintegrasi",
+    "order_summary": "Ringkasan Pesanan",
+    "plan": "Paket",
+    "duration": "Durasi",
+    "subtotal": "Subtotal",
+    "method": "Metode",
+    "pay_now": "Bayar Sekarang",
+    "secure_transaction": "Transaksi aman & terenkripsi oleh {gateway}",
+    "select_method_error": "Silakan pilih metode pembayaran",
+    "paddle_link_error": "Gagal mendapatkan tautan pembayaran Paddle dari server",
+    "paddle_success_simulation": "simulasi pembayaran berhasil! karena tidak ada paddle api key di backend, sistem secara otomatis menyelesaikan transaksi secara lokal.",
+    "paddle_process_error": "Gagal memproses pembayaran via Paddle",
+    "generic_payment_error": "Terjadi kesalahan saat memproses pembayaran",
+    "page_title": "Pilih Metode Pembayaran - Archeris.net",
+    "paddle_name": "Kartu Kredit / PayPal (Global)",
+    "paddle_group": "Kartu Kredit & Internasional",
+    "load_channels_failed": "Gagal mengambil metode pembayaran. Silakan coba lagi."
   }
 }

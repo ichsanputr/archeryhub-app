@@ -31,51 +31,30 @@
 
         <!-- Quick Stats -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div
-                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:newspaper" class="text-xl" />
-                </div>
-                <div>
-                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Total Berita</p>
-                    <p class="text-lg font-bold text-navy">{{ news.length }}</p>
-                </div>
-            </div>
-            <div
-                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:check-circle" class="text-xl" />
-                </div>
-                <div>
-                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Dipublikasi</p>
-                    <p class="text-lg font-bold text-navy">{{news.filter(n => n.status === 'published').length}}</p>
-                </div>
-            </div>
-            <div
-                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:file-text" class="text-xl" />
-                </div>
-                <div>
-                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Draft</p>
-                    <p class="text-lg font-bold text-navy">{{news.filter(n => n.status === 'draft').length}}</p>
-                </div>
-            </div>
-            <div
-                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:eye" class="text-xl" />
-                </div>
-                <div>
-                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Total View</p>
-                    <p class="text-lg font-bold text-navy">{{news.reduce((acc, n) => acc + (n.views || 0),
-                        0).toLocaleString() }}</p>
-                </div>
-            </div>
+            <StatCard
+                title="total berita"
+                :value="news.length"
+                icon="ph:newspaper"
+                color="primary"
+            />
+            <StatCard
+                title="dipublikasi"
+                :value="news.filter(n => n.status === 'published').length"
+                icon="ph:check-circle"
+                color="primary"
+            />
+            <StatCard
+                title="draft"
+                :value="news.filter(n => n.status === 'draft').length"
+                icon="ph:file-text"
+                color="primary"
+            />
+            <StatCard
+                title="total view"
+                :value="news.reduce((acc, n) => acc + (n.views || 0), 0).toLocaleString()"
+                icon="ph:eye"
+                color="primary"
+            />
         </div>
 
         <!-- Search & Filter -->

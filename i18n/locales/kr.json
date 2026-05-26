@@ -8,7 +8,7 @@
     "confirm": "예, 계속",
     "save_changes": "변경 사항 저장",
     "fill_required_fields": "필수 필드를 모두 입력해주세요",
-    "error_saving": "데이터 저장에 실패했습니다",
+    "error_saving": "변경 사항을 저장하지 못했습니다",
     "active": "활성",
     "inactive": "비활성",
     "actions": "작업",
@@ -317,7 +317,8 @@
         "action": "작업"
       },
       "no_participants": "참가자를 찾을 수 없습니다.",
-      "view_details": "프로필 상세 보기"
+      "view_details": "프로필 상세 보기",
+      "total_label": "합계:"
     },
     "reports": {
       "title": "보고서 대시보드",
@@ -937,7 +938,9 @@
       "FAQ": "FAQ"
     },
     "quota_info_unavailable": "할당량 정보를 사용할 수 없습니다.",
-    "organizer": "주최자"
+    "organizer": "주최자",
+    "archers": "양궁 선수",
+    "teams": "팀"
   },
   "event_elimination": {
     "title": "본선 관리",
@@ -2767,89 +2770,6 @@
       "dashboard": "Dashboard",
       "events": "Event"
     },
-    "participant": {
-      "list": {
-        "title": "Peserta"
-      },
-      "detail": {
-        "title": "Detail Peserta",
-        "subtitle": "Lihat informasi lengkap dan status pendaftaran peserta",
-        "save_button": "Simpan Perubahan",
-        "save_short": "Simpan",
-        "loading": "Memuat data peserta...",
-        "loading_short": "Memuat...",
-        "info_title": "Informasi Peserta",
-        "division_label": "Divisi & Kategori Lomba",
-        "search_placeholder": "Cari divisi atau kategori...",
-        "category_not_found": "Kategori tidak ditemukan",
-        "multiple_selection_note": "Pemanah dapat mengikuti lebih dari satu kategori",
-        "payment_title": "Status & Pembayaran",
-        "payment_status_label": "Status Pembayaran",
-        "payment_amount_label": "Jumlah Pembayaran",
-        "kick": {
-          "title": "Keluarkan Peserta",
-          "description": "Hapus peserta dari event ini secara permanen. Tindakan ini juga akan menghapus data target dan skor yang terkait.",
-          "cannot_remove": "Tidak Dapat Dikeluarkan",
-          "remove_button": "Keluarkan Peserta",
-          "confirm_title": "Keluarkan Peserta?",
-          "confirm_heading": "Keluarkan Peserta?",
-          "confirm_message": "Apakah Anda yakin ingin mengeluarkan {name} dari event ini?",
-          "confirm_warning": "Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat dibatalkan."
-        },
-        "not_found_title": "Peserta Tidak Ditemukan",
-        "not_found_message": "Peserta yang Anda cari tidak ditemukan atau telah dihapus.",
-        "back_to_list": "Kembali ke Daftar Peserta",
-        "tbd": "TBD",
-        "category_fallback": "Kategori",
-        "select_category": "Pilih Kategori",
-        "toast": {
-          "load_failed": "Gagal memuat data peserta",
-          "update_success": "Data peserta berhasil diperbarui",
-          "update_failed": "Gagal memperbarui data peserta",
-          "kick_success": "Peserta berhasil dikeluarkan dari event",
-          "kick_failed": "Gagal mengeluarkan peserta"
-        }
-      },
-      "edit": {
-        "title": "Edit Peserta",
-        "title_short": "Edit",
-        "subtitle": "Ubah informasi pendaftaran peserta",
-        "actions": {
-          "save_changes": "Simpan Perubahan"
-        },
-        "competition_info": "Informasi Lomba",
-        "select_category": "Kategori Event",
-        "select_category_placeholder": "Pilih Kategori",
-        "payment_amount_label": "Jumlah Pembayaran",
-        "payment_amount_placeholder": "0",
-        "event": "Event",
-        "tips_title": "Tips",
-        "tips": {
-          "1": "Pastikan kategori yang dipilih sesuai dengan divisi peserta",
-          "2": "Nomor target akan diassign pada modul khusus target"
-        },
-        "kick": {
-          "title": "Keluarkan Peserta",
-          "description": "Hapus peserta dari event ini secara permanen. Tindakan ini juga akan menghapus data target dan skor yang terkait.",
-          "button": "Keluarkan Peserta",
-          "confirm_message": "Apakah Anda yakin ingin mengeluarkan peserta ini dari event? Semua data pendaftaran dan skor akan dihapus secara permanen."
-        },
-        "errors": {
-          "select_category": "Pilih kategori event terlebih dahulu"
-        },
-        "subscription_expired": "Paket Anda sudah kedaluwarsa. Perpanjang paket untuk mengedit peserta."
-      },
-      "status": {
-        "registered": "Terdaftar",
-        "pending": "Menunggu"
-      },
-      "source": {
-        "invited": "Diundang",
-        "admin_created": "Dibuat oleh Admin",
-        "self_registered": "Daftar Sendiri",
-        "self_registered_alt": "Daftar Sendiri"
-      }
-    },
     "tabs": {
       "informasi": "정보",
       "pendaftaran": "등록",
@@ -2979,6 +2899,89 @@
       "file_failed": "{name} 파일 업로드에 실패했습니다",
       "save_success": "이벤트 페이지가 성공적으로 업데이트되었습니다",
       "save_failed": "이벤트 저장에 실패했습니다"
+    }
+  },
+  "participant": {
+    "list": {
+      "title": "참가자"
+    },
+    "detail": {
+      "title": "참가자 상세 정보",
+      "subtitle": "참가자의 전체 정보 및 등록 상태를 확인합니다",
+      "save_button": "변경 사항 저장",
+      "save_short": "저장",
+      "loading": "참가자 데이터 로드 중...",
+      "loading_short": "로드 중...",
+      "info_title": "참가자 정보",
+      "division_label": "부문 및 카테고리",
+      "search_placeholder": "부문 또는 카테고리 검색...",
+      "category_not_found": "카테고리를 찾을 수 없습니다",
+      "multiple_selection_note": "선수는 둘 이상의 카테고리에 참여할 수 있습니다",
+      "payment_title": "상태 및 결제",
+      "payment_status_label": "결제 상태",
+      "payment_amount_label": "결제 금액",
+      "kick": {
+        "title": "참가자 제외",
+        "description": "이 이벤트에서 참가자를 영구히 제외합니다. 관련된 타겟 번호 및 점수 데이터도 함께 삭제됩니다.",
+        "cannot_remove": "제외 불가",
+        "remove_button": "참가자 제외",
+        "confirm_title": "참가자를 제외하시겠습니까?",
+        "confirm_heading": "참가자 제외?",
+        "confirm_message": "이 이벤트에서 {name} 선수를 정말로 제외하시겠습니까?",
+        "confirm_warning": "이 작업은 관련된 모든 타겟 번호 및 점수를 삭제하며 취소할 수 없습니다."
+      },
+      "not_found_title": "참가자를 찾을 수 없음",
+      "not_found_message": "찾으시는 참가자가 없거나 삭제되었습니다.",
+      "back_to_list": "참가자 목록으로 돌아가기",
+      "tbd": "미정",
+      "category_fallback": "카테고리",
+      "select_category": "카테고리 선택",
+      "toast": {
+        "load_failed": "참가자 데이터를 불러오지 못했습니다",
+        "update_success": "참가자 정보가 성공적으로 업데이트되었습니다",
+        "update_failed": "참가자 정보 업데이트에 실패했습니다",
+        "kick_success": "이벤트에서 참가자가 성공적으로 제외되었습니다",
+        "kick_failed": "참가자 제외에 실패했습니다"
+      }
+    },
+    "edit": {
+      "title": "참가자 편집",
+      "title_short": "편집",
+      "subtitle": "참가자 등록 정보 수정",
+      "actions": {
+        "save_changes": "변경 사항 저장"
+      },
+      "competition_info": "대회 정보",
+      "select_category": "이벤트 카테고리",
+      "select_category_placeholder": "카테고리 선택",
+      "payment_amount_label": "결제 금액",
+      "payment_amount_placeholder": "0",
+      "event": "이벤트",
+      "tips_title": "팁",
+      "tips": {
+        "1": "선택한 카테고리가 참가자의 부문과 일치하는지 확인하세요",
+        "2": "과녁 번호는 타겟 모듈에서 배정됩니다"
+      },
+      "kick": {
+        "title": "참가자 제외",
+        "description": "이 이벤트에서 참가자를 영구히 제외합니다. 관련된 타겟 및 점수 데이터도 함께 삭제됩니다.",
+        "button": "참가자 제외",
+        "confirm_message": "이벤트에서 이 참가자를 정말로 제외하시겠습니까? 모든 등록 및 점수 데이터가 영구적으로 삭제됩니다."
+      },
+      "errors": {
+        "select_category": "먼저 이벤트 카테고리를 선택해 주세요"
+      },
+      "subscription_expired": "요금제 기간이 만료되었습니다. 참가자를 편집하려면 요금제를 갱신하세요."
+    },
+    "status": {
+      "registered": "등록 완료",
+      "pending": "대기 중"
+    },
+    "source": {
+      "invited": "초대됨",
+      "admin_created": "관리자 생성",
+      "self_registered": "직접 등록",
+      "self_registered_alt": "직접 등록"
     }
   }
 }

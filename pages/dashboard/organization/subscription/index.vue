@@ -19,8 +19,8 @@
 
         <!-- Status & Stats Section -->
         <SubscriptionStatus :plan-name="currentPlan?.name"
-            :billing-cycle="currentPlan?.billing === 'atlet' ? 'per penggunaan' : 'bulanan'"
-            :price-label="`${currentPlan?.priceLabel} / ${currentPlan?.billing}`"
+            :billing-cycle="currentPlan?.billing === 'atlet' ? t('subscription.status.per_usage') : t('subscription.status.monthly')"
+            :price-label="`${currentPlan?.priceLabel} / ${currentPlan?.billing === 'atlet' ? t('subscription.status.per_usage') : (currentPlan?.billing === 'thn' ? t('subscription.status.yearly') : t('subscription.status.monthly'))}`"
             :next-billing="subscriptionRes?.current?.next_billing_date" :usage-media="usageMedia"
             :usage-members="usageMembers" :remaining-days-label="remainingDaysLabel" :expiry-percent="expiryPercent"
             :is-expired="headerStatus === 'expired' || headerStatus === 'canceled'" :show-members="true"
@@ -112,23 +112,27 @@ const handleSelectPlan = (plan) => {
 
 
 
-const orgPlanDetails = [
+const orgPlanDetails = computed(() => [
     {
         id: [3, 5],
-        features: ['Maksimum 50 Peserta / Event', 'Manajemen Pendaftaran Online', 'Sistem Digital Scoring', 'Live Results (Public)', 'Penyimpanan Media 1 GB'],
+        features: t('subscription_page.basic_features_list') 
+            ? (Array.isArray(t('subscription_page.basic_features_list')) ? t('subscription_page.basic_features_list') : Object.values(t('subscription_page.basic_features_list')))
+            : ['Maksimum 50 Peserta / Event', 'Manajemen Pendaftaran Online', 'Sistem Digital Scoring', 'Live Results (Public)', 'Penyimpanan Media 1 GB'],
     },
     {
         id: [4, 6],
-        features: ['Maksimum Peserta Tak Terbatas', 'Manajemen Match Finals', 'Integrasi Pembayaran Otomatis', 'Analitik & Laporan Lanjutan', 'Penyimpanan Media 5 GB'],
+        features: t('subscription_page.elite_features_list')
+            ? (Array.isArray(t('subscription_page.elite_features_list')) ? t('subscription_page.elite_features_list') : Object.values(t('subscription_page.elite_features_list')))
+            : ['Maksimum Peserta Tak Terbatas', 'Manajemen Match Finals', 'Integrasi Pembayaran Otomatis', 'Analitik & Laporan Lanjutan', 'Penyimpanan Media 5 GB'],
     }
-]
+])
 
 const isSubscribed = computed(() => !!subscriptionRes.value?.current?.plan_id)
 
 const availablePlans = computed(() => {
     const plansFromApi = subscriptionRes.value?.plans || []
     const currentPlanId = subscriptionRes.value?.current?.plan_id
-    const currentPlanDetails = orgPlanDetails
+    const currentPlanDetails = orgPlanDetails.value
     const isUSDVal = isUSD.value
 
     const uniquePlans = []
@@ -146,8 +150,8 @@ const availablePlans = computed(() => {
 
     if (uniquePlans.length === 0) {
         return [
-            { id: 3, name: 'Standar', priceLabel: isUSDVal ? '$2' : 'Rp 30.000', priceRaw: isUSDVal ? 2 : 30000, billing: 'bln', features: currentPlanDetails[0].features, isCurrent: false, isUpgrade: false },
-            { id: 4, name: 'Elite', priceLabel: isUSDVal ? '$5' : 'Rp 80.000', priceRaw: isUSDVal ? 5 : 80000, billing: 'bln', features: currentPlanDetails[1].features, isCurrent: false, isUpgrade: true }
+            { id: 3, name: t('subscription_page.basic_title') || 'Standar', priceLabel: isUSDVal ? '$2' : 'Rp 30.000', priceRaw: isUSDVal ? 2 : 30000, billing: 'bln', features: currentPlanDetails[0].features, isCurrent: false, isUpgrade: false },
+            { id: 4, name: t('subscription_page.elite_title') || 'Elite', priceLabel: isUSDVal ? '$5' : 'Rp 80.000', priceRaw: isUSDVal ? 5 : 80000, billing: 'bln', features: currentPlanDetails[1].features, isCurrent: false, isUpgrade: true }
         ]
     }
 
@@ -164,22 +168,22 @@ const availablePlans = computed(() => {
 
         let localizedName = plan.name
         if (plan.name.toLowerCase().includes('basic') || plan.name.toLowerCase().includes('standard') || plan.name.toLowerCase().includes('standar')) {
-            localizedName = 'Standar'
+            localizedName = t('subscription_page.basic_title') || 'Standar'
         } else if (plan.name.toLowerCase().includes('elite') || plan.name.toLowerCase().includes('premium')) {
-            localizedName = 'Elite'
+            localizedName = t('subscription_page.elite_title') || 'Elite'
         }
 
         let finalPrice = plan.price
-        if (localizedName === 'Standar' || plan.name.toLowerCase().includes('basic')) {
+        if (plan.name.toLowerCase().includes('basic') || plan.name.toLowerCase().includes('standard') || plan.name.toLowerCase().includes('standar')) {
             finalPrice = isUSDVal ? 2 : 30000
-        } else if (localizedName === 'Elite' || plan.name.toLowerCase().includes('premium')) {
+        } else if (plan.name.toLowerCase().includes('elite') || plan.name.toLowerCase().includes('premium')) {
             finalPrice = isUSDVal ? 5 : 80000
         }
 
         return {
             id: plan.id,
             name: localizedName,
-            priceLabel: finalPrice === 0 ? (isUSDVal ? 'Free' : 'Gratis') : (isUSDVal ? `$${finalPrice}` : `Rp ${new Intl.NumberFormat('id-ID').format(finalPrice)}`),
+            priceLabel: finalPrice === 0 ? (isUSDVal ? 'Free' : t('subscription_page.free_title')) : (isUSDVal ? `$${finalPrice}` : `Rp ${new Intl.NumberFormat('id-ID').format(finalPrice)}`),
             priceRaw: finalPrice,
             billing: plan.type === 'yearly' ? 'thn' : 'bln',
             features: detail ? detail.features : (function () {
@@ -266,7 +270,7 @@ const usageMedia = computed(() => {
 const usageMembers = computed(() => {
     const isElite = currentPlan.value?.name === 'Elite'
     const limitCount = 50 // Standard limit updated to 50
-    const limit = isElite ? 'Tak Terbatas' : limitCount
+    const limit = isElite ? t('subscription.status.unlimited') : limitCount
     const current = subscriptionRes.value?.current?.usage?.current || 0
     const percent = isElite ? 0 : Math.min((current / limitCount) * 100, 100)
 
@@ -288,9 +292,9 @@ const remainingDays = computed(() => {
 const remainingDaysLabel = computed(() => {
     if (remainingDays.value === null) {
         const status = (subscriptionRes.value?.current?.status || '').toLowerCase()
-        return status === 'active' ? 'Aktif' : '-'
+        return status === 'active' ? t('subscription.status.active') : '-'
     }
-    return `${remainingDays.value} Hari Tersisa`
+    return t('subscription.status.days_remaining', { days: remainingDays.value }).replace('{days}', String(remainingDays.value))
 })
 
 const totalDays = computed(() => {

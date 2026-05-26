@@ -352,7 +352,7 @@ useHead({
                         <div v-if="errorMessage || fetchError"
                             class="mb-6 p-4 bg-red-50 text-red-600 rounded-2xl  text-xs font-bold flex items-center gap-3 border border-red-100">
                             <Icon icon="ph:warning-circle-fill" class="text-lg shrink-0" />
-                            {{ errorMessage || 'Gagal mengambil metode pembayaran. Silakan coba lagi.' }}
+                            {{ errorMessage || t('subscription_payment_page.load_channels_failed') }}
                         </div>
 
                         <button @click="handlePayment" :disabled="isProcessing || !selectedChannel"

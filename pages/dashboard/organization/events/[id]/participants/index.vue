@@ -24,16 +24,14 @@
                             <Icon icon="ph:users" class="text-white text-2xl" />
                         </div>
 
-                            <span class="hidden sm:inline">{{ t('dashboard.participants_list.export_csv') }}</span>
-                            <span class="sm:hidden">{{ t('dashboard.participants_list.export_short') }}</span>
+                        <div>
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
                                 {{ t('dashboard.participants_list.title') }}
                             </h1>
                             <p class="text-slate-300 text-sm max-w-2xl">
                                 {{ t('dashboard.participants_list.subtitle') }}
-                                <span class="hidden sm:inline">{{ t('dashboard.participants_list.add_participant') }}</span>
-                                <span class="sm:hidden">{{ t('dashboard.participants_list.add_short') }}</span>
                             </p>
+                        </div>
                     </div>
 
                     <!-- Action Buttons -->
@@ -453,8 +451,8 @@ const getFilteredCategoryLabels = (participant) => {
 
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
-    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return t('dashboard.participants_list.status.registered')
-    return t('dashboard.participants_list.status.pending')
+    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return t('dashboard.participants_list.status_options.paid')
+    return t('dashboard.participants_list.status_options.pending')
 }
 
 const getStatusClass = (status) => {
