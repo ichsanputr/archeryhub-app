@@ -116,14 +116,13 @@
                     <div v-if="paymentResult.payment_method === 'paddle'"
                         class="flex items-center gap-2.5 bg-green-500/10 border border-green-400/20 rounded-xl p-3">
                         <Icon icon="ph:check-circle-bold" class="text-green-300 shrink-0" />
-                        <span class="text-xs text-white/70 font-medium block">payment successful! your registration is complete.</span>
+                        <span class="text-xs text-white/70 font-medium block">Payment Successful! Your Registration is Complete.</span>
                     </div>
                     <!-- Manual payment proof uploaded notice -->
                     <div v-if="paymentResult.payment_method === 'manual'"
                         class="flex items-center gap-2.5 bg-amber-500/10 border border-amber-400/20 rounded-xl p-3">
                         <Icon icon="ph:clock-bold" class="text-amber-300 shrink-0" />
-                        <span class="text-xs text-white/70 font-medium block">payment proof uploaded. the organizer will
-                            verify your payment.</span>
+                        <span class="text-xs text-white/70 font-medium block">Payment Proof Uploaded. The Organizer Will Verify Your Payment.</span>
                     </div>
                 </div>
 
@@ -227,7 +226,19 @@
             <!-- MAIN 2-COLUMN LAYOUT                        -->
             <!-- ─────────────────────────────────────────── -->
             <main v-else class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 items-start">
+                <!-- If not logged in, show only one login required card -->
+                <div v-if="!isLoggedIn" class="max-w-md mx-auto">
+                    <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm text-center">
+                        <div class="h-16 w-16 bg-primary rounded-2xl flex items-center justify-center mb-5 mx-auto shadow-lg shadow-primary/20">
+                            <Icon icon="ph:lock-bold" class="text-3xl text-navy" />
+                        </div>
+                        <h2 class="text-xl font-black text-navy mb-2">{{ t('my_registration.login_required') }}</h2>
+                        <span class="text-sm text-gray-500 mb-6 block">{{ t('my_registration.please_login_athlete') }}</span>
+                        <BaseButton :to="loginUrl" variant="navy" size="lg" class="w-full font-black tracking-widest text-xs h-11">{{ t('my_registration.login_now') }}</BaseButton>
+                    </div>
+                </div>
+
+                <div v-else class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 items-start">
 
                     <!-- LEFT COLUMN — Archer Info + Category -->
                     <div class="lg:col-span-3 space-y-5">
@@ -295,8 +306,8 @@
                                         <BaseSelect v-model="profileForm.bow_type" :items="bowTypeOptions"
                                             label="Bow Type" placeholder="Select bow type" required
                                             icon="ph:target-bold" />
-                                        <BaseInput v-model="profileForm.country" label="Country"
-                                            placeholder="Country" icon="ph:globe-hemisphere-east-bold" />
+                                        <BaseSelect v-model="profileForm.country" :items="countries" label="Country"
+                                            placeholder="Select country" icon="ph:globe-hemisphere-east-bold" />
                                         <BaseSelect v-model="profileForm.city" :items="cityOptions"
                                             label="City / Regency" placeholder="Select city" icon="ph:map-pin-bold"
                                             class="relative z-20" />
@@ -663,8 +674,14 @@
                                         </div>
                                     </div>
                                     <!-- Upload proof when manual selected -->
-                                    <div v-if="form.manual_method_id" class="pt-3 border-t border-gray-100 space-y-2">
-                                        <div class="text-[10px] font-black text-gray-500 tracking-widest">Upload Payment Proof</div>
+                                    <div v-if="form.manual_method_id" class="pt-3 border-t border-gray-100 space-y-3">
+                                        <div class="space-y-1">
+                                            <label class="text-[10px] font-black text-gray-500 tracking-widest uppercase block">{{ t('my_registration.sender_name') }}</label>
+                                            <input type="text" v-model="form.sender_name" 
+                                                class="w-full px-3.5 py-2.5 text-xs border border-gray-200 rounded-xl focus:outline-none focus:border-primary font-medium"
+                                                :placeholder="t('my_registration.sender_name_placeholder')" />
+                                        </div>
+                                        <div class="text-[10px] font-black text-gray-500 tracking-widest">{{ t('my_registration.upload_proof') }}</div>
                                         <div @click="triggerFileInput"
                                             class="border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-gray-50"
                                             :class="proofFileUrl ? 'border-primary/50 bg-primary/5' : 'border-gray-200'">
@@ -968,6 +985,7 @@ const form = ref({
     participant_type: 'individual',  // legacy single value
     participant_types: ['individual'],
     manual_method_id: '',
+    sender_name: '',
     // Team/mixed partners: { [categoryId]: { team: [archer], mixed: [archer] } }
     team_partners: {}
 })
@@ -1093,6 +1111,20 @@ const genderOptions = [
     { title: 'Male', value: 'male' },
     { title: 'Female', value: 'female' }
 ]
+
+const countries = ref([
+    { title: 'Indonesia', value: 'Indonesia', icon: 'circle-flags:id' },
+    { title: 'Malaysia', value: 'Malaysia', icon: 'circle-flags:my' },
+    { title: 'Singapore', value: 'Singapore', icon: 'circle-flags:sg' },
+    { title: 'Thailand', value: 'Thailand', icon: 'circle-flags:th' },
+    { title: 'Philippines', value: 'Philippines', icon: 'circle-flags:ph' },
+    { title: 'Vietnam', value: 'Vietnam', icon: 'circle-flags:vn' },
+    { title: 'Australia', value: 'Australia', icon: 'circle-flags:au' },
+    { title: 'Japan', value: 'Japan', icon: 'circle-flags:jp' },
+    { title: 'South Korea', value: 'South Korea', icon: 'circle-flags:kr' },
+    { title: 'United Kingdom', value: 'United Kingdom', icon: 'circle-flags:gb' },
+    { title: 'United States', value: 'United States', icon: 'circle-flags:us' }
+])
 
 const onlineChannels = computed(() => data.value?.onlineChannels || [])
 const showPageLoader = computed(() => pending.value || isClientPreparing.value)
@@ -1433,7 +1465,8 @@ const handleSubmit = async () => {
             if (form.value.payment_type === 'manual') {
                 const txRef = payResult.reference
                 await post(`/payment/manual/${txRef}/upload-proof`, {
-                    proof_url: proofFileUrl.value
+                    proof_url: proofFileUrl.value,
+                    sender_name: form.value.sender_name
                 })
                 registrationSuccess.value = true
             } else if (selectedChannel === 'paddle') {

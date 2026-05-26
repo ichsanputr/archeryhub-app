@@ -184,6 +184,7 @@
             <tr>
               <th class="px-6 py-4">Reference</th>
               <th class="px-6 py-4">User</th>
+              <th class="px-6 py-4">{{ t('my_registration.sender_name') }}</th>
               <th class="px-6 py-4">Event</th>
               <th class="px-6 py-4">Amount</th>
               <th class="px-6 py-4">Method</th>
@@ -195,6 +196,7 @@
             <tr v-for="t in stats.recent_transactions" :key="t.id" class="hover:bg-gray-50 transition-colors">
               <td class="px-6 py-4 text-navy-dark font-bold font-mono">{{ t.reference }}</td>
               <td class="px-6 py-4 text-gray-700 font-bold capitalize">{{ t.user_name ? t.user_name.toLowerCase() : '-' }}</td>
+              <td class="px-6 py-4 text-gray-700 font-medium capitalize">{{ t.sender_name || '-' }}</td>
               <td class="px-6 py-4 text-gray-500 font-semibold capitalize">{{ t.event_name.toLowerCase() }}</td>
               <td class="px-6 py-4 text-navy-dark font-black font-mono">Rp {{ formatPrice(t.amount) }}</td>
               <td class="px-6 py-4 text-gray-500 font-bold uppercase">{{ t.payment_method || 'manual' }}</td>
@@ -214,7 +216,7 @@
               <td class="px-6 py-4 text-gray-400 font-semibold font-mono">{{ formatDate(t.created_at) }}</td>
             </tr>
             <tr v-if="!stats.recent_transactions?.length">
-              <td colspan="7" class="text-center py-10 text-gray-400 font-bold">No Transactions Found Matching Selected Filters.</td>
+              <td colspan="8" class="text-center py-10 text-gray-400 font-bold">No Transactions Found Matching Selected Filters.</td>
             </tr>
           </tbody>
         </table>

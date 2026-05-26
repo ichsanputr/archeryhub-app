@@ -1978,7 +1978,13 @@
     "toast_payment_failed": "Gagal memulai pembayaran. silakan coba beberapa saat lagi.",
     "paid": "Lunas",
     "unpaid": "Belum Bayar",
-    "pending": "Menunggu"
+    "pending": "Menunggu",
+    "login_required": "Login Dibutuhkan",
+    "please_login_athlete": "Silakan login sebagai pemanah untuk mendaftar.",
+    "login_now": "Login Sekarang",
+    "sender_name": "Atas Nama",
+    "sender_name_placeholder": "Masukkan nama pengirim (contoh: John Doe)",
+    "upload_proof": "Unggah Bukti Pembayaran"
   },
   "subscription_payment_page": {
     "back": "Kembali ke Subscription",

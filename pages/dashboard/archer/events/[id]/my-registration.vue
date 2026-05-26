@@ -157,21 +157,10 @@
                             <!-- QR Code Section -->
                             <div
                                 class="w-full bg-slate-50 dark:bg-slate-900 rounded-3xl p-6 flex flex-col items-center mb-6 border border-slate-100 dark:border-slate-700 shadow-sm">
-                                <div v-if="participant.payment_status === 'lunas' || participant.payment_status === 'paid'"
-                                    class="relative p-4 bg-white rounded-2xl shadow-sm border border-slate-100">
+                                <div class="relative p-4 bg-white rounded-2xl shadow-sm border border-slate-100">
                                     <QrcodeVue :value="participant.categories?.[0]?.qr_raw || participant.id"
                                         :size="160" level="H" render-as="svg" background="#ffffff"
                                         foreground="#1a2e4d" />
-                                </div>
-                                <div v-else class="flex flex-col items-center justify-center text-slate-300 py-8 gap-3">
-                                    <div
-                                        class="size-16 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center shadow-sm text-slate-400">
-                                        <Icon icon="ph:lock-key-bold" class="text-3xl" />
-                                    </div>
-                                    <span
-                                        class="text-[10px] font-black tracking-widest text-center px-4 leading-relaxed">
-                                        {{ t('my_registration.qr_locked') }}
-                                    </span>
                                 </div>
                             </div>
 
@@ -223,13 +212,99 @@
                                                 class="w-40 h-40 rounded-xl border border-slate-200" />
                                         </div>
 
-                                        <BaseButton v-if="participant.transaction.status === 'pending'"
-                                            variant="primary" block
-                                            class="h-11 font-black tracking-widest text-xs shadow-sm"
-                                            @click="handleTransactionPayment(participant.transaction)">
-                                            {{ t('my_registration.pay_now') }}
-                                            <Icon icon="ph:arrow-right-bold" class="ml-2" />
-                                        </BaseButton>
+                                        <!-- If payment method is manual -->
+                                        <template v-if="participant.transaction.payment_method === 'manual'">
+                                            <!-- Awaiting verification status -->
+                                            <div v-if="participant.transaction.status === 'awaiting_verification'"
+                                                class="p-4 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900 rounded-xl space-y-3">
+                                                <div class="flex gap-2">
+                                                    <Icon icon="ph:clock-bold" class="text-amber-500 text-lg shrink-0 mt-0.5" />
+                                                    <span class="text-xs text-amber-800 dark:text-amber-300 font-bold">
+                                                        Awaiting Verification
+                                                    </span>
+                                                </div>
+                                                <p class="text-slate-500 dark:text-slate-400 text-[11px] leading-relaxed">
+                                                    Your payment proof has been uploaded. The organizer will verify your payment soon.
+                                                </p>
+                                                <div v-if="participant.transaction.proof_url" class="relative rounded-lg overflow-hidden border border-gray-100 bg-white">
+                                                    <img :src="participant.transaction.proof_url" alt="Payment Proof" class="w-full h-auto max-h-40 object-contain mx-auto" />
+                                                </div>
+                                            </div>
+
+                                            <!-- Paid status -->
+                                            <div v-else-if="participant.transaction.status === 'paid'"
+                                                class="p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900 rounded-xl flex gap-2">
+                                                <Icon icon="ph:check-circle-bold" class="text-green-500 text-lg shrink-0 mt-0.5" />
+                                                <span class="text-xs text-green-800 dark:text-green-300 font-medium">
+                                                    Payment Verified. Your Registration is Complete.
+                                                </span>
+                                            </div>
+
+                                            <!-- Pending or Rejected status -->
+                                            <div v-else-if="participant.transaction.status === 'pending' || participant.transaction.status === 'rejected'" class="space-y-4">
+                                                <!-- Rejected notice -->
+                                                <div v-if="participant.transaction.status === 'rejected'"
+                                                    class="p-3.5 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 rounded-xl space-y-1">
+                                                    <div class="flex gap-2">
+                                                        <Icon icon="ph:warning-circle-bold" class="text-red-500 text-lg shrink-0 mt-0.5" />
+                                                        <span class="text-xs text-red-800 dark:text-red-300 font-bold">
+                                                            Payment Rejected
+                                                        </span>
+                                                    </div>
+                                                    <p v-if="participant.transaction.rejection_reason" class="text-[11px] text-slate-500 dark:text-slate-400 ml-7 leading-snug">
+                                                        Reason: {{ participant.transaction.rejection_reason }}
+                                                    </p>
+                                                </div>
+
+                                                <!-- Upload Form -->
+                                                <div class="space-y-3 pt-2">
+                                                    <div class="space-y-1">
+                                                        <label class="text-[10px] font-black text-gray-400 tracking-widest uppercase block">{{ t('my_registration.sender_name') }}</label>
+                                                        <input type="text" v-model="senderName" 
+                                                            class="w-full px-3 py-2.5 text-xs border border-gray-200 dark:border-slate-700 bg-transparent rounded-xl focus:outline-none focus:border-primary font-medium"
+                                                            :placeholder="t('my_registration.sender_name_placeholder')" />
+                                                    </div>
+
+                                                    <div class="text-[10px] font-black text-gray-400 tracking-widest">{{ t('my_registration.upload_proof') }}</div>
+                                                    <div @click="triggerFileInput"
+                                                        class="border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-gray-50 dark:hover:bg-slate-900"
+                                                        :class="proofFileUrl ? 'border-primary/50 bg-primary/5' : 'border-gray-200 dark:border-slate-700'">
+                                                        <input type="file" ref="proofInput" class="hidden" accept="image/*" @change="handleProofUpload" />
+                                                        <template v-if="uploadingProof">
+                                                            <Icon icon="ph:circle-notch-bold" class="text-xl text-primary animate-spin mb-2" />
+                                                            <span class="text-[10px] text-gray-500 font-bold">Uploading...</span>
+                                                        </template>
+                                                        <template v-else-if="proofFileUrl">
+                                                            <img :src="proofFileUrl" class="max-h-24 object-contain rounded-lg mb-2 border border-gray-100" />
+                                                            <span class="text-[10px] text-green-600 font-bold">Proof uploaded ✓</span>
+                                                        </template>
+                                                        <template v-else>
+                                                            <Icon icon="ph:cloud-arrow-up-bold" class="text-xl text-gray-400 mb-2" />
+                                                            <span class="text-[10px] text-gray-500 font-bold">Click to upload proof</span>
+                                                        </template>
+                                                    </div>
+
+                                                    <BaseButton variant="primary" block :loading="uploadingProof"
+                                                        class="h-10 font-black tracking-widest text-[11px] shadow-sm"
+                                                        @click="submitManualProof">
+                                                        Submit Verification Request
+                                                    </BaseButton>
+
+                                                    <span v-if="uploadError" class="text-xs text-red-500 font-bold block text-center">{{ uploadError }}</span>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <!-- If online gateway payment -->
+                                        <template v-else>
+                                            <BaseButton v-if="participant.transaction.status === 'pending'"
+                                                variant="primary" block
+                                                class="h-11 font-black tracking-widest text-xs shadow-sm"
+                                                @click="handleTransactionPayment(participant.transaction)">
+                                                {{ t('my_registration.pay_now') }}
+                                                <Icon icon="ph:arrow-right-bold" class="ml-2" />
+                                            </BaseButton>
+                                        </template>
 
                                         <!-- Instruction groups -->
                                         <template
@@ -327,7 +402,7 @@ import { useToast } from '~/composables/useToast'
 
 const { t } = useI18n()
 const toast = useToast()
-const { get, post, delete: del } = useApi()
+const { get, post, upload, delete: del } = useApi()
 const apiBaseUrl = useApiBaseUrl()
 const route = useRoute()
 const eventId = route.params.id
@@ -347,6 +422,63 @@ const isProcessingPayment = ref(false)
 const showCancelConfirm = ref(false)
 const isCancelling = ref(false)
 const activeInstructionGroup = ref(0)
+
+const uploadingProof = ref(false)
+const uploadError = ref('')
+const proofFileUrl = ref('')
+const senderName = ref('')
+const proofInput = ref(null)
+
+const triggerFileInput = () => {
+    proofInput.value?.click()
+}
+
+const handleProofUpload = async (evt) => {
+    const file = evt.target.files?.[0]
+    if (!file) return
+
+    if (file.size > 10 * 1024 * 1024) {
+        uploadError.value = 'File too large. Maximum size is 10MB.'
+        return
+    }
+
+    uploadingProof.value = true
+    uploadError.value = ''
+    try {
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('caption', `proof-manual-${participant.value?.id || 'reg'}-${Date.now()}`)
+
+        const res = await upload('/media/upload', formData)
+        proofFileUrl.value = res.url || res.URL || ''
+    } catch (err) {
+        uploadError.value = err.response?.data?.error || err.data?.error || err.message || 'Failed to upload image.'
+    } finally {
+        uploadingProof.value = false
+    }
+}
+
+const submitManualProof = async () => {
+    if (!proofFileUrl.value) {
+        uploadError.value = 'Please upload a payment proof image first.'
+        return
+    }
+    uploadingProof.value = true
+    uploadError.value = ''
+    try {
+        const txRef = participant.value?.transaction?.reference
+        await post(`/payment/manual/${txRef}/upload-proof`, {
+            proof_url: proofFileUrl.value,
+            sender_name: senderName.value
+        })
+        toast.success('Payment proof uploaded successfully')
+        await fetchInitialData()
+    } catch (err) {
+        uploadError.value = err.response?.data?.error || err.data?.error || err.message || 'Failed to submit proof.'
+    } finally {
+        uploadingProof.value = false
+    }
+}
 
 // Parses Tripay instructions JSON into [{title, steps[]}] groups.
 // Tripay format: [{ "title": "Internet Banking", "steps": ["Login...", ...] }]

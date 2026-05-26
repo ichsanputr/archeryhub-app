@@ -358,7 +358,7 @@
       "create_event": "Create Event",
       "search_label": "Search events",
       "search_placeholder": "Search by name, code, or location",
-      "reset_filters": "Clear Filters",
+      "reset_filters": "Clear",
       "table_headers": {
         "event_info": "Event Info",
         "schedule_location": "Schedule & Location",
@@ -373,7 +373,7 @@
         "description": "No events match your search criteria.",
         "create_first": "Create your first event"
       },
-      "clear_filters": "Clear Filters",
+      "clear_filters": "Clear",
       "participants_label": "Participants",
       "categories_label": "Categories",
       "manage": "Manage"

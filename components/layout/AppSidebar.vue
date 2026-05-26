@@ -309,14 +309,7 @@ const navSections = computed(() => {
     return [
       { label: t('dashboard.sidebar.overview'), icon: 'ph:squares-four', path: '/dashboard/organization' },
       { type: 'label', label: t('dashboard.sidebar.event') },
-      {
-        label: t('dashboard.sidebar.event'),
-        icon: 'ph:trophy',
-        type: 'group',
-        children: [
-          { label: t('dashboard.sidebar.my_events'), icon: 'material-symbols:event-list-outline', path: '/dashboard/organization/events' },
-        ]
-      },
+      { label: t('dashboard.sidebar.my_events'), icon: 'ph:trophy', path: '/dashboard/organization/events' },
       { type: 'label', label: t('dashboard.sidebar.organization') },
       {
         label: t('dashboard.sidebar.organization'),

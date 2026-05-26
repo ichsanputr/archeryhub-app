@@ -78,7 +78,6 @@
                             {{ t('payments.pay_now') }}
                         </BaseButton>
                         <button
-                            v-if="payment.status === 'pending' && (payment.va_number || payment.pay_code || payment.qr_url || payment.instructions)"
                             @click="toggleInstructions(payment.uuid)"
                             class="h-9 w-9 rounded-xl border border-slate-200 dark:border-slate-600 flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary/30 transition-colors">
                             <Icon
@@ -87,58 +86,141 @@
                     </div>
                 </div>
 
-                <!-- Instruction panel -->
-                <div v-if="payment.status === 'pending' && expandedPayments.has(payment.uuid)"
-                    class="border-t border-slate-100 dark:border-slate-700 px-5 sm:px-6 py-5 bg-slate-50 dark:bg-slate-900/50 space-y-4">
-
-                    <!-- VA / Pay code highlight -->
-                    <div v-if="payment.va_number || payment.pay_code"
-                        class="flex items-center justify-between p-3 bg-white dark:bg-slate-800 rounded-xl border border-primary/20">
-                        <span class="text-[10px] font-black text-slate-400 tracking-widest">
-                            {{ payment.va_number ? t('payments.va_number') : t('payments.pay_code') }}
-                        </span>
-                        <span class="text-sm font-black text-navy dark:text-white font-mono tracking-wider select-all font-bold">
-                            {{ payment.va_number || payment.pay_code }}
-                        </span>
-                    </div>
-
-                    <!-- QR code -->
-                    <div v-if="payment.qr_url" class="flex justify-center">
-                        <img :src="payment.qr_url" alt="QR Code"
-                            class="w-44 h-44 rounded-xl border border-slate-200 shadow-sm" />
-                    </div>
-
-                    <!-- Instruction groups -->
-                    <template v-if="parseInstructionGroups(payment.instructions).length">
-                        <div class="text-[10px] font-black text-slate-400 tracking-widest pt-1">{{ t('payments.how_to_pay') }}</div>
-                        <!-- Tab selector when multiple groups -->
-                        <div v-if="parseInstructionGroups(payment.instructions).length > 1"
-                            class="flex gap-2 flex-wrap">
-                            <button v-for="(group, gi) in parseInstructionGroups(payment.instructions)"
-                                :key="group.title" @click="setActiveGroup(payment.uuid, gi)"
-                                :class="getActiveGroup(payment.uuid) === gi
-                                    ? 'bg-navy text-white border-navy'
-                                    : 'bg-white dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-600 hover:border-primary/40'"
-                                class="px-3 py-1.5 rounded-lg border text-[10px] font-black tracking-widest transition-colors">
-                                {{ group.title }}
-                            </button>
+                <!-- Expanded Detail panel -->
+                <div v-if="expandedPayments.has(payment.uuid)"
+                    class="border-t border-slate-100 dark:border-slate-700 px-5 sm:px-6 py-5 bg-slate-50/50 dark:bg-slate-900/30 space-y-4">
+                    
+                    <!-- Breakout summary grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-4 border-b border-slate-100 dark:border-slate-700 text-xs">
+                        <div>
+                            <span class="text-[10px] font-black text-slate-400 tracking-widest block uppercase mb-1">Transaction Ref</span>
+                            <span class="font-bold text-navy dark:text-white select-all font-mono">{{ payment.reference }}</span>
                         </div>
-                        <!-- Steps for active/only group -->
-                        <div v-for="(group, gi) in parseInstructionGroups(payment.instructions)" :key="group.title"
-                            v-show="parseInstructionGroups(payment.instructions).length === 1 || getActiveGroup(payment.uuid) === gi"
-                            class="space-y-2.5">
-                            <div v-if="parseInstructionGroups(payment.instructions).length === 1"
-                                class="text-[10px] font-black text-slate-500 tracking-widest">{{ group.title }}</div>
-                            <div v-for="(step, si) in group.steps" :key="si" class="flex gap-3">
-                                <span
-                                    class="size-5 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px] font-bold">
-                                    {{ si + 1 }}
-                                </span>
-                                <span v-html="step"
-                                    class="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed"></span>
+                        <div>
+                            <span class="text-[10px] font-black text-slate-400 tracking-widest block uppercase mb-1">Payment Channel</span>
+                            <span class="font-bold text-navy dark:text-white">{{ payment.payment_method || payment.payment_channel || 'Manual Transfer' }}</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-black text-slate-400 tracking-widest block uppercase mb-1">Expiration / Paid Date</span>
+                            <span class="font-bold text-navy dark:text-white">
+                                {{ payment.status === 'paid' && payment.paid_at ? formatDate(payment.paid_at) : formatDate(payment.expired_at) }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- If payment is manual transfer -->
+                    <div v-if="(payment.payment_method || '').toLowerCase() === 'manual' || (payment.payment_channel || '').toLowerCase() === 'manual'" class="space-y-4">
+                        <!-- Manual Proof Uploaded Image -->
+                        <div class="space-y-2">
+                            <span class="text-[10px] font-black text-slate-400 tracking-widest block uppercase">Transfer Proof Image</span>
+                            <div v-if="payment.proof_url" class="relative max-w-xs rounded-xl overflow-hidden border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 shadow-sm">
+                                <img :src="payment.proof_url" alt="Bukti Transfer" class="w-full h-auto max-h-52 object-contain mx-auto" />
+                                <a :href="payment.proof_url" target="_blank" class="absolute bottom-2 right-2 px-2.5 py-1 bg-black/60 hover:bg-black/80 text-white rounded-lg text-[9px] font-bold flex items-center gap-1 transition-colors">
+                                    <Icon icon="ph:arrow-square-out-bold" />
+                                    View Fullsize
+                                </a>
+                            </div>
+                            <div v-else class="text-xs text-slate-400 italic">No transfer proof has been uploaded.</div>
+                        </div>
+
+                        <!-- Manual Verification Status Info -->
+                        <div v-if="payment.status === 'awaiting_verification'" class="p-3 bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900 rounded-xl flex gap-2">
+                            <Icon icon="ph:clock-bold" class="text-amber-500 text-lg shrink-0 mt-0.5" />
+                            <div class="text-xs text-amber-800 dark:text-amber-300 font-medium">
+                                payment proof is uploaded. the organizer will verify your payment soon.
                             </div>
                         </div>
-                    </template>
+                        <div v-else-if="payment.status === 'rejected'" class="p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 rounded-xl space-y-1">
+                            <div class="flex gap-2">
+                                <Icon icon="ph:warning-circle-bold" class="text-red-500 text-lg shrink-0 mt-0.5" />
+                                <div class="text-xs text-red-800 dark:text-red-300 font-bold">
+                                    payment verification rejected
+                                </div>
+                            </div>
+                            <div v-if="payment.rejection_reason" class="text-xs text-slate-500 dark:text-slate-400 ml-7">
+                                Reason: {{ payment.rejection_reason }}
+                            </div>
+                        </div>
+                        <div v-else-if="payment.status === 'paid' && payment.verified_at" class="p-3 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900 rounded-xl flex gap-2">
+                            <Icon icon="ph:check-circle-bold" class="text-green-500 text-lg shrink-0 mt-0.5" />
+                            <div class="text-xs text-green-800 dark:text-green-300 font-medium">
+                                payment verified by organizer at {{ formatDate(payment.verified_at) }}.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- If online gateway payment -->
+                    <div v-else class="space-y-4">
+                        <!-- Pending online instructions -->
+                        <template v-if="payment.status === 'pending'">
+                            <!-- VA / Pay code highlight -->
+                            <div v-if="payment.va_number || payment.pay_code"
+                                class="flex items-center justify-between p-3 bg-white dark:bg-slate-800 rounded-xl border border-primary/20">
+                                <span class="text-[10px] font-black text-slate-400 tracking-widest">
+                                    {{ payment.va_number ? t('payments.va_number') : t('payments.pay_code') }}
+                                </span>
+                                <span class="text-sm font-black text-navy dark:text-white font-mono tracking-wider select-all font-bold">
+                                    {{ payment.va_number || payment.pay_code }}
+                                </span>
+                            </div>
+
+                            <!-- QR code -->
+                            <div v-if="payment.qr_url" class="flex justify-center">
+                                <img :src="payment.qr_url" alt="QR Code"
+                                    class="w-44 h-44 rounded-xl border border-slate-200 shadow-sm" />
+                            </div>
+
+                            <!-- Instruction groups -->
+                            <template v-if="parseInstructionGroups(payment.instructions).length">
+                                <div class="text-[10px] font-black text-slate-400 tracking-widest pt-1">{{ t('payments.how_to_pay') }}</div>
+                                <!-- Tab selector when multiple groups -->
+                                <div v-if="parseInstructionGroups(payment.instructions).length > 1"
+                                    class="flex gap-2 flex-wrap">
+                                    <button v-for="(group, gi) in parseInstructionGroups(payment.instructions)"
+                                        :key="group.title" @click="setActiveGroup(payment.uuid, gi)"
+                                        :class="getActiveGroup(payment.uuid) === gi
+                                            ? 'bg-navy text-white border-navy'
+                                            : 'bg-white dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-600 hover:border-primary/40'"
+                                        class="px-3 py-1.5 rounded-lg border text-[10px] font-black tracking-widest transition-colors">
+                                        {{ group.title }}
+                                    </button>
+                                </div>
+                                <!-- Steps for active/only group -->
+                                <div v-for="(group, gi) in parseInstructionGroups(payment.instructions)" :key="group.title"
+                                    v-show="parseInstructionGroups(payment.instructions).length === 1 || getActiveGroup(payment.uuid) === gi"
+                                    class="space-y-2.5">
+                                    <div v-if="parseInstructionGroups(payment.instructions).length === 1"
+                                        class="text-[10px] font-black text-slate-500 tracking-widest">{{ group.title }}</div>
+                                    <div v-for="(step, si) in group.steps" :key="si" class="flex gap-3">
+                                        <span
+                                            class="size-5 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px] font-bold">
+                                            {{ si + 1 }}
+                                        </span>
+                                        <span v-html="step"
+                                            class="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed"></span>
+                                    </div>
+                                </div>
+                            </template>
+                        </template>
+
+                        <!-- Non-pending online information breakdown -->
+                        <template v-else>
+                            <div class="p-3.5 bg-slate-100/50 dark:bg-slate-900/50 rounded-xl space-y-2 text-xs">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-400 font-bold">Base Amount</span>
+                                    <span class="font-bold text-navy dark:text-white">{{ formatCurrency(payment.amount) }}</span>
+                                </div>
+                                <div class="flex justify-between" v-if="payment.fee_amount">
+                                    <span class="text-slate-400 font-bold">Gateway / Admin Fee</span>
+                                    <span class="font-bold text-navy dark:text-white">{{ formatCurrency(payment.fee_amount) }}</span>
+                                </div>
+                                <div class="flex justify-between border-t border-slate-200/50 dark:border-slate-700 pt-2 font-black">
+                                    <span class="text-navy dark:text-white uppercase text-[10px] tracking-widest">Total Amount</span>
+                                    <span class="text-sm text-navy dark:text-white">{{ formatCurrency(payment.total_amount) }}</span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
             </div>
 
@@ -335,4 +417,3 @@ const parseInstructionGroups = (raw) => {
     return []
 }
 </script>
-

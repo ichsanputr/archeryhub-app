@@ -1761,7 +1761,13 @@
     "toast_payment_failed": "결제 요청에 실패했습니다. 잠시 후 다시 시도해 주세요.",
     "paid": "결제 완료",
     "unpaid": "미결제",
-    "pending": "대기 중"
+    "pending": "대기 중",
+    "login_required": "로그인 필요",
+    "please_login_athlete": "등록하려면 운동선수로 로그인하세요.",
+    "login_now": "지금 로그인",
+    "sender_name": "예금주명 (Atas Nama)",
+    "sender_name_placeholder": "송금인명을 입력하세요 (예: 홍길동)",
+    "upload_proof": "결제 증빙 업로드"
   },
   "subscription_payment_page": {
     "back": "구독으로 돌아가기",

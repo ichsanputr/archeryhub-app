@@ -20,7 +20,7 @@
                     </div>
 
                     <div class="flex flex-col lg:flex-row items-end justify-between gap-8 mb-12">
-                        <div class="max-w-3xl">
+                        <div class="">
                             <h1
                                 class="text-2xl sm:text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6 font-display text-white">
                                 {{ tournament.name }}

@@ -1433,7 +1433,7 @@
     "search_label": "Search Events",
     "reset": "Reset",
     "no_events": "No Events Yet",
-    "clear_filter": "Clear Filter",
+    "clear_filter": "Clear",
     "search_event": "Search New Tournaments",
     "schedule": "Schedule",
     "location": "Location",
@@ -1710,7 +1710,7 @@
     "back_to_results": "Back to Results",
     "no_match_filter": "No results match your filter",
     "no_match_filter_desc": "Try adjusting your status filter to see more results.",
-    "clear_filter": "Clear Filter"
+    "clear_filter": "Clear"
   },
   "payments": {
     "title": "Payment History",
@@ -1814,7 +1814,7 @@
     "back_to_results": "Back to Results",
     "no_filter_match": "No Matching Results",
     "no_filter_match_desc": "There are no attempts with this status.",
-    "clear_filter": "Clear Filter"
+    "clear_filter": "Clear"
   },
   "loading_dashboard": "loading dashboard...",
   "events": {
@@ -1837,7 +1837,7 @@
       "empty_state": {
         "title": "No Events Found",
         "description": "No events match your search criteria.",
-        "clear_filters": "Clear Filters",
+        "clear_filters": "Clear",
         "create_first": "Create First Event"
       },
       "participants": "Participants",
@@ -1890,7 +1890,13 @@
     "toast_payment_failed": "Failed to initiate payment. please try again later.",
     "paid": "Paid",
     "unpaid": "Unpaid",
-    "pending": "Pending"
+    "pending": "Pending",
+    "login_required": "Login Required",
+    "please_login_athlete": "Please log in as an athlete to register.",
+    "login_now": "Login Now",
+    "sender_name": "Account Holder Name (Atas Nama)",
+    "sender_name_placeholder": "Enter sender name (e.g. John Doe)",
+    "upload_proof": "Upload Payment Proof"
   },
   "subscription_payment_page": {
     "back": "Back to Subscription",

@@ -223,16 +223,17 @@
           </div>
 
           <!-- Card Footer -->
-          <div class="mt-auto pt-4 border-t border-slate-100 flex items-center gap-2 relative z-10">
+          <div class="mt-auto pt-4 border-t border-slate-100 grid grid-cols-5 gap-2 relative z-10">
             <BaseButton :to="`/dashboard/archer/events/${event.slug || event.id}/my-registration`" variant="primary"
-              size="sm" class="flex-1 font-black tracking-widest text-[10px] h-9 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all">
+              size="sm" :class="getMainStatusLabel(event) === 'Registered' ? 'col-span-4' : 'col-span-5'"
+              class="font-black tracking-widest text-[10px] h-9 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all">
               <Icon icon="ph:arrow-right-bold" class="text-sm" />
               {{ t('my_events.open_event') }}
             </BaseButton>
             
-            <!-- QR Code Button if available -->
-            <button v-if="event.qr_raw" @click="showQRDialog(event)"
-              class="size-9 rounded-lg bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center transition-all border border-slate-200 hover:border-slate-300">
+            <!-- QR Code Button if registered -->
+            <button v-if="getMainStatusLabel(event) === 'Registered'" @click="showQRDialog(event)"
+              class="col-span-1 h-9 rounded-lg bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center transition-all border border-slate-200 hover:border-slate-300">
               <Icon icon="ph:qr-code-bold" class="text-base" />
             </button>
           </div>
@@ -271,7 +272,7 @@
 
               <!-- QR Code -->
               <div class="bg-white p-6 sm:p-8 rounded-[40px] border-2 border-slate-100 shadow-2xl">
-                <qrcode-vue :value="selectedEvent?.qr_raw || 'N/A'" :size="isMobile ? 280 : 350" level="H"
+                <qrcode-vue :value="selectedEvent?.qr_raw || selectedEvent?.id || 'N/A'" :size="isMobile ? 280 : 350" level="H"
                   render-as="svg" />
               </div>
 

@@ -60,7 +60,7 @@
                         </div>
                         <div class="divide-y divide-gray-100">
                             <!-- Status Filter -->
-                            <details class="group">
+                            <details class="group" open>
                                 <summary
                                     class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-gray-50 transition-colors">
                                     <span>{{ $t('events_page.status') }}</span>
@@ -69,7 +69,7 @@
                                 </summary>
                                 <div class="px-6 pb-6 text-sm space-y-4">
                                     <label class="flex items-center gap-3 cursor-pointer group/item">
-                                        <input
+                                        <input v-model="selectedStatuses" value="upcoming"
                                             class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
                                             type="checkbox" />
                                         <span
@@ -78,7 +78,7 @@
                                         </span>
                                     </label>
                                     <label class="flex items-center gap-3 cursor-pointer group/item">
-                                        <input
+                                        <input v-model="selectedStatuses" value="ongoing"
                                             class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
                                             type="checkbox" />
                                         <span
@@ -87,7 +87,7 @@
                                         </span>
                                     </label>
                                     <label class="flex items-center gap-3 cursor-pointer group/item">
-                                        <input
+                                        <input v-model="selectedStatuses" value="completed"
                                             class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
                                             type="checkbox" />
                                         <span
@@ -95,6 +95,25 @@
                                             {{ $t('events_page.status_completed') }}
                                         </span>
                                     </label>
+                                </div>
+                            </details>
+
+                            <!-- Country Filter -->
+                            <details class="group" open>
+                                <summary
+                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-gray-50 transition-colors">
+                                    <span>{{ $t('events_page.country', 'Negara') }}</span>
+                                    <Icon icon="ph:caret-down-bold"
+                                        class="transition group-open:rotate-180 text-gray-400" />
+                                </summary>
+                                <div class="px-6 pb-6">
+                                    <select v-model="selectedCountry"
+                                        class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-semibold text-navy focus:ring-4 focus:ring-primary/20 transition-all">
+                                        <option value="">{{ $t('events_page.all_countries', 'Semua Negara') }}</option>
+                                        <option v-for="country in countryOptions" :key="country" :value="country">
+                                            {{ country }}
+                                        </option>
+                                    </select>
                                 </div>
                             </details>
 
@@ -182,17 +201,17 @@
                                     <div class="space-y-3 mb-8">
                                         <div class="flex items-center gap-3 text-gray-500">
                                             <div
-                                                class="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center transition-colors">
-                                                <Icon icon="ph:calendar-blank-bold" class="text-lg transition-colors" />
+                                                class="h-8 w-8 rounded-lg bg-primary text-white flex items-center justify-center transition-colors shadow-sm">
+                                                <Icon icon="ph:calendar-blank-bold" class="text-lg" />
                                             </div>
-                                            <span class="text-xs font-bold">{{ tournament.date }}</span>
+                                            <span class="text-xs font-bold text-gray-600">{{ tournament.date }}</span>
                                         </div>
                                         <div class="flex items-center gap-3 text-gray-500">
                                             <div
-                                                class="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center transition-colors">
-                                                <Icon icon="ph:map-pin-bold" class="text-lg transition-colors" />
+                                                class="h-8 w-8 rounded-lg bg-primary text-white flex items-center justify-center transition-colors shadow-sm">
+                                                <Icon icon="ph:map-pin-bold" class="text-lg" />
                                             </div>
-                                            <span class="text-xs font-bold truncate">{{ tournament.location }}</span>
+                                            <span class="text-xs font-bold text-gray-600 truncate">{{ tournament.location }}</span>
                                         </div>
                                     </div>
                                     <div class="mt-auto">
@@ -231,6 +250,8 @@ const apiBaseUrl = useApiBaseUrl()
 const searchQuery = ref('')
 const sortBy = ref('newest')
 const selectedCity = ref('')
+const selectedCountry = ref('')
+const selectedStatuses = ref([])
 const displayedLimit = ref(6)
 
 const { t } = useI18n()
@@ -274,6 +295,7 @@ const transformEventData = (event) => {
         date: formatDateRange(event.start_date, event.end_date),
         location: event.venue || event.location || event.city || 'Lokasi belum ditentukan',
         city: event.city || '',
+        country: event.organizer_country || 'Indonesia',
         status: event.status || 'upcoming',
         category: event.location_type || event.category || null,
         organizer: event.organizer_name || event.organizer || 'Penyelenggara',
@@ -305,6 +327,10 @@ const cityOptions = computed(() =>
     Array.from(new Set(tournaments.value.map(t => t.city).filter(Boolean))).sort((a, b) => a.localeCompare(b, 'id-ID'))
 )
 
+const countryOptions = computed(() =>
+    Array.from(new Set(tournaments.value.map(t => t.country).filter(Boolean))).sort((a, b) => a.localeCompare(b, 'id-ID'))
+)
+
 const filteredTournaments = computed(() => {
     let result = tournaments.value
     if (searchQuery.value) {
@@ -312,6 +338,12 @@ const filteredTournaments = computed(() => {
     }
     if (selectedCity.value) {
         result = result.filter(t => t.city === selectedCity.value)
+    }
+    if (selectedCountry.value) {
+        result = result.filter(t => t.country === selectedCountry.value)
+    }
+    if (selectedStatuses.value.length > 0) {
+        result = result.filter(t => selectedStatuses.value.includes(t.status))
     }
     if (sortBy.value === 'newest') {
         result = [...result].sort((a, b) => new Date(b.startDate || 0) - new Date(a.startDate || 0))
@@ -326,6 +358,8 @@ const filteredTournaments = computed(() => {
 const resetFilters = () => {
     searchQuery.value = ''
     selectedCity.value = ''
+    selectedCountry.value = ''
+    selectedStatuses.value = []
     sortBy.value = 'newest'
 }
 
