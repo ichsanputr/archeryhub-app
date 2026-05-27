@@ -1,0 +1,1 @@
+{"version":3,"file":"DdkGmFI5.js","sources":["../../../../layouts/blank.vue"],"sourcesContent":["<template>\n  <div>\n    <slot />\n  </div>\n</template>\n\n<script setup>\nconst route = useRoute()\n</script>\n"],"names":["useRoute","_createElementBlock","_renderSlot","_ctx"],"mappings":"oFAOc,OAAAA,EAAQ,cANpBC,EAEM,MAAA,KAAA,CADJC,EAAQC,EAAA,OAAA,SAAA"}
