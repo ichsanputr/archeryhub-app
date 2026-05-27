@@ -1,106 +1,106 @@
 export const registrasi_ulang = {
-    slug: 'registrasi-ulang', title: 'Registrasi Ulang Akun Pemanah', excerpt: 'Panduan memperbarui data registrasi akun pemanah: perubahan klub, kategori usia, dan verifikasi ulang identitas.', icon: 'ph:arrows-clockwise-bold', category: 'archer', readTime: '5 menit',
+    slug: 'registrasi-ulang', title: 'Re-Register Archer Account', excerpt: 'Guide to updating archer account registration data: change of club, age category and re-verification of identity.', icon: 'ph:arrows-clockwise-bold', category: 'archer', readTime: '5 min',
     toc: [
-        { id: 'kapan-perlu', level: 2, text: 'Kapan Perlu Registrasi Ulang?' },
-        { id: 'pindah-klub', level: 2, text: 'Pindah atau Ganti Klub' },
-        { id: 'update-kategori', level: 2, text: 'Perbarui Kategori & Divisi' },
-        { id: 'verifikasi-identitas', level: 2, text: 'Verifikasi Identitas Ulang' },
-        { id: 'langkah-langkah', level: 2, text: 'Langkah-Langkah Registrasi Ulang' },
-        { id: 'dampak', level: 2, text: 'Dampak pada Riwayat & Prestasi' },
+        { id: 'kapan-perlu', level: 2, text: 'When do you need to re-register?' },
+        { id: 'pindah-klub', level: 2, text: 'Move or Change Club' },
+        { id: 'update-kategori', level: 2, text: 'Update Categories & Divisions' },
+        { id: 'verifikasi-identitas', level: 2, text: 'Re-Verify Identity' },
+        { id: 'langkah-langkah', level: 2, text: 'Re-Registration Steps' },
+        { id: 'dampak', level: 2, text: 'Impact on History & Achievements' },
     ],
     content: `
-                    <h2 id="kapan-perlu">Kapan Perlu Registrasi Ulang?</h2>
-                    <p>Registrasi ulang diperlukan ketika terjadi perubahan data penting pada profil pemanah yang berdampak pada keikutsertaan di event. Beberapa kondisi yang memerlukan registrasi ulang antara lain:</p>
+                    <h2 id="when-necessary">When do you need to re-register?</h2>
+                    <p>Re-registration is required when important data changes occur in the archer's profile which impacts participation in the event. Some conditions that require re-registration include:</p>
                     <ul>
-                        <li><strong>Pindah klub:</strong> Bergabung ke klub baru setelah keluar dari klub lama.</li>
-                        <li><strong>Naik kelompok usia:</strong> Memasuki tahun ulang tahun yang mengubah kategori usia (misal: dari U-18 ke U-21).</li>
-                        <li><strong>Perubahan divisi busur:</strong> Berganti dari satu divisi busur ke divisi lain secara resmi.</li>
-                        <li><strong>Pembaruan dokumen identitas:</strong> KTP/KIA baru, atau masa berlaku dokumen sebelumnya telah habis.</li>
-                        <li><strong>Reset akun:</strong> Akun lama tidak dapat diakses dan perlu dibuat ulang dengan data yang sama.</li>
+                        <li><strong>Changing clubs:</strong> Joining a new club after leaving the old one.</li>
+                        <li><strong>Moving up age group:</strong> Entering the birthday year that changes the age category (e.g. from U-18 to U-21).</li>
+                        <li><strong>Arc division change:</strong> Switching from one arc division to another officially.</li>
+                        <li><strong>Renewal of identity documents:</strong> New KTP/KIA, or the validity period of the previous document has expired.</li>
+                        <li><strong>Reset account:</strong> The old account cannot be accessed and needs to be recreated with the same data.</li>
                     </ul>
 
                     <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-6 flex gap-4">
                         <div class="text-amber-500 text-2xl shrink-0">⚠️</div>
                         <div>
-                            <div class="font-bold text-amber-800 text-sm mb-1">Perhatikan Tenggat Waktu Event</div>
-                            <div class="text-amber-700 text-sm">Pastikan registrasi ulang telah selesai <strong>sebelum mendaftar ke event baru</strong>. Panitia event umumnya menggunakan data profil terkini saat proses check-in dilakukan.</div>
+                            <div class="font-bold text-amber-800 text-sm mb-1">Pay attention to event deadlines</div>
+                            <div class="text-amber-700 text-sm">Make sure re-registration is complete <strong>before registering for a new event</strong>. The event committee generally uses the latest profile data when the check-in process is carried out.</div>
                         </div>
                     </div>
 
-                    <h2 id="pindah-klub">Pindah atau Ganti Klub</h2>
-                    <p>Jika Anda baru saja pindah klub, segera perbarui informasi klub pada profil pemanah Anda. Klub yang tercantum di profil akan menjadi representasi Anda di setiap event yang diikuti.</p>
+                    <h2 id="move-club">Move or Change Club</h2>
+                    <p>If you have recently changed clubs, immediately update the club information on your archer profile. The club listed in your profile will be your representative at every event you participate in.</p>
                     <ol>
-                        <li>Masuk ke <strong>Dasbor Pemanah → Profil Saya</strong>.</li>
-                        <li>Klik ikon edit pada bagian <strong>Informasi Klub</strong>.</li>
-                        <li>Cari nama klub baru melalui kolom pencarian.</li>
-                        <li>Konfirmasi perubahan — sistem akan mencatat tanggal perubahan afiliasi klub.</li>
+                        <li>Sign in to <strong>Archer Dashboard → My Profile</strong>.</li>
+                        <li>Click the edit icon in the <strong>Club Information</strong> section.</li>
+                        <li>Search for the new club name via the search field.</li>
+                        <li>Confirm change — the system will record the date of change of club affiliation.</li>
                     </ol>
-                    <p>Keanggotaan di klub baru sepenuhnya dikelola oleh pengurus klub. Pastikan Anda telah resmi diterima oleh klub sebelum mengubah afiliasi di platform.</p>
+                    <p>Membership in the new club is fully managed by the club management. Make sure you have been officially accepted by the club before changing your affiliation on the platform.</p>
 
-                    <h2 id="update-kategori">Perbarui Kategori & Divisi</h2>
-                    <p>archeris.net menghitung kelompok usia secara otomatis berdasarkan tanggal lahir yang terdaftar. Namun, divisi busur dapat diperbarui secara manual sesuai kebutuhan kompetisi:</p>
-                    <div class="not-prose overflow-x-auto my-4">
+                    <h2 id="update-category">Update Category & Division</h2>
+                    <p>archeris.net calculates age groups automatically based on registered birth dates. However, bow divisions can be updated manually according to competition requirements:</p>
+                    <div class="not-process overflow-x-auto my-4">
                         <table class="w-full text-sm border-collapse">
-                            <thead>
+                            <head>
                                 <tr class="bg-navy text-white">
                                     <th class="px-4 py-3 text-left font-bold rounded-tl-xl">Data</th>
-                                    <th class="px-4 py-3 text-left font-bold">Cara Ubah</th>
-                                    <th class="px-4 py-3 text-left font-bold rounded-tr-xl">Keterangan</th>
+                                    <th class="px-4 py-3 text-left font-bold">How to Change</th>
+                                    <th class="px-4 py-3 text-left font-bold rounded-tr-xl">Description</th>
                                 </tr>
-                            </thead>
+                            </head>
                             <tbody>
                                 <tr class="border-b border-gray-100 bg-white">
-                                    <td class="px-4 py-3 font-semibold text-navy">Kelompok Usia</td>
-                                    <td class="px-4 py-3 text-gray-600">Otomatis</td>
-                                    <td class="px-4 py-3 text-gray-500">Dihitung dari tanggal lahir</td>
+                                    <td class="px-4 py-3 font-semibold text-navy">Age Group</td>
+                                    <td class="px-4 py-3 text-gray-600">Automatic</td>
+                                    <td class="px-4 py-3 text-gray-500">Calculated from date of birth</td>
                                 </tr>
                                 <tr class="border-b border-gray-100 bg-gray-50">
-                                    <td class="px-4 py-3 font-semibold text-navy">Divisi Busur</td>
-                                    <td class="px-4 py-3 text-gray-600">Manual (edit profil)</td>
-                                    <td class="px-4 py-3 text-gray-500">Bisa berbeda per event</td>
+                                    <td class="px-4 py-3 font-semibold text-navy">Arc Division</td>
+                                    <td class="px-4 py-3 text-gray-600">Manual (edit profile)</td>
+                                    <td class="px-4 py-3 text-gray-500">May vary per event</td>
                                 </tr>
                                 <tr class="border-b border-gray-100 bg-white">
-                                    <td class="px-4 py-3 font-semibold text-navy">Nama Lengkap</td>
-                                    <td class="px-4 py-3 text-gray-600">Manual (edit profil)</td>
-                                    <td class="px-4 py-3 text-gray-500">Gunakan nama sesuai KTP</td>
+                                    <td class="px-4 py-3 font-semibold text-navy">Full Name</td>
+                                    <td class="px-4 py-3 text-gray-600">Manual (edit profile)</td>
+                                    <td class="px-4 py-3 text-gray-500">Use the name according to your KTP</td>
                                 </tr>
                                 <tr class="bg-gray-50">
-                                    <td class="px-4 py-3 font-semibold text-navy">Tanggal Lahir</td>
-                                    <td class="px-4 py-3 text-gray-600">Hubungi dukungan</td>
-                                    <td class="px-4 py-3 text-gray-500">Perlu verifikasi dokumen</td>
+                                    <td class="px-4 py-3 font-semibold text-navy">Date of Birth</td>
+                                    <td class="px-4 py-3 text-gray-600">Contact support</td>
+                                    <td class="px-4 py-3 text-gray-500">Document verification required</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <h2 id="verifikasi-identitas">Verifikasi Identitas Ulang</h2>
-                    <p>Beberapa event dapat mensyaratkan verifikasi identitas yang diperbarui, terutama untuk event dengan kategori resmi atau berhadiah. Jika verifikasi Anda telah kedaluwarsa atau ditolak, ikuti langkah berikut:</p>
+                    <h2 id="identity-verification">Re-Verify Identity</h2>
+                    <p>Some events may require updated identity verification, especially for events with official categories or prizes. If your verification has expired or been rejected, follow these steps:</p>
                     <ul>
-                        <li>Siapkan foto KTP/KIA yang masih berlaku (format JPEG/PNG, maks. 5MB).</li>
-                        <li>Buka <strong>Profil Saya â†’ Verifikasi Identitas</strong>.</li>
-                        <li>Unggah dokumen dan tunggu proses tinjauan oleh tim archeris.net (1â€“2 hari kerja).</li>
-                        <li>Status verifikasi akan diperbarui dan notifikasi dikirim ke email terdaftar.</li>
+                        <li>Prepare a photo of your valid KTP/KIA (JPEG/PNG format, max. 5MB).</li>
+                        <li>Go to <strong>My Profile â†’ Identity Verification</strong>.</li>
+                        <li>Upload the document and wait for the review process by the archeris.net team (1–2 working days).</li>
+                        <li>The verification status will be updated and a notification sent to the registered email.</li>
                     </ul>
 
-                    <h2 id="langkah-langkah">Langkah-Langkah Registrasi Ulang</h2>
-                    <p>Berikut ringkasan alur lengkap registrasi ulang akun pemanah:</p>
+                    <h2 id="steps">Re-Registration Steps</h2>
+                    <p>The following is a summary of the complete flow of re-registering an archer account:</p>
                     <ol>
-                        <li><strong>Login</strong> ke akun archeris.net Anda.</li>
-                        <li>Buka <strong>Dasbor â†’ Profil Saya â†’ Edit Profil</strong>.</li>
-                        <li>Perbarui data yang berubah: nama, tanggal lahir, klub, divisi busur, dan foto profil.</li>
-                        <li>Simpan perubahan dengan klik <strong>Simpan Profil</strong>.</li>
-                        <li>Jika ada dokumen identitas yang perlu diperbarui, unggah di bagian <strong>Verifikasi Identitas</strong>.</li>
-                        <li>Tunggu konfirmasi dari sistem (untuk perubahan yang memerlukan verifikasi manual).</li>
+                        <li><strong>Login</strong> to your archeris.net account.</li>
+                        <li>Go to <strong>Dashboard â†’ My Profile â†’ Edit Profile</strong>.</li>
+                        <li>Update changed data: name, date of birth, club, arc division and profile photo.</li>
+                        <li>Save changes by clicking <strong>Save Profile</strong>.</li>
+                        <li>If there are identity documents that need to be updated, upload them in the <strong>Identity Verification</strong> section.</li>
+                        <li>Wait for confirmation from the system (for changes that require manual verification).</li>
                     </ol>
 
-                    <h2 id="dampak">Dampak pada Riwayat & Prestasi</h2>
-                    <p>Registrasi ulang <strong>tidak menghapus</strong> riwayat prestasi dan skor yang telah tercatat. Semua data pertandingan sebelumnya tetap tersimpan dan terhubung ke akun Anda, bahkan setelah perubahan keanggotaan klubatau divisi.</p>
+                    <h2 id="impact">Impact on History & Achievements</h2>
+                    <p>Re-registration <strong>does not delete</strong> the achievement history and scores that have been recorded. All previous match data remains stored and linked to your account, even after a change in club membership or division.</p>
                     <ul>
-                        <li>Riwayat skor dan ranking tetap dipertahankan.</li>
-                        <li>Sertifikat dan penghargaan digital tetap dapat diakses.</li>
-                        <li>Bila berganti klub, prestasi lama tetap muncul dengan label klub asal saat event berlangsung.</li>
+                        <li>Score history and rankings are maintained.</li>
+                        <li>Digital certificates and awards remain accessible.</li>
+                        <li>If you change clubs, old achievements will still appear with the original club label at the time of the event.</li>
                     </ul>
-                    <p>Jika menemui kendala saat registrasi ulang, hubungi dukungan melalui fitur chat di aplikasi atau kirim email ke support@archeris.net.</p>
-                `
+                    <p>If you encounter problems when re-registering, contact support via the chat feature in the application or send an email to support@archeris.net.</p>
+`
 }
 

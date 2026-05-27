@@ -1,23 +1,9 @@
 // Archery Hub / Archeris Documentation Translator Utility
 // Supports English (en), Indonesian (id), and Korean (kr)
+import { idTranslations } from '~/data/docs/translations/id/index.js'
 
 const docTranslations = {
   'apa-itu-archeris': {
-    en: {
-      title: 'What is Archeris.net?',
-      excerpt: 'Learn about the core architecture, target audience, and primary features of Archeris.net.',
-      content: `
-        <p><strong>Archeris.net</strong> is an integrated archery management platform designed to simplify tournament organization, live scoring, and athlete portfolio development. Built with modern web technologies, the platform caters to three primary user groups: Archers, Organizations (Clubs/Event Organizers), and Vendors.</p>
-        <h2>1. Core Vision</h2>
-        <p>Our vision is to digitalize the traditional, paper-based archery ecosystem. By introducing automated target butt assignment, digital scorecards with offline support, and automatic bracket generation for elimination rounds, we allow organizers to focus on delivering high-quality events while providing archers with instant performance feedback.</p>
-        <h2>2. Key Features</h2>
-        <ul>
-          <li><strong>Digital Scorekeeper:</strong> Real-time input via mobile apps or browsers with automatic leaderboard updates.</li>
-          <li><strong>Smart Bracket Builder:</strong> Generates custom brackets for elimination matches instantly.</li>
-          <li><strong>Payment Integration:</strong> Secure registrations supporting digital wallets, bank transfers, and credit cards.</li>
-        </ul>
-      `
-    },
     kr: {
       title: 'Archeris.net이란 무엇인가요?',
       excerpt: 'Archeris.net의 핵심 아키텍처, 주요 기능 및 대상 사용자에 대해 알아봅니다.',
@@ -27,7 +13,7 @@ const docTranslations = {
         <p>전통적인 종이 기반의 양궁 운영 방식을 디지털화하여 혁신합니다. 자동 사로 배정 시스템, 오프라인 입력을 지원하는 디지털 스코어카드, 토너먼트 대진표 자동 생성 기능을 제공하여 운영의 효율성을 극대화합니다.</p>
         <h2>2. 주요 핵심 기능</h2>
         <ul>
-          <li><strong>디지털 스코어키퍼:</strong> 실시간 점수 입력 및 공공 리더보드 즉시 동기화 기능.</li>
+          <li><strong>디지털 스코어keeper:</strong> 실시간 점수 입력 및 공공 리더보드 즉시 동기화 기능.</li>
           <li><strong>스마트 토너먼트 대진표:</strong> 예선 순위에 기반한 엘리미네이션 대진표 자동 생성.</li>
           <li><strong>통합 결제 시스템:</strong> QRIS, 가상계좌, 신용카드를 지원하는 원스톱 참가비 수납.</li>
         </ul>
@@ -35,22 +21,6 @@ const docTranslations = {
     }
   },
   'cara-daftar': {
-    en: {
-      title: 'How to Register an Account',
-      excerpt: 'Step-by-step guide to registering a new account on Archeris.net.',
-      content: `
-        <h2 id="pilih-tipe">1. Choose User Role</h2>
-        <p>Archeris.net provides three main account types: <strong>Archer</strong>, <strong>Organization</strong>, and <strong>Vendor</strong>. Select the role that matches your objective.</p>
-        <h2 id="daftar-email">2. Sign Up via Email</h2>
-        <ol>
-          <li>Visit the registration page.</li>
-          <li>Fill in your full name, email address, and a secure password.</li>
-          <li>Select your account type.</li>
-          <li>Click the <strong>Register Now</strong> button.</li>
-          <li>Verify your account via the link sent to your email.</li>
-        </ol>
-      `
-    },
     kr: {
       title: '계정 등록 방법',
       excerpt: 'Archeris.net에서 새로운 계정을 등록하는 단계별 가이드입니다.',
@@ -69,18 +39,6 @@ const docTranslations = {
     }
   },
   'jenis-busur': {
-    en: {
-      title: 'Bow Types & Divisions',
-      excerpt: 'A comprehensive guide to standard bow classifications used in tournaments.',
-      content: `
-        <h2>1. Recurve Bow (Olympic)</h2>
-        <p>The standard bow type used in the Olympic Games, featuring limbs that curve away from the archer. Allows stabilizers, sights, and clickers.</p>
-        <h2>2. Compound Bow</h2>
-        <p>Uses a system of cams and cables to reduce draw weight at full draw, allowing for highly precise aiming.</p>
-        <h2>3. Barebow & Traditional</h2>
-        <p>Recurve bows without any sights or stabilizers, relying completely on instinctive or string-walking aiming techniques.</p>
-      `
-    },
     kr: {
       title: '활의 종류 및 경기 부문',
       excerpt: '대회에서 사용되는 표준 활 분류 및 부문에 대한 종합 안내서입니다.',
@@ -95,18 +53,6 @@ const docTranslations = {
     }
   },
   'paket-berlangganan': {
-    en: {
-      title: 'Subscription Plans & Pricing',
-      excerpt: 'Detailed overview of individual and club subscription tiers.',
-      content: `
-        <h2>1. Archer Basic (Free)</h2>
-        <p>Includes basic digital scorecards, personal statistics, and event registration.</p>
-        <h2>2. Archer Pro ($2/month)</h2>
-        <p>Unlocks detailed performance analytics, verified achievement digital portfolios, and target hit charts.</p>
-        <h2>3. Club Elite ($10/month)</h2>
-        <p>Complete tournament builder, unlimited scorekeeper registration, QRIS automated billing, and custom white-label brackets.</p>
-      `
-    },
     kr: {
       title: '구독 요금제 및 패키지 안내',
       excerpt: '개인 및 클럽 구독 등급에 대한 자세한 비교 안내입니다.',
@@ -123,61 +69,81 @@ const docTranslations = {
 };
 
 const metadataTranslations = {
-  // Common fallback title translations for metadata listing
   'apa-itu-end': {
-    en: { title: 'What is an End?', excerpt: 'Understanding the scoring units and structural rounds in archery tournaments.' },
     kr: { title: '엔드(End)의 개념이란?', excerpt: '양궁 토너먼트에서 점수 기록과 발사 수 단위에 대해 배웁니다.' }
   },
   'cara-menjual-barang': {
-    en: { title: 'How to Sell Items', excerpt: 'Complete guide for merchants on listing bow accessories and equipment in the Marketplace.' },
     kr: { title: '상품 판매 등록 방법', excerpt: '셀러 회원이 마켓플레이스에 장비 및 액세서리를 업로드하는 방법 안내.' }
   },
   'fase-eliminasi': {
-    en: { title: 'Elimination Phase Rules', excerpt: 'Learn the official head-to-head rules, tie-breaker shoot-offs, and target matches.' },
     kr: { title: '엘리미네이션 토너먼트 규정', excerpt: '대진표 매치, 동점 슛오프 및 공식 1:1 토너먼트 규정을 학습합니다.' }
   },
   'fase-kualifikasi': {
-    en: { title: 'Qualification Phase Guide', excerpt: 'Official guidelines for scoring ends, target distances, and seeding ranking rounds.' },
     kr: { title: '예선 라운드 운영 가이드', excerpt: '순위 결정을 위한 예선 라운드 스코어 기록 및 표적 배치 기준 안내.' }
   },
   'fee-biaya-admin': {
-    en: { title: 'Fees & Admin Costs', excerpt: 'Transparent breakdown of marketplace commissions and secure payment gateway transaction fees.' },
     kr: { title: '수수료 및 관리 비용 안내', excerpt: '안전 결제 게이트웨이 수수료 및 마켓플레이스 거래 수수료 투명 정보.' }
   },
   'jarak-dan-target': {
-    en: { title: 'Distances and Targets', excerpt: 'Official target sizes (80cm, 122cm) and distances designated for standard divisions.' },
     kr: { title: '경기 거리 및 표적 규격', excerpt: '각 경기 부문별 공식 타겟 규격(80cm, 122cm) 및 사거리 기준.' }
   },
   'kategori-lomba': {
-    en: { title: 'Competition Categories', excerpt: 'Overview of age groups, bow divisions, and team structures available for creation.' },
     kr: { title: '대회 세부 종목 카테고리', excerpt: '연령대, 활 부문, 단체전 구성을 위한 카테고리 설정 개요.' }
   },
   'mobile-app-scoring': {
-    en: { title: 'Scoring via Mobile App', excerpt: 'Referee and scorekeeper guide for real-time digital score entries.' },
     kr: { title: '모바일 앱 실시간 스코어링', excerpt: '심판 및 기록원이 모바일 앱을 통해 실시간으로 점수를 입력하는 가이드.' }
   },
   'sinkronisasi-tim': {
-    en: { title: 'Automatic Team Synchronization', excerpt: 'Learn how the system automatically forms teams for the team elimination round.' },
     kr: { title: '팀 자동 동기화 기능', excerpt: '예선 개인전 점수를 기반으로 단체전 팀을 시스템에서 자동 빌드하는 가이드.' }
   },
   'scorekeeper': {
-    en: { title: 'Scorekeeper Assignment Guide', excerpt: 'How organizers assign scorekeepers and manage security PIN codes.' },
     kr: { title: '스코어키퍼 등록 및 권한 설정', excerpt: '운영진이 사로별 기록원을 할당하고 보안 로그인 코드를 부여하는 법.' }
   },
   'membuat-event': {
-    en: { title: 'Creating a New Event', excerpt: 'How organizers configure target butts, registration schedules, and categories.' },
     kr: { title: '신규 양궁 이벤트 생성', excerpt: '이벤트 상세 일정, 참가 요금제, 사로 배정 규칙을 디자인하는 방법.' }
   },
   'mendaftar-event': {
-    en: { title: 'Registering for an Event', excerpt: 'Step-by-step guide for archers to register and pay for tournaments.' },
     kr: { title: '양궁 대회 참가 신청', excerpt: '궁사(선수) 회원이 진행 중인 대회에 참가 신청 및 결제하는 가이드.' }
   }
 };
 
-export function translateText(text, locale, slug = '') {
-  if (!locale || locale === 'id') return text;
+const dictionary = {
+  id: {
+    'All': 'Semua',
+    'Platform': 'Platform',
+    'Archer Account': 'Akun Pemanah',
+    'Archery Technical': 'Teknis Panahan',
+    'Subscription': 'Berlangganan',
+    'Event Management': 'Manajemen Event',
+    'Scoring': 'Scoring',
+    'Marketplace': 'Marketplace',
+    'min': 'menit',
+    'read': 'membaca'
+  },
+  kr: {
+    'All': '전체',
+    'Platform': '플랫폼',
+    'Archer Account': '궁사 계정',
+    'Archery Technical': '양궁 기술',
+    'Subscription': '구독 요금제',
+    'Event Management': '이벤트 관리',
+    'Scoring': '스코어링',
+    'Marketplace': '마켓플레이스',
+    'min': '분',
+    'read': '읽기'
+  }
+};
 
-  // 1. Check direct doc translations
+export function translateText(text, locale, slug = '') {
+  if (!locale || locale === 'en') return text;
+
+  // 1. Check ID translations dictionary
+  if (locale === 'id') {
+    if (dictionary.id[text]) return dictionary.id[text];
+    return text;
+  }
+
+  // 2. Check direct doc translations for Korean
   if (slug && docTranslations[slug] && docTranslations[slug][locale]) {
     const matched = docTranslations[slug][locale];
     if (text === matched.title || text === matched.excerpt) {
@@ -185,170 +151,49 @@ export function translateText(text, locale, slug = '') {
     }
   }
 
-  // 2. Check metadata translations
+  // 3. Check metadata translations for Korean
   if (slug && metadataTranslations[slug] && metadataTranslations[slug][locale]) {
     const item = metadataTranslations[slug][locale];
-    // If the original text starts with typical ID strings, map it
-    if (text.toLowerCase().includes('cara') || text.toLowerCase().includes('fase') || text.toLowerCase().includes('manajemen') || text.toLowerCase().includes('paket') || text.toLowerCase().includes('apa itu') || text.toLowerCase().includes('sinkronisasi')) {
-      return item.title;
-    }
+    return item.title;
   }
 
-  // 3. Fallback dictionary translations for common structural phrases
-  const dictionary = {
-    en: {
-      'Semua': 'All',
-      'Platform': 'Platform',
-      'Akun Pemanah': 'Archer Account',
-      'Teknis Panahan': 'Archery Technical',
-      'Berlangganan': 'Subscription',
-      'Manajemen Event': 'Event Management',
-      'Scoring': 'Scoring',
-      'Marketplace': 'Marketplace',
-      'Cara Mendaftar Akun': 'How to Register an Account',
-      'Cara Menjual Barang': 'How to Sell Items',
-      'Fase Eliminasi': 'Elimination Phase',
-      'Fase Kualifikasi': 'Qualification Phase',
-      'Fee & Biaya Admin': 'Fees & Admin Costs',
-      'Jarak dan Target': 'Distance and Targets',
-      'Jenis Busur': 'Bow Types',
-      'Kategori Lomba': 'Competition Categories',
-      'Kategorisasi Produk': 'Product Categorization',
-      'Keranjang Belanja': 'Shopping Cart',
-      'Manajemen Keuangan': 'Financial Management',
-      'Manajemen Peserta': 'Participant Management',
-      'Manajemen Profil': 'Profile Management',
-      'Membeli Barang': 'Buying Items',
-      'Membuat Event': 'Creating Events',
-      'Mendaftar Event': 'Registering for Events',
-      'Mobile App Scoring': 'Mobile App Scoring',
-      'Modul News': 'News Module',
-      'Paket Berlangganan': 'Subscription Plans',
-      'Pendaftaran Peserta': 'Participant Registration',
-      'Penempatan Bantalan': 'Target Butt Placement',
-      'Peran Pengguna': 'User Roles',
-      'Profil Pemanah': 'Archer Profile',
-      'Registrasi Ulang': 'Re-registration',
-      'Scorekeeper': 'Scorekeeper Guide',
-      'Sinkronisasi Tim': 'Team Synchronization',
-      'Sistem Eliminasi': 'Elimination System',
-      'Sistem Scoring Kualifikasi': 'Qualification Scoring',
-      'Status Pendaftaran': 'Registration Status',
-      'Ukuran Bracket': 'Bracket Sizes',
-      'Apa Itu Archeris': 'What is Archeris.net?',
-      'Apa Itu End': 'What is an End?',
-      'Mengenal Archeris.net secara mendalam': 'Getting to know Archeris.net deeply',
-      'Panduan khusus untuk pengguna akun Pemanah': 'Guides tailored for Archer account users',
-      'Pengetahuan dasar dan teknis panahan': 'Fundamental and technical archery knowledge',
-      'Paket dan fitur berlangganan': 'Subscription plans and core features',
-      'Panduan pengelolaan event': 'Event setup and tournament guidelines',
-      'Sistem penilaian dan scoring': 'Judging system and scoring guides',
-      'Jual beli perlengkapan panahan': 'Buying and selling archery equipment',
-      'menit': 'min',
-      'membaca': 'read'
-    },
-    kr: {
-      'Semua': '전체',
-      'Platform': '플랫폼',
-      'Akun Pemanah': '궁사 계정',
-      'Teknis Panahan': '양궁 기술',
-      'Berlangganan': '구독 요금제',
-      'Manajemen Event': '이벤트 관리',
-      'Scoring': '스코어링',
-      'Marketplace': '마켓플레이스',
-      'Cara Mendaftar Akun': '계정 등록 방법',
-      'Cara Menjual Barang': '상품 판매 등록 방법',
-      'Fase Eliminasi': '엘리미네이션 토너먼트 규정',
-      'Fase Kualifikasi': '예선 라운드 운영 가이드',
-      'Fee & Biaya Admin': '수수료 및 관리 비용',
-      'Jarak dan Target': '경기 거리 및 표적 규격',
-      'Jenis Busur': '활의 종류 및 경기 부문',
-      'Kategori Lomba': '대회 세부 종목 카테고리',
-      'Kategorisasi Produk': '상품 카테고리 분류',
-      'Keranjang Belanja': '장바구니 기능',
-      'Manajemen Keuangan': '재무 정산 관리',
-      'Manajemen Peserta': '참가 선수 관리',
-      'Manajemen Profil': '프로필 및 클럽 관리',
-      'Membeli Barang': '상품 구매 및 결제',
-      'Membuat Event': '신규 양궁 이벤트 생성',
-      'Mendaftar Event': '양궁 대회 참가 신청',
-      'Mobile App Scoring': '모바일 앱 실시간 스코어링',
-      'Modul News': '소식 및 뉴스 게시 모듈',
-      'Paket Berlangganan': '구독 요금제 및 패키지 안내',
-      'Pendaftaran Peserta': '대회 참가자 접수',
-      'Penempatan Bantalan': '사로 표적 판 배치 규정',
-      'Peran Pengguna': '사용자 권한 및 역할',
-      'Profil Pemanah': '궁사 프로필 편집',
-      'Registrasi Ulang': '현장 참가 재등록',
-      'Scorekeeper': '스코어키퍼 할당 및 핀코드',
-      'Sinkronisasi Tim': '단체전 팀 자동 동기화',
-      'Sistem Eliminasi': '토너먼트 엘리미네이션 규칙',
-      'Sistem Scoring Kualifikasi': '예선 라운드 스코어 기록',
-      'Status Pendaftaran': '참가자 승인 상태 조회',
-      'Ukuran Bracket': '대진표 브래킷 사이즈',
-      'Apa Itu Archeris': 'Archeris.net 소개 문서',
-      'Apa Itu End': '양궁 엔드(End)의 개념',
-      'Mengenal Archeris.net secara mendalam': 'Archeris.net에 대해 자세히 알아보기',
-      'Panduan khusus untuk pengguna akun Pemanah': '궁사 계정 사용자를 위한 맞춤형 가이드',
-      'Pengetahuan dasar dan teknis panahan': '양궁 기본 및 기술 지식',
-      'Paket dan fitur berlangganan': '구독 패키지 및 핵심 기능',
-      'Panduan pengelolaan event': '이벤트 설정 및 토너먼트 가이드라인',
-      'Sistem penilaian dan scoring': '심사 시스템 및 스코어링 가이드',
-      'Jual beli perlengkapan panahan': '양궁 장비 구매 및 판매',
-      'menit': '분',
-      'membaca': '읽기'
-    }
-  };
-
-  if (dictionary[locale] && dictionary[locale][text]) {
-    return dictionary[locale][text];
-  }
-
-  // Fallback for document titles and excerpts matching metadata list
-  for (const s of Object.keys(metadataTranslations)) {
-    if (slug === s && metadataTranslations[s][locale]) {
-      if (text.toLowerCase().includes(s.replace('-', ' '))) {
-        return metadataTranslations[s][locale].title;
-      }
-    }
+  // 4. Fallback dictionary translations for Korean
+  if (dictionary.kr[text]) {
+    return dictionary.kr[text];
   }
 
   return text;
 }
 
 export function translateDoc(doc, locale) {
-  if (!doc || !locale || locale === 'id') return doc;
+  if (!doc) return doc;
 
   const slug = doc.slug;
-  const hasFullTranslation = docTranslations[slug] && docTranslations[slug][locale];
+
+  // 1. If Indonesian is requested and we have the translation, return it!
+  if (locale === 'id') {
+    if (idTranslations[slug]) {
+      return idTranslations[slug];
+    }
+    return doc;
+  }
+
+  // 2. If English or default is requested, return base English doc
+  if (locale === 'en' || !locale) {
+    return {
+      ...doc,
+      readTime: doc.readTime ? doc.readTime.replace('menit', 'min').replace('hari', 'days') : ''
+    };
+  }
+
+  // 3. For Korean (kr)
+  const hasFullTranslation = docTranslations[slug] && docTranslations[slug]['kr'];
 
   return {
     ...doc,
-    title: hasFullTranslation ? docTranslations[slug][locale].title : translateText(doc.title, locale, slug),
-    excerpt: hasFullTranslation ? docTranslations[slug][locale].excerpt : translateText(doc.excerpt, locale, slug),
-    content: hasFullTranslation ? docTranslations[slug][locale].content : convertHtmlHeadings(doc.content, locale, slug),
-    readTime: doc.readTime ? doc.readTime.replace('menit', locale === 'kr' ? '분' : 'min') : ''
+    title: hasFullTranslation ? docTranslations[slug]['kr'].title : translateText(doc.title, 'kr', slug),
+    excerpt: hasFullTranslation ? docTranslations[slug]['kr'].excerpt : translateText(doc.excerpt, 'kr', slug),
+    content: hasFullTranslation ? docTranslations[slug]['kr'].content : doc.content,
+    readTime: doc.readTime ? doc.readTime.replace('menit', '분').replace('hari', '일') : ''
   };
-}
-
-function convertHtmlHeadings(content, locale, slug) {
-  if (!content) return '';
-  let updated = content;
-
-  // Simple string replacer for headings to match translated TOC in key files
-  if (slug === 'cara-daftar') {
-    if (locale === 'kr') {
-      updated = updated.replace('Pilih Tipe Akun', '회원 유형 선택');
-      updated = updated.replace('Daftar via Email', '이메일로 가입하기');
-      updated = updated.replace('Daftar via Google', '구글 계정으로 가입');
-      updated = updated.replace('Verifikasi & Login', '이메일 인증 및 로그인');
-    } else if (locale === 'en') {
-      updated = updated.replace('Pilih Tipe Akun', 'Choose Account Type');
-      updated = updated.replace('Daftar via Email', 'Register via Email');
-      updated = updated.replace('Daftar via Google', 'Register via Google');
-      updated = updated.replace('Verifikasi & Login', 'Verification & Login');
-    }
-  }
-
-  return updated;
 }

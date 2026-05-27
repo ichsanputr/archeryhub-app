@@ -1,133 +1,133 @@
 export const fase_eliminasi = {
     slug: 'fase-eliminasi',
-    title: 'Fase Eliminasi dalam Pertandingan Panahan',
-    excerpt: 'Memahami format bracket, sistem set, mekanisme tie-break, dan relasi antara kualifikasi dengan eliminasi dalam kompetisi panahan.',
+    title: 'Elimination Phase in an Archery Competition',
+    excerpt: 'Understand the bracket format, set system, tie-break mechanism, and the relationship between qualification and elimination in archery competitions.',
     icon: 'ph:git-branch-bold',
     category: 'archery',
-    readTime: '6 menit',
+    readTime: '6 min',
     toc: [
-        { id: 'apa-itu-eliminasi', level: 2, text: 'Apa Itu Fase Eliminasi?' },
-        { id: 'format-bracket', level: 2, text: 'Format Bracket' },
-        { id: 'sistem-set', level: 2, text: 'Sistem Set (Set System)' },
-        { id: 'sistem-poin-kumulatif', level: 2, text: 'Sistem Poin Kumulatif (Compound)' },
+        { id: 'apa-itu-eliminasi', level: 2, text: 'What is the Elimination Phase?' },
+        { id: 'format-bracket', level: 2, text: 'Bracket Format' },
+        { id: 'sistem-set', level: 2, text: 'Set System' },
+        { id: 'sistem-poin-kumulatif', level: 2, text: 'Cumulative Point System (Compound)' },
         { id: 'tie-break-shootoff', level: 2, text: 'Tie-Break & Shoot-Off' },
-        { id: 'hubungan-kualifikasi', level: 2, text: 'Hubungan Eliminasi dengan Kualifikasi' },
-        { id: 'eliminasi-di-Archeris', level: 2, text: 'Eliminasi di archeris.net' },
+        { id: 'hubungan-kualifikasi', level: 2, text: 'Relationship between Elimination and Qualification' },
+        { id: 'eliminasi-di-Archeris', level: 2, text: 'Elimination at archeris.net' },
     ],
     content: `
-        <h2 id="apa-itu-eliminasi">Apa Itu Fase Eliminasi?</h2>
-        <p><strong>Fase eliminasi</strong> adalah babak kedua kompetisi panahan di mana peserta bertanding secara <em>head-to-head</em> (satu lawan satu) berdasarkan bracket yang disusun dari hasil kualifikasi. Setiap pertandingan menghasilkan satu pemenang yang melanjutkan ke babak berikutnya, dan satu peserta yang gugur. Babak ini terus berlanjut hingga menyisakan satu pemenang sebagai juara.</p>
-        <p>Format ini dipopulerkan oleh World Archery sejak Olimpiade 1988 dan kini menjadi standar dalam hampir semua kompetisi panahan besar di dunia, termasuk kejuaraan yang difasilitasi oleh archeris.net.</p>
+        <h2 id="what-is-elimination">What is the Elimination Phase?</h2>
+        <p><strong>The elimination phase</strong> is the second round of the archery competition where participants compete <em>head-to-head</em> (one on one) based on the bracket compiled from the qualifying results. Each match produces one winner who moves on to the next round, and one participant who falls. This round continues until one winner remains as champion.</p>
+        <p>This format was popularized by World Archery since the 1988 Olympics and is now the standard in almost all major archery competitions in the world, including championships facilitated by archeris.net.</p>
 
         <h2 id="format-bracket">Format Bracket</h2>
-        <p>Bracket eliminasi tersedia dalam berbagai ukuran, disesuaikan dengan jumlah peserta yang lolos kualifikasi:</p>
-        <div class="not-prose overflow-x-auto my-4">
+        <p>Elimination brackets are available in various sizes, adjusted to the number of participants who qualify:</p>
+        <div class="not-process overflow-x-auto my-4">
             <table class="w-full text-sm border-collapse">
-                <thead>
+                <head>
                     <tr class="bg-navy text-left text-white">
-                        <th class="px-4 py-3 rounded-tl-xl">Ukuran Bracket</th>
-                        <th class="px-4 py-3">Jumlah Peserta</th>
-                        <th class="px-4 py-3 rounded-tr-xl">Babak</th>
+                        <th class="px-4 py-3 rounded-tl-xl">Bracket Size</th>
+                        <th class="px-4 py-3">Number of Participants</th>
+                        <th class="px-4 py-3 rounded-tr-xl">Half</th>
                     </tr>
-                </thead>
+                </head>
                 <tbody class="divide-y divide-gray-100 bg-white">
-                    <tr><td class="px-4 py-3 font-bold text-navy">32 Besar</td><td class="px-4 py-3">32 peserta</td><td class="px-4 py-3">Babak 32, 16, 8, 4, Final</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">16 Besar</td><td class="px-4 py-3">16 peserta</td><td class="px-4 py-3">Babak 16, 8, 4, Final</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">8 Besar</td><td class="px-4 py-3">8 peserta</td><td class="px-4 py-3">Babak 8, 4, Final</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">4 Besar</td><td class="px-4 py-3">4 peserta</td><td class="px-4 py-3">Semi Final, Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">Top 32</td><td class="px-4 py-3">32 participants</td><td class="px-4 py-3">Rounds 32, 16, 8, 4, Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">Top 16</td><td class="px-4 py-3">16 participants</td><td class="px-4 py-3">Round 16, 8, 4, Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">Top 8</td><td class="px-4 py-3">8 participants</td><td class="px-4 py-3">Round 8, 4, Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">Top 4</td><td class="px-4 py-3">4 participants</td><td class="px-4 py-3">Semi Final, Final</td></tr>
                 </tbody>
             </table>
         </div>
-        <p><strong>Cara seeding bracket:</strong> Peserta #1 (ranking terbaik kualifikasi) ditempatkan di sisi berlawanan dengan peserta #2 agar potensi pertemuan keduanya baru terjadi di babak final. Peringkat #1 bertemu peringkat terakhir yang lolos; peringkat #2 bertemu peringkat kedua dari bawah; dan seterusnya.</p>
+        <p><strong>Seeding bracket method:</strong> Participant #1 (best qualifying ranking) is placed on the opposite side to participant #2 so that the potential for a new meeting between the two will occur in the final round. Rank #1 meets the last place to qualify; #2 meets second from bottom; and so on.</p>
 
-        <h2 id="sistem-set">Sistem Set (Set System)</h2>
-        <p>Digunakan untuk divisi <strong>Recurve</strong>, Standard Bow, dan Barebow. Dalam satu pertandingan, kedua atlet menembak beberapa <em>set</em>, masing-masing set terdiri dari 3 panah (outdoor) atau 3 panah (indoor). Pemenang setiap set ditentukan oleh siapa yang meraih total poin tertinggi dalam set tersebut:</p>
+        <h2 id="set-system">Set System</h2>
+        <p>Used for the <strong>Recurve</strong>, Standard Bow, and Barebow divisions. In one match, both athletes shoot several <em>sets</em>, each set consisting of 3 arrows (outdoor) or 3 arrows (indoor). The winner of each set is determined by who gets the highest total points in that set:</p>
         <ul>
-            <li>Menang set → mendapat <strong>2 poin set</strong></li>
-            <li>Seri dalam satu set → masing-masing mendapat <strong>1 poin set</strong></li>
-            <li>Kalah set → mendapat <strong>0 poin set</strong></li>
+            <li>Win the set → get <strong>2 set points</strong></li>
+            <li>Draw in a set → each gets <strong>1 set point</strong></li>
+            <li>Losing a set → getting <strong>0 set points</strong></li>
         </ul>
-        <p>Atlet pertama yang mencapai <strong>6 poin set</strong> memenangkan pertandingan. Jika kedua atlet mencapai 5–5, pertandingan masuk ke <strong>shoot-off</strong> (lihat seksi Tie-Break di bawah).</p>
+        <p>The first athlete to reach <strong>6 set points</strong> wins the match. If both athletes reach 5–5, the match goes to a <strong>shoot-off</strong> (see Tie-Break section below).</p>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-4 mb-2 flex gap-4">
             <div class="text-primary text-2xl shrink-0">🎯</div>
             <div>
-                <div class="font-bold text-navy text-sm mb-1">Kenapa Sistem Set Dibuat?</div>
-                <div class="text-gray-600 text-sm">Sistem set sengaja dirancang supaya setiap end terasa seperti "pertandingan kecil". Satu kesalahan tidak langsung mematikan peluang—tapi konsistensi per set adalah kunci. Ini membuat eliminasi lebih dramatis dan menarik bagi penonton.</div>
+                <div class="font-bold text-navy text-sm mb-1">Why was the Set System created?</div>
+                <div class="text-gray-600 text-sm">The set system is deliberately designed so that each end feels like a "small match". One mistake doesn't immediately kill a chance—but consistency per set is key. This makes the eliminations more dramatic and interesting for the audience.</div>
             </div>
         </div>
 
-        <h2 id="sistem-poin-kumulatif">Sistem Poin Kumulatif (Compound)</h2>
-        <p>Divisi <strong>Compound</strong> menggunakan format berbeda: semua panah dalam seluruh end dijumlahkan langsung. Atlet dengan total poin kumulatif tertinggi setelah semua end selesai memenangkan pertandingan. Tidak ada poin set — setiap panah berpengaruh langsung pada total akhir.</p>
-        <p>Hal ini mencerminkan karakteristik compound: dengan akurasi tinggi, selisih skor biasanya sangat tipis dan setiap panah benar-benar menentukan.</p>
+        <h2 id="cumulative-point-system">Cumulative Point System (Compound)</h2>
+        <p>The <strong>Compound</strong> division uses a different format: all arrows in an entire end are added together directly. The athlete with the highest cumulative point total after all finishes wins the event. There are no set points — each arrow has a direct effect on the final total.</p>
+        <p>This reflects the characteristics of compound: with high accuracy, the difference in scores is usually very small and each arrow is truly decisive.</p>
 
         <h2 id="tie-break-shootoff">Tie-Break & Shoot-Off</h2>
-        <p>Jika pertandingan berakhir seri setelah semua end/set reguler selesai, dilakukan <strong>shoot-off</strong>:</p>
+        <p>If the match ends in a draw after all regular ends/sets have been completed, a <strong>shoot-off</strong> takes place:</p>
         <ol>
-            <li>Masing-masing atlet menembakkan <strong>1 panah</strong> ke target.</li>
-            <li>Atlet dengan nilai panah tertinggi menang.</li>
-            <li>Jika masih seri, pemenang ditentukan oleh panah yang <strong>lebih dekat ke pusat</strong> (diukur).</li>
+            <li>Each athlete shoots <strong>1 arrow</strong> at the target.</li>
+            <li>The athlete with the highest arrow value wins.</li>
+            <li>If there is still a tie, the winner is determined by the arrow that is <strong>closer to the center</strong> (measured).</li>
         </ol>
-        <p>Shoot-off adalah momen paling menegangkan dalam eliminasi — satu panah tunggal menentukan siapa yang melanjutkan dan siapa yang pulang.</p>
+        <p>The shoot-off is the most tense moment in elimination — one single arrow determines who goes on and who goes home.</p>
 
-        <h2 id="hubungan-kualifikasi">Hubungan Eliminasi dengan Kualifikasi — Mengapa Atlet Butuh Keduanya</h2>
-        <p>Kualifikasi dan eliminasi <strong>bukan dua lomba yang terpisah</strong> — keduanya adalah satu sistem terpadu yang saling bergantung. Berikut alasan mengapa setiap atlet harus memahami dan mempersiapkan kedua fase ini secara berbeda:</p>
-        <div class="not-prose overflow-x-auto my-4">
+        <h2 id="qualification-relationship">Relationship of Eliminations to Qualifications — Why Athletes Need Both</h2>
+        <p>Qualification and elimination are <strong>not two separate races</strong> — they are one integrated, interdependent system. Here are the reasons why each athlete must understand and prepare for these two phases differently:</p>
+        <div class="not-process overflow-x-auto my-4">
             <table class="w-full text-sm border-collapse">
-                <thead>
+                <head>
                     <tr class="bg-navy text-left text-white">
-                        <th class="px-4 py-3 rounded-tl-xl">Aspek</th>
-                        <th class="px-4 py-3">Kualifikasi</th>
-                        <th class="px-4 py-3 rounded-tr-xl">Eliminasi</th>
+                        <th class="px-4 py-3 rounded-tl-xl">Aspect</th>
+                        <th class="px-4 py-3">Qualifications</th>
+                        <th class="px-4 py-3 rounded-tr-xl">Elimination</th>
                     </tr>
-                </thead>
+                </head>
                 <tbody class="divide-y divide-gray-100 bg-white">
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Tujuan</td>
-                        <td class="px-4 py-3">Menentukan ranking & siapa yang lolos</td>
-                        <td class="px-4 py-3">Menentukan juara melalui head-to-head</td>
+                        <td class="px-4 py-3 font-bold text-navy">Destination</td>
+                        <td class="px-4 py-3">Determine ranking & who passes</td>
+                        <td class="px-4 py-3">Determine the champion through head-to-head</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Lawan</td>
-                        <td class="px-4 py-3">Tidak ada — melawan target sendiri</td>
-                        <td class="px-4 py-3">Satu atlet spesifik per babak</td>
+                        <td class="px-4 py-3 font-bold text-navy">Opponent</td>
+                        <td class="px-4 py-3">None — against own target</td>
+                        <td class="px-4 py-3">One ​​specific athlete per heat</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Tekanan mental</td>
-                        <td class="px-4 py-3">Akumulatif — harus stabil puluhan panah</td>
-                        <td class="px-4 py-3">Situasional — setiap set bisa berbalik</td>
+                        <td class="px-4 py-3 font-bold text-navy">Mental stress</td>
+                        <td class="px-4 py-3">Accumulative — must be stable tens of arrows</td>
+                        <td class="px-4 py-3">Situational — every set can turn around</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Strategi</td>
-                        <td class="px-4 py-3">Konsistensi, ritme, manajemen energi</td>
-                        <td class="px-4 py-3">Adaptasi, momentum, membaca lawan</td>
+                        <td class="px-4 py-3 font-bold text-navy">Strategy</td>
+                        <td class="px-4 py-3">Consistency, rhythm, energy management</td>
+                        <td class="px-4 py-3">Adaptation, momentum, reading opponents</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Kesalahan</td>
-                        <td class="px-4 py-3">Langsung mempengaruhi total skor</td>
-                        <td class="px-4 py-3">Bisa dikejar di set berikutnya</td>
+                        <td class="px-4 py-3 font-bold text-navy">Error</td>
+                        <td class="px-4 py-3">Directly affects the total score</td>
+                        <td class="px-4 py-3">Can be caught in the next set</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Hasil</td>
-                        <td class="px-4 py-3">Ranking → posisi di bracket</td>
-                        <td class="px-4 py-3">Posisi akhir: juara, runner-up, dll.</td>
+                        <td class="px-4 py-3 font-bold text-navy">Result</td>
+                        <td class="px-4 py-3">Ranking → position in bracket</td>
+                        <td class="px-4 py-3">Final position: champion, runner-up, etc.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <p>Singkatnya: <strong>kualifikasi yang baik membuka jalan yang lebih mudah di eliminasi</strong> — Anda mendapat lawan yang secara seeding lebih lemah di babak awal, dan Anda berada di sisi bracket yang menguntungkan. Namun kualifikasi yang sempurna pun tidak menjamin kemenangan eliminasi, karena sifat head-to-head membuat siapapun bisa kalah pada hari yang berbeda.</p>
-        <p>Itulah mengapa program latihan atlet yang baik harus mencakup <em>kedua</em> jenis mental training: latihan skor konsisten jangka panjang (untuk kualifikasi), dan latihan pressure shot situasional (untuk eliminasi).</p>
+        <p>In short: <strong>good qualifiers open up an easier path to elimination</strong> — you have a weaker seeding opponent in the early rounds, and you are on the advantageous side of the bracket. However, even perfect qualifications do not guarantee an elimination win, because the head-to-head nature means that anyone can lose on different days.</p>
+        <p>That's why a good athlete's training program should include <em>both</em> types of mental training: long-term consistent scoring practice (for qualifying), and situational pressure shot practice (for eliminations).</p>
 
-        <h2 id="eliminasi-di-Archeris">Eliminasi di archeris.net</h2>
-        <p>Panitia event di archeris.net dapat mengelola fase eliminasi melalui modul <strong>Elimination</strong> yang terintegrasi dengan hasil kualifikasi. Fitur utama:</p>
+        <h2 id="elimination-on-Archeris">Elimination on archeris.net</h2>
+        <p>Event organizers at archeris.net can manage the elimination phase through the <strong>Elimination</strong> module which is integrated with the qualification results. Main features:</p>
         <ul>
-            <li><strong>Generate bracket otomatis</strong> dari ranking kualifikasi dengan satu klik.</li>
-            <li>Dukungan bracket 4/8/16/32 besar per kategori.</li>
-            <li>Input skor set atau poin kumulatif langsung dari mobile app atau dashboard.</li>
-            <li>Visualisasi bracket real-time — dapat ditampilkan di layar TV/display venue.</li>
-            <li>Tambah <strong>Additional End</strong> (end tambahan) jika terjadi seri di akhir pertandingan, tanpa harus mereset seluruh data.</li>
-            <li>Cetak bracket dalam format PDF untuk arsip atau tempel di venue.</li>
+            <li><strong>Automatically generate brackets</strong> from qualifying rankings with one click.</li>
+            <li>Support 4/8/16/32 large brackets per category.</li>
+            <li>Input set scores or cumulative points directly from the mobile app or dashboard.</li>
+            <li>Real-time bracket visualization — can be displayed on the venue's TV/display screen.</li>
+            <li>Add an <strong>Additional End</strong> if there is a tie at the end of the match, without having to reset all data.</li>
+            <li>Print the brackets in PDF format for archiving or sticking at the venue.</li>
         </ul>
-    `
+`
 }
 
 

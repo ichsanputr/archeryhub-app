@@ -1,83 +1,83 @@
 export const sinkronisasi_tim = {
     slug: 'sinkronisasi-tim',
-    title: 'Sinkronisasi Tim Otomatis',
-    excerpt: 'Cara kerja fitur Sync Tim di archeris.net — bagaimana sistem mengelompokkan pemanah menjadi tim berdasarkan klub dan skor kualifikasi secara otomatis.',
+    title: 'Automatic Team Sync',
+    excerpt: 'How the Team Sync feature on archeris.net works — how the system automatically groups archers into teams based on clubs and qualifying scores.',
     icon: 'ph:arrows-clockwise-bold',
     category: 'archery',
-    readTime: '5 menit',
+    readTime: '5 min',
     toc: [
-        { id: 'apa-itu-sync-tim', level: 2, text: 'Apa Itu Sinkronisasi Tim?' },
-        { id: 'syarat-tim-terbentuk', level: 2, text: 'Syarat Tim Terbentuk' },
-        { id: 'tipe-tim', level: 2, text: 'Tipe Tim: Standar vs Mixed' },
-        { id: 'cara-kerja-pengelompokan', level: 2, text: 'Cara Kerja Pengelompokan' },
-        { id: 'kategori-individu-vs-tim', level: 2, text: 'Kategori Individu & Kategori Tim' },
-        { id: 'estimasi-vs-hasil-sync', level: 2, text: 'Estimasi Tim vs Hasil Sync' },
-        { id: 'sync-manual', level: 2, text: 'Kapan Perlu Sync Manual?' },
+        { id: 'apa-itu-sync-tim', level: 2, text: 'What is Team Sync?' },
+        { id: 'syarat-tim-terbentuk', level: 2, text: 'Team Formation Requirements' },
+        { id: 'tipe-tim', level: 2, text: 'Team Type: Standard vs Mixed' },
+        { id: 'cara-kerja-pengelompokan', level: 2, text: 'How Grouping Works' },
+        { id: 'kategori-individu-vs-tim', level: 2, text: 'Individual Category & Team Category' },
+        { id: 'estimasi-vs-hasil-sync', level: 2, text: 'Team Estimates vs Sync Results' },
+        { id: 'sync-manual', level: 2, text: 'When is Manual Sync Needed?' },
         { id: 'troubleshooting', level: 2, text: 'Troubleshooting (Error Messages)' },
     ],
     content: `
-        <h2 id="apa-itu-sync-tim">Apa Itu Sinkronisasi Tim?</h2>
-        <p><strong>Sinkronisasi Tim</strong> adalah fitur di dashboard panitia yang secara otomatis membentuk tim-tim resmi untuk babak eliminasi beregu berdasarkan:</p>
+        <h2 id="what-is-team-sync">What is Team Sync?</h2>
+        <p><strong>Team Synchronization</strong> is a feature on the committee dashboard that automatically forms official teams for the team elimination round based on:</p>
         <ul>
-            <li>Keanggotaan klub masing-masing pemanah</li>
-            <li>Skor kualifikasi individu yang telah dicatat</li>
-            <li>Tipe kategori (tim 3 orang atau mixed 2 orang)</li>
+            <li>Club membership of each archer</li>
+            <li>Recorded individual qualifying scores</li>
+            <li>Category type (team of 3 people or mixed 2 people)</li>
         </ul>
-        <p>Proses ini menggantikan pembentukan tim manual yang rawan kesalahan dan memakan waktu, terutama pada event dengan puluhan kategori.</p>
+        <p>This process replaces manual team formation which is error-prone and time-consuming, especially at events with dozens of categories.</p>
 
-        <h2 id="syarat-tim-terbentuk">Syarat Tim Terbentuk</h2>
-        <p>Agar sistem dapat membentuk tim, beberapa syarat harus terpenuhi:</p>
-        <div class="not-prose overflow-x-auto my-4">
+        <h2 id="team-formation-requirements">Formation-Team Conditions</h2>
+        <p>For the system to form a team, several conditions must be met:</p>
+        <div class="not-process overflow-x-auto my-4">
             <table class="w-full text-sm border-collapse">
-                <thead>
+                <head>
                     <tr class="bg-navy text-left text-white">
-                        <th class="px-4 py-3 rounded-tl-xl">Syarat</th>
-                        <th class="px-4 py-3 rounded-tr-xl">Keterangan</th>
+                        <th class="px-4 py-3 rounded-tl-xl">Terms</th>
+                        <th class="px-4 py-3 rounded-tr-xl">Description</th>
                     </tr>
-                </thead>
+                </head>
                 <tbody class="divide-y divide-gray-100 bg-white">
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Status Pembayaran</td>
-                        <td class="px-4 py-3">Peserta harus berstatus <em>lunas</em> atau <em>menunggu acc</em></td>
+                        <td class="px-4 py-3 font-bold text-navy">Payment Status</td>
+                        <td class="px-4 py-3">Participants must be <em>paid off</em> or <em>waiting for acc</em></td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Skor Kualifikasi</td>
-                        <td class="px-4 py-3">Pemanah harus memiliki skor kualifikasi yang telah diinput</td>
+                        <td class="px-4 py-3 font-bold text-navy">Qualification Score</td>
+                        <td class="px-4 py-3">Archers must have a qualifying score entered</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Keanggotaan Klub</td>
-                        <td class="px-4 py-3">Pemanah harus terdaftar di sebuah klub (bukan independen)</td>
+                        <td class="px-4 py-3 font-bold text-navy">Club Membership</td>
+                        <td class="px-4 py-3">Archers must be registered with a club (not independent)</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Kuota Per Klub</td>
-                        <td class="px-4 py-3">Satu klub membutuhkan minimal 3 pemanah (standar) atau 1 putra + 1 putri (mixed) agar bisa membentuk satu tim</td>
+                        <td class="px-4 py-3 font-bold text-navy">Quota Per Club</td>
+                        <td class="px-4 py-3">One ​​club requires a minimum of 3 archers (standard) or 1 man + 1 woman (mixed) to form one team</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <p>Jika salah satu syarat tidak terpenuhi, klub tersebut tidak akan menghasilkan tim — namun klub lain yang memenuhi syarat tetap akan diproses.</p>
+        <p>If one of the conditions is not met, the club will not produce a team — but other clubs that meet the requirements will still be processed.</p>
 
-        <h2 id="tipe-tim">Tipe Tim: Standar vs Mixed</h2>
-        <p>archeris.net mendukung dua tipe kategori beregu:</p>
-        <div class="not-prose overflow-x-auto my-4">
+        <h2 id="team-type">Team Type: Standard vs Mixed</h2>
+        <p>archeris.net supports two types of team categories:</p>
+        <div class="not-process overflow-x-auto my-4">
             <table class="w-full text-sm border-collapse">
-                <thead>
+                <head>
                     <tr class="bg-navy text-left text-white">
-                        <th class="px-4 py-3 rounded-tl-xl">Tipe</th>
-                        <th class="px-4 py-3">Anggota</th>
-                        <th class="px-4 py-3 rounded-tr-xl">Cara Pembentukan</th>
+                        <th class="px-4 py-3 rounded-tl-xl">Type</th>
+                        <th class="px-4 py-3">Members</th>
+                        <th class="px-4 py-3 rounded-tr-xl">Formation Method</th>
                     </tr>
-                </thead>
+                </head>
                 <tbody class="divide-y divide-gray-100 bg-white">
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Tim Standar</td>
-                        <td class="px-4 py-3">3 pemanah dari klub yang sama (gender sama)</td>
-                        <td class="px-4 py-3">Diambil 3 pemanah dengan skor tertinggi per kelompok (grup 3 teratas, grup 4–6, dst.)</td>
+                        <td class="px-4 py-3 font-bold text-navy">Standard Team</td>
+                        <td class="px-4 py-3">3 archers from the same club (same gender)</td>
+                        <td class="px-4 py-3">3 archers with the highest scores per group are drawn (top 3 group, 4–6 group, etc.)</td>
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Mixed Team</td>
-                        <td class="px-4 py-3">1 putra + 1 putri dari klub yang sama</td>
-                        <td class="px-4 py-3">Dipasangkan pemanah putra dan putri terbaik per peringkat dari setiap klub</td>
+                        <td class="px-4 py-3">1 boy + 1 girl from the same club</td>
+                        <td class="px-4 py-3">The best male and female archers are paired per ranking from each club</td>
                     </tr>
                 </tbody>
             </table>
@@ -85,112 +85,112 @@ export const sinkronisasi_tim = {
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 my-4 flex gap-4">
             <div class="text-primary text-2xl shrink-0">💡</div>
             <div>
-                <div class="font-bold text-navy text-sm mb-1">Satu Klub, Banyak Tim</div>
-                <div class="text-gray-600 text-sm">Jika sebuah klub memiliki 6 pemanah berskor di satu kategori, sistem akan otomatis membentuk 2 tim dari klub tersebut — Tim A (peringkat 1–3 klub) dan Tim B (peringkat 4–6 klub).</div>
+                <div class="font-bold text-navy text-sm mb-1">One ​​Club, Many Teams</div>
+                <div class="text-gray-600 text-sm">If a club has 6 archers scoring in one category, the system will automatically form 2 teams from that club — Team A (ranked 1–3 clubs) and Team B (ranked 4–6 clubs).</div>
             </div>
         </div>
 
-        <h2 id="cara-kerja-pengelompokan">Cara Kerja Pengelompokan</h2>
-        <p>Algoritma sync tim bekerja sebagai berikut:</p>
+        <h2 id="how-grouping-works">How Grouping Works</h2>
+        <p>The team sync algorithm works as follows:</p>
         <ol>
-            <li><strong>Ambil semua peserta</strong> dari kategori individu yang sesuai (divisi, kelompok usia, dan gender yang sama dengan kategori tim).</li>
-            <li><strong>Hitung skor kualifikasi</strong> setiap peserta dari tabel <code>qualification_end_scores</code>.</li>
-            <li><strong>Kelompokkan berdasarkan klub</strong> dan urutkan dari skor tertinggi ke terendah.</li>
-            <li><strong>Bagi ke dalam kelompok berisi <em>n</em> pemanah</strong> (n = ukuran tim). Kelompok pertama adalah tim terbaik, kelompok kedua tim kedua, dst.</li>
-            <li><strong>Kelompok yang tidak memenuhi kuota</strong> (kurang dari n pemanah berskor) diabaikan.</li>
-            <li><strong>Buat entri tim</strong> di database, lengkap dengan nama tim, peringkat, skor total, dan daftar anggota.</li>
+            <li><strong>Take all participants</strong> from the appropriate individual category (same division, age group, and gender as the team category).</li>
+            <li><strong>Calculate the qualifying score</strong> for each participant from the <code>qualification_end_scores</code> table.</li>
+            <li><strong>Group by club</strong> and order from highest to lowest score.</li>
+            <li><strong>Divide into groups of <em>n</em> archers</strong> (n = team size). The first group is the best team, the second group is the second team, etc.</li>
+            <li><strong>Groups that do not meet the quota</strong> (less than n scored archers) are ignored.</li>
+            <li><strong>Create a team entry</strong> in the database, complete with team name, ranking, total score, and member list.</li>
         </ol>
 
-        <h2 id="kategori-individu-vs-tim">Kategori Individu &amp; Kategori Tim</h2>
-        <p>Di sebuah event panahan, satu divisi biasanya memiliki <strong>dua kategori terpisah</strong>: kategori individu dan kategori tim.</p>
+        <h2 id="individual-vs-team-category">Individual &amp; Team Category</h2>
+        <p>In an archery event, a division usually has <strong>two separate categories</strong>: an individual category and a team category.</p>
         <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-5 my-4 flex gap-4">
             <div class="text-amber-500 text-2xl shrink-0">⚠️</div>
             <div>
-                <div class="font-bold text-navy text-sm mb-1">Pemanah Mendaftar di Kategori Individu</div>
-                <div class="text-gray-600 text-sm">Peserta <strong>selalu mendaftar ke kategori individu</strong> — bukan ke kategori tim. Saat Sync Tim dijalankan, sistem secara otomatis mencari peserta dari kategori individu yang memiliki divisi, kelompok usia, dan gender yang sama dengan kategori tim yang dipilih. Ini berarti sinkronisasi akan berhasil meski dari tampilan kategori tim tidak terlihat peserta terdaftar.</div>
+                <div class="font-bold text-navy text-sm mb-1">Archers Register in Individual Category</div>
+                <div class="text-gray-600 text-sm">Participants <strong>always register in the individual category</strong> — not in the team category. When Team Sync is run, the system automatically searches for participants from individual categories that belong to the same division, age group, and gender as the selected team category. This means that synchronization will be successful even if the team category display does not show registered participants.</div>
             </div>
         </div>
-        <p>Contoh: Kategori <em>Compound U-13 Putra Tim</em> akan mencari pesertanya dari kategori <em>Compound U-13 Putra Individual</em> di event yang sama.</p>
+        <p>Example: The <em>Men's U-13 Compound Team</em> category will look for participants from the <em>Individual Men's U-13 Compound</em> category at the same event.</p>
 
-        <h2 id="estimasi-vs-hasil-sync">Estimasi Tim vs Hasil Sync</h2>
-        <p>Sebelum menjalankan sync, halaman <strong>Pembuatan Bracket</strong> menampilkan dua angka:</p>
+        <h2 id="estimate-vs-sync-results">Team Estimates vs Sync Results</h2>
+        <p>Before running sync, the <strong>Bracket Creation</strong> page displays two numbers:</p>
         <ul>
-            <li><strong>Estimasi Tim</strong> <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">Estimasi</span> — perkiraan jumlah tim yang akan terbentuk, dihitung langsung dari data kualifikasi saat ini tanpa benar-benar membuat tim. Berguna untuk memutuskan ukuran bracket sebelum sync dijalankan.</li>
-            <li><strong>Tim Tersinkron</strong> <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full">Auto</span> — jumlah tim yang sudah benar-benar dibuat dan tersimpan di database setelah sync dijalankan.</li>
+            <li><strong>Team Estimates</strong> <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">Estimations</span> — estimates of the number of teams that will form, calculated directly from current qualifying data without actually creating teams. Useful for deciding the bracket size before syncing.</li>
+            <li><strong>Synchronized Teams</strong> <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full">Auto</span> — the number of teams that were actually created and saved in the database after the sync was executed.</li>
         </ul>
-        <p>Jika sudah ada tim tersinkron, angka tersebut yang digunakan sebagai dasar rekomendasi ukuran bracket. Jika belum ada, sistem menggunakan estimasi sebagai acuan.</p>
+        <p>If there are already synchronized teams, this number is used as a basis for bracket size recommendations. If it doesn't exist yet, the system uses the estimate as a reference.</p>
 
-        <h2 id="sync-manual">Kapan Perlu Sync Manual?</h2>
-        <p>Meskipun Sync Otomatis menangani sebagian besar kebutuhan, ada situasi di mana panitia perlu mengedit atau membuat tim secara manual:</p>
+        <h2 id="sync-manual">When is Manual Sync Needed?</h2>
+        <p>While Auto Sync handles most needs, there are situations where organizers need to edit or create teams manually:</p>
         <ul>
-            <li>Pemanah dari luar klub yang ingin bergabung sebagai tim (pemanah independen)</li>
-            <li>Perubahan komposisi akibat pemanah yang cedera atau mengundurkan diri</li>
-            <li>Format khusus event yang tidak mengikuti aturan standar pengelompokan</li>
+            <li>Archers from outside the club who wish to join as a team (independent archers)</li>
+            <li>Changes in composition due to archers being injured or withdrawing</li>
+            <li>A special event format that does not follow standard grouping rules</li>
         </ul>
-        <p>Gunakan tombol <strong>Tambah Tim Manual</strong> atau <strong>Edit Detil Tim</strong> di halaman Manajemen Tim untuk kasus-kasus tersebut.</p>
+        <p>Use the <strong>Manual Add Team</strong> or <strong>Edit Team Details</strong> button on the Team Management page for those cases.</p>
         <div class="not-prose bg-red-50 border border-red-200 rounded-2xl p-5 my-4 flex gap-4">
             <div class="text-red-500 text-2xl shrink-0">🔄</div>
             <div>
-                <div class="font-bold text-navy text-sm mb-1">Sync Otomatis Menghapus Data Tim Lama</div>
-                <div class="text-gray-600 text-sm">Setiap kali Sync Otomatis dijalankan, semua tim yang ada di kategori tersebut akan dihapus dan dibuat ulang dari awal. Pastikan skor kualifikasi sudah final sebelum menjalankan sync.</div>
+                <div class="font-bold text-navy text-sm mb-1">Automatic Sync Delete Old Team Data</div>
+                <div class="text-gray-600 text-sm">Every time Auto Sync is run, all existing teams in that category will be deleted and re-created from scratch. Make sure the qualifying scores are final before running sync.</div>
             </div>
         </div>
 
-        <h2 id="troubleshooting">Troubleshooting (Pesan Error)</h2>
-        <p>Berikut adalah beberapa pesan error yang mungkin muncul saat proses sinkronisasi dan penjelasan mengenai penyebabnya:</p>
+        <h2 id="troubleshooting">Troubleshooting (Error Message)</h2>
+        <p>The following are several error messages that may appear during the synchronization process and an explanation of their causes:</p>
 
         <div class="space-y-4 my-6">
-            <!-- 1. Kategori Putri/Putra Tidak Ditemukan -->
+            <!-- 1. Girls/Boys Category Not Found -->
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded ">Error</span>
-                    <h4 class="text-sm font-black text-navy tracking-tight">"Kategori pasangan putra/putri (Individual) tidak ditemukan..."</h4>
+                    <h4 class="text-sm font-black text-navy tracking-tight">"Category pair son/daughter (Individual) not found..."</h4>
                 </div>
-                <p class="text-[13px] text-gray-500 italic mb-3">Kasus: Sinkronisasi Mixed Team.</p>
+                <p class="text-[13px] text-gray-500 italic mb-3">Case: Mixed Team Sync.</p>
                 <div class="space-y-2">
-                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Sistem tidak dapat menemukan kategori <em>Individual</em> dengan divisi dan kelompok umur yang sama untuk menarik skor kualifikasi.</p>
-                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Pastikan Anda telah membuat kategori <em>Individual Putra</em> DAN <em>Individual Putri</em> untuk divisi tersebut. Sistem membutuhkan skor dari kedua kategori ini untuk membentuk tim campuran (mixed).</p>
+                    <p class="text-[13px] text-gray-700"><strong>Cause:</strong> The system could not find an <em>Individual</em> category with the same division and age group to pull qualifying scores from.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solution:</strong> Make sure you have created <em>Men's Individual</em> AND <em>Women's Individual</em> categories for the division. The system requires scores from both categories to form a mixed team.</p>
                 </div>
             </div>
 
-            <!-- 2. Sinkronisasi Tidak Menghasilkan Tim -->
+            <!-- 2. Synchronization Doesn't Make Teams -->
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="px-2 py-0.5 bg-amber-100 text-amber-600 font-bold text-[10px] rounded ">Info</span>
-                    <h4 class="text-sm font-black text-navy tracking-tight">"Sinkronisasi tidak menghasilkan tim"</h4>
+                    <h4 class="text-sm font-black text-navy tracking-tight">"Sync does not generate teams"</h4>
                 </div>
                 <div class="space-y-2 mt-3">
-                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Peserta ada, kategori ada, namun kuota per klub tidak mencukupi untuk membentuk satu pun tim.</p>
-                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> 
+                    <p class="text-[13px] text-gray-700"><strong>Cause:</strong> There are participants, there are categories, but the quota per club is not sufficient to form a single team.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solution:</strong>
                         <ul class="list-disc pl-5 space-y-1">
-                            <li>Check skor kualifikasi peserta: Peserta tanpa skor tidak akan dihitung oleh sistem sync.</li>
-                            <li>Check jumlah peserta per klub: Tim standar butuh minimal 3 orang, Mixed butuh minimal 1 putra & 1 putri dari klub yang sama.</li>
+                            <li>Check participant qualification scores: Participants without scores will not be counted by the sync system.</li>
+                            <li>Check the number of participants per club: Standard team requires a minimum of 3 people, Mixed requires a minimum of 1 male & 1 female from the same club.</li>
                         </ul>
                     </p>
                 </div>
             </div>
 
-            <!-- 3. Event Tidak Ditemukan -->
+            <!-- 3. Event Not Found -->
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded ">Error</span>
-                    <h4 class="text-sm font-black text-navy tracking-tight">"Event tidak ditemukan"</h4>
+                    <h4 class="text-sm font-black text-navy tracking-tight">"Event not found"</h4>
                 </div>
                 <div class="space-y-2 mt-3">
-                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Masalah pada sinkronisasi URL atau data cache di browser.</p>
-                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Refresh halaman dashboard Anda dan coba jalankan kembali proses sinkronisasi.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Cause:</strong> Problems synchronizing URLs or cache data in the browser.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solution:</strong> Refresh your dashboard page and try running the sync process again.</p>
                 </div>
             </div>
 
-            <!-- 4. Gagal Menghitung Peringkat -->
+            <!-- 4. Failed to Calculate Rank -->
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded ">Error</span>
-                    <h4 class="text-sm font-black text-navy tracking-tight">"Gagal menghitung peringkat tim" / "Gagal menghitung peringkat mixed team"</h4>
+                    <h4 class="text-sm font-black text-navy tracking-tight">"Failed to calculate team ranking" / "Failed to calculate mixed team ranking"</h4>
                 </div>
                 <div class="space-y-2 mt-3">
-                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Terjadi ketidakkonsistenan data skor di database pada salah satu peserta.</p>
-                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Periksa kembali leaderboard kualifikasi. Jika ada skor yang terlihat tidak wajar atau error, lakukan reset dan input ulang skor pada peserta tersebut.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Cause:</strong> There was an inconsistency in the score data in the database for one of the participants.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solution:</strong> Check the qualification leaderboard again. If there is a score that looks unnatural or has an error, reset and re-enter the score for that participant.</p>
                 </div>
             </div>
 
@@ -198,15 +198,15 @@ export const sinkronisasi_tim = {
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded ">Error</span>
-                    <h4 class="text-sm font-black text-navy tracking-tight">"Gagal menyimpan hasil sinkronisasi" / "Gagal memulai transaksi"</h4>
+                    <h4 class="text-sm font-black text-navy tracking-tight">"Failed to save synchronization results" / "Failed to start transaction"</h4>
                 </div>
                 <div class="space-y-2 mt-3">
-                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Gangguan koneksi ke server database atau timeout saat memproses data dalam jumlah besar.</p>
-                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Tunggu beberapa saat dan ulangi proses. Jika masalah berlanjut, hubungi tim support Archeris untuk pengecekan status server.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Cause:</strong> Connection interruption to the database server or timeout when processing large amounts of data.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solution:</strong> Wait a while and repeat the process. If the problem persists, contact the Archeris support team to check the server status.</p>
                 </div>
             </div>
         </div>
-    `,
+`,
 }
 
 

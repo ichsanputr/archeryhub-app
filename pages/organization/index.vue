@@ -71,7 +71,7 @@
                                 </h3>
                                 <p v-if="org.acronym" class="text-sm text-gray-400 font-bold">{{ org.acronym }}</p>
                             </div>
-                            <span v-if="org.verification_status === 'verified'"
+                            <span v-if="org.status === 'active'"
                                 class="flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-600 text-[10px] font-black rounded-full ">
                                 <Icon icon="ph:seal-check-fill" />
                                 Verified

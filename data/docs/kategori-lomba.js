@@ -1,54 +1,54 @@
 export const kategori_lomba = {
-    slug: 'kategori-lomba', title: 'Kategori dan Divisi Lomba', excerpt: 'Panduan lengkap pembagian divisi berdasarkan jenis busur, kelompok usia, dan format pertandingan.', icon: 'ph:list-numbers-bold', category: 'archery', readTime: '7 menit',
+    slug: 'kategori-lomba', title: 'Competition Categories and Divisions', excerpt: 'A complete guide to divisions based on bow type, age group and competition format.', icon: 'ph:list-numbers-bold', category: 'archery', readTime: '7 min',
     toc: [
-        { id: 'divisi-busur', level: 2, text: 'Divisi Berdasarkan Jenis Busur' },
-        { id: 'divisi-usia', level: 2, text: 'Pengelompokan Usia (Age Groups)' },
-        { id: 'kategori-gender', level: 2, text: 'Kategori Gender & Regu' },
-        { id: 'format-lomba', level: 2, text: 'Format Pertandingan' },
+        { id: 'divisi-busur', level: 2, text: 'Division Based on Bow Type' },
+        { id: 'divisi-usia', level: 2, text: 'Age Grouping (Age Groups)' },
+        { id: 'kategori-gender', level: 2, text: 'Gender & Team Category' },
+        { id: 'format-lomba', level: 2, text: 'Match Format' },
     ],
     content: `
-                    <h2 id="divisi-busur">Divisi Berdasarkan Jenis Busur</h2>
-                    <p>Dalam setiap kompetisi panahan, peserta dipisahkan berdasarkan jenis busur yang digunakan untuk memastikan persaingan yang adil. Divisi utama yang diakui secara luas meliputi:</p>
+                    <h2 id="arc-division">Division by Bow Type</h2>
+                    <p>In each archery competition, participants are separated based on the type of bow used to ensure fair competition. Widely recognized major divisions include:</p>
                     <ul>
-                        <li><strong>Recurve:</strong> Divisi standar Olimpiade dengan aksesori bidik lengkap.</li>
-                        <li><strong>Compound:</strong> Divisi busur katrol dengan presisi sangat tinggi.</li>
-                        <li><strong>Standard Bow (Nasional):</strong> Divisi khusus pemula atau jenjang pembinaan nasional (ciri khas riser kayu).</li>
-                        <li><strong>Barebow:</strong> Divisi busur recurve tanpa alat bantu bidik.</li>
-                        <li><strong>Tradisional / Horsebow:</strong> Divisi busur tanpa arrow rest, seringkali menggunakan teknik thumb draw.</li>
+                        <li><strong>Recurve:</strong> Olympic standard division with full aiming accessories.</li>
+                        <li><strong>Compound:</strong>Very high precision pulley bow division.</li>
+                        <li><strong>Standard Bow (National):</strong> Special beginner division or national coaching level (typical wooden riser).</li>
+                        <li><strong>Barebow:</strong> A division of recurve bows without aiming aids.</li>
+                        <li><strong>Traditional / Horsebow:</strong> Division of bows without an arrow rest, often using the thumb draw technique.</li>
                     </ul>
 
-                    <h2 id="divisi-usia">Pengelompokan Usia (Age Groups)</h2>
-                    <p>Untuk mendukung pembinaan atlet sejak dini, perlombaan biasanya dibagi ke dalam kelompok usia tertentu sesuai standar PERPANI dan World Archery:</p>
+                    <h2 id="age-division">Age Groups</h2>
+                    <p>To support the development of athletes from an early age, competitions are usually divided into certain age groups according to PERPANI and World Archery standards:</p>
                     <ul>
-                        <li><strong>U-9 & U-12 (Pra-Pemula):</strong> Fokus pada pengenalan teknik dan jarak dekat.</li>
-                        <li><strong>U-15 (Pemula):</strong> Jenjang persiapan menuju atlet kompetisi.</li>
-                        <li><strong>U-18 (Cadet) & U-21 (Junior):</strong> Kategori prestasi untuk atlet muda potensial.</li>
-                        <li><strong>Public/Umum (Open):</strong> Kategori terbuka untuk semua umur, biasanya diikuti oleh atlet elit.</li>
-                        <li><strong>Master:</strong> Kategori khusus untuk peserta senior (biasanya usia 40 atau 50 tahun ke atas).</li>
+                        <li><strong>U-9 & U-12 (Pre-Beginner):</strong> Focus on introduction to technique and close range.</li>
+                        <li><strong>U-15 (Beginner):</strong> Level of preparation for competitive athletes.</li>
+                        <li><strong>U-18 (Cadet) & U-21 (Junior):</strong> Achievement category for potential young athletes.</li>
+                        <li><strong>Public/General (Open):</strong> Category open to all ages, usually attended by elite athletes.</li>
+                        <li><strong>Master:</strong> Special category for senior participants (usually aged 40 or 50 years and above).</li>
                     </ul>
 
-                    <h2 id="kategori-gender">Kategori Gender & Regu</h2>
-                    <p>Selain divisi busur dan usia, pertandingan juga dibagi berdasarkan jenis kelamin dan komposisi tim:</p>
+                    <h2 id="gender-category">Gender & Team Category</h2>
+                    <p>In addition to bow and age divisions, matches are also divided by gender and team composition:</p>
                     <ul>
-                        <li><strong>Individu (Putra/Putri):</strong> Pertandingan perorangan.</li>
-                        <li><strong>Beregu (Team):</strong> Terdiri dari 3 pemanah dengan gender dan divisi busur yang sama.</li>
-                        <li><strong>Mixed Team (Beregu Campuran):</strong> Terdiri dari 1 putra dan 1 putri dalam divisi busur yang sama.</li>
+                        <li><strong>Individual (Men/Women):</strong> Individual competition.</li>
+                        <li><strong>Team:</strong> Consists of 3 archers of the same gender and bow division.</li>
+                        <li><strong>Mixed Team:</strong> Consists of 1 boy and 1 girl in the same bow division.</li>
                     </ul>
 
-                    <h2 id="format-lomba">Format Pertandingan</h2>
-                    <p>Di archeris.net, sistem kami mendukung dua format utama pertandingan:</p>
+                    <h2 id="competition-format">Competition Format</h2>
+                    <p>At archeris.net, our system supports two main match formats:</p>
                     <ol>
-                        <li><strong>Kualifikasi:</strong> Babak penentuan skor total untuk mencari peringkat awal. Biasanya terdiri dari 2 sesi (masing-masing 36 anak panah).</li>
-                        <li><strong>Eliminasi (Aduan):</strong> Sistem gugur (bracket) di mana pemanah bertanding satu lawan satu hingga babak final.</li>
+                        <li><strong>Qualification:</strong> The round of determining the total score to determine the initial ranking. Usually consists of 2 sessions (36 arrows each).</li>
+                        <li><strong>Elimination (Competition):</strong> Knockout system (bracket) where archers compete one on one until the final round.</li>
                     </ol>
 
                     <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-6 mt-8">
                         <div class="flex items-center gap-3 mb-3">
                             <span class="text-2xl">📝</span>
-                            <div class="font-bold text-amber-800">Catatan Penting</div>
+                            <div class="font-bold text-amber-800">Important Note</div>
                         </div>
-                        <p class="text-sm text-amber-700">Beberapa event mungkin memiliki penamaan kategori yang unik (misalnya: "SD Kelas 1-3" atau "Internal Club"). Selalu periksa detail Technical Handbook event yang Anda ikuti melalui archeris.net sebelum mendaftar.</p>
+                        <p class="text-sm text-amber-700">Some events may have unique category names (for example: "Primary Grades 1-3" or "Internal Club"). Always check the Technical Handbook details of the event you are participating in via archeris.net before registering.</p>
                     </div>
-                `
+`
 }
 

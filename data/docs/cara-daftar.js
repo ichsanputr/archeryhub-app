@@ -1,26 +1,26 @@
 export const cara_daftar = {
-  slug: 'cara-daftar', title: 'Cara Mendaftar Akun', excerpt: 'Panduan langkah demi langkah untuk mendaftarkan akun baru di archeris.net.', icon: 'ph:user-plus-bold', category: 'platform', readTime: '4 menit',
+  slug: 'cara-daftar', title: 'How to Register an Account', excerpt: 'Step by step guide to register a new account on archeris.net.', icon: 'ph:user-plus-bold', category: 'platform', readTime: '4 min',
   toc: [
-    { id: 'pilih-tipe', level: 2, text: 'Pilih Tipe Akun' },
-    { id: 'daftar-email', level: 2, text: 'Daftar via Email' },
-    { id: 'daftar-google', level: 2, text: 'Daftar via Google' },
-    { id: 'verifikasi', level: 2, text: 'Verifikasi & Login' },
+    { id: 'pilih-tipe', level: 2, text: 'Select Account Type' },
+    { id: 'daftar-email', level: 2, text: 'Register via Email' },
+    { id: 'daftar-google', level: 2, text: 'Register via Google' },
+    { id: 'verifikasi', level: 2, text: 'Verify & Login' },
   ],
   content: `
-          <h2 id="pilih-tipe">Pilih Tipe Akun</h2>
-          <p>archeris.net menyediakan tiga tipe akun utama yang dapat dipilih saat pendaftaran: <strong>Pemanah</strong>, <strong>Organisasi</strong> (Penyelenggara), dan <strong>Penjual</strong>. Pilih tipe yang sesuai dengan peran Anda dalam ekosistem panahan.</p>
-          <h2 id="daftar-email">Daftar via Email</h2>
+          <h2 id="select-type">Select Account Type</h2>
+          <p>archeris.net provides three main account types that can be selected during registration: <strong>Archer</strong>, <strong>Organization</strong> (Organizer), and <strong>Seller</strong>. Choose the type that suits your role in the archery ecosystem.</p>
+          <h2 id="register-email">Register via Email</h2>
           <ol>
-            <li>Kunjungi halaman <a href="/auth/register" class="text-primary font-semibold">Daftar</a>.</li>
-            <li>Isi nama lengkap, alamat email, dan kata sandi yang kuat.</li>
-            <li>Pilih tipe akun (Pemanah / Organisasi / Penjual).</li>
-            <li>Klik tombol <strong>Daftar Sekarang</strong>.</li>
-            <li>Periksa kotak masuk email Anda dan klik tautan verifikasi.</li>
+            <li>Visit the <a href="/auth/register" class="text-primary font-semibold">Register</a> page.</li>
+            <li>Fill in your full name, email address and strong password.</li>
+            <li>Select account type (Archer / Organization / Seller).</li>
+            <li>Click the <strong>Register Now</strong> button.</li>
+            <li>Check your email inbox and click the verification link.</li>
           </ol>
-          <h2 id="daftar-google">Daftar via Google</h2>
-          <p>Anda juga bisa mendaftar dengan cepat menggunakan akun Google. Klik tombol <strong>Daftar dengan Google</strong> di halaman registrasi, dan pilih akun Google yang ingin digunakan. Platform akan secara otomatis mengisi nama dan email Anda.</p>
-          <h2 id="verifikasi">Verifikasi & Login</h2>
-          <p>Setelah verifikasi berhasil, Anda akan langsung diarahkan ke dashboard sesuai tipe akun yang dipilih. Lengkapi profil Anda agar informasi tampil dengan benar di halaman publik.</p>
-        `
+          <h2 id="register-google">Register via Google</h2>
+          <p>You can also register quickly using a Google account. Click the <strong>Register with Google</strong> button on the registration page, and select the Google account you want to use. The platform will automatically fill in your name and email.</p>
+          <h2 id="verification">Verify & Login</h2>
+          <p>After successful verification, you will be immediately directed to the dashboard according to the account type selected. Complete your profile so that information appears correctly on public pages.</p>
+`
 }
 

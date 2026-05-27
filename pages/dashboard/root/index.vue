@@ -113,12 +113,12 @@
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
                                 {{ t('root.subscriptions.table_header_account') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-center">
-                                {{ t('root.subscriptions.table_header_plan') }}
+                                {{ currentTab === 'club' ? 'City' : t('root.subscriptions.table_header_plan') }}
                             </th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-center">
                                 {{ t('root.subscriptions.table_header_status') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
-                                {{ t('root.subscriptions.table_header_expires') }}</th>
+                                {{ currentTab === 'club' ? 'Last Updated' : t('root.subscriptions.table_header_expires') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
                                 {{ t('root.index.table_header_registered') }}</th>
                             <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right">
@@ -132,7 +132,7 @@
                                 <div class="flex items-center gap-4">
                                     <div
                                         class="h-10 w-10 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0">
-                                        <img :src="useImageOrDefault(user.avatar_url, user.name)"
+                                        <img :src="useImageOrDefault(user.avatar_url || user.logo_url, user.name)"
                                             class="w-full h-full object-cover">
                                     </div>
                                     <div>
@@ -140,53 +140,69 @@
                                             class="font-bold text-navy group-hover:text-primary transition-colors line-clamp-1 truncate max-w-[220px]">
                                             {{ user.name || '—' }}
                                         </div>
-                                        <div class="text-xs text-gray-400 line-clamp-1 truncate max-w-[220px]">{{
-                                            user.email || '—' }}</div>
+                                        <div class="text-xs text-gray-400 line-clamp-1 truncate max-w-[220px]">
+                                            {{ currentTab === 'club' ? (user.abbreviation ? `(${user.abbreviation})` : '—') : (user.email || '—') }}
+                                        </div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-center text-sm font-semibold text-navy">
-                                {{ user.plan_name || '—' }}
+                                {{ currentTab === 'club' ? (user.city || '—') : (user.plan_name || '—') }}
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <span class="px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest border"
-                                    :class="getStatusBadgeClass(user.subscription_status)">
-                                    {{ (user.subscription_status || 'active').charAt(0).toUpperCase() + (user.subscription_status || 'active').slice(1) }}
+                                    :class="getStatusBadgeClass(user.subscription_status || user.status)">
+                                    {{ (user.subscription_status || user.status || 'active').charAt(0).toUpperCase() + (user.subscription_status || user.status || 'active').slice(1) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-xs font-semibold"
                                 :class="isExpiredSoon(user.expires_at) ? 'text-red-500 font-bold' : 'text-navy'">
-                                {{ user.expires_at ? formatDate(user.expires_at) : '—' }}
+                                {{ currentTab === 'club' ? formatDate(user.updated_at) : (user.expires_at ? formatDate(user.expires_at) : '—') }}
                             </td>
                             <td class="px-6 py-4 text-xs font-semibold text-gray-400">{{ formatDate(user.created_at) }}
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <!-- Edit Package -->
-                                    <button @click="openEditSubscription(user)"
+                                    <!-- Edit Club or Edit Package -->
+                                    <button v-if="currentTab === 'club'" @click="openEditClub(user)"
+                                        class="p-2 text-navy hover:bg-gray-100 hover:text-navy-dark rounded-xl transition-all"
+                                        title="Edit Club">
+                                        <Icon icon="ph:pencil-simple-bold" class="text-xl" />
+                                    </button>
+                                    <button v-else @click="openEditSubscription(user)"
                                         class="p-2 text-navy hover:bg-gray-100 hover:text-navy-dark rounded-xl transition-all"
                                         :title="t('root.subscriptions.edit_modal_title')">
                                         <Icon icon="ph:pencil-simple-bold" class="text-xl" />
                                     </button>
-                                    <!-- Change Password -->
-                                    <button @click="openChangePassword(user)"
-                                        class="p-2 text-navy hover:bg-gray-100 hover:text-navy-dark rounded-xl transition-all"
-                                        :title="t('root.index.change_password_title')">
-                                        <Icon icon="ph:key-bold" class="text-xl" />
-                                    </button>
-                                    <!-- Suspend/Activate -->
-                                    <button v-if="user.subscription_status !== 'suspended'"
-                                        @click="confirmAction(user, 'suspend')"
+                                    
+                                    <!-- Delete Club -->
+                                    <button v-if="currentTab === 'club'" @click="deleteClub(user)"
                                         class="p-2 text-red-400 hover:bg-red-50 hover:text-red-500 rounded-xl transition-all"
-                                        :title="t('root.index.suspend_account_title')">
-                                        <Icon icon="ph:prohibit-bold" class="text-xl" />
+                                        title="Delete Club">
+                                        <Icon icon="ph:trash-bold" class="text-xl" />
                                     </button>
-                                    <button v-else
-                                        @click="confirmAction(user, 'activate')"
-                                        class="p-2 text-green-500 hover:bg-green-50 rounded-xl transition-all"
-                                        :title="t('root.index.activate_account_title')">
-                                        <Icon icon="ph:check-circle-bold" class="text-xl" />
-                                    </button>
+
+                                    <!-- Change Password -->
+                                    <template v-if="currentTab !== 'club'">
+                                        <button @click="openChangePassword(user)"
+                                            class="p-2 text-navy hover:bg-gray-100 hover:text-navy-dark rounded-xl transition-all"
+                                            :title="t('root.index.change_password_title')">
+                                            <Icon icon="ph:key-bold" class="text-xl" />
+                                        </button>
+                                        <!-- Suspend/Activate -->
+                                        <button v-if="user.subscription_status !== 'suspended'"
+                                            @click="confirmAction(user, 'suspend')"
+                                            class="p-2 text-red-400 hover:bg-red-50 hover:text-red-500 rounded-xl transition-all"
+                                            :title="t('root.index.suspend_account_title')">
+                                            <Icon icon="ph:prohibit-bold" class="text-xl" />
+                                        </button>
+                                        <button v-else
+                                            @click="confirmAction(user, 'activate')"
+                                            class="p-2 text-green-500 hover:bg-green-50 rounded-xl transition-all"
+                                            :title="t('root.index.activate_account_title')">
+                                            <Icon icon="ph:check-circle-bold" class="text-xl" />
+                                        </button>
+                                    </template>
                                 </div>
                             </td>
                         </tr>
@@ -373,8 +389,8 @@
                         <Icon icon="ph:shield-bold" class="text-navy text-xl" />
                     </div>
                     <div>
-                        <h3 class="text-lg font-black text-navy tracking-tight">Add New Club</h3>
-                        <div class="text-[10px] font-bold text-gray-400 mt-0.5">Register a new club data master</div>
+                        <h3 class="text-lg font-black text-navy tracking-tight">{{ isEditingClub ? 'Edit Club' : 'Add New Club' }}</h3>
+                        <div class="text-[10px] font-bold text-gray-400 mt-0.5">{{ isEditingClub ? 'Update club details' : 'Register a new club data master' }}</div>
                     </div>
                 </div>
 
@@ -392,14 +408,14 @@
                     </div>
 
                     <div class="space-y-1">
-                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Registration Email</label>
-                        <input v-model="clubForm.email" type="email" required placeholder="e.g. contact@club.com"
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">City</label>
+                        <input v-model="clubForm.city" type="text" placeholder="e.g. Sleman"
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
                     </div>
 
                     <div class="space-y-1">
-                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Password</label>
-                        <input v-model="clubForm.password" type="password" required placeholder="••••••••"
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Logo URL</label>
+                        <input v-model="clubForm.logo_url" type="text" placeholder="e.g. /media/logo.png"
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
                     </div>
 
@@ -408,10 +424,10 @@
                             class="flex-1 py-3 border border-gray-200 rounded-xl text-xs font-black text-gray-500 hover:bg-gray-50 transition-all tracking-widest">
                             Cancel
                         </button>
-                        <button type="submit" :disabled="addClubLoading || !clubForm.name || !clubForm.email || !clubForm.password"
+                        <button type="submit" :disabled="addClubLoading || !clubForm.name"
                             class="flex-1 py-3 bg-navy text-primary rounded-xl text-xs font-black hover:bg-navy/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2 tracking-widest shadow-lg shadow-navy/20">
                             <Icon v-if="addClubLoading" icon="ph:spinner-bold" class="animate-spin" />
-                            Save Club
+                            {{ isEditingClub ? 'Save Changes' : 'Save Club' }}
                         </button>
                     </div>
                 </form>
@@ -455,49 +471,90 @@ const addClubLoading = ref(false)
 const clubForm = ref({
     name: '',
     acronym: '',
-    email: '',
-    password: ''
+    city: '',
+    logo_url: ''
 })
+const isEditingClub = ref(false)
+const editingClubId = ref('')
 
 const openAddClub = () => {
     clubForm.value = {
         name: '',
         acronym: '',
-        email: '',
-        password: ''
+        city: '',
+        logo_url: ''
     }
+    isEditingClub.value = false
+    editingClubId.value = ''
+    showAddClubModal.value = true
+}
+
+const openEditClub = (club) => {
+    clubForm.value = {
+        name: club.name || '',
+        acronym: club.abbreviation || '',
+        city: club.city || '',
+        logo_url: club.logo_url || ''
+    }
+    isEditingClub.value = true
+    editingClubId.value = club.uuid
     showAddClubModal.value = true
 }
 
 const submitAddClub = async () => {
     addClubLoading.value = true
     try {
-        await $fetch(`${apiBaseUrl}/root/dashboard/users`, {
-            method: 'POST',
+        const url = isEditingClub.value 
+            ? `${apiBaseUrl}/root/dashboard/clubs/${editingClubId.value}`
+            : `${apiBaseUrl}/root/dashboard/clubs`
+        const method = isEditingClub.value ? 'PUT' : 'POST'
+
+        await $fetch(url, {
+            method: method,
             body: {
-                user_type: 'club',
                 name: clubForm.value.name,
                 acronym: clubForm.value.acronym,
-                email: clubForm.value.email,
-                password: clubForm.value.password
+                city: clubForm.value.city,
+                logo_url: clubForm.value.logo_url
             },
             credentials: 'include'
         })
         showAddClubModal.value = false
-        successMessage.value = 'Club added successfully'
+        successMessage.value = isEditingClub.value ? 'Club updated successfully' : 'Club added successfully'
         showSuccessToast.value = true
         setTimeout(() => { showSuccessToast.value = false }, 5000)
         await refreshSubs()
     } catch (err) {
-        alert(err.data?.error || 'Failed to add club')
+        alert(err.data?.error || 'Failed to save club')
     } finally {
         addClubLoading.value = false
     }
 }
 
+const deleteClub = async (club) => {
+    if (!confirm(`Are you sure you want to delete the club: ${club.name}?`)) return
+    try {
+        await $fetch(`${apiBaseUrl}/root/dashboard/clubs/${club.uuid}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        })
+        successMessage.value = 'Club deleted successfully'
+        showSuccessToast.value = true
+        setTimeout(() => { showSuccessToast.value = false }, 5000)
+        await refreshSubs()
+    } catch (err) {
+        alert(err.data?.error || 'Failed to delete club')
+    }
+}
+
 // Fetch Subscriptions (dependent on currentTab)
 const { data: subData, refresh: refreshSubs } = await useFetch(
-    () => `${apiBaseUrl}/root/dashboard/subscriptions?type=${currentTab.value}`,
+    () => {
+        if (currentTab.value === 'club') {
+            return `${apiBaseUrl}/root/dashboard/clubs`
+        }
+        return `${apiBaseUrl}/root/dashboard/subscriptions?type=${currentTab.value}`
+    },
     {
         key: 'root-subscriptions-dynamic',
         credentials: 'include',
@@ -515,6 +572,10 @@ const { data: plansData } = await useFetch(
 )
 
 const users = computed(() => {
+    if (currentTab.value === 'club') {
+        const list = subData.value?.data || []
+        return [...list].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    }
     const list = subData.value?.subscriptions || []
     return [...list].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
 })

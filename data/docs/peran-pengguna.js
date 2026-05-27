@@ -1,83 +1,83 @@
 export const peran_pengguna = {
-    slug: 'peran-pengguna', title: 'Jenis Akun di Platform', excerpt: 'Panduan lengkap jenis akun, hak akses, dan alur kerja tiap tipe pengguna di archeris.net.', icon: 'ph:users-three-bold', category: 'platform', readTime: '8 menit',
+    slug: 'peran-pengguna', title: 'Account Types on the Platform', excerpt: 'Complete guide to account types, access rights, and workflow for each user type on archeris.net.', icon: 'ph:users-three-bold', category: 'platform', readTime: '8 min',
     toc: [
-        { id: 'tipe-akun', level: 2, text: 'Tipe Akun di archeris.net' },
-        { id: 'pemanah', level: 2, text: 'Akun Pemanah' },
-        { id: 'organisasi', level: 2, text: 'Akun Organisasi' },
-        { id: 'penjual', level: 2, text: 'Akun Penjual' },
-        { id: 'perbandingan', level: 2, text: 'Perbandingan Hak Akses' },
-        { id: 'pilih-peran', level: 2, text: 'Bagaimana Memilih Akun yang Tepat?' },
+        { id: 'tipe-akun', level: 2, text: 'Account Types on archeris.net' },
+        { id: 'pemanah', level: 2, text: 'Archer Account' },
+        { id: 'organisasi', level: 2, text: 'Organization Account' },
+        { id: 'penjual', level: 2, text: 'Seller Account' },
+        { id: 'perbandingan', level: 2, text: 'Comparison of Access Rights' },
+        { id: 'pilih-peran', level: 2, text: 'How to Choose the Right Account?' },
     ],
     content: `
-                    <h2 id="tipe-akun">Tipe Akun di archeris.net</h2>
-                    <p>archeris.net dirancang untuk melayani satu ekosistem panahan yang lengkap. Karena kebutuhan pengguna berbeda-beda, sistem menyediakan tiga tipe akun utama: <strong>Pemanah</strong>, <strong>Organisasi</strong> (Penyelenggara), dan <strong>Penjual</strong>. Masing-masing tipe memiliki dashboard, menu, serta kewenangan yang disesuaikan dengan fungsinya.</p>
-                    <p>Memilih tipe akun yang tepat sejak awal akan membuat alur kerja Anda lebih efisien, mulai dari pendaftaran event, penyelenggaraan turnamen, hingga penjualan produk panahan.</p>
+                    <h2 id="account-type">Account Types on archeris.net</h2>
+                    <p>archeris.net is designed to serve a complete archery ecosystem. Because user needs vary, the system provides three main account types: <strong>Archer</strong>, <strong>Organization</strong> (Organizer), and <strong>Seller</strong>. Each type has a dashboard, menu and authority tailored to its function.</p>
+                    <p>Choosing the right account type from the start will make your workflow more efficient, from event registration, organizing tournaments, to selling archery products.</p>
 
-                    <h2 id="pemanah">Akun Pemanah</h2>
-                    <p>Akun <strong>Pemanah</strong> ditujukan untuk atlet individu, baik pemula maupun kompetitor aktif. Fokus utama akun ini adalah perkembangan profil atlet dan partisipasi event.</p>
-                    <p><strong>Fitur utama untuk Pemanah:</strong></p>
+                    <h2 id="archer">Archer Account</h2>
+                    <p>The <strong>Archer</strong> account is intended for individual athletes, both beginners and active competitors. The main focus of this account is the development of athlete profiles and event participation.</p>
+                    <p><strong>Key features for Archer:</strong></p>
                     <ul>
-                        <li>Membuat profil atlet publik (nama, domisili, jenis busur, bio singkat).</li>
-                        <li>Mendaftar event/turnamen dan memantau status pendaftaran secara real-time.</li>
-                        <li>Melihat hasil kualifikasi, ranking, dan bracket eliminasi dari setiap kejuaraan yang diikuti.</li>
-                        <li>Mengelola portofolio prestasi digital yang dapat dibagikan kepada komunitas atau sponsor.</li>
-                        <li>Pembelian peralatan panahan melalui marketplace terintegrasi.</li>
+                        <li>Create a public athlete profile (name, domicile, arc type, short bio).</li>
+                        <li>Register for events/tournaments and monitor registration status in real-time.</li>
+                        <li>See the qualifying results, rankings and elimination brackets for each championship you participate in.</li>
+                        <li>Manage a portfolio of digital achievements that can be shared with the community or sponsors.</li>
+                        <li>Purchase archery equipment through the integrated marketplace.</li>
                     </ul>
-                    <p><strong>Cocok untuk:</strong> atlet individu, pelajar, penghobi panahan, dan peserta event terbuka.</p>
+                    <p><strong>Suitable for:</strong> individual athletes, students, archery hobbyists and outdoor event participants.</p>
 
-                    <h2 id="organisasi">Akun Organisasi</h2>
-                    <p>Akun <strong>Organisasi</strong> ditujukan untuk penyelenggara event, asosiasi, atau panitia turnamen. Ini adalah tipe akun dengan fokus tertinggi pada operasional kompetisi dan manajemen pertandingan.</p>
-                    <p><strong>Fitur utama untuk Organisasi:</strong></p>
+                    <h2 id="organization">Organization Account</h2>
+                    <p>The <strong>Organization</strong> account is intended for event organizers, associations or tournament committees. This is the account type with the highest focus on competition operations and match management.</p>
+                    <p><strong>Key features for Organizations:</strong></p>
                     <ul>
-                        <li>Membuat dan mempublikasikan event lengkap dengan kategori usia, jenis busur, dan jadwal.</li>
-                        <li>Mengelola peserta, verifikasi pendaftaran otomatis, dan kontrol status pembayaran (invoice).</li>
-                        <li>Membentuk sesi kualifikasi, pembagian bantalan (assignment), serta alur pertandingan.</li>
-                        <li>Mengelola akun scorekeeper untuk input skor lapangan melalui aplikasi mobile.</li>
-                        <li>Menampilkan leaderboard dan bracket eliminasi yang ter-update secara otomatis sesuai skor masuk.</li>
+                        <li>Create and publish events complete with age categories, arc types, and schedules.</li>
+                        <li>Manage participants, automatic registration verification, and control payment status (invoices).</li>
+                        <li>Establish qualifying sessions, assignments and match flow.</li>
+                        <li>Manage a scorekeeper account for field score input via the mobile application.</li>
+                        <li>Displays the leaderboard and elimination bracket which are updated automatically according to the entered score.</li>
                     </ul>
-                    <p><strong>Catatan:</strong> beberapa fitur lanjutan organisasi membutuhkan paket berlangganan (Starter/Pro) untuk kapasitas peserta yang lebih besar.</p>
-                    <p><strong>Cocok untuk:</strong> panitia kejuaraan, pengurus daerah/cabang (PERPANI), EO olahraga, dan lembaga pembina kompetisi.</p>
+                    <p><strong>Note:</strong> some advanced organizational features require a subscription plan (Starter/Pro) for larger participant capacities.</p>
+                    <p><strong>Suitable for:</strong> championship committees, regional/branch administrators (PERPANI), sports EOs, and competition development institutions.</p>
 
-                    <h2 id="penjual">Akun Penjual</h2>
-                    <p>Akun <strong>Penjual</strong> ditujukan untuk toko atau individu yang menjual perlengkapan panahan. Tipe ini dipisahkan agar manajemen produk dan transaksi dapat berjalan fokus tanpa bercampur dengan fitur kompetisi.</p>
-                    <p><strong>Fitur utama untuk Penjual:</strong></p>
+                    <h2 id="seller">Seller Account</h2>
+                    <p>The <strong>Seller</strong> account is intended for stores or individuals who sell archery equipment. This type is separated so that product and transaction management can run focused without being mixed up with competition features.</p>
+                    <p><strong>Key features for Sellers:</strong></p>
                     <ul>
-                        <li>Membuat etalase produk panahan (busur, anak panah, aksesori, apparel).</li>
-                        <li>Mengelola stok, harga, variasi produk, and media foto produk.</li>
-                        <li>Memproses pesanan masuk dan memantau status pengiriman dari dashboard penjual.</li>
-                        <li>Membangun reputasi toko melalui interaksi dengan komunitas pembeli di platform.</li>
+                        <li>Create a display case for archery products (bows, arrows, accessories, apparel).</li>
+                        <li>Manage stock, prices, product variations, and product photo media.</li>
+                        <li>Process incoming orders and monitor delivery status from the seller dashboard.</li>
+                        <li>Building store reputation through interaction with the buyer community on the platform.</li>
                     </ul>
-                    <p><strong>Cocok untuk:</strong> pemilik toko panahan, reseller perlengkapan, distributor lokal, and merchant komunitas.</p>
+                    <p><strong>Suitable for:</strong> archery shop owners, equipment resellers, local distributors, and community merchants.</p>
 
-                    <h2 id="perbandingan">Perbandingan Hak Akses</h2>
-                    <div class="not-prose overflow-x-auto my-4">
+                    <h2 id="comparison">Comparison of Access Rights</h2>
+                    <div class="not-process overflow-x-auto my-4">
                         <table class="w-full text-sm border-collapse">
-                            <thead>
+                            <head>
                                 <tr class="bg-navy text-left">
-                                    <th class="text-primary font-bold px-4 py-3 rounded-tl-xl">Fitur</th>
-                                    <th class="text-white font-bold px-4 py-3">Pemanah</th>
-                                    <th class="text-white font-bold px-4 py-3">Organisasi</th>
-                                    <th class="text-white font-bold px-4 py-3 rounded-tr-xl">Penjual</th>
+                                    <th class="text-primary font-bold px-4 py-3 rounded-tl-xl">Features</th>
+                                    <th class="text-white font-bold px-4 py-3">Archer</th>
+                                    <th class="text-white font-bold px-4 py-3">Organization</th>
+                                    <th class="text-white font-bold px-4 py-3 rounded-tr-xl">Seller</th>
                                 </tr>
-                            </thead>
+                            </head>
                             <tbody class="divide-y divide-gray-100">
-                                <tr class="bg-white"><td class="px-4 py-3 text-gray-700 font-medium">Profil Publik</td><td class="px-4 py-3 text-green-600 font-bold">Ya</td><td class="px-4 py-3 text-green-600 font-bold">Ya</td><td class="px-4 py-3 text-green-600 font-bold">Ya</td></tr>
-                                <tr class="bg-gray-50"><td class="px-4 py-3 text-gray-700 font-medium">Daftar Event</td><td class="px-4 py-3 text-green-600 font-bold">Ya</td><td class="px-4 py-3 text-gray-400">Tidak</td><td class="px-4 py-3 text-gray-400">Tidak</td></tr>
-                                <tr class="bg-white"><td class="px-4 py-3 text-gray-700 font-medium">Buat Event</td><td class="px-4 py-3 text-gray-400">Tidak</td><td class="px-4 py-3 text-green-600 font-bold">Ya</td><td class="px-4 py-3 text-gray-400">Tidak</td></tr>
-                                <tr class="bg-gray-50"><td class="px-4 py-3 text-gray-700 font-medium">Kelola Scoring</td><td class="px-4 py-3 text-gray-400">Tidak</td><td class="px-4 py-3 text-green-600 font-bold">Ya</td><td class="px-4 py-3 text-gray-400">Tidak</td></tr>
-                                <tr class="bg-white"><td class="px-4 py-3 text-gray-700 font-medium">Jual Produk</td><td class="px-4 py-3 text-gray-400">Tidak</td><td class="px-4 py-3 text-gray-400">Tidak</td><td class="px-4 py-3 text-green-600 font-bold">Ya</td></tr>
+                                <tr class="bg-white"><td class="px-4 py-3 text-gray-700 font-medium">Public Profile</td><td class="px-4 py-3 text-green-600 font-bold">Yes</td><td class="px-4 py-3 text-green-600 font-bold">Yes</td><td class="px-4 py-3 text-green-600 font-bold">Yes</td></tr>
+                                <tr class="bg-gray-50"><td class="px-4 py-3 text-gray-700 font-medium">Event List</td><td class="px-4 py-3 text-green-600 font-bold">Yes</td><td class="px-4 py-3 text-gray-400">No</td><td class="px-4 py-3 text-gray-400">No</td></tr>
+                                <tr class="bg-white"><td class="px-4 py-3 text-gray-700 font-medium">Create Event</td><td class="px-4 py-3 text-gray-400">No</td><td class="px-4 py-3 text-green-600 font-bold">Yes</td><td class="px-4 py-3 text-gray-400">No</td></tr>
+                                <tr class="bg-gray-50"><td class="px-4 py-3 text-gray-700 font-medium">Manage Scoring</td><td class="px-4 py-3 text-gray-400">No</td><td class="px-4 py-3 text-green-600 font-bold">Yes</td><td class="px-4 py-3 text-gray-400">No</td></tr>
+                                <tr class="bg-white"><td class="px-4 py-3 text-gray-700 font-medium">Sell Products</td><td class="px-4 py-3 text-gray-400">No</td><td class="px-4 py-3 text-gray-400">No</td><td class="px-4 py-3 text-green-600 font-bold">Yes</td></tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <h2 id="pilih-peran">Bagaimana Memilih Akun yang Tepat?</h2>
-                    <p>Gunakan panduan cepat berikut:</p>
+                    <h2 id="select-role">How to Choose the Right Account?</h2>
+                    <p>Use this quick guide:</p>
                     <ul>
-                        <li>Jika Anda ingin <strong>ikut lomba sebagai atlet</strong>, pilih <strong>Pemanah</strong>.</li>
-                        <li>Jika Anda menjadi <strong>panitia/penyelenggara turnamen</strong>, pilih <strong>Organisasi</strong>.</li>
-                        <li>Jika fokus Anda adalah <strong>menjual peralatan panahan</strong>, pilih <strong>Penjual</strong>.</li>
+                        <li>If you want to <strong>take part in the competition as an athlete</strong>, select <strong>Archer</strong>.</li>
+                        <li>If you are the <strong>tournament organizer/organizer</strong>, select <strong>Organization</strong>.</li>
+                        <li>If your focus is <strong>selling archery equipment</strong>, select <strong>Seller</strong>.</li>
                     </ul>
-                    <p>Setiap tipe akun memiliki workflow yang berbeda. Pastikan Anda memilih sesuai kebutuhan utama Anda saat ini.</p>
-                `
+                    <p>Each account type has a different workflow. Make sure you choose according to your current main needs.</p>
+`
 }
 

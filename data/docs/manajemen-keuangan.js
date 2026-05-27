@@ -1,43 +1,43 @@
 export const manajemen_keuangan = {
-    slug: 'manajemen-keuangan', title: 'Manajemen Keuangan & Saldo', excerpt: 'Panduan lengkap pengelolaan penghasilan, saldo, dan pengaturan rekening bank pada dashboard Organisasi.', icon: 'ph:wallet-bold', category: 'platform', readTime: '6 menit',
+    slug: 'manajemen-keuangan', title: 'Finance & Balance Management', excerpt: 'Complete guide to managing income, balances and bank account settings on the Organization dashboard.', icon: 'ph:wallet-bold', category: 'platform', readTime: '6 min',
     toc: [
-        { id: 'penghasilan-saya', level: 2, text: 'Menu Penghasilan Saya' },
-        { id: 'saldo-organisasi', level: 2, text: 'Saldo & Riwayat Transaksi' },
-        { id: 'rekening-bank', level: 2, text: 'Pengaturan Rekening Bank' },
-        { id: 'withdraw-hasi', level: 2, text: 'Penarikan Dana (Withdrawal)' },
+        { id: 'penghasilan-saya', level: 2, text: 'My Income Menu' },
+        { id: 'saldo-organisasi', level: 2, text: 'Balance & Transaction History' },
+        { id: 'rekening-bank', level: 2, text: 'Bank Account Settings' },
+        { id: 'withdraw-hasi', level: 2, text: 'Withdrawal of Funds (Withdrawal)' },
     ],
     content: `
-                    <h2 id="penghasilan-saya">Menu Penghasilan Saya</h2>
-                    <p>Melalui menu <strong>Keuangan > Penghasilan Saya</strong>, Anda dapat melihat rangkuman performa finansial organisasi Anda. Halaman ini menyajikan data statistik pendapatan dari seluruh event yang Anda selenggarakan, dipisahkan berdasarkan status pembayaran peserta.</p>
-                    <img src="/docs/organization-menu-penghasilan-saya.png" alt="Menu Penghasilan Saya" />
-                    
-                    <h2 id="saldo-organisasi">Saldo & Riwayat Transaksi</h2>
-                    <p>Seluruh dana hasil pendaftaran yang telah diverifikasi (status Paid) akan masuk ke dalam <strong>Saldo Organisasi</strong> Anda. Sistem archeris.net mencatat setiap mutasi saldo secara detail:</p>
-                    <ul>
-                        <li><strong>Dana Masuk:</strong> Pendapatan bersih dari pendaftaran peserta setelah dikurangi biaya layanan platform.</li>
-                        <li><strong>Dana Keluar:</strong> Riwayat penarikan dana (withdrawal) yang telah Anda lakukan ke rekening bank terdaftar.</li>
-                    </ul>
-                    <img src="/docs/organization-menu-keuangan-saldo.png" alt="Saldo & Riwayat Transaksi" />
+                    <h2 id="my-income">My Income Menu</h2>
+                    <p>Via the <strong>Finance > My Income</strong> menu, you can see a summary of your organization's financial performance. This page presents statistical data on income from all events you organize, separated by participant payment status.</p>
+                    <img src="/docs/organization-menu-my-income.png" alt="My Income Menu" />
 
-                    <h2 id="rekening-bank">Pengaturan Rekening Bank</h2>
-                    <p>Untuk dapat menarik dana, Anda wajib mendaftarkan nomor rekening bank di menu <strong>Settings > Bank Account</strong>. Beberapa hal yang perlu diperhatikan:</p>
+                    <h2 id="organization-balance">Balance & Transaction History</h2>
+                    <p>All funds from verified registration (Paid status) will go into your <strong>Organization Balance</strong>. The archeris.net system records every balance mutation in detail:</p>
                     <ul>
-                        <li>Pastikan nama pemilik rekening sesuai dengan nama organisasi atau penanggung jawab yang sah.</li>
-                        <li>Data rekening ini akan melalui proses verifikasi keamanan sebelum dapat digunakan untuk penarikan.</li>
-                        <li>Anda dapat mengubah data rekening kapan saja, namun proses verifikasi mungkin akan dilakukan kembali untuk keamanan dana Anda.</li>
+                        <li><strong>Incoming Funds:</strong> Net income from participant registration after deducting platform service fees.</li>
+                        <li><strong>Outgoing Funds:</strong> History of withdrawals that you have made to your registered bank account.</li>
                     </ul>
-                    <img src="/docs/organization-rekening-bank.png" alt="Pengaturan Rekening Bank" />
+                    <img src="/docs/organization-menu-keuangan-saldo.png" alt="Balance & Transaction History" />
 
-                    <h2 id="withdraw-hasi">Penarikan Dana (Withdrawal)</h2>
-                    <p>Penarikan dana dapat dilakukan secara fleksibel dari saldo yang tersedia. Anda cukup memasukkan nominal penarikan, dan sistem akan memproses transfer ke rekening bank Anda dalam kurun waktu 1-3 hari kerja (tergantung kebijakan bank masing-masing).</p>
+                    <h2 id="bank-account">Bank Account Settings</h2>
+                    <p>To be able to withdraw funds, you must register your bank account number in the <strong>Settings > Bank Account</strong> menu. Some things to note:</p>
+                    <ul>
+                        <li>Make sure the account owner's name matches the name of the organization or legal person in charge.</li>
+                        <li>This account data will go through a security verification process before it can be used for withdrawals.</li>
+                        <li>You can change your account data at any time, but the verification process may be carried out again for the security of your funds.</li>
+                    </ul>
+                    <img src="/docs/organization-account-bank.png" alt="Bank Account Settings" />
+
+                    <h2 id="withdraw-hasi">Withdrawal</h2>
+                    <p>Withdrawals can be made flexibly from the available balance. You simply enter the withdrawal amount, and the system will process the transfer to your bank account within 1-3 working days (depending on each bank's policy).</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
                         <div class="text-primary text-2xl shrink-0">�️</div>
                         <div>
-                            <div class="font-bold text-navy text-sm mb-1">Keamanan Finansial</div>
-                            <div class="text-gray-600 text-sm">archeris.net menggunakan sistem keamanan berlapis untuk setiap transaksi keuangan. Pastikan Anda tidak membagikan kredensial login atau kode verifikasi kepada pihak manapun demi keamanan saldo organisasi Anda.</div>
+                            <div class="font-bold text-navy text-sm mb-1">Financial Security</div>
+                            <div class="text-gray-600 text-sm">archeris.net uses a multi-layered security system for every financial transaction. Make sure you do not share your login credentials or verification code with any party for the security of your organization's balance.</div>
                         </div>
                     </div>
-                `
+`
 }
 

@@ -1,66 +1,66 @@
 export const apa_itu_archeris = {
-  slug: 'apa-itu-archeris', title: 'Apa itu archeris.net?', excerpt: 'Pengenalan menyeluruh tentang platform manajemen panahan terpadu pertama di Indonesia.', icon: 'ph:info-bold', category: 'platform', readTime: '3 menit',
+  slug: 'apa-itu-archeris', title: 'What is archeris.net?', excerpt: 'A comprehensive introduction to Indonesia's first integrated archery management platform.', icon: 'ph:info-bold', category: 'platform', readTime: '3 min',
   toc: [
-    { id: 'tentang', level: 2, text: 'Tentang archeris.net' },
-    { id: 'misi', level: 2, text: 'Misi Platform' },
-    { id: 'fitur-utama', level: 2, text: 'Fitur Utama' },
-    { id: 'untuk-siapa', level: 2, text: 'Untuk Siapa?' },
+    { id: 'tentang', level: 2, text: 'About archeris.net' },
+    { id: 'misi', level: 2, text: 'Platform Mission' },
+    { id: 'fitur-utama', level: 2, text: 'Key Features' },
+    { id: 'untuk-siapa', level: 2, text: 'For who?' },
   ],
   content: `
-          <h2 id="tentang">Tentang archeris.net</h2>
-          <p>archeris.net adalah ekosistem digital panahan terintegrasi pertama di Indonesia yang dirancang untuk menghubungkan seluruh elemen dalam olahraga panahan — mulai dari atlet, klub, penyelenggara event, hingga penyedia peralatan dalam satu platform yang harmonis.</p>
+          <h2 id="about">About archeris.net</h2>
+          <p>archeris.net is the first integrated archery digital ecosystem in Indonesia designed to connect all elements in the sport of archery — from athletes, clubs, event organizers, to equipment providers in one harmonious platform.</p>
           <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mb-6 flex gap-4">
             <div class="text-primary text-2xl shrink-0">💡</div>
             <div>
-              <div class="font-bold text-navy text-sm mb-1">Pusat Interaksi Panahan Indonesia</div>
-              <div class="text-gray-600 text-sm">archeris.net bukan sekadar alat manajemen, melainkan rumah digital tempat komunitas panahan bertumbuh, berkompetisi, dan bertransaksi dengan aman dan transparan.</div>
+              <div class="font-bold text-navy text-sm mb-1">Indonesian Archery Interaction Center</div>
+              <div class="text-gray-600 text-sm">archeris.net is not just a management tool, but a digital home where the archery community grows, competes and transacts safely and transparently.</div>
             </div>
           </div>
-          <h2 id="misi">Misi Platform</h2>
-          <p>Kami hadir untuk mendigitalisasi seluruh proses operasional dalam dunia panahan yang selama ini masih banyak dilakukan secara manual. Visi kami adalah menciptakan standar baru dalam penyelenggaraan event dan pengelolaan data atlet yang profesional, transparan, dan mudah diakses oleh semua lapisan komunitas.</p>
-          <h2 id="fitur-utama">Fitur Utama</h2>
+          <h2 id="mission">Platform Mission</h2>
+          <p>We are here to digitize all operational processes in the world of archery, which are still mostly done manually. Our vision is to create a new standard in organizing events and managing athlete data that is professional, transparent and easily accessible to all levels of the community.</p>
+          <h2 id="main-features">Main Features</h2>
           <ul>
-            <li><strong>Event & Tournament Management:</strong> Solusi lengkap pendaftaran, pembagian sesi, hingga pengolahan hasil yang akurat.</li>
-            <li><strong>Sistem Scoring Digital:</strong> Input skor real-time yang terhubung langsung ke leaderboard publik, meminimalisir kesalahan manual.</li>
-            <li><strong>Marketplace & Peralatan:</strong> Ekosistem jual beli perlengkapan panahan yang terverifikasi dan terpercaya.</li>
-            <li><strong>Portofolio Atlet Digital:</strong> Rekam jejak prestasi dan statistik performa yang tersimpan rapi sebagai identitas profesional pemanah.</li>
+            <li><strong>Event & Tournament Management:</strong> Complete solution for registration, session sharing, and accurate results processing.</li>
+            <li><strong>Digital Scoring System:</strong> Real-time score input connected directly to the public leaderboard, minimizing manual errors.</li>
+            <li><strong>Marketplace & Equipment:</strong> Verified and trusted archery equipment buying and selling ecosystem.</li>
+            <li><strong>Digital Athlete Portfolio:</strong> A neatly stored track record of achievements and performance statistics as an archer's professional identity.</li>
           </ul>
-          <h2 id="untuk-siapa">Untuk Siapa?</h2>
-          <p>archeris.net dirancang untuk melayani setiap peran penting dalam ekosistem panahan Indonesia. Kami memahami bahwa setiap aktor memiliki kebutuhan unik, sehingga platform ini menyediakan fitur yang sangat spesifik dan terintegrasi untuk masing-masing peran.</p>
-          
-          <p>Bagi <strong>Atlet dan Pemanah</strong>, platform ini bertindak sebagai asisten pribadi digital. Selain memudahkan pendaftaran event tanpa repot, sistem kami mencatat setiap skor dan prestasi Anda secara otomatis. Ini membantu Anda membangun identitas profesional (Digital Archer Profile) yang dapat diakses oleh sponsor, pelatih, maupun komunitas luas.</p>
-          
+          <h2 id="for-whom">For Whom?</h2>
+          <p>archeris.net is designed to serve every important role in the Indonesian archery ecosystem. We understand that each actor has unique needs, so the platform provides highly specific and integrated features for each role.</p>
+
+          <p>For <strong>Athletes and Archers</strong>, the platform acts as a digital personal assistant. Apart from making event registration easy without hassle, our system records each of your scores and achievements automatically. This helps you build a professional identity (Digital Archer Profile) that can be accessed by sponsors, coaches and the wider community.</p>
+
           <div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
             <div class="border border-gray-100 rounded-xl p-4 bg-gray-50 flex flex-col gap-2 shadow-sm">
               <div class="font-bold text-navy text-sm flex items-center gap-2">
-                <span class="text-lg">🏹</span> Atlet / Pemanah
+                <span class="text-lg">🏹</span> Athletes / Archers
               </div>
-              <div class="text-gray-500 text-xs leading-relaxed">Pemanah individu dari berbagai level dapat mendaftar turnamen dengan instan, melihat ranking nasional, serta memantau statistik performa jangka panjang mereka.</div>
+              <div class="text-gray-500 text-xs leading-relaxed">Individual archers of any level can register for tournaments instantly, view national rankings, and track their long-term performance statistics.</div>
             </div>
             <div class="border border-gray-100 rounded-xl p-4 bg-gray-50 flex flex-col gap-2 shadow-sm">
               <div class="font-bold text-navy text-sm flex items-center gap-2">
-                <span class="text-lg">🎖️</span> Penyelenggara / Organisasi
+                <span class="text-lg">🎖️</span> Organizer / Organization
               </div>
-              <div class="text-gray-500 text-xs leading-relaxed">Penyelenggara event mendapatkan solusi end-to-end: dari manajemen pendaftaran, pengaturan jadwal, hingga sistem scoring digital real-time yang tersistematis.</div>
+              <div class="text-gray-500 text-xs leading-relaxed">Event organizers get an end-to-end solution: from registration management, schedule management, to a systematic real-time digital scoring system.</div>
             </div>
             <div class="border border-gray-100 rounded-xl p-4 bg-gray-50 flex flex-col gap-2 shadow-sm">
               <div class="font-bold text-navy text-sm flex items-center gap-2">
-                <span class="text-lg">🛒</span> Toko & Seller Peralatan
+                <span class="text-lg">🛒</span> Equipment Shop & Seller
               </div>
-              <div class="text-gray-500 text-xs leading-relaxed">Pelaku bisnis peralatan panahan dapat menjangkau target pasar yang spesifik dan terverifikasi secara langsung di dalam ekosistem para penggiat panahan.</div>
+              <div class="text-gray-500 text-xs leading-relaxed">Archery equipment business players can reach specific and verified target markets directly within the ecosystem of archery enthusiasts.</div>
             </div>
             <div class="border border-gray-100 rounded-xl p-4 bg-gray-50 flex flex-col gap-2 shadow-sm">
               <div class="font-bold text-navy text-sm flex items-center gap-2">
-                <span class="text-lg">👨‍👩‍👧</span> Orang Tua & Pendamping
+                <span class="text-lg">👨‍👩‍👧</span> Parents & Companions
               </div>
-              <div class="text-gray-500 text-xs leading-relaxed">Memberikan kemudahan bagi keluarga untuk memantau jadwal pertandingan dan perkembangan prestasi atlet binaan secara transparan dan terukur.</div>
+              <div class="text-gray-500 text-xs leading-relaxed">Makes it easy for families to monitor match schedules and the development of achievements of coached athletes in a transparent and measurable manner.</div>
             </div>
           </div>
 
-          <p>Selain ketiga pilar utama di atas, platform ini juga sangat bermanfaat bagi <strong>Pelatih dan Pembina</strong>. Dengan data statistik yang akurat dari setiap event yang diikuti, pelatih dapat melakukan analisis objektif terhadap performa atlet mereka tanpa harus mengandalkan catatan manual yang berserakan. archeris.net membantu merangkum pola tembakan dan konsistensi skor atlet dari waktu ke waktu.</p>
-          
-          <p>Kami terus berkomitmen untuk memperluas jangkauan platform ini agar dapat mengakomodasi lebih banyak skenario di lapangan, memastikan bahwa setiap kemajuan kecil yang dicapai oleh seorang pemanah tercatat dan diapresiasi dalam ekosistem panahan digital Indonesia yang semakin berkembang.</p>
-        `
+          <p>Apart from the three main pillars above, this platform is also very useful for <strong>Trainers and Coaches</strong>. With accurate statistical data from each event they participate in, coaches can carry out objective analysis of their athletes' performance without having to rely on scattered manual records. archeris.net helps summarize athletes' shooting patterns and scoring consistency over time.</p>
+
+          <p>We continue to be committed to expanding the reach of this platform to accommodate more scenarios in the field, ensuring that every small piece of progress achieved by an archer is recorded and appreciated in Indonesia's growing digital archery ecosystem.</p>
+`
 }
 
 

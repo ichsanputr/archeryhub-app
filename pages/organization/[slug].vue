@@ -34,7 +34,7 @@
                             <span class="px-3 py-1 bg-primary text-navy-dark text-[9px] font-black rounded-lg capitalize tracking-widest">
                                 {{ t('organization.public.official_profile') }}
                             </span>
-                            <div v-if="org.verification_status === 'verified'"
+                            <div v-if="org.status === 'active'"
                                 class="flex items-center gap-1.5 px-3 py-1 bg-white/8 backdrop-blur-sm border border-white/10 rounded-lg">
                                 <Icon icon="ph:seal-check-fill" class="text-primary text-xs" />
                                 <span class="text-[9px] font-black tracking-widest text-white/85 capitalize">{{ t('organization.public.verified') }}</span>
@@ -68,11 +68,6 @@
                         <div class="text-center px-6 py-4">
                             <div class="text-[9px] font-black text-white/40 tracking-widest capitalize mb-1">{{ t('organization.public.events') }}</div>
                             <div class="text-2xl font-black text-white">{{ totalEvents || 0 }}</div>
-                        </div>
-                        <div class="w-px h-12 bg-white/10"></div>
-                        <div class="text-center px-6 py-4">
-                            <div class="text-[9px] font-black text-primary tracking-widest capitalize mb-1">{{ t('organization.public.clubs') }}</div>
-                            <div class="text-2xl font-black text-primary">{{ clubs.length || 0 }}</div>
                         </div>
                     </div>
                 </div>

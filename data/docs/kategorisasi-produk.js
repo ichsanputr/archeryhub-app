@@ -1,79 +1,79 @@
 export const kategorisasi_produk = {
     slug: 'kategorisasi-produk',
-    title: 'Kategorisasi Produk Marketplace',
-    excerpt: 'Penjelasan lengkap tentang kategori produk yang tersedia di Marketplace archeris.net dan pedoman penempatan produk yang tepat.',
+    title: 'Marketplace Product Categorization',
+    excerpt: 'A complete explanation of the product categories available on the archeris.net Marketplace and guidelines for proper product placement.',
     icon: 'ph:tag-bold',
     category: 'marketplace',
-    readTime: '3 menit',
+    readTime: '3 min',
     toc: [
-        { id: 'mengapa-kategori', level: 2, text: 'Mengapa Kategori Itu Penting' },
-        { id: 'daftar-kategori', level: 2, text: 'Daftar Kategori Produk' },
-        { id: 'sub-kategori', level: 2, text: 'Sub-Kategori & Filter Lanjutan' },
-        { id: 'kategori-salah', level: 2, text: 'Produk di Kategori yang Salah' },
+        { id: 'mengapa-kategori', level: 2, text: 'Why Categories Matter' },
+        { id: 'daftar-kategori', level: 2, text: 'List of Product Categories' },
+        { id: 'sub-kategori', level: 2, text: 'Advanced Sub-Categories & Filters' },
+        { id: 'kategori-salah', level: 2, text: 'Product in the Wrong Category' },
     ],
     content: `
-        <h2 id="mengapa-kategori">Mengapa Kategori Itu Penting</h2>
-        <p>Kategori yang tepat membantu pembeli menemukan produk Anda lebih cepat. Algoritma pencarian Marketplace archeris.net menggunakan kategori sebagai salah satu sinyal relevansi. Produk yang dikategorikan dengan benar cenderung mendapat lebih banyak tayangan organik dibandingkan produk dengan kategori yang tidak sesuai.</p>
+        <h2 id="why-categories">Why Categories Matter</h2>
+        <p>The right categories help buyers find your products faster. The archeris.net Marketplace search algorithm uses categories as a relevance signal. Products that are categorized correctly tend to get more organic impressions than products that are inappropriately categorized.</p>
 
-        <h2 id="daftar-kategori">Daftar Kategori Produk</h2>
-        <div class="not-prose overflow-x-auto my-4">
+        <h2 id="category-list">Product Category List</h2>
+        <div class="not-process overflow-x-auto my-4">
             <table class="w-full text-sm border-collapse">
-                <thead>
+                <head>
                     <tr class="bg-navy text-left text-white">
-                        <th class="px-4 py-3 rounded-tl-xl">Kategori</th>
-                        <th class="px-4 py-3">Contoh Produk</th>
-                        <th class="px-4 py-3 rounded-tr-xl">Cocok Untuk</th>
+                        <th class="px-4 py-3 rounded-tl-xl">Category</th>
+                        <th class="px-4 py-3">Product Examples</th>
+                        <th class="px-4 py-3 rounded-tr-xl">Suitable For</th>
                     </tr>
-                </thead>
+                </head>
                 <tbody class="divide-y divide-gray-100 bg-white">
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Peralatan <span class="text-xs font-normal text-gray-400">(equipment)</span></td>
-                        <td class="px-4 py-3">Busur, limb, riser, tali busur, arrow rest, sight, stabilizer, clicker, release aid</td>
-                        <td class="px-4 py-3">Komponen utama busur dan sistem tembakan</td>
+                        <td class="px-4 py-3 font-bold text-navy">Equipment <span class="text-xs font-normal text-gray-400">(equipment)</span></td>
+                        <td class="px-4 py-3">Bow, limb, riser, bowstring, arrow rest, sight, stabilizer, clicker, release aid</td>
+                        <td class="px-4 py-3">Major components of the bow and firing system</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Anak Panah & Aksesoris <span class="text-xs font-normal text-gray-400">(accessories)</span></td>
+                        <td class="px-4 py-3 font-bold text-navy">Darts & Accessories <span class="text-xs font-normal text-gray-400">(accessories)</span></td>
                         <td class="px-4 py-3">Arrow carbon/aluminium, nock, point, fletching, pin nock, nocking plier, arrow tube</td>
-                        <td class="px-4 py-3">Anak panah dan komponen kecil pendukung tembakan</td>
+                        <td class="px-4 py-3">Arrows and small shooting support components</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Pakaian & Proteksi <span class="text-xs font-normal text-gray-400">(apparel)</span></td>
-                        <td class="px-4 py-3">Finger tab, arm guard, chest guard, quiver, uniform, cap, sepatu panahan</td>
-                        <td class="px-4 py-3">Pakaian, pelindung tubuh, dan perlengkapan badan atlet</td>
+                        <td class="px-4 py-3 font-bold text-navy">Clothing & Protection <span class="text-xs font-normal text-gray-400">(apparel)</span></td>
+                        <td class="px-4 py-3">Finger tab, arm guard, chest guard, quiver, uniform, cap, archery shoes</td>
+                        <td class="px-4 py-3">Athlete clothing, body armor and personal equipment</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Latihan & Edukasi <span class="text-xs font-normal text-gray-400">(training)</span></td>
-                        <td class="px-4 py-3">Bantalan target, face target, alat stretch, bow stand, training aid, buku/video kursus</td>
-                        <td class="px-4 py-3">Perlengkapan dan konten untuk latihan mandiri</td>
+                        <td class="px-4 py-3 font-bold text-navy">Training & Education <span class="text-xs font-normal text-gray-400">(training)</span></td>
+                        <td class="px-4 py-3">Target pads, target faces, stretching tools, bow stands, training aids, course books/videos</td>
+                        <td class="px-4 py-3">Equipment and content for independent practice</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Lainnya <span class="text-xs font-normal text-gray-400">(other)</span></td>
-                        <td class="px-4 py-3">Plakat, piala, souvenir, merchandise klub, alat tulis kompetisi</td>
-                        <td class="px-4 py-3">Produk yang tidak masuk kategori di atas</td>
+                        <td class="px-4 py-3 font-bold text-navy">Other <span class="text-xs font-normal text-gray-400">(other)</span></td>
+                        <td class="px-4 py-3">Plaques, trophies, souvenirs, club merchandise, competition stationery</td>
+                        <td class="px-4 py-3">Products that do not fit into the above categories</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <h2 id="sub-kategori">Sub-Kategori & Filter Lanjutan</h2>
-        <p>Selain memilih kategori utama, penjual disarankan melengkapi atribut lanjutan agar produk bisa muncul di filter spesifik pembeli:</p>
+        <h2 id="sub-category">Sub-Categories & Advanced Filters</h2>
+        <p>In addition to selecting the main category, sellers are advised to complete advanced attributes so that products can appear in buyers' specific filters:</p>
         <ul>
-            <li><strong>Jenis busur yang kompatibel</strong> — Recurve, Compound, Barebow, Standard Bow, dll.</li>
-            <li><strong>Level atlet</strong> — Pemula, Menengah, Profesional / Kompetisi.</li>
-            <li><strong>Kondisi barang</strong> — Baru / Bekas (Second).</li>
-            <li><strong>Merek</strong> — Samick, Hoyt, Win&Win, Easton, Carbon Express, lokal, atau no-brand.</li>
+            <li><strong>Compatible bow types</strong> — Recurve, Compound, Barebow, Standard Bow, etc.</li>
+            <li><strong>Athlete level</strong> — Beginner, Intermediate, Professional / Competition.</li>
+            <li><strong>Item condition</strong> — New / Used (Second).</li>
+            <li><strong>Brand</strong> — Samick, Hoyt, Win&Win, Easton, Carbon Express, local, or no-brand.</li>
         </ul>
-        <p>Atribut ini tidak bersifat wajib, namun sangat berpengaruh pada visibilitas produk di hasil filter pencarian pembeli.</p>
+        <p>This attribute is not mandatory, but it has a big influence on product visibility in buyer search filter results.</p>
 
-        <h2 id="kategori-salah">Produk di Kategori yang Salah</h2>
-        <p>Tim archeris.net melakukan kurasi periodik terhadap listing. Produk yang terbukti berada di kategori yang tidak relevan akan dipindahkan atau dihapus sementara sambil menunggu koreksi dari penjual. Penjual akan menerima notifikasi dan penjelasan alasan tindakan tersebut.</p>
+        <h2 id="wrong-category">Products in Wrong Category</h2>
+        <p>The archeris.net team carries out periodic curation of listings. Products that are proven to be in irrelevant categories will be moved or temporarily deleted pending correction from the seller. The seller will receive a notification and an explanation of the reasons for the action.</p>
         <div class="not-prose bg-yellow-50 border border-yellow-200 rounded-2xl p-5 mt-4 flex gap-4">
             <div class="text-yellow-500 text-2xl shrink-0">⚠️</div>
             <div>
-                <div class="font-bold text-navy text-sm mb-1">Produk yang Dilarang</div>
-                <div class="text-gray-600 text-sm">archeris.net tidak menerima listing untuk senjata api, produk berbahaya yang tidak berhubungan dengan olahraga panahan, atau produk palsu/KW yang melanggar hak merek. Pelanggaran dapat berujung pada penangguhan toko.</div>
+                <div class="font-bold text-navy text-sm mb-1">Prohibited Products</div>
+                <div class="text-gray-600 text-sm">archeris.net does not accept listings for firearms, dangerous products that are not related to the sport of archery, or fake/KW products that violate brand rights. Violations may result in store suspension.</div>
             </div>
         </div>
-    `
+`
 }
 

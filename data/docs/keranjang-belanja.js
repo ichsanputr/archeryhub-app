@@ -1,36 +1,36 @@
 export const keranjang_belanja = {
-    slug: 'keranjang-belanja', title: 'Manajemen Keranjang Belanja', excerpt: 'Panduan cara menggunakan keranjang belanja untuk mengelola item perlengkapan panahan sebelum melakukan checkout.', icon: 'ph:shopping-cart-bold', category: 'archer', readTime: '3 menit',
+    slug: 'keranjang-belanja', title: 'Shopping Cart Management', excerpt: 'A guide on how to use the shopping cart to organize archery equipment items before checkout.', icon: 'ph:shopping-cart-bold', category: 'archer', readTime: '3 min',
     toc: [
-        { id: 'tambah-produk', level: 2, text: 'Menambah Produk ke Keranjang' },
-        { id: 'kelola-item', level: 2, text: 'Mengelola Item di Keranjang' },
-        { id: 'multi-seller', level: 2, text: 'Checkout dari Berbagai Penjual' },
-        { id: 'riwayat-order', level: 2, text: 'Memantau Pesanan Barang' },
+        { id: 'tambah-produk', level: 2, text: 'Adding Products to Cart' },
+        { id: 'kelola-item', level: 2, text: 'Manage Items in Cart' },
+        { id: 'multi-seller', level: 2, text: 'Checkout from Various Sellers' },
+        { id: 'riwayat-order', level: 2, text: 'Monitoring Goods Orders' },
     ],
     content: `
-                    <h2 id="tambah-produk">Menambah Produk ke Keranjang</h2>
-                    <p>Saat menjelajahi Marketplace di archeris.net, Anda dapat memasukkan berbagai perlengkapan ke dalam keranjang. Klik ikon keranjang pada produk yang Anda inginkan. Anda dapat terus berbelanja dan mengumpulkan item sebelum memutuskan untuk melakukan pembayaran.</p>
-                    
-                    <h2 id="kelola-item">Mengelola Item di Keranjang</h2>
-                    <p>Anda dapat mengakses keranjang belanja melalui ikon keranjang di navigasi atas atau melalui <strong>Dashboard > Cart</strong>. Di sini Anda bisa:</p>
+                    <h2 id="add-product">Adding Product to Cart</h2>
+                    <p>When browsing the Marketplace on archeris.net, you can add various supplies to your cart. Click the basket icon on the product you want. You can continue shopping and collecting items before deciding to make a payment.</p>
+
+                    <h2 id="manage-items">Manage Items in Cart</h2>
+                    <p>You can access the shopping cart via the cart icon in the top navigation or via <strong>Dashboard > Cart</strong>. Here you can:</p>
                     <ul>
-                        <li>Mengubah jumlah (quantity) produk.</li>
-                        <li>Menghapus produk yang tidak jadi dibeli.</li>
-                        <li>Melihat rincian subtotal per item.</li>
+                        <li>Changing the quantity of products.</li>
+                        <li>Delete products that were not purchased.</li>
+                        <li>View subtotal details per item.</li>
                     </ul>
 
-                    <h2 id="multi-seller">Checkout dari Berbagai Penjual</h2>
-                    <p>archeris.net mendukung pembelian dari beberapa penjual sekaligus dalam satu sesi belanja. Keranjang akan secara otomatis mengelompokkan produk berdasarkan toko pengirim. Biaya pengiriman akan dihitung terpisah per toko saat Anda melakukan checkout.</p>
+                    <h2 id="multi-seller">Checkout from Multiple Sellers</h2>
+                    <p>archeris.net supports purchases from multiple sellers at once in one shopping session. Cart will automatically group products by sending store. Shipping costs will be calculated separately per store when you checkout.</p>
 
-                    <h2 id="riwayat-order">Memantau Pesanan Barang</h2>
-                    <p>Setelah checkout dan pembayaran diverifikasi, Anda dapat memantau status pengiriman barang Anda melalui tab <strong>Orders</strong> di dashboard. Di sana tertera nomor resi dan status perjalanan paket dari toko ke alamat Anda.</p>
+                    <h2 id="order-history">Monitoring Goods Orders</h2>
+                    <p>After checkout and payment has been verified, you can monitor the delivery status of your goods via the <strong>Orders</strong> tab on the dashboard. There is the receipt number and travel status of the package from the shop to your address.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
                         <div class="text-primary text-2xl shrink-0">🛒</div>
                         <div>
-                            <div class="font-bold text-navy text-sm mb-1">Keamanan Transaksi</div>
-                            <div class="text-gray-600 text-sm">Dana Anda akan ditahan oleh sistem archeris.net dan baru akan diteruskan ke penjual setelah Anda mengonfirmasi bahwa barang telah diterima dengan baik.</div>
+                            <div class="font-bold text-navy text-sm mb-1">Transaction Security</div>
+                            <div class="text-gray-600 text-sm">Your funds will be held by the archeris.net system and will only be transferred to the seller after you confirm that the goods have been received properly.</div>
                         </div>
                     </div>
-                `
+`
 }
 

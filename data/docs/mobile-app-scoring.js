@@ -1,24 +1,24 @@
 export const mobile_app_scoring = {
-    slug: 'mobile-app-scoring', title: 'Scoring via Aplikasi Mobile', excerpt: 'Panduan lengkap wasit memakai mobile scoring dari login hingga sinkronisasi data.', icon: 'ph:device-mobile-bold', category: 'scoring', readTime: '6 menit',
+    slug: 'mobile-app-scoring', title: 'Scoring via Mobile Application', excerpt: 'Complete guide for referees using mobile scoring from logging in to data synchronization.', icon: 'ph:device-mobile-bold', category: 'scoring', readTime: '6 min',
     toc: [
-        { id: 'login-mobile', level: 2, text: 'Login Scorekeeper' },
+        { id: 'login-mobile', level: 2, text: 'Scorekeeper Login' },
         { id: 'scan-qr', level: 2, text: 'Scan QR Assignment' },
-        { id: 'input-skor-mobile', level: 2, text: 'Input Skor' },
-        { id: 'sinkronisasi', level: 2, text: 'Sinkronisasi dan Troubleshooting' },
+        { id: 'input-skor-mobile', level: 2, text: 'Score Input' },
+        { id: 'sinkronisasi', level: 2, text: 'Synchronization and Troubleshooting' },
     ],
     content: `
-                    <h2 id="login-mobile">Login Scorekeeper</h2>
-                    <p>Akun scorekeeper dibuat oleh panitia dari dashboard. Gunakan kredensial resmi agar setiap input skor tercatat atas nama petugas yang tepat.</p>
+                    <h2 id="login-mobile">Scorekeeper Login</h2>
+                    <p>The scorekeeper account is created by the committee from the dashboard. Use official credentials so that each score input is recorded in the name of the correct officer.</p>
                     <h2 id="scan-qr">Scan QR Assignment</h2>
-                    <p>Setiap bantalan memiliki QR assignment. Scan QR untuk membuka match/target yang benar dan menghindari salah input ke peserta lain.</p>
-                    <h2 id="input-skor-mobile">Input Skor</h2>
-                    <p>Input nilai panah per end sesuai urutan tembakan. Setelah diverifikasi bersama petugas lapangan, simpan end agar data langsung ter-update di sistem pusat.</p>
-                    <img src="/docs/input-nilai-per-end.png" alt="Input Nilai Mobile" />
-                    <h2 id="sinkronisasi">Sinkronisasi dan Troubleshooting</h2>
+                    <p>Each bearing has a QR assignment. Scan the QR to open the correct match/target and avoid wrong input to other participants.</p>
+                    <h2 id="input-skor-mobile">Input Score</h2>
+                    <p>Input the arrow value per end according to the shot sequence. After verification with field officers, save the end so that the data is immediately updated in the central system.</p>
+                    <img src="/docs/input-values-per-end.png" alt="Input Mobile Values" />
+                    <h2 id="sync">Synchronization and Troubleshooting</h2>
                     <ul>
-                        <li>Jika jaringan tidak stabil, pastikan data benar-benar tersimpan sebelum pindah end.</li>
-                        <li>Lakukan refresh assignment bila QR tidak sesuai match aktif.</li>
-                        <li>Laporkan mismatch data ke operator dashboard untuk koreksi terpusat.</li>
+                        <li>If the network is unstable, make sure the data is completely saved before moving end.</li>
+                        <li>Perform a refresh assignment if the QR does not match the active match.</li>
+                        <li>Report data mismatch to dashboard operator for centralized correction.</li>
                     </ul>
-                `
+`
 }

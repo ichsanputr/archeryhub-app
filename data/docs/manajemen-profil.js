@@ -1,65 +1,65 @@
 export const manajemen_profil = {
-    slug: 'manajemen-profil', title: 'Manajemen Profil & Pengaturan', excerpt: 'Panduan lengkap cara mengelola informasi profil, foto, keamanan akun, dan pengaturan tampilan dashboard Anda.', icon: 'ph:gear-six-bold', category: 'platform', readTime: '6 menit',
+    slug: 'manajemen-profil', title: 'Profile Management & Settings', excerpt: 'A complete guide on how to manage your profile information, photos, account security, and dashboard display settings.', icon: 'ph:gear-six-bold', category: 'platform', readTime: '6 min',
     toc: [
-        { id: 'gambaran-umum', level: 2, text: 'Gambaran Umum' },
-        { id: 'mengelola-data', level: 2, text: 'Mengelola Data Diri' },
-        { id: 'foto-profil', level: 2, text: 'Foto Profil & Banner' },
-        { id: 'keamanan-akun', level: 2, text: 'Keamanan & Kata Sandi' },
-        { id: 'ubah-email', level: 2, text: 'Mengubah Alamat Email' },
-        { id: 'pengaturan-tema', level: 2, text: 'Tema & Tampilan' },
-        { id: 'visibilitas-publik', level: 2, text: 'Kontrol Halaman Publik' },
+        { id: 'gambaran-umum', level: 2, text: 'General description' },
+        { id: 'mengelola-data', level: 2, text: 'Managing Personal Data' },
+        { id: 'foto-profil', level: 2, text: 'Profile Photo & Banner' },
+        { id: 'keamanan-akun', level: 2, text: 'Security & Password' },
+        { id: 'ubah-email', level: 2, text: 'Change Email Address' },
+        { id: 'pengaturan-tema', level: 2, text: 'Theme & Appearance' },
+        { id: 'visibilitas-publik', level: 2, text: 'Public Page Control' },
     ],
     content: `
-                    <h2 id="gambaran-umum">Gambaran Umum</h2>
-                    <p>Halaman pengaturan di archeris.net adalah pusat kontrol untuk identitas digital Anda. Di sini Anda dapat memastikan informasi yang tampil kepada publik tetap akurat, menjaga keamanan akses akun, serta menyesuaikan kenyamanan tampilan dashboard sesuai preferensi Anda.</p>
-                    
-                    <h2 id="mengelola-data">Mengelola Data Diri</h2>
-                    <p>Setiap tipe akun memiliki fokus informasi yang berbeda saat proses pembaruan profil:</p>
-                    <ul>
-                        <li><strong>Pemanah:</strong> Lengkapi data atlet seperti nama lengkap, jenis busur utama, klub asal, dan bio singkat untuk membangun portofolio prestasi Anda.</li>
-                        <li><strong>Organisasi:</strong> Perbarui identitas resmi organisasi, visi-misi, sejarah singkat, serta informasi FAQ agar calon peserta event mendapatkan informasi yang jelas.</li>
-                        <li><strong>Penjual:</strong> Kelola profil toko Anda untuk meningkatkan kepercayaan calon pembeli di marketplace.</li>
-                    </ul>
-                    <img src="/docs/organization-kustomisasi-profil.png" alt="Kustomisasi Profil Organisasi" />
+                    <h2 id="overview">Overview</h2>
+                    <p>The settings page on archeris.net is the control center for your digital identity. Here you can ensure that the information displayed to the public remains accurate, maintain account access security, and adjust the comfort of the dashboard display according to your preferences.</p>
 
-                    <h2 id="foto-profil">Foto Profil & Banner</h2>
-                    <p>Visual yang profesional membantu reputasi Anda di ekosistem panahan. Anda dapat mengunggah:</p>
+                    <h2 id="managing-data">Managing Personal Data</h2>
+                    <p>Each account type has a different information focus during the profile update process:</p>
                     <ul>
-                        <li><strong>Avatar/Foto Profil:</strong> Digunakan sebagai identitas utama Anda di leaderboard dan interaksi platform.</li>
-                        <li><strong>Banner:</strong> Gambar latar untuk mempercantik halaman publik profil Anda (terutama untuk Organisasi dan Toko).</li>
+                        <li><strong>Archer:</strong> Complete athlete data such as full name, primary bow type, home club, and a short bio to build your portfolio of achievements.</li>
+                        <li><strong>Organization:</strong> Update the organization's official identity, vision and mission, brief history, and FAQ information so that potential event participants get clear information.</li>
+                        <li><strong>Seller:</strong> Manage your shop profile to increase the trust of potential buyers in the marketplace.</li>
                     </ul>
-                    <p>Tips: Gunakan gambar dengan resolusi yang baik namun ukuran file yang ringan agar profil Anda dapat dimuat dengan cepat oleh pengunjung lain.</p>
+                    <img src="/docs/organization-customization-profile.png" alt="Organization Profile Customization" />
 
-                    <h2 id="keamanan-akun">Keamanan & Kata Sandi</h2>
-                    <p>Lindungi akun Anda dengan rutin memantau status keamanan di tab Pengaturan:</p>
+                    <h2 id="profile-photo">Profile Photo & Banner</h2>
+                    <p>Professional visuals help your reputation in the archery ecosystem. You can upload:</p>
                     <ul>
-                        <li><strong>Ubah Kata Sandi:</strong> Perbarui kata sandi Anda secara berkala dengan perpaduan karakter yang kuat.</li>
-                        <li><strong>Metode Login:</strong> Jika Anda mendaftar melalui akun Google, Anda dapat melihat status keterhubungannya di sini.</li>
+                        <li><strong>Avatar/Profile Photo:</strong> Used as your main identity on leaderboards and platform interactions.</li>
+                        <li><strong>Banner:</strong> Background image to beautify your public profile page (especially for Organizations and Shops).</li>
+                    </ul>
+                    <p>Tip: Use images with good resolution but light file sizes so that your profile can be loaded quickly by other visitors.</p>
+
+                    <h2 id="account-security">Security & Password</h2>
+                    <p>Protect your account by regularly monitoring your security status in the Settings tab:</p>
+                    <ul>
+                        <li><strong>Change Password:</strong> Update your password regularly with a strong mix of characters.</li>
+                        <li><strong>Login Method:</strong> If you registered via Google account, you can see the connection status here.</li>
                     </ul>
 
-                    <h2 id="ubah-email">Mengubah Alamat Email</h2>
-                    <p>Demi keamanan, perubahan alamat email memerlukan langkah verifikasi tambahan:</p>
+                    <h2 id="change-email">Change Email Address</h2>
+                    <p>For security reasons, email address changes require additional verification steps:</p>
                     <ol>
-                        <li>Masukkan alamat email baru Anda pada form yang tersedia.</li>
-                        <li>Sistem akan mengirimkan kode verifikasi (OTP) ke email baru tersebut.</li>
-                        <li>Masukkan kode yang Anda terima untuk mengonfirmasi bahwa email tersebut adalah milik Anda.</li>
+                        <li>Enter your new email address in the form provided.</li>
+                        <li>The system will send a verification code (OTP) to the new email.</li>
+                        <li>Enter the code you received to confirm that the email is yours.</li>
                     </ol>
-                    <p>Setelah terverifikasi, alamat email login Anda akan otomatis berubah ke alamat yang baru.</p>
+                    <p>After verification, your login email address will automatically change to a new address.</p>
 
-                    <h2 id="pengaturan-tema">Tema & Tampilan</h2>
-                    <p>Setiap pengguna memiliki selera tampilan yang berbeda. Di bagian pengaturan user, Anda dapat memilih antara <strong>Light Mode</strong> (Terang) atau <strong>Dark Mode</strong> (Gelap) untuk dashboard Anda. Pilih yang paling nyaman bagi mata Anda saat mengelola data panahan dalam waktu lama.</p>
-                    <img src="/docs/pengaturan-tema.png" alt="Pengaturan Tema Dashboard" />
+                    <h2 id="theme-settings">Theme & Appearance</h2>
+                    <p>Each user has different display tastes. In the user settings section, you can choose between <strong>Light Mode</strong> or <strong>Dark Mode</strong> for your dashboard. Choose what is most comfortable for your eyes when managing archery data for a long time.</p>
+                    <img src="/docs/theme-settings.png" alt="Dashboard Theme Settings" />
 
-                    <h2 id="visibilitas-publik">Kontrol Halaman Publik</h2>
-                    <p>Khusus untuk akun Organisasi, Anda memiliki kendali penuh atas bagian mana saja yang ingin ditampilkan kepada publik. Anda dapat mengatur apakah Visi-Misi, Sejarah, atau FAQ organisasi tampil di halaman depan profil publik Anda melalui menu Page Settings.</p>
+                    <h2 id="public-visibility">Public Page Controls</h2>
+                    <p>Especially for Organization accounts, you have full control over which parts you want to display publicly. You can set whether the organization's Vision-Mission, History, or FAQ appears on the front page of your public profile via the Page Settings menu.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
                         <div class="text-primary text-2xl shrink-0">📌</div>
                         <div>
-                            <div class="font-bold text-navy text-sm mb-1">Tips Manajemen Profil</div>
-                            <div class="text-gray-600 text-sm">Pastikan "Slug" atau username Anda tetap unik dan mudah diingat, karena ini akan menjadi bagian dari alamat URL profil publik Anda di archeris.net.</div>
+                            <div class="font-bold text-navy text-sm mb-1">Profile Management Tips</div>
+                            <div class="text-gray-600 text-sm">Make sure your "Slug" or username remains unique and easy to remember, as this will be part of the URL address of your public profile on archeris.net.</div>
                         </div>
                     </div>
-                `
+`
 }
 

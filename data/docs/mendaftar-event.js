@@ -1,45 +1,45 @@
 export const mendaftar_event = {
-    slug: 'mendaftar-event', title: 'Cara Mendaftar ke Event', excerpt: 'Panduan lengkap langkah demi langkah untuk mendaftar ke turnamen atau event panahan di archeris.net.', icon: 'ph:clipboard-text-bold', category: 'archer', readTime: '5 menit',
+    slug: 'mendaftar-event', title: 'How to Register for the Event', excerpt: 'Complete step-by-step guide to registering for an archery tournament or event at archeris.net.', icon: 'ph:clipboard-text-bold', category: 'archer', readTime: '5 min',
     toc: [
-        { id: 'cari-event', level: 2, text: 'Mencari Event' },
-        { id: 'pilihan-kategori', level: 2, text: 'Memilih Kategori Lomba' },
-        { id: 'isi-data', level: 2, text: 'Melengkapi Data Kepesertaan' },
-        { id: 'proses-bayar', level: 2, text: 'Pembayaran Pendaftaran' },
-        { id: 'konfirmasi', level: 2, text: 'Konfirmasi Pendaftaran' },
+        { id: 'cari-event', level: 2, text: 'Looking for Events' },
+        { id: 'pilihan-kategori', level: 2, text: 'Choose a Competition Category' },
+        { id: 'isi-data', level: 2, text: 'Complete Participation Data' },
+        { id: 'proses-bayar', level: 2, text: 'Registration Payment' },
+        { id: 'konfirmasi', level: 2, text: 'Confirm Registration' },
     ],
     content: `
-                    <h2 id="cari-event">Mencari Event</h2>
-                    <p>Anda dapat menemukan berbagai turnamen panahan melalui menu <strong>Events</strong> di halaman utama. Gunakan fitur filter untuk mencari event berdasarkan lokasi, status pendaftaran (Open/Closed), atau jenis turnamen yang Anda minati.</p>
-                    <img src="/docs/archer-dashboard-event.png" alt="Dashboard Event Pemanah" />
-                    
-                    <h2 id="pilihan-kategori">Memilih Kategori Lomba</h2>
-                    <p>Setelah memilih event, Anda akan melihat daftar kategori yang tersedia (misalnya: Recurve 70m, Barebow 20m, dsb). Pastikan Anda memilih kategori yang sesuai dengan kelompok umur dan jenis busur Anda. Klik tombol <strong>Daftar</strong> pada kategori yang diinginkan.</p>
+                    <h2 id="search-event">Search for Events</h2>
+                    <p>You can find various archery tournaments via the <strong>Events</strong> menu on the main page. Use the filter feature to search for events based on location, registration status (Open/Closed), or the type of tournament you are interested in.</p>
+                    <img src="/docs/archer-dashboard-event.png" alt="Archer Event Dashboard" />
 
-                    <h2 id="isi-data">Melengkapi Data Kepesertaan</h2>
-                    <p>Sistem akan secara otomatis mengambil data dari profil Anda. Namun, pastikan kembali poin-poin berikut:</p>
+                    <h2 id="category-choice">Choose a Competition Category</h2>
+                    <p>After selecting an event, you will see a list of available categories (for example: Recurve 70m, Barebow 20m, etc.). Make sure you choose a category that suits your age group and bow type. Click the <strong>Register</strong> button on the desired category.</p>
+
+                    <h2 id="isi-data">Completing Participation Data</h2>
+                    <p>The system will automatically retrieve data from your profile. However, check the following points again:</p>
                     <ul>
-                        <li><strong>Klub Asal:</strong> Pastikan klub yang tertera sesuai dengan klub yang Anda wakili untuk event tersebut.</li>
-                        <li><strong>Data Tambahan:</strong> Beberapa event mungkin meminta data tambahan seperti ukuran jersey atau nomor anggota organisasi tertentu.</li>
+                        <li><strong>Home Club:</strong> Make sure the club listed matches the club you are representing for the event.</li>
+                        <li><strong>Additional Data:</strong> Some events may request additional data such as jersey size or member number of certain organizations.</li>
                     </ul>
 
-                    <h2 id="proses-bayar">Pembayaran Pendaftaran</h2>
-                    <p>Setiap pendaftaran akan menghasilkan invoice unik. Anda dapat memilih berbagai metode pembayaran:</p>
+                    <h2 id="payment-process">Registration Payment</h2>
+                    <p>Each registration will generate a unique invoice. You can choose various payment methods:</p>
                     <ul>
-                        <li><strong>Virtual Account:</strong> Pembayaran otomatis terverifikasi (BNI, Mandiri, Permata, dll).</li>
-                        <li><strong>E-Wallet:</strong> Dukungan QRIS, GoPay, dan ShopeePay untuk kemudahan transaksi mobile.</li>
+                        <li><strong>Virtual Account:</strong> Verified automatic payment (BNI, Mandiri, Permata, etc.).</li>
+                        <li><strong>E-Wallet:</strong> Support QRIS, GoPay, and ShopeePay for easy mobile transactions.</li>
                     </ul>
-                    <p>Setelah pembayaran sukses, status pendaftaran Anda akan otomatis berubah menjadi <strong>Paid</strong>.</p>
+                    <p>After successful payment, your registration status will automatically change to <strong>Paid</strong>.</p>
 
-                    <h2 id="konfirmasi">Konfirmasi Pendaftaran</h2>
-                    <p>Setelah melakukan pembayaran, Anda tidak perlu mengirimkan bukti transfer secara manual jika menggunakan metode Virtual Account atau E-Wallet. Tiket elektronik dan nomor peserta akan tersedia di dashboard Anda segera setelah sistem memverifikasi transaksi.</p>
+                    <h2 id="confirm">Registration Confirmation</h2>
+                    <p>After making a payment, you do not need to send proof of transfer manually if you use the Virtual Account or E-Wallet method. Electronic tickets and participant numbers will be available on your dashboard as soon as the system verifies the transaction.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
                         <div class="text-primary text-2xl shrink-0">⚠️</div>
                         <div>
-                            <div class="font-bold text-navy text-sm mb-1">Penting</div>
-                            <div class="text-gray-600 text-sm">Pastikan Anda menyelesaikan pembayaran sebelum batas waktu invoice (biasanya 24 jam) agar pendaftaran Anda tidak hangus secara otomatis oleh sistem.</div>
+                            <div class="font-bold text-navy text-sm mb-1">Important</div>
+                            <div class="text-gray-600 text-sm">Make sure you complete the payment before the invoice deadline (usually 24 hours) so that your registration is not automatically forfeited by the system.</div>
                         </div>
                     </div>
-                `
+`
 }
 

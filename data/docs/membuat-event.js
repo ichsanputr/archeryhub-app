@@ -1,41 +1,41 @@
 export const membuat_event = {
-    slug: 'membuat-event', title: 'Membuat dan Mempublish Event', excerpt: 'Panduan lengkap merancang event dari draft, konfigurasi kategori, hingga rilis publik.', icon: 'ph:plus-square-bold', category: 'event', readTime: '9 menit',
+    slug: 'membuat-event', title: 'Create and Publish Events', excerpt: 'Complete guide to designing events from draft, category configuration, to public release.', icon: 'ph:plus-square-bold', category: 'event', readTime: '9 min',
     toc: [
-        { id: 'persyaratan', level: 2, text: 'Persyaratan' },
-        { id: 'siapkan-data', level: 2, text: 'Data yang Perlu Disiapkan' },
-        { id: 'langkah-membuat', level: 2, text: 'Langkah Membuat Event' },
-        { id: 'publish', level: 2, text: 'Mempublish Event' },
-        { id: 'checklist-pra-rilis', level: 2, text: 'Checklist Pra-Rilis' },
+        { id: 'persyaratan', level: 2, text: 'Condition' },
+        { id: 'siapkan-data', level: 2, text: 'Data that needs to be prepared' },
+        { id: 'langkah-membuat', level: 2, text: 'Steps to Create an Event' },
+        { id: 'publish', level: 2, text: 'Publishing Events' },
+        { id: 'checklist-pra-rilis', level: 2, text: 'Pre-Release Checklist' },
     ],
     content: `
-                    <h2 id="persyaratan">Persyaratan</h2>
-                    <p>Untuk membuat event, akun Anda harus bertipe <strong>Organisasi</strong> dan memiliki paket berlangganan aktif sesuai kebutuhan modul event yang akan digunakan.</p>
-                    <h2 id="siapkan-data">Data yang Perlu Disiapkan</h2>
+                    <h2 id="requirements">Requirements</h2>
+                    <p>To create an event, your account must be of type <strong>Organization</strong> and have an active subscription package in accordance with the requirements of the event module to be used.</p>
+                    <h2 id="prepare-data">Data that needs to be prepared</h2>
                     <ul>
-                        <li>Nama event dan identitas penyelenggara.</li>
-                        <li>Tanggal pelaksanaan, lokasi, dan PIC.</li>
-                        <li>Kategori/divisi lomba yang dibuka.</li>
-                        <li>Kuota peserta per kategori.</li>
-                        <li>Skema pembayaran (gratis/berbayar) dan tenggat pendaftaran.</li>
+                        <li>Name of event and identity of organizer.</li>
+                        <li>Implementation date, location, and PIC.</li>
+                        <li>Open competition categories/divisions.</li>
+                        <li>Participant quota per category.</li>
+                        <li>Payment scheme (free/paid) and registration deadline.</li>
                     </ul>
-                    <h2 id="langkah-membuat">Langkah Membuat Event</h2>
+                    <h2 id="creation-step">Event Creation Step</h2>
                     <ol>
-                        <li>Masuk ke <strong>Dashboard Organisasi -> Event -> Buat Event</strong>.</li>
-                        <li>Isi informasi dasar event dan unggah banner.</li>
-                        <li>Tambahkan kategori lomba, kuota, and parameter teknis.</li>
-                        <li>Konfigurasikan pendaftaran, biaya, serta jadwal penting.</li>
-                        <li>Simpan sebagai draft, lalu review data bersama tim panitia.</li>
+                        <li>Go to <strong>Organization Dashboard -> Events -> Create Event</strong>.</li>
+                        <li>Fill in the basic event information and upload the banner.</li>
+                        <li>Add competition categories, quotas, and technical parameters.</li>
+                        <li>Configure important registrations, fees, and schedules.</li>
+                        <li>Save as a draft, then review the data with the committee team.</li>
                     </ol>
-                    <img src="/docs/menambahkan-kategori-lomba.png" alt="Menambahkan Kategori Lomba" />
-                    <h2 id="publish">Mempublish Event</h2>
-                    <p>Setelah validasi selesai, klik <strong>Publish</strong> agar event tampil di halaman publik. Selama periode pendaftaran masih berjalan, Anda tetap bisa melakukan koreksi konten non-kritis.</p>
+                    <img src="/docs/menamcepat-category-competition.png" alt="Adding Contest Category" />
+                    <h2 id="publish">Publishing Event</h2>
+                    <p>After validation is complete, click <strong>Publish</strong> so that the event appears on the public page. As long as the registration period is still running, you can still make corrections to non-critical content.</p>
                     <img src="/docs/printout.png" alt="Output Event & Printout" />
-                    <h2 id="checklist-pra-rilis">Checklist Pra-Rilis</h2>
+                    <h2 id="pre-release-checklist">Pre-Release Checklist</h2>
                     <ul>
-                        <li>Pastikan semua kategori memiliki kuota dan jadwal.</li>
-                        <li>Periksa harga pendaftaran dan status pembayaran.</li>
-                        <li>Cek ulang deskripsi event agar tidak menimbulkan interpretasi ganda.</li>
-                        <li>Pastikan tim operasional sudah siap memantau pendaftaran masuk.</li>
+                        <li>Make sure all categories have quotas and schedules.</li>
+                        <li>Check the registration price and payment status.</li>
+                        <li>Recheck the event description to avoid multiple interpretations.</li>
+                        <li>Make sure the operational team is ready to monitor incoming registration.</li>
                     </ul>
-                `
+`
 }
