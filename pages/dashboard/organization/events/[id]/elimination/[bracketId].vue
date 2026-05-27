@@ -1076,7 +1076,7 @@ const autoAssignTargets = async () => {
         const roundNo = currentRoundNo.value || 1
         const response = await post(`/events/${eventId}/elimination/brackets/${bracketId}/targets/auto-assign?round=${roundNo}`)
         toast.success(response?.message || t('event_elimination.toast_auto_assign_success'))
-        await fetchBracket()
+        await fetchBracket(true)
     } catch (e) {
         toast.error(e?.data?.error || t('event_elimination.toast_auto_assign_failed'))
     } finally {
