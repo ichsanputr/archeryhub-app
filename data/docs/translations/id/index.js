@@ -1,69 +1,69 @@
-import { addon_langganan } from './addon-langganan.js'
-import { apa_itu_archeris } from './apa-itu-archeris.js'
-import { apa_itu_end } from './apa-itu-end.js'
-import { cara_daftar } from './cara-daftar.js'
-import { cara_menjual_barang } from './cara-menjual-barang.js'
-import { fase_eliminasi } from './fase-eliminasi.js'
-import { fase_kualifikasi } from './fase-kualifikasi.js'
-import { fee_biaya_admin } from './fee-biaya-admin.js'
-import { jarak_dan_target } from './jarak-dan-target.js'
-import { jenis_busur } from './jenis-busur.js'
-import { kategori_lomba } from './kategori-lomba.js'
-import { kategorisasi_produk } from './kategorisasi-produk.js'
-import { keranjang_belanja } from './keranjang-belanja.js'
-import { manajemen_keuangan } from './manajemen-keuangan.js'
-import { manajemen_peserta } from './manajemen-peserta.js'
-import { manajemen_profil } from './manajemen-profil.js'
-import { membeli_barang } from './membeli-barang.js'
-import { membuat_event } from './membuat-event.js'
-import { mendaftar_event } from './mendaftar-event.js'
+import { archer_profile } from './archer-profile.js'
+import { bow_types } from './bow-types.js'
+import { bracket_sizes } from './bracket-sizes.js'
+import { competition_categories } from './competition-categories.js'
+import { creating_events } from './creating-events.js'
+import { distances_and_targets } from './distances-and-targets.js'
+import { elimination_phase } from './elimination-phase.js'
+import { elimination_system } from './elimination-system.js'
+import { fees_and_admin_costs } from './fees-and-admin-costs.js'
+import { financial_management } from './financial-management.js'
+import { how_to_buy_items } from './how-to-buy-items.js'
+import { how_to_register } from './how-to-register.js'
+import { how_to_sell_items } from './how-to-sell-items.js'
 import { mobile_app_scoring } from './mobile-app-scoring.js'
-import { modul_news } from './modul-news.js'
-import { paket_berlangganan } from './paket-berlangganan.js'
-import { pendaftaran_peserta } from './pendaftaran-peserta.js'
-import { penempatan_bantalan } from './penempatan-bantalan.js'
-import { peran_pengguna } from './peran-pengguna.js'
-import { profil_pemanah } from './profil-pemanah.js'
-import { registrasi_ulang } from './registrasi-ulang.js'
-import { scorekeeper } from './scorekeeper.js'
-import { sinkronisasi_tim } from './sinkronisasi-tim.js'
-import { sistem_eliminasi } from './sistem-eliminasi.js'
-import { sistem_scoring_kualifikasi } from './sistem-scoring-kualifikasi.js'
-import { status_pendaftaran } from './status-pendaftaran.js'
-import { ukuran_bracket } from './ukuran-bracket.js'
+import { news_module } from './news-module.js'
+import { participant_management } from './participant-management.js'
+import { participant_registration } from './participant-registration.js'
+import { product_categorization } from './product-categorization.js'
+import { profile_management } from './profile-management.js'
+import { qualification_phase } from './qualification-phase.js'
+import { qualification_scoring } from './qualification-scoring.js'
+import { re_registration } from './re-registration.js'
+import { registering_for_events } from './registering-for-events.js'
+import { registration_status } from './registration-status.js'
+import { scorekeeper_management } from './scorekeeper-management.js'
+import { shopping_cart } from './shopping-cart.js'
+import { subscription_addons } from './subscription-addons.js'
+import { subscription_plans } from './subscription-plans.js'
+import { target_butt_placement } from './target-butt-placement.js'
+import { team_synchronization } from './team-synchronization.js'
+import { user_roles } from './user-roles.js'
+import { what_is_archeris } from './what-is-archeris.js'
+import { what_is_end } from './what-is-end.js'
 
 export const idTranslations = {
-  'addon-langganan': addon_langganan,
-  'apa-itu-archeris': apa_itu_archeris,
-  'apa-itu-end': apa_itu_end,
-  'cara-daftar': cara_daftar,
-  'cara-menjual-barang': cara_menjual_barang,
-  'fase-eliminasi': fase_eliminasi,
-  'fase-kualifikasi': fase_kualifikasi,
-  'fee-biaya-admin': fee_biaya_admin,
-  'jarak-dan-target': jarak_dan_target,
-  'jenis-busur': jenis_busur,
-  'kategori-lomba': kategori_lomba,
-  'kategorisasi-produk': kategorisasi_produk,
-  'keranjang-belanja': keranjang_belanja,
-  'manajemen-keuangan': manajemen_keuangan,
-  'manajemen-peserta': manajemen_peserta,
-  'manajemen-profil': manajemen_profil,
-  'membeli-barang': membeli_barang,
-  'membuat-event': membuat_event,
-  'mendaftar-event': mendaftar_event,
+  'archer-profile': archer_profile,
+  'bow-types': bow_types,
+  'bracket-sizes': bracket_sizes,
+  'competition-categories': competition_categories,
+  'creating-events': creating_events,
+  'distances-and-targets': distances_and_targets,
+  'elimination-phase': elimination_phase,
+  'elimination-system': elimination_system,
+  'fees-and-admin-costs': fees_and_admin_costs,
+  'financial-management': financial_management,
+  'how-to-buy-items': how_to_buy_items,
+  'how-to-register': how_to_register,
+  'how-to-sell-items': how_to_sell_items,
   'mobile-app-scoring': mobile_app_scoring,
-  'modul-news': modul_news,
-  'paket-berlangganan': paket_berlangganan,
-  'pendaftaran-peserta': pendaftaran_peserta,
-  'penempatan-bantalan': penempatan_bantalan,
-  'peran-pengguna': peran_pengguna,
-  'profil-pemanah': profil_pemanah,
-  'registrasi-ulang': registrasi_ulang,
-  'scorekeeper': scorekeeper,
-  'sinkronisasi-tim': sinkronisasi_tim,
-  'sistem-eliminasi': sistem_eliminasi,
-  'sistem-scoring-kualifikasi': sistem_scoring_kualifikasi,
-  'status-pendaftaran': status_pendaftaran,
-  'ukuran-bracket': ukuran_bracket
+  'news-module': news_module,
+  'participant-management': participant_management,
+  'participant-registration': participant_registration,
+  'product-categorization': product_categorization,
+  'profile-management': profile_management,
+  'qualification-phase': qualification_phase,
+  'qualification-scoring': qualification_scoring,
+  're-registration': re_registration,
+  'registering-for-events': registering_for_events,
+  'registration-status': registration_status,
+  'scorekeeper-management': scorekeeper_management,
+  'shopping-cart': shopping_cart,
+  'subscription-addons': subscription_addons,
+  'subscription-plans': subscription_plans,
+  'target-butt-placement': target_butt_placement,
+  'team-synchronization': team_synchronization,
+  'user-roles': user_roles,
+  'what-is-archeris': what_is_archeris,
+  'what-is-end': what_is_end
 }

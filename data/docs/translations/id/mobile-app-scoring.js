@@ -1,12 +1,17 @@
 export const mobile_app_scoring = {
-    slug: 'mobile-app-scoring', title: 'Scoring via Aplikasi Mobile', excerpt: 'Panduan lengkap wasit memakai mobile scoring dari login hingga sinkronisasi data.', icon: 'ph:device-mobile-bold', category: 'scoring', readTime: '6 menit',
-    toc: [
-        { id: 'login-mobile', level: 2, text: 'Login Scorekeeper' },
-        { id: 'scan-qr', level: 2, text: 'Scan QR Assignment' },
-        { id: 'input-skor-mobile', level: 2, text: 'Input Skor' },
-        { id: 'sinkronisasi', level: 2, text: 'Sinkronisasi dan Troubleshooting' },
-    ],
-    content: `
+  slug: "mobile-app-scoring",
+  title: "Scoring via Aplikasi Mobile",
+  excerpt: "Panduan lengkap wasit memakai mobile scoring dari login hingga sinkronisasi data.",
+  icon: "ph:device-mobile-bold",
+  category: "scoring",
+  readTime: "6 menit",
+  toc: [
+    { id: "login-mobile", level: 2, text: "Login Scorekeeper" },
+    { id: "scan-qr", level: 2, text: "Scan QR Assignment" },
+    { id: "input-skor-mobile", level: 2, text: "Input Skor" },
+    { id: "sinkronisasi", level: 2, text: "Sinkronisasi dan Troubleshooting" }
+  ],
+  content: `
                     <h2 id="login-mobile">Login Scorekeeper</h2>
                     <p>Akun scorekeeper dibuat oleh panitia dari dashboard. Gunakan kredensial resmi agar setiap input skor tercatat atas nama petugas yang tepat.</p>
                     <h2 id="scan-qr">Scan QR Assignment</h2>

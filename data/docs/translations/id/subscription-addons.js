@@ -1,0 +1,14 @@
+export const subscription_addons = {
+  slug: "subscription-addons",
+  title: "Add-on & Upgrade Paket",
+  excerpt: "Panduan kapan perlu add-on, contoh kasus penggunaan, dan strategi upgrade bertahap.",
+  icon: "ph:plus-circle-bold",
+  category: "subscription",
+  readTime: "5 menit",
+  toc: [
+    { id: "apa-itu-addon", level: 2, text: "Apa itu Add-on?" },
+    { id: "kapan-dibutuhkan", level: 2, text: "Kapan Add-on Dibutuhkan?" },
+    { id: "strategi-upgrade", level: 2, text: "Strategi Upgrade Bertahap" }
+  ],
+  content: `<h2 id="apa-itu-addon">Apa itu Add-on?</h2><p>Add-on adalah perluasan kapasitas atau fitur tambahan di atas paket utama.</p><h2 id="kapan-dibutuhkan">Kapan Add-on Dibutuhkan?</h2><ul><li>Saat jumlah peserta/event melampaui beban normal paket.</li><li>Saat butuh fitur khusus untuk periode kompetisi tertentu.</li><li>Saat organisasi ingin scale-up tanpa pindah paket permanen.</li></ul><h2 id="strategi-upgrade">Strategi Upgrade Bertahap</h2><p>Mulai dari paket inti, monitor pemakaian, lalu aktifkan add-on saat mendekati batas operasional untuk menjaga efisiensi biaya.</p>`
+}
