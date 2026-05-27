@@ -83,8 +83,7 @@ const { locale, locales, setLocaleCookie, loadLocaleMessages } = useI18n()
 const showLangMenu = ref(false)
 const langFlags = {
   en: 'circle-flags:us',
-  id: 'circle-flags:id',
-  kr: 'circle-flags:kr'
+  id: 'circle-flags:id'
 }
 
 const changeDashboardLocale = async (code) => {

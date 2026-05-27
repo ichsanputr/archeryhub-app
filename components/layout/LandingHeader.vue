@@ -421,8 +421,7 @@ const localePath = useLocalePath()
 
 const langFlags = {
     en: 'circle-flags:us',
-    id: 'circle-flags:id',
-    kr: 'circle-flags:kr'
+    id: 'circle-flags:id'
 }
 
 const mobileMenuOpen = ref(false)
