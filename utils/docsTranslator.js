@@ -1,9 +1,8 @@
 // Archery Hub / Archeris Documentation Translator Utility
-// Supports English (en), Indonesian (id), and Korean (kr)
-import { idTranslations } from '~/data/docs/translations/id/index.js'
+// Supports English (en) and Korean (kr)
 
 const docTranslations = {
-  'apa-itu-archeris': {
+  'what-is-archeris': {
     kr: {
       title: 'Archeris.net이란 무엇인가요?',
       excerpt: 'Archeris.net의 핵심 아키텍처, 주요 기능 및 대상 사용자에 대해 알아봅니다.',
@@ -20,7 +19,7 @@ const docTranslations = {
       `
     }
   },
-  'cara-daftar': {
+  'how-to-register': {
     kr: {
       title: '계정 등록 방법',
       excerpt: 'Archeris.net에서 새로운 계정을 등록하는 단계별 가이드입니다.',
@@ -38,7 +37,7 @@ const docTranslations = {
       `
     }
   },
-  'jenis-busur': {
+  'types-of-bows': {
     kr: {
       title: '활의 종류 및 경기 부문',
       excerpt: '대회에서 사용되는 표준 활 분류 및 부문에 대한 종합 안내서입니다.',
@@ -52,7 +51,7 @@ const docTranslations = {
       `
     }
   },
-  'paket-berlangganan': {
+  'subscription-plans': {
     kr: {
       title: '구독 요금제 및 패키지 안내',
       excerpt: '개인 및 클럽 구독 등급에 대한 자세한 비교 안내입니다.',
@@ -69,57 +68,45 @@ const docTranslations = {
 };
 
 const metadataTranslations = {
-  'apa-itu-end': {
+  'what-is-end': {
     kr: { title: '엔드(End)의 개념이란?', excerpt: '양궁 토너먼트에서 점수 기록과 발사 수 단위에 대해 배웁니다.' }
   },
-  'cara-menjual-barang': {
+  'how-to-sell-items': {
     kr: { title: '상품 판매 등록 방법', excerpt: '셀러 회원이 마켓플레이스에 장비 및 액세서리를 업로드하는 방법 안내.' }
   },
-  'fase-eliminasi': {
+  'elimination-phase': {
     kr: { title: '엘리미네이션 토너먼트 규정', excerpt: '대진표 매치, 동점 슛오프 및 공식 1:1 토너먼트 규정을 학습합니다.' }
   },
-  'fase-kualifikasi': {
+  'qualification-phase': {
     kr: { title: '예선 라운드 운영 가이드', excerpt: '순위 결정을 위한 예선 라운드 스코어 기록 및 표적 배치 기준 안내.' }
   },
-  'fee-biaya-admin': {
+  'fees-admin-charges': {
     kr: { title: '수수료 및 관리 비용 안내', excerpt: '안전 결제 게이트웨이 수수료 및 마켓플레이스 거래 수수료 투명 정보.' }
   },
-  'jarak-dan-target': {
+  'shooting-distance-targets': {
     kr: { title: '경기 거리 및 표적 규격', excerpt: '각 경기 부문별 공식 타겟 규격(80cm, 122cm) 및 사거리 기준.' }
   },
-  'kategori-lomba': {
+  'competition-categories': {
     kr: { title: '대회 세부 종목 카테고리', excerpt: '연령대, 활 부문, 단체전 구성을 위한 카테고리 설정 개요.' }
   },
   'mobile-app-scoring': {
     kr: { title: '모바일 앱 실시간 스코어링', excerpt: '심판 및 기록원이 모바일 앱을 통해 실시간으로 점수를 입력하는 가이드.' }
   },
-  'sinkronisasi-tim': {
+  'team-synchronization': {
     kr: { title: '팀 자동 동기화 기능', excerpt: '예선 개인전 점수를 기반으로 단체전 팀을 시스템에서 자동 빌드하는 가이드.' }
   },
   'scorekeeper': {
     kr: { title: '스코어키퍼 등록 및 권한 설정', excerpt: '운영진이 사로별 기록원을 할당하고 보안 로그인 코드를 부여하는 법.' }
   },
-  'membuat-event': {
+  'create-events': {
     kr: { title: '신규 양궁 이벤트 생성', excerpt: '이벤트 상세 일정, 참가 요금제, 사로 배정 규칙을 디자인하는 방법.' }
   },
-  'mendaftar-event': {
+  'register-for-events': {
     kr: { title: '양궁 대회 참가 신청', excerpt: '궁사(선수) 회원이 진행 중인 대회에 참가 신청 및 결제하는 가이드.' }
   }
 };
 
 const dictionary = {
-  id: {
-    'All': 'Semua',
-    'Platform': 'Platform',
-    'Archer Account': 'Akun Pemanah',
-    'Archery Technical': 'Teknis Panahan',
-    'Subscription': 'Berlangganan',
-    'Event Management': 'Manajemen Event',
-    'Scoring': 'Scoring',
-    'Marketplace': 'Marketplace',
-    'min': 'menit',
-    'read': 'membaca'
-  },
   kr: {
     'All': '전체',
     'Platform': '플랫폼',
@@ -135,15 +122,9 @@ const dictionary = {
 };
 
 export function translateText(text, locale, slug = '') {
-  if (!locale || locale === 'en') return text;
+  if (!locale || locale === 'en' || locale === 'id') return text;
 
-  // 1. Check ID translations dictionary
-  if (locale === 'id') {
-    if (dictionary.id[text]) return dictionary.id[text];
-    return text;
-  }
-
-  // 2. Check direct doc translations for Korean
+  // 1. Check direct doc translations for Korean
   if (slug && docTranslations[slug] && docTranslations[slug][locale]) {
     const matched = docTranslations[slug][locale];
     if (text === matched.title || text === matched.excerpt) {
@@ -151,13 +132,13 @@ export function translateText(text, locale, slug = '') {
     }
   }
 
-  // 3. Check metadata translations for Korean
+  // 2. Check metadata translations for Korean
   if (slug && metadataTranslations[slug] && metadataTranslations[slug][locale]) {
     const item = metadataTranslations[slug][locale];
     return item.title;
   }
 
-  // 4. Fallback dictionary translations for Korean
+  // 3. Fallback dictionary translations for Korean
   if (dictionary.kr[text]) {
     return dictionary.kr[text];
   }
@@ -170,23 +151,15 @@ export function translateDoc(doc, locale) {
 
   const slug = doc.slug;
 
-  // 1. If Indonesian is requested and we have the translation, return it!
-  if (locale === 'id') {
-    if (idTranslations[slug]) {
-      return idTranslations[slug];
-    }
-    return doc;
-  }
-
-  // 2. If English or default is requested, return base English doc
-  if (locale === 'en' || !locale) {
+  // 1. If English, Indonesian or default is requested, return base English doc
+  if (locale === 'en' || locale === 'id' || !locale) {
     return {
       ...doc,
       readTime: doc.readTime ? doc.readTime.replace('menit', 'min').replace('hari', 'days') : ''
     };
   }
 
-  // 3. For Korean (kr)
+  // 2. For Korean (kr)
   const hasFullTranslation = docTranslations[slug] && docTranslations[slug]['kr'];
 
   return {

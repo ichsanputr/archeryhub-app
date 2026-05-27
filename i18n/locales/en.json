@@ -367,7 +367,21 @@
       "start_date": "Start Date",
       "end_date": "End Date",
       "apply_filters": "Apply Filters",
-      "reset_filters": "Reset Filters"
+      "reset_filters": "Reset Filters",
+      "archer": "Archer",
+      "event": "Event",
+      "checkin_time": "Check-in Date/Time",
+      "reference": "Reference",
+      "user": "User",
+      "amount": "Amount",
+      "method": "Method",
+      "status": "Status",
+      "date": "Date",
+      "event_name": "Event Name",
+      "event_dates": "Event Dates",
+      "categories_count": "Categories Count",
+      "registrants_capacity": "Registrants / Capacity",
+      "quota_fill_rate": "Quota Fill Rate"
     },
     "logout_dialog": {
       "title": "Sign Out",
@@ -2992,29 +3006,29 @@
     "draft": "Draft"
   },
   "dashboard_events_page": {
-    "title": "Halaman Event",
-    "subtitle": "Kelola informasi yang ditampilkan di halaman publik event.",
-    "view_button": "Lihat",
-    "save_button": "Simpan",
+    "title": "Event Page",
+    "subtitle": "Manage the information displayed on the event public page.",
+    "view_button": "View",
+    "save_button": "Save",
     "faq": {
-      "title": "Pertanyaan Sering Diajukan (FAQ)",
-      "add": "Tambah",
-      "no_items": "Belum ada FAQ yang ditambahkan.",
-      "question_label": "Pertanyaan",
-      "answer_label": "Jawaban",
-      "question_placeholder": "Contoh: Berapa biaya pendaftaran?",
-      "answer_placeholder": "Tuliskan jawaban yang detail..."
+      "title": "Frequently Asked Questions (FAQ)",
+      "add": "Add FAQ",
+      "no_items": "No FAQ added yet.",
+      "question_label": "Question",
+      "answer_label": "Answer",
+      "question_placeholder": "Write question...",
+      "answer_placeholder": "Write answer..."
     },
     "information": {
-      "basic_title": "Informasi Dasar",
-      "name_label": "Nama Event",
+      "basic_title": "Basic Information",
+      "name_label": "Event Name",
       "name_placeholder": "Nama event Anda",
-      "description_label": "Deskripsi (Tentang Event)",
-      "start_date_label": "Tanggal Mulai",
-      "end_date_label": "Tanggal Selesai",
-      "location_type_label": "Tipe Lokasi",
-      "location_type_placeholder": "Pilih Tipe Lokasi",
-      "status_label": "Status Event"
+      "description_label": "Event Description",
+      "start_date_label": "Start Date",
+      "end_date_label": "End Date",
+      "location_type_label": "Location Type",
+      "location_type_placeholder": "Select location type...",
+      "status_label": "Event Status"
     },
     "breadcrumbs": {
       "dashboard": "Dashboard",

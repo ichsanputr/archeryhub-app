@@ -350,7 +350,21 @@
       "start_date": "Tanggal Mulai",
       "end_date": "Tanggal Selesai",
       "apply_filters": "Terapkan Filter",
-      "reset_filters": "Atur Ulang Filter"
+      "reset_filters": "Atur Ulang Filter",
+      "archer": "Pemanah",
+      "event": "Event",
+      "checkin_time": "Tanggal/Waktu Check-in",
+      "reference": "Referensi",
+      "user": "Pengguna",
+      "amount": "Jumlah",
+      "method": "Metode",
+      "status": "Status",
+      "date": "Tanggal",
+      "event_name": "Nama Event",
+      "event_dates": "Tanggal Event",
+      "categories_count": "Jumlah Kategori",
+      "registrants_capacity": "Pendaftar / Kapasitas",
+      "quota_fill_rate": "Tingkat Keterisian Kuota"
     },
     "logout_dialog": {
       "title": "Keluar dari Sistem",

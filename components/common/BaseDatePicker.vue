@@ -13,7 +13,7 @@
       </div>
 
       <div class="w-full h-11 pl-11 pr-10 rounded-xl border border-gray-200 bg-gray-50/50 text-sm font-medium transition-all
-        flex items-center cursor-pointer hover:border-black/40 select-none"
+        flex items-center cursor-pointer hover:border-black/40 select-none whitespace-nowrap overflow-hidden"
         :class="[
           isOpen ? 'border-primary bg-white ring-4 ring-primary/10' : '',
           error ? 'border-red-500 ring-4 ring-red-100' : '',
@@ -22,21 +22,21 @@
 
         <!-- range display -->
         <template v-if="range">
-          <span v-if="rangeStart && rangeEnd" class="flex items-center gap-2">
-            <span class="font-black text-navy text-xs">{{ fmtShort(rangeStart) }}</span>
+          <span v-if="rangeStart && rangeEnd" class="flex items-center gap-2 whitespace-nowrap truncate">
+            <span class="font-black text-navy text-xs whitespace-nowrap truncate">{{ fmtShort(rangeStart) }}</span>
             <span class="text-gray-300 font-bold">→</span>
-            <span class="font-black text-navy text-xs">{{ fmtShort(rangeEnd) }}</span>
+            <span class="font-black text-navy text-xs whitespace-nowrap truncate">{{ fmtShort(rangeEnd) }}</span>
           </span>
-          <span v-else-if="rangeStart" class="flex items-center gap-2">
-            <span class="font-black text-primary text-xs">{{ fmtShort(rangeStart) }}</span>
+          <span v-else-if="rangeStart" class="flex items-center gap-2 whitespace-nowrap truncate">
+            <span class="font-black text-primary text-xs whitespace-nowrap truncate">{{ fmtShort(rangeStart) }}</span>
             <span class="text-gray-300 font-bold">→</span>
-            <span class="text-gray-400 text-xs">{{ placeholder || 'End date' }}</span>
+            <span class="text-gray-400 text-xs whitespace-nowrap truncate">{{ placeholder || 'End date' }}</span>
           </span>
-          <span v-else class="text-gray-400">{{ placeholder || 'Select date range' }}</span>
+          <span v-else class="text-gray-400 whitespace-nowrap truncate">{{ placeholder || 'Select date range' }}</span>
         </template>
 
         <!-- single display -->
-        <span v-else :class="displaySingle ? 'text-navy' : 'text-gray-400'">
+        <span v-else :class="displaySingle ? 'text-navy' : 'text-gray-400'" class="whitespace-nowrap truncate w-full">
           {{ displaySingle || placeholder || 'Select date' }}
         </span>
       </div>

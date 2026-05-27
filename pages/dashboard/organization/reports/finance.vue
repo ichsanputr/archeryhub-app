@@ -165,14 +165,14 @@
         <table class="w-full text-left text-xs">
           <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
             <tr>
-              <th class="px-6 py-4">Reference</th>
-              <th class="px-6 py-4">User</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.reference') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.user') }}</th>
               <th class="px-6 py-4">{{ t('my_registration.sender_name') }}</th>
-              <th class="px-6 py-4">Event</th>
-              <th class="px-6 py-4">Amount</th>
-              <th class="px-6 py-4">Method</th>
-              <th class="px-6 py-4">Status</th>
-              <th class="px-6 py-4">Date</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.event') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.amount') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.method') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.status') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.date') }}</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 font-medium">

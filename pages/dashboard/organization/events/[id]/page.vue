@@ -130,8 +130,8 @@
             <div v-if="activeTab === 'pendaftaran'" class="space-y-6">
 
                 <!-- Waktu Pendaftaran -->
-                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
+                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-visible">
+                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 rounded-t-2xl">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:calendar-check" class="text-primary text-lg sm:text-xl" />
                             {{ $t('dashboard_events_page.registration.timeline_title') }}
@@ -572,8 +572,8 @@
 
             <!-- Jadwal Tab -->
             <section v-if="activeTab === 'jadwal'"
-                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-visible">
+                <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 rounded-t-2xl flex items-center justify-between">
                     <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                         <Icon icon="ph:calendar-bold" class="text-primary text-lg sm:text-xl" />
                         {{ $t('dashboard_events_page.schedule.title') }}

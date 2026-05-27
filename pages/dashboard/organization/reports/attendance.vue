@@ -134,9 +134,9 @@
           <table class="w-full text-left text-xs">
             <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100 sticky top-0">
               <tr>
-                <th class="px-5 py-3">Archer</th>
-                <th class="px-5 py-3">Event</th>
-                <th class="px-5 py-3">Check-in Date/Time</th>
+                <th class="px-5 py-3">{{ t('dashboard.reports.archer') }}</th>
+                <th class="px-5 py-3">{{ t('dashboard.reports.event') }}</th>
+                <th class="px-5 py-3">{{ t('dashboard.reports.checkin_time') }}</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 font-medium">

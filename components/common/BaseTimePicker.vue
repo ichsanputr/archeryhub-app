@@ -20,7 +20,7 @@
           disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '',
           displayValue ? 'text-navy' : 'text-gray-400'
         ]">
-        {{ displayValue || placeholder || 'Select time' }}
+        <span class="whitespace-nowrap truncate w-full">{{ displayValue || placeholder || 'Select time' }}</span>
       </div>
 
       <!-- clear -->

@@ -72,12 +72,12 @@
         <table class="w-full text-left text-xs">
           <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
             <tr>
-              <th class="px-6 py-4">Event Name</th>
-              <th class="px-6 py-4">Status</th>
-              <th class="px-6 py-4">Event Dates</th>
-              <th class="px-6 py-4">Categories Count</th>
-              <th class="px-6 py-4">Registrants / Capacity</th>
-              <th class="px-6 py-4">Quota Fill Rate</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.event_name') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.status') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.event_dates') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.categories_count') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.registrants_capacity') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.quota_fill_rate') }}</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 font-medium">
