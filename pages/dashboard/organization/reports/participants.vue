@@ -1,17 +1,14 @@
 <template>
   <div class="space-y-8">
-    <!-- Header Section -->
-    <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
-      <div class="absolute inset-0"
-        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
+    <!-- header -->
+    <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white">
+      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
       <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
       <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
       <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div class="flex items-center gap-5">
           <NuxtLink :to="getBackLink()"
-            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner text-white hover:bg-white/20 transition-all">
+            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 text-white hover:bg-white/20 transition-all">
             <Icon icon="ph:arrow-left-bold" class="text-primary text-xl sm:text-2xl" />
           </NuxtLink>
           <div>
@@ -22,70 +19,74 @@
       </div>
     </div>
 
-    <!-- Filters Panel -->
-    <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
+    <!-- filters panel -->
+    <div class="bg-white border border-primary/10 rounded-2xl p-5 space-y-4">
       <div class="flex items-center gap-2 pb-3 border-b border-gray-100">
         <Icon icon="ph:funnel-bold" class="text-primary text-lg" />
-        <h3 class="text-sm font-black text-navy-dark">Report Filters</h3>
+        <h3 class="text-sm font-black text-navy">Report Filters</h3>
       </div>
-      
+
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-        <!-- Event Filter -->
-        <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.select_event') }}</label>
-          <select v-model="filters.event_id" class="w-full h-10 px-3 border border-gray-200 rounded-xl text-xs font-bold bg-gray-50 focus:bg-white focus:ring-1 focus:ring-primary/40 focus:border-primary outline-none">
-            <option value="all">{{ t('dashboard.reports.all_events') }}</option>
-            <option v-for="e in eventsList" :key="e.id" :value="e.id">{{ e.name }}</option>
-          </select>
-        </div>
+        <!-- event -->
+        <BaseSelect
+          v-model="filters.event_id"
+          :items="eventSelectItems"
+          item-title="name"
+          item-value="id"
+          :placeholder="t('dashboard.reports.all_events')"
+          :label="t('dashboard.reports.select_event')"
+          :searchable="true"
+          clearable
+        />
 
-        <!-- Start Date Filter -->
-        <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.start_date') }}</label>
-          <input type="date" v-model="filters.start_date" class="w-full h-10 px-3 border border-gray-200 rounded-xl text-xs font-bold bg-gray-50 focus:bg-white focus:ring-1 focus:ring-primary/40 focus:border-primary outline-none" />
-        </div>
+        <!-- start date -->
+        <BaseDatePicker
+          v-model="filters.start_date"
+          :label="t('dashboard.reports.start_date')"
+          placeholder="Select start date"
+          clearable
+        />
 
-        <!-- End Date Filter -->
-        <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.end_date') }}</label>
-          <input type="date" v-model="filters.end_date" class="w-full h-10 px-3 border border-gray-200 rounded-xl text-xs font-bold bg-gray-50 focus:bg-white focus:ring-1 focus:ring-primary/40 focus:border-primary outline-none" />
-        </div>
+        <!-- end date -->
+        <BaseDatePicker
+          v-model="filters.end_date"
+          :label="t('dashboard.reports.end_date')"
+          placeholder="Select end date"
+          clearable
+        />
 
-        <!-- Bow Type Filter -->
-        <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">Bow Type</label>
-          <select v-model="filters.bow_type" class="w-full h-10 px-3 border border-gray-200 rounded-xl text-xs font-bold bg-gray-50 focus:bg-white focus:ring-1 focus:ring-primary/40 focus:border-primary outline-none">
-            <option value="all">All Bow Types</option>
-            <option value="Recurve">Recurve</option>
-            <option value="Compound">Compound</option>
-            <option value="Barebow">Barebow</option>
-            <option value="Traditional">Traditional</option>
-            <option value="Standard">Standard</option>
-          </select>
-        </div>
+        <!-- bow type -->
+        <BaseSelect
+          v-model="filters.bow_type"
+          :items="bowTypeItems"
+          item-title="label"
+          item-value="value"
+          label="Bow Type"
+          :searchable="false"
+        />
 
-        <!-- Status Checkin Filter -->
-        <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">Check-in Status</label>
-          <select v-model="filters.status" class="w-full h-10 px-3 border border-gray-200 rounded-xl text-xs font-bold bg-gray-50 focus:bg-white focus:ring-1 focus:ring-primary/40 focus:border-primary outline-none">
-            <option value="all">All Status</option>
-            <option value="checked_in">Checked In</option>
-            <option value="pending">Not Checked In</option>
-          </select>
-        </div>
+        <!-- check-in status -->
+        <BaseSelect
+          v-model="filters.status"
+          :items="statusItems"
+          item-title="label"
+          item-value="value"
+          label="Check-in Status"
+          :searchable="false"
+        />
       </div>
 
-      <div class="flex justify-end gap-3 pt-2">
+      <div class="flex justify-end gap-3 pt-1">
         <BaseButton variant="ghost" class="h-9 px-4 text-xs font-black" @click="resetFilters">
           {{ t('dashboard.reports.reset_filters') }}
         </BaseButton>
-        <BaseButton variant="primary" class="h-9 px-5 text-xs font-black shadow-lg shadow-primary/10" @click="applyFilters">
+        <BaseButton variant="primary" class="h-9 px-5 text-xs font-black" @click="applyFilters">
           {{ t('dashboard.reports.apply_filters') }}
         </BaseButton>
       </div>
     </div>
 
-    <!-- Stats summary grid -->
+    <!-- stats -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
       <StatCard title="Total Registrations" :value="stats.total_participants || 0" icon="ph:users-three-bold" color="primary" />
       <StatCard title="Checked-in Archers" :value="stats.checked_in_count || 0" icon="ph:user-circle-check-bold" color="success" />
@@ -93,14 +94,13 @@
       <StatCard title="Check-in Rate" :value="checkInRate + '%'" icon="ph:percent-bold" color="primary" />
     </div>
 
-    <!-- Registration Trend Chart -->
-    <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-      <h3 class="text-navy-dark font-black text-base flex items-center gap-2 mb-6">
+    <!-- registration trend chart -->
+    <div class="bg-white border border-primary/10 rounded-2xl p-6">
+      <h3 class="text-navy font-black text-base flex items-center gap-2 mb-6">
         <Icon icon="ph:chart-line-up-bold" class="text-primary" />
         Registration Trend
       </h3>
       <div v-if="trendPoints.length > 1" class="relative">
-        <!-- SVG area/line chart -->
         <svg viewBox="0 0 500 150" class="w-full h-48 overflow-visible" preserveAspectRatio="none">
           <defs>
             <linearGradient id="gradient-area" x1="0" y1="0" x2="0" y2="1">
@@ -108,12 +108,9 @@
               <stop offset="100%" stop-color="var(--color-primary, #ea580c)" stop-opacity="0" />
             </linearGradient>
           </defs>
-          <!-- area path -->
           <path :d="svgAreaPath" fill="url(#gradient-area)" />
-          <!-- line path -->
           <path :d="svgLinePath" fill="none" stroke="var(--color-primary, #ea580c)" stroke-width="2.5" stroke-linecap="round" />
         </svg>
-        <!-- X axis labels -->
         <div class="flex justify-between text-[9px] text-gray-400 font-bold mt-3">
           <span>{{ trendPoints[0].date }}</span>
           <span>{{ trendPoints[Math.floor(trendPoints.length / 2)].date }}</span>
@@ -126,18 +123,17 @@
       </div>
     </div>
 
-    <!-- Splits and Breakdowns -->
+    <!-- splits -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- bow types split -->
-      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
-        <h3 class="text-navy-dark font-black text-sm flex items-center gap-2">
+      <div class="bg-white border border-primary/10 rounded-2xl p-6 space-y-4">
+        <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:crosshair-bold" class="text-primary" />
           Bow Types Split
         </h3>
         <div class="space-y-3">
           <div v-for="item in stats.bow_type_split" :key="item.name" class="space-y-1">
             <div class="flex justify-between text-xs font-bold">
-              <span class="text-navy-dark capitalize">{{ item.name.toLowerCase() }}</span>
+              <span class="text-navy capitalize">{{ item.name.toLowerCase() }}</span>
               <span class="text-gray-500">{{ item.count }} ({{ getPercent(item.count) }}%)</span>
             </div>
             <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
@@ -148,16 +144,15 @@
         </div>
       </div>
 
-      <!-- gender split -->
-      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
-        <h3 class="text-navy-dark font-black text-sm flex items-center gap-2">
+      <div class="bg-white border border-primary/10 rounded-2xl p-6 space-y-4">
+        <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:gender-intersex-bold" class="text-primary" />
           Gender Split
         </h3>
         <div class="space-y-3">
           <div v-for="item in stats.gender_split" :key="item.name" class="space-y-1">
             <div class="flex justify-between text-xs font-bold">
-              <span class="text-navy-dark capitalize">{{ item.name.toLowerCase() }}</span>
+              <span class="text-navy capitalize">{{ item.name.toLowerCase() }}</span>
               <span class="text-gray-500">{{ item.count }} ({{ getPercent(item.count) }}%)</span>
             </div>
             <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
@@ -168,16 +163,15 @@
         </div>
       </div>
 
-      <!-- registration source split -->
-      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
-        <h3 class="text-navy-dark font-black text-sm flex items-center gap-2">
+      <div class="bg-white border border-primary/10 rounded-2xl p-6 space-y-4">
+        <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:globe-bold" class="text-primary" />
           Registration Sources
         </h3>
         <div class="space-y-3">
           <div v-for="item in stats.registration_source_split" :key="item.name" class="space-y-1">
             <div class="flex justify-between text-xs font-bold">
-              <span class="text-navy-dark capitalize">{{ item.name.replace('_', ' ').toLowerCase() }}</span>
+              <span class="text-navy capitalize">{{ item.name.replace('_', ' ').toLowerCase() }}</span>
               <span class="text-gray-500">{{ item.count }} ({{ getPercent(item.count) }}%)</span>
             </div>
             <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
@@ -189,10 +183,10 @@
       </div>
     </div>
 
-    <!-- Participants Ledger -->
-    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
-      <div class="p-5 border-b border-gray-100 flex items-center justify-between">
-        <h3 class="text-navy-dark font-black text-sm flex items-center gap-2">
+    <!-- participants table -->
+    <div class="bg-white border border-primary/10 rounded-2xl overflow-hidden">
+      <div class="p-5 border-b border-gray-100">
+        <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:list-dashes-bold" class="text-primary" />
           Recent Registered Participants
         </h3>
@@ -211,23 +205,27 @@
           </thead>
           <tbody class="divide-y divide-gray-100 font-medium">
             <tr v-for="p in stats.recent_participants" :key="p.id" class="hover:bg-gray-50 transition-colors">
-              <td class="px-6 py-4 flex items-center gap-3">
-                <img :src="useImageOrDefault(p.avatar_url, p.archer_name)" :alt="p.archer_name" class="size-8 rounded-full object-cover border border-gray-100 bg-gray-50 shrink-0" />
-                <span class="text-navy-dark font-bold capitalize">{{ p.archer_name.toLowerCase() }}</span>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <img :src="useImageOrDefault(p.avatar_url, p.archer_name)" :alt="p.archer_name" class="size-8 rounded-full object-cover border border-gray-100 bg-gray-50 shrink-0" />
+                  <span class="text-navy font-bold capitalize">{{ p.archer_name.toLowerCase() }}</span>
+                </div>
               </td>
               <td class="px-6 py-4 text-gray-500 font-semibold capitalize">{{ p.event_name.toLowerCase() }}</td>
               <td class="px-6 py-4">
-                <div class="text-navy-dark font-bold capitalize">{{ p.bow_type ? p.bow_type.toLowerCase() : '-' }}</div>
+                <div class="text-navy font-bold capitalize">{{ p.bow_type ? p.bow_type.toLowerCase() : '-' }}</div>
                 <div class="text-gray-400 text-[10px] font-bold capitalize">{{ p.age_group ? p.age_group.toLowerCase() : '' }} ({{ p.gender ? p.gender.toLowerCase() : '' }})</div>
               </td>
               <td class="px-6 py-4 text-gray-500 font-semibold font-mono">{{ formatDate(p.registration_date) }}</td>
               <td class="px-6 py-4">
-                <span :class="p.payment_status === 'paid' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-amber-50 text-amber-600 border-amber-200'" class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider uppercase">
+                <span :class="p.payment_status === 'paid' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-amber-50 text-amber-600 border-amber-200'"
+                  class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider uppercase">
                   {{ p.payment_status }}
                 </span>
               </td>
               <td class="px-6 py-4">
-                <span :class="p.last_reregistration_at ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-slate-50 text-slate-400 border-slate-200'" class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider capitalize">
+                <span :class="p.last_reregistration_at ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-slate-50 text-slate-400 border-slate-200'"
+                  class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider capitalize">
                   {{ p.last_reregistration_at ? 'Checked In' : 'Pending' }}
                 </span>
               </td>
@@ -249,9 +247,7 @@ import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 
-definePageMeta({
-  layout: 'dashboard'
-})
+definePageMeta({ layout: 'dashboard' })
 
 const { t } = useI18n()
 const route = useRoute()
@@ -280,9 +276,27 @@ const filters = reactive({
   status: 'all'
 })
 
-onMounted(() => {
-  fetchReportData()
-})
+const eventSelectItems = computed(() => [
+  { id: 'all', name: t('dashboard.reports.all_events') },
+  ...eventsList.value
+])
+
+const bowTypeItems = [
+  { value: 'all', label: 'All Bow Types' },
+  { value: 'Recurve', label: 'Recurve' },
+  { value: 'Compound', label: 'Compound' },
+  { value: 'Barebow', label: 'Barebow' },
+  { value: 'Traditional', label: 'Traditional' },
+  { value: 'Standard', label: 'Standard' },
+]
+
+const statusItems = [
+  { value: 'all', label: 'All Status' },
+  { value: 'checked_in', label: 'Checked In' },
+  { value: 'pending', label: 'Not Checked In' },
+]
+
+onMounted(() => { fetchReportData() })
 
 const fetchReportData = async () => {
   try {
@@ -297,22 +311,19 @@ const fetchReportData = async () => {
     const res = await api.get(`/organizations/reports/participants?${queryParams.toString()}`)
     if (res) {
       stats.value = res
-      if (res.events_list) {
-        eventsList.value = res.events_list
-      }
+      if (res.events_list) eventsList.value = res.events_list
     }
   } catch (err) {
     console.error('failed to fetch participants report:', err)
   }
 }
 
-const getBackLink = () => {
-  return route.query.event_id ? `/dashboard/organization/reports?event_id=${route.query.event_id}` : '/dashboard/organization/reports'
-}
+const getBackLink = () =>
+  route.query.event_id
+    ? `/dashboard/organization/reports?event_id=${route.query.event_id}`
+    : '/dashboard/organization/reports'
 
-const applyFilters = () => {
-  fetchReportData()
-}
+const applyFilters = () => fetchReportData()
 
 const resetFilters = () => {
   filters.event_id = route.query.event_id || 'all'
@@ -327,8 +338,7 @@ const resetFilters = () => {
 const checkInRate = computed(() => {
   const total = stats.value.total_participants || 0
   if (total === 0) return 0
-  const rate = ((stats.value.checked_in_count || 0) / total) * 100
-  return Math.round(rate)
+  return Math.round(((stats.value.checked_in_count || 0) / total) * 100)
 })
 
 const getPercent = (count) => {
@@ -337,19 +347,15 @@ const getPercent = (count) => {
   return Math.round((count / total) * 100)
 }
 
-const trendPoints = computed(() => {
-  return stats.value.registration_trend || []
-})
+const trendPoints = computed(() => stats.value.registration_trend || [])
 
 const svgLinePath = computed(() => {
   const trend = trendPoints.value
   if (trend.length <= 1) return ''
   const max = Math.max(...trend.map(d => d.value)) || 1
-  const width = 500
-  const height = 150
   const points = trend.map((d, i) => {
-    const x = (i / (trend.length - 1)) * width
-    const y = height - (d.value / max) * height
+    const x = (i / (trend.length - 1)) * 500
+    const y = 150 - (d.value / max) * 150
     return `${x},${y}`
   })
   return `M ${points.join(' L ')}`
@@ -358,27 +364,11 @@ const svgLinePath = computed(() => {
 const svgAreaPath = computed(() => {
   const path = svgLinePath.value
   if (!path) return ''
-  const width = 500
-  const height = 150
-  return `${path} L ${width},${height} L 0,${height} Z`
+  return `${path} L 500,150 L 0,150 Z`
 })
 
 const formatDate = (dateStr) => {
   if (!dateStr) return '-'
-  const date = new Date(dateStr)
-  return date.toLocaleDateString('id-ID', {
-    day: '2-digit',
-    month: 'short',
-    year: '2-digit'
-  })
+  return new Date(dateStr).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: '2-digit' })
 }
 </script>
-
-<style scoped>
-.text-navy-dark {
-  color: #1e293b;
-}
-.bg-primary\/10 {
-  background-color: rgba(234, 88, 12, 0.1);
-}
-</style>

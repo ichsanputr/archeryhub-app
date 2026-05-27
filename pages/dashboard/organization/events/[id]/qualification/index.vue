@@ -398,32 +398,17 @@
 
               <div>
                 <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ t('event_qualification.session_date_label') }}</label>
-                <div class="relative group">
-                  <Icon icon="ph:calendar-bold"
-                    class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" />
-                  <input v-model="newSessionDate" type="date"
-                    class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:outline-none focus:border-primary focus:bg-white transition-all text-navy font-bold" />
-                </div>
+                <BaseDatePicker v-model="newSessionDate" :placeholder="t('event_qualification.select_date') || 'Select date'" />
               </div>
-
+ 
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ t('event_qualification.start_time_label') }}</label>
-                  <div class="relative group">
-                    <Icon icon="ph:clock-bold"
-                      class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" />
-                    <input v-model="newSessionStart" type="time"
-                      class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:outline-none focus:border-primary focus:bg-white transition-all text-navy font-bold" />
-                  </div>
+                  <BaseTimePicker v-model="newSessionStart" placeholder="08:00" />
                 </div>
                 <div>
                   <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ t('event_qualification.end_time_label') }}</label>
-                  <div class="relative group">
-                    <Icon icon="ph:clock-afternoon-bold"
-                      class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" />
-                    <input v-model="newSessionEnd" type="time"
-                      class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:outline-none focus:border-primary focus:bg-white transition-all text-navy font-bold" />
-                  </div>
+                  <BaseTimePicker v-model="newSessionEnd" placeholder="12:00" />
                 </div>
               </div>
 

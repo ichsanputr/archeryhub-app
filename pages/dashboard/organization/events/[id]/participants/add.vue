@@ -200,7 +200,7 @@
                                 <BaseInput v-model="newArcherForm.password" :label="$t('dashboard_events_participants_add.password')" type="password"
                                     :placeholder="$t('dashboard_events_participants_add.password_placeholder')"
                                     :required="!!newArcherForm.phone && !newArcherForm.email" />
-                                <BaseInput v-model="newArcherForm.date_of_birth" :label="$t('dashboard_events_participants_add.date_of_birth')" type="date" />
+                                <BaseDatePicker v-model="newArcherForm.date_of_birth" :label="$t('dashboard_events_participants_add.date_of_birth')" :placeholder="$t('dashboard_events_participants_add.date_of_birth_placeholder') || 'Select date'" />
                                 <BaseSelect v-model="newArcherForm.gender" :label="$t('dashboard_events_participants_add.gender')" :items="genderOptions"
                                     required />
                                 <BaseSelect v-model="newArcherForm.bow_type" :label="$t('dashboard_events_participants_add.bow_type')" :items="bowOptions"

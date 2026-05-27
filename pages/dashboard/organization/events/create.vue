@@ -70,11 +70,33 @@
 
           <FormSection icon="ant-design:schedule-outlined" :title="t('event_create.section_schedule')">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.startDate" :label="t('event_create.field_start_date')" type="datetime-local" required
-                :error="errors.startDate" @blur="validate('startDate', form.startDate, [rules.required()])" />
-              <BaseInput v-model="form.endDate" :label="t('event_create.field_end_date')" type="datetime-local" required
-                :error="errors.endDate" @blur="validate('endDate', form.endDate, [rules.required()])" />
-              <BaseInput v-model="form.registrationDeadline" :label="t('event_create.field_registration_deadline')" type="datetime-local" />
+              <div class="space-y-2">
+                <label class="text-navy text-sm font-bold ml-1 flex items-center gap-1">
+                  {{ t('event_create.field_start_date') }} <span class="text-red-500">*</span>
+                </label>
+                <div class="grid grid-cols-2 gap-2">
+                  <BaseDatePicker v-model="startDateDate" :placeholder="t('event_create.field_start_date')" :error="errors.startDate" />
+                  <BaseTimePicker v-model="startDateTime" placeholder="08:00" />
+                </div>
+              </div>
+              <div class="space-y-2">
+                <label class="text-navy text-sm font-bold ml-1 flex items-center gap-1">
+                  {{ t('event_create.field_end_date') }} <span class="text-red-500">*</span>
+                </label>
+                <div class="grid grid-cols-2 gap-2">
+                  <BaseDatePicker v-model="endDateDate" :placeholder="t('event_create.field_end_date')" :error="errors.endDate" />
+                  <BaseTimePicker v-model="endDateTime" placeholder="17:00" />
+                </div>
+              </div>
+              <div class="space-y-2 md:col-span-2">
+                <label class="text-navy text-sm font-bold ml-1 flex items-center gap-1">
+                  {{ t('event_create.field_registration_deadline') }}
+                </label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  <BaseDatePicker v-model="regDate" :placeholder="t('event_create.field_registration_deadline')" />
+                  <BaseTimePicker v-model="regTime" placeholder="23:59" />
+                </div>
+              </div>
             </div>
           </FormSection>
 
@@ -153,6 +175,25 @@ const form = reactive({
   type: '', // Discipline
   registrationDeadline: '',
   status: 'draft'
+})
+
+const startDateDate = ref('')
+const startDateTime = ref('08:00')
+const endDateDate = ref('')
+const endDateTime = ref('17:00')
+const regDate = ref('')
+const regTime = ref('23:59')
+
+watch([startDateDate, startDateTime], () => {
+  form.startDate = startDateDate.value ? `${startDateDate.value}T${startDateTime.value || '00:00'}` : ''
+})
+
+watch([endDateDate, endDateTime], () => {
+  form.endDate = endDateDate.value ? `${endDateDate.value}T${endDateTime.value || '00:00'}` : ''
+})
+
+watch([regDate, regTime], () => {
+  form.registrationDeadline = regDate.value ? `${regDate.value}T${regTime.value || '00:00'}` : ''
 })
 
 const isSlugManuallyEdited = ref(false)

@@ -33,13 +33,13 @@
         <!-- Start Date Filter -->
         <div class="space-y-1">
           <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.start_date') }}</label>
-          <input type="date" v-model="filters.start_date" class="w-full h-10 px-3 border border-gray-200 rounded-xl text-xs font-bold bg-gray-50 focus:bg-white focus:ring-1 focus:ring-primary/40 focus:border-primary outline-none" />
+          <BaseDatePicker v-model="filters.start_date" :placeholder="t('dashboard.reports.start_date')" />
         </div>
 
         <!-- End Date Filter -->
         <div class="space-y-1">
           <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.end_date') }}</label>
-          <input type="date" v-model="filters.end_date" class="w-full h-10 px-3 border border-gray-200 rounded-xl text-xs font-bold bg-gray-50 focus:bg-white focus:ring-1 focus:ring-primary/40 focus:border-primary outline-none" />
+          <BaseDatePicker v-model="filters.end_date" :placeholder="t('dashboard.reports.end_date')" />
         </div>
       </div>
 

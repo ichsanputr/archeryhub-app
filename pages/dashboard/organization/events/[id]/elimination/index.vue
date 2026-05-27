@@ -313,8 +313,8 @@
                 <div>
                   <label class="block text-sm font-bold text-navy mb-3 ml-1">{{ t('event_elimination.start_elimination') }}</label>
                   <div class="grid grid-cols-2 gap-4">
-                    <BaseInput v-model="newBracket.startDate" type="date" icon="ph:calendar-bold" />
-                    <BaseInput v-model="newBracket.startTime" type="time" icon="ph:clock-bold" />
+                    <BaseDatePicker v-model="newBracket.startDate" :placeholder="t('event_elimination.start_date') || 'Select date'" />
+                    <BaseTimePicker v-model="newBracket.startTime" placeholder="08:00" />
                   </div>
                 </div>
 
@@ -322,8 +322,8 @@
                 <div>
                   <label class="block text-sm font-bold text-navy mb-3 ml-1">{{ t('event_elimination.end_elimination') }}</label>
                   <div class="grid grid-cols-2 gap-4">
-                    <BaseInput v-model="newBracket.endDate" type="date" icon="ph:calendar-bold" />
-                    <BaseInput v-model="newBracket.endTime" type="time" icon="ph:clock-afternoon-bold" />
+                    <BaseDatePicker v-model="newBracket.endDate" :placeholder="t('event_elimination.end_date') || 'Select date'" />
+                    <BaseTimePicker v-model="newBracket.endTime" placeholder="17:00" />
                   </div>
                 </div>
               </div>

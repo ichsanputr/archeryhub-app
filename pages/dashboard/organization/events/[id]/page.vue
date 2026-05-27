@@ -100,13 +100,17 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.information.start_date_label') }}</label>
-                                <input v-model="form.start_date" type="datetime-local"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                                <div class="grid grid-cols-2 gap-2">
+                                    <BaseDatePicker :model-value="getSchedDate(form, 'start_date')" @update:model-value="val => setSchedDate(form, 'start_date', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form, 'start_date')" @update:model-value="val => setSchedTime(form, 'start_date', val)" placeholder="08:00" />
+                                </div>
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.information.end_date_label') }}</label>
-                                <input v-model="form.end_date" type="datetime-local"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                                <div class="grid grid-cols-2 gap-2">
+                                    <BaseDatePicker :model-value="getSchedDate(form, 'end_date')" @update:model-value="val => setSchedDate(form, 'end_date', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form, 'end_date')" @update:model-value="val => setSchedTime(form, 'end_date', val)" placeholder="17:00" />
+                                </div>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -137,13 +141,17 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.registration.start_label') }}</label>
-                                <input v-model="form.page_settings.registration_start" type="datetime-local"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" />
+                                <div class="grid grid-cols-2 gap-2">
+                                    <BaseDatePicker :model-value="getSchedDate(form.page_settings, 'registration_start')" @update:model-value="val => setSchedDate(form.page_settings, 'registration_start', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form.page_settings, 'registration_start')" @update:model-value="val => setSchedTime(form.page_settings, 'registration_start', val)" placeholder="08:00" />
+                                </div>
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.registration.end_label') }}</label>
-                                <input v-model="form.registration_deadline" type="datetime-local"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" />
+                                <div class="grid grid-cols-2 gap-2">
+                                    <BaseDatePicker :model-value="getSchedDate(form, 'registration_deadline')" @update:model-value="val => setSchedDate(form, 'registration_deadline', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form, 'registration_deadline')" @update:model-value="val => setSchedTime(form, 'registration_deadline', val)" placeholder="23:59" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -599,13 +607,17 @@
                                 </div>
                                 <div class="space-y-1">
                                     <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.start_time') }}</label>
-                                    <input v-model="session.start_time" type="datetime-local"
-                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
+                                    <div class="flex flex-col gap-1">
+                                        <BaseDatePicker :model-value="getSchedDate(session, 'start_time')" @update:model-value="val => setSchedDate(session, 'start_time', val)" />
+                                        <BaseTimePicker :model-value="getSchedTime(session, 'start_time')" @update:model-value="val => setSchedTime(session, 'start_time', val)" placeholder="08:00" />
+                                    </div>
                                 </div>
                                 <div class="space-y-1">
                                     <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.end_time') }}</label>
-                                    <input v-model="session.end_time" type="datetime-local"
-                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
+                                    <div class="flex flex-col gap-1">
+                                        <BaseDatePicker :model-value="getSchedDate(session, 'end_time')" @update:model-value="val => setSchedDate(session, 'end_time', val)" />
+                                        <BaseTimePicker :model-value="getSchedTime(session, 'end_time')" @update:model-value="val => setSchedTime(session, 'end_time', val)" placeholder="17:00" />
+                                    </div>
                                 </div>
                                 <div class="space-y-1">
                                     <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.location') }}</label>
@@ -1625,4 +1637,33 @@ onMounted(async () => {
 useSeoMeta({
     title: () => `${t('dashboard_events_page.seo_title')} - Dashboard`
 })
+const getSchedDate = (session, field) => {
+    const val = session ? session[field] : ''
+    if (!val) return ''
+    return val.split('T')[0]
+}
+
+const setSchedDate = (session, field, dateVal) => {
+    if (!session) return
+    const currentVal = session[field] || ''
+    const currentTime = currentVal.includes('T') ? currentVal.split('T')[1] : '00:00'
+    session[field] = dateVal ? `${dateVal}T${currentTime}` : ''
+}
+
+const getSchedTime = (session, field) => {
+    const val = session ? session[field] : ''
+    if (!val) return '00:00'
+    return val.includes('T') ? val.split('T')[1] : val
+}
+
+const setSchedTime = (session, field, timeVal) => {
+    if (!session) return
+    const currentVal = session[field] || ''
+    const currentDate = currentVal.includes('T') ? currentVal.split('T')[0] : ''
+    if (currentDate) {
+        session[field] = `${currentDate}T${timeVal || '00:00'}`
+    } else {
+        session[field] = ''
+    }
+}
 </script>

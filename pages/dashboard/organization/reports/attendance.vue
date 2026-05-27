@@ -33,22 +33,19 @@
         <!-- Event Filter -->
         <div class="space-y-1">
           <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.select_event') }}</label>
-          <select v-model="filters.event_id" class="w-full h-10 px-3 border border-gray-200 rounded-xl text-xs font-bold bg-gray-50 focus:bg-white focus:ring-1 focus:ring-primary/40 focus:border-primary outline-none">
-            <option value="all">{{ t('dashboard.reports.all_events') }}</option>
-            <option v-for="e in eventsList" :key="e.id" :value="e.id">{{ e.name }}</option>
-          </select>
+          <BaseSelect v-model="filters.event_id" :items="eventsDropdownItems" :placeholder="t('dashboard.reports.select_event')" />
         </div>
 
         <!-- Start Date Filter -->
         <div class="space-y-1">
           <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.start_date') }}</label>
-          <input type="date" v-model="filters.start_date" class="w-full h-10 px-3 border border-gray-200 rounded-xl text-xs font-bold bg-gray-50 focus:bg-white focus:ring-1 focus:ring-primary/40 focus:border-primary outline-none" />
+          <BaseDatePicker v-model="filters.start_date" :placeholder="t('dashboard.reports.start_date')" />
         </div>
 
         <!-- End Date Filter -->
         <div class="space-y-1">
           <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.end_date') }}</label>
-          <input type="date" v-model="filters.end_date" class="w-full h-10 px-3 border border-gray-200 rounded-xl text-xs font-bold bg-gray-50 focus:bg-white focus:ring-1 focus:ring-primary/40 focus:border-primary outline-none" />
+          <BaseDatePicker v-model="filters.end_date" :placeholder="t('dashboard.reports.end_date')" />
         </div>
       </div>
 
@@ -178,6 +175,10 @@ const route = useRoute()
 const api = useApi()
 
 const eventsList = ref([])
+const eventsDropdownItems = computed(() => [
+  { title: t('dashboard.reports.all_events'), value: 'all' },
+  ...eventsList.value.map(e => ({ title: e.name, value: e.id }))
+])
 const stats = ref({
   total_registered: 0,
   total_checked_in: 0,
