@@ -49,14 +49,23 @@
     "hero": {
       "title_part1": "Digitalize Your",
       "title_part2": "Archery Experience",
-      "description": "Archeris.net is an integrated archery event management platform designed specifically to ease tournament management, real-time scoring, and the development of the archery sports ecosystem.",
+      "description": "An integrated digital infrastructure platform for real-time scoring and more efficient professional archery tournaments.",
       "cta_primary": "Get Started",
       "cta_secondary": "Learn More"
     },
     "learn": {
       "title": "Step-by-Step Guide to Using",
       "subtitle": "Archeris Efficiently",
-      "description": "Start managing your archery tournaments with an integrated and easy-to-use digital system."
+      "description": "Start managing your archery tournaments with an integrated and easy-to-use digital system.",
+      "step1_tag": "Step 1: Club Setup",
+      "step1_title": "Roster & Communications",
+      "step1_desc": "Manage members, divisions (recurve/compound), and broadcast instant announcement logs.",
+      "step2_tag": "Step 2: Schedule & Allocations",
+      "step2_title": "Match & Target Butt Allocation",
+      "step2_desc": "Assign lanes (1A, 1B, 2A, 2B), schedule tournaments, and configure match guidelines.",
+      "step3_tag": "Step 3: Scoring & Leaderboards",
+      "step3_title": "Live Scoring & Performance",
+      "step3_desc": "Monitor athlete performance end-by-end (X, 10, 9) and publish real-time public leaderboards."
     },
     "features_demo": {
       "title1": "Built for Archers.",
@@ -73,7 +82,20 @@
       "f3_desc": "Collect registration fees instantly with a secure and integrated payment gateway. Supports QRIS, VA, and Credit Cards.",
       "f4_tag": "Athlete Portfolio",
       "f4_title": "Showcase every achievement",
-      "f4_desc": "Every shot arrow will be recorded. Build a comprehensive digital portfolio showing performance trends and digital certificates."
+      "f4_desc": "Every shot arrow will be recorded. Build a comprehensive digital portfolio showing performance trends and digital certificates.",
+      "f1_list_1": "No Archeris branding—only your club",
+      "f1_list_2": "Available on iOS, Android, and mobile web",
+      "f1_list_3": "Consistent look and feel across every touchpoint",
+      "f1_list_4": "Reinforce your brand with every interaction",
+      "f2_list_1": "Optimize range real estate with smarter time-slot management",
+      "f2_list_2": "Waitlist tools and priority access features",
+      "f2_list_3": "Built for multi-discipline and multi-surface facilities",
+      "f3_list_1": "Automated payment verification and receipting",
+      "f3_list_2": "Real-time revenue tracking and financial reporting",
+      "f3_list_3": "Refund management and early-bird discount tools",
+      "f4_list_1": "Dynamic performance charts and scoring averages",
+      "f4_list_2": "Digital trophy cabinet for certificates and badges",
+      "f4_list_3": "Shareable professional profile for scouting and clubs"
     },
     "blog": {
       "title1": "Operators rely on us.",
@@ -3211,5 +3233,20 @@
       "self_registered": "Self Registered",
       "self_registered_alt": "Self Registered"
     }
+  },
+  "footer": {
+    "about_desc": "An integrated digital infrastructure platform for real-time scoring and more efficient professional archery tournaments. Archeris is here to connect and empower all archery enthusiasts globally, from beginner athletes to professional event organizers.",
+    "nav_title": "Navigation",
+    "comp_title": "Company",
+    "supp_title": "Support",
+    "about_us": "About Us",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "disclaimer": "Disclaimer",
+    "faq": "FAQ",
+    "docs": "Documentation",
+    "blog": "Blog",
+    "rights": "All rights reserved."
   }
 }

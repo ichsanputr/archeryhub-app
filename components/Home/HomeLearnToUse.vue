@@ -42,17 +42,17 @@
                     <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
                         <div class="mb-5">
                             <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black uppercase tracking-widest rounded-full mb-3 inline-block">
-                                Step 1: Club Setup
+                                {{ $t('home.learn.step1_tag') }}
                             </span>
                             <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-none font-display">
-                                Roster & Communications
+                                {{ $t('home.learn.step1_title') }}
                             </h3>
                             <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-1">
-                                Manage members, divisions (recurve/compound), and broadcast instant announcement logs.
+                                {{ $t('home.learn.step1_desc') }}
                             </p>
                         </div>
                         <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[1.6/1] bg-slate-50">
-                            <img src="/learn-step1.png" alt="Club Setup & Roster Dashboard" class="w-full h-full object-cover object-top" />
+                             <img src="/learn-step1.png" alt="Club Setup & Roster Dashboard" class="w-full h-full object-cover object-top" />
                         </div>
                     </div>
 
@@ -60,17 +60,17 @@
                     <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
                         <div class="mb-5">
                             <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black uppercase tracking-widest rounded-full mb-3 inline-block">
-                                Step 2: Schedule & Allocations
+                                {{ $t('home.learn.step2_tag') }}
                             </span>
                             <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-none font-display">
-                                Match & Target Butt Allocation
+                                {{ $t('home.learn.step2_title') }}
                             </h3>
                             <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-1">
-                                Assign lanes (1A, 1B, 2A, 2B), schedule tournaments, and configure match guidelines.
+                                {{ $t('home.learn.step2_desc') }}
                             </p>
                         </div>
                         <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[1.6/1] bg-slate-50">
-                            <img src="/learn-step2.png" alt="Match Schedule & Target Butt Dashboard" class="w-full h-full object-cover object-top" />
+                             <img src="/learn-step2.png" alt="Match Schedule & Target Butt Dashboard" class="w-full h-full object-cover object-top" />
                         </div>
                     </div>
 
@@ -78,22 +78,21 @@
                     <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
                         <div class="mb-5">
                             <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black uppercase tracking-widest rounded-full mb-3 inline-block">
-                                Step 3: Scoring & Leaderboards
+                                {{ $t('home.learn.step3_tag') }}
                             </span>
                             <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-none font-display">
-                                Live Scoring & Performance
+                                {{ $t('home.learn.step3_title') }}
                             </h3>
                             <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-1">
-                                Monitor athlete performance end-by-end (X, 10, 9) and publish real-time public leaderboards.
+                                {{ $t('home.learn.step3_desc') }}
                             </p>
                         </div>
                         <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[1.6/1] bg-slate-50">
-                            <img src="/learn-step3.png" alt="Live Scoring Leaderboard Dashboard" class="w-full h-full object-cover object-top" />
+                             <img src="/learn-step3.png" alt="Live Scoring Leaderboard Dashboard" class="w-full h-full object-cover object-top" />
                         </div>
-                    </div>
-
+                    </div>                  
                 </div>
-            </div>
+                </div>
         </div>
     </section>
 </template>

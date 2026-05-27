@@ -44,16 +44,16 @@
 
                     <ul class="space-y-4 border-t border-gray-100 pt-8">
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            No Archeris branding—only your club
+                            {{ $t('home.features_demo.f1_list_1') }}
                         </li>
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            Available on iOS, Android, and mobile web
+                            {{ $t('home.features_demo.f1_list_2') }}
                         </li>
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            Consistent look and feel across every touchpoint
+                            {{ $t('home.features_demo.f1_list_3') }}
                         </li>
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            Reinforce your brand with every interaction
+                            {{ $t('home.features_demo.f1_list_4') }}
                         </li>
                     </ul>
                 </div>
@@ -90,13 +90,13 @@
 
                     <ul class="space-y-4 border-t border-gray-100 pt-8">
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            Optimize range real estate with smarter time-slot management
+                            {{ $t('home.features_demo.f2_list_1') }}
                         </li>
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            Waitlist tools and priority access features
+                            {{ $t('home.features_demo.f2_list_2') }}
                         </li>
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            Built for multi-discipline and multi-surface facilities
+                            {{ $t('home.features_demo.f2_list_3') }}
                         </li>
                     </ul>
                 </div>
@@ -115,13 +115,13 @@
 
                     <ul class="space-y-4 border-t border-gray-100 pt-8">
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            Automated payment verification and receipting
+                            {{ $t('home.features_demo.f3_list_1') }}
                         </li>
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            Real-time revenue tracking and financial reporting
+                            {{ $t('home.features_demo.f3_list_2') }}
                         </li>
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            Refund management and early-bird discount tools
+                            {{ $t('home.features_demo.f3_list_3') }}
                         </li>
                     </ul>
                 </div>
@@ -158,13 +158,13 @@
 
                     <ul class="space-y-4 border-t border-gray-100 pt-8">
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            Dynamic performance charts and scoring averages
+                            {{ $t('home.features_demo.f4_list_1') }}
                         </li>
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            Digital trophy cabinet for certificates and badges
+                            {{ $t('home.features_demo.f4_list_2') }}
                         </li>
                         <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            Shareable professional profile for scouting and clubs
+                            {{ $t('home.features_demo.f4_list_3') }}
                         </li>
                     </ul>
                 </div>

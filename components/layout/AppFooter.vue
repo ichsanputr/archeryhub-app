@@ -24,7 +24,7 @@
               </div>
             </div>
             <p class="text-gray-400 leading-relaxed text-sm sm:text-base">
-              An integrated digital infrastructure platform for real-time scoring and more efficient professional archery tournaments. Archeris is here to connect and empower all archery enthusiasts globally, from beginner athletes to professional event organizers.
+              {{ $t('footer.about_desc') }}
             </p>
           </div>
         </div>
@@ -34,7 +34,7 @@
           <!-- Column 2: Navigation -->
           <div class="flex flex-col gap-5">
             <h4 class="text-sm font-black  tracking-widest text-white border-b border-white/10 pb-2">
-              Navigation
+              {{ $t('footer.nav_title') }}
             </h4>
             <div class="flex flex-col gap-3">
               <NuxtLink to="/events"
@@ -68,28 +68,28 @@
           <!-- Column 3: Company -->
           <div class="flex flex-col gap-5">
             <h4 class="text-xs font-black  tracking-widest text-white border-b border-white/10 pb-2">
-              Company
+              {{ $t('footer.comp_title') }}
             </h4>
             <div class="flex flex-col gap-3">
               <NuxtLink to="/about-us"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                About Us
+                {{ $t('footer.about_us') }}
               </NuxtLink>
               <NuxtLink to="/contact"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Contact
+                {{ $t('footer.contact') }}
               </NuxtLink>
               <NuxtLink to="/privacy"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Privacy Policy
+                {{ $t('footer.privacy') }}
               </NuxtLink>
               <NuxtLink to="/terms"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Terms & Conditions
+                {{ $t('footer.terms') }}
               </NuxtLink>
               <NuxtLink to="/disclaimer"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Disclaimer
+                {{ $t('footer.disclaimer') }}
               </NuxtLink>
             </div>
           </div>
@@ -97,20 +97,20 @@
           <!-- Column 4: Support -->
           <div class="flex flex-col gap-5">
             <h4 class="text-sm font-black  tracking-widest text-white border-b border-white/10 pb-2">
-              Support
+              {{ $t('footer.supp_title') }}
             </h4>
             <div class="flex flex-col gap-3">
               <NuxtLink to="/faq"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                FAQ
+                {{ $t('footer.faq') }}
               </NuxtLink>
               <NuxtLink to="/docs"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Documentation
+                {{ $t('footer.docs') }}
               </NuxtLink>
               <NuxtLink to="/blog"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Blog
+                {{ $t('footer.blog') }}
               </NuxtLink>
             </div>
           </div>
@@ -120,7 +120,7 @@
       <!-- Bottom Bar -->
       <div class="pt-4 pb-2 border-t border-white/5">
         <p class="text-gray-500 font-medium text-center">
-          &copy; {{ new Date().getFullYear() }} archeris.net. All rights reserved.
+          &copy; {{ new Date().getFullYear() }} archeris.net. {{ $t('footer.rights') }}
         </p>
       </div>
     </div>

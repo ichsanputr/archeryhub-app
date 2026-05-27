@@ -32,14 +32,23 @@
     "hero": {
       "title_part1": "Digitalisasi Pengalaman",
       "title_part2": "Panahan Anda",
-      "description": "Archeris.net adalah platform manajemen turnamen panahan terpadu yang dirancang khusus untuk memudahkan pengelolaan event, skoring real-time, dan pengembangan ekosistem olahraga panahan.",
+      "description": "Platform infrastruktur digital terintegrasi untuk skoring real-time dan pengelolaan turnamen panahan profesional yang lebih efisien.",
       "cta_primary": "Mulai Sekarang",
       "cta_secondary": "Pelajari Lebih Lanjut"
     },
     "learn": {
       "title": "Panduan Langkah demi Langkah Menggunakan",
       "subtitle": "Archeris Secara Efisien",
-      "description": "Mulai kelola turnamen panahan Anda dengan sistem digital yang terintegrasi dan mudah digunakan."
+      "description": "Mulai kelola turnamen panahan Anda dengan sistem digital yang terintegrasi dan mudah digunakan.",
+      "step1_tag": "Langkah 1: Setup Klub",
+      "step1_title": "Roster & Komunikasi",
+      "step1_desc": "Kelola anggota, divisi (recurve/compound), dan siarkan log pengumuman instan.",
+      "step2_tag": "Langkah 2: Jadwal & Alokasi",
+      "step2_title": "Alokasi Pertandingan & Bantalan Target",
+      "step2_desc": "Tetapkan bantalan sasaran (1A, 1B, 2A, 2B), jadwalkan turnamen, dan konfigurasikan aturan pertandingan.",
+      "step3_tag": "Langkah 3: Skor & Papan Peringkat",
+      "step3_title": "Skor Langsung & Performa",
+      "step3_desc": "Pantau performa atlet dari seri ke seri (X, 10, 9) dan publikasikan papan peringkat langsung secara real-time."
     },
     "features_demo": {
       "title1": "Dibuat untuk Archer.",
@@ -56,7 +65,20 @@
       "f3_desc": "Kumpulkan biaya pendaftaran secara instan dengan payment gateway yang aman dan terintegrasi. Mendukung QRIS, VA, dan Kartu Kredit.",
       "f4_tag": "Portofolio Atlet",
       "f4_title": "Pamerkan setiap pencapaian",
-      "f4_desc": "Setiap anak panah yang dilesatkan akan tercatat. Bangun portofolio digital komprehensif yang menunjukkan tren performa dan sertifikat digital."
+      "f4_desc": "Setiap anak panah yang dilesatkan akan tercatat. Bangun portofolio digital komprehensif yang menunjukkan tren performa dan sertifikat digital.",
+      "f1_list_1": "Tanpa branding Archeris—hanya klub Anda",
+      "f1_list_2": "Tersedia di iOS, Android, dan web seluler",
+      "f1_list_3": "Tampilan dan nuansa yang konsisten di setiap titik sentuh",
+      "f1_list_4": "Perkuat brand Anda di setiap interaksi",
+      "f2_list_1": "Optimalkan area latihan dengan manajemen slot waktu yang cerdas",
+      "f2_list_2": "Fitur daftar tunggu dan akses prioritas",
+      "f2_list_3": "Dibuat untuk fasilitas multi-disiplin dan multi-permukaan",
+      "f3_list_1": "Verifikasi pembayaran dan pembuatan tanda terima otomatis",
+      "f3_list_2": "Pelacakan pendapatan real-time dan pelaporan keuangan",
+      "f3_list_3": "Manajemen pengembalian dana dan diskon pendaftar awal",
+      "f4_list_1": "Grafik performa dinamis dan rata-rata skor",
+      "f4_list_2": "Lemari piala digital untuk sertifikat dan lencana",
+      "f4_list_3": "Profil profesional yang dapat dibagikan untuk pencarian bakat dan klub"
     },
     "blog": {
       "title1": "Operator mengandalkan kami.",
@@ -3062,5 +3084,20 @@
   },
   "common": {
     "error_saving": "Gagal menyimpan perubahan"
+  },
+  "footer": {
+    "about_desc": "Platform infrastruktur digital terintegrasi untuk skoring real-time dan pengelolaan turnamen panahan profesional yang lebih efisien. Archeris hadir untuk menghubungkan dan memberdayakan seluruh penggemar panahan secara global, dari atlet pemula hingga penyelenggara event profesional.",
+    "nav_title": "Navigasi",
+    "comp_title": "Perusahaan",
+    "supp_title": "Bantuan",
+    "about_us": "Tentang Kami",
+    "contact": "Kontak",
+    "privacy": "Kebijakan Privasi",
+    "terms": "Syarat & Ketentuan",
+    "disclaimer": "Penyangkalan",
+    "faq": "Tanya Jawab",
+    "docs": "Dokumentasi",
+    "blog": "Blog",
+    "rights": "Hak cipta dilindungi undang-undang."
   }
 }
