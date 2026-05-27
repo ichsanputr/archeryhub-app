@@ -19,15 +19,35 @@
                     </div>
                 </div>
 
-                <!-- Right: Search button -->
-                <button
-                    @click="searchDialog?.open()"
-                    class="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-primary/10 text-gray-400 transition-all text-xs font-medium group"
-                >
-                    <Icon icon="ph:magnifying-glass-bold" class="text-base group-hover:text-primary transition-colors" />
-                    <span class="hidden sm:inline text-gray-500 transition-colors">Cari dokumentasi</span>
-                    <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 bg-white border border-gray-200 rounded text-xs text-gray-300 font-mono ml-1">Ctrl K</kbd>
-                </button>
+                <!-- Right: Search button & Language switcher -->
+                <div class="flex items-center gap-3">
+                    <button
+                        @click="searchDialog?.open()"
+                        class="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-primary/10 text-gray-400 transition-all text-xs font-medium group"
+                    >
+                        <Icon icon="ph:magnifying-glass-bold" class="text-base group-hover:text-primary transition-colors" />
+                        <span class="hidden sm:inline text-gray-500 transition-colors">Cari dokumentasi</span>
+                        <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 bg-white border border-gray-200 rounded text-xs text-gray-300 font-mono ml-1">Ctrl K</kbd>
+                    </button>
+
+                    <!-- Language Switcher -->
+                    <div class="flex items-center gap-1 bg-gray-100 rounded-xl p-1 text-xs font-bold text-gray-500">
+                        <button 
+                            @click="setLocale('id')"
+                            class="px-2.5 py-1 rounded-lg transition-all"
+                            :class="locale === 'id' ? 'bg-white text-navy shadow-sm' : 'hover:text-navy'"
+                        >
+                            ID
+                        </button>
+                        <button 
+                            @click="setLocale('en')"
+                            class="px-2.5 py-1 rounded-lg transition-all"
+                            :class="locale === 'en' ? 'bg-white text-navy shadow-sm' : 'hover:text-navy'"
+                        >
+                            EN
+                        </button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -45,8 +65,11 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import DocSearchDialog from '~/components/layout/DocSearchDialog.vue'
+import { useI18n } from 'vue-i18n'
 
 defineOptions({ name: 'DocsLayout' })
+
+const { locale, setLocale } = useI18n()
 
 const searchDialog = ref(null)
 const route = useRoute()

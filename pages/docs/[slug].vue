@@ -250,12 +250,11 @@ import { Icon } from '@iconify/vue'
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { docs } from '~/data/docs'
-import { translateDoc, translateText } from '~/utils/docsTranslator'
 
 definePageMeta({ layout: 'docs' })
 
 const { t, locale } = useI18n()
+const apiBaseUrl = useApiBaseUrl()
 
 const route = useRoute()
 const currentSlug = computed(() => route.params.slug)
@@ -283,36 +282,49 @@ const getCategoryLabel = (id) => {
     return cat ? t(cat.label) : id
 }
 
-const currentDoc = computed(() => {
-    const raw = docs.find(d => d.slug === currentSlug.value)
-    return raw ? translateDoc(raw, locale.value) : null
-})
+// Fetch all docs list for sidebar navigation & prev/next calculations
+const { data: docsList } = await useAsyncData(
+    'docs-api-sidebar',
+    () => $fetch(`${apiBaseUrl}/docs?lang=${locale.value}`),
+    {
+        watch: [locale]
+    }
+)
 
-const currentIndex = computed(() => docs.findIndex(d => d.slug === currentSlug.value))
-const prevDoc = computed(() => {
-    const raw = currentIndex.value > 0 ? docs[currentIndex.value - 1] : null
-    return raw ? translateDoc(raw, locale.value) : null
-})
-const nextDoc = computed(() => {
-    const raw = currentIndex.value < docs.length - 1 ? docs[currentIndex.value + 1] : null
-    return raw ? translateDoc(raw, locale.value) : null
-})
+const docs = computed(() => docsList.value || [])
+
+// Fetch details for the current doc slug
+const { data: currentDocData } = await useAsyncData(
+    () => `doc-detail-${currentSlug.value}-${locale.value}`,
+    () => $fetch(`${apiBaseUrl}/docs/${currentSlug.value}?lang=${locale.value}`),
+    {
+        watch: [currentSlug, locale]
+    }
+)
+
+const currentDoc = computed(() => currentDocData.value)
+
+// Calculate prev/next
+const currentIndex = computed(() => docs.value.findIndex(d => d.slug === currentSlug.value))
+const prevDoc = computed(() => currentIndex.value > 0 ? docs.value[currentIndex.value - 1] : null)
+const nextDoc = computed(() => currentIndex.value >= 0 && currentIndex.value < docs.value.length - 1 ? docs.value[currentIndex.value + 1] : null)
 
 const filteredSidebarDocs = (categoryId) => {
-    return docs.filter(d => {
+    return docs.value.filter(d => {
         const matchCat = d.category === categoryId
         const matchSearch = sidebarSearch.value === '' ||
             d.title.toLowerCase().includes(sidebarSearch.value.toLowerCase())
         return matchCat && matchSearch
-    }).map(d => translateDoc(d, locale.value))
+    })
 }
 
 const sidebarVisibleCategories = computed(() => {
     return sidebarCategories.filter(cat => filteredSidebarDocs(cat.id).length > 0)
 })
 
+// translateHeadingText fallback no longer needed, we render text directly
 const translateHeadingText = (text) => {
-    return translateText(text, locale.value, currentSlug.value)
+    return text
 }
 
 // Authentication & API

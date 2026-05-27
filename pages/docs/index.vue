@@ -113,12 +113,21 @@ import { Icon } from '@iconify/vue'
 import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { docs } from '~/data/docs'
-import { translateDoc } from '~/utils/docsTranslator'
 
 definePageMeta({ layout: 'docs' })
 
 const { t, locale } = useI18n()
+const apiBaseUrl = useApiBaseUrl()
+
+const { data: docsList } = await useAsyncData(
+    'docs-api-list',
+    () => $fetch(`${apiBaseUrl}/docs?lang=${locale.value}`),
+    {
+        watch: [locale]
+    }
+)
+
+const docs = computed(() => (docsList.value as any[]) || [])
 
 useHead({
     title: 'Dokumentasi - Archeris.net',
@@ -183,13 +192,13 @@ const filteredCategories = computed(() => {
 })
 
 const filteredDocs = (categoryId: string) => {
-    return docs.filter(d => {
+    return docs.value.filter((d: any) => {
         const matchCat = d.category === categoryId
         const matchSearch = searchQuery.value === '' ||
             d.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
             d.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase())
         return matchCat && matchSearch
-    }).map(d => translateDoc(d, locale.value))
+    })
 }
 </script>
 
