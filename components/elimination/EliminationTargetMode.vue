@@ -7,7 +7,7 @@
             </div>
             <div class="flex-1 min-w-0">
                 <h3 class="text-lg font-black text-navy leading-tight">{{ $t('event_elimination.target_allocation') }}</h3>
-                <p class="text-xs text-navy/50 font-medium">{{ $t('event_elimination.target_allocation_desc') }}</p>
+                <div class="text-xs text-navy/50 font-medium">{{ $t('event_elimination.target_allocation_desc') }}</div>
             </div>
             <BaseButton variant="primary" icon="ph:magic-wand-bold" :loading="isAutoAssigning"
                 @click="$emit('auto-assign')" class="hidden sm:flex shadow-sm shadow-primary/20 !rounded-2xl">
@@ -26,18 +26,18 @@
         <!-- Grid Matches -->
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             <div v-for="match in roundMatches" :key="match.id"
-                class="group bg-white rounded-[2rem] border-t-4 transition-all duration-500 overflow-hidden flex flex-col shadow-sm hover:shadow-xl hover:-translate-y-1"
+                class="group bg-white rounded-3xl border-t-4 border-x border-b transition-all duration-500 overflow-hidden flex flex-col"
                 :class="[
                     match.winner_entry_id 
-                        ? 'border-t-green-500 border-x border-b border-gray-100 bg-green-50/5' 
-                        : (match.target_name ? 'border-t-primary border-x border-b border-gray-100' : 'border-t-navy/20 border-x border-b border-gray-100')
+                        ? 'border-t-green-500 border-x-navy/10 border-b-navy/10 bg-green-50/5' 
+                        : (match.target_name ? 'border-t-primary border-x-navy/10 border-b-navy/10' : 'border-t-navy/20 border-x-navy/10 border-b-navy/10')
                 ]">
 
                 <!-- Header: Match Info -->
-                <div class="px-6 py-4.5 bg-gradient-to-b from-navy/[0.03] to-transparent border-b border-gray-50 flex items-center justify-between">
+                <div class="px-6 py-4 bg-navy/5 border-b border-navy/10 flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <div
-                            class="size-8 rounded-xl bg-navy text-white shadow-sm flex items-center justify-center font-black text-xs">
+                            class="size-8 rounded-xl bg-navy text-white flex items-center justify-center font-black text-xs">
                             {{ match.match_no }}
                         </div>
                         <div>
@@ -48,7 +48,7 @@
                     </div>
 
                     <div v-if="match.winner_entry_id"
-                        class="size-7 rounded-full bg-green-100 flex items-center justify-center text-green-600 shadow-sm">
+                        class="size-7 rounded-full bg-green-100 flex items-center justify-center text-green-600">
                         <Icon icon="ph:check-bold" class="text-sm" />
                     </div>
                     <div v-else-if="match.target_name"
@@ -62,20 +62,20 @@
                     <div v-for="side in ['a', 'b']" :key="side"
                         class="flex items-center justify-between p-3 rounded-xl border transition-all" :class="[
                             match[`entry_${side}_name`] 
-                                ? 'bg-gradient-to-r from-gray-50 to-white border-gray-100 shadow-sm' 
-                                : 'bg-slate-50/50 border-dashed border-gray-200 opacity-60'
+                                ? 'bg-navy/[0.02] border-navy/10' 
+                                : 'bg-navy/[0.01] border-dashed border-navy/5 opacity-60'
                         ]">
                         <div class="flex items-center gap-3 min-w-0">
                             <div class="relative shrink-0">
                                 <img :src="getAvatarUrl(match[`entry_${side}_name`])"
-                                    class="size-9 rounded-xl border-2 border-white shadow-sm object-cover" />
+                                    class="size-9 rounded-xl border-2 border-white object-cover" />
                                 <div v-if="match[`entry_${side}_seed`]"
-                                    class="absolute -top-1 -left-1 size-4.5 rounded bg-navy text-primary text-[8px] font-black flex items-center justify-center shadow border border-white">
+                                    class="absolute -top-1 -left-1 size-4.5 rounded bg-navy text-primary text-[8px] font-black flex items-center justify-center border border-white">
                                     {{ match[`entry_${side}_seed`] }}
                                 </div>
                             </div>
                             <div class="min-w-0">
-                                <div class="text-[9px] font-black text-gray-400 tracking-wider mb-0.5">
+                                <div class="text-[9px] font-black text-navy/40 tracking-wider mb-0.5">
                                     SIDE {{ side.toUpperCase() }}
                                 </div>
                                 <div class="text-xs font-bold text-navy truncate">
@@ -89,11 +89,11 @@
                 <!-- Footer: Target Selection -->
                 <div class="p-5 pt-0 mt-auto">
                     <div
-                        class="p-2.5 px-4 bg-navy/[0.03] rounded-2xl border border-navy/5 group/sel focus-within:bg-white focus-within:border-primary/50 transition-all shadow-inner">
+                        class="p-2.5 px-4 bg-navy/[0.03] rounded-2xl border border-navy/5 group/sel focus-within:bg-white focus-within:border-primary/50 transition-all">
                         <div class="flex items-center justify-between mb-1">
                             <label class="text-[9px] font-black text-navy/40 tracking-widest block">{{ $t('event_elimination.target_line') }}</label>
                             <span v-if="match.board_code"
-                                class="text-[8px] font-black bg-navy text-primary px-1.5 py-0.5 rounded shadow-sm">{{
+                                class="text-[8px] font-black bg-navy text-primary px-1.5 py-0.5 rounded">{{
                                     match.board_code }}</span>
                         </div>
                         <select :value="match.target_id"

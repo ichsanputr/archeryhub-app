@@ -1140,7 +1140,9 @@
     "toast_bracket_created": "Bracket created successfully",
     "toast_bracket_create_failed": "Failed to create bracket",
     "toast_bracket_deleted": "Elimination bracket deleted successfully",
-    "toast_bracket_delete_failed": "Failed to delete bracket"
+    "toast_bracket_delete_failed": "Failed to delete bracket",
+    "bracket_not_generated": "Bracket Not Generated",
+    "generate_bracket_now": "Generate Bracket Now"
   },
   "event_qualification": {
     "title": "Qualification Management",

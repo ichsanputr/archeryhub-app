@@ -1054,7 +1054,9 @@
     "toast_bracket_created": "대진표가 생성되었습니다",
     "toast_bracket_create_failed": "대진표 생성에 실패했습니다",
     "toast_bracket_deleted": "엘리미네이션 대진표가 삭제되었습니다",
-    "toast_bracket_delete_failed": "대진표 삭제에 실패했습니다"
+    "toast_bracket_delete_failed": "대진표 삭제에 실패했습니다",
+    "bracket_not_generated": "대진표가 생성되지 않았습니다",
+    "generate_bracket_now": "지금 대진표 생성하기"
   },
   "event_qualification": {
     "title": "예선 관리",

@@ -51,16 +51,16 @@
             </div>
         </div>
 
-        <div v-if="Object.keys(rounds).length === 0" class="text-center py-40 bg-white">
+        <div v-if="Object.keys(rounds).length === 0" class="text-center py-16 bg-white">
             <div
-                class="size-32 rounded-[2.5rem] bg-slate-50 shadow-inner flex items-center justify-center mx-auto mb-8 border border-slate-100">
-                <Icon icon="ph:brackets-curly-bold" class="text-6xl text-slate-200" />
+                class="size-20 rounded-2xl bg-slate-50 shadow-inner flex items-center justify-center mx-auto mb-6 border border-slate-100">
+                <Icon icon="ph:brackets-curly-bold" class="text-3xl text-slate-200" />
             </div>
-            <h2 class="text-3xl font-black text-navy tracking-tight">Bracket Belum Di-generate</h2>
+            <h2 class="text-lg font-black text-navy tracking-tight mb-6">{{ t('event_elimination.bracket_not_generated') }}</h2>
             <button @click="$emit('generate-bracket')"
-                class="mt-10 px-8 py-4 rounded-2xl bg-navy text-primary font-black tracking-widest hover:brightness-110 shadow-lg shadow-navy/20 transition-all flex items-center gap-3 mx-auto">
-                <Icon icon="ph:magic-wand-bold" class="text-2xl" />
-                Generate Bracket Sekarang
+                class="px-5 py-2.5 rounded-xl bg-navy text-primary text-xs font-black tracking-widest hover:brightness-110 shadow-lg shadow-navy/20 transition-all flex items-center gap-2.5 mx-auto">
+                <Icon icon="ph:magic-wand-bold" class="text-base" />
+                {{ t('event_elimination.generate_bracket_now') }}
             </button>
         </div>
     </div>
@@ -68,8 +68,11 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import BracketRound from './BracketRound.vue'
 import ChampionshipTower from './ChampionshipTower.vue'
+
+const { t } = useI18n()
 
 const props = defineProps({
     bracket: { type: Object, required: true },

@@ -2,13 +2,13 @@
     <div class="flex flex-col lg:grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
         <!-- Matches Navigation / Selector - MOBILE: Horizontal Scroll at Top | DESKTOP: Sticky Sidebar -->
         <div class="w-full lg:col-span-4 xl:col-span-3 lg:sticky lg:top-6">
-            <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-4 sm:p-6">
-                <div class="flex items-center justify-between mb-4 lg:mb-6 pb-2 border-b border-gray-50">
+            <div class="bg-white rounded-[2rem] border border-navy/10 p-4 sm:p-6">
+                <div class="flex items-center justify-between mb-4 lg:mb-6 pb-2 border-b border-navy/5">
                     <h3 class="text-[10px] font-black tracking-[0.2em] text-navy/40 flex items-center gap-2 ">
                         <Icon icon="ph:list-bullets-bold" class="text-sm" />
                         {{ $t('event_elimination.match_list') }}
                     </h3>
-                    <span class="px-2 py-0.5 rounded-lg bg-slate-100 text-[10px] font-black text-slate-400">{{
+                    <span class="px-2 py-0.5 rounded-lg bg-navy/5 text-[10px] font-black text-navy/40">{{
                         roundMatches.length }}</span>
                 </div>
                 <!-- Desktop List / Mobile Horizontal Scroll -->
@@ -19,8 +19,8 @@
                         class="shrink-0 w-[260px] lg:w-full group p-4 rounded-[2rem] border-2 text-left transition-all relative cursor-pointer"
                         :class="[
                             selectedScoringMatch?.id === match.id
-                                ? 'border-primary bg-primary/5 shadow-xl shadow-primary/10 ring-4 ring-primary/5 scale-[1.02] z-10'
-                                : 'border-gray-50 bg-white hover:border-gray-200 hover:shadow-md hover:shadow-primary/5',
+                                ? 'border-primary bg-primary/5 scale-[1.02] z-10'
+                                : 'border-navy/10 bg-white hover:border-primary/40',
                             (match.status === 'finished' || match.winner_entry_id) ? 'opacity-80' : ''
                         ]">
 
@@ -28,15 +28,15 @@
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-2">
                                 <div
-                                    class="px-2 py-0.5 rounded-lg bg-primary text-btn-text text-[9px] font-black shadow-sm capitalize tracking-wider">
+                                    class="px-2 py-0.5 rounded-lg bg-primary text-btn-text text-[9px] font-black capitalize tracking-wider">
                                     M{{ match.match_no }}
                                 </div>
                                 <div v-if="match.board_code"
-                                    class="px-2 py-0.5 rounded-lg bg-navy text-primary text-[9px] font-black capitalize tracking-wider shadow-sm">
+                                    class="px-2 py-0.5 rounded-lg bg-navy text-primary text-[9px] font-black capitalize tracking-wider">
                                     {{ match.board_code }}
                                 </div>
                                 <div v-else-if="match.target_name"
-                                    class="px-2 py-0.5 rounded-lg bg-slate-100/80 text-slate-500 text-[9px] font-black capitalize tracking-wider">
+                                    class="px-2 py-0.5 rounded-lg bg-navy/5 text-navy/50 text-[9px] font-black capitalize tracking-wider">
                                     {{ match.target_name }}
                                 </div>
                             </div>
@@ -54,8 +54,8 @@
                                 :class="[
                                     isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id)
                                         ? 'bg-green-500/5 border-green-500/20'
-                                        : 'bg-white border-slate-50',
-                                    selectedScoringMatch?.id === match.id && !isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'border-gray-100' : ''
+                                        : 'bg-white border-navy/5',
+                                    selectedScoringMatch?.id === match.id && !isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'border-navy/10' : ''
                                 ]">
                                 <div class="flex items-center gap-3 min-w-0">
                                     <!-- Avatar for individual matches -->

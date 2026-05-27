@@ -1236,7 +1236,9 @@
     "toast_bracket_created": "Bracket berhasil dibuat",
     "toast_bracket_create_failed": "Gagal membuat bracket",
     "toast_bracket_deleted": "Bracket eliminasi berhasil dihapus",
-    "toast_bracket_delete_failed": "Gagal menghapus bracket"
+    "toast_bracket_delete_failed": "Gagal menghapus bracket",
+    "bracket_not_generated": "Bracket Belum Di-generate",
+    "generate_bracket_now": "Generate Bracket Sekarang"
   },
   "event_qualification": {
     "title": "Manajemen Kualifikasi",

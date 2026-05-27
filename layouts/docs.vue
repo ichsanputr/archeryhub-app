@@ -31,21 +31,31 @@
                     </button>
 
                     <!-- Language Switcher -->
-                    <div class="flex items-center gap-1 bg-gray-100 rounded-xl p-1 text-xs font-bold text-gray-500">
-                        <button 
-                            @click="setLocale('id')"
-                            class="px-2.5 py-1 rounded-lg transition-all"
-                            :class="locale === 'id' ? 'bg-white text-navy shadow-sm' : 'hover:text-navy'"
-                        >
-                            ID
+                    <div class="relative mr-1" @mouseenter="showLangMenu = true" @mouseleave="showLangMenu = false">
+                        <button
+                          class="flex items-center gap-2 px-3 h-9 rounded-xl bg-gray-100 border border-transparent hover:bg-gray-200 transition-all duration-300 text-xs font-bold tracking-widest text-gray-700">
+                          <Icon :icon="langFlags[locale] || 'ph:globe-bold'"
+                            class="text-lg rounded-full overflow-hidden border border-gray-200 shrink-0" />
+                          <span class="uppercase">{{ locale }}</span>
                         </button>
-                        <button 
-                            @click="setLocale('en')"
-                            class="px-2.5 py-1 rounded-lg transition-all"
-                            :class="locale === 'en' ? 'bg-white text-navy shadow-sm' : 'hover:text-navy'"
-                        >
-                            EN
-                        </button>
+                
+                        <Transition enter-active-class="transition duration-200 ease-out"
+                          enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0"
+                          leave-active-class="transition duration-150 ease-in"
+                          leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
+                          <div v-if="showLangMenu" class="absolute right-0 top-full pt-2 w-40 z-[99]">
+                            <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2">
+                              <button v-for="loc in locales" :key="loc.code" @click="changeDashboardLocale(loc.code)"
+                                class="flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold transition-colors hover:bg-gray-50"
+                                :class="locale === loc.code ? 'text-primary' : 'text-gray-700'">
+                                <Icon :icon="langFlags[loc.code] || 'ph:globe-bold'"
+                                  class="text-base rounded-full overflow-hidden border border-gray-100" />
+                                <span class="flex-1 text-left">{{ loc.name }}</span>
+                                <Icon v-if="locale === loc.code" icon="ph:check-bold" />
+                              </button>
+                            </div>
+                          </div>
+                        </Transition>
                     </div>
                 </div>
             </div>
@@ -69,7 +79,20 @@ import { useI18n } from 'vue-i18n'
 
 defineOptions({ name: 'DocsLayout' })
 
-const { locale, setLocale } = useI18n()
+const { locale, locales, setLocaleCookie, loadLocaleMessages } = useI18n()
+const showLangMenu = ref(false)
+const langFlags = {
+  en: 'circle-flags:us',
+  id: 'circle-flags:id',
+  kr: 'circle-flags:kr'
+}
+
+const changeDashboardLocale = async (code) => {
+  await loadLocaleMessages(code)
+  locale.value = code
+  setLocaleCookie(code)
+  showLangMenu.value = false
+}
 
 const searchDialog = ref(null)
 const route = useRoute()
