@@ -55,11 +55,11 @@
         <!-- Tabs & Add Button -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-200 gap-4">
             <div class="flex">
-                <button @click="currentTab = 'organization'"
+                <button @click="currentTab = 'organizer'"
                     class="px-6 py-3 text-sm font-bold border-b-2 transition-all flex items-center gap-2"
-                    :class="currentTab === 'organization' ? 'border-navy text-navy font-black' : 'border-transparent text-gray-400 hover:text-gray-600'">
+                    :class="currentTab === 'organizer' ? 'border-navy text-navy font-black' : 'border-transparent text-gray-400 hover:text-gray-600'">
                     <Icon icon="ph:buildings-bold" />
-                    <span>Organizations</span>
+                    <span>Organizers</span>
                 </button>
                 <button @click="currentTab = 'club'"
                     class="px-6 py-3 text-sm font-bold border-b-2 transition-all flex items-center gap-2"
@@ -465,7 +465,7 @@ watch([searchQuery, statusFilter], () => {
     currentPage.value = 1
 })
 
-const currentTab = ref('organization')
+const currentTab = ref('organizer')
 const showAddClubModal = ref(false)
 const addClubLoading = ref(false)
 const clubForm = ref({

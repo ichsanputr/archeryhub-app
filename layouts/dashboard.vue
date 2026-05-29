@@ -135,7 +135,7 @@ const { isSubscriptionActive, subscriptionData, fetchSubscription } = useSubscri
 const showExpiredPackageBanner = computed(() => {
     if (!user.value) return false
     const role = user.value.role || user.value.type || user.value.user_type
-    if (role !== 'club' && role !== 'organization') return false
+    if (role !== 'club' && role !== 'organizer') return false
 
     return !isSubscriptionActive.value
 })
@@ -166,11 +166,11 @@ watch(isMobileMenuOpen, (open) => {
     }
 })
 
-// Global Subscription Check (only for klub & organisasi)
+// Global Subscription Check (only for klub & penyelenggara)
 onMounted(async () => {
     if (!user.value) return
     const role = user.value.role || user.value.type || user.value.user_type
-    if (role === 'club' || role === 'organization' || role === 'admin') {
+    if (role === 'club' || role === 'organizer' || role === 'admin') {
         await fetchSubscription()
     }
 })

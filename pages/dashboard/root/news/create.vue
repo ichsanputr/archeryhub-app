@@ -161,12 +161,12 @@ const statusOptions = [
 ]
  
 const previewNews = () => {
-    toast.info(t('organization.news.form.preview', 'Preview'))
+    toast.info(t('organizer.news.form.preview', 'Preview'))
 }
  
 const submitNews = async () => {
     if (!form.value.title) {
-        toast.error(t('organization.news.form.toast_title_required', 'Judul berita wajib diisi'))
+        toast.error(t('organizer.news.form.toast_title_required', 'Judul berita wajib diisi'))
         return
     }
  
@@ -188,11 +188,11 @@ const submitNews = async () => {
         await post('/news', payload)
  
         toast.success(form.value.status === 'published'
-            ? t('organization.news.form.toast_create_ok_published', 'Berita berhasil dipublikasikan!')
-            : t('organization.news.form.toast_create_ok_draft', 'Draft berhasil disimpan!'))
+            ? t('organizer.news.form.toast_create_ok_published', 'Berita berhasil dipublikasikan!')
+            : t('organizer.news.form.toast_create_ok_draft', 'Draft berhasil disimpan!'))
         router.push('/dashboard/root/news')
     } catch (error) {
-        toast.error(t('organization.news.form.toast_create_failed', 'Gagal menyimpan berita'))
+        toast.error(t('organizer.news.form.toast_create_failed', 'Gagal menyimpan berita'))
     } finally {
         isSubmitting.value = false
     }

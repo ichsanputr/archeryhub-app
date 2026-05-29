@@ -646,7 +646,7 @@
                                 </div>
                                 <div>
                                     <NuxtLink v-if="tournament.organizer_slug"
-                                        :to="`/organization/${tournament.organizer_slug}`"
+                                        :to="`/organizer/${tournament.organizer_slug}`"
                                         class="font-bold text-navy text-sm hover:text-primary transition-colors">
                                         {{ tournament.organizer }}
                                     </NuxtLink>
@@ -670,7 +670,7 @@
                                 </button>
 
                                 <NuxtLink v-if="tournament.organizer_slug"
-                                    :to="`/organization/${tournament.organizer_slug}`"
+                                    :to="`/organizer/${tournament.organizer_slug}`"
                                     class="flex-1 py-2.5 bg-navy hover:bg-navy-light border border-navy rounded-xl text-xs font-bold text-white transition-all text-center flex items-center justify-center">
                                     Lihat Profil
                                 </NuxtLink>

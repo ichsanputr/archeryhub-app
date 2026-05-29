@@ -80,7 +80,7 @@
     "news": {
       "index": {
         "title": "News Management",
-        "subtitle": "Manage your organization news and announcements.",
+        "subtitle": "Manage your organizer news and announcements.",
         "create": "Create New Article",
         "stats_total": "Total Articles",
         "stats_published": "Published",
@@ -112,7 +112,7 @@
       },
       "form": {
         "create_title": "Create New Article",
-        "create_subtitle": "Write and publish news for your organization.",
+        "create_subtitle": "Write and publish news for your organizer.",
         "edit_title": "Edit Article",
         "edit_subtitle": "Update your article content.",
         "featured_image": "Featured Image",
@@ -235,10 +235,10 @@
         "faq": "FAQ",
         "general": "Info Umum"
       },
-      "title": "Profil Organisasi",
+      "title": "Profil Penyelenggara",
       "save": "Simpan Profil",
       "saving": "Menyimpan...",
-      "subtitle": "Kelola identitas publik organisasi Anda"
+      "subtitle": "Kelola identitas publik penyelenggara Anda"
     },
     "bank_accounts": {
       "title": "Bank Accounts",
@@ -296,7 +296,7 @@
         "status_label": "Akun"
       },
       "search_placeholder": "Cari nama atau kode staff...",
-      "subtitle": "Kelola akun staff pencatat skor organisasi",
+      "subtitle": "Kelola akun staff pencatat skor penyelenggara",
       "title": "Scorekeeper"
     }
   },
@@ -356,7 +356,7 @@
     "packageTitle": "Event Optimizer",
     "promoBadge": "New Organizer",
     "promoTitle": "Start your tournament free for 3 months!",
-    "promoDesc": "Register your organization now and get the Standard package free for the first 3 months.",
+    "promoDesc": "Register your organizer now and get the Standard package free for the first 3 months.",
     "savings": "104,997",
     "recommendationBadge": "Pro EO",
     "eliteDescription": "Complete solution for large-scale tournaments with custom registration features.",
@@ -430,10 +430,10 @@
     },
     "manual_payment": {
       "title": "Manual Payment Method",
-      "description": "Activate your organization's bank accounts or e-wallets that participants can use for manual transfers for this event.",
-      "list_title": "Organization Payment Account List",
+      "description": "Activate your organizer's bank accounts or e-wallets that participants can use for manual transfers for this event.",
+      "list_title": "Organizer Payment Account List",
       "warning": "Warning:",
-      "no_accounts_warning": "No active bank accounts/e-wallets have been configured in your organization yet. Participants will not be able to choose manual payment options during registration.",
+      "no_accounts_warning": "No active bank accounts/e-wallets have been configured in your organizer yet. Participants will not be able to choose manual payment options during registration.",
       "configure_link": "Configure Payment Accounts"
     },
     "prizes": {
@@ -615,7 +615,7 @@
   "organization_news": {
     "index": {
       "title": "News Management",
-      "subtitle": "Manage your organization's news and announcements.",
+      "subtitle": "Manage your organizer's news and announcements.",
       "create": "Create New Article",
       "meta_title": "News Management - ArcheryHub Dashboard",
       "stats_total_view": "Total Views",
@@ -652,7 +652,7 @@
     "create": {
       "title_short": "New",
       "title": "Create News",
-      "subtitle": "Write and publish news for your organization.",
+      "subtitle": "Write and publish news for your organizer.",
       "meta_title": "Create News - ArcheryHub Dashboard",
       "featured_image": "Featured Image",
       "click_to_select_image": "Click to select image",
@@ -708,7 +708,7 @@
     "edit": {
       "title_short": "Edit",
       "title": "Edit News",
-      "subtitle": "Modify your organization's news article.",
+      "subtitle": "Modify your organizer's news article.",
       "cancel": "Cancel",
       "update_publish": "Update & Publish",
       "save_changes": "Save Changes"
@@ -724,7 +724,7 @@
   "subscription_page": {
     "badge": "SUBSCRIPTION PLAN",
     "title": "Scale Your Archery Management",
-    "description": "Flexible options for tournament organizers from small-scale to international. Get 3 months free Standard package for new organization registration.",
+    "description": "Flexible options for tournament organizers from small-scale to international. Get 3 months free Standard package for new organizer registration.",
     "detail_comparison": "Detailed Comparison",
     "feature_header": "Feature",
     "basic_title": "Standard Eo",
@@ -737,7 +737,7 @@
     "month_unit": "/MO",
     "limit_promo": "Limited Promo",
     "promo_title": "Start Your Tournament Free for 3 Months!",
-    "promo_desc": "Register your organization now and enjoy full access to the Standard package at no cost for the first three months.",
+    "promo_desc": "Register your organizer now and enjoy full access to the Standard package at no cost for the first three months.",
     "saving_text": "Save $9",
     "promo_extra": "No setup fees, no commitment.",
     "total_value": "Total Value",
@@ -818,7 +818,7 @@
       },
       {
         "question": "How long does implementation take for the Elite plan?",
-        "answer": "For Elite plans, we typically set up all custom configurations within 3-5 business days. You will also receive dedicated training sessions for your organization's administrators."
+        "answer": "For Elite plans, we typically set up all custom configurations within 3-5 business days. You will also receive dedicated training sessions for your organizer's administrators."
       }
     ],
     "benefits_title": "Premium Services Advantages",
@@ -855,7 +855,7 @@
       "free": {
         "participants": "Max 10 Participants / Event",
         "storage": "250 MB Media Storage",
-        "profile": "Basic Organization Profile",
+        "profile": "Basic Organizer Profile",
         "create": "Create New Events",
         "scoring": "Digital Scoring"
       }

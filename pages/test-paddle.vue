@@ -13,7 +13,7 @@
                     </div>
                 </div>
 
-                <nuxt-link to="/dashboard/organization/subscription" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition-colors flex items-center gap-2 border border-slate-200">
+                <nuxt-link to="/dashboard/organizer/subscription" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition-colors flex items-center gap-2 border border-slate-200">
                     <Icon icon="ph:arrow-left-bold" />
                     Kembali ke Dashboard
                 </nuxt-link>
@@ -260,7 +260,7 @@ const testWebhook = async () => {
         addLog('redirect', 'Mengarahkan kembali dalam 1.5 detik...', 'info')
         setTimeout(() => {
             if (res.is_subscription) {
-                useRouter().push('/dashboard/organization/subscription?status=success')
+                useRouter().push('/dashboard/organizer/subscription?status=success')
             } else {
                 useRouter().push('/dashboard/archer/events?status=success')
             }

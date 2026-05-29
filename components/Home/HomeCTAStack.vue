@@ -30,13 +30,13 @@
                 <div class="w-10 h-10 rounded-xl bg-navy flex items-center justify-center text-white mb-5">
                     <span class="material-symbols-outlined text-xl">domain_add</span>
                 </div>
-                <h3 class="text-lg sm:text-2xl font-black text-navy mb-2 font-display">Organisasi</h3>
-                <div class="text-text-sub text-sm mb-6">Kelola organisasi kamu, buat event sebanyaknya.</div>
+                <h3 class="text-lg sm:text-2xl font-black text-navy mb-2 font-display">Penyelenggara</h3>
+                <div class="text-text-sub text-sm mb-6">Kelola penyelenggara kamu, buat event sebanyaknya.</div>
             </div>
             <div class="relative z-10">
-                <NuxtLink to="/auth/register?type=organization"
+                <NuxtLink to="/auth/register?type=organizer"
                     class="w-full inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy-light text-white text-sm font-bold px-6 py-3 rounded-xl transition-all">
-                    Bikin Akun Organisasi
+                    Bikin Akun Penyelenggara
                     <span class="material-symbols-outlined text-lg">arrow_forward</span>
                 </NuxtLink>
             </div>

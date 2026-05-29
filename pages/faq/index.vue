@@ -21,7 +21,7 @@
                         Frequently <span class="text-primary">Asked Questions</span>
                     </h1>
                     <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
-                        Find quick answers to common questions about registration, organizations, and the Archeris.net scoring system.
+                        Find quick answers to common questions about registration, organizers, and the Archeris.net scoring system.
                     </p>
                 </div>
             </div>
@@ -87,8 +87,8 @@ const toggleFaq = (index) => {
 
 const faqs = [
     {
-        question: 'How do I register an organization on Archeris.net?',
-        answer: 'You can register your organization via the registration page by choosing the "Organization" account type. Once your email is verified, you can complete your organization profile and start managing events.'
+        question: 'How do I register an organizer on Archeris.net?',
+        answer: 'You can register your organizer via the registration page by choosing the "Organizer" account type. Once your email is verified, you can complete your organizer profile and start managing events.'
     },
     {
         question: 'Can the scoring system be used for offline tournaments?',

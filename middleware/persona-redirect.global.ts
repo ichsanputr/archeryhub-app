@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware((to) => {
 
     // Only handle dashboard routes that are NOT already persona-prefixed
     // We check if the second segment is NOT in our persona list
-    const personas = ['archer', 'club', 'organization', 'seller', 'root']
+    const personas = ['archer', 'club', 'organizer', 'seller', 'root']
     const segments = to.path.split('/').filter(Boolean)
 
     if (segments[0] === 'dashboard') {
@@ -13,7 +13,7 @@ export default defineNuxtRouteMiddleware((to) => {
         // List of generic paths that should be redirected to persona paths
         const genericPaths = [
             'settings', 'profile', 'reports', 'subscription', 'notifications',
-            'news', 'events', 'payments-membership', 'archers', 'clubs', 'organizations'
+            'news', 'events', 'payments-membership', 'archers', 'clubs', 'organizers'
         ]
 
         if (genericPaths.includes(secondSegment) || !secondSegment) {
@@ -26,7 +26,7 @@ export default defineNuxtRouteMiddleware((to) => {
             let targetFeature = secondSegment || ''
             if (targetFeature === 'archers') targetFeature = 'archer'
             if (targetFeature === 'clubs') targetFeature = 'club'
-            if (targetFeature === 'organizations') targetFeature = 'organization'
+            if (targetFeature === 'organizers') targetFeature = 'organizer'
 
             const target = `/dashboard/${persona}${targetFeature ? '/' + targetFeature : ''}${remainingPath ? '/' + remainingPath : ''}`
 

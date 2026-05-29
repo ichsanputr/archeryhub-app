@@ -235,10 +235,10 @@
         "faq": "FAQ",
         "general": "Info Umum"
       },
-      "title": "Profil Organisasi",
+      "title": "Profil Penyelenggara",
       "save": "Simpan Profil",
       "saving": "Menyimpan...",
-      "subtitle": "Kelola identitas publik organisasi Anda"
+      "subtitle": "Kelola identitas publik penyelenggara Anda"
     },
     "bank_accounts": {
       "title": "은행 계좌",
@@ -296,7 +296,7 @@
         "status_label": "Akun"
       },
       "search_placeholder": "Cari nama atau kode staff...",
-      "subtitle": "Kelola akun staff pencatat skor organisasi",
+      "subtitle": "Kelola akun staff pencatat skor penyelenggara",
       "title": "Scorekeeper"
     }
   },

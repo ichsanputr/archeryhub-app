@@ -137,7 +137,7 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const route = useRoute()
 const router = useRouter()
-const { user, userPersona, archerProfile, organizationProfile, sellerProfile, logout } = useAuth()
+const { user, userPersona, archerProfile, organizerProfile, sellerProfile, logout } = useAuth()
 const { t } = useI18n()
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
@@ -156,8 +156,8 @@ const userAvatar = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
   let url = user.value?.avatar_url
 
-  if (role === 'organization' && (organizationProfile.value?.avatar_url || organizationProfile.value?.logo_url)) {
-    url = organizationProfile.value.avatar_url || organizationProfile.value.logo_url
+  if (role === 'organizer' && (organizerProfile.value?.avatar_url || organizerProfile.value?.logo_url)) {
+    url = organizerProfile.value.avatar_url || organizerProfile.value.logo_url
   } else if (role === 'seller' && sellerProfile.value?.avatar_url) {
     url = sellerProfile.value.avatar_url
   } else if (role === 'archer' && archerProfile.value?.avatar_url) {
@@ -169,7 +169,7 @@ const userAvatar = computed(() => {
 
 const displayName = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
-  if (role === 'organization' && organizationProfile.value?.name) return organizationProfile.value.name
+  if (role === 'organizer' && organizerProfile.value?.name) return organizerProfile.value.name
   else if (role === 'seller' && sellerProfile.value?.store_name) return sellerProfile.value.store_name
   return user.value?.full_name || user.value?.name || 'Guest'
 })
@@ -183,7 +183,7 @@ const isOnEventSubPage = computed(() => {
   // Check if it's an event page under any role
   const isEventPath = path.includes('/events/') && path.includes('/dashboard/')
   if (!isEventPath) return false
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organization|seller|root|events)\/events\/([^/]+)\/(.+)/) ||
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organizer|seller|root|events)\/events\/([^/]+)\/(.+)/) ||
     path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
   return !!eventPathMatch
 })
@@ -192,7 +192,7 @@ const isEventManagePage = computed(() => {
   const path = route.path
   const isEventPath = path.includes('/events/') && path.includes('/dashboard/')
   if (!isEventPath) return false
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organization|seller|root|events)\/events\/([^/]+)\/(.+)/) ||
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organizer|seller|root|events)\/events\/([^/]+)\/(.+)/) ||
     path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
   const [, , subPath] = eventPathMatch || []
   if (!subPath) return false
@@ -202,7 +202,7 @@ const isEventManagePage = computed(() => {
 
 const eventLinks = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
-  const isOrganization = role === 'organization'
+  const isOrganization = role === 'organizer'
   const isArcher = role === 'archer'
 
   // Use persona prefix
@@ -249,14 +249,14 @@ const isArcher = computed(() => {
 
 const canManageEvents = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
-  return ['admin', 'organization'].includes(role)
+  return ['admin', 'organizer'].includes(role)
 })
 
 const userRoleLabel = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
   const labels = {
     'archer': t('dashboard.sidebar.roles.archer'),
-    'organization': t('dashboard.sidebar.roles.organization'),
+    'organizer': t('dashboard.sidebar.roles.organizer'),
     'admin': t('dashboard.sidebar.roles.admin'),
     'seller': t('dashboard.sidebar.roles.seller'),
     'scorekeeper': t('dashboard.sidebar.roles.scorekeeper')
@@ -305,21 +305,21 @@ const navSections = computed(() => {
     ]
   }
 
-  if (role === 'organization') {
+  if (role === 'organizer') {
     return [
-      { label: t('dashboard.sidebar.overview'), icon: 'ph:squares-four', path: '/dashboard/organization' },
+      { label: t('dashboard.sidebar.overview'), icon: 'ph:squares-four', path: '/dashboard/organizer' },
       { type: 'label', label: t('dashboard.sidebar.event') },
-      { label: t('dashboard.sidebar.my_events'), icon: 'ph:trophy', path: '/dashboard/organization/events' },
-      { type: 'label', label: t('dashboard.sidebar.organization') },
+      { label: t('dashboard.sidebar.my_events'), icon: 'ph:trophy', path: '/dashboard/organizer/events' },
+      { type: 'label', label: t('dashboard.sidebar.organizer') },
       {
-        label: t('dashboard.sidebar.organization'),
+        label: t('dashboard.sidebar.organizer'),
         icon: 'ph:building-office',
         type: 'group',
         children: [
-          { label: t('dashboard.sidebar.profile'), icon: 'icomoon-free:profile', path: '/dashboard/organization/profile' },
-          { label: t('dashboard.sidebar.scorekeeper'), icon: 'ph:user-focus', path: '/dashboard/organization/scorekeepers' },
-          { label: t('dashboard.sidebar.payment_methods'), icon: 'ph:credit-card', path: '/dashboard/organization/payment-methods' },
-          { label: t('dashboard.sidebar.reports'), icon: 'ph:chart-bar', path: '/dashboard/organization/reports' },
+          { label: t('dashboard.sidebar.profile'), icon: 'icomoon-free:profile', path: '/dashboard/organizer/profile' },
+          { label: t('dashboard.sidebar.scorekeeper'), icon: 'ph:user-focus', path: '/dashboard/organizer/scorekeepers' },
+          { label: t('dashboard.sidebar.payment_methods'), icon: 'ph:credit-card', path: '/dashboard/organizer/payment-methods' },
+          { label: t('dashboard.sidebar.reports'), icon: 'ph:chart-bar', path: '/dashboard/organizer/reports' },
         ]
       },
       { type: 'label', label: t('dashboard.sidebar.finance') },
@@ -328,23 +328,23 @@ const navSections = computed(() => {
         icon: 'ph:coins',
         type: 'group',
         children: [
-          { label: t('dashboard.sidebar.earnings'), icon: 'ph:wallet', path: '/dashboard/organization/earnings' },
-          { label: t('dashboard.sidebar.balance'), icon: 'ph:bank', path: '/dashboard/organization/balance' },
-          { label: t('dashboard.sidebar.bank_accounts'), icon: 'ph:credit-card', path: '/dashboard/organization/bank-accounts' },
+          { label: t('dashboard.sidebar.earnings'), icon: 'ph:wallet', path: '/dashboard/organizer/earnings' },
+          { label: t('dashboard.sidebar.balance'), icon: 'ph:bank', path: '/dashboard/organizer/balance' },
+          { label: t('dashboard.sidebar.bank_accounts'), icon: 'ph:credit-card', path: '/dashboard/organizer/bank-accounts' },
         ]
       },
       { type: 'label', label: t('dashboard.sidebar.settings') },
-      { label: t('dashboard.sidebar.subscription'), icon: 'ph:credit-card', path: '/dashboard/organization/subscription' },
-      ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.news'), icon: 'ph:newspaper', path: '/dashboard/organization/news' }] : []),
-      ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.settings'), icon: 'ph:gear', path: '/dashboard/organization/settings' }] : []),
+      { label: t('dashboard.sidebar.subscription'), icon: 'ph:credit-card', path: '/dashboard/organizer/subscription' },
+      ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.news'), icon: 'ph:newspaper', path: '/dashboard/organizer/news' }] : []),
+      ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.settings'), icon: 'ph:gear', path: '/dashboard/organizer/settings' }] : []),
     ]
   }
 
   // Root admin — clean minimal nav
   if (role === 'root') {
     return [
-      { type: 'label', label: t('root.index.title', 'Organizations') },
-      { label: t('root.index.title', 'Organizations'), icon: 'ph:users-four-bold', path: '/dashboard/root' },
+      { type: 'label', label: t('root.index.title', 'Organizers') },
+      { label: t('root.index.title', 'Organizers'), icon: 'ph:users-four-bold', path: '/dashboard/root' },
       { label: t('dashboard.sidebar.news'), icon: 'ph:newspaper', path: '/dashboard/root/news' },
     ]
   }
@@ -375,7 +375,7 @@ const isActive = (path) => {
   }
 
   // Dashboard roots should use exact match and not match sub-pages
-  const dashboardRoots = ['/dashboard/root', '/dashboard/organization', '/dashboard/seller', '/dashboard/archer']
+  const dashboardRoots = ['/dashboard/root', '/dashboard/organizer', '/dashboard/seller', '/dashboard/archer']
   if (dashboardRoots.includes(path)) {
     return route.path === path || route.path === path + '/'
   }

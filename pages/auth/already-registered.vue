@@ -74,7 +74,7 @@ const userTypeLabel = computed(() => {
   const type = typeof t === 'string' ? t.toLowerCase() : ''
   const labels = {
     archer: 'Archer',
-    organization: 'Organization',
+    organizer: 'Organizer',
     club: 'Club',
     seller: 'Seller',
   }

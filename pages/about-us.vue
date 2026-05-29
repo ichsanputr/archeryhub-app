@@ -90,7 +90,7 @@
                     Empower Your Next Tournament.
                 </h2>
                 <p class="text-slate-400 text-sm md:text-base font-medium mb-8 relative z-10 max-w-xl mx-auto">
-                    register your organization to access real-time score keeping, target map configuration, and dynamic brackets.
+                    register your organizer to access real-time score keeping, target map configuration, and dynamic brackets.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
                     <NuxtLink :to="localePath('/auth/login')"

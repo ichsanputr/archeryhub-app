@@ -296,7 +296,7 @@
             :confirm-text="$t('subscription_page.to_dashboard', 'Ke Dashboard')"
             :cancel-text="$t('subscription_page.close', 'Tutup')"
             icon="ph:info-bold"
-            @confirm="router.push('/dashboard/organization/subscription')"
+            @confirm="router.push('/dashboard/organizer/subscription')"
         />
 
         <!-- Choose Payment Gateway Modal -->
@@ -389,7 +389,7 @@ const toggleFaq = (index) => {
 }
 
 const { tm, t, locale } = useI18n()
-const { user, organizationProfile } = useAuth()
+const { user, organizerProfile } = useAuth()
 const { subscriptionData, fetchSubscription, isSubscriptionActive } = useSubscription()
 const router = useRouter()
 
@@ -418,8 +418,8 @@ const { data: eoComparisonDataRaw } = await useFetch(`${apiBaseUrl}/public/subsc
 
 // Currency detection helper
 const isUSD = computed(() => {
-    if (user.value && organizationProfile.value) {
-        return organizationProfile.value.country !== 'Indonesia'
+    if (user.value && organizerProfile.value) {
+        return organizerProfile.value.country !== 'Indonesia'
     }
     return locale.value === 'en' || locale.value === 'kr'
 })
@@ -482,7 +482,7 @@ const handleSelectPlan = async (planId, planName, planPrice) => {
 
     // 3. Free plan chosen:
     if (planId === 0) {
-        router.push('/dashboard/organization')
+        router.push('/dashboard/organizer')
         return
     }
 
@@ -507,7 +507,7 @@ const choosePaymentGateway = (gateway) => {
     if (!selectedPlanDetails.value) return
     showPaymentMethodModal.value = false
     router.push({
-        path: '/dashboard/organization/subscription/payment',
+        path: '/dashboard/organizer/subscription/payment',
         query: {
             plan_id: selectedPlanDetails.value.id,
             plan_name: selectedPlanDetails.value.name,
@@ -621,7 +621,7 @@ const faqs = computed(() => {
 
 useSeoMeta({
     title: () => `${t('subscription_page.title', 'Skalakan Manajemen Panahan Anda')} - Archeris.net`,
-    description: () => t('subscription_page.description', 'Pilih paket berlangganan terbaik untuk organisasi panahan Anda.')
+    description: () => t('subscription_page.description', 'Pilih paket berlangganan terbaik untuk penyelenggara panahan Anda.')
 })
 </script>
 

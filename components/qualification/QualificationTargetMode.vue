@@ -3,9 +3,9 @@
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <h2 class="text-xl font-black text-navy leading-tight">Pengaturan Target</h2>
-                <div class="text-sm text-gray-500 mt-1">Kelola penempatan pemanah pada target kualifikasi (Geser &
-                    Letakkan)
+                <h2 class="text-xl font-black text-navy leading-tight">{{ t('event_qualification.target_settings') }}</h2>
+                <div class="text-sm text-gray-500 mt-1">
+                    {{ t('event_qualification.target_settings_desc') }}
                 </div>
             </div>
             <div class="flex items-center gap-3">
@@ -13,17 +13,17 @@
                     :disabled="isReseting || isAssigning || props.archers.length === unassignedArchersCount"
                     :loading="isReseting" class="!text-red-500 !border-red-100 hover:!bg-red-50"
                     @click="isSubscriptionActive ? resetAssignments() : (showPremiumModal = true)">
-                    Atur Ulang
+                    {{ t('event_qualification.reset') }}
                 </BaseButton>
-
+ 
                 <div class="relative dropdown-container">
                     <BaseButton variant="primary" icon="fa7-solid:random"
                         :disabled="isAssigning || isReseting || props.archers.length === 0" :loading="isAssigning"
                         @click="isSubscriptionActive ? (showAutoAssignMenu = !showAutoAssignMenu) : (showPremiumModal = true)">
-                        Penempatan Otomatis
+                        {{ t('event_qualification.auto_assign') }}
                         <Icon icon="ph:caret-down-bold" class="ml-2 text-xs" />
                     </BaseButton>
-
+ 
                     <transition enter-active-class="transition ease-out duration-100"
                         enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
                         leave-active-class="transition ease-in duration-75"
@@ -32,10 +32,11 @@
                         <div v-if="showAutoAssignMenu" v-click-outside="() => showAutoAssignMenu = false"
                             class="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-gray-100 py-3 z-[1001] origin-top-right">
                             <div class="px-4 py-2 border-b border-gray-50 mb-2">
-                                <span class="text-[10px] font-black text-gray-400 tracking-widest">Pilih tipe
-                                    draw</span>
+                                <span class="text-[10px] font-black text-gray-400 tracking-widest">
+                                    {{ t('event_qualification.select_draw_type') }}
+                                </span>
                             </div>
-
+ 
                             <button type="button" @click="handleAutoAssignSelection('standard')"
                                 class="w-full px-4 py-3 flex items-start gap-3 hover:bg-gray-50 transition-colors text-left group">
                                 <div
@@ -45,13 +46,13 @@
                                 <div class="flex-1">
                                     <div
                                         class="text-xs font-black text-navy group-hover:text-primary transition-colors">
-                                        Standard Draw</div>
-                                    <div class="text-[10px] text-gray-400 leading-tight mt-0.5">Berurutan A-C-B-D
-                                        (Standar
-                                        Ianseo)</div>
+                                        {{ t('event_qualification.standard_draw') }}</div>
+                                    <div class="text-[10px] text-gray-400 leading-tight mt-0.5">
+                                        {{ t('event_qualification.standard_draw_desc') }}
+                                    </div>
                                 </div>
                             </button>
-
+ 
                             <button type="button" @click="handleAutoAssignSelection('field')"
                                 class="w-full px-4 py-3 flex items-start gap-3 hover:bg-gray-50 transition-colors text-left group">
                                 <div
@@ -61,10 +62,10 @@
                                 <div class="flex-1">
                                     <div
                                         class="text-xs font-black text-navy group-hover:text-primary transition-colors">
-                                        Field / 3D Draw</div>
-                                    <div class="text-[10px] text-gray-400 leading-tight mt-0.5">Lompat +2 target untuk
-                                        jarak
-                                        aman</div>
+                                        {{ t('event_qualification.field_draw') }}</div>
+                                    <div class="text-[10px] text-gray-400 leading-tight mt-0.5">
+                                        {{ t('event_qualification.field_draw_desc') }}
+                                    </div>
                                 </div>
                             </button>
                         </div>
@@ -72,25 +73,25 @@
                 </div>
             </div>
         </div>
-
+ 
         <!-- Kanban Board Layout -->
         <div class="flex flex-col lg:flex-row gap-6">
             <!-- Unassigned Column -->
             <div class="lg:w-80 shrink-0 lg:self-start lg:sticky lg:top-4">
                 <div class="bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 p-4 min-h-[500px] flex flex-col gap-4"
-                    @dragover.prevent @drop="handleDropOnUnassigned">
+                     @dragover.prevent @drop="handleDropOnUnassigned">
                     <div class="flex items-center justify-between px-2">
-                        <h3 class="font-black text-navy text-xs tracking-widest">Belum Terbagi</h3>
+                        <h3 class="font-black text-navy text-xs tracking-widest">{{ t('event_qualification.unassigned') }}</h3>
                         <span class="bg-navy text-white text-[10px] font-black px-2 py-0.5 rounded-full">{{
                             unassignedArchersCount }}</span>
                     </div>
-
+ 
                     <div v-if="unassignedArchersCount === 0"
                         class="flex-1 flex flex-col items-center justify-center text-center p-8 opacity-30">
                         <Icon icon="ph:check-circle-bold" class="text-4xl mb-2" />
-                        <div class="text-[10px] font-bold">Semua sudah terbagi</div>
+                        <div class="text-[10px] font-bold">{{ t('event_qualification.all_assigned') }}</div>
                     </div>
-
+ 
                     <div v-else class="flex flex-col gap-0 max-h-[700px] overflow-y-auto no-scrollbar pb-10">
                         <div v-for="group in unassignedArchersByClub" :key="group.clubName" class="space-y-2">
                             <!-- Group Divider -->
@@ -98,11 +99,11 @@
                                 <div class="flex-1 h-[1px] bg-gray-200"></div>
                                 <span
                                     class="text-[9px] font-black text-gray-400 tracking-widest whitespace-nowrap bg-gray-50 px-2 rounded-full border border-gray-100 shadow-sm">
-                                    {{ group.clubName }}
+                                    {{ group.clubName === 'Independen' ? t('event_qualification.independent') : group.clubName }}
                                 </span>
                                 <div class="flex-1 h-[1px] bg-gray-200"></div>
                             </div>
-
+ 
                             <div v-for="archer in group.archers" :key="archer.uuid" :draggable="isSubscriptionActive"
                                 @dragstart="(e) => handleDragStart(e, archer)" @dragend="handleDragEnd"
                                 class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm cursor-grab active:cursor-grabbing hover:border-primary/50 hover:shadow-md transition-all flex items-center gap-3 group mx-1">
@@ -114,7 +115,7 @@
                                 <div class="flex-1 min-w-0 pointer-events-none">
                                     <div class=" text-xs font-black text-navy truncate">{{ archer.name }}</div>
                                     <div class="text-[9px] text-gray-400 font-bold truncate tracking-tighter">
-                                        {{ archer.club || 'Independen' }}
+                                        {{ archer.club || t('event_qualification.independent') }}
                                     </div>
                                 </div>
                                 <Icon icon="ph:dots-six-vertical-bold"
@@ -124,7 +125,7 @@
                     </div>
                 </div>
             </div>
-
+ 
             <!-- Target Grid Column -->
             <div class="flex-1">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -140,7 +141,7 @@
                                     <span>{{ target.name.split(' ').pop() }}</span>
                                     <span v-if="target.assignedCount > 0"
                                         class="text-white text-[10px] font-mono border-l border-white/10 pl-2"
-                                        title="Kode Board">
+                                        :title="t('event_qualification.board_code')">
                                         {{ getBoardCode(target.name) ? getBoardCode(target.name) :
                                             String(target.name.match(/\d+/)?.[0] || '').padStart(2, '0') }}
                                     </span>
@@ -151,12 +152,12 @@
                                 target.assignedCount === target.availableLetters.length ? 'bg-green-100 text-green-700' :
                                     target.assignedCount === 0 ? 'bg-gray-100 text-gray-400' : 'bg-blue-100 text-blue-700'
                             ]">
-                                {{ target.assignedCount === target.availableLetters.length ? 'Penuh' :
-                                    target.assignedCount === 0 ? 'Kosong' : `${target.availableLetters.length -
-                                        target.assignedCount} Slot tersedia` }}
+                                {{ target.assignedCount === target.availableLetters.length ? t('event_qualification.full') :
+                                    target.assignedCount === 0 ? t('event_qualification.empty_slot') :
+                                    t('event_qualification.slots_available', { count: target.availableLetters.length - target.assignedCount }) }}
                             </span>
                         </div>
-
+ 
                         <div class="p-4 space-y-3">
                             <div v-for="pos in target.availableLetters" :key="pos" class="group" @dragover.prevent
                                 @drop="isSubscriptionActive ? handleDropOnTarget(target, pos) : null">
@@ -179,14 +180,14 @@
                                         <div class=" text-xs font-black text-navy truncate leading-tight">{{
                                             target.slots[pos].name }}</div>
                                         <div class="text-[9px] text-gray-500 truncate font-bold tracking-tighter">
-                                            {{
-                                                target.slots[pos].club || 'Independen' }}</div>
+                                            {{ target.slots[pos].club || t('event_qualification.independent') }}
+                                        </div>
                                     </div>
                                     <BaseButton variant="white" size="sm" icon="ph:x-bold"
                                         class="!size-6 !p-0 !rounded-lg text-gray-400 hover:!text-red-500 hover:!bg-red-50 opacity-0 group-hover/slot-filled:opacity-100"
                                         @click="isSubscriptionActive ? unassignArcherFromTarget(target.slots[pos].assignmentId) : (showPremiumModal = true)" />
                                 </div>
-
+ 
                                 <!-- Custom Archer Dropdown -->
                                 <div v-else class="relative archer-dropdown-container" @dragover.prevent
                                     @drop.stop="handleDropOnTarget(target, pos)">
@@ -201,14 +202,14 @@
                                                 {{ target.otherSlots[pos].archer_name }}
                                             </div>
                                             <div class="text-[9px] text-gray-400 font-bold tracking-tighter">
-                                                Lain Kategori
+                                                {{ t('event_qualification.other_category') }}
                                             </div>
                                         </div>
                                         <div class="size-6 flex items-center justify-center">
                                             <Icon icon="ph:lock-key-bold" class="text-gray-300" />
                                         </div>
                                     </div>
-
+ 
                                     <div v-else @click.stop="isSubscriptionActive ? toggleDropdown(target.name, pos) : (showPremiumModal = true)"
                                         class="flex items-center gap-3 p-2.5 rounded-xl border border-dashed border-gray-200 bg-white hover:bg-gray-50/50 hover:border-primary/50 transition-all cursor-pointer group/slot"
                                         :class="{ 'border-primary bg-primary/5 ring-4 ring-primary/10 shadow-inner': isDragging }"
@@ -218,8 +219,9 @@
                                             {{ pos }}
                                         </span>
                                         <div class="flex-1 min-w-0">
-                                            <div class="text-xs font-bold text-gray-300">Pindahkan
-                                                Kemari...</div>
+                                            <div class="text-xs font-bold text-gray-300">
+                                                {{ t('event_qualification.move_here') }}
+                                            </div>
                                         </div>
                                         <Icon icon="ph:plus-circle-bold"
                                             class="text-gray-200 text-lg group-hover/slot:text-primary transition-colors" />
@@ -230,7 +232,7 @@
                                             <div class="relative">
                                                 <Icon icon="ph:magnifying-glass"
                                                     class="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                                                <input v-model="filterText" type="text" placeholder="Cari pemanah..."
+                                                <input v-model="filterText" type="text" :placeholder="t('event_qualification.search_archer')"
                                                     class="w-full pl-8 pr-3 py-1.5 text-xs border border-gray-100 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary"
                                                     @click.stop />
                                             </div>
@@ -238,7 +240,7 @@
                                         <div class="max-h-60 overflow-y-auto pt-1 no-scrollbar">
                                             <div v-if="unassignedArcherListFiltered.length === 0"
                                                 class="px-4 py-3 text-center text-gray-400 text-xs font-bold">
-                                                Semua pemanah terbagi
+                                                {{ t('event_qualification.all_archers_assigned') }}
                                             </div>
                                             <BaseButton v-for="archer in unassignedArcherListFiltered"
                                                 :key="archer.uuid"
@@ -256,8 +258,8 @@
                                                     </div>
                                                     <div
                                                         class="text-[9px] text-gray-500 font-bold truncate tracking-tighter">
-                                                        {{
-                                                            archer.club || 'Independen' }}</div>
+                                                        {{ archer.club || t('event_qualification.independent') }}
+                                                    </div>
                                                 </div>
                                             </BaseButton>
                                         </div>
@@ -270,20 +272,19 @@
             </div>
         </div>
     </div>
-    <AppDialog v-model:show="showResetDialog" type="danger" title="Atur Ulang Penempatan"
-        message="Apakah Anda yakin ingin menghapus semua penempatan target untuk kategori ini? Tindakan ini tidak dapat dibatalkan."
-        confirmText="Ya, Atur Ulang" cancelText="Batal" icon="ph:trash-bold" @confirm="confirmReset" />
-
-    <AppDialog v-model:show="showAutoAssignDialog" type="warning" title="Konfirmasi Penempatan"
-        confirmText="Ya, Acak & Tempatkan" cancelText="Batal" icon="fa7-solid:random" @confirm="confirmAutoAssign">
+    <AppDialog v-model:show="showResetDialog" type="danger" :title="t('event_qualification.reset_confirm_title')"
+        :message="t('event_qualification.reset_confirm_msg')"
+        :confirmText="t('event_qualification.yes_reset')" :cancelText="t('event_qualification.cancel')" icon="ph:trash-bold" @confirm="confirmReset" />
+ 
+    <AppDialog v-model:show="showAutoAssignDialog" type="warning" :title="t('event_qualification.auto_assign_confirm_title')"
+        :confirmText="t('event_qualification.yes_assign')" :cancelText="t('event_qualification.cancel')" icon="fa7-solid:random" @confirm="confirmAutoAssign">
         <template #default>
             <div class="space-y-4 text-left">
                 <div class="text-sm text-gray-500">
-                    Penempatan otomatis akan menghapus semua penempatan yang ada untuk kategori
-                    ini, lalu menempatkan ulang semua pemanah secara otomatis menggunakan mode:
-                    <span class="font-black text-navy block mt-1 ">{{ drawType === 'standard' ? 'Standard Draw'
-                        :
-                        'Field / 3D Draw' }}</span>
+                    {{ t('event_qualification.auto_assign_confirm_msg') }}
+                    <span class="font-black text-navy block mt-1 ">
+                        {{ drawType === 'standard' ? t('event_qualification.standard_draw') : t('event_qualification.field_draw') }}
+                    </span>
                 </div>
             </div>
         </template>
@@ -301,6 +302,7 @@ import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 const { isSubscriptionActive } = useSubscription()
+const { t } = useI18n()
 const showPremiumModal = ref(false)
 
 const props = defineProps({
@@ -487,13 +489,20 @@ const handleDropOnTarget = async (targetRecord, pos) => {
         return
     }
 
+    const existingArcher = targetRecord.slots[pos]
+
     try {
         isSyncing.value = true
-        const existingArcher = targetRecord.slots[pos]
 
         if (existingArcher && sourceTarget) {
-            // It's a swap between two assigned archers
-            await swapAssignments(movingArcher.uuid, existingArcher.uuid)
+            // Optimistically swap A-B targets
+            const originalTargetA = movingArcher.assignedTarget
+            const originalTargetB = existingArcher.assignedTarget
+
+            movingArcher.assignedTarget = originalTargetB
+            existingArcher.assignedTarget = originalTargetA
+
+            await swapAssignments(movingArcher.uuid, existingArcher.uuid, originalTargetA, originalTargetB, movingArcher, existingArcher)
         } else {
             // Simple move or assign from unassigned
             await assignArcherToTarget(targetRecord, pos, movingArcher.uuid)
@@ -529,17 +538,26 @@ const toggleDropdown = (targetId, pos) => {
 }
 
 const assignArcherToTarget = async (baseTarget, position, archerUuid) => {
+    const archerObj = props.archers.find(a => a.uuid === archerUuid)
+    if (!archerObj) return
+
+    const originalTarget = archerObj.assignedTarget
+    const originalAssignmentId = archerObj.assignmentId
+
+    let targetId = baseTarget.targetIds[0]
+    if (baseTarget.targetIds.length > 1) {
+        const matched = props.availableTargets.find(t =>
+            baseTarget.targetIds.includes(t.id) &&
+            t.name.toUpperCase().endsWith(position)
+        )
+        if (matched) targetId = matched.id
+    }
+
+    // Optimistically assign target
+    archerObj.assignedTarget = targetId
+
     try {
         isSyncing.value = true
-        let targetId = baseTarget.targetIds[0]
-        if (baseTarget.targetIds.length > 1) {
-            const matched = props.availableTargets.find(t =>
-                baseTarget.targetIds.includes(t.id) &&
-                t.name.toUpperCase().endsWith(position)
-            )
-            if (matched) targetId = matched.id
-        }
-
         const payload = {
             category_id: props.selectedCategory,
             assignments: [
@@ -552,30 +570,41 @@ const assignArcherToTarget = async (baseTarget, position, archerUuid) => {
 
         await post(`/events/${props.eventId}/qualification/sessions/${props.sessionData.uuid}/assignments`, payload)
 
-        toast.success('Pemanah berhasil ditempatkan')
+        toast.success(t('event_qualification.toast_archer_assigned'))
         emit('updated')
         openDropdown.value = null
     } catch (error) {
         console.error('Failed to assign archer:', error)
-        const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Gagal menempatkan pemanah'
+        // Rollback on failure
+        archerObj.assignedTarget = originalTarget
+        archerObj.assignmentId = originalAssignmentId
+        
+        const errorMsg = error.response?.data?.error || error.response?.data?.message || t('event_qualification.toast_archer_assign_failed')
         toast.error(errorMsg)
+        emit('updated')
     } finally {
         isSyncing.value = false
     }
 }
 
-const swapAssignments = async (participantAUuid, participantBUuid) => {
+const swapAssignments = async (participantAUuid, participantBUuid, originalTargetA, originalTargetB, archerA, archerB) => {
     try {
         isSyncing.value = true
         await post(`/qualification/sessions/${props.sessionData.uuid}/swap-assignments`, {
             participant_a: participantAUuid,
             participant_b: participantBUuid
         })
-        toast.success('Pemanah berhasil ditukar')
+        toast.success(t('event_qualification.toast_archer_swapped'))
         emit('updated')
     } catch (error) {
         console.error('Failed to swap archers:', error)
-        toast.error('Gagal menukar pemanah')
+        // Rollback on failure
+        if (archerA && archerB) {
+            archerA.assignedTarget = originalTargetA
+            archerB.assignedTarget = originalTargetB
+        }
+        toast.error(t('event_qualification.toast_archer_swap_failed'))
+        emit('updated')
     } finally {
         isSyncing.value = false
     }
@@ -583,14 +612,30 @@ const swapAssignments = async (participantAUuid, participantBUuid) => {
 
 const unassignArcherFromTarget = async (assignmentId) => {
     if (!assignmentId) return
+    const archerObj = props.archers.find(a => a.assignmentId === assignmentId)
+    const originalTarget = archerObj ? archerObj.assignedTarget : ''
+    const originalAssignmentId = archerObj ? archerObj.assignmentId : null
+
+    if (archerObj) {
+        // Optimistically unassign target
+        archerObj.assignedTarget = ''
+        archerObj.assignmentId = null
+    }
+
     try {
         isSyncing.value = true
         await del(`/qualification/assignments/${assignmentId}`)
-        toast.success('Pemanah berhasil dilepas dari target')
+        toast.success(t('event_qualification.toast_archer_unassigned'))
         emit('updated')
     } catch (error) {
         console.error('Failed to unassign archer:', error)
-        toast.error('Gagal melepas pemanah')
+        // Rollback on failure
+        if (archerObj) {
+            archerObj.assignedTarget = originalTarget
+            archerObj.assignmentId = originalAssignmentId
+        }
+        toast.error(t('event_qualification.toast_archer_unassign_failed'))
+        emit('updated')
     } finally {
         isSyncing.value = false
     }
@@ -605,11 +650,11 @@ const autoAssignTargets = async () => {
             draw_type: drawType.value
         })
 
-        toast.success('Auto-assignment berhasil')
+        toast.success(t('event_qualification.toast_auto_assign_success'))
         emit('updated')
     } catch (error) {
         console.error('Auto-assign failed:', error)
-        toast.error('Gagal melakukan penempatan otomatis')
+        toast.error(t('event_qualification.toast_auto_assign_failed'))
     } finally {
         isAssigning.value = false
     }
@@ -630,11 +675,11 @@ const confirmReset = async () => {
             category_id: props.selectedCategory
         })
 
-        toast.success('Berhasil mengatur ulang penempatan')
+        toast.success(t('event_qualification.toast_reset_success'))
         emit('updated')
     } catch (error) {
         console.error('Reset assignments failed:', error)
-        toast.error('Gagal mengatur ulang penempatan')
+        toast.error(t('event_qualification.toast_reset_failed'))
     } finally {
         isReseting.value = false
         showResetDialog.value = false

@@ -83,7 +83,7 @@
                         <select @change="selectDemoUser($event.target.value)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-slate-700 focus:outline-none focus:ring-1 focus:ring-amber-500 font-medium">
                             <option value="">-- select account --</option>
                             <option value="archer">archer (archer) - stewie4king@gmail.com</option>
-                            <option value="organization">organization (club) - ichsanfadhil67@gmail.com</option>
+                            <option value="organizer">organizer (club) - ichsanfadhil67@gmail.com</option>
                             <option value="seller">seller (shop) - seller@panahan.com</option>
                         </select>
                     </div>
@@ -166,7 +166,7 @@ const selectDemoUser = (role) => {
     if (!role) return
     const credentials = {
         archer: { email: 'stewie4king@gmail.com', password: '12345' },
-        organization: { email: 'ichsanfadhil67@gmail.com', password: '123456' },
+        organizer: { email: 'ichsanfadhil67@gmail.com', password: '123456' },
         seller: { email: 'seller@panahan.com', password: '12345' }
     }
     const creds = credentials[role]

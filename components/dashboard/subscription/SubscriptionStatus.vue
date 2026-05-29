@@ -67,7 +67,7 @@
                     </div>
                 </div>
 
-                <!-- Members Usage (not shown for organizations) -->
+                <!-- Members Usage (not shown for organizers) -->
                 <div v-if="showMembers" class="space-y-3">
                     <div class="flex justify-between items-end">
                         <div>

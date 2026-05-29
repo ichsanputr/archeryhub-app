@@ -44,14 +44,14 @@
           </p>
           <ul class="list-disc pl-6 space-y-2 marker:text-primary">
             <li><strong>athletes:</strong> responsible for providing accurate profile information (name, gender, age category, bow type) and maintaining sportsmanship.</li>
-            <li><strong>organizations:</strong> responsible for configuring tournament details, setting up target assignments, defining qualification/elimination rules, and resolving participant disputes.</li>
-            <li><strong>scorekeepers:</strong> appointed by organizations to record arrow points. scorekeepers must enter points honestly and conform to tournament rules.</li>
+            <li><strong>organizers:</strong> responsible for configuring tournament details, setting up target assignments, defining qualification/elimination rules, and resolving participant disputes.</li>
+            <li><strong>scorekeepers:</strong> appointed by organizers to record arrow points. scorekeepers must enter points honestly and conform to tournament rules.</li>
             <li><strong>sellers:</strong> responsible for listing authentic archery gear, managing stock levels, processing buyer orders, and shipping items within the specified timelines.</li>
           </ul>
 
           <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Subscriptions and Financial Transactions</h3>
           <p>
-            organizations require an active subscription to access specific limits (e.g. creating unlimited tournaments, adding scorekeepers, and exporting registration sheets):
+            organizers require an active subscription to access specific limits (e.g. creating unlimited tournaments, adding scorekeepers, and exporting registration sheets):
           </p>
           <ul class="list-disc pl-6 space-y-2 marker:text-primary">
             <li><strong>plans & billing:</strong> subscriptions are processed securely via paddle. billing cycles recur monthly or annually.</li>

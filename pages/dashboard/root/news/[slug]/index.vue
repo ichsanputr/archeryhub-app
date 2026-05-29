@@ -357,7 +357,7 @@ const fetchArticle = async () => {
             article.value = response.data
         }
     } catch (error) {
-        toast.error(t('organization.news.form.toast_load_failed', 'Gagal memuat berita'))
+        toast.error(t('organizer.news.form.toast_load_failed', 'Gagal memuat berita'))
         router.push('/dashboard/root/news')
     } finally {
         isLoading.value = false
@@ -397,10 +397,10 @@ const publishArticle = async () => {
             status: 'published'
         })
         article.value.status = 'published'
-        toast.success(t('organization.news.form.toast_create_ok_published', 'Berita berhasil dipublikasikan!'))
+        toast.success(t('organizer.news.form.toast_create_ok_published', 'Berita berhasil dipublikasikan!'))
         fetchArticle()
     } catch (error) {
-        toast.error(t('organization.news.detail.toast_publish_failed', 'Gagal mempublikasikan berita'))
+        toast.error(t('organizer.news.detail.toast_publish_failed', 'Gagal mempublikasikan berita'))
     }
 }
  
@@ -411,10 +411,10 @@ const unpublishArticle = async () => {
             status: 'draft'
         })
         article.value.status = 'draft'
-        toast.info(t('organization.news.detail.toast_unpublish_ok', 'Berita ditarik ke draft'))
+        toast.info(t('organizer.news.detail.toast_unpublish_ok', 'Berita ditarik ke draft'))
         fetchArticle()
     } catch (error) {
-        toast.error(t('organization.news.detail.toast_unpublish_failed', 'Gagal menarik berita'))
+        toast.error(t('organizer.news.detail.toast_unpublish_failed', 'Gagal menarik berita'))
     }
 }
  
@@ -456,12 +456,12 @@ const copyPublicUrl = async () => {
     try {
         await navigator.clipboard.writeText(publicNewsUrl.value)
         copySuccess.value = true
-        toast.success(t('organization.news.detail.toast_link_copied', 'Link berita tersalin!'))
+        toast.success(t('organizer.news.detail.toast_link_copied', 'Link berita tersalin!'))
         setTimeout(() => {
             copySuccess.value = false
         }, 2000)
     } catch (e) {
-        toast.error(t('organization.news.detail.toast_copy_failed', 'Gagal menyalin link'))
+        toast.error(t('organizer.news.detail.toast_copy_failed', 'Gagal menyalin link'))
     }
 }
  
@@ -493,10 +493,10 @@ const confirmDelete = () => {
 const deleteArticle = async () => {
     try {
         await del(`/news/${article.value.uuid}`)
-        toast.success(t('organization.news.index.toast_delete_ok', 'Berita berhasil dihapus'))
+        toast.success(t('organizer.news.index.toast_delete_ok', 'Berita berhasil dihapus'))
         router.push('/dashboard/root/news')
     } catch (error) {
-        toast.error(t('organization.news.index.toast_delete_failed', 'Gagal menghapus berita'))
+        toast.error(t('organizer.news.index.toast_delete_failed', 'Gagal menghapus berita'))
     }
 }
  

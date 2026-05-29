@@ -26,7 +26,7 @@ async function generateSitemap() {
         '/events',
         '/news',
         '/products',
-        '/organization',
+        '/organizer',
         '/contact',
         '/faq',
         '/privacy',
@@ -82,13 +82,13 @@ async function generateSitemap() {
 
 
 
-        // 5. Add Organizations
-        if (data.organizations) {
-            console.log(`Adding ${data.organizations.length} organizations...`);
-            data.organizations.forEach(slug => {
+        // 5. Add Organizers
+        if (data.organizers) {
+            console.log(`Adding ${data.organizers.length} organizers...`);
+            data.organizers.forEach(slug => {
                 xml += `
   <url>
-    <loc>${SITE_URL}/organization/${slug}</loc>
+    <loc>${SITE_URL}/organizer/${slug}</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>`;

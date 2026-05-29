@@ -138,7 +138,7 @@
                         <Icon icon="ph:users-bold" class="text-3xl text-gray-300" />
                     </div>
                     <p class="text-gray-400 font-black text-[10px] tracking-widest leading-relaxed max-w-xs">
-                        Belum ada pemanah yang ditugaskan
+                        {{ t('event_qualification.no_archers_assigned') }}
                     </p>
                 </div>
             </div>
@@ -162,13 +162,13 @@
                             :disabled="!currentScoringAssignment || !currentScoringAssignment.currentEndScores?.some(v => v !== undefined)"
                             class="!h-14 !rounded-xl border-2 border-slate-100 bg-white text-navy hover:!bg-red-50 hover:!text-red-500 hover:!border-red-100"
                             @click="isSubscriptionActive ? deleteLastScore() : (showPremiumModal = true)">
-                            <span class="text-[10px] tracking-widest ">HAPUS</span>
+                            <span class="text-[10px] tracking-widest ">{{ t('event_qualification.delete_btn') }}</span>
                         </BaseButton>
                         <BaseButton variant="primary" iconRight="ph:paper-plane-right-fill"
                             :disabled="saving || !currentScoringAssignment" :loading="saving"
                             class="!h-14 !rounded-xl bg-primary text-primary-text hover:bg-primary/90 shadow-sm"
                             @click="isSubscriptionActive ? saveEndAndNext() : (showPremiumModal = true)">
-                            <span class="text-[10px] tracking-widest ">SIMPAN</span>
+                            <span class="text-[10px] tracking-widest ">{{ t('event_qualification.save_btn') }}</span>
                         </BaseButton>
                     </div>
                 </div>
@@ -183,7 +183,7 @@
                 class="lg:hidden fixed inset-x-0 bottom-0 z-[70] bg-white border-t border-gray-200 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] rounded-t-3xl p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
                 <div class="flex items-center justify-between mb-3">
                     <div class="min-w-0">
-                        <p class="text-[10px] font-black tracking-widest text-gray-400">Input Nilai</p>
+                        <p class="text-[10px] font-black tracking-widest text-gray-400">{{ t('event_qualification.input_scoring') }}</p>
                         <p class="text-sm font-black text-navy truncate">
                             {{ currentScoringAssignment?.archer_name || 'Pilih pemanah' }}
                         </p>
@@ -205,11 +205,11 @@
                     <BaseButton variant="white" icon="ph:backspace-bold"
                         :disabled="!currentScoringAssignment || !currentScoringAssignment.currentEndScores?.some(v => v !== undefined)"
                         class="!h-11 !rounded-xl border border-slate-200" @click="isSubscriptionActive ? deleteLastScore() : (showPremiumModal = true)">
-                        <span class="text-[10px] tracking-widest ">Hapus</span>
+                        <span class="text-[10px] tracking-widest ">{{ t('event_qualification.delete_btn') }}</span>
                     </BaseButton>
                     <BaseButton variant="primary" :disabled="saving || !currentScoringAssignment" :loading="saving"
                         class="!h-11 !rounded-xl" @click="isSubscriptionActive ? saveEndAndNext() : (showPremiumModal = true)">
-                        <span class="text-[10px] tracking-widest ">Simpan</span>
+                        <span class="text-[10px] tracking-widest ">{{ t('event_qualification.save_btn') }}</span>
                     </BaseButton>
                 </div>
             </div>
@@ -224,9 +224,9 @@
                 </div>
                 <Icon icon="ph:folder-user-bold" class="text-4xl text-gray-300 relative z-10" />
             </div>
-            <h2 class="text-xl font-black text-navy tracking-tight mb-2">Kategori Belum Dipilih</h2>
+            <h2 class="text-xl font-black text-navy tracking-tight mb-2">{{ t('event_qualification.category_not_selected') }}</h2>
             <p class="text-gray-400 font-medium max-w-xs mx-auto text-sm">
-                Pilih kategori dan sesi untuk memulai input skor.
+                {{ t('event_qualification.choose_category_to_manage') }}
             </p>
         </div>
     </div>
@@ -242,6 +242,7 @@ import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 const { isSubscriptionActive } = useSubscription()
+const { t } = useI18n()
 const showPremiumModal = ref(false)
 
 const props = defineProps({
@@ -448,7 +449,7 @@ const saveEndAndNext = async () => {
         }
 
         if (endsToSave.length === 0) {
-            toast.info('Belum ada nilai yang diinput')
+            toast.info(t('event_qualification.toast_no_scores_entered'))
             saving.value = false
             return
         }
@@ -457,7 +458,7 @@ const saveEndAndNext = async () => {
             ends: endsToSave
         })
 
-        toast.success('Nilai berhasil disimpan')
+        toast.success(t('event_qualification.toast_score_saved'))
 
         if (isAssignmentEndComplete(assignment)) {
             if (currentEndNum < (props.sessionData?.total_ends || 0)) {
@@ -468,16 +469,16 @@ const saveEndAndNext = async () => {
                     const nextArcher = props.targetAssignments[currentIndex + 1]
                     currentScoringAssignment.value = nextArcher
                     initEndScores(nextArcher)
-                    toast.info(`Berpindah ke: ${nextArcher.archer_name}`)
+                    toast.info(t('event_qualification.toast_moved_to_archer', { name: nextArcher.archer_name }))
                 } else {
-                    toast.success('Semua pemanah dalam kategori ini selesai!')
+                    toast.success(t('event_qualification.toast_category_completed'))
                 }
             }
         }
         emit('updated')
     } catch (error) {
         console.error('Failed to save score:', error)
-        toast.error('Gagal menyimpan nilai')
+        toast.error(t('event_qualification.toast_score_save_failed'))
     } finally {
         saving.value = false
     }

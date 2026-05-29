@@ -49,7 +49,7 @@
           </p>
           <ul class="list-disc pl-6 space-y-2 marker:text-primary">
             <li><strong>Athlete Profiles:</strong> full name, email, phone number, gender, date of birth, bio, location/city, preferred bow types, and list of achievements.</li>
-            <li><strong>Organization Profiles:</strong> organization name, profile city, official address, logo/avatar urls, and contact details.</li>
+            <li><strong>Organizer Profiles:</strong> organizer name, profile city, official address, logo/avatar urls, and contact details.</li>
             <li><strong>Vendor Profiles:</strong> store name, store slug, business description, and catalog items.</li>
           </ul>
 
@@ -86,7 +86,7 @@
             we use your information to operate a secure, transparent, and accurate platform for all users:
           </p>
           <ol class="list-decimal pl-6 space-y-2 marker:text-navy marker:font-bold">
-            <li><strong>account management:</strong> creating, configuring, and verifying athlete, organization, scorekeeper, and seller accounts.</li>
+            <li><strong>account management:</strong> creating, configuring, and verifying athlete, organizer, scorekeeper, and seller accounts.</li>
             <li><strong>tournament execution:</strong> managing registrations, target boards, qualifications, and live elimination brackets.</li>
             <li><strong>public scoreboards:</strong> compiling and publishing tournament results, rankings, and athlete achievements (which are public by design).</li>
             <li><strong>payment and payouts:</strong> processing tournament invoices, subscription plans, matching paddle transactions, and executing seller commission payouts.</li>

@@ -411,7 +411,7 @@ const isActive = (path) => {
 
 const dashboardUrl = computed(() => {
   const persona = userPersona.value
-  if (persona === 'organization' || persona === 'archer') return `/dashboard/${persona}/events`
+  if (persona === 'organizer' || persona === 'archer') return `/dashboard/${persona}/events`
   return `/dashboard/${persona}`
 })
 

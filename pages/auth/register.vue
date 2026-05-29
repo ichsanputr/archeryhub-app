@@ -114,8 +114,8 @@
                                 <p class="mt-2 text-xs text-gray-400 font-body italic">{{ t('auth.register.archer_note') }}</p>
                             </div>
 
-                            <!-- Organization: Nama Organisasi -->
-                            <div v-if="form.userType === 'organization'" class="space-y-4">
+                            <!-- Organizer: Nama Penyelenggara -->
+                            <div v-if="form.userType === 'organizer'" class="space-y-4">
                                 <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:buildings-bold" class="text-primary text-lg" />
                                     {{ t('auth.register.org_info') }}
@@ -225,7 +225,7 @@ useHead({
 
 const userTypes = [
     { value: 'archer', label: 'Archer', icon: 'temaki:archery' },
-    { value: 'organization', label: 'Organization', icon: 'ph:buildings-bold' },
+    { value: 'organizer', label: 'Organizer', icon: 'ph:buildings-bold' },
     { value: 'seller', label: 'Seller', icon: 'ph:storefront-bold' }
 ]
 
@@ -244,7 +244,7 @@ const startSlideshow = () => {
 // Get initial user type from query param
 const getInitialUserType = () => {
     const typeParam = route.query.type
-    if (typeParam && ['archer', 'organization', 'seller'].includes(typeParam)) {
+    if (typeParam && ['archer', 'organizer', 'seller'].includes(typeParam)) {
         return typeParam
     }
     return 'archer'
@@ -254,7 +254,7 @@ const getInitialUserType = () => {
 const form = ref({
     userType: getInitialUserType(),
     fullName: '',           // For archer
-    organizationName: '',   // For organization
+    organizationName: '',   // For organizer
     storeName: '',          // For seller
     terms: false,
 
@@ -392,7 +392,7 @@ onUnmounted(() => {
 const getName = () => {
     switch (form.value.userType) {
         case 'archer': return form.value.fullName
-        case 'organization': return form.value.organizationName
+        case 'organizer': return form.value.organizationName
         case 'seller': return form.value.storeName
         default: return ''
     }
@@ -460,7 +460,7 @@ const handleGoogleRegister = async () => {
                 new_club_name: form.value.newClubName || '',
                 new_club_acronym: form.value.newClubAcronym || ''
             })
-        } else if (form.value.userType === 'organization') {
+        } else if (form.value.userType === 'organizer') {
             if (!form.value.country) {
                 toast.error('Country is required')
                 isGoogleLoading.value = false

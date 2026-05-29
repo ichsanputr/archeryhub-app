@@ -14,12 +14,12 @@
       <!-- Mobile Logo/Branding (Centered between hamburger and notification) -->
       <div v-if="isDashboard" class="lg:hidden flex items-center gap-2 mx-auto">
         <div class="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white shadow-sm">
-          <img v-if="user?.role === 'organization'"
+          <img v-if="user?.role === 'organizer'"
             :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.name || user?.full_name || 'Org')"
-            :alt="user?.name || user?.full_name || 'Organization'" class="w-full h-full object-cover" />
+            :alt="user?.name || user?.full_name || 'Organizer'" class="w-full h-full object-cover" />
           <img v-else src="/logo.png" alt="Archeris" class="w-full h-full object-contain" />
         </div>
-        <span v-if="user?.role === 'organization'" class="text-sm font-black text-header-text truncate max-w-[120px]">
+        <span v-if="user?.role === 'organizer'" class="text-sm font-black text-header-text truncate max-w-[120px]">
           {{ getFirstWord(user?.full_name || user?.name || 'Dashboard') }}
         </span>
         <span v-else class="text-sm font-black text-header-text">
@@ -71,23 +71,23 @@
 
 
 
-      <!-- Dashboard Context: Organization Name -->
-      <div v-else-if="isDashboard && user?.role === 'organization' && !isEventManageMode"
+      <!-- Dashboard Context: Organizer Name -->
+      <div v-else-if="isDashboard && user?.role === 'organizer' && !isEventManageMode"
         class="hidden md:flex items-center gap-3">
         <div class="flex items-center gap-3">
           <div
             class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm duration-300">
-            <img :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.name || 'Organization')"
-              :alt="user?.name || 'Organization'" class="w-full h-full object-cover" />
+            <img :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.name || 'Organizer')"
+              :alt="user?.name || 'Organizer'" class="w-full h-full object-cover" />
           </div>
           <h2 class="text-lg font-black text-header-text truncate max-w-sm tracking-tight">
-            {{ user?.full_name || t('dashboard.sidebar.roles.organization') }}
+            {{ user?.full_name || t('dashboard.sidebar.roles.organizer') }}
           </h2>
         </div>
       </div>
 
       <!-- Dashboard Title (only for non-orgs in general dashboard mode) -->
-      <div v-else-if="isDashboard && user?.role !== 'organization' && !isEventManageMode"
+      <div v-else-if="isDashboard && user?.role !== 'organizer' && !isEventManageMode"
         class="hidden md:flex items-center gap-3 mr-4">
         <h1 class="text-lg font-black text-header-text whitespace-nowrap">
           {{ dashboardTitle }}
@@ -194,7 +194,7 @@ const isEventManageMode = computed(() => {
   // Check if we're on any event management page
   const path = route.path
   // Match both legacy /dashboard/events/ and new /dashboard/[persona]/events/
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organization|seller|events)\/events\/([^/]+)\/(.+)/) ||
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organizer|seller|events)\/events\/([^/]+)\/(.+)/) ||
     path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
 
   if (!eventPathMatch) return false

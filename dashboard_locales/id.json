@@ -80,7 +80,7 @@
     "news": {
       "index": {
         "title": "Manajemen Berita",
-        "subtitle": "Kelola berita dan pengumuman organisasi Anda.",
+        "subtitle": "Kelola berita dan pengumuman penyelenggara Anda.",
         "create": "Buat Berita Baru",
         "stats_total": "Total Berita",
         "stats_published": "Dipublikasi",
@@ -112,7 +112,7 @@
       },
       "form": {
         "create_title": "Buat Berita Baru",
-        "create_subtitle": "Tulis dan publikasikan berita untuk organisasi Anda.",
+        "create_subtitle": "Tulis dan publikasikan berita untuk penyelenggara Anda.",
         "edit_title": "Edit Berita",
         "edit_subtitle": "Perbarui konten berita Anda.",
         "featured_image": "Gambar Utama",
@@ -235,10 +235,10 @@
         "faq": "FAQ",
         "general": "Info Umum"
       },
-      "title": "Profil Organisasi",
+      "title": "Profil Penyelenggara",
       "save": "Simpan Profil",
       "saving": "Menyimpan...",
-      "subtitle": "Kelola identitas publik organisasi Anda"
+      "subtitle": "Kelola identitas publik penyelenggara Anda"
     },
     "bank_accounts": {
       "title": "Rekening Bank",
@@ -296,7 +296,7 @@
         "status_label": "Akun"
       },
       "search_placeholder": "Cari nama atau kode staff...",
-      "subtitle": "Kelola akun staff pencatat skor organisasi",
+      "subtitle": "Kelola akun staff pencatat skor penyelenggara",
       "title": "Scorekeeper"
     }
   },
@@ -356,7 +356,7 @@
     "packageTitle": "Event Optimizer",
     "promoBadge": "Penyelenggara Baru",
     "promoTitle": "Mulai Turnamen Anda Gratis 3 Bulan!",
-    "promoDesc": "Daftarkan organisasi Anda sekarang dan dapatkan paket Standard secara gratis selama 3 bulan pertama.",
+    "promoDesc": "Daftarkan penyelenggara Anda sekarang dan dapatkan paket Standard secara gratis selama 3 bulan pertama.",
     "savings": "104.997",
     "recommendationBadge": "EO Profesional",
     "eliteDescription": "Solusi lengkap untuk turnamen skala besar dengan fitur kustom pendaftaran.",
@@ -430,10 +430,10 @@
     },
     "manual_payment": {
       "title": "Metode Pembayaran Manual",
-      "description": "Aktifkan rekening bank atau e-wallet organisasi Anda yang dapat digunakan peserta untuk melakukan transfer manual pada event ini.",
-      "list_title": "Daftar Rekening Pembayaran Organisasi",
+      "description": "Aktifkan rekening bank atau e-wallet penyelenggara Anda yang dapat digunakan peserta untuk melakukan transfer manual pada event ini.",
+      "list_title": "Daftar Rekening Pembayaran Penyelenggara",
       "warning": "Perhatian:",
-      "no_accounts_warning": "Belum ada rekening bank/e-wallet aktif yang dikonfigurasi di organisasi Anda. Peserta tidak akan bisa memilih opsi pembayaran manual saat mendaftar.",
+      "no_accounts_warning": "Belum ada rekening bank/e-wallet aktif yang dikonfigurasi di penyelenggara Anda. Peserta tidak akan bisa memilih opsi pembayaran manual saat mendaftar.",
       "configure_link": "Konfigurasi Rekening Pembayaran"
     },
     "prizes": {
@@ -615,7 +615,7 @@
   "organization_news": {
     "index": {
       "title": "Manajemen Berita",
-      "subtitle": "Kelola berita dan pengumuman organisasi Anda.",
+      "subtitle": "Kelola berita dan pengumuman penyelenggara Anda.",
       "create": "Buat Berita Baru",
       "meta_title": "Manajemen Berita - Dashboard ArcheryHub",
       "stats_total_view": "Total Tayangan",
@@ -679,7 +679,7 @@
     "create": {
       "title_short": "Baru",
       "title": "Buat Berita Baru",
-      "subtitle": "Tulis dan publikasikan berita untuk organisasi Anda.",
+      "subtitle": "Tulis dan publikasikan berita untuk penyelenggara Anda.",
       "meta_title": "Buat Berita - Dashboard ArcheryHub",
       "featured_image": "Gambar Utama",
       "click_to_select_image": "Klik untuk pilih gambar",
@@ -708,7 +708,7 @@
     "edit": {
       "title_short": "Edit",
       "title": "Edit Berita",
-      "subtitle": "Ubah informasi berita organisasi Anda.",
+      "subtitle": "Ubah informasi berita penyelenggara Anda.",
       "cancel": "Batal",
       "update_publish": "Perbarui & Publikasikan",
       "save_changes": "Simpan Perubahan"
@@ -724,7 +724,7 @@
   "subscription_page": {
     "badge": "PAKET BERLANGGANAN",
     "title": "Skalakan Manajemen Panahan Anda",
-    "description": "Opsi fleksibel untuk penyelenggara turnamen skala kecil sampai skala internasional. Dapatkan 3 bulan gratis paket Standard untuk pendaftaran organisasi baru.",
+    "description": "Opsi fleksibel untuk penyelenggara turnamen skala kecil sampai skala internasional. Dapatkan 3 bulan gratis paket Standard untuk pendaftaran penyelenggara baru.",
     "detail_comparison": "Perbandingan Detail",
     "feature_header": "Fitur",
     "basic_title": "Standar Eo",
@@ -737,7 +737,7 @@
     "month_unit": "/BLN",
     "limit_promo": "Promo Terbatas",
     "promo_title": "Mulai Turnamen Anda Gratis 3 Bulan!",
-    "promo_desc": "Daftarkan organisasi Anda sekarang dan nikmati akses penuh paket Standard tanpa biaya selama tiga bulan pertama.",
+    "promo_desc": "Daftarkan penyelenggara Anda sekarang dan nikmati akses penuh paket Standard tanpa biaya selama tiga bulan pertama.",
     "saving_text": "Hemat Rp 90.000",
     "promo_extra": "Tanpa biaya pendaftaran, tanpa komitmen.",
     "total_value": "Total Nilai",
@@ -779,7 +779,7 @@
         "icon": "ph:newspaper-bold"
       },
       {
-        "feature": "Profil Organisasi",
+        "feature": "Profil Penyelenggara",
         "basic": "Lengkap & Kustom",
         "elite": "Lengkap & Kustom",
         "icon": "ph:buildings-bold"
@@ -818,14 +818,14 @@
       },
       {
         "question": "Berapa lama waktu implementasi untuk paket Elite?",
-        "answer": "Untuk paket Elite, kami biasanya menyiapkan semua konfigurasi dalam waktu 3-5 hari kerja. Anda juga akan mendapatkan sesi training khusus untuk seluruh staf admin organisasi."
+        "answer": "Untuk paket Elite, kami biasanya menyiapkan semua konfigurasi dalam waktu 3-5 hari kerja. Anda juga akan mendapatkan sesi training khusus untuk seluruh staf admin penyelenggara."
       }
     ],
     "benefits_title": "Keunggulan Layanan Premium",
     "benefit_activation_title": "Aktivasi Instan",
     "benefit_activation_desc": "Paket langganan Anda langsung aktif secara otomatis setelah pembayaran berhasil diverifikasi.",
     "benefit_analytics_title": "Analitik Lanjutan",
-    "benefit_analytics_desc": "Pantau performa turnamen, statistik pendaftaran, dan data keuangan organisasi secara real-time.",
+    "benefit_analytics_desc": "Pantau performa turnamen, statistik pendaftaran, dan data keuangan penyelenggara secara real-time.",
     "benefit_cert_title": "E-Sertifikat Otomatis",
     "benefit_cert_desc": "Buat sertifikat digital otomatis untuk seluruh peserta dan pemenang dengan desain kustom.",
     "benefit_support_title": "Dukungan Prioritas",
@@ -855,7 +855,7 @@
       "free": {
         "participants": "Maksimal 10 Peserta / Event",
         "storage": "Penyimpanan Media 250 MB",
-        "profile": "Profil Organisasi Dasar",
+        "profile": "Profil Penyelenggara Dasar",
         "create": "Buat Event Baru",
         "scoring": "Scoring Digital"
       }
@@ -875,7 +875,7 @@
       "team_club_mgmt": "Manajemen Tim & Klub",
       "target_allocation": "Alokasi Target Bantalan Visual",
       "obs_overlay": "Overlay Live Streaming OBS",
-      "direct_payout": "Rekening Bank Organisasi Langsung",
+      "direct_payout": "Rekening Bank Penyelenggara Langsung",
       "custom_whatsapp": "Nama Pengirim WA Kustom",
       "digital_cert_sign": "Tanda Tangan Sertifikat Digital",
       "finance_analytics": "Analitik Keuangan & Pendaftaran",

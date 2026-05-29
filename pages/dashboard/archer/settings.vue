@@ -310,11 +310,11 @@ const passwordStatusDescription = computed(() => {
 // Determine user type
 const userType = computed(() => userData.value?.user_type || user.value?.role || user.value?.type || 'archer')
 const userTypeLabel = computed(() => {
-  const labels = { archer: 'Pemanah', organization: 'Organisasi', club: 'Klub', admin: 'Admin', seller: 'Seller' }
+  const labels = { archer: 'Pemanah', organizer: 'Penyelenggara', club: 'Klub', admin: 'Admin', seller: 'Seller' }
   return labels[userType.value] || 'Pengguna'
 })
 const userTypeIcon = computed(() => {
-  const icons = { archer: 'ph:user', organization: 'ph:buildings', club: 'ph:users-three', admin: 'ph:shield-star', seller: 'ph:storefront' }
+  const icons = { archer: 'ph:user', organizer: 'ph:buildings', club: 'ph:users-three', admin: 'ph:shield-star', seller: 'ph:storefront' }
   return icons[userType.value] || 'ph:user'
 })
 

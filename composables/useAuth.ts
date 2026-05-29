@@ -85,11 +85,11 @@ export const useAuth = () => {
     }
     return null
   })
-  const organizationProfile = useState<any | null>('auth.organizationProfile', () => {
-    // Populate organizationProfile from server context if user is an organization
+  const organizerProfile = useState<any | null>('auth.organizerProfile', () => {
+    // Populate organizerProfile from server context if user is an organizer
     if (import.meta.server) {
       const event = useRequestEvent()
-      if (event?.context?.user && (event.context.user.role === 'organization' || event.context.user.user_type === 'organization')) {
+      if (event?.context?.user && (event.context.user.role === 'organizer' || event.context.user.user_type === 'organizer')) {
         return event.context.user
       }
     }
@@ -183,7 +183,7 @@ export const useAuth = () => {
     })
     user.value = null
     archerProfile.value = null
-    organizationProfile.value = null
+    organizerProfile.value = null
     sellerProfile.value = null
 
     if (import.meta.client) {
@@ -214,12 +214,12 @@ export const useAuth = () => {
             const profileRes = await $fetch<{ data: any }>(`${baseUrl}/archer/me`, fetchOptions).catch(() => null)
             archerProfile.value = profileRes?.data || profileRes
           }
-        } else if (userType === 'organization') {
+        } else if (userType === 'organizer') {
           if (user.value.logo_url || user.value.city) {
-            organizationProfile.value = { ...user.value }
+            organizerProfile.value = { ...user.value }
           } else {
-            const profileRes = await $fetch<{ data: any }>(`${baseUrl}/organization/me`, fetchOptions).catch(() => null)
-            organizationProfile.value = profileRes?.data || profileRes
+            const profileRes = await $fetch<{ data: any }>(`${baseUrl}/organizer/me`, fetchOptions).catch(() => null)
+            organizerProfile.value = profileRes?.data || profileRes
           }
 
         } else if (userType === 'seller') {
@@ -263,10 +263,10 @@ export const useAuth = () => {
     const role = user.value?.role || user.value?.user_type || user.value?.type || 'archer'
     const roleMap: Record<string, string> = {
       'archer': 'archer',
-      'organization': 'organization',
+      'organizer': 'organizer',
       'seller': 'seller',
       'root': 'root',
-      'admin': 'organization'
+      'admin': 'organizer'
     }
     return roleMap[role] || 'archer'
   })
@@ -275,7 +275,7 @@ export const useAuth = () => {
     user: readonly(user) as Ref<AuthUser | null>,
     userPersona,
     archerProfile: readonly(archerProfile),
-    organizationProfile: readonly(organizationProfile),
+    organizerProfile: readonly(organizerProfile),
     sellerProfile: readonly(sellerProfile),
     isUserLoading: readonly(isUserLoading),
     isLoggedIn,

@@ -642,7 +642,7 @@
                                         class="p-6 text-center border-2 border-dashed border-gray-100 rounded-xl bg-gray-50/50">
                                         <Icon icon="ph:credit-card-light" class="text-3xl text-gray-300 mb-1.5 mx-auto" />
                                         <span class="text-xs text-navy font-black block">Manual Transfer Not Available</span>
-                                        <span class="text-[10px] text-gray-400 block mt-1">This event does not support manual transfer. Please configure a payment method in your organization settings or use online payment channels.</span>
+                                        <span class="text-[10px] text-gray-400 block mt-1">This event does not support manual transfer. Please configure a payment method in your organizer settings or use online payment channels.</span>
                                     </div>
                                     <div v-else v-for="method in orgManualMethods"
                                         :key="method.uuid || method.account_number"

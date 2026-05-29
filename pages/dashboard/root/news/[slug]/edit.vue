@@ -168,7 +168,7 @@ const loadNews = async () => {
             }
         }
     } catch (error) {
-        toast.error(t('organization.news.form.toast_load_failed', 'Gagal memuat data berita'))
+        toast.error(t('organizer.news.form.toast_load_failed', 'Gagal memuat data berita'))
         router.push('/dashboard/root/news')
     }
 }
@@ -184,7 +184,7 @@ const handleMediaSelect = (media) => {
  
 const submitNews = async () => {
     if (!form.value.title) {
-        toast.error(t('organization.news.form.toast_title_required', 'Judul berita wajib diisi'))
+        toast.error(t('organizer.news.form.toast_title_required', 'Judul berita wajib diisi'))
         return
     }
  
@@ -205,10 +205,10 @@ const submitNews = async () => {
  
         await put(`/news/${route.params.slug}`, payload)
  
-        toast.success(t('organization.news.form.toast_update_ok', 'Berita berhasil diperbarui!'))
+        toast.success(t('organizer.news.form.toast_update_ok', 'Berita berhasil diperbarui!'))
         router.push('/dashboard/root/news')
     } catch (error) {
-        toast.error(t('organization.news.form.toast_update_failed', 'Gagal memperbarui berita'))
+        toast.error(t('organizer.news.form.toast_update_failed', 'Gagal memperbarui berita'))
     } finally {
         isSubmitting.value = false
     }
