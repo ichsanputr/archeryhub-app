@@ -1,2 +1,0 @@
-import{_ as o,X as a,c as s,a as e,b as c,o as _,ay as n}from"./B14eACdF.js";const r={class:"min-h-screen bg-background-light font-body text-navy antialiased flex flex-col"},d={class:"flex-grow max-w-[1280px] mx-auto w-full"},l={class:"w-full"},i={__name:"[id]",setup(u){return a().params.id,(p,x)=>{const t=n;return _(),s("div",r,[e("main",d,[e("div",l,[c(t)])])])}}},h=o(i,[["__scopeId","data-v-9578c7d6"]]);export{h as default};
-//# sourceMappingURL=B4o7hkaD.js.map

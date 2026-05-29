@@ -1,2 +1,2 @@
-import{p as o}from"../nitro/nitro.mjs";const t=o("/hero-event-detail.jpeg");export{t as _};
+import{p as e}from"../_/nitro.mjs";const o=e("/hero-event-detail.jpeg");export{o as _};
 //# sourceMappingURL=virtual_public-BPtpOYNI.mjs.map
