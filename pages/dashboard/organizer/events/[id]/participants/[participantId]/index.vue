@@ -186,6 +186,53 @@
                                 <BaseInput v-model="form.payment_amount" :label="t('participant.detail.payment_amount_label')" placeholder="0"
                                     icon="ph:money" kind="currency" required />
                             </div>
+
+                            <!-- Transaction Details -->
+                            <div v-if="participant.transaction" class="pt-6 border-t border-gray-100 space-y-4">
+                                <span class="text-xs font-black text-gray-400 tracking-widest block">detail transaksi</span>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100 text-xs">
+                                    <div class="space-y-2.5">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-gray-500">tipe pembayaran</span>
+                                            <span class="font-bold text-navy capitalize">{{ participant.transaction.payment_method }}</span>
+                                        </div>
+                                        <div v-if="participant.transaction.payment_channel" class="flex items-center justify-between">
+                                            <span class="text-gray-500">channel</span>
+                                            <span class="font-bold text-navy capitalize">{{ participant.transaction.payment_channel }}</span>
+                                        </div>
+                                        <div v-if="participant.transaction.reference" class="flex items-center justify-between">
+                                            <span class="text-gray-500">id referensi</span>
+                                            <span class="font-mono text-navy font-bold">{{ participant.transaction.reference }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2.5">
+                                        <div v-if="participant.transaction.sender_name" class="flex items-center justify-between">
+                                            <span class="text-gray-500">atas nama (sender name)</span>
+                                            <span class="font-bold text-navy">{{ participant.transaction.sender_name }}</span>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-gray-500">nominal transaksi</span>
+                                            <span class="font-black text-navy">Rp {{ formatCurrency(participant.transaction.amount) }}</span>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-gray-500">tanggal dibuat</span>
+                                            <span class="text-navy font-medium">{{ formatDate(participant.transaction.created_at) }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="participant.transaction.proof_url" class="p-4 bg-gray-50 rounded-xl border border-gray-100 space-y-2">
+                                    <span class="text-xs font-black text-gray-500 block">bukti pembayaran</span>
+                                    <div class="relative group max-w-xs cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-white" @click="showProofDialog = true">
+                                        <img :src="participant.transaction.proof_url" class="h-40 w-full object-cover transition-transform group-hover:scale-105" />
+                                        <div class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                            <div class="bg-white/90 px-3 py-1.5 rounded-lg text-xs font-bold text-navy flex items-center gap-1.5 shadow">
+                                                <Icon icon="ph:magnifying-glass-plus" />
+                                                <span>lihat bukti</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -265,6 +312,21 @@
             </div>
         </template>
 
+            <!-- View Proof Dialog -->
+            <BaseDialogForm v-model="showProofDialog" @close="showProofDialog = false">
+                <template #header>
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 bg-primary/10 rounded-xl flex items-center justify-center shadow-inner">
+                            <Icon icon="ph:image-bold" class="text-xl text-navy" />
+                        </div>
+                        <h2 class="text-xl font-black text-navy">bukti transfer</h2>
+                    </div>
+                </template>
+                <div class="flex justify-center p-2">
+                    <img :src="participant.transaction?.proof_url" class="max-w-full max-h-[70vh] object-contain rounded-2xl border border-gray-100 shadow-md" />
+                </div>
+            </BaseDialogForm>
+
         <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
     </div>
 </template>
@@ -311,6 +373,7 @@ const isLoading = ref(true)
 const isSubmitting = ref(false)
 const isKicking = ref(false)
 const showKickDialog = ref(false)
+const showProofDialog = ref(false)
 const participant = ref(null)
 const event = ref(null)
 const categories = ref([])
