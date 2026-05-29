@@ -338,13 +338,12 @@ const countries = ref([
 ])
 
 definePageMeta({
-  title: 'Profil Penyelenggara',
   layout: 'dashboard',
   middleware: ['auth']
 })
 
 useHead({
-  title: 'Profil Penyelenggara - Archeris Dashboard'
+  title: computed(() => `${t('organizer.profile.title')} - Archeris Dashboard`)
 })
 
 const router = useRouter()

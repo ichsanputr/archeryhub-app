@@ -93,9 +93,9 @@
                                             <option value="female">{{ t('auth.register.gender_female') }}</option>
                                         </select>
                                     </div>
-                                    <BaseInput v-model="form.dateOfBirth" :label="t('auth.register.birth_date_label')" type="date" required
-                                        :error="errors.dateOfBirth"
-                                        @update:model-value="validate('dateOfBirth', form.dateOfBirth, [rules.required()])" />
+                                    <BaseSelect v-model="form.country" :label="t('auth.register.country_label')" :placeholder="t('auth.register.country_placeholder')" required
+                                        :items="countries" :error="errors.country" searchable
+                                        @update:model-value="handleCountryChange" />
                                 </div>
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -207,7 +207,6 @@
 import { Icon } from '@iconify/vue'
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import { useFormValidation } from '~/composables/useFormValidation'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
@@ -262,7 +261,7 @@ const form = ref({
     gender: '',
     dateOfBirth: '',
     city: '',
-    country: '',
+    country: 'Indonesia',
     currency: '',
     clubID: '',
     newClubName: '',
@@ -314,11 +313,82 @@ const countryToCurrency = {
   'United States': 'USD'
 }
 
+const countryCities = {
+    'Indonesia': [],
+    'Malaysia': [
+        { title: 'Kuala Lumpur', value: 'Kuala Lumpur' },
+        { title: 'George Town', value: 'George Town' },
+        { title: 'Johor Bahru', value: 'Johor Bahru' },
+        { title: 'Ipoh', value: 'Ipoh' },
+        { title: 'Kuching', value: 'Kuching' },
+        { title: 'Kota Kinabalu', value: 'Kota Kinabalu' }
+    ],
+    'Singapore': [
+        { title: 'Singapore', value: 'Singapore' }
+    ],
+    'Thailand': [
+        { title: 'Bangkok', value: 'Bangkok' },
+        { title: 'Chiang Mai', value: 'Chiang Mai' },
+        { title: 'Phuket', value: 'Phuket' },
+        { title: 'Pattaya', value: 'Pattaya' }
+    ],
+    'Philippines': [
+        { title: 'Manila', value: 'Manila' },
+        { title: 'Quezon City', value: 'Quezon City' },
+        { title: 'Davao City', value: 'Davao City' },
+        { title: 'Cebu City', value: 'Cebu City' }
+    ],
+    'Vietnam': [
+        { title: 'Ho Chi Minh City', value: 'Ho Chi Minh City' },
+        { title: 'Hanoi', value: 'Hanoi' },
+        { title: 'Da Nang', value: 'Da Nang' }
+    ],
+    'Australia': [
+        { title: 'Sydney', value: 'Sydney' },
+        { title: 'Melbourne', value: 'Melbourne' },
+        { title: 'Brisbane', value: 'Brisbane' },
+        { title: 'Perth', value: 'Perth' },
+        { title: 'Adelaide', value: 'Adelaide' }
+    ],
+    'Japan': [
+        { title: 'Tokyo', value: 'Tokyo' },
+        { title: 'Osaka', value: 'Osaka' },
+        { title: 'Kyoto', value: 'Kyoto' },
+        { title: 'Yokohama', value: 'Yokohama' }
+    ],
+    'South Korea': [
+        { title: 'Seoul', value: 'Seoul' },
+        { title: 'Busan', value: 'Busan' },
+        { title: 'Incheon', value: 'Incheon' }
+    ],
+    'United Kingdom': [
+        { title: 'London', value: 'London' },
+        { title: 'Manchester', value: 'Manchester' },
+        { title: 'Birmingham', value: 'Birmingham' },
+        { title: 'Edinburgh', value: 'Edinburgh' }
+    ],
+    'United States': [
+        { title: 'New York', value: 'New York' },
+        { title: 'Los Angeles', value: 'Los Angeles' },
+        { title: 'Chicago', value: 'Chicago' },
+        { title: 'Houston', value: 'Houston' },
+        { title: 'San Francisco', value: 'San Francisco' }
+    ]
+}
+
 const handleCountryChange = (countryName) => {
     validate('country', countryName, [rules.required()])
     const currency = countryToCurrency[countryName]
     if (currency) {
         form.value.currency = currency
+    }
+
+    // Auto-update cities
+    form.value.city = ''
+    if (countryCities[countryName]) {
+        cities.value = countryCities[countryName]
+    } else {
+        cities.value = []
     }
 }
 
@@ -379,7 +449,11 @@ onMounted(async () => {
     startSlideshow()
     try {
         const response = await get('/cities')
-        cities.value = response.data.map(c => ({ title: c.name, value: c.name }))
+        const indoCities = response.data.map(c => ({ title: c.name, value: c.name }))
+        countryCities['Indonesia'] = indoCities
+        if (form.value.country === 'Indonesia') {
+            cities.value = indoCities
+        }
     } catch (err) {
         console.error('Failed to fetch cities:', err)
     }
@@ -436,8 +510,8 @@ const handleGoogleRegister = async () => {
                 isGoogleLoading.value = false
                 return
             }
-            if (!form.value.dateOfBirth) {
-                toast.error('Birth date is required')
+            if (!form.value.country) {
+                toast.error('Country is required')
                 isGoogleLoading.value = false
                 return
             }
@@ -454,7 +528,7 @@ const handleGoogleRegister = async () => {
 
             Object.assign(metadata, {
                 gender: form.value.gender,
-                date_of_birth: form.value.dateOfBirth,
+                country: form.value.country,
                 city: form.value.city,
                 club_id: form.value.clubID || '',
                 new_club_name: form.value.newClubName || '',

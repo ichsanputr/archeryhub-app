@@ -68,7 +68,7 @@
                     class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5 space-y-4 mb-6">
                     <!-- VA Number -->
                     <div v-if="paymentResult.pay_code">
-                        <span class="text-[10px] font-black tracking-widest text-white/40 block mb-2">Virtual
+                        <span class="text-xs font-black tracking-widest text-white/40 block mb-2">Virtual
                             Account</span>
                         <div class="flex items-center justify-between gap-3 bg-white/10 rounded-xl px-4 py-3">
                             <span class="font-mono font-black text-white text-xl tracking-widest">{{
@@ -81,18 +81,18 @@
                     </div>
                     <!-- QR -->
                     <div v-if="paymentResult.qr_url" class="flex flex-col items-center bg-white rounded-xl p-4">
-                        <span class="text-[10px] font-black tracking-widest text-gray-400 block mb-3">Scan QRIS</span>
+                        <span class="text-xs font-black tracking-widest text-gray-400 block mb-3">Scan QRIS</span>
                         <img :src="paymentResult.qr_url" class="w-40 h-40" />
                     </div>
                     <!-- Amount & method -->
                     <div class="flex items-center justify-between border-t border-white/10 pt-3">
                         <div>
-                            <span class="text-[9px] text-white/40 font-black tracking-widest block">Total Amount</span>
+                            <span class="text-xs text-white/40 font-black tracking-widest block">Total Amount</span>
                             <span class="font-black text-primary text-lg tabular-nums">{{ formatPrice(paymentResult.total_amount
                                 || paymentResult.amount || 0) }}</span>
                         </div>
                         <div v-if="paymentResult.payment_method" class="text-right">
-                            <span class="text-[9px] text-white/40 font-black tracking-widest block">Method</span>
+                            <span class="text-xs text-white/40 font-black tracking-widest block">Method</span>
                             <span class="text-white font-black text-sm">{{ paymentResult.payment_method }}</span>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                             <Icon icon="ph:info-bold" class="text-primary shrink-0" />
                             <span class="text-xs text-white/90 font-bold block">Action Required: Complete Payment</span>
                         </div>
-                        <span class="text-[11px] text-white/70 font-medium block leading-relaxed">
+                        <span class="text-xs text-white/70 font-medium block leading-relaxed">
                             Click the button below to proceed to the secure checkout page and complete your payment.
                         </span>
                         <a :href="paymentResult.checkout_url" target="_blank"
@@ -153,7 +153,7 @@
                             <Icon icon="ph:arrow-left-bold" />
                             Back
                         </NuxtLink>
-                        <Icon icon="ph:caret-right-bold" class="text-white/30 text-[10px]" />
+                        <Icon icon="ph:caret-right-bold" class="text-white/30 text-xs" />
                         <span class="text-white/60 text-xs font-bold tracking-widest">Registration</span>
                     </div>
                     <h1 class="text-2xl md:text-4xl font-black text-white tracking-tight leading-tight">
@@ -292,7 +292,7 @@
                                             <span class="text-sm text-gray-400 block">{{ archerProfile?.email || ''
                                                 }}</span>
                                             <span v-if="archerProfile?.id"
-                                                class="text-[10px] text-navy font-black bg-gray-100 px-2 py-0.5 rounded-full tracking-wider">ID:
+                                                class="text-xs text-navy font-black bg-gray-100 px-2 py-0.5 rounded-full tracking-wider">ID:
                                                 {{ archerProfile.id }}</span>
                                         </div>
                                     </div>
@@ -301,8 +301,8 @@
                                             placeholder="Full name" required icon="ph:user-bold" />
                                         <BaseSelect v-model="profileForm.gender" :items="genderOptions" label="Gender"
                                             placeholder="Select" required icon="ph:gender-intersex" />
-                                        <BaseInput v-model="profileForm.date_of_birth" label="Date of Birth" type="date"
-                                            required icon="ph:calendar-blank" />
+                                        <BaseDatePicker v-model="profileForm.date_of_birth" label="Date of Birth"
+                                            required />
                                         <BaseSelect v-model="profileForm.bow_type" :items="bowTypeOptions"
                                             label="Bow Type" placeholder="Select bow type" required
                                             icon="ph:target-bold" />
@@ -330,8 +330,8 @@
                                     <Icon icon="ph:users-three-bold" class="text-lg" />
                                 </div>
                                 <div>
-                                    <h2 class="text-base font-black text-navy">Pilih Tipe Peserta</h2>
-                                    <span class="text-[10px] text-gray-400 font-medium block">Can select multiple if the schedule allows</span>
+                                    <h2 class="text-base font-black text-navy">{{ t('my_registration.select_participant_type') }}</h2>
+                                    <span class="text-xs text-gray-400 font-medium block">{{ t('my_registration.select_participant_type_desc') }}</span>
                                 </div>
                             </div>
                             <div class="p-6">
@@ -349,8 +349,8 @@
                                             : 'border-gray-200 text-gray-500 hover:border-gray-300'"
                                         class="flex flex-col items-start gap-1 p-3 rounded-xl border-2 transition-all text-left w-full">
                                         <Icon :icon="pt.icon" class="text-lg" />
-                                        <span class="text-[10px] font-black tracking-wide">{{ pt.label }}</span>
-                                        <span class="text-[9px] font-bold text-navy tabular-nums">{{ formatPrice(pt.fee) }}</span>
+                                        <span class="text-xs font-black tracking-wide">{{ pt.label }}</span>
+                                        <span class="text-xs font-bold text-navy tabular-nums">{{ formatPrice(pt.fee) }}</span>
                                     </button>
                                 </div>
                             </div>
@@ -363,8 +363,8 @@
                                     <Icon icon="ph:tag-bold" class="text-lg" />
                                 </div>
                                 <div>
-                                    <h2 class="text-base font-black text-navy">Select Category</h2>
-                                    <span class="text-[10px] text-gray-400 font-medium block">Can select multiple if the schedule allows</span>
+                                    <h2 class="text-base font-black text-navy">{{ t('my_registration.select_category') }}</h2>
+                                    <span class="text-xs text-gray-400 font-medium block">{{ t('my_registration.select_participant_type_desc') }}</span>
                                 </div>
                             </div>
                             <div class="p-6 space-y-4">
@@ -405,13 +405,13 @@
                                             class="border-t border-primary/20 px-3.5 pb-3.5 pt-3 space-y-2"
                                             @click.stop>
                                             <div class="flex items-center justify-between">
-                                                <div class="text-[10px] font-black text-gray-500 tracking-widest uppercase">
+                                                <div class="text-xs font-black text-gray-500 tracking-widest uppercase">
                                                     {{ getCategoryType(category) === 'mixed_team' ? 'Partner (1 Required)' : 'Team Members (2 Required)' }}
                                                 </div>
                                                 <button type="button"
                                                     @click="openPartnerDialog(category.id)"
                                                     :disabled="getPartnersForCategory(category.id).length >= (getCategoryType(category) === 'mixed_team' ? 1 : 2)"
-                                                    class="text-[10px] font-black text-primary hover:text-primary/80 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1">
+                                                    class="text-xs font-black text-primary hover:text-primary/80 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1">
                                                     <Icon icon="ph:plus-bold" class="text-xs" />
                                                     Add
                                                 </button>
@@ -423,7 +423,7 @@
                                                     <img :src="partner.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(partner.full_name || 'A')}&background=1a2744&color=f5c842&size=32`"
                                                         class="size-6 rounded-full object-cover shrink-0" />
                                                     <span class="text-xs font-bold text-navy flex-1 truncate">{{ partner.full_name }}</span>
-                                                    <span v-if="partner.id" class="text-[9px] text-gray-400 font-mono">{{ partner.id }}</span>
+                                                    <span v-if="partner.id" class="text-xs text-gray-400 font-mono">{{ partner.id }}</span>
                                                     <button type="button" @click="removePartner(category.id, partner.uuid || partner.id)"
                                                         class="p-0.5 text-gray-400 hover:text-red-500 transition-colors shrink-0">
                                                         <Icon icon="ph:x-bold" class="text-xs" />
@@ -431,12 +431,12 @@
                                                 </div>
                                             </div>
                                             <!-- Empty state -->
-                                            <div v-else class="text-[10px] text-gray-400 italic">
+                                            <div v-else class="text-xs text-gray-400 italic">
                                                 no partners added yet
                                             </div>
                                             <!-- Incomplete warning -->
                                             <div v-if="!isPartnerComplete(category.id)"
-                                                class="flex items-center gap-1.5 text-[10px] text-amber-600 font-bold">
+                                                class="flex items-center gap-1.5 text-xs text-amber-600 font-bold">
                                                 <Icon icon="ph:warning-bold" class="text-xs" />
                                                 {{ getCategoryType(category) === 'mixed_team' ? '1 partner required' : '2 team members required' }}
                                             </div>
@@ -462,19 +462,19 @@
                                 <div class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
                                     <Icon icon="ph:receipt-bold" class="text-lg" />
                                 </div>
-                                <h2 class="text-base font-black text-navy">Summary</h2>
+                                <h2 class="text-base font-black text-navy">{{ t('my_registration.summary') }}</h2>
                             </div>
                             <div class="p-6">
                                 <!-- Selected Categories Receipt -->
                                 <div v-if="form.category_ids.length > 0" class="space-y-3">
                                     <!-- Participant Types (only if fee_mode === per_type) -->
                                     <template v-if="event.fee_mode === 'per_type'">
-                                        <span class="text-[10px] font-black text-gray-400 tracking-widest block uppercase">Participant Types</span>
+                                        <span class="text-xs font-black text-gray-400 tracking-widest block">{{ t('my_registration.participant_types') }}</span>
                                         <div v-for="type in form.participant_types" :key="type"
                                             class="flex items-center justify-between gap-2">
                                             <div class="flex items-center gap-2 min-w-0">
                                                 <div class="size-4 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                                                    <Icon icon="ph:user-bold" class="text-navy text-[8px]" />
+                                                    <Icon icon="ph:user-bold" class="text-navy text-xs" />
                                                 </div>
                                                 <span class="text-xs font-bold text-navy capitalize">{{ type.replace('_', ' ') }}</span>
                                             </div>
@@ -483,12 +483,12 @@
                                         <div class="h-px bg-gray-100 my-2"></div>
                                     </template>
 
-                                    <span class="text-[10px] font-black text-gray-400 tracking-widest block uppercase">Selected Categories</span>
+                                    <span class="text-xs font-black text-gray-400 tracking-widest block">{{ t('my_registration.selected_categories') }}</span>
                                     <div v-for="catId in form.category_ids" :key="catId"
                                         class="flex items-center justify-between gap-2">
                                         <div class="flex items-center gap-2 min-w-0">
                                             <div class="size-4 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                                                <Icon icon="ph:check-bold" class="text-navy text-[8px]" />
+                                                <Icon icon="ph:check-bold" class="text-navy text-xs" />
                                             </div>
                                             <span class="text-xs font-medium text-navy truncate">{{ getCategoryName(catId) }}</span>
                                         </div>
@@ -504,11 +504,11 @@
                                     <div class="flex items-center justify-between text-sm">
                                         <span class="text-gray-500">{{ form.category_ids.length }} {{ form.category_ids.length > 1 ? 'categories' : 'category' }}</span>
                                         <span class="font-bold text-navy capitalize">
-                                            {{ event.fee_mode === 'per_type' ? form.participant_types.map(t => t.charAt(0).toUpperCase() + t.slice(1).replace('_', ' ')).join(', ') : 'Per Category' }}
+                                            {{ event.fee_mode === 'per_type' ? form.participant_types.map(t => t.replace('_', ' ')).join(', ') : 'per category' }}
                                         </span>
                                     </div>
                                     <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                                        <span class="font-black text-navy">total</span>
+                                        <span class="font-black text-navy">{{ t('my_registration.total') }}</span>
                                         <span class="text-2xl font-black text-navy tabular-nums">{{ formatPrice(totalFee) }}</span>
                                     </div>
                                 </div>
@@ -527,8 +527,8 @@
                                     <Icon icon="ph:credit-card-bold" class="text-lg" />
                                 </div>
                                 <div>
-                                    <h2 class="text-base font-black text-navy">Metode Pembayaran</h2>
-                                    <span class="text-[10px] text-gray-400 font-medium block">Pilih metode pembayaran online atau transfer manual</span>
+                                    <h2 class="text-base font-black text-navy">{{ t('my_registration.payment_methods') }}</h2>
+                                    <span class="text-xs text-gray-400 font-medium block">{{ t('my_registration.payment_methods_desc') }}</span>
                                 </div>
                             </div>
 
@@ -538,14 +538,14 @@
                                     @click="form.payment_type = 'online'; form.manual_method_id = ''"
                                     :class="form.payment_type === 'online' ? 'border-primary text-navy font-black' : 'border-transparent text-gray-400 hover:text-gray-600'"
                                     class="flex-1 py-3 text-center border-b-2 text-xs transition-all tracking-wide">
-                                    Pembayaran Online
+                                    {{ t('my_registration.online_payment') }}
                                 </button>
                                 <button v-if="orgManualMethods.length > 0 || paymentMethods.length > 0"
                                     type="button"
                                     @click="form.payment_type = 'manual'; form.online_channel = ''"
                                     :class="form.payment_type === 'manual' ? 'border-primary text-navy font-black' : 'border-transparent text-gray-400 hover:text-gray-600'"
                                     class="flex-1 py-3 text-center border-b-2 text-xs transition-all tracking-wide">
-                                    Transfer Manual
+                                    {{ t('my_registration.manual_transfer') }}
                                 </button>
                             </div>
 
@@ -562,10 +562,10 @@
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <span class="text-sm font-black text-navy block leading-tight">PayPal</span>
-                                                <span class="text-[10px] text-gray-400 font-medium">International · Powered by Paddle</span>
+                                                <span class="text-xs text-gray-400 font-medium">International · Powered by Paddle</span>
                                             </div>
                                             <div v-if="form.online_channel === 'paddle_paypal'" class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0">
-                                                <Icon icon="ph:check-bold" class="text-navy text-[10px]" />
+                                                <Icon icon="ph:check-bold" class="text-navy text-xs" />
                                             </div>
                                         </div>
                                     </div>
@@ -579,10 +579,10 @@
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <span class="text-sm font-black text-navy block leading-tight">Google Pay</span>
-                                                <span class="text-[10px] text-gray-400 font-medium">International · Powered by Paddle</span>
+                                                <span class="text-xs text-gray-400 font-medium">International · Powered by Paddle</span>
                                             </div>
                                             <div v-if="form.online_channel === 'paddle_gpay'" class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0">
-                                                <Icon icon="ph:check-bold" class="text-navy text-[10px]" />
+                                                <Icon icon="ph:check-bold" class="text-navy text-xs" />
                                             </div>
                                         </div>
                                     </div>
@@ -598,10 +598,10 @@
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <span class="text-sm font-black text-navy block leading-tight">{{ ch.label }}</span>
-                                                <span class="text-[10px] text-gray-400 font-medium">{{ ch.type }}</span>
+                                                <span class="text-xs text-gray-400 font-medium">{{ ch.type }}</span>
                                             </div>
                                             <div v-if="form.online_channel === ch.code" class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0">
-                                                <Icon icon="ph:check-bold" class="text-navy text-[10px]" />
+                                                <Icon icon="ph:check-bold" class="text-navy text-xs" />
                                             </div>
                                         </div>
                                         <div v-if="form.online_channel === ch.code" class="border-t border-gray-100 bg-white/80 px-4 pb-4 pt-2">
@@ -614,7 +614,7 @@
                                                     <div v-for="(group, gi) in channelInstructionGroups(ch.code)" :key="group.title"
                                                         @click="setActiveInstructionTab(ch.code, gi)"
                                                         :class="getActiveInstructionTab(ch.code) === gi ? 'bg-navy text-white border-navy' : 'bg-white text-gray-500 border-gray-200 hover:border-navy/40'"
-                                                        class="px-3 py-1.5 rounded-lg border text-[10px] font-black tracking-widest transition-colors cursor-pointer">
+                                                        class="px-3 py-1.5 rounded-lg border text-xs font-black tracking-widest transition-colors cursor-pointer">
                                                         {{ group.title }}
                                                     </div>
                                                 </div>
@@ -622,7 +622,7 @@
                                                     v-show="channelInstructionGroups(ch.code).length === 1 || getActiveInstructionTab(ch.code) === gi"
                                                     class="space-y-2.5">
                                                     <div v-for="(step, si) in (group.steps || [])" :key="si" class="flex gap-3">
-                                                        <span class="size-5 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px]">{{ si + 1 }}</span>
+                                                        <span class="size-5 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-xs">{{ si + 1 }}</span>
                                                         <span v-html="step" class="text-xs text-gray-600 font-medium leading-relaxed"></span>
                                                     </div>
                                                 </div>
@@ -632,7 +632,7 @@
                                     </div>
                                     <div class="flex items-center gap-2 pt-1">
                                         <Icon icon="ph:shield-check-bold" class="text-emerald-500 text-sm shrink-0" />
-                                        <span class="text-[10px] text-gray-400 font-medium">Secure · Auto-confirmed after payment</span>
+                                        <span class="text-xs text-gray-400 font-medium">Secure · Auto-confirmed after payment</span>
                                     </div>
                                 </div>
 
@@ -642,7 +642,7 @@
                                         class="p-6 text-center border-2 border-dashed border-gray-100 rounded-xl bg-gray-50/50">
                                         <Icon icon="ph:credit-card-light" class="text-3xl text-gray-300 mb-1.5 mx-auto" />
                                         <span class="text-xs text-navy font-black block">Manual Transfer Not Available</span>
-                                        <span class="text-[10px] text-gray-400 block mt-1">This event does not support manual transfer. Please configure a payment method in your organizer settings or use online payment channels.</span>
+                                        <span class="text-xs text-gray-400 block mt-1">This event does not support manual transfer. Please configure a payment method in your organizer settings or use online payment channels.</span>
                                     </div>
                                     <div v-else v-for="method in orgManualMethods"
                                         :key="method.uuid || method.account_number"
@@ -660,7 +660,7 @@
                                         <div class="flex-1 min-w-0">
                                             <div class="text-sm font-black text-navy leading-tight">{{ method.custom_name || method.bank_name || method.payment_method }}</div>
                                             <div class="font-mono text-xs font-bold text-gray-500 mt-0.5">{{ method.account_number }}</div>
-                                            <div class="text-[10px] text-gray-400">{{ method.account_name }}</div>
+                                            <div class="text-xs text-gray-400">{{ method.account_name }}</div>
                                         </div>
                                         <div class="flex items-center gap-2 shrink-0">
                                             <button @click.stop="copyToClipboard(method.account_number)"
@@ -669,36 +669,36 @@
                                             </button>
                                             <div v-if="form.manual_method_id === (method.uuid || method.account_number)"
                                                 class="size-5 rounded-full bg-primary flex items-center justify-center">
-                                                <Icon icon="ph:check-bold" class="text-navy text-[10px]" />
+                                                <Icon icon="ph:check-bold" class="text-navy text-xs" />
                                             </div>
                                         </div>
                                     </div>
                                     <!-- Upload proof when manual selected -->
                                     <div v-if="form.manual_method_id" class="pt-3 border-t border-gray-100 space-y-3">
                                         <div class="space-y-1">
-                                            <label class="text-[10px] font-black text-gray-500 tracking-widest uppercase block">{{ t('my_registration.sender_name') }}</label>
+                                            <label class="text-xs font-black text-gray-500 tracking-widest block">{{ t('my_registration.sender_name') }}</label>
                                             <input type="text" v-model="form.sender_name" 
                                                 class="w-full px-3.5 py-2.5 text-xs border border-gray-200 rounded-xl focus:outline-none focus:border-primary font-medium"
                                                 :placeholder="t('my_registration.sender_name_placeholder')" />
                                         </div>
-                                        <div class="text-[10px] font-black text-gray-500 tracking-widest">{{ t('my_registration.upload_proof') }}</div>
+                                        <div class="text-xs font-black text-gray-500 tracking-widest">{{ t('my_registration.upload_proof') }}</div>
                                         <div @click="triggerFileInput"
                                             class="border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-gray-50"
                                             :class="proofFileUrl ? 'border-primary/50 bg-primary/5' : 'border-gray-200'">
                                             <input type="file" ref="proofInput" class="hidden" accept="image/*" @change="handleProofUpload" />
                                             <template v-if="uploadingProof">
                                                 <Icon icon="ph:circle-notch-bold" class="text-2xl text-primary animate-spin mb-2" />
-                                                <span class="text-xs text-gray-500 font-bold">Uploading...</span>
+                                                <span class="text-xs text-gray-500 font-bold">uploading...</span>
                                             </template>
                                             <template v-else-if="proofFileUrl">
                                                 <img :src="proofFileUrl" class="max-h-28 object-contain rounded-lg mb-2 border border-gray-100" />
-                                                <span class="text-[10px] text-green-600 font-bold">Proof uploaded ✓</span>
-                                                <span class="text-[9px] text-gray-400">Click to change</span>
+                                                <span class="text-xs text-green-600 font-bold">proof uploaded ✓</span>
+                                                <span class="text-xs text-gray-400">click to change</span>
                                             </template>
                                             <template v-else>
                                                 <Icon icon="ph:cloud-arrow-up-bold" class="text-2xl text-gray-400 mb-2" />
-                                                <span class="text-xs text-gray-500 font-bold">Click to upload proof</span>
-                                                <span class="text-[9px] text-gray-400">JPEG, PNG (max 10MB)</span>
+                                                <span class="text-xs text-gray-500 font-bold">click to upload proof</span>
+                                                <span class="text-xs text-gray-400">jpeg, png (max 10mb)</span>
                                             </template>
                                         </div>
                                         <span v-if="uploadError" class="text-xs text-red-500 font-bold block">{{ uploadError }}</span>
@@ -719,7 +719,7 @@
                             <span v-if="submitError" class="text-sm text-red-500 font-bold text-center block">{{
                                 submitError }}</span>
                             <span
-                                class="text-[10px] text-gray-400 text-center font-medium leading-relaxed block">Automatic
+                                class="text-xs text-gray-400 text-center font-medium leading-relaxed block">Automatic
                                 confirmation after
                                 successful payment.</span>
                         </div>
@@ -741,7 +741,7 @@
                         <h3 class="text-base font-black text-navy">
                             {{ partnerDialogType === 'mixed_team' ? 'Add Partner' : 'Add Team Member' }}
                         </h3>
-                        <div class="text-[10px] text-gray-400 mt-0.5">
+                        <div class="text-xs text-gray-400 mt-0.5">
                             {{ partnerDialogType === 'mixed_team' ? '1 partner required' : '2 members required' }}
                         </div>
                     </div>
@@ -783,8 +783,8 @@
                                 class="size-10 rounded-full object-cover shrink-0 border border-gray-100" />
                             <div class="flex-1 min-w-0">
                                 <div class="text-sm font-black text-navy truncate">{{ archer.full_name }}</div>
-                                <div class="text-[10px] text-gray-400 font-mono">{{ archer.id }}</div>
-                                <div v-if="archer.club_name" class="text-[10px] text-gray-400">{{ archer.club_name }}</div>
+                                <div class="text-xs text-gray-400 font-mono">{{ archer.id }}</div>
+                                <div v-if="archer.club_name" class="text-xs text-gray-400">{{ archer.club_name }}</div>
                             </div>
                             <div v-if="getPartnersForCategory(partnerDialogCategoryId).some(p => (p.uuid || p.id) === (archer.uuid || archer.id))"
                                 class="size-6 rounded-full bg-green-100 flex items-center justify-center shrink-0">
@@ -798,7 +798,7 @@
                 <!-- Current partners -->
                 <div v-if="partnerDialogCategoryId && getPartnersForCategory(partnerDialogCategoryId).length > 0"
                     class="px-4 py-3 border-t border-gray-100 bg-gray-50/50">
-                    <div class="text-[10px] font-black text-gray-400 tracking-widest mb-2 uppercase">Added</div>
+                    <div class="text-xs font-black text-gray-400 tracking-widest mb-2 uppercase">Added</div>
                     <div class="space-y-1.5">
                         <div v-for="partner in getPartnersForCategory(partnerDialogCategoryId)" :key="partner.uuid || partner.id"
                             class="flex items-center gap-2 p-2 bg-white rounded-lg border border-gray-100">
@@ -838,6 +838,7 @@ import { useDateFormat } from '@vueuse/core'
 
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
 const slug = route.params.slug
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()

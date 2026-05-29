@@ -73,233 +73,6 @@
       "title": "Pengaturan akun"
     }
   },
-  "organization": {
-    "events": {
-      "title": "이벤트 목록 - Archeris 대시보드"
-    },
-    "news": {
-      "index": {
-        "title": "뉴스 관리",
-        "subtitle": "조직의 뉴스 및 공지사항을 관리하세요.",
-        "create": "새 글 작성",
-        "stats_total": "전체 글",
-        "stats_published": "게시됨",
-        "stats_draft": "초안",
-        "stats_views": "총 조회수",
-        "search_placeholder": "제목 검색...",
-        "filter_status": "상태",
-        "filter_category": "카테고리",
-        "reset_filters": "초기화",
-        "empty_title": "아직 글이 없습니다",
-        "empty_desc": "첫 글을 작성하여 참가자에게 정보를 공유하세요.",
-        "delete_title": "글 삭제",
-        "delete_confirm": "\"{title}\"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
-        "delete_yes": "삭제",
-        "delete_no": "취소",
-        "toast_fetch_failed": "글을 불러오지 못했습니다",
-        "toast_delete_ok": "삭제되었습니다",
-        "toast_delete_failed": "삭제하지 못했습니다"
-      },
-      "common": {
-        "dashboard": "대시보드",
-        "news": "뉴스",
-        "create": "작성",
-        "detail": "상세",
-        "edit": "수정",
-        "back": "뒤로",
-        "cancel": "취소",
-        "delete": "삭제"
-      },
-      "form": {
-        "create_title": "새 글 작성",
-        "create_subtitle": "조직 소식을 작성하고 게시하세요.",
-        "edit_title": "글 수정",
-        "edit_subtitle": "글 내용을 업데이트하세요.",
-        "featured_image": "대표 이미지",
-        "pick_image": "이미지를 선택하려면 클릭",
-        "pick_image_hint": "라이브러리에서 선택하거나 새로 업로드",
-        "info_title": "글 정보",
-        "title_label": "제목",
-        "title_placeholder": "흥미로운 제목을 입력하세요...",
-        "category_label": "카테고리",
-        "status_label": "게시 상태",
-        "tags_label": "태그",
-        "tags_placeholder": "예: event, tournament, sleman",
-        "excerpt_label": "짧은 요약",
-        "excerpt_placeholder": "짧은 요약을 작성하세요(미리보기 표시)...",
-        "content_title": "본문",
-        "content_placeholder": "여기에 내용을 작성하세요...",
-        "preview": "미리보기",
-        "publish": "게시",
-        "save_draft": "초안 저장",
-        "update_publish": "수정 후 게시",
-        "save_changes": "변경 저장",
-        "toast_title_required": "제목은 필수입니다",
-        "toast_create_ok_published": "게시되었습니다!",
-        "toast_create_ok_draft": "초안이 저장되었습니다!",
-        "toast_create_failed": "저장하지 못했습니다",
-        "toast_update_ok": "업데이트되었습니다!",
-        "toast_update_failed": "업데이트하지 못했습니다",
-        "toast_load_failed": "글을 불러오지 못했습니다"
-      },
-      "detail": {
-        "toast_publish_failed": "게시하지 못했습니다",
-        "toast_unpublish_ok": "초안으로 되돌렸습니다",
-        "toast_unpublish_failed": "초안으로 되돌리지 못했습니다",
-        "toast_link_copied": "링크가 복사되었습니다!",
-        "toast_copy_failed": "링크를 복사하지 못했습니다"
-      },
-      "options": {
-        "status_all": "전체 상태",
-        "status_draft": "초안",
-        "status_published": "게시됨",
-        "cat_all": "전체 카테고리",
-        "cat_event": "이벤트",
-        "cat_announcement": "공지",
-        "cat_achievement": "성과",
-        "cat_other": "기타"
-      }
-    },
-    "balance": {
-      "header": {
-        "title": "잔액 및 출금",
-        "subtitle": "잔액을 관리하고 출금을 요청하세요"
-      },
-      "security": {
-        "title": "보안 인증",
-        "desc": "금융 기능에 접근하려면 계정 비밀번호를 입력하세요",
-        "password_placeholder": "계정 비밀번호",
-        "open_access": "보안 접근 열기"
-      },
-      "available": "사용 가능한 잔액",
-      "withdrawals": {
-        "title": "잔액 출금",
-        "empty": "출금 이력이 없습니다.",
-        "table_tx_id": "거래 ID",
-        "table_date": "날짜",
-        "table_status": "상태",
-        "table_amount": "금액"
-      },
-      "otp": {
-        "request_title": "인증 코드 요청",
-        "request_desc": "이 출금을 승인하기 위해 6자리 OTP 인증 코드가 이메일로 전송됩니다.",
-        "send": "이메일로 코드 전송",
-        "verified_title": "이메일 인증됨",
-        "verified_desc": "다음 기간 동안 OTP를 다시 요청하지 않고 추가 출금을 수행할 수 있습니다.",
-        "code_sent": "인증 코드가 등록된 이메일로 전송되었습니다. 15분 동안 유효합니다.",
-        "code_label": "6자리 OTP 코드 입력 *",
-        "code_placeholder": "6자리 OTP 코드 입력",
-        "invalid_length": "OTP 코드는 6자리여야 합니다",
-        "sent_success": "인증 코드가 이메일로 전송되었습니다",
-        "sent_error": "인증 코드 전송 실패"
-      },
-      "withdraw_button": "잔액 출금",
-      "withdraw_info": "최소 출금액 Rp 100,000<br />처리 1-3 영업일",
-      "amount_label": "출금액 (Rp) *",
-      "amount_placeholder": "최소 Rp 100,000",
-      "available_balance": "사용 가능한 잔액",
-      "destination_account": "출금 계좌",
-      "submit_withdrawal": "출금 신청",
-      "password_error": "비밀번호가 잘못되었습니다. 다시 시도하세요.",
-      "minimum_balance_error": "최소 출금액은 Rp 100,000입니다",
-      "no_account_error": "아직 은행 계좌가 없습니다. 먼저 계좌를 추가하세요.",
-      "amount_minimum_error": "최소 출금액은 Rp 100,000입니다",
-      "amount_exceeds_error": "출금액이 사용 가능한 잔액을 초과합니다",
-      "withdrawal_success": "출금 신청이 성공적으로 제출되었습니다",
-      "withdrawal_error": "출금 신청 제출 실패"
-    },
-    "profile": {
-      "edit": {
-        "head_title": "프로필 편집 - Archeris 대시보드",
-        "back_to_profile": "프로필로 돌아가기",
-        "title": "프로필 편집",
-        "subtitle": "개인 정보 및 설정을 업데이트하세요.",
-        "basic_info": "기본 정보",
-        "basic_info_sub": "공개로 표시될 개인 정보입니다.",
-        "category_discipline": "카테고리 & 종목",
-        "category_sub": "대회 레벨을 선택하세요.",
-        "equipment_setup": "장비 설정",
-        "equipment_sub": "현재 사용하는 장비를 기록하세요.",
-        "privacy_settings": "개인정보 설정",
-        "privacy_sub": "프로필을 볼 수 있는 대상을 제어하세요.",
-        "privacy_public": "공개 프로필",
-        "privacy_public_sub": "누구나 프로필과 업적을 볼 수 있도록 허용합니다.",
-        "privacy_stats": "통계 표시",
-        "privacy_stats_sub": "토너먼트 결과 및 장비를 공개적으로 표시합니다.",
-        "cancel": "취소",
-        "save_changes": "변경 사항 저장"
-      },
-      "tabs": {
-        "about": "Visi & Misi",
-        "contact": "Kontak & Sosmed",
-        "faq": "FAQ",
-        "general": "Info Umum"
-      },
-      "title": "Profil Penyelenggara",
-      "save": "Simpan Profil",
-      "saving": "Menyimpan...",
-      "subtitle": "Kelola identitas publik penyelenggara Anda"
-    },
-    "bank_accounts": {
-      "title": "은행 계좌",
-      "subtitle": "출금 대상 계좌 관리",
-      "add": "계좌 추가",
-      "fields": {
-        "bank_name": "은행명",
-        "account_number": "계좌번호",
-        "account_name": "예금주명"
-      },
-      "modal": {
-        "add_title": "은행 계좌 추가",
-        "edit_title": "계좌 편집",
-        "pick_bank": "은행 선택",
-        "custom_bank_label": "사용자 정의 은행명",
-        "custom_bank_placeholder": "목록에 없는 경우",
-        "account_name_label": "예금주명",
-        "account_name_placeholder": "통장 기재명",
-        "account_number_label": "계좌번호",
-        "account_number_placeholder": "계좌번호 입력",
-        "set_primary": "주 계좌로 설정",
-        "save": "계좌 저장",
-        "set_primary_label": "주 계좌로 설정"
-      },
-      "delete": {
-        "title": "계좌를 삭제하시겠습니까?",
-        "message": "이 계좌는 출금 대상 목록에서 제거됩니다."
-      },
-      "add_new": "새 계좌 추가",
-      "add_new_desc": "출금을 위해 다른 계좌 사용",
-      "copy_success": "계좌 번호가 복사되었습니다",
-      "messages": {
-        "please_complete_all_fields": "모든 필드를 입력해 주세요",
-        "account_updated": "계좌가 성공적으로 업데이트되었습니다",
-        "account_added": "계좌가 성공적으로 추가되었습니다",
-        "failed_to_save_account": "계좌 저장에 실패했습니다",
-        "account_deleted": "계좌가 성공적으로 삭제되었습니다",
-        "failed_to_delete_account": "계좌 삭제에 실패했습니다"
-      }
-    },
-    "scorekeepers": {
-      "add": "Tambah Staff",
-      "delete": {
-        "confirm": "Ya, Hapus Akun",
-        "message": "Tindakan ini permanen. Scorekeeper akan kehilangan akses ke akun mereka segera setelah dihapus.",
-        "title": "Hapus Scorekeeper?"
-      },
-      "modal": {
-        "add_title": "Tambah Scorekeeper",
-        "edit_title": "Edit Scorekeeper",
-        "generate": "Generate Akun",
-        "info_generate": "Kode akses login mobile apps akan digenerate secara otomatis setelah Anda menyimpan data staff ini.",
-        "name_label": "Nama Lengkap Staff",
-        "name_placeholder": "e.g. Budi Santoso",
-        "status_label": "Akun"
-      },
-      "search_placeholder": "Cari nama atau kode staff...",
-      "subtitle": "Kelola akun staff pencatat skor penyelenggara",
-      "title": "Scorekeeper"
-    }
-  },
   "subscription": {
     "success": {
       "title": "결제 성공!",
@@ -612,106 +385,6 @@
       "club_required": "양궁 선수의 클럽을 선택하십시오"
     }
   },
-  "organization_news": {
-    "index": {
-      "title": "뉴스 관리",
-      "subtitle": "조직의 뉴스 및 공지사항을 관리하세요.",
-      "create": "새 기사 작성",
-      "stats_total": "총 기사",
-      "stats_published": "게시됨",
-      "stats_draft": "초안",
-      "empty_title": "기사가 없습니다",
-      "empty_desc": "첫 번째 기사를 작성하여 양궁 선수 및 이벤트 참가자와 정보를 공유하세요.",
-      "delete_title": "기사 삭제",
-      "delete_yes": "예, 삭제",
-      "delete_no": "취소",
-      "delete_confirm": "\"{title}\" 기사를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
-      "toast_fetch_failed": "뉴스 데이터를 가져오지 못했습니다",
-      "toast_delete_ok": "기사가 성공적으로 삭제되었습니다",
-      "toast_delete_failed": "기사 삭제 실패"
-    },
-    "options": {
-      "status_all": "모든 상태",
-      "status_draft": "초안",
-      "status_published": "게시됨",
-      "cat_all": "모든 카테고리",
-      "cat_event": "이벤트",
-      "cat_announcement": "공지사항",
-      "cat_achievement": "성과",
-      "cat_other": "기타"
-    },
-    "create": {
-      "title_short": "새 기사",
-      "title": "뉴스 작성",
-      "subtitle": "조직을 위한 뉴스를 작성하고 게시합니다.",
-      "meta_title": "뉴스 작성 - ArcheryHub 대시보드",
-      "featured_image": "대표 이미지",
-      "click_to_select_image": "이미지를 선택하려면 클릭하세요",
-      "select_or_upload": "라이브러리에서 선택하거나 새로 업로드",
-      "info_heading": "뉴스 정보",
-      "label_title": "뉴스 제목",
-      "placeholder_title": "매력적인 뉴스 제목을 입력하세요...",
-      "label_category": "카테고리",
-      "label_status": "게시 상태",
-      "label_tags": "태그",
-      "placeholder_tags": "예: 이벤트, 토너먼트",
-      "label_excerpt": "짧은 요약",
-      "placeholder_excerpt": "미리보기를 위한 짧은 요약을 작성하세요...",
-      "content_heading": "뉴스 내용",
-      "placeholder_content": "뉴스 내용을 여기에 작성하세요...",
-      "back": "돌아가기",
-      "preview": "미리보기",
-      "publish": "게시",
-      "save_draft": "임시 저장",
-      "toast_preview": "미리보기가 열렸습니다",
-      "toast_title_required": "뉴스 제목은 필수 항목입니다",
-      "toast_create_ok_published": "뉴스가 성공적으로 게시되었습니다!",
-      "toast_create_ok_draft": "임시 저장이 성공적으로 완료되었습니다!",
-      "toast_create_failed": "뉴스 저장에 실패했습니다"
-    },
-    "detail": {
-      "title_short": "상세 정보",
-      "status_heading": "뉴스 상태",
-      "stats_heading": "통계",
-      "stats_views": "조회수",
-      "stats_words": "단어 수",
-      "stats_read_time": "읽는 시간",
-      "status_label": "상태",
-      "status_published": "게시됨",
-      "status_draft": "임시 저장",
-      "quick_actions": "빠른 작업",
-      "publish": "게시하기",
-      "unpublish": "임시 저장으로 변경",
-      "share": "공유",
-      "share_title": "기사 공유",
-      "share_desc": "이 기사 링크를 소셜 미디어에 공유하거나 링크를 복사하여 공유하세요.",
-      "share_link_label": "기사 링크",
-      "copy": "복사",
-      "copied": "복사됨",
-      "share_to_label": "공유할 위치",
-      "delete_dialog_title": "기사 삭제",
-      "delete_dialog_message": "\"{title}\" 기사를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
-      "delete_dialog_confirm": "예, 삭제",
-      "delete": "삭제",
-      "edit": "편집",
-      "read_time_unit": "분 소요"
-    },
-    "edit": {
-      "title_short": "편집",
-      "title": "뉴스 편집",
-      "subtitle": "조직의 뉴스 기사를 수정합니다.",
-      "cancel": "취소",
-      "update_publish": "업데이트 및 게시",
-      "save_changes": "변경 사항 저장"
-    },
-    "form": {
-      "edit_title": "뉴스 편집",
-      "toast_load_failed": "뉴스 데이터를 가져오지 못했습니다",
-      "toast_title_required": "뉴스 제목은 필수 항목입니다",
-      "toast_update_ok": "뉴스가 성공적으로 업데이트되었습니다!",
-      "toast_update_failed": "뉴스 업데이트에 실패했습니다"
-    }
-  },
   "subscription_page": {
     "badge": "구독 패키지",
     "title": "양궁 관리 규모 확장",
@@ -940,5 +613,332 @@
     "paddle_name": "신용카드 / 페이팔 (글로벌)",
     "paddle_group": "신용카드 및 해외 결제",
     "load_channels_failed": "결제 수단을 가져오지 못했습니다. 다시 시도하십시오."
+  },
+  "organizer": {
+    "events": {
+      "title": "이벤트 목록 - Archeris 대시보드"
+    },
+    "news": {
+      "index": {
+        "title": "뉴스 관리",
+        "subtitle": "조직의 뉴스 및 공지사항을 관리하세요.",
+        "create": "새 글 작성",
+        "stats_total": "전체 글",
+        "stats_published": "게시됨",
+        "stats_draft": "초안",
+        "stats_views": "총 조회수",
+        "search_placeholder": "제목 검색...",
+        "filter_status": "상태",
+        "filter_category": "카테고리",
+        "reset_filters": "초기화",
+        "empty_title": "아직 글이 없습니다",
+        "empty_desc": "첫 글을 작성하여 참가자에게 정보를 공유하세요.",
+        "delete_title": "글 삭제",
+        "delete_confirm": "\"{title}\"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+        "delete_yes": "삭제",
+        "delete_no": "취소",
+        "toast_fetch_failed": "글을 불러오지 못했습니다",
+        "toast_delete_ok": "삭제되었습니다",
+        "toast_delete_failed": "삭제하지 못했습니다"
+      },
+      "common": {
+        "dashboard": "대시보드",
+        "news": "뉴스",
+        "create": "작성",
+        "detail": "상세",
+        "edit": "수정",
+        "back": "뒤로",
+        "cancel": "취소",
+        "delete": "삭제"
+      },
+      "form": {
+        "create_title": "새 글 작성",
+        "create_subtitle": "조직 소식을 작성하고 게시하세요.",
+        "edit_title": "글 수정",
+        "edit_subtitle": "글 내용을 업데이트하세요.",
+        "featured_image": "대표 이미지",
+        "pick_image": "이미지를 선택하려면 클릭",
+        "pick_image_hint": "라이브러리에서 선택하거나 새로 업로드",
+        "info_title": "글 정보",
+        "title_label": "제목",
+        "title_placeholder": "흥미로운 제목을 입력하세요...",
+        "category_label": "카테고리",
+        "status_label": "게시 상태",
+        "tags_label": "태그",
+        "tags_placeholder": "예: event, tournament, sleman",
+        "excerpt_label": "짧은 요약",
+        "excerpt_placeholder": "짧은 요약을 작성하세요(미리보기 표시)...",
+        "content_title": "본문",
+        "content_placeholder": "여기에 내용을 작성하세요...",
+        "preview": "미리보기",
+        "publish": "게시",
+        "save_draft": "초안 저장",
+        "update_publish": "수정 후 게시",
+        "save_changes": "변경 저장",
+        "toast_title_required": "제목은 필수입니다",
+        "toast_create_ok_published": "게시되었습니다!",
+        "toast_create_ok_draft": "초안이 저장되었습니다!",
+        "toast_create_failed": "저장하지 못했습니다",
+        "toast_update_ok": "업데이트되었습니다!",
+        "toast_update_failed": "업데이트하지 못했습니다",
+        "toast_load_failed": "글을 불러오지 못했습니다"
+      },
+      "detail": {
+        "toast_publish_failed": "게시하지 못했습니다",
+        "toast_unpublish_ok": "초안으로 되돌렸습니다",
+        "toast_unpublish_failed": "초안으로 되돌리지 못했습니다",
+        "toast_link_copied": "링크가 복사되었습니다!",
+        "toast_copy_failed": "링크를 복사하지 못했습니다"
+      },
+      "options": {
+        "status_all": "전체 상태",
+        "status_draft": "초안",
+        "status_published": "게시됨",
+        "cat_all": "전체 카테고리",
+        "cat_event": "이벤트",
+        "cat_announcement": "공지",
+        "cat_achievement": "성과",
+        "cat_other": "기타"
+      }
+    },
+    "balance": {
+      "header": {
+        "title": "잔액 및 출금",
+        "subtitle": "잔액을 관리하고 출금을 요청하세요"
+      },
+      "security": {
+        "title": "보안 인증",
+        "desc": "금융 기능에 접근하려면 계정 비밀번호를 입력하세요",
+        "password_placeholder": "계정 비밀번호",
+        "open_access": "보안 접근 열기"
+      },
+      "available": "사용 가능한 잔액",
+      "withdrawals": {
+        "title": "잔액 출금",
+        "empty": "출금 이력이 없습니다.",
+        "table_tx_id": "거래 ID",
+        "table_date": "날짜",
+        "table_status": "상태",
+        "table_amount": "금액"
+      },
+      "otp": {
+        "request_title": "인증 코드 요청",
+        "request_desc": "이 출금을 승인하기 위해 6자리 OTP 인증 코드가 이메일로 전송됩니다.",
+        "send": "이메일로 코드 전송",
+        "verified_title": "이메일 인증됨",
+        "verified_desc": "다음 기간 동안 OTP를 다시 요청하지 않고 추가 출금을 수행할 수 있습니다.",
+        "code_sent": "인증 코드가 등록된 이메일로 전송되었습니다. 15분 동안 유효합니다.",
+        "code_label": "6자리 OTP 코드 입력 *",
+        "code_placeholder": "6자리 OTP 코드 입력",
+        "invalid_length": "OTP 코드는 6자리여야 합니다",
+        "sent_success": "인증 코드가 이메일로 전송되었습니다",
+        "sent_error": "인증 코드 전송 실패"
+      },
+      "withdraw_button": "잔액 출금",
+      "withdraw_info": "최소 출금액 Rp 100,000<br />처리 1-3 영업일",
+      "amount_label": "출금액 (Rp) *",
+      "amount_placeholder": "최소 Rp 100,000",
+      "available_balance": "사용 가능한 잔액",
+      "destination_account": "출금 계좌",
+      "submit_withdrawal": "출금 신청",
+      "password_error": "비밀번호가 잘못되었습니다. 다시 시도하세요.",
+      "minimum_balance_error": "최소 출금액은 Rp 100,000입니다",
+      "no_account_error": "아직 은행 계좌가 없습니다. 먼저 계좌를 추가하세요.",
+      "amount_minimum_error": "최소 출금액은 Rp 100,000입니다",
+      "amount_exceeds_error": "출금액이 사용 가능한 잔액을 초과합니다",
+      "withdrawal_success": "출금 신청이 성공적으로 제출되었습니다",
+      "withdrawal_error": "출금 신청 제출 실패"
+    },
+    "profile": {
+      "edit": {
+        "head_title": "프로필 편집 - Archeris 대시보드",
+        "back_to_profile": "프로필로 돌아가기",
+        "title": "프로필 편집",
+        "subtitle": "개인 정보 및 설정을 업데이트하세요.",
+        "basic_info": "기본 정보",
+        "basic_info_sub": "공개로 표시될 개인 정보입니다.",
+        "category_discipline": "카테고리 & 종목",
+        "category_sub": "대회 레벨을 선택하세요.",
+        "equipment_setup": "장비 설정",
+        "equipment_sub": "현재 사용하는 장비를 기록하세요.",
+        "privacy_settings": "개인정보 설정",
+        "privacy_sub": "프로필을 볼 수 있는 대상을 제어하세요.",
+        "privacy_public": "공개 프로필",
+        "privacy_public_sub": "누구나 프로필과 업적을 볼 수 있도록 허용합니다.",
+        "privacy_stats": "통계 표시",
+        "privacy_stats_sub": "토너먼트 결과 및 장비를 공개적으로 표시합니다.",
+        "cancel": "취소",
+        "save_changes": "변경 사항 저장"
+      },
+      "tabs": {
+        "about": "Visi & Misi",
+        "contact": "Kontak & Sosmed",
+        "faq": "FAQ",
+        "general": "Info Umum"
+      },
+      "title": "Profil Penyelenggara",
+      "save": "Simpan Profil",
+      "saving": "Menyimpan...",
+      "subtitle": "Kelola identitas publik penyelenggara Anda"
+    },
+    "bank_accounts": {
+      "title": "은행 계좌",
+      "subtitle": "출금 대상 계좌 관리",
+      "add": "계좌 추가",
+      "fields": {
+        "bank_name": "은행명",
+        "account_number": "계좌번호",
+        "account_name": "예금주명"
+      },
+      "modal": {
+        "add_title": "은행 계좌 추가",
+        "edit_title": "계좌 편집",
+        "pick_bank": "은행 선택",
+        "custom_bank_label": "사용자 정의 은행명",
+        "custom_bank_placeholder": "목록에 없는 경우",
+        "account_name_label": "예금주명",
+        "account_name_placeholder": "통장 기재명",
+        "account_number_label": "계좌번호",
+        "account_number_placeholder": "계좌번호 입력",
+        "set_primary": "주 계좌로 설정",
+        "save": "계좌 저장",
+        "set_primary_label": "주 계좌로 설정"
+      },
+      "delete": {
+        "title": "계좌를 삭제하시겠습니까?",
+        "message": "이 계좌는 출금 대상 목록에서 제거됩니다."
+      },
+      "add_new": "새 계좌 추가",
+      "add_new_desc": "출금을 위해 다른 계좌 사용",
+      "copy_success": "계좌 번호가 복사되었습니다",
+      "messages": {
+        "please_complete_all_fields": "모든 필드를 입력해 주세요",
+        "account_updated": "계좌가 성공적으로 업데이트되었습니다",
+        "account_added": "계좌가 성공적으로 추가되었습니다",
+        "failed_to_save_account": "계좌 저장에 실패했습니다",
+        "account_deleted": "계좌가 성공적으로 삭제되었습니다",
+        "failed_to_delete_account": "계좌 삭제에 실패했습니다"
+      }
+    },
+    "scorekeepers": {
+      "add": "Tambah Staff",
+      "delete": {
+        "confirm": "Ya, Hapus Akun",
+        "message": "Tindakan ini permanen. Scorekeeper akan kehilangan akses ke akun mereka segera setelah dihapus.",
+        "title": "Hapus Scorekeeper?"
+      },
+      "modal": {
+        "add_title": "Tambah Scorekeeper",
+        "edit_title": "Edit Scorekeeper",
+        "generate": "Generate Akun",
+        "info_generate": "Kode akses login mobile apps akan digenerate secara otomatis setelah Anda menyimpan data staff ini.",
+        "name_label": "Nama Lengkap Staff",
+        "name_placeholder": "e.g. Budi Santoso",
+        "status_label": "Akun"
+      },
+      "search_placeholder": "Cari nama atau kode staff...",
+      "subtitle": "Kelola akun staff pencatat skor penyelenggara",
+      "title": "Scorekeeper"
+    }
+  },
+  "organizer_news": {
+    "index": {
+      "title": "뉴스 관리",
+      "subtitle": "조직의 뉴스 및 공지사항을 관리하세요.",
+      "create": "새 기사 작성",
+      "stats_total": "총 기사",
+      "stats_published": "게시됨",
+      "stats_draft": "초안",
+      "empty_title": "기사가 없습니다",
+      "empty_desc": "첫 번째 기사를 작성하여 양궁 선수 및 이벤트 참가자와 정보를 공유하세요.",
+      "delete_title": "기사 삭제",
+      "delete_yes": "예, 삭제",
+      "delete_no": "취소",
+      "delete_confirm": "\"{title}\" 기사를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+      "toast_fetch_failed": "뉴스 데이터를 가져오지 못했습니다",
+      "toast_delete_ok": "기사가 성공적으로 삭제되었습니다",
+      "toast_delete_failed": "기사 삭제 실패"
+    },
+    "options": {
+      "status_all": "모든 상태",
+      "status_draft": "초안",
+      "status_published": "게시됨",
+      "cat_all": "모든 카테고리",
+      "cat_event": "이벤트",
+      "cat_announcement": "공지사항",
+      "cat_achievement": "성과",
+      "cat_other": "기타"
+    },
+    "create": {
+      "title_short": "새 기사",
+      "title": "뉴스 작성",
+      "subtitle": "조직을 위한 뉴스를 작성하고 게시합니다.",
+      "meta_title": "뉴스 작성 - ArcheryHub 대시보드",
+      "featured_image": "대표 이미지",
+      "click_to_select_image": "이미지를 선택하려면 클릭하세요",
+      "select_or_upload": "라이브러리에서 선택하거나 새로 업로드",
+      "info_heading": "뉴스 정보",
+      "label_title": "뉴스 제목",
+      "placeholder_title": "매력적인 뉴스 제목을 입력하세요...",
+      "label_category": "카테고리",
+      "label_status": "게시 상태",
+      "label_tags": "태그",
+      "placeholder_tags": "예: 이벤트, 토너먼트",
+      "label_excerpt": "짧은 요약",
+      "placeholder_excerpt": "미리보기를 위한 짧은 요약을 작성하세요...",
+      "content_heading": "뉴스 내용",
+      "placeholder_content": "뉴스 내용을 여기에 작성하세요...",
+      "back": "돌아가기",
+      "preview": "미리보기",
+      "publish": "게시",
+      "save_draft": "임시 저장",
+      "toast_preview": "미리보기가 열렸습니다",
+      "toast_title_required": "뉴스 제목은 필수 항목입니다",
+      "toast_create_ok_published": "뉴스가 성공적으로 게시되었습니다!",
+      "toast_create_ok_draft": "임시 저장이 성공적으로 완료되었습니다!",
+      "toast_create_failed": "뉴스 저장에 실패했습니다"
+    },
+    "detail": {
+      "title_short": "상세 정보",
+      "status_heading": "뉴스 상태",
+      "stats_heading": "통계",
+      "stats_views": "조회수",
+      "stats_words": "단어 수",
+      "stats_read_time": "읽는 시간",
+      "status_label": "상태",
+      "status_published": "게시됨",
+      "status_draft": "임시 저장",
+      "quick_actions": "빠른 작업",
+      "publish": "게시하기",
+      "unpublish": "임시 저장으로 변경",
+      "share": "공유",
+      "share_title": "기사 공유",
+      "share_desc": "이 기사 링크를 소셜 미디어에 공유하거나 링크를 복사하여 공유하세요.",
+      "share_link_label": "기사 링크",
+      "copy": "복사",
+      "copied": "복사됨",
+      "share_to_label": "공유할 위치",
+      "delete_dialog_title": "기사 삭제",
+      "delete_dialog_message": "\"{title}\" 기사를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+      "delete_dialog_confirm": "예, 삭제",
+      "delete": "삭제",
+      "edit": "편집",
+      "read_time_unit": "분 소요"
+    },
+    "edit": {
+      "title_short": "편집",
+      "title": "뉴스 편집",
+      "subtitle": "조직의 뉴스 기사를 수정합니다.",
+      "cancel": "취소",
+      "update_publish": "업데이트 및 게시",
+      "save_changes": "변경 사항 저장"
+    },
+    "form": {
+      "edit_title": "뉴스 편집",
+      "toast_load_failed": "뉴스 데이터를 가져오지 못했습니다",
+      "toast_title_required": "뉴스 제목은 필수 항목입니다",
+      "toast_update_ok": "뉴스가 성공적으로 업데이트되었습니다!",
+      "toast_update_failed": "뉴스 업데이트에 실패했습니다"
+    }
   }
 }

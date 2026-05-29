@@ -357,9 +357,7 @@
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">{{ t('root.subscriptions.edit_expires_label') }}</label>
-                        <input v-model="editExpiresAt" type="date" :disabled="editPlanId === null"
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all disabled:opacity-40 disabled:cursor-not-allowed" />
+                        <BaseDatePicker v-model="editExpiresAt" :label="t('root.subscriptions.edit_expires_label')" :disabled="editPlanId === null" />
                     </div>
                 </div>
 

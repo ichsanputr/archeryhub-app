@@ -220,24 +220,35 @@
                                                 <div class="flex gap-2">
                                                     <Icon icon="ph:clock-bold" class="text-amber-500 text-lg shrink-0 mt-0.5" />
                                                     <span class="text-xs text-amber-800 dark:text-amber-300 font-bold">
-                                                        Awaiting Verification
+                                                        awaiting verification
                                                     </span>
                                                 </div>
                                                 <p class="text-slate-500 dark:text-slate-400 text-[11px] leading-relaxed">
-                                                    Your payment proof has been uploaded. The organizer will verify your payment soon.
+                                                    your payment proof has been uploaded. the organizer will verify your payment soon.
                                                 </p>
+                                                <div v-if="participant.transaction.sender_name" class="text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                                                    {{ t('my_registration.sender_name') }}: <span class="font-medium">{{ participant.transaction.sender_name }}</span>
+                                                </div>
                                                 <div v-if="participant.transaction.proof_url" class="relative rounded-lg overflow-hidden border border-gray-100 bg-white">
-                                                    <img :src="participant.transaction.proof_url" alt="Payment Proof" class="w-full h-auto max-h-40 object-contain mx-auto" />
+                                                    <img :src="participant.transaction.proof_url" alt="Payment Proof" class="w-full h-auto max-h-40 object-contain mx-auto cursor-pointer" @click="openImage(participant.transaction.proof_url)" />
                                                 </div>
                                             </div>
 
                                             <!-- Paid status -->
                                             <div v-else-if="participant.transaction.status === 'paid'"
-                                                class="p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900 rounded-xl flex gap-2">
-                                                <Icon icon="ph:check-circle-bold" class="text-green-500 text-lg shrink-0 mt-0.5" />
-                                                <span class="text-xs text-green-800 dark:text-green-300 font-medium">
-                                                    Payment Verified. Your Registration is Complete.
-                                                </span>
+                                                class="p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900 rounded-xl space-y-3">
+                                                <div class="flex gap-2">
+                                                    <Icon icon="ph:check-circle-bold" class="text-green-500 text-lg shrink-0 mt-0.5" />
+                                                    <span class="text-xs text-green-800 dark:text-green-300 font-medium">
+                                                        payment verified. your registration is complete.
+                                                    </span>
+                                                </div>
+                                                <div v-if="participant.transaction.sender_name" class="text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                                                    {{ t('my_registration.sender_name') }}: <span class="font-medium">{{ participant.transaction.sender_name }}</span>
+                                                </div>
+                                                <div v-if="participant.transaction.proof_url" class="relative rounded-lg overflow-hidden border border-gray-100 bg-white">
+                                                    <img :src="participant.transaction.proof_url" alt="Payment Proof" class="w-full h-auto max-h-40 object-contain mx-auto cursor-pointer" @click="openImage(participant.transaction.proof_url)" />
+                                                </div>
                                             </div>
 
                                             <!-- Pending or Rejected status -->
@@ -248,18 +259,18 @@
                                                     <div class="flex gap-2">
                                                         <Icon icon="ph:warning-circle-bold" class="text-red-500 text-lg shrink-0 mt-0.5" />
                                                         <span class="text-xs text-red-800 dark:text-red-300 font-bold">
-                                                            Payment Rejected
+                                                            payment rejected
                                                         </span>
                                                     </div>
                                                     <p v-if="participant.transaction.rejection_reason" class="text-[11px] text-slate-500 dark:text-slate-400 ml-7 leading-snug">
-                                                        Reason: {{ participant.transaction.rejection_reason }}
+                                                        reason: {{ participant.transaction.rejection_reason }}
                                                     </p>
                                                 </div>
 
                                                 <!-- Upload Form -->
                                                 <div class="space-y-3 pt-2">
                                                     <div class="space-y-1">
-                                                        <label class="text-[10px] font-black text-gray-400 tracking-widest uppercase block">{{ t('my_registration.sender_name') }}</label>
+                                                        <label class="text-[10px] font-black text-gray-400 tracking-widest block">{{ t('my_registration.sender_name') }}</label>
                                                         <input type="text" v-model="senderName" 
                                                             class="w-full px-3 py-2.5 text-xs border border-gray-200 dark:border-slate-700 bg-transparent rounded-xl focus:outline-none focus:border-primary font-medium"
                                                             :placeholder="t('my_registration.sender_name_placeholder')" />
@@ -272,22 +283,22 @@
                                                         <input type="file" ref="proofInput" class="hidden" accept="image/*" @change="handleProofUpload" />
                                                         <template v-if="uploadingProof">
                                                             <Icon icon="ph:circle-notch-bold" class="text-xl text-primary animate-spin mb-2" />
-                                                            <span class="text-[10px] text-gray-500 font-bold">Uploading...</span>
+                                                            <span class="text-[10px] text-gray-500 font-bold">uploading...</span>
                                                         </template>
                                                         <template v-else-if="proofFileUrl">
                                                             <img :src="proofFileUrl" class="max-h-24 object-contain rounded-lg mb-2 border border-gray-100" />
-                                                            <span class="text-[10px] text-green-600 font-bold">Proof uploaded ✓</span>
+                                                            <span class="text-[10px] text-green-600 font-bold">proof uploaded ✓</span>
                                                         </template>
                                                         <template v-else>
                                                             <Icon icon="ph:cloud-arrow-up-bold" class="text-xl text-gray-400 mb-2" />
-                                                            <span class="text-[10px] text-gray-500 font-bold">Click to upload proof</span>
+                                                            <span class="text-[10px] text-gray-500 font-bold">click to upload proof</span>
                                                         </template>
                                                     </div>
 
                                                     <BaseButton variant="primary" block :loading="uploadingProof"
                                                         class="h-10 font-black tracking-widest text-[11px] shadow-sm"
                                                         @click="submitManualProof">
-                                                        Submit Verification Request
+                                                        submit verification request
                                                     </BaseButton>
 
                                                     <span v-if="uploadError" class="text-xs text-red-500 font-bold block text-center">{{ uploadError }}</span>
@@ -389,6 +400,13 @@
             :message="t('my_registration.cancel_dialog_desc')" type="danger" icon="ph:warning-circle-bold"
             :confirm-text="t('my_registration.cancel_dialog_confirm')"
             :cancel-text="t('my_registration.cancel_dialog_back')" @confirm="cancelRegistration" />
+
+        <!-- Image Preview Dialog -->
+        <AppDialog v-model:show="showImageDialog" title="payment proof" message="" type="info" icon="ph:image-bold">
+            <div class="flex justify-center p-2">
+                <img :src="selectedImage" class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-md" />
+            </div>
+        </AppDialog>
 
     </div>
 </template>
@@ -627,6 +645,14 @@ const fetchInitialData = async () => {
     try {
         const detailed = await get(`/events/${eventId}/participants/me`)
         participant.value = detailed
+        if (detailed?.transaction) {
+            if (detailed.transaction.sender_name) {
+                senderName.value = detailed.transaction.sender_name
+            }
+            if (detailed.transaction.proof_url) {
+                proofFileUrl.value = detailed.transaction.proof_url
+            }
+        }
     } catch (e) {
         console.error('Failed to fetch registration data:', e)
     } finally {

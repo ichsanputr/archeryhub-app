@@ -11,7 +11,7 @@
           <!-- Input Row -->
           <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100">
             <Icon icon="ph:magnifying-glass-bold" class="text-xl text-primary shrink-0" />
-            <input ref="inputRef" v-model="query" type="text" placeholder="Cari halaman..."
+            <input ref="inputRef" v-model="query" type="text" :placeholder="t('doc_search.placeholder')"
               class="flex-1 text-sm text-gray-900 placeholder-gray-400 focus:outline-none bg-transparent"
               @keydown.esc="close" @keydown.down.prevent="moveDown" @keydown.up.prevent="moveUp"
               @keydown.enter.prevent="navigate" />
@@ -45,15 +45,14 @@
                 <div class="flex justify-center w-full">
                   <Icon icon="ph:file-search-bold" class="text-4xl text-gray-200 mb-3" />
                 </div>
-                <p class="text-sm text-gray-400">Tidak ada hasil untuk <strong class="text-navy">"{{ query }}"</strong>
-                </p>
+                <p class="text-sm text-gray-400">{{ t('doc_search.no_results', { query }) }}</p>
               </div>
             </template>
 
             <!-- Empty / Default state: quick links -->
             <template v-else>
               <div class="px-5 pt-5 pb-4">
-                <p class="text-xs text-gray-300 font-bold tracking-widest mb-3">Navigasi Cepat</p>
+                <p class="text-xs text-gray-300 font-bold tracking-widest mb-3">{{ t('doc_search.quick_navigation') }}</p>
                 <div class="flex flex-col gap-1">
                   <NuxtLink v-for="(page, i) in quickLinks" :key="page.path" :to="page.path" @click="close"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors text-xs text-gray-600 border border-gray-100"
@@ -74,15 +73,15 @@
           <div class="border-t border-gray-100 bg-gray-50/50 px-5 py-2.5 flex items-center gap-4">
             <span class="flex items-center gap-1.5 text-xs text-gray-300">
               <kbd class="bg-white border border-gray-200 rounded px-1.5 py-0.5 font-mono text-gray-400">↑↓</kbd>
-              navigasi
+              {{ t('doc_search.navigate') }}
             </span>
             <span class="flex items-center gap-1.5 text-xs text-gray-300">
               <kbd class="bg-white border border-gray-200 rounded px-1.5 py-0.5 font-mono text-gray-400">↵</kbd>
-              buka
+              {{ t('doc_search.open') }}
             </span>
             <span class="flex items-center gap-1.5 text-xs text-gray-300">
               <kbd class="bg-white border border-gray-200 rounded px-1.5 py-0.5 font-mono text-gray-400">Esc</kbd>
-              tutup
+              {{ t('doc_search.close') }}
             </span>
             <span class="ml-auto text-xs text-gray-200 hidden sm:block">Ctrl K</span>
           </div>
@@ -95,6 +94,7 @@
 <script setup>
 import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
 import { useAuth } from '~/composables/useAuth'
 import pagesData from '~/data/pages.json'
@@ -104,6 +104,7 @@ const query = ref('')
 const activeIndex = ref(-1)
 const inputRef = ref(null)
 const router = useRouter()
+const { t } = useI18n()
 
 const { user } = useAuth()
 

@@ -101,8 +101,7 @@
               <BaseInput v-model="accountForm.username" :label="t('profile.username')" placeholder="username"
                 :hint="t('profile.username_hint')" :error="isUsernameTaken ? 'Username is already taken' : ''" />
 
-              <BaseInput v-model="accountForm.date_of_birth" :label="t('profile.dob')" type="date"
-                icon="mingcute:calendar-line" />
+              <BaseDatePicker v-model="accountForm.date_of_birth" :label="t('profile.dob')" />
               <BaseSelect v-model="accountForm.gender" :label="t('profile.gender')" :items="[
                 { title: t('profile.male'), value: 'male' },
                 { title: t('profile.female'), value: 'female' }
