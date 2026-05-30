@@ -31,7 +31,7 @@
                     </button>
 
                     <!-- Theme Toggle -->
-                    <button
+                    <button v-if="isSlugPage"
                         @click="toggleDark"
                         class="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-500 transition-all flex items-center justify-center shrink-0 size-9"
                         :title="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
@@ -116,6 +116,10 @@ watch(() => route.query.q, (newQ) => {
     }
 })
 
+watch(() => route.path, () => {
+    updateDocumentClass()
+})
+
 const onSearchSubmit = () => {
     if (headerSearch.value.trim() !== '') {
         router.push({ path: '/docs', query: { q: headerSearch.value } })
@@ -137,7 +141,7 @@ const toggleDark = () => {
 
 const updateDocumentClass = () => {
     if (!import.meta.client) return
-    if (isDark.value) {
+    if (isDark.value && isSlugPage.value) {
         document.documentElement.classList.add('dark')
     } else {
         document.documentElement.classList.remove('dark')

@@ -190,7 +190,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 text-sm">
-                            <tr v-for="i in 6" :key="i" class="hover:bg-gray-50/50 transition-colors">
+                            <tr v-for="i in 14" :key="i" class="hover:bg-gray-50/50 transition-colors">
                                 <td class="py-6 px-6 font-bold text-navy">
                                     {{ $t(`home.comparison.f${i}_name`) }}
                                 </td>

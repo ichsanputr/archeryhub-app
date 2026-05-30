@@ -91,7 +91,7 @@
 
                 <div class="divide-y divide-gray-100">
                     <!-- Table Rows -->
-                    <div v-for="i in 6" :key="i" class="p-6 md:p-8 hover:bg-gray-50/30 transition-colors">
+                    <div v-for="i in 14" :key="i" class="p-6 md:p-8 hover:bg-gray-50/30 transition-colors">
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
                             <!-- Feature Name -->
                             <div class="md:col-span-3">

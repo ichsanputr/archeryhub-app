@@ -18,7 +18,7 @@
             <aside
                 class="flex flex-col w-full lg:w-64 xl:w-72 shrink-0 lg:sticky lg:top-24 lg:h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-4 lg:scrollbar-styled self-start mb-8 lg:mb-0">
                 <!-- Mobile Toggle Button -->
-                <button @click="isMobileMenuOpen = !isMobileMenuOpen"
+                <button @click="toggleMobileMenu"
                     class="lg:hidden flex items-center justify-between w-full bg-white border border-gray-200 rounded-xl px-4 py-3 mb-2 text-sm font-bold text-navy hover:bg-gray-50 transition-colors">
                     <span class="flex items-center gap-2">
                         <Icon icon="ph:list-dashes-bold" class="text-lg text-primary" />
@@ -308,7 +308,7 @@
     </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -328,6 +328,10 @@ const currentSlug = computed(() => {
 })
 const sidebarSearch = ref('')
 const isMobileMenuOpen = ref(false)
+
+const toggleMobileMenu = () => {
+    isMobileMenuOpen.value = !isMobileMenuOpen.value
+}
 
 watch(currentSlug, () => {
     isMobileMenuOpen.value = false // Auto close on navigation in mobile
@@ -367,7 +371,7 @@ watch([docs, currentSlug], () => {
     if (!slug || slug.includes('/')) return
 
     // Explicit legacy slug aliases
-    const legacyAliases: Record<string, string> = {
+    const legacyAliases = {
         'user-roles': 'account-types',
     }
     const alias = legacyAliases[slug]
@@ -503,7 +507,7 @@ const submitReply = async (parentId) => {
     
     isSubmittingReply.value = true
     try {
-        await api.post(`/docs/${currentSlug.value}/comments`, {
+        await api.post(`/docs-comments/${currentSlug.value}`, {
             guest_name: replyForm.value.guest_name,
             content: replyForm.value.content,
             parent_id: parentId
@@ -521,7 +525,7 @@ const fetchComments = async () => {
     if (!currentSlug.value) return
     isCommentsLoading.value = true
     try {
-        const response = await api.get(`/docs/${currentSlug.value}/comments`)
+        const response = await api.get(`/docs-comments/${currentSlug.value}`)
         comments.value = response?.comments || []
     } catch (error) {
         console.error('Failed to fetch doc comments:', error)
@@ -536,7 +540,7 @@ const submitComment = async () => {
     
     isSubmittingComment.value = true
     try {
-        await api.post(`/docs/${currentSlug.value}/comments`, {
+        await api.post(`/docs-comments/${currentSlug.value}`, {
             guest_name: commentForm.value.guest_name,
             content: commentForm.value.content
         })
