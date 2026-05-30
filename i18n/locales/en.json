@@ -540,6 +540,7 @@
     "categories": {
       "all": "All",
       "platform": "Platform",
+      "dashboard": "Dashboard",
       "archer": "Archer Account",
       "archery": "Archery Technical",
       "subscription": "Subscription",
@@ -549,6 +550,7 @@
     },
     "cat_desc": {
       "platform": "Getting to know Archeris.net deeply",
+      "dashboard": "Dashboard and account management guides",
       "archer": "Guides tailored for Archer account users",
       "archery": "Fundamental and technical archery knowledge",
       "subscription": "Subscription plans and core features",

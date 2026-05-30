@@ -176,7 +176,7 @@ watch(() => route.query.cat, (newCat) => {
 
 const categories = [
     { id: 'all', label: 'docs.categories.all', icon: 'ph:squares-four-bold', description: '' },
-    { id: 'platform', label: 'docs.categories.platform', icon: 'ph:rocket-bold', description: 'docs.cat_desc.platform' },
+    { id: 'dashboard', label: 'docs.categories.dashboard', icon: 'ph:monitor-bold', description: 'docs.cat_desc.dashboard' },
     { id: 'archer', label: 'docs.categories.archer', icon: 'ph:user-bold', description: 'docs.cat_desc.archer' },
     { id: 'archery', label: 'docs.categories.archery', icon: 'ph:crosshair-bold', description: 'docs.cat_desc.archery' },
     { id: 'subscription', label: 'docs.categories.subscription', icon: 'ph:crown-bold', description: 'docs.cat_desc.subscription' },

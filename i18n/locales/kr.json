@@ -474,6 +474,7 @@
     "categories": {
       "all": "전체",
       "platform": "플랫폼",
+      "dashboard": "대시보드",
       "archer": "궁사 계정",
       "archery": "양궁 기술",
       "subscription": "구독 요금제",
@@ -483,6 +484,7 @@
     },
     "cat_desc": {
       "platform": "Archeris.net에 대해 자세히 알아보기",
+      "dashboard": "대시보드 및 계정 관리 가이드",
       "archer": "궁사 계정 사용자를 위한 맞춤형 가이드",
       "archery": "양궁 기본 및 기술 지식",
       "subscription": "구독 패키지 및 핵심 기능",

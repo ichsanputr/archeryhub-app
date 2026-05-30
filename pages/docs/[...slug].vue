@@ -187,28 +187,91 @@
 
                     <!-- Comments List -->
                     <div v-if="isCommentsLoading" class="flex flex-col items-center py-10 text-gray-300">
-                        <Icon icon="ph:spinner-bold" class="animate-spin text-3xl mb-2" />
+                        <Icon icon="ph:spinner-bold" class="mx-auto block animate-spin text-3xl mb-2" />
                         <span class="text-xs font-bold tracking-wider">{{ $t('docs.loading_comments') || 'Loading comments...' }}</span>
                     </div>
 
                     <div v-else-if="comments.length === 0" class="text-center py-10 border border-dashed border-gray-100 rounded-2xl">
-                        <Icon icon="ph:chat-circle-dots-light" class="text-4xl text-gray-300 mb-2" />
+                        <Icon icon="ph:chat-circle-dots-light" class="mx-auto block text-4xl text-gray-300 mb-2" />
                         <p class="text-gray-400 text-xs font-bold tracking-wider">{{ $t('docs.no_comments') || 'No comments yet. Be the first to share your thoughts!' }}</p>
                     </div>
 
                     <div v-else class="space-y-6">
-                        <div v-for="comment in comments" :key="comment.id" class="flex gap-4 p-4 rounded-2xl hover:bg-gray-50/50 transition-colors border border-gray-50">
-                            <!-- Avatar -->
-                            <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center shrink-0 border border-gray-200 overflow-hidden font-bold text-navy text-sm">
-                                <Icon icon="ph:user-bold" class="text-gray-400" />
-                            </div>
-                            <!-- Comment Content -->
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center justify-between gap-2 mb-1">
-                                    <h5 class="font-bold text-sm text-navy truncate">{{ comment.user_name }}</h5>
-                                    <span class="text-[10px] font-medium text-gray-400 whitespace-nowrap">{{ formatDate(comment.created_at) }}</span>
+                        <div v-for="comment in threadedComments" :key="comment.id" class="space-y-4">
+                            <!-- Root Comment Card -->
+                            <div class="flex gap-4 p-4 rounded-2xl hover:bg-gray-50/50 transition-colors border border-gray-50 bg-white">
+                                <!-- Avatar -->
+                                <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center shrink-0 border border-gray-200 overflow-hidden font-bold text-navy text-sm dark:border-slate-800">
+                                    <Icon icon="ph:user-bold" class="text-gray-400" />
                                 </div>
-                                <p class="text-gray-600 text-sm leading-relaxed whitespace-pre-line">{{ comment.content }}</p>
+                                <!-- Comment Content -->
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-2 mb-1">
+                                        <h5 class="font-bold text-sm text-navy truncate">{{ comment.user_name }}</h5>
+                                        <span class="text-[10px] font-medium text-gray-400 whitespace-nowrap">{{ formatDate(comment.created_at) }}</span>
+                                    </div>
+                                    <p class="text-gray-600 text-sm leading-relaxed whitespace-pre-line">{{ comment.content }}</p>
+                                    
+                                    <!-- Actions (Reply Button) -->
+                                    <div class="flex items-center gap-4 mt-2">
+                                        <button 
+                                            @click="startReply(comment.id)" 
+                                            class="text-xs font-bold text-primary hover:text-primary-hover flex items-center gap-1 transition-colors capitalize"
+                                        >
+                                            <Icon icon="ph:arrow-bend-up-left-bold" />
+                                            <span>reply</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Reply Form (if replying to this comment) -->
+                            <div v-if="replyingToId === comment.id" class="ml-10 p-4 bg-gray-50 rounded-2xl border border-gray-100 dark:bg-slate-900/50 dark:border-slate-800 space-y-3">
+                                <div class="text-xs text-gray-500 font-bold">
+                                    replying to <span class="text-navy">{{ comment.user_name }}</span>:
+                                </div>
+                                <div v-if="!isLoggedIn" class="grid grid-cols-1 gap-4">
+                                    <input v-model="replyForm.guest_name" type="text" required
+                                        class="w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-primary transition-colors text-navy placeholder:text-gray-400 font-medium"
+                                        placeholder="your name..." />
+                                </div>
+                                <textarea v-model="replyForm.content" rows="2" required
+                                    class="w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-primary transition-colors text-navy placeholder:text-gray-400 font-medium"
+                                    placeholder="write a reply..."></textarea>
+                                <div class="flex justify-end gap-2">
+                                    <button 
+                                        @click="cancelReply" 
+                                        class="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-800 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition-all text-xs font-bold"
+                                    >
+                                        cancel
+                                    </button>
+                                    <button 
+                                        @click="submitReply(comment.id)" 
+                                        :disabled="isSubmittingReply || !replyForm.content || (!isLoggedIn && !replyForm.guest_name)"
+                                        class="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary-hover disabled:bg-gray-100 disabled:text-gray-400 text-navy font-bold transition-all text-xs flex items-center gap-1"
+                                    >
+                                        <Icon v-if="isSubmittingReply" icon="ph:spinner-bold" class="animate-spin" />
+                                        <span>submit</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Replies List -->
+                            <div v-if="comment.replies && comment.replies.length > 0" class="ml-10 pl-4 border-l-2 border-gray-100 dark:border-slate-800 space-y-4">
+                                <div v-for="reply in comment.replies" :key="reply.id" class="flex gap-3 p-3.5 rounded-xl bg-gray-50/50 dark:bg-slate-900/30 border border-gray-50 dark:border-slate-800">
+                                    <!-- Avatar -->
+                                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0 border border-gray-200 dark:border-slate-800 overflow-hidden font-bold text-navy text-xs">
+                                        <Icon icon="ph:user-bold" class="text-gray-400" />
+                                    </div>
+                                    <!-- Content -->
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center justify-between gap-2 mb-0.5">
+                                            <h6 class="font-bold text-xs text-navy truncate">{{ reply.user_name }}</h6>
+                                            <span class="text-[9px] font-medium text-gray-400 whitespace-nowrap">{{ formatDate(reply.created_at) }}</span>
+                                        </div>
+                                        <p class="text-gray-600 text-xs leading-relaxed whitespace-pre-line">{{ reply.content }}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -248,7 +311,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 definePageMeta({ layout: 'docs' })
@@ -257,7 +320,12 @@ const { t, locale } = useI18n()
 const apiBaseUrl = useApiBaseUrl()
 
 const route = useRoute()
-const currentSlug = computed(() => route.params.slug)
+const router = useRouter()
+const currentSlug = computed(() => {
+    const raw = route.params.slug
+    if (Array.isArray(raw)) return raw.join('/')
+    return raw ? String(raw) : ''
+})
 const sidebarSearch = ref('')
 const isMobileMenuOpen = ref(false)
 
@@ -266,7 +334,7 @@ watch(currentSlug, () => {
 })
 
 const categories = [
-    { id: 'platform', label: 'docs.categories.platform', icon: 'ph:rocket-bold' },
+    { id: 'dashboard', label: 'docs.categories.dashboard', icon: 'ph:monitor-bold' },
     { id: 'archer', label: 'docs.categories.archer', icon: 'ph:user-bold' },
     { id: 'archery', label: 'docs.categories.archery', icon: 'ph:crosshair-bold' },
     { id: 'subscription', label: 'docs.categories.subscription', icon: 'ph:crown-bold' },
@@ -292,6 +360,16 @@ const { data: docsList } = await useAsyncData(
 )
 
 const docs = computed(() => docsList.value || [])
+
+// Canonicalize legacy non-nested URLs like /docs/archer-profile -> /docs/archer/archer-profile
+watch([docs, currentSlug], () => {
+    const slug = currentSlug.value
+    if (!slug || slug.includes('/')) return
+    const match = docs.value.find(d => typeof d.slug === 'string' && d.slug.endsWith('/' + slug))
+    if (match?.slug) {
+        router.replace(`/docs/${match.slug}`)
+    }
+}, { immediate: true })
 
 // Fetch details for the current doc slug
 const { data: currentDocData } = await useAsyncData(
@@ -365,11 +443,65 @@ const copyLink = () => {
 // Comments
 const isCommentsLoading = ref(false)
 const isSubmittingComment = ref(false)
+const isSubmittingReply = ref(false)
 const comments = ref([])
 const commentForm = ref({
     guest_name: '',
     content: ''
 })
+const replyingToId = ref(null)
+const replyForm = ref({
+    guest_name: '',
+    content: ''
+})
+
+const threadedComments = computed(() => {
+    const list = [...comments.value]
+    // Filter root comments (no parent_id)
+    const roots = list.filter(c => !c.parent_id)
+    // Filter replies (have parent_id)
+    const replies = list.filter(c => c.parent_id)
+    
+    // Nest one level of replies under their parent
+    return roots.map(root => {
+        return {
+            ...root,
+            replies: replies.filter(reply => reply.parent_id === root.id)
+        }
+    })
+})
+
+const startReply = (commentId) => {
+    replyingToId.value = commentId
+    replyForm.value.content = ''
+    replyForm.value.guest_name = ''
+}
+
+const cancelReply = () => {
+    replyingToId.value = null
+    replyForm.value.content = ''
+    replyForm.value.guest_name = ''
+}
+
+const submitReply = async (parentId) => {
+    if (!replyForm.value.content) return
+    if (!isLoggedIn.value && !replyForm.value.guest_name) return
+    
+    isSubmittingReply.value = true
+    try {
+        await api.post(`/docs/${currentSlug.value}/comments`, {
+            guest_name: replyForm.value.guest_name,
+            content: replyForm.value.content,
+            parent_id: parentId
+        })
+        cancelReply()
+        await fetchComments()
+    } catch (error) {
+        console.error('Failed to submit reply:', error)
+    } finally {
+        isSubmittingReply.value = false
+    }
+}
 
 const fetchComments = async () => {
     if (!currentSlug.value) return

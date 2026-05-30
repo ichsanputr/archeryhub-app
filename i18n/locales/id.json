@@ -542,6 +542,7 @@
     "categories": {
       "all": "Semua",
       "platform": "Platform",
+      "dashboard": "Dashboard",
       "archer": "Akun Pemanah",
       "archery": "Teknis Panahan",
       "subscription": "Berlangganan",
@@ -551,6 +552,7 @@
     },
     "cat_desc": {
       "platform": "Mengenal Archeris.net secara mendalam",
+      "dashboard": "Panduan dashboard dan pengaturan akun",
       "archer": "Panduan khusus untuk pengguna akun Pemanah",
       "archery": "Pengetahuan dasar dan teknis panahan",
       "subscription": "Paket dan fitur berlangganan",
