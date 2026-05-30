@@ -5,17 +5,17 @@
         <div class="text-sm text-gray-500 mb-2">
           <NuxtLink to="/dashboard">Dashboard</NuxtLink>
           <span class="mx-2">/</span>
-          <NuxtLink to="/dashboard/organizer/news">{{ t('organization_news.index.title') }}</NuxtLink>
+          <NuxtLink to="/dashboard/organizer/news">{{ t('organizer_news.index.title') }}</NuxtLink>
           <span class="mx-2">/</span>
-          <span class="font-bold">Detail</span>
+          <span class="font-bold">{{ t('organizer_news.detail.title_short') }}</span>
         </div>
         <h1 class="text-2xl font-extrabold">{{ article.title }}</h1>
       </div>
       <div class="flex items-center gap-2">
         <NuxtLink :to="`/dashboard/organizer/news/${route.params.slug}/edit`">
-          <BaseButton variant="outline" icon="ph:pencil-simple">Edit</BaseButton>
+          <BaseButton variant="outline" icon="ph:pencil-simple">{{ t('organizer_news.detail.edit') }}</BaseButton>
         </NuxtLink>
-        <BaseButton variant="white" icon="ph:trash" @click="confirmDelete">{{ t('organization_news.detail.delete') }}</BaseButton>
+        <BaseButton variant="white" icon="ph:trash" @click="confirmDelete">{{ t('organizer_news.detail.delete') }}</BaseButton>
       </div>
     </div>
 
@@ -34,17 +34,17 @@
 
       <aside class="space-y-4">
         <div class="bg-white rounded-2xl p-4">
-          <div class="text-sm text-gray-500">{{ t('organization_news.detail.created_label') }}</div>
+          <div class="text-sm text-gray-500">{{ t('organizer_news.detail.created_label') }}</div>
           <div class="font-medium">{{ formatDate(article.created_at, true) }}</div>
         </div>
         <div class="bg-white rounded-2xl p-4">
-          <div class="text-sm text-gray-500">{{ t('organization_news.detail.status') }}</div>
+          <div class="text-sm text-gray-500">{{ t('organizer_news.detail.status') }}</div>
           <div class="font-medium">{{ article.status }}</div>
         </div>
         <div class="bg-white rounded-2xl p-4">
-          <BaseButton variant="primary" block @click="publishArticle" v-if="article.status !== 'published'">{{ t('organization_news.detail.publish') }}</BaseButton>
-          <BaseButton variant="outline" block @click="unpublishArticle" v-else>{{ t('organization_news.detail.unpublish') }}</BaseButton>
-          <BaseButton variant="white" block @click="openShareDialog">{{ t('organization_news.detail.share') }}</BaseButton>
+          <BaseButton variant="primary" block @click="publishArticle" v-if="article.status !== 'published'">{{ t('organizer_news.detail.publish') }}</BaseButton>
+          <BaseButton variant="outline" block @click="unpublishArticle" v-else>{{ t('organizer_news.detail.unpublish') }}</BaseButton>
+          <BaseButton variant="white" block @click="openShareDialog">{{ t('organizer_news.detail.share') }}</BaseButton>
         </div>
       </aside>
     </div>
@@ -54,14 +54,14 @@
         <div v-if="showShareDialog" class="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div class="bg-white rounded-lg p-6 w-full max-w-md">
             <div class="flex justify-between items-start mb-4">
-              <h3 class="font-bold">{{ t('organization_news.detail.share_title') }}</h3>
+              <h3 class="font-bold">{{ t('organizer_news.detail.share_title') }}</h3>
               <button @click="closeShareDialog"><Icon icon="ph:x-bold" /></button>
             </div>
             <div class="mb-4">
               <div class="bg-gray-50 p-3 rounded">{{ publicNewsUrl }}</div>
             </div>
             <div class="flex gap-2">
-              <button @click="copyPublicUrl" class="px-4 py-2 bg-navy text-white rounded">{{ copySuccess ? t('organization_news.detail.copied') : t('organization_news.detail.copy') }}</button>
+              <button @click="copyPublicUrl" class="px-4 py-2 bg-navy text-white rounded">{{ copySuccess ? t('organizer_news.detail.copied') : t('organizer_news.detail.copy') }}</button>
               <button @click="closeShareDialog" class="px-4 py-2 border rounded">{{ t('common.close') || 'Close' }}</button>
             </div>
           </div>
@@ -69,7 +69,7 @@
       </Teleport>
     </ClientOnly>
 
-    <AppDialog v-model:show="showDeleteConfirm" title="Hapus Berita" :message="`Apakah Anda yakin ingin menghapus berita '${article.title}'?`" confirm-text="Ya" type="danger" @confirm="deleteArticle" />
+    <AppDialog v-model:show="showDeleteConfirm" :title="t('organizer_news.detail.delete_dialog_title')" :message="t('organizer_news.detail.delete_dialog_message').replace('{title}', article.title)" :confirm-text="t('organizer_news.detail.delete_dialog_confirm')" type="danger" @confirm="deleteArticle" />
   </div>
 </template>
 

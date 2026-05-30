@@ -6,12 +6,12 @@
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">{{ t('common.dashboard') }}</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink :to="`/dashboard/${userPersona}/news`" class="hover:text-primary transition-colors">{{ t('organization_news.index.title') }}</NuxtLink>
+                    <NuxtLink :to="`/dashboard/${userPersona}/news`" class="hover:text-primary transition-colors">{{ t('organizer_news.index.title') }}</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">{{ t('organization_news.edit.title_short') }}</span>
+                    <span class="text-navy">{{ t('organizer_news.edit.title_short') }}</span>
                 </div>
-                <h1 class="text-3xl font-extrabold text-navy tracking-tight">{{ t('organization_news.edit.title') }}</h1>
-                <p class="text-gray-500 font-medium mt-1">{{ t('organization_news.edit.subtitle') }}</p>
+                <h1 class="text-3xl font-extrabold text-navy tracking-tight">{{ t('organizer_news.edit.title') }}</h1>
+                <p class="text-gray-500 font-medium mt-1">{{ t('organizer_news.edit.subtitle') }}</p>
             </div>
         </div>
 
@@ -22,7 +22,7 @@
                 <div class="p-8 border-b border-gray-100">
                     <h3 class="text-lg font-bold text-navy mb-4 flex items-center gap-2">
                         <Icon icon="ph:image" class="text-primary" />
-                        {{ t('organization_news.create.featured_image') }}
+                        {{ t('organizer_news.create.featured_image') }}
                     </h3>
                     <div class="relative h-64 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 hover:border-primary hover:bg-primary/5 transition-colors cursor-pointer overflow-hidden"
                         @click="openMediaLibrary">
@@ -32,8 +32,8 @@
                                 <Icon icon="ph:upload-simple" class="text-3xl text-gray-400" />
                             </div>
                             <div class="text-center">
-                                <p class="font-bold text-navy">{{ t('organization_news.create.click_to_select_image') }}</p>
-                                <p class="text-sm text-gray-400">{{ t('organization_news.create.select_or_upload') }}</p>
+                                <p class="font-bold text-navy">{{ t('organizer_news.create.click_to_select_image') }}</p>
+                                <p class="text-sm text-gray-400">{{ t('organizer_news.create.select_or_upload') }}</p>
                             </div>
                         </div>
                     </div>
@@ -43,28 +43,28 @@
                 <div class="p-8 border-b border-gray-100 space-y-6">
                     <h3 class="text-lg font-bold text-navy mb-4 flex items-center gap-2">
                         <Icon icon="ph:info" class="text-primary" />
-                        {{ t('organization_news.create.info_heading') }}
+                        {{ t('organizer_news.create.info_heading') }}
                     </h3>
 
-                    <BaseInput v-model="form.title" :label="t('organization_news.create.label_title')"
-                        :placeholder="t('organization_news.create.placeholder_title')" required />
+                    <BaseInput v-model="form.title" :label="t('organizer_news.create.label_title')"
+                        :placeholder="t('organizer_news.create.placeholder_title')" required />
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <BaseSelect v-model="form.category" :items="categoryOptions" :label="t('organization_news.create.label_category')" required />
-                        <BaseSelect v-model="form.status" :items="statusOptions" :label="t('organization_news.create.label_status')" required />
+                        <BaseSelect v-model="form.category" :items="categoryOptions" :label="t('organizer_news.create.label_category')" required />
+                        <BaseSelect v-model="form.status" :items="statusOptions" :label="t('organizer_news.create.label_status')" required />
                     </div>
 
-                    <BaseInput v-model="form.tags" :label="t('organization_news.create.label_tags')" :placeholder="t('organization_news.create.placeholder_tags')"
+                    <BaseInput v-model="form.tags" :label="t('organizer_news.create.label_tags')" :placeholder="t('organizer_news.create.placeholder_tags')"
                         icon="ph:tag" />
 
                     <div>
                         <label class="block text-xs font-bold text-navy  tracking-wider mb-2">
-                            {{ t('organization_news.create.label_excerpt') }}
+                            {{ t('organizer_news.create.label_excerpt') }}
                         </label>
                         <textarea v-model="form.excerpt"
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
                             rows="3"
-                            :placeholder="t('organization_news.create.placeholder_excerpt')"></textarea>
+                            :placeholder="t('organizer_news.create.placeholder_excerpt')"></textarea>
                     </div>
                 </div>
 
@@ -72,21 +72,21 @@
                 <div class="p-8 border-b border-gray-100">
                     <h3 class="text-lg font-bold text-navy mb-4 flex items-center gap-2">
                         <Icon icon="ph:text-aa" class="text-primary" />
-                        {{ t('organization_news.create.content_heading') }}
+                        {{ t('organizer_news.create.content_heading') }}
                     </h3>
-                    <TiptapEditor v-model="form.content" :placeholder="t('organization_news.create.placeholder_content')" />
+                    <TiptapEditor v-model="form.content" :placeholder="t('organizer_news.create.placeholder_content')" />
                 </div>
 
                 <!-- Actions -->
                 <div class="p-8 bg-gray-50/50 flex items-center justify-between gap-4">
                     <NuxtLink :to="`/dashboard/${userPersona}/news`">
                         <BaseButton variant="white" icon="ph:arrow-left">
-                            {{ t('organization_news.edit.cancel') }}
+                            {{ t('organizer_news.edit.cancel') }}
                         </BaseButton>
                     </NuxtLink>
                     <div class="flex items-center gap-3">
                         <BaseButton variant="gold" type="submit" icon="ph:floppy-disk" :loading="isSubmitting">
-                            {{ form.status === 'published' ? t('organization_news.edit.update_publish') : t('organization_news.edit.save_changes') }}
+                            {{ form.status === 'published' ? t('organizer_news.edit.update_publish') : t('organizer_news.edit.save_changes') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -120,7 +120,7 @@ const { get, put } = useApi()
 const { t } = useDashboardI18n()
 
 useHead({
-    title: () => `${t('organization_news.form.edit_title')} - ArcheryHub Dashboard`
+    title: () => `${t('organizer_news.form.edit_title')} - ArcheryHub Dashboard`
 })
 
 const isSubmitting = ref(false)
@@ -139,15 +139,15 @@ const form = ref({
 })
 
 const categoryOptions = computed(() => [
-    { title: t('organization_news.options.cat_event'), value: 'event' },
-    { title: t('organization_news.options.cat_announcement'), value: 'pengumuman' },
-    { title: t('organization_news.options.cat_achievement'), value: 'prestasi' },
-    { title: t('organization_news.options.cat_other'), value: 'lainnya' }
+    { title: t('organizer_news.options.cat_event'), value: 'event' },
+    { title: t('organizer_news.options.cat_announcement'), value: 'pengumuman' },
+    { title: t('organizer_news.options.cat_achievement'), value: 'prestasi' },
+    { title: t('organizer_news.options.cat_other'), value: 'lainnya' }
 ])
 
 const statusOptions = computed(() => [
-    { title: t('organization_news.options.status_draft'), value: 'draft' },
-    { title: t('organization_news.options.status_published'), value: 'published' }
+    { title: t('organizer_news.options.status_draft'), value: 'draft' },
+    { title: t('organizer_news.options.status_published'), value: 'published' }
 ])
 
 const loadNews = async () => {

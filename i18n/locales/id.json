@@ -261,7 +261,8 @@
         "admin": "Admin",
         "seller": "Penjual",
         "scorekeeper": "Scorekeeper",
-        "user": "Pengguna"
+        "user": "Pengguna",
+        "organizer": "Penyelenggara"
       },
       "reports": "Laporan",
       "organizer": "Penyelenggara"

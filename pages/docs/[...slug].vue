@@ -308,7 +308,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -365,6 +365,20 @@ const docs = computed(() => docsList.value || [])
 watch([docs, currentSlug], () => {
     const slug = currentSlug.value
     if (!slug || slug.includes('/')) return
+
+    // Explicit legacy slug aliases
+    const legacyAliases: Record<string, string> = {
+        'user-roles': 'account-types',
+    }
+    const alias = legacyAliases[slug]
+    if (alias) {
+        const matchAlias = docs.value.find(d => typeof d.slug === 'string' && d.slug.endsWith('/' + alias))
+        if (matchAlias?.slug) {
+            router.replace(`/docs/${matchAlias.slug}`)
+            return
+        }
+    }
+
     const match = docs.value.find(d => typeof d.slug === 'string' && d.slug.endsWith('/' + slug))
     if (match?.slug) {
         router.replace(`/docs/${match.slug}`)

@@ -278,7 +278,8 @@
         "admin": "Admin",
         "seller": "Seller",
         "scorekeeper": "Scorekeeper",
-        "user": "User"
+        "user": "User",
+        "organizer": "Organizer"
       },
       "reports": "Reports",
       "organizer": "Organizer"

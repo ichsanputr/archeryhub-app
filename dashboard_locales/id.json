@@ -913,7 +913,8 @@
       "delete_dialog_confirm": "Ya, Hapus",
       "delete": "Hapus",
       "edit": "Edit",
-      "read_time_unit": "menit baca"
+      "read_time_unit": "menit baca",
+      "created_label": "Dibuat Pada"
     },
     "create": {
       "title_short": "Baru",
@@ -959,5 +960,16 @@
       "toast_update_ok": "Berita berhasil diperbarui!",
       "toast_update_failed": "Gagal memperbarui berita"
     }
+  },
+  "organizer_settings_page": {
+    "type_bank": "Transfer Bank",
+    "type_qris": "QRIS",
+    "type_ewallet": "E-Wallet",
+    "type_international": "Internasional",
+    "type_custom": "Kustom",
+    "swift_transfer": "Transfer Bank (Internasional / SWIFT)",
+    "credit_card": "Kartu Kredit / Debit",
+    "custom_title": "Lainnya / Kustom",
+    "account_name_placeholder": "Contoh: Muhammad Ali"
   }
 }

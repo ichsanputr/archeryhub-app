@@ -942,7 +942,8 @@
       "delete_dialog_confirm": "Yes, Delete",
       "delete": "Delete",
       "edit": "Edit",
-      "read_time_unit": "min read"
+      "read_time_unit": "min read",
+      "created_label": "Created At"
     },
     "edit": {
       "title_short": "Edit",
@@ -959,5 +960,16 @@
       "toast_update_ok": "News updated successfully!",
       "toast_update_failed": "Failed to update news"
     }
+  },
+  "organizer_settings_page": {
+    "type_bank": "Bank Transfer",
+    "type_qris": "QRIS",
+    "type_ewallet": "E-Wallet",
+    "type_international": "International",
+    "type_custom": "Custom",
+    "swift_transfer": "Bank Transfer (International / SWIFT)",
+    "credit_card": "Credit / Debit Card",
+    "custom_title": "Other / Custom",
+    "account_name_placeholder": "Example: John Doe"
   }
 }

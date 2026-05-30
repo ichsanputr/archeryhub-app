@@ -76,7 +76,7 @@
               <th @click="toggleSort('start_date')"
                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
-                  {{ t('events.list.headers.schedule_location', 'Jadwal & Lokasi') }}
+                  {{ t('events.list.table_headers.schedule_location') }}
                   <Icon v-if="sortBy === 'start_date'"
                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
@@ -85,7 +85,7 @@
               <th @click="toggleSort('participant_count')"
                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
-                  {{ t('events.list.headers.participants_categories', 'Peserta / Kategori') }}
+                  {{ t('events.list.table_headers.participants_categories') }}
                   <Icon v-if="sortBy === 'participant_count'"
                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
@@ -94,13 +94,13 @@
               <th @click="toggleSort('status')"
                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
-                  {{ t('events.list.headers.status', 'Status') }}
+                  {{ t('events.list.table_headers.status') }}
                   <Icon v-if="sortBy === 'status'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                     class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                 </div>
               </th>
-              <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right "> {{ t('events.list.headers.actions', 'Aksi') }}
+              <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right "> {{ t('events.list.table_headers.actions') }}
               </th>
             </tr>
           </thead>
