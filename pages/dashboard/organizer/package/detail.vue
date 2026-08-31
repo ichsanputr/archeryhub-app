@@ -66,13 +66,13 @@
             <div class="space-y-1">
               <div class="flex items-center gap-2">
                 <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800">
-                  Lunas / Verified
+                  {{ t('package_detail.paid_badge', 'Lunas / Terverifikasi') }}
                 </span>
                 <span class="text-xs text-slate-400 font-semibold">{{ formatDate(tx.purchased_at || tx.created_at) }}</span>
               </div>
-              <div class="text-base sm:text-lg font-black text-navy">Pembayaran Berhasil & Terverifikasi</div>
+              <div class="text-base sm:text-lg font-black text-navy">{{ t('package_detail.paid_title', 'Pembayaran Berhasil & Terverifikasi') }}</div>
               <div class="text-xs text-slate-500 font-medium">
-                Kuota turnamen panahan Anda telah aktif secara instan dan dapat langsung digunakan untuk membuka event baru.
+                {{ t('package_detail.paid_desc', 'Kuota turnamen panahan Anda telah aktif secara instan dan dapat langsung digunakan untuk membuka event baru.') }}
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@
             <NuxtLink to="/dashboard/organizer/events"
               class="w-full sm:w-auto px-5 py-3 rounded-xl bg-navy hover:bg-navy-dark text-white text-xs font-black flex items-center justify-center gap-2 shadow-xs transition-all">
               <Icon icon="ph:plus-circle-bold" class="text-base text-primary" />
-              <span>Buat Event Sekarang</span>
+              <span>{{ t('package_detail.btn_create_event', 'Buat Event Sekarang') }}</span>
             </NuxtLink>
           </div>
         </div>
@@ -93,45 +93,45 @@
                 <Icon icon="ph:clock-bold" class="text-xl" />
               </div>
               <div>
-                <div class="text-xs font-bold text-slate-400 capitalize tracking-wider">Status Pembayaran</div>
-                <div class="text-base font-black text-navy">Menunggu Pembayaran Online</div>
+                <div class="text-xs font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.status_label', 'Status Pembayaran') }}</div>
+                <div class="text-base font-black text-navy">{{ t('package_detail.awaiting_payment', 'Menunggu Pembayaran Online') }}</div>
               </div>
             </div>
             <div v-if="tx.expiry_date" class="px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200/70 text-amber-900 text-xs font-bold flex items-center gap-1.5 w-fit">
               <Icon icon="ph:hourglass-medium-bold" class="text-sm text-amber-600" />
-              <span>Bayar Sebelum: {{ formatExpiry(tx.expiry_date) }}</span>
+              <span>{{ t('package_detail.pay_before', 'Bayar Sebelum') }}: {{ formatExpiry(tx.expiry_date) }}</span>
             </div>
           </div>
 
-          <!-- Mayar Payment Action Box -->
+          <!-- Mayar Payment Action Box (Single Primary Payment CTA) -->
           <div class="bg-gradient-to-br from-navy/5 via-navy/[0.02] to-primary/5 border-2 border-primary/40 rounded-2xl p-5 sm:p-6 space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div class="space-y-1">
                 <div class="text-sm sm:text-base font-black text-navy flex items-center gap-2">
                   <Icon icon="ph:shield-check-fill" class="text-primary text-lg" />
-                  <span>Selesaikan Pembayaran via Mayar</span>
+                  <span>{{ t('package_detail.pay_via_mayar_title', 'Selesaikan Pembayaran via Mayar') }}</span>
                 </div>
                 <div class="text-xs text-slate-500 font-medium leading-relaxed max-w-lg">
-                  Bayar secara aman menggunakan QRIS (BCA, Mandiri, BRI, BNI, GoPay, OVO, DANA, ShopeePay) atau Virtual Account resmi.
+                  {{ t('package_detail.pay_via_mayar_desc', 'Bayar secara aman menggunakan QRIS (BCA, Mandiri, BRI, BNI, GoPay, OVO, DANA, ShopeePay) atau Virtual Account resmi.') }}
                 </div>
               </div>
               <div class="sm:text-right shrink-0">
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Tagihan</span>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">{{ t('package_detail.total_paid', 'Total Tagihan') }}</span>
                 <span class="text-xl sm:text-2xl font-black text-navy tabular-nums">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
               </div>
             </div>
 
-            <!-- Big Direct Payment Button -->
+            <!-- Single Direct Payment Action -->
             <a v-if="tx.checkout_url" :href="tx.checkout_url" target="_blank" rel="noopener noreferrer"
               class="w-full py-4 px-6 bg-primary hover:bg-primary-hover text-navy rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md shadow-primary/20 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer">
               <Icon icon="ph:arrow-square-out-bold" class="text-xl" />
-              <span>Bayar Sekarang di Mayar (Buka Halaman Pembayaran)</span>
+              <span>{{ t('package_detail.btn_pay_now', 'Bayar Sekarang di Mayar') }}</span>
             </a>
 
             <!-- Supported Badges -->
             <div class="pt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-500 font-semibold">
-              <span class="text-slate-400">Metode Tersedia:</span>
-              <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">QRIS (Semua E-Wallet)</span>
+              <span class="text-slate-400">{{ t('package_detail.available_methods', 'Metode Tersedia') }}:</span>
+              <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">{{ t('package_detail.method_qris', 'QRIS (Semua E-Wallet)') }}</span>
               <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">BCA VA</span>
               <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">Mandiri VA</span>
               <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">BRI VA</span>
@@ -146,29 +146,29 @@
           <div class="flex items-center justify-between">
             <h3 class="text-sm font-black text-navy flex items-center gap-2">
               <Icon icon="ph:list-dashes-bold" class="text-primary text-base" />
-              <span>Rincian Layanan & Kuota</span>
+              <span>{{ t('package_detail.item_details', 'Rincian Layanan & Kuota') }}</span>
             </h3>
-            <span class="text-xs font-bold text-slate-400">1 Item</span>
+            <span class="text-xs font-bold text-slate-400">{{ t('package_detail.item_count', { count: 1 }) }}</span>
           </div>
 
           <div class="border border-gray-100 rounded-2xl overflow-hidden overflow-x-auto">
             <table class="w-full text-left text-xs min-w-[480px]">
               <thead class="bg-slate-50 text-slate-500 font-bold border-b border-gray-100">
                 <tr>
-                  <th class="py-3 px-4">Deskripsi Layanan</th>
-                  <th class="py-3 px-4 text-center">Jumlah</th>
-                  <th class="py-3 px-4 text-right">Harga Satuan</th>
-                  <th class="py-3 px-4 text-right">Subtotal</th>
+                  <th class="py-3 px-4">{{ t('package_detail.col_item', 'Deskripsi Layanan') }}</th>
+                  <th class="py-3 px-4 text-center">{{ t('package_detail.col_qty', 'Jumlah') }}</th>
+                  <th class="py-3 px-4 text-right">{{ t('package_detail.col_unit_price', 'Harga Satuan') }}</th>
+                  <th class="py-3 px-4 text-right">{{ t('package_detail.col_subtotal', 'Subtotal') }}</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100 font-medium">
                 <tr>
                   <td class="py-4 px-4">
                     <div class="font-black text-navy text-xs sm:text-sm">{{ tx.plan_name || 'Paket Kuota Event' }}</div>
-                    <div class="text-[11px] text-slate-400 mt-0.5">Aktivasi turnamen resmi panahan, OBS scoring overlay, dan live streaming ranking</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">{{ t('package_detail.quota_note', 'Aktivasi turnamen resmi panahan, OBS scoring overlay, dan live streaming ranking') }}</div>
                   </td>
                   <td class="py-4 px-4 text-center font-black text-navy">
-                    {{ tx.quantity || 1 }} Event
+                    {{ tx.quantity || 1 }} {{ t('package_detail.event_unit', 'Event') }}
                   </td>
                   <td class="py-4 px-4 text-right font-bold text-slate-600">
                     Rp {{ formatNumber((tx.total_amount || tx.amount || 0) / (tx.quantity || 1)) }}
@@ -184,22 +184,22 @@
           <!-- Total Calculation Breakdown -->
           <div class="pt-3 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
             <div class="text-xs text-slate-400 space-y-1">
-              <div>Kuitansi resmi diterbitkan oleh ArcheryHub.id</div>
-              <div class="text-[11px] text-slate-400">Pajak sudah termasuk dalam total pembayaran (PPN 0%)</div>
+              <div>{{ t('package_detail.official_receipt_note', 'Kuitansi resmi diterbitkan oleh ArcheryHub.id') }}</div>
+              <div class="text-[11px] text-slate-400">{{ t('package_detail.tax_note', 'Pajak sudah termasuk dalam total pembayaran (PPN 0%)') }}</div>
             </div>
 
             <div class="w-full sm:w-64 space-y-2 text-xs">
               <div class="flex justify-between text-slate-500">
-                <span>Subtotal</span>
+                <span>{{ t('package_detail.col_subtotal', 'Subtotal') }}</span>
                 <span class="font-bold text-navy">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
               </div>
               <div class="flex justify-between text-slate-500">
-                <span>Biaya Layanan Payment</span>
-                <span class="font-bold text-emerald-600">Gratis (Rp 0)</span>
+                <span>{{ t('package_detail.admin_fee', 'Biaya Layanan Payment') }}</span>
+                <span class="font-bold text-emerald-600">{{ t('package_detail.free', 'Gratis (Rp 0)') }}</span>
               </div>
               <div class="h-px bg-slate-100 my-1"></div>
               <div class="flex justify-between items-baseline">
-                <span class="text-xs font-black text-navy">Total Pembayaran</span>
+                <span class="text-xs font-black text-navy">{{ t('package_detail.total_payment', 'Total Pembayaran') }}</span>
                 <span class="text-lg sm:text-xl font-black text-navy tabular-nums">
                   Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}
                 </span>
@@ -212,7 +212,7 @@
         <div v-if="isPending && instructionGroups.length > 0" class="bg-white rounded-3xl border border-gray-100 p-6 sm:p-7 shadow-xs space-y-4">
           <h4 class="text-sm font-black text-navy flex items-center gap-2">
             <Icon icon="ph:info-bold" class="text-primary text-base" />
-            <span>Petunjuk Cara Pembayaran</span>
+            <span>{{ t('package_detail.instructions_title', 'Petunjuk Cara Pembayaran') }}</span>
           </h4>
 
           <div class="flex flex-wrap gap-2">
@@ -234,63 +234,51 @@
 
       </div>
 
-      <!-- RIGHT COLUMN: Order Summary Card, Public Link & Support (1 Col) -->
+      <!-- RIGHT COLUMN: Order Summary Sidebar & Support (1 Col, Zero Duplication) -->
       <div class="space-y-6">
         
-        <!-- Summary & Actions Card -->
+        <!-- Summary & Navigation Card -->
         <div class="bg-white rounded-3xl border border-gray-100 p-6 shadow-xs space-y-5">
           <div class="space-y-1 pb-4 border-b border-gray-100">
-            <div class="text-xs font-bold text-slate-400 capitalize">Ringkasan Invoice</div>
+            <div class="text-xs font-bold text-slate-400 capitalize">{{ t('package_detail.summary_title', 'Ringkasan Invoice') }}</div>
             <div class="font-mono text-sm font-black text-navy truncate select-all">{{ tx.reference || reference }}</div>
           </div>
 
           <div class="space-y-3 text-xs">
             <div class="flex justify-between items-center text-slate-500">
-              <span>Status</span>
+              <span>{{ t('package_detail.status', 'Status') }}</span>
               <span :class="statusBadgeClasses" class="px-2.5 py-1 rounded-lg text-[10px] font-black capitalize border shadow-2xs">
                 {{ formatStatus(tx.status || tx.payment_status) }}
               </span>
             </div>
             <div class="flex justify-between items-center text-slate-500">
-              <span>Metode</span>
+              <span>{{ t('package_detail.method_label', 'Metode') }}</span>
               <span class="font-bold text-navy">{{ formatPaymentMethodName(tx.payment_method) }}</span>
             </div>
             <div class="flex justify-between items-center text-slate-500">
-              <span>Waktu Pembelian</span>
+              <span>{{ t('package_detail.purchase_time', 'Waktu Pembelian') }}</span>
               <span class="font-bold text-navy">{{ formatDate(tx.purchased_at || tx.created_at) }}</span>
             </div>
             <div class="h-px bg-slate-100 my-1"></div>
             <div class="flex justify-between items-baseline">
-              <span class="text-xs font-black text-navy">Total Tagihan</span>
+              <span class="text-xs font-black text-navy">{{ t('package_detail.total_paid', 'Total Tagihan') }}</span>
               <span class="text-xl font-black text-navy tabular-nums">
                 Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}
               </span>
             </div>
           </div>
 
-          <!-- Action Buttons in Sidebar -->
+          <!-- Non-repetitive Navigation Actions -->
           <div class="space-y-2.5 pt-2">
-            <a v-if="isPending && tx.checkout_url" :href="tx.checkout_url" target="_blank" rel="noopener noreferrer"
-              class="w-full py-3 px-4 bg-primary hover:bg-primary-hover text-navy rounded-xl font-black text-xs flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer">
-              <Icon icon="ph:arrow-square-out-bold" class="text-base" />
-              <span>Buka Invoice Mayar</span>
-            </a>
-
             <NuxtLink :to="`/payment/status/${tx.reference || reference}`"
-              class="w-full py-3 px-4 bg-navy hover:bg-navy-dark text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all">
+              class="w-full py-3 px-4 bg-navy hover:bg-navy-dark text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs">
               <Icon icon="ph:globe-bold" class="text-base" />
-              <span>Halaman Status Publik</span>
+              <span>{{ t('package_detail.btn_public_status', 'Halaman Status Publik') }}</span>
             </NuxtLink>
 
-            <button type="button" @click="printInvoice"
-              class="w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
-              <Icon icon="ph:printer-bold" class="text-base" />
-              <span>Cetak Bukti Pembayaran</span>
-            </button>
-
             <NuxtLink to="/dashboard/organizer/package"
-              class="w-full py-3 px-4 bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all text-center">
-              <span>Kembali ke Paket</span>
+              class="w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all text-center">
+              <span>{{ t('package_detail.btn_back', 'Kembali ke Paket') }}</span>
             </NuxtLink>
           </div>
         </div>
@@ -302,9 +290,9 @@
               <Icon icon="ph:shield-check-bold" class="text-lg" />
             </div>
             <div class="space-y-1">
-              <div class="text-xs font-black text-navy">Jaminan Pembayaran Aman</div>
+              <div class="text-xs font-black text-navy">{{ t('package_detail.security_title', 'Jaminan Pembayaran Aman') }}</div>
               <div class="text-[11px] text-slate-400 leading-relaxed">
-                Diproses secara otomatis dan terenkripsi menggunakan gateway resmi Mayar Headless API.
+                {{ t('package_detail.security_desc', 'Diproses secara otomatis dan terenkripsi menggunakan gateway resmi Mayar Headless API.') }}
               </div>
             </div>
           </div>
@@ -315,7 +303,7 @@
             target="_blank"
             class="inline-flex items-center justify-center gap-2 w-full py-2.5 text-xs text-slate-500 hover:text-navy font-bold transition-colors">
             <Icon icon="ph:whatsapp-logo-bold" class="text-emerald-500 text-base" />
-            <span>Butuh Bantuan? Hubungi CS</span>
+            <span>{{ t('package_detail.help_cs', 'Butuh Bantuan? Hubungi CS') }}</span>
           </a>
         </div>
 
@@ -338,11 +326,11 @@
         <div class="text-right">
           <div class="text-xl font-black tracking-wider text-slate-900">INVOICE</div>
           <div class="font-mono text-xs font-bold text-slate-700 mt-1">No: {{ tx.reference || reference }}</div>
-          <div class="text-xs text-slate-500 mt-0.5">Tanggal: {{ formatDate(tx.purchased_at || tx.created_at) }}</div>
+          <div class="text-xs text-slate-500 mt-0.5">{{ t('package_detail.purchase_time', 'Tanggal') }}: {{ formatDate(tx.purchased_at || tx.created_at) }}</div>
           <div class="mt-2">
             <span class="inline-block px-2.5 py-0.5 rounded text-[11px] font-black border"
               :class="isPaid ? 'bg-slate-50 text-slate-900 border-slate-300' : 'bg-slate-50 text-slate-600 border-slate-200'">
-              {{ isPaid ? 'Lunas / Paid' : 'Menunggu Pembayaran / Unpaid' }}
+              {{ isPaid ? t('package_detail.status_paid', 'Lunas / Paid') : t('package_detail.status_pending', 'Menunggu Pembayaran / Unpaid') }}
             </span>
           </div>
         </div>
@@ -370,10 +358,10 @@
         <thead>
           <tr class="border-b border-slate-200 text-slate-600 font-bold bg-slate-50/50">
             <th class="py-2.5 px-2 w-10">No</th>
-            <th class="py-2.5 px-2">Deskripsi Layanan</th>
-            <th class="py-2.5 px-2 text-center w-24">Jumlah</th>
-            <th class="py-2.5 px-2 text-right w-28">Harga Satuan</th>
-            <th class="py-2.5 px-2 text-right w-32">Total (IDR)</th>
+            <th class="py-2.5 px-2">{{ t('package_detail.col_item', 'Deskripsi Layanan') }}</th>
+            <th class="py-2.5 px-2 text-center w-24">{{ t('package_detail.col_qty', 'Jumlah') }}</th>
+            <th class="py-2.5 px-2 text-right w-28">{{ t('package_detail.col_unit_price', 'Harga Satuan') }}</th>
+            <th class="py-2.5 px-2 text-right w-32">{{ t('package_detail.col_subtotal', 'Total (IDR)') }}</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100">
@@ -381,9 +369,9 @@
             <td class="py-3 px-2 text-slate-400 font-medium">1</td>
             <td class="py-3 px-2">
               <div class="font-bold text-slate-900">{{ tx.plan_name || 'Paket Kuota Event' }}</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">Aktivasi turnamen resmi, OBS overlay, dan scoring live</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">{{ t('package_detail.quota_note', 'Aktivasi turnamen resmi, OBS overlay, dan scoring live') }}</div>
             </td>
-            <td class="py-3 px-2 text-center font-semibold text-slate-800">{{ tx.quantity || 1 }} Event</td>
+            <td class="py-3 px-2 text-center font-semibold text-slate-800">{{ tx.quantity || 1 }} {{ t('package_detail.event_unit', 'Event') }}</td>
             <td class="py-3 px-2 text-right text-slate-600">Rp {{ formatNumber((tx.total_amount || tx.amount || 0) / (tx.quantity || 1)) }}</td>
             <td class="py-3 px-2 text-right font-bold text-slate-900">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</td>
           </tr>
@@ -395,21 +383,20 @@
         <div class="space-y-1 text-slate-500 max-w-xs">
           <div class="font-bold text-slate-800">Informasi Pembayaran:</div>
           <div>Metode: {{ formatPaymentMethodName(tx.payment_method) }}</div>
-          <div v-if="tx.pay_code">No. Virtual Account: {{ tx.pay_code }}</div>
-          <div>Status: {{ isPaid ? 'Lunas (Terverifikasi Sistem)' : 'Menunggu Pembayaran' }}</div>
+          <div>Status: {{ isPaid ? t('package_detail.status_paid', 'Lunas (Terverifikasi Sistem)') : t('package_detail.status_pending', 'Menunggu Pembayaran') }}</div>
         </div>
 
         <div class="w-60 space-y-1.5 text-right">
           <div class="flex justify-between text-slate-500">
-            <span>Subtotal:</span>
+            <span>{{ t('package_detail.col_subtotal', 'Subtotal') }}:</span>
             <span class="font-semibold text-slate-800">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
           </div>
           <div class="flex justify-between text-slate-500">
-            <span>Biaya Layanan:</span>
-            <span class="font-semibold text-slate-800">Rp 0</span>
+            <span>{{ t('package_detail.admin_fee', 'Biaya Layanan') }}:</span>
+            <span class="font-semibold text-slate-800">{{ t('package_detail.free', 'Rp 0') }}</span>
           </div>
           <div class="border-t border-slate-200 pt-2 flex justify-between text-sm font-black text-slate-900">
-            <span>Total Tagihan:</span>
+            <span>{{ t('package_detail.total_payment', 'Total Tagihan') }}:</span>
             <span>Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
           </div>
         </div>
@@ -418,7 +405,7 @@
       <!-- Refined Minimal PDF / Print Footer -->
       <div class="border-t border-slate-200 pt-4 flex justify-between items-center text-[10px] text-slate-400">
         <div>
-          Faktur ini merupakan bukti pembayaran elektronik resmi yang sah dari ArcheryHub.id.
+          {{ t('package_detail.official_receipt_note', 'Faktur ini merupakan bukti pembayaran elektronik resmi yang sah dari ArcheryHub.id.') }}
         </div>
         <div class="font-bold text-slate-500">
           ArcheryHub.id Digital Receipt
