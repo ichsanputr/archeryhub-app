@@ -102,21 +102,17 @@
 
       <!-- Empty State -->
       <div v-else-if="targets.length === 0"
-        class="bg-white rounded-3xl border border-gray-100 p-20 text-center shadow-sm">
-        <div class="flex flex-col items-center gap-6 max-w-sm mx-auto">
+        class="bg-white rounded-3xl border border-gray-100 p-16 text-center shadow-sm">
+        <div class="flex flex-col items-center gap-4 max-w-sm mx-auto">
           <div class="size-20 bg-gray-50 rounded-3xl flex items-center justify-center text-gray-300">
             <Icon icon="ph:target-bold" class="text-5xl" />
           </div>
-          <div class="space-y-2">
-            <h3 class="text-xl font-black text-navy">{{ t('event_targets.no_targets') }}</h3>
-            <div class="text-sm text-gray-500 font-medium leading-relaxed">
+          <div class="space-y-1">
+            <h3 class="text-lg font-black text-navy">{{ t('event_targets.no_targets') }}</h3>
+            <div class="text-xs text-gray-500 font-medium leading-relaxed">
               {{ t('event_targets.no_targets_desc') }}
             </div>
           </div>
-          <BaseButton @click="isSubscriptionActive ? (showCreateDialog = true) : (showPremiumModal = true)" variant="primary" icon="ph:plus-bold" class="w-full"
-            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
-            {{ t('event_targets.add_target') }}
-          </BaseButton>
         </div>
       </div>
 

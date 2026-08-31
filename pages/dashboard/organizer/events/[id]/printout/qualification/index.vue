@@ -96,30 +96,32 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <label class="flex items-center gap-3 p-3.5 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors cursor-pointer bg-gray-50/50">
-              <input type="checkbox" v-model="form.addCompetitionHeader" class="rounded text-primary focus:ring-primary size-4" />
-              <span class="text-xs font-bold text-navy">{{ t('event_printout.scoresheet.add_competition_header', 'Header Informasi Kejuaraan') }}</span>
-            </label>
-
-            <label class="flex items-center gap-3 p-3.5 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors cursor-pointer bg-gray-50/50">
-              <input type="checkbox" v-model="form.addCompetitionImages" class="rounded text-primary focus:ring-primary size-4" />
-              <span class="text-xs font-bold text-navy">{{ t('event_printout.scoresheet.add_competition_images', 'Logo & Gambar Event') }}</span>
-            </label>
-
-            <label class="flex items-center gap-3 p-3.5 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors cursor-pointer bg-gray-50/50">
-              <input type="checkbox" v-model="form.addCountryClubFlags" class="rounded text-primary focus:ring-primary size-4" />
-              <span class="text-xs font-bold text-navy">{{ t('event_printout.scoresheet.add_country_club_flags', 'Nama Klub / Kontingen') }}</span>
-            </label>
-
-            <label class="flex items-center gap-3 p-3.5 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors cursor-pointer bg-gray-50/50">
-              <input type="checkbox" v-model="form.collectArchersBirthdateEmail" class="rounded text-primary focus:ring-primary size-4" />
-              <span class="text-xs font-bold text-navy">{{ t('event_printout.scoresheet.collect_birthdate_email', 'Sertakan Info Kontak / Tanggal Lahir') }}</span>
-            </label>
-
-            <label class="flex items-center gap-3 p-3.5 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors cursor-pointer bg-gray-50/50 md:col-span-2">
-              <input type="checkbox" v-model="form.printBarcode" class="rounded text-primary focus:ring-primary size-4" />
-              <span class="text-xs font-bold text-navy">{{ t('event_printout.scoresheet.print_barcode', 'Cetak Barcode Verifikasi') }}</span>
-            </label>
+            <BaseCheckbox
+              v-model="form.addCompetitionHeader"
+              card
+              :label="t('event_printout.scoresheet.add_competition_header', 'Header Informasi Kejuaraan')"
+            />
+            <BaseCheckbox
+              v-model="form.addCompetitionImages"
+              card
+              :label="t('event_printout.scoresheet.add_competition_images', 'Logo & Gambar Event')"
+            />
+            <BaseCheckbox
+              v-model="form.addCountryClubFlags"
+              card
+              :label="t('event_printout.scoresheet.add_country_club_flags', 'Nama Klub / Kontingen')"
+            />
+            <BaseCheckbox
+              v-model="form.collectArchersBirthdateEmail"
+              card
+              :label="t('event_printout.scoresheet.collect_birthdate_email', 'Sertakan Info Kontak / Tanggal Lahir')"
+            />
+            <BaseCheckbox
+              v-model="form.printBarcode"
+              card
+              class="md:col-span-2"
+              :label="t('event_printout.scoresheet.print_barcode', 'Cetak Barcode Verifikasi')"
+            />
           </div>
         </div>
 
@@ -133,21 +135,18 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label class="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors cursor-pointer bg-gray-50/50">
-              <input type="checkbox" v-model="form.autoPrint" class="rounded text-primary focus:ring-primary size-4 mt-0.5" />
-              <div>
-                <div class="text-xs font-black text-navy">{{ t('event_printout.scoresheet.auto_print_label', 'Dialog Cetak Otomatis') }}</div>
-                <div class="text-[10px] text-gray-400 mt-0.5">{{ t('event_printout.scoresheet.auto_print_desc', 'Membuka dialog print browser saat PDF dibuka.') }}</div>
-              </div>
-            </label>
-
-            <label class="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors cursor-pointer bg-gray-50/50">
-              <input type="checkbox" v-model="form.blankScoresheet" class="rounded text-primary focus:ring-primary size-4 mt-0.5" />
-              <div>
-                <div class="text-xs font-black text-navy">{{ t('event_printout.scoresheet.blank_label', 'Scoresheet Kosong') }}</div>
-                <div class="text-[10px] text-gray-400 mt-0.5">{{ t('event_printout.scoresheet.blank_desc', 'Cetak format lembar skor kosong tanpa nama atlet.') }}</div>
-              </div>
-            </label>
+            <BaseCheckbox
+              v-model="form.autoPrint"
+              card
+              :label="t('event_printout.scoresheet.auto_print_label', 'Dialog Cetak Otomatis')"
+              :sublabel="t('event_printout.scoresheet.auto_print_desc', 'Membuka dialog print browser saat PDF dibuka.')"
+            />
+            <BaseCheckbox
+              v-model="form.blankScoresheet"
+              card
+              :label="t('event_printout.scoresheet.blank_label', 'Scoresheet Kosong')"
+              :sublabel="t('event_printout.scoresheet.blank_desc', 'Cetak format lembar skor kosong tanpa nama atlet.')"
+            />
           </div>
         </div>
 

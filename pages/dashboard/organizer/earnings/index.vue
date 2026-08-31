@@ -131,7 +131,7 @@ const totalEarningsAmount = computed(() => {
     return earningsHistoryData.value.reduce((acc, curr) => acc + curr.amount, 0)
 })
 
-const earningsHistory = computed(() => earningsHistoryData.value)
+const earningsHistory = computed(() => earningsHistoryData.value.filter(item => (item.amount || 0) > 0))
 
 const monthlyEarnings = computed(() => {
     // Basic logic: filter by current month

@@ -242,7 +242,7 @@ const eventLinks = computed(() => {
 
   const links = [
     { label: t('sidebar.summary', 'Ringkasan'), icon: 'ph:squares-four', path: `${prefix}/events/${eventId.value}/overview` },
-    { label: t('sidebar.event_page', 'Landing Page'), icon: 'ph:browser', path: `${prefix}/events/${eventId.value}/page` },
+    { label: t('sidebar.event_page', 'Event Setting'), icon: 'ph:gear-six-bold', path: `${prefix}/events/${eventId.value}/page` },
     { label: t('sidebar.participants', 'Peserta'), icon: 'ph:users-three', path: `${prefix}/events/${eventId.value}/participants` },
     { label: t('sidebar.teams', 'Tim'), icon: 'ph:users-four', path: `${prefix}/events/${eventId.value}/teams` },
   ]

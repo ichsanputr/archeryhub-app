@@ -106,34 +106,22 @@
                                     <Icon icon="ph:caret-down-bold"
                                         class="transition group-open:rotate-180 text-gray-400" />
                                 </summary>
-                                <div class="px-6 pb-6 text-sm space-y-4">
-                                    <label class="flex items-center gap-3 cursor-pointer group/item">
-                                        <input v-model="selectedStatuses" value="upcoming"
-                                            class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
-                                            type="checkbox" />
-                                        <span
-                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">
-                                            {{ $t('events_page.status_upcoming') }}
-                                        </span>
-                                    </label>
-                                    <label class="flex items-center gap-3 cursor-pointer group/item">
-                                        <input v-model="selectedStatuses" value="ongoing"
-                                            class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
-                                            type="checkbox" />
-                                        <span
-                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">
-                                            {{ $t('events_page.status_ongoing') }}
-                                        </span>
-                                    </label>
-                                    <label class="flex items-center gap-3 cursor-pointer group/item">
-                                        <input v-model="selectedStatuses" value="completed"
-                                            class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
-                                            type="checkbox" />
-                                        <span
-                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">
-                                            {{ $t('events_page.status_completed') }}
-                                        </span>
-                                    </label>
+                                <div class="px-6 pb-6 text-sm space-y-3">
+                                    <BaseCheckbox
+                                        v-model="selectedStatuses"
+                                        value="upcoming"
+                                        :label="$t('events_page.status_upcoming')"
+                                    />
+                                    <BaseCheckbox
+                                        v-model="selectedStatuses"
+                                        value="ongoing"
+                                        :label="$t('events_page.status_ongoing')"
+                                    />
+                                    <BaseCheckbox
+                                        v-model="selectedStatuses"
+                                        value="completed"
+                                        :label="$t('events_page.status_completed')"
+                                    />
                                 </div>
                             </details>
 

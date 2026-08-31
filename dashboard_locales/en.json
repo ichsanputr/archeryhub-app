@@ -48,7 +48,7 @@
     "printout": "Printout",
     "certificates": "Certificates",
     "summary": "Summary",
-    "event_page": "Landing Page",
+    "event_page": "Event Setting",
     "participants": "Participants",
     "teams": "Teams",
     "competition_categories": "Categories",
@@ -970,7 +970,9 @@
         "status": "Status",
         "actions": "Actions"
       },
-      "manage": "Manage"
+      "manage": "Manage",
+      "participants_label": "Participants",
+      "categories_label": "Categories"
     },
     "filter": {
       "filter_status": "Event Status",
@@ -1863,7 +1865,9 @@
   "organizer_subscription": {
     "page_title": "Event Packages & Quota",
     "breadcrumb": "Event Package",
-    "subtitle": "Manage event quota, purchase packages, and view transaction history."
+    "subtitle": "Manage event quota, purchase packages, and view transaction history.",
+    "no_history": "No Purchase History Yet",
+    "no_history_desc": "Standard & Elite quota purchases will be recorded here. Free Tier (Initial Bonus) quota is used directly without purchase invoices."
   },
   "premium": {
     "subscription_expired": "Package Expired",
@@ -1974,7 +1978,8 @@
     "payment_unpaid_desc": "No proof / payment received yet",
     "leaderboard": {
       "title": "Leaderboard Rankings",
-      "no_scores": "No archer scores recorded yet"
+      "no_scores": "No archer scores recorded yet",
+      "empty_title": "No Scores Recorded Yet"
     },
     "top_archers_badge": "Top 6 Archers",
     "total_score_label": "Total Score",
@@ -2005,7 +2010,8 @@
       "elite_desc": "Unlimited participants, categories, scorekeepers.",
       "insufficient_standard": "Insufficient Standard Quota. Please purchase additional quota.",
       "insufficient_elite": "Insufficient Elite Quota. Please purchase additional quota."
-    }
+    },
+    "no_category_data_desc": "Category registration statistics will appear automatically once archers register."
   },
   "auth": {
     "login": {

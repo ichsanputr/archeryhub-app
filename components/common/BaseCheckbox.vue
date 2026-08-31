@@ -1,53 +1,110 @@
 <template>
-    <div class="flex flex-col gap-1">
-        <label class="relative flex items-center gap-3 cursor-pointer group select-none">
-            <input type="checkbox" :checked="modelValue" @change="handleChange" :required="required"
-                class="peer sr-only" :disabled="disabled" />
+  <div class="flex flex-col gap-1">
+    <label
+      class="relative flex items-center gap-3 cursor-pointer group select-none"
+      :class="[
+        disabled ? 'opacity-50 cursor-not-allowed' : '',
+        card ? 'p-3.5 rounded-xl border transition-all ' + (isChecked ? 'border-primary bg-primary/5 shadow-xs' : 'border-gray-200 hover:border-gray-300 bg-gray-50/50') : ''
+      ]"
+    >
+      <input
+        type="checkbox"
+        :checked="isChecked"
+        :value="value"
+        :disabled="disabled"
+        :required="required"
+        class="peer sr-only"
+        @change="handleChange"
+      />
 
-            <div class="w-5 h-5 rounded-md border-2 transition-all 
-                   peer-focus:ring-4 peer-focus:ring-primary/20
-                   peer-focus-visible:outline-none
-                   group-hover:border-primary/50
-                   flex items-center justify-center shrink-0
-                   peer-disabled:opacity-50 peer-disabled:cursor-not-allowed" :class="[
-                    modelValue ? 'bg-primary border-primary' : 'bg-white border-gray-200',
-                    error ? 'border-red-500' : ''
-                ]">
-                <svg v-if="modelValue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"
-                    class="w-3.5 h-3.5 text-white" fill="currentColor">
-                    <path
-                        d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z" />
-                </svg>
-            </div>
+      <div
+        class="size-5 rounded-lg border-2 transition-all flex items-center justify-center shrink-0"
+        :class="[
+          isChecked
+            ? 'bg-primary border-primary text-navy shadow-2xs'
+            : 'bg-white border-slate-300 group-hover:border-primary/60',
+          error ? 'border-red-500' : '',
+          'peer-focus:ring-2 peer-focus:ring-primary/20 peer-focus-visible:outline-none'
+        ]"
+      >
+        <Icon v-if="isChecked" icon="ph:check-bold" class="text-xs text-navy" />
+      </div>
 
-            <span class="text-sm font-semibold text-navy group-hover:text-primary-dark transition-colors flex-1">
-                <slot>{{ label }}</slot>
-            </span>
-        </label>
+      <div class="flex-1 min-w-0">
+        <span
+          v-if="label || $slots.default"
+          class="text-xs sm:text-sm font-bold text-navy group-hover:text-primary transition-colors block leading-tight truncate"
+        >
+          <slot>{{ label }}</slot>
+        </span>
+        <span
+          v-if="sublabel || $slots.sublabel"
+          class="text-[11px] text-slate-400 font-medium block mt-0.5"
+        >
+          <slot name="sublabel">{{ sublabel }}</slot>
+        </span>
+      </div>
+    </label>
 
-        <p v-if="error" class="text-red-500  text-xs font-bold ml-8">
-            {{ error }}
-        </p>
-    </div>
+    <span v-if="error" class="text-red-500 text-xs font-bold ml-8">
+      {{ error }}
+    </span>
+  </div>
 </template>
 
 <script setup>
-
+import { computed } from 'vue'
 
 const props = defineProps({
-    modelValue: {
-        type: Boolean,
-        default: false
-    },
-    label: String,
-    error: String,
-    disabled: Boolean,
-    required: Boolean
+  modelValue: {
+    type: [Boolean, Array, String, Number],
+    default: false
+  },
+  value: {
+    type: [String, Number, Boolean, Object],
+    default: null
+  },
+  label: String,
+  sublabel: String,
+  error: String,
+  disabled: Boolean,
+  required: Boolean,
+  card: Boolean
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'change'])
+
+const isChecked = computed(() => {
+  if (Array.isArray(props.modelValue)) {
+    return props.modelValue.includes(props.value)
+  }
+  if (typeof props.modelValue === 'boolean') {
+    return props.modelValue
+  }
+  return props.modelValue === props.value
+})
 
 const handleChange = (event) => {
-    emit('update:modelValue', event.target.checked)
+  const checked = event.target.checked
+  let newValue
+
+  if (Array.isArray(props.modelValue)) {
+    newValue = [...props.modelValue]
+    if (checked) {
+      if (!newValue.includes(props.value)) {
+        newValue.push(props.value)
+      }
+    } else {
+      const index = newValue.indexOf(props.value)
+      if (index > -1) {
+        newValue.splice(index, 1)
+      }
+    }
+  } else {
+    newValue = checked
+  }
+
+  emit('update:modelValue', newValue)
+  emit('change', newValue)
 }
 </script>

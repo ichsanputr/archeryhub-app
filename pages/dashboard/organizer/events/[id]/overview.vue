@@ -56,10 +56,6 @@
                             class="h-11 px-5 shadow-sm font-bold" @click="showQuotaModal = true">
                             {{ $t('dashboard_event_overview.publish', 'Publikasikan') }}
                         </BaseButton>
-                        <BaseButton variant="white" icon="ph:code-bold"
-                            class="h-11 px-5 border-white/20 shadow-sm font-bold" @click="showEmbedModal = true">
-                            {{ $t('dashboard_event_overview.embed_widget', 'Sematkan Widget') }}
-                        </BaseButton>
                         <BaseButton variant="white" icon="ph:share-network-bold"
                             class="h-11 px-5 border-white/20 shadow-sm font-bold" @click="openShareDialog">
                             {{ $t('dashboard_event_overview.share_button') }}
@@ -504,48 +500,7 @@
                 </div>
             </Teleport>
 
-            <!-- Embed Widget Modal -->
-            <Teleport to="body">
-                <div v-if="showEmbedModal"
-                    class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
-                    <div class="fixed inset-0 bg-navy/60 backdrop-blur-sm transition-opacity"
-                        @click="showEmbedModal = false"></div>
-                    <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 z-10 border border-slate-100">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
-                            <div class="flex items-center gap-3">
-                                <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                    <Icon icon="ph:code-bold" class="text-primary text-xl" />
-                                </div>
-                                <div>
-                                    <h3 class="font-black text-navy text-lg">{{ $t('dashboard_event_overview.embed_modal.title', 'Embed Widget Live') }}</h3>
-                                    <div class="text-xs text-slate-500">{{ $t('dashboard_event_overview.embed_modal.desc', 'Salin kode iframe untuk disematkan pada website Anda') }}</div>
-                                </div>
-                            </div>
-                            <button @click="showEmbedModal = false" class="text-slate-400 hover:text-navy p-1">
-                                <Icon icon="ph:x-bold" class="text-lg" />
-                            </button>
-                        </div>
 
-                        <!-- Bracket Embed Code -->
-                        <div class="space-y-2">
-                            <label class="text-xs font-black capitalize tracking-wider text-slate-500">{{ $t('dashboard_event_overview.embed_modal.bracket_label', '1. Bracket Eliminasi Live Widget') }}</label>
-                            <div class="bg-slate-900 text-slate-200 p-3 rounded-xl font-mono text-[11px] break-all border border-slate-800 relative group">
-                                <code>{{ embedBracketCode }}</code>
-                                <button @click="copyText(embedBracketCode)" class="absolute top-2 right-2 px-2.5 py-1 bg-primary text-navy font-bold rounded-lg text-[10px] hover:bg-yellow-400">Copy</button>
-                            </div>
-                        </div>
-
-                        <!-- Results Embed Code -->
-                        <div class="space-y-2">
-                            <label class="text-xs font-black capitalize tracking-wider text-slate-500">{{ $t('dashboard_event_overview.embed_modal.results_label', '2. Hasil Kualifikasi Live Widget') }}</label>
-                            <div class="bg-slate-900 text-slate-200 p-3 rounded-xl font-mono text-[11px] break-all border border-slate-800 relative group">
-                                <code>{{ embedResultsCode }}</code>
-                                <button @click="copyText(embedResultsCode)" class="absolute top-2 right-2 px-2.5 py-1 bg-primary text-navy font-bold rounded-lg text-[10px] hover:bg-yellow-400">Copy</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Teleport>
             <!-- Quota Selection Modal -->
             <Teleport to="body">
                 <div v-if="showQuotaModal"
@@ -840,9 +795,7 @@ const copyPublicUrl = async () => {
     }
 }
 
-const showEmbedModal = ref(false)
-const embedBracketCode = computed(() => `<iframe src="https://archeris.net/embed/bracket/${event.value?.slug || route.params.id}" width="100%" height="600" frameborder="0"></iframe>`)
-const embedResultsCode = computed(() => `<iframe src="https://archeris.net/embed/results/${event.value?.slug || route.params.id}" width="100%" height="600" frameborder="0"></iframe>`)
+
 
 const shareTo = (platform) => {
     const url = encodeURIComponent(publicEventUrl.value)

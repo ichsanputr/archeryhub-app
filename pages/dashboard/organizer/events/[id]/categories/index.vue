@@ -82,13 +82,8 @@
             </div>
             <div v-else-if="categories.length === 0" class="p-12 text-center">
                 <Icon icon="ph:tag-simple" class="text-5xl text-gray-300 mx-auto mb-4" />
-                <div class="text-gray-500 font-medium mb-2">{{ t('event_categories.no_categories') }}</div>
-                <div class="text-sm text-gray-400 mb-6">{{ t('event_categories.no_categories_desc') }}</div>
-                <BaseButton variant="primary" icon="ph:plus-bold"
-                    :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
-                    @click="isSubscriptionActive ? openCreateDialog() : (showPremiumModal = true)">
-                    {{ t('event_categories.add_first_category') }}
-                </BaseButton>
+                <div class="text-gray-600 font-bold mb-1">{{ t('event_categories.no_categories') }}</div>
+                <div class="text-sm text-gray-400">{{ t('event_categories.no_categories_desc') }}</div>
             </div>
             <div v-else class="divide-y divide-gray-100">
                 <div v-for="category in categories" :key="category.id"

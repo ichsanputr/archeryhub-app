@@ -9,7 +9,8 @@
     "my_events": "내 이벤트",
     "profile": "프로필",
     "settings": "설정",
-    "sign_out": "로그아웃"
+    "sign_out": "로그아웃",
+    "event_page": "이벤트 설정"
   },
   "my_certificate_page": {
     "title": "대회 인증서",
@@ -1047,5 +1048,15 @@
     "total_score": "팀 총점",
     "total_x": "총 X 수",
     "rank": "단체전 순위"
+  },
+  "dashboard_event_overview": {
+    "leaderboard": {
+      "empty_title": "기록된 점수가 없습니다"
+    },
+    "no_category_data_desc": "참가자가 등록하면 카테고리 등록 통계가 자동으로 표시됩니다."
+  },
+  "organizer_subscription": {
+    "no_history": "구매 내역이 없습니다",
+    "no_history_desc": "Standard 및 Elite 쿼터 구매 내역이 여기에 기록됩니다. Free 쿼터(시작 보너스)는 구매 결제 없이 즉시 사용됩니다."
   }
 }

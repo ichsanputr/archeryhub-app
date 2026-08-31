@@ -1850,7 +1850,9 @@
         "cancel": "취소"
       },
       "delete_success": "대회가 성공적으로 삭제되었습니다",
-      "delete_failed": "대회 삭제 실패"
+      "delete_failed": "대회 삭제 실패",
+      "participants_label": "참가자",
+      "categories_label": "카테고리"
     },
     "status": {
       "active": "진행 중",
@@ -2489,7 +2491,8 @@
     "showing_top_categories": "상위 5개 카테고리 표시 중",
     "leaderboard": {
       "title": "리더보드",
-      "no_scores": "아직 점수가 없습니다"
+      "no_scores": "아직 점수가 없습니다",
+      "empty_title": "기록된 점수가 없습니다"
     },
     "share_dialog": {
       "title": "이벤트 공유",
@@ -2508,7 +2511,8 @@
     "completed": "완료됨",
     "archery_event": "양궁 이벤트",
     "active": "활성",
-    "draft": "초안"
+    "draft": "초안",
+    "no_category_data_desc": "참가자가 등록하면 카테고리 등록 통계가 자동으로 표시됩니다."
   },
   "dashboard_events_page": {
     "title": "Halaman Event",
@@ -3184,7 +3188,9 @@
     "elite_desc": "전국 대회 및 대규모 오픈 시리즈를 위한 무제한 참가자.",
     "elite_feat_1": "<strong>무제한 참가자</strong>",
     "elite_feat_2": "<strong>무제한 부문/카테고리</strong>",
-    "elite_feat_3": "<strong>무제한 심판/기록원</strong>"
+    "elite_feat_3": "<strong>무제한 심판/기록원</strong>",
+    "no_history": "구매 내역이 없습니다",
+    "no_history_desc": "Standard 및 Elite 쿼터 구매 내역이 여기에 기록됩니다. Free 쿼터(시작 보너스)는 구매 결제 없이 즉시 사용됩니다."
   },
   "package_detail": {
     "verified_instant": "즉시 확인됨",
@@ -3194,5 +3200,8 @@
   },
   "news": {
     "management_title": "뉴스 관리"
+  },
+  "sidebar": {
+    "event_page": "이벤트 설정"
   }
 }

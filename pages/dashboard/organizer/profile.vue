@@ -12,7 +12,7 @@
     >
       <template #actions>
         <BaseButton variant="primary" :loading="saving" @click="saveProfile" icon="ph:floppy-disk"
-          class="h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl">
+          class="h-11 px-6 shadow-lg shadow-primary/20 font-bold text-xs !rounded-xl">
           {{ saving ? t('organizer.profile.saving') : t('organizer.profile.save') }}
         </BaseButton>
       </template>
@@ -38,7 +38,7 @@
           <!-- Identitas -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+              <h3 class="text-sm font-bold text-navy flex items-center gap-2">
                 <Icon icon="ph:identification-badge-bold" class="text-primary text-lg" /> {{ t('organizer.profile.identity_section') }}
               </h3>
             </div>
@@ -62,7 +62,7 @@
 
           <!-- Logo & Banner -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8">
-            <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+            <h3 class="text-sm font-bold text-navy flex items-center gap-2">
               <Icon icon="ph:image-bold" class="text-primary text-lg" /> {{ t('organizer.profile.branding_section') }}
             </h3>
 
@@ -70,8 +70,8 @@
               <!-- Logo Upload -->
               <div class="space-y-4">
                 <div>
-                  <label class="block text-sm font-black text-navy">{{ t('organizer.profile.logo_label') }}</label>
-                  <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider">{{ t('organizer.profile.logo_desc') }}</div>
+                  <label class="block text-sm font-bold text-navy">{{ t('organizer.profile.logo_label') }}</label>
+                  <div class="text-xs text-gray-400 font-medium mt-1">{{ t('organizer.profile.logo_desc') }}</div>
                 </div>
                 <div class="flex flex-col items-center gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100">
                   <div
@@ -81,7 +81,7 @@
                   </div>
                   <div class="flex gap-2 w-full">
                     <BaseButton @click="openMediaLibrary('logo')" variant="primary" size="sm"
-                      icon="ph:cloud-arrow-up-bold" class="flex-1 h-10 font-black tracking-widest text-[10px]">
+                      icon="ph:cloud-arrow-up-bold" class="flex-1 h-10 font-bold text-xs">
                       {{ t('organizer.profile.choose_logo') }}
                     </BaseButton>
                     <BaseButton v-if="form.logoUrl" @click="form.logoUrl = ''" variant="white" size="sm"
@@ -94,8 +94,8 @@
               <!-- Banner Upload -->
               <div class="space-y-4">
                 <div>
-                  <label class="block text-sm font-black text-navy">{{ t('organizer.profile.banner_label') }}</label>
-                  <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider">{{ t('organizer.profile.banner_desc') }}</div>
+                  <label class="block text-sm font-bold text-navy">{{ t('organizer.profile.banner_label') }}</label>
+                  <div class="text-xs text-gray-400 font-medium mt-1">{{ t('organizer.profile.banner_desc') }}</div>
                 </div>
                 <div class="relative group">
                   <div
@@ -104,12 +104,12 @@
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div v-else class="text-center p-6">
                       <Icon icon="ph:image-square-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
-                      <div class="text-[10px] text-gray-400 font-bold  tracking-wider">{{ t('organizer.profile.banner_desc') }}</div>
+                      <div class="text-xs text-gray-400 font-medium">{{ t('organizer.profile.banner_desc') }}</div>
                     </div>
                   </div>
                   <div class="mt-4 flex gap-2">
                     <BaseButton @click="openMediaLibrary('banner')" variant="primary" size="sm" icon="ph:image-bold"
-                      class="flex-1 h-10 font-black tracking-widest text-[10px]">
+                      class="flex-1 h-10 font-bold text-xs">
                       {{ t('organizer.profile.choose_banner') }}
                     </BaseButton>
                     <BaseButton v-if="form.bannerUrl" @click="form.bannerUrl = ''" variant="white" size="sm"
@@ -125,7 +125,7 @@
         <!-- Tab: Kontak -->
         <div v-if="activeTab === 'contact'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+            <h3 class="text-sm font-bold text-navy flex items-center gap-2">
               <Icon icon="ph:phone-bold" class="text-primary text-xl" /> {{ t('organizer.profile.contact_section') }}
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -141,7 +141,7 @@
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class=" text-xs font-black text-navy tracking-[0.2em] flex items-center gap-2">
+              <h3 class="text-sm font-bold text-navy flex items-center gap-2">
                 <Icon icon="ph:share-network-bold" class="text-primary text-xl" /> {{ t('organizer.profile.social_section') }}
               </h3>
 
@@ -176,7 +176,7 @@
                       :class="getPlatformIconBagde(social.platform)">
                       <Icon :icon="getPlatformInfo(social.platform).icon" class="text-lg" />
                     </div>
-                    <span class="text-xs font-black text-navy tracking-widest">{{
+                    <span class="text-xs font-bold text-navy">{{
                       getPlatformInfo(social.platform).title }}</span>
                   </div>
                   <button @click="removeSocialMedia(idx)" class="text-gray-400 hover:text-red-500 transition-colors">
@@ -193,7 +193,7 @@
               <div v-if="form.socialMedia.length === 0"
                 class="py-12 text-center border-2 border-dashed border-gray-100 rounded-2xl">
                 <Icon icon="ph:share-network" class="text-4xl text-gray-200 mx-auto mb-3" />
-                <div class="text-sm text-gray-400 font-bold tracking-widest">{{ t('organizer.profile.no_social_added') }}</div>
+                <div class="text-xs text-gray-400 font-medium">{{ t('organizer.profile.no_social_added') }}</div>
               </div>
             </div>
           </div>
@@ -202,7 +202,7 @@
         <!-- Tab: Visi, Misi & Sejarah -->
         <div v-if="activeTab === 'about'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+            <h3 class="text-sm font-bold text-navy flex items-center gap-2">
               <Icon icon="ph:eye-bold" class="text-primary text-xl" /> {{ t('organizer.profile.vision_section') }}
             </h3>
             <div>
@@ -217,7 +217,7 @@
           </div>
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+            <h3 class="text-sm font-bold text-navy flex items-center gap-2">
               <Icon icon="ph:book-open-bold" class="text-primary text-xl" /> {{ t('organizer.profile.history_section') }}
             </h3>
             <div>
@@ -232,11 +232,11 @@
         <div v-if="activeTab === 'faq'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+              <h3 class="text-sm font-bold text-navy flex items-center gap-2">
                 <Icon icon="ph:question-bold" class="text-primary text-xl" /> {{ t('organizer.profile.faq_section') }}
               </h3>
               <button @click="addFAQ"
-                class="text-xs font-black text-primary hover:text-primary-dark flex items-center gap-1 transition">
+                class="text-xs font-bold text-primary hover:text-primary-dark flex items-center gap-1 transition">
                 <Icon icon="ph:plus-circle-bold" /> {{ t('organizer.profile.add_faq') }}
               </button>
             </div>
@@ -259,9 +259,9 @@
               <div v-if="form.faq.length === 0"
                 class="text-center py-12 border-2 border-dashed border-gray-100 rounded-3xl">
                 <Icon icon="ph:chat-centered-dots-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
-                <div class="text-sm text-gray-400 font-bold  tracking-widest">{{ t('organizer.profile.no_faq') }}</div>
+                <div class="text-xs text-gray-400 font-medium">{{ t('organizer.profile.no_faq') }}</div>
                 <button @click="addFAQ"
-                  class="mt-4 px-4 py-2 bg-navy text-white text-xs font-black rounded-xl shadow-md hover:bg-navy-dark transition">{{ t('organizer.profile.create_first_faq') }}</button>
+                  class="mt-4 px-4 py-2 bg-navy text-white text-xs font-bold rounded-xl shadow-md hover:bg-navy-dark transition">{{ t('organizer.profile.create_first_faq') }}</button>
               </div>
             </div>
           </div>
@@ -271,7 +271,7 @@
       <!-- Side card -->
       <div class="space-y-4">
         <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-5">
-          <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+          <h3 class="text-sm font-bold text-navy flex items-center gap-2">
             <Icon icon="ph:gear-six-bold" class="text-primary text-lg" /> {{ t('organizer.profile.visibility_section') }}
           </h3>
           <div class="text-xs text-gray-500 font-medium">{{ t('organizer.profile.visibility_desc') }}</div>

@@ -48,7 +48,7 @@
     "printout": "Printout",
     "certificates": "Sertifikat",
     "summary": "Ringkasan",
-    "event_page": "Landing Page",
+    "event_page": "Pengaturan Event",
     "participants": "Peserta",
     "teams": "Tim",
     "competition_categories": "Kategori",
@@ -970,7 +970,9 @@
         "status": "Status",
         "actions": "Aksi"
       },
-      "manage": "Kelola"
+      "manage": "Kelola",
+      "participants_label": "Peserta",
+      "categories_label": "Kategori"
     },
     "filter": {
       "filter_status": "Status Event",
@@ -1899,7 +1901,9 @@
   "organizer_subscription": {
     "page_title": "Paket Event & Kuota",
     "breadcrumb": "Paket Event",
-    "subtitle": "Kelola kuota event, beli paket, dan pantau riwayat transaksi."
+    "subtitle": "Kelola kuota event, beli paket, dan pantau riwayat transaksi.",
+    "no_history": "Belum Ada Riwayat Pembelian",
+    "no_history_desc": "Riwayat pembelian kuota Standard & Elite akan tercatat di sini. Kuota Free (Bonus Awal) digunakan langsung tanpa transaksi pembelian."
   },
   "premium": {
     "subscription_expired": "Paket Habis",
@@ -2010,7 +2014,8 @@
     "payment_unpaid_desc": "Belum ada bukti / pembayaran",
     "leaderboard": {
       "title": "Papan Peringkat (Leaderboard)",
-      "no_scores": "Belum ada skor pemanah tercatat"
+      "no_scores": "Belum ada skor pemanah tercatat",
+      "empty_title": "Belum Ada Skor Tercatat"
     },
     "top_archers_badge": "Top 6 Pemanah",
     "total_score_label": "Skor Total",
@@ -2041,7 +2046,8 @@
       "elite_desc": "Tanpa batas peserta, kategori, scorekeeper.",
       "insufficient_standard": "Quota Standard tidak mencukupi. Silakan beli quota terlebih dahulu.",
       "insufficient_elite": "Quota Elite tidak mencukupi. Silakan beli quota terlebih dahulu."
-    }
+    },
+    "no_category_data_desc": "Statistik pendaftaran kategori akan otomatis muncul setelah peserta mendaftar."
   },
   "auth": {
     "login": {

@@ -71,12 +71,7 @@
           class="text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
           <Icon icon="ph:calendar-blank" class="text-4xl text-gray-300 mx-auto mb-3" />
           <div class="text-sm font-bold text-gray-600 mb-1">{{ t('event_qualification.no_session') }}</div>
-          <div class="text-xs text-gray-400 mb-4">{{ t('event_qualification.no_session_desc') }}</div>
-          <BaseButton variant="primary" icon="ph:plus-bold"
-            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
-            @click="isSubscriptionActive ? openCreateModal() : (showPremiumModal = true)">
-            {{ t('event_qualification.create_first_session') }}
-          </BaseButton>
+          <div class="text-xs text-gray-400">{{ t('event_qualification.no_session_desc') }}</div>
         </div>
 
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

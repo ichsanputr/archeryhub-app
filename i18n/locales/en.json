@@ -2302,7 +2302,9 @@
         "cancel": "Cancel"
       },
       "delete_success": "Event successfully deleted",
-      "delete_failed": "Failed to delete event"
+      "delete_failed": "Failed to delete event",
+      "participants_label": "Participants",
+      "categories_label": "Categories"
     },
     "status": {
       "active": "Active",
@@ -2981,7 +2983,8 @@
     "showing_top_categories": "Showing top 5 categories",
     "leaderboard": {
       "title": "Leaderboard Rankings",
-      "no_scores": "No archer scores recorded yet"
+      "no_scores": "No archer scores recorded yet",
+      "empty_title": "No Scores Recorded Yet"
     },
     "share_dialog": {
       "title": "Share Event",
@@ -3025,7 +3028,8 @@
       "elite_desc": "Unlimited participants, categories, scorekeepers.",
       "insufficient_standard": "Insufficient Standard Quota. Please purchase additional quota.",
       "insufficient_elite": "Insufficient Elite Quota. Please purchase additional quota."
-    }
+    },
+    "no_category_data_desc": "Category registration statistics will appear automatically once archers register."
   },
   "dashboard_events_page": {
     "title": "Event Page",
@@ -4062,7 +4066,7 @@
     "col_total": "Total Cost",
     "col_method": "Method",
     "col_status": "Status",
-    "no_history": "No quota purchase history yet.",
+    "no_history": "No Purchase History Yet",
     "slot_unit": "Slots",
     "free_tier_badge": "Registration Welcome Bonus",
     "free_tier_title": "Free Tier",
@@ -4091,7 +4095,8 @@
     "event_unit": "Event",
     "standard_tier_name": "Standard",
     "elite_tier_name": "Elite",
-    "custom_tier_name": "Custom"
+    "custom_tier_name": "Custom",
+    "no_history_desc": "Standard & Elite quota purchases will be recorded here. Free Tier (Initial Bonus) quota is used directly without purchase invoices."
   },
   "org_checkout": {
     "title": "Platform Fee Payment",
@@ -4585,7 +4590,7 @@
     "back_to_events": "All Events",
     "event_management": "Event Management",
     "summary": "Summary",
-    "event_page": "Landing Page",
+    "event_page": "Event Setting",
     "participants": "Participants",
     "teams": "Teams",
     "competition_categories": "Categories",

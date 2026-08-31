@@ -471,9 +471,18 @@
                             </td>
                         </tr>
                         <tr v-if="!history.length && !isLoadingHistory">
-                            <td colspan="7" class="py-12 text-center text-slate-400">
-                                <Icon icon="ph:receipt-x-bold" class="text-3xl mx-auto mb-2 opacity-50" />
-                                <div>{{ t('organizer_subscription.no_history') }}</div>
+                            <td colspan="7" class="py-14 text-center">
+                                <div class="flex flex-col items-center justify-center gap-3 max-w-md mx-auto">
+                                    <div class="size-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
+                                        <Icon icon="ph:receipt-x-bold" class="text-3xl text-slate-400" />
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-sm font-bold text-navy">{{ t('organizer_subscription.no_history', 'Belum Ada Riwayat Pembelian') }}</div>
+                                        <div class="text-xs text-slate-400 font-medium leading-relaxed">
+                                            {{ t('organizer_subscription.no_history_desc', 'Riwayat pembelian kuota Standard & Elite akan tercatat di sini. Kuota Free (Bonus Awal) digunakan langsung tanpa transaksi pembelian.') }}
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr v-if="isLoadingHistory">

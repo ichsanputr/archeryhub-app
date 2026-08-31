@@ -2279,7 +2279,9 @@
         "cancel": "Batal"
       },
       "delete_success": "Event berhasil dihapus",
-      "delete_failed": "Gagal menghapus event"
+      "delete_failed": "Gagal menghapus event",
+      "participants_label": "Peserta",
+      "categories_label": "Kategori"
     },
     "status": {
       "active": "Aktif",
@@ -2897,7 +2899,8 @@
     "showing_top_categories": "Menampilkan 5 kategori terbanyak",
     "leaderboard": {
       "title": "Papan Peringkat (Leaderboard)",
-      "no_scores": "Belum ada skor pemanah tercatat"
+      "no_scores": "Belum ada skor pemanah tercatat",
+      "empty_title": "Belum Ada Skor Tercatat"
     },
     "share_dialog": {
       "title": "Bagikan Event",
@@ -2941,7 +2944,8 @@
       "elite_desc": "Tanpa batas peserta, kategori, scorekeeper.",
       "insufficient_standard": "Quota Standard tidak mencukupi. Silakan beli quota terlebih dahulu.",
       "insufficient_elite": "Quota Elite tidak mencukupi. Silakan beli quota terlebih dahulu."
-    }
+    },
+    "no_category_data_desc": "Statistik pendaftaran kategori akan otomatis muncul setelah peserta mendaftar."
   },
   "dashboard_events_page": {
     "title": "Halaman Event",
@@ -3947,7 +3951,7 @@
     "col_total": "Total Biaya",
     "col_method": "Metode",
     "col_status": "Status",
-    "no_history": "Belum ada riwayat pembelian kuota.",
+    "no_history": "Belum Ada Riwayat Pembelian",
     "slot_unit": "Slot",
     "free_tier_badge": "Bonus Awal Registrasi",
     "free_tier_title": "Free Tier",
@@ -3976,7 +3980,8 @@
     "event_unit": "Event",
     "standard_tier_name": "Standard",
     "elite_tier_name": "Elite",
-    "custom_tier_name": "Kustom"
+    "custom_tier_name": "Kustom",
+    "no_history_desc": "Riwayat pembelian kuota Standard & Elite akan tercatat di sini. Kuota Free (Bonus Awal) digunakan langsung tanpa transaksi pembelian."
   },
   "org_checkout": {
     "title": "Pembayaran Biaya Platform",
@@ -4470,7 +4475,7 @@
     "back_to_events": "Semua Event",
     "event_management": "Manajemen Event",
     "summary": "Ringkasan",
-    "event_page": "Landing Page",
+    "event_page": "Pengaturan Event",
     "participants": "Peserta",
     "teams": "Tim",
     "competition_categories": "Kategori",
