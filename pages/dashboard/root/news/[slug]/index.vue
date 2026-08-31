@@ -76,7 +76,7 @@
  
                         <!-- Article Body -->
                         <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                            <p class="text-xl text-gray-600 font-medium mb-6">{{ article.excerpt }}</p>
+                            <div class="text-xl text-gray-600 font-medium mb-6">{{ article.excerpt }}</div>
  
                             <div v-html="article.content"></div>
                         </div>
@@ -127,17 +127,17 @@
                     <div class="space-y-3">
                         <div class="grid grid-cols-3 gap-3">
                             <div class="rounded-xl border border-navy/10 bg-navy/5 p-3 text-center">
-                                <p class="text-[10px] font-black tracking-widest text-gray-400">Views</p>
-                                <p class="text-xl font-black text-navy mt-1">{{ article.views?.toLocaleString() || 0 }}
-                                </p>
+                                <div class="text-[10px] font-black tracking-widest text-gray-400">Views</div>
+                                <div class="text-xl font-black text-navy mt-1">{{ article.views?.toLocaleString() || 0 }}
+                                </div>
                             </div>
                             <div class="rounded-xl border border-primary/20 bg-primary/5 p-3 text-center">
-                                <p class="text-[10px] font-black tracking-widest text-gray-400">Words</p>
-                                <p class="text-xl font-black text-navy mt-1">{{ wordCount.toLocaleString() }}</p>
+                                <div class="text-[10px] font-black tracking-widest text-gray-400">Words</div>
+                                <div class="text-xl font-black text-navy mt-1">{{ wordCount.toLocaleString() }}</div>
                             </div>
                             <div class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-center">
-                                <p class="text-[10px] font-black tracking-widest text-gray-400">Read Time</p>
-                                <p class="text-xl font-black text-navy mt-1">{{ readTimeMinutes }}m</p>
+                                <div class="text-[10px] font-black tracking-widest text-gray-400">Read Time</div>
+                                <div class="text-xl font-black text-navy mt-1">{{ readTimeMinutes }}m</div>
                             </div>
                         </div>
  
@@ -207,9 +207,9 @@
                                 <div>
                                     <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">Bagikan Berita
                                     </h3>
-                                    <p class="text-text-secondary text-sm font-medium leading-relaxed">
+                                    <div class="text-text-secondary text-sm font-medium leading-relaxed">
                                         Sebarkan link berita ini ke sosial media atau salin link untuk dibagikan.
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
  
@@ -255,13 +255,15 @@
         </ClientOnly>
  
         <!-- Delete Confirmation -->
-        <DeleteConfirmationModal v-model:show="showDeleteConfirm" title="Hapus Berita"
+        <DeleteConfirmationModal v-model:show="showDeleteConfirm" :title="t('root_news_cms.confirm_delete_title')"
             :message="`Apakah Anda yakin ingin menghapus berita '${article.title}'? Tindakan ini tidak dapat dibatalkan.`"
-            confirm-text="Ya, Hapus" type="danger" icon="ph:trash" @confirm="deleteArticle" />
+            :confirm-text="t('root_news_cms.yes_delete')" type="danger" icon="ph:trash" @confirm="deleteArticle" />
     </div>
 </template>
  
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -277,13 +279,12 @@ definePageMeta({
 })
  
 useHead({
-    title: 'Detail Berita - Archeris Dashboard'
+    title: computed(() => t('news.detail_title', 'News Detail') + ' - ArcheryHub Dashboard')
 })
  
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
-const { t } = useDashboardI18n()
 const { get, delete: del, put } = useApi()
  
 // States

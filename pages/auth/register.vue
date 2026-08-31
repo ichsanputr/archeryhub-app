@@ -80,28 +80,13 @@
                                 </h4>
                                 <BaseInput v-model="form.fullName" :label="t('auth.register.full_name_label')" :placeholder="t('auth.register.full_name_placeholder')"
                                     required
-                                    :error="errors.fullName || (isNameTaken ? t('auth.register.name_taken_archer') : '')"
+                                    :error="errors.fullName"
                                     @update:model-value="validate('fullName', form.fullName, [rules.required(), rules.minLength(3)])" />
 
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="space-y-1">
-                                        <label class="text-sm font-bold text-navy">{{ t('auth.register.gender_label') }} <span class="text-red-500">*</span></label>
-                                        <select v-model="form.gender" required
-                                            class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
-                                            <option value="">{{ t('auth.register.gender_select') || 'Select Gender' }}</option>
-                                            <option value="male">{{ t('auth.register.gender_male') }}</option>
-                                            <option value="female">{{ t('auth.register.gender_female') }}</option>
-                                        </select>
-                                    </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <BaseSelect v-model="form.country" :label="t('auth.register.country_label')" :placeholder="t('auth.register.country_placeholder')" required
                                         :items="countries" :error="errors.country" searchable
                                         @update:model-value="handleCountryChange" />
-                                </div>
-
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <BaseSelect v-model="form.city" :items="cities" :label="t('auth.register.city_label')"
-                                        :placeholder="t('auth.register.city_placeholder')" required :error="errors.city" searchable
-                                        @update:model-value="validate('city', form.city, [rules.required()])" />
                                     
                                     <ClubSelector
                                         v-model="form.clubID"
@@ -142,11 +127,7 @@
                                     <label class="text-sm font-bold text-navy">{{ t('auth.register.address_label_full') }}</label>
                                     <textarea v-model="form.address"
                                         class="w-full p-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all min-h-[80px]"
-                                        :class="{ 'border-red-500': errors.address }"
-                                        :placeholder="t('auth.register.address_label')"
-                                        @input="validate('address', form.address, [rules.required()])"></textarea>
-                                    <p v-if="errors.address" class="text-red-500  text-xs font-bold ml-1">{{
-                                        errors.address }}</p>
+                                        :placeholder="t('auth.register.address_label')"></textarea>
                                 </div>
                             </div>
 
@@ -179,7 +160,7 @@
                         <div class="pt-2">
                             <BaseButton variant="gold" block size="lg" icon="logos:google-icon"
                                 @click="handleGoogleRegister" :loading="isGoogleLoading || isValidating"
-                                :disabled="!isNameValid || !form.terms || isNameTaken || isValidating">
+                                :disabled="!isNameValid || !form.terms || (form.userType !== 'archer' && isNameTaken) || isValidating">
                                 {{ t('auth.register.register_with_google') }}
                             </BaseButton>
                             <p class="mt-4 text-xs text-center text-gray-400">
@@ -190,11 +171,7 @@
 
                     <div class="mt-8 text-center font-body">
                         <p class="text-sm text-slate-600">
-                            {{ t('auth.register.already_have_account') }}
-                            <NuxtLink class="font-black text-navy hover:text-primary-hover transition-colors"
-                                to="/auth/login">
-                                {{ t('auth.register.login_here') }}
-                            </NuxtLink>
+                            {{ t('auth.register.already_have_account') }} <NuxtLink class="font-black text-navy hover:text-primary-hover transition-colors" to="/auth/login">{{ t('auth.register.login_here') }}</NuxtLink>
                         </p>
                     </div>
                 </div>
@@ -219,7 +196,7 @@ const cities = ref([])
 const { t } = useI18n()
 
 useHead({
-    title: t('auth.register.welcome') + ' - Archeris.net'
+    title: computed(() => t('auth.register.welcome') + ' - Archeris.net')
 })
 
 const userTypes = [
@@ -270,6 +247,10 @@ const form = ref({
 })
 
 // Club variables removed
+const genderOptions = computed(() => [
+  { title: computed(() => t('auth.register.gender_male') || 'Male'), value: 'male' },
+  { title: computed(() => t('auth.register.gender_female') || 'Female'), value: 'female' }
+])
 
 const countries = ref([
     { title: 'Indonesia', value: 'Indonesia', icon: 'circle-flags:id' },
@@ -410,6 +391,7 @@ const isValidating = ref(false)
 let debounceTimer = null
 
 const checkNameUnique = async (name) => {
+    if (form.value.userType === 'archer') return
     if (!name || name.length < 3) return
 
     isValidating.value = true
@@ -428,6 +410,7 @@ const checkNameUnique = async (name) => {
 
 watch([() => form.value.fullName, () => form.value.organizationName, () => form.value.storeName], () => {
     isNameTaken.value = false
+    if (form.value.userType === 'archer') return
     clearTimeout(debounceTimer)
     const name = getName()
     if (name.length >= 3) {
@@ -439,6 +422,7 @@ watch([() => form.value.fullName, () => form.value.organizationName, () => form.
 
 watch(() => form.value.userType, () => {
     isNameTaken.value = false
+    if (form.value.userType === 'archer') return
     const name = getName()
     if (name.length >= 3) {
         checkNameUnique(name)
@@ -505,18 +489,8 @@ const handleGoogleRegister = async () => {
         }
 
         if (form.value.userType === 'archer') {
-            if (!form.value.gender) {
-                toast.error('Gender is required')
-                isGoogleLoading.value = false
-                return
-            }
             if (!form.value.country) {
                 toast.error('Country is required')
-                isGoogleLoading.value = false
-                return
-            }
-            if (!form.value.city) {
-                toast.error('City is required')
                 isGoogleLoading.value = false
                 return
             }
@@ -527,9 +501,7 @@ const handleGoogleRegister = async () => {
             }
 
             Object.assign(metadata, {
-                gender: form.value.gender,
                 country: form.value.country,
-                city: form.value.city,
                 club_id: form.value.clubID || '',
                 new_club_name: form.value.newClubName || '',
                 new_club_acronym: form.value.newClubAcronym || ''
@@ -545,16 +517,11 @@ const handleGoogleRegister = async () => {
                 isGoogleLoading.value = false
                 return
             }
-            if (!form.value.address) {
-                toast.error('Address is required')
-                isGoogleLoading.value = false
-                return
-            }
 
             Object.assign(metadata, {
                 country: form.value.country,
                 currency: form.value.currency,
-                address: form.value.address
+                address: form.value.address || ''
             })
         }
 

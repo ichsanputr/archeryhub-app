@@ -22,7 +22,7 @@
           </button>
         </header>
 
-        <div ref="chatContainer" class="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/50">
+        <div ref="chatContainer" class="flex-1 overflow-y-auto p-5 space-y-4 bg-[#efeae2]/70 relative" style="background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-repeat: repeat;">
           <TransitionGroup name="chat-message" tag="div" class="space-y-4">
             <div v-for="(message, index) in messages" :key="`msg-${index}-${message.time}`"
               :class="message.role === 'bot' ? 'flex items-end gap-2.5' : 'flex items-end justify-end gap-2.5'">

@@ -11,7 +11,7 @@
                     <span class="text-navy">Edit</span>
                 </div>
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">Edit Berita</h1>
-                <p class="text-gray-500 font-medium mt-1">Perbarui konten berita resmi Archeris.</p>
+                <div class="text-gray-500 font-medium mt-1">Perbarui konten berita resmi Archeris.</div>
             </div>
         </div>
  
@@ -32,8 +32,8 @@
                                 <Icon icon="ph:upload-simple" class="text-3xl text-gray-400" />
                             </div>
                             <div class="text-center">
-                                <p class="font-bold text-navy">Klik untuk pilih gambar</p>
-                                <p class="text-sm text-gray-400">Pilih dari library atau upload baru</p>
+                                <div class="font-bold text-navy">{{ t("root_news_cms.click_to_select_image") }}</div>
+                                <div class="text-sm text-gray-400">{{ t("root_news_cms.choose_media") }}</div>
                             </div>
                         </div>
                     </div>
@@ -46,15 +46,15 @@
                         Informasi Berita
                     </h3>
  
-                    <BaseInput v-model="form.title" label="Judul Berita"
-                        placeholder="Masukkan judul berita yang menarik..." required />
+                    <BaseInput v-model="form.title" :label="t('root_news_cms.title_label')"
+                        :placeholder="t('root_news_cms.title_placeholder')" required />
  
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <BaseSelect v-model="form.category" :items="categoryOptions" label="Kategori" required />
-                        <BaseSelect v-model="form.status" :items="statusOptions" label="Status Publikasi" required />
+                        <BaseSelect v-model="form.category" :items="categoryOptions" :label="t('root_news_cms.category')" required />
+                        <BaseSelect v-model="form.status" :items="statusOptions" :label="t('root_news_cms.publication_status')" required />
                     </div>
  
-                    <BaseInput v-model="form.tags" label="Tags" placeholder="Contoh: event, turnamen, sleman"
+                    <BaseInput v-model="form.tags" :label="t('root_news_cms.tags_label')" :placeholder="t('root_news_cms.tags_placeholder')"
                         icon="ph:tag" />
  
                     <div>
@@ -64,7 +64,7 @@
                         <textarea v-model="form.excerpt"
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
                             rows="3"
-                            placeholder="Tulis ringkasan singkat berita (akan ditampilkan di preview)..."></textarea>
+                            :placeholder="t('root_news_cms.excerpt_placeholder')"></textarea>
                     </div>
                 </div>
  
@@ -86,7 +86,7 @@
                     </NuxtLink>
                     <div class="flex items-center gap-3">
                         <BaseButton variant="gold" type="submit" icon="ph:floppy-disk" :loading="isSubmitting">
-                            {{ form.status === 'published' ? 'Perbarui & Publikasikan' : 'Simpan Perubahan' }}
+                            {{ form.status === 'published' ? t('root_news_cms.update_publish') : t('root_news_cms.save_changes') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -99,8 +99,10 @@
 </template>
  
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 import { Icon } from '@iconify/vue'
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
@@ -114,14 +116,13 @@ definePageMeta({
 })
  
 useHead({
-    title: 'Edit Berita - Archeris Dashboard'
+    title: computed(() => t('news.edit_title', 'Edit News') + ' - ArcheryHub Dashboard')
 })
  
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
 const { get, put } = useApi()
-const { t } = useDashboardI18n()
  
 const isSubmitting = ref(false)
 const showMediaLibrary = ref(false)

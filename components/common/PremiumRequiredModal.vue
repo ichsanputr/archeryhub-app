@@ -37,6 +37,6 @@ const message = computed(() => {
 
 const handleUpgrade = () => {
     showModal.value = false
-    router.push('/dashboard/organizer/subscription')
+    router.push('/dashboard/organizer/package')
 }
 </script>

@@ -14,13 +14,13 @@
               <Icon icon="ph:chat-circle-dots-bold" class="text-primary text-lg" />
             </div>
             <div>
-              <h1 class="text-base font-black text-navy leading-none">{{ t('chat.title') }}</h1>
-              <div class=" text-xs text-gray-500 font-semibold mt-0.5">{{ t('chat.subtitle') }}</div>
+              <h1 class="text-base font-black text-navy leading-none">{{ t('chat.title', 'Pesan & Chat') }}</h1>
+              <div class=" text-xs text-gray-500 font-semibold mt-0.5">{{ t('chat.subtitle', 'Komunikasi dengan pelanggan toko Anda') }}</div>
             </div>
           </div>
           <div class="relative">
             <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
-            <input v-model="searchQuery" type="text" :placeholder="t('chat.search_placeholder')"
+            <input v-model="searchQuery" type="text" :placeholder="t('chat.search_placeholder', 'Cari pesan atau nama...')"
               class="w-full pl-9 pr-4 py-2.5 bg-gray-100 border border-gray-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-primary/20 focus:border-primary/40 focus:bg-white transition-all outline-none placeholder:text-gray-400" />
           </div>
         </div>
@@ -46,8 +46,8 @@
               class="size-20 rounded-3xl bg-white border-2 border-dashed border-gray-200 flex items-center justify-center mb-4">
               <Icon icon="ph:chat-centered-dots" class="text-4xl text-gray-300" />
             </div>
-            <div class="text-sm font-black text-gray-500">{{ t('chat.empty_title') }}</div>
-            <div class=" text-xs text-gray-400 font-medium mt-1">{{ t('chat.empty_desc') }}</div>
+            <div class="text-sm font-black text-gray-500">{{ t('chat.empty_title', 'Belum Ada Percakapan') }}</div>
+            <div class=" text-xs text-gray-400 font-medium mt-1">{{ t('chat.empty_desc', 'Pesan dari pembeli akan muncul di sini') }}</div>
           </div>
 
           <!-- Conversation List -->
@@ -61,10 +61,7 @@
               <div class="relative size-12 shrink-0">
                 <div class="size-full rounded-2xl bg-white overflow-hidden border-2"
                   :class="activeConv?.id === conv.id ? 'border-primary/30' : 'border-gray-200'">
-                  <img v-if="conv.archer_avatar" :src="conv.archer_avatar" class="w-full h-full object-cover" />
-                  <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
-                    <Icon icon="ph:user-circle-bold" class="text-gray-400 text-xl" />
-                  </div>
+                  <img :src="useImageOrDefault(conv.archer_avatar, conv.archer_name)" class="w-full h-full object-cover" />
                 </div>
                 <!-- Online indicator -->
                 <div class="absolute -bottom-0.5 -right-0.5 size-3.5 rounded-full border-2 border-white"
@@ -88,7 +85,7 @@
                 </div>
                 <div class=" text-xs truncate leading-snug"
                   :class="conv.seller_unread > 0 ? 'text-navy font-bold' : 'text-gray-500 font-medium'">
-                  {{ conv.last_message || (conv.product_name ? `Re: ${conv.product_name}` : t('chat.start_conversation')) }}
+                  {{ conv.last_message || (conv.product_name ? `Re: ${conv.product_name}` : t('chat.start_conversation', 'Mulai Percakapan')) }}
                 </div>
                 <div v-if="conv.product_name"
                   class="mt-1 inline-flex items-center gap-1 text-[9px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.5 rounded-md">
@@ -110,9 +107,9 @@
             class="size-24 rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center mb-6">
             <Icon icon="ph:chat-circle-dots-bold" class="text-4xl text-primary/50" />
           </div>
-          <h3 class="text-xl font-black text-navy tracking-tight mb-2">{{ t('chat.select_conversation') }}</h3>
+          <h3 class="text-xl font-black text-navy tracking-tight mb-2">{{ t('chat.select_conversation', 'Pilih Percakapan') }}</h3>
           <div class="text-sm text-gray-400 font-medium max-w-[260px] leading-relaxed">
-            {{ t('chat.select_conversation_desc') }}
+            {{ t('chat.select_conversation_desc', 'Pilih salah satu pesan di sebelah kiri untuk mulai membaca dan membalas.') }}
           </div>
         </div>
 
@@ -128,10 +125,7 @@
             </button>
             <!-- Archer avatar -->
             <div class="size-10 rounded-xl overflow-hidden bg-gray-100 border-2 border-gray-200 shrink-0">
-              <img v-if="activeConv.archer_avatar" :src="activeConv.archer_avatar" class="w-full h-full object-cover" />
-              <div v-else class="w-full h-full flex items-center justify-center">
-                <Icon icon="ph:user-circle-bold" class="text-gray-400" />
-              </div>
+              <img :src="useImageOrDefault(activeConv.archer_avatar, activeConv.archer_name)" class="w-full h-full object-cover" />
             </div>
             <!-- Info -->
             <div class="flex-1 min-w-0">
@@ -151,10 +145,23 @@
                 </template>
               </div>
             </div>
-            <!-- Product thumbnail -->
-            <div v-if="activeConv.product_image"
-              class="size-10 rounded-xl overflow-hidden border-2 border-gray-200 shrink-0">
-              <img :src="activeConv.product_image" class="w-full h-full object-cover" />
+
+            <!-- Product thumbnail & Close Ticket Action -->
+            <div class="flex items-center gap-2">
+              <BaseButton
+                variant="outline"
+                size="xs"
+                icon="ph:clipboard-text-bold"
+                class="!rounded-xl !border-gray-200 text-navy bg-white hover:bg-gray-50 font-bold text-[11px] shadow-xs"
+                @click="showCloseTicketModal = true"
+                title="Tutup / Selesaikan Pesanan Ini"
+              >
+                Tutup Pesanan
+              </BaseButton>
+              <div v-if="activeConv.product_image"
+                class="size-10 rounded-xl overflow-hidden border-2 border-gray-200 shrink-0">
+                <img :src="useImageOrDefault(activeConv.product_image)" class="w-full h-full object-cover" />
+              </div>
             </div>
           </div>
 
@@ -162,18 +169,26 @@
           <div v-if="activeConv.product_name"
             class="flex items-center gap-3 px-5 py-2.5 bg-primary/5 border-b border-primary/20 shrink-0">
             <div class="size-8 rounded-lg overflow-hidden bg-white border-2 border-primary/20 shrink-0">
-              <img v-if="activeConv.product_image" :src="activeConv.product_image" class="w-full h-full object-cover" />
+              <img v-if="activeConv.product_image" :src="useImageOrDefault(activeConv.product_image)" class="w-full h-full object-cover" />
               <Icon v-else icon="ph:package-bold" class="text-gray-400 text-sm m-auto mt-1.5" />
             </div>
             <div class="flex-1 min-w-0">
               <div class="text-[10px] font-black text-navy truncate">{{ activeConv.product_name }}</div>
-              <div class="text-[9px] text-gray-500 font-semibold">{{ t('chat.product_asked') }}</div>
+              <div class="text-[9px] text-gray-500 font-semibold">{{ t('chat.product_asked', 'Menanyakan Produk Ini') }}</div>
             </div>
           </div>
 
           <!-- Messages area -->
-          <div ref="messageContainer" class="flex-grow overflow-y-auto px-4 sm:px-6 py-5 space-y-3 no-scrollbar"
-            style="background: linear-gradient(180deg, #f4f6fb 0%, #eef1f8 100%);">
+          <div ref="messageContainer" @scroll="onMessageScroll" class="flex-grow overflow-y-auto px-4 sm:px-6 py-5 space-y-3 no-scrollbar bg-[#efeae2]/70 relative transition-all duration-200"
+            style="background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-repeat: repeat;">
+
+            <!-- Top loading indicator for older messages -->
+            <div v-if="isLoadingOlder" class="flex justify-center py-2">
+              <div class="px-3 py-1 bg-white/90 rounded-full border border-gray-200 shadow-sm flex items-center gap-2 text-xs font-bold text-gray-500 animate-pulse">
+                <Icon icon="ph:spinner-gap-bold" class="animate-spin text-primary" />
+                <span>{{ t('chat.loading_older', 'Memuat pesan terdahulu...') }}</span>
+              </div>
+            </div>
 
             <!-- Loading skeleton -->
             <div v-if="isLoadingMessages" class="space-y-4 animate-pulse">
@@ -191,8 +206,8 @@
                   class="size-16 rounded-3xl bg-white border-2 border-dashed border-gray-200 flex items-center justify-center mb-3">
                   <Icon icon="ph:chat-circle-bold" class="text-3xl text-gray-300" />
                 </div>
-                <div class="text-sm font-bold text-gray-400">{{ t('chat.no_messages') }}</div>
-                <div class="text-xs text-gray-300 font-medium mt-1">{{ t('chat.reply_to_start') }}</div>
+                <div class="text-sm font-bold text-gray-400">{{ t('chat.no_messages', 'Belum Ada Pesan') }}</div>
+                <div class="text-xs text-gray-300 font-medium mt-1">{{ t('chat.reply_to_start', 'Kirim pesan untuk memulai pembicaraan') }}</div>
               </div>
 
               <template v-else>
@@ -208,19 +223,18 @@
                   </div>
 
                   <!-- Message bubble -->
-                  <div class="flex flex-col" :class="msg.sender_type === 'seller' ? 'items-end' : 'items-start'">
+                  <div class="flex flex-col transition-all duration-200" :class="msg.sender_type === 'seller' ? 'items-end' : 'items-start'">
                     <div class="max-w-[78%] sm:max-w-[65%]">
-                      <div class="px-4 py-2.5 text-sm leading-relaxed font-medium shadow-md" :class="msg.sender_type === 'seller'
-                        ? 'bg-navy text-white rounded-2xl rounded-tr-sm'
-                        : 'bg-white text-navy border border-gray-200 rounded-2xl rounded-tl-sm'">
+                      <div class="px-4 py-2.5 text-sm leading-relaxed font-medium shadow-xs whitespace-pre-wrap break-words bg-white text-navy border border-gray-200" :class="msg.sender_type === 'seller'
+                        ? 'rounded-2xl rounded-tr-xs'
+                        : 'rounded-2xl rounded-tl-xs'">
                         {{ msg.message }}
                       </div>
                       <div class="mt-1 text-[9px] font-semibold text-gray-400 flex items-center gap-1"
                         :class="msg.sender_type === 'seller' ? 'justify-end' : 'justify-start'">
                         {{ formatMessageTime(msg.created_at) }}
-                        <Icon v-if="msg.sender_type === 'seller'"
-                          :icon="msg.is_read ? 'ph:checks-bold' : 'ph:check-bold'" class="text-[10px]"
-                          :class="msg.is_read ? 'text-primary' : 'text-gray-300'" />
+                        <Icon v-if="msg.sender_type === 'seller'" icon="ph:checks-bold"
+                          :class="msg.is_read ? 'text-primary' : 'text-gray-300'" class="text-xs" />
                       </div>
                     </div>
                   </div>
@@ -234,7 +248,7 @@
             <div class="flex items-end gap-2.5 max-w-4xl mx-auto">
               <div
                 class="flex-grow bg-gray-50 rounded-2xl border-2 border-gray-200 focus-within:border-primary/40 focus-within:bg-white transition-all flex items-end overflow-hidden">
-                <textarea v-model="newMessage" :placeholder="t('chat.type_reply')" rows="1"
+                <textarea v-model="newMessage" :placeholder="t('chat.type_reply', 'Ketik balasan pesan...')" rows="1"
                   @keydown.enter.exact.prevent="sendMessage"
                   class="flex-grow bg-transparent border-none focus:ring-0 text-sm font-medium px-4 py-3 max-h-32 resize-none no-scrollbar text-navy placeholder:text-gray-300 outline-none" />
               </div>
@@ -244,10 +258,72 @@
                 <Icon v-else icon="ph:paper-plane-right-fill" class="text-primary text-lg" />
               </button>
             </div>
-            <div class="text-[9px] text-gray-300 font-semibold text-center mt-2">{{ t('chat.send_hint') }}
+            <div class="text-[9px] text-gray-300 font-semibold text-center mt-2">{{ t('chat.send_hint', 'Tekan Enter untuk mengirim, Shift + Enter untuk baris baru') }}
             </div>
           </div>
         </template>
+      </div>
+    </div>
+
+    <!-- Close Order Ticket Modal -->
+    <div v-if="showCloseTicketModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+      <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-100 space-y-5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
+              <Icon icon="ph:check-square-offset-bold" class="text-xl" />
+            </div>
+            <div>
+              <h3 class="font-black text-navy text-lg leading-tight">Tutup Tiket Pesanan</h3>
+              <div class="text-xs text-gray-500 mt-0.5">Pilih status penyelesaian untuk transaksi ini</div>
+            </div>
+          </div>
+          <button @click="showCloseTicketModal = false" class="size-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center transition">
+            <Icon icon="ph:x-bold" class="text-sm" />
+          </button>
+        </div>
+
+        <div class="space-y-3">
+          <!-- Option 1: Selesai / Deal -->
+          <button @click="handleCloseTicket('success')" :disabled="isClosingTicket"
+            class="w-full text-left p-4 rounded-2xl border-2 border-emerald-100 bg-emerald-50/50 hover:bg-emerald-50 hover:border-emerald-500 transition-all flex items-start gap-3.5 group">
+            <div class="size-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+              <Icon icon="ph:check-bold" class="text-lg" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-black text-emerald-950 text-sm flex items-center justify-between">
+                <span>Pesanan Selesai / Berhasil Deal</span>
+                <Icon icon="ph:arrow-right-bold" class="text-emerald-600 opacity-0 group-hover:opacity-100 transition-all" />
+              </div>
+              <div class="text-[11px] text-emerald-800/80 mt-1 leading-relaxed">
+                Transaksi disepakati, pembayaran/stok aman, dan produk siap atau sudah dikirim ke pembeli.
+              </div>
+            </div>
+          </button>
+
+          <!-- Option 2: Batal / Tidak Deal -->
+          <button @click="handleCloseTicket('failed')" :disabled="isClosingTicket"
+            class="w-full text-left p-4 rounded-2xl border-2 border-rose-100 bg-rose-50/50 hover:bg-rose-50 hover:border-rose-500 transition-all flex items-start gap-3.5 group">
+            <div class="size-9 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+              <Icon icon="ph:x-bold" class="text-lg" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="font-black text-rose-950 text-sm flex items-center justify-between">
+                <span>Batalkan / Tidak Jadi Deal</span>
+                <Icon icon="ph:arrow-right-bold" class="text-rose-600 opacity-0 group-hover:opacity-100 transition-all" />
+              </div>
+              <div class="text-[11px] text-rose-800/80 mt-1 leading-relaxed">
+                Pesanan tidak berlanjut (stok barang habis, negosiasi batal, atau pembeli membatalkan).
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <div class="pt-2">
+          <BaseButton @click="showCloseTicketModal = false" variant="outline" size="md" class="w-full !rounded-xl text-gray-500">
+            Kembali ke Obrolan
+          </BaseButton>
+        </div>
       </div>
     </div>
   </div>
@@ -256,13 +332,12 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
-import { useI18n } from 'vue-i18n'
 
 definePageMeta({ layout: 'dashboard' })
 
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 
-useHead({ title: computed(() => t('chat.title') + ' - Archeris Dashboard') })
+useHead({ title: computed(() => `${t('chat.title', 'Pesan & Chat')} - Dashboard Seller`) })
 
 const { get, post } = useApi()
 const toast = useToast()
@@ -273,10 +348,36 @@ const isLoadingList = ref(true)
 const activeConv = ref(null)
 const messages = ref([])
 const isLoadingMessages = ref(false)
+const isLoadingOlder = ref(false)
+const hasMoreMessages = ref(true)
 const newMessage = ref('')
 const isSending = ref(false)
+const isClosingTicket = ref(false)
+const showCloseTicketModal = ref(false)
 const messageContainer = ref(null)
 let pollInterval = null
+
+async function handleCloseTicket(status) {
+  if (!activeConv.value || isClosingTicket.value) return
+
+  isClosingTicket.value = true
+  const closingMessage = status === 'success'
+    ? '🎉 *PESANAN SELESAI*\n━━━━━━━━━━━━━━━━━━━━━━━━\n✅ *Status:* Transaksi Selesai & Deal\nTerima kasih telah berbelanja! Pesanan Anda telah selesai diproses oleh penjual.\n━━━━━━━━━━━━━━━━━━━━━━━━'
+    : '⚠️ *PESANAN DIBATALKAN*\n━━━━━━━━━━━━━━━━━━━━━━━━\n❌ *Status:* Dibatalkan / Tutup Tiket\nPenjual telah menutup percakapan / tiket pesanan ini.\n━━━━━━━━━━━━━━━━━━━━━━━━'
+
+  try {
+    await post(`/chat/conversations/${activeConv.value.id}/messages`, { message: closingMessage })
+    showCloseTicketModal.value = false
+    toast.success(status === 'success' ? 'Pesanan berhasil ditandai selesai!' : 'Tiket pesanan berhasil ditutup / dibatalkan.')
+    await fetchMessages(activeConv.value.id)
+    await refreshConversationsSilent()
+  } catch (error) {
+    console.error('Failed to close ticket:', error)
+    toast.error('Gagal memperbarui status pesanan')
+  } finally {
+    isClosingTicket.value = false
+  }
+}
 
 // ─── Computed ─────────────────────────────────────────────────────────────────
 const filteredConvs = computed(() => {
@@ -316,12 +417,56 @@ async function refreshConversationsSilent() {
 
 // ─── Open Conversation ────────────────────────────────────────────────────────
 async function openConversation(conv) {
+  if (activeConv.value?.id === conv.id) return
   activeConv.value = conv
+  hasMoreMessages.value = true
   await fetchMessages(conv.id)
   const idx = conversations.value.findIndex(c => c.id === conv.id)
   if (idx >= 0) conversations.value[idx].seller_unread = 0
   clearInterval(pollInterval)
   pollInterval = setInterval(() => pollMessages(conv.id), 5000)
+}
+
+// ─── Top Scroll Pagination (Load Older Messages) ─────────────────────────────
+async function onMessageScroll() {
+  if (!messageContainer.value || isLoadingOlder.value || !hasMoreMessages.value || !activeConv.value) return
+  if (messageContainer.value.scrollTop < 50) {
+    await fetchOlderMessages()
+  }
+}
+
+async function fetchOlderMessages() {
+  if (!messages.value.length || isLoadingOlder.value || !hasMoreMessages.value) return
+  const oldestMsg = messages.value[0]
+  if (!oldestMsg?.id || oldestMsg.id.startsWith('temp-')) return
+
+  isLoadingOlder.value = true
+  const oldScrollHeight = messageContainer.value?.scrollHeight || 0
+
+  try {
+    const res = await get(`/chat/conversations/${activeConv.value.id}/messages`, {
+      params: { before_id: oldestMsg.id }
+    })
+    const olderMsgs = res.messages || []
+    if (olderMsgs.length === 0) {
+      hasMoreMessages.value = false
+    } else {
+      const uniqueOlder = olderMsgs.filter(om => !messages.value.some(m => m.id === om.id))
+      if (uniqueOlder.length === 0) {
+        hasMoreMessages.value = false
+      } else {
+        messages.value = [...uniqueOlder, ...messages.value]
+        await nextTick()
+        if (messageContainer.value) {
+          messageContainer.value.scrollTop = messageContainer.value.scrollHeight - oldScrollHeight
+        }
+      }
+    }
+  } catch (e) {
+    console.error('Failed to load older messages:', e)
+  } finally {
+    isLoadingOlder.value = false
+  }
 }
 
 // ─── Fetch Messages ───────────────────────────────────────────────────────────
@@ -341,10 +486,16 @@ async function fetchMessages(convId) {
 async function pollMessages(convId) {
   if (!activeConv.value || activeConv.value.id !== convId) return
   try {
-    const res = await get(`/chat/conversations/${convId}/messages`)
+    const lastMsg = messages.value[messages.value.length - 1]
+    const params = lastMsg?.id ? { after_id: lastMsg.id } : {}
+    const res = await get(`/chat/conversations/${convId}/messages`, { params })
     const newMsgs = res.messages || []
-    if (newMsgs.length !== messages.value.length) {
-      messages.value = newMsgs
+    if (newMsgs.length > 0) {
+      for (const msg of newMsgs) {
+        if (!messages.value.some(m => m.id === msg.id)) {
+          messages.value.push(msg)
+        }
+      }
       await scrollToBottom()
     }
     // Use silent refresh so isLoadingList stays false and skeleton never flashes

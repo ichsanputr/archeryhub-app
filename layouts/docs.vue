@@ -45,7 +45,7 @@
                           class="flex items-center gap-2 px-3 h-9 rounded-xl bg-gray-100 border border-transparent hover:bg-gray-200 transition-all duration-300 text-xs font-bold tracking-widest text-gray-700">
                           <Icon :icon="langFlags[locale] || 'ph:globe-bold'"
                             class="text-lg rounded-full overflow-hidden border border-gray-200 shrink-0" />
-                          <span class="uppercase">{{ locale }}</span>
+                          <span class="font-black uppercase">{{ locale.toUpperCase() }}</span>
                         </button>
                 
                         <Transition enter-active-class="transition duration-200 ease-out"
@@ -151,8 +151,10 @@ const updateDocumentClass = () => {
 onMounted(() => {
     if (import.meta.client) {
         const saved = localStorage.getItem('docs-theme')
-        if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (saved === 'dark') {
             isDark.value = true
+        } else {
+            isDark.value = false
         }
         updateDocumentClass()
     }
@@ -166,234 +168,23 @@ onUnmounted(() => {
 </script>
 
 <style>
-/* Custom dark mode styles for Docs */
-.dark .docs-page {
-    background-color: #0b0f19 !important;
+/* Clean light scrollbars for Docs */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
 }
-.dark header {
-    background-color: #0b0f19 !important;
-    border-color: #1e293b !important;
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
-.dark header span, .dark header a {
-    color: #f1f5f9 !important;
+.scrollbar-styled::-webkit-scrollbar {
+    width: 4px;
 }
-.dark header button {
-    background-color: #1e293b !important;
-    color: #cbd5e1 !important;
+.scrollbar-styled::-webkit-scrollbar-track {
+    background: transparent;
 }
-.dark header button:hover {
-    background-color: #334155 !important;
-}
-.dark header kbd {
-    background-color: #0b0f19 !important;
-    border-color: #334155 !important;
-    color: #64748b !important;
-}
-.dark header .bg-white {
-    background-color: #0b0f19 !important;
-}
-.dark header .border-gray-100 {
-    border-color: #1e293b !important;
-}
-.dark footer {
-    background-color: #0b0f19 !important;
-    border-color: #1e293b !important;
-}
-.dark footer span, .dark footer a {
-    color: #94a3b8 !important;
-}
-.dark footer a:hover {
-    color: #f1f5f9 !important;
-}
-
-/* Category tabs on docs home */
-.dark .bg-white.border-b.border-gray-100 {
-    background-color: #0b0f19 !important;
-    border-color: #1e293b !important;
-}
-.dark .bg-white.border-b.border-gray-100 button {
-    color: #94a3b8;
-}
-.dark .bg-white.border-b.border-gray-100 button:hover {
-    color: #f1f5f9;
-    background-color: #1e293b;
-}
-
-/* Docs Cards on home */
-.dark .bg-white.border.border-gray-200\/60 {
-    background-color: #111827 !important;
-    border-color: #1e293b !important;
-    color: #f1f5f9 !important;
-}
-.dark .bg-white.border.border-gray-200\/60 h3 {
-    color: #ffffff !important;
-}
-.dark .bg-white.border.border-gray-200\/60 .text-gray-500 {
-    color: #94a3b8 !important;
-}
-.dark .bg-white.border.border-gray-200\/60 .border-t {
-    border-color: #1e293b !important;
-}
-.dark .bg-white.border.border-gray-200\/60 span.text-navy {
-    color: #b7fb23 !important;
-}
-
-/* Breadcrumb in slug page */
-.dark .bg-white.border-b.border-gray-100 {
-    background-color: #0b0f19 !important;
-    border-color: #1e293b !important;
-}
-.dark .bg-white.border-b.border-gray-100 a {
-    color: #94a3b8 !important;
-}
-.dark .bg-white.border-b.border-gray-100 a:hover {
-    color: #f1f5f9 !important;
-}
-.dark .bg-white.border-b.border-gray-100 span.text-navy {
-    color: #f1f5f9 !important;
-}
-
-/* Sidebar links in slug page */
-.dark aside a.text-gray-600 {
-    color: #94a3b8 !important;
-}
-.dark aside a.text-gray-600:hover {
-    background-color: #1e293b !important;
-    color: #f1f5f9 !important;
-}
-.dark aside button {
-    background-color: #111827 !important;
-    border-color: #1e293b !important;
-    color: #f1f5f9 !important;
-}
-.dark aside button:hover {
-    background-color: #1e293b !important;
-}
-
-/* Main Content Card in slug page */
-.dark main .bg-white.rounded-3xl {
-    background-color: #111827 !important;
-    border-color: #1e293b !important;
-}
-.dark main .bg-white.rounded-3xl .border-t {
-    border-color: #1e293b !important;
-}
-.dark main .bg-navy {
-    background-color: #0b0f19 !important;
-}
-.dark main .bg-navy h1 {
-    color: #ffffff !important;
-}
-.dark main .bg-navy p {
-    color: #cbd5e1 !important;
-}
-.dark main .bg-navy span {
-    color: #94a3b8 !important;
-}
-
-/* Document content elements override */
-.dark .doc-content p, 
-.dark .doc-content li, 
-.dark .doc-content ul, 
-.dark .doc-content ol {
-    color: #cbd5e1 !important;
-}
-.dark .doc-content h2, 
-.dark .doc-content h3, 
-.dark .doc-content h4, 
-.dark .doc-content strong {
-    color: #ffffff !important;
-}
-.dark .doc-content h2 {
-    border-color: #1e293b !important;
-}
-
-/* Share buttons */
-.dark main button.bg-gray-50 {
-    background-color: #1e293b !important;
-    border-color: #334155 !important;
-    color: #f1f5f9 !important;
-}
-.dark main button.bg-gray-50:hover {
-    background-color: #334155 !important;
-    border-color: #b7fb23 !important;
-}
-
-/* Navigation buttons (prev/next) */
-.dark main a.border-gray-100 {
-    border-color: #1e293b !important;
-    background-color: #111827 !important;
-}
-.dark main a.border-gray-100:hover {
-    background-color: #1e293b !important;
-    border-color: #b7fb23 !important;
-}
-.dark main a.border-gray-100 .text-navy {
-    color: #ffffff !important;
-}
-
-/* Comments section card */
-.dark main .bg-white.rounded-3xl.p-6 {
-    background-color: #111827 !important;
-    border-color: #1e293b !important;
-}
-.dark main .bg-white.rounded-3xl.p-6 h3 {
-    color: #ffffff !important;
-}
-.dark main .bg-white.rounded-3xl.p-6 label {
-    color: #64748b !important;
-}
-.dark main .bg-white.rounded-3xl.p-6 input,
-.dark main .bg-white.rounded-3xl.p-6 textarea {
-    background-color: #0b0f19 !important;
-    border-color: #1e293b !important;
-    color: #ffffff !important;
-}
-.dark main .bg-white.rounded-3xl.p-6 input:focus,
-.dark main .bg-white.rounded-3xl.p-6 textarea:focus {
-    border-color: #b7fb23 !important;
-}
-.dark main .bg-white.rounded-3xl.p-6 .text-gray-500 {
-    color: #94a3b8 !important;
-}
-.dark main .bg-white.rounded-3xl.p-6 .text-navy {
-    color: #ffffff !important;
-}
-.dark main .bg-white.rounded-3xl.p-6 button[type="submit"] {
-    background-color: #b7fb23 !important;
-    color: #0f172a !important;
-}
-.dark main .bg-white.rounded-3xl.p-6 button[type="submit"]:hover {
-    background-color: #a3df1d !important;
-}
-
-/* Comments List cards */
-.dark main .hover\:bg-gray-50\/50 {
-    border-color: #1e293b !important;
-}
-.dark main .hover\:bg-gray-50\/50:hover {
-    background-color: rgba(30, 41, 59, 0.3) !important;
-}
-.dark main .bg-gray-50.flex.items-center {
-    background-color: #0b0f19 !important;
-    border-color: #1e293b !important;
-}
-.dark main .text-gray-600 {
-    color: #cbd5e1 !important;
-}
-
-/* Right sidebar TOC */
-.dark aside nav a.text-gray-600 {
-    color: #cbd5e1 !important;
-}
-.dark aside nav a.text-gray-600:hover {
-    color: #b7fb23 !important;
-}
-.dark aside nav a.text-gray-400 {
-    color: #64748b !important;
-}
-.dark aside nav a.text-gray-400:hover {
-    color: #b7fb23 !important;
+.scrollbar-styled::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
 }
 </style>
 

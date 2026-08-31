@@ -28,9 +28,9 @@
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
                                 {{ t('event_categories.title') }}
                             </h1>
-                            <p class="text-slate-300 text-sm max-w-2xl">
+                            <div class="text-slate-300 text-sm max-w-2xl">
                                 {{ t('event_categories.desc') }}
-                            </p>
+                            </div>
                         </div>
                     </div>
 
@@ -82,8 +82,8 @@
             </div>
             <div v-else-if="categories.length === 0" class="p-12 text-center">
                 <Icon icon="ph:tag-simple" class="text-5xl text-gray-300 mx-auto mb-4" />
-                <p class="text-gray-500 font-medium mb-2">{{ t('event_categories.no_categories') }}</p>
-                <p class="text-sm text-gray-400 mb-6">{{ t('event_categories.no_categories_desc') }}</p>
+                <div class="text-gray-500 font-medium mb-2">{{ t('event_categories.no_categories') }}</div>
+                <div class="text-sm text-gray-400 mb-6">{{ t('event_categories.no_categories_desc') }}</div>
                 <BaseButton variant="primary" icon="ph:plus-bold"
                     :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
                     @click="isSubscriptionActive ? openCreateDialog() : (showPremiumModal = true)">
@@ -208,16 +208,16 @@
                             <input v-model.number="form.max_participants" type="number" min="0"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 :placeholder="t('event_categories.unlimited_placeholder')" />
-                            <p class="text-[10px] text-gray-400">{{ t('event_categories.max_participants_desc') }}</p>
+                            <div class="text-[10px] text-gray-400">{{ t('event_categories.max_participants_desc') }}</div>
                         </div>
                         <div class="space-y-2">
                             <label class="text-sm font-bold text-gray-700">{{ t('event_categories.members_per_team') }}</label>
                             <div class="px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-navy font-bold">
                                 {{ t('event_categories.people_count', { count: form.team_size || (isTeamEvent ? (isMixedTeam ? 2 : 3) : 1) }) }}
                             </div>
-                            <p class="text-[10px] text-gray-400">
+                            <div class="text-[10px] text-gray-400">
                                 {{ teamTypeDescription }}
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -243,13 +243,13 @@
 
             <div v-if="fetchingDetails" class="py-12 flex flex-col items-center justify-center gap-4 text-center">
                 <Icon icon="ph:circle-notch-bold" class="text-4xl text-primary animate-spin" />
-                <p class="text-sm font-bold text-gray-400 tracking-widest">{{ t('event_categories.analyzing_relations') }}</p>
+                <div class="text-sm font-bold text-gray-400 tracking-widest">{{ t('event_categories.analyzing_relations') }}</div>
             </div>
 
             <div v-else-if="categoryDetails" class="space-y-6">
-                <p class="text-slate-500 font-medium leading-relaxed">
+                <div class="text-slate-500 font-medium leading-relaxed">
                     {{ t('event_categories.permanent_action_desc') }}
-                </p>
+                </div>
 
                 <!-- Category Summary Card -->
                 <div class="p-5 rounded-2xl bg-navy text-white relative overflow-hidden group shadow-sm">
@@ -362,14 +362,14 @@ const selectedTeamType = ref('all')
 
 const bowFilterOptions = computed(() => {
     return [
-        { value: 'all', title: t('event_categories.all_bows') },
+        { value: 'all', title: computed(() => t('event_categories.all_bows')) },
         ...bowTypes.value.map(bow => ({ value: bow.code, title: bow.name }))
     ]
 })
 
 const teamTypeFilterOptions = computed(() => {
     return [
-        { value: 'all', title: t('event_categories.all_team_types') },
+        { value: 'all', title: computed(() => t('event_categories.all_team_types')) },
         ...eventTypes.value.map(type => ({ value: type.id, title: type.name }))
     ]
 })

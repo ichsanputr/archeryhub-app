@@ -24,6 +24,7 @@
 
         <!-- Header Section -->
         <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
             <div class="absolute inset-0"
                 style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
             <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
@@ -89,14 +90,7 @@
                 </div>
             </div>
             <div class="w-full md:w-56">
-                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider ">{{ t('root.subscriptions.status_filter') }}</label>
-                <select v-model="statusFilter"
-                    class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                    <option value="">{{ t('root.subscriptions.status_all') }}</option>
-                    <option value="active">{{ t('root.subscriptions.status_active') }}</option>
-                    <option value="expired">{{ t('root.subscriptions.status_expired') }}</option>
-                    <option value="canceled">{{ t('root.subscriptions.status_canceled') }}</option>
-                </select>
+                <BaseSelect v-model="statusFilter" :options="statusOptions" :label="t('root.subscriptions.status_filter')" class="w-full" />
             </div>
             <button @click="searchQuery = ''; statusFilter = ''"
                 class="h-11 px-6 font-semibold text-sm text-navy bg-white border border-gray-200 hover:bg-gray-50 rounded-xl transition-all shrink-0">
@@ -345,15 +339,8 @@
                 </div>
 
                 <div class="space-y-4">
-                    <div class="space-y-1.5">
-                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">{{ t('root.subscriptions.edit_plan_label') }}</label>
-                        <select v-model="editPlanId"
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all">
-                            <option :value="null">Free</option>
-                            <option v-for="p in availablePlansForEdit" :key="p.id" :value="p.id">
-                                {{ p.name }} ({{ formatCurrency(p.price) }})
-                            </option>
-                        </select>
+                    <div>
+                        <BaseSelect v-model="editPlanId" :options="editPlanOptions" :label="t('root.subscriptions.edit_plan_label')" class="w-full" />
                     </div>
 
                     <div class="space-y-1.5">
@@ -446,11 +433,24 @@ const route = useRoute()
 const { t } = useI18n()
 
 definePageMeta({ layout: 'dashboard', middleware: ['auth'] })
-useHead({ title: t('root.index.title') + ' — Root Terminal' })
+useHead({ title: computed(() => t('root.index.title') + ' - Root Terminal') })
 
-// ── Data ──────────────────────────────────────────────────────────────
 const searchQuery = ref('')
 const statusFilter = ref('')
+const statusOptions = computed(() => [
+    { title: t('root.subscriptions.status_all') || 'All Status', value: '' },
+    { title: t('root.subscriptions.status_active') || 'Active', value: 'active' },
+    { title: t('root.subscriptions.status_expired') || 'Expired', value: 'expired' },
+    { title: t('root.subscriptions.status_canceled') || 'Canceled', value: 'canceled' },
+])
+
+const editPlanOptions = computed(() => [
+    { title: 'Free', value: null },
+    ...availablePlansForEdit.value.map(p => ({
+        title: `${p.name} (${formatCurrency(p.price)})`,
+        value: p.id
+    }))
+])
 const showSuccessToast = ref(false)
 const successMessage = ref('')
 

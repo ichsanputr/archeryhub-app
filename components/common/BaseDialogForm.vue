@@ -27,7 +27,7 @@
                         </div>
 
                         <!-- Scrollable Content -->
-                        <div class="flex-1 overflow-y-auto px-6 py-6" style="max-height: calc(90vh - 140px);">
+                        <div class="flex-1 overflow-y-auto px-6 py-6 relative" style="max-height: calc(90vh - 140px);">
                             <slot></slot>
                         </div>
 

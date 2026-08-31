@@ -91,83 +91,83 @@
                     <h3 class="text-lg sm:text-2xl font-black text-navy mb-3">{{ $t('products_page.not_found') }}</h3>
                     <p class="text-gray-500 max-w-md mx-auto text-center">{{ $t('products_page.not_found_desc') }}</p>
                 </div>
-                <div v-else key="content" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                    <!-- Product Card Premium -->
-                    <a v-for="product in filteredProducts" :key="product.id"
-                        :href="localePath(`/products/${product.slug || product.id}`)"
-                        class="bg-white rounded-3xl border border-stone-200 flex flex-col shadow-sm hover:border-stone-300 transition-all group overflow-hidden h-full">
+                <div v-else key="content" class="space-y-12">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                        <!-- Product Card Premium -->
+                        <a v-for="product in paginatedProducts" :key="product.id"
+                            :href="localePath(`/products/${product.slug || product.id}`)"
+                            class="bg-white rounded-3xl border border-stone-200 flex flex-col shadow-sm hover:border-stone-300 transition-all group overflow-hidden h-full">
 
-                        <!-- Product Image Container -->
-                        <div class="relative pt-[100%] bg-stone-50 overflow-hidden">
-                            <img :src="getProductImage(product.image_url)" :alt="product.name"
-                                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
+                            <!-- Product Image Container -->
+                            <div class="relative pt-[100%] bg-stone-50 overflow-hidden">
+                                <img :src="getProductImage(product.image_url)" :alt="product.name"
+                                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
 
-                            <!-- Premium Overlays -->
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                            </div>
-
-                            <!-- Sale Badge -->
-                            <div v-if="product.sale_price" class="absolute top-4 left-4 z-10">
+                                <!-- Premium Overlays -->
                                 <div
-                                    class="px-3 py-1 bg-stone-900 text-white text-[10px] font-black rounded-lg shadow-sm flex items-center gap-1">
-                                    <Icon icon="ph:tag-fill" />
-                                    {{ $t('products_page.promo') }}
+                                    class="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                                 </div>
-                            </div>
 
-                            <div
-                                class="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
-                                <div
-                                    class="w-full py-2.5 bg-white/92 backdrop-blur-md text-navy text-xs font-black rounded-xl text-center shadow-sm flex items-center justify-center gap-2">
-                                    <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
-                                    {{ $t('products_page.view_detail') }}
+                                <!-- Sale Badge -->
+                                <div v-if="product.sale_price" class="absolute top-4 left-4 z-10">
+                                    <div
+                                        class="px-3 py-1 bg-stone-900 text-white text-[10px] font-black rounded-lg shadow-sm flex items-center gap-1">
+                                        <Icon icon="ph:tag-fill" />
+                                        {{ $t('products_page.promo') }}
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- Product Content -->
-                        <div class="p-6 flex flex-col flex-1">
-                            <!-- Category & Status -->
-                            <div class="flex items-center justify-between mb-3">
-                                <span
-                                    class="text-[10px] font-black text-stone-600 tracking-widest bg-stone-100 px-2 py-0.5 rounded-md">
-                                    {{ getCategoryLabel(product.category) }}
-                                </span>
-                                <span v-if="product.stock > 0"
-                                    class="text-[10px] font-bold text-emerald-700 flex items-center gap-1">
-                                    <span class="w-1.5 h-1.5 bg-emerald-600 rounded-full"></span>
-                                    {{ $t('products_page.in_stock') }}
-                                </span>
                             </div>
 
-                            <!-- Title -->
-                            <h3
-                                class="font-black text-navy text-sm md:text-base mb-3 leading-snug break-words group-hover:text-stone-700 transition-colors">
-                                {{ product.name }}
-                            </h3>
-
-                            <!-- Price Section -->
-                            <div class="mt-auto pt-4 border-t border-stone-100">
-                                <div class="flex flex-col">
-                                    <span v-if="product.sale_price"
-                                        class="text-[10px] text-stone-400 line-through mb-0.5">
-                                        Rp {{ formatPrice(product.price) }}
+                            <!-- Product Content -->
+                            <div class="p-6 flex flex-col flex-1">
+                                <!-- Category & Status -->
+                                <div class="flex items-center justify-between mb-3">
+                                    <span
+                                        class="text-[10px] font-black text-stone-600 tracking-widest bg-stone-100 px-2 py-0.5 rounded-md">
+                                        {{ getCategoryLabel(product.category) }}
                                     </span>
-                                    <div class="flex items-center justify-between">
-                                        <span
-                                            class="text-lg font-black text-navy group-hover:text-stone-700 transition-colors">
-                                            Rp {{ formatPrice(product.sale_price || product.price) }}
+                                    <span v-if="product.stock > 0"
+                                        class="text-[10px] font-bold text-emerald-700 flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 bg-emerald-600 rounded-full"></span>
+                                        {{ $t('products_page.in_stock') }}
+                                    </span>
+                                </div>
+
+                                <!-- Title -->
+                                <h3
+                                    class="font-black text-navy text-sm md:text-base mb-3 leading-snug break-words group-hover:text-stone-700 transition-colors">
+                                    {{ product.name }}
+                                </h3>
+
+                                <!-- Price Section -->
+                                <div class="mt-auto pt-4 border-t border-stone-100">
+                                    <div class="flex flex-col">
+                                        <span v-if="product.sale_price"
+                                            class="text-[10px] text-stone-400 line-through mb-0.5">
+                                            Rp {{ formatPrice(product.price) }}
                                         </span>
-                                        <div
-                                            class="w-8 h-8 rounded-lg bg-stone-100 group-hover:bg-stone-200 flex items-center justify-center text-stone-500 group-hover:text-stone-700 transition-all">
-                                            <Icon icon="ph:arrow-right-bold" class="text-xs" />
+                                        <div class="flex items-center justify-between">
+                                            <span
+                                                class="text-lg font-black text-navy group-hover:text-stone-700 transition-colors">
+                                                Rp {{ formatPrice(product.sale_price || product.price) }}
+                                            </span>
+                                            <div
+                                                class="w-8 h-8 rounded-lg bg-stone-100 group-hover:bg-stone-200 flex items-center justify-center text-stone-500 group-hover:text-stone-700 transition-all">
+                                                <Icon icon="ph:arrow-right-bold" class="text-xs" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
+
+                    <!-- BasePagination -->
+                    <div v-if="filteredProducts.length > itemsPerPage" class="flex justify-center pt-8 border-t border-stone-100">
+                        <BasePagination :current-page="currentPage" :total-items="filteredProducts.length" :items-per-page="itemsPerPage"
+                            @change-page="currentPage = $event" />
+                    </div>
                 </div>
             </Transition>
         </section>
@@ -191,6 +191,9 @@ const localePath = useLocalePath()
 definePageMeta({
     layout: 'landing'
 })
+
+useHead({ title: computed(() => t('shop.title', 'Archery Shop') + ' - ArcheryHub') })
+
 
 useSeoMeta({
     title: () => `${t('products_page.badge')} - Archeris.net`,
@@ -268,6 +271,9 @@ const { data: productResponse, pending: isLoading } = useAsyncData('products', (
 
 const products = computed(() => productResponse.value?.data || [])
 
+const itemsPerPage = ref(10)
+const currentPage = ref(1)
+
 const filteredProducts = computed(() => {
     let filtered = products.value.filter(p => {
         const matchesSearch = !searchQuery.value || p.name?.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -285,6 +291,15 @@ const filteredProducts = computed(() => {
     }
 
     return filtered
+})
+
+const paginatedProducts = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage.value
+    return filteredProducts.value.slice(start, start + itemsPerPage.value)
+})
+
+watch([searchQuery, categoryFilter, sortBy], () => {
+    currentPage.value = 1
 })
 
 const formatPrice = (price) => {

@@ -5,11 +5,11 @@
             <div class="flex items-center gap-3">
                 <NuxtLink to="/" class="flex items-center gap-2">
                     <img src="/logo.png" alt="Archeris" class="w-8 h-8 object-contain" />
-                    <span class="font-black tracking-widest text-sm uppercase text-white">Archeris <span class="text-primary font-black">Ref</span></span>
+                    <span class="font-black tracking-widest text-sm text-white">Archeris <span class="text-primary font-black">Ref</span></span>
                 </NuxtLink>
             </div>
             <div class="flex items-center gap-4">
-                <span class="text-[10px] font-black tracking-widest uppercase text-slate-400 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
+                <span class="text-[10px] font-black tracking-widest text-slate-400 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
                     Revamp Sandbox
                 </span>
             </div>
@@ -20,7 +20,7 @@
             <!-- Left Panel: Audit Grid Cards -->
             <div class="lg:col-span-5 space-y-6 overflow-y-auto max-h-[950px] scrollbar-thin pr-2">
                 <div class="space-y-2">
-                    <h1 class="text-2xl font-black uppercase text-white tracking-tight leading-none">
+                    <h1 class="text-2xl font-black text-white tracking-tight leading-none">
                         Landing Page <span class="text-primary">Benchmarks</span>
                     </h1>
                     <p class="text-xs text-slate-400 font-medium leading-relaxed">
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 gap-4">
-                    <div v-for="(site, idx) in sites" :key="site.name"
+                    <div v-for="site in sites" :key="site.name"
                         @click="selectedSite = site"
                         :class="[
                             'p-5 rounded-2xl border transition-all cursor-pointer text-left relative group',
@@ -45,15 +45,15 @@
                                     <Icon :icon="site.icon" class="text-xl" />
                                 </div>
                                 <div>
-                                    <h3 class="font-black text-sm uppercase tracking-wide text-white group-hover:text-primary transition-colors">
+                                    <h3 class="font-black text-sm tracking-wide text-white group-hover:text-primary transition-colors">
                                         {{ site.name }}
                                     </h3>
-                                    <span class="text-[9px] font-black text-slate-400 tracking-wider uppercase block mt-0.5">
+                                    <span class="text-[9px] font-black text-slate-400 tracking-wider block mt-0.5">
                                         {{ site.url.replace('https://', '').replace('www.', '') }}
                                     </span>
                                 </div>
                             </div>
-                            <span class="px-2.5 py-1 bg-white/5 border border-white/10 rounded-lg text-[8px] font-black text-primary uppercase tracking-widest">
+                            <span class="px-2.5 py-1 bg-white/5 border border-white/10 rounded-lg text-[8px] font-black text-primary tracking-widest">
                                 {{ site.theme }}
                             </span>
                         </div>
@@ -63,11 +63,11 @@
                         </p>
 
                         <div class="flex items-center justify-between">
-                            <span class="text-[9px] font-black text-slate-400 group-hover:text-white transition-colors uppercase tracking-widest">
+                            <span class="text-[9px] font-black text-slate-400 group-hover:text-white transition-colors tracking-widest">
                                 {{ selectedSite.name === site.name ? 'Active Preview' : 'Click to inspect' }}
                             </span>
                             <a :href="site.url" target="_blank" @click.stop
-                                class="flex items-center gap-1 text-[9px] font-black text-primary hover:underline uppercase tracking-widest shrink-0">
+                                class="flex items-center gap-1 text-[9px] font-black text-primary hover:underline tracking-widest shrink-0">
                                 Open Site <Icon icon="ph:arrow-square-out-bold" />
                             </a>
                         </div>
@@ -80,8 +80,8 @@
                 <!-- Sandbox Controls Header -->
                 <div class="px-6 py-4 bg-navy/80 border-b border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shrink-0">
                     <div class="min-w-0">
-                        <span class="text-[8px] font-black text-primary tracking-widest uppercase">Target Preview</span>
-                        <h2 class="font-black text-sm uppercase tracking-wider text-white truncate">
+                        <span class="text-[8px] font-black text-primary tracking-widest ">Target Preview</span>
+                        <h2 class="font-black text-sm tracking-wider text-white truncate">
                             {{ selectedSite.name }}
                         </h2>
                     </div>
@@ -91,7 +91,7 @@
                         <button v-for="mode in ['desktop', 'tablet', 'mobile']" :key="mode"
                             @click="viewportMode = mode"
                             :class="[
-                                'px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all',
+                                'px-3 py-1.5 rounded-lg text-[9px] font-black tracking-wider transition-all',
                                 viewportMode === mode ? 'bg-primary text-navy-dark shadow-sm' : 'text-slate-400 hover:text-white'
                             ]">
                             {{ mode }}
@@ -105,7 +105,7 @@
                     <div class="absolute top-4 left-4 right-4 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 flex items-start gap-3 z-20">
                         <Icon icon="ph:warning-circle-bold" class="text-amber-500 text-lg shrink-0 mt-0.5" />
                         <div>
-                            <h4 class="text-[10px] font-black text-amber-500 uppercase tracking-widest leading-none mb-1">
+                            <h4 class="text-[10px] font-black text-amber-500 tracking-widest leading-none mb-1">
                                 Frame Loading Limitations
                             </h4>
                             <p class="text-[9px] text-slate-300 font-bold leading-normal">

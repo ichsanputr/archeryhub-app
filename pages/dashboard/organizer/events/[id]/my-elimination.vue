@@ -52,8 +52,8 @@
 
                     <!-- Final Standing Badge -->
                     <div class="flex flex-col items-center md:items-end justify-center">
-                        <p class="text-[10px] font-black text-slate-400 tracking-widest mb-1">Status Eliminasi
-                        </p>
+                        <div class="text-[10px] font-black text-slate-400 tracking-widest mb-1">Status Eliminasi
+                        </div>
                         <div class="flex items-center gap-2">
                             <Icon v-if="elimStatusLabel === 'Juara'" icon="ph:crown-fill"
                                 class="text-primary text-2xl" />
@@ -80,7 +80,7 @@
                 <div v-if="elimMatches.length === 0"
                     class="py-20 text-center border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-[32px]">
                     <Icon icon="ph:sword-light" class="text-7xl mx-auto mb-6 opacity-10" />
-                    <p class="text-sm font-black tracking-widest text-slate-300">Belum mencapai eliminasi</p>
+                    <div class="text-sm font-black tracking-widest text-slate-300">Belum mencapai eliminasi</div>
                 </div>
 
                 <div v-else class="relative overflow-x-auto pb-8 scrollbar-hide">
@@ -136,7 +136,9 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 const { get } = useApi()
 const route = useRoute()
 const router = useRouter()
@@ -145,6 +147,9 @@ const eventId = route.params.id
 definePageMeta({
     layout: 'dashboard'
 })
+
+useHead({ title: computed(() => t('elimination.my_bracket', 'My Elimination Bracket') + ' - ArcheryHub Dashboard') })
+
 
 const isLoading = ref(true)
 const userProfile = ref(null)

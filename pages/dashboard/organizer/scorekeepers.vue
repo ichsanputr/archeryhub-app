@@ -1,56 +1,45 @@
 <template>
     <div class="space-y-6">
-        <!-- Header: Premium Navy Banner -->
-        <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-navy text-white shadow-sm">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-
-            <!-- Decorative Background Elements (Glows) -->
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
-            <div class="relative p-6 sm:p-8">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div class="flex items-center gap-5">
-                        <!-- Icon Badge -->
-                        <div
-                            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
-                            <Icon icon="ph:user-focus-bold" class="text-primary text-2xl sm:text-3xl" />
-                        </div>
-                        <div>
-                            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">
-                                {{ t('organizer.scorekeepers.title') }}
-                            </h1>
-                            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">
-                                {{ t('organizer.scorekeepers.subtitle') }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <BaseButton @click="isSubscriptionActive ? openAddModal() : (showPremiumModal = true)"
-                            variant="primary" icon="ph:plus-bold"
-                            class="w-full sm:w-auto h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl"
-                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
-                            {{ t('organizer.scorekeepers.add') }}
-                        </BaseButton>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <PremiumRequiredModal v-model:show="showPremiumModal" feature="scorekeeper" />
+    <!-- Header: Premium Navy Banner -->
+    <DashboardHeader
+      :title="t('organizer.scorekeepers.title', 'Manajemen Scorekeeper')"
+      :subtitle="t('organizer.scorekeepers.subtitle', 'Kelola akun dan hak akses juri/pencatat skor pertandingan panahan Anda.')"
+      icon="ph:user-focus-bold"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: 'Scorekeeper' }
+      ]"
+    >
+      <template #actions>
+        <BaseButton @click="isSubscriptionActive ? openAddModal() : (showPremiumModal = true)"
+          variant="gold" icon="ph:plus-bold"
+          class="w-full sm:w-auto h-11 px-6 font-black tracking-widest text-xs rounded-xl"
+          :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
+          {{ t('organizer.scorekeepers.add', 'Tambah Scorekeeper') }}
+        </BaseButton>
+      </template>
+    </DashboardHeader>
+    <PremiumRequiredModal v-model:show="showPremiumModal" feature="scorekeeper" />
 
         <div
-            class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
-            <div class="flex-grow w-full">
+            class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+            <div class="flex-grow w-full md:w-auto">
                 <BaseInput v-model="searchQuery" icon="ph:magnifying-glass"
-                    :placeholder="t('organizer.scorekeepers.search_placeholder')"
-                    class="!mb-0" />
+                    :placeholder="t('organizer.scorekeepers.search_placeholder', 'Cari nama atau kode staff...')"
+                    :label="t('organizer.scorekeepers.search_label', 'Cari Scorekeeper')" />
             </div>
-            <BaseButton variant="white" icon="ph:funnel" @click="searchQuery = ''"
-                class="h-11 px-6 !rounded-xl text-[10px] font-black tracking-widest">
-                {{ t('common.reset') }}
+            <div class="w-full md:w-48">
+                <label class="block text-xs font-bold text-navy mb-1.5">{{ t('organizer.scorekeepers.filter_status', 'Status Scorekeeper') }}</label>
+                <BaseSelect
+                    v-model="statusFilter"
+                    :options="statusOptions"
+                    :placeholder="t('organizer.scorekeepers.select_status', 'Pilih Status')"
+                    class="w-full text-xs"
+                />
+            </div>
+            <BaseButton variant="white" icon="ph:funnel" @click="resetFilters"
+                class="h-11 px-6 rounded-xl text-xs font-black tracking-widest shrink-0">
+                {{ t('common.reset', 'Reset') }}
             </BaseButton>
         </div>
 
@@ -68,34 +57,23 @@
                 class="flex flex-col items-center justify-center py-24 gap-4">
                 <div class="h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
                 <div class="text-center">
-                    <p class="text-navy font-bold">{{ t('common.loading') }}</p>
-                    <p class="text-xs text-gray-400 font-medium">{{ t('organizer.scorekeepers.loading_desc') }}</p>
+                    <div class="text-navy font-bold">{{ t('common.loading', 'Memuat...') }}</div>
+                    <div class="text-xs text-gray-400 font-medium">{{ t('organizer.scorekeepers.loading_desc', 'Menyiapkan profil staff') }}</div>
                 </div>
             </div>
 
             <!-- Empty State -->
             <div v-else-if="!loading && scorekeepers.length === 0"
-                class="flex flex-col items-center justify-center py-32 px-6 text-center">
-                <div class="relative mb-8">
-                    <div class="absolute inset-0 bg-primary/10 blur-2xl rounded-full scale-150"></div>
-                    <div
-                        class="relative w-24 h-24 bg-white rounded-3xl shadow-xl border border-gray-100 flex items-center justify-center text-primary group hover:scale-110 transition-transform duration-500">
-                        <Icon icon="ph:user-focus-duotone" class="text-5xl" />
-                        <div
-                            class="absolute -bottom-2 -right-2 w-8 h-8 bg-navy text-primary rounded-xl flex items-center justify-center shadow-lg border-2 border-white">
-                            <Icon icon="ph:plus-bold" class="text-sm" />
-                        </div>
+                class="flex flex-col items-center justify-center py-24 px-6 text-center">
+                <div class="space-y-2 mb-8 max-w-sm">
+                    <h3 class="text-2xl font-black text-navy tracking-tight">{{ t('organizer.scorekeepers.empty_title', 'Belum Ada Staff') }}</h3>
+                    <div class="text-sm text-gray-500 leading-relaxed">
+                        {{ t('organizer.scorekeepers.empty_desc', 'Daftarkan akun staff pencatat skor untuk membantu penyelenggara Anda dalam mengelola nilai dan hasil pertandingan di lapangan.') }}
                     </div>
                 </div>
-                <div class="space-y-2 mb-10 max-w-sm">
-                    <h3 class="text-2xl font-black text-navy tracking-tight">{{ t('organizer.scorekeepers.empty_title') }}</h3>
-                    <p class="text-sm text-gray-500 leading-relaxed">
-                        {{ t('organizer.scorekeepers.empty_desc') }}
-                    </p>
-                </div>
                 <BaseButton @click="openAddModal" variant="primary" icon="ph:plus-bold"
-                    class="px-8 h-12 shadow-xl shadow-primary/20">
-                    {{ t('organizer.scorekeepers.add_first') }}
+                    class="px-8 h-11 text-xs font-black tracking-widest shadow-xl shadow-primary/20">
+                    {{ t('organizer.scorekeepers.add_first', 'Tambah Scorekeeper Pertama') }}
                 </BaseButton>
             </div>
 
@@ -107,10 +85,10 @@
                 </div>
                 <div class="space-y-1 mb-8">
                     <h3 class="text-lg font-bold text-navy">{{ t('common.no_results') }}</h3>
-                    <p class="text-sm text-gray-500 max-w-xs mx-auto">
+                    <div class="text-sm text-gray-500 max-w-xs mx-auto">
                         {{ t('common.no_results_desc') }} "<span class="font-bold text-navy">{{ searchQuery
                             }}</span>".
-                    </p>
+                    </div>
                 </div>
                 <BaseButton @click="searchQuery = ''" variant="white" size="sm" class="font-bold">
                     {{ t('common.clear_search') }}
@@ -200,13 +178,13 @@
                                 <div class="flex items-center justify-end gap-2">
                                     <BaseButton
                                         @click="isSubscriptionActive ? openEditModal(sk) : (showPremiumModal = true)"
-                                        variant="white" size="sm" icon="ph:pencil-simple"
-                                        class="h-9 w-9 p-0 text-gray-400 hover:text-primary border-slate-200"
+                                        variant="white" size="md" icon="ph:pencil-simple"
+                                        class="!size-10 !p-0 text-slate-500 hover:text-primary border-slate-200"
                                         :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }" />
                                     <BaseButton
                                         @click="isSubscriptionActive ? confirmDelete(sk) : (showPremiumModal = true)"
-                                        variant="white" size="sm" icon="ph:trash"
-                                        class="h-9 w-9 p-0 text-red-400 hover:text-red-500 border-slate-200"
+                                        variant="white" size="md" icon="ph:trash"
+                                        class="!size-10 !p-0 text-red-500 hover:text-red-600 border-slate-200"
                                         :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }" />
                                 </div>
                             </td>
@@ -224,14 +202,6 @@
                     :label="t('organizer.scorekeepers.modal.name_label')"
                     :placeholder="t('organizer.scorekeepers.modal.name_placeholder')"
                     required />
-
-                <div v-if="!modal.isEdit"
-                    class="bg-primary/5 border border-primary/20 p-4 rounded-xl flex gap-3 items-start">
-                    <Icon icon="ph:info-bold" class="text-primary text-lg flex-shrink-0 mt-0.5" />
-                    <p class=" text-xs text-navy/70 leading-relaxed font-medium">
-                        {{ t('organizer.scorekeepers.modal.info_generate') }}
-                    </p>
-                </div>
 
                 <div v-if="modal.isEdit" class="mt-2">
                     <label class="block text-xs font-black text-gray-500 tracking-widest mb-2">
@@ -283,23 +253,37 @@ import BaseInput from '~/components/common/BaseInput.vue'
 import AppDialog from '~/components/common/AppDialog.vue'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
+const { t } = useI18n()
+
 definePageMeta({
     middleware: ['auth'],
     layout: 'dashboard'
 })
 
 useHead({
-    title: computed(() => `${t('organizer.scorekeepers.title')} - Archeris Dashboard`)
+    title: computed(() => `${t('organizer.scorekeepers.title')} - ArcheryHub Dashboard`)
 })
 
 const { isSubscriptionActive } = useSubscription()
-const { t } = useI18n()
+
 const api = useApi()
 const toast = useToast()
 
 const showPremiumModal = ref(false)
 const scorekeepers = ref([])
 const searchQuery = ref('')
+const statusFilter = ref('all')
+const statusOptions = computed(() => [
+    { label: t('common.all_status', 'Semua Status'), value: 'all' },
+    { label: t('common.active', 'Aktif'), value: 'active' },
+    { label: t('common.inactive', 'Nonaktif'), value: 'inactive' }
+])
+
+const resetFilters = () => {
+    searchQuery.value = ''
+    statusFilter.value = 'all'
+}
+
 const loading = ref(true)
 
 // Sort & Pagination
@@ -309,7 +293,14 @@ const currentPage = ref(1)
 const totalItems = ref(0)
 const limit = ref(10)
 
-const filteredScorekeepers = computed(() => scorekeepers.value)
+const filteredScorekeepers = computed(() => {
+    let list = scorekeepers.value || []
+    if (statusFilter.value && statusFilter.value !== 'all') {
+        const target = String(statusFilter.value).toLowerCase()
+        list = list.filter(s => String(s.status || '').toLowerCase() === target)
+    }
+    return list
+})
 
 const fetchScorekeepers = async () => {
     loading.value = true

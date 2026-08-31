@@ -212,13 +212,11 @@ import { useI18n } from 'vue-i18n'
 import { useFormValidation } from '~/composables/useFormValidation'
 import { useToast } from '~/composables/useToast'
 
+const { t } = useI18n()
+
 definePageMeta({ layout: false })
 
-useHead({ title: t('auth.forgot.title', 'Forgot Password') + ' - Archeris.net' })
-
-const config = useRuntimeConfig()
-const apiBaseUrl = useApiBaseUrl()
-const { t } = useI18n()
+useHead({ title: computed(() => t('auth.forgot.title', 'Forgot Password') + ' - Archeris.net') })
 const toast = useToast()
 const router = useRouter()
 

@@ -1,37 +1,23 @@
 <template>
     <div class="space-y-8">
         <!-- Header Section -->
-        <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
-            <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div class="flex items-center gap-5">
-                    <div
-                        class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
-                        <Icon icon="ph:credit-card-bold" class="text-primary text-2xl sm:text-3xl" />
-                    </div>
-                    <div>
-                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">
-                            {{ t('organizer.bank_accounts.title') }}
-                        </h1>
-                        <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">
-                            {{ t('organizer.bank_accounts.subtitle') }}
-                        </p>
-                    </div>
-                </div>
-                <div>
-                    <BaseButton @click="isSubscriptionActive ? openAddModal() : (showPremiumModal = true)" variant="primary" icon="ph:plus-bold"
-                        :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
-                        class="font-black tracking-widest text-[10px] h-11 px-6 shadow-lg shadow-primary/20 !rounded-xl">
-                        {{ t('organizer.bank_accounts.add') }}
-                    </BaseButton>
-                </div>
-            </div>
-        </div>
+        <DashboardHeader
+            :title="t('organizer.bank_accounts.title')"
+            :subtitle="t('organizer.bank_accounts.subtitle')"
+            icon="ph:credit-card-bold"
+            :breadcrumbs="[
+                { label: 'Dashboard', to: '/dashboard/organizer' },
+                { label: t('organizer.bank_accounts.title') }
+            ]"
+        >
+            <template #actions>
+                <BaseButton @click="isSubscriptionActive ? openAddModal() : (showPremiumModal = true)" variant="primary" icon="ph:plus-bold"
+                    :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                    class="font-black tracking-widest text-[10px] h-11 px-6 shadow-lg shadow-primary/20 !rounded-xl">
+                    {{ t('organizer.bank_accounts.add') }}
+                </BaseButton>
+            </template>
+        </DashboardHeader>
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
         <!-- Bank Accounts Grid -->
@@ -46,7 +32,7 @@
                             class="h-full w-full object-contain" />
                         <Icon v-else :icon="getBankIcon(account.bank_name)" class="text-2xl" />
                     </div>
-                    <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div class="flex gap-1.5 items-center">
                         <button @click="isSubscriptionActive ? openEditModal(account) : (showPremiumModal = true)"
                             class="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-navy transition-colors">
                             <Icon icon="ph:pencil-simple-bold" />
@@ -60,10 +46,10 @@
 
                     <div class="space-y-4">
                     <div>
-                        <p class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
+                        <div class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
                             {{ t('organizer.bank_accounts.fields.bank_name') }}
-                        </p>
-                        <p class="text-sm font-black text-navy">{{ account.bank_name }}</p>
+                        </div>
+                        <div class="text-sm font-black text-navy">{{ account.bank_name }}</div>
                     </div>
                     <div>
                         <div class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
@@ -77,10 +63,10 @@
                         </div>
                     </div>
                     <div>
-                        <p class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
+                        <div class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
                             {{ t('organizer.bank_accounts.fields.account_name') }}
-                        </p>
-                        <p class="text-sm font-bold text-gray-700 truncate">{{ account.account_name }}</p>
+                        </div>
+                        <div class="text-sm font-bold text-gray-700 truncate">{{ account.account_name }}</div>
                     </div>
                 </div>
             </div>
@@ -93,8 +79,8 @@
                     <Icon icon="ph:plus-bold" class="text-2xl" />
                 </div>
                 <div class="text-center">
-                    <p class="text-sm font-black text-navy tracking-widest">{{ t('organizer.bank_accounts.add_new') }}</p>
-                    <p class="text-xs text-gray-400 font-medium mt-1">{{ t('organizer.bank_accounts.add_new_desc') }}</p>
+                    <div class="text-sm font-black text-navy tracking-widest">{{ t('organizer.bank_accounts.add_new') }}</div>
+                    <div class="text-xs text-gray-400 font-medium mt-1">{{ t('organizer.bank_accounts.add_new_desc') }}</div>
                 </div>
             </button>
         </div>
@@ -160,7 +146,6 @@ import { ref, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
-import useDashboardI18n from '~/composables/useDashboardI18n'
 import BaseDialogForm from '~/components/common/BaseDialogForm.vue'
 import AppDialog from '~/components/common/AppDialog.vue'
 import { useSubscription } from '~/composables/useSubscription'
@@ -171,14 +156,14 @@ const showPremiumModal = ref(false)
 
 const api = useApi()
 const toast = useToast()
-const { t } = useDashboardI18n()
+const { t } = useI18n()
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 useHead({
-    title: () => `${t('organizer.bank_accounts.title')} - Archeris`
+    title: () => `${t('organizer.bank_accounts.title')} - ArcheryHub Dashboard`
 })
 
 const bankAccounts = ref([])

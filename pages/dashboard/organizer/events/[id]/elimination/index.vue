@@ -739,9 +739,9 @@ const handleDeleteBracket = async () => {
 }
 
 const bracketTypes = computed(() => [
-  { value: 'individual', title: t('event_detail.individual') || 'Perorangan', icon: 'ph:user' },
-  { value: 'team3', title: t('event_detail.team3') || 'Tim 3 Orang', icon: 'ph:users-three' },
-  { value: 'mixed2', title: t('event_detail.mixed2') || 'Tim Campuran 2 Orang', icon: 'ph:gender-intersex' }
+  { value: 'individual', title: computed(() => t('event_detail.individual')) || 'Perorangan', icon: 'ph:user' },
+  { value: 'team3', title: computed(() => t('event_detail.team3')) || 'Tim 3 Orang', icon: 'ph:users-three' },
+  { value: 'mixed2', title: computed(() => t('event_detail.mixed2')) || 'Tim Campuran 2 Orang', icon: 'ph:gender-intersex' }
 ])
 
 const availableBracketTypes = computed(() => {

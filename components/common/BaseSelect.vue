@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-1.5 w-full relative" :class="{ 'z-[100]': isOpen }" v-click-outside="closeDropdown">
+  <div class="flex flex-col gap-1.5 w-full relative" :class="{ 'z-[10000]': isOpen }" v-click-outside="closeDropdown">
     <label v-if="label" class="text-navy text-sm font-bold ml-1 flex items-center gap-1">
       {{ label }}
       <span v-if="required" class="text-red-500">*</span>
@@ -92,8 +92,8 @@
         leave-to-class="translate-y-2 opacity-0 scale-95">
 
         <div v-if="isOpen"
-          class="absolute left-0 right-0 top-full z-[9999] mt-2 bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col"
-          style="box-shadow: 0 20px 60px -10px rgba(15,23,42,0.15); max-height: 320px">
+          class="absolute left-0 right-0 top-full z-[10000] mt-2 bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col shadow-2xl"
+          style="box-shadow: 0 20px 60px -10px rgba(15,23,42,0.25); max-height: 320px">
 
           <!-- multiple: search header (single has inline) -->
           <div v-if="multiple && searchable" class="px-3 pt-3 pb-2 border-b border-gray-50">
@@ -117,7 +117,7 @@
               {{ allSelected ? 'Deselect all' : 'Select all' }}
             </button>
             <span class="text-[10px] font-bold text-gray-400">
-              {{ selectedValues.length }} / {{ props.items.length }}
+              {{ selectedValues.length }} / {{ allItems.length }}
             </span>
           </div>
 
@@ -205,6 +205,7 @@ const { t } = useI18n()
 const props = defineProps({
   modelValue: [String, Number, Boolean, Object, Array],
   items: { type: Array, default: () => [] },
+  options: { type: Array, default: null },
   label: String,
   placeholder: String,
   hint: String,
@@ -225,17 +226,18 @@ const isOpen = ref(false)
 const searchQuery = ref('')
 const searchInput = ref(null)
 
-// ── helpers ────────────────────────────────────────
-const getItemTitle = (item) => (typeof item === 'object' ? item[props.itemTitle] : item)
-const getItemValue = (item) => (typeof item === 'object' ? item[props.itemValue] : item)
+const allItems = computed(() => (Array.isArray(props.options) ? props.options : props.items) || [])
+
+const getItemTitle = (item) => (typeof item === 'object' && item !== null ? (item[props.itemTitle] ?? item.label ?? item.name ?? item.title ?? '') : item)
+const getItemValue = (item) => (typeof item === 'object' && item !== null ? (item[props.itemValue] ?? item.value ?? item.id ?? '') : item)
 
 const getLabelForValue = (val) => {
-  const item = props.items.find(i => getItemValue(i) === val)
+  const item = allItems.value.find(i => getItemValue(i) === val)
   return item ? getItemTitle(item) : val
 }
 
 const getIconForValue = (val) => {
-  const item = props.items.find(i => getItemValue(i) === val)
+  const item = allItems.value.find(i => getItemValue(i) === val)
   return item?.icon || null
 }
 
@@ -251,14 +253,14 @@ const hasClearableValue = computed(() => {
 })
 
 const allSelected = computed(() => {
-  if (!props.items.length) return false
-  return props.items.every(i => selectedValues.value.includes(getItemValue(i)))
+  if (!allItems.value.length) return false
+  return allItems.value.every(i => selectedValues.value.includes(getItemValue(i)))
 })
 
 const filteredItems = computed(() => {
-  if (!searchQuery.value) return props.items
+  if (!searchQuery.value) return allItems.value
   const q = searchQuery.value.toLowerCase()
-  return props.items.filter(item => {
+  return allItems.value.filter(item => {
     const title = getItemTitle(item)?.toString().toLowerCase() || ''
     const desc = item.description?.toString().toLowerCase() || ''
     return title.includes(q) || desc.includes(q)
@@ -267,13 +269,13 @@ const filteredItems = computed(() => {
 
 const selectedLabel = computed(() => {
   if (props.multiple) return null
-  const item = props.items.find(i => getItemValue(i) === props.modelValue)
+  const item = allItems.value.find(i => getItemValue(i) === props.modelValue)
   return item ? getItemTitle(item) : null
 })
 
 const selectedItemIcon = computed(() => {
   if (props.multiple) return null
-  const item = props.items.find(i => getItemValue(i) === props.modelValue)
+  const item = allItems.value.find(i => getItemValue(i) === props.modelValue)
   return item?.icon || null
 })
 

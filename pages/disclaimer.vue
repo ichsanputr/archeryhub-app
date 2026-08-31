@@ -78,6 +78,6 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Disclaimer - Archeris.net'
+  title: computed(() => t('legal.disclaimer', 'Disclaimer') + ' - ArcheryHub')
 })
 </script>

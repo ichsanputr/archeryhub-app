@@ -4,7 +4,7 @@
             <div class="flex items-center justify-between mb-8">
                 <h2 class="text-lg sm:text-2xl font-black text-navy font-display">{{ $t('home.news.title') }}</h2>
                 <NuxtLink class="text-gray-500 hover:text-navy font-bold text-xs sm:text-sm" to="/news">
-                    <span class="link-underline">{{ $t('home.news.view_more') }}</span>
+                    <span class="">{{ $t('home.news.view_more') }}</span>
                 </NuxtLink>
             </div>
 
@@ -33,7 +33,7 @@
                             </span>
                         </div>
                         <h3
-                            class="text-lg sm:text-xl font-bold text-navy mb-3 line-clamp-2 font-display underline-link">
+                            class="text-lg sm:text-xl font-bold text-navy mb-3 line-clamp-2 font-display group-hover:text-primary transition-colors">
                             {{ news.title }}
                         </h3>
                         <div class="text-gray-500 mb-4 line-clamp-2 text-sm sm:text-base">
@@ -84,14 +84,4 @@ const articles = computed(() => {
 </script>
 
 <style scoped>
-.underline-link {
-    background-image: linear-gradient(#D9FF00, #D9FF00);
-    background-position: 0% 100%;
-    background-repeat: no-repeat;
-    background-size: 0% 2px;
-    transition: background-size 0.3s ease;
-}
-.group:hover .underline-link {
-    background-size: 100% 2px;
-}
 </style>

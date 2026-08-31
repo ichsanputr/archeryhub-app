@@ -22,16 +22,18 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useAuth } from '~/composables/useAuth'
 import { Icon } from '@iconify/vue'
 
 const router = useRouter()
 const { setToken } = useAuth()
+const { t } = useI18n()
 
 useHead({
-  title: 'Login Successful - Archeris.net'
+  title: computed(() => (t ? t('auth.login_success', 'Login Successful') : 'Login Successful') + ' - ArcheryHub')
 })
 
 onMounted(() => {

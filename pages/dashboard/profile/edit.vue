@@ -53,7 +53,7 @@
                             <h1
                                 class="text-2xl md:text-3xl font-black text-white tracking-tight drop-shadow-md font-display">
                                 {{ t('profile.edit.title', 'Edit Profil') }}</h1>
-                            <p class="text-white/60 text-xs md:text-sm font-medium drop-shadow-sm">{{ t('profile.edit.subtitle', 'Perbarui informasi pribadi dan preferensi Anda.') }}</p>
+                            <div class="text-white/60 text-xs md:text-sm font-medium drop-shadow-sm">{{ t('profile.edit.subtitle', 'Perbarui informasi pribadi dan preferensi Anda.') }}</div>
                         </div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                         </span>
                         <div>
                             <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.basic_info', 'Informasi Dasar') }}</h2>
-                            <p class="text-sm text-text-sub">{{ t('profile.edit.basic_info_sub', 'Detail pribadi yang akan ditampilkan secara publik.') }}</p>
+                            <div class="text-sm text-text-sub">{{ t('profile.edit.basic_info_sub', 'Detail pribadi yang akan ditampilkan secara publik.') }}</div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -101,7 +101,7 @@
                         </span>
                         <div>
                             <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.category_discipline', 'Kategori & Disiplin') }}</h2>
-                            <p class="text-sm text-text-sub">{{ t('profile.edit.category_sub', 'Tentukan level kompetisi Anda.') }}</p>
+                            <div class="text-sm text-text-sub">{{ t('profile.edit.category_sub', 'Tentukan level kompetisi Anda.') }}</div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -112,7 +112,7 @@
                                 { value: 'barebow', label: 'Barebow' },
                                 { value: 'standard', label: 'Standard Bow' }
                             ]" />
-                            <BaseSelect v-model="profileData.ageCategory" label="Kategori Usia" :options="[
+                            <BaseSelect v-model="profileData.ageCategory" :label="t('profile.age_category', 'Kategori Usia')" :options="[
                                 { value: 'U12', label: 'Under 12 (U12)' },
                                 { value: 'U15', label: 'Under 15 (U15)' },
                                 { value: 'U18', label: 'Under 18 (U18)' },
@@ -132,7 +132,7 @@
                         </span>
                         <div>
                             <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.equipment_setup', 'Konfigurasi Alat') }}</h2>
-                            <p class="text-sm text-text-sub">{{ t('profile.edit.equipment_sub', 'Catat perlengkapan yang Anda gunakan saat ini.') }}</p>
+                            <div class="text-sm text-text-sub">{{ t('profile.edit.equipment_sub', 'Catat perlengkapan yang Anda gunakan saat ini.') }}</div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -151,14 +151,14 @@
                         </span>
                         <div>
                             <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.privacy_settings', 'Pengaturan Privasi') }}</h2>
-                            <p class="text-sm text-text-sub">{{ t('profile.edit.privacy_sub', 'Kontrol siapa yang dapat melihat profil Anda.') }}</p>
+                            <div class="text-sm text-text-sub">{{ t('profile.edit.privacy_sub', 'Kontrol siapa yang dapat melihat profil Anda.') }}</div>
                         </div>
                     </div>
                     <div class="space-y-6">
                         <div class="flex items-center justify-between">
                             <div>
                                 <h3 class="text-sm font-bold text-navy">{{ t('profile.edit.privacy_public', 'Profil Publik') }}</h3>
-                                <p class="text-xs text-text-sub mt-1">{{ t('profile.edit.privacy_public_sub', 'Izinkan siapa saja melihat profil dan prestasi Anda.') }}</p>
+                                <div class="text-xs text-text-sub mt-1">{{ t('profile.edit.privacy_public_sub', 'Izinkan siapa saja melihat profil dan prestasi Anda.') }}</div>
                             </div>
                             <BaseCheckbox v-model="profileData.isPublic" />
                         </div>
@@ -166,7 +166,7 @@
                         <div class="flex items-center justify-between">
                             <div>
                                 <h3 class="text-sm font-bold text-navy">{{ t('profile.edit.privacy_stats', 'Tampilkan Statistik') }}</h3>
-                                <p class="text-xs text-text-sub mt-1">{{ t('profile.edit.privacy_stats_sub', 'Tampilkan hasil turnamen dan peralatan Anda secara publik.') }}</p>
+                                <div class="text-xs text-text-sub mt-1">{{ t('profile.edit.privacy_stats_sub', 'Tampilkan hasil turnamen dan peralatan Anda secara publik.') }}</div>
                             </div>
                             <BaseCheckbox v-model="profileData.showStats" />
                         </div>
@@ -197,7 +197,7 @@ import useDashboardI18n from '~/composables/useDashboardI18n'
 const { t } = useDashboardI18n()
 
 useHead({
-    title: t('profile.edit.head_title', 'Edit Profil - Archeris Dashboard')
+    title: computed(() => t('profile.edit.head_title'), 'Edit Profil - ArcheryHub Dashboard')
 })
 
 const profileData = ref({

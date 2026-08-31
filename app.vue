@@ -5,6 +5,7 @@
       <NuxtPage :page-key="pageKey" />
     </NuxtLayout>
     <SupportChatWidget v-if="showSupportChat" />
+    <BaseToast />
   </div>
 </template>
 
@@ -77,9 +78,21 @@ const showSupportChat = computed(() =>
 // Initialize theme and auth at app level
 const { initializeTheme, removeTheme, isThemeLoading } = useTheme()
 const { initializeAuth } = useAuth()
+const toast = useToast()
 
 onMounted(async () => {
   await initializeAuth()
+  if (import.meta.client) {
+    try {
+      const authToast = sessionStorage.getItem('auth_toast')
+      if (authToast) {
+        sessionStorage.removeItem('auth_toast')
+        setTimeout(() => {
+          toast.success(authToast)
+        }, 300)
+      }
+    } catch {}
+  }
   if (isDashboard.value) {
     initializeTheme()
   } else {

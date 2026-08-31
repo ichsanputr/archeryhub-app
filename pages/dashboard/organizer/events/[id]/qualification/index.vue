@@ -162,8 +162,17 @@
 
       <!-- Results Section -->
       <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-        <div class="flex items-center justify-between mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <h2 class="text-base font-bold text-navy">{{ t('event_qualification.qualification_results') }}</h2>
+          <div class="w-full sm:w-80">
+            <BaseSelect
+              v-model="selectedCategory"
+              :items="mappedCategoriesForFilter"
+              :placeholder="t('event_qualification.choose_category', 'Pilih Kategori Event')"
+              searchable
+              @update:modelValue="(val) => selectCategory(val)"
+            />
+          </div>
         </div>
 
         <!-- Category Selection -->
@@ -573,6 +582,7 @@ import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
 import { useSubscription } from '~/composables/useSubscription'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 const { t } = useI18n()
@@ -651,6 +661,14 @@ const paginatedEntries = computed(() => {
 
 watch(reportEntries, () => {
   currentPage.value = 1
+})
+
+const mappedCategoriesForFilter = computed(() => {
+  return categories.value.map(cat => ({
+    value: cat.id,
+    title: getCategoryName(cat),
+    description: `${cat.participant_count || 0} ${t('event_qualification.archers').toLowerCase()}`
+  }))
 })
 
 // Computed Properties

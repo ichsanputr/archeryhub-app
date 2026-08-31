@@ -90,18 +90,30 @@
       <!-- Dynamic Event Navigation (Manajemen Event) -->
       <div v-if="eventId && (canManageEvents || isArcher)" class="flex flex-col gap-1"
         :class="isOnEventSubPage ? '' : 'mt-4'">
-        <div v-if="!isOnEventSubPage && !isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
-        <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
-          <div class="text-xs font-bold text-gray-500">{{ t('dashboard.sidebar.event_management') }}</div>
-        </div>
-        <NuxtLink v-for="item in eventLinks" :key="item.path" :to="item.path"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group" :class="isActive(item.path)
-            ? 'bg-primary text-primary-text shadow-lg shadow-primary/20'
-            : 'text-gray-400 hover:bg-white/5 hover:text-white'">
-          <Icon :icon="item.icon" :class="isActive(item.path) ? 'text-primary-text' : ''"
-            class="text-xl transition-transform" />
-          <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
+        <!-- Back to Events button when on subpage -->
+        <NuxtLink v-if="isOnEventSubPage" :to="isArcher ? '/dashboard/archer/events' : '/dashboard/organizer/events'"
+          class="flex items-center gap-2 px-3 py-2 text-xs font-bold text-slate-400 hover:text-white mb-1 rounded-xl hover:bg-white/5 transition-all">
+          <Icon icon="ph:arrow-left-bold" class="text-sm" />
+          <span v-if="!isSidebarCollapsed">{{ t('sidebar.back_to_events', t('dashboard.sidebar.back_to_events', 'Semua Event')) }}</span>
         </NuxtLink>
+        <div v-if="!isOnEventSubPage && !isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
+        <div v-if="!isSidebarCollapsed && !isOnEventSubPage" class="px-3 mb-2">
+          <div class="text-xs font-bold text-gray-500">{{ t('sidebar.event_management', t('dashboard.sidebar.event_management', 'Manajemen Event')) }}</div>
+        </div>
+        <template v-for="(item, idx) in eventLinks" :key="item.path || item.label || idx">
+          <div v-if="item.type === 'label'" class="px-3 mt-3 mb-1">
+            <div v-if="!isSidebarCollapsed" class="text-[10px] font-black capitalize tracking-wider text-gray-500">{{ item.label }}</div>
+            <div v-else class="h-px bg-white/10 my-1"></div>
+          </div>
+          <NuxtLink v-else :to="item.path"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group" :class="isActive(item.path)
+              ? 'bg-primary text-primary-text shadow-lg shadow-primary/20'
+              : 'text-gray-400 hover:bg-white/5 hover:text-white'">
+            <Icon :icon="item.icon" :class="isActive(item.path) ? 'text-primary-text' : ''"
+              class="text-xl transition-transform" />
+            <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
+          </NuxtLink>
+        </template>
       </div>
     </div>
 
@@ -138,12 +150,12 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 const route = useRoute()
 const router = useRouter()
 const { user, userPersona, archerProfile, organizerProfile, sellerProfile, logout } = useAuth()
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const isSidebarCollapsed = useState('sidebar-collapsed', () => false)
 
-// Groups that are expanded (open)
+// Groups that are expanded (open) - Expand all groups by default
 const openGroups = ref([])
 
 function toggleGroup(label) {
@@ -210,33 +222,41 @@ const eventLinks = computed(() => {
 
   if (isArcher) {
     return [
-      { label: t('dashboard.sidebar.registration'), icon: 'ph:clipboard-text', path: `${prefix}/events/${eventId.value}/my-registration` },
-      { label: t('dashboard.sidebar.qualification_results'), icon: 'ph:chart-line-up-bold', path: `${prefix}/events/${eventId.value}/my-qualification` },
-      { label: t('dashboard.sidebar.elimination_results'), icon: 'ph:git-merge-bold', path: `${prefix}/events/${eventId.value}/my-elimination` },
+      // ── Event Info ───────────────────────────────────────────
+      { type: 'label', label: t('sidebar.event', 'Event') },
+      { label: t('sidebar.event_overview', 'Info Event'), icon: 'ph:info-bold', path: `${prefix}/events/${eventId.value}/overview` },
+      // ── Registration ────────────────────────────────────────
+      { type: 'label', label: t('sidebar.registration_section', 'Pendaftaran') },
+      { label: t('sidebar.registration_section', 'Pendaftaran'), icon: 'ph:clipboard-text', path: `${prefix}/events/${eventId.value}/my-registration` },
+      { label: t('sidebar.my_target', 'Target'), icon: 'ph:target', path: `${prefix}/events/${eventId.value}/my-target` },
+      // ── Competition ─────────────────────────────────────────
+      { type: 'label', label: t('sidebar.competition_section', 'Kompetisi') },
+      { label: t('sidebar.qualification', 'Kualifikasi'), icon: 'ph:chart-line-up-bold', path: `${prefix}/events/${eventId.value}/my-qualification` },
+      { label: t('sidebar.elimination', 'Eliminasi'), icon: 'ph:git-merge-bold', path: `${prefix}/events/${eventId.value}/my-elimination` },
+      { label: t('sidebar.teams', 'Tim'), icon: 'ph:users-four', path: `${prefix}/events/${eventId.value}/my-team` },
+      // ── Results ─────────────────────────────────────────────
+      { type: 'label', label: t('sidebar.results_section', 'Hasil') },
+      { label: t('sidebar.certificates', 'Sertifikat'), icon: 'ph:certificate-bold', path: `${prefix}/events/${eventId.value}/my-certificate` },
     ]
   }
 
   const links = [
-    { label: t('dashboard.sidebar.summary'), icon: 'ph:squares-four', path: `${prefix}/events/${eventId.value}/overview` },
-    { label: t('dashboard.sidebar.event_page'), icon: 'ph:browser', path: `${prefix}/events/${eventId.value}/page` },
-    { label: t('dashboard.sidebar.participants'), icon: 'ph:users-three', path: `${prefix}/events/${eventId.value}/participants` },
-    { label: t('dashboard.sidebar.teams'), icon: 'ph:users-four', path: `${prefix}/events/${eventId.value}/teams` },
+    { label: t('sidebar.summary', 'Ringkasan'), icon: 'ph:squares-four', path: `${prefix}/events/${eventId.value}/overview` },
+    { label: t('sidebar.event_page', 'Landing Page'), icon: 'ph:browser', path: `${prefix}/events/${eventId.value}/page` },
+    { label: t('sidebar.participants', 'Peserta'), icon: 'ph:users-three', path: `${prefix}/events/${eventId.value}/participants` },
+    { label: t('sidebar.teams', 'Tim'), icon: 'ph:users-four', path: `${prefix}/events/${eventId.value}/teams` },
   ]
 
   if (isOrganization) {
-    links.push({ label: t('dashboard.sidebar.competition_categories'), icon: 'ph:tag', path: `${prefix}/events/${eventId.value}/categories` })
+    links.push({ label: t('sidebar.competition_categories', 'Kategori'), icon: 'ph:tag', path: `${prefix}/events/${eventId.value}/categories` })
   }
 
   links.push(
-    { label: t('dashboard.sidebar.targets'), icon: 'ph:target', path: `${prefix}/events/${eventId.value}/targets` },
-    { label: t('dashboard.sidebar.qualification'), icon: 'fluent:table-freeze-column-20-regular', path: `${prefix}/events/${eventId.value}/qualification` },
-    { label: t('dashboard.sidebar.elimination'), icon: 'mdi:bracket', path: `${prefix}/events/${eventId.value}/elimination` },
-    { label: t('dashboard.sidebar.printout'), icon: 'ph:printer-bold', path: `${prefix}/events/${eventId.value}/printout` },
-    { label: t('dashboard.sidebar.scan_qr'), icon: 'ph:qr-code', path: '/scan/qr' },
-  )
-
-  links.push(
-    { label: t('dashboard.sidebar.reset_data'), icon: 'ph:arrow-counter-clockwise', path: `${prefix}/events/${eventId.value}/reset` },
+    { label: t('sidebar.targets', 'Target'), icon: 'ph:target', path: `${prefix}/events/${eventId.value}/targets` },
+    { label: t('sidebar.qualification', 'Kualifikasi'), icon: 'fluent:table-freeze-column-20-regular', path: `${prefix}/events/${eventId.value}/qualification` },
+    { label: t('sidebar.elimination', 'Eliminasi'), icon: 'mdi:bracket', path: `${prefix}/events/${eventId.value}/elimination` },
+    { label: t('sidebar.printout', 'Printout'), icon: 'ph:printer-bold', path: `${prefix}/events/${eventId.value}/printout` },
+    { label: t('sidebar.certificates', 'Sertifikat'), icon: 'ph:certificate-bold', path: `${prefix}/events/${eventId.value}/certificate` },
   )
 
   return links
@@ -255,109 +275,102 @@ const canManageEvents = computed(() => {
 const userRoleLabel = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
   const labels = {
-    'archer': t('dashboard.sidebar.roles.archer'),
-    'organizer': t('dashboard.sidebar.roles.organizer'),
-    'admin': t('dashboard.sidebar.roles.admin'),
-    'seller': t('dashboard.sidebar.roles.seller'),
-    'scorekeeper': t('dashboard.sidebar.roles.scorekeeper')
+    'archer': t('dashboard.sidebar.roles.archer', 'Archer'),
+    'organizer': t('dashboard.sidebar.roles.organizer', 'Organizer'),
+    'admin': t('dashboard.sidebar.roles.admin', 'Administrator'),
+    'seller': t('dashboard.sidebar.roles.seller', 'Seller Store'),
+    'scorekeeper': t('dashboard.sidebar.roles.scorekeeper', 'Scorekeeper')
   }
-  return labels[role] || t('dashboard.sidebar.roles.user')
+  return labels[role] || t('dashboard.sidebar.roles.user', 'Member')
 })
 
 const { isSubscriptionActive, isElite } = useSubscription()
 
 // ── Nav sections (supports labels, items, and group dropdowns) ─────────────
 const navSections = computed(() => {
-  const role = user.value?.role || user.value?.type || user.value?.user_type
+  const role = userPersona.value || user.value?.role || user.value?.type || user.value?.user_type
   const isActiveSub = isSubscriptionActive.value
 
   if (role === 'archer') {
     return [
-      { label: t('dashboard.sidebar.my_events'), icon: 'ph:trophy', path: '/dashboard/archer/events' },
-      { label: t('dashboard.sidebar.payments'), icon: 'ph:credit-card', path: '/dashboard/archer/payments' },
-      { label: t('dashboard.sidebar.cart'), icon: 'ph:shopping-cart', path: '/dashboard/archer/cart' },
-      { label: t('dashboard.sidebar.chat'), icon: 'ph:chat-circle-dots', path: '/dashboard/archer/chat', badge: 'New' },
-      { label: t('dashboard.sidebar.archer_profile'), icon: 'ph:user-circle', path: '/dashboard/archer/profile' },
-      { label: t('dashboard.sidebar.settings'), icon: 'ph:gear', path: '/dashboard/archer/settings' },
+      { type: 'label', label: t('sidebar.activity', 'Turnamen') },
+      { label: t('sidebar.my_events', 'Event Saya'), icon: 'ph:trophy-bold', path: '/dashboard/archer/events' },
+      { label: t('sidebar.my_certifications', 'Sertifikat'), icon: 'ph:certificate-bold', path: '/dashboard/archer/certificates' },
+      { type: 'label', label: t('sidebar.commerce', 'Belanja') },
+      { label: t('sidebar.payments', 'Pembayaran'), icon: 'ph:credit-card-bold', path: '/dashboard/archer/payments' },
+      { label: t('sidebar.cart', 'Keranjang'), icon: 'ph:shopping-cart-bold', path: '/dashboard/archer/cart' },
+      { type: 'label', label: t('sidebar.account_section', 'Akun') },
+      { label: t('sidebar.chat', 'Chat'), icon: 'ph:chat-circle-dots-bold', path: '/dashboard/archer/chat', badge: 'New' },
+      { label: t('sidebar.archer_profile', 'Profil'), icon: 'ph:user-circle-bold', path: '/dashboard/archer/profile' },
+      { label: t('sidebar.settings', 'Pengaturan'), icon: 'ph:gear-bold', path: '/dashboard/archer/settings' },
     ]
   }
 
   if (role === 'seller') {
     return [
-      { label: t('dashboard.sidebar.overview'), icon: 'ph:squares-four', path: '/dashboard/seller' },
-      { type: 'label', label: t('dashboard.sidebar.overview') },
-      { label: t('dashboard.sidebar.profile'), icon: 'ph:storefront', path: '/dashboard/seller/store' },
-      { label: t('dashboard.sidebar.event'), icon: 'ph:package', path: '/dashboard/seller/products' },
-      { label: t('dashboard.sidebar.my_events'), icon: 'ph:shopping-cart', path: '/dashboard/seller/orders' },
-      { label: t('dashboard.sidebar.news'), icon: 'ph:chat-circle-dots', path: '/dashboard/seller/chat', badge: 'New' },
-      { type: 'label', label: t('dashboard.sidebar.finance') },
-      {
-        label: t('dashboard.sidebar.finance'),
-        icon: 'ph:coins',
-        type: 'group',
-        children: [
-          { label: t('dashboard.sidebar.earnings'), icon: 'ph:credit-card', path: '/dashboard/seller/finance/transactions' },
-          { label: t('dashboard.sidebar.balance'), icon: 'ph:wallet', path: '/dashboard/seller/finance/balance' },
-        ]
-      },
-      { type: 'label', label: t('dashboard.sidebar.settings') },
-      { label: t('dashboard.sidebar.settings'), icon: 'ph:gear', path: '/dashboard/seller/settings' },
+      { label: t('sidebar.overview', 'Overview'), icon: 'ph:squares-four', path: '/dashboard/seller' },
+      { type: 'label', label: t('sidebar.store_management', 'Toko') },
+      { label: t('sidebar.store_profile', 'Profil Toko'), icon: 'ph:storefront', path: '/dashboard/seller/store' },
+      { label: t('sidebar.products', 'Produk'), icon: 'ph:package', path: '/dashboard/seller/products' },
+      { label: t('sidebar.orders', 'Pesanan'), icon: 'ph:shopping-cart', path: '/dashboard/seller/orders' },
+      { label: t('sidebar.chat', 'Chat'), icon: 'ph:chat-circle-dots', path: '/dashboard/seller/chat', badge: 'New' },
+      { type: 'label', label: t('sidebar.settings', 'Pengaturan') },
+      { label: t('sidebar.settings', 'Pengaturan'), icon: 'ph:gear', path: '/dashboard/seller/settings' },
     ]
   }
 
   if (role === 'organizer') {
     return [
-      { label: t('dashboard.sidebar.overview'), icon: 'ph:squares-four', path: '/dashboard/organizer' },
-      { type: 'label', label: t('dashboard.sidebar.event') },
-      { label: t('dashboard.sidebar.my_events'), icon: 'ph:trophy', path: '/dashboard/organizer/events' },
-      { type: 'label', label: t('dashboard.sidebar.organizer') },
+      { label: t('sidebar.overview', 'Overview'), icon: 'ph:squares-four', path: '/dashboard/organizer' },
+      { type: 'label', label: t('sidebar.event', 'Event') },
+      { label: t('sidebar.my_events', 'Event Saya'), icon: 'ph:trophy', path: '/dashboard/organizer/events' },
+      { type: 'label', label: t('sidebar.organizer', 'Penyelenggara') },
       {
-        label: t('dashboard.sidebar.organizer'),
+        label: t('sidebar.organizer', 'Penyelenggara'),
         icon: 'ph:building-office',
         type: 'group',
         children: [
-          { label: t('dashboard.sidebar.profile'), icon: 'icomoon-free:profile', path: '/dashboard/organizer/profile' },
-          { label: t('dashboard.sidebar.scorekeeper'), icon: 'ph:user-focus', path: '/dashboard/organizer/scorekeepers' },
-          { label: t('dashboard.sidebar.payment_methods'), icon: 'ph:credit-card', path: '/dashboard/organizer/payment-methods' },
-          { label: t('dashboard.sidebar.reports'), icon: 'ph:chart-bar', path: '/dashboard/organizer/reports' },
+          { label: t('sidebar.profile', 'Profil'), icon: 'icomoon-free:profile', path: '/dashboard/organizer/profile' },
+          { label: t('sidebar.scorekeeper', 'Scorekeeper'), icon: 'ph:user-focus', path: '/dashboard/organizer/scorekeepers' },
+          { label: t('sidebar.reports', 'Laporan'), icon: 'ph:chart-bar', path: '/dashboard/organizer/reports' },
         ]
       },
-      { type: 'label', label: t('dashboard.sidebar.finance') },
+      { type: 'label', label: t('sidebar.finance', 'Keuangan') },
       {
-        label: t('dashboard.sidebar.finance'),
+        label: t('sidebar.finance', 'Keuangan'),
         icon: 'ph:coins',
         type: 'group',
         children: [
-          { label: t('dashboard.sidebar.earnings'), icon: 'ph:wallet', path: '/dashboard/organizer/earnings' },
-          { label: t('dashboard.sidebar.balance'), icon: 'ph:bank', path: '/dashboard/organizer/balance' },
-          { label: t('dashboard.sidebar.bank_accounts'), icon: 'ph:credit-card', path: '/dashboard/organizer/bank-accounts' },
+          { label: t('sidebar.earnings', 'Pendapatan'), icon: 'ph:wallet', path: '/dashboard/organizer/earnings' },
+          { label: t('sidebar.balance', 'Saldo'), icon: 'ph:bank', path: '/dashboard/organizer/balance' },
+          { label: t('sidebar.bank_accounts', 'Rekening'), icon: 'ph:credit-card', path: '/dashboard/organizer/bank-accounts' },
         ]
       },
-      { type: 'label', label: t('dashboard.sidebar.settings') },
-      { label: t('dashboard.sidebar.subscription'), icon: 'ph:credit-card', path: '/dashboard/organizer/subscription' },
-      ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.news'), icon: 'ph:newspaper', path: '/dashboard/organizer/news' }] : []),
-      ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.settings'), icon: 'ph:gear', path: '/dashboard/organizer/settings' }] : []),
+      { type: 'label', label: t('sidebar.settings', 'Pengaturan') },
+      { label: t('sidebar.package', 'Package'), icon: 'ph:package', path: '/dashboard/organizer/package' },
+      ...(!isEventManagePage.value ? [{ label: t('sidebar.news', 'Berita'), icon: 'ph:newspaper', path: '/dashboard/organizer/news' }] : []),
+      ...(!isEventManagePage.value ? [{ label: t('sidebar.settings', 'Pengaturan'), icon: 'ph:gear', path: '/dashboard/organizer/settings' }] : []),
     ]
   }
 
   // Root admin — clean minimal nav
   if (role === 'root') {
     return [
-      { type: 'label', label: t('root.index.title', 'Organizers') },
-      { label: t('root.index.title', 'Organizers'), icon: 'ph:users-four-bold', path: '/dashboard/root' },
-      { label: t('dashboard.sidebar.news'), icon: 'ph:newspaper', path: '/dashboard/root/news' },
+      { type: 'label', label: t('root.index.title', 'Penyelenggara') },
+      { label: t('root.index.title', 'Penyelenggara'), icon: 'ph:users-four-bold', path: '/dashboard/root' },
+      { label: t('sidebar.news', 'Berita'), icon: 'ph:newspaper', path: '/dashboard/root/news' },
     ]
   }
 
   // Admin / default
   const prefix = `/dashboard/${userPersona.value}`
   return [
-    { label: t('dashboard.sidebar.overview'), icon: 'ph:squares-four', path: prefix },
-    { label: t('dashboard.sidebar.event'), icon: 'ph:trophy', path: `${prefix}/events` },
-    ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.earnings'), icon: 'ph:chart-bar', path: `${prefix}/reports` }] : []),
-    { label: t('dashboard.sidebar.profile'), icon: 'ph:users-four', path: `${prefix}/teams` },
-    ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.news'), icon: 'ph:newspaper', path: `${prefix}/news` }] : []),
-    ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.settings'), icon: 'ph:gear', path: `${prefix}/settings` }] : []),
+    { label: t('sidebar.overview', 'Overview'), icon: 'ph:squares-four', path: prefix },
+    { label: t('sidebar.event', 'Event'), icon: 'ph:trophy', path: `${prefix}/events` },
+    ...(!isEventManagePage.value ? [{ label: t('sidebar.earnings', 'Laporan'), icon: 'ph:chart-bar', path: `${prefix}/reports` }] : []),
+    { label: t('sidebar.profile', 'Profil'), icon: 'ph:users-four', path: `${prefix}/teams` },
+    ...(!isEventManagePage.value ? [{ label: t('sidebar.news', 'Berita'), icon: 'ph:newspaper', path: `${prefix}/news` }] : []),
+    ...(!isEventManagePage.value ? [{ label: t('sidebar.settings', 'Pengaturan'), icon: 'ph:gear', path: `${prefix}/settings` }] : []),
   ]
 })
 
@@ -365,6 +378,17 @@ const navSections = computed(() => {
 watch(() => route.path, () => {
   isSidebarOpen.value = false
 })
+
+// Auto-expand all group labels by default
+watch(navSections, (sections) => {
+  if (sections && Array.isArray(sections)) {
+    sections.forEach((sec) => {
+      if (sec.children && sec.label && !openGroups.value.includes(sec.label)) {
+        openGroups.value.push(sec.label)
+      }
+    })
+  }
+}, { immediate: true })
 
 
 // ── Active detection — exact match for /dashboard, prefix for others ───────

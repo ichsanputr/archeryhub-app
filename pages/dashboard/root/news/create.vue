@@ -11,7 +11,7 @@
                     <span class="text-navy">Buat Baru</span>
                 </div>
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">Buat Berita Baru</h1>
-                <p class="text-gray-500 font-medium mt-1">Tulis dan publikasikan berita resmi Archeris.</p>
+                <div class="text-gray-500 font-medium mt-1">Tulis dan publikasikan berita resmi Archeris.</div>
             </div>
         </div>
  
@@ -32,8 +32,8 @@
                                 <Icon icon="ph:image-bold" class="text-3xl text-gray-400" />
                             </div>
                             <div class="text-center">
-                                <p class="font-bold text-navy">Klik untuk pilih gambar</p>
-                                <p class="text-sm text-gray-400">Pilih dari library atau upload baru</p>
+                                <div class="font-bold text-navy">{{ t("root_news_cms.click_to_select_image") }}</div>
+                                <div class="text-sm text-gray-400">{{ t("root_news_cms.choose_media") }}</div>
                             </div>
                         </div>
                     </div>
@@ -49,15 +49,15 @@
                         Informasi Berita
                     </h3>
  
-                    <BaseInput v-model="form.title" label="Judul Berita"
-                        placeholder="Masukkan judul berita yang menarik..." required />
+                    <BaseInput v-model="form.title" :label="t('root_news_cms.title_label')"
+                        :placeholder="t('root_news_cms.title_placeholder')" required />
  
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <BaseSelect v-model="form.category" :items="categoryOptions" label="Kategori" required />
-                        <BaseSelect v-model="form.status" :items="statusOptions" label="Status Publikasi" required />
+                        <BaseSelect v-model="form.category" :items="categoryOptions" :label="t('root_news_cms.category')" required />
+                        <BaseSelect v-model="form.status" :items="statusOptions" :label="t('root_news_cms.publication_status')" required />
                     </div>
  
-                    <BaseInput v-model="form.tags" label="Tags" placeholder="Contoh: event, turnamen, sleman"
+                    <BaseInput v-model="form.tags" :label="t('root_news_cms.tags_label')" :placeholder="t('root_news_cms.tags_placeholder')"
                         icon="ph:tag" />
  
                     <div>
@@ -67,7 +67,7 @@
                         <textarea v-model="form.excerpt"
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
                             rows="3"
-                            placeholder="Tulis ringkasan singkat berita (akan ditampilkan di preview)..."></textarea>
+                            :placeholder="t('root_news_cms.excerpt_placeholder')"></textarea>
                     </div>
                 </div>
  
@@ -92,7 +92,7 @@
                             Preview
                         </BaseButton>
                         <BaseButton variant="gold" type="submit" icon="ph:paper-plane-tilt" :loading="isSubmitting">
-                            {{ form.status === 'published' ? 'Publikasikan' : 'Simpan Draft' }}
+                            {{ form.status === 'published' ? t('root_news_cms.publish') : t('root_news_cms.save_draft') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -102,8 +102,10 @@
 </template>
  
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
@@ -117,13 +119,12 @@ definePageMeta({
 })
  
 useHead({
-    title: 'Buat Berita - Archeris Dashboard'
+    title: computed(() => t('news.create_title', 'Create News') + ' - ArcheryHub Dashboard')
 })
  
 const { post } = useApi()
 const router = useRouter()
 const toast = useToast()
-const { t } = useDashboardI18n()
 const isSubmitting = ref(false)
 const showMediaLibrary = ref(false)
  

@@ -1,27 +1,32 @@
 <template>
     <div class="space-y-6">
-        <!-- Header -->
-        <div class="flex items-center gap-5">
-            <div class="size-12 rounded-2xl bg-navy flex items-center justify-center shrink-0 shadow-lg">
-                <Icon icon="ph:gear-six-bold" class="text-primary text-2xl" />
-            </div>
-            <div>
-                <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none capitalize">
-                    {{ t('seller.settings.title') }}
-                </h1>
-                <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wide capitalize">
-                    {{ t('seller.settings.subtitle') }}
+        <!-- Enhanced Header Section -->
+        <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+            <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+            <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center gap-4 sm:gap-5">
+                    <div class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-lg">
+                        <Icon icon="ph:gear-six-bold" class="text-primary text-2xl sm:text-3xl" />
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-3xl font-black tracking-tight leading-tight capitalize">{{ t('seller.settings.title', 'Pengaturan Akun') }}</h1>
+                        <div class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('seller.settings.subtitle', 'Kelola preferensi akun, kata sandi, dan keamanan Anda') }}</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Settings Nav Tabs -->
-        <div class="flex gap-1 bg-gray-100 rounded-2xl p-1.5 overflow-x-auto no-scrollbar">
+        <div class="flex gap-1 bg-slate-100 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm">
             <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-                :class="activeTab === tab.value ? 'bg-white shadow-sm text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
-                class="flex items-center justify-center gap-2 flex-1 min-w-[120px] px-4 py-2.5 rounded-xl text-sm font-black transition-all">
-                <Icon :icon="tab.icon" class="text-base" />
-                <span>{{ tab.label }}</span>
+                :class="activeTab === tab.value ? 'bg-white shadow-sm text-navy font-black' : 'text-slate-500 hover:text-navy hover:bg-white/50 font-bold'"
+                class="flex items-center justify-center gap-2 flex-1 min-w-[120px] sm:min-w-[140px] px-4 py-2.5 rounded-xl text-xs sm:text-sm whitespace-nowrap shrink-0 transition-all">
+                <Icon :icon="tab.icon" class="text-base shrink-0" />
+                <span class="whitespace-nowrap">{{ tab.label }}</span>
             </button>
         </div>
 
@@ -171,21 +176,21 @@
                 <div class="pt-8 border-t border-gray-100">
                     <h4 class="text-sm font-black text-navy tracking-widest mb-6 flex items-center gap-2">
                         <Icon icon="ph:lock-key-bold" class="text-primary" />
-                        {{ hasPassword ? 'Ganti Password' : 'Setel Password Akun' }}
+                        {{ hasPassword ? t('settings.change_password', 'Ubah Kata Sandi') : t('settings.set_password', 'Atur Kata Sandi') }}
                     </h4>
 
                     <div class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                            <BaseInput v-model="securityForm.new_password" label="Password Baru" type="password"
+                            <BaseInput v-model="securityForm.new_password" :label="t('settings.new_password', 'Kata Sandi Baru')" type="password"
                                 placeholder="••••••••" required />
-                            <BaseInput v-model="securityForm.confirm_password" label="Konfirmasi Password Baru"
+                            <BaseInput v-model="securityForm.confirm_password" :label="t('settings.confirm_password', 'Konfirmasi Kata Sandi Baru')"
                                 type="password" placeholder="••••••••" required />
                         </div>
 
                         <div class="pt-4 border-t border-gray-50">
                             <BaseButton variant="primary" size="md" icon="ph:lock-key" @click="changePassword"
                                 :loading="isChangingPassword" :disabled="!securityForm.new_password">
-                                {{ hasPassword ? 'Perbarui Password' : 'Setel Password' }}
+                                {{ t('settings.update_password', 'Simpan Kata Sandi Baru') }}
                             </BaseButton>
                         </div>
                     </div>
@@ -249,10 +254,10 @@
     <!-- Save Button (Optional depending on tab) -->
     <div v-if="activeTab === 'theme'" class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
         <BaseButton variant="outline" size="md" @click="resetForm" :loading="isResetting">
-            {{ t('common.cancel', 'Batal') }}
+            {{ t('settings.cancel', 'Batal') }}
         </BaseButton>
         <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral">
-            {{ t('common.save_changes', 'Simpan Perubahan') }}
+            {{ t('settings.save_changes', 'Simpan Perubahan') }}
         </BaseButton>
     </div>
 </template>
@@ -272,7 +277,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Pengaturan Akun - Archeris Dashboard'
+    title: computed(() => `${t('seller.settings.title', 'Pengaturan')} - ArcheryHub Dashboard`)
 })
 
 const { login, user } = useAuth()
@@ -282,10 +287,10 @@ const { currentTheme, themes, isSyncing } = useTheme()
 const route = useRoute()
 const { t } = useDashboardI18n()
 
-const tabs = [
+const tabs = computed(() => [
     { label: t('seller.settings.tabs.security', 'Keamanan'), value: 'security', icon: 'ph:shield-check' },
     { label: t('seller.settings.tabs.theme', 'Tema'), value: 'theme', icon: 'ph:palette' },
-]
+])
 
 const activeTab = ref('security')
 const isRequestingOTP = ref(false)

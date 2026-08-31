@@ -74,7 +74,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 definePageMeta({
     layout: 'landing'
@@ -109,6 +109,6 @@ const faqs = [
 ]
 
 useHead({
-    title: 'FAQ - Frequently Asked Questions - Archeris.net'
+    title: computed(() => t('faq.title', 'FAQ - Frequently Asked Questions') + ' - ArcheryHub')
 })
 </script>

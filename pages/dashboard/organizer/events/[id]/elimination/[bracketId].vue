@@ -201,7 +201,7 @@
         <div v-else class="text-center py-20 bg-white rounded-[40px] border border-gray-100 shadow-sm">
             <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-50 mb-4 mx-auto" />
             <h2 class="text-3xl font-black text-navy tracking-tight">{{ t('event_elimination.bracket_not_found') }}</h2>
-            <p class="text-gray-400 mt-2">{{ t('event_elimination.bracket_invalid_desc') }}</p>
+            <div class="text-gray-400 mt-2">{{ t('event_elimination.bracket_invalid_desc') }}</div>
             <button @click="navigateTo(`/dashboard/events/${eventId}/elimination`)"
                 class="mt-10 px-6 py-3 rounded-2xl border-2 border-navy text-navy font-black tracking-widest hover:bg-navy hover:text-white transition-all">
                 {{ t('event_elimination.back_to_list') }}
@@ -229,7 +229,7 @@
                         <div class="relative p-6 sm:p-8 text-center">
                             <div class="mb-4 sm:mb-6">
                                 <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">{{ t('event_elimination.end_match_confirm') }}</h2>
-                                <p class="text-white/60 text-[10px] sm:text-sm mt-1">{{ t('event_elimination.end_match_confirm_desc') }}</p>
+                                <div class="text-white/60 text-[10px] sm:text-sm mt-1">{{ t('event_elimination.end_match_confirm_desc') }}</div>
                             </div>
 
                             <!-- Battle Display -->
@@ -298,9 +298,9 @@
                                     <Icon icon="ph:info-bold" class="text-yellow-500" />
                                     <span class="text-xs font-black text-yellow-500 tracking-widest">{{ t('event_elimination.manual_winner_desc') }}</span>
                                 </div>
-                                <p class="text-[10px] text-white/40 mb-4 leading-relaxed">
+                                <div class="text-[10px] text-white/40 mb-4 leading-relaxed">
                                     {{ t('event_elimination.shoot_off_tie_desc') }}
-                                </p>
+                                </div>
 
                                 <div class="space-y-2">
                                     <button v-if="selectedScoringMatch.entry_a_id"

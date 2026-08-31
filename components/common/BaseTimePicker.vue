@@ -62,7 +62,7 @@
         <div class="flex divide-x divide-gray-100">
           <!-- hours -->
           <div class="flex-1 flex flex-col items-center">
-            <div class="text-[9px] font-black text-gray-400 uppercase tracking-widest py-2">
+            <div class="text-[9px] font-black text-gray-400 tracking-widest py-2">
               {{ use12h ? 'Hour' : 'HH' }}
             </div>
             <div class="relative h-48 overflow-hidden w-full">
@@ -84,7 +84,7 @@
 
           <!-- minutes -->
           <div class="flex-1 flex flex-col items-center">
-            <div class="text-[9px] font-black text-gray-400 uppercase tracking-widest py-2">MM</div>
+            <div class="text-[9px] font-black text-gray-400 tracking-widest py-2">MM</div>
             <div class="relative h-48 overflow-hidden w-full">
               <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-9 bg-primary/10 border-y border-primary/20 pointer-events-none z-10" />
               <div ref="minCol" class="h-full overflow-y-auto scroll-smooth no-scrollbar snap-y snap-mandatory"
@@ -103,7 +103,7 @@
 
           <!-- AM / PM toggle -->
           <div v-if="use12h" class="w-16 flex flex-col items-center pt-2 gap-0">
-            <div class="text-[9px] font-black text-gray-400 uppercase tracking-widest py-2">AM/PM</div>
+            <div class="text-[9px] font-black text-gray-400 tracking-widest py-2">AM/PM</div>
             <div class="flex flex-col gap-1.5 mt-2 w-full px-2">
               <button type="button" @click.stop="ampm = 'AM'"
                 class="py-2 rounded-xl text-xs font-black transition-all"
@@ -122,7 +122,7 @@
         <!-- step selector -->
         <div class="px-3 py-2 border-t border-gray-50 flex items-center justify-between">
           <div class="flex items-center gap-1">
-            <span class="text-[9px] font-black text-gray-400 uppercase tracking-wider">step</span>
+            <span class="text-[9px] font-black text-gray-400 tracking-wider">step</span>
             <div class="flex gap-1 ml-1">
               <button v-for="s in [1,5,10,15,30]" :key="s" type="button"
                 @click.stop="minuteStep = s"

@@ -96,14 +96,7 @@
                                 class="text-[8px] font-black bg-navy text-primary px-1.5 py-0.5 rounded">{{
                                     match.board_code }}</span>
                         </div>
-                        <select :value="match.target_id"
-                            class="w-full bg-transparent border-none focus:ring-0 text-xs font-black text-navy outline-none py-1 cursor-pointer"
-                            @change="e => { match.target_id = e.target.value; $emit('update-target', match) }">
-                            <option value="">-- {{ $t('event_elimination.select_target_option') }} --</option>
-                            <option v-for="opt in getFilteredOptions(match.id)" :key="opt.id" :value="opt.id">
-                                {{ opt.displayName || opt.name }} {{ opt.board_code ? `(${opt.board_code})` : '' }}
-                            </option>
-                        </select>
+                        <BaseSelect :model-value="match.target_id" :options="getTargetOptions(match.id)" class="w-full text-xs" @update:model-value="val => { match.target_id = val; $emit('update-target', match) }" />
                     </div>
                 </div>
             </div>
@@ -132,6 +125,16 @@ const getFilteredOptions = (currentMatchId) => {
 
     // Remove targets that are already assigned to other matches
     return props.targetOptions.filter(option => !assignedIds.includes(option.id))
+}
+
+const getTargetOptions = (matchId) => {
+    return [
+        { title: `-- ${t('event_elimination.select_target_option')} --`, value: '' },
+        ...getFilteredOptions(matchId).map(opt => ({
+            title: `${opt.displayName || opt.name} ${opt.board_code ? `(${opt.board_code})` : ''}`,
+            value: opt.id
+        }))
+    ]
 }
 
 const getAvatarUrl = (name) => {

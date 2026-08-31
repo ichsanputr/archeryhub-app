@@ -296,14 +296,16 @@
                                                         {{ result.club_name || '-' }}
                                                     </div>
                                                 </td>
-                                                <td v-if="selectedSession !== 'total'" v-for="i in displayTotalEnds"
-                                                    :key="i"
-                                                    class="px-2 py-4 text-center text-sm font-bold border-x border-gray-100"
-                                                    :class="getEndScoreClass(result.displayScores[i - 1])">
-                                                    {{ result.displayScores && result.displayScores[i - 1] !== undefined
-                                                        ?
-                                                        result.displayScores[i - 1] : '-' }}
-                                                </td>
+                                                <template v-if="selectedSession !== 'total'">
+                                                    <td v-for="i in displayTotalEnds"
+                                                        :key="i"
+                                                        class="px-2 py-4 text-center text-sm font-bold border-x border-gray-100"
+                                                        :class="getEndScoreClass(result.displayScores[i - 1])">
+                                                        {{ result.displayScores && result.displayScores[i - 1] !== undefined
+                                                            ?
+                                                            result.displayScores[i - 1] : '-' }}
+                                                    </td>
+                                                </template>
                                                 <td class="px-4 py-4 text-center bg-navy/5 border-l-2 border-navy/20">
                                                     <span class="text-base sm:text-lg font-black text-navy">{{
                                                         result.displayTotal }}</span>

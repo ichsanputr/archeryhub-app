@@ -183,7 +183,7 @@ const handleSubscribe = () => {
 }
 
 useHead({
-    title: 'Archery Blog, Articles & Tips - Archeris',
+    title: computed(() => t('blog.title', 'Archery Blog & Articles') + ' - ArcheryHub'),
     meta: [
         { name: 'description', content: 'Learn archery techniques, gear selection tips, and mental secrets from the experts at Archeris.' }
     ]

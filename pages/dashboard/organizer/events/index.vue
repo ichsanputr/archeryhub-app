@@ -13,7 +13,7 @@ definePageMeta({
 })
 
 useHead({
-  title: useDashboardI18n().t('organizer.events.meta_title')
+  title: computed(() => useDashboardI18n().t('organizer.events.meta_title'))
 })
 
 const { user } = useAuth()

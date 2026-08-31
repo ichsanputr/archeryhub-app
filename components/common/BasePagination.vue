@@ -20,14 +20,9 @@
 
     <!-- Center/Right: Controls -->
     <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-      <!-- Rows Per Page -->
       <div v-if="showPageSize" class="mr-4 hidden lg:flex items-center gap-3">
         <span class="text-xs font-black tracking-widest text-gray-400">{{ t('pagination.rows') }}</span>
-        <select :value="itemsPerPage" @change="$emit('update:itemsPerPage', parseInt($event.target.value))"
-          class="h-10 px-3 pr-8 rounded-xl bg-white border border-gray-200 text-navy text-sm font-bold focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all appearance-none cursor-pointer"
-          style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23161c2d%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 8px center; background-size: 16px;">
-          <option v-for="size in pageSizeOptions" :key="size" :value="size">{{ size }}</option>
-        </select>
+        <BaseSelect :model-value="itemsPerPage" :options="pageSizeSelectOptions" class="w-24 text-xs" @update:model-value="$emit('update:itemsPerPage', parseInt($event))" />
       </div>
 
       <!-- Navigation Group -->
@@ -112,6 +107,10 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['change-page', 'update:itemsPerPage'])
+
+const pageSizeSelectOptions = computed(() => {
+  return props.pageSizeOptions.map(size => ({ title: String(size), value: size }))
+})
 
 const totalPages = computed(() => Math.ceil(props.totalItems / props.itemsPerPage))
 

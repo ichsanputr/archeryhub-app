@@ -117,9 +117,9 @@
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary"
                         :class="[navLinkClasses, { '!border-primary font-bold': isActive('/docs') }]">
                         {{ $t('nav.docs') }}</NuxtLink>
-                    <NuxtLink :to="localePath('/pricing')"
+                    <NuxtLink :to="localePath('/package')"
                         class="font-semibold text-sm transition-all duration-300 hover:text-primary px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary"
-                        :class="[navLinkClasses, { '!border-primary font-bold': isActive('/pricing') }]">
+                        :class="[navLinkClasses, { '!border-primary font-bold': isActive('/package') }]">
                         {{ $t('nav.pricing') }}
                     </NuxtLink>
                 </nav>
@@ -334,7 +334,7 @@
                             { to: '/archeris-vs-ianseo', label: $t('nav.archeris_vs_ianseo'), icon: 'ph:scales-bold' },
                             { to: '/news', label: $t('nav.news'), icon: 'ph:newspaper-bold' },
                             { to: '/docs', label: $t('nav.docs'), icon: 'ph:book-open-bold' },
-                            { to: '/pricing', label: $t('nav.pricing'), icon: 'ph:credit-card-bold' },
+                            { to: '/package', label: $t('nav.pricing'), icon: 'ph:credit-card-bold' },
                         ]" :key="link.to" :to="localePath(link.to)" @click="mobileMenuOpen = false"
                             class="flex items-center gap-4 p-4 rounded-2xl transition-all group"
                             :class="isActive(link.to) ? 'bg-primary text-primary-text' : 'text-gray-500 hover:bg-gray-50 hover:text-navy'">
@@ -537,7 +537,17 @@ const fetchLatestEvents = async () => {
             events = response.events
         }
 
-        const transformed = events.map(event => ({
+        const seen = new Set()
+        const uniqueEvents = []
+        for (const event of events) {
+            const key = event.slug || event.uuid || event.id
+            if (key && !seen.has(key)) {
+                seen.add(key)
+                uniqueEvents.push(event)
+            }
+        }
+
+        const transformed = uniqueEvents.map(event => ({
             id: event.uuid || event.id,
             slug: event.slug,
             name: event.name,

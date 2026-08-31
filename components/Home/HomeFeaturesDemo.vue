@@ -173,7 +173,7 @@
             <!-- Comparison Table Section -->
             <div class="mt-32 pt-24 border-t border-gray-100 reveal-comparison">
                 <div class="text-center mb-16">
-                    <span class="text-[10px] font-bold tracking-[0.2em] text-navy/40 mb-4 block uppercase">{{ $t('home.comparison.subtitle') }}</span>
+                    <span class="text-[10px] font-bold tracking-[0.2em] text-navy/40 mb-4 block ">{{ $t('home.comparison.subtitle') }}</span>
                     <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-4">{{ $t('home.comparison.title') }}</h3>
                     <p class="text-text-secondary text-base sm:text-lg max-w-2xl mx-auto font-light">
                         {{ $t('home.comparison.description') }}
@@ -183,7 +183,7 @@
                 <div class="overflow-x-auto rounded-3xl border border-gray-100 shadow-sm">
                     <table class="w-full text-left border-collapse bg-white min-w-[700px]">
                         <thead>
-                            <tr class="bg-navy text-white text-xs font-black tracking-wider uppercase border-b border-navy">
+                            <tr class="bg-navy text-white text-xs font-black tracking-wider border-b border-navy">
                                 <th class="py-5 px-6">{{ $t('home.comparison.col_feature') }}</th>
                                 <th class="py-5 px-6 bg-navy/95 border-x border-white/10 text-primary">{{ $t('home.comparison.col_archeris') }}</th>
                                 <th class="py-5 px-6 text-white/70">{{ $t('home.comparison.col_ianseo') }}</th>

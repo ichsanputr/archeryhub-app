@@ -22,15 +22,15 @@
                                 <NuxtLink :to="`/dashboard/organizer/events/${eventId}/categories`"
                                         class="text-xs font-bold text-primary hover:underline tracking-widest flex items-center gap-1">
                                         <Icon icon="ph:arrow-left-bold" />
-                                        {{ t('event_categories.back_to_categories') }}
+                                        {{ t('event_categories.back_to_categories', 'Kembali ke Kategori') }}
                                     </NuxtLink>
                             </div>
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
-                                {{ categoryName || t('event_categories.detail_title') }}
+                                {{ categoryName || t('event_categories.detail_title', 'Peserta Kategori') }}
                             </h1>
-                            <p class="text-slate-300 text-sm max-w-2xl">
-                                {{ t('event_categories.category_participants_desc') }}
-                            </p>
+                            <div class="text-slate-300 text-sm max-w-2xl">
+                                {{ t('event_categories.category_participants_desc', 'Daftar seluruh pemanah yang terdaftar pada kategori event ini.') }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -41,11 +41,11 @@
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div
                 class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <h2 class="text-lg font-bold text-navy">{{ t('event_categories.participants_title') }}</h2>
+                <h2 class="text-lg font-bold text-navy">{{ t('event_categories.participants_title', 'Daftar Peserta Terdaftar') }}</h2>
                 <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold text-gray-400">{{ t('event_categories.total_label') }}</span>
+                    <span class="text-xs font-bold text-gray-400">{{ t('event_categories.total_label', 'Total:') }}</span>
                     <span class="px-3 py-1 bg-navy/5 text-navy rounded-lg font-black text-xs border border-navy/10">
-                        {{ t('event_categories.participants_count_unit', { count: participants.length }) }}
+                        {{ t('event_categories.participants_count_unit', '{count} Pemanah', { count: participants.length }) }}
                     </span>
                 </div>
             </div>
@@ -56,18 +56,18 @@
 
                 <div v-else-if="participants.length === 0" class="p-20 text-center">
                 <Icon icon="ph:user-circle-minus" class="text-6xl text-gray-200 mx-auto mb-4" />
-                <h3 class="text-xl font-bold text-navy mb-1">{{ t('event_categories.no_participants') }}</h3>
-                <p class="text-gray-400 text-sm">{{ t('event_categories.no_participants_desc') }}</p>
+                <h3 class="text-xl font-bold text-navy mb-1">{{ t('event_categories.no_participants', 'Belum Ada Peserta') }}</h3>
+                <div class="text-gray-400 text-sm">{{ t('event_categories.no_participants_desc', 'Belum ada pemanah yang terdaftar di kategori ini.') }}</div>
             </div>
 
             <div v-else class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="bg-gray-50/50 border-b border-gray-100">
                         <tr class="text-[10px] font-black text-gray-400 tracking-widest">
-                            <th class="px-6 py-4 w-16">{{ t('event_categories.table.no') }}</th>
-                            <th class="px-6 py-4">{{ t('event_categories.table.name') }}</th>
-                            <th class="px-6 py-4">{{ t('event_categories.table.club_city') }}</th>
-                            <th class="px-6 py-4">{{ t('event_categories.table.status') }}</th>
+                            <th class="px-6 py-4 w-16">{{ t('event_categories.table.no', 'No') }}</th>
+                            <th class="px-6 py-4">{{ t('event_categories.table.name', 'Nama Pemanah') }}</th>
+                            <th class="px-6 py-4">{{ t('event_categories.table.club_city', 'Klub & Kota') }}</th>
+                            <th class="px-6 py-4">{{ t('event_categories.table.status', 'Status Pembayaran') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
@@ -89,7 +89,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-sm font-bold text-navy leading-tight">{{ p.club_name || t('event_categories.independent') }}
+                                <div class="text-sm font-bold text-navy leading-tight">{{ p.club_name || t('event_categories.independent', 'Independen') }}
                                 </div>
                                 <div class=" text-xs text-gray-400 mt-0.5">{{ p.city || '-' }}</div>
                             </td>
@@ -97,7 +97,7 @@
                                 <span
                                     :class="p.payment_status === 'Terbayar' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'"
                                     class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-tighter">
-                                    {{ p.payment_status === 'Terbayar' ? t('event_categories.status_paid') : t('event_categories.status_pending') }}
+                                    {{ p.payment_status === 'Terbayar' ? t('event_categories.status_paid', 'Terbayar') : t('event_categories.status_pending', 'Menunggu') }}
                                 </span>
                             </td>
                         </tr>
@@ -109,7 +109,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { useApi } from '~/composables/useApi'
@@ -125,10 +125,12 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+const { t } = useI18n()
 const isLoading = ref(true)
 const categoryName = ref('')
 const participants = ref([])
-const { t } = useI18n()
+
+useHead({ title: computed(() => t('category.detail', 'Category Detail') + ' - ArcheryHub Dashboard') })
 
 const fetchData = async () => {
     isLoading.value = true

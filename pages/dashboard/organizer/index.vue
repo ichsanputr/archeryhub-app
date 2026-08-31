@@ -1,38 +1,24 @@
 <template>
     <div class="space-y-8">
         <!-- Header Section -->
-        <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-            <!-- Decorative Background Elements (Glows) -->
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
-            <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div class="flex items-center gap-5">
-                    <div
-                        class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
-                        <Icon icon="ph:chart-pie-slice-bold" class="text-primary text-2xl sm:text-3xl" />
-                    </div>
-                    <div>
-                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">{{ t('dashboard.org.overview') }}</h1>
-                        <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">{{ t('dashboard.org.welcome') }}
-                            <span class="text-white">{{ welcomeName }}</span>
-                        </p>
-                    </div>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <NuxtLink to="/dashboard/organizer/events" class="w-full sm:w-auto">
-                        <BaseButton variant="primary" icon="ph:trophy-bold"
-                            class="w-full h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl">
-                            {{ t('dashboard.org.manage_events') }}
-                        </BaseButton>
-                    </NuxtLink>
-                </div>
-            </div>
-        </div>
+        <DashboardHeader
+            :title="t('dashboard.org.overview')"
+            :subtitle="t('dashboard.org.welcome') + ' ' + welcomeName"
+            icon="ph:chart-pie-slice-bold"
+            :breadcrumbs="[
+                { label: 'Dashboard', to: '/dashboard/organizer' },
+                { label: t('dashboard.org.overview') }
+            ]"
+        >
+            <template #actions>
+                <NuxtLink to="/dashboard/organizer/events" class="w-full sm:w-auto">
+                    <BaseButton variant="primary" icon="ph:trophy-bold"
+                        class="w-full h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl">
+                        {{ t('dashboard.org.manage_events') }}
+                    </BaseButton>
+                </NuxtLink>
+            </template>
+        </DashboardHeader>
 
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -54,11 +40,11 @@
                 color="primary"
             >
                 <template #footer>
-                    <p class="text-text-secondary text-[10px] font-medium flex items-center gap-1">
+                    <div class="text-text-secondary text-[10px] font-medium flex items-center gap-1">
                         <span class="w-1.5 h-1.5 rounded-full"
                             :class="dashboardStats.activeTotalTargets > 0 ? 'bg-green-500' : 'bg-slate-300'"></span>
                         {{ dashboardStats.activeTotalTargets > 0 ? t('dashboard.org.event_ongoing') : t('dashboard.org.no_event_active') }}
-                    </p>
+                    </div>
                 </template>
             </StatCard>
 
@@ -83,170 +69,204 @@
                 :value="'Rp ' + formatPrice(dashboardStats.totalRevenue || 0)"
                 icon="ph:wallet-bold"
                 color="success"
-            >
-                <template #footer>
-                    <div class="flex items-center justify-between text-[9px] font-black tracking-widest w-full">
-                        <span class="text-orange-500 flex items-center gap-1">
-                            <Icon icon="ph:clock-bold" />
-                            {{ dashboardStats.pendingPayments || 0 }} {{ t('dashboard.org.pending') }}
-                        </span>
-                        <NuxtLink to="/dashboard/organizer/balance" class="text-primary hover:underline">{{ t('dashboard.org.detail') }}</NuxtLink>
-                    </div>
-                </template>
-            </StatCard>
+            />
         </div>
 
         <!-- Revenue & Registration Analytics -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-navy-dark font-black text-lg flex items-center gap-2">
-                        <Icon icon="ph:chart-bar-bold" class="text-primary" />
-                        {{ t('dashboard.org.trend_title') }}
-                    </h3>
-                    <div class="flex gap-2">
-                        <button class="px-3 py-1 text-[10px] font-bold rounded-lg bg-gray-100 text-gray-500">{{ t('dashboard.org.days_7') }}</button>
-                        <button class="px-3 py-1 text-[10px] font-bold rounded-lg bg-primary/10 text-primary">{{ t('dashboard.org.days_30') }}</button>
+            <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 p-6 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-navy font-black text-base flex items-center gap-2">
+                            <Icon icon="ph:chart-bar-bold" class="text-primary text-xl" />
+                            {{ t('dashboard.org.trend_title', 'Archers & Revenue Trend') }}
+                        </h3>
+                        <div class="text-xs text-slate-400 font-medium mt-0.5">{{ t('dashboard.org.trend_subtitle', 'Trend of archer registrations and event revenue') }}</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="px-3 py-1 text-[11px] font-bold rounded-lg bg-navy text-white">{{ t('dashboard.org.last_30_days', 'Last 30 Days') }}</span>
                     </div>
                 </div>
-                <!-- Mock Chart Placeholder -->
-                <div
-                    class="h-64 w-full bg-gray-50 rounded-2xl border border-dashed border-gray-200 flex items-center justify-center relative overflow-hidden group">
-                    <div
-                        class="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]">
+
+                <!-- Live Trend Chart Visualization -->
+                <div class="w-full bg-slate-50/70 rounded-2xl border border-slate-200/80 p-5 space-y-6">
+                    <div class="grid grid-cols-2 gap-4 pb-4 border-b border-slate-200/60">
+                        <div>
+                            <span class="text-xs font-bold text-slate-500 block">{{ t('dashboard.org.total_archers_registered', 'Total Registered Archers') }}</span>
+                            <span class="text-2xl font-black text-navy tabular-nums">{{ dashboardStats.totalArchers || 0 }} {{ t('dashboard.org.peserta', 'Archers') }}</span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-slate-500 block">{{ t('dashboard.org.total_verified_revenue', 'Total Verified Revenue') }}</span>
+                            <span class="text-2xl font-black text-emerald-600 tabular-nums">Rp {{ formatPrice(dashboardStats.totalRevenue || 0) }}</span>
+                        </div>
                     </div>
-                    <div class="text-center space-y-2">
-                        <Icon icon="ph:presentation-chart-bold"
-                            class="text-4xl text-gray-300 group-hover:text-primary transition-colors" />
-                        <p class="text-gray-400 text-xs font-bold">{{ t('dashboard.org.trend_prep') }}</p>
-                    </div>
-                    <!-- Decorative bars -->
-                    <div class="absolute bottom-0 left-0 right-0 px-8 flex items-end gap-4 h-32 opacity-20">
-                        <div v-for="i in 12" :key="i"
-                            class="flex-1 bg-primary rounded-t-lg transition-all duration-1000"
-                            :style="{ height: `${Math.random() * 100}%` }"></div>
+
+                    <!-- Trend Bars Grid -->
+                    <div class="space-y-2">
+                        <span class="text-xs font-bold text-slate-500 block">{{ t('dashboard.org.visualization_title', 'Event Trend Visualization') }}</span>
+                        <div v-if="trendBars && trendBars.length" class="flex items-end gap-2 h-36 pt-4 px-2">
+                            <div v-for="(bar, idx) in trendBars" :key="idx" class="flex-1 flex flex-col items-center gap-2 group h-full justify-end" :title="`${bar.label}: ${bar.count || 0} pendaftar`">
+                                <div class="w-full bg-slate-200/80 group-hover:bg-primary rounded-t-lg transition-all relative overflow-hidden" :style="{ height: `${Math.max(bar.height || 0, bar.count ? 12 : 4)}%` }">
+                                    <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                </div>
+                                <span class="text-[9px] font-bold text-slate-400 group-hover:text-navy truncate">{{ bar.label }}</span>
+                            </div>
+                        </div>
+                        <div v-else class="flex items-center justify-center h-36 text-slate-400 text-xs font-medium">
+                            {{ t('dashboard.org.no_trend_data', 'Belum ada data pendaftaran event') }}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-navy rounded-xl p-6 text-white shadow-xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-8 opacity-10">
-                    <Icon icon="ph:seal-check-fill" class="text-9xl rotate-12" />
+            <!-- Quick Actions Card -->
+            <div class="bg-navy rounded-2xl p-6 text-white border border-navy/20 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+                    <Icon icon="ph:seal-check-fill" class="text-9xl rotate-12 text-white" />
                 </div>
-                <h3 class="text-lg font-black mb-4 flex items-center gap-2">
-                    <Icon icon="ph:lightning-bold" class="text-yellow-400" />
-                    {{ t('dashboard.org.quick_actions') }}
-                </h3>
-                <div class="space-y-3 relative z-10">
-                    <NuxtLink to="/dashboard/organizer/events"
-                        class="flex items-center justify-between p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
-                        <div class="flex items-center gap-3">
-                            <Icon icon="ph:user-circle-check-bold" class="text-xl text-primary" />
-                            <span class="text-sm font-bold">{{ t('dashboard.org.manage_registrants') }}</span>
-                        </div>
-                        <Icon icon="ph:caret-right-bold"
-                            class="text-xs group-hover:translate-x-1 transition-transform" />
-                    </NuxtLink>
-                    <NuxtLink to="/dashboard/organizer/events/create"
-                        class="flex items-center justify-between p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
-                        <div class="flex items-center gap-3">
-                            <Icon icon="ph:plus-circle-bold" class="text-xl text-green-400" />
-                            <span class="text-sm font-bold">{{ t('dashboard.org.create_event') }}</span>
-                        </div>
-                        <Icon icon="ph:caret-right-bold"
-                            class="text-xs group-hover:translate-x-1 transition-transform" />
-                    </NuxtLink>
-                    <NuxtLink to="/dashboard/organizer/news/create"
-                        class="flex items-center justify-between p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
-                        <div class="flex items-center gap-3">
-                            <Icon icon="ph:article-bold" class="text-xl text-blue-400" />
-                            <span class="text-sm font-bold">{{ t('dashboard.org.publish_news') }}</span>
-                        </div>
-                        <Icon icon="ph:caret-right-bold"
-                            class="text-xs group-hover:translate-x-1 transition-transform" />
-                    </NuxtLink>
-                </div>
-                <div class="mt-8 pt-6 border-t border-white/10">
-                    <div class="flex items-center gap-3 text-xs opacity-60 font-bold mb-4 tracking-widest">{{ t('dashboard.org.help_center') }}</div>
-                    <BaseButton variant="primary" size="sm" class="w-full text-xs font-black">{{ t('dashboard.org.contact_support') }}</BaseButton>
+                <div class="space-y-4 relative z-10">
+                    <h3 class="text-lg font-black flex items-center gap-2">
+                        <Icon icon="ph:lightning-bold" class="text-yellow-400" />
+                        {{ t('dashboard.org.quick_actions', 'Quick Actions') }}
+                    </h3>
+                    <div class="space-y-2">
+                        <NuxtLink to="/dashboard/organizer/events"
+                            class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                            <div class="flex items-center gap-3">
+                                <Icon icon="ph:user-circle-check-bold" class="text-lg text-primary" />
+                                <span class="text-xs font-bold">{{ t('dashboard.org.manage_registrants', 'Manage Event Registrants') }}</span>
+                            </div>
+                            <Icon icon="ph:caret-right-bold"
+                                class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
+                        </NuxtLink>
+                        <NuxtLink to="/dashboard/organizer/events/create"
+                            class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                            <div class="flex items-center gap-3">
+                                <Icon icon="ph:plus-circle-bold" class="text-lg text-primary" />
+                                <span class="text-xs font-bold">{{ t('dashboard.org.create_event', 'Create New Event') }}</span>
+                            </div>
+                            <Icon icon="ph:caret-right-bold"
+                                class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
+                        </NuxtLink>
+                        <NuxtLink to="/dashboard/organizer/news/create"
+                            class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                            <div class="flex items-center gap-3">
+                                <Icon icon="ph:newspaper-bold" class="text-lg text-primary" />
+                                <span class="text-xs font-bold">{{ t('dashboard.org.create_news', 'Create News / Announcement') }}</span>
+                            </div>
+                            <Icon icon="ph:caret-right-bold"
+                                class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
+                        </NuxtLink>
+                        <NuxtLink to="/dashboard/organizer/scorekeepers"
+                            class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                            <div class="flex items-center gap-3">
+                                <Icon icon="ph:users-three-bold" class="text-lg text-primary" />
+                                <span class="text-xs font-bold">{{ t('dashboard.org.manage_scorekeepers', 'Manage Scorekeepers') }}</span>
+                            </div>
+                            <Icon icon="ph:caret-right-bold"
+                                class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
+                        </NuxtLink>
+                        <NuxtLink to="/dashboard/organizer/balance"
+                            class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                            <div class="flex items-center gap-3">
+                                <Icon icon="ph:wallet-bold" class="text-lg text-primary" />
+                                <span class="text-xs font-bold">{{ t('dashboard.org.wallet_payouts', 'Wallet & Payouts') }}</span>
+                            </div>
+                            <Icon icon="ph:caret-right-bold"
+                                class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
+                        </NuxtLink>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Main Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Event Recap (Organizer overview – replaces Target Status) -->
-            <div
-                class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
-                <div class="p-4 px-6 border-b border-gray-100 flex items-center justify-between bg-white">
-                    <h3 class="text-navy-dark font-black text-xs tracking-widest flex items-center gap-2">
-                        <Icon icon="ph:chart-line-up-bold" class="text-primary" />
-                        {{ t('dashboard.org.event_recap') }}
+        <!-- Event Recap & Leaderboard Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Event Recap Card -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 flex flex-col overflow-hidden">
+                <div class="p-4 px-6 border-b border-slate-100 flex justify-between items-center bg-white">
+                    <h3 class="text-navy font-bold text-sm flex items-center gap-2">
+                        <Icon icon="ph:chart-pie-slice-bold" class="text-primary text-base" />
+                        {{ t('dashboard.org.event_recap', 'Event Recap') }}
                     </h3>
                     <NuxtLink to="/dashboard/organizer/events">
-                        <BaseButton variant="ghost" class="text-[10px] font-black tracking-widest">{{ t('dashboard.org.view_all') }}</BaseButton>
+                        <BaseButton variant="ghost" size="sm" class="text-xs font-bold">{{ t('dashboard.org.view_all', 'View All') }}</BaseButton>
                     </NuxtLink>
                 </div>
-                <div class="p-5 space-y-4 flex-1 overflow-y-auto">
+                <div class="p-5 space-y-3 flex-1 overflow-y-auto min-h-[260px]">
                     <div v-for="event in orgCompletedEvents" :key="event.id"
-                        class="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100 hover:border-primary/30 transition-all cursor-pointer group"
+                        class="flex items-center justify-between p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-primary/40 transition-all cursor-pointer group"
                         @click="router.push(`/dashboard/organizer/events/${event.id}/overview`)">
                         <div class="flex items-center gap-4 flex-1 min-w-0">
                             <div
-                                class="w-12 h-12 rounded-lg bg-white border border-gray-100 flex flex-col items-center justify-center shrink-0">
-                                <span class="text-[10px] font-black text-primary ">{{ event.dateLabel }}</span>
+                                class="w-12 h-12 rounded-xl bg-white border border-slate-200 flex flex-col items-center justify-center shrink-0">
+                                <span class="text-[10px] font-black text-primary">{{ event.dateLabel }}</span>
                                 <span class="text-lg font-black text-navy leading-none">{{ event.dayLabel }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <h4 class="font-bold text-navy group-hover:text-primary transition-colors truncate">{{ event.name }}</h4>
                                 <div class="flex items-center gap-4 mt-1">
-                                    <p class="text-xs text-gray-500">{{ event.statusLabel }}</p>
-                                    <div class="flex items-center gap-3 text-xs text-gray-500">
+                                    <div class="text-xs text-slate-500">{{ event.statusLabel }}</div>
+                                    <div class="flex items-center gap-3 text-xs text-slate-500">
                                         <span class="flex items-center gap-1">
                                             <Icon icon="ph:users-bold" class="text-[10px]" />
-                                            {{ event.participantCount || 0 }} {{ t('dashboard.org.peserta') }}
+                                            {{ event.participantCount || 0 }} {{ t('dashboard.org.peserta', 'Archers') }}
                                         </span>
                                         <span class="flex items-center gap-1">
                                             <Icon icon="ph:trophy-bold" class="text-[10px]" />
-                                            {{ event.categoryCount || 0 }} {{ t('dashboard.org.kategori') }}
+                                            {{ event.categoryCount || 0 }} {{ t('dashboard.org.kategori', 'Categories') }}
                                         </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <Icon icon="ph:arrow-right-bold"
-                            class="text-gray-300 group-hover:text-primary transition-all group-hover:translate-x-1 shrink-0" />
+                            class="text-slate-300 group-hover:text-primary transition-all group-hover:translate-x-1 shrink-0" />
                     </div>
-                    <div v-if="!orgCompletedEvents.length" class="text-center py-10">
-                        <Icon icon="ph:chart-line-up" class="text-4xl text-gray-200 mx-auto mb-2" />
-                        <p class="text-gray-400 text-sm">{{ t('dashboard.org.no_event_recap') }}</p>
+
+                    <!-- Enhanced Centered Empty State with Pie Chart Graphic -->
+                    <div v-if="!orgCompletedEvents || !orgCompletedEvents.length" class="flex flex-col items-center justify-center text-center py-8 px-4 space-y-4">
+                        <!-- Custom CSS SVG Pie Chart Graphic -->
+                        <div class="relative size-24 flex items-center justify-center">
+                            <svg class="size-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="text-primary/40" stroke-dasharray="35, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="text-navy/30" stroke-dasharray="20, 100" stroke-dashoffset="-35" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <Icon icon="ph:chart-pie-slice-bold" class="text-2xl text-navy/60" />
+                            </div>
+                        </div>
+                        <div class="max-w-xs space-y-1">
+                            <div class="text-xs font-bold text-navy">{{ t('dashboard.org.no_event_recap', 'No Event Recap') }}</div>
+                            <div class="text-[11px] text-slate-400 font-medium leading-relaxed">{{ t('dashboard.org.recap_empty_desc', 'Recap statistics will automatically appear after events are completed.') }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Leaderboard -->
-            <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
-                <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                    <h3 class="text-navy-dark font-black text-xs tracking-widest flex items-center gap-2">
-                        {{ t('dashboard.org.leaderboard') }}</h3>
-                    <BaseButton variant="ghost" class="text-[10px] font-black tracking-widest">
-                        {{ t('dashboard.org.all') }}
-                    </BaseButton>
+            <!-- Leaderboard Card -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 flex flex-col overflow-hidden">
+                <div class="p-4 px-6 border-b border-slate-100 flex justify-between items-center bg-white">
+                    <h3 class="text-navy font-bold text-sm flex items-center gap-2">
+                        <Icon icon="ph:trophy-bold" class="text-primary" />
+                        {{ t('dashboard.org.leaderboard', 'Event Leaderboard') }}
+                    </h3>
                 </div>
-                <div class="flex-1 overflow-y-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
+                <div class="flex-1 overflow-y-auto min-h-[220px]">
+                    <table v-if="leaderboard && leaderboard.length" class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100">
                             <tr>
-                                <th class="px-6 py-3 font-medium text-xs  tracking-wider">{{ t('dashboard.org.rank') }}</th>
-                                <th class="px-6 py-3 font-medium text-xs  tracking-wider">{{ t('dashboard.org.archer') }}</th>
-                                <th class="px-6 py-3 text-right font-medium text-xs  tracking-wider">{{ t('dashboard.org.score') }}</th>
+                                <th class="px-6 py-3 font-semibold text-xs">{{ t('dashboard.org.rank', 'Rank') }}</th>
+                                <th class="px-6 py-3 font-semibold text-xs">{{ t('dashboard.org.archer', 'Archer') }}</th>
+                                <th class="px-6 py-3 text-right font-semibold text-xs">{{ t('dashboard.org.score', 'Score') }}</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
+                        <tbody class="divide-y divide-slate-100">
                             <tr v-for="(archer, index) in leaderboard" :key="archer.id"
-                                class="hover:bg-gray-50 transition-colors group">
+                                class="hover:bg-slate-50 transition-colors group">
                                 <td class="px-6 py-3.5">
-                                    <div :class="index === 0 ? 'bg-primary text-primary-text font-extrabold shadow-sm' : 'text-gray-400 font-bold'"
+                                    <div :class="index === 0 ? 'bg-primary text-navy font-extrabold' : 'text-slate-400 font-bold'"
                                         class="w-6 h-6 rounded flex items-center justify-center text-xs">
                                         {{ index + 1 }}
                                     </div>
@@ -255,22 +275,32 @@
                                     <div class="flex items-center gap-3">
                                         <img :src="useImageOrDefault(archer.avatar_url || archer.photo_url || archer.image, archer.name)"
                                             :alt="archer.name"
-                                            class="w-9 h-9 rounded-full object-cover border border-gray-200 bg-gray-50" />
+                                            class="w-9 h-9 rounded-full object-cover border border-slate-200 bg-slate-50" />
                                         <div>
                                             <div
-                                                class="text-navy-dark font-bold group-hover:text-primary-hover transition-colors">
-                                                {{
-                                                    archer.name
-                                                }}</div>
-                                            <div class="text-gray-400 text-xs">{{ archer.category || '-' }}</div>
+                                                class="text-navy font-bold group-hover:text-primary transition-colors">
+                                                {{ archer.name }}
+                                            </div>
+                                            <div class="text-slate-400 text-xs">{{ archer.category || '-' }}</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td :class="index === 0 ? 'text-navy-dark font-bold text-base' : 'text-navy-dark font-semibold text-sm'"
+                                <td :class="index === 0 ? 'text-navy font-bold text-base' : 'text-navy font-semibold text-sm'"
                                     class="px-6 py-3.5 text-right font-mono">{{ archer.score }}</td>
                             </tr>
                         </tbody>
                     </table>
+
+                    <!-- Clean Centered Empty State -->
+                    <div v-else class="flex flex-col items-center justify-center text-center py-12 px-4 space-y-3">
+                        <div class="size-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center">
+                            <Icon icon="ph:trophy-bold" class="text-2xl text-slate-400" />
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-navy">{{ t('dashboard.org.no_leaderboard', 'No Leaderboard Yet') }}</div>
+                            <div class="text-[11px] text-slate-400 font-medium mt-0.5">{{ t('dashboard.org.leaderboard_empty_desc', 'Archer scores and event rankings will be displayed here.') }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -285,14 +315,16 @@ import { useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 
-const { t } = useI18n()
+import useDashboardI18n from '~/composables/useDashboardI18n'
+
+const { t } = useDashboardI18n()
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 useHead({
-    title: computed(() => `${t('dashboard.sidebar.organizer')} Dashboard - Archeris`)
+    title: computed(() => `${t('dashboard.sidebar.organizer')} Dashboard - ArcheryHub Dashboard`)
 })
 
 const router = useRouter()
@@ -320,12 +352,27 @@ onMounted(() => {
     fetchDashboardStats()
 })
 
+const leaderboard = ref([])
+const trendBars = ref([])
+
 const fetchDashboardStats = async () => {
     try {
         const res = await api.get('/organizers/stats')
         Object.assign(dashboardStats, res)
+        if (res?.leaderboard) {
+            leaderboard.value = res.leaderboard
+        } else {
+            leaderboard.value = []
+        }
+        if (res?.trendBars) {
+            trendBars.value = res.trendBars
+        } else {
+            trendBars.value = []
+        }
     } catch (error) {
         console.error('Failed to fetch dashboard stats:', error)
+        leaderboard.value = []
+        trendBars.value = []
     }
 }
 
@@ -369,12 +416,4 @@ const orgCompletedEvents = computed(() => {
         }
     })
 })
-
-const leaderboard = [
-    { id: 1, name: 'Sarah Jenkins', category: 'Recurve Open', score: 582 },
-    { id: 2, name: 'Mike Ross', category: 'Compound', score: 579 },
-    { id: 3, name: 'David Chen', category: 'Recurve Open', score: 575 },
-    { id: 4, name: 'Jessica Wu', category: 'Compound', score: 572 },
-    { id: 5, name: 'Tom Baker', category: 'Recurve Open', score: 568 },
-]
 </script>

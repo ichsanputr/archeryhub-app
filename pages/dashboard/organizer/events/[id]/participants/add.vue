@@ -2,57 +2,68 @@
     <div class="flex flex-col gap-8 pb-12">
         <!-- Header -->
         <div class="flex flex-col gap-4">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 class="text-2xl md:text-3xl font-extrabold text-navy tracking-tight">{{ $t('dashboard_events_participants_add.title') }}</h1>
-                    <p class="text-gray-500 font-medium mt-1 text-sm md:text-base">{{ $t('dashboard_events_participants_add.subtitle') }}</p>
-                </div>
-                <div class="flex gap-3">
-                    <BaseButton variant="white" :to="`/dashboard/events/${route.params.id}/participants`"
-                        class="h-10 md:h-11 px-4 md:px-6">
-                        {{ $t('dashboard_events_participants_add.cancel') }}
-                    </BaseButton>
-                    <BaseButton variant="primary" @click="submit" :loading="isSubmitting"
-                        class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/20">
-                        <span class="hidden sm:inline">{{ $t('dashboard_events_participants_add.save_participant') }}</span>
-                        <span class="sm:hidden">{{ $t('dashboard_events_participants_add.save') }}</span>
-                    </BaseButton>
-                </div>
+            <div>
+                <h1 class="text-2xl md:text-3xl font-extrabold text-navy tracking-tight">{{ t('dashboard_events_participants_add.title', 'Tambah Peserta Event') }}</h1>
+                <div class="text-gray-500 font-medium mt-1 text-sm md:text-base">{{ t('dashboard_events_participants_add.subtitle', 'Daftarkan pemanah terdaftar atau buat profil pemanah baru langsung ke event ini') }}</div>
             </div>
         </div>
 
+        <!-- Subscription Expired / Locked Banner -->
+        <div v-if="!isSubscriptionActive" class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4 text-amber-900 shadow-sm">
+            <div class="flex items-center gap-4">
+                <div class="size-12 rounded-xl bg-amber-500/20 flex items-center justify-center shrink-0 text-amber-700">
+                    <Icon icon="ph:lock-key-bold" class="text-2xl" />
+                </div>
+                <div>
+                    <h3 class="font-black text-base text-navy">{{ t("dashboard_events_participants_add.subscription_expired_title") }}</h3>
+                    <div class="text-xs text-slate-600 font-medium mt-0.5">{{ t("dashboard_events_participants_add.subscription_expired_desc") }}</div>
+                </div>
+            </div>
+            <BaseButton to="/dashboard/organizer/package" variant="primary" icon="ph:sparkle-bold" class="shrink-0 h-10 px-5 text-xs font-black tracking-widest">
+                {{ t("dashboard_events_participants_add.upgrade_plan_btn") }}
+            </BaseButton>
+        </div>
+
         <!-- Form -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" :class="{ 'opacity-60 pointer-events-none select-none': !isSubscriptionActive }">
             <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6">
                 <!-- Step 1: Select Archer -->
                 <div>
-                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">{{ $t('dashboard_events_participants_add.select_archer') }}</h3>
+                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">{{ t('dashboard_events_participants_add.select_archer') }}</h3>
                     <div class="space-y-4">
-                        <div class="flex gap-3">
-                            <BaseButton @click="archerMode = 'existing'"
-                                :variant="archerMode === 'existing' ? 'primary' : 'white'"
-                                class="flex-1 h-12 font-bold text-sm">
-                                <span class="hidden sm:inline">{{ $t('dashboard_events_participants_add.select_registered') }}</span>
-                                <span class="sm:hidden">{{ $t('dashboard_events_participants_add.select_archer') }}</span>
-                            </BaseButton>
-                            <BaseButton @click="archerMode = 'new'"
-                                :variant="archerMode === 'new' ? 'primary' : 'white'"
-                                class="flex-1 h-12 font-bold text-sm">
-                                <span class="hidden sm:inline">{{ $t('dashboard_events_participants_add.create_new') }}</span>
-                                <span class="sm:hidden">{{ $t('dashboard_events_participants_add.create_new_short') }}</span>
-                            </BaseButton>
+                        <div class="flex p-1.5 bg-gray-100/80 rounded-2xl gap-2 border border-gray-200/50">
+                            <button type="button" @click="archerMode = 'existing'"
+                                :class="[
+                                    'flex-1 h-11 rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-none',
+                                    archerMode === 'existing'
+                                        ? 'bg-white text-navy shadow-md shadow-gray-200/50 border border-gray-100 font-extrabold'
+                                        : 'text-gray-500 hover:text-navy hover:bg-white/50'
+                                ]">
+                                <Icon icon="ph:users-three-bold" :class="archerMode === 'existing' ? 'text-primary text-base' : 'text-gray-400'" />
+                                <span class="hidden sm:inline">{{ t('dashboard_events_participants_add.select_registered') }}</span>
+                                <span class="sm:hidden">{{ t('dashboard_events_participants_add.select_archer') }}</span>
+                            </button>
+                            <button type="button" @click="archerMode = 'new'"
+                                :class="[
+                                    'flex-1 h-11 rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-none',
+                                    archerMode === 'new'
+                                        ? 'bg-white text-navy shadow-md shadow-gray-200/50 border border-gray-100 font-extrabold'
+                                        : 'text-gray-500 hover:text-navy hover:bg-white/50'
+                                ]">
+                                <Icon icon="ph:user-plus-bold" :class="archerMode === 'new' ? 'text-primary text-base' : 'text-gray-400'" />
+                                <span class="hidden sm:inline">{{ t('dashboard_events_participants_add.create_new') }}</span>
+                                <span class="sm:hidden">{{ t('dashboard_events_participants_add.create_new_short') }}</span>
+                            </button>
                         </div>
 
                         <!-- Existing Archer Selection -->
-                        <div v-if="archerMode === 'existing'" class="space-y-4">
-                            <!-- Search Input (Always visible) -->
-                            <div class="space-y-4">
-                                <BaseInput v-model="searchArcherQuery" icon="ph:magnifying-glass"
-                                    :placeholder="$t('dashboard_events_participants_add.search_placeholder')" :label="$t('dashboard_events_participants_add.search_label')" />
+                        <div v-if="archerMode === 'existing'" class="space-y-4 flex flex-col flex-1">
+                            <!-- Search Input -->
+                            <BaseInput v-model="searchArcherQuery" icon="ph:magnifying-glass"
+                                :placeholder="t('dashboard_events_participants_add.search_placeholder')" :label="t('dashboard_events_participants_add.search_label')" />
 
-                                <!-- Search Results -->
-                                <div v-if="searchArcherQuery && searchArcherQuery.length >= 2"
-                                    class="max-h-64 overflow-y-auto border border-gray-100 rounded-xl bg-white shadow-sm">
+                            <!-- Search Results / Default List -->
+                            <div class="max-h-[520px] min-h-[220px] flex-1 overflow-y-auto border border-gray-100 rounded-xl bg-white shadow-sm custom-scrollbar">
                                     <template v-if="filteredArchers.length > 0">
                                         <div v-for="archer in filteredArchers" :key="archer.uuid || archer.id"
                                             @click="toggleArcher(archer)"
@@ -73,11 +84,11 @@
                                                         class="w-full h-full object-cover" />
                                                 </div>
                                                 <div class="flex-1 min-w-0">
-                                                    <p :class="isArcherSelected(archer) ? 'text-primary' : 'text-navy'"
+                                                    <div :class="isArcherSelected(archer) ? 'text-primary' : 'text-navy'"
                                                         class="font-bold group-hover:text-primary transition-colors truncate">
-                                                        {{ archer.full_name }}</p>
-                                                    <p class="text-xs text-gray-500 truncate">{{ archer.email ||
-                                                        archer.phone || '-' }}</p>
+                                                        {{ archer.full_name }}</div>
+                                                    <div class="text-xs text-gray-500 truncate">{{ archer.email ||
+                                                        archer.phone || '-' }}</div>
                                                     <div class="flex items-center gap-2 text-xs text-gray-400 mt-1">
                                                         <span>{{ archer.club_name || 'Individual' }}</span>
                                                         <span v-if="archer.city"
@@ -89,144 +100,158 @@
                                         </div>
                                     </template>
                                     <!-- Empty Result State -->
-                                    <div v-else class="p-8 text-center">
+                                    <div v-else-if="!isSearchingArchers" class="p-8 text-center">
                                         <Icon icon="ph:user-minus" class="text-3xl text-gray-300 mx-auto mb-2" />
-                                        <p class="text-sm font-bold text-gray-500">{{ $t('dashboard_events_participants_add.not_found') }}</p>
-                                        <p class="text-xs text-gray-400 mt-1">{{ $t('dashboard_events_participants_add.not_found_desc') }}</p>
+                                        <div class="text-sm font-bold text-gray-500">{{ t('dashboard_events_participants_add.not_found') }}</div>
+                                        <div class="text-xs text-gray-400 mt-1">{{ t('dashboard_events_participants_add.not_found_desc') }}</div>
                                     </div>
-                                </div>
-
-                                <!-- Initial Search Empty State (No Query) -->
-                                <div v-else-if="!searchArcherQuery && !isSearchingArchers"
-                                    class="py-12 border-2 border-dashed border-gray-100 rounded-xl flex flex-col items-center justify-center text-center">
-                                    <div
-                                        class="h-12 w-12 rounded-full bg-gray-50 flex items-center justify-center mb-3">
-                                        <Icon icon="ph:magnifying-glass" class="text-2xl text-gray-300" />
-                                    </div>
-                                    <p class="text-sm font-bold text-gray-500">{{ $t('dashboard_events_participants_add.initial_search_title') }}</p>
-                                    <p class="text-xs text-gray-400 max-w-[200px] mt-1">{{ $t('dashboard_events_participants_add.initial_search_desc') }}</p>
                                 </div>
 
                                 <div v-if="isSearchingArchers"
                                     class="flex items-center justify-center py-8 gap-2 text-sm text-gray-400 font-medium">
                                     <span
                                         class="inline-block h-4 w-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
-                                    {{ $t('dashboard_events_participants_add.searching') }}
+                                    {{ t('dashboard_events_participants_add.searching') }}
                                 </div>
                             </div>
-
-                            <!-- Selected Archers (at bottom) -->
-                            <div v-if="selectedArchers.length > 0" class="space-y-3">
-                                <div class="flex items-center justify-between">
-                                    <p class="text-sm font-bold text-navy">{{ $t('dashboard_events_participants_add.selected_title', { count: selectedArchers.length }) }}</p>
-                                    <BaseButton @click="selectedArchers = []" variant="white" size="xs"
-                                        class="text-red-500 font-bold border-none shadow-none hover:underline p-0 h-auto">
-                                        {{ $t('dashboard_events_participants_add.clear_all') }}
-                                    </BaseButton>
-                                </div>
-                                <div class="space-y-2 max-h-48 overflow-y-auto">
-                                    <div v-for="(archer, index) in selectedArchers" :key="archer.uuid || archer.id"
-                                        class="bg-blue-50 border border-blue-100 rounded-lg p-3 relative group">
-                                        <div class="flex items-center gap-3">
-                                            <div
-                                                class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-navy font-bold text-xs  overflow-hidden border border-gray-200">
-                                                <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
-                                                    class="w-full h-full object-cover" />
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <p class="font-bold text-navy text-sm truncate">{{ archer.full_name }}
-                                                </p>
-                                                <p class="text-xs text-gray-500 truncate">{{ archer.email ||
-                                                    archer.phone || '-' }}</p>
-                                            </div>
-                                            <BaseButton @click="removeArcher(index)" variant="white" size="sm"
-                                                icon="ph:x"
-                                                class="h-6 w-6 p-0 rounded-full bg-red-100 text-red-500 hover:bg-red-200 border-none shadow-none opacity-0 group-hover:opacity-100" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- New Archer Form Info -->
                         <div v-if="archerMode === 'new'" class="space-y-4">
-                            <div
-                                class="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-4 border border-blue-100 bg-blue-50/50 rounded-xl">
-                                <Icon icon="ph:info-bold" class="text-2xl text-primary flex-shrink-0" />
-                                <div class="text-xs sm:text-sm text-navy font-medium leading-relaxed">
-                                    <p class="font-bold mb-1">{{ $t('dashboard_events_participants_add.password_terms_title') }}</p>
-                                    <ul class="space-y-1 ml-4 list-disc">
-                                        <li>{{ $t('dashboard_events_participants_add.password_terms_phone') }}</li>
-                                        <li>{{ $t('dashboard_events_participants_add.password_terms_email') }}</li>
-                                    </ul>
+                            <!-- CSV Import Quick Action Banner -->
+                            <div class="p-4 bg-gradient-to-r from-navy via-navy/95 to-navy/90 text-white rounded-2xl border border-primary/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+                                <div class="flex items-center gap-3">
+                                    <div class="size-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20">
+                                        <Icon icon="ph:file-csv-bold" class="text-2xl text-primary" />
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-bold tracking-tight">{{ t('dashboard_events_participants_add.csv_banner_title', 'Punya banyak data peserta?') }}</div>
+                                        <div class="text-xs text-slate-300">{{ t('dashboard_events_participants_add.csv_banner_desc', 'Impor sekaligus menggunakan file CSV') }}</div>
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap gap-2 shrink-0">
+                                    <BaseButton @click="downloadCsvTemplate" variant="white" icon="ph:download-simple-bold" size="sm" class="font-bold text-xs shadow-md">
+                                        {{ t('dashboard_events_participants_add.btn_download_template', 'Unduh Template CSV') }}
+                                    </BaseButton>
+                                    <BaseButton @click="showImportModal = true" variant="primary" icon="ph:upload-simple-bold" size="sm" class="font-bold text-xs shadow-md">
+                                        {{ t('dashboard_events_participants_add.btn_import_csv', 'Import CSV Peserta') }}
+                                    </BaseButton>
                                 </div>
                             </div>
 
                             <!-- Avatar Upload -->
-                            <div class="flex items-center gap-4 p-4 bg-white border border-gray-100 rounded-xl">
-                                <div
-                                    class="relative w-16 h-16 rounded-full bg-gray-50 border border-gray-100 overflow-hidden flex-shrink-0 group">
-                                    <img :src="useImageOrDefault(newArcherForm.avatar_url, newArcherForm.full_name)"
-                                        class="w-full h-full object-cover">
-                                    <div @click="showMediaLibrary = true"
-                                        class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white cursor-pointer">
-                                        <Icon icon="ph:pencil-simple" />
+                            <div class="flex items-center gap-5 p-4 bg-gray-50/80 border border-gray-200/60 rounded-2xl">
+                                <div class="relative cursor-pointer group shrink-0" @click="showMediaLibrary = true">
+                                    <div class="size-20 rounded-2xl bg-white border-2 border-dashed border-gray-300 overflow-hidden flex items-center justify-center shadow-sm group-hover:border-primary transition-colors">
+                                        <img :src="useImageOrDefault(newArcherForm.avatar_url, newArcherForm.full_name)"
+                                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <div class="absolute inset-0 bg-navy/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <Icon icon="ph:camera-bold" class="text-white text-xl" />
+                                        </div>
+                                    </div>
+                                    <div class="absolute -bottom-1 -right-1 size-7 bg-primary rounded-xl flex items-center justify-center shadow-md border-2 border-white text-navy">
+                                        <Icon icon="ph:pencil-simple-bold" class="text-xs" />
                                     </div>
                                 </div>
-                                <div class="flex-1">
-                                    <p class="text-sm font-bold text-navy mb-1">{{ $t('dashboard_events_participants_add.profile_photo') }}</p>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-sm font-bold text-navy mb-0.5">{{ t('dashboard_events_participants_add.profile_photo') }}</div>
+                                    <div class="text-xs text-gray-400 mb-2 font-medium">PNG, JPG atau WEBP (Maks. 2MB)</div>
                                     <div class="flex gap-2">
-                                        <BaseButton @click="showMediaLibrary = true" variant="white" size="xs"
-                                            class="text-primary font-bold border-none shadow-none hover:underline p-0 h-auto">
-                                            {{ newArcherForm.avatar_url ? $t('dashboard_events_participants_add.change_photo') : $t('dashboard_events_participants_add.upload_photo') }}
+                                        <BaseButton @click="showMediaLibrary = true" variant="white" size="sm" icon="ph:cloud-arrow-up-bold" class="h-8 px-3 text-xs font-bold shadow-sm">
+                                            {{ newArcherForm.avatar_url ? t('dashboard_events_participants_add.change_photo') : t('dashboard_events_participants_add.upload_photo') }}
                                         </BaseButton>
-                                        <BaseButton v-if="newArcherForm.avatar_url"
-                                            @click="newArcherForm.avatar_url = ''" variant="white" size="xs"
-                                            class="text-red-500 font-bold border-none shadow-none hover:underline p-0 h-auto">
-                                            {{ $t('dashboard_events_participants_add.delete') }}
-                                        </BaseButton>
+                                        <BaseButton v-if="newArcherForm.avatar_url" @click="newArcherForm.avatar_url = ''" variant="white" size="sm" icon="ph:trash-bold" class="h-8 w-8 p-0 text-red-500 bg-red-50 border-red-100 hover:bg-red-100" />
                                     </div>
                                 </div>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <BaseInput v-model="newArcherForm.full_name" :label="$t('dashboard_events_participants_add.full_name')"
-                                    :placeholder="$t('dashboard_events_participants_add.full_name_placeholder')" required @input="generateUsername" />
-                                <BaseInput v-model="newArcherForm.email" :label="$t('dashboard_events_participants_add.email')" type="email"
-                                    :placeholder="$t('dashboard_events_participants_add.email_placeholder')" />
-                                <BaseInput v-model="newArcherForm.phone" :label="$t('dashboard_events_participants_add.phone')" type="tel"
-                                    :placeholder="$t('dashboard_events_participants_add.phone_placeholder')" numberOnly
-                                    :rules="[v => !v || String(v).length >= 8 || $t('dashboard_events_participants_add.phone_error')]" />
-                                <BaseInput v-model="newArcherForm.password" :label="$t('dashboard_events_participants_add.password')" type="password"
-                                    :placeholder="$t('dashboard_events_participants_add.password_placeholder')"
-                                    :required="!!newArcherForm.phone && !newArcherForm.email" />
-                                <BaseDatePicker v-model="newArcherForm.date_of_birth" :label="$t('dashboard_events_participants_add.date_of_birth')" :placeholder="$t('dashboard_events_participants_add.date_of_birth_placeholder') || 'Select date'" />
-                                <BaseSelect v-model="newArcherForm.gender" :label="$t('dashboard_events_participants_add.gender')" :items="genderOptions"
-                                    required />
-                                <BaseSelect v-model="newArcherForm.bow_type" :label="$t('dashboard_events_participants_add.bow_type')" :items="bowOptions"
-                                    required />
-                                <BaseSelect v-model="newArcherForm.city" :label="$t('dashboard_events_participants_add.city')" :placeholder="$t('dashboard_events_participants_add.city_placeholder')"
-                                    :items="cityOptions" searchable />
-                                <BaseInput v-model="newArcherForm.school" :label="$t('dashboard_events_participants_add.school')"
-                                    :placeholder="$t('dashboard_events_participants_add.school_placeholder')" />
-                                <BaseSelect v-model="newArcherForm.club_id" :label="$t('dashboard_events_participants_add.club')" :items="clubOptions" required
-                                    searchable />
+                                <BaseInput v-model="newArcherForm.full_name" :label="t('dashboard_events_participants_add.full_name')"
+                                    :placeholder="t('dashboard_events_participants_add.full_name_placeholder')" required @input="generateUsername" />
+                                <BaseInput v-model="newArcherForm.email" :label="t('dashboard_events_participants_add.email')" type="email"
+                                    :placeholder="t('dashboard_events_participants_add.email_placeholder')" required />
+                                <BaseInput v-model="newArcherForm.phone" :label="t('dashboard_events_participants_add.phone')" type="tel"
+                                    :placeholder="t('dashboard_events_participants_add.phone_placeholder')" numberOnly
+                                    :rules="[v => !v || String(v).length >= 8 || t('dashboard_events_participants_add.phone_error')]" />
+                                
+                                <div class="relative">
+                                    <BaseInput v-model="newArcherForm.password" :label="t('dashboard_events_participants_add.password')" type="text"
+                                        :placeholder="t('dashboard_events_participants_add.password_placeholder')" required />
+                                    <button type="button" @click="generateRandomPassword"
+                                        class="absolute right-2 top-8 text-xs font-bold text-slate-600 hover:text-navy bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1">
+                                        <Icon icon="ph:arrows-clockwise-bold" class="text-xs text-slate-500" />
+                                        <span>{{ t('dashboard_events_participants_add.generate_password', 'Acak Password') }}</span>
+                                    </button>
+                                </div>
+
+                                <BaseSelect v-model="newArcherForm.club_id" :label="t('dashboard_events_participants_add.club')" :items="clubOptions" required
+                                    searchable class="md:col-span-2" />
                             </div>
-                            <BaseTextarea v-model="newArcherForm.address" :label="$t('dashboard_events_participants_add.address')" :placeholder="$t('dashboard_events_participants_add.address_placeholder')"
-                                :rows="2" />
-                            <p class="text-xs text-gray-400">
-                                {{ $t('dashboard_events_participants_add.required_fields_hint') }}
-                            </p>
+                            
+                            <div class="flex items-center justify-between pt-2">
+                                <div class="text-xs text-gray-400">
+                                    {{ t('dashboard_events_participants_add.required_fields_hint') }}
+                                </div>
+                                <BaseButton type="button" @click="addNewArcherToList" variant="primary" icon="ph:user-plus-bold" size="sm" class="font-bold shadow-md">
+                                    {{ t('dashboard_events_participants_add.add_to_list', 'Tambah ke Daftar Peserta') }}
+                                </BaseButton>
+                            </div>
+                        </div>
+
+                        <!-- Selected / Added Participants List Section -->
+                        <div class="p-5 bg-gray-50/80 border border-gray-200/60 rounded-2xl space-y-3 mt-4">
+                            <div class="flex items-center justify-between border-b border-gray-200/60 pb-3">
+                                <div class="text-sm font-black text-navy">{{ t('dashboard_events_participants_add.selected_title', { count: selectedArchers.length }) }}</div>
+                                <BaseButton v-if="selectedArchers.length > 0" @click="selectedArchers = []" variant="white" size="xs"
+                                    class="text-red-500 font-bold border-none shadow-none hover:underline p-0 h-auto">
+                                    {{ t('dashboard_events_participants_add.clear_all') }}
+                                </BaseButton>
+                            </div>
+
+                            <!-- List Items -->
+                            <div v-if="selectedArchers.length > 0" class="space-y-2 max-h-60 overflow-y-auto pr-1 custom-scrollbar">
+                                <div v-for="(archer, index) in selectedArchers" :key="archer.uuid || archer.id"
+                                    class="bg-white border border-gray-200/60 rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-xs hover:border-primary/50 transition-colors group">
+                                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                                        <div
+                                            class="h-10 w-10 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xs overflow-hidden border border-gray-200 shrink-0">
+                                            <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
+                                                class="w-full h-full object-cover" />
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="font-bold text-navy text-sm truncate flex items-center gap-2">
+                                                <span>{{ archer.full_name }}</span>
+                                                <span v-if="archer.is_new_profile" class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-extrabold rounded-md capitalize">Baru</span>
+                                            </div>
+                                            <div class="text-xs text-gray-500 truncate mt-0.5">
+                                                {{ archer.email || archer.phone || archer.club_name || '-' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" @click="removeArcher(index)"
+                                        class="size-8 rounded-lg bg-red-50 hover:bg-red-100 text-red-500 flex items-center justify-center transition-colors shrink-0">
+                                        <Icon icon="ph:trash-bold" class="text-sm" />
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Empty State -->
+                            <div v-else class="py-8 px-4 text-center border-2 border-dashed border-gray-200 rounded-xl bg-white/80">
+                                <div class="size-12 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-2 text-gray-400">
+                                    <Icon icon="ph:users-thin" class="text-3xl" />
+                                </div>
+                                <div class="text-sm font-bold text-navy">{{ t('dashboard_events_participants_add.empty_list_title', 'Belum ada pemanah yang ditambahkan') }}</div>
+                                <div class="text-xs text-gray-400 max-w-xs mx-auto mt-1">{{ t('dashboard_events_participants_add.empty_list_desc', 'Pilih pemanah terdaftar atau buat profil baru dan klik Tambah ke Daftar Peserta untuk mendaftarkan peserta.') }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 2 & 3: Sidebar Columns -->
+            <!-- Step 2: Sidebar Column -->
             <div class="lg:col-span-1 space-y-6">
-                <!-- Step 2: Select Category (same style as events/[slug]/register.vue) -->
+                <!-- Step 2: Select Category -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">{{ $t('dashboard_events_participants_add.competition_category') }}</h3>
+                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">{{ t('dashboard_events_participants_add.competition_category') }}</h3>
                     <div class="space-y-4">
                         <div class="grid grid-cols-1 gap-3">
                             <div v-for="category in categories" :key="category.id || category.uuid"
@@ -249,38 +274,35 @@
                                 </div>
                                 <div v-if="form.category_ids.includes(category.id || category.uuid)"
                                     class="px-2 py-1 bg-primary text-navy text-[10px] font-black tracking-widest rounded-md">
-                                    {{ $t('dashboard_events_participants_add.selected') }}
+                                    {{ t('dashboard_events_participants_add.selected') }}
                                 </div>
                             </div>
                         </div>
-                        <p class=" text-xs text-gray-500 font-medium px-1 flex items-center gap-2">
+                        <div class=" text-xs text-gray-500 font-medium px-1 flex items-center gap-2">
                             <Icon icon="ph:info-bold" class="text-navy" />
-                            {{ $t('dashboard_events_participants_add.category_schedule_hint') }}
-                        </p>
+                            {{ t('dashboard_events_participants_add.category_schedule_hint') }}
+                        </div>
                         <div v-if="categories.length === 0" class="p-4 bg-amber-50 border border-amber-100 rounded-xl">
                             <div class="flex items-center gap-2">
                                 <Icon icon="ph:info-bold" class="text-amber-500 text-xl shrink-0" />
-                                <p class="text-sm text-amber-700 font-medium">
-                                    {{ $t('dashboard_events_participants_add.no_categories_warning') }}
-                                </p>
+                                <div class="text-sm text-amber-700 font-medium">
+                                    {{ t('dashboard_events_participants_add.no_categories_warning') }}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Step 3: Additional Info -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">{{ $t('dashboard_events_participants_add.additional_info') }}</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <BaseSelect v-model="form.payment_status" :label="$t('dashboard_events_participants_add.payment_status')"
-                            :items="paymentStatusOptions" />
-                        <BaseInput v-model="form.payment_amount" :label="$t('dashboard_events_participants_add.payment_amount')" :placeholder="$t('dashboard_events_participants_add.payment_amount_placeholder')"
-                            kind="currency" />
-                        <BaseSelect v-model="form.registration_source" :label="$t('dashboard_events_participants_add.registration_source')" :items="sourceOptions"
-                            class="md:col-span-2" disabled />
-                    </div>
-                    <BaseTextarea v-model="form.notes" :label="$t('dashboard_events_participants_add.notes')" :placeholder="$t('dashboard_events_participants_add.notes_placeholder')"
-                        :rows="3" class="mt-4" />
+                <!-- Action Buttons below Card 2 -->
+                <div class="flex gap-3">
+                    <BaseButton variant="white" :to="`/dashboard/events/${route.params.id}/participants`"
+                        class="flex-1 h-11 px-4 font-bold">
+                        {{ t('dashboard_events_participants_add.cancel') }}
+                    </BaseButton>
+                    <BaseButton variant="primary" @click="submit" :loading="isSubmitting"
+                        class="flex-1 h-11 px-4 font-bold shadow-lg shadow-primary/20">
+                        {{ t('dashboard_events_participants_add.save_participant') }}
+                    </BaseButton>
                 </div>
             </div>
         </div>
@@ -288,12 +310,14 @@
     </div>
 
     <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleAvatarSelect" />
+    <ImportParticipantsModal v-model:show="showImportModal" :event-id="route.params.id" @parsed="handleCsvParsed" />
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
+import ImportParticipantsModal from '~/components/dashboard/ImportParticipantsModal.vue'
 import { ref, computed, onMounted, onBeforeUnmount, watch, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
@@ -301,9 +325,9 @@ import { useEventContext } from '~/composables/useEventContext'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
 import { useSubscription } from '~/composables/useSubscription'
-import { useI18n } from 'vue-i18n'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 
 definePageMeta({
     layout: 'dashboard',
@@ -311,7 +335,7 @@ definePageMeta({
 })
 
 useHead({
-    title: () => `${t('dashboard_events_participants_add.title')} - ArcheryHub Dashboard`
+    title: computed(() => `${t('dashboard_events_participants_add.title', 'Tambah Peserta Event')} - ArcheryHub Dashboard`)
 })
 
 const route = useRoute()
@@ -347,6 +371,7 @@ const searchArcherQuery = ref('')
 const selectedArchers = ref([])
 const isSubmitting = ref(false)
 const showMediaLibrary = ref(false)
+const showImportModal = ref(false)
 
 const form = reactive({
     category_ids: [],
@@ -444,18 +469,17 @@ const fetchEventDetails = async () => {
     }
 }
 
-const searchArchers = async (query) => {
-    if (!query || query.length < 2) {
-        archers.value = []
-        return
-    }
-
+const searchArchers = async (query = '') => {
     isSearchingArchers.value = true
     try {
-        const response = await get(`/archers?search=${encodeURIComponent(query)}&limit=10`)
-        archers.value = response?.archers || []
+        const url = query && query.length >= 2 
+            ? `/archers?search=${encodeURIComponent(query)}&limit=15`
+            : `/archers?limit=15`
+        const response = await get(url)
+        archers.value = response?.archers || response?.data || (Array.isArray(response) ? response : [])
     } catch (error) {
         console.error('Failed to search archers:', error)
+        archers.value = []
     } finally {
         isSearchingArchers.value = false
     }
@@ -499,7 +523,8 @@ const selectArcher = (archer) => {
 }
 
 const toggleArcher = (archer) => {
-    const index = selectedArchers.value.findIndex(a => (a.uuid || a.id) === (archer.uuid || archer.id))
+    const archerId = archer.uuid || archer.id
+    const index = selectedArchers.value.findIndex(a => (a.uuid || a.id) === archerId)
     if (index > -1) {
         selectedArchers.value.splice(index, 1)
     } else {
@@ -512,7 +537,8 @@ const removeArcher = (index) => {
 }
 
 const isArcherSelected = (archer) => {
-    return selectedArchers.value.some(a => (a.uuid || a.id) === (archer.uuid || archer.id))
+    const archerId = archer.uuid || archer.id
+    return selectedArchers.value.some(a => (a.uuid || a.id) === archerId)
 }
 
 const formatDate = (dateStr) => {
@@ -541,40 +567,126 @@ const generateUsername = () => {
     newArcherForm.username = username
 }
 
+const generateRandomPassword = () => {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$'
+    let pass = ''
+    for (let i = 0; i < 10; i++) {
+        pass += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+    newArcherForm.password = pass
+}
+
+const downloadCsvTemplate = () => {
+    const csvContent = 'full_name,email,phone,gender,bow_type,club_name,category_name,payment_status,payment_amount\n' +
+        'Budi Santoso,budi@example.com,081234567890,M,recurve,Klub Panahan Sleman,Recurve 70m - Putra,paid,150000\n' +
+        'Siti Aminah,siti@example.com,081298765432,F,barebow,Archery Club Jogja,Barebow 50m - Putri,unpaid,0'
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.setAttribute('href', url)
+    link.setAttribute('download', 'template_import_peserta_archeryhub.csv')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    toast.success(t('dashboard_events_participants_add.download_template_success', 'Template CSV berhasil diunduh'))
+}
+
+const handleCsvParsed = (parsedArchers) => {
+    if (!Array.isArray(parsedArchers) || parsedArchers.length === 0) return
+
+    const existingEmails = new Set(
+        selectedArchers.value
+            .map(a => (a.email || '').trim().toLowerCase())
+            .filter(Boolean)
+    )
+
+    let addedCount = 0
+    let duplicateCount = 0
+
+    for (const archer of parsedArchers) {
+        const email = (archer.email || '').trim().toLowerCase()
+        if (email && existingEmails.has(email)) {
+            duplicateCount++
+            continue
+        }
+
+        if (email) existingEmails.add(email)
+        selectedArchers.value.push(archer)
+        addedCount++
+    }
+
+    if (duplicateCount > 0) {
+        toast.info(`${addedCount} pemanah ditambahkan, ${duplicateCount} peserta diabaikan karena email sudah ada di daftar.`)
+    }
+}
+
+const addNewArcherToList = () => {
+    if (!validateNewArcherForm()) return
+
+    const inputEmail = newArcherForm.email.trim().toLowerCase()
+    const isDuplicate = selectedArchers.value.some(
+        a => (a.email || '').trim().toLowerCase() === inputEmail
+    )
+
+    if (isDuplicate) {
+        toast.error(`Pemanah dengan email "${newArcherForm.email}" sudah ada dalam daftar terpilih!`)
+        return
+    }
+
+    const tempId = `new-${Date.now()}`
+    const newArcher = {
+        id: tempId,
+        uuid: tempId,
+        full_name: newArcherForm.full_name,
+        username: newArcherForm.username,
+        email: newArcherForm.email.trim(),
+        phone: newArcherForm.phone,
+        password: newArcherForm.password,
+        club_id: newArcherForm.club_id,
+        avatar_url: newArcherForm.avatar_url,
+        is_new_profile: true
+    }
+
+    selectedArchers.value.push(newArcher)
+    toast.success(t('dashboard_events_participants_add.archer_added_toast', 'Profil pemanah ditambahkan ke daftar!'))
+
+    // Reset form
+    newArcherForm.full_name = ''
+    newArcherForm.username = ''
+    newArcherForm.email = ''
+    newArcherForm.phone = ''
+    newArcherForm.password = ''
+    newArcherForm.avatar_url = ''
+}
+
 const validateNewArcherForm = () => {
     if (!newArcherForm.full_name.trim()) {
         toast.error(t('dashboard_events_participants_add.toasts.name_required'))
         return false
     }
 
-    if (newArcherForm.email && newArcherForm.email.trim()) {
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        if (!emailPattern.test(newArcherForm.email)) {
-            toast.error(t('dashboard_events_participants_add.toasts.email_invalid'))
-            return false
-        }
-    }
-
-    // Password validation rules:
-    // - If phone is filled → password required
-    // - If email is filled (no phone) → password optional
-    if (newArcherForm.phone && newArcherForm.phone.trim() && !(newArcherForm.password && newArcherForm.password.trim())) {
-        toast.error(t('dashboard_events_participants_add.toasts.password_required_for_phone'))
-        return false
-    }
-    if (newArcherForm.password && newArcherForm.password.trim() && newArcherForm.password.length < 6) {
-        toast.error(t('dashboard_events_participants_add.toasts.password_length'))
+    if (!newArcherForm.email || !newArcherForm.email.trim()) {
+        toast.error(t('dashboard_events_participants_add.email_required_toast', 'Alamat email wajib diisi'))
         return false
     }
 
-    if (!newArcherForm.gender) {
-        toast.error(t('dashboard_events_participants_add.toasts.gender_required'))
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailPattern.test(newArcherForm.email.trim())) {
+        toast.error(t('dashboard_events_participants_add.toasts.email_invalid'))
         return false
     }
-    if (!newArcherForm.bow_type) {
-        toast.error(t('dashboard_events_participants_add.toasts.bow_type_required'))
+
+    if (!newArcherForm.password || !newArcherForm.password.trim()) {
+        toast.error(t('dashboard_events_participants_add.password_required_toast', 'Password wajib diisi'))
         return false
     }
+
+    if (newArcherForm.password.trim().length < 6) {
+        toast.error(t('dashboard_events_participants_add.password_min_toast', 'Password minimal 6 karakter'))
+        return false
+    }
+
     if (!newArcherForm.club_id) {
         toast.error(t('dashboard_events_participants_add.toasts.club_required'))
         return false
@@ -588,76 +700,61 @@ const submit = async () => {
         return
     }
 
-    if (archerMode.value === 'existing' && selectedArchers.value.length === 0) {
-        toast.error(t('dashboard_events_participants_add.toasts.archer_required'))
-        return
+    // If in 'new' mode and form is filled, automatically push to selectedArchers list
+    if (archerMode.value === 'new' && newArcherForm.full_name.trim()) {
+        if (!validateNewArcherForm()) return
+        addNewArcherToList()
     }
 
-    if (archerMode.value === 'new' && !validateNewArcherForm()) {
+    if (selectedArchers.value.length === 0) {
+        toast.error(t('dashboard_events_participants_add.no_archers_selected_toast', 'Belum ada pemanah yang dipilih atau ditambahkan ke daftar'))
         return
     }
 
     isSubmitting.value = true
 
     try {
-        // validate payment amount
-        if (isNaN(Number(form.payment_amount)) || Number(form.payment_amount) < 0) {
-            toast.error(t('dashboard_events_participants_add.toasts.amount_error'))
-            isSubmitting.value = false
-            return
+        const existingArcherIds = []
+        const createdArcherIds = []
+
+        // Process any newly created profiles first
+        for (const archer of selectedArchers.value) {
+            if (archer.is_new_profile) {
+                const archerResponse = await post('/archers', {
+                    full_name: archer.full_name,
+                    username: archer.username || undefined,
+                    email: archer.email || undefined,
+                    password: archer.password || undefined,
+                    phone: archer.phone || undefined,
+                    club_id: archer.club_id || undefined,
+                    avatar_url: archer.avatar_url || undefined
+                })
+                const newId = archerResponse.uuid || archerResponse.archer_id || archerResponse.id
+                if (newId) {
+                    createdArcherIds.push(newId)
+                }
+            } else {
+                existingArcherIds.push(archer.uuid || archer.id)
+            }
         }
 
-        if (archerMode.value === 'existing') {
-            // Register multiple existing archers via batch endpoint (single API call)
+        const allArcherIds = [...existingArcherIds, ...createdArcherIds]
+
+        if (allArcherIds.length > 0) {
             const payload = {
-                athlete_ids: selectedArchers.value.map(a => a.uuid || a.id),
+                athlete_ids: allArcherIds,
                 event_category_ids: form.category_ids,
-                payment_amount: form.payment_amount || 0,
-                payment_status: form.payment_status || 'paid',
-                registration_source: form.registration_source || 'admin_created'
+                payment_amount: 0,
+                payment_status: 'paid',
+                registration_source: 'admin_created'
             }
             const result = await post(`/events/${route.params.id}/participants/batch`, payload)
-            const count = result?.registered ?? selectedArchers.value.length
+            const count = result?.registered ?? allArcherIds.length
             const skipped = result?.skipped ?? 0
             const msg = skipped > 0
                 ? t('dashboard_events_participants_add.toasts.batch_success_with_skipped', { count, skipped }).replace('{count}', String(count)).replace('{skipped}', String(skipped))
                 : t('dashboard_events_participants_add.toasts.batch_success', { count }).replace('{count}', String(count))
             toast.success(msg)
-        } else {
-            // Create new archer and register
-            const archerResponse = await post('/archers', {
-                full_name: newArcherForm.full_name,
-                username: newArcherForm.username || undefined,
-                email: newArcherForm.email || undefined,
-                password: newArcherForm.password || undefined,
-                phone: newArcherForm.phone || undefined,
-                date_of_birth: newArcherForm.date_of_birth || undefined,
-                gender: newArcherForm.gender || undefined,
-                bow_type: newArcherForm.bow_type || undefined,
-                city: newArcherForm.city || undefined,
-                school: newArcherForm.school || undefined,
-                club_id: newArcherForm.club_id || undefined,
-                address: newArcherForm.address || undefined,
-                avatar_url: newArcherForm.avatar_url || undefined,
-                id: newArcherForm.id || undefined
-            })
-
-            const archerId = archerResponse.uuid || archerResponse.archer_id || archerResponse.id
-            if (!archerId) {
-                toast.error('Gagal mendapatkan ID pemanah setelah dibuat')
-                return
-            }
-
-            // Register the new archer with all selected categories
-            const payload = {
-                athlete_id: archerId,
-                event_category_ids: form.category_ids,
-                payment_amount: form.payment_amount || 0,
-                payment_status: form.payment_status || 'paid',
-                registration_source: form.registration_source || 'admin_created'
-            }
-            await post(`/events/${route.params.id}/participants`, payload)
-            toast.success(t('dashboard_events_participants_add.toasts.single_success'))
         }
 
         router.push(`/dashboard/events/${route.params.id}/participants`)
@@ -677,13 +774,8 @@ const handleAvatarSelect = (media) => {
 let searchTimeout
 
 watch(searchArcherQuery, (newVal) => {
-    if (!newVal) {
-        archers.value = []
-        return
-    }
-
-    if (newVal.length < 2) {
-        archers.value = []
+    if (!newVal || newVal.trim() === '') {
+        searchArchers('')
         return
     }
 
@@ -698,11 +790,7 @@ watch(searchArcherQuery, (newVal) => {
 })
 
 onMounted(() => {
-    if (!isSubscriptionActive.value) {
-        toast.error('subscription expired. upgrade your plan to add participants.')
-        router.replace(`/dashboard/events/${route.params.id}/participants`)
-        return
-    }
+    searchArchers()
     fetchEventDetails()
     fetchCategories()
     fetchClubs()

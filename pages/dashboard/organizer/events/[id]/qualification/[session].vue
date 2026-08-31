@@ -56,11 +56,11 @@
           <!-- Print Scoresheet Button (Standardized B&W) -->
           <div v-if="sessionData" class="flex-shrink-0">
             <button type="button" :disabled="isDownloadingScoresheet"
-              class="flex items-center gap-2 px-4 py-2 bg-white/10 text-white hover:bg-primary hover:text-btn-text border border-white/20 rounded-xl backdrop-blur-sm transition-all text-xs font-black disabled:opacity-50 disabled:cursor-not-allowed"
+              class="flex items-center gap-2.5 px-5 py-2.5 bg-white/10 text-white hover:bg-primary hover:text-btn-text border border-white/20 rounded-xl backdrop-blur-sm transition-all text-sm font-black disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               @click="downloadScoresheet">
               <Icon :icon="isDownloadingScoresheet ? 'ph:spinner' : 'ph:printer-bold'"
-                :class="['text-lg', isDownloadingScoresheet ? 'animate-spin' : '']" />
-              {{ isDownloadingScoresheet ? t('event_qualification.processing') : t('event_qualification.print_scoresheet') }}
+                :class="['text-xl', isDownloadingScoresheet ? 'animate-spin' : '']" />
+              <span>{{ isDownloadingScoresheet ? t('event_qualification.processing') : t('event_qualification.print_scoresheet') }}</span>
             </button>
           </div>
         </div>
@@ -70,12 +70,12 @@
     <div
       class="flex items-center gap-1 border-b border-gray-200 overflow-x-auto no-scrollbar bg-white rounded-t-2xl px-2">
       <button v-for="t in tabs" :key="t.id" type="button" @click="activeTab = t.id"
-        class="px-6 py-4 border-b-2 font-bold text-sm flex items-center gap-2 whitespace-nowrap transition-colors outline-none"
+        class="px-6 py-4 border-b-2 font-black text-sm sm:text-base flex items-center gap-2.5 whitespace-nowrap transition-colors outline-none"
         :class="activeTab === t.id
           ? 'border-primary text-navy bg-primary/5'
           : 'border-transparent text-gray-500 hover:text-navy hover:bg-gray-50'">
         <Icon :icon="t.icon" class="text-xl" />
-        {{ t.label }}
+        <span>{{ t.label }}</span>
       </button>
     </div>
 
@@ -97,7 +97,7 @@
 
       <div v-else-if="categories.length === 0" class="text-center py-8 text-gray-400">
         <Icon icon="ph:folder-notch-open" class="text-4xl mx-auto mb-2" />
-        <p>{{ t('event_qualification.category_not_found') }}</p>
+        <div>{{ t('event_qualification.category_not_found') }}</div>
       </div>
 
       <div v-else class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
@@ -118,9 +118,9 @@
                 class="w-full h-full object-contain invert group-hover:invert-0 transition-all" />
             </div>
             <div class="flex-1 min-w-0">
-              <p
+              <div
                 class="font-extrabold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2">
-                {{ getCategoryName(category) }}</p>
+                {{ getCategoryName(category) }}</div>
             </div>
           </div>
         </div>
@@ -134,7 +134,7 @@
         class="absolute inset-0 z-[50] flex items-center justify-center bg-white/60 backdrop-blur-sm min-h-[400px]">
         <div class="flex flex-col items-center gap-3">
           <div class="size-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-          <p class="text-xs font-bold text-navy animate-pulse tracking-widest">{{ t('event_qualification.loading_data') }}</p>
+          <div class="text-xs font-bold text-navy animate-pulse tracking-widest">{{ t('event_qualification.loading_data') }}</div>
         </div>
       </div>
 
@@ -158,7 +158,7 @@
           <Icon icon="ph:cursor-click-bold" class="text-4xl text-gray-300" />
         </div>
         <h3 class="text-xl font-bold text-navy mb-2">{{ t('event_qualification.category_not_selected') }}</h3>
-        <p class="text-gray-500 max-w-xs mx-auto">{{ t('event_qualification.choose_category_to_manage') }}</p>
+        <div class="text-gray-500 max-w-xs mx-auto">{{ t('event_qualification.choose_category_to_manage') }}</div>
       </div>
     </div>
   </div>
@@ -186,7 +186,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => `${t('event_qualification.title')} - ArcheryHub.id`)
+  title: computed(() => `${t('event_qualification.title')} - ArcheryHub Dashboard`)
 })
 
 // State

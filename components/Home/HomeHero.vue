@@ -35,10 +35,10 @@
                             class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-8 py-3.5 rounded-xl transition-all shadow-[0_4px_14px_0_rgba(183,251,35,0.39)] hover:shadow-[0_6px_20px_rgba(183,251,35,0.23)] hover:-translate-y-0.5 text-center">
                             {{ $t('home.hero.cta_primary') }}
                         </NuxtLink>
-                        <button
-                            class="bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm font-medium px-8 py-3.5 rounded-xl transition-colors backdrop-blur-md">
+                        <NuxtLink :to="localePath('/about-us')"
+                            class="bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm font-medium px-8 py-3.5 rounded-xl transition-colors backdrop-blur-md text-center">
                             {{ $t('home.hero.cta_secondary') }}
-                        </button>
+                        </NuxtLink>
                     </div>
                 </div>
             </div>

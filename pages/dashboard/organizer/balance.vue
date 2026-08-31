@@ -21,22 +21,22 @@
 
                     <div class="space-y-2">
                         <h2 class="text-2xl font-black text-navy tracking-tight ">
-                            {{ t('organizer.balance.security.title') }}
+                            {{ t('organizer.balance.security.title', 'Verifikasi Keamanan') }}
                         </h2>
-                        <p
+                        <div
                             class=" text-xs text-gray-400 font-bold leading-relaxed max-w-[240px] mx-auto tracking-wider">
-                            {{ t('organizer.balance.security.desc') }}
-                        </p>
+                            {{ t('organizer.balance.security.desc', 'Masukkan kata sandi akun Anda untuk mengakses informasi saldo dan keuangan.') }}
+                        </div>
                     </div>
 
                     <div class="space-y-4 pt-2">
                         <BaseInput v-model="password" type="password"
-                            :placeholder="t('organizer.balance.security.password_placeholder')"
+                            :placeholder="t('organizer.balance.security.password_placeholder', 'Masukkan kata sandi Anda')"
                             class="!rounded-2xl border-gray-100 focus:!border-primary/30" icon="ph:lock-bold"
                             @keyup.enter="verifyPassword" />
                         <BaseButton @click="verifyPassword" variant="primary" block :loading="verifying"
                             class="h-11 !rounded-xl font-black tracking-widest text-[10px] shadow-lg shadow-primary/20">
-                            {{ t('organizer.balance.security.open_access') }}
+                            {{ t('organizer.balance.security.open_access', 'Buka Akses') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -46,30 +46,15 @@
         <div :class="{ 'opacity-20 pointer-events-none': !isVerified }"
             class="space-y-8 transition-opacity duration-500">
             <!-- Header Section -->
-            <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
-                <div class="absolute inset-0"
-                    style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-                </div>
-                <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-                <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
-                <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div class="flex items-center gap-5">
-                        <div
-                            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
-                            <Icon icon="ph:bank-bold" class="text-primary text-2xl sm:text-3xl" />
-                        </div>
-                        <div>
-                            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">
-                                {{ t('organizer.balance.header.title') }}
-                            </h1>
-                            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">
-                                {{ t('organizer.balance.header.subtitle') }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <DashboardHeader
+                :title="t('organizer.balance.header.title', 'Saldo & Rekening')"
+                :subtitle="t('organizer.balance.header.subtitle', 'Kelola pendapatan, saldo dompet, rekening bank, dan penarikan dana.')"
+                icon="ph:bank-bold"
+                :breadcrumbs="[
+                    { label: 'Dashboard', to: '/dashboard/organizer' },
+                    { label: t('organizer.balance.header.title', 'Saldo & Rekening') }
+                ]"
+            />
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Left: Balance Card -->
@@ -79,9 +64,9 @@
                         <div class="absolute top-0 right-0 p-8 opacity-10">
                             <Icon icon="ph:coins-bold" class="text-8xl" />
                         </div>
-                        <p class="text-primary text-[10px] font-black tracking-[0.2em] mb-3">
-                            {{ t('organizer.balance.available') }}
-                        </p>
+                        <div class="text-primary text-[10px] font-black tracking-[0.2em] mb-3">
+                            {{ t('organizer.balance.available', 'Saldo Tersedia') }}
+                        </div>
                         <h2 class="text-3xl sm:text-4xl font-black tracking-tight mb-10 leading-none tabular-nums">
                             <span class="text-lg font-bold opacity-40 mr-1">Rp</span>{{ balance.toLocaleString('id-ID')
                             }}
@@ -92,11 +77,11 @@
                                 @click="isSubscriptionActive ? openWithdrawDialog() : (showPremiumModal = true)"
                                 :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
                                 class="font-black tracking-widest text-[10px] h-11 !rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
-                                {{ t('organizer.balance.withdraw_button') }}
+                                {{ t('organizer.balance.withdraw_button', 'Tarik Saldo') }}
                             </BaseButton>
-                            <p class="text-[9px] text-slate-400 text-center font-black tracking-widest leading-loose">
-                                {{ t('organizer.balance.withdraw_info') }}
-                            </p>
+                            <div class="text-[9px] text-slate-400 text-center font-black tracking-widest leading-loose">
+                                {{ t('organizer.balance.withdraw_info', 'Penarikan diproses dalam 1-2 hari kerja') }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -169,7 +154,7 @@
                                             <div class="opacity-20 mb-2">
                                                 <Icon icon="ph:clock-counter-clockwise" class="text-4xl mx-auto" />
                                             </div>
-                                            <p class="text-gray-400 text-sm font-bold tracking-tight">{{ t('organizer.balance.withdrawals.empty') }}</p>
+                                            <div class="text-gray-400 text-sm font-bold tracking-tight">{{ t('organizer.balance.withdrawals.empty') }}</div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -203,9 +188,9 @@
                         <h3 class="text-xs font-black text-navy">
                             {{ t('organizer.balance.otp.request_title') }}
                         </h3>
-                        <p class="text-[10px] text-gray-500 max-w-xs mx-auto font-medium">
+                        <div class="text-[10px] text-gray-500 max-w-xs mx-auto font-medium">
                             {{ t('organizer.balance.otp.request_desc') }}
-                        </p>
+                        </div>
                     </div>
                     <BaseButton variant="primary" class="font-black text-xs h-9 tracking-wider shadow-md"
                         :loading="sendingOtp" @click="requestWithdrawalOTP">
@@ -225,18 +210,18 @@
                             <h4 class="text-xs font-black text-green-900">
                                 {{ t('organizer.balance.otp.verified_title') }}
                             </h4>
-                            <p class="text-[10px] text-green-700 mt-0.5 font-medium font-sans">
+                            <div class="text-[10px] text-green-700 mt-0.5 font-medium font-sans">
                                 {{ t('organizer.balance.otp.verified_desc') }}
                                 <span class="font-black font-mono text-green-800">{{ formattedRemainingTime }}</span>
-                            </p>
+                            </div>
                         </div>
                     </div>
 
                     <div v-else class="p-3 bg-green-50 border border-green-100 rounded-xl flex gap-2.5 items-start">
                         <Icon icon="ph:check-circle-bold" class="text-green-600 text-lg shrink-0 mt-0.5" />
-                        <p class=" text-xs text-green-800 font-semibold leading-relaxed">
+                        <div class=" text-xs text-green-800 font-semibold leading-relaxed">
                             {{ t('organizer.balance.otp.code_sent') }}
-                        </p>
+                        </div>
                     </div>
 
                     <!-- OTP Input -->
@@ -255,19 +240,37 @@
                         </label>
                         <BaseInput v-model="withdrawalAmount" :placeholder="t('organizer.balance.amount_placeholder')" type="number" min="100000"
                             :max="balance" required />
-                        <p class="text-[10px] text-gray-500 font-medium">
+                        <div class="text-[10px] text-gray-500 font-medium">
                             {{ t('organizer.balance.available_balance') }}: Rp {{ balance.toLocaleString('id-ID') }}
-                        </p>
+                        </div>
                     </div>
 
-                    <!-- Bank Account Info -->
-                    <div v-if="primaryAccount"
-                        class="p-4 bg-navy/5 border border-navy/10 rounded-xl">
-                        <h4 class="text-xs font-black text-navy mb-2">{{ t('organizer.balance.destination_account') }}</h4>
-                        <div class="space-y-1 text-xs">
-                            <p class="font-bold text-navy">{{ primaryAccount.bank_name }}</p>
-                            <p class="text-gray-600">{{ primaryAccount.account_number }}</p>
-                            <p class="text-gray-600">{{ primaryAccount.account_name }}</p>
+                    <!-- Bank Account Info & Selector -->
+                    <div v-if="bankAccounts.length"
+                        class="p-4 bg-navy/5 border border-navy/10 rounded-2xl space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-black text-navy">{{ t('organizer.balance.destination_account', 'Rekening Bank Tujuan') }}</label>
+                            <NuxtLink to="/dashboard/organizer/bank-accounts" class="text-[10px] font-bold text-primary hover:underline flex items-center gap-1">
+                                <Icon icon="ph:gear-six-bold" />
+                                <span>Kelola Rekening</span>
+                            </NuxtLink>
+                        </div>
+
+                        <!-- Dropdown selector if organizer has more than 1 account -->
+                        <div v-if="bankAccounts.length > 1">
+                            <select v-model="selectedAccountId"
+                                class="w-full px-3.5 py-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold text-navy focus:border-primary outline-none shadow-2xs">
+                                <option v-for="acc in bankAccounts" :key="acc.id || acc.uuid" :value="acc.id || acc.uuid">
+                                    {{ acc.bank_name }} - {{ acc.account_number }} (a.n {{ acc.account_name }}) {{ acc.is_primary ? '(Utama)' : '' }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Selected Account Card Display -->
+                        <div v-if="currentSelectedAccount" class="p-3 bg-white border border-gray-100 rounded-xl space-y-0.5 text-xs shadow-2xs">
+                            <div class="font-black text-navy">{{ currentSelectedAccount.bank_name }}</div>
+                            <div class="font-mono font-bold text-slate-700 tracking-wider">{{ currentSelectedAccount.account_number }}</div>
+                            <div class="text-[11px] text-gray-500 font-medium truncate">a.n {{ currentSelectedAccount.account_name }}</div>
                         </div>
                     </div>
                 </div>
@@ -294,7 +297,6 @@ import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
-import useDashboardI18n from '~/composables/useDashboardI18n'
 import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
@@ -304,15 +306,14 @@ const showPremiumModal = ref(false)
 const api = useApi()
 const toast = useToast()
 const { user } = useAuth()
-const { t } = useDashboardI18n()
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 useHead({
-    title: () => `${t('organizer.balance.header.title')} - Archeris`
+    title: () => `${t('organizer.balance.header.title')} - ArcheryHub Dashboard`
 })
 
 // Security State
@@ -324,7 +325,6 @@ const verifying = ref(false)
 const balance = ref(0)
 const withdrawalHistory = ref([])
 const loading = ref(true)
-const primaryAccount = ref(null)
 
 // Sort & Pagination
 const sortBy = ref('created_at')
@@ -393,7 +393,7 @@ const verifyPassword = async () => {
         sessionStorage.setItem('finance_verified', 'true')
         await initData()
     } catch (error) {
-        toast.error(t('organizer.balance.password_error'))
+        toast.error(t('organizer.balance.password_error', 'Password salah. Silakan coba lagi.'))
     } finally {
         verifying.value = false
     }
@@ -446,11 +446,23 @@ watch([sortBy, order, currentPage], () => {
     fetchWithdrawals()
 })
 
+const bankAccounts = ref([])
+const primaryAccount = ref(null)
+const selectedAccountId = ref('')
+
+const currentSelectedAccount = computed(() => {
+    return bankAccounts.value.find(a => (a.id || a.uuid) === selectedAccountId.value) || primaryAccount.value || bankAccounts.value[0] || null
+})
+
 const fetchPrimaryAccount = async () => {
     try {
         const res = await api.get('/organizers/bank-accounts')
         const accounts = res?.data || res || []
-        primaryAccount.value = accounts.find(a => a.is_primary) || accounts[0]
+        bankAccounts.value = Array.isArray(accounts) ? accounts : []
+        primaryAccount.value = bankAccounts.value.find(a => a.is_primary) || bankAccounts.value[0] || null
+        if (primaryAccount.value) {
+            selectedAccountId.value = primaryAccount.value.id || primaryAccount.value.uuid
+        }
     } catch (error) {
         console.error('Failed to fetch primary account:', error)
     }
@@ -477,15 +489,19 @@ const initData = async () => {
 
 const openWithdrawDialog = () => {
     if (balance.value < 100000) {
-        toast.error(t('organizer.balance.minimum_balance_error'))
+        toast.error(t('organizer.balance.minimum_balance_error', 'Saldo minimum untuk penarikan adalah Rp 100.000'))
         return
     }
     
-    if (!primaryAccount.value) {
-        toast.error(t('organizer.balance.no_account_error'))
+    if (!primaryAccount.value && !bankAccounts.value.length) {
+        toast.error(t('organizer.balance.no_account_error', 'Anda belum memiliki rekening bank. Silakan tambahkan rekening terlebih dahulu.'))
         return
     }
     
+    if (!selectedAccountId.value && primaryAccount.value) {
+        selectedAccountId.value = primaryAccount.value.id || primaryAccount.value.uuid
+    }
+
     withdrawalAmount.value = null
     
     if (isOtpVerified.value) {
@@ -513,10 +529,10 @@ const requestWithdrawalOTP = async () => {
     try {
         await api.post('/organizers/wallet/withdrawals/request-otp')
         otpSent.value = true
-        toast.success(t('organizer.balance.otp.sent_success'))
+        toast.success(t('organizer.balance.otp.sent_success', 'Kode verifikasi dikirim ke email Anda'))
     } catch (error) {
         console.error('Failed to request withdrawal OTP:', error)
-        toast.error(error?.data?.error || t('organizer.balance.otp.sent_error'))
+        toast.error(error?.data?.error || t('organizer.balance.otp.sent_error', 'Gagal mengirim kode verifikasi'))
     } finally {
         sendingOtp.value = false
     }
@@ -524,29 +540,31 @@ const requestWithdrawalOTP = async () => {
 
 const handleWithdrawal = async () => {
     if (otpCode.value.trim().length !== 6) {
-        toast.error(t('organizer.balance.otp.invalid_length'))
+        toast.error(t('organizer.balance.otp.invalid_length', 'Kode OTP harus 6 digit'))
         return
     }
     
     if (!withdrawalAmount.value || withdrawalAmount.value < 100000) {
-        toast.error(t('organizer.balance.amount_minimum_error'))
+        toast.error(t('organizer.balance.amount_minimum_error', 'Jumlah penarikan minimum adalah Rp 100.000'))
         return
     }
     
     if (withdrawalAmount.value > balance.value) {
-        toast.error(t('organizer.balance.amount_exceeds_error'))
+        toast.error(t('organizer.balance.amount_exceeds_error', 'Jumlah penarikan melebihi saldo tersedia'))
         return
     }
 
     isSubmittingWithdrawal.value = true
     try {
+        const targetAccountId = selectedAccountId.value || (primaryAccount.value?.id || primaryAccount.value?.uuid)
         const payload = {
+            bank_account_id: targetAccountId,
             amount: withdrawalAmount.value,
             otp_code: otpCode.value.trim()
         }
 
         await api.post('/organizers/wallet/withdrawals', payload)
-        toast.success(t('organizer.balance.withdrawal_success'))
+        toast.success(t('organizer.balance.withdrawal_success', 'Permintaan penarikan berhasil diajukan'))
         
         // Save verified OTP and time for 5 minutes window
         verifiedOtp.value = otpCode.value.trim()
@@ -559,7 +577,7 @@ const handleWithdrawal = async () => {
         await initData()
     } catch (error) {
         console.error('Failed to submit withdrawal:', error)
-        toast.error(error?.data?.error || t('organizer.balance.withdrawal_error'))
+        toast.error(error?.data?.error || t('organizer.balance.withdrawal_error', 'Gagal mengajukan permintaan penarikan'))
     } finally {
         isSubmittingWithdrawal.value = false
     }

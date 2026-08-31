@@ -380,6 +380,51 @@
                                     </div>
                                 </div>
                             </section>
+
+                            <!-- FAQ Section -->
+                            <section v-if="tournament.faq && tournament.faq.length > 0"
+                                class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100 overflow-hidden relative">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 relative z-10">
+                                    <div>
+                                        <h2 class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
+                                            <div class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
+                                                <Icon icon="ph:question-bold" class="text-base md:text-xl text-navy" />
+                                            </div>
+                                            {{ t('event_detail.faq') }}
+                                        </h2>
+                                        <div class="text-sm text-gray-400 font-medium">Informasi penting seputar event ini</div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4 relative z-10">
+                                    <details v-for="(faq, fIdx) in tournament.faq" :key="fIdx"
+                                        class="group border border-gray-100 rounded-3xl transition-all duration-300 open:bg-gray-50/50 open:border-primary/20 open:shadow-lg open:shadow-primary/5">
+                                        <summary
+                                            class="list-none p-6 font-black text-navy cursor-pointer flex items-center justify-between group-hover:bg-gray-50 group-open:bg-transparent rounded-3xl transition-all duration-300">
+                                            <div class="flex items-center gap-4">
+                                                <span
+                                                    class="flex-shrink-0 w-8 h-8 rounded-xl bg-gray-100 group-open:bg-navy group-open:text-white flex items-center justify-center text-xs font-black transition-colors">
+                                                    {{ fIdx + 1 }}
+                                                </span>
+                                                <span class="text-lg leading-tight">{{ faq.question }}</span>
+                                            </div>
+                                            <div
+                                                class="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center group-open:rotate-180 group-open:bg-navy group-open:border-navy transition-all duration-500">
+                                                <Icon icon="ph:caret-down-bold"
+                                                    class="text-gray-400 group-open:text-white transition-colors" />
+                                            </div>
+                                        </summary>
+                                        <div class="px-6 pb-8 pt-0 ml-12">
+                                            <div
+                                                class="h-px w-full bg-gradient-to-r from-primary/20 to-transparent mb-6">
+                                            </div>
+                                            <div class="text-gray-600 text-lg leading-relaxed whitespace-pre-line">
+                                                {{ faq.answer }}
+                                            </div>
+                                        </div>
+                                    </details>
+                                </div>
+                            </section>
                         </div>
 
                         <TournamentScheduleTab v-else-if="activeTab === 'Jadwal Lomba'" :event-id="slug"
@@ -465,61 +510,6 @@
                                         <Icon icon="ph:camera-slash" class="text-4xl text-gray-200" />
                                     </div>
                                     <div class="text-gray-400 font-bold">{{ t('event_detail.no_photos') }}</div>
-                                </div>
-                            </section>
-                        </div>
-
-                        <!-- FAQ Tab -->
-                        <div v-else-if="activeTab === 'FAQ'" class="space-y-8">
-                            <section
-                                class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100 overflow-hidden relative">
-                                <!-- Decorative element -->
-                                <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl">
-                                </div>
-
-                                <div
-                                    class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 relative z-10">
-                                    <div>
-                                        <h2
-                                            class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
-                                            <div
-                                                class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
-                                                <Icon icon="ph:question-bold" class="text-base md:text-xl text-navy" />
-                                            </div>
-                                            {{ t('event_detail.faq') }}
-                                        </h2>
-                                        <div class="text-sm text-gray-400 font-medium">Informasi penting seputar event
-                                            ini</div>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-4 relative z-10">
-                                    <details v-for="(faq, fIdx) in tournament.faq" :key="fIdx"
-                                        class="group border border-gray-100 rounded-3xl transition-all duration-300 open:bg-gray-50/50 open:border-primary/20 open:shadow-lg open:shadow-primary/5">
-                                        <summary
-                                            class="list-none p-6 font-black text-navy cursor-pointer flex items-center justify-between group-hover:bg-gray-50 group-open:bg-transparent rounded-3xl transition-all duration-300">
-                                            <div class="flex items-center gap-4">
-                                                <span
-                                                    class="flex-shrink-0 w-8 h-8 rounded-xl bg-gray-100 group-open:bg-navy group-open:text-white flex items-center justify-center text-xs font-black transition-colors">
-                                                    {{ fIdx + 1 }}
-                                                </span>
-                                                <span class="text-lg leading-tight">{{ faq.question }}</span>
-                                            </div>
-                                            <div
-                                                class="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center group-open:rotate-180 group-open:bg-navy group-open:border-navy transition-all duration-500">
-                                                <Icon icon="ph:caret-down-bold"
-                                                    class="text-gray-400 group-open:text-white transition-colors" />
-                                            </div>
-                                        </summary>
-                                        <div class="px-6 pb-8 pt-0 ml-12">
-                                            <div
-                                                class="h-px w-full bg-gradient-to-r from-primary/20 to-transparent mb-6">
-                                            </div>
-                                            <div class="text-gray-600 text-lg leading-relaxed whitespace-pre-line">
-                                                {{ faq.answer }}
-                                            </div>
-                                        </div>
-                                    </details>
                                 </div>
                             </section>
                         </div>
@@ -689,32 +679,36 @@
                                     <Icon icon="ph:map-pin" class="text-3xl text-gray-300" />
                                 </div>
                             </div>
-                            <div class="p-5">
-                                <h3 class="font-bold text-navy mb-1">{{ displayValue(tournament.venue) }}</h3>
-                                <div class="text-sm text-gray-500">{{ displayValue(tournament.address) }}</div>
+                            <div class="p-4">
+                                <h3 class="font-bold text-navy text-sm leading-snug line-clamp-2 mb-1">{{ displayValue(tournament.venue) }}</h3>
+                                <div class="text-xs text-gray-500 line-clamp-2 leading-relaxed">{{ displayValue(tournament.address) }}</div>
                             </div>
                         </div>
 
                         <!-- Share Section -->
                         <div
-                            class="flex flex-col items-center gap-4 justify-center bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
-                            <span class="text-xs font-black text-gray-400 tracking-[0.25em] capitalize">Bagikan Event Ini</span>
-                            <div class="grid grid-cols-4 gap-3 w-full">
+                            class="flex flex-col items-center gap-3 justify-center bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
+                            <span class="text-xs font-black text-gray-400 tracking-[0.2em] capitalize">Bagikan Event Ini</span>
+                            <div class="grid grid-cols-4 gap-2 w-full">
                                 <button @click="shareTo('whatsapp')"
-                                    class="w-full aspect-square rounded-2xl bg-green-50/50 border border-green-100/50 flex items-center justify-center text-[#25D366] hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-all duration-300 shadow-sm active:scale-95">
-                                    <Icon icon="ph:whatsapp-logo-fill" class="text-2xl" />
+                                    class="w-full h-10 rounded-xl bg-green-50/50 border border-green-100/50 flex items-center justify-center text-[#25D366] hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-all duration-300 shadow-2xs active:scale-95"
+                                    title="WhatsApp">
+                                    <Icon icon="ph:whatsapp-logo-fill" class="text-lg" />
                                 </button>
                                 <button @click="shareTo('facebook')"
-                                    class="w-full aspect-square rounded-2xl bg-blue-50/50 border border-blue-100/50 flex items-center justify-center text-[#1877F2] hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-all duration-300 shadow-sm active:scale-95">
-                                    <Icon icon="ph:facebook-logo-fill" class="text-2xl" />
+                                    class="w-full h-10 rounded-xl bg-blue-50/50 border border-blue-100/50 flex items-center justify-center text-[#1877F2] hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-all duration-300 shadow-2xs active:scale-95"
+                                    title="Facebook">
+                                    <Icon icon="ph:facebook-logo-fill" class="text-lg" />
                                 </button>
                                 <button @click="shareTo('twitter')"
-                                    class="w-full aspect-square rounded-2xl bg-gray-50/50 border border-gray-100 flex items-center justify-center text-navy hover:bg-navy hover:text-white hover:border-navy transition-all duration-300 shadow-sm active:scale-95">
-                                    <Icon icon="ph:twitter-logo-fill" class="text-2xl" />
+                                    class="w-full h-10 rounded-xl bg-gray-50/50 border border-gray-100 flex items-center justify-center text-navy hover:bg-navy hover:text-white hover:border-navy transition-all duration-300 shadow-2xs active:scale-95"
+                                    title="X / Twitter">
+                                    <Icon icon="ph:twitter-logo-fill" class="text-lg" />
                                 </button>
                                 <button @click="copyPublicUrl"
-                                    class="w-full aspect-square rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-navy hover:bg-primary transition-all duration-300 shadow-sm active:scale-95">
-                                    <Icon icon="ph:link-bold" class="text-2xl" />
+                                    class="w-full h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-navy hover:bg-primary transition-all duration-300 shadow-2xs active:scale-95"
+                                    title="Salin Link">
+                                    <Icon icon="ph:link-bold" class="text-lg" />
                                 </button>
                             </div>
                             <div v-if="copySuccess" class="text-[10px] font-bold text-green-600 transition-all animate-fade-in">
@@ -806,19 +800,7 @@ const fallbackTournament = {
 
 const tabs = computed(() => {
     if (!tournament.value || !tournament.value.page_settings) return ['Ringkasan']
-    const list = ['Ringkasan']
-    // Always include schedule tab
-    list.push('Jadwal Lomba')
-    list.push('Peserta', 'Hasil')
-    // Always include location tab
-    list.push('Lokasi')
-    // Always show Galeri tab
-    list.push('Galeri')
-    // FAQ only if there are FAQ items
-    if (tournament.value.faq?.length > 0) {
-        list.push('FAQ')
-    }
-    return list
+    return ['Ringkasan', 'Jadwal Lomba', 'Peserta', 'Hasil', 'Lokasi', 'Galeri']
 })
 const activeTab = computed(() => {
     const q = route.query.tab || ''
@@ -838,8 +820,7 @@ const tabToSlug = {
     'Peserta': 'peserta',
     'Hasil': 'hasil',
     'Lokasi': 'lokasi',
-    'Galeri': 'galeri',
-    'FAQ': 'faq'
+    'Galeri': 'galeri'
 }
 
 const slugToTab = {
@@ -849,7 +830,7 @@ const slugToTab = {
     'hasil': 'Hasil',
     'lokasi': 'Lokasi',
     'galeri': 'Galeri',
-    'faq': 'FAQ'
+    'faq': 'Ringkasan'
 }
 
 // Keeping this for compatibility or if we need a fast way to switch without full reload (though NuxtLink handles it)
@@ -1078,7 +1059,7 @@ const divisionsData = computed(() => {
 })
 
 const schedulesData = computed(() => eventData.value?.schedules?.schedules || eventData.value?.schedules?.data?.schedules || [])
-const participantsData = computed(() => eventData.value?.participants?.participants || [])
+const participantsData = computed(() => eventData.value?.participants?.data || eventData.value?.participants?.participants || [])
 const categoriesList = computed(() => eventData.value?.categories?.events || [])
 const galleryImages = computed(() => eventData.value?.images?.images || eventData.value?.images?.data?.images || [])
 
@@ -1307,6 +1288,52 @@ const isAlreadyRegistered = computed(() => {
         (p.email && p.email === userEmail) ||
         (p.athlete_code && p.athlete_code === user.value.athlete_code)
     )
+})
+
+// Dynamic SEO & Open Graph Meta Tags for Social Sharing & Google Rich Snippets
+useSeoMeta({
+    title: () => `${tournament.value.name || 'Event Panahan'} - Archeris.net`,
+    ogTitle: () => `${tournament.value.name || 'Event Panahan'} - Archeris.net`,
+    description: () => tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Ikuti event panahan ${tournament.value.name} di ${tournament.value.location}. Dapatkan informasi jadwal, kualifikasi, eliminasi, dan pendaftaran resmi.`,
+    ogDescription: () => tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Ikuti event panahan ${tournament.value.name} di ${tournament.value.location}. Dapatkan informasi jadwal, kualifikasi, eliminasi, dan pendaftaran resmi.`,
+    ogImage: () => tournament.value.banner_url || tournament.value.logo_url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop',
+    twitterCard: 'summary_large_image',
+    twitterTitle: () => `${tournament.value.name || 'Event Panahan'} - Archeris.net`,
+    twitterDescription: () => tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Ikuti event panahan ${tournament.value.name} di ${tournament.value.location}.`,
+    twitterImage: () => tournament.value.banner_url || tournament.value.logo_url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop',
+})
+
+// Canonical Link & SportsEvent JSON-LD Structured Data for Google Rich Snippets
+useHead({
+    link: [
+        { rel: 'canonical', href: `https://archeris.net/events/${slug}` }
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            children: computed(() => JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'SportsEvent',
+                'name': tournament.value.name || 'Event Panahan',
+                'description': tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 200) : '',
+                'image': [tournament.value.banner_url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop'],
+                'location': {
+                    '@type': 'Place',
+                    'name': tournament.value.location || 'Lapangan Panahan',
+                    'address': {
+                        '@type': 'PostalAddress',
+                        'addressLocality': tournament.value.location || 'Indonesia',
+                        'addressCountry': 'ID'
+                    }
+                },
+                'organizer': {
+                    '@type': 'Organization',
+                    'name': tournament.value.organizer || 'Penyelenggara Event',
+                    'url': 'https://archeris.net'
+                }
+            }))
+        }
+    ]
 })
 </script>
 

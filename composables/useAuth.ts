@@ -174,20 +174,52 @@ export const useAuth = () => {
     return response
   }
 
-  const logout = async (): Promise<void> => {
-    const baseUrl = useApiBaseUrl()
-    await $fetch(`${baseUrl}/auth/logout`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include'
-    })
+  const clearClientAuth = () => {
     user.value = null
     archerProfile.value = null
     organizerProfile.value = null
     sellerProfile.value = null
 
     if (import.meta.client) {
-      window.location.href = '/'
+      // Clear cookies across all possible domain scopes and paths
+      const cookiesToClear = ['auth_token', 'refresh_token', 'session', 'token']
+      const host = window.location.hostname
+      const hostParts = host.split('.')
+      const domainVariants = ['', `; domain=${host}`]
+      if (hostParts.length > 2) {
+        domainVariants.push(`; domain=.${hostParts.slice(-2).join('.')}`)
+      }
+
+      cookiesToClear.forEach(cookieName => {
+        domainVariants.forEach(dom => {
+          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/${dom}`
+          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; max-age=0${dom}`
+        })
+      })
+
+      try {
+        sessionStorage.removeItem('oauth_state')
+        sessionStorage.removeItem('auth_user')
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('auth_user')
+      } catch {}
+    }
+  }
+
+  const logout = async (redirectUrl = '/'): Promise<void> => {
+    try {
+      const baseUrl = useApiBaseUrl()
+      await $fetch(`${baseUrl}/auth/logout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
+      }).catch(() => {})
+    } catch {}
+
+    clearClientAuth()
+
+    if (import.meta.client) {
+      window.location.href = redirectUrl
     }
   }
 
@@ -208,31 +240,19 @@ export const useAuth = () => {
 
         // Populate detailed profile states on client-side only
         if (userType === 'archer') {
-          if (user.value.bio || user.value.date_of_birth) {
-            archerProfile.value = { ...user.value }
-          } else {
-            const profileRes = await $fetch<{ data: any }>(`${baseUrl}/archer/me`, fetchOptions).catch(() => null)
-            archerProfile.value = profileRes?.data || profileRes
-          }
+          const profileRes = await $fetch<{ data: any }>(`${baseUrl}/archer/me`, fetchOptions)
+          archerProfile.value = profileRes?.data || profileRes
         } else if (userType === 'organizer') {
-          if (user.value.logo_url || user.value.city) {
-            organizerProfile.value = { ...user.value }
-          } else {
-            const profileRes = await $fetch<{ data: any }>(`${baseUrl}/organizer/me`, fetchOptions).catch(() => null)
-            organizerProfile.value = profileRes?.data || profileRes
-          }
-
+          const profileRes = await $fetch<{ data: any }>(`${baseUrl}/organizer/me`, fetchOptions)
+          organizerProfile.value = profileRes?.data || profileRes
         } else if (userType === 'seller') {
-          if (user.value.store_name) {
-            sellerProfile.value = { ...user.value }
-          } else {
-            const profileRes = await $fetch<{ data: any }>(`${baseUrl}/seller/me`, fetchOptions).catch(() => null)
-            sellerProfile.value = profileRes?.data || profileRes
-          }
+          const profileRes = await $fetch<{ data: any }>(`${baseUrl}/seller/me`, fetchOptions)
+          sellerProfile.value = profileRes?.data || profileRes
         }
       }
     } catch (error: unknown) {
-      user.value = null
+      // Profile fetch failed (e.g. 401/404/user deleted) -> wipe state & cookies cleanly
+      clearClientAuth()
     } finally {
       isUserLoading.value = false
     }

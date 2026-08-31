@@ -2,6 +2,7 @@
     <div class="flex flex-col gap-8">
         <!-- Header Section -->
         <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
             <!-- Theme Motif Pattern -->
             <div class="absolute inset-0"
                 style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
@@ -18,7 +19,7 @@
                     </div>
                     <div>
                         <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ t('organization_news.index.title') }}</h1>
-                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('organization_news.index.subtitle') }}</p>
+                        <div class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('organization_news.index.subtitle') }}</div>
                     </div>
                 </div>
                 <BaseButton to="/dashboard/root/news/create" variant="primary" icon="ph:plus-bold"
@@ -60,14 +61,14 @@
         <div
             class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
             <div class="flex-grow w-full">
-                <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" placeholder="Cari judul berita..."
+                <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" :placeholder="t('root_news_cms.search_news_placeholder')"
                     label="Pencarian" />
             </div>
             <div class="w-full md:w-48">
                 <BaseSelect v-model="statusFilter" :items="statusOptions" label="Status" />
             </div>
             <div class="w-full md:w-48">
-                <BaseSelect v-model="categoryFilter" :items="categoryOptions" label="Kategori" />
+                <BaseSelect v-model="categoryFilter" :items="categoryOptions" :label="t('root_news_cms.category_filter_label')" />
             </div>
             <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
                 Reset
@@ -113,7 +114,7 @@
                         class="font-bold text-navy text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                         {{ item.title }}
                     </h3>
-                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">{{ item.excerpt }}</p>
+                    <div class="text-gray-500 text-sm line-clamp-2 mb-4">{{ item.excerpt }}</div>
  
                     <!-- Meta Info -->
                     <div class="flex items-center justify-between text-xs text-gray-400 pt-4 border-t border-gray-100">
@@ -159,7 +160,7 @@
                         <Icon icon="ph:newspaper" class="text-5xl" />
                     </div>
                     <h3 class="text-xl font-bold text-navy mb-2">{{ t('organization_news.index.empty_title') }}</h3>
-                    <p class="text-gray-500 mb-6 max-w-sm mx-auto">{{ t('organization_news.index.empty_desc') }}</p>
+                    <div class="text-gray-500 mb-6 max-w-sm mx-auto">{{ t('organization_news.index.empty_desc') }}</div>
                 </div>
             </div>
         </div>
@@ -178,18 +179,20 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
  
+const { t } = useI18n()
+
 definePageMeta({
     title: 'Berita',
     layout: 'dashboard'
 })
  
 useHead({
-    title: 'Manajemen Berita - Archeris Dashboard'
+    title: computed(() => t('news.management_title', 'News Management') + ' - ArcheryHub Dashboard')
 })
  
 const { get, delete: del } = useApi()
 const toast = useToast()
-const { t } = useI18n()
+
  
 const news = ref([])
 const isLoading = ref(true)

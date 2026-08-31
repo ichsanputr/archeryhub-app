@@ -3,25 +3,26 @@
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <h2 class="text-xl font-black text-navy leading-tight">{{ t('event_qualification.target_settings') }}</h2>
+                <h2 class="text-xl font-black text-navy leading-tight">{{ t('event_qualification.target_settings', 'Pengaturan Target') }}</h2>
                 <div class="text-sm text-gray-500 mt-1">
-                    {{ t('event_qualification.target_settings_desc') }}
+                    {{ t('event_qualification.target_settings_desc', 'Kelola penempatan pemanah pada target kualifikasi (Geser & Letakkan)') }}
                 </div>
             </div>
             <div class="flex items-center gap-3">
-                <BaseButton variant="white" icon="ph:trash-bold"
+                <BaseButton variant="white" icon="ph:trash-bold" size="md"
                     :disabled="isReseting || isAssigning || props.archers.length === unassignedArchersCount"
-                    :loading="isReseting" class="!text-red-500 !border-red-100 hover:!bg-red-50"
+                    :loading="isReseting" class="!text-red-600 !border-red-200 hover:!bg-red-50 font-black text-xs sm:text-sm h-10 sm:h-11 px-4 sm:px-5"
                     @click="isSubscriptionActive ? resetAssignments() : (showPremiumModal = true)">
                     {{ t('event_qualification.reset') }}
                 </BaseButton>
  
                 <div class="relative dropdown-container">
-                    <BaseButton variant="primary" icon="fa7-solid:random"
+                    <BaseButton variant="primary" icon="fa7-solid:random" size="md"
                         :disabled="isAssigning || isReseting || props.archers.length === 0" :loading="isAssigning"
+                        class="font-black text-xs sm:text-sm h-10 sm:h-11 px-4 sm:px-5 shadow-md shadow-primary/20"
                         @click="isSubscriptionActive ? (showAutoAssignMenu = !showAutoAssignMenu) : (showPremiumModal = true)">
                         {{ t('event_qualification.auto_assign') }}
-                        <Icon icon="ph:caret-down-bold" class="ml-2 text-xs" />
+                        <Icon icon="ph:caret-down-bold" class="ml-1.5 text-xs" />
                     </BaseButton>
  
                     <transition enter-active-class="transition ease-out duration-100"

@@ -167,24 +167,9 @@
             </a>
           </div>
 
-          <!-- Product context banner -->
-          <div v-if="activeConv.product_name"
-            class="flex items-center gap-3 px-5 py-2.5 bg-primary/5 border-b border-primary/20 shrink-0">
-            <div class="size-8 rounded-lg overflow-hidden bg-white border-2 border-primary/20 shrink-0">
-              <img v-if="activeConv.product_image" :src="activeConv.product_image" class="w-full h-full object-cover" />
-              <Icon v-else icon="ph:package-bold" class="text-gray-400 text-sm m-auto mt-1.5" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <div class="text-[10px] font-black text-navy truncate">{{ activeConv.product_name }}</div>
-              <div class="text-[9px] text-gray-500 font-semibold">{{ t('chat.product_inquiry') }}</div>
-            </div>
-            <a v-if="activeConv.product_id" :href="`/products/${activeConv.product_id}`" target="_blank"
-              class="text-[10px] font-black text-primary hover:underline shrink-0">{{ t('chat.view_product') }} →</a>
-          </div>
-
           <!-- Messages area -->
-          <div ref="messageContainer" class="flex-grow overflow-y-auto px-4 sm:px-6 py-5 space-y-3 no-scrollbar"
-            style="background: linear-gradient(180deg, #f4f6fb 0%, #eef1f8 100%);">
+          <div ref="messageContainer" class="flex-grow overflow-y-auto px-4 sm:px-6 py-5 space-y-3 no-scrollbar bg-[#efeae2]/70 relative"
+            style="background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-repeat: repeat;">
 
             <!-- Loading skeleton -->
             <div v-if="isLoadingMessages" class="space-y-4 animate-pulse">
@@ -221,9 +206,9 @@
                   <!-- Message bubble -->
                   <div class="flex flex-col" :class="msg.sender_type === 'archer' ? 'items-end' : 'items-start'">
                     <div class="max-w-[78%] sm:max-w-[65%]">
-                      <div class="px-4 py-2.5 text-sm leading-relaxed font-medium shadow-md" :class="msg.sender_type === 'archer'
-                        ? 'bg-navy text-white rounded-2xl rounded-tr-sm'
-                        : 'bg-white text-navy border border-gray-200 rounded-2xl rounded-tl-sm'">
+                      <div class="px-4 py-2.5 text-sm leading-relaxed font-medium shadow-xs whitespace-pre-wrap break-words bg-white text-navy border border-gray-200" :class="msg.sender_type === 'archer'
+                        ? 'rounded-2xl rounded-tr-xs'
+                        : 'rounded-2xl rounded-tl-xs'">
                         {{ msg.message }}
                       </div>
                       <div class="mt-1 text-[9px] font-semibold text-gray-400 flex items-center gap-1"
@@ -244,10 +229,11 @@
           <div class="px-4 py-3 bg-white border-t-2 border-gray-200 shrink-0">
             <div class="flex items-end gap-2.5 max-w-4xl mx-auto">
               <div
-                class="flex-grow bg-gray-50 rounded-2xl border-2 border-gray-200 focus-within:border-primary/40 focus-within:bg-white transition-all flex items-end overflow-hidden">
+                class="flex-grow bg-gray-50 rounded-2xl border-2 border-gray-200 focus-within:border-primary/40 focus-within:bg-white transition-all flex items-center px-2 overflow-visible">
+                <EmojiPicker @select="(emoji) => newMessage += emoji" />
                 <textarea v-model="newMessage" :placeholder="t('chat.type_reply')" rows="1"
                   @keydown.enter.exact.prevent="sendMessage"
-                  class="flex-grow bg-transparent border-none focus:ring-0 text-sm font-medium px-4 py-3 max-h-32 resize-none no-scrollbar text-navy placeholder:text-gray-300 outline-none" />
+                  class="flex-grow bg-transparent border-none focus:ring-0 text-sm font-medium px-3 py-3 max-h-32 resize-none no-scrollbar text-navy placeholder:text-gray-300 outline-none" />
               </div>
               <button @click="sendMessage" :disabled="!newMessage.trim() || isSending"
                 class="size-11 rounded-2xl bg-navy flex items-center justify-center shrink-0 shadow-lg hover:bg-primary hover:shadow-primary/40 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-100 border-2 border-navy hover:border-primary">
@@ -266,16 +252,17 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import EmojiPicker from '~/components/common/EmojiPicker.vue'
 
 definePageMeta({ layout: 'dashboard' })
 
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => t('chat.title') + ' - Archeris')
+  title: computed(() => t('chat.title') + ' - ArcheryHub Dashboard')
 })
 
 const route = useRoute()

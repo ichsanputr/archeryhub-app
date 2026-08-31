@@ -105,20 +105,20 @@ const variantClass = computed(() => {
 
 const sizeClass = computed(() => {
     const sizes = {
-        sm: 'px-3 py-1.5 text-xs rounded-lg',
-        md: 'px-4 py-2.5 text-sm rounded-xl',
-        lg: 'px-6 py-3 text-base rounded-xl',
-        xl: 'px-8 py-4 text-lg rounded-2xl'
+        sm: 'px-3.5 py-2 text-xs rounded-xl min-h-[38px]',
+        md: 'px-4 py-2.5 text-sm rounded-xl min-h-[44px]',
+        lg: 'px-6 py-3 text-base rounded-xl min-h-[48px]',
+        xl: 'px-8 py-4 text-lg rounded-2xl min-h-[54px]'
     }
     return sizes[props.size] || sizes.md
 })
 
 const iconSizeClass = computed(() => {
     const sizes = {
-        sm: 'text-base !text-[16px]',
-        md: 'text-lg !text-[20px]',
-        lg: 'text-xl !text-[24px]',
-        xl: 'text-2xl !text-[28px]'
+        sm: 'text-lg !text-[18px] min-w-[18px] min-h-[18px]',
+        md: 'text-xl !text-[22px] min-w-[22px] min-h-[22px]',
+        lg: 'text-2xl !text-[26px] min-w-[26px] min-h-[26px]',
+        xl: 'text-3xl !text-[30px] min-w-[30px] min-h-[30px]'
     }
     return sizes[props.size] || sizes.md
 })

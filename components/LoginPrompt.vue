@@ -46,6 +46,5 @@ defineExpose({
 </script>
 
 <template>
-  <!-- This component doesn't render anything directly -->
-  <!-- It provides a function to show login prompts -->
+  <div v-if="false"></div>
 </template>

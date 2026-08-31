@@ -2,6 +2,7 @@
     <div class="space-y-8">
         <!-- Header Section -->
         <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
             <div class="absolute inset-0"
                 style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
             </div>
@@ -16,13 +17,13 @@
                     </button>
                     <div>
                         <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ eventName || t('earnings.detail_title') }}</h1>
-                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('earnings.detail_subtitle') }}</p>
+                        <div class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('earnings.detail_subtitle') }}</div>
                     </div>
                 </div>
                 <div class="flex gap-3">
                     <div class="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-right">
-                        <p class="text-[10px] font-black tracking-wider text-primary">{{ t('earnings.total_event') }}</p>
-                        <p class="text-xl font-black tabular-nums">Rp {{ totalAmount.toLocaleString('id-ID') }}</p>
+                        <div class="text-[10px] font-black tracking-wider text-primary">{{ t('earnings.total_event') }}</div>
+                        <div class="text-xl font-black tabular-nums">Rp {{ totalAmount.toLocaleString('id-ID') }}</div>
                     </div>
                 </div>
             </div>
@@ -77,7 +78,7 @@
                         <tr v-if="!loading && filteredPayments.length === 0">
                             <td colspan="5" class="px-6 py-12 text-center">
                                 <Icon icon="ph:mask-sad" class="text-4xl text-gray-200 mx-auto mb-2" />
-                                <p class="text-gray-400">{{ t('earnings.no_data') }}</p>
+                                <div class="text-gray-400">{{ t('earnings.no_data') }}</div>
                             </td>
                         </tr>
                     </tbody>
@@ -85,7 +86,7 @@
             </div>
             <div v-if="loading" class="p-12 text-center">
                 <Icon icon="ph:circle-notch-bold" class="text-3xl text-primary animate-spin mx-auto" />
-                <p class="text-gray-400 mt-2 text-sm font-medium">{{ t('earnings.loading') }}</p>
+                <div class="text-gray-400 mt-2 text-sm font-medium">{{ t('earnings.loading') }}</div>
             </div>
         </div>
     </div>
@@ -110,7 +111,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Detail Penghasilan Event - ArcheryHub'
+    title: computed(() => t('earnings.event_detail', 'Event Earnings Detail') + ' - ArcheryHub Dashboard')
 })
 
 const eventId = route.params.id

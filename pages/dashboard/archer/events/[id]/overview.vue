@@ -1,821 +1,405 @@
 <template>
-    <div class="flex flex-col gap-6 pb-12">
-        <!-- Enhanced Header -->
-        <div
-            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
+  <div class="flex flex-col gap-6 md:gap-8 pb-16">
+    <!-- Hero Banner Header -->
+    <div
+      class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+      <!-- Background Motif -->
+      <div class="absolute inset-0"
+        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.15);"></div>
+      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+      <!-- Header Body -->
+      <div class="relative p-6 sm:p-8">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div class="flex items-start gap-4">
+            <!-- Event Thumbnail / Logo -->
+            <div class="size-16 sm:size-20 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 overflow-hidden shrink-0 shadow-md flex items-center justify-center">
+              <img v-if="event?.banner_url || event?.logo_url" :src="useImageOrDefault(event.logo_url || event.banner_url)" :alt="event?.name" class="w-full h-full object-cover" />
+              <Icon v-else icon="ph:trophy-bold" class="text-primary text-3xl" />
             </div>
 
-            <!-- Decorative Background Elements -->
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-            <!-- Header Content -->
-            <div class="relative p-6 sm:p-8">
-                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                    <div class="flex items-start gap-4">
-                        <!-- Icon Badge -->
-                        <div
-                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-                            <Icon icon="ph:calendar-check" class="text-white text-2xl" />
-                        </div>
-
-                        <!-- Title Section -->
-                        <div class="flex-1">
-                            <div v-if="isLoading" class="space-y-3">
-                                <div class="h-8 w-64 bg-white/10 animate-pulse rounded-lg"></div>
-                                <div class="h-4 w-48 bg-white/5 animate-pulse rounded"></div>
-                                <div class="h-4 w-24 bg-white/5 animate-pulse rounded"></div>
-                            </div>
-                            <template v-else>
-                                <div class="flex items-center gap-3 mb-2">
-                                    <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">
-                                        {{ event?.name || t('event_overview.title') }}
-                                    </h1>
-                                </div>
-                                <p v-if="event" class="text-slate-300 text-sm mb-2">
-                                    {{ event.venue || t('event_overview.venue_default') }} • {{ event.location || t('event_overview.address_default') }}
-                                </p>
-                                <div class="flex flex-wrap items-center gap-4">
-                                    <div
-                                        class="flex items-center gap-2 text-slate-300 text-xs font-bold  tracking-wider">
-                                        <Icon icon="ph:hash-bold" class="text-white text-sm" />
-                                        <span>{{ event?.code }}</span>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex flex-wrap gap-3 flex-shrink-0">
-                        <BaseButton variant="white" icon="ph:share-network-bold"
-                            class="h-11 px-5 border-white/20 shadow-sm font-bold" @click="openShareDialog">
-                            {{ t('event_overview.share') }}
-                        </BaseButton>
-                    </div>
+            <!-- Event Details -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 text-xs text-white/60 mb-2">
+                <NuxtLink to="/dashboard/archer/events" class="hover:text-white transition-colors">Event Saya</NuxtLink>
+                <Icon icon="ph:caret-right-bold" class="text-[10px]" />
+                <span class="text-primary font-medium truncate">Ringkasan Event</span>
+              </div>
+              <h1 class="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-tight tracking-tight">
+                {{ event?.name || t('archer_event_overview.loading_event') }}
+              </h1>
+              <div class="flex flex-wrap items-center gap-4 text-xs text-slate-300 font-medium mt-2">
+                <div class="flex items-center gap-1.5">
+                  <Icon icon="ph:map-pin-bold" class="text-primary text-sm" />
+                  <span>{{ event?.venue || event?.location || 'Venue Pertandingan' }}</span>
                 </div>
+                <div class="size-1 rounded-full bg-white/30 hidden sm:block"></div>
+                <div class="flex items-center gap-1.5">
+                  <Icon icon="ph:calendar-blank-bold" class="text-primary text-sm" />
+                  <span>{{ formatDateRange(event?.start_date, event?.end_date) }}</span>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="flex items-center gap-3 shrink-0">
+            <NuxtLink :to="`/events/${eventSlug || eventId}`" target="_blank"
+              class="h-10 px-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-bold flex items-center gap-2 backdrop-blur-sm transition-all shadow-sm">
+              <Icon icon="ph:arrow-square-out-bold" class="text-base text-primary" />
+              <span>Halaman Publik</span>
+            </NuxtLink>
+          </div>
         </div>
-
-        <!-- Main Content (Overview) -->
-
-        <!-- Loading State -->
-        <div v-if="isLoading" class="space-y-8">
-            <!-- Stats Grid Skeleton -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div v-for="i in 4" :key="i"
-                    class="bg-white rounded-xl p-5 h-32 border border-gray-100 shadow-sm flex flex-col justify-between">
-                    <div class="flex justify-between items-start">
-                        <div class="space-y-2">
-                            <div class="h-3 w-20 bg-gray-100 animate-pulse rounded"></div>
-                            <div class="h-8 w-12 bg-gray-100 animate-pulse rounded-lg"></div>
-                        </div>
-                        <div class="size-10 bg-gray-50 animate-pulse rounded-lg"></div>
-                    </div>
-                    <div class="h-3 w-24 bg-gray-50 animate-pulse rounded mt-auto"></div>
-                </div>
-            </div>
-
-            <!-- Main Content Grid Skeleton -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Analytics Skeleton -->
-                <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                        <div class="h-6 w-40 bg-gray-100 animate-pulse rounded"></div>
-                        <div class="h-4 w-20 bg-gray-50 animate-pulse rounded"></div>
-                    </div>
-                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/10">
-                        <div class="space-y-5">
-                            <div class="h-3 w-24 bg-gray-100 animate-pulse rounded mb-6"></div>
-                            <div v-for="i in 5" :key="i" class="space-y-2">
-                                <div class="flex justify-between">
-                                    <div class="h-4 w-32 bg-gray-100 animate-pulse rounded"></div>
-                                    <div class="h-4 w-8 bg-gray-50 animate-pulse rounded"></div>
-                                </div>
-                                <div class="h-1.5 w-full bg-gray-100 animate-pulse rounded-full"></div>
-                            </div>
-                        </div>
-                        <div class="space-y-4">
-                            <div class="h-3 w-32 bg-gray-100 animate-pulse rounded mb-6"></div>
-                            <div v-for="i in 3" :key="i"
-                                class="h-20 bg-white border border-gray-50 rounded-xl animate-pulse">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Leaderboard Skeleton -->
-                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                        <div class="h-6 w-32 bg-gray-100 animate-pulse rounded"></div>
-                        <div class="h-4 w-16 bg-gray-50 animate-pulse rounded"></div>
-                    </div>
-                    <div class="p-0">
-                        <div v-for="i in 5" :key="i"
-                            class="border-b border-gray-50 p-4 px-6 flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <div class="size-6 bg-gray-100 animate-pulse rounded"></div>
-                                <div class="space-y-2">
-                                    <div class="h-4 w-32 bg-gray-100 animate-pulse rounded"></div>
-                                    <div class="h-3 w-20 bg-gray-50 animate-pulse rounded"></div>
-                                </div>
-                            </div>
-                            <div class="h-6 w-10 bg-gray-100 animate-pulse rounded"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab Content -->
-        <div v-else class="space-y-8">
-            <!-- OVERVIEW TAB -->
-            <div v-if="activeTab === 'overview'" class="space-y-8">
-                <!-- Stats Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                    <!-- Total Pemanah -->
-                    <StatCard
-                        :title="t('event_overview.total_archers')"
-                        :value="event?.participant_count || 0"
-                        icon="ph:users"
-                        color="primary"
-                    >
-                        <template #footer>
-                            <p class="text-green-600 text-xs font-bold flex items-center gap-1">
-                                <Icon icon="ph:trend-up" class="text-[14px]" />
-                                {{ participants.length }} {{ t('event_overview.registered') }}
-                            </p>
-                        </template>
-                    </StatCard>
-
-                    <!-- Active Targets -->
-                    <StatCard
-                        :title="t('event_overview.active_targets')"
-                        :value="event?.active_target_count || 0 + ' / ' + (event?.target_count || 0)"
-                        icon="ph:target"
-                        color="primary"
-                    >
-                        <template #footer>
-                            <p class="text-text-secondary text-xs font-medium flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                                {{ t('event_overview.system_normal') }}
-                            </p>
-                        </template>
-                    </StatCard>
-
-                    <!-- Completion -->
-                    <StatCard
-                        :title="t('event_overview.completion')"
-                        :value="completionPercentage + '%'"
-                        icon="ph:check-square-offset"
-                        color="primary"
-                    >
-                        <template #footer>
-                            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-auto">
-                                <div class="bg-primary h-1.5 rounded-full" :style="`width: ${completionPercentage}%`"></div>
-                            </div>
-                        </template>
-                    </StatCard>
-
-                    <!-- Time Left -->
-                    <StatCard
-                        :title="t('event_overview.time_left')"
-                        :value="timeLeft"
-                        icon="ph:timer"
-                        color="primary"
-                    >
-                        <template #footer>
-                            <p class="text-text-secondary text-xs font-medium">{{ t('event_overview.estimated_end', { time: estimatedEnd }) }}</p>
-                        </template>
-                    </StatCard>
-                </div>
-
-                <!-- Main Content Grid -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Registration Analytics -->
-                    <div
-                        class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
-                        <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">
-                                {{ t('event_overview.registration_analytics') }}
-                            </h3>
-                            <NuxtLink :to="`/dashboard/events/${route.params.id}/participants`"
-                                class="text-xs text-navy font-bold hover:text-primary transition-colors">
-                                {{ t('event_overview.view_all_participants') }}
-                            </NuxtLink>
-                        </div>
-                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/30">
-                            <!-- By Category -->
-                            <div>
-                                <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">
-                                    {{ t('event_overview.category_distribution') }}
-                                </h4>
-                                <div class="space-y-4">
-                                    <div v-for="cat in registrationStats.categories.slice(0, 5)" :key="cat.name"
-                                        class="space-y-1.5">
-                                        <div class="flex items-center gap-3 text-sm">
-                                            <div
-                                                class="size-8 rounded-lg bg-navy/5 flex items-center justify-center p-1.5 shrink-0">
-                                                <img :src="'/' + getCategoryIcon(`${cat.division} ${cat.event_type} ${cat.gender}`)"
-                                                    :alt="cat.division" class="w-full h-full object-contain" />
-                                            </div>
-                                            <span class="font-bold text-navy-dark truncate pr-2">{{ cat.division }} - {{
-                                                cat.name }}</span>
-                                            <span class="text-navy font-black font-mono shrink-0 ml-auto">{{ cat.count
-                                            }}</span>
-                                        </div>
-                                        <div class="w-full bg-gray-200 rounded-full h-1.5">
-                                            <div class="bg-navy h-1.5 rounded-full transition-all duration-500"
-                                                :style="`width: ${(cat.count / Math.max(1, participants.length)) * 100}%`">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="registrationStats.categories.length === 0"
-                                        class="py-10 text-center text-gray-400 italic text-xs">
-                                        {{ t('event_overview.no_category_data') }}
-                                    </div>
-                                    <p v-if="registrationStats.categories.length > 5"
-                                        class="text-[10px] text-gray-400 italic text-center pt-2">
-                                        {{ t('event_overview.showing_top_categories') }}
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Payment Status -->
-                            <div>
-                                <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">
-                                    {{ t('event_overview.payment_status') }}
-                                </h4>
-                                <div class="space-y-3">
-                                    <div
-                                        class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm transition-transform hover:-translate-y-0.5">
-                                        <div class="flex items-center gap-3">
-                                            <div
-                                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-primary">
-                                                <Icon icon="ph:check-circle-fill" class="text-xl" />
-                                            </div>
-                                            <div>
-                                                <span
-                                                    class="block text-sm font-bold text-navy-dark leading-tight">{{ t('event_overview.paid') }}</span>
-                                                <span class="text-[10px] text-gray-400 font-medium">{{ t('event_overview.payment_verified') }}</span>
-                                            </div>
-                                        </div>
-                                        <span class="text-2xl font-black text-green-600 font-mono">{{
-                                            registrationStats.payment.lunas }}</span>
-                                    </div>
-                                    <div
-                                        class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm transition-transform hover:-translate-y-0.5">
-                                        <div class="flex items-center gap-3">
-                                            <div
-                                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-primary">
-                                                <Icon icon="ph:clock-fill" class="text-xl" />
-                                            </div>
-                                            <div>
-                                                <span
-                                                    class="block text-sm font-bold text-navy-dark leading-tight">{{ t('event_overview.waiting_acc') }}</span>
-                                                <span class="text-[10px] text-gray-400 font-medium">{{ t('event_overview.need_verification') }}</span>
-                                            </div>
-                                        </div>
-                                        <span class="text-2xl font-black text-amber-600 font-mono">{{
-                                            registrationStats.payment.menunggu_acc }}</span>
-                                    </div>
-                                    <div
-                                        class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm transition-transform hover:-translate-y-0.5">
-                                        <div class="flex items-center gap-3">
-                                            <div
-                                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-primary">
-                                                <Icon icon="ph:warning-circle-fill" class="text-xl" />
-                                            </div>
-                                            <div>
-                                                <span class="block text-sm font-bold text-navy-dark leading-tight">{{ t('event_overview.unpaid') }}</span>
-                                                <span class="text-[10px] text-gray-400 font-medium">{{ t('event_overview.open_bill') }}</span>
-                                            </div>
-                                        </div>
-                                        <span class="text-2xl font-black text-red-600 font-mono">{{
-                                            registrationStats.payment.belum_lunas }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Leaderboard -->
-                    <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
-                        <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">{{ t('event_overview.leaderboard') }}</h3>
-                            <NuxtLink :to="`/dashboard/events/${route.params.id}/results`"
-                                class="text-xs text-text-secondary hover:text-navy-dark font-semibold transition-colors">
-                                {{ t('event_overview.view_all') }}
-                            </NuxtLink>
-                        </div>
-                        <div class="flex-1 overflow-y-auto max-h-[440px] p-4">
-                            <div class="space-y-3">
-                                <div v-for="(participant, idx) in topParticipants" :key="participant.id"
-                                    @click="navigateTo(`/dashboard/events/${route.params.id}/participants/${participant.athlete_code || participant.id}`)"
-                                    class="group relative bg-white border border-gray-50 rounded-2xl p-4 hover:border-primary/50 hover:shadow-md transition-all cursor-pointer flex items-center gap-4">
-
-                                    <!-- Avatar with Rank Badge -->
-                                    <div class="relative shrink-0 mr-2">
-                                        <div
-                                            class="size-12 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shadow-sm relative z-0">
-                                            <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
-                                                class="w-full h-full object-cover" />
-                                        </div>
-                                        <div class="absolute -top-1 -right-1 size-6 rounded-lg flex items-center justify-center font-black text-[10px] shadow-md z-10 border-2 border-white"
-                                            :class="getRankClass(idx)">
-                                            {{ idx + 1 }}
-                                        </div>
-                                    </div>
-
-                                    <!-- Info -->
-                                    <div class="flex-1 min-w-0">
-                                        <div
-                                            class="text-navy font-black truncate group-hover:text-primary transition-colors leading-tight">
-                                            {{ participant.full_name }}
-                                        </div>
-                                        <div class="flex items-center gap-2 mt-1">
-                                            <div
-                                                class="flex items-center gap-1.5 px-2 py-0.5 bg-navy/5 rounded-md shrink-0">
-                                                <img :src="'/' + getCategoryIcon(`${participant.division_name} ${participant.event_type_name} ${participant.gender_division_name}`)"
-                                                    class="size-3 object-contain opacity-60" />
-                                                <span
-                                                    class="text-[9px] font-black text-gray-500 tracking-wider truncate max-w-[80px]">
-                                                    {{ participant.division_name }}
-                                                </span>
-                                            </div>
-                                            <span class="text-[10px] font-bold text-gray-300 truncate">
-                                                {{ participant.club_name }}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Score -->
-                                    <div class="text-right shrink-0">
-                                        <div
-                                            class="text-xl font-black text-navy group-hover:scale-110 transition-transform tabular-nums">
-                                            {{ participant.total_score || 0 }}
-                                        </div>
-                                        <div class="text-[9px] font-black text-gray-400 tracking-tighter">
-                                            {{ t('event_overview.total_score') }}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div v-if="topParticipants.length === 0"
-                                    class="py-12 text-center text-gray-400 italic font-medium bg-gray-50/50 rounded-2xl">
-                                    {{ t('event_overview.no_scores_available') }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- Share Dialog -->
-        <!-- Share Dialog (Teleported) -->
-        <ClientOnly>
-            <Teleport to="body">
-                <div v-if="showShareDialog" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <!-- Backdrop -->
-                    <div class="share-dialog-backdrop absolute inset-0 bg-navy-dark/80 backdrop-blur-sm"
-                        @click="closeShareDialog"></div>
-
-                    <!-- Dialog Card -->
-                    <div
-                        class="share-dialog-card bg-white rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden border border-gray-100">
-                        <!-- Decorative Border Top -->
-                        <div class="bg-primary h-1.5 w-full"></div>
-
-                        <div class="p-8">
-                            <!-- Close Button -->
-                            <BaseButton @click="closeShareDialog" variant="white" size="sm" icon="ph:x-bold"
-                                class="absolute right-6 top-6 h-10 w-10 p-0 border-none shadow-none text-gray-400 hover:text-navy" />
-
-                            <!-- Header -->
-                            <div class="flex items-start gap-4 mb-8">
-                                <div class="p-3 bg-primary/10 text-primary rounded-2xl shrink-0">
-                                    <Icon icon="ph:share-network-bold" class="text-3xl" />
-                                </div>
-                                <div>
-                                    <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">
-                                        {{ t('event_overview.share_event') }}
-                                    </h3>
-                                    <p class="text-text-secondary text-sm font-medium leading-relaxed">
-                                        {{ t('event_overview.share_event_desc') }}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Link Copy Segment -->
-                            <div class="space-y-3 mb-8">
-                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">{{ t('event_overview.public_event_link') }}</label>
-                                <div class="flex items-center gap-2">
-                                    <div
-                                        class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-xs text-gray-600 font-mono truncate">
-                                        {{ publicEventUrl }}
-                                    </div>
-                                    <BaseButton @click="copyPublicUrl" variant="primary" size="sm"
-                                        :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'"
-                                        class="px-5 h-10 font-bold tracking-widest text-[10px] shrink-0 shadow-md">
-                                        {{ copySuccess ? t('event_overview.copied') : t('event_overview.copy') }}
-                                    </BaseButton>
-                                </div>
-                            </div>
-
-                            <!-- Social Sharing -->
-                            <div class="space-y-4">
-                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">{{ t('event_overview.share_to_social') }}</label>
-                                <div class="grid grid-cols-4 gap-3">
-                                    <div v-for="social in [
-                                        { id: 'whatsapp', icon: 'ph:whatsapp-logo-fill', color: 'text-green-500', bg: 'bg-green-50', hover: 'hover:bg-green-500' },
-                                        { id: 'telegram', icon: 'ph:telegram-logo-fill', color: 'text-sky-500', bg: 'bg-sky-50', hover: 'hover:bg-sky-500' },
-                                        { id: 'twitter', icon: 'ph:twitter-logo-fill', color: 'text-black', bg: 'bg-gray-100', hover: 'hover:bg-black' },
-                                        { id: 'facebook', icon: 'ph:facebook-logo-fill', color: 'text-blue-600', bg: 'bg-blue-50', hover: 'hover:bg-blue-600' }
-                                    ]" :key="social.id" @click="shareTo(social.id)"
-                                        class="flex flex-col items-center gap-2 group cursor-pointer">
-                                        <div :class="[social.bg, social.color]"
-                                            class="size-12 rounded-2xl flex items-center justify-center group-hover:bg-primary group-hover:text-navy transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
-                                            <Icon :icon="social.icon" class="text-2xl" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Background Ornament -->
-                            <div
-                                class="absolute top-0 right-0 -mr-12 -mt-12 size-32 bg-gray-50 rounded-full -z-10 blur-2xl">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Teleport>
-        </ClientOnly>
+      </div>
     </div>
+
+    <!-- Loading Skeleton -->
+    <div v-if="isLoading" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2 space-y-6">
+        <div class="h-44 bg-white rounded-3xl animate-pulse border border-slate-100" />
+        <div class="h-64 bg-white rounded-3xl animate-pulse border border-slate-100" />
+      </div>
+      <div class="h-96 bg-white rounded-3xl animate-pulse border border-slate-100" />
+    </div>
+
+    <!-- Loaded Content -->
+    <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+      
+      <!-- Left Column: Archer Status & Hub Cards -->
+      <div class="lg:col-span-2 space-y-6 md:space-y-8">
+
+        <!-- Archer Personal Participation Card -->
+        <div class="bg-white rounded-3xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6 relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-navy to-primary"></div>
+          
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <div class="size-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                <Icon icon="hugeicons:archer" class="text-2xl text-navy" />
+              </div>
+              <div>
+                <span class="text-[10px] font-black text-slate-400 tracking-wider block font-mono">{{ t("archer_event_overview.archer_participation_status") }}</span>
+                <h3 class="text-lg font-black text-navy">{{ participant?.full_name || user?.full_name || t('archer_event_overview.default_archer_name') }}</h3>
+                <div class="text-xs text-slate-500 font-medium">{{ participant?.club_name || t('archer_event_overview.independent_archer') }}</div>
+              </div>
+            </div>
+
+            <!-- Status Pill -->
+            <div class="shrink-0">
+              <span :class="getStatusBadgeClass(participant?.payment_status)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black border">
+                <span class="size-2 rounded-full" :class="isPaid(participant?.payment_status) ? 'bg-emerald-500' : 'bg-amber-500'"></span>
+                {{ isPaid(participant?.payment_status) ? t('archer_event_overview.registered_paid') : t('archer_event_overview.waiting_payment') }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Highlight Metric Grid for Archer -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <!-- Target / Bantalan -->
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
+              <div class="text-[10px] font-bold text-slate-400">{{ t("archer_event_overview.target_face_label") }}</div>
+              <div class="text-lg font-black text-navy mt-1 truncate">
+                {{ primaryCategory?.target_name || t('archer_event_overview.not_assigned') }}
+              </div>
+            </div>
+
+            <!-- Kategori -->
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
+              <div class="text-[10px] font-bold text-slate-400">{{ t("archer_event_overview.category_label") }}</div>
+              <div class="text-sm font-black text-navy mt-1 truncate" :title="primaryCategory?.category_name">
+                {{ primaryCategory?.category_name || t('archer_event_overview.general_category') }}
+              </div>
+            </div>
+
+            <!-- Divisi Busur -->
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
+              <div class="text-[10px] font-bold text-slate-400">{{ t("archer_event_overview.bow_division_label") }}</div>
+              <div class="text-sm font-black text-navy mt-1 truncate">
+                {{ primaryCategory?.division_name || 'Recurve' }}
+              </div>
+            </div>
+
+            <!-- Nomor Atlet / Kode -->
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
+              <div class="text-[10px] font-bold text-slate-400">{{ t("archer_event_overview.athlete_code_label") }}</div>
+              <div class="text-sm font-black text-navy mt-1 font-mono truncate">
+                {{ participant?.athlete_code || ('ARC-' + (participant?.archer_id || '').substring(0, 5).toUpperCase()) }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action CTA inside Card -->
+          <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <span class="text-slate-500 font-medium">{{ t("archer_event_overview.need_ticket_info") }}</span>
+            <NuxtLink :to="`/dashboard/archer/events/${eventId}/my-registration`" class="inline-flex items-center gap-1.5 font-black text-navy hover:text-primary transition-colors">
+              <span>{{ t("archer_event_overview.open_reg_detail") }}</span>
+              <Icon icon="ph:arrow-right-bold" />
+            </NuxtLink>
+          </div>
+        </div>
+
+        <!-- Navigation Hub: 6 Core Performance Cards -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-black text-navy flex items-center gap-2">
+              <Icon icon="ph:compass-bold" class="text-primary text-xl" />
+              <span>{{ t("archer_event_overview.match_features_menu") }}</span>
+            </h3>
+            <span class="text-xs text-slate-400 font-bold">{{ t("archer_event_overview.quick_access_portal") }}</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Card 1: My Registration & QR -->
+            <NuxtLink :to="`/dashboard/archer/events/${eventId}/my-registration`"
+              class="group bg-white rounded-2xl p-5 border border-slate-100 shadow-xs hover:shadow-md hover:border-primary/40 transition-all flex items-start gap-4">
+              <div class="size-12 rounded-xl bg-slate-50 border border-slate-100 text-navy flex items-center justify-center shrink-0 group-hover:bg-primary/10 group-hover:text-primary group-hover:border-primary/30 transition-all">
+                <Icon icon="ph:qr-code-bold" class="text-2xl" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-sm font-black text-navy group-hover:text-primary transition-colors">{{ t("archer_event_overview.card_reg_title") }}</h4>
+                <div class="text-xs text-slate-500 mt-1 line-clamp-2">{{ t("archer_event_overview.card_reg_desc") }}</div>
+              </div>
+            </NuxtLink>
+
+            <!-- Card 2: My Target -->
+            <NuxtLink :to="`/dashboard/archer/events/${eventId}/my-target`"
+              class="group bg-white rounded-2xl p-5 border border-slate-100 shadow-xs hover:shadow-md hover:border-primary/40 transition-all flex items-start gap-4">
+              <div class="size-12 rounded-xl bg-slate-50 border border-slate-100 text-navy flex items-center justify-center shrink-0 group-hover:bg-primary/10 group-hover:text-primary group-hover:border-primary/30 transition-all">
+                <Icon icon="ph:crosshair-bold" class="text-2xl" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-sm font-black text-navy group-hover:text-primary transition-colors">{{ t("archer_event_overview.card_target_title") }}</h4>
+                <div class="text-xs text-slate-500 mt-1 line-clamp-2">{{ t("archer_event_overview.card_target_desc") }}</div>
+              </div>
+            </NuxtLink>
+
+            <!-- Card 3: Scorecard Qualification -->
+            <NuxtLink :to="`/dashboard/archer/events/${eventId}/my-qualification`"
+              class="group bg-white rounded-2xl p-5 border border-slate-100 shadow-xs hover:shadow-md hover:border-primary/40 transition-all flex items-start gap-4">
+              <div class="size-12 rounded-xl bg-slate-50 border border-slate-100 text-navy flex items-center justify-center shrink-0 group-hover:bg-primary/10 group-hover:text-primary group-hover:border-primary/30 transition-all">
+                <Icon icon="ph:pencil-line-bold" class="text-2xl" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-sm font-black text-navy group-hover:text-primary transition-colors">{{ t("archer_event_overview.card_qual_title") }}</h4>
+                <div class="text-xs text-slate-500 mt-1 line-clamp-2">{{ t("archer_event_overview.card_qual_desc") }}</div>
+              </div>
+            </NuxtLink>
+
+            <!-- Card 4: Elimination Bracket -->
+            <NuxtLink :to="`/dashboard/archer/events/${eventId}/my-elimination`"
+              class="group bg-white rounded-2xl p-5 border border-slate-100 shadow-xs hover:shadow-md hover:border-primary/40 transition-all flex items-start gap-4">
+              <div class="size-12 rounded-xl bg-slate-50 border border-slate-100 text-navy flex items-center justify-center shrink-0 group-hover:bg-primary/10 group-hover:text-primary group-hover:border-primary/30 transition-all">
+                <Icon icon="ph:tree-structure-bold" class="text-2xl" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-sm font-black text-navy group-hover:text-primary transition-colors">{{ t("archer_event_overview.card_elim_title") }}</h4>
+                <div class="text-xs text-slate-500 mt-1 line-clamp-2">{{ t("archer_event_overview.card_elim_desc") }}</div>
+              </div>
+            </NuxtLink>
+
+            <!-- Card 5: Team Performance -->
+            <NuxtLink :to="`/dashboard/archer/events/${eventId}/my-team`"
+              class="group bg-white rounded-2xl p-5 border border-slate-100 shadow-xs hover:shadow-md hover:border-primary/40 transition-all flex items-start gap-4">
+              <div class="size-12 rounded-xl bg-slate-50 border border-slate-100 text-navy flex items-center justify-center shrink-0 group-hover:bg-primary/10 group-hover:text-primary group-hover:border-primary/30 transition-all">
+                <Icon icon="ph:users-three-bold" class="text-2xl" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-sm font-black text-navy group-hover:text-primary transition-colors">{{ t("archer_event_overview.card_team_title") }}</h4>
+                <div class="text-xs text-slate-500 mt-1 line-clamp-2">{{ t("archer_event_overview.card_team_desc") }}</div>
+              </div>
+            </NuxtLink>
+
+            <!-- Card 6: My Certificate -->
+            <NuxtLink :to="`/dashboard/archer/events/${eventId}/my-certificate`"
+              class="group bg-white rounded-2xl p-5 border border-slate-100 shadow-xs hover:shadow-md hover:border-primary/40 transition-all flex items-start gap-4">
+              <div class="size-12 rounded-xl bg-slate-50 border border-slate-100 text-navy flex items-center justify-center shrink-0 group-hover:bg-primary/10 group-hover:text-primary group-hover:border-primary/30 transition-all">
+                <Icon icon="ph:certificate-bold" class="text-2xl" />
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-sm font-black text-navy group-hover:text-primary transition-colors">{{ t("archer_event_overview.card_cert_title") }}</h4>
+                <div class="text-xs text-slate-500 mt-1 line-clamp-2">{{ t("archer_event_overview.card_cert_desc") }}</div>
+              </div>
+            </NuxtLink>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Event Info, Schedule & Guidebook -->
+      <div class="space-y-6">
+
+        <!-- Live Leaderboard Quick Widget -->
+        <div class="bg-gradient-to-br from-navy to-navy/95 text-white rounded-3xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-black text-primary tracking-wider">{{ t("archer_event_overview.live_tournament") }}</span>
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+          </div>
+          <div>
+            <h4 class="text-base font-black">{{ t("archer_event_overview.live_leaderboard_title") }}</h4>
+            <div class="text-xs text-slate-300 mt-1">{{ t("archer_event_overview.live_leaderboard_desc") }}</div>
+          </div>
+          <NuxtLink :to="`/dashboard/archer/events/${eventId}/leaderboard`"
+            class="w-full inline-flex items-center justify-center gap-2 py-3 bg-primary hover:bg-primary/90 text-navy font-black text-xs rounded-xl transition-all shadow-sm">
+            <Icon icon="ph:chart-bar-bold" class="text-base" />
+            <span>{{ t("archer_event_overview.open_live_leaderboard") }}</span>
+          </NuxtLink>
+        </div>
+
+        <!-- Event Information Card -->
+        <div class="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm space-y-5">
+          <h4 class="text-sm font-black text-navy flex items-center gap-2 border-b border-gray-100 pb-3">
+            <Icon icon="ph:info-bold" class="text-primary text-lg" />
+            <span>{{ t("archer_event_overview.tournament_info") }}</span>
+          </h4>
+
+          <div class="space-y-4 text-xs">
+            <div>
+              <span class="text-slate-400 font-bold block mb-0.5">Penyelenggara</span>
+              <span class="font-black text-navy">{{ event?.organizer_name || 'Panitia Turnamen' }}</span>
+            </div>
+
+            <div>
+              <span class="text-slate-400 font-bold block mb-0.5">Lokasi & Venue</span>
+              <span class="font-bold text-navy leading-relaxed block">{{ event?.venue || '-' }}</span>
+              <span class="text-slate-500 mt-0.5 block">{{ event?.location || '' }}</span>
+            </div>
+
+            <div>
+              <span class="text-slate-400 font-bold block mb-0.5">Tanggal Pelaksanaan</span>
+              <span class="font-bold text-navy">{{ formatDateRange(event?.start_date, event?.end_date) }}</span>
+            </div>
+
+            <div v-if="event?.technical_guidebook_url" class="pt-2">
+              <a :href="event.technical_guidebook_url" target="_blank"
+                class="w-full inline-flex items-center justify-center gap-2 py-2.5 bg-slate-100 hover:bg-slate-200 text-navy font-bold text-xs rounded-xl transition-colors">
+                <Icon icon="ph:file-pdf-bold" class="text-base text-red-500" />
+                <span>Unduh Petunjuk Teknis (THB)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Event Schedule Highlights -->
+        <div v-if="schedules && schedules.length > 0" class="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm space-y-4">
+          <h4 class="text-sm font-black text-navy flex items-center gap-2 border-b border-gray-100 pb-3">
+            <Icon icon="ph:clock-countdown-bold" class="text-primary text-lg" />
+            <span>Jadwal & Rundown</span>
+          </h4>
+
+          <div class="space-y-3">
+            <div v-for="(item, idx) in schedules.slice(0, 4)" :key="idx" class="flex items-start gap-3 text-xs">
+              <div class="size-6 rounded-lg bg-primary/10 text-navy font-black flex items-center justify-center shrink-0 text-[10px] mt-0.5">
+                {{ idx + 1 }}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-bold text-navy truncate">{{ item.title || item.name }}</div>
+                <div class="text-slate-400 text-[11px] font-medium">{{ item.date || item.time || '-' }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
-import { getCategoryIcon } from '~/utils/logoArcheryCategory'
-import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
-import { useEventContext } from '~/composables/useEventContext'
+import { useAuth } from '~/composables/useAuth'
 import { useImageOrDefault } from '~/composables/useImageHelper'
-import { useI18n } from 'vue-i18n'
-
-const { t } = useI18n()
 
 definePageMeta({
-    layout: 'dashboard'
+  layout: 'dashboard'
+})
+
+const route = useRoute()
+const eventId = route.params.id
+
+const { get } = useApi()
+const { user } = useAuth()
+
+const isLoading = ref(true)
+const event = ref(null)
+const participant = ref(null)
+const schedules = ref([])
+
+const eventSlug = computed(() => event.value?.slug || eventId)
+const primaryCategory = computed(() => {
+  if (participant.value?.categories && participant.value.categories.length > 0) {
+    return participant.value.categories[0]
+  }
+  return null
 })
 
 useHead({
-    title: 'Panel Kontrol Event - ArcheryHub Dashboard'
+  title: computed(() => `${event.value?.name || 'Ringkasan Event'} - ArcheryHub Dashboard`)
 })
 
-import { gsap } from 'gsap'
-
-const route = useRoute()
-const { get, post } = useApi()
-const { setEvent, clearEvent } = useEventContext()
-
-const { user } = useAuth()
-const userRole = computed(() => user.value?.role || 'archer')
-
-const breadcrumbItems = computed(() => [
-    { label: 'Dashboard', path: '/dashboard' },
-    { label: 'Events', path: userRole.value === 'archer' ? '/dashboard/archers/events' : '/dashboard/events' }
-])
-
-const event = ref(null)
-const eventCategories = ref([])
-const participants = ref([])
-const searchQuery = ref('')
-const isLoading = ref(true)
-const isPublishing = ref(false)
-const activeTab = ref('overview')
-const showShareDialog = ref(false)
-const copySuccess = ref(false)
-const now = ref(new Date())
-let timer = null
-
-const filteredParticipants = computed(() => {
-    if (!searchQuery.value) return participants.value
-    const q = searchQuery.value.toLowerCase()
-    return participants.value.filter(p =>
-        p.full_name?.toLowerCase().includes(q) ||
-        p.name?.toLowerCase().includes(q) ||
-        p.athlete_code?.toLowerCase().includes(q) ||
-        p.club_name?.toLowerCase().includes(q) ||
-        p.club_id?.toLowerCase().includes(q)
-    )
-})
-
-const tabs = computed(() => [
-    { id: 'overview', label: t('event_overview.title'), icon: 'ph:layout-bold' }
-])
-
-const groupedTargets = computed(() => {
-    const targets = {}
-    participants.value.forEach(p => {
-        if (!p.target_name) return
-        if (!targets[p.target_name]) {
-            targets[p.target_name] = []
-        }
-        targets[p.target_name].push(p)
-    })
-    return targets
-})
-
-const maxTargets = computed(() => {
-    try {
-        if (!groupedTargets.value || typeof groupedTargets.value !== 'object') return 20
-        const targetNames = Object.keys(groupedTargets.value)
-        if (targetNames.length === 0) return 20
-        // Extract numbers from target_name (e.g., "A6" -> 6)
-        const targetNumbers = targetNames
-            .map(name => parseInt(name.replace(/^\D+/g, '')))
-            .filter(n => !isNaN(n) && isFinite(n) && n > 0)
-
-        if (targetNumbers.length === 0) return 20
-        const max = Math.max(...targetNumbers, 20)
-        return isFinite(max) && max > 0 ? max : 20
-    } catch (error) {
-        console.error('Error calculating maxTargets:', error)
-        return 20
-    }
-})
-
-const completionPercentage = computed(() => {
-    if (!event.value || !participants.value.length) return 0
-    // Simple calculation - can be enhanced with actual completion data
-    const assigned = participants.value.filter(p => p.target_name).length
-    return Math.round((assigned / participants.value.length) * 100)
-})
-
-const timeLeft = computed(() => {
-    if (!event.value?.end_date) return 'N/A'
-    const end = new Date(event.value.end_date)
-    const diff = end - now.value
-    if (diff < 0) return t('event_overview.ended')
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-
-    if (days > 0) {
-        return `${days}d ${hours}h ${minutes}m`
-    }
-    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`
-})
-
-const estimatedEnd = computed(() => {
-    if (!event.value?.end_date) return 'N/A'
-    const end = new Date(event.value.end_date)
-    return end.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-})
-
-const topParticipants = computed(() => {
-    return participants.value
-        .filter(p => p.total_score)
-        .sort((a, b) => (b.total_score || 0) - (a.total_score || 0))
-        .slice(0, 5)
-})
-
-const registrationStats = computed(() => {
-    const stats = {
-        byCategory: {},
-        byPayment: {
-            lunas: 0,
-            menunggu_acc: 0,
-            belum_lunas: 0
-        }
-    }
-
-    participants.value.forEach(p => {
-        // Category stats
-        const catId = p.category_id || 'unassigned'
-        if (!stats.byCategory[catId]) {
-            stats.byCategory[catId] = {
-                name: p.category_name || t('event_overview.no_category'),
-                division: p.division_name || 'N/A',
-                event_type: p.event_type_name || '',
-                gender: p.gender_division_name || '',
-                count: 0
-            }
-        }
-        stats.byCategory[catId].count++
-
-        // Payment stats
-        const status = p.payment_status?.toLowerCase()
-        if (status === 'lunas' || status === 'paid') stats.byPayment.lunas++
-        else if (status === 'menunggu_acc' || status === 'menunggu acc' || status === 'pending') stats.byPayment.menunggu_acc++
-        else stats.byPayment.belum_lunas++
-    })
-
-    return {
-        categories: Object.values(stats.byCategory).sort((a, b) => b.count - a.count),
-        payment: stats.byPayment
-    }
-})
-
-const publicEventUrl = computed(() => {
-    const slug = event.value?.slug || route.params.id
-    const origin = window?.location?.origin || 'https://archeryhub.id'
-    return `${origin}/events/${slug}`
-})
-
-const openShareDialog = () => {
-    copySuccess.value = false
-    showShareDialog.value = true
-    nextTick(() => {
-        const dialog = document.querySelector('.share-dialog-card')
-        const backdrop = document.querySelector('.share-dialog-backdrop')
-        if (dialog && backdrop) {
-            gsap.fromTo(backdrop, { opacity: 0 }, { opacity: 1, duration: 0.3 })
-            gsap.fromTo(dialog, { opacity: 0, scale: 0.9, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'back.out(1.7)' })
-        }
-    })
+const isPaid = (status) => {
+  const s = (status || '').toLowerCase()
+  return ['paid', 'lunas', 'registered', 'terdaftar', 'success', 'completed'].includes(s)
 }
 
-const closeShareDialog = () => {
-    const dialog = document.querySelector('.share-dialog-card')
-    const backdrop = document.querySelector('.share-dialog-backdrop')
-    if (dialog && backdrop) {
-        gsap.to(dialog, {
-            opacity: 0, scale: 0.9, y: 20, duration: 0.2, ease: 'power2.in', onComplete: () => {
-                showShareDialog.value = false
-            }
-        })
-        gsap.to(backdrop, { opacity: 0, duration: 0.2 })
-    } else {
-        showShareDialog.value = false
-    }
+const getStatusBadgeClass = (status) => {
+  if (isPaid(status)) {
+    return 'bg-emerald-50 text-emerald-700 border-emerald-200'
+  }
+  return 'bg-amber-50 text-amber-700 border-amber-200'
 }
 
-const copyPublicUrl = async () => {
-    try {
-        await navigator.clipboard.writeText(publicEventUrl.value)
-        copySuccess.value = true
-        setTimeout(() => {
-            copySuccess.value = false
-        }, 2000)
-    } catch (e) {
-        console.error('Failed to copy link:', e)
-    }
+const formatDateRange = (start, end) => {
+  if (!start && !end) return '-'
+  try {
+    const s = start ? new Date(start).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : ''
+    const e = end ? new Date(end).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : ''
+    if (s && e && s !== e) return `${s} - ${e}`
+    return s || e
+  } catch {
+    return `${start || ''} - ${end || ''}`
+  }
 }
 
-const shareTo = (platform) => {
-    const url = encodeURIComponent(publicEventUrl.value)
-    const text = encodeURIComponent(event.value?.name || 'Event Panahan')
+const loadData = async () => {
+  isLoading.value = true
+  try {
+    const [eventRes, participantRes, scheduleRes] = await Promise.allSettled([
+      get(`/events/${eventId}`),
+      get(`/events/${eventId}/participants/me`),
+      get(`/events/${eventId}/schedule`)
+    ])
 
-    let shareUrl = ''
-    if (platform === 'whatsapp') {
-        shareUrl = `https://wa.me/?text=${text}%20-%20${url}`
-    } else if (platform === 'telegram') {
-        shareUrl = `https://t.me/share/url?url=${url}&text=${text}`
-    } else if (platform === 'twitter') {
-        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`
-    } else if (platform === 'facebook') {
-        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`
+    if (eventRes.status === 'fulfilled') {
+      event.value = eventRes.value?.data || eventRes.value
     }
 
-    if (shareUrl) {
-        window.open(shareUrl, '_blank', 'noopener,noreferrer')
+    if (participantRes.status === 'fulfilled') {
+      participant.value = participantRes.value?.data || participantRes.value
     }
-}
 
-const alerts = computed(() => {
-    // Generate alerts based on event status
-    const alertList = []
-    if (participants.value.filter(p => !p.target_name).length > 0) {
-        alertList.push({
-            id: 1,
-            type: 'info',
-            icon: 'ph:user-plus',
-            title: t('event_overview.unassigned_participants_title'),
-            message: t('event_overview.unassigned_participants_desc', { count: participants.value.filter(p => !p.target_name).length })
-        })
+    if (scheduleRes.status === 'fulfilled') {
+      const sch = scheduleRes.value?.data || scheduleRes.value
+      schedules.value = Array.isArray(sch) ? sch : []
     }
-    return alertList
-})
-
-const getTargetHasIssue = (targetNum) => {
-    // Placeholder - can be enhanced with actual issue detection
-    return false
-}
-
-const fetchEventDetails = async () => {
-    isLoading.value = true
-    try {
-        const [eventRes, categoriesRes, participantsRes] = await Promise.all([
-            get(`/events/${route.params.id}`),
-            get(`/events/${route.params.id}/categories`),
-            get(`/events/${route.params.id}/participants`)
-        ])
-        event.value = eventRes
-        eventCategories.value = categoriesRes?.categories || []
-        participants.value = participantsRes?.participants || []
-
-        if (event.value) {
-            setEvent(event.value)
-        }
-    } catch (error) {
-        console.error('Failed to fetch event management data:', error)
-    } finally {
-        isLoading.value = false
-    }
-}
-
-const publishEvent = async () => {
-    isPublishing.value = true
-    try {
-        await post(`/events/${route.params.id}/publish`)
-        await fetchEventDetails()
-    } catch (error) {
-        console.error('Failed to publish event:', error)
-    } finally {
-        isPublishing.value = false
-    }
+  } catch (err) {
+    console.error('Failed to load event overview:', err)
+  } finally {
+    isLoading.value = false
+  }
 }
 
 onMounted(() => {
-    fetchEventDetails()
-    timer = setInterval(() => {
-        now.value = new Date()
-    }, 60000)
+  loadData()
 })
-
-onBeforeUnmount(() => {
-    if (timer) clearInterval(timer)
-})
-
-watch(event, (newEvent) => {
-    if (newEvent) {
-        setEvent(newEvent)
-    }
-}, { deep: true })
-
-const getStatusClass = (status) => {
-    const classes = {
-        'active': 'bg-green-50 text-green-700 border-green-100 shadow-green-100/50',
-        'draft': 'bg-amber-50 text-amber-700 border-amber-100 shadow-amber-100/50'
-    }
-    return classes[status] || 'bg-gray-100 text-gray-600 border-gray-200'
-}
-
-const getStatusDotClass = (status) => {
-    const classes = {
-        'active': 'bg-green-500',
-        'draft': 'bg-amber-500'
-    }
-    return classes[status] || 'bg-gray-300'
-}
-
-const getStatusLabel = (status) => {
-    const labels = {
-        'active': t('event_overview.status_active'),
-        'draft': t('event_overview.status_draft')
-    }
-    return labels[status] || status
-}
-
-const getRankClass = (idx) => {
-    if (idx === 0) return 'bg-yellow-400 text-white'
-    if (idx === 1) return 'bg-slate-300 text-slate-700'
-    if (idx === 2) return 'bg-orange-400 text-white'
-    return 'bg-gray-50 text-gray-400 border border-gray-100'
-}
 </script>
-
-<style scoped>
-.scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb {
-    background: #e2e8f0;
-    border-radius: 10px;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-
-.no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-</style>

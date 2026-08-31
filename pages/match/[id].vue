@@ -349,9 +349,11 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
 import { Icon } from '@iconify/vue'
 import { useApi } from '~/composables/useApi'
 import { onMounted, ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 
 const { get } = useApi()
@@ -360,6 +362,9 @@ const router = useRouter()
 const matchId = route.params.id
 
 definePageMeta({ layout: 'blank' })
+
+useHead({ title: computed(() => t('match.title', 'Match') + ' - ArcheryHub') })
+
 
 const isLoading = ref(true)
 const matchData = ref(null)

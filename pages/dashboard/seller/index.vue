@@ -1,6 +1,7 @@
 <template>
   <div class="space-y-8">
     <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
       <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
       </div>
       <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
@@ -36,7 +37,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <StatCard
-        :title="t('seller.stats.total_products', 'Total produk')"
+        :title="t('seller.stats.total_products', 'Total Produk')"
         :value="products.length"
         icon="ph:package-bold"
         color="primary"
@@ -50,7 +51,7 @@
       </StatCard>
 
       <StatCard
-        title="Total terjual"
+        :title="t('seller.stats.total_sold', 'Total Terjual')"
         :value="totalSold"
         icon="ph:shopping-bag-open-bold"
         color="primary"
@@ -58,7 +59,7 @@
       />
 
       <StatCard
-        title="Total views"
+        :title="t('seller.stats.total_views', 'Total Tayangan')"
         :value="totalViews.toLocaleString('id-ID')"
         icon="ph:eye-bold"
         color="primary"
@@ -72,7 +73,7 @@
         <div class="p-5 px-6 border-b border-gray-100 flex items-center justify-between">
             <h2 class="text-xs font-black text-navy capitalize tracking-widest flex items-center gap-2">
             <Icon icon="ph:fire-bold" class="text-primary" />
-            {{ t('seller.sections.top_selling', 'Produk paling banyak dibeli') }}
+            {{ t('seller.sections.top_selling', 'Produk Paling Laris') }}
           </h2>
         </div>
         <div class="divide-y divide-gray-50">
@@ -86,7 +87,7 @@
               <div class="text-[10px] text-gray-400 font-bold tracking-wider">{{ product.category }}</div>
             </div>
             <div class="text-right">
-              <div class="text-sm font-black text-navy">{{ product.sold }} Terjual</div>
+              <div class="text-sm font-black text-navy">{{ product.sold }} {{ t('seller.stats.sold_unit', 'Terjual') }}</div>
               <div class="text-[10px] text-primary font-bold tracking-wider">Rp {{ formatCurrencyValue(product.price) }}
               </div>
             </div>
@@ -102,10 +103,10 @@
         <div class="p-5 px-6 border-b border-gray-100 flex items-center justify-between">
             <h2 class="text-xs font-black text-navy capitalize tracking-widest flex items-center gap-2">
             <Icon icon="ph:clock-bold" class="text-primary" />
-            {{ t('seller.sections.latest', 'Produk terbaru') }}
+            {{ t('seller.sections.latest', 'Produk Terbaru') }}
           </h2>
           <NuxtLink to="/dashboard/seller/products">
-            <BaseButton variant="ghost" class="text-[10px] font-black tracking-widest text-primary">{{ t('common.view_all', 'Lihat Semua') }}
+            <BaseButton variant="ghost" class="text-xs font-black tracking-widest text-primary">{{ t('common.view_all', 'Lihat Semua') }}
             </BaseButton>
           </NuxtLink>
         </div>
@@ -117,7 +118,7 @@
             </div>
             <div class="flex-1 min-w-0">
               <div class="text-sm font-black text-navy truncate">{{ product.name }}</div>
-              <div class="text-[10px] text-gray-400 font-bold tracking-wider">Stok: {{ product.stock }}</div>
+              <div class="text-[10px] text-gray-400 font-bold tracking-wider">{{ t('seller.stats.stock_label', 'Stok') }}: {{ product.stock }}</div>
             </div>
             <div class="text-right">
               <NuxtLink :to="`/dashboard/seller/products/${product.id}`">
@@ -143,7 +144,7 @@ import useDashboardI18n from '~/composables/useDashboardI18n'
 const { t } = useDashboardI18n()
 
 definePageMeta({ layout: 'dashboard' })
-useHead({ title: 'Dashboard Ringkasan Toko - Archeris' })
+useHead({ title: computed(() => t('seller.dashboard_title', 'Store Dashboard') + ' - ArcheryHub Dashboard') })
 
 const api = useApi()
 

@@ -14,7 +14,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('my_registration.my_events') + ' - Archeris Dashboard')
+  title: computed(() => t('my_registration.my_events') + ' - ArcheryHub Dashboard')
 })
 
 const { clearEvent } = useEventContext()

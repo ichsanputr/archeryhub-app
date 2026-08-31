@@ -46,15 +46,7 @@
                 </div>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-500  tracking-wider mb-2">Subject</label>
-                <select v-model="form.subject"
-                  class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors cursor-pointer"
-                  required>
-                  <option disabled value="">Select a topic</option>
-                  <option value="general">General Inquiry</option>
-                  <option value="tech">Technical Issue</option>
-                  <option value="partnership">Partnership</option>
-                </select>
+                <BaseSelect v-model="form.subject" :options="subjectOptions" label="Subject" placeholder="Select a topic" required />
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-500  tracking-wider mb-2">Message</label>
@@ -162,17 +154,22 @@
  <script setup>
  import { Icon } from '@iconify/vue'
  import { useApi } from '~/composables/useApi'
- import { ref, reactive } from 'vue'
+ import { ref, computed, reactive } from 'vue'
 
  definePageMeta({
    layout: 'landing'
  })
 
  useHead({
-   title: 'Contact Us - Archeris.net'
+   title: computed(() => t('contact.title', 'Contact Us') + ' - ArcheryHub')
  })
 
  const loading = ref(false)
+ const subjectOptions = [
+   { title: 'General Inquiry', value: 'general' },
+   { title: 'Technical Issue', value: 'tech' },
+   { title: 'Partnership', value: 'partnership' }
+ ]
  const form = reactive({
    name: '',
    email: '',

@@ -28,120 +28,28 @@
             </div>
         </div>
 
-        <!-- Success -->
+        <!-- Redirect state (brief loading before navigating) -->
         <div v-else-if="registrationSuccess"
             class="fixed inset-0 bg-navy flex items-center justify-center z-50 overflow-hidden">
-            <!-- Background subtle pattern -->
             <div class="absolute inset-0 opacity-5"
                 style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 32px 32px;">
             </div>
-            <!-- Glow -->
-            <div
-                class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl">
-            </div>
-
-            <div class="relative z-10 w-full max-w-md mx-4">
-                <!-- Success Icon -->
-                <div class="flex flex-col items-center mb-8">
-                    <div class="relative mb-6">
-                        <!-- Countdown ring (only for tripay checkout URL redirect) -->
-                        <svg v-if="paymentResult?.checkout_url && paymentResult?.payment_method !== 'paddle'"
-                            class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 80 80">
-                            <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(255,255,255,0.1)"
-                                stroke-width="4" />
-                            <circle cx="40" cy="40" r="36" fill="none" stroke="#f5c842" stroke-width="4"
-                                stroke-linecap="round" :stroke-dasharray="226"
-                                :stroke-dashoffset="226 * (1 - redirectCountdown / 4)"
-                                class="transition-all duration-1000 ease-linear" />
-                        </svg>
-                        <div
-                            class="size-20 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
-                            <Icon icon="ph:check-bold" class="text-4xl text-navy" />
-                        </div>
-                    </div>
-                    <h1 class="text-2xl font-black text-white mb-2 text-center">Registration Successful!</h1>
-                    <span class="text-white/50 text-sm font-medium text-center block">{{ event.name }}</span>
+            <div class="relative z-10 flex flex-col items-center gap-4">
+                <div class="size-20 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
+                    <Icon icon="ph:check-bold" class="text-4xl text-navy" />
                 </div>
-
-                <!-- Online payment result box -->
-                <div v-if="paymentResult"
-                    class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5 space-y-4 mb-6">
-                    <!-- VA Number -->
-                    <div v-if="paymentResult.pay_code">
-                        <span class="text-xs font-black tracking-widest text-white/40 block mb-2">Virtual
-                            Account</span>
-                        <div class="flex items-center justify-between gap-3 bg-white/10 rounded-xl px-4 py-3">
-                            <span class="font-mono font-black text-white text-xl tracking-widest">{{
-                                paymentResult.pay_code }}</span>
-                            <button @click="copyToClipboard(paymentResult.pay_code)"
-                                class="p-2 rounded-lg bg-primary text-navy shrink-0">
-                                <Icon icon="ph:copy-bold" class="text-sm" />
-                            </button>
-                        </div>
-                    </div>
-                    <!-- QR -->
-                    <div v-if="paymentResult.qr_url" class="flex flex-col items-center bg-white rounded-xl p-4">
-                        <span class="text-xs font-black tracking-widest text-gray-400 block mb-3">Scan QRIS</span>
-                        <img :src="paymentResult.qr_url" class="w-40 h-40" />
-                    </div>
-                    <!-- Amount & method -->
-                    <div class="flex items-center justify-between border-t border-white/10 pt-3">
-                        <div>
-                            <span class="text-xs text-white/40 font-black tracking-widest block">Total Amount</span>
-                            <span class="font-black text-primary text-lg tabular-nums">{{ formatPrice(paymentResult.total_amount
-                                || paymentResult.amount || 0) }}</span>
-                        </div>
-                        <div v-if="paymentResult.payment_method" class="text-right">
-                            <span class="text-xs text-white/40 font-black tracking-widest block">Method</span>
-                            <span class="text-white font-black text-sm">{{ paymentResult.payment_method }}</span>
-                        </div>
-                    </div>
-                    <!-- Redirect notice (Tripay) -->
-                    <div v-if="paymentResult.checkout_url && paymentResult.payment_method !== 'paddle'"
-                        class="flex flex-col gap-3 bg-primary/10 border border-primary/20 rounded-xl p-4">
-                        <div class="flex items-center gap-2.5">
-                            <Icon icon="ph:info-bold" class="text-primary shrink-0" />
-                            <span class="text-xs text-white/90 font-bold block">Action Required: Complete Payment</span>
-                        </div>
-                        <span class="text-xs text-white/70 font-medium block leading-relaxed">
-                            Click the button below to proceed to the secure checkout page and complete your payment.
-                        </span>
-                        <a :href="paymentResult.checkout_url" target="_blank"
-                            class="flex items-center justify-center gap-2 bg-primary hover:bg-primary/95 text-navy font-black text-xs py-2.5 px-4 rounded-lg transition-colors">
-                            <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
-                            Proceed to Payment Page
-                        </a>
-                    </div>
-                    <!-- Paddle overlay notice -->
-                    <div v-if="paymentResult.payment_method === 'paddle'"
-                        class="flex items-center gap-2.5 bg-green-500/10 border border-green-400/20 rounded-xl p-3">
-                        <Icon icon="ph:check-circle-bold" class="text-green-300 shrink-0" />
-                        <span class="text-xs text-white/70 font-medium block">Payment Successful! Your Registration is Complete.</span>
-                    </div>
-                    <!-- Manual payment proof uploaded notice -->
-                    <div v-if="paymentResult.payment_method === 'manual'"
-                        class="flex items-center gap-2.5 bg-amber-500/10 border border-amber-400/20 rounded-xl p-3">
-                        <Icon icon="ph:clock-bold" class="text-amber-300 shrink-0" />
-                        <span class="text-xs text-white/70 font-medium block">Payment Proof Uploaded. The Organizer Will Verify Your Payment.</span>
-                    </div>
-                </div>
-
-
-                <!-- Manual go to dashboard link (subtle) -->
-                <span class="text-center block text-white/30 text-xs font-medium">
-                    <NuxtLink to="/dashboard/archer/events"
-                        class="hover:text-white/60 transition-colors underline underline-offset-4">View in Dashboard →
-                    </NuxtLink>
-                </span>
+                <h1 class="text-2xl font-black text-white text-center">Registration Successful!</h1>
+                <p class="text-white/50 text-sm font-medium text-center">Redirecting to payment page...</p>
+                <Icon icon="ph:circle-notch-bold" class="text-2xl text-primary animate-spin mt-2" />
             </div>
         </div>
-
         <template v-else>
-            <!-- Hero Header -->
+
+            <!-- Hero Header (Always retained when event data exists) -->
             <div class="bg-navy relative overflow-hidden min-h-[220px] md:min-h-[280px] pt-20 flex items-end">
                 <div class="absolute inset-0 z-0">
                     <img alt="Event Banner" class="w-full h-full object-cover object-center"
-                        src="/hero-event-detail.jpeg" />
+                        :src="useImageOrDefault(event.image, '/hero-event-detail.jpeg')" />
                     <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
                     <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
                     </div>
@@ -154,10 +62,12 @@
                             Back
                         </NuxtLink>
                         <Icon icon="ph:caret-right-bold" class="text-white/30 text-xs" />
-                        <span class="text-white/60 text-xs font-bold tracking-widest">Registration</span>
+                        <span class="text-white/60 text-xs font-bold tracking-widest">
+                            {{ existingRegistration && existingRegistration.payment_status !== 'cancelled' ? 'Registration Status' : 'Registration' }}
+                        </span>
                     </div>
                     <h1 class="text-2xl md:text-4xl font-black text-white tracking-tight leading-tight">
-                        Register: {{ event.name }}
+                        {{ existingRegistration && existingRegistration.payment_status !== 'cancelled' ? 'Status Pendaftaran: ' + event.name : 'Register: ' + event.name }}
                     </h1>
                     <div class="flex flex-wrap items-center gap-4 mt-2 text-white/70 text-sm">
                         <div class="flex items-center gap-1.5">
@@ -172,8 +82,93 @@
                 </div>
             </div>
 
+            <!-- Active Registration Info Page (Status Card Mode) -->
+            <main v-if="existingRegistration && existingRegistration.payment_status !== 'cancelled'" class="max-w-3xl mx-auto px-4 py-10 sm:py-14">
+                <div class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-10 shadow-sm space-y-6">
+                    <!-- Status Icon & Title -->
+                    <div class="text-center space-y-3">
+                        <div class="size-20 rounded-2xl flex items-center justify-center mx-auto shadow-xs"
+                             :class="existingRegistration.payment_status === 'paid' || existingRegistration.payment_status === 'lunas'
+                                ? 'bg-emerald-50 text-emerald-600 border border-emerald-200'
+                                : 'bg-amber-50 text-amber-600 border border-amber-200'">
+                            <Icon :icon="existingRegistration.payment_status === 'paid' || existingRegistration.payment_status === 'lunas'
+                                ? 'ph:check-circle-bold'
+                                : 'ph:clock-bold'" class="text-4xl" />
+                        </div>
+                        
+                        <h2 class="text-2xl sm:text-3xl font-black text-navy tracking-tight">
+                            {{ existingRegistration.payment_status === 'paid' || existingRegistration.payment_status === 'lunas'
+                                ? 'Anda Sudah Terdaftar!'
+                                : 'Status Pendaftaran Event' }}
+                        </h2>
+                        
+                        <p class="text-xs sm:text-sm text-slate-500 font-medium max-w-md mx-auto leading-relaxed">
+                            {{ existingRegistration.payment_status === 'paid' || existingRegistration.payment_status === 'lunas'
+                                ? 'Pendaftaran Anda telah lunas dan terverifikasi untuk event ini.'
+                                : 'Anda memiliki pendaftaran aktif untuk event ini. Silakan selesaikan pembayaran atau batalkan pendaftaran jika ingin mendaftar ulang.' }}
+                        </p>
+                    </div>
+
+                    <!-- Registration Summary Card -->
+                    <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-500 font-bold">Nama Pemanah</span>
+                            <span class="font-black text-navy">{{ existingRegistration.full_name }}</span>
+                        </div>
+                        <div v-if="existingRegistration.club_name" class="flex justify-between items-center text-xs">
+                            <span class="text-slate-500 font-bold">Klub</span>
+                            <span class="font-bold text-navy">{{ existingRegistration.club_name }}</span>
+                        </div>
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="text-slate-500 font-bold">Status Pembayaran</span>
+                            <span class="font-black px-2.5 py-0.5 rounded-md text-[10px]"
+                                :class="existingRegistration.payment_status === 'paid' || existingRegistration.payment_status === 'lunas'
+                                    ? 'bg-emerald-100 text-emerald-700'
+                                    : 'bg-amber-100 text-amber-700'">
+                                {{ existingRegistration.payment_status === 'paid' || existingRegistration.payment_status === 'lunas' ? 'Lunas' : 'Menunggu Pembayaran' }}
+                            </span>
+                        </div>
+                        <div class="h-px bg-slate-200/80 my-1"></div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-slate-500 font-bold">Total Biaya Pendaftaran</span>
+                            <span class="text-xl font-black text-navy tabular-nums">
+                                Rp {{ (existingRegistration.payment_amount || 0).toLocaleString('id-ID') }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Registered Categories List -->
+                    <div v-if="existingRegistration.categories && existingRegistration.categories.length > 0" class="space-y-3">
+                        <h3 class="text-xs font-black text-slate-400 tracking-wider ">Kategori Yang Diikuti</h3>
+                        <div class="space-y-2">
+                            <div v-for="cat in existingRegistration.categories" :key="cat.id"
+                                 class="p-3.5 bg-white border border-slate-200 rounded-xl flex items-center justify-between text-xs">
+                                <div class="font-bold text-navy">
+                                    {{ cat.division_name }} - {{ cat.category_name }} {{ cat.gender_division_name ? '- ' + cat.gender_division_name : '' }}
+                                </div>
+                                <span class="text-slate-400 font-medium">Target: {{ cat.target_name || '-' }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons: Cancel Registration & Back to Event -->
+                    <div class="space-y-3 pt-2">
+                        <BaseButton v-if="existingRegistration.payment_status !== 'paid' && existingRegistration.payment_status !== 'lunas'"
+                            @click="handleCancelRegistration"
+                            variant="outline" size="lg" :loading="isCancellingReg"
+                            class="w-full justify-center font-bold text-red-600 border-red-200 hover:bg-red-50">
+                            Batalkan Pendaftaran (Mendaftar Ulang)
+                        </BaseButton>
+
+                        <BaseButton :to="`/events/${slug}`" variant="navy" size="lg" class="w-full justify-center font-bold">
+                            Kembali ke Detail Event
+                        </BaseButton>
+                    </div>
+                </div>
+            </main>
+
             <!-- Already Registered -->
-            <main v-if="isAlreadyRegistered" class="max-w-2xl mx-auto px-4 py-12 text-center">
+            <main v-else-if="isAlreadyRegistered" class="max-w-2xl mx-auto px-4 py-12 text-center">
                 <div class="bg-white rounded-3xl p-10 border border-gray-200 shadow-sm">
                     <div class="h-20 w-20 bg-navy rounded-3xl flex items-center justify-center mx-auto mb-6">
                         <Icon icon="ph:identification-card" class="text-4xl text-primary" />
@@ -223,28 +218,82 @@
             </main>
 
             <!-- ─────────────────────────────────────────── -->
-            <!-- MAIN 2-COLUMN LAYOUT                        -->
+            <!-- NOT LOGGED IN GUEST ONBOARDING VIEW         -->
             <!-- ─────────────────────────────────────────── -->
-            <main v-else class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <!-- If not logged in, show only one login required card -->
-                <div v-if="!isLoggedIn" class="max-w-md mx-auto">
-                    <div class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm text-center">
-                        <div class="h-16 w-16 bg-primary rounded-2xl flex items-center justify-center mb-5 mx-auto shadow-lg shadow-primary/20">
-                            <Icon icon="ph:lock-bold" class="text-3xl text-navy" />
-                        </div>
-                        <h2 class="text-xl font-black text-navy mb-2">{{ t('my_registration.login_required') }}</h2>
-                        <span class="text-sm text-gray-500 mb-6 block">{{ t('my_registration.please_login_athlete') }}</span>
-                        <BaseButton :to="loginUrl" variant="navy" size="lg" class="w-full font-black tracking-widest text-xs h-11">{{ t('my_registration.login_now') }}</BaseButton>
+            <main v-else-if="!isLoggedIn" class="max-w-xl mx-auto px-4 py-12 sm:py-16">
+                <div class="relative overflow-hidden rounded-3xl border border-primary/25 bg-gradient-to-b from-navy via-navy/95 to-slate-900 text-white p-8 sm:p-12 shadow-2xl text-center space-y-6">
+                    <!-- Ambient Glow -->
+                    <div class="absolute inset-0"
+                        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.12);"></div>
+                    <div class="absolute -top-20 left-1/2 -translate-x-1/2 h-44 w-44 rounded-full bg-primary/20 blur-3xl pointer-events-none"></div>
+
+                    <!-- Glowing Icon Badge -->
+                    <div class="relative z-10 size-20 rounded-3xl bg-gradient-to-br from-primary via-yellow-300 to-primary flex items-center justify-center mx-auto shadow-xl shadow-primary/25 text-navy">
+                        <Icon icon="ph:user-circle-gear-bold" class="text-4xl" />
+                    </div>
+
+                    <!-- Content -->
+                    <div class="relative z-10 space-y-3">
+                        <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white leading-tight">
+                            {{ t('guest_reg.login_required_title') }}
+                        </h2>
+                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
+                            {{ t('guest_reg.login_required_desc') }}
+                        </p>
+                    </div>
+
+                    <!-- Micro Feature Tags -->
+                    <div class="relative z-10 flex items-center justify-center gap-2 flex-wrap pt-1">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] border border-white/10 text-[11px] font-bold text-slate-200">
+                            <Icon icon="ph:target-bold" class="text-primary text-xs" />
+                            {{ t('guest_reg.tag_target') }}
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] border border-white/10 text-[11px] font-bold text-slate-200">
+                            <Icon icon="ph:lightning-bold" class="text-primary text-xs" />
+                            {{ t('guest_reg.tag_scoring') }}
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] border border-white/10 text-[11px] font-bold text-slate-200">
+                            <Icon icon="ph:certificate-bold" class="text-primary text-xs" />
+                            {{ t('guest_reg.tag_certificate') }}
+                        </span>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="relative z-10 space-y-3 pt-3">
+                        <NuxtLink :to="loginUrl"
+                            class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-primary hover:bg-primary/90 text-navy font-black text-xs capitalize tracking-wider shadow-lg shadow-primary/25 transition-all duration-200 active:scale-98">
+                            <Icon icon="ph:sign-in-bold" class="text-base" />
+                            <span>{{ t('guest_reg.login_btn') }}</span>
+                        </NuxtLink>
+
+                        <NuxtLink :to="registerUrl"
+                            class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white/[0.07] hover:bg-white/[0.14] border border-white/15 text-white font-bold text-xs transition-all duration-200 active:scale-98">
+                            <Icon icon="ph:user-plus-bold" class="text-sm text-primary" />
+                            <span>{{ t('guest_reg.register_btn') }}</span>
+                        </NuxtLink>
+                    </div>
+
+                    <!-- Back to Event -->
+                    <div class="relative z-10 pt-2">
+                        <NuxtLink :to="`/events/${slug}`"
+                            class="text-xs text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5 font-bold">
+                            <Icon icon="ph:arrow-left-bold" class="text-xs" />
+                            <span>{{ t('guest_reg.back_to_event') }}</span>
+                        </NuxtLink>
                     </div>
                 </div>
+            </main>
 
-                <div v-else class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 items-start">
+            <!-- LOGGED IN 2-COLUMN REGISTRATION FORM        -->
+            <!-- ─────────────────────────────────────────── -->
+            <main v-else class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 items-start">
 
                     <!-- LEFT COLUMN — Archer Info + Category -->
                     <div class="lg:col-span-3 space-y-5">
 
                         <!-- Archer Profile Card -->
-                        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm">
                             <div
                                 class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
                                 <div
@@ -300,17 +349,12 @@
                                         <BaseInput v-model="profileForm.full_name" label="Full Name"
                                             placeholder="Full name" required icon="ph:user-bold" />
                                         <BaseSelect v-model="profileForm.gender" :items="genderOptions" label="Gender"
-                                            placeholder="Select" required icon="ph:gender-intersex" />
+                                            placeholder="Select Gender" required icon="ph:gender-intersex" />
                                         <BaseDatePicker v-model="profileForm.date_of_birth" label="Date of Birth"
                                             required />
-                                        <BaseSelect v-model="profileForm.bow_type" :items="bowTypeOptions"
-                                            label="Bow Type" placeholder="Select bow type" required
-                                            icon="ph:target-bold" />
+
                                         <BaseSelect v-model="profileForm.country" :items="countries" label="Country"
-                                            placeholder="Select country" icon="ph:globe-hemisphere-east-bold" />
-                                        <BaseSelect v-model="profileForm.city" :items="cityOptions"
-                                            label="City / Regency" placeholder="Select city" icon="ph:map-pin-bold"
-                                            class="relative z-20" />
+                                            placeholder="Select Country" icon="ph:globe-hemisphere-east-bold" />
                                         <BaseInput v-model="profileForm.club_name" label="Club / Institution"
                                             icon="ph:users-bold" hint="Cannot be changed here" disabled readonly />
                                     </div>
@@ -323,34 +367,48 @@
                             </div>
                         </section>
 
-                        <!-- Participant Type Selection (only when fee_mode === 'per_type') -->
-                        <section v-if="event.fee_mode === 'per_type' && activeParticipantTypes.length > 0" class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-5">
+                        <!-- Participant Type Selection -->
+                        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-5">
                             <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
                                 <div class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
                                     <Icon icon="ph:users-three-bold" class="text-lg" />
                                 </div>
                                 <div>
-                                    <h2 class="text-base font-black text-navy">{{ t('my_registration.select_participant_type') }}</h2>
-                                    <span class="text-xs text-gray-400 font-medium block">{{ t('my_registration.select_participant_type_desc') }}</span>
+                                    <h2 class="text-base font-black text-navy">{{ t('my_registration.select_participant_type') || 'Select Participant Type' }}</h2>
+                                    <span class="text-xs text-gray-400 font-medium block">{{ t('my_registration.select_participant_type_desc') || 'Choose your participation type' }}</span>
                                 </div>
                             </div>
                             <div class="p-6">
-                                <div class="grid gap-2"
-                                    :class="{
-                                        'grid-cols-1 max-w-xs': activeParticipantTypes.length === 1,
-                                        'grid-cols-2 max-w-md': activeParticipantTypes.length === 2,
-                                        'grid-cols-3': activeParticipantTypes.length >= 3
-                                    }">
-                                    <button v-for="pt in activeParticipantTypes" :key="pt.value"
-                                        type="button"
-                                        @click="toggleParticipantType(pt.value)"
-                                        :class="form.participant_types.includes(pt.value)
-                                            ? 'border-primary bg-primary/5 text-navy'
-                                            : 'border-gray-200 text-gray-500 hover:border-gray-300'"
-                                        class="flex flex-col items-start gap-1 p-3 rounded-xl border-2 transition-all text-left w-full">
-                                        <Icon :icon="pt.icon" class="text-lg" />
-                                        <span class="text-xs font-black tracking-wide">{{ pt.label }}</span>
-                                        <span class="text-xs font-bold text-navy tabular-nums">{{ formatPrice(pt.fee) }}</span>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <button type="button"
+                                        @click="participantType = 'individual'"
+                                        :class="participantType === 'individual' ? 'border-primary bg-primary/5 ring-2 ring-primary' : 'border-gray-200 hover:border-primary/40'"
+                                        class="flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all text-left cursor-pointer">
+                                        <div class="size-10 rounded-xl flex items-center justify-center" :class="participantType === 'individual' ? 'bg-primary text-navy' : 'bg-gray-100 text-gray-500'">
+                                            <Icon icon="ph:user-bold" class="text-xl" />
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-black text-navy">Individual</div>
+                                            <div class="text-xs text-gray-500">Daftar sendiri di satu atau lebih kategori</div>
+                                        </div>
+                                        <div v-if="participantType === 'individual'" class="ml-auto text-primary">
+                                            <Icon icon="ph:check-circle-fill" class="text-lg" />
+                                        </div>
+                                    </button>
+                                    <button type="button"
+                                        @click="participantType = 'team'"
+                                        :class="participantType === 'team' ? 'border-primary bg-primary/5 ring-2 ring-primary' : 'border-gray-200 hover:border-primary/40'"
+                                        class="flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all text-left cursor-pointer">
+                                        <div class="size-10 rounded-xl flex items-center justify-center" :class="participantType === 'team' ? 'bg-primary text-navy' : 'bg-gray-100 text-gray-500'">
+                                            <Icon icon="ph:users-three-bold" class="text-xl" />
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-black text-navy">Beregu / Tim</div>
+                                            <div class="text-xs text-gray-500">Daftar bersama anggota tim beregu</div>
+                                        </div>
+                                        <div v-if="participantType === 'team'" class="ml-auto text-primary">
+                                            <Icon icon="ph:check-circle-fill" class="text-lg" />
+                                        </div>
                                     </button>
                                 </div>
                             </div>
@@ -405,7 +463,7 @@
                                             class="border-t border-primary/20 px-3.5 pb-3.5 pt-3 space-y-2"
                                             @click.stop>
                                             <div class="flex items-center justify-between">
-                                                <div class="text-xs font-black text-gray-500 tracking-widest uppercase">
+                                                <div class="text-xs font-black text-gray-500 tracking-widest ">
                                                     {{ getCategoryType(category) === 'mixed_team' ? 'Partner (1 Required)' : 'Team Members (2 Required)' }}
                                                 </div>
                                                 <button type="button"
@@ -432,25 +490,25 @@
                                             </div>
                                             <!-- Empty state -->
                                             <div v-else class="text-xs text-gray-400 italic">
-                                                no partners added yet
+                                                No Partners Added Yet
                                             </div>
                                             <!-- Incomplete warning -->
                                             <div v-if="!isPartnerComplete(category.id)"
                                                 class="flex items-center gap-1.5 text-xs text-amber-600 font-bold">
                                                 <Icon icon="ph:warning-bold" class="text-xs" />
-                                                {{ getCategoryType(category) === 'mixed_team' ? '1 partner required' : '2 team members required' }}
+                                                {{ getCategoryType(category) === 'mixed_team' ? '1 Partner Required' : '2 Team Members Required' }}
                                             </div>
                                         </div>
                                     </div>
 
                                     <div v-if="filteredCategories.length === 0" class="py-10 text-center text-gray-400">
                                         <Icon icon="ph:magnifying-glass-slash" class="text-3xl mx-auto mb-2 opacity-40" />
-                                        <span class="text-xs font-bold tracking-widest block">category not found</span>
+                                        <span class="text-xs font-bold tracking-widest block">Category Not Found</span>
                                     </div>
                                     <div v-if="categories.length === 0 && !pending"
                                         class="p-4 bg-amber-50 border border-amber-100 rounded-xl flex gap-2.5">
                                         <Icon icon="ph:warning-bold" class="text-amber-500 shrink-0" />
-                                        <span class="text-sm text-amber-700 font-medium block">category not yet available. please contact the organizer.</span>
+                                        <span class="text-sm text-amber-700 font-medium block">Category Not Yet Available. Please Contact The Organizer.</span>
                                     </div>
                                 </div>
                             </div>
@@ -498,7 +556,7 @@
                                 </div>
                                 <div v-else class="py-4 text-center border-2 border-dashed border-gray-100 rounded-xl">
                                     <Icon icon="ph:tag-light" class="text-3xl text-gray-300 mb-1 mx-auto" />
-                                    <span class="text-xs text-gray-300 font-bold tracking-widest block">no categories selected yet</span>
+                                    <span class="text-xs text-gray-300 font-bold tracking-widest block">No Categories Selected Yet</span>
                                 </div>
                                 <div class="pt-4 border-t border-gray-100 space-y-1.5 mt-4">
                                     <div class="flex items-center justify-between text-sm">
@@ -727,10 +785,9 @@
                 </div>
             </main>
         </template>
-    </div>
 
-    <!-- Partner Search Dialog -->
-    <Teleport to="body">
+        <!-- Partner Search Dialog -->
+        <Teleport to="body">
         <div v-if="showPartnerDialog"
             class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
             @click.self="showPartnerDialog = false">
@@ -798,7 +855,7 @@
                 <!-- Current partners -->
                 <div v-if="partnerDialogCategoryId && getPartnersForCategory(partnerDialogCategoryId).length > 0"
                     class="px-4 py-3 border-t border-gray-100 bg-gray-50/50">
-                    <div class="text-xs font-black text-gray-400 tracking-widest mb-2 uppercase">Added</div>
+                    <div class="text-xs font-black text-gray-400 tracking-widest mb-2 ">Added</div>
                     <div class="space-y-1.5">
                         <div v-for="partner in getPartnersForCategory(partnerDialogCategoryId)" :key="partner.uuid || partner.id"
                             class="flex items-center gap-2 p-2 bg-white rounded-lg border border-gray-100">
@@ -822,11 +879,14 @@
             </div>
         </div>
     </Teleport>
+    </div>
 </template>
 
 <script setup>
 definePageMeta({ layout: 'landing' })
 
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
 import { usePayment } from '~/composables/usePayment'
 import { useImageOrDefault } from '~/composables/useImageHelper'
@@ -836,9 +896,11 @@ import BaseSelect from '~/components/common/BaseSelect.vue'
 import { Icon } from '@iconify/vue'
 import { useDateFormat } from '@vueuse/core'
 
+const { t } = useI18n()
+useHead({ title: computed(() => t('event.register_title', 'Register for Event') + ' - ArcheryHub') })
+
 const route = useRoute()
 const router = useRouter()
-const { t } = useI18n()
 const slug = route.params.slug
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
@@ -859,13 +921,14 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
 
         const eventId = eventResponse.uuid || eventResponse.id
 
-        const [categoriesResponse, bowTypesRes, citiesRes, profileResponse, participantsResponse, channelsRes] = await Promise.all([
+        const [categoriesResponse, bowTypesRes, citiesRes, profileResponse, participantsResponse, channelsRes, myRegistrationRes] = await Promise.all([
             $fetch(`${apiBaseUrl}/events/${slug}/categories`).catch(() => ({ events: [] })),
             $fetch(`${apiBaseUrl}/bow-types`).catch(() => ({ bow_types: [] })),
             $fetch(`${apiBaseUrl}/cities`).catch(() => ({ data: [] })),
             token ? $fetch(`${apiBaseUrl}/archer/me`, fetchOptions).catch(() => null) : Promise.resolve(null),
             $fetch(`${apiBaseUrl}/events/${slug}/participants?limit=2000`).catch(() => ({ participants: [] })),
-            $fetch(`${apiBaseUrl}/payment/channels`).catch(() => [])
+            $fetch(`${apiBaseUrl}/payment/channels`).catch(() => []),
+            token ? $fetch(`${apiBaseUrl}/events/${slug}/participants/me`, fetchOptions).catch(() => null) : Promise.resolve(null)
         ])
 
         const formatDate = (d) => d ? useDateFormat(d, 'DD MMM YYYY', { locales: 'en-US' }).value : ''
@@ -941,6 +1004,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             bowTypes: (bowTypesRes.bow_types || []).map(b => ({ title: b.name, value: b.code })),
             cities: (citiesRes.data || []).map(c => ({ title: c.name, value: c.name })),
             participants: participantsResponse?.participants || [],
+            myRegistration: myRegistrationRes,
             onlineChannels: (Array.isArray(channelsRes) ? channelsRes : channelsRes?.data || [])
                 .filter(ch => ch.active !== false)
                 .map(ch => ({
@@ -960,6 +1024,44 @@ const loading = ref(false)
 const isClientPreparing = ref(true)
 const submitError = ref('')
 const registrationSuccess = ref(false)
+const manualCancelled = ref(false)
+
+const existingRegistration = computed(() => {
+    if (manualCancelled.value) return null
+    if (data.value?.myRegistration) {
+        return data.value.myRegistration
+    }
+    if (isLoggedIn.value && user.value && data.value?.participants) {
+        const userId = user.value.id
+        const userEmail = user.value.email
+        const matched = data.value.participants.filter(p =>
+            (p.archer_id && String(p.archer_id) === String(userId)) ||
+            (p.user_id && String(p.user_id) === String(userId)) ||
+            (p.email && p.email === userEmail) ||
+            (p.athlete_code && p.athlete_code === user.value.athlete_code)
+        )
+        if (matched.length > 0) {
+            const first = matched[0]
+            return {
+                full_name: first.full_name || first.name || user.value.name || 'Pemanah',
+                club_name: first.club_name || null,
+                payment_status: first.payment_status || 'unpaid',
+                payment_amount: matched.reduce((sum, item) => sum + (Number(item.payment_amount) || 0), 0),
+                categories: matched.map(m => ({
+                    id: m.id || m.uuid,
+                    division_name: m.division_name || '',
+                    category_name: m.category_name || m.name || '',
+                    gender_division_name: m.gender_division_name || '',
+                    target_name: m.target_name || ''
+                })),
+                transaction: first.transaction_reference ? { reference: first.transaction_reference } : null
+            }
+        }
+    }
+    return null
+})
+
+const isCancellingReg = ref(false)
 const channelInstructionsLoading = ref(null)
 const channelInstructionsCache = ref({})
 const activeInstructionTabByChannel = ref({}) // { [channelCode]: tabIndex } for multi-platform tabs
@@ -971,6 +1073,28 @@ const categorySearch = ref('')
 const uploadingProof = ref(false)
 const proofFileUrl = ref('')
 const uploadError = ref('')
+
+const handleCancelRegistration = async () => {
+    if (!confirm('Apakah Anda yakin ingin membatalkan pendaftaran ini? Anda dapat mendaftar ulang setelah pendaftaran dibatalkan.')) return
+    isCancellingReg.value = true
+    try {
+        const token = useCookie('auth_token').value
+        const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
+        await $fetch(`${apiBaseUrl}/events/${slug}/participants/me`, {
+            method: 'DELETE',
+            headers,
+            credentials: 'include'
+        })
+        manualCancelled.value = true
+        if (data.value) data.value.myRegistration = null
+        await refresh()
+    } catch (err) {
+        console.error('Gagal membatalkan pendaftaran:', err)
+        alert(err.data?.error || err.message || 'Gagal membatalkan pendaftaran. Silakan coba lagi.')
+    } finally {
+        isCancellingReg.value = false
+    }
+}
 
 
 
@@ -1050,19 +1174,11 @@ const removePartner = (categoryId, archerId) => {
     }
 }
 
-const toggleParticipantType = (type) => {
-    if (!form.value.participant_types) {
-        form.value.participant_types = []
-    }
-    const idx = form.value.participant_types.indexOf(type)
-    if (idx === -1) {
-        form.value.participant_types.push(type)
-    } else {
-        form.value.participant_types.splice(idx, 1)
-    }
+const participantType = ref('individual')
 
-    form.value.participant_type = form.value.participant_types[0] || 'individual'
-
+watch(participantType, (newVal) => {
+    form.value.participant_type = newVal
+    form.value.participant_types = [newVal]
     // Clean up selected categories that are no longer in selected types
     form.value.category_ids = form.value.category_ids.filter(catId => {
         const category = categories.value.find(c => c.id === catId)
@@ -1070,7 +1186,7 @@ const toggleParticipantType = (type) => {
         const catType = getCategoryType(category)
         return form.value.participant_types.includes(catType)
     })
-}
+}, { immediate: true })
 
 const getCategoryType = (category) => {
     const typeName = (category?.event_type_name || '').toLowerCase()
@@ -1101,7 +1217,6 @@ const profileForm = ref({
     gender: '',
     date_of_birth: '',
     country: '',
-    city: '',
     club_name: '',
     club_id: null,
     bow_type: '',
@@ -1282,6 +1397,7 @@ const buttonText = computed(() => {
 })
 
 const loginUrl = computed(() => `/auth/login?redirect=${encodeURIComponent(route.fullPath)}`)
+const registerUrl = computed(() => `/auth/register?type=archer&redirect=${encodeURIComponent(route.fullPath)}`)
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 const displayValue = (v) => v || 'TBA'
@@ -1355,7 +1471,6 @@ watch(() => archerProfile.value, (profile) => {
             gender: profile.gender || '',
             date_of_birth: profile.date_of_birth ? new Date(profile.date_of_birth).toISOString().split('T')[0] : '',
             country: profile.country || 'Indonesia',
-            city: profile.city || '',
             club_name: profile.club_name || '',
             club_id: profile.club_id || null,
             bow_type: profile.bow_type || '',
@@ -1374,6 +1489,18 @@ watch(activeParticipantTypes, (types) => {
             form.value.participant_types = [activeVals[0]]
             form.value.participant_type = activeVals[0]
         }
+    }
+}, { immediate: true })
+
+watch(onlineChannels, (channels) => {
+    if (channels && channels.length > 0 && !form.value.online_channel) {
+        form.value.online_channel = channels[0].code
+    }
+}, { immediate: true })
+
+watch(orgManualMethods, (methods) => {
+    if (methods && methods.length > 0 && !form.value.manual_method_id) {
+        form.value.manual_method_id = methods[0].id || methods[0].uuid
     }
 }, { immediate: true })
 
@@ -1425,7 +1552,6 @@ const handleSubmit = async () => {
                 gender: profileForm.value.gender,
                 date_of_birth: profileForm.value.date_of_birth,
                 country: profileForm.value.country,
-                city: profileForm.value.city,
                 bow_type: profileForm.value.bow_type,
                 club_id: profileForm.value.club_id
             })
@@ -1462,47 +1588,56 @@ const handleSubmit = async () => {
             })
             paymentResult.value = payResult
 
-            // if manual, upload the proof url
+            const ref = payResult?.reference || payResult?.data?.reference || payResult?.uuid || payResult?.payment?.reference
+
+            if (!ref) {
+                submitError.value = 'Registrasi berhasil, namun tidak menerima referensi transaksi.'
+                return
+            }
+
+            // if manual, upload the proof url then redirect to status page
             if (form.value.payment_type === 'manual') {
-                const txRef = payResult.reference
-                await post(`/payment/manual/${txRef}/upload-proof`, {
+                await post(`/payment/manual/${ref}/upload-proof`, {
                     proof_url: proofFileUrl.value,
                     sender_name: form.value.sender_name
                 })
                 registrationSuccess.value = true
+                await nextTick()
+                setTimeout(() => navigateTo(`/payment/status/${ref}`), 1000)
             } else if (selectedChannel === 'paddle') {
                 const txId = payResult.tripay_reference
                 if (txId && !txId.includes('mock') && window.Paddle) {
-                    // Always use Paddle popup overlay
+                    // Paddle popup overlay
                     window.Paddle.Checkout.open({
                         transactionId: txId,
                         eventCallback: (data) => {
                             if (data.name === 'checkout.completed') {
-                                registrationSuccess.value = true
+                                navigateTo(`/payment/status/${ref}`)
                             }
                         }
                     })
                 } else if (payResult.checkout_url && payResult.checkout_url.includes('txn_mock_')) {
-                    // Automatically simulate success for mock payments in dev
-                    alert('simulasi pembayaran berhasil! karena tidak ada paddle api key di backend, sistem secara otomatis menyelesaikan transaksi secara lokal.')
-                    await $fetch(`${apiBaseUrl}/payment/simulate-success/${payResult.reference}`, {
+                    // Dev mock simulation
+                    alert('Simulasi pembayaran berhasil! Karena tidak ada Paddle API key, sistem otomatis menyelesaikan transaksi.')
+                    await $fetch(`${apiBaseUrl}/payment/simulate-success/${ref}`, {
                         method: 'GET',
                         credentials: 'include'
                     })
-                    registrationSuccess.value = true
+                    navigateTo(`/payment/status/${ref}`)
                 } else {
-                    // Fallback: show success if no Paddle SDK available
-                    registrationSuccess.value = true
+                    navigateTo(`/payment/status/${ref}`)
                 }
-            } else if (payResult.checkout_url) {
-                // Tripay: redirect directly
-                window.location.href = payResult.checkout_url
             } else {
+                // All Tripay online channels (VA, QRIS, e-wallet, etc.)
+                // Always go to dedicated payment status page
                 registrationSuccess.value = true
+                await nextTick()
+                setTimeout(() => navigateTo(`/payment/status/${ref}`), 800)
             }
+
         } catch (payErr) {
-            // Registration succeeded but payment link failed - still show success
-            registrationSuccess.value = true
+            console.error('Payment creation failed after registration:', payErr)
+            submitError.value = payErr?.response?.data?.error || payErr?.data?.error || payErr?.message || 'Registrasi tersimpan, namun gagal membuat pembayaran.'
         }
     } catch (err) {
         submitError.value = err.response?.data?.error || err.data?.error || err.message || 'Failed to complete registration.'
@@ -1518,6 +1653,12 @@ useSeoMeta({
 
 onMounted(async () => {
     await nextTick()
+    const token = useCookie('auth_token').value
+    if (token) {
+        try {
+            await refresh()
+        } catch (e) {}
+    }
     isClientPreparing.value = false
 })
 </script>

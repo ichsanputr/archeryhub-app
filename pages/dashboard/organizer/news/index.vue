@@ -1,76 +1,153 @@
 <template>
     <div class="flex flex-col gap-8">
         <!-- Header Section -->
-        <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-            <!-- Decorative Background Elements (Glows) -->
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
-            <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div class="flex items-center gap-4">
-                    <div
-                        class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
-                        <Icon icon="ph:newspaper-bold" class="text-primary text-2xl sm:text-3xl" />
-                    </div>
-                    <div>
-                        <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ t('organizer_news.index.title') }}</h1>
-                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('organizer_news.index.subtitle') }}</p>
-                    </div>
-                </div>
+        <DashboardHeader
+            :title="t('organizer_news.index.title')"
+            :subtitle="t('organizer_news.index.subtitle')"
+            icon="ph:newspaper-bold"
+            :breadcrumbs="[
+                { label: 'Dashboard', to: '/dashboard/organizer' },
+                { label: t('organizer_news.index.title', 'Berita') }
+            ]"
+        >
+            <template #actions>
                 <BaseButton to="/dashboard/organizer/news/create" variant="primary" icon="ph:plus-bold"
-                    class="h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-xs">
+                    class="h-11 px-6 font-black tracking-widest text-xs">
                     {{ t('organizer_news.index.create') }}
                 </BaseButton>
-            </div>
-        </div>
+            </template>
+        </DashboardHeader>
 
-        <!-- Quick Stats -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <StatCard
-                :title="t('organizer_news.index.stats_total')"
-                :value="news.length"
-                icon="ph:newspaper"
-                color="primary"
-            />
-            <StatCard
-                :title="t('organizer_news.index.stats_published')"
-                :value="news.filter(n => n.status === 'published').length"
-                icon="ph:check-circle"
-                color="primary"
-            />
-            <StatCard
-                :title="t('organizer_news.index.stats_draft')"
-                :value="news.filter(n => n.status === 'draft').length"
-                icon="ph:file-text"
-                color="primary"
-            />
-            <StatCard
-                :title="t('organizer_news.index.stats_total_view')"
-                :value="news.reduce((acc, n) => acc + (n.views || 0), 0).toLocaleString()"
-                icon="ph:eye"
-                color="primary"
-            />
+        <!-- Quick Stats Cards (Sleek Unified Brand Suite) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            
+            <!-- Metric 1: Total Berita -->
+            <div class="relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group flex flex-col justify-between">
+                <div class="absolute top-0 left-0 w-full h-[2px] bg-slate-200 group-hover:bg-primary transition-colors"></div>
+                
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-black text-slate-400 capitalize tracking-wider">{{ t('organizer_news.index.stats_total') }}</span>
+                    <div class="size-11 rounded-2xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center shrink-0 group-hover:bg-navy group-hover:text-primary transition-all duration-300">
+                        <Icon icon="ph:newspaper-bold" class="text-xl" />
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-2xl sm:text-3xl font-black text-navy tabular-nums">{{ news.length }}</span>
+                        <span class="text-xs font-bold text-slate-400">{{ t('organizer_news.index.article_unit', 'Artikel') }}</span>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-medium text-slate-500">
+                        <span class="flex items-center gap-1.5">
+                            <Icon icon="ph:article-bold" class="text-slate-400 text-xs shrink-0" />
+                            <span>{{ t('organizer_news.index.total_content', 'Total Konten') }}</span>
+                        </span>
+                        <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold text-[10px]">{{ t('organizer_news.index.all_tag', 'Semua') }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metric 2: Berita Terbit -->
+            <div class="relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group flex flex-col justify-between">
+                <div class="absolute top-0 left-0 w-full h-[2px] bg-slate-200 group-hover:bg-primary transition-colors"></div>
+
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-black text-slate-400 capitalize tracking-wider">{{ t('organizer_news.index.stats_published') }}</span>
+                    <div class="size-11 rounded-2xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center shrink-0 group-hover:bg-navy group-hover:text-primary transition-all duration-300">
+                        <Icon icon="ph:check-circle-bold" class="text-xl" />
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-2xl sm:text-3xl font-black text-navy tabular-nums">{{ publishedCount }}</span>
+                        <span class="text-xs font-bold text-slate-400">{{ t('organizer_news.index.published_unit', 'Terbit') }}</span>
+                    </div>
+                    
+                    <div class="mt-3 pt-3 border-t border-slate-100 space-y-1.5">
+                        <div class="flex items-center justify-between text-[11px] font-medium text-slate-500">
+                            <span class="flex items-center gap-1.5">
+                                <span class="size-1.5 rounded-full bg-slate-700"></span>
+                                <span>{{ t('organizer_news.index.publish_ratio', 'Rasio Publikasi') }}</span>
+                            </span>
+                            <span class="text-navy font-bold text-[10px]">{{ publishedRate }}%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-navy h-1.5 rounded-full transition-all duration-700" :style="{ width: `${publishedRate}%` }"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metric 3: Draf Berita -->
+            <div class="relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group flex flex-col justify-between">
+                <div class="absolute top-0 left-0 w-full h-[2px] bg-slate-200 group-hover:bg-primary transition-colors"></div>
+
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-black text-slate-400 capitalize tracking-wider">{{ t('organizer_news.index.stats_draft') }}</span>
+                    <div class="size-11 rounded-2xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center shrink-0 group-hover:bg-navy group-hover:text-primary transition-all duration-300">
+                        <Icon icon="ph:file-text-bold" class="text-xl" />
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-2xl sm:text-3xl font-black text-navy tabular-nums">{{ draftCount }}</span>
+                        <span class="text-xs font-bold text-slate-400">{{ t('organizer_news.index.draft_unit', 'Draf') }}</span>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-medium text-slate-500">
+                        <span class="flex items-center gap-1.5">
+                            <Icon icon="ph:pencil-simple-bold" class="text-slate-400 text-xs shrink-0" />
+                            <span>{{ t('organizer_news.index.not_published', 'Belum Terbit') }}</span>
+                        </span>
+                        <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold text-[10px]">{{ draftCount }} {{ t('organizer_news.index.draft_unit', 'Draf') }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metric 4: Total Pembaca -->
+            <div class="relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group flex flex-col justify-between">
+                <div class="absolute top-0 left-0 w-full h-[2px] bg-slate-200 group-hover:bg-primary transition-colors"></div>
+
+                <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-black text-slate-400 capitalize tracking-wider">{{ t('organizer_news.index.stats_total_view') }}</span>
+                    <div class="size-11 rounded-2xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center shrink-0 group-hover:bg-navy group-hover:text-primary transition-all duration-300">
+                        <Icon icon="ph:eye-bold" class="text-xl" />
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-2xl sm:text-3xl font-black text-navy tabular-nums">{{ totalViews.toLocaleString('id-ID') }}</span>
+                        <span class="text-xs font-bold text-slate-400">{{ t('organizer_news.index.views_unit', 'Views') }}</span>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-medium text-slate-500">
+                        <span class="flex items-center gap-1.5">
+                            <Icon icon="ph:chart-line-up-bold" class="text-slate-400 text-xs shrink-0" />
+                            <span>{{ t('organizer_news.index.average', 'Rata-rata') }}</span>
+                        </span>
+                        <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold text-[10px]">~{{ avgViews.toLocaleString('id-ID') }} / {{ t('organizer_news.index.per_article', 'artikel') }}</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- Search & Filter -->
         <div
-            class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+            class="bg-white p-5 rounded-2xl border border-gray-100 flex flex-col md:flex-row gap-4 items-end">
             <div class="flex-grow w-full">
-                <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" :placeholder="t('organizer_news.index.search_placeholder')"
-                    :label="t('organizer_news.index.search_label')" />
+                <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" :placeholder="t('organizer_news.index.search_placeholder', 'Cari judul berita, artikel, atau tagar...')"
+                    :label="t('organizer_news.index.search_label', 'Pencarian Berita')" />
             </div>
-            <div class="w-full md:w-48">
-                <BaseSelect v-model="statusFilter" :items="statusOptions" :label="t('organizer_news.index.filter_status')" />
+            <div class="w-full md:w-56">
+                <BaseSelect v-model="statusFilter" :items="statusOptions" :label="t('organizer_news.index.filter_status', 'Status Publikasi')" :placeholder="t('organizer_news.index.placeholder_status', 'Pilih Status')" />
             </div>
-            <div class="w-full md:w-48">
-                <BaseSelect v-model="categoryFilter" :items="categoryOptions" :label="t('organizer_news.index.filter_category')" />
+            <div class="w-full md:w-56">
+                <BaseSelect v-model="categoryFilter" :items="categoryOptions" :label="t('organizer_news.index.filter_category', 'Kategori Berita')" :placeholder="t('organizer_news.index.placeholder_category', 'Pilih Kategori')" />
             </div>
-            <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
-                {{ t('organizer_news.index.reset') }}
+            <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11 shrink-0">
+                {{ t('organizer_news.index.reset', 'Reset') }}
             </BaseButton>
         </div>
 
@@ -113,7 +190,7 @@
                         class="font-bold text-navy text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                         {{ item.title }}
                     </h3>
-                    <p class="text-gray-500 text-sm line-clamp-2 mb-4">{{ item.excerpt }}</p>
+                    <div class="text-gray-500 text-sm line-clamp-2 mb-4">{{ item.excerpt }}</div>
 
                     <!-- Meta Info -->
                     <div class="flex items-center justify-between text-xs text-gray-400 pt-4 border-t border-gray-100">
@@ -159,7 +236,7 @@
                         <Icon icon="ph:newspaper" class="text-5xl" />
                     </div>
                     <h3 class="text-xl font-bold text-navy mb-2">{{ t('organizer_news.index.empty_title') }}</h3>
-                    <p class="text-gray-500 mb-6 max-w-sm mx-auto">{{ t('organizer_news.index.empty_desc') }}</p>
+                    <div class="text-gray-500 mb-6 max-w-sm mx-auto">{{ t('organizer_news.index.empty_desc') }}</div>
                 </div>
             </div>
         </div>
@@ -182,7 +259,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Manajemen Berita - Archeris Dashboard'
+    title: computed(() => t('news.management_title', 'News Management') + ' - ArcheryHub Dashboard')
 })
 
 import { useApi } from '~/composables/useApi'
@@ -199,18 +276,24 @@ const searchQuery = ref('')
 const statusFilter = ref('all')
 const categoryFilter = ref('all')
 
+const publishedCount = computed(() => news.value.filter(n => n.status === 'published').length)
+const draftCount = computed(() => news.value.filter(n => n.status === 'draft').length)
+const totalViews = computed(() => news.value.reduce((acc, n) => acc + (n.views || 0), 0))
+const publishedRate = computed(() => news.value.length > 0 ? Math.round((publishedCount.value / news.value.length) * 100) : 0)
+const avgViews = computed(() => publishedCount.value > 0 ? Math.round(totalViews.value / publishedCount.value) : 0)
+
 const statusOptions = computed(() => [
-    { title: t('organizer_news.options.status_all'), value: 'all' },
-    { title: t('organizer_news.options.status_draft'), value: 'draft' },
-    { title: t('organizer_news.options.status_published'), value: 'published' }
+    { title: t('organizer_news.options.status_all', 'Semua Status'), value: 'all' },
+    { title: t('organizer_news.options.status_published', 'Terbit (Publik)'), value: 'published' },
+    { title: t('organizer_news.options.status_draft', 'Draf (Belum Terbit)'), value: 'draft' }
 ])
 
 const categoryOptions = computed(() => [
-    { title: t('organizer_news.options.cat_all'), value: 'all' },
-    { title: t('organizer_news.options.cat_event'), value: 'event' },
-    { title: t('organizer_news.options.cat_announcement'), value: 'pengumuman' },
-    { title: t('organizer_news.options.cat_achievement'), value: 'prestasi' },
-    { title: t('organizer_news.options.cat_other'), value: 'lainnya' }
+    { title: t('organizer_news.options.cat_all', 'Semua Kategori'), value: 'all' },
+    { title: t('organizer_news.options.cat_announcement', 'Pengumuman'), value: 'pengumuman' },
+    { title: t('organizer_news.options.cat_event', 'Event & Turnamen'), value: 'event' },
+    { title: t('organizer_news.options.cat_achievement', 'Prestasi & Rekor'), value: 'prestasi' },
+    { title: t('organizer_news.options.cat_other', 'Lainnya'), value: 'lainnya' }
 ])
 
 const showDeleteDialog = ref(false)

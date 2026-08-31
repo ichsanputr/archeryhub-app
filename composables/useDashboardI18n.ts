@@ -12,9 +12,7 @@ export function useDashboardI18n(defaultLocale = 'en') {
   let globalLocaleFound = false
   try {
     // Prefer composable `useNuxtApp()` when available in Nuxt runtime.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const maybeUseNuxt = (globalThis as any).useNuxtApp || (typeof useNuxtApp === 'function' ? useNuxtApp : undefined)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const nuxt = maybeUseNuxt ? (maybeUseNuxt as any)() : undefined
     const globalI18n = nuxt && (nuxt.$i18n || nuxt.app?.$i18n || nuxt.$i18n)
     if (globalI18n) {
@@ -52,7 +50,6 @@ export function useDashboardI18n(defaultLocale = 'en') {
   // Watch for runtime changes to global i18n locale and update dashboard locale accordingly
   try {
     if (process.client) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const nuxt = typeof useNuxtApp === 'function' ? (useNuxtApp() as any) : (globalThis as any).useNuxtApp && (globalThis as any).useNuxtApp()
       const globalI18n = nuxt && (nuxt.$i18n || nuxt.app?.$i18n)
       if (globalI18n && globalI18n.locale && typeof globalI18n.locale === 'object' && 'value' in globalI18n.locale) {
@@ -89,15 +86,39 @@ export function useDashboardI18n(defaultLocale = 'en') {
     void loadMessages(loc)
   }
 
-  function t(path: string, fallback = ''): string {
-    if (!messages.value) return fallback
-    const parts = path.split('.')
-    let cur: any = messages.value
-    for (const p of parts) {
-      if (cur && p in cur) cur = cur[p]
-      else return fallback
+  function t(path: string, paramsOrDefault?: any, fallback = ''): string {
+    let params: Record<string, any> | undefined = undefined
+    let defaultVal = fallback
+
+    if (typeof paramsOrDefault === 'object' && paramsOrDefault !== null) {
+      params = paramsOrDefault
+    } else if (typeof paramsOrDefault === 'string') {
+      defaultVal = paramsOrDefault
     }
-    return typeof cur === 'string' ? cur : fallback
+
+    let result = defaultVal
+    if (messages.value) {
+      const parts = path.split('.')
+      let cur: any = messages.value
+      for (const p of parts) {
+        if (cur && p in cur) cur = cur[p]
+        else {
+          cur = null
+          break
+        }
+      }
+      if (typeof cur === 'string') {
+        result = cur
+      }
+    }
+
+    if (params && typeof result === 'string') {
+      Object.keys(params).forEach(key => {
+        result = result.replace(new RegExp(`\\{${key}\\}`, 'g'), String(params[key]))
+      })
+    }
+
+    return result
   }
 
   // initial load (server and client) using the resolved locale

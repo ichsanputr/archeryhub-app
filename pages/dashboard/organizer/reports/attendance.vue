@@ -1,26 +1,23 @@
 <template>
   <div class="space-y-8">
     <!-- Header Section -->
-    <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
-      <div class="absolute inset-0"
-        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
-      <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="flex items-center gap-5">
-          <NuxtLink :to="getBackLink()"
-            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner text-white hover:bg-white/20 transition-all">
-            <Icon icon="ph:arrow-left-bold" class="text-primary text-xl sm:text-2xl" />
-          </NuxtLink>
-          <div>
-            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none">{{ t('dashboard.reports.attendance_title') }}</h1>
-            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider">Track Checked-in vs Registered Participants Status.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <DashboardHeader
+      :title="t('dashboard.reports.attendance_title')"
+      subtitle="Track Checked-in vs Registered Participants Status."
+      icon="ph:users-three-bold"
+      :back-to="getBackLink()"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('dashboard.reports.title', 'Laporan'), to: '/dashboard/organizer/reports' },
+        { label: t('dashboard.reports.attendance_title') }
+      ]"
+    >
+      <template #actions>
+        <BaseButton variant="primary" icon="ph:download-simple-bold" class="h-11 px-5 text-xs font-black" @click="handleExportExcel">
+          Ekspor Excel
+        </BaseButton>
+      </template>
+    </DashboardHeader>
 
     <!-- Filters Panel -->
     <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
@@ -32,19 +29,19 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         <!-- Event Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.select_event') }}</label>
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.select_event') }}</label>
           <BaseSelect v-model="filters.event_id" :items="eventsDropdownItems" :placeholder="t('dashboard.reports.select_event')" />
         </div>
 
         <!-- Start Date Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.start_date') }}</label>
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.start_date') }}</label>
           <BaseDatePicker v-model="filters.start_date" :placeholder="t('dashboard.reports.start_date')" />
         </div>
 
         <!-- End Date Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.end_date') }}</label>
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.end_date') }}</label>
           <BaseDatePicker v-model="filters.end_date" :placeholder="t('dashboard.reports.end_date')" />
         </div>
       </div>
@@ -92,7 +89,7 @@
       </div>
       <div v-else class="h-48 flex flex-col items-center justify-center text-gray-400 space-y-2 border border-dashed border-gray-100 rounded-xl">
         <Icon icon="ph:identification-card-bold" class="text-3xl" />
-        <p class="text-xs font-bold">No Timeline Data Available. Check-in events will appear here chronologically.</p>
+        <div class="text-xs font-bold">No Timeline Data Available. Check-in events will appear here chronologically.</div>
       </div>
     </div>
 
@@ -169,6 +166,9 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 definePageMeta({
   layout: 'dashboard'
 })
+
+useHead({ title: computed(() => t('reports.attendance', 'Attendance Report') + ' - ArcheryHub Dashboard') })
+
 
 const { t } = useI18n()
 const route = useRoute()
@@ -269,6 +269,32 @@ const svgAreaPath = computed(() => {
   const height = 150
   return `${path} L ${width},${height} L 0,${height} Z`
 })
+
+import { exportToExcel } from '~/utils/exportExcel'
+
+const handleExportExcel = () => {
+  const list = stats.value.recent_checkins || []
+  const data = list.map((a, idx) => ({
+    no: idx + 1,
+    archer_name: a.archer_name || a.name || '-',
+    category_name: a.category_name || '-',
+    club_name: a.club_name || '-',
+    target_name: a.target_name || '-',
+    checked_in_at: a.checked_in_at ? formatDateTime(a.checked_in_at) : (a.time || '-')
+  }))
+  exportToExcel(
+    'Laporan_Kehadiran_Turnamen_ArcheryHub',
+    [
+      { key: 'no', label: 'No' },
+      { key: 'archer_name', label: 'Nama Peserta' },
+      { key: 'category_name', label: 'Kategori' },
+      { key: 'club_name', label: 'Klub' },
+      { key: 'target_name', label: 'Nomor Bantalan' },
+      { key: 'checked_in_at', label: 'Waktu Check-In' }
+    ],
+    data
+  )
+}
 
 const formatDateTime = (dateStr) => {
   if (!dateStr) return '-'

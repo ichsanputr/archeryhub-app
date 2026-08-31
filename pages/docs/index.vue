@@ -1,33 +1,41 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero -->
-        <section class="bg-navy overflow-hidden pt-16 pb-16 md:pt-20 md:pb-24 relative">
+        <section class="relative bg-gradient-to-b from-navy via-navy-dark to-slate-900 text-white overflow-hidden pt-12 pb-14 md:pt-16 md:pb-20">
+            <!-- Background Image Slideshow changing every 5 seconds -->
             <div class="absolute inset-0 z-0">
-                <img src="/hero-homepage.jpeg" class="w-full h-full object-cover opacity-40" alt="" />
-                <div class="absolute inset-0 bg-gradient-to-br from-navy/90 via-navy/75 to-navy/60"></div>
+                <transition-group name="hero-fade">
+                    <div v-for="(img, idx) in heroImages" :key="img"
+                        v-show="currentHeroIdx === idx"
+                        class="absolute inset-0 w-full h-full">
+                        <img :src="img" alt="Archery Documentation Background" class="w-full h-full object-cover object-center scale-105 transition-transform duration-[8000ms] ease-out" />
+                    </div>
+                </transition-group>
+                <div class="absolute inset-0 bg-navy/85 backdrop-blur-[2px]"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90"></div>
             </div>
 
-            <div class="container mx-auto px-4 max-w-5xl relative z-10 text-center py-12">
+            <div class="container mx-auto px-4 max-w-5xl relative z-10 text-center py-6">
                 <div
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-primary/20 border border-primary/30 backdrop-blur-sm rounded-full text-primary text-xs font-bold tracking-widest mb-6">
-                    <Icon icon="ph:book-open-bold" class="text-base" />
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/15 backdrop-blur-md rounded-full text-primary text-xs font-bold tracking-widest mb-6 shadow-inner">
+                    <Icon icon="ph:book-open-bold" class="text-base text-primary" />
                     <span>{{ $t('docs.official_docs') }}</span>
                 </div>
-                <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-5">
-                    {{ $t('docs.title_part2') }}<br /><span class="text-primary">{{ $t('docs.title_part1') }}</span>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-5 font-display">
+                    {{ $t('docs.title_part2') }}<br /><span class="text-slate-300">{{ $t('docs.title_part1') }}</span>
                 </h1>
-                <p class="text-white/60 text-sm md:text-base max-w-xl mx-auto mb-10 leading-relaxed">
+                <p class="text-slate-300 text-sm md:text-base max-w-xl mx-auto mb-8 leading-relaxed font-medium">
                     {{ $t('docs.description') }}
                 </p>
                 <!-- Search trigger -->
                 <div class="max-w-lg mx-auto">
                     <button
                         @click="openSearch"
-                        class="w-full flex items-center gap-3 pl-4 pr-4 py-3.5 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 text-white/50 hover:bg-white/15 hover:border-primary/50 transition-all text-sm group"
+                        class="w-full flex items-center gap-3 pl-4 pr-4 py-3.5 rounded-2xl bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:border-primary focus:ring-4 focus:ring-primary/20 transition-all text-sm group shadow-sm backdrop-blur-md"
                     >
-                        <Icon icon="ph:magnifying-glass-bold" class="text-lg text-gray-300 group-hover:text-primary transition-colors" />
-                        <span class="flex-1 text-left text-white/40">{{ $t('docs.search_placeholder') }}</span>
-                        <kbd class="hidden sm:inline-flex items-center gap-1 px-2 py-1 bg-white/10 border border-white/20 rounded-lg text-xs text-white/30 font-mono">Ctrl K</kbd>
+                        <Icon icon="ph:magnifying-glass-bold" class="text-lg text-slate-300 group-hover:text-primary transition-colors" />
+                        <span class="flex-1 text-left text-slate-300 font-medium">{{ $t('docs.search_placeholder') }}</span>
+                        <kbd class="hidden sm:inline-flex items-center gap-1 px-2 py-1 bg-white/10 border border-white/20 rounded-lg text-xs text-slate-300 font-mono">Ctrl K</kbd>
                     </button>
                 </div>
             </div>
@@ -40,8 +48,8 @@
                     <button v-for="cat in categories" :key="cat.id" @click="activeCategory = cat.id"
                         class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all"
                         :class="activeCategory === cat.id
-                            ? 'bg-navy text-primary shadow-sm'
-                            : 'text-gray-500 hover:text-navy hover:bg-gray-100'">
+                            ? 'bg-primary/20 border border-primary/40 text-navy font-black shadow-sm'
+                            : 'text-gray-500 hover:text-navy hover:bg-gray-100 font-bold'">
                         <Icon :icon="cat.icon" class="text-base" />
                         {{ $t(cat.label) }}
                     </button>
@@ -53,8 +61,8 @@
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div v-for="cat in filteredCategories" :key="cat.id" class="mb-12">
                 <div class="flex items-center gap-3 mb-5">
-                    <div class="w-9 h-9 rounded-xl bg-navy flex items-center justify-center text-primary shrink-0">
-                        <Icon :icon="cat.icon" class="text-lg" />
+                    <div class="w-9 h-9 rounded-xl bg-primary/15 border border-primary/30 flex items-center justify-center text-navy shrink-0">
+                        <Icon :icon="cat.icon" class="text-lg text-navy" />
                     </div>
                     <div>
                         <h2 class="text-lg font-black text-navy">{{ $t(cat.label) }}</h2>
@@ -114,7 +122,11 @@ import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
-definePageMeta({ layout: 'docs' })
+definePageMeta({
+    layout: 'docs',
+    pageTransition: false,
+    layoutTransition: false
+})
 
 const { t, locale } = useI18n()
 const apiBaseUrl = useApiBaseUrl()
@@ -130,7 +142,7 @@ const { data: docsList } = await useAsyncData(
 const docs = computed(() => (docsList.value as any[]) || [])
 
 useHead({
-    title: 'Dokumentasi - Archeris.net',
+    title: computed(() => t('docs.title', 'Documentation') + ' - Archeris.net'),
     meta: [{ name: 'description', content: 'Dokumentasi resmi Archeris.net. Panduan lengkap tentang platform, jenis busur, sistem berlangganan, dan tata cara turnamen.' }]
 })
 
@@ -200,6 +212,30 @@ const filteredDocs = (categoryId: string) => {
         return matchCat && matchSearch
     })
 }
+
+const heroImages = [
+    '/hero-event-detail.jpeg',
+    '/hero-homepage.jpeg',
+    '/hero-event.jpeg',
+    '/hero-club.jpeg',
+    '/hero-berita.jpeg',
+    '/hero-archer.jpeg'
+]
+
+const currentHeroIdx = ref(0)
+let heroTimer: any = null
+
+onMounted(() => {
+    heroTimer = setInterval(() => {
+        currentHeroIdx.value = (currentHeroIdx.value + 1) % heroImages.length
+    }, 5000)
+})
+
+onUnmounted(() => {
+    if (heroTimer) {
+        clearInterval(heroTimer)
+    }
+})
 </script>
 
 <style scoped>
@@ -217,5 +253,14 @@ const filteredDocs = (categoryId: string) => {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+.hero-fade-enter-active,
+.hero-fade-leave-active {
+    transition: opacity 1.5s ease-in-out;
+}
+.hero-fade-enter-from,
+.hero-fade-leave-to {
+    opacity: 0;
 }
 </style>

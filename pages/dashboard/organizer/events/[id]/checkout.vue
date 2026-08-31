@@ -15,10 +15,10 @@
             </nav>
 
             <div class="flex flex-col gap-3">
-                <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Pembayaran Biaya Platform</h1>
-                <p class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">
+                <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">{{ t("org_checkout.title") }}</h1>
+                <div class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">
                     Selesaikan pembayaran untuk mengaktifkan event Anda dan mulai menerima pendaftaran peserta.
-                </p>
+                </div>
             </div>
         </div>
 
@@ -41,7 +41,7 @@
                     <div v-else class="space-y-6">
                         <!-- Virtual Account -->
                         <div v-if="channelGroups.va?.length">
-                            <h3 class="text-sm font-bold text-gray-500  tracking-wider mb-3">Virtual Account
+                            <h3 class="text-sm font-bold text-gray-500  tracking-wider mb-3">{{ t("org_checkout.virtual_account") }}
                             </h3>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 <button v-for="channel in channelGroups.va" :key="channel.code"
@@ -56,7 +56,7 @@
 
                         <!-- E-Wallet -->
                         <div v-if="channelGroups.ewallet?.length">
-                            <h3 class="text-sm font-bold text-gray-500  tracking-wider mb-3">E-Wallet</h3>
+                            <h3 class="text-sm font-bold text-gray-500  tracking-wider mb-3">{{ t("org_checkout.e_wallet") }}</h3>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 <button v-for="channel in channelGroups.ewallet" :key="channel.code"
                                     @click="selectChannel(channel)"
@@ -70,7 +70,7 @@
 
                         <!-- Convenience Store -->
                         <div v-if="channelGroups.cstore?.length">
-                            <h3 class="text-sm font-bold text-gray-500  tracking-wider mb-3">Convenience Store
+                            <h3 class="text-sm font-bold text-gray-500  tracking-wider mb-3">{{ t("org_checkout.convenience_store") }}
                             </h3>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 <button v-for="channel in channelGroups.cstore" :key="channel.code"
@@ -96,16 +96,16 @@
 
                     <div class="space-y-4 mb-6">
                         <div class="flex justify-between py-2 border-b border-gray-100">
-                            <span class="text-gray-500">Biaya Platform</span>
+                            <span class="text-gray-500">{{ t("org_checkout.platform_fee") }}</span>
                             <span class="font-semibold text-navy">Rp 50.000</span>
                         </div>
                         <div v-if="selectedChannel" class="flex justify-between py-2 border-b border-gray-100">
-                            <span class="text-gray-500">Biaya Admin</span>
+                            <span class="text-gray-500">{{ t("org_checkout.admin_fee") }}</span>
                             <span class="font-semibold text-navy">Rp {{
                                 selectedChannel.total_fee?.flat?.toLocaleString('id-ID') || '0' }}</span>
                         </div>
                         <div class="flex justify-between py-3 text-lg">
-                            <span class="font-bold text-navy">Total</span>
+                            <span class="font-bold text-navy">{{ t("org_checkout.total") }}</span>
                             <span class="font-black text-primary">Rp {{ totalAmount.toLocaleString('id-ID') }}</span>
                         </div>
                     </div>
@@ -113,36 +113,36 @@
                     <button @click="createPayment" :disabled="!selectedChannel || isProcessing"
                         class="w-full h-12 rounded-xl bg-navy-dark text-white font-bold hover:bg-navy-light transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                         <span v-if="isProcessing" class="material-symbols-outlined animate-spin">sync</span>
-                        <span>{{ isProcessing ? 'Memproses...' : 'Bayar Sekarang' }}</span>
+                        <span>{{ isProcessing ? t('org_checkout.processing') : t('org_checkout.pay_now') }}</span>
                     </button>
 
-                    <p class="text-xs text-gray-500 text-center mt-4">
+                    <div class="text-xs text-gray-500 text-center mt-4">
                         Dengan melanjutkan, Anda menyetujui <NuxtLink to="#" class="text-primary hover:underline">syarat
                             dan
                             ketentuan</NuxtLink> kami.
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Payment Instructions Modal -->
-        <AppDialog v-model:show="showInstructionsDialog" title="Instruksi Pembayaran" type="primary" icon="payments">
+        <AppDialog v-model:show="showInstructionsDialog" :title="t('org_checkout.instructions_title')" type="primary" icon="payments">
             <template #default>
                 <div class="space-y-4">
                     <div v-if="paymentData?.pay_code" class="bg-gray-50 rounded-xl p-4 text-center">
-                        <p class="text-xs text-gray-500  font-bold mb-2">Kode Pembayaran / VA</p>
-                        <p class="text-2xl font-black text-navy tracking-widest">{{ paymentData.pay_code }}</p>
+                        <div class="text-xs text-gray-500  font-bold mb-2">{{ t("org_checkout.pay_code_label") }}</div>
+                        <div class="text-2xl font-black text-navy tracking-widest">{{ paymentData.pay_code }}</div>
                     </div>
                     <div v-if="paymentData?.qr_url" class="flex justify-center">
                         <img :src="paymentData.qr_url" alt="QR Code" class="w-48 h-48 rounded-xl border" />
                     </div>
                     <div class="flex justify-between py-2 border-b border-gray-100">
-                        <span class="text-gray-500">Total Bayar</span>
+                        <span class="text-gray-500">{{ t("org_checkout.total_to_pay") }}</span>
                         <span class="font-bold text-navy">Rp {{ paymentData?.total_amount?.toLocaleString('id-ID') ||
                             '0' }}</span>
                     </div>
                     <div class="flex justify-between py-2 border-b border-gray-100">
-                        <span class="text-gray-500">Batas Waktu</span>
+                        <span class="text-gray-500">{{ t("org_checkout.expiry_time") }}</span>
                         <span class="font-semibold text-amber-600">{{ formatExpiry(paymentData?.expired_at) }}</span>
                     </div>
                 </div>
@@ -157,9 +157,10 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Pembayaran - Dashboard'
+    title: computed(() => t('payment.title', 'Payment') + ' - ArcheryHub Dashboard')
 })
 
+const { t } = useI18n()
 const route = useRoute()
 const { get, post } = useApi()
 

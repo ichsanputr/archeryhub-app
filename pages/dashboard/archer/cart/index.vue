@@ -1,44 +1,21 @@
 <template>
     <div class="space-y-8 pb-12">
         <!-- Header -->
-        <div
-            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-
-            <!-- Decorative Background Elements -->
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-            <!-- Header Content -->
-            <div class="relative p-6 sm:p-8">
-                <div class="flex items-center gap-2 text-sm text-white/60 mb-4">
-                    <NuxtLink to="/dashboard/archer" class="hover:text-white transition-colors">Dashboard</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-base" />
-                    <span class="text-primary font-medium">{{ t('cart.title') }}</span>
-                </div>
-                <div class="flex items-start gap-4">
-                    <!-- Icon Badge -->
-                    <div
-                        class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-                        <Icon icon="ph:shopping-cart" class="text-primary text-2xl" />
-                    </div>
-                    <div class="flex-grow">
-                        <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">{{ t('cart.title') }}</h1>
-                        <p class="text-slate-300 text-sm mt-1">{{ t('cart.desc') }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <DashboardHeader
+            :title="t('cart.title')"
+            :subtitle="t('cart.desc')"
+            icon="ph:shopping-cart"
+            :breadcrumbs="[
+                { label: 'Dashboard', to: '/dashboard/archer' },
+                { label: t('cart.title') }
+            ]"
+        />
 
         <!-- Content Area -->
         <div v-if="isLoading"
             class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
             <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
-            <p class="text-gray-500 font-medium">{{ t('cart.loading') }}</p>
+            <div class="text-gray-500 font-medium">{{ t('cart.loading') }}</div>
         </div>
 
         <div v-else>
@@ -48,7 +25,7 @@
                     <Icon icon="ph:shopping-bag-open" class="text-5xl text-gray-200" />
                 </div>
                 <h3 class="text-xl font-bold text-navy mb-2">{{ t('cart.empty_title') }}</h3>
-                <p class="text-gray-500 mb-8 px-6 text-center max-w-md">{{ t('cart.empty_desc') }}</p>
+                <div class="text-gray-500 mb-8 px-6 text-center max-w-md">{{ t('cart.empty_desc') }}</div>
                 <NuxtLink to="/products">
                     <BaseButton variant="primary" size="lg" icon="ph:shopping-bag">{{ t('cart.start_shopping') }}</BaseButton>
                 </NuxtLink>
@@ -62,12 +39,9 @@
 
                         <!-- Product Image -->
                         <div
-                            class="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-gray-50 flex-shrink-0 overflow-hidden border border-gray-100">
-                            <img v-if="item.product_image_url" :src="item.product_image_url" :alt="item.product_name"
+                            class="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-gray-50 flex-shrink-0 overflow-hidden border border-gray-100 flex items-center justify-center">
+                            <img :src="getProductImage(item)" :alt="item.product_name"
                                 class="w-full h-full object-cover" />
-                            <div v-else class="w-full h-full flex items-center justify-center">
-                                <Icon icon="ph:package" class="text-4xl text-gray-200" />
-                            </div>
                         </div>
 
                         <div class="flex-grow min-w-0 flex flex-col justify-between py-1">
@@ -88,12 +62,12 @@
 
                             <div class="flex items-end justify-between mt-4">
                                 <div class="space-y-1">
-                                    <p class="text-xs text-gray-400 line-through" v-if="item.product_sale_price">
+                                    <div class="text-xs text-gray-400 line-through" v-if="item.product_sale_price">
                                         Rp {{ formatPrice(item.product_price) }}
-                                    </p>
-                                    <p class="text-lg font-black text-navy">
+                                    </div>
+                                    <div class="text-lg font-black text-navy">
                                         Rp {{ formatPrice(item.product_sale_price || item.product_price) }}
-                                    </p>
+                                    </div>
                                 </div>
 
                                 <!-- Quantity Controls -->
@@ -144,38 +118,93 @@
                                 <div
                                     class="pt-4 border-t border-dashed border-gray-200 flex justify-between items-center">
                                     <span class="font-bold text-navy tracking-widest text-xs">{{ t('cart.total_payment') }}</span>
-                                    <span class="text-2xl font-black text-navy">Rp {{ formatPrice(totalProductSubtotal)
-                                        }}</span>
+                                    <span class="text-2xl font-black text-navy">Rp {{ formatPrice(totalProductSubtotal) }}</span>
                                 </div>
                             </div>
 
-                            <BaseButton @click="navigateTo('/dashboard/archer/cart/payment')" class="w-full"
-                                variant="primary" size="lg" icon="ph:arrow-right-bold"
+                            <BaseButton @click="openCheckoutModal" class="w-full"
+                                variant="primary" size="lg" icon="ph:ticket-bold"
                                 :disabled="productCart.length === 0">
-                                {{ t('cart.checkout') }}
+                                {{ t("archer_cart.open_checkout_ticket") }}
                             </BaseButton>
-
-                            <div class="mt-6 p-4 bg-navy/[0.02] rounded-xl border border-navy/5">
-                                <p class="text-[10px] text-gray-400 text-center italic">
-                                    {{ t('cart.direct_shipping_info') }}
-                                </p>
-                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <!-- Info Cards -->
-                        <div class="grid grid-cols-2 gap-3">
-                            <div
-                                class="p-3 bg-white rounded-xl border border-gray-100 flex flex-col items-center text-center gap-2">
-                                <Icon icon="ph:shield-check-fill" class="text-primary text-xl" />
-                                <span class="text-[9px] font-bold text-navy tracking-tighter">{{ t('cart.secure_guarantee') }}</span>
+        <!-- Checkout Dialog Modal -->
+        <div v-if="showCheckoutModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+            <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-100 space-y-6 animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto no-scrollbar">
+                
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="size-11 rounded-2xl bg-navy text-primary flex items-center justify-center shrink-0">
+                            <Icon icon="ph:ticket-bold" class="text-xl" />
+                        </div>
+                        <div>
+                            <h3 class="font-black text-navy text-lg leading-tight">{{ t("archer_cart.open_order_ticket_title") }}</h3>
+                            <div class="text-xs text-gray-500 mt-0.5">{{ t("archer_cart.send_order_via_chat_desc") }}</div>
+                        </div>
+                    </div>
+                    <button @click="showCheckoutModal = false" class="size-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center transition">
+                        <Icon icon="ph:x-bold" class="text-sm" />
+                    </button>
+                </div>
+
+                <!-- Products Summary in Modal -->
+                <div class="space-y-3">
+                    <div class="text-[10px] font-black text-gray-400 tracking-wider capitalize">{{ t("archer_cart.ordered_products_list") }}</div>
+                    <div class="max-h-48 overflow-y-auto space-y-2 pr-1 no-scrollbar">
+                        <div v-for="item in productCart" :key="item.uuid" class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl text-xs border border-gray-100">
+                            <div class="size-10 rounded-lg overflow-hidden bg-white border border-gray-200 shrink-0 flex items-center justify-center">
+                                <img :src="getProductImage(item)" class="w-full h-full object-cover" />
                             </div>
-                            <div
-                                class="p-3 bg-white rounded-xl border border-gray-100 flex flex-col items-center text-center gap-2">
-                                <Icon icon="ph:truck-fill" class="text-primary text-xl" />
-                                <span class="text-[9px] font-bold text-navy tracking-tighter">{{ t('cart.trusted_courier') }}</span>
+                            <div class="min-w-0 flex-1 pr-2">
+                                <div class="font-bold text-navy truncate">{{ item.product_name }}</div>
+                                <div class="text-[10px] text-gray-500">
+                                    {{ item.quantity }}x @ Rp {{ formatPrice(item.product_sale_price || item.product_price) }}
+                                    <span v-if="item.color" class="text-primary font-bold">({{ item.color }})</span>
+                                </div>
+                            </div>
+                            <div class="font-black text-navy shrink-0">
+                                Rp {{ formatPrice((item.product_sale_price || item.product_price) * item.quantity) }}
                             </div>
                         </div>
                     </div>
+                    <div class="flex justify-between items-center pt-2 px-1 border-t border-gray-100">
+                        <span class="text-xs font-bold text-gray-500">{{ t("archer_cart.estimated_total") }}</span>
+                        <span class="text-lg font-black text-navy">Rp {{ formatPrice(totalProductSubtotal) }}</span>
+                    </div>
+                </div>
+
+                <!-- Additional Notes / Address Input -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-black text-navy tracking-wider mb-2">{{ t("archer_cart.shipping_notes_label") }}</label>
+                        <textarea v-model="checkoutForm.notes" rows="3"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none resize-none text-xs"
+                            :placeholder="t('archer_cart.shipping_notes_placeholder')"></textarea>
+                    </div>
+
+                    <div class="p-3 bg-blue-50/70 border border-blue-100 rounded-xl text-left flex items-start gap-2.5">
+                        <Icon icon="ph:info-bold" class="text-blue-600 text-base shrink-0 mt-0.5" />
+                        <div class="text-[11px] text-blue-900 leading-relaxed">
+                            <span v-html="t('archer_cart.chat_ticket_info')"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Actions -->
+                <div class="flex gap-3 pt-2">
+                    <BaseButton @click="showCheckoutModal = false" variant="outline" size="md" class="flex-1 !rounded-xl">
+                        {{ t("archer_cart.cancel") }}
+                    </BaseButton>
+                    <BaseButton @click="handleSendOrderTicket" variant="primary" size="md" icon="ph:paper-plane-tilt-bold"
+                        class="flex-1 !rounded-xl font-black shadow-lg shadow-primary/20" :loading="isSubmittingTicket">
+                        {{ t("archer_cart.send_order_chat_btn") }}
+                    </BaseButton>
                 </div>
             </div>
         </div>
@@ -185,9 +214,11 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useI18n } from 'vue-i18n'
 
 definePageMeta({
@@ -195,18 +226,25 @@ definePageMeta({
 })
 
 const { t } = useI18n()
+const router = useRouter()
 
 useHead({
-    title: computed(() => t('cart.title') + ' - Archeris')
+    title: computed(() => t('cart.title') + ' - ArcheryHub Dashboard')
 })
 
 const { user } = useAuth()
-const { get, put, delete: del } = useApi()
+const { get, post, put, delete: del } = useApi()
 const toast = useToast()
 
 const isLoading = ref(true)
 const isProcessing = ref(false)
+const isSubmittingTicket = ref(false)
+const showCheckoutModal = ref(false)
 const productCart = ref([])
+
+const checkoutForm = ref({
+    notes: ''
+})
 
 // Computed values
 const totalProductQty = computed(() => productCart.value.reduce((acc, item) => acc + item.quantity, 0))
@@ -216,7 +254,21 @@ const totalProductSubtotal = computed(() => productCart.value.reduce((acc, item)
 }, 0))
 
 // Utility functions
-const formatPrice = (p) => new Intl.NumberFormat('id-ID').format(p)
+const formatPrice = (p) => new Intl.NumberFormat('id-ID').format(p || 0)
+
+const getProductImage = (item) => {
+    let img = item.product_image_url || item.image_url || item.product_image
+    if (!img && item.images) {
+        try {
+            const arr = typeof item.images === 'string' ? JSON.parse(item.images) : item.images
+            if (Array.isArray(arr) && arr[0]) img = arr[0]
+        } catch { /* silent */ }
+    }
+    if (img && img.trim()) {
+        return useImageOrDefault(img)
+    }
+    return `https://picsum.photos/seed/${item.product_id || item.product_name || 'archery'}/300/300`
+}
 
 // API Handlers
 const fetchCart = async () => {
@@ -233,6 +285,111 @@ const fetchCart = async () => {
         toast.error(t('cart.cart_error'))
     } finally {
         isLoading.value = false
+    }
+}
+
+const openCheckoutModal = () => {
+    if (productCart.value.length === 0) return
+    showCheckoutModal.value = true
+}
+
+const handleSendOrderTicket = async () => {
+    if (productCart.value.length === 0) return
+    isSubmittingTicket.value = true
+
+    try {
+        // Group items by seller_id
+        const sellerGroups = {}
+        productCart.value.forEach(item => {
+            const sId = item.seller_id || 'default_seller'
+            if (!sellerGroups[sId]) sellerGroups[sId] = []
+            sellerGroups[sId].push(item)
+        })
+
+        let lastConvId = null
+
+        // Send order ticket for each seller group
+        for (const [sellerId, items] of Object.entries(sellerGroups)) {
+            const firstItem = items[0]
+            const itemsListText = items.map(it => {
+                const price = it.product_sale_price || it.product_price
+                const variant = it.color ? ` (${it.color})` : ''
+                return `• ${it.product_name}${variant} x${it.quantity} — Rp ${formatPrice(price * it.quantity)}`
+            }).join('\n')
+
+            const groupTotal = items.reduce((sum, it) => {
+                const price = it.product_sale_price || it.product_price
+                return sum + (price * it.quantity)
+            }, 0)
+
+            const formattedMessage = [
+                '🎫 TIKET PESANAN BARU',
+                '─────────────────────────',
+                '📦 Rincian Produk:',
+                itemsListText,
+                '',
+                `💰 Total Estimasi: Rp ${formatPrice(groupTotal)}`,
+                checkoutForm.value.notes ? `📍 Alamat & Catatan:
+${checkoutForm.value.notes}` : '',
+                '─────────────────────────',
+                'Halo, saya ingin memesan produk di atas. Mohon konfirmasi ketersediaan dan detail selanjutnya.'
+            ].filter(Boolean).join('\n')
+
+            // Create order record in database so seller sees it in /dashboard/seller/orders
+            try {
+                await post('/orders', {
+                    seller_id: firstItem.seller_id || '',
+                    shipping_address: checkoutForm.value.notes || '',
+                    notes: checkoutForm.value.notes || '',
+                    items: items.map(it => ({
+                        product_id: it.product_id,
+                        quantity: it.quantity,
+                        price: it.product_sale_price || it.product_price,
+                        color: it.color || ''
+                    }))
+                })
+            } catch (err) {
+                console.warn('Failed to create order record:', err)
+            }
+
+            // Start or get conversation
+            const convRes = await post('/chat/conversations', {
+                seller_id: firstItem.seller_id || '',
+                product_id: firstItem.product_id,
+                product_name: firstItem.product_name,
+                product_image: firstItem.product_image_url
+            })
+
+            const convData = convRes?.conversation || convRes?.data || convRes
+            const convId = convData?.id || convData?.uuid
+
+            if (convId) {
+                lastConvId = convId
+                await post(`/chat/conversations/${convId}/messages`, {
+                    message: formattedMessage
+                })
+            }
+        }
+
+        // Delete all items from cart
+        for (const item of productCart.value) {
+            try {
+                await del(`/cart/${item.uuid}`)
+            } catch (e) { /* silent */ }
+        }
+
+        productCart.value = []
+        showCheckoutModal.value = false
+        toast.success('Tiket pesanan berhasil dikirimkan ke Penjual!')
+
+        // Redirect to chat
+        router.push(lastConvId ? `/dashboard/archer/chat?conversation_id=${lastConvId}` : '/dashboard/archer/chat')
+    } catch (error) {
+        console.error('Failed to send order ticket:', error)
+        const errMsg = error?.response?.data?.error || error?.message || 'Gagal mengirimkan tiket pesanan ke penjual'
+        toast.error(errMsg)
+    } finally {
+        isSubmittingTicket.value = false
     }
 }
 

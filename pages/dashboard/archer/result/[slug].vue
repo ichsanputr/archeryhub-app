@@ -57,7 +57,7 @@ const statusOptions = [
 
 const statusFilterOptions = computed(() => {
   return [
-    { value: '', title: t('problem_results.all_statuses') },
+    { value: '', title: computed(() => t('problem_results.all_statuses')) },
     ...statusOptions.map(s => ({ value: s.description, title: s.description }))
   ]
 })
@@ -162,7 +162,7 @@ const formatDate = (dateString) => {
 }
 
 useHead({
-  title: computed(() => t('problem_results.seo_title', { title: problemTitle.value })),
+  title: t('problem_results.seo_title', { title: problemTitle.value }),
   meta: [
     { name: 'description', content: computed(() => t('problem_results.seo_desc', { title: problemTitle.value })) },
     { name: 'robots', content: 'noindex' }
@@ -201,9 +201,9 @@ definePageMeta({
             <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-3 tracking-tight">
               {{ problemTitle }}
             </h1>
-            <p class="text-slate-300 text-lg font-medium">
+            <div class="text-slate-300 text-lg font-medium">
               {{ t('problem_results.header_desc') }}
-            </p>
+            </div>
           </div>
 
           <!-- Stats Cards -->
@@ -238,7 +238,7 @@ definePageMeta({
             <div class="size-16 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
             <div class="space-y-2">
               <h3 class="text-lg font-bold text-navy">{{ t('problem_results.loading_title') }}</h3>
-              <p class="text-slate-500 text-sm">{{ t('problem_results.loading_desc') }}</p>
+              <div class="text-slate-500 text-sm">{{ t('problem_results.loading_desc') }}</div>
             </div>
           </div>
         </div>
@@ -255,9 +255,9 @@ definePageMeta({
               <h3 class="text-xl font-semibold text-gray-900 mb-2">
                 {{ t('problem_results.failed_load') }}
               </h3>
-              <p class="text-gray-600 mb-6">
+              <div class="text-gray-600 mb-6">
                 {{ error }}
-              </p>
+              </div>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-3 w-full">
@@ -285,7 +285,7 @@ definePageMeta({
                 </div>
                 <h3 class="text-lg font-semibold text-gray-900">{{ t('problem_results.filter_title') }}</h3>
               </div>
-              <p class="text-gray-600">{{ t('problem_results.filter_desc') }}</p>
+              <div class="text-gray-600">{{ t('problem_results.filter_desc') }}</div>
             </div>
             <div class="flex items-center gap-4">
               <div class="min-w-[220px]">
@@ -435,10 +435,10 @@ definePageMeta({
 
         <!-- Results Summary -->
         <div v-if="user && !loading && paginatedResults.length > 0" class="mt-6 text-center">
-          <p class="text-sm text-gray-600">
+          <div class="text-sm text-gray-600">
             {{ t('problem_results.showing_info', { start: (page - 1) * pageSize + 1, end: Math.min(page * pageSize, filteredResults.length), total: filteredResults.length }) }}
             <span v-if="filters.status" class="text-blue-600"> {{ t('problem_results.filtered_by', { status: filters.status }) }}</span>
-          </p>
+          </div>
         </div>
 
         <!-- Enhanced Empty State for No Results -->
@@ -450,9 +450,9 @@ definePageMeta({
             <h3 class="text-xl font-semibold text-gray-900 mb-3">
               {{ t('problem_results.no_attempts') }}
             </h3>
-            <p class="text-gray-600 mb-8">
+            <div class="text-gray-600 mb-8">
               {{ t('problem_results.no_attempts_desc') }}
-            </p>
+            </div>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
               <BaseButton :to="`/dashboard/${userPersona}/events`" variant="gold" icon="ph:trophy">
                 {{ t('problem_results.view_tournament') }}
@@ -474,9 +474,9 @@ definePageMeta({
             <h3 class="text-lg font-semibold text-gray-900 mb-2">
               {{ t('problem_results.no_filter_match') }}
             </h3>
-            <p class="text-gray-600 mb-6">
+            <div class="text-gray-600 mb-6">
               {{ t('problem_results.no_filter_match_desc') }}
-            </p>
+            </div>
             <BaseButton variant="gold" icon="ph:x" @click="filters.status = ''">
               {{ t('problem_results.clear_filter') }}
             </BaseButton>

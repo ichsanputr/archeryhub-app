@@ -40,7 +40,7 @@
                             <span>Pembayaran</span>
                         </nav>
                         <h1
-                            class="text-xl md:text-3xl font-black leading-tight tracking-tight mb-4 font-display text-white uppercase-none">
+                            class="text-xl md:text-3xl font-black leading-tight tracking-tight mb-4 font-display text-white -none">
                             Pembayaran {{ event?.name }}
                         </h1>
                         <div class="flex flex-wrap items-center gap-6 text-white/70">
@@ -231,12 +231,17 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 import { useDateFormat } from '@vueuse/core'
 
 definePageMeta({
     layout: 'blank'
 })
+
+useHead({ title: computed(() => t('payment.event_payment', 'Event Payment') + ' - ArcheryHub') })
+
 
 const route = useRoute()
 const router = useRouter()

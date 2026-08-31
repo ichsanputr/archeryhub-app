@@ -1,35 +1,30 @@
 <template>
   <div class="flex flex-col gap-8">
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-      <div class="flex items-center gap-5">
-        <div class="size-12 rounded-2xl bg-navy flex items-center justify-center shrink-0 shadow-lg">
-          <Icon icon="ph:buildings-bold" class="text-primary text-2xl" />
-        </div>
-        <div>
-          <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none ">
-            {{ t('organizer.profile.title') }}
-          </h1>
-          <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider ">
-            {{ t('organizer.profile.subtitle') }}
-          </div>
-        </div>
-      </div>
-      <div class="flex gap-3">
+    <!-- Header Section -->
+    <DashboardHeader
+      :title="t('organizer.profile.title')"
+      :subtitle="t('organizer.profile.subtitle')"
+      icon="ph:buildings-bold"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('organizer.profile.title', 'Profil Organisasi') }
+      ]"
+    >
+      <template #actions>
         <BaseButton variant="primary" :loading="saving" @click="saveProfile" icon="ph:floppy-disk"
           class="h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl">
           {{ saving ? t('organizer.profile.saving') : t('organizer.profile.save') }}
         </BaseButton>
-      </div>
-    </div>
+      </template>
+    </DashboardHeader>
 
     <!-- Tab Navigation -->
-    <div class="flex gap-1 bg-gray-100/80 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm">
+    <div class="flex gap-1 bg-slate-100 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm">
       <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-        :class="activeTab === tab.id ? 'bg-white shadow text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
-        class="flex items-center justify-center gap-2 flex-1 min-w-[140px] px-5 py-2.5 rounded-xl text-sm font-black transition-all">
-        <Icon :icon="tab.icon" class="text-lg" />
-        {{ tab.label }}
+        :class="activeTab === tab.id ? 'bg-white shadow-sm text-navy font-black' : 'text-slate-500 hover:text-navy hover:bg-white/50 font-bold'"
+        class="flex items-center justify-center gap-2 flex-1 min-w-[120px] sm:min-w-[140px] px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm whitespace-nowrap shrink-0 transition-all">
+        <Icon :icon="tab.icon" class="text-base sm:text-lg shrink-0" />
+        <span class="whitespace-nowrap">{{ tab.label }}</span>
       </button>
     </div>
 
@@ -337,20 +332,22 @@ const countries = ref([
     { title: 'United States', value: 'United States', icon: 'circle-flags:us' }
 ])
 
+const { t } = useI18n()
+
 definePageMeta({
   layout: 'dashboard',
   middleware: ['auth']
 })
 
 useHead({
-  title: computed(() => `${t('organizer.profile.title')} - Archeris Dashboard`)
+  title: computed(() => `${t('organizer.profile.title')} - ArcheryHub Dashboard`)
 })
 
 const router = useRouter()
 const { get, put } = useApi()
 const { user, organizerProfile } = useAuth()
 const toast = useToast()
-const { t } = useI18n()
+
 
 const saving = ref(false)
 const activeTab = ref('general')
@@ -546,10 +543,18 @@ const removeFAQ = (index) => {
 
 const loadProfile = async () => {
   try {
-    // Use organizerProfile (already loaded by server middleware)
-    const org = organizerProfile.value
+    // Fetch fresh organizer profile from API
+    let org = organizerProfile.value
+    try {
+      const res = await get('/organizers/me')
+      if (res && (res.id || res.uuid || res.name)) {
+        org = res
+      }
+    } catch (e) {
+      console.warn('API /organizers/me fetch failed, fallback to useAuth organizerProfile:', e)
+    }
 
-    if (org && (org.id || org.uuid)) {
+    if (org && (org.id || org.uuid || org.name)) {
       form.name = org.name || ''
       form.slug = org.slug || ''
       form.bannerUrl = org.banner_url || ''
@@ -626,6 +631,10 @@ const saveProfile = async () => {
   }
 }
 
+
+watch(organizerProfile, () => {
+  loadProfile()
+}, { immediate: true })
 
 onMounted(() => {
   loadProfile()

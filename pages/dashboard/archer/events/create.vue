@@ -15,7 +15,7 @@
       <div class="flex flex-wrap justify-between gap-6 items-end">
         <div class="flex flex-col gap-3">
           <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">{{ t('event_create.title') }}</h1>
-          <p class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">{{ t('event_create.subtitle') }}</p>
+          <div class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">{{ t('event_create.subtitle') }}</div>
         </div>
       </div>
     </div>
@@ -38,9 +38,9 @@
                   :placeholder="t('event_create.slug_placeholder')" required :error="errors.slug"
                   @input="onSlugInput"
                   @blur="validate('slug', form.slug, [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, t('event_create.error_slug_format'))])" />
-                <p class="text-xs text-gray-500 mt-1.5">
+                <div class="text-xs text-gray-500 mt-1.5">
                   {{ t('event_create.slug_help') }}
-                </p>
+                </div>
               </div>
               <BaseInput v-model="form.venue" :label="t('event_create.venue_location')" :placeholder="t('event_create.venue_placeholder')"
                 icon="la:place-of-worship" />
@@ -60,9 +60,9 @@
                     referrerpolicy="no-referrer-when-downgrade" :src="gmapsEmbedUrl">
                   </iframe>
                 </div>
-                <p v-else-if="form.gmapsLink && !isValidGmaps" class="text-red-500 text-xs font-bold mt-1">
+                <div v-else-if="form.gmapsLink && !isValidGmaps" class="text-red-500 text-xs font-bold mt-1">
                   {{ t('event_create.gmaps_error') }}
-                </p>
+                </div>
               </div>
             </div>
           </FormSection>
@@ -81,7 +81,7 @@
 
           <!-- Event Images Section -->
           <FormSection icon="ph:images-bold" :title="t('event_create.event_images')">
-            <p class="text-text-secondary text-sm mb-4">{{ t('event_create.images_desc') }}</p>
+            <div class="text-text-secondary text-sm mb-4">{{ t('event_create.images_desc') }}</div>
 
             <div class="flex flex-wrap gap-4">
               <!-- Image Thumbnails -->
@@ -124,7 +124,7 @@
 
           <!-- Payment Methods Section -->
           <FormSection icon="ph:credit-card" :title="t('event_create.payment_methods')">
-            <p class="text-text-secondary text-sm mb-4">{{ t('event_create.payment_desc') }}</p>
+            <div class="text-text-secondary text-sm mb-4">{{ t('event_create.payment_desc') }}</div>
 
             <div class="space-y-4">
               <!-- Payment Method List -->
@@ -219,7 +219,7 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => `${t('event_create.title')} - Archeris Dashboard`)
+  title: computed(() => `${t('event_create.title')} - ArcheryHub Dashboard`)
 })
 
 const router = useRouter()

@@ -1,111 +1,167 @@
 <template>
-    <div class="flex flex-col gap-8 max-w-4xl mx-auto">
-        <!-- Header Section -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard/organizer" class="hover:text-primary transition-colors">{{ t('common.dashboard') }}</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink to="/dashboard/organizer/news" class="hover:text-primary transition-colors">{{ t('organizer_news.index.title') }}</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">{{ t('organizer_news.create.title_short') }}</span>
-                </div>
-                <h1 class="text-3xl font-extrabold text-navy tracking-tight">{{ t('organizer_news.create.title') }}</h1>
-                <p class="text-gray-500 font-medium mt-1">{{ t('organizer_news.create.subtitle') }}</p>
+  <div class="flex flex-col gap-6 sm:gap-8 max-w-6xl mx-auto w-full">
+    <!-- Header Section (Enhanced Navy & Brand Accents) -->
+    <DashboardHeader
+      :title="t('organizer_news.create.title', 'Tulis Berita & Pengumuman Baru')"
+      :subtitle="t('organizer_news.create.subtitle', 'Publikasikan informasi kegiatan, pengumuman event, atau artikel seputar panahan.')"
+      icon="ph:pencil-line-bold"
+      back-to="/dashboard/organizer/news"
+      :back-text="t('organizer_news.create.back', 'Kembali ke Daftar Berita')"
+      :breadcrumbs="[
+        { label: t('common.dashboard', 'Dashboard'), to: '/dashboard' },
+        { label: t('organizer_news.index.title', 'Berita'), to: '/dashboard/organizer/news' },
+        { label: t('organizer_news.create.title_short', 'Tulis Berita') }
+      ]"
+    />
+
+    <!-- Form Section -->
+    <form @submit.prevent="submitNews" class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+      <!-- Main Content Column (2 Cols) -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Article Info & Excerpt Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6 sm:p-8 space-y-6">
+          <div class="flex items-center gap-2 pb-4 border-b border-slate-100">
+            <Icon icon="ph:article-bold" class="text-navy text-lg" />
+            <h3 class="text-base font-black text-navy">{{ t('organizer_news.create.info_heading', 'Informasi Utama Berita') }}</h3>
+          </div>
+
+          <BaseInput
+            v-model="form.title"
+            :label="t('organizer_news.create.label_title', 'Judul Berita')"
+            :placeholder="t('organizer_news.create.placeholder_title', 'Contoh: Sleman Archery Championship 2026 Resmi Dibuka')"
+            required
+          />
+
+          <div>
+            <label class="block text-xs font-bold text-navy tracking-wider mb-2">
+              {{ t('organizer_news.create.label_excerpt', 'Ringkasan / Kutipan Lead (Opsional)') }}
+            </label>
+            <textarea
+              v-model="form.excerpt"
+              class="w-full px-4 py-3 rounded-2xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-hidden transition-all resize-none text-xs sm:text-sm text-slate-800"
+              rows="3"
+              :placeholder="t('organizer_news.create.placeholder_excerpt', 'Tuliskan 1-2 kalimat ringkasan yang menarik perhatian pembaca...')"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Rich Text Editor Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6 sm:p-8 space-y-6">
+          <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <Icon icon="ph:text-aa-bold" class="text-navy text-lg" />
+              <h3 class="text-base font-black text-navy">{{ t('organizer_news.create.content_heading', 'Isi Lengkap Artikel') }}</h3>
             </div>
+            <span class="text-xs font-semibold text-slate-400">Editor Visual</span>
+          </div>
+
+          <div class="min-h-[350px]">
+            <TiptapEditor
+              v-model="form.content"
+              :placeholder="t('organizer_news.create.placeholder_content', 'Tuliskan isi artikel berita secara lengkap di sini...')"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings & Publishing Sidebar (1 Col) -->
+      <aside class="space-y-6">
+        <!-- Publishing Control Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6 space-y-5">
+          <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+            <Icon icon="ph:sliders-horizontal-bold" class="text-navy text-lg" />
+            <h3 class="text-sm font-black text-navy capitalize">{{ t('organizer_news.detail.status_heading', 'Status & Publikasi') }}</h3>
+          </div>
+
+          <BaseSelect
+            v-model="form.status"
+            :items="statusOptions"
+            :label="t('organizer_news.create.label_status', 'Status Publikasi')"
+            required
+          />
+
+          <BaseSelect
+            v-model="form.category"
+            :items="categoryOptions"
+            :label="t('organizer_news.create.label_category', 'Kategori Berita')"
+            required
+          />
+
+          <BaseInput
+            v-model="form.tags"
+            :label="t('organizer_news.create.label_tags', 'Label & Tagar')"
+            :placeholder="t('organizer_news.create.placeholder_tags', 'Contoh: panahan, kejurda, sleman (pisahkan dengan koma)')"
+            icon="ph:tag"
+          />
+
+          <div class="pt-3 border-t border-slate-100 space-y-2">
+            <BaseButton
+              variant="primary"
+              type="submit"
+              icon="ph:paper-plane-tilt-bold"
+              :loading="isSubmitting"
+              block
+              class="h-11 font-black text-xs"
+            >
+              {{ form.status === 'published' ? t('organizer_news.create.publish', 'Publikasikan Sekarang') : t('organizer_news.create.save_draft', 'Simpan sebagai Draf') }}
+            </BaseButton>
+
+            <NuxtLink to="/dashboard/organizer/news" class="block">
+              <BaseButton variant="white" block class="h-10 text-xs font-bold">
+                {{ t('common.cancel', 'Batal') }}
+              </BaseButton>
+            </NuxtLink>
+          </div>
         </div>
 
-        <!-- Form Card -->
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <form @submit.prevent="submitNews">
-                <!-- Featured Image Upload -->
-                <div class="p-8 border-b border-gray-100">
-                    <h3 class="text-lg font-bold text-navy mb-4 flex items-center gap-2">
-                        <Icon icon="ph:image" class="text-primary" />
-                        {{ t('organizer_news.create.featured_image') }}
-                    </h3>
-                    <div class="relative h-64 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 hover:border-primary hover:bg-primary/5 transition-colors cursor-pointer overflow-hidden"
-                        @click="openMediaLibrary">
-                        <img v-if="form.imageURL" :src="form.imageURL" class="w-full h-full object-cover" />
-                        <div v-else class="absolute inset-0 flex flex-col items-center justify-center gap-3">
-                            <div class="h-16 w-16 rounded-2xl bg-gray-100 flex items-center justify-center">
-                                <Icon icon="ph:image-bold" class="text-3xl text-gray-400" />
-                            </div>
-                            <div class="text-center">
-                                <p class="font-bold text-navy">{{ t('organizer_news.create.click_to_select_image') }}</p>
-                                <p class="text-sm text-gray-400">{{ t('organizer_news.create.select_or_upload') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Featured Image Card -->
+        <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs p-6 space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div class="flex items-center gap-2">
+              <Icon icon="ph:image-bold" class="text-navy text-lg" />
+              <h3 class="text-sm font-black text-navy">{{ t('organizer_news.create.featured_image', 'Foto Sampul Utama') }}</h3>
+            </div>
+            <button
+              v-if="form.imageURL"
+              type="button"
+              @click="form.imageURL = ''"
+              class="text-xs text-red-500 hover:text-red-700 font-bold flex items-center gap-1"
+            >
+              <Icon icon="ph:trash" />
+              <span>Hapus</span>
+            </button>
+          </div>
 
-                <!-- Media Library Modal -->
-                <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
-
-                <!-- Basic Info -->
-                <div class="p-8 border-b border-gray-100 space-y-6">
-                    <h3 class="text-lg font-bold text-navy mb-4 flex items-center gap-2">
-                        <Icon icon="ph:info" class="text-primary" />
-                        {{ t('organizer_news.create.info_heading') }}
-                    </h3>
-
-                    <BaseInput v-model="form.title" :label="t('organizer_news.create.label_title')"
-                        :placeholder="t('organizer_news.create.placeholder_title')" required />
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <BaseSelect v-model="form.category" :items="categoryOptions" :label="t('organizer_news.create.label_category')" required />
-                        <BaseSelect v-model="form.status" :items="statusOptions" :label="t('organizer_news.create.label_status')" required />
-                    </div>
-
-                    <BaseInput v-model="form.tags" :label="t('organizer_news.create.label_tags')" :placeholder="t('organizer_news.create.placeholder_tags')"
-                        icon="ph:tag" />
-
-                    <div>
-                        <label class="block text-xs font-bold text-navy  tracking-wider mb-2">
-                            {{ t('organizer_news.create.label_excerpt') }}
-                        </label>
-                        <textarea v-model="form.excerpt"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                            rows="3"
-                            :placeholder="t('organizer_news.create.placeholder_excerpt')"></textarea>
-                    </div>
-                </div>
-
-                <!-- Content Editor -->
-                <div class="p-8 border-b border-gray-100">
-                    <h3 class="text-lg font-bold text-navy mb-4 flex items-center gap-2">
-                        <Icon icon="ph:text-aa" class="text-primary" />
-                        {{ t('organizer_news.create.content_heading') }}
-                    </h3>
-                    <TiptapEditor v-model="form.content" :placeholder="t('organizer_news.create.placeholder_content')" />
-                </div>
-
-                <!-- Actions -->
-                <div class="p-8 bg-gray-50/50 flex items-center justify-between gap-4">
-                        <NuxtLink to="/dashboard/organizer/news">
-                        <BaseButton variant="white" icon="ph:arrow-left">
-                            {{ t('organizer_news.create.back') }}
-                        </BaseButton>
-                    </NuxtLink>
-                    <div class="flex items-center gap-3">
-                        <BaseButton variant="outline" type="button" icon="ph:eye" @click="previewNews">
-                            {{ t('organizer_news.create.preview') }}
-                        </BaseButton>
-                        <BaseButton variant="gold" type="submit" icon="ph:paper-plane-tilt" :loading="isSubmitting">
-                            {{ form.status === 'published' ? t('organizer_news.create.publish') : t('organizer_news.create.save_draft') }}
-                        </BaseButton>
-                    </div>
-                </div>
-            </form>
+          <div
+            class="relative h-48 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer overflow-hidden group flex flex-col items-center justify-center"
+            @click="openMediaLibrary"
+          >
+            <img v-if="form.imageURL" :src="form.imageURL" class="w-full h-full object-cover" />
+            <div v-else class="flex flex-col items-center justify-center p-4 text-center gap-2">
+              <div class="size-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Icon icon="ph:cloud-arrow-up-bold" class="text-2xl text-slate-400 group-hover:text-primary transition-colors" />
+              </div>
+              <div>
+                <div class="font-black text-navy text-xs">{{ t('organizer_news.create.click_to_select_image', 'Klik untuk Pilih / Unggah Gambar') }}</div>
+                <div class="text-[11px] text-slate-400 mt-0.5">{{ t('organizer_news.create.select_or_upload', 'Format JPG, PNG, atau WebP') }}</div>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
+      </aside>
+    </form>
+
+    <!-- Media Library Modal -->
+    <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
+  </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
 import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import useDashboardI18n from '~/composables/useDashboardI18n'
@@ -113,13 +169,14 @@ import useDashboardI18n from '~/composables/useDashboardI18n'
 const { t } = useDashboardI18n()
 
 definePageMeta({
-    title: 'Create News - Archeris Dashboard',
+    title: 'Tulis Berita',
     layout: 'dashboard'
 })
 
 useHead({
-    title: t('organizer_news.create.meta_title')
+    title: computed(() => t('organizer_news.create.meta_title', 'Tulis Berita') + ' - ArcheryHub Dashboard')
 })
+
 const { post } = useApi()
 const router = useRouter()
 const toast = useToast()
@@ -148,25 +205,21 @@ const handleMediaSelect = (media) => {
     showMediaLibrary.value = false
 }
 
-const categoryOptions = [
-    { title: t('organizer_news.options.cat_event'), value: 'event' },
-    { title: t('organizer_news.options.cat_announcement'), value: 'pengumuman' },
-    { title: t('organizer_news.options.cat_achievement'), value: 'prestasi' },
-    { title: t('organizer_news.options.cat_other'), value: 'lainnya' }
-]
+const categoryOptions = computed(() => [
+    { title: t('organizer_news.options.cat_announcement', 'Pengumuman'), value: 'pengumuman' },
+    { title: t('organizer_news.options.cat_event', 'Event & Turnamen'), value: 'event' },
+    { title: t('organizer_news.options.cat_achievement', 'Prestasi & Rekor'), value: 'prestasi' },
+    { title: t('organizer_news.options.cat_other', 'Lainnya'), value: 'lainnya' }
+])
 
-const statusOptions = [
-    { title: t('organizer_news.options.status_draft'), value: 'draft' },
-    { title: t('organizer_news.options.status_published'), value: 'published' }
-]
-
-const previewNews = () => {
-    toast.info(t('organizer_news.create.toast_preview'))
-}
+const statusOptions = computed(() => [
+    { title: t('organizer_news.options.status_draft', 'Draf (Belum Terbit)'), value: 'draft' },
+    { title: t('organizer_news.options.status_published', 'Terbit (Publik)'), value: 'published' }
+])
 
 const submitNews = async () => {
-    if (!form.value.title) {
-        toast.error(t('organizer_news.create.toast_title_required'))
+    if (!form.value.title.trim()) {
+        toast.error(t('organizer_news.create.toast_title_required', 'Judul berita wajib diisi'))
         return
     }
 
@@ -174,8 +227,8 @@ const submitNews = async () => {
 
     try {
         const payload = {
-            title: form.value.title,
-            excerpt: form.value.excerpt,
+            title: form.value.title.trim(),
+            excerpt: form.value.excerpt.trim(),
             content: form.value.content,
             image_url: form.value.imageURL,
             category: form.value.category,
@@ -188,11 +241,11 @@ const submitNews = async () => {
         await post('/news', payload)
 
         toast.success(form.value.status === 'published'
-            ? t('organizer_news.create.toast_create_ok_published')
-            : t('organizer_news.create.toast_create_ok_draft'))
+            ? t('organizer_news.create.toast_create_ok_published', 'Berita berhasil dipublikasikan!')
+            : t('organizer_news.create.toast_create_ok_draft', 'Draf berita berhasil disimpan!'))
         router.push('/dashboard/organizer/news')
     } catch (error) {
-        toast.error(t('organizer_news.create.toast_create_failed'))
+        toast.error(t('organizer_news.create.toast_create_failed', 'Gagal menyimpan berita'))
     } finally {
         isSubmitting.value = false
     }

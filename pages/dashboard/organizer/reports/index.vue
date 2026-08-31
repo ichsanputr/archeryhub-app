@@ -1,26 +1,15 @@
 <template>
   <div class="space-y-8">
     <!-- Header Section -->
-    <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
-      <div class="absolute inset-0"
-        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
-      <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="flex items-center gap-5">
-          <div
-            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
-            <Icon icon="ph:chart-bar-bold" class="text-primary text-2xl sm:text-3xl" />
-          </div>
-          <div>
-            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none">{{ t('dashboard.reports.title') }}</h1>
-            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider">{{ t('dashboard.reports.subtitle') }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <DashboardHeader
+      :title="t('dashboard.reports.title')"
+      :subtitle="t('dashboard.reports.subtitle')"
+      icon="ph:chart-bar-bold"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('dashboard.reports.title', 'Laporan') }
+      ]"
+    />
 
     <!-- Active Event Filter Information Alert (if event_id query is passed) -->
     <div v-if="eventName" class="flex items-center gap-3 p-4 bg-primary/10 border border-primary/20 rounded-2xl text-primary text-xs font-bold transition-all">
@@ -50,7 +39,7 @@
             {{ report.title }}
             <Icon icon="ph:arrow-right-bold" class="text-xs opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
           </h3>
-          <p class="text-gray-500 text-xs font-medium leading-relaxed">{{ report.description }}</p>
+          <div class="text-gray-500 text-xs font-medium leading-relaxed">{{ report.description }}</div>
         </div>
       </NuxtLink>
     </div>
@@ -66,6 +55,9 @@ import { useApi } from '~/composables/useApi'
 definePageMeta({
   layout: 'dashboard'
 })
+
+useHead({ title: computed(() => t('reports.title', 'Reports') + ' - ArcheryHub Dashboard') })
+
 
 const { t } = useI18n()
 const route = useRoute()

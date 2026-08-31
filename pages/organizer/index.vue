@@ -109,7 +109,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Penyelenggara Panahan - Archeris.net',
+    title: computed(() => t('organizer.directory_title', 'Archery Organizers') + ' - Archeris.net'),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ]

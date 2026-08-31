@@ -50,8 +50,9 @@ const props = defineProps({
 const router = useRouter()
 
 const handleCardClick = () => {
-    if (props.match?.id) {
-        router.push(`/match/${props.match.id}`)
+    const targetId = props.match?.id || props.match?.uuid
+    if (targetId) {
+        router.push(`/match/${targetId}`)
     }
 }
 

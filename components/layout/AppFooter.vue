@@ -50,7 +50,7 @@
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 {{ $t('nav.marketplace') }}
               </NuxtLink>
-              <NuxtLink to="/pricing"
+              <NuxtLink to="/package"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 {{ $t('nav.pricing') }}
               </NuxtLink>

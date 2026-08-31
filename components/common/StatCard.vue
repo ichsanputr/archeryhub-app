@@ -1,10 +1,10 @@
 <template>
   <div
-    class="relative overflow-hidden bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col justify-between min-h-[110px] hover:border-primary/30"
+    class="relative overflow-hidden bg-white p-5 rounded-2xl border border-slate-200/80 hover:border-primary/40 transition-all duration-300 flex flex-col justify-between min-h-[110px]"
   >
     <!-- Background Watermark Icon Overlay -->
     <div
-      class="absolute right-3 -bottom-3 opacity-[0.06] group-hover:opacity-[0.12] group-hover:scale-110 transition-all duration-500 pointer-events-none text-primary"
+      class="absolute right-3 -bottom-3 opacity-[0.12] scale-110 pointer-events-none text-primary"
     >
       <Icon :icon="icon" class="text-7xl sm:text-8xl" />
     </div>
@@ -12,7 +12,7 @@
     <!-- Main Content Header -->
     <div class="flex justify-between items-start relative z-10 w-full">
       <div class="min-w-0 flex-1 pr-2">
-        <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase truncate mb-1">
+        <p class="text-xs font-bold text-slate-500 truncate mb-1">
           {{ title }}
         </p>
         <p class="text-2xl sm:text-3xl font-black text-navy tracking-tight tabular-nums truncate leading-none">
@@ -21,14 +21,14 @@
       </div>
       <!-- Top-right Icon Badge -->
       <div
-        class="size-10 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0 shadow-sm bg-primary/10 text-primary group-hover:bg-primary group-hover:text-btn-text"
+        class="size-10 rounded-xl flex items-center justify-center shrink-0 bg-primary text-btn-text"
       >
         <Icon :icon="icon" class="text-xl" />
       </div>
     </div>
 
     <!-- Optional Footer / Details -->
-    <div v-if="$slots.footer || description" class="mt-3 pt-3 border-t border-slate-50 relative z-10 w-full">
+    <div v-if="$slots.footer || description" class="mt-auto pt-3 border-t border-slate-50 relative z-10 w-full">
       <slot name="footer">
         <p class="text-slate-400 text-[10px] font-bold flex items-center gap-1">
           <Icon v-if="descriptionIcon" :icon="descriptionIcon" class="text-[12px]" />
@@ -69,4 +69,3 @@ const props = defineProps({
   }
 })
 </script>
-

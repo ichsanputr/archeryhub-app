@@ -1,23 +1,23 @@
 <template>
   <div class="space-y-8">
-    <!-- header -->
-    <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white">
-      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="flex items-center gap-5">
-          <NuxtLink :to="getBackLink()"
-            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 text-white hover:bg-white/20 transition-all">
-            <Icon icon="ph:arrow-left-bold" class="text-primary text-xl sm:text-2xl" />
-          </NuxtLink>
-          <div>
-            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none">{{ t('dashboard.reports.participants_title') }}</h1>
-            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider">Analyze Registration Splits, Check-in Status, and Registration Timeline.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Header Section -->
+    <DashboardHeader
+      :title="t('dashboard.reports.participants_title')"
+      subtitle="Analyze Registration Splits, Check-in Status, and Registration Timeline."
+      icon="ph:user-list-bold"
+      :back-to="getBackLink()"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('dashboard.reports.title', 'Laporan'), to: '/dashboard/organizer/reports' },
+        { label: t('dashboard.reports.participants_title') }
+      ]"
+    >
+      <template #actions>
+        <BaseButton variant="primary" icon="ph:download-simple-bold" class="h-11 px-5 text-xs font-black" @click="handleExportExcel">
+          Ekspor Excel
+        </BaseButton>
+      </template>
+    </DashboardHeader>
 
     <!-- filters panel -->
     <div class="bg-white border border-primary/10 rounded-2xl p-5 space-y-4">
@@ -62,6 +62,7 @@
           item-title="label"
           item-value="value"
           label="Bow Type"
+          :placeholder="t('reports.select_bow_type', 'Pilih Jenis Busur')"
           :searchable="false"
         />
 
@@ -72,6 +73,7 @@
           item-title="label"
           item-value="value"
           label="Check-in Status"
+          :placeholder="t('reports.select_status', 'Pilih Status')"
           :searchable="false"
         />
       </div>
@@ -119,7 +121,7 @@
       </div>
       <div v-else class="h-48 flex flex-col items-center justify-center text-gray-400 space-y-2 border border-dashed border-gray-100 rounded-xl">
         <Icon icon="ph:trend-up-bold" class="text-3xl" />
-        <p class="text-xs font-bold">No Timeline Trend Data Available for Selected Filter.</p>
+        <div class="text-xs font-bold">No Timeline Trend Data Available for Selected Filter.</div>
       </div>
     </div>
 
@@ -219,7 +221,7 @@
               <td class="px-6 py-4 text-gray-500 font-semibold font-mono">{{ formatDate(p.registration_date) }}</td>
               <td class="px-6 py-4">
                 <span :class="p.payment_status === 'paid' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-amber-50 text-amber-600 border-amber-200'"
-                  class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider uppercase">
+                  class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider ">
                   {{ p.payment_status }}
                 </span>
               </td>
@@ -248,6 +250,9 @@ import { useApi } from '~/composables/useApi'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({ layout: 'dashboard' })
+
+useHead({ title: computed(() => t('reports.participants', 'Participants Report') + ' - ArcheryHub Dashboard') })
+
 
 const { t } = useI18n()
 const route = useRoute()
@@ -366,6 +371,34 @@ const svgAreaPath = computed(() => {
   if (!path) return ''
   return `${path} L 500,150 L 0,150 Z`
 })
+
+import { exportToExcel } from '~/utils/exportExcel'
+
+const handleExportExcel = () => {
+  const list = stats.value.recent_participants || []
+  const data = list.map((p, idx) => ({
+    no: idx + 1,
+    name: p.archer_name || p.name || '-',
+    email: p.email || '-',
+    club: p.club_name || '-',
+    category: p.category_name || '-',
+    status: p.status || (p.checked_in ? 'Checked-in' : 'Registered'),
+    registered_at: p.created_at ? formatDate(p.created_at) : '-'
+  }))
+  exportToExcel(
+    'Laporan_Peserta_Turnamen_ArcheryHub',
+    [
+      { key: 'no', label: 'No' },
+      { key: 'name', label: 'Nama Peserta' },
+      { key: 'email', label: 'Email' },
+      { key: 'club', label: 'Klub' },
+      { key: 'category', label: 'Kategori Lomba' },
+      { key: 'status', label: 'Status Kehadiran' },
+      { key: 'registered_at', label: 'Tanggal Registrasi' }
+    ],
+    data
+  )
+}
 
 const formatDate = (dateStr) => {
   if (!dateStr) return '-'

@@ -1,45 +1,78 @@
 <template>
   <div class="flex flex-col gap-8">
     <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-      <div>
-        <h1 class="text-3xl font-black text-navy tracking-tight">{{ t('profile.title') }}</h1>
-        <p class="text-gray-500 mt-1 font-medium">{{ t('profile.subtitle') }}</p>
-      </div>
-      <div class="flex gap-3">
-        <BaseButton v-if="user?.username" variant="outline" size="sm" icon="ph:eye" @click="previewProfile">
-          {{ t('profile.preview') }}
-        </BaseButton>
-        <BaseButton variant="gold" size="sm" icon="ph:floppy-disk" @click="saveProfile" :loading="isSaving">
-          {{ t('profile.save_profile') }}
-        </BaseButton>
-      </div>
+    <div
+        class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+        <!-- Theme Motif Pattern -->
+        <div class="absolute inset-0"
+            style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
+        </div>
+
+        <!-- Decorative Background Elements -->
+        <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+        <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+        <!-- Header Content -->
+        <div class="relative p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+            <div>
+                <div class="flex items-center gap-2 text-sm text-white/60 mb-4">
+                    <NuxtLink to="/dashboard/archer" class="hover:text-white transition-colors">Dashboard</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-base" />
+                    <span class="text-primary font-medium">{{ t('profile.title') }}</span>
+                </div>
+                <div class="flex items-start gap-4">
+                    <!-- Icon Badge -->
+                    <div
+                        class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
+                        <Icon icon="ph:user-circle-bold" class="text-primary text-2xl" />
+                    </div>
+                    <div class="flex-grow">
+                        <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">{{ t('profile.title') }}</h1>
+                        <div class="text-slate-300 text-sm mt-1">{{ t('profile.subtitle') }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+                <button v-if="accountForm.username || user?.username" @click="previewProfile"
+                    class="h-9 px-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/30 text-white text-xs font-black tracking-wider flex items-center gap-2 backdrop-blur-sm transition-all shadow-sm shrink-0">
+                    <Icon icon="ph:eye-bold" class="text-base text-primary" />
+                    <span>{{ t('profile.preview') }}</span>
+                </button>
+                <BaseButton variant="gold" size="sm" icon="ph:floppy-disk" @click="saveFullProfile" :loading="isSaving">
+                    {{ t('profile.save_profile') }}
+                </BaseButton>
+            </div>
+        </div>
     </div>
 
-    <div class="flex gap-1 bg-gray-100/80 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm">
+    <!-- Tabs -->
+    <div class="flex gap-1 bg-slate-100 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm">
       <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-        :class="activeTab === tab.id ? 'bg-white shadow text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
-        class="flex items-center justify-center gap-2 flex-1 min-w-[140px] px-5 py-2.5 rounded-xl text-sm font-black transition-all">
-        <Icon :icon="tab.icon" class="text-lg" />
-        {{ tab.label }}
+        :class="activeTab === tab.id ? 'bg-white shadow-sm text-navy font-black' : 'text-slate-500 hover:text-navy hover:bg-white/50 font-bold'"
+        class="flex items-center justify-center gap-2 flex-1 min-w-[140px] px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm whitespace-nowrap transition-all shrink-0">
+        <Icon :icon="tab.icon" class="text-base sm:text-lg shrink-0" />
+        <span class="whitespace-nowrap">{{ tab.label }}</span>
       </button>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Main Content -->
+      <!-- Main Content Area -->
       <div class="lg:col-span-2 space-y-6">
-        <!-- Tab: Informasi (Personal Data) -->
+        
+        <!-- TAB 1: INFORMASI PRIBADI, KONTAK & SOSIAL -->
         <div v-if="activeTab === 'information'" class="space-y-6">
-          <!-- Media Section -->
-          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-6">
+          
+          <!-- Media Section (Avatar & Banner) -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy flex items-center gap-2 mb-6">
               <Icon icon="ph:image-bold" class="text-primary text-xl" />
               {{ t('profile.media_title') }}
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
               <!-- Avatar -->
               <div class="space-y-4">
-                <div class="text-[10px] font-black text-navy/30 tracking-widest">{{ t('profile.avatar_label') }}</div>
+                <div class="text-xs font-bold text-slate-400">{{ t('profile.avatar_label') }}</div>
                 <div class="flex items-center gap-6">
                   <div
                     class="w-24 h-24 rounded-full bg-gray-50 border-4 border-white shadow-md overflow-hidden shrink-0 relative group">
@@ -52,17 +85,18 @@
                     </div>
                   </div>
                   <div class="space-y-2">
-                    <h5 class="text-xs font-black text-navy ">{{ t('profile.picture_title') }}</h5>
+                    <h5 class="text-xs font-black text-navy">{{ t('profile.picture_title') }}</h5>
                     <div class="text-[10px] text-gray-500 max-w-[160px]">{{ t('profile.picture_desc') }}</div>
                     <BaseButton variant="outline" size="xs" icon="ph:pencil-simple" @click="openMediaLibrary('avatar')">
-                      {{ t('profile.change_photo') }}</BaseButton>
+                      {{ t('profile.change_photo') }}
+                    </BaseButton>
                   </div>
                 </div>
               </div>
 
               <!-- Banner -->
               <div class="space-y-4">
-                <div class="text-[10px] font-black text-navy/30 tracking-widest">{{ t('profile.banner_label') }}</div>
+                <div class="text-xs font-bold text-slate-400">{{ t('profile.banner_label') }}</div>
                 <div
                   class="w-full aspect-[21/9] rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden relative group">
                   <img v-if="accountForm.banner_url" :src="useImageOrDefault(accountForm.banner_url)"
@@ -86,34 +120,50 @@
             </div>
           </div>
 
-          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-6">
+          <!-- Identitas & Data Diri -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy flex items-center gap-2 mb-2">
               <Icon icon="ph:user-circle-bold" class="text-primary text-xl" />
-              {{ t('profile.personal_data') }}
+              {{ t('profile.identity_title') }}
             </h3>
-            <div class="text-sm text-gray-600">
-              {{ t('profile.personal_desc') }}
+            <div class="text-xs text-gray-500">
+              {{ t('profile.identity_desc') }}
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-              <BaseInput v-model="accountForm.full_name" :label="t('profile.full_name')" :placeholder="t('profile.full_name_placeholder')"
-                required />
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+              <BaseInput v-model="accountForm.full_name" :label="t('profile.full_name')" :placeholder="t('profile.full_name_placeholder')" required />
+              
               <BaseInput v-model="accountForm.username" :label="t('profile.username')" placeholder="username"
                 :hint="t('profile.username_hint')" :error="isUsernameTaken ? 'Username is already taken' : ''" />
 
               <BaseDatePicker v-model="accountForm.date_of_birth" :label="t('profile.dob')" />
+
               <BaseSelect v-model="accountForm.gender" :label="t('profile.gender')" :items="[
                 { title: t('profile.male'), value: 'male' },
                 { title: t('profile.female'), value: 'female' }
               ]" icon="ph:gender-intersex" />
 
-              <BaseInput v-model="accountForm.phone" :label="t('profile.phone')" type="tel" placeholder="+62 812-3456-7890"
-                icon="ph:phone" numberOnly :rules="[v => !v || String(v).length >= 8 || t('profile.phone_error')]" />
-              <BaseSelect v-model="accountForm.city" :label="t('profile.city')" :items="cityOptions"
-                :placeholder="t('profile.select_city')" icon="mingcute:building-2-line" />
+              <BaseSelect v-model="accountForm.blood_type" :label="t('profile.blood_type')" :items="[
+                { title: 'A', value: 'A' },
+                { title: 'B', value: 'B' },
+                { title: 'AB', value: 'AB' },
+                { title: 'O', value: 'O' }
+              ]" icon="ph:drop-bold" :placeholder="t('profile.select_blood_type')" />
 
-              <BaseSelect v-model="accountForm.country" :label="t('profile.country') || 'Country'" :items="countries"
-                placeholder="Select Country..." icon="ph:globe" searchable />
+              <BaseInput v-model.number="accountForm.height_cm" :label="t('profile.height_label')" type="number" placeholder="170" icon="ph:arrows-out-line-vertical-bold" />
+              
+              <BaseInput v-model.number="accountForm.weight_kg" :label="t('profile.weight_label')" type="number" placeholder="65" icon="ph:scales-bold" />
+            </div>
+          </div>
+
+          <!-- Spesifikasi Atlet & Klub -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy flex items-center gap-2 mb-2">
+              <Icon icon="hugeicons:archer" class="text-primary text-xl" />
+              {{ t('profile.athlete_specs_title') }}
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
               <BaseSelect v-model="accountForm.bow_type" :label="t('profile.bow_type')" :items="[
                 { title: 'Recurve', value: 'recurve' },
                 { title: 'Compound', value: 'compound' },
@@ -121,127 +171,70 @@
                 { title: 'Traditional', value: 'traditional' }
               ]" icon="hugeicons:archer" />
 
-              <ClubSelector 
-                v-model="accountForm.club_id"
-                v-model:newClubName="accountForm.new_club_name"
-                v-model:newClubAcronym="accountForm.new_club_acronym"
-                label="Club" />
+              <BaseSelect v-model="accountForm.hand_dominance" :label="t('profile.hand_dominance')" :items="[
+                { title: t('profile.right_handed'), value: 'right' },
+                { title: t('profile.left_handed'), value: 'left' }
+              ]" icon="ph:hand-pointing-bold" />
+
+              <div class="md:col-span-2">
+                <ClubSelector 
+                  v-model="accountForm.club_id"
+                  v-model:newClubName="accountForm.new_club_name"
+                  v-model:newClubAcronym="accountForm.new_club_acronym"
+                  :label="t('profile.club_label')" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Kontak & Kontak Darurat -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy flex items-center gap-2 mb-2">
+              <Icon icon="ph:phone-bold" class="text-primary text-xl" />
+              {{ t('profile.contact_title') }}
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+              <BaseInput v-model="accountForm.phone" :label="t('profile.phone')" type="tel" placeholder="+62 812-3456-7890"
+                icon="ph:phone" numberOnly />
+
+              <BaseInput v-model="accountForm.email" label="Email" type="email" placeholder="archer@example.com" icon="ph:envelope-simple-bold" />
+
+              <BaseInput v-model="accountForm.emergency_contact_name" :label="t('profile.emergency_name')" placeholder="Nama Lengkap" icon="ph:user-bold" />
+              
+              <BaseInput v-model="accountForm.emergency_contact_phone" :label="t('profile.emergency_phone')" type="tel" placeholder="+62 812-..." icon="ph:phone-call-bold" />
+            </div>
+          </div>
+
+          <!-- Alamat & Domisili -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy flex items-center gap-2 mb-2">
+              <Icon icon="ph:map-pin-bold" class="text-primary text-xl" />
+              {{ t('profile.address_title') }}
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+              <BaseSelect v-model="accountForm.country" :label="t('profile.country')" :items="countries"
+                :placeholder="t('profile.select_country', 'Select Country...')" icon="ph:globe" searchable />
+
+              <BaseInput v-model="accountForm.province" :label="t('profile.province')" placeholder="D.I. Yogyakarta" icon="ph:map-trifold-bold" />
+
+              <BaseInput v-model="accountForm.city" :label="t('profile.city')" placeholder="Kabupaten Sleman" icon="ph:buildings-bold" />
+
+              <BaseInput v-model="accountForm.postal_code" :label="t('profile.postal_code')" placeholder="55281" icon="ph:mailbox-bold" />
 
               <div class="md:col-span-2">
                 <BaseTextarea v-model="accountForm.address" :label="t('profile.address')" :placeholder="t('profile.address_placeholder')"
                   :rows="3" icon="ph:house" />
               </div>
             </div>
-
-            <div class="flex justify-end mt-6 pt-6 border-t border-gray-100">
-              <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveAccountInfo"
-                :loading="isSavingAccount">
-                {{ t('profile.save_info') }}
-              </BaseButton>
-            </div>
-          </div>
-        </div>
-
-        <!-- Media Library Modal -->
-        <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
-
-        <!-- Tab: Profil (Bio, Prestasi, Riwayat Event) -->
-        <div v-if="activeTab === 'profile'" class="space-y-6">
-          <!-- Bio Section -->
-          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-6">
-              <Icon icon="ph:identification-card-bold" class="text-primary text-xl" />
-              {{ t('profile.about_me') }}
-            </h3>
-            <div class="space-y-4">
-              <div>
-                <label class="block text-sm font-bold text-navy mb-2">{{ t('profile.self_desc') }}</label>
-                <TiptapEditor v-model="profile.bio"
-                  :placeholder="t('profile.bio_placeholder')"
-                  minHeight="180px" />
-              </div>
-              <div class="text-[10px] text-gray-400 font-medium italic">
-                {{ t('profile.bio_hint') }}
-              </div>
-            </div>
           </div>
 
-          <!-- Achievements Section -->
-          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-6">
-              <Icon icon="ph:medal-bold" class="text-primary text-xl" />
-              {{ t('profile.achievements') }}
-            </h3>
-            <div class="space-y-4">
-              <div v-for="(ach, idx) in achievementsList" :key="idx" class="flex items-center gap-3">
-                <BaseInput v-model="ach.text" :placeholder="t('profile.achievement_placeholder')" icon="ph:medal-bold"
-                  class="flex-1" />
-                <button @click="achievementsList.splice(idx, 1)"
-                  class="text-gray-400 hover:text-red-500 transition-colors p-2 mt-1">
-                  <Icon icon="ph:trash-bold" />
-                </button>
-              </div>
-
-              <BaseButton variant="outline" size="sm" icon="ph:plus-bold"
-                @click="achievementsList.push({ text: '' })" class="w-full">
-                {{ t('profile.add_achievement') }}
-              </BaseButton>
-            </div>
-          </div>
-
-          <!-- Equipment Section -->
-          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-6">
-              <Icon icon="ph:bow-arrow-bold" class="text-primary text-xl" />
-              {{ t('profile.gear') }}
-            </h3>
-            <div class="space-y-4">
-              <div v-for="(eq, idx) in equipmentList" :key="idx" class="flex items-center gap-3">
-                <BaseInput v-model="equipmentList[idx]" :placeholder="t('profile.gear_placeholder')" class="flex-1"
-                  icon="ph:gear-bold" />
-                <button @click="equipmentList.splice(idx, 1)"
-                  class="text-gray-400 hover:text-red-500 transition-colors p-2 mt-1">
-                  <Icon icon="ph:trash-bold" />
-                </button>
-              </div>
-
-              <BaseButton variant="outline" size="sm" icon="ph:plus-bold" @click="equipmentList.push('')"
-                class="w-full">
-                {{ t('profile.add_gear') }}
-              </BaseButton>
-
-              <div class="text-[10px] text-gray-400 font-medium italic">
-                {{ t('profile.gear_hint') }}
-              </div>
-            </div>
-          </div>
-
-          <!-- Event History Section -->
-          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-6">
-              <Icon icon="ph:calendar-check-bold" class="text-primary text-xl" />
-              {{ t('profile.event_history') }}
-            </h3>
-            <div class="space-y-4">
-              <div class="text-sm text-gray-600">
-                {{ t('profile.event_history_desc') }}
-              </div>
-              <div class="p-4 bg-gray-50 rounded-xl">
-                <div class="text-sm text-gray-500">
-                  {{ t('profile.total_events_label') }} <span class="font-bold text-navy">{{ userStats.totalEvents || 0 }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tab: Kontak (Sosial Media) -->
-        <div v-if="activeTab === 'contact'" class="space-y-6">
-          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
+          <!-- Media Sosial & Tautan Publik -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
+              <h3 class="text-sm font-black text-navy flex items-center gap-2">
                 <Icon icon="ph:share-network-bold" class="text-primary text-xl" />
-                {{ t('profile.social_media') }}
+                {{ t('profile.social_title') }}
               </h3>
 
               <div class="relative group">
@@ -263,7 +256,7 @@
               </div>
             </div>
 
-            <div class="text-sm text-gray-600">{{ t('profile.social_media_desc') }}</div>
+            <div class="text-xs text-gray-500">{{ t('profile.social_media_desc') }}</div>
 
             <div class="grid grid-cols-1 gap-4 mt-2">
               <div v-for="(social, idx) in userSocials" :key="social.platform"
@@ -288,18 +281,117 @@
               </div>
 
               <div v-if="userSocials.length === 0"
-                class="py-12 text-center border-2 border-dashed border-gray-100 rounded-2xl">
-                <Icon icon="ph:share-network" class="text-4xl text-gray-200 mx-auto mb-3" />
-                <div class="text-sm text-gray-400 font-medium">{{ t('profile.no_socials') }}</div>
+                class="py-8 text-center border-2 border-dashed border-gray-100 rounded-2xl">
+                <Icon icon="ph:share-network" class="text-4xl text-gray-200 mx-auto mb-2" />
+                <div class="text-xs text-gray-400 font-medium">{{ t('profile.no_socials') }}</div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <!-- TAB 2: BIOGRAFI & PRESTASI -->
+        <div v-if="activeTab === 'profile'" class="space-y-6">
+          <!-- Bio Section -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+              <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+                <Icon icon="ph:identification-card-bold" class="text-primary text-xl" />
+                {{ t('profile.about_me') }}
+              </h3>
+              <div class="text-xs text-slate-500 font-medium mt-1">
+                {{ t('profile.bio_hint') }}
+              </div>
+            </div>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-bold text-navy mb-2">{{ t('profile.self_desc') }}</label>
+                <ClientOnly>
+                  <TiptapEditor v-model="profile.bio"
+                    :placeholder="t('profile.bio_placeholder')"
+                    minHeight="180px" />
+                </ClientOnly>
               </div>
             </div>
           </div>
+
+          <!-- Achievements Section -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+                  <Icon icon="ph:medal-bold" class="text-primary text-xl" />
+                  {{ t('profile.achievements') }}
+                </h3>
+                <div class="text-xs text-slate-500 font-medium mt-1">
+                  {{ t('profile.star_hint') }}
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div v-for="(ach, idx) in achievementsList" :key="idx" class="flex items-center gap-2">
+                <!-- Highlight Star Toggle -->
+                <button type="button" @click="toggleAchievementHighlight(idx)"
+                  :title="t('profile.highlight_hint')"
+                  :class="ach.is_highlighted ? 'bg-amber-50 text-amber-600 border-amber-300 shadow-sm' : 'bg-slate-50 text-slate-400 border-slate-200 hover:text-amber-500'"
+                  class="h-11 px-3 rounded-xl border flex items-center gap-1.5 text-xs font-bold transition-all shrink-0">
+                  <Icon :icon="ach.is_highlighted ? 'ph:star-fill' : 'ph:star-bold'" class="text-base" />
+                  <span v-if="ach.is_highlighted" class="hidden sm:inline text-[10px] font-black capitalize tracking-wider">{{ t('profile.highlight_badge') }}</span>
+                </button>
+
+                <BaseInput v-model="ach.text" :placeholder="t('profile.achievement_placeholder')" icon="ph:medal-bold"
+                  class="flex-1" />
+
+                <button @click="achievementsList.splice(idx, 1)"
+                  class="h-11 w-11 rounded-xl bg-slate-50 hover:bg-rose-50 text-slate-400 hover:text-rose-500 border border-slate-200 flex items-center justify-center transition-colors shrink-0">
+                  <Icon icon="ph:trash-bold" class="text-base" />
+                </button>
+              </div>
+
+              <div v-if="achievementsList.length === 0"
+                class="py-8 text-center border-2 border-dashed border-gray-100 rounded-2xl">
+                <Icon icon="ph:trophy" class="text-4xl text-gray-200 mx-auto mb-2" />
+                <div class="text-xs text-gray-400 font-medium">{{ t('profile.no_achievements_yet', 'No achievements added yet') }}</div>
+              </div>
+
+              <BaseButton variant="outline" size="md" icon="ph:plus-bold"
+                @click="achievementsList.push({ text: '', is_highlighted: false })" class="w-full font-bold min-h-[44px]">
+                {{ t('profile.add_achievement') }}
+              </BaseButton>
+            </div>
+          </div>
+
+          <!-- Event History Section -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2 mb-6">
+              <Icon icon="ph:calendar-check-bold" class="text-primary text-xl" />
+              {{ t('profile.event_history') }}
+            </h3>
+            <div class="space-y-4">
+              <div class="text-sm text-gray-600">
+                {{ t('profile.event_history_desc') }}
+              </div>
+              <div class="p-4 bg-gray-50 rounded-xl flex items-center justify-between">
+                <div class="text-sm text-gray-500">
+                  {{ t('profile.total_events_label') }} <span class="font-black text-navy">{{ userStats.totalEvents || 0 }} Event</span>
+                </div>
+                <NuxtLink to="/dashboard/archer/certificates" class="text-xs font-bold text-navy hover:text-primary flex items-center gap-1">
+                  <span>{{ t('profile.view_all_certificates') }}</span>
+                  <Icon icon="ph:arrow-right-bold" />
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+
+
         </div>
+
       </div>
 
-      <!-- Preview Sidebar -->
+      <!-- Live Profile Card Preview Sidebar -->
       <div class="space-y-6">
-        <!-- Profile Card Preview -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm overflow-hidden relative">
           <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
           <div class="flex flex-col items-center text-center mt-4">
@@ -309,41 +401,55 @@
                 :src="useImageOrDefault(accountForm.avatar_url || user?.avatar_url, accountForm.full_name || user?.full_name)"
                 class="w-full h-full object-cover rounded-full" />
             </div>
-            <h4 class="font-black text-navy text-lg leading-tight">{{ accountForm.full_name || user?.full_name }}</h4>
-            <div class="text-gray-400 text-xs font-bold  tracking-tighter mt-1">@{{ accountForm.username || user?.username
-            }}</div>
+            <h4 class="font-black text-navy text-lg leading-tight">{{ accountForm.full_name || user?.full_name || 'Nama Atlet' }}</h4>
+            <div class="text-gray-400 text-xs font-bold mt-1">@{{ accountForm.username || user?.username || 'username' }}</div>
 
-            <div v-if="profile.bio" class="mt-4 px-2">
-              <div class="text-xs text-gray-500 italic line-clamp-3">"{{ profile.bio }}"</div>
+            <div class="flex flex-wrap items-center justify-center gap-2 mt-3">
+              <span v-if="accountForm.bow_type" class="px-2 py-1 bg-primary/10 text-navy font-bold text-[10px] rounded-lg capitalize tracking-wider">
+                {{ accountForm.bow_type }}
+              </span>
+              <span v-if="accountForm.blood_type" class="px-2 py-1 bg-rose-50 text-rose-700 font-bold text-[10px] rounded-lg">
+                Gol. {{ accountForm.blood_type }}
+              </span>
             </div>
 
-            <div class="w-full h-px bg-gray-50 my-6"></div>
+            <div v-if="profile.bio" class="mt-4 px-2">
+              <div class="text-xs text-gray-500 italic line-clamp-3 prose prose-xs" v-html="profile.bio"></div>
+            </div>
+
+            <div class="w-full h-px bg-gray-100 my-6"></div>
 
             <div class="grid grid-cols-2 w-full gap-4">
               <div class="text-center">
-                <div class="text-[10px] font-black text-gray-400  tracking-widest">Events</div>
-                <div class="text-navy font-black">{{ userStats.totalEvents || 0 }}</div>
+                <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">Events</div>
+                <div class="text-navy font-black text-lg">{{ userStats.totalEvents || 0 }}</div>
               </div>
-              <div class="text-center border-l border-gray-50">
-                <div class="text-[10px] font-black text-gray-400  tracking-widest">Best Score</div>
-                <div class="text-navy font-black">{{ userStats.bestScore || '-' }}</div>
+              <div class="text-center border-l border-gray-100">
+                <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">Best Score</div>
+                <div class="text-navy font-black text-lg">{{ userStats.bestScore || '-' }}</div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Media Library Modal -->
+    <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
   </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
-import { ref, onMounted, watch, computed, nextTick } from 'vue'
+import ClubSelector from '~/components/common/ClubSelector.vue'
+import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({
   layout: 'dashboard'
@@ -352,7 +458,7 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => `${t('profile.title')} - Archeris Dashboard`)
+  title: computed(() => `${t('profile.title')} - ArcheryHub Dashboard`)
 })
 
 const { user, archerProfile } = useAuth()
@@ -360,7 +466,6 @@ const { get, put } = useApi()
 const toast = useToast()
 
 const isSaving = ref(false)
-const isSavingAccount = ref(false)
 const profile = ref({
   bio: '',
   achievements: '',
@@ -368,10 +473,8 @@ const profile = ref({
 })
 
 const achievementsList = ref([])
-const equipmentList = ref([])
-
 const showMediaLibrary = ref(false)
-const mediaTarget = ref('') // 'avatar' or 'banner'
+const mediaTarget = ref('') 
 
 const openMediaLibrary = (target) => {
   mediaTarget.value = target
@@ -382,19 +485,7 @@ const handleMediaSelect = (media) => {
   if (mediaTarget.value === 'avatar') {
     accountForm.value.avatar_url = media.url
   } else if (mediaTarget.value === 'banner') {
-    const img = new Image()
-    img.src = media.url
-    img.onload = () => {
-      const ratio = img.width / img.height
-      if (ratio < 1.8 || ratio > 3.2) {
-        toast.error('Banner image must be wide (aspect ratio between 1.8 and 3.2, ideal 21:9)')
-        return
-      }
-      accountForm.value.banner_url = media.url
-    }
-    img.onerror = () => {
-      accountForm.value.banner_url = media.url
-    }
+    accountForm.value.banner_url = media.url
   }
 }
 
@@ -411,7 +502,7 @@ const platformOptions = [
   { value: 'linkedin', title: 'LinkedIn', icon: 'ph:linkedin-logo', iconColor: 'text-blue-700', placeholder: 'username / link' }
 ]
 
-const userSocials = ref([]) // Dynamic list: [{ platform: 'instagram', handle: 'stewie' }]
+const userSocials = ref([])
 
 const remainingPlatforms = computed(() => {
   return platformOptions.filter(p => !userSocials.value.some(s => s.platform === p.value))
@@ -421,16 +512,8 @@ const addSocial = (platform) => {
   userSocials.value.push({ platform, handle: '' })
 }
 
-const toggleHighlight = (index) => {
-  const item = achievementsList.value[index]
-  if (!item.is_highlighted) {
-    const activeHighlights = achievementsList.value.filter(a => a.is_highlighted).length
-    if (activeHighlights >= 3) {
-      toast.warning(t('profile.toast_max_highlight'))
-      return
-    }
-  }
-  item.is_highlighted = !item.is_highlighted
+const removeSocial = (index) => {
+  userSocials.value.splice(index, 1)
 }
 
 const getPlatformInfo = (platform) => {
@@ -445,39 +528,46 @@ const getPlatformIconBagde = (platform) => {
   if (platform === 'twitter') return 'bg-slate-50 text-slate-800 border border-slate-100'
   if (platform === 'youtube') return 'bg-red-50 text-red-600 border border-red-100'
   if (platform === 'spotify') return 'bg-green-50 text-green-600 border border-green-100'
-  if (platform === 'website') return 'bg-blue-50 text-blue-600 border border-blue-100'
-  if (platform === 'pinterest') return 'bg-red-50 text-red-700 border border-red-100'
-  if (platform === 'linkedin') return 'bg-blue-50 text-blue-700 border border-blue-100'
-  return 'bg-gray-100 text-gray-600'
+  return 'bg-gray-50 text-gray-700 border border-gray-200'
 }
 
-const countries = ref([
-  { title: 'Indonesia', value: 'Indonesia', icon: 'circle-flags:id' },
-  { title: 'Malaysia', value: 'Malaysia', icon: 'circle-flags:my' },
-  { title: 'Singapore', value: 'Singapore', icon: 'circle-flags:sg' },
-  { title: 'Thailand', value: 'Thailand', icon: 'circle-flags:th' },
-  { title: 'Philippines', value: 'Philippines', icon: 'circle-flags:ph' },
-  { title: 'Vietnam', value: 'Vietnam', icon: 'circle-flags:vn' },
-  { title: 'Australia', value: 'Australia', icon: 'circle-flags:au' },
-  { title: 'Japan', value: 'Japan', icon: 'circle-flags:jp' },
-  { title: 'South Korea', value: 'South Korea', icon: 'circle-flags:kr' },
-  { title: 'United Kingdom', value: 'United Kingdom', icon: 'circle-flags:gb' },
-  { title: 'United States', value: 'United States', icon: 'circle-flags:us' }
-])
+const countries = [
+  { title: 'Indonesia', value: 'Indonesia' },
+  { title: 'Malaysia', value: 'Malaysia' },
+  { title: 'Singapore', value: 'Singapore' },
+  { title: 'Thailand', value: 'Thailand' },
+  { title: 'Philippines', value: 'Philippines' },
+  { title: 'United States', value: 'United States' },
+  { title: 'Australia', value: 'Australia' },
+  { title: 'Japan', value: 'Japan' },
+  { title: 'South Korea', value: 'South Korea' }
+]
 
 const accountForm = ref({
   full_name: '',
   username: '',
+  nik: '',
   date_of_birth: '',
-  gender: '',
+  gender: 'male',
+  blood_type: '',
+  hand_dominance: 'right',
+  height_cm: null,
+  weight_kg: null,
   phone: '',
+  email: '',
+  emergency_contact_name: '',
+  emergency_contact_phone: '',
   city: '',
-  country: '',
-  bow_type: '',
+  province: '',
+  postal_code: '',
+  country: 'Indonesia',
+  bow_type: 'recurve',
   address: '',
   avatar_url: '',
   banner_url: '',
-  club_id: ''
+  club_id: '',
+  new_club_name: '',
+  new_club_acronym: ''
 })
 
 const isUsernameTaken = ref(false)
@@ -501,157 +591,75 @@ watch(() => accountForm.value.username, (newVal) => {
   }, 500)
 })
 
-const cityOptions = ref([])
-const clubOptions = ref([])
-
 const userStats = ref({
   totalEvents: 0,
   bestScore: null
 })
 
-// Available section types
-const allSections = [
-  {
-    type: 'bio',
-    label: 'Tentang Saya',
-    description: 'Ceritakan tentang diri Anda',
-    icon: 'ph:identification-card-bold',
-    defaultVisible: true
-  },
-  {
-    type: 'achievements',
-    label: 'Prestasi & Penghargaan',
-    description: 'Daftar prestasi dan penghargaan',
-    icon: 'ph:medal-bold',
-    defaultVisible: true
-  },
-  {
-    type: 'contact',
-    label: 'Kontak',
-    description: 'Informasi kontak',
-    icon: 'ph:phone-bold',
-    defaultVisible: false
-  },
-  {
-    type: 'social',
-    label: 'Media Sosial',
-    description: 'Tautan media sosial',
-    icon: 'ph:share-network-bold',
-    defaultVisible: false
-  },
-  {
-    type: 'equipment',
-    label: 'Peralatan',
-    description: 'Daftar peralatan panahan',
-    icon: 'ph:bow-arrow-bold',
-    defaultVisible: false
-  },
-  {
-    type: 'gallery',
-    label: 'Galeri',
-    description: 'Foto-foto event dan latihan',
-    icon: 'ph:images-bold',
-    defaultVisible: false
-  },
-  {
-    type: 'event_history',
-    label: 'Riwayat Event',
-    description: 'Daftar event yang diikuti',
-    icon: 'ph:calendar-check-bold',
-    defaultVisible: false
-  }
-]
-
 const activeTab = ref('information')
 const tabs = computed(() => [
-  { id: 'information', label: t('profile.tab_information'), icon: 'ph:user-circle-bold' },
-  { id: 'profile', label: t('profile.tab_profile'), icon: 'ph:identification-card-bold' },
-  { id: 'contact', label: t('profile.tab_contact'), icon: 'ph:phone-bold' }
+  { id: 'information', label: t('profile.tab_info'), icon: 'ph:user-circle-bold' },
+  { id: 'profile', label: t('profile.tab_bio'), icon: 'ph:identification-card-bold' }
 ])
 
-
-// Initialize from user data
-onMounted(async () => {
-
-  // Load cities
-  try {
-    const citiesRes = await get('/cities')
-    cityOptions.value = (citiesRes.data || []).map(c => ({ title: c.name, value: c.name }))
-  } catch (e) {
-    console.error('Failed to load cities:', e)
-  }
-
-  // Load clubs
-  try {
-    const clubsRes = await get('/clubs?limit=1000')
-    clubOptions.value = (clubsRes.data || []).map(c => ({ title: c.name, value: c.uuid }))
-  } catch (e) {
-    console.error('Failed to load clubs:', e)
-  }
-
-  // Load profile and account data
-  await loadProfile()
-
-  // Use global archerProfile (already loaded by server middleware)
-  if (archerProfile.value) {
-    const data = archerProfile.value
-    profile.value.bio = data.bio || ''
-    profile.value.achievements = data.achievements || ''
-    profile.value.social_instagram = data.social_instagram || ''
-    profile.value.social_tiktok = data.social_tiktok || ''
-    profile.value.social_whatsapp = data.social_whatsapp || ''
-
-    // Fetch user stats (this is separate from basic profile)
-    try {
-      const stats = await get('/archers/me/stats')
-      if (stats) {
-        userStats.value = {
-          totalEvents: stats.total_events || 0,
-          bestScore: stats.best_score || null
-        }
-      }
-    } catch (error) {
-      console.error('Failed to fetch stats:', error)
+const toggleAchievementHighlight = (idx) => {
+  const current = achievementsList.value[idx]
+  if (!current) return
+  if (!current.is_highlighted) {
+    const totalHighlighted = achievementsList.value.filter(a => a.is_highlighted).length
+    if (totalHighlighted >= 3) {
+      toast.warning(t('profile.highlight_max_error'))
+      return
     }
+    current.is_highlighted = true
+  } else {
+    current.is_highlighted = false
   }
-})
+}
 
-// Load profile data
 const loadProfile = async () => {
   try {
     const response = await get('/archer/me')
     const data = response.data || response
 
-    // Load account information
     accountForm.value = {
       full_name: data.full_name || '',
       username: data.username || '',
+      nik: data.nik || '',
       date_of_birth: data.date_of_birth ? new Date(data.date_of_birth).toISOString().split('T')[0] : '',
-      gender: data.gender || '',
+      gender: data.gender || 'male',
+      blood_type: data.blood_type || '',
+      hand_dominance: data.hand_dominance || 'right',
+      height_cm: data.height_cm || null,
+      weight_kg: data.weight_kg || null,
       phone: data.phone || '',
+      email: data.email || '',
+      emergency_contact_name: data.emergency_contact_name || '',
+      emergency_contact_phone: data.emergency_contact_phone || '',
       city: data.city || '',
-      country: data.country || '',
-      bow_type: data.bow_type || '',
+      province: data.province || '',
+      postal_code: data.postal_code || '',
+      country: data.country || 'Indonesia',
+      bow_type: data.bow_type || 'recurve',
       address: data.address || '',
       avatar_url: data.avatar_url || '',
       banner_url: data.banner_url || '',
-      club_id: data.club_id || ''
+      club_id: data.club_id || '',
+      new_club_name: '',
+      new_club_acronym: ''
     }
 
-    // Load detailed profile information
     profile.value = {
       bio: data.bio || '',
       achievements: data.achievements || '',
       equipment: data.equipment || ''
     }
 
-    achievementsList.value = data.achievements ? data.achievements.split('\n').filter(a => a.trim() !== '').map(a => {
+    achievementsList.value = data.achievements ? data.achievements.split(/\r?\n/).filter(a => a.trim() !== '').map(a => {
       if (a.startsWith('[H] ')) return { text: a.replace('[H] ', ''), is_highlighted: true }
       return { text: a, is_highlighted: false }
     }) : []
-    equipmentList.value = data.equipment ? data.equipment.split('\n').filter(e => e.trim() !== '') : []
 
-    // Populate dynamic socials
     userSocials.value = []
     if (data.social_instagram) userSocials.value.push({ platform: 'instagram', handle: data.social_instagram })
     if (data.social_tiktok) userSocials.value.push({ platform: 'tiktok', handle: data.social_tiktok })
@@ -664,36 +672,36 @@ const loadProfile = async () => {
     if (data.social_pinterest) userSocials.value.push({ platform: 'pinterest', handle: data.social_pinterest })
     if (data.social_linkedin) userSocials.value.push({ platform: 'linkedin', handle: data.social_linkedin })
 
+    try {
+      const stats = await get('/archers/me/stats')
+      if (stats) {
+        userStats.value = {
+          totalEvents: stats.total_events || 0,
+          bestScore: stats.best_score || null
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch stats:', error)
+    }
+
   } catch (error) {
     console.error('Failed to load profile:', error)
   }
 }
 
-// Save account information
-const saveAccountInfo = async () => {
+const saveFullProfile = async () => {
   if (isUsernameTaken.value) {
     toast.error('Username is already taken!')
     return
   }
-  isSavingAccount.value = true
-  try {
-    await put('/user/profile', accountForm.value)
-    toast.success(t('profile.toast_save_success'))
-  } catch (error) {
-    console.error('Failed to save account info:', error)
-    toast.error(t('profile.toast_save_failed'))
-  } finally {
-    isSavingAccount.value = false
-  }
-}
 
-const saveProfile = async () => {
   isSaving.value = true
   try {
     const payload = {
+      ...accountForm.value,
       bio: profile.value.bio,
-      achievements: achievementsList.value.filter(a => a.text.trim() !== '').map(a => a.is_highlighted ? `[H] ${a.text}` : a.text).join('\n'),
-      equipment: equipmentList.value.filter(e => e.trim() !== '').join('\n'),
+      equipment: profile.value.equipment,
+      achievements: achievementsList.value.filter(a => a.text.trim() !== '').map(a => a.is_highlighted ? `[H] ${a.text.trim()}` : a.text.trim()).join('\n'),
       social_instagram: userSocials.value.find(s => s.platform === 'instagram')?.handle || '',
       social_tiktok: userSocials.value.find(s => s.platform === 'tiktok')?.handle || '',
       social_whatsapp: userSocials.value.find(s => s.platform === 'whatsapp')?.handle || '',
@@ -703,26 +711,32 @@ const saveProfile = async () => {
       social_spotify: userSocials.value.find(s => s.platform === 'spotify')?.handle || '',
       social_website: userSocials.value.find(s => s.platform === 'website')?.handle || '',
       social_pinterest: userSocials.value.find(s => s.platform === 'pinterest')?.handle || '',
-      social_linkedin: userSocials.value.find(s => s.platform === 'linkedin')?.handle || '',
-      avatar_url: accountForm.value.avatar_url,
-      banner_url: accountForm.value.banner_url
+      social_linkedin: userSocials.value.find(s => s.platform === 'linkedin')?.handle || ''
     }
+
     await put('/user/profile', payload)
     toast.success(t('profile.toast_profile_success'))
+    await loadProfile()
   } catch (error) {
-    toast.error(error.message || t('profile.toast_profile_failed'))
+    console.error('Failed to save profile:', error)
+    toast.error(error?.data?.error || t('profile.toast_profile_failed'))
   } finally {
     isSaving.value = false
   }
 }
 
 const previewProfile = () => {
-  if (user.value?.username) {
-    window.open(`/archers/${user.value.username}`, '_blank')
+  const uname = accountForm.value.username || user.value?.username
+  if (uname) {
+    window.open(`/archers/${uname}`, '_blank')
   } else {
     toast.warning(t('profile.toast_username_required'))
   }
 }
+
+onMounted(() => {
+  loadProfile()
+})
 </script>
 
 <style scoped>

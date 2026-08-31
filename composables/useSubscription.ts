@@ -19,12 +19,18 @@ export interface SubscriptionData {
     }
     plans: any[]
     invoices: any[]
+    quota_free?: number
+    quota_standard?: number
+    quota_elite?: number
+    total_quota?: number
 }
 
 export const useSubscription = () => {
     const subscriptionData = useState<SubscriptionData | null>('subscription.data', () => null)
     const isLoading = useState<boolean>('subscription.isLoading', () => false)
     const lastFetched = useState<number>('subscription.lastFetched', () => 0)
+    
+    const quotaData = useState<{quota_free?: number, quota_standard: number, quota_elite: number, total_quota: number} | null>('subscription.quota', () => null)
 
     const config = useRuntimeConfig()
     const api = useApi()
@@ -51,14 +57,30 @@ export const useSubscription = () => {
         }
     }
 
+    const fetchQuota = async () => {
+        try {
+            const res = await api.get<{quota_free: number, quota_standard: number, quota_elite: number, total_quota: number}>('/organizers/me/quota')
+            quotaData.value = res
+            return res
+        } catch (err) {
+            console.error('Failed to fetch quota:', err)
+            return null
+        }
+    }
+
     const isSubscribed = computed(() => !!subscriptionData.value?.current?.plan_id)
     const activePlan = computed(() => subscriptionData.value?.current)
 
     const isSubscriptionActive = computed(() => {
         if (user.value?.role === 'root') return true
         const status = subscriptionData.value?.current?.status
-        return status === 'active' || status === 'trial'
+        const hasQuota = (quotaData.value?.quota_free || 0) > 0 || (quotaData.value?.quota_standard || 0) > 0 || (quotaData.value?.quota_elite || 0) > 0
+        return status === 'active' || status === 'trial' || hasQuota
     })
+
+    const hasFreeQuota = computed(() => (quotaData.value?.quota_free || 0) > 0)
+    const hasStandardQuota = computed(() => (quotaData.value?.quota_standard || 0) > 0)
+    const hasEliteQuota = computed(() => (quotaData.value?.quota_elite || 0) > 0)
 
     const isElite = computed(() => {
         if (user.value?.role === 'root') return true
@@ -68,7 +90,7 @@ export const useSubscription = () => {
     // Feature Gates
     const canCreateEvent = computed(() => {
         if (user.value?.role === 'root') return true
-        return isSubscriptionActive.value
+        return isSubscriptionActive.value || (quotaData.value?.total_quota || 0) > 0
     })
 
     const canAddMember = computed(() => {
@@ -98,10 +120,14 @@ export const useSubscription = () => {
 
     return {
         subscriptionData,
+        quotaData,
         isLoading,
         fetchSubscription,
+        fetchQuota,
         isSubscribed,
         isSubscriptionActive,
+        hasStandardQuota,
+        hasEliteQuota,
         isElite,
         canCreateEvent,
         canAddMember,

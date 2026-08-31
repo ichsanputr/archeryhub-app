@@ -8,7 +8,7 @@
             <div class="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
             <div class="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <p class="text-navy font-bold animate-pulse">{{ t('profile_public.loading_profile') }}</p>
+          <div class="text-navy font-bold animate-pulse">{{ t('profile_public.loading_profile') }}</div>
         </div>
 
         <!-- Error State -->
@@ -17,7 +17,7 @@
             <Icon icon="ph:user-focus" class="w-10 h-10" />
           </div>
           <h2 class="text-2xl font-black text-navy mb-2">{{ t('profile_public.profile_not_found') }}</h2>
-          <p class="text-text-secondary mb-8 max-w-sm mx-auto">{{ error }}</p>
+          <div class="text-text-secondary mb-8 max-w-sm mx-auto">{{ error }}</div>
           <BaseButton :to="`/dashboard/${userPersona}/events`" variant="primary" icon="ph:arrow-left">
             {{ t('profile_public.back_to_home') }}
           </BaseButton>
@@ -43,11 +43,11 @@
               <div class="pt-20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                   <h1 class="text-3xl font-bold text-gray-900">{{ profile.name || profile.username }}</h1>
-                  <p class="text-gray-600 mt-1">@{{ profile.username }}</p>
-                  <p class="text-sm text-gray-500 mt-2">
+                  <div class="text-gray-600 mt-1">@{{ profile.username }}</div>
+                  <div class="text-sm text-gray-500 mt-2">
                     <Icon icon="ph:calendar" class="inline w-4 h-4 mr-1" />
                     {{ t('profile_public.joined') }} {{ formatDate(profile.created_at) }}
-                  </p>
+                  </div>
                 </div>
 
                 <!-- Level Badge -->
@@ -69,8 +69,8 @@
                 class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-primary transition-colors">
                 <Icon icon="ph:check-circle-fill" class="w-6 h-6 text-primary group-hover:text-navy" />
               </div>
-              <p class="text-3xl font-black text-navy">{{ profile.total_solved }}</p>
-              <p class="text-sm text-text-secondary mt-1 font-medium">{{ t('profile_public.events_participated') }}</p>
+              <div class="text-3xl font-black text-navy">{{ profile.total_solved }}</div>
+              <div class="text-sm text-text-secondary mt-1 font-medium">{{ t('profile_public.events_participated') }}</div>
             </div>
 
             <div
@@ -78,8 +78,8 @@
               <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Icon icon="ph:fire-fill" class="w-6 h-6 text-green-600" />
               </div>
-              <p class="text-3xl font-bold text-gray-900">{{ profile.current_streak }}</p>
-              <p class="text-sm text-gray-600 mt-1">{{ t('profile_public.current_streak') }}</p>
+              <div class="text-3xl font-bold text-gray-900">{{ profile.current_streak }}</div>
+              <div class="text-sm text-gray-600 mt-1">{{ t('profile_public.current_streak') }}</div>
             </div>
 
             <div
@@ -88,8 +88,8 @@
                 class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-orange-500 transition-colors">
                 <Icon icon="ph:trophy-fill" class="w-6 h-6 text-orange-600 group-hover:text-white" />
               </div>
-              <p class="text-3xl font-black text-navy">{{ profile.longest_streak }}</p>
-              <p class="text-sm text-text-secondary mt-1 font-medium">{{ t('profile_public.best_achievement') }}</p>
+              <div class="text-3xl font-black text-navy">{{ profile.longest_streak }}</div>
+              <div class="text-sm text-text-secondary mt-1 font-medium">{{ t('profile_public.best_achievement') }}</div>
             </div>
 
             <div
@@ -97,8 +97,8 @@
               <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Icon icon="ph:percent-fill" class="w-6 h-6 text-purple-600" />
               </div>
-              <p class="text-3xl font-bold text-gray-900">{{ Math.round(profile.success_rate) }}%</p>
-              <p class="text-sm text-gray-600 mt-1">{{ t('profile_public.success_rate') }}</p>
+              <div class="text-3xl font-bold text-gray-900">{{ Math.round(profile.success_rate) }}%</div>
+              <div class="text-sm text-gray-600 mt-1">{{ t('profile_public.success_rate') }}</div>
             </div>
           </div>
 
@@ -108,7 +108,7 @@
               :current-streak="profile.current_streak" :longest-streak="profile.longest_streak" />
             <div v-else class="text-center py-16 bg-gray-50 rounded-xl border border-dashed border-gray-200">
               <Icon icon="ph:calendar-blank" class="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p class="text-text-secondary font-medium">{{ t('profile_public.no_activity_data') }}</p>
+              <div class="text-text-secondary font-medium">{{ t('profile_public.no_activity_data') }}</div>
             </div>
           </div>
 
@@ -168,16 +168,16 @@
             <h2 class="text-xl font-bold text-gray-900 mb-6">{{ t('profile_public.submission_statistics') }}</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div class="text-center p-4 bg-blue-50 rounded-xl">
-                <p class="text-4xl font-bold text-blue-600">{{ profile.total_submissions }}</p>
-                <p class="text-sm text-gray-600 mt-2">{{ t('profile_public.total_submissions') }}</p>
+                <div class="text-4xl font-bold text-blue-600">{{ profile.total_submissions }}</div>
+                <div class="text-sm text-gray-600 mt-2">{{ t('profile_public.total_submissions') }}</div>
               </div>
               <div class="text-center p-4 bg-green-50 rounded-xl">
-                <p class="text-4xl font-bold text-green-600">{{ profile.total_solved }}</p>
-                <p class="text-sm text-gray-600 mt-2">{{ t('profile_public.accepted') }}</p>
+                <div class="text-4xl font-bold text-green-600">{{ profile.total_solved }}</div>
+                <div class="text-sm text-gray-600 mt-2">{{ t('profile_public.accepted') }}</div>
               </div>
               <div class="text-center p-4 bg-red-50 rounded-xl">
-                <p class="text-4xl font-bold text-red-600">{{ profile.total_submissions - profile.total_solved }}</p>
-                <p class="text-sm text-gray-600 mt-2">{{ t('profile_public.failed') }}</p>
+                <div class="text-4xl font-bold text-red-600">{{ profile.total_submissions - profile.total_solved }}</div>
+                <div class="text-sm text-gray-600 mt-2">{{ t('profile_public.failed') }}</div>
               </div>
             </div>
           </div>

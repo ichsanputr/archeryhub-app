@@ -56,12 +56,12 @@
                             <span class="text-white/40 text-xs font-bold  tracking-wider">{{ t('profile_public.current_status') }}</span>
                             <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                         </div>
-                        <p class="font-bold mb-1">{{ t('profile_public.preparation_pon') }}</p>
+                        <div class="font-bold mb-1">{{ t('profile_public.preparation_pon') }}</div>
                         <div class="w-full bg-white/10 rounded-full h-1.5 mt-2">
                             <div class="bg-primary h-1.5 rounded-full" :style="{ width: athlete.readiness + '%' }">
                             </div>
                         </div>
-                        <p class="text-right text-xs text-primary mt-1">{{ athlete.readiness }}% {{ t('profile_public.readiness') }}</p>
+                        <div class="text-right text-xs text-primary mt-1">{{ athlete.readiness }}% {{ t('profile_public.readiness') }}</div>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                 <div v-for="metric in metrics" :key="metric.label"
                     class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between group hover:border-primary/50 transition-colors">
                     <div>
-                        <p class="text-text-sub text-xs font-bold  tracking-wider mb-1">{{ metric.label }}</p>
+                        <div class="text-text-sub text-xs font-bold  tracking-wider mb-1">{{ metric.label }}</div>
                         <div class="flex items-baseline gap-2">
                             <h3 class="text-4xl font-black text-navy">{{ metric.value }}</h3>
                             <span v-if="metric.trend" :class="metric.trend > 0 ? 'text-green-500' : 'text-red-500'"
@@ -131,8 +131,8 @@
                                 <Icon :icon="item.icon" class="text-xl" />
                             </div>
                             <div>
-                                <p class="text-xs text-text-sub font-bold ">{{ item.label }}</p>
-                                <p class="font-bold text-navy text-sm">{{ item.value }}</p>
+                                <div class="text-xs text-text-sub font-bold ">{{ item.label }}</div>
+                                <div class="font-bold text-navy text-sm">{{ item.value }}</div>
                             </div>
                         </div>
                     </div>
@@ -189,6 +189,8 @@
 </template>
 
 <script setup>
+
+useHead({ title: computed(() => t('profile.title', 'Profile') + ' - ArcheryHub Dashboard') })
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()

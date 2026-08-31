@@ -1,25 +1,17 @@
 <template>
   <div class="space-y-8">
     <!-- Breadcrumb & Header -->
-    <div class="flex flex-col gap-6">
-      <nav class="flex flex-wrap gap-2 items-center">
-        <NuxtLink to="/dashboard/organizer"
-          class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">
-          {{ t('dashboard.sidebar.overview') }}</NuxtLink>
-        <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
-        <NuxtLink to="/dashboard/organizer/events"
-          class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">{{ t('dashboard.sidebar.event') }}</NuxtLink>
-        <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
-        <span class="text-navy text-sm font-bold">{{ t('event_create.breadcrumb_new') }}</span>
-      </nav>
-
-      <div class="flex flex-wrap justify-between gap-6 items-end">
-        <div class="flex flex-col gap-3">
-          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">{{ t('event_create.title') }}</h1>
-          <p class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">{{ t('event_create.subtitle') }}</p>
-        </div>
-      </div>
-    </div>
+    <DashboardHeader
+      :title="t('event_create.title')"
+      :subtitle="t('event_create.subtitle')"
+      icon="ph:calendar-plus-bold"
+      back-to="/dashboard/organizer/events"
+      :breadcrumbs="[
+        { label: t('dashboard.sidebar.overview'), to: '/dashboard/organizer' },
+        { label: t('dashboard.sidebar.event'), to: '/dashboard/organizer/events' },
+        { label: t('event_create.breadcrumb_new') }
+      ]"
+    />
 
     <!-- Form Card -->
     <div class="bg-white border border-gray-200 rounded-xl p-6 md:p-10 shadow-sm">
@@ -27,6 +19,228 @@
 
         <!-- Single Step: Event Info -->
         <div class="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4">
+          <!-- Package / Quota Selector (Placed on Top) -->
+          <FormSection icon="ph:package-bold" title="Pilihan Paket Kuota Event">
+            <div class="space-y-4">
+              <!-- Quota Balance Header Bar -->
+              <div class="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
+                <div class="flex flex-wrap items-center gap-3">
+                  <span class="text-xs font-black uppercase tracking-wider text-slate-500">Saldo Kuota Anda:</span>
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white text-navy border border-slate-200 text-xs font-bold shadow-2xs">
+                    <Icon icon="ph:gift-bold" class="text-sm text-primary" />
+                    Free: {{ quotaBalance.quota_free ?? 20 }}/20 Kuota
+                  </div>
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white text-navy border border-slate-200 text-xs font-bold shadow-2xs">
+                    <Icon icon="ph:check-circle-bold" class="text-sm text-primary" />
+                    Standard: {{ quotaBalance.quota_standard || 0 }} Kuota
+                  </div>
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white text-navy border border-slate-200 text-xs font-bold shadow-2xs">
+                    <Icon icon="ph:crown-bold" class="text-sm text-primary" />
+                    Elite: {{ quotaBalance.quota_elite || 0 }} Kuota
+                  </div>
+                </div>
+
+                <NuxtLink
+                  to="/dashboard/organizer/package"
+                  class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-navy text-white hover:bg-navy-dark text-xs font-bold transition-all shadow-sm"
+                >
+                  <Icon icon="ph:plus-circle-bold" class="text-sm text-primary" />
+                  Beli / Tambah Kuota
+                </NuxtLink>
+              </div>
+
+              <!-- 3-Package Cards Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Free Package Card -->
+                <div
+                  @click="(quotaBalance.quota_free ?? 20) > 0 ? form.quotaType = 'free' : null"
+                  class="relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all select-none group"
+                  :class="[
+                    (quotaBalance.quota_free ?? 20) <= 0 ? 'border-slate-200 bg-slate-50/70 opacity-75 cursor-not-allowed' : 'cursor-pointer',
+                    form.quotaType === 'free' ? 'border-primary bg-primary/5 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-white'
+                  ]"
+                >
+                  <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-700">
+                        Bonus Awal (20 Kuota)
+                      </div>
+                      <div
+                        v-if="(quotaBalance.quota_free ?? 20) > 0"
+                        class="size-5 rounded-full border-2 flex items-center justify-center transition-colors"
+                        :class="form.quotaType === 'free' ? 'border-navy bg-navy text-primary' : 'border-slate-300 group-hover:border-slate-400'"
+                      >
+                        <Icon v-if="form.quotaType === 'free'" icon="ph:check-bold" class="text-xs" />
+                      </div>
+                      <span v-else class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+                        Kuota Habis
+                      </span>
+                    </div>
+
+                    <h4 class="text-lg font-black text-navy mb-1">Free Tier</h4>
+                    <div class="text-xs text-slate-500 font-medium mb-4">Event Latihan / Internal Klub</div>
+
+                    <div class="space-y-2.5 text-xs font-medium text-slate-600 border-t border-slate-100 pt-3">
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:users-bold" class="text-slate-400 text-sm shrink-0" />
+                        <span>Maks. <strong>50 Peserta</strong></span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:squares-four-bold" class="text-slate-400 text-sm shrink-0" />
+                        <span><strong>Kategori Tanpa Batas</strong></span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:device-tablet-speaker-bold" class="text-slate-400 text-sm shrink-0" />
+                        <span><strong>Scorekeeper Tanpa Batas</strong></span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:hard-drive-bold" class="text-slate-400 text-sm shrink-0" />
+                        <span>100 MB Penyimpanan Media</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 pt-3 border-t border-slate-100">
+                    <div v-if="(quotaBalance.quota_free ?? 20) > 0" class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-slate-400">Gunakan:</span>
+                      <span class="text-xs font-black text-navy">1 Kuota (Sisa: {{ quotaBalance.quota_free ?? 20 }}/20)</span>
+                    </div>
+                    <div v-else class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-slate-400">Sisa 0 Kuota Free</span>
+                      <span class="text-xs font-bold text-slate-500">Pilih Standard/Elite</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Standard Package Card -->
+                <div
+                  @click="quotaBalance.quota_standard > 0 ? form.quotaType = 'standard' : null"
+                  class="relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all select-none group"
+                  :class="[
+                    quotaBalance.quota_standard <= 0 ? 'border-slate-200 bg-slate-50/70 opacity-75 cursor-not-allowed' : 'cursor-pointer',
+                    form.quotaType === 'standard' ? 'border-primary bg-primary/5 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-white'
+                  ]"
+                >
+                  <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-700">
+                        Event Komunitas
+                      </div>
+                      <div
+                        v-if="quotaBalance.quota_standard > 0"
+                        class="size-5 rounded-full border-2 flex items-center justify-center transition-colors"
+                        :class="form.quotaType === 'standard' ? 'border-navy bg-navy text-primary' : 'border-slate-300 group-hover:border-slate-400'"
+                      >
+                        <Icon v-if="form.quotaType === 'standard'" icon="ph:check-bold" class="text-xs" />
+                      </div>
+                      <span v-else class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+                        Kuota Habis
+                      </span>
+                    </div>
+
+                    <h4 class="text-lg font-black text-navy mb-1">Standard EO</h4>
+                    <div class="text-xs text-slate-500 font-medium mb-4">Turnamen Daerah / Sirkuit</div>
+
+                    <div class="space-y-2.5 text-xs font-medium text-slate-600 border-t border-slate-100 pt-3">
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:users-bold" class="text-slate-400 text-sm shrink-0" />
+                        <span>Maks. <strong>200 Peserta</strong></span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:squares-four-bold" class="text-slate-400 text-sm shrink-0" />
+                        <span><strong>Kategori Tanpa Batas</strong></span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:device-tablet-speaker-bold" class="text-slate-400 text-sm shrink-0" />
+                        <span><strong>Scorekeeper Tanpa Batas</strong></span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:hard-drive-bold" class="text-slate-400 text-sm shrink-0" />
+                        <span>500 MB Penyimpanan Media</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 pt-3 border-t border-slate-100">
+                    <div v-if="quotaBalance.quota_standard > 0" class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-slate-400">Gunakan:</span>
+                      <span class="text-xs font-black text-navy">1 Kuota (Sisa: {{ quotaBalance.quota_standard }})</span>
+                    </div>
+                    <div v-else class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-slate-400">Sisa 0 Kuota</span>
+                      <NuxtLink to="/dashboard/organizer/package" class="text-xs font-bold text-navy hover:underline flex items-center gap-0.5">
+                        Beli Kuota <Icon icon="ph:arrow-right" class="text-[10px]" />
+                      </NuxtLink>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Elite Package Card -->
+                <div
+                  @click="quotaBalance.quota_elite > 0 ? form.quotaType = 'elite' : null"
+                  class="relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all select-none group"
+                  :class="[
+                    quotaBalance.quota_elite <= 0 ? 'border-slate-200 bg-slate-50/70 opacity-75 cursor-not-allowed' : 'cursor-pointer',
+                    form.quotaType === 'elite' ? 'border-primary bg-primary/5 shadow-sm' : 'border-slate-200 hover:border-slate-300 bg-white'
+                  ]"
+                >
+                  <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-700">
+                        Kejurnas & Open
+                      </div>
+                      <div
+                        v-if="quotaBalance.quota_elite > 0"
+                        class="size-5 rounded-full border-2 flex items-center justify-center transition-colors"
+                        :class="form.quotaType === 'elite' ? 'border-navy bg-navy text-primary' : 'border-slate-300 group-hover:border-slate-400'"
+                      >
+                        <Icon v-if="form.quotaType === 'elite'" icon="ph:check-bold" class="text-xs" />
+                      </div>
+                      <span v-else class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+                        Kuota Habis
+                      </span>
+                    </div>
+
+                    <h4 class="text-lg font-black text-navy mb-1">Elite EO</h4>
+                    <div class="text-xs text-slate-500 font-medium mb-4">Turnamen Skala Nasional / Internasional</div>
+
+                    <div class="space-y-2.5 text-xs font-medium text-slate-600 border-t border-slate-100 pt-3">
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:users-bold" class="text-slate-400 text-sm shrink-0" />
+                        <span><strong>Peserta Tanpa Batas</strong></span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:squares-four-bold" class="text-slate-400 text-sm shrink-0" />
+                        <span><strong>Kategori Tanpa Batas</strong></span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:device-tablet-speaker-bold" class="text-slate-400 text-sm shrink-0" />
+                        <span><strong>Scorekeeper Tanpa Batas</strong></span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:hard-drive-bold" class="text-slate-400 text-sm shrink-0" />
+                        <span>5 GB Penyimpanan Media</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 pt-3 border-t border-slate-100">
+                    <div v-if="quotaBalance.quota_elite > 0" class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-slate-400">Gunakan:</span>
+                      <span class="text-xs font-black text-navy">1 Kuota (Sisa: {{ quotaBalance.quota_elite }})</span>
+                    </div>
+                    <div v-else class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-slate-400">Sisa 0 Kuota</span>
+                      <NuxtLink to="/dashboard/organizer/package" class="text-xs font-bold text-navy hover:underline flex items-center gap-0.5">
+                        Beli Kuota <Icon icon="ph:arrow-right" class="text-[10px]" />
+                      </NuxtLink>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FormSection>
+
           <FormSection icon="ph:identification-card" :title="t('event_create.section_identity')">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="md:col-span-2">
@@ -39,9 +253,9 @@
                   :placeholder="t('event_create.field_slug_placeholder')" required :error="errors.slug"
                   @input="onSlugInput"
                   @blur="validate('slug', form.slug, [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, t('event_create.slug_validation'))])" />
-                <p class="text-xs text-gray-500 mt-1.5">
+                <div class="text-xs text-gray-500 mt-1.5">
                   {{ t('event_create.slug_hint') }}
-                </p>
+                </div>
               </div>
               <BaseInput v-model="form.venue" :label="t('event_create.field_venue')" :placeholder="t('event_create.field_venue_placeholder')"
                 icon="la:place-of-worship" />
@@ -61,9 +275,9 @@
                     referrerpolicy="no-referrer-when-downgrade" :src="gmapsEmbedUrl">
                   </iframe>
                 </div>
-                <p v-else-if="form.gmapsLink && !isValidGmaps" class="text-red-500 text-xs font-bold mt-1">
+                <div v-else-if="form.gmapsLink && !isValidGmaps" class="text-red-500 text-xs font-bold mt-1">
                   {{ t('event_create.gmaps_invalid') }}
-                </p>
+                </div>
               </div>
             </div>
           </FormSection>
@@ -151,7 +365,7 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => `${t('event_create.page_title')} - Archeris Dashboard`)
+  title: computed(() => `${t('event_create.page_title')} - ArcheryHub Dashboard`)
 })
 
 const router = useRouter()
@@ -174,7 +388,15 @@ const form = reactive({
   description: '',
   type: '', // Discipline
   registrationDeadline: '',
-  status: 'draft'
+  status: 'draft',
+  quotaType: 'free'
+})
+
+const quotaBalance = ref({
+  quota_free: 20,
+  quota_standard: 0,
+  quota_elite: 0,
+  total_quota: 20
 })
 
 const startDateDate = ref('')
@@ -249,12 +471,32 @@ onMounted(async () => {
     return
   }
   try {
-    const res = await get('/disciplines')
-    if (res?.disciplines) {
-      disciplines.value = res.disciplines
+    const [resDisc, resQuota] = await Promise.all([
+      get('/disciplines'),
+      get('/organizers/me/quota').catch(() => null)
+    ])
+    if (resDisc?.disciplines) {
+      disciplines.value = resDisc.disciplines
+    }
+    if (resQuota) {
+      quotaBalance.value = {
+        quota_free: resQuota.quota_free ?? 20,
+        quota_standard: resQuota.quota_standard || 0,
+        quota_elite: resQuota.quota_elite || 0,
+        total_quota: resQuota.total_quota ?? 20
+      }
+      if ((quotaBalance.value.quota_free ?? 20) > 0) {
+        form.quotaType = 'free'
+      } else if (quotaBalance.value.quota_standard > 0) {
+        form.quotaType = 'standard'
+      } else if (quotaBalance.value.quota_elite > 0) {
+        form.quotaType = 'elite'
+      } else {
+        form.quotaType = 'free'
+      }
     }
   } catch (err) {
-    console.error('Failed to fetch disciplines', err)
+    console.error('Failed to fetch initial data', err)
   }
 })
 
@@ -328,7 +570,8 @@ const handleSubmit = async () => {
       description: form.description,
       status: form.status,
       registration_deadline: formatToISO(form.registrationDeadline),
-      location_type: form.type
+      location_type: form.type,
+      quota_type: form.quotaType
     }
 
     const result = await post('/events', payload)

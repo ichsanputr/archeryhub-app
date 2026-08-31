@@ -44,12 +44,39 @@ export const useApi = () => {
     try {
       return await $fetch<T>(url, fetchOptions)
     } catch (error: any) {
-      // If 401 Unauthorized, it means session is expired or invalid
-      if (error.response?.status === 401 && !url.includes('/auth/login')) {
-        console.error('Session expired or unauthorized, logging out...')
+      const status = error.response?.status || error.statusCode || error.status
+      // If 401 Unauthorized or 403 Forbidden on protected API endpoints
+      if ((status === 401 || status === 403) && !url.includes('/auth/login') && !url.includes('/auth/register')) {
+        console.warn(`[useApi] Session expired or unauthorized (status ${status}) on ${url}. Cleaning auth state...`)
         if (import.meta.client) {
-          // Redirect to logout endpoint to clear cookies, then to login
-          window.location.href = '/auth/login?expired=true'
+          // Clear cookies across all possible domain scopes and paths
+          const cookiesToClear = ['auth_token', 'refresh_token', 'session', 'token']
+          const host = window.location.hostname
+          const hostParts = host.split('.')
+          const domainVariants = ['', `; domain=${host}`]
+          if (hostParts.length > 2) {
+            domainVariants.push(`; domain=.${hostParts.slice(-2).join('.')}`)
+          }
+
+          cookiesToClear.forEach(cookieName => {
+            domainVariants.forEach(dom => {
+              document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/${dom}`
+              document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; max-age=0${dom}`
+            })
+          })
+
+          try {
+            sessionStorage.removeItem('oauth_state')
+            sessionStorage.removeItem('auth_user')
+            localStorage.removeItem('auth_token')
+            localStorage.removeItem('auth_user')
+          } catch {}
+
+          // Avoid redirect loop if already on login page
+          if (!window.location.pathname.startsWith('/auth/login')) {
+            const currentPath = window.location.pathname + window.location.search
+            window.location.href = `/auth/login?expired=true&redirect=${encodeURIComponent(currentPath)}`
+          }
         }
       }
       throw error

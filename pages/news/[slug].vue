@@ -47,7 +47,7 @@
                                 <div class="flex items-center gap-2">
                                     <div class="text-sm font-black text-white">{{ article.author.name }}</div>
                                     <span v-if="!article.organization_id && !article.club_id"
-                                        class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] font-black tracking-widest uppercase shrink-0">
+                                        class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] font-black tracking-widest shrink-0">
                                         {{ $t('news_page.official_badge') }}
                                     </span>
                                 </div>
@@ -89,7 +89,7 @@
                     <div class="prose prose-slate max-w-none dark:prose-invert 
                         prose-headings:text-navy prose-headings:font-black 
                         prose-p:text-[#0f172a]/70 prose-p:leading-relaxed prose-p:mb-6 prose-p:font-medium
-                        prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:underline
+                        prose-a:text-primary prose-a:font-bold prose-a:no-underline 
                         prose-strong:text-navy prose-strong:font-black
                         prose-img:rounded-2xl prose-img:shadow-xl">
                         <div v-html="article.content"></div>
@@ -245,7 +245,7 @@
                                 </div>
                                 <div>
                                     <h4
-                                        class="font-bold text-navy text-sm leading-snug mb-1 line-clamp-2 underline-link">
+                                        class="font-bold text-navy text-sm leading-snug mb-1 line-clamp-2 group-hover:text-primary transition-colors">
                                         {{ item.title }}
                                     </h4>
                                     <span class="text-xs text-slate-400">{{ item.date }}</span>
@@ -540,15 +540,47 @@ const openShareDialog = () => {
 }
 
 useHead({
-    title: computed(() => `${article.value.title} - Archeryhub.id`),
+    title: computed(() => `${article.value.title} - Archeris.net`),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            children: computed(() => JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Article',
+                'headline': article.value.title,
+                'description': article.value.excerpt || '',
+                'image': article.value.image ? [article.value.image] : [],
+                'datePublished': article.value.published_at || article.value.created_at,
+                'dateModified': article.value.updated_at || article.value.created_at,
+                'author': {
+                    '@type': 'Person',
+                    'name': article.value.author?.name || 'Archeris.net'
+                },
+                'publisher': {
+                    '@type': 'Organization',
+                    'name': 'Archeris.net',
+                    'url': 'https://archeris.net'
+                },
+                'url': useRequestURL().href
+            }))
+        }
     ]
 })
 
 useSeoMeta({
-    title: () => `${article.value.title} - Archeryhub.id`,
-    description: () => article.value.excerpt
+    title: () => `${article.value.title} - Archeris.net`,
+    description: () => article.value.excerpt,
+    ogTitle: () => article.value.title,
+    ogDescription: () => article.value.excerpt,
+    ogImage: () => article.value.image || 'https://archeris.net/og-default.jpg',
+    ogType: 'article',
+    twitterCard: 'summary_large_image',
+    twitterTitle: () => article.value.title,
+    twitterDescription: () => article.value.excerpt,
+    twitterImage: () => article.value.image || 'https://archeris.net/og-default.jpg',
 })
 </script>
 

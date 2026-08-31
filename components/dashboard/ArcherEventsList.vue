@@ -1,38 +1,15 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
-    <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-navy text-white shadow-sm">
-      <!-- Theme Motif Pattern -->
-      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-
-      <!-- Decorative Background Elements (Glow) -->
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
-      <!-- Header Content -->
-      <div class="relative p-5 sm:p-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div class="flex items-center sm:items-start gap-4 flex-1">
-            <!-- Icon Badge -->
-            <div
-              class="size-12 sm:size-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-              <Icon icon="ph:calendar-blank-bold" class="text-primary text-xl sm:text-2xl" />
-            </div>
-
-            <!-- Title Section -->
-            <div class="min-w-0">
-              <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                {{ t('my_events.title') }}
-              </h1>
-              <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
-                {{ t('my_events.subtitle') }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Header (Identical to Cart Page Header) -->
+    <DashboardHeader
+      :title="t('my_events.title')"
+      :subtitle="t('my_events.subtitle')"
+      icon="ph:calendar-blank-bold"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/archer' },
+        { label: t('my_events.title') }
+      ]"
+    />
 
     <!-- Club Invitation Notification Alert -->
     <div v-if="invitations.length > 0"
@@ -41,7 +18,7 @@
         <Icon icon="ph:bell-ringing-bold" class="text-amber-500 text-xl" />
         <div>
           <h3 class="font-bold text-navy text-sm">{{ t('my_events.new_notification') }}</h3>
-          <p class="text-amber-700 text-xs mt-0.5">{{ t('my_events.invitation_desc', { count: invitations.length }) }}</p>
+          <div class="text-amber-700 text-xs mt-0.5">{{ t('my_events.invitation_desc', { count: invitations.length }) }}</div>
         </div>
       </div>
       <BaseButton :to="`/dashboard/${userPersona}/notifications`" variant="white" size="sm"
@@ -111,15 +88,15 @@
           <Icon icon="ph:calendar-x-bold" class="text-4xl" />
         </div>
         <div class="space-y-2">
-          <p class="text-lg font-black text-navy">{{ t('my_events.no_events') }}</p>
-          <p class="text-sm text-slate-500 font-medium leading-relaxed">
+          <div class="text-lg font-black text-navy">{{ t('my_events.no_events') }}</div>
+          <div class="text-sm text-slate-500 font-medium leading-relaxed">
             {{ emptyStateMessage }}
-          </p>
+          </div>
         </div>
-        <BaseButton v-if="searchQuery" variant="outline" size="sm" @click="resetFilters" class="w-full">
+        <BaseButton v-if="searchQuery" variant="outline" size="md" @click="resetFilters" class="w-full min-h-[44px]">
           {{ t('my_events.clear_filter') }}
         </BaseButton>
-        <BaseButton v-else to="/events" variant="primary" size="sm" icon="ph:magnifying-glass-bold" class="w-full">
+        <BaseButton v-else to="/events" variant="primary" size="md" icon="ph:magnifying-glass-bold" class="w-full min-h-[44px]">
           {{ t('my_events.search_event') }}
         </BaseButton>
       </div>
@@ -145,7 +122,7 @@
             </div>
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-1.5 mb-1.5">
-                <span class="px-1.5 py-0.5 bg-navy text-primary rounded text-[8px] font-black tracking-widest uppercase">{{
+                <span class="px-1.5 py-0.5 bg-navy text-primary rounded text-[8px] font-black tracking-widest ">{{
                   event.code?.toUpperCase() || 'EVENT' }}</span>
                 <span v-if="event.city" class="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-[8px] font-bold">
                   <Icon icon="ph:map-pin-bold" class="inline text-[9px]" /> {{ event.city }}
@@ -225,16 +202,16 @@
           <!-- Card Footer -->
           <div class="mt-auto pt-4 border-t border-slate-100 grid grid-cols-5 gap-2 relative z-10">
             <BaseButton :to="`/dashboard/archer/events/${event.slug || event.id}/my-registration`" variant="primary"
-              size="sm" :class="getMainStatusLabel(event) === 'Registered' ? 'col-span-4' : 'col-span-5'"
-              class="font-black tracking-widest text-[10px] h-9 shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all">
-              <Icon icon="ph:arrow-right-bold" class="text-sm" />
+              size="md" :class="getMainStatusLabel(event) === 'Registered' ? 'col-span-4' : 'col-span-5'"
+              class="font-black tracking-wider text-xs h-11 min-h-[44px] shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 transition-all">
+              <Icon icon="ph:arrow-right-bold" class="text-base" />
               {{ t('my_events.open_event') }}
             </BaseButton>
             
             <!-- QR Code Button if registered -->
             <button v-if="getMainStatusLabel(event) === 'Registered'" @click="showQRDialog(event)"
-              class="col-span-1 h-9 rounded-lg bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center transition-all border border-slate-200 hover:border-slate-300">
-              <Icon icon="ph:qr-code-bold" class="text-base" />
+              class="col-span-1 h-11 min-h-[44px] rounded-xl bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center transition-all border border-slate-200 hover:border-slate-300">
+              <Icon icon="ph:qr-code-bold" class="text-lg" />
             </button>
           </div>
         </div>
@@ -266,8 +243,8 @@
               <!-- Archer Name -->
               <div class="text-center space-y-3">
                 <h3 class="text-3xl sm:text-4xl font-black text-navy tracking-tight">{{ user?.name || 'Archer' }}</h3>
-                <p class="text-sm sm:text-base text-slate-500 font-bold tracking-widest">{{
-                  selectedEvent?.name }}</p>
+                <div class="text-sm sm:text-base text-slate-500 font-bold tracking-widest">{{
+                  selectedEvent?.name }}</div>
               </div>
 
               <!-- QR Code -->
@@ -278,7 +255,7 @@
 
               <!-- Info -->
               <div class="text-center">
-                <p class="text-xs text-slate-400 font-bold tracking-widest">{{ t('my_events.qr_instructions') }}</p>
+                <div class="text-xs text-slate-400 font-bold tracking-widest">{{ t('my_events.qr_instructions') }}</div>
               </div>
             </div>
           </div>

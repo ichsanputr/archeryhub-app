@@ -91,7 +91,7 @@ const getCategoryIcon = (icon) => {
 
       <!-- Categories Grid -->
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <NuxtLink v-for="(category, i) in categories" :key="category.id" :to="`/category/${category.slug}`"
+        <NuxtLink v-for="category in categories" :key="category.id" :to="`/category/${category.slug}`"
           class="group">
           <div
             class="block bg-white rounded-lg shadow-sm border border-gray-200 p-6 h-full transition-all duration-300 hover:border-yellow-200 hover:shadow-md">

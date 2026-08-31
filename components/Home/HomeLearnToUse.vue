@@ -41,7 +41,7 @@
                     <!-- ── CARD 1: ROSTER & COMMUNICATIONS ── -->
                     <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
                         <div class="mb-5">
-                            <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black uppercase tracking-widest rounded-full mb-3 inline-block">
+                            <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black tracking-widest rounded-full mb-3 inline-block">
                                 {{ $t('home.learn.step1_tag') }}
                             </span>
                             <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-none font-display">
@@ -59,7 +59,7 @@
                     <!-- ── CARD 2: MATCH SCHEDULE & TARGET ALLOCATION ── -->
                     <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
                         <div class="mb-5">
-                            <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black uppercase tracking-widest rounded-full mb-3 inline-block">
+                            <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black tracking-widest rounded-full mb-3 inline-block">
                                 {{ $t('home.learn.step2_tag') }}
                             </span>
                             <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-none font-display">
@@ -77,7 +77,7 @@
                     <!-- ── CARD 3: LIVE SCORING & LEADERBOARD ── -->
                     <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
                         <div class="mb-5">
-                            <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black uppercase tracking-widest rounded-full mb-3 inline-block">
+                            <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black tracking-widest rounded-full mb-3 inline-block">
                                 {{ $t('home.learn.step3_tag') }}
                             </span>
                             <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-none font-display">

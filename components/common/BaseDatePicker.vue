@@ -269,7 +269,7 @@ const CalGrid = defineComponent({
     return () => {
       const headerRow = h('div', { class: 'grid grid-cols-7 mb-1' },
         DAY_HEADERS.map(d => h('div', {
-          key: d, class: 'text-center text-[10px] font-black text-gray-400 uppercase py-1'
+          key: d, class: 'text-center text-[10px] font-black text-gray-400 py-1'
         }, d))
       )
 

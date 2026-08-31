@@ -40,7 +40,7 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-    title: t('home.meta_title'),
+    title: computed(() => t('home.meta_title')),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ],

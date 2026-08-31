@@ -28,9 +28,9 @@
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
                                 {{ t('dashboard.participants_list.title') }}
                             </h1>
-                            <p class="text-slate-300 text-sm max-w-2xl">
+                            <div class="text-slate-300 text-sm max-w-2xl">
                                 {{ t('dashboard.participants_list.subtitle') }}
-                            </p>
+                            </div>
                         </div>
                     </div>
 
@@ -54,6 +54,7 @@
             </div>
         </div>
         <PremiumRequiredModal v-model:show="showPremiumModal" :feature="premiumFeature" />
+        <ImportParticipantsModal v-model:show="showImportModal" :event-id="eventId" @imported="loadParticipants" />
 
         <!-- Search and Filter Bar -->
         <div
@@ -68,10 +69,12 @@
                 </div>
                 <div class="w-full sm:w-72">
                     <BaseSelect v-model="categoryFilter" :items="categoryFilterOptions" multiple clearable
+                        :placeholder="t('dashboard.participants_list.select_category', 'Pilih Kategori')"
                         @update:model-value="handleFilterCategory" />
                 </div>
                 <div class="w-full sm:w-48">
                     <BaseSelect v-model="statusFilter" :items="statusOptions"
+                        :placeholder="t('dashboard.participants_list.select_status', 'Pilih Status Pembayaran')"
                         @update:model-value="handleFilterStatus" />
                 </div>
             </div>
@@ -197,13 +200,18 @@
                                         <span>{{ participant.last_reregistration_at ? t('dashboard.participants_list.reregistered') : t('dashboard.participants_list.not_reregistered') }}</span>
                                     </button>
                                 </td>
-                                <td class="px-6 py-4 text-right align-top w-20">
-                                    <div class="flex items-center justify-end">
+                                <td class="px-6 py-4 text-right align-top w-28">
+                                    <div class="flex items-center justify-end gap-1.5">
                                         <BaseButton
-                                            :to="`/dashboard/events/${eventId}/participants/${participant.athlete_code || participant.archer_id}`"
+                                            :to="`/dashboard/events/${eventId}/participants/detail?archer_id=${participant.archer_id || participant.athlete_code}`"
                                             variant="white" size="sm" icon="ph:eye-bold"
-                                            class="h-10 w-10 p-0 text-gray-400 hover:text-navy border-gray-100 hover:border-navy/20 shadow-none"
+                                            class="h-9 w-9 p-0 text-gray-400 hover:text-navy border-gray-100 hover:border-navy/20 shadow-none"
                                             :title="t('dashboard.participants_list.view_details')" />
+                                        <BaseButton
+                                            :to="`/dashboard/events/${eventId}/participants/edit?archer_id=${participant.archer_id || participant.athlete_code}`"
+                                            variant="white" size="sm" icon="ph:pencil-simple-bold"
+                                            class="h-9 w-9 p-0 text-gray-400 hover:text-primary hover:border-primary/30 border-gray-100 shadow-none"
+                                            :title="t('dashboard.participants_list.edit_button', 'Edit Data Registrasi')" />
                                     </div>
                                 </td>
                             </tr>
@@ -238,6 +246,7 @@ import { useEventContext } from '~/composables/useEventContext'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
 import BasePagination from '~/components/common/BasePagination.vue'
+import ImportParticipantsModal from '~/components/dashboard/ImportParticipantsModal.vue'
 
 definePageMeta({
     layout: 'dashboard'
@@ -246,7 +255,7 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-    title: t('dashboard.participants_list.meta_title')
+    title: computed(() => `${t('dashboard.participants_list.meta_title', 'Daftar Peserta')} - ArcheryHub Dashboard`)
 })
 
 const route = useRoute()
@@ -254,6 +263,7 @@ const eventId = computed(() => route.params.id)
 const { get, put } = useApi()
 const toast = useToast()
 
+const showImportModal = ref(false)
 const isTogglingReregister = ref({})
 
 const toggleReregister = async (participant) => {
@@ -313,9 +323,9 @@ const isLoading = ref(true)
 const statusFilter = ref('Semua')
 const categoryFilter = ref([])
 const statusOptions = computed(() => [
-    { title: t('dashboard.participants_list.status_options.all'), value: 'Semua' },
-    { title: t('dashboard.participants_list.status_options.paid'), value: 'paid' },
-    { title: t('dashboard.participants_list.status_options.pending'), value: 'pending' }
+    { title: computed(() => t('dashboard.participants_list.status_options.all')), value: 'Semua' },
+    { title: computed(() => t('dashboard.participants_list.status_options.paid')), value: 'paid' },
+    { title: computed(() => t('dashboard.participants_list.status_options.pending')), value: 'pending' }
 ])
 
 const categoryFilterOptions = computed(() => {
@@ -358,6 +368,10 @@ const handleSearch = () => {
         page.value = 1
         fetchParticipants()
     }, 500)
+}
+
+const loadParticipants = () => {
+    fetchParticipants()
 }
 
 const fetchEventDetails = async () => {

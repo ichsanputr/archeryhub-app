@@ -1,16 +1,30 @@
 <template>
     <div class="space-y-8 pb-12">
-        <!-- Header -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard/seller/products" class="hover:text-primary transition-colors">Produk
-                    </NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">Edit Produk</span>
+        <!-- Enhanced Header Section -->
+        <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+            <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+            <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center gap-4 sm:gap-5">
+                    <div class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-lg">
+                        <Icon icon="ph:pencil-simple-bold" class="text-primary text-2xl sm:text-3xl" />
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-3xl font-black tracking-tight leading-tight">{{ t('seller_product_form.edit_title', 'Edit Produk') }}</h1>
+                        <div class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('seller_product_form.edit_subtitle', 'Perbarui informasi produk Anda di marketplace.') }}</div>
+                    </div>
                 </div>
-                <h1 class="text-3xl font-extrabold text-navy tracking-tight">Edit Produk</h1>
-                <div class="text-gray-500 font-medium mt-1">Perbarui informasi produk Anda di marketplace.</div>
+                <div class="flex items-center gap-3">
+                    <NuxtLink to="/dashboard/seller/products">
+                        <BaseButton variant="outline" size="sm" icon="ph:arrow-left-bold"
+                            class="h-11 px-6 font-black tracking-widest text-xs !rounded-xl border-white/20 text-white hover:bg-white/10 transition-all">
+                            Kembali
+                        </BaseButton>
+                    </NuxtLink>
+                </div>
             </div>
         </div>
 
@@ -18,17 +32,17 @@
         <div v-if="isLoadingProduct" class="flex items-center justify-center py-24">
             <div class="flex flex-col items-center gap-4">
                 <LoadingSpinner size="xl" />
-                <div class="text-gray-400 font-medium">Memuat data produk...</div>
+                <div class="text-gray-400 font-medium">{{ t('seller_product_form.loading_data', 'Memuat data produk...') }}</div>
             </div>
         </div>
 
         <!-- Not Found -->
         <div v-else-if="notFound" class="flex flex-col items-center justify-center py-24">
             <Icon icon="ph:package-x" class="text-6xl text-gray-200 mb-4" />
-            <h3 class="text-xl font-black text-navy mb-2">Produk Tidak Ditemukan</h3>
-            <div class="text-gray-400 font-medium mb-6">Produk yang ingin Anda edit tidak ditemukan.</div>
+            <h3 class="text-xl font-black text-navy mb-2">{{ t('seller_product_form.not_found_title', 'Produk Tidak Ditemukan') }}</h3>
+            <div class="text-gray-400 font-medium mb-6">{{ t('seller_product_form.not_found_desc', 'Produk yang ingin Anda edit tidak ditemukan.') }}</div>
             <NuxtLink to="/dashboard/seller/products">
-                <BaseButton variant="primary" icon="ph:arrow-left">Kembali ke Daftar Produk</BaseButton>
+                <BaseButton variant="primary" icon="ph:arrow-left">{{ t('seller_product_form.back_to_list', 'Kembali ke Daftar Produk') }}</BaseButton>
             </NuxtLink>
         </div>
 
@@ -41,27 +55,27 @@
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
                         <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2">
                             <Icon icon="ph:info" class="text-primary" />
-                            Informasi Dasar
+                            {{ t('seller_product_form.basic_info', 'Informasi Dasar') }}
                         </h2>
                         <div class="space-y-5">
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Nama Produk *</label>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('seller_product_form.product_name', 'Nama Produk *') }}</label>
                                 <input v-model="form.name" type="text" required
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                    placeholder='Contoh: Recurve Bow Hoyt Satori 23"' />
+                                    :placeholder="t('seller_product_form.name_placeholder', 'Contoh: Recurve Bow Hoyt Satori 23 Inch')" />
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Deskripsi</label>
-                                <TiptapEditor v-model="form.description" placeholder="Jelaskan produk Anda secara detail..." minHeight="200px" />
+                                <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('seller_product_form.description', 'Deskripsi') }}</label>
+                                <TiptapEditor v-model="form.description" :placeholder="t('seller_product_form.desc_placeholder', 'Jelaskan produk Anda secara detail...')" minHeight="200px" />
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <BaseSelect v-model="form.category" :items="categoryOptions" label="Kategori"
-                                        placeholder="Pilih Kategori" required />
+                                    <BaseSelect v-model="form.category" :items="categoryOptions" :label="t('seller_product_form.category', 'Kategori')"
+                                        :placeholder="t('seller_product_form.category_select', 'Pilih Kategori')" required />
                                 </div>
                                 <div>
-                                    <BaseSelect v-model="form.status" :items="statusOptions" label="Status"
-                                        placeholder="Pilih Status" />
+                                    <BaseSelect v-model="form.status" :items="statusOptions" :label="t('seller_product_form.status', 'Status')"
+                                        :placeholder="t('seller_product_form.status_select', 'Pilih Status')" />
                                 </div>
                             </div>
                         </div>
@@ -71,12 +85,12 @@
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
                         <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2">
                             <Icon icon="ph:money" class="text-primary" />
-                            Harga & Stok
+                            {{ t('seller_product_form.pricing_stock', 'Harga & Stok') }}
                         </h2>
                         <div class="space-y-5">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Harga Normal *</label>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('seller_product_form.price', 'Harga Normal *') }}</label>
                                     <div class="relative">
                                         <span
                                             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
@@ -86,19 +100,19 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Harga Diskon</label>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('seller_product_form.sale_price', 'Harga Diskon') }}</label>
                                     <div class="relative">
                                         <span
                                             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
                                         <input v-model.number="form.sale_price" type="number" min="0" step="1000"
                                             class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                            placeholder="0 (opsional)" />
+                                            :placeholder="t('seller_product_form.sale_price_placeholder', '0 (opsional)')" />
                                     </div>
-                                    <div class="text-xs text-gray-400 mt-1">Kosongkan jika tidak ada diskon</div>
+                                    <div class="text-xs text-gray-400 mt-1">{{ t('seller_product_form.price_sale_hint', 'Kosongkan atau isi 0 untuk tidak terbatas') }}</div>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Stok Tersedia</label>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('seller_product_form.stock', 'Stok Tersedia') }}</label>
                                 <input v-model.number="form.stock" type="number" min="0"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                     placeholder="0" />
@@ -110,28 +124,28 @@
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
                         <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2">
                             <Icon icon="ph:image" class="text-primary" />
-                            Gambar Produk
+                            {{ t('seller_product_form.media', 'Gambar Produk') }}
                         </h2>
                         <div class="space-y-5">
                             <div>
                                 <div class="flex items-center justify-between gap-3 mb-2">
-                                    <label class="block text-sm font-bold text-gray-700">Gambar Utama</label>
+                                    <label class="block text-sm font-bold text-gray-700">{{ t('seller_product_form.media_primary', 'Gambar Utama') }}</label>
                                     <BaseButton type="button" variant="white" size="sm" icon="ph:images" @click="openMediaLibrary('primary')">
-                                        Pilih dari Media Library
+                                        {{ t('seller_product_form.select_media', 'Pilih dari Media Library') }}
                                     </BaseButton>
                                 </div>
                                 <div v-if="form.image_url" class="mt-3">
                                     <img :src="form.image_url" alt="Preview"
                                         class="h-32 w-32 object-cover rounded-xl border border-gray-200" />
                                 </div>
-                                <div v-else class="text-sm text-gray-500">Belum ada gambar utama.</div>
+                                <div v-else class="text-sm text-gray-500">{{ t('seller_product_form.no_main_image', 'Belum ada gambar utama.') }}</div>
                             </div>
 
                             <div>
                                 <div class="flex items-center justify-between gap-3 mb-2">
-                                    <label class="block text-sm font-bold text-gray-700">Gambar Tambahan</label>
+                                    <label class="block text-sm font-bold text-gray-700">{{ t('seller_product_form.media_gallery', 'Gambar Tambahan') }}</label>
                                     <BaseButton type="button" variant="white" size="sm" icon="ph:images" @click="openMediaLibrary('gallery')">
-                                        Tambah dari Media Library
+                                        {{ t('seller_product_form.add_media', 'Tambah dari Media Library') }}
                                     </BaseButton>
                                 </div>
                                 <div v-if="form.images.length" class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -143,7 +157,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div v-else class="text-sm text-gray-500">Belum ada gambar tambahan.</div>
+                                <div v-else class="text-sm text-gray-500">{{ t('seller_product_form.no_additional_images', 'Belum ada gambar tambahan.') }}</div>
                             </div>
                         </div>
                     </div>
@@ -152,13 +166,13 @@
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
                         <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2">
                             <Icon icon="ph:list-bullets" class="text-primary" />
-                            Spesifikasi
+                            {{ t('seller_product_form.specifications', 'Spesifikasi') }}
                         </h2>
                         <div class="space-y-4">
                             <div v-for="(spec, idx) in specifications" :key="idx" class="flex gap-3">
-                                <input v-model="spec.key" type="text" placeholder="Nama Spesifikasi"
+                                <input v-model="spec.key" type="text" :placeholder="t('seller_product_form.spec_name', 'Nama Spesifikasi')"
                                     class="flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                                <input v-model="spec.value" type="text" placeholder="Nilai"
+                                <input v-model="spec.value" type="text" :placeholder="t('seller_product_form.spec_value', 'Nilai')"
                                     class="flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                                 <button type="button" @click="specifications.splice(idx, 1)"
                                     class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
@@ -168,25 +182,25 @@
                             <button type="button" @click="specifications.push({ key: '', value: '' })"
                                 class="w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2">
                                 <Icon icon="ph:plus-bold" />
-                                Tambah Spesifikasi
+                                {{ t('seller_product_form.add_spec', 'Tambah Spesifikasi') }}
                             </button>
                         </div>
                     </div>
 
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
-                        <h2 class="text-xl font-bold text-navy mb-2">Warna Produk</h2>
-                        <div class="text-sm text-gray-500 mb-5">Kelola opsi warna produk yang tersedia.</div>
+                        <h2 class="text-xl font-bold text-navy mb-2">{{ t('seller_product_form.product_colors', 'Warna Produk') }}</h2>
+                        <div class="text-sm text-gray-500 mb-5">{{ t('seller_product_form.product_colors_desc', 'Kelola opsi warna produk yang tersedia.') }}</div>
 
                         <div class="flex flex-col sm:flex-row gap-3 mb-4">
                             <input
                                 v-model="newColor"
                                 type="text"
                                 class="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                placeholder="Contoh: Hitam, Navy, Merah"
+                                :placeholder="t('seller_product_form.color_placeholder', 'Contoh: Hitam, Navy, Merah')"
                                 @keyup.enter.prevent="addColor"
                             />
                             <BaseButton type="button" variant="white" icon="ph:plus-bold" @click="addColor">
-                                Tambah Warna
+                                {{ t('seller_product_form.add_color', 'Tambah Warna') }}
                             </BaseButton>
                         </div>
 
@@ -208,13 +222,13 @@
                 <!-- Sidebar -->
                 <div class="lg:col-span-1">
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
-                        <h3 class="text-lg font-bold text-navy">Aksi</h3>
+                        <h3 class="text-lg font-bold text-navy">{{ t('seller_product_form.actions', 'Aksi') }}</h3>
                         <BaseButton type="submit" variant="primary" size="lg" class="w-full" :loading="isSubmitting">
                             <Icon icon="ph:floppy-disk-bold" class="mr-2" />
-                            Simpan Perubahan
+                            {{ t('seller_product_form.update_button', 'Simpan Perubahan') }}
                         </BaseButton>
                         <NuxtLink to="/dashboard/seller/products" class="block">
-                            <BaseButton type="button" variant="white" size="lg" class="w-full">Batal</BaseButton>
+                            <BaseButton type="button" variant="white" size="lg" class="w-full">{{ t('seller_product_form.cancel_button', 'Batal') }}</BaseButton>
                         </NuxtLink>
 
                     </div>
@@ -235,7 +249,10 @@ import { useToast } from '~/composables/useToast'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 
 definePageMeta({ layout: 'dashboard' })
-useHead({ title: 'Edit Produk - ArcheryHub Dashboard' })
+
+const { t } = useDashboardI18n()
+
+useHead({ title: computed(() => `${t('seller_product_form.edit_title', 'Edit Produk')} - ArcheryHub Dashboard`) })
 
 const route = useRoute()
 const router = useRouter()
@@ -251,20 +268,19 @@ const showMediaLibrary = ref(false)
 const mediaTarget = ref('primary')
 const newColor = ref('')
 
-const categoryOptions = [
-    { value: 'equipment', title: 'Peralatan' },
-    { value: 'apparel', title: 'Pakaian' },
-    { value: 'accessories', title: 'Aksesoris' },
-    { value: 'training', title: 'Training' },
-    { value: 'other', title: 'Lainnya' }
-]
+const categoryOptions = computed(() => [
+    { value: 'equipment', title: computed(() => t('seller_product_form.cat_equipment', 'Peralatan')) },
+    { value: 'apparel', title: computed(() => t('seller_product_form.cat_apparel', 'Pakaian')) },
+    { value: 'accessories', title: computed(() => t('seller_product_form.cat_accessories', 'Aksesoris')) },
+    { value: 'training', title: computed(() => t('seller_product_form.cat_training', 'Training')) },
+    { value: 'other', title: computed(() => t('seller_product_form.cat_other', 'Lainnya')) }
+])
 
-const statusOptions = [
-    { value: 'draft', title: 'Draft' },
-    { value: 'active', title: 'Aktif' },
-    { value: 'sold_out', title: 'Habis' },
-    { value: 'archived', title: 'Arsip' }
-]
+const statusOptions = computed(() => [
+    { value: 'draft', title: computed(() => t('seller_product_form.stat_draft', 'Draft')) },
+    { value: 'active', title: computed(() => t('seller_product_form.stat_active', 'Aktif')) },
+    { value: 'archived', title: computed(() => t('seller_product_form.stat_archived', 'Arsip')) }
+])
 
 const form = ref({
     name: '',
@@ -346,6 +362,12 @@ onMounted(async () => {
             try { colors = JSON.parse(colors) } catch { colors = [] }
         }
         form.value.colors = Array.isArray(colors) ? colors : []
+
+        let pm = p.allowed_payment_methods || ['automatic', 'wallet', 'manual']
+        if (typeof pm === 'string') {
+            try { pm = JSON.parse(pm) } catch { pm = ['automatic', 'wallet', 'manual'] }
+        }
+        form.value.allowed_payment_methods = Array.isArray(pm) ? pm : ['automatic', 'wallet', 'manual']
 
         // Parse specifications
         let specs = p.specifications || {}

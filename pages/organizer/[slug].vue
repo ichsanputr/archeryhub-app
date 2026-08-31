@@ -81,7 +81,7 @@
                 <div class="border-b border-gray-100 bg-gray-50/50 px-6 sm:px-10 py-4 flex flex-wrap items-center justify-between gap-4">
                     <div class="flex gap-6 sm:gap-8 overflow-x-auto scrollbar-none">
                         <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-                            class="py-2.5 font-black text-xs tracking-widest capitalize transition-all duration-300 relative shrink-0"
+                            class="py-2.5 font-black text-xs tracking-widest capitalize transition-all duration-300 relative shrink-0 whitespace-nowrap"
                             :class="activeTab === tab.id ? 'text-navy border-b-2 border-primary' : 'text-gray-400 hover:text-navy'">
                             {{ tab.label }}
                         </button>

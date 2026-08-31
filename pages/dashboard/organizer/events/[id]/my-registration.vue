@@ -91,23 +91,23 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div
                                 class="p-6 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-3xl group transition-all hover:border-primary/30">
-                                <p class="text-[10px] font-black text-slate-400 tracking-widest mb-2">Divisi &
-                                    Kategori</p>
-                                <p class="text-lg font-black text-navy dark:text-white leading-tight">
+                                <div class="text-[10px] font-black text-slate-400 tracking-widest mb-2">Divisi &
+                                    Kategori</div>
+                                <div class="text-lg font-black text-navy dark:text-white leading-tight">
                                     {{ participant.category_name || participant.division_name }}
-                                </p>
-                                <p class="text-xs text-slate-400 mt-1 font-bold">{{ participant.division_name }} - {{
-                                    participant.age_category || '-' }}</p>
+                                </div>
+                                <div class="text-xs text-slate-400 mt-1 font-bold">{{ participant.division_name }} - {{
+                                    participant.age_category || '-' }}</div>
                             </div>
 
                             <div
                                 class="p-6 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-3xl group transition-all hover:border-primary/30 text-center">
-                                <p class="text-[10px] font-black text-slate-400 tracking-widest mb-2">Nomor
-                                    Bantalan</p>
+                                <div class="text-[10px] font-black text-slate-400 tracking-widest mb-2">Nomor
+                                    Bantalan</div>
                                 <div class="flex items-center justify-center gap-2">
                                     <Icon icon="ph:target-bold" class="text-primary text-2xl" />
-                                    <p class="text-3xl font-black text-navy dark:text-white tracking-tighter">{{
-                                        participant.target_name || '-' }}</p>
+                                    <div class="text-3xl font-black text-navy dark:text-white tracking-tighter">{{
+                                        participant.target_name || '-' }}</div>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
                     <!-- Status Card -->
                     <div
                         class="bg-white dark:bg-slate-800 rounded-[32px] border border-slate-100 dark:border-slate-700 shadow-sm shadow-slate-200/30 overflow-hidden p-8">
-                        <h4 class="text-xs font-black text-slate-400 tracking-widest mb-6">Status Pembayaran
+                        <h4 class="text-xs font-black text-slate-400 tracking-widest mb-6">{{ t("org_my_reg.payment_status") }}
                         </h4>
 
                         <div class="flex flex-col gap-6">
@@ -136,11 +136,11 @@
 
                             <div class="space-y-4">
                                 <div class="flex justify-between items-center text-sm font-bold">
-                                    <span class="text-slate-400">ID Registrasi</span>
+                                    <span class="text-slate-400">{{ t("org_my_reg.reg_id") }}</span>
                                     <span class="text-navy dark:text-white">#{{ participant.id }}</span>
                                 </div>
                                 <div class="flex justify-between items-center text-sm font-bold">
-                                    <span class="text-slate-400">Tagihan</span>
+                                    <span class="text-slate-400">{{ t("org_my_reg.billing_amount") }}</span>
                                     <span class="text-navy dark:text-white">Rp {{
                                         formatCurrency(participant.payment_amount || 0) }}</span>
                                 </div>
@@ -148,8 +148,8 @@
 
                             <div v-if="participant.payment_proof_urls && participant.payment_proof_urls.length"
                                 class="mt-4">
-                                <p class="text-[10px] font-black text-slate-400 tracking-widest mb-4">Bukti
-                                    Pembayaran</p>
+                                <div class="text-[10px] font-black text-slate-400 tracking-widest mb-4">Bukti
+                                    Pembayaran</div>
                                 <div class="space-y-4">
                                     <div v-for="(url, idx) in paymentProofs" :key="idx" class="relative group">
                                         <div
@@ -177,8 +177,8 @@
             class="py-20 text-center bg-white dark:bg-slate-800 rounded-[40px] border border-slate-100 dark:border-slate-700">
             <Icon icon="ph:user-circle-gear-light" class="text-7xl text-slate-200 mx-auto mb-6" />
             <h3 class="text-xl font-black text-navy dark:text-white mb-2">Pendaftaran Tidak Ditemukan</h3>
-            <p class="text-slate-400 text-sm font-medium">Anda mungkin belum terdaftar di event ini atau sesi anda telah
-                berakhir.</p>
+            <div class="text-slate-400 text-sm font-medium">Anda mungkin belum terdaftar di event ini atau sesi anda telah
+                berakhir.</div>
         </div>
 
         <!-- Image Lightbox -->
@@ -193,7 +193,9 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 const { get } = useApi()
 const route = useRoute()
 const eventId = route.params.id
@@ -201,6 +203,9 @@ const eventId = route.params.id
 definePageMeta({
     layout: 'dashboard'
 })
+
+useHead({ title: computed(() => t('registration.my_registration', 'My Registration') + ' - ArcheryHub Dashboard') })
+
 
 const isLoading = ref(true)
 const participant = ref(null)

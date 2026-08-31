@@ -20,7 +20,8 @@
     "days": "일",
     "hours": "시간",
     "minutes": "분",
-    "unlimited": "제한 없음"
+    "unlimited": "제한 없음",
+    "dashboard": "대시보드"
   },
   "nav": {
     "home": "홈",
@@ -361,7 +362,7 @@
       "start_date": "시작일",
       "end_date": "종료일",
       "apply_filters": "필터 적용",
-      "reset_filters": "필터 초기화"
+      "reset_filters": "Reset"
     },
     "logout_dialog": {
       "title": "로그아웃",
@@ -1644,7 +1645,7 @@
     "toast_verify_error": "인증 코드가 잘못되었거나 만료되었습니다."
   },
   "result": {
-    "meta_title": "{title} 토너먼트 결과 - archeryhub.id",
+    "meta_title": "{title} 토너먼트 결과 - archeris.id",
     "meta_desc": "{title} 이벤트에 대한 귀하의 모든 시도와 결과를 확인하십시오.",
     "back_to_list": "결과 목록으로 돌아가기",
     "event_result": "이벤트 결과",
@@ -1781,7 +1782,7 @@
   },
   "problem_results": {
     "all_statuses": "모든 상태",
-    "seo_title": "문제 결과: {title} - archeryhub",
+    "seo_title": "문제 결과: {title} - archeris",
     "seo_desc": "{title}에 대한 문제 제출 결과를 확인하세요.",
     "back_to_list": "목록으로 돌아가기",
     "event_results": "이벤트 결과",
@@ -1823,7 +1824,7 @@
       "create_event": "대회 생성",
       "search_placeholder": "대회명, 장소 또는 코드 검색...",
       "search_label": "검색",
-      "reset_filters": "초기화",
+      "reset_filters": "Reset",
       "table_headers": {
         "event_info": "대회 정보",
         "schedule_location": "일정 및 장소",
@@ -2208,7 +2209,7 @@
     "search_placeholder": "제품 이름 검색...",
     "status_filter": "상태",
     "category_filter": "카테고리",
-    "reset_filters": "초기화",
+    "reset_filters": "Reset",
     "table_header_name": "제품 이름",
     "table_header_category": "카테고리",
     "table_header_price": "가격",
@@ -2460,7 +2461,7 @@
     }
   },
   "dashboard_event_overview": {
-    "meta_title": "이벤트 대시보드 - ArcheryHub",
+    "meta_title": "이벤트 대시보드 - Archeris",
     "payment_status_heading": "결제 상태",
     "payment_paid": "결제 완료",
     "payment_paid_desc": "결제 확인됨",
@@ -2972,7 +2973,7 @@
       "share_profile": "프로필 공유",
       "copy": "복사",
       "copied": "복사됨",
-      "check_org_profile": "archeryhub에서 {name}의 프로필을 확인해보세요!",
+      "check_org_profile": "archeris에서 {name}의 프로필을 확인해보세요!",
       "contact_desc": "공식 전화번호로 직접 문의하세요",
       "not_available": "제공되지 않음"
     }
@@ -3054,30 +3055,93 @@
   "organizer_news": {
     "index": {
       "title": "뉴스 관리",
-      "subtitle": "조직의 뉴스 및 공지사항을 관리하세요.",
+      "subtitle": "조직의 뉴스 기사를 작성, 관리 및 게시하세요.",
       "create": "새 기사 작성",
-      "stats_total": "총 기사",
-      "stats_published": "게시됨",
-      "stats_draft": "초안",
-      "empty_title": "기사가 없습니다",
-      "empty_desc": "첫 번째 기사를 작성하여 양궁 선수 및 이벤트 참가자와 정보를 공유하세요.",
-      "delete_title": "기사 삭제",
-      "delete_yes": "예, 삭제",
+      "stats_total": "총 기사 수",
+      "stats_published": "게시된 기사",
+      "stats_draft": "초안 기사",
+      "empty_title": "등록된 뉴스가 없습니다",
+      "empty_desc": "첫 번째 뉴스 기사를 작성하고 게시하여 토너먼트 소식을 공유하세요.",
+      "delete_title": "기사를 삭제하시겠습니까?",
+      "delete_yes": "예, 삭제합니다",
       "delete_no": "취소",
-      "delete_confirm": "\"{title}\" 기사를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
-      "toast_fetch_failed": "뉴스 데이터를 가져오지 못했습니다",
+      "delete_confirm": "'{title}' 기사를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.",
+      "toast_fetch_failed": "뉴스 목록을 불러오지 못했습니다",
       "toast_delete_ok": "기사가 성공적으로 삭제되었습니다",
-      "toast_delete_failed": "기사 삭제 실패"
+      "toast_delete_failed": "뉴스 기사를 삭제하지 못했습니다",
+      "stats_total_view": "총 조회수",
+      "article_unit": "기사",
+      "total_content": "총 콘텐츠",
+      "all_tag": "전체",
+      "published_unit": "게시됨",
+      "publish_ratio": "게시 비율",
+      "draft_unit": "초안",
+      "not_published": "미게시",
+      "views_unit": "조회수",
+      "average": "평균",
+      "per_article": "기사",
+      "search_placeholder": "뉴스 제목, 기사 또는 태그 검색...",
+      "search_label": "뉴스 검색",
+      "filter_status": "게시 상태",
+      "placeholder_status": "상태 선택",
+      "filter_category": "뉴스 카테고리",
+      "placeholder_category": "카테고리 선택",
+      "reset": "초기화",
+      "view": "보기",
+      "edit": "편집",
+      "toast_delete_success": "뉴스 기사가 성공적으로 삭제되었습니다"
     },
     "options": {
       "status_all": "모든 상태",
-      "status_draft": "초안",
-      "status_published": "게시됨",
+      "status_published": "게시됨 (공개)",
+      "status_draft": "초안 (미게시)",
       "cat_all": "모든 카테고리",
-      "cat_event": "이벤트",
       "cat_announcement": "공지사항",
-      "cat_achievement": "성과",
+      "cat_event": "이벤트 및 토너먼트",
+      "cat_achievement": "성과 및 기록",
       "cat_other": "기타"
+    },
+    "create": {
+      "title_short": "신규",
+      "title": "새 기사 작성",
+      "subtitle": "조직을 위한 뉴스를 작성하고 게시하세요.",
+      "meta_title": "뉴스 작성 - 대시보드",
+      "featured_image": "대표 이미지",
+      "click_to_select_image": "이미지를 선택하려면 클릭하세요",
+      "select_or_upload": "미디어 라이브러리에서 선택하거나 새로 업로드",
+      "info_heading": "기사 정보",
+      "label_title": "기사 제목",
+      "placeholder_title": "기사 제목을 입력하세요...",
+      "label_category": "카테고리",
+      "label_status": "게시 상태",
+      "label_tags": "태그 및 라벨",
+      "placeholder_tags": "예: 이벤트, 토너먼트",
+      "label_excerpt": "요약",
+      "placeholder_excerpt": "기사의 간단한 요약을 작성하세요...",
+      "content_heading": "기사 내용",
+      "placeholder_content": "기사 본문을 작성하세요...",
+      "back": "뒤로",
+      "preview": "미리보기",
+      "publish": "게시",
+      "save_draft": "초안 저장",
+      "toast_preview": "미리보기가 열렸습니다",
+      "toast_title_required": "기사 제목은 필수입니다",
+      "toast_create_ok_published": "기사가 성공적으로 게시되었습니다!",
+      "toast_create_ok_draft": "초안이 성공적으로 저장되었습니다!",
+      "toast_create_failed": "기사를 저장하지 못했습니다"
+    },
+    "edit": {
+      "title_short": "기사 편집",
+      "title": "뉴스 기사 편집",
+      "subtitle": "이 기사의 내용, 표지 사진, 카테고리 또는 게시 상태를 업데이트하세요.",
+      "cancel": "취소 및 뒤로",
+      "update_publish": "업데이트 및 게시",
+      "save_changes": "변경 사항 저장",
+      "toast_update_ok": "기사가 성공적으로 업데이트되었습니다!",
+      "toast_update_failed": "기사를 업데이트하지 못했습니다"
+    },
+    "detail": {
+      "copy_failed": "링크 복사 실패"
     }
   },
   "doc_search": {
@@ -3087,5 +3151,48 @@
     "navigate": "탐색",
     "open": "열기",
     "close": "닫기"
+  },
+  "organizer_subscription": {
+    "promo_badge_50": "50% 프로모션 할인",
+    "promo_subtext": "모든 등급 50% 런칭 프로모션 할인",
+    "custom_slot_label": "사용자 지정 수량",
+    "custom_slot_title": "사용자 지정 이벤트 슬롯 수량:",
+    "custom_slot_desc": "구매할 토너먼트 쿼터 수량을 직접 입력하세요",
+    "slot_event_unit": "이벤트 슬롯",
+    "select_tripay_method": "Tripay 결제 수단 선택:",
+    "order_success_toast": "이벤트 쿼터 주문이 성공적으로 생성되었습니다",
+    "history_page_info": "{total}건 중 {from} - {to} 표시",
+    "btn_prev": "이전",
+    "btn_next": "다음",
+    "status_paid": "결제 완료",
+    "status_pending": "결제 대기",
+    "btn_pay_detail": "결제 상세",
+    "loading_history": "거래 내역을 불러오는 중...",
+    "col_action": "작업",
+    "event_unit": "이벤트",
+    "standard_tier_name": "Standard",
+    "elite_tier_name": "Elite",
+    "custom_tier_name": "사용자 지정",
+    "free_tier_desc": "이벤트당 최대 50명 참가자 무료 쿼터",
+    "free_tier_feat_1": "이벤트당 최대 <strong>50명 참가자</strong>",
+    "free_tier_feat_2": "<strong>무제한 부문/카테고리</strong>",
+    "free_tier_feat_3": "<strong>무제한 디지털 기록원</strong>",
+    "standard_desc": "모든 기능을 갖춘 이벤트당 최대 200명 참가자.",
+    "std_feat_1": "이벤트당 최대 <strong>200명 참가자</strong>",
+    "std_feat_2": "<strong>무제한 부문/카테고리</strong>",
+    "std_feat_3": "<strong>무제한 심판/기록원</strong>",
+    "elite_desc": "전국 대회 및 대규모 오픈 시리즈를 위한 무제한 참가자.",
+    "elite_feat_1": "<strong>무제한 참가자</strong>",
+    "elite_feat_2": "<strong>무제한 부문/카테고리</strong>",
+    "elite_feat_3": "<strong>무제한 심판/기록원</strong>"
+  },
+  "package_detail": {
+    "verified_instant": "즉시 확인됨",
+    "expires_in": "만료 시간",
+    "waiting_transfer": "이체 대기 중",
+    "download_qr": "QR 이미지 다운로드"
+  },
+  "news": {
+    "management_title": "뉴스 관리"
   }
 }

@@ -1,26 +1,23 @@
 <template>
   <div class="space-y-8">
     <!-- Header Section -->
-    <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
-      <div class="absolute inset-0"
-        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
-      <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="flex items-center gap-5">
-          <NuxtLink :to="getBackLink()"
-            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner text-white hover:bg-white/20 transition-all">
-            <Icon icon="ph:arrow-left-bold" class="text-primary text-xl sm:text-2xl" />
-          </NuxtLink>
-          <div>
-            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none">{{ t('dashboard.reports.finance_title') }}</h1>
-            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider">Monitor Payments Status, Revenue Flow, and Payment Method Summaries.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <DashboardHeader
+      :title="t('dashboard.reports.finance_title')"
+      subtitle="Monitor Payments Status, Revenue Flow, and Payment Method Summaries."
+      icon="ph:currency-circle-dollar-bold"
+      :back-to="getBackLink()"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('dashboard.reports.title', 'Laporan'), to: '/dashboard/organizer/reports' },
+        { label: t('dashboard.reports.finance_title') }
+      ]"
+    >
+      <template #actions>
+        <BaseButton variant="primary" icon="ph:download-simple-bold" class="h-11 px-5 text-xs font-black" @click="handleExportExcel">
+          Ekspor Excel
+        </BaseButton>
+      </template>
+    </DashboardHeader>
 
     <!-- Filters Panel -->
     <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
@@ -32,32 +29,32 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
         <!-- Event Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.select_event') }}</label>
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.select_event') }}</label>
           <BaseSelect v-model="filters.event_id" :items="eventsDropdownItems" :placeholder="t('dashboard.reports.select_event')" />
         </div>
 
         <!-- Start Date Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.start_date') }}</label>
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.start_date') }}</label>
           <BaseDatePicker v-model="filters.start_date" :placeholder="t('dashboard.reports.start_date')" />
         </div>
 
         <!-- End Date Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.end_date') }}</label>
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.end_date') }}</label>
           <BaseDatePicker v-model="filters.end_date" :placeholder="t('dashboard.reports.end_date')" />
         </div>
 
         <!-- Payment Method Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">Payment Method</label>
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">Payment Method</label>
           <BaseSelect v-model="filters.payment_method" :items="methodOptions" placeholder="All Methods" />
         </div>
 
         <!-- Payment Status Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">Payment Status</label>
-          <BaseSelect v-model="filters.status" :items="statusOptions" placeholder="All Status" />
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">Payment Status</label>
+          <BaseSelect v-model="filters.status" :items="statusOptions" :placeholder="t('org_finance_report.all_status')" />
         </div>
       </div>
 
@@ -73,7 +70,7 @@
 
     <!-- Stats summary grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-      <StatCard title="Total Paid Revenue" :value="'Rp ' + formatPrice(stats.total_paid || 0)" icon="ph:wallet-bold" color="success" />
+      <StatCard :title="t('org_finance_report.total_paid_revenue')" :value="'Rp ' + formatPrice(stats.total_paid || 0)" icon="ph:wallet-bold" color="success" />
       <StatCard title="Pending Payments" :value="'Rp ' + formatPrice(stats.total_pending || 0)" icon="ph:clock-bold" color="warning" />
       <StatCard title="Expired/Failed Payments" :value="'Rp ' + formatPrice(stats.total_failed || 0)" icon="ph:x-circle-bold" color="primary" />
     </div>
@@ -103,7 +100,7 @@
       </div>
       <div v-else class="h-48 flex flex-col items-center justify-center text-gray-400 space-y-2 border border-dashed border-gray-100 rounded-xl">
         <Icon icon="ph:coin-bold" class="text-3xl" />
-        <p class="text-xs font-bold">No Revenue Timeline Data Available for Selected Filter.</p>
+        <div class="text-xs font-bold">No Revenue Timeline Data Available for Selected Filter.</div>
       </div>
     </div>
 
@@ -118,7 +115,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div v-for="item in stats.payment_method_split" :key="item.name" class="p-4 bg-gray-50 rounded-xl space-y-2 border border-gray-100">
             <div class="flex justify-between text-xs font-bold">
-              <span class="text-navy-dark uppercase">{{ item.name }}</span>
+              <span class="text-navy-dark ">{{ item.name }}</span>
               <span class="text-gray-500">{{ item.count }} Txn</span>
             </div>
             <div class="text-lg font-black text-navy">Rp {{ formatPrice(item.amount) }}</div>
@@ -141,9 +138,9 @@
             <Icon icon="ph:info-bold" class="text-yellow-400" />
             Financial Overview
           </h3>
-          <p class="text-slate-300 text-xs font-medium leading-relaxed">
+          <div class="text-slate-300 text-xs font-medium leading-relaxed">
             This dashboard aggregates payment transaction logs specifically from registered participants. To withdraw settled balance to your registered bank account, go to Balance Dashboard.
-          </p>
+          </div>
         </div>
         <NuxtLink to="/dashboard/organizer/balance" class="w-full mt-6 relative z-10">
           <BaseButton variant="primary" class="w-full h-11 text-xs font-black shadow-lg shadow-primary/20">
@@ -182,7 +179,7 @@
               <td class="px-6 py-4 text-gray-700 font-medium capitalize">{{ t.sender_name || '-' }}</td>
               <td class="px-6 py-4 text-gray-500 font-semibold capitalize">{{ t.event_name.toLowerCase() }}</td>
               <td class="px-6 py-4 text-navy-dark font-black font-mono">Rp {{ formatPrice(t.amount) }}</td>
-              <td class="px-6 py-4 text-gray-500 font-bold uppercase">{{ t.payment_method || 'manual' }}</td>
+              <td class="px-6 py-4 text-gray-500 font-bold ">{{ t.payment_method || 'manual' }}</td>
               <td class="px-6 py-4">
                 <span 
                   :class="[
@@ -191,7 +188,7 @@
                     t.status === 'expired' ? 'bg-slate-50 text-slate-400 border-slate-200' : '',
                     t.status === 'failed' ? 'bg-red-50 text-red-600 border-red-200' : '',
                   ]"
-                  class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider uppercase"
+                  class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider "
                 >
                   {{ t.status }}
                 </span>
@@ -217,6 +214,9 @@ import { useApi } from '~/composables/useApi'
 definePageMeta({
   layout: 'dashboard'
 })
+
+useHead({ title: computed(() => t('reports.finance', 'Finance Report') + ' - ArcheryHub Dashboard') })
+
 
 const { t } = useI18n()
 const route = useRoute()
@@ -339,6 +339,36 @@ const svgAreaPath = computed(() => {
   const height = 150
   return `${path} L ${width},${height} L 0,${height} Z`
 })
+
+import { exportToExcel } from '~/utils/exportExcel'
+
+const handleExportExcel = () => {
+  const list = stats.value.recent_transactions || []
+  const data = list.map((t, idx) => ({
+    no: idx + 1,
+    reference: t.reference || t.code || '-',
+    user_name: t.user_name || t.archer_name || '-',
+    event_name: t.event_name || '-',
+    method: t.payment_method || '-',
+    status: t.status || 'paid',
+    amount: t.amount || 0,
+    date: t.created_at || '-'
+  }))
+  exportToExcel(
+    'Laporan_Keuangan_Turnamen_ArcheryHub',
+    [
+      { key: 'no', label: 'No' },
+      { key: 'reference', label: 'No. Referensi' },
+      { key: 'user_name', label: 'Nama Pembayar' },
+      { key: 'event_name', label: 'Event' },
+      { key: 'method', label: 'Metode Pembayaran' },
+      { key: 'status', label: 'Status' },
+      { key: 'amount', label: 'Nominal (IDR)' },
+      { key: 'date', label: 'Waktu Transaksi' }
+    ],
+    data
+  )
+}
 
 const formatDate = (dateStr) => {
   if (!dateStr) return '-'

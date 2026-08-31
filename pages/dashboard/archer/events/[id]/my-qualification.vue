@@ -1,36 +1,39 @@
 <template>
     <div class="flex flex-col gap-6 pb-16">
-        <!-- Header (matching app style from overview.vue) -->
+        <!-- Header (Standard Dashboard Style) -->
         <div
             class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+            <!-- Theme Motif Pattern -->
             <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.15);"></div>
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
+            </div>
+
+            <!-- Decorative Background Elements -->
             <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
             <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
 
+            <!-- Header Content -->
             <div class="relative p-6 sm:p-8">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div class="flex items-center gap-4">
-                        <div>
-                            <nav
-                                class="flex text-[10px] font-bold text-white/40 tracking-widest mb-1 items-center gap-1.5">
-                                <NuxtLink :to="`/dashboard/archer/events/${eventId}`"
-                                    class="hover:text-white transition-colors">{{ t('qualification.nav_event') }}</NuxtLink>
-                                <Icon icon="ph:caret-right-bold" class="text-[9px]" />
-                                <span class="text-white/70">{{ t('qualification.nav_title') }}</span>
-                            </nav>
-                            <h1 class="text-2xl font-black tracking-tight">{{ t('qualification.title') }}</h1>
+                <div class="flex items-center gap-2 text-sm text-white/60 mb-4">
+                    <NuxtLink to="/dashboard/archer/events" class="hover:text-white transition-colors">{{ t('qualification.nav_event', 'Event Saya') }}</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-base" />
+                    <span class="text-primary font-medium">{{ t('qualification.nav_title', 'Scorecard Kualifikasi') }}</span>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex items-start gap-4">
+                        <!-- Icon Badge -->
+                        <div
+                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
+                            <Icon icon="ph:pencil-line-bold" class="text-primary text-2xl" />
+                        </div>
+                        <div class="flex-grow">
+                            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">{{ t('qualification.title', 'Scorecard Kualifikasi') }}</h1>
+                            <div class="text-slate-300 text-sm mt-1">Perolehan skor seri kualifikasi, statistik 10s/Xs, dan peringkat atlet.</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-3 flex-shrink-0">
-                        <select v-if="myCategories.length > 0" v-model="categoryId" @change="updateResultsData"
-                            class="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-xs font-black tracking-wider text-white outline-none cursor-pointer hover:bg-white/20 transition-colors focus:ring-2 focus:ring-primary appearance-none">
-                            <option v-for="cat in myCategories" :key="cat.category_id" :value="cat.category_id"
-                                class="text-navy">
-                                {{ cat.division_name }} - {{ cat.category_name }}
-                            </option>
-                        </select>
+                        <BaseSelect v-if="myCategories.length > 0" v-model="categoryId" :options="categoryOptions" item-title="title" item-value="value" class="w-56 text-xs" @update:model-value="updateResultsData" />
                         <div v-else-if="categoryName"
                             class="px-3 py-1.5 rounded-xl bg-white/10 border border-white/20 text-xs font-black tracking-wider">
                             {{ categoryName }}
@@ -258,7 +261,7 @@ const eventId = route.params.id
 
 definePageMeta({ layout: 'dashboard' })
 
-useHead({ title: 'Hasil Kualifikasi Saya - ArcheryHub Dashboard' })
+useHead({ title: computed(() => `${t('dashboard.my_qualification', 'Hasil Kualifikasi Saya')} - ArcheryHub Dashboard`) })
 
 const isLoading = ref(true)
 const userProfile = ref(null)
@@ -277,6 +280,13 @@ const myCategories = ref([])
 const currentCategoryName = computed(() => {
     const cat = myCategories.value.find(c => c.category_id === categoryId.value)
     return cat ? `${cat.division_name} - ${cat.category_name}` : ''
+})
+
+const categoryOptions = computed(() => {
+    return myCategories.value.map(cat => ({
+        title: `${cat.division_name} - ${cat.category_name}`,
+        value: cat.category_id
+    }))
 })
 
 const activeSession = computed(() => qualSessions.value[activeSessionIdx.value] || null)
@@ -319,22 +329,19 @@ const fetchInitialData = async () => {
     try {
         const profileRes = await get('/archer/me')
         userProfile.value = profileRes?.data
-        const searchEmail = userProfile.value?.email
 
-        const participantsRes = await get(`/events/${eventId}/participants`, {
-            params: { limit: 100, group_by: 'archer', search: searchEmail }
-        })
-        const me = participantsRes?.participants?.find(p => p.email === searchEmail || p.full_name === userProfile.value?.full_name)
-        if (me?.categories?.length) {
-            myCategories.value = me.categories
-            const cat = me.categories[0]
+        // Use direct participants/me endpoint
+        const meRes = await get(`/events/${eventId}/participants/me`)
+        if (meRes?.categories?.length) {
+            myCategories.value = meRes.categories
+            const cat = meRes.categories[0]
             categoryId.value = cat.category_id
             categoryName.value = `${cat.division_name} - ${cat.category_name}`
-            archerUuid.value = me.archer_id
+            archerUuid.value = meRes.archer_id
         }
         await updateResultsData()
     } catch (e) {
-        console.error('Failed to fetch data:', e)
+        console.error('Failed to fetch initial qualification data:', e)
     } finally {
         isLoading.value = false
     }
@@ -346,10 +353,12 @@ const updateResultsData = async () => {
         const gRes = await get(`/events/${eventId}/results/qualification`, {
             params: { category_id: categoryId.value }
         })
-        const myQual = gRes?.results?.find(r =>
+        const list = gRes?.leaderboard || gRes?.results || []
+        const myQual = list.find(r =>
             r.archer_uuid === archerUuid.value ||
             r.archer_uuid === userProfile.value?.uuid ||
-            r.archer_name === userProfile.value?.full_name
+            r.archer_name === userProfile.value?.full_name ||
+            r.archer_name === userProfile.value?.name
         )
         if (myQual) {
             qualRank.value = myQual.rank

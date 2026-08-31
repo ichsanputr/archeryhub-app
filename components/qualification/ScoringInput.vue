@@ -2,14 +2,7 @@
     <div class="space-y-6">
         <!-- Participant Selection -->
         <div class="bg-gray-50 rounded-xl p-5 border border-gray-200">
-            <label class="block text-sm font-bold text-gray-700 mb-3">Pilih Peserta</label>
-            <select v-model="selectedParticipant" @change="fetchScores"
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none">
-                <option value="">-- Pilih Peserta --</option>
-                <option v-for="participant in participants" :key="participant.uuid" :value="participant.uuid">
-                    {{ participant.target_name }} - {{ participant.archer_name }}
-                </option>
-            </select>
+            <BaseSelect v-model="selectedParticipant" :options="participantSelectOptions" label="Pilih Peserta" class="w-full" @update:model-value="fetchScores" />
         </div>
 
         <!-- Scoring Grid -->
@@ -84,7 +77,15 @@ const { get, post } = useApi()
 const toast = useToast()
 
 const participants = ref([])
-const selectedParticipant = ref('')
+const participantSelectOptions = computed(() => {
+    return [
+        { title: '-- Pilih Peserta --', value: '' },
+        ...participants.value.map(p => ({
+            title: `${p.target_name} - ${p.archer_name}`,
+            value: p.uuid
+        }))
+    ]
+})
 const ends = ref([])
 const loadingScores = ref(false)
 

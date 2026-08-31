@@ -27,9 +27,9 @@
               <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
                 Reset Event Data
               </h1>
-              <p class="text-slate-300 text-sm max-w-2xl font-medium">
+              <div class="text-slate-300 text-sm max-w-2xl font-medium">
                 Reset and purge qualification, elimination, or participant registration data for event {{ eventName }}
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -60,13 +60,13 @@
           <div class="space-y-4">
             <div class="p-4 bg-navy/5 rounded-xl border border-navy/10 flex gap-3">
               <Icon icon="ph:info-bold" class="text-primary text-lg shrink-0 mt-0.5" />
-              <p class="text-xs text-navy leading-relaxed font-semibold">
+              <div class="text-xs text-navy leading-relaxed font-semibold">
                 Reset actions are permanent. Once deleted, data cannot be recovered from the database server.
-              </p>
+              </div>
             </div>
 
             <div class="space-y-3 pt-2">
-              <h3 class="text-xs font-black text-navy uppercase tracking-wider">Safety Guidelines</h3>
+              <h3 class="text-xs font-black text-navy tracking-wider">Safety Guidelines</h3>
               <ul class=" text-xs text-gray-500 space-y-2.5 font-bold">
                 <li class="flex items-start gap-2">
                   <Icon icon="ph:check-circle-bold" class="text-green-500 shrink-0 mt-0.5 text-sm" />
@@ -106,9 +106,9 @@
                 </div>
                 <div>
                   <h3 class="text-sm font-black text-navy leading-snug">Reset Qualification</h3>
-                  <p class=" text-xs text-gray-500 font-semibold leading-relaxed mt-1">
+                  <div class=" text-xs text-gray-500 font-semibold leading-relaxed mt-1">
                     Deletes all qualification scores (arrow scores, end scores), log scores, target assignments, and resets participant target allocations.
-                  </p>
+                  </div>
                 </div>
               </div>
               <BaseButton variant="danger" class="shrink-0 h-9 font-bold text-xs shadow-md shadow-red-100/50"
@@ -129,9 +129,9 @@
                 </div>
                 <div>
                   <h3 class="text-sm font-black text-navy leading-snug">Reset Elimination & Brackets</h3>
-                  <p class=" text-xs text-gray-500 font-semibold leading-relaxed mt-1">
+                  <div class=" text-xs text-gray-500 font-semibold leading-relaxed mt-1">
                     Deletes elimination matches, bracket structures, and match scores. Useful for re-configuring elimination structures.
-                  </p>
+                  </div>
                 </div>
               </div>
               <BaseButton variant="danger" class="shrink-0 h-9 font-bold text-xs shadow-md shadow-red-100/50"
@@ -152,9 +152,9 @@
                 </div>
                 <div>
                   <h3 class="text-sm font-black text-navy leading-snug">Delete All Participants</h3>
-                  <p class=" text-xs text-gray-500 font-semibold leading-relaxed mt-1">
+                  <div class=" text-xs text-gray-500 font-semibold leading-relaxed mt-1">
                     Unregisters and deletes all participants from this event. This automatically cleans up dependent qualification and elimination data.
-                  </p>
+                  </div>
                 </div>
               </div>
               <BaseButton variant="danger" class="shrink-0 h-9 font-bold text-xs shadow-md shadow-red-100/50"
@@ -175,9 +175,9 @@
                 </div>
                 <div>
                   <h3 class="text-sm font-black text-navy leading-snug">Factory Reset (Full Reset)</h3>
-                  <p class=" text-xs text-gray-500 font-semibold leading-relaxed mt-1">
+                  <div class=" text-xs text-gray-500 font-semibold leading-relaxed mt-1">
                     Cleans all event data back to its original state. Removes participants, targets, qualification, elimination, and all scoring data completely.
-                  </p>
+                  </div>
                 </div>
               </div>
               <BaseButton variant="danger" class="shrink-0 h-9 font-bold text-xs shadow-md shadow-red-100/50"
@@ -209,9 +209,9 @@
           <Icon icon="ph:envelope-open-bold" class="text-4xl text-primary mx-auto animate-bounce" />
           <div class="space-y-1">
             <h3 class="text-xs font-black text-navy">Request Verification Code</h3>
-            <p class="text-[10px] text-gray-500 max-w-xs mx-auto font-medium">
+            <div class="text-[10px] text-gray-500 max-w-xs mx-auto font-medium">
               A 6-digit OTP verification code will be sent to your email to authorize this action.
-            </p>
+            </div>
           </div>
           <BaseButton variant="primary" class="font-black text-xs h-9 tracking-wider shadow-md" :loading="sendingOtp" @click="requestVerificationCode">
             Send Code to Email
@@ -227,17 +227,17 @@
             </div>
             <div>
               <h4 class="text-xs font-black text-green-900">Email Verified</h4>
-              <p class="text-[10px] text-green-700 mt-0.5 font-medium font-sans">
+              <div class="text-[10px] text-green-700 mt-0.5 font-medium font-sans">
                 You can perform additional resets without requesting another OTP for the next <span class="font-black font-mono text-green-800">{{ formattedRemainingTime }}</span>
-              </p>
+              </div>
             </div>
           </div>
           
           <div v-else class="p-3 bg-green-50 border border-green-100 rounded-xl flex gap-2.5 items-start">
             <Icon icon="ph:check-circle-bold" class="text-green-600 text-lg shrink-0 mt-0.5" />
-            <p class=" text-xs text-green-800 font-semibold leading-relaxed">
+            <div class=" text-xs text-green-800 font-semibold leading-relaxed">
               Verification code has been sent to your registered email. It is valid for 15 minutes.
-            </p>
+            </div>
           </div>
 
           <!-- OTP Input -->
@@ -286,7 +286,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Reset Data Event - Dashboard'
+  title: computed(() => t('reset_event.title', 'Reset Event Data') + ' - ArcheryHub Dashboard')
 })
 
 const route = useRoute()

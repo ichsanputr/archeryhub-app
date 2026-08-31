@@ -1,232 +1,249 @@
 <template>
-  <div class="min-h-screen bg-navy text-white flex flex-col justify-between font-sans antialiased relative overflow-hidden">
-    <!-- Glow effects -->
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute bottom-10 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800 antialiased font-sans">
+    <!-- App Global Header -->
+    <LayoutAppHeaderDynamic />
 
-    <!-- Header / Navbar -->
-    <header class="border-b border-white/10 relative z-10">
-      <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="size-9 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center">
-            <Icon icon="ph:shield-check-bold" class="text-primary text-xl" />
-          </div>
-          <div>
-            <h1 class="text-sm font-black tracking-wider text-white">archeris.id</h1>
-            <div class="text-[9px] font-black text-primary tracking-widest uppercase">status pembayaran</div>
-          </div>
+    <!-- Main Content Container -->
+    <main class="flex-grow pt-28 pb-16 px-4 sm:px-6 flex items-center justify-center">
+      <!-- Loading State -->
+      <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-slate-200/80 shadow-sm max-w-md w-full p-8 text-center">
+        <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
+        <div class="text-slate-600 font-bold text-sm">Memuat Status Pembayaran...</div>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="errorMsg" class="max-w-md w-full bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 text-center shadow-md">
+        <div class="size-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-5 mx-auto border border-red-100 shadow-xs">
+          <Icon icon="ph:warning-circle-bold" class="text-3xl" />
         </div>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="flex-grow flex items-center justify-center p-4 relative z-10 my-8">
-      <div v-if="isLoading" class="text-center py-12">
-        <Icon icon="ph:circle-notch-bold" class="text-4xl text-primary animate-spin mb-4" />
-        <div class="text-slate-400 font-bold text-sm">memuat status pembayaran...</div>
+        <h2 class="text-xl font-black text-navy mb-2">Transaksi Tidak Ditemukan</h2>
+        <p class="text-slate-500 text-xs font-medium leading-relaxed mb-6">{{ errorMsg }}</p>
+        <BaseButton :to="dashboardBackUrl" variant="navy" size="md" class="w-full justify-center">
+          {{ dashboardBackLabel }}
+        </BaseButton>
       </div>
 
-      <div v-else-if="errorMsg" class="max-w-md w-full bg-white/5 border border-white/10 rounded-3xl p-8 text-center backdrop-blur-md">
-        <div class="h-16 w-16 bg-red-500/10 rounded-full flex items-center justify-center mb-6 mx-auto border border-red-500/20">
-          <Icon icon="ph:warning-circle-bold" class="text-3xl text-red-500" />
-        </div>
-        <h2 class="text-lg font-black text-white mb-3">transaksi tidak ditemukan</h2>
-        <div class="text-slate-400 text-xs font-medium leading-relaxed mb-6">{{ errorMsg }}</div>
-        <BaseButton to="/dashboard/archer/payments" variant="navy" size="md" class="w-full justify-center">kembali ke riwayat pembayaran</BaseButton>
-      </div>
-
-      <div v-else class="max-w-md w-full space-y-6">
+      <!-- Transaction Details Card -->
+      <div v-else class="max-w-lg w-full space-y-6">
         <!-- 1. PAID STATE -->
-        <div v-if="tx.status === 'paid'" class="bg-white/5 border border-white/20 rounded-3xl p-6 backdrop-blur-md space-y-6 shadow-xl">
-          <div class="text-center space-y-3">
-            <div class="relative size-16 mx-auto mb-4">
-              <div class="absolute inset-0 bg-primary/20 rounded-full blur-md animate-pulse"></div>
-              <div class="relative size-16 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/30 border border-primary/40">
-                <Icon icon="ph:check-bold" class="text-3xl text-navy" />
+        <div v-if="tx.status === 'paid' || tx.status === 'PAID'" class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+          <div class="text-center space-y-2">
+            <div class="relative size-16 mx-auto mb-3">
+              <div class="absolute inset-0 bg-emerald-500/20 rounded-full blur-md animate-pulse"></div>
+              <div class="relative size-16 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/20">
+                <Icon icon="ph:check-bold" class="text-3xl" />
               </div>
             </div>
-            <h2 class="text-xl font-black text-white">pembayaran berhasil!</h2>
-            <div class="text-xs text-slate-300 font-medium">terima kasih, pembayaran anda telah berhasil diverifikasi dan dikonfirmasi secara instan.</div>
+            <h2 class="text-2xl font-black text-navy tracking-tight">Pembayaran Berhasil!</h2>
+            <p class="text-xs text-slate-500 font-medium">Terima kasih, pembayaran Anda telah diverifikasi dan dikonfirmasi secara instan.</p>
           </div>
 
-          <!-- Transaction details -->
-          <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-4 space-y-3.5">
+          <!-- Transaction Details -->
+          <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3.5">
             <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-400 font-bold">no. referensi</span>
-              <span class="font-mono text-white font-black">{{ tx.reference }}</span>
+              <span class="text-slate-500 font-bold">Nomor Referensi</span>
+              <span class="font-mono text-navy font-black">{{ tx.reference }}</span>
             </div>
             
             <div v-if="tx.description || tx.event_name" class="flex justify-between items-start text-xs gap-4">
-              <span class="text-slate-400 font-bold shrink-0">item/deskripsi</span>
-              <span class="text-white font-black text-right">{{ tx.event_name || tx.plan_name || tx.description }}</span>
+              <span class="text-slate-500 font-bold shrink-0">Item / Deskripsi</span>
+              <span class="text-navy font-black text-right">{{ tx.event_name || tx.plan_name || tx.description }}</span>
             </div>
 
             <div v-if="tx.athlete_name" class="flex justify-between items-center text-xs">
-              <span class="text-slate-400 font-bold">nama atlet</span>
-              <span class="text-white font-black">{{ tx.athlete_name }}</span>
+              <span class="text-slate-500 font-bold">Nama Atlet</span>
+              <span class="text-navy font-black">{{ tx.athlete_name }}</span>
             </div>
 
             <div v-if="tx.division || tx.category" class="flex justify-between items-center text-xs">
-              <span class="text-slate-400 font-bold">kategori lomba</span>
-              <span class="text-white font-black text-right">
-                {{ tx.division || '' }} {{ tx.category ? `• ${tx.category}` : '' }}
+              <span class="text-slate-500 font-bold">Kategori Lomba</span>
+              <span class="text-navy font-black text-right">
+                {{ tx.division || '' }} {{ tx.category ? ` ${tx.category}` : '' }}
               </span>
             </div>
 
             <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-400 font-bold">metode pembayaran</span>
-              <span class="text-white font-black">{{ tx.payment_method || '-' }}</span>
+              <span class="text-slate-500 font-bold">Metode Pembayaran</span>
+              <span class="text-navy font-black">{{ formatPaymentMethodName(tx.payment_method) }}</span>
             </div>
 
-            <div class="h-px bg-white/10"></div>
+            <div class="h-px bg-slate-200/80 my-1"></div>
 
             <div class="flex justify-between items-center">
-              <span class="text-xs text-slate-400 font-bold">total bayar</span>
-              <span class="text-lg font-black text-primary tabular-nums">Rp {{ formatNumber(tx.total_amount) }}</span>
-            </div>
-          </div>
-
-          <!-- Invoice/Back Buttons -->
-          <div class="flex flex-col gap-2">
-            <BaseButton v-if="eventSlug" :to="`/events/${eventSlug}`" variant="primary" size="md" class="w-full justify-center text-navy font-black">
-              lihat halaman event
-            </BaseButton>
-            <BaseButton to="/dashboard/archer/events" variant="navy" size="md" class="w-full justify-center border-white/20 text-white font-black">
-              masuk ke dashboard
-            </BaseButton>
-            <a :href="getInvoiceUrl(tx.reference)" target="_blank" class="flex items-center justify-center gap-2 border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 transition-colors text-white text-xs font-black py-2.5 px-4 rounded-xl">
-              <Icon icon="ph:file-pdf" class="text-base" />
-              unduh invoice (pdf)
-            </a>
-          </div>
-        </div>
-
-        <!-- 2. PENDING STATE -->
-        <div v-else-if="tx.status === 'pending'" class="bg-white/5 border border-white/20 rounded-3xl p-6 backdrop-blur-md space-y-6 shadow-xl">
-          <div class="text-center space-y-3">
-            <div class="size-16 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto shadow-md">
-              <Icon icon="ph:clock-bold" class="text-3xl text-amber-500" />
-            </div>
-            <h2 class="text-xl font-black text-white">menunggu pembayaran</h2>
-            <div class="text-xs text-slate-300 font-medium">silakan selesaikan pembayaran anda sebelum batas waktu kadaluarsa.</div>
-          </div>
-
-          <!-- VA / Pay code display -->
-          <div v-if="tx.va_number || tx.pay_code" class="bg-white/[0.03] border border-white/10 rounded-2xl p-4 space-y-2">
-            <div class="text-[9px] font-black text-slate-400 tracking-widest uppercase">
-              {{ tx.payment_method?.includes('VA') || tx.va_number ? 'nomor virtual account' : 'kode bayar' }}
-            </div>
-            <div class="flex items-center justify-between gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
-              <span class="font-mono font-black text-white text-lg tracking-wider select-all">{{ tx.va_number || tx.pay_code }}</span>
-              <button @click="copyText(tx.va_number || tx.pay_code)" class="p-2 rounded-lg bg-primary hover:bg-primary/90 text-navy transition-colors shrink-0">
-                <Icon :icon="copied ? 'ph:check-bold' : 'ph:copy-bold'" class="text-sm" />
-              </button>
-            </div>
-          </div>
-
-          <!-- QRIS display -->
-          <div v-if="tx.qr_url" class="flex flex-col items-center bg-white rounded-2xl p-5 border border-white/10 shadow-inner">
-            <div class="text-[10px] font-black tracking-widest text-slate-500 uppercase mb-3">pindai qris</div>
-            <img :src="tx.qr_url" alt="QR Code" class="w-44 h-44 rounded-xl border border-slate-100" />
-          </div>
-
-          <!-- Payment Summary -->
-          <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-4 space-y-3">
-            <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-400 font-bold">total bayar</span>
-              <span class="text-base font-black text-primary tabular-nums">Rp {{ formatNumber(tx.total_amount) }}</span>
-            </div>
-            <div class="flex justify-between items-center text-xs border-t border-white/10 pt-3">
-              <span class="text-slate-400 font-bold">batas waktu</span>
-              <span class="text-white font-black">{{ formatExpiry(tx.expired_at) }}</span>
-            </div>
-          </div>
-
-          <!-- Instructions Accordion/Tabs -->
-          <div v-if="instructionGroups.length" class="space-y-3">
-            <div class="text-[10px] font-black text-slate-400 tracking-widest uppercase">panduan pembayaran</div>
-            <div v-if="instructionGroups.length > 1" class="flex gap-2 flex-wrap pb-1">
-              <button v-for="(group, gi) in instructionGroups" :key="group.title" @click="activeGroupIdx = gi"
-                :class="activeGroupIdx === gi ? 'bg-primary text-navy border-primary' : 'bg-white/5 text-slate-300 border-white/10 hover:border-primary/40'"
-                class="px-2.5 py-1.5 rounded-lg border text-[9px] font-black tracking-wider uppercase transition-all">
-                {{ group.title }}
-              </button>
-            </div>
-            <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-4 space-y-3.5 max-h-48 overflow-y-auto custom-scrollbar">
-              <div v-for="(step, si) in activeGroupSteps" :key="si" class="flex gap-3">
-                <span class="size-5 mt-0.5 rounded-full bg-primary/20 text-primary font-black flex items-center justify-center shrink-0 text-[9px]">
-                  {{ si + 1 }}
-                </span>
-                <span v-html="step" class="text-[11px] text-slate-300 font-semibold leading-relaxed"></span>
-              </div>
+              <span class="text-xs text-slate-500 font-bold">Total Bayar</span>
+              <span class="text-xl font-black text-navy tabular-nums">Rp {{ formatNumber(tx.total_amount) }}</span>
             </div>
           </div>
 
           <!-- Action Buttons -->
-          <div class="space-y-2 pt-2">
-            <!-- INSTANT CONFIRMATION / SIMULATOR BUTTON (ONLY FOR PENDING) -->
-            <button @click="triggerInstantConfirmation" :disabled="isSimulating"
-              class="w-full h-11 bg-primary hover:bg-primary/90 text-navy disabled:opacity-50 transition-all font-black text-xs tracking-wider rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 border border-primary/30">
-              <Icon v-if="isSimulating" icon="ph:circle-notch-bold" class="animate-spin text-sm" />
-              <template v-else>
-                konfirmasi instan (simulasi bayar)
-                <Icon icon="ph:paper-plane-right-bold" />
-              </template>
-            </button>
-
-            <BaseButton v-if="tx.checkout_url" :to="tx.checkout_url" target="_blank" variant="navy" size="md" class="w-full justify-center border-white/20 text-white font-black">
-              halaman pembayaran tripay
+          <div class="space-y-3">
+            <BaseButton :to="dashboardBackUrl" variant="navy" size="lg" class="w-full justify-center font-bold">
+              {{ dashboardBackLabel }}
             </BaseButton>
+            <a :href="getInvoiceUrl(tx.reference)" target="_blank" class="flex items-center justify-center gap-2 border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 transition-colors text-navy text-xs font-bold py-3 px-4 rounded-xl shadow-2xs">
+              <Icon icon="ph:file-pdf" class="text-base text-red-500" />
+              Unduh Invoice (PDF)
+            </a>
+          </div>
+        </div>
 
-            <BaseButton to="/dashboard/archer/payments" variant="white" size="md" class="w-full justify-center border-white/10 bg-white/5 hover:bg-white/10 text-white font-black">
-              lihat riwayat pembayaran
+        <!-- 2. PENDING / AWAITING VERIFICATION STATE -->
+        <div v-else-if="tx.status === 'pending' || tx.status === 'UNPAID' || tx.status === 'awaiting_verification' || tx.status === 'AWAITING_VERIFICATION'" class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+          <div class="text-center space-y-2">
+            <div class="size-16 rounded-2xl flex items-center justify-center mx-auto shadow-xs"
+              :class="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'bg-blue-50 text-blue-600 border border-blue-200' : 'bg-amber-50 text-amber-600 border border-amber-200'">
+              <Icon :icon="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'ph:receipt-bold' : 'ph:clock-bold'" class="text-3xl" />
+            </div>
+            <h2 class="text-2xl font-black text-navy tracking-tight">
+              {{ (tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'Bukti Pembayaran Diterima' : 'Menunggu Pembayaran' }}
+            </h2>
+            <p class="text-xs text-slate-500 font-medium">
+              {{ (tx.payment_method === 'manual' || tx.status === 'awaiting_verification')
+                ? 'Bukti transfer Anda telah kami terima. Harap tunggu verifikasi dari penyelenggara.'
+                : 'Silakan selesaikan pembayaran Anda sebelum batas waktu kadaluarsa.' }}
+            </p>
+          </div>
+
+          <!-- Manual payment notice -->
+          <div v-if="tx.payment_method === 'manual' || tx.status === 'awaiting_verification'" class="bg-blue-50/60 border border-blue-200/70 rounded-2xl p-5 space-y-3">
+            <div class="flex items-start gap-3">
+              <Icon icon="ph:info-bold" class="text-blue-600 shrink-0 mt-0.5" />
+              <div class="space-y-1">
+                <div class="text-xs font-black text-blue-900">Status: Menunggu Verifikasi Penyelenggara</div>
+                <div class="text-xs text-blue-700 font-medium leading-relaxed">
+                  Penyelenggara akan memverifikasi bukti pembayaran Anda dalam 1x24 jam. Anda akan mendapat notifikasi setelah dikonfirmasi.
+                </div>
+              </div>
+            </div>
+            <div v-if="tx.proof_url" class="mt-3 pt-3 border-t border-blue-100/80 flex flex-col items-center gap-2">
+              <span class="text-[11px] font-bold text-blue-900">Bukti Pembayaran Diunggah:</span>
+              <a :href="tx.proof_url" target="_blank" rel="noopener noreferrer" class="block rounded-xl overflow-hidden border border-blue-200/80 shadow-2xs hover:scale-105 transition-transform">
+                <img :src="tx.proof_url" alt="Bukti Transfer" class="h-32 object-cover" />
+              </a>
+            </div>
+          </div>
+
+          <!-- VA / Pay code / QRIS display -->
+          <div v-if="tx.qr_url || tx.va_number || tx.pay_code" class="bg-amber-50/60 border border-amber-200/70 rounded-2xl p-5 space-y-4">
+            <!-- Simple QRIS Image -->
+            <div v-if="tx.qr_url" class="flex flex-col items-center justify-center space-y-2 py-1">
+              <span class="text-xs font-black text-amber-900 tracking-wider">Pindai QRIS Pembayaran</span>
+              <img :src="tx.qr_url" alt="QRIS Code" class="size-56 sm:size-64 object-contain rounded-xl shadow-2xs border border-amber-200/60 bg-white p-2" />
+            </div>
+
+            <!-- Virtual Account or Pay Code -->
+            <div v-if="tx.va_number || tx.pay_code" class="space-y-2">
+              <div class="text-[10px] font-black text-amber-700 tracking-wider">
+                {{ tx.payment_method?.includes('VA') || tx.va_number ? 'Nomor Virtual Account' : 'Kode Bayar' }}
+              </div>
+              <div class="flex items-center justify-between gap-3 bg-white border border-amber-200 rounded-xl px-4 py-3 shadow-2xs">
+                <span class="font-mono font-black text-navy text-lg sm:text-xl tracking-wider select-all">{{ tx.va_number || tx.pay_code }}</span>
+                <button type="button" @click="copyText(tx.va_number || tx.pay_code)" class="flex items-center gap-1 text-xs font-bold text-amber-700 hover:text-amber-800 transition-colors bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-lg border border-amber-200 shrink-0">
+                  <Icon :icon="copied ? 'ph:check-bold' : 'ph:copy-bold'" class="text-sm" />
+                  {{ copied ? 'Tersalin' : 'Salin' }}
+                </button>
+              </div>
+            </div>
+
+            <div v-if="tx.expired_at" class="text-[11px] text-amber-700/80 font-medium flex items-center gap-1.5 pt-1 justify-center sm:justify-start">
+              <Icon icon="ph:hourglass-medium-bold" />
+              <span>Batas Waktu Pembayaran: {{ formatExpiry(tx.expired_at) }}</span>
+            </div>
+          </div>
+
+          <!-- Transaction Summary -->
+          <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-500 font-bold">Nomor Referensi</span>
+              <span class="font-mono text-navy font-black">{{ tx.reference }}</span>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-500 font-bold">Metode Pembayaran</span>
+              <span class="text-navy font-black">{{ formatPaymentMethodName(tx.payment_method) }}</span>
+            </div>
+            <div class="h-px bg-slate-200/80 my-1"></div>
+            <div class="flex justify-between items-center">
+              <span class="text-xs text-slate-500 font-bold">Total Tagihan</span>
+              <span class="text-xl font-black text-navy tabular-nums">Rp {{ formatNumber(tx.total_amount) }}</span>
+            </div>
+          </div>
+
+          <!-- Instructions Tabs -->
+          <div v-if="instructionGroups.length > 0" class="space-y-3">
+            <h3 class="text-xs font-black text-slate-400 tracking-wider">Instruksi Pembayaran</h3>
+            <div class="flex flex-wrap gap-2">
+              <button v-for="(group, idx) in instructionGroups" :key="idx" @click="activeGroupIdx = idx" type="button" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all border" :class="activeGroupIdx === idx ? 'bg-navy text-white border-navy shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'">
+                {{ group.title }}
+              </button>
+            </div>
+            <ol class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-xs text-slate-600 space-y-2 list-decimal list-inside font-medium leading-relaxed">
+              <li v-for="(step, sIdx) in activeGroupSteps" :key="sIdx">{{ step }}</li>
+            </ol>
+          </div>
+
+          <!-- Dev Simulator Button -->
+          <div v-if="tx.reference && tx.reference.includes('DEV-')" class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl space-y-2">
+            <div class="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
+              <Icon icon="ph:wrench-bold" />
+              Simulasi Pembayaran (Mode Pengembangan)
+            </div>
+            <BaseButton @click="triggerInstantConfirmation" variant="primary" size="md" :loading="isSimulating" class="w-full justify-center font-bold">
+              Simulasi Pembayaran Lunas
+            </BaseButton>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="space-y-3">
+            <a v-if="isRealTripayCheckoutUrl(tx.checkout_url)" :href="tx.checkout_url" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-navy font-black text-sm py-3.5 px-4 rounded-xl shadow-xs transition-colors">
+              <Icon icon="ph:arrow-square-out-bold" class="text-base" />
+              <span>Bayar Langsung via Halaman Tripay</span>
+            </a>
+            <BaseButton :to="dashboardBackUrl" variant="navy" size="lg" class="w-full justify-center font-bold">
+              {{ dashboardBackLabel }}
             </BaseButton>
           </div>
         </div>
 
-        <!-- 3. OTHER STATES (expired, failed, etc.) -->
-        <div v-else class="bg-white/5 border border-white/20 rounded-3xl p-6 backdrop-blur-md space-y-6 shadow-xl">
-          <div class="text-center space-y-3">
-            <div class="size-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center mx-auto shadow-md">
-              <Icon icon="ph:x-circle-bold" class="text-3xl text-red-500" />
+        <!-- 3. FAILED / EXPIRED STATE -->
+        <div v-else class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+          <div class="text-center space-y-2">
+            <div class="size-16 rounded-2xl bg-red-50 text-red-500 border border-red-200 flex items-center justify-center mx-auto shadow-xs">
+              <Icon icon="ph:x-circle-bold" class="text-3xl" />
             </div>
-            <h2 class="text-xl font-black text-white">pembayaran gagal</h2>
-            <div class="text-xs text-slate-300 font-medium">transaksi ini berstatus <span class="font-black text-red-400 uppercase">{{ tx.status }}</span> dan tidak dapat dilanjutkan.</div>
+            <h2 class="text-2xl font-black text-navy tracking-tight">Pembayaran Gagal</h2>
+            <p class="text-xs text-slate-500 font-medium">Transaksi ini berstatus <span class="font-bold text-red-600 capitalize">{{ formatTitleCase(tx.status) }}</span> dan tidak dapat dilanjutkan.</p>
           </div>
 
-          <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-4 space-y-3">
+          <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3">
             <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-400 font-bold">no. referensi</span>
-              <span class="font-mono text-white font-black">{{ tx.reference }}</span>
+              <span class="text-slate-500 font-bold">Nomor Referensi</span>
+              <span class="font-mono text-navy font-black">{{ tx.reference }}</span>
             </div>
             <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-400 font-bold">total bayar</span>
-              <span class="text-white font-black tabular-nums">Rp {{ formatNumber(tx.total_amount) }}</span>
+              <span class="text-slate-500 font-bold">Total Tagihan</span>
+              <span class="text-navy font-black tabular-nums">Rp {{ formatNumber(tx.total_amount) }}</span>
             </div>
           </div>
 
-          <div class="flex flex-col gap-2">
-            <BaseButton v-if="eventSlug" :to="`/events/${eventSlug}`" variant="primary" size="md" class="w-full justify-center text-navy font-black">
-              kembali ke halaman event
-            </BaseButton>
-            <BaseButton to="/dashboard/archer/payments" variant="navy" size="md" class="w-full justify-center border-white/20 text-white font-black">
-              kembali ke riwayat pembayaran
+          <div class="space-y-3">
+            <BaseButton :to="dashboardBackUrl" variant="navy" size="lg" class="w-full justify-center font-bold">
+              {{ dashboardBackLabel }}
             </BaseButton>
           </div>
         </div>
       </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-white/10 py-4 text-center text-[10px] font-bold text-slate-500 tracking-widest uppercase relative z-10">
-      archeris.id &bull; secure transaction
-    </footer>
+    <!-- App Global Footer -->
+    <LayoutAppFooter />
   </div>
 </template>
 
 <script setup>
+const { t } = useI18n()
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from '#app'
 import { usePayment } from '~/composables/usePayment'
 import { useRuntimeConfig } from '#imports'
@@ -235,12 +252,36 @@ definePageMeta({
     layout: 'blank'
 })
 
+useHead({ title: computed(() => t('payment.status_title', 'Payment Status') + ' - ArcheryHub') })
+
+
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
 const reference = route.params.reference
 const payment = usePayment()
+const { userPersona } = useAuth()
+
+const dashboardBackUrl = computed(() => {
+    if (reference?.startsWith('QUOTA-') || userPersona.value === 'organizer') {
+        return '/dashboard/organizer/package'
+    }
+    if (userPersona.value === 'seller') {
+        return '/dashboard/seller/orders'
+    }
+    return '/dashboard/archer/payments'
+})
+
+const dashboardBackLabel = computed(() => {
+    if (reference?.startsWith('QUOTA-') || userPersona.value === 'organizer') {
+        return 'Kembali ke Manajemen Paket & Kuota'
+    }
+    if (userPersona.value === 'seller') {
+        return 'Kembali ke Pesanan Toko'
+    }
+    return 'Kembali ke Riwayat Pembayaran'
+})
 
 const tx = ref(null)
 const eventSlug = ref(null)
@@ -250,18 +291,43 @@ const copied = ref(false)
 const activeGroupIdx = ref(0)
 const isSimulating = ref(false)
 
+const isRealTripayCheckoutUrl = (url) => {
+    if (!url) return false
+    if (url.includes('/payment/status/') || url.includes('localhost:3003')) return false
+    return url.startsWith('http://') || url.startsWith('https://')
+}
+
+const formatTitleCase = (str) => {
+    if (!str) return ''
+    return str.toString().replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
+}
+
+const formatPaymentMethodName = (method) => {
+    if (!method) return '-'
+    const m = method.toUpperCase()
+    if (m === 'MANUAL') return 'Transfer Bank Manual'
+    if (m === 'GOPAY') return 'GoPay'
+    if (m === 'QRIS') return 'QRIS'
+    if (m === 'BRIVA') return 'BRI Virtual Account'
+    if (m === 'BCAVA' || m === 'BCA') return 'BCA Virtual Account'
+    if (m === 'MANDIRIVA' || m === 'MANDIRI') return 'Mandiri Virtual Account'
+    if (m === 'BNIVA' || m === 'BNI') return 'BNI Virtual Account'
+    if (m === 'PERMATAVA' || m === 'PERMATA') return 'Permata Virtual Account'
+    if (m === 'PADDLE') return 'Paddle'
+    return formatTitleCase(method)
+}
+
 const loadPaymentDetails = async () => {
     isLoading.value = true
     errorMsg.value = ''
     try {
         const res = await payment.getPaymentStatus(reference)
         if (!res) {
-            errorMsg.value = 'transaksi tidak ditemukan atau response kosong.'
+            errorMsg.value = 'Transaksi tidak ditemukan atau tanggapan kosong.'
             return
         }
         tx.value = res
 
-        // fetch event details to get the event slug if event_id is available
         if (res.event_id) {
             try {
                 const eventRes = await $fetch(`${apiBaseUrl}/events/${res.event_id}`)
@@ -269,12 +335,12 @@ const loadPaymentDetails = async () => {
                     eventSlug.value = eventRes.slug
                 }
             } catch (err) {
-                console.error('failed to fetch event slug:', err)
+                console.error('Failed to fetch event slug:', err)
             }
         }
     } catch (err) {
-        console.error('failed to load payment details:', err)
-        errorMsg.value = err?.data?.error || 'gagal memuat rincian transaksi.'
+        console.error('Failed to load payment details:', err)
+        errorMsg.value = err?.data?.error || 'Gagal memuat rincian transaksi.'
     } finally {
         isLoading.value = false
     }
@@ -282,6 +348,25 @@ const loadPaymentDetails = async () => {
 
 onMounted(() => {
     loadPaymentDetails()
+
+    // Auto-poll every 5 seconds while payment is pending
+    const pollingInterval = setInterval(async () => {
+        if (!tx.value || tx.value.status === 'paid' || tx.value.status === 'PAID' ||
+            tx.value.status === 'expired' || tx.value.status === 'failed' ||
+            tx.value.status === 'FAILED' || tx.value.status === 'EXPIRED') {
+            clearInterval(pollingInterval)
+            return
+        }
+        try {
+            const res = await payment.getPaymentStatus(reference)
+            if (res) tx.value = res
+        } catch (e) {
+            // Silent fail — we still show last known state
+        }
+    }, 5000)
+
+    // Cleanup polling on unmount
+    onUnmounted(() => clearInterval(pollingInterval))
 })
 
 const formatNumber = (val) => {
@@ -308,7 +393,7 @@ const copyText = async (text) => {
             copied.value = false
         }, 2000)
     } catch (err) {
-        console.error('failed to copy text:', err)
+        console.error('Failed to copy text:', err)
     }
 }
 
@@ -343,11 +428,10 @@ const triggerInstantConfirmation = async () => {
     isSimulating.value = true
     try {
         await payment.simulateSuccess(reference)
-        // refresh details
         await loadPaymentDetails()
     } catch (err) {
-        console.error('simulation failed:', err)
-        alert(err?.data?.error || 'simulasi gagal. silakan coba lagi.')
+        console.error('Simulation failed:', err)
+        alert(err?.data?.error || 'Simulasi gagal. Silakan coba lagi.')
     } finally {
         isSimulating.value = false
     }
@@ -355,19 +439,18 @@ const triggerInstantConfirmation = async () => {
 </script>
 
 <style scoped>
-/* clean scrollbar style */
 .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.05);
     border-radius: 4px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.15);
     border-radius: 4px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.25);
 }
 </style>

@@ -1,60 +1,45 @@
 <template>
   <div class="space-y-6">
     <!-- Header -->
-    <div id="tour-events-header"
-      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-navy text-white shadow-sm">
-      <!-- Theme Motif Pattern -->
-      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-
-      <!-- Decorative Background Elements (Glows) -->
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
-      <!-- Header Content -->
-      <div class="relative p-5 sm:p-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div class="flex items-center sm:items-start gap-4 flex-1">
-            <!-- Icon Badge -->
-            <div
-              class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-              <Icon icon="ph:calendar-blank" class="text-primary text-xl sm:text-2xl" />
-            </div>
-
-            <!-- Title Section -->
-            <div class="min-w-0">
-              <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                {{ t('events.list.title') }}
-              </h1>
-              <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
-                {{ t('events.list.subtitle') }}
-              </p>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex flex-col sm:flex-row gap-3">
-            <BaseButton id="tour-create-event-btn" :to="canCreateEvent ? '/dashboard/events/create' : undefined"
-              variant="primary" icon="ph:plus-bold" @click="!canCreateEvent && (showPremiumModal = true)"
-              class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
-              :class="{ 'opacity-50 grayscale cursor-not-allowed': !canCreateEvent }">
-              {{ t('events.list.create_event') }}
-            </BaseButton>
-          </div>
-        </div>
-      </div>
-    </div>
+    <DashboardHeader
+      id="tour-events-header"
+      :title="t('events.list.title', 'Event & Turnamen Saya')"
+      :subtitle="t('events.list.subtitle', 'Kelola semua event panahan, peserta, bantalan target, dan rekap skor Anda.')"
+      icon="ph:calendar-blank"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('events.list.title', 'Event & Turnamen') }
+      ]"
+    >
+      <template #actions>
+        <BaseButton id="tour-create-event-btn" :to="canCreateEvent ? '/dashboard/events/create' : undefined"
+          variant="primary" icon="ph:plus-bold" @click="!canCreateEvent && (showPremiumModal = true)"
+          class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
+          :class="{ 'opacity-80': !canCreateEvent }">
+          {{ t('events.list.create_event', 'Buat Event Baru') }}
+        </BaseButton>
+      </template>
+    </DashboardHeader>
     <PremiumRequiredModal v-model:show="showPremiumModal" feature="create_event" />
 
     <!-- Search & Filter Card -->
     <div id="tour-search-filter"
       class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
-      <div class="flex-grow w-full">
-        <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" :placeholder="t('events.list.search_placeholder')"
-          :label="t('events.list.search_label')" />
+      <!-- Search Input -->
+      <div class="flex-grow w-full md:w-auto">
+        <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" :placeholder="t('events.list.search_placeholder', 'Cari nama event, lokasi, atau slug...')"
+          :label="t('events.list.search_label', 'Cari Event')" />
       </div>
-      <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
-        {{ t('events.list.reset_filters') }}
+
+      <!-- Status Filter -->
+      <div class="w-full md:w-48">
+        <label class="block text-xs font-bold text-navy mb-1.5">{{ t('events.list.filter_status', 'Status Event') }}</label>
+        <BaseSelect v-model="statusFilter" :options="statusFilterOptions" class="w-full text-xs" />
+      </div>
+
+      <!-- Reset Button -->
+      <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11 shrink-0">
+        {{ t('events.list.reset_filters', 'Reset') }}
       </BaseButton>
     </div>
 
@@ -67,7 +52,7 @@
               <th @click="toggleSort('name')"
                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
-                  {{ t('events.list.table_headers.event_info') }}
+                  {{ t('events.list.table_headers.event_info', 'Info Event') }}
                   <Icon v-if="sortBy === 'name'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                     class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
@@ -76,7 +61,7 @@
               <th @click="toggleSort('start_date')"
                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
-                  {{ t('events.list.table_headers.schedule_location') }}
+                  {{ t('events.list.table_headers.schedule_location', 'Jadwal & Lokasi') }}
                   <Icon v-if="sortBy === 'start_date'"
                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
@@ -85,7 +70,7 @@
               <th @click="toggleSort('participant_count')"
                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
-                  {{ t('events.list.table_headers.participants_categories') }}
+                  {{ t('events.list.table_headers.participants_categories', 'Peserta & Kategori') }}
                   <Icon v-if="sortBy === 'participant_count'"
                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
@@ -94,13 +79,13 @@
               <th @click="toggleSort('status')"
                 class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
-                  {{ t('events.list.table_headers.status') }}
+                  {{ t('events.list.table_headers.status', 'Status') }}
                   <Icon v-if="sortBy === 'status'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                     class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                 </div>
               </th>
-              <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right "> {{ t('events.list.table_headers.actions') }}
+              <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right "> {{ t('events.list.table_headers.actions', 'Aksi') }}
               </th>
             </tr>
           </thead>
@@ -111,8 +96,8 @@
                 <div class="flex flex-col items-center justify-center gap-4">
                   <div class="h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
                   <div class="flex flex-col gap-1">
-                    <p class="text-navy font-bold">{{ t('events.list.loading_title', 'Memuat Event...') }}</p>
-                    <p class="text-xs text-gray-400 font-medium">{{ t('events.list.loading_subtext', 'Menyiapkan data kompetisi Anda') }}</p>
+                    <div class="text-navy font-bold">{{ t('events.list.loading_title', 'Memuat Event...') }}</div>
+                    <div class="text-xs text-gray-400 font-medium">{{ t('events.list.loading_subtext', 'Menyiapkan data kompetisi Anda') }}</div>
                   </div>
                 </div>
               </td>
@@ -126,17 +111,13 @@
                     <Icon icon="ph:calendar-x" class="text-4xl" />
                   </div>
                   <div class="space-y-1">
-                    <p class="text-lg font-bold text-navy">{{ t('events.list.empty_state.title', 'Event Tidak Ditemukan') }}</p>
-                    <p class="text-sm text-gray-500 font-medium leading-relaxed">
+                    <div class="text-lg font-bold text-navy">{{ t('events.list.empty_state.title', 'Event Tidak Ditemukan') }}</div>
+                    <div class="text-sm text-gray-500 font-medium leading-relaxed">
                       {{ t('events.list.empty_state.description', 'Belum ada event yang sesuai dengan kriteria pencarian Anda.') }}
-                    </p>
+                    </div>
                   </div>
-                  <BaseButton v-if="searchQuery" variant="outline" size="sm" @click="resetFilters">
+                  <BaseButton v-if="searchQuery || statusFilter !== 'all'" variant="outline" size="sm" @click="resetFilters">
                     {{ t('events.list.clear_filters', 'Hapus Filter') }}
-                  </BaseButton>
-                  <BaseButton v-else :to="`/dashboard/${userPersona}/events/create`" variant="primary" size="sm"
-                    icon="ph:plus-bold">
-                    {{ t('events.list.empty_state.create_first') }}
                   </BaseButton>
                 </div>
               </td>
@@ -238,8 +219,24 @@ const { t } = useDashboardI18n()
 
 const showPremiumModal = ref(false)
 const searchQuery = ref('')
+const statusFilter = ref('all')
+const scopeFilter = ref('all')
 const events = ref([])
 const isLoading = ref(true)
+
+const statusFilterOptions = computed(() => [
+  { title: t('events.filter.all_status', 'Semua Status'), value: 'all' },
+  { title: t('events.filter.status_active', 'Aktif'), value: 'active' },
+  { title: t('events.filter.status_draft', 'Draft'), value: 'draft' },
+  { title: t('events.filter.status_completed', 'Selesai'), value: 'completed' },
+])
+
+const scopeFilterOptions = computed(() => [
+  { title: t('events.filter.all_scope', 'Semua Lingkup'), value: 'all' },
+  { title: t('events.filter.scope_national', 'Nasional'), value: 'national' },
+  { title: t('events.filter.scope_provincial', 'Provinsi'), value: 'provincial' },
+  { title: t('events.filter.scope_club', 'Klub / Internal'), value: 'club' },
+])
 
 // Sorting and Pagination state
 const currentPage = ref(1)
@@ -278,7 +275,7 @@ const triggerTour = (force = false) => {
   startTour('organizer-events-tour', steps, force)
 }
 
-watch([searchQuery, limit, sortBy, order], () => {
+watch([searchQuery, statusFilter, scopeFilter, limit, sortBy, order], () => {
   currentPage.value = 1
   fetchEvents()
 })
@@ -296,6 +293,12 @@ const fetchEvents = async () => {
 
     if (searchQuery.value) {
       params.append('search', searchQuery.value)
+    }
+    if (statusFilter.value && statusFilter.value !== 'all') {
+      params.append('status', statusFilter.value)
+    }
+    if (scopeFilter.value && scopeFilter.value !== 'all') {
+      params.append('scope', scopeFilter.value)
     }
 
     const response = await get(`/events/my?${params.toString()}`)
@@ -332,6 +335,8 @@ onMounted(() => {
 })
 const resetFilters = () => {
   searchQuery.value = ''
+  statusFilter.value = 'all'
+  scopeFilter.value = 'all'
 }
 
 const filteredEvents = computed(() => events.value)

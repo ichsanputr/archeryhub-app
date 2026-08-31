@@ -35,7 +35,7 @@
 
             <div class="border-t border-gray-100 pt-2 text-center">
                 <button type="button" @click="isCreatingNewClub = true"
-                    class="text-xs font-black text-primary hover:text-primary-hover flex items-center gap-1 mx-auto justify-center py-1">
+                    class="text-xs font-bold text-slate-600 hover:text-navy flex items-center gap-1 mx-auto justify-center py-1 transition-colors">
                     <Icon icon="ph:plus-bold" />
                     Club not found? Create a new one
                 </button>

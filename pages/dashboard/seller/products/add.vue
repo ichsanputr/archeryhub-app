@@ -1,15 +1,30 @@
 <template>
     <div class="space-y-8 pb-12">
-        <!-- Header -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard/seller/products" class="hover:text-primary transition-colors">Produk</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">Tambah Produk</span>
+        <!-- Enhanced Header Section -->
+        <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+            <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+            <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center gap-4 sm:gap-5">
+                    <div class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-lg">
+                        <Icon icon="ph:plus-circle-bold" class="text-primary text-2xl sm:text-3xl" />
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-3xl font-black tracking-tight leading-tight">{{ t('seller_product_form.add_title', 'Tambah Produk Baru') }}</h1>
+                        <div class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('seller_product_form.add_subtitle', 'Lengkapi informasi produk untuk ditambahkan ke marketplace.') }}</div>
+                    </div>
                 </div>
-                <h1 class="text-3xl font-extrabold text-navy tracking-tight">Tambah Produk Baru</h1>
-                <div class="text-gray-500 font-medium mt-1">Lengkapi informasi produk untuk ditambahkan ke marketplace.</div>
+                <div class="flex items-center gap-3">
+                    <NuxtLink to="/dashboard/seller/products">
+                        <BaseButton variant="outline" size="sm" icon="ph:arrow-left-bold"
+                            class="h-11 px-6 font-black tracking-widest text-xs !rounded-xl border-white/20 text-white hover:bg-white/10 transition-all">
+                            Kembali
+                        </BaseButton>
+                    </NuxtLink>
+                </div>
             </div>
         </div>
 
@@ -19,26 +34,26 @@
                 <div class="lg:col-span-2 space-y-6">
                     <!-- Basic Information -->
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
-                        <h2 class="text-xl font-bold text-navy mb-6">Informasi Dasar</h2>
+                        <h2 class="text-xl font-bold text-navy mb-6">{{ t('seller_product_form.basic_info', 'Informasi Dasar') }}</h2>
                         <div class="space-y-5">
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Nama Produk *</label>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">{{ t("seller_products.product_name_label") }}</label>
                                 <input v-model="form.name" type="text" required
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                    placeholder="Contoh: Recurve Bow Hoyt Satori 23&quot;" />
+                                    :placeholder="t('seller_products.product_name_placeholder')" />
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Deskripsi</label>
-                                <TiptapEditor v-model="form.description" placeholder="Jelaskan produk Anda secara detail..." minHeight="200px" />
+                                <label class="block text-sm font-bold text-gray-700 mb-2">{{ t("seller_products.description_label") }}</label>
+                                <TiptapEditor v-model="form.description" :placeholder="t('seller_products.description_placeholder')" minHeight="200px" />
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <BaseSelect v-model="form.category" :items="categoryOptions" label="Kategori"
-                                        placeholder="Pilih Kategori" required />
+                                    <BaseSelect v-model="form.category" :items="categoryOptions" :label="t('seller_products.category_label')"
+                                        :placeholder="t('seller_products.select_category')" required />
                                 </div>
                                 <div>
-                                    <BaseSelect v-model="form.status" :items="statusOptions" label="Status"
-                                        placeholder="Pilih Status" />
+                                    <BaseSelect v-model="form.status" :items="statusOptions" :label="t('seller_products.status_label')"
+                                        :placeholder="t('seller_products.select_status')" />
                                 </div>
                             </div>
                         </div>
@@ -46,11 +61,11 @@
 
                     <!-- Pricing -->
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
-                        <h2 class="text-xl font-bold text-navy mb-6">Harga & Stok</h2>
+                        <h2 class="text-xl font-bold text-navy mb-6">{{ t("seller_products.pricing_stock_title") }}</h2>
                         <div class="space-y-5">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Harga Normal *</label>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ t("seller_products.normal_price_label") }}</label>
                                     <div class="relative">
                                         <span
                                             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
@@ -60,7 +75,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Harga Diskon</label>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ t("seller_products.sale_price_label") }}</label>
                                     <div class="relative">
                                         <span
                                             class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
@@ -68,42 +83,42 @@
                                             class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                             placeholder="0 (opsional)" />
                                     </div>
-                                    <div class="text-xs text-gray-400 mt-1">Kosongkan jika tidak ada diskon</div>
+                                    <div class="text-xs text-gray-400 mt-1">{{ t("seller_products.optional_discount_hint") }}</div>
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Stok Tersedia</label>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">{{ t("seller_products.stock_label") }}</label>
                                 <input v-model.number="form.stock" type="number" min="0"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                     placeholder="0" />
-                                <div class="text-xs text-gray-400 mt-1">Kosongkan atau isi 0 untuk tidak terbatas</div>
+                                <div class="text-xs text-gray-400 mt-1">{{ t("seller_products.unlimited_stock_hint") }}</div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Images -->
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
-                        <h2 class="text-xl font-bold text-navy mb-6">Gambar Produk</h2>
+                        <h2 class="text-xl font-bold text-navy mb-6">{{ t("seller_products.product_images_title") }}</h2>
                         <div class="space-y-5">
                             <div>
                                 <div class="flex items-center justify-between gap-3 mb-2">
-                                    <label class="block text-sm font-bold text-gray-700">Gambar Utama</label>
+                                    <label class="block text-sm font-bold text-gray-700">{{ t("seller_products.primary_image_label") }}</label>
                                     <BaseButton type="button" variant="white" size="sm" icon="ph:images" @click="openMediaLibrary('primary')">
-                                        Pilih dari Media Library
+                                        {{ t("seller_products.select_media_library") }}
                                     </BaseButton>
                                 </div>
                                 <div class="rounded-xl border border-dashed border-gray-200 bg-gray-50 p-4">
                                     <img v-if="form.image_url" :src="form.image_url" alt="Primary product"
                                         class="h-40 w-full max-w-xs object-cover rounded-xl border border-gray-200" />
-                                    <div v-else class="text-sm text-gray-500">Belum ada gambar utama.</div>
+                                    <div v-else class="text-sm text-gray-500">{{ t("seller_products.no_primary_image") }}</div>
                                 </div>
                             </div>
 
                             <div>
                                 <div class="flex items-center justify-between gap-3 mb-2">
-                                    <label class="block text-sm font-bold text-gray-700">Gambar Tambahan</label>
+                                    <label class="block text-sm font-bold text-gray-700">{{ t("seller_products.additional_images_label") }}</label>
                                     <BaseButton type="button" variant="white" size="sm" icon="ph:images" @click="openMediaLibrary('gallery')">
-                                        Tambah dari Media Library
+                                        {{ t("seller_products.add_from_media") }}
                                     </BaseButton>
                                 </div>
                             </div>
@@ -119,7 +134,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div v-else class="text-sm text-gray-500">Belum ada gambar tambahan.</div>
+                            <div v-else class="text-sm text-gray-500">{{ t("seller_products.no_gallery_images") }}</div>
                         </div>
                     </div>
 
@@ -244,6 +259,8 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 import { Icon } from '@iconify/vue'
     import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -255,8 +272,9 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+
 useHead({
-    title: 'Tambah Produk - Archeris Dashboard'
+    title: computed(() => `${t('seller_product_form.add_title', 'Tambah Produk Baru')} - ArcheryHub Dashboard`)
 })
 
 const router = useRouter()
@@ -269,20 +287,19 @@ const showMediaLibrary = ref(false)
 const mediaTarget = ref('primary')
 const newColor = ref('')
 
-const categoryOptions = [
-    { value: 'equipment', title: 'Peralatan' },
-    { value: 'apparel', title: 'Pakaian' },
-    { value: 'accessories', title: 'Aksesoris' },
-    { value: 'training', title: 'Training' },
-    { value: 'other', title: 'Lainnya' }
-]
+const categoryOptions = computed(() => [
+    { value: 'equipment', title: computed(() => t('seller_product_form.cat_equipment', 'Peralatan')) },
+    { value: 'apparel', title: computed(() => t('seller_product_form.cat_apparel', 'Pakaian')) },
+    { value: 'accessories', title: computed(() => t('seller_product_form.cat_accessories', 'Aksesoris')) },
+    { value: 'training', title: computed(() => t('seller_product_form.cat_training', 'Training')) },
+    { value: 'other', title: computed(() => t('seller_product_form.cat_other', 'Lainnya')) }
+])
 
-const statusOptions = [
-    { value: 'draft', title: 'Draft' },
-    { value: 'active', title: 'Aktif' },
-    { value: 'sold_out', title: 'Habis' },
-    { value: 'archived', title: 'Arsip' }
-]
+const statusOptions = computed(() => [
+    { value: 'draft', title: computed(() => t('seller_product_form.stat_draft', 'Draft')) },
+    { value: 'active', title: computed(() => t('seller_product_form.stat_active', 'Aktif')) },
+    { value: 'archived', title: computed(() => t('seller_product_form.stat_archived', 'Arsip')) }
+])
 
 const shippingMethodOptions = [
     { value: 'regular_courier', title: 'Kurir Reguler', description: 'Pengiriman standar via JNE, J&T, SiCepat, dan sejenisnya.' },
@@ -294,15 +311,16 @@ const shippingMethodOptions = [
 const form = ref({
     name: '',
     description: '',
-    price: 0,
-    sale_price: null,
     category: '',
+    price: null,
+    sale_price: null,
     stock: 0,
-    status: 'draft',
+    status: 'active',
     image_url: '',
     images: [],
     colors: [],
-    shipping_methods: []
+    shipping_methods: ['regular_courier'],
+    allowed_payment_methods: ['automatic', 'wallet', 'manual']
 })
 
 const openMediaLibrary = (target) => {

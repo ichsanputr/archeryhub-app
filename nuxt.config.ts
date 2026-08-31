@@ -56,20 +56,22 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
   ],
   i18n: {
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://archeris.net',
     locales: [
-      { code: 'en', iso: 'en-US', file: 'en.json', name: 'English' },
-      { code: 'id', iso: 'id-ID', file: 'id.json', name: 'Bahasa Indonesia' }
+      { code: 'en', iso: 'en-US', file: 'en.json', name: 'English', language: 'en-US' },
+      { code: 'id', iso: 'id-ID', file: 'id.json', name: 'Bahasa Indonesia', language: 'id-ID' }
     ],
     lazy: true,
     langDir: 'locales',
     defaultLocale: 'en',
+    fallbackLocale: 'id',
     strategy: 'prefix_except_default',
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
       redirectOn: 'root',
       alwaysRedirect: false,
-      fallbackLocale: 'en'
+      fallbackLocale: 'id'
     },
     customRoutes: 'config',
     // keep dashboard routes identical across locales (no prefix change)
@@ -91,9 +93,9 @@ export default defineNuxtConfig({
     "~/assets/scss/main.scss",
   ],
   runtimeConfig: {
-    apiBaseUrl: '', // server-side internal api url override
+    apiBaseUrl: process.env.NUXT_API_BASE_URL || process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:8001',
     public: {
-      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://api.archeris.net',
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:8001',
       siteUrl: 'https://archeris.net',
       siteName: 'Archeris.net',
       paddleClientToken: process.env.NUXT_PUBLIC_PADDLE_CLIENT_TOKEN || 'test_e8c89b33a59fa8730ad3d1000bb',
@@ -112,8 +114,20 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
-          name: 'description', content: 'Archeris.net hadir sebagai wadah bagi seluruh penggiat panahan. Dari pemula hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.'
+          name: 'description',
+          content: 'Archeris.net hadir sebagai wadah bagi seluruh penggiat panahan. Dari pemula hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.'
         },
+        // Open Graph / Facebook / WhatsApp
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'Archeris.net' },
+        { property: 'og:title', content: 'Archeris.net - Platform Panahan Terintegrasi' },
+        { property: 'og:description', content: 'Kelola event panahan, skor kualifikasi & eliminasi, pendaftaran, dan informasi kompetisi panahan Indonesia.' },
+        { property: 'og:image', content: 'https://archeris.net/og-default.jpg' },
+        // Twitter Card
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'Archeris.net - Platform Panahan Terintegrasi' },
+        { name: 'twitter:description', content: 'Kelola event panahan, skor kualifikasi & eliminasi, pendaftaran, dan informasi kompetisi panahan Indonesia.' },
+        { name: 'twitter:image', content: 'https://archeris.net/og-default.jpg' },
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -141,7 +155,7 @@ export default defineNuxtConfig({
       "process.env.DEBUG": true, // Enable debug logging
     },
     server: {
-      allowedHosts: ['localhost', '127.0.0.1']
+      allowedHosts: true
     }
   },
   watch: ["data"],

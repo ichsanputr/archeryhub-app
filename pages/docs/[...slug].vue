@@ -43,7 +43,7 @@
                                 :to="`/docs/${doc.slug}`"
                                 class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all relative group"
                                 :class="currentSlug === doc.slug
-                                    ? 'bg-navy text-primary font-bold'
+                                    ? 'bg-primary/20 border border-primary/40 text-navy font-black shadow-2xs'
                                     : 'text-gray-600 hover:bg-gray-100 hover:text-navy font-medium'">
                                 <div v-if="currentSlug === doc.slug"
                                     class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-primary rounded-r-full">
@@ -59,19 +59,16 @@
             <main class="flex-1 min-w-0 w-full lg:pl-8 lg:pr-6">
                 <div v-if="currentDoc" class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
                     <!-- Doc header -->
-                    <div class="bg-navy px-8 pt-10 pb-8 relative overflow-hidden">
-                        <div class="absolute inset-0 opacity-10"
-                            style="background-image: linear-gradient(to right, #b7fb23 1px, transparent 1px), linear-gradient(to bottom, #b7fb23 1px, transparent 1px); background-size: 40px 40px;">
-                        </div>
+                    <div class="bg-slate-50 border-b border-gray-100 px-8 pt-10 pb-8 relative overflow-hidden">
                         <div class="relative z-10">
                             <div
-                                class="inline-flex items-center gap-2 px-3 py-1 bg-primary/20 border border-primary/30 rounded-full text-primary text-xs font-bold mb-4">
-                                <Icon :icon="currentDoc.icon" class="text-sm" />
+                                class="inline-flex items-center gap-2 px-3 py-1 bg-navy/5 border border-navy/10 rounded-full text-navy text-xs font-bold mb-4">
+                                <Icon :icon="currentDoc.icon" class="text-sm text-primary" />
                                 {{ getCategoryLabel(currentDoc.category) }}
                             </div>
-                            <h1 class="text-2xl md:text-3xl xl:text-4xl font-black text-white mb-3 leading-tight">{{ currentDoc.title }}</h1>
-                            <p class="text-white/60 text-sm">{{ currentDoc.excerpt }}</p>
-                            <div class="flex items-center gap-4 mt-4 text-white/40 text-xs">
+                            <h1 class="text-2xl md:text-3xl xl:text-4xl font-black text-navy mb-3 leading-tight">{{ currentDoc.title }}</h1>
+                            <p class="text-slate-600 text-sm font-medium">{{ currentDoc.excerpt }}</p>
+                            <div class="flex items-center gap-4 mt-4 text-slate-400 text-xs font-medium">
                                 <span class="flex items-center gap-1.5">
                                     <Icon icon="ph:clock-bold" class="text-sm" /> {{ currentDoc.readTime }}
                                 </span>
@@ -87,7 +84,7 @@
 
                     <!-- Share Social Media -->
                     <div class="px-6 md:px-10 pb-8 pt-4 border-t border-gray-100">
-                        <h4 class="text-xs font-black text-gray-400 tracking-widest uppercase mb-3">{{ $t('docs.share_title') || 'Share this article' }}</h4>
+                        <h4 class="text-xs font-black text-gray-400 tracking-widest mb-3">{{ $t('docs.share_title') || 'Share this article' }}</h4>
                         <div class="flex flex-wrap gap-2">
                             <button @click="shareTo('twitter')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 hover:bg-primary/10 text-navy text-xs font-bold transition-all border border-gray-100 hover:border-primary/30">
                                 <Icon icon="simple-icons:x" class="text-sm" />
@@ -159,7 +156,7 @@
                     <form @submit.prevent="submitComment" class="mb-8 space-y-4">
                         <div v-if="!isLoggedIn" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-bold text-gray-400 uppercase mb-2">{{ $t('docs.comment_name') || 'Your Name' }}</label>
+                                <label class="block text-xs font-bold text-gray-400 mb-2">{{ $t('docs.comment_name') || 'Your Name' }}</label>
                                 <input v-model="commentForm.guest_name" type="text" required
                                     class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors text-navy placeholder:text-gray-400 font-medium"
                                     :placeholder="$t('docs.comment_name_placeholder') || 'Enter your name...'" />
@@ -170,7 +167,7 @@
                         </div>
 
                         <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-2">{{ $t('docs.comment_message') || 'Comment' }}</label>
+                            <label class="block text-xs font-bold text-gray-400 mb-2">{{ $t('docs.comment_message') || 'Comment' }}</label>
                             <textarea v-model="commentForm.content" rows="4" required
                                 class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors text-navy placeholder:text-gray-400 font-medium"
                                 :placeholder="$t('docs.comment_message_placeholder') || 'Write your thoughts...'"></textarea>
@@ -314,7 +311,11 @@ import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
-definePageMeta({ layout: 'docs' })
+definePageMeta({
+    layout: 'docs',
+    pageTransition: false,
+    layoutTransition: false
+})
 
 const { t, locale } = useI18n()
 const apiBaseUrl = useApiBaseUrl()
@@ -576,7 +577,7 @@ watch(currentSlug, () => {
 }, { immediate: true })
 
 useHead(computed(() => ({
-    title: currentDoc.value ? `${currentDoc.value.title} - Archeris` : 'Dokumentasi - Archeris',
+    title: currentDoc.value ? `${currentDoc.value.title} - ArcheryHub Docs` : t('docs.title', 'Documentation') + ' - ArcheryHub',
     meta: [{ name: 'description', content: currentDoc.value?.excerpt || '' }]
 })))
 </script>
@@ -628,7 +629,8 @@ useHead(computed(() => ({
 }
 
 .doc-content a {
-    color: #b7fb23;
+    color: #0284c7;
+    font-weight: 600;
     text-decoration: underline;
 }
 

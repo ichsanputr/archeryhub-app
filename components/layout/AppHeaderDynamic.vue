@@ -365,7 +365,17 @@ const fetchLatestEvents = async () => {
     else if (response?.data) events = response.data
     else if (response?.events) events = response.events
 
-    const transformed = events.map(event => ({
+    const seen = new Set()
+    const uniqueList = []
+    for (const event of events) {
+      const key = event.slug || event.uuid || event.id
+      if (key && !seen.has(key)) {
+        seen.add(key)
+        uniqueList.push(event)
+      }
+    }
+
+    const transformed = uniqueList.map(event => ({
       id: event.uuid || event.id,
       slug: event.slug,
       name: event.name,

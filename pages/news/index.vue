@@ -98,7 +98,7 @@
                                     </template>
                                 </div>
                                 <h2
-                                    class="text-white text-xl sm:text-2xl md:text-3xl font-black mt-4 leading-tight underline-link-white">
+                                    class="text-white text-xl sm:text-2xl md:text-3xl font-black mt-4 leading-tight group-hover:text-primary transition-colors">
                                     {{ featuredArticle.title }}
                                 </h2>
                                 <p class="text-gray-300 mt-3 line-clamp-2 max-w-2xl">{{ featuredArticle.excerpt }}</p>
@@ -113,7 +113,7 @@
                                         {{ featuredArticle.author }}
                                     </span>
                                     <span v-if="!featuredArticle.organization_id && !featuredArticle.club_id"
-                                        class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] font-black tracking-widest uppercase">
+                                        class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] font-black tracking-widest ">
                                         {{ $t('news_page.official_badge') }}
                                     </span>
                                 </div>
@@ -122,10 +122,10 @@
                     </NuxtLink>
 
                     <!-- Articles List -->
-                    <div v-if="filteredArticles.length > 0" class="grid grid-cols-1 gap-6">
+                    <div v-if="filteredArticles.length > 0" class="grid grid-cols-1 gap-6 pb-6">
                         <NuxtLink v-for="article in filteredArticles" :key="article.id"
                             :to="localePath(`/news/${article.slug || article.id}`)"
-                            class="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:border-primary/50 hover:shadow-sm hover:shadow-primary/5 transition-all duration-300">
+                            class="group bg-white rounded-2xl border border-gray-200  overflow-hidden hover:border-primary/50 hover:shadow-md transition-all duration-300">
 
                             <div class="flex flex-col sm:flex-row h-full">
                                 <!-- Thumbnail -->
@@ -162,7 +162,7 @@
                                             </div>
                                         </div>
                                         <h3
-                                            class="font-black text-navy text-xl leading-snug line-clamp-2 mb-3 underline-link">
+                                            class="font-black text-navy text-xl leading-snug line-clamp-2 mb-3">
                                             {{ article.title }}
                                         </h3>
                                         <p class="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4">{{
@@ -170,7 +170,7 @@
                                     </div>
 
                                     <div
-                                        class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-auto pt-4 border-t border-gray-50">
+                                        class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-auto pt-4 border-t border-gray-100">
                                         <div class="flex items-center gap-2">
                                             <div
                                                 class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -178,15 +178,10 @@
                                             </div>
                                             <span class="text-xs font-bold text-navy">{{ article.author }}</span>
                                             <span v-if="!article.organization_id && !article.club_id"
-                                                class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] font-black tracking-widest uppercase">
+                                                class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] font-black tracking-widest ">
                                                 {{ $t('news_page.official_badge') }}
                                             </span>
                                         </div>
-                                        <span
-                                            class="text-navy font-black text-xs tracking-wider flex items-center gap-1.5 self-start sm:self-auto pb-px">
-                                            {{ $t('news_page.read_more') }}
-                                            <Icon icon="ph:arrow-right-bold" class="transition-transform group-hover:translate-x-0.5" />
-                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -232,7 +227,7 @@
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <h4
-                                            class="font-bold text-navy text-sm leading-snug line-clamp-2 underline-link">
+                                            class="font-bold text-navy text-sm leading-snug line-clamp-2 group-hover:text-primary transition-colors">
                                             {{ article.title }}
                                         </h4>
                                         <span class="text-[10px] text-gray-400 mt-1 block font-medium">{{ article.date
@@ -316,6 +311,9 @@ import { useToast } from '~/composables/useToast'
 definePageMeta({
     layout: 'landing'
 })
+
+useHead({ title: computed(() => t('news.all_title', 'News & Articles') + ' - ArcheryHub') })
+
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
@@ -496,14 +494,14 @@ useSeoMeta({
 }
 
 /* Same for white text (featured article) */
-.underline-link-white {
+.group-hover:text-primary transition-colors {
     background-image: linear-gradient(#fff, #fff);
     background-position: 0% 100%;
     background-repeat: no-repeat;
     background-size: 0% 2px;
     transition: background-size 0.3s ease;
 }
-.group:hover .underline-link-white {
+.group:hover .group-hover:text-primary transition-colors {
     background-size: 100% 2px;
 }
 </style>

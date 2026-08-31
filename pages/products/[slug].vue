@@ -12,21 +12,25 @@
         <Transition name="fade" mode="out-in">
             <ProductPageSkeleton v-if="isLoading" key="skeleton" class="container mx-auto max-w-7xl px-4 pt-8" />
 
-            <div v-else-if="!product" key="not-found" class="container mx-auto max-w-7xl px-4 pt-8">
-                <section class="rounded-3xl border border-black/5 bg-white p-10 text-center shadow-sm">
-                    <div
-                        class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-red-500">
-                        <Icon icon="ph:package-bold" class="text-2xl" />
+            <div v-else-if="!product" key="not-found" class="container mx-auto max-w-4xl px-4 py-16">
+                <div class="rounded-3xl border border-gray-100 bg-white p-12 sm:p-16 text-center shadow-md space-y-6">
+                    <div class="size-20 mx-auto rounded-3xl bg-amber-50 border-2 border-amber-100 flex items-center justify-center shadow-sm">
+                        <Icon icon="ph:package-x-bold" class="text-3xl text-amber-600" />
                     </div>
-                    <h2 class="text-2xl font-black text-navy">{{ t('products.not_found') }}</h2>
-                    <p class="mt-2 text-sm text-gray-500">
-                        {{ fetchError?.data?.error || t('products.not_found') }}
-                    </p>
-                    <NuxtLink href="/products"
-                        class="mt-5 inline-flex items-center rounded-xl bg-navy px-5 py-2.5 text-xs font-black tracking-widest text-white hover:bg-navy/90">
-                        {{ t('products.back_to_products') }}
-                    </NuxtLink>
-                </section>
+                    <div class="space-y-2">
+                        <h2 class="text-2xl sm:text-3xl font-black text-navy tracking-tight">{{ t('products.not_found') }}</h2>
+                        <p class="text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
+                            {{ fetchError?.data?.error || 'Produk yang Anda cari tidak ditemukan atau telah diturunkan oleh penjual.' }}
+                        </p>
+                    </div>
+                    <div>
+                        <NuxtLink to="/products"
+                            class="inline-flex items-center gap-2.5 rounded-2xl bg-navy px-7 py-3 text-xs font-black tracking-widest text-white shadow-lg shadow-navy/20 hover:bg-primary hover:text-navy transition-all duration-300">
+                            <Icon icon="ph:arrow-left-bold" class="text-sm" />
+                            <span>{{ t('products.back_to_products') }}</span>
+                        </NuxtLink>
+                    </div>
+                </div>
             </div>
 
             <div v-else key="content" class="container mx-auto max-w-7xl px-4 pt-8">
@@ -140,14 +144,14 @@
                                         <Icon v-if="isAddingToCart" icon="ph:spinner"
                                             class="animate-spin text-lg shrink-0" />
                                         <Icon v-else icon="ph:shopping-cart-simple-bold" class="text-lg shrink-0" />
-                                        <span class="uppercase tracking-wide">{{ t('products.add_to_cart') }}</span>
+                                        <span class="tracking-wide">{{ t('products.add_to_cart') }}</span>
                                     </button>
                                     <button type="button" @click="openChatDialog" :disabled="isChatStarting"
-                                        class="w-full flex items-center justify-center gap-2 rounded-2xl border-2 border-navy py-3.5  text-xs font-black text-navy transition hover:bg-navy hover:text-white active:scale-95 disabled:opacity-60">
+                                        class="w-full flex items-center justify-center gap-2 rounded-2xl border-2 border-navy py-3.5 text-xs font-black text-navy transition hover:bg-navy hover:text-white active:scale-95 disabled:opacity-60">
                                         <Icon v-if="isChatStarting" icon="ph:spinner"
                                             class="animate-spin text-lg shrink-0" />
                                         <Icon v-else icon="ph:chat-circle-dots-bold" class="text-lg shrink-0" />
-                                        <span class="uppercase tracking-wide">{{ t('products.chat') }}</span>
+                                        <span class="tracking-wide">Chat Seller</span>
                                     </button>
                                 </div>
 
@@ -246,14 +250,23 @@
                             {{ product.description || t('products.no_description') }}
                         </div>
 
-                        <div v-if="Object.keys(product.specifications || {}).length" class="mt-8">
-                            <h3 class=" text-xs font-black tracking-[0.2em] text-gray-400 mb-4">{{ t('products.specifications') }}</h3>
-                            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                                <div v-for="(value, key) in product.specifications" :key="key"
-                                    class="rounded-2xl border border-gray-50 bg-[#fafafa] p-4 flex flex-col gap-1">
-                                    <div class="text-[10px] font-bold tracking-wider text-gray-400">{{ key }}
+                        <!-- Detailed Specifications Table -->
+                        <div v-if="Object.keys(product.specifications || {}).length" class="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700">
+                            <div class="flex items-center gap-2 mb-4">
+                                <Icon icon="ph:sliders-horizontal-bold" class="text-primary text-base" />
+                                <h3 class="text-xs font-black tracking-[0.2em] text-navy dark:text-white capitalize">{{ t('products.specifications', 'Spesifikasi Detail') }}</h3>
+                            </div>
+                            <div class="rounded-2xl border border-primary/20 bg-white dark:bg-slate-800 overflow-hidden shadow-2xs divide-y divide-slate-100 dark:divide-slate-700">
+                                <div v-for="(value, key, idx) in product.specifications" :key="key"
+                                    class="grid grid-cols-1 sm:grid-cols-3 gap-2 px-5 py-3.5 items-center transition-colors"
+                                    :class="idx % 2 === 0 ? 'bg-slate-50/50 dark:bg-slate-800/60' : 'bg-white dark:bg-slate-800'">
+                                    <div class="text-[11px] font-bold text-slate-500 dark:text-slate-400 capitalize tracking-wider flex items-center gap-2">
+                                        <span class="size-1.5 rounded-full bg-primary shrink-0"></span>
+                                        <span>{{ formatSpecKey(key) }}</span>
                                     </div>
-                                    <div class="font-black text-navy text-sm">{{ value }}</div>
+                                    <div class="sm:col-span-2 font-black text-navy dark:text-white text-xs sm:text-sm">
+                                        {{ formatSpecValue(value) }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -363,8 +376,8 @@
                         </div>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-black leading-none truncate">{{ chatConv?.seller_name ||
-                            product?.seller?.store_name || 'Penjual' }}</p>
+                        <div class="text-sm font-black leading-none truncate">{{ chatConv?.seller_name ||
+                            product?.seller?.store_name || 'Penjual' }}</div>
                         <div v-if="chatConv?.product_name" class="flex items-center gap-1 mt-0.5">
                             <Icon icon="ph:package-bold" class="text-[9px] text-white/60" />
                             <span class="text-[10px] text-white/60 font-semibold truncate">{{ chatConv.product_name
@@ -385,7 +398,7 @@
                             class="w-full h-full object-cover" />
                         <Icon v-else icon="ph:package-bold" class="text-gray-400 text-xs m-auto mt-1" />
                     </div>
-                    <p class="text-[10px] font-black text-navy truncate flex-1">{{ chatConv.product_name }}</p>
+                    <div class="text-[10px] font-black text-navy truncate flex-1">{{ chatConv.product_name }}</div>
                 </div>
 
                 <!-- Messages -->
@@ -401,20 +414,37 @@
                         </div>
                     </div>
 
-                    <!-- Empty state -->
+                    <!-- Empty state with Quick Ticket Presets -->
                     <div v-else-if="chatMessages.length === 0"
-                        class="flex flex-col items-center justify-center h-full text-center py-6">
-                        <Icon icon="ph:chat-circle-bold" class="text-4xl text-gray-200 mb-2" />
-                        <p class="text-xs font-bold text-gray-400">{{ t('products.start_conversation') }}</p>
-                        <p class="text-[10px] text-gray-300 mt-0.5">{{ t('products.ask_about_product') }}</p>
+                        class="flex flex-col items-center justify-center h-full text-center py-4 px-2">
+                        <div class="size-10 rounded-2xl bg-white border border-gray-200 flex items-center justify-center shadow-sm mb-2 text-primary">
+                            <Icon icon="ph:ticket-bold" class="text-xl" />
+                        </div>
+                        <div class="text-xs font-black text-navy">Buka Tiket / Chat Penjual</div>
+                        <div class="text-[10px] text-gray-400 mt-0.5 mb-3">Kirim pertanyaan atau pesan langsung ke toko</div>
+                        
+                        <div class="w-full space-y-1.5 text-left">
+                            <button @click="chatInput = 'Halo, apakah produk ini ready stock?'; sendChatMessage()"
+                                class="w-full text-left p-2 rounded-xl bg-white hover:bg-gray-50 border border-gray-200 text-[11px] font-bold text-navy transition shadow-2xs">
+                                💬 Halo, apakah produk ini ready stock?
+                            </button>
+                            <button @click="chatInput = 'Halo, bisa minta info spesifikasi dan rekomendasi detailnya?'; sendChatMessage()"
+                                class="w-full text-left p-2 rounded-xl bg-white hover:bg-gray-50 border border-gray-200 text-[11px] font-bold text-navy transition shadow-2xs">
+                                📋 Tanya spesifikasi detail
+                            </button>
+                            <button @click="chatInput = 'Halo, apakah bisa nego harga atau custom order?'; sendChatMessage()"
+                                class="w-full text-left p-2 rounded-xl bg-white hover:bg-gray-50 border border-gray-200 text-[11px] font-bold text-navy transition shadow-2xs">
+                                🏷️ Tanya negosiasi / custom order
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Messages -->
                     <div v-else v-for="msg in chatMessages" :key="msg.id" class="flex flex-col"
                         :class="msg.sender_type === 'archer' ? 'items-end' : 'items-start'">
-                        <div class="max-w-[85%] px-3.5 py-2.5 text-[12px] leading-relaxed font-medium shadow-sm" :class="msg.sender_type === 'archer'
-                            ? 'bg-navy text-white rounded-2xl rounded-tr-sm'
-                            : 'bg-white text-navy border border-gray-200 rounded-2xl rounded-tl-sm'">
+                        <div class="max-w-[85%] px-3.5 py-2.5 text-[12px] leading-relaxed font-medium shadow-xs whitespace-pre-wrap break-words bg-white text-navy border border-gray-200" :class="msg.sender_type === 'archer'
+                            ? 'rounded-2xl rounded-tr-xs'
+                            : 'rounded-2xl rounded-tl-xs'">
                             {{ msg.message }}
                         </div>
                         <div class="mt-0.5 text-[9px] font-semibold text-gray-400 flex items-center gap-1"
@@ -444,7 +474,7 @@
                     </div>
                     <p class="text-[9px] text-gray-300 font-semibold text-center mt-1.5">
                         Enter kirim · <NuxtLink :to="`/dashboard/archer/chat?conv=${chatConv?.id}`"
-                            class="text-primary hover:underline" @click.native="closeChatDialog">Buka di dashboard →
+                            class="text-primary hover:underline" @click="closeChatDialog">Buka di dashboard →
                         </NuxtLink>
                     </p>
                 </div>
@@ -453,7 +483,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { computed, ref, watchEffect, nextTick, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
@@ -462,6 +492,54 @@ import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+
+const formatSpecKey = (key: any) => {
+    if (!key) return ''
+    const knownKeys: Record<string, string> = {
+        riser_length: 'Riser Length',
+        limb_fitting: 'Limb Fitting / Pocket System',
+        limb_pocket: 'Limb Pocket System',
+        material: 'Material & Construction',
+        weight: 'Net Weight',
+        weight_grams: 'Total Weight (Grams)',
+        weight_lbs: 'Draw Weight (lbs)',
+        draw_weight: 'Draw Weight',
+        draw_length: 'Draw Length Range',
+        handedness: 'Handedness / Dexterity',
+        hand_orientation: 'Hand Orientation (RH/LH)',
+        finish: 'Surface Finish',
+        finish_type: 'Color Finish Type',
+        bow_type: 'Bow Type / Category',
+        brace_height: 'Recommended Brace Height',
+        axle_to_axle: 'Axle-to-Axle Length',
+        let_off: 'Let-Off Percentage',
+        speed_fps: 'Arrow Speed (FPS)',
+        diameter: 'Shaft Diameter',
+        spine: 'Arrow Spine Deflection',
+        grain_weight: 'Grain Weight',
+        thread_size: 'Thread / Bushing Size',
+        warranty: 'Manufacturer Warranty',
+        brand: 'Brand / Manufacturer',
+        country_of_origin: 'Country of Origin',
+        model_year: 'Model Release Year'
+    }
+    const lower = String(key).toLowerCase().trim()
+    if (knownKeys[lower]) return knownKeys[lower]
+    return lower
+        .replace(/[_-]+/g, ' ')
+        .replace(/([a-z])([A-Z])/g, '$1 $2')
+        .split(' ')
+        .filter(Boolean)
+        .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+}
+
+const formatSpecValue = (val: any) => {
+    if (val === null || val === undefined || val === '') return '-'
+    if (typeof val === 'boolean') return val ? 'Yes' : 'No'
+    if (Array.isArray(val)) return val.join(', ')
+    return String(val)
+}
 
 definePageMeta({
     layout: 'landing',
@@ -484,8 +562,8 @@ const categoryLabels = {
 
 useHead(() => ({
     title: product.value?.name
-        ? `${product.value.name} | Produk Panahan | ArcheryHub`
-        : 'Detail Produk | ArcheryHub',
+        ? `${product.value.name} | Archery Products | ArcheryHub`
+        : t('shop.product_detail', 'Product Detail') + ' | ArcheryHub',
     meta: [
         {
             name: 'description',
@@ -666,13 +744,8 @@ const formatPrice = (price) => new Intl.NumberFormat('id-ID').format(Number(pric
 
 const openChatDialog = async () => {
     if (!isLoggedIn.value) {
-        toast.error('Silahkan login sebagai Pemanah untuk memulai chat')
+        toast.error('Silahkan login untuk memulai chat')
         navigateTo('/auth/login')
-        return
-    }
-    const role = user.value?.role || user.value?.type || user.value?.user_type
-    if (role !== 'archer') {
-        toast.error('Hanya akun Pemanah yang dapat menghubungi penjual via chat')
         return
     }
     const sellerID = product.value?.seller?.uuid || product.value?.seller_id

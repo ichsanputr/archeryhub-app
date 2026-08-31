@@ -1,21 +1,23 @@
 <template>
   <div class="flex flex-col gap-8">
     <!-- Header Section -->
-    <div class="flex flex-col gap-4">
-      <Breadcrumbs :items="breadcrumbItems" :current="t('org_teams.title')" />
-
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 class="text-2xl md:text-3xl font-extrabold text-navy tracking-tight">{{ t('org_teams.title') }}</h1>
-          <p class="text-gray-500 font-medium mt-1 text-sm md:text-base">{{ t('org_teams.subtitle') }}</p>
-        </div>
+    <DashboardHeader
+      :title="t('org_teams.title')"
+      :subtitle="t('org_teams.subtitle')"
+      icon="ph:users-four-bold"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('org_teams.title') }
+      ]"
+    >
+      <template #actions>
         <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-md shadow-primary/20 h-10 md:h-11 px-4 md:px-6"
           @click="showCreateModal = true">
           <span class="hidden sm:inline">{{ t('org_teams.create_team') }}</span>
           <span class="sm:hidden">{{ t('org_teams.create_team_short') }}</span>
         </BaseButton>
-      </div>
-    </div>
+      </template>
+    </DashboardHeader>
 
     <!-- Quick Stats -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -26,8 +28,8 @@
           <Icon icon="ph:users-four" class="text-xl" />
         </div>
         <div>
-          <p class="text-xs text-gray-400 font-bold  tracking-wider">{{ t('org_teams.stats_total') }}</p>
-          <p class="text-lg font-bold text-navy">{{ teams.length }}</p>
+          <div class="text-xs text-gray-400 font-bold  tracking-wider">{{ t('org_teams.stats_total') }}</div>
+          <div class="text-lg font-bold text-navy">{{ teams.length }}</div>
         </div>
       </div>
       <div
@@ -37,8 +39,8 @@
           <Icon icon="ph:check-circle" class="text-xl" />
         </div>
         <div>
-          <p class="text-xs text-gray-400 font-bold  tracking-wider">{{ t('org_teams.stats_active') }}</p>
-          <p class="text-lg font-bold text-navy">{{teams.filter(t => t.status === 'active').length}}</p>
+          <div class="text-xs text-gray-400 font-bold  tracking-wider">{{ t('org_teams.stats_active') }}</div>
+          <div class="text-lg font-bold text-navy">{{teams.filter(t => t.status === 'active').length}}</div>
         </div>
       </div>
       <div
@@ -48,8 +50,8 @@
           <Icon icon="ph:user" class="text-xl" />
         </div>
         <div>
-          <p class="text-xs text-gray-400 font-bold  tracking-wider">{{ t('org_teams.stats_members') }}</p>
-          <p class="text-lg font-bold text-navy">{{teams.reduce((acc, t) => acc + t.memberCount, 0)}}</p>
+          <div class="text-xs text-gray-400 font-bold  tracking-wider">{{ t('org_teams.stats_members') }}</div>
+          <div class="text-lg font-bold text-navy">{{teams.reduce((acc, t) => acc + t.memberCount, 0)}}</div>
         </div>
       </div>
       <div
@@ -59,8 +61,8 @@
           <Icon icon="ph:trophy" class="text-xl" />
         </div>
         <div>
-          <p class="text-xs text-gray-400 font-bold  tracking-wider">{{ t('org_teams.stats_active_events') }}</p>
-          <p class="text-lg font-bold text-navy">{{[...new Set(teams.map(t => t.eventId))].length}}</p>
+          <div class="text-xs text-gray-400 font-bold  tracking-wider">{{ t('org_teams.stats_active_events') }}</div>
+          <div class="text-lg font-bold text-navy">{{[...new Set(teams.map(t => t.eventId))].length}}</div>
         </div>
       </div>
     </div>
@@ -72,7 +74,7 @@
           :label="t('org_teams.search_label')" />
       </div>
       <div class="w-full md:w-64">
-        <BaseSelect v-model="statusFilter" :items="statusOptions" :label="t('org_teams.status_label')" />
+        <BaseSelect v-model="statusFilter" :items="statusOptions" :label="t('org_teams.status_label')" :placeholder="t('org_teams.select_status', 'Pilih Status')" />
       </div>
       <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
         {{ t('common.reset') }}
@@ -94,7 +96,7 @@
               </div>
               <div>
                 <h3 class="font-bold text-navy text-lg group-hover:text-primary transition-colors">{{ team.name }}</h3>
-                <p class="text-sm text-gray-400">{{ team.eventName }}</p>
+                <div class="text-sm text-gray-400">{{ team.eventName }}</div>
               </div>
             </div>
             <span :class="[
@@ -167,7 +169,7 @@
             <Icon icon="ph:users-four" class="text-5xl" />
           </div>
           <h3 class="text-xl font-bold text-navy mb-2">{{ t('org_teams.no_teams') }}</h3>
-          <p class="text-gray-500 mb-6 max-w-sm mx-auto">{{ t('org_teams.no_teams_desc') }}</p>
+          <div class="text-gray-500 mb-6 max-w-sm mx-auto">{{ t('org_teams.no_teams_desc') }}</div>
           <BaseButton variant="primary" icon="ph:plus-bold" @click="showCreateModal = true">
             {{ t('org_teams.create_first_team') }}
           </BaseButton>
@@ -192,7 +194,7 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => `${t('org_teams.title')} - Archeris Dashboard`)
+  title: computed(() => `${t('org_teams.title')} - ArcheryHub Dashboard`)
 })
 
 const { get, delete: del } = useApi()
@@ -209,9 +211,9 @@ const statusFilter = ref('all')
 const showCreateModal = ref(false)
 
 const statusOptions = computed(() => [
-  { value: 'all', title: t('org_teams.status_all') },
-  { value: 'active', title: t('org_teams.status_active') },
-  { value: 'inactive', title: t('org_teams.status_inactive') }
+  { value: 'all', title: computed(() => t('org_teams.status_all')) },
+  { value: 'active', title: computed(() => t('org_teams.status_active')) },
+  { value: 'inactive', title: computed(() => t('org_teams.status_inactive')) }
 ])
 
 const fetchTeams = async () => {

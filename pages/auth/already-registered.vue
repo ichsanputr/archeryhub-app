@@ -55,11 +55,14 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({ layout: 'default' })
 
+const { t } = useI18n()
+
 useHead({
-  title: 'Email Already Registered - Archeris.net'
+  title: computed(() => (t ? t('auth.already_registered', 'Email Already Registered') : 'Email Already Registered') + ' - ArcheryHub')
 })
 
 const route = useRoute()

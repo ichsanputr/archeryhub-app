@@ -5,7 +5,7 @@
         <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent">
         </div>
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Connecting account...</h2>
-        <p class="text-gray-500 dark:text-gray-400">Please wait a moment while we process your login.</p>
+        <div class="text-gray-500 dark:text-gray-400">Please wait a moment while we process your login.</div>
       </div>
 
       <div v-else-if="error" class="space-y-6">
@@ -13,7 +13,7 @@
           <span class="material-symbols-outlined text-4xl">error</span>
         </div>
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white font-display">Failed to Log In</h2>
-        <p class="text-red-500 mb-6 font-body text-sm">{{ error }}</p>
+        <div class="text-red-500 mb-6 font-body text-sm">{{ error }}</div>
         <NuxtLink to="/auth/login"
           class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-navy font-bold rounded-xl hover:bg-primary-hover transition-colors shadow-lg shadow-primary/20">
           <span class="material-symbols-outlined">arrow_back</span>
@@ -25,15 +25,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useAuth } from '~/composables/useAuth'
 
 const route = useRoute()
+const { t } = useI18n()
 const { handleCallback, user, fetchProfileSSR } = useAuth()
 
 useHead({
-  title: 'Connecting Account... - Archeris.net'
+  title: computed(() => (t ? t('auth.connecting', 'Connecting Account...') : 'Connecting Account...') + ' - ArcheryHub')
 })
 
 const loading = ref(true)
@@ -54,6 +56,9 @@ onMounted(async () => {
 
       // Load user state from cookie
       await fetchProfileSSR()
+
+      const welcomeMsg = user.value?.full_name ? `Welcome back, ${user.value.full_name}!` : 'Login successful!'
+      sessionStorage.setItem('auth_toast', welcomeMsg)
 
       let redirect = route.query.redirect || '/dashboard'
       if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
@@ -80,6 +85,9 @@ onMounted(async () => {
 
   try {
     await handleCallback(code, state)
+
+    const welcomeMsg = user.value?.full_name ? `Welcome back, ${user.value.full_name}!` : 'Login successful!'
+    sessionStorage.setItem('auth_toast', welcomeMsg)
 
     // Full page reload so auth state is restored from cookie/SSR
     let redirect = route.query.redirect || '/dashboard'

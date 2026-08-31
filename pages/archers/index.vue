@@ -121,7 +121,7 @@
                         <div
                             class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all group-hover:bg-primary/5 group-hover:border-primary/10">
                             <span
-                                class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5 uppercase">{{ $t('archers.division') }}</span>
+                                class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5 ">{{ $t('archers.division') }}</span>
                             <div class="flex items-center gap-2">
                                 <div
                                     class="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center p-1 border border-gray-100 group-hover:border-primary/20">
@@ -136,7 +136,7 @@
                         <div
                             class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all group-hover:bg-amber-50 group-hover:border-amber-100">
                             <span
-                                class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5 uppercase">{{ $t('archers.competition') }}</span>
+                                class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5 ">{{ $t('archers.competition') }}</span>
                             <div class="flex items-center gap-2">
                                 <div
                                     class="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center border border-gray-100 group-hover:border-amber-200">
@@ -300,7 +300,7 @@ const activeArchers = computed(() => {
 const filteredArchers = computed(() => archers.value)
 
 useHead({
-    title: t('archers.seo_title'),
+    title: computed(() => t('archers.seo_title')),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ],

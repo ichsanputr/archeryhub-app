@@ -7,7 +7,7 @@
  * 2. Redirects unauthenticated users from protected routes to /auth/login
  * 3. Redirects authenticated users from /auth/* to /dashboard
  */
-import { getCookie, sendRedirect } from 'h3'
+import { getCookie, deleteCookie, sendRedirect } from 'h3'
 import type { H3Event } from 'h3'
 
 function decodeJWT(token: string): Record<string, unknown> | null {
@@ -44,44 +44,65 @@ export default defineEventHandler(async (event: H3Event) => {
     } else {
         const payload = decodeJWT(token)
         if (payload && payload.user_id) {
-            event.context.user = {
-                uuid: payload.user_id,
-                email: payload.email,
-                full_name: payload.name,
-                avatar_url: payload.avatar,
-                role: payload.role,
-                user_type: payload.user_type
-            }
+            // Check expiry if exp field exists
+            const isExpired = typeof payload.exp === 'number' && payload.exp * 1000 < Date.now()
+            if (isExpired) {
+                deleteCookie(event, 'auth_token', { path: '/' })
+                event.context.user = null
+            } else {
+                let userVerified = false
+                let profileData: any = null
 
-            // Fetch detailed profile server-side
-            try {
-                const config = useRuntimeConfig()
-                const apiBaseUrl = config.apiBaseUrl || config.public.apiBaseUrl
-                let endpoint = ''
+                // Fetch detailed profile server-side to ensure user still exists in DB
+                try {
+                    const config = useRuntimeConfig()
+                    const apiBaseUrl = config.apiBaseUrl || config.public.apiBaseUrl
+                    let endpoint = ''
 
-                if (payload.role === 'archer') endpoint = '/archer/me'
-                else if (payload.role === 'organizer') endpoint = '/organizer/me'
-                else if (payload.role === 'club') endpoint = '/club/me'
-                else if (payload.role === 'seller') endpoint = '/seller/me'
-                else if (payload.role === 'root') endpoint = '' // No details endpoint for root yet
+                    if (payload.role === 'archer') endpoint = '/archer/me'
+                    else if (payload.role === 'organizer') endpoint = '/organizer/me'
+                    else if (payload.role === 'club') endpoint = '/club/me'
+                    else if (payload.role === 'seller') endpoint = '/seller/me'
+                    else if (payload.role === 'root') endpoint = '' // No details endpoint for root
 
-                if (endpoint && apiBaseUrl) {
-                    const response = await $fetch<any>(`${apiBaseUrl}${endpoint}`, {
-                        headers: {
-                            Cookie: `auth_token=${token}`
+                    if (endpoint && apiBaseUrl) {
+                        const response = await $fetch<any>(`${apiBaseUrl}${endpoint}`, {
+                            headers: {
+                                Cookie: `auth_token=${token}`
+                            }
+                        })
+
+                        profileData = response?.data || response
+                        if (profileData && (profileData.uuid || profileData.id || profileData.email || profileData.name || profileData.full_name)) {
+                            userVerified = true
                         }
-                    })
-
-                    const profileData = response.data || response // APIs return { data: ... } or just date
-                    if (profileData) {
-                        // Merge profile data into context user
-                        Object.assign(event.context.user, profileData)
+                    } else if (payload.role === 'root') {
+                        userVerified = true
                     }
+                } catch (error: any) {
+                    // Profile endpoint failed (e.g. 401 Unauthorized / 404 Not Found)
+                    console.warn('[auth.global.ts] Session invalid or user removed from DB. Clearing auth_token cookie.')
+                    deleteCookie(event, 'auth_token', { path: '/' })
+                    event.context.user = null
                 }
-            } catch (error) {
-                console.error('Auth Middleware: Failed to fetch profile', error)
+
+                if (userVerified) {
+                    event.context.user = {
+                        uuid: payload.user_id,
+                        email: payload.email,
+                        full_name: payload.name,
+                        avatar_url: payload.avatar,
+                        role: payload.role,
+                        user_type: payload.user_type,
+                        ...(profileData || {})
+                    }
+                } else if (!event.context.user) {
+                    deleteCookie(event, 'auth_token', { path: '/' })
+                    event.context.user = null
+                }
             }
         } else {
+            deleteCookie(event, 'auth_token', { path: '/' })
             event.context.user = null
         }
     }

@@ -79,13 +79,7 @@
                             </span>
                             <span class="text-[10px] bg-amber-200/60 text-amber-800 px-1.5 py-0.5 rounded font-mono font-bold">auto-fill</span>
                         </div>
-                        <label class="block font-bold text-slate-700">select demo account type:</label>
-                        <select @change="selectDemoUser($event.target.value)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-slate-700 focus:outline-none focus:ring-1 focus:ring-amber-500 font-medium">
-                            <option value="">-- select account --</option>
-                            <option value="archer">archer (archer) - stewie4king@gmail.com</option>
-                            <option value="organizer">organizer (club) - ichsanfadhil67@gmail.com</option>
-                            <option value="seller">seller (shop) - seller@panahan.com</option>
-                        </select>
+                        <BaseSelect v-model="selectedDemoAccount" :options="demoAccountOptions" label="Select Demo Account Type" placeholder="-- Select Account --" @update:model-value="selectDemoUser" />
                     </div>
 
                     <BaseInput v-model="form.email" :label="t('auth.login.email_label')" :placeholder="t('auth.login.email_placeholder')" type="email"
@@ -142,7 +136,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
@@ -151,8 +145,29 @@ import { useToast } from '~/composables/useToast'
  
 const route = useRoute()
 const { t } = useI18n()
-const { login, loginWithEmail, isLoggedIn, user } = useAuth()
+const { login, loginWithEmail, isLoggedIn, user, initializeAuth } = useAuth()
 const toast = useToast()
+
+const form = ref({
+    email: '',
+    password: '',
+    rememberMe: true
+})
+
+const checkAndRedirect = () => {
+    if (route.query.expired === 'true') return
+    if (isLoggedIn.value && user.value) {
+        let redirect = (route.query.redirect as string) || '/dashboard'
+        if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
+            redirect = '/dashboard/archer/events'
+        }
+        window.location.href = redirect
+    }
+}
+
+watch([isLoggedIn, user], () => {
+    checkAndRedirect()
+}, { immediate: true })
 
 const isDev = computed(() => {
     if (process.client) {
@@ -161,9 +176,16 @@ const isDev = computed(() => {
     return import.meta.dev
 })
 
-const selectDemoUser = (role) => {
+const selectedDemoAccount = ref('')
+const demoAccountOptions = [
+    { title: 'Archer (archer) - stewie4king@gmail.com', value: 'archer' },
+    { title: 'Organizer (club) - ichsanfadhil67@gmail.com', value: 'organizer' },
+    { title: 'Seller (shop) - seller@panahan.com', value: 'seller' },
+]
+
+const selectDemoUser = (role: string) => {
     if (!role) return
-    const credentials = {
+    const credentials: Record<string, { email: string, password: string }> = {
         archer: { email: 'stewie4king@gmail.com', password: '12345' },
         organizer: { email: 'ichsanfadhil67@gmail.com', password: '123456' },
         seller: { email: 'seller@panahan.com', password: '12345' }
@@ -178,12 +200,12 @@ const selectDemoUser = (role) => {
 }
 
 useHead({
-    title: 'Login - Archeris.net'
+    title: computed(() => (t('auth.login.seo_title', 'Masuk ke Akun')) + ' - Archeris.net')
 })
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
 
-const getMediaUrl = (filename) => {
+const getMediaUrl = (filename: string) => {
     if (!filename) return ''
     if (filename.startsWith('http')) return filename
     // apiBaseUrl already contains /api/v1
@@ -194,7 +216,7 @@ const isLoading = ref(false)
 
 const { errors, validate, validateForm, rules } = useFormValidation()
 
-const userAvatar = ref(null)
+const userAvatar = ref<string | null>(null)
 
 watch(() => form.value.email, async (newEmail) => {
     if (!newEmail || !newEmail.includes('@')) {
@@ -204,7 +226,7 @@ watch(() => form.value.email, async (newEmail) => {
 
     // Debounce or wait for blur if preferred, but let's try real-time
     try {
-        const response = await $fetch(`${apiBaseUrl}/auth/avatar/${encodeURIComponent(newEmail)}`)
+        const response = await $fetch<{ avatar_url?: string }>(`${apiBaseUrl}/auth/avatar/${encodeURIComponent(newEmail)}`)
         if (response && response.avatar_url) {
             userAvatar.value = getMediaUrl(response.avatar_url)
         } else {
@@ -217,7 +239,7 @@ watch(() => form.value.email, async (newEmail) => {
 
 const slides = ['/slide-1.jpeg', '/slide-2.jpeg', '/slide-3.jpeg']
 const currentSlideIndex = ref(0)
-let slideInterval = null
+let slideInterval: any = null
 
 const startSlideshow = () => {
     slideInterval = setInterval(() => {
@@ -225,37 +247,26 @@ const startSlideshow = () => {
     }, 2000)
 }
 
-const form = ref({
-    email: '',
-    password: '',
-    rememberMe: true
-})
-
 // Redirect if already logged in or auto-fill in development
 onMounted(async () => {
     startSlideshow()
 
-    if (isLoggedIn.value) {
-        let redirect = route.query.redirect || '/dashboard'
-        if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
-            redirect = '/dashboard/archer/events'
-        }
-        window.location.href = redirect
+    if (route.query.expired === 'true') {
+        const cookiesToClear = ['auth_token', 'refresh_token', 'session', 'token']
+        cookiesToClear.forEach(c => {
+            document.cookie = `${c}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+            document.cookie = `${c}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; max-age=0;`
+        })
+        try {
+            sessionStorage.removeItem('auth_user')
+            localStorage.removeItem('auth_user')
+            localStorage.removeItem('auth_token')
+        } catch {}
         return
     }
 
-    // Auto-fill for development
-    if (import.meta.dev) {
-        try {
-            const { email, password } = await $fetch(`${apiBaseUrl}/auth/sample-user`)
-            if (email) {
-                form.value.email = email
-                form.value.password = password
-            }
-        } catch (err) {
-            console.warn('Failed to fetch sample user for auto-fill:', err)
-        }
-    }
+    await initializeAuth()
+    checkAndRedirect()
 })
 
 const handleEmailAuth = async () => {
@@ -270,6 +281,9 @@ const handleEmailAuth = async () => {
 
     try {
         await loginWithEmail(form.value.email, form.value.password)
+        const welcomeMsg = user.value?.full_name ? `Welcome back, ${user.value.full_name}!` : 'Login successful!'
+        sessionStorage.setItem('auth_toast', welcomeMsg)
+
         // Full page reload so auth state is restored from cookie/SSR
         let redirect = route.query.redirect || '/dashboard'
         if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {

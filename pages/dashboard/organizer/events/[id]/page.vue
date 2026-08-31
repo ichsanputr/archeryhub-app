@@ -2,23 +2,54 @@
     <div class="flex flex-col gap-8">
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
         <!-- Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-                <h1 class="text-2xl sm:text-3xl font-black text-navy tracking-tight text-center sm:text-left">{{ $t('dashboard_events_page.title') }}</h1>
-                <div class="text-gray-500 mt-1 text-sm text-center sm:text-left">{{ $t('dashboard_events_page.subtitle') }}</div>
+        <div
+            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
             </div>
-            <div class="flex items-center justify-center sm:justify-end gap-2 sm:gap-3">
-                <BaseButton variant="outline" icon="ph:eye" :to="`/events/${eventData.slug}`" target="_blank" size="md"
-                    class="flex-1 sm:flex-none">
-                    {{ $t('dashboard_events_page.view_button') }}
-                </BaseButton>
-                <BaseButton variant="primary" icon="ph:floppy-disk"
-                    @click="isSubscriptionActive ? saveEventPage() : (showPremiumModal = true)"
-                    :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
-                    :loading="saving" size="md"
-                    class="flex-1 sm:flex-none">
-                    {{ $t('dashboard_events_page.save_button') }}
-                </BaseButton>
+
+            <!-- Decorative Background Elements -->
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+            <!-- Header Content -->
+            <div class="relative p-6 sm:p-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="flex items-center sm:items-start gap-4">
+                        <!-- Icon Badge -->
+                        <div
+                            class="size-12 sm:size-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg shrink-0">
+                            <Icon icon="ph:browser-bold" class="text-primary text-xl sm:text-2xl" />
+                        </div>
+
+                        <!-- Title Section -->
+                        <div class="flex-1 min-w-0">
+                            <h1 class="text-xl sm:text-2xl lg:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2">
+                                {{ $t('dashboard_events_page.title') }}
+                            </h1>
+                            <div class="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
+                                {{ $t('dashboard_events_page.subtitle') }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+                        <BaseButton variant="outline" icon="ph:eye-bold" :to="`/events/${eventData.slug}`" target="_blank" size="md"
+                            class="h-10 sm:h-11 px-5 text-white border-white/30 hover:bg-white/10 backdrop-blur-sm text-xs sm:text-sm font-bold">
+                            {{ $t('dashboard_events_page.view_button') }}
+                        </BaseButton>
+                        <BaseButton variant="primary" icon="ph:floppy-disk-bold"
+                            @click="isSubscriptionActive ? saveEventPage() : (showPremiumModal = true)"
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                            :loading="saving" size="md"
+                            class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 text-xs sm:text-sm font-black">
+                            {{ $t('dashboard_events_page.save_button') }}
+                        </BaseButton>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -113,14 +144,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <BaseSelect v-model="form.location_type" :items="disciplines" item-value="name"
-                                    item-title="name" :label="$t('dashboard_events_page.information.location_type_label')" :placeholder="$t('dashboard_events_page.information.location_type_placeholder')" />
-                            </div>
-                            <div>
-                                <BaseSelect v-model="form.status" :items="statusOptions" :label="$t('dashboard_events_page.information.status_label')" />
-                            </div>
+                        <div>
+                            <BaseSelect v-model="form.status" :items="statusOptions" :label="$t('dashboard_events_page.information.status_label')" />
                         </div>
                     </div>
                 </section>
@@ -138,17 +163,23 @@
                         </h2>
                     </div>
                     <div class="p-4 sm:p-6">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.registration.start_label') }}</label>
-                                <div class="grid grid-cols-2 gap-2">
+                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                    <Icon icon="ph:calendar-blank-bold" class="text-primary text-base" />
+                                    {{ $t('dashboard_events_page.registration.start_label') }}
+                                </label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <BaseDatePicker :model-value="getSchedDate(form.page_settings, 'registration_start')" @update:model-value="val => setSchedDate(form.page_settings, 'registration_start', val)" />
                                     <BaseTimePicker :model-value="getSchedTime(form.page_settings, 'registration_start')" @update:model-value="val => setSchedTime(form.page_settings, 'registration_start', val)" placeholder="08:00" />
                                 </div>
                             </div>
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.registration.end_label') }}</label>
-                                <div class="grid grid-cols-2 gap-2">
+                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                    <Icon icon="ph:calendar-check-bold" class="text-primary text-base" />
+                                    {{ $t('dashboard_events_page.registration.end_label') }}
+                                </label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <BaseDatePicker :model-value="getSchedDate(form, 'registration_deadline')" @update:model-value="val => setSchedDate(form, 'registration_deadline', val)" />
                                     <BaseTimePicker :model-value="getSchedTime(form, 'registration_deadline')" @update:model-value="val => setSchedTime(form, 'registration_deadline', val)" placeholder="23:59" />
                                 </div>
@@ -335,7 +366,7 @@
 
                         <!-- Preview of configured bank accounts -->
                         <div class="mt-4 border-t border-gray-100 pt-4">
-                            <h4 class="text-xs font-black text-gray-400 tracking-wider mb-3 text-left uppercase">{{ $t('dashboard_events_page.manual_payment.list_title') }}</h4>
+                            <h4 class="text-xs font-black text-gray-400 tracking-wider mb-3 text-left ">{{ $t('dashboard_events_page.manual_payment.list_title') }}</h4>
                             <div v-if="orgBankAccounts.length === 0" class="text-xs text-amber-600 bg-amber-50 border border-amber-100 p-4 rounded-2xl text-left flex items-start gap-2.5">
                                 <Icon icon="ph:warning-circle-bold" class="text-lg shrink-0 mt-0.5" />
                                 <div>
@@ -374,19 +405,28 @@
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:emoji-events" class="text-primary text-lg sm:text-xl" />
+                            <Icon icon="ph:trophy-bold" class="text-primary text-lg sm:text-xl" />
                             {{ $t('dashboard_events_page.prizes.title') }}
                         </h2>
                     </div>
                     <div class="p-4 sm:p-6 space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.prizes.total_prize_label') }}</label>
-                                <input v-model.number="form.total_prize" type="number"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                    <Icon icon="ph:currency-circle-dollar-bold" class="text-primary text-base" />
+                                    {{ $t('dashboard_events_page.prizes.total_prize_label') }}
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-bold">Rp</span>
+                                    <input v-model.number="form.total_prize" type="number" min="0" placeholder="0"
+                                        class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-bold" />
+                                </div>
                             </div>
                             <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.prizes.guidebook_label') }}</label>
+                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                    <Icon icon="ph:book-bookmark-bold" class="text-primary text-base" />
+                                    {{ $t('dashboard_events_page.prizes.guidebook_label') }}
+                                </label>
                                 <div class="flex items-center gap-2">
                                     <input type="text" :value="form.technical_guidebook_url ? 'Guidebook.pdf' : ''"
                                         readonly
@@ -394,7 +434,7 @@
                                         :placeholder="$t('dashboard_events_page.prizes.no_file')" />
                                     <input type="file" ref="guidebookInput" class="hidden" accept=".pdf"
                                         @change="handleGuidebookUpload" />
-                                    <BaseButton variant="outline" size="sm" @click="$refs.guidebookInput.click()"
+                                    <BaseButton variant="outline" size="sm" icon="ph:upload-simple-bold" @click="$refs.guidebookInput.click()"
                                         :loading="uploadingGuidebook">{{ $t('dashboard_events_page.prizes.upload') }}</BaseButton>
                                 </div>
                             </div>
@@ -858,8 +898,8 @@ const showPremiumModal = ref(false)
 const { t } = useI18n()
 
 const statusOptions = computed(() => [
-    { value: 'draft', title: t('dashboard_events_page.status_options.draft') },
-    { value: 'active', title: t('dashboard_events_page.status_options.active') }
+    { value: 'draft', title: computed(() => t('dashboard_events_page.status_options.draft')) },
+    { value: 'active', title: computed(() => t('dashboard_events_page.status_options.active')) }
 ])
 
 definePageMeta({
@@ -1323,10 +1363,11 @@ const fetchEventData = async () => {
                 faq: true
             }
 
+            const regStartRaw = parsedPageSettings.registration_start || data.registration_start || data.created_at || ''
             const pageSettings = {
                 enable_manual_payment: parsedPageSettings.enable_manual_payment !== false,
                 ...parsedPageSettings,
-                registration_start: parsedPageSettings.registration_start ? formatToDatetimeLocal(parsedPageSettings.registration_start) : '',
+                registration_start: regStartRaw ? formatToDatetimeLocal(regStartRaw) : '',
                 sections: {
                     ...sectionDefaults,
                     ...(parsedPageSettings.sections || {})

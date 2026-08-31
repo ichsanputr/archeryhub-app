@@ -41,10 +41,7 @@ export const useImageOrDefault = (
   name?: string
 ): string => {
   if (url?.trim()) {
-    // If it's already a full URL, return it
-    if (url.startsWith('http')) return url
-    // If it's a relative path, prepend API URL if needed (adjust based on your setup)
-    return url
+    return getImageUrl(url)
   }
 
   // If name provided, use DiceBear
@@ -55,4 +52,28 @@ export const useImageOrDefault = (
 
   // Fallback to default avatar if no name
   return '/avatar-default.svg'
+}
+
+/**
+ * Get full image URL by handling relative paths from API
+ */
+export const getImageUrl = (url: string | null | undefined): string => {
+  if (!url) return ''
+  const config = useRuntimeConfig()
+  const apiBase = (config.public?.apiBase as string) || 'http://localhost:8001'
+
+  // If URL has localhost/127.0.0.1 from local database seed, rewrite to current environment's apiBase
+  if (url.includes('localhost:') || url.includes('127.0.0.1:')) {
+    const filename = url.split('/').pop() || ''
+    return `${apiBase}/media/${filename}`
+  }
+
+  if (url.startsWith('http://') || url.startsWith('https://')) return url
+  if (url.startsWith('/')) {
+    return `${apiBase}${url}`
+  }
+  if (!url.startsWith('uploads/') && !url.startsWith('media/')) {
+    return `${apiBase}/media/${url}`
+  }
+  return `${apiBase}/${url}`
 }

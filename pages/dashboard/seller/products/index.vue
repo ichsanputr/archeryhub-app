@@ -3,6 +3,7 @@
         <!-- Enhanced Header -->
         <div
             class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm mb-2">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
             <!-- Theme Motif Pattern -->
             <div class="absolute inset-0"
                 style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
@@ -15,86 +16,64 @@
                         <Icon icon="ph:package-bold" class="text-primary text-2xl sm:text-3xl" />
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none capitalize">{{ t('seller_products.title') }}</h1>
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none capitalize">{{ t('seller_products.title', 'Produk Toko') }}</h1>
                         <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">
-                            {{ t('seller_products.subtitle') }}</div>
+                            {{ t('seller_products.subtitle', 'Kelola daftar produk, stok, dan harga barang Anda') }}</div>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3">
                     <BaseButton variant="primary" icon="ph:plus-bold"
                         class="w-full sm:w-auto h-11 px-6 shadow-lg shadow-primary/20 font-black capitalize tracking-widest text-[10px] !rounded-xl"
                         to="/dashboard/seller/products/add">
-                        {{ t('seller_products.add_button') }}
+                        {{ t('seller_products.add_button', 'Tambah Produk Baru') }}
                     </BaseButton>
                 </div>
             </div>
         </div>
 
         <!-- Quick Stats -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div
-                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:package-bold" class="text-xl" />
-                </div>
-                <div>
-                    <div class="text-[9px] text-gray-400 font-black tracking-widest capitalize">{{ t('seller_products.stats_total') }}</div>
-                    <div class="text-lg font-black text-navy">{{ products.length }}</div>
-                </div>
-            </div>
-            <div
-                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-green-500 group-hover:bg-green-500 group-hover:text-white transition-colors">
-                    <Icon icon="ph:check-circle-bold" class="text-xl" />
-                </div>
-                <div>
-                    <div class="text-[9px] text-gray-400 font-black tracking-widest capitalize">{{ t('seller_products.stats_active') }}</div>
-                    <div class="text-lg font-black text-navy">{{products.filter(p => p.status === 'active').length}}
-                    </div>
-                </div>
-            </div>
-            <div
-                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors">
-                    <Icon icon="ph:warning-circle-bold" class="text-xl" />
-                </div>
-                <div>
-                    <div class="text-[9px] text-gray-400 font-black tracking-widest capitalize">{{ t('seller_products.stats_low_stock') }}</div>
-                    <div class="text-lg font-black text-navy">{{products.filter(p => p.stock < 10).length}}</div>
-                    </div>
-                </div>
-                <div
-                    class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                        <Icon icon="ph:eye-bold" class="text-xl" />
-                    </div>
-                    <div>
-                        <div class="text-[9px] text-gray-400 font-black tracking-widest capitalize">{{ t('seller_products.stats_views') }}</div>
-                        <div class="text-lg font-black text-navy">{{products.reduce((acc, p) => acc + (p.views || 0),
-                            0).toLocaleString('id-ID') }}</div>
-                    </div>
-                </div>
-            </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <StatCard
+                :title="t('seller_products.stats_total', 'Total Produk')"
+                :value="products.length"
+                icon="ph:package-bold"
+                color="primary"
+            />
+            <StatCard
+                :title="t('seller_products.stats_active', 'Produk Aktif')"
+                :value="products.filter(p => p.status === 'active').length"
+                icon="ph:check-circle-bold"
+                color="primary"
+            />
+            <StatCard
+                :title="t('seller_products.stats_low_stock', 'Stok Menipis')"
+                :value="products.filter(p => p.stock < 10).length"
+                icon="ph:warning-circle-bold"
+                color="primary"
+            />
+            <StatCard
+                :title="t('seller_products.stats_views', 'Total Tayangan')"
+                :value="products.reduce((acc, p) => acc + (p.views || 0), 0).toLocaleString('id-ID')"
+                icon="ph:eye-bold"
+                color="primary"
+            />
+        </div>
 
             <!-- Search & Filter -->
             <div
                 class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
                 <div class="flex-grow w-full">
-                    <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" :placeholder="t('seller_products.search_placeholder')"
-                        :label="t('seller_products.search_label')" />
+                    <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" :placeholder="t('seller_products.search_placeholder', 'Cari produk...')"
+                        :label="t('seller_products.search_label', 'Cari')" />
                 </div>
                 <div class="w-full md:w-48">
-                    <BaseSelect v-model="statusFilter" :items="statusOptions" :label="t('seller_products.status_filter')" item-title="title" />
+                    <BaseSelect v-model="statusFilter" :items="statusOptions" :label="t('seller_products.status_filter', 'Status')" item-title="title" />
                 </div>
                 <div class="w-full md:w-48">
-                    <BaseSelect v-model="categoryFilter" :items="categoryOptions" :label="t('seller_products.category_filter')" item-title="title" />
+                    <BaseSelect v-model="categoryFilter" :items="categoryOptions" :label="t('seller_products.category_filter', 'Kategori')" item-title="title" />
                 </div>
                 <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
-                    {{ t('seller_products.reset_filters') }}
+                    {{ t('seller_products.reset_filters', 'Reset Filter') }}
                 </BaseButton>
             </div>
 
@@ -277,17 +256,13 @@
 import { Icon } from '@iconify/vue'
 import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 
-definePageMeta({
-    title: 'Marketplace',
-    layout: 'dashboard'
-})
+definePageMeta({ layout: 'dashboard' })
 
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 
 useHead({
-    title: computed(() => `${t('seller_products.title')} - Archeris Dashboard`)
+    title: computed(() => `${t('seller_products.title')} - ArcheryHub Dashboard`)
 })
 
 const { get, delete: del } = useApi()

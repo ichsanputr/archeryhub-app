@@ -1,27 +1,23 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
-    <div class="flex items-center gap-5">
-      <div class="size-12 rounded-2xl bg-navy flex items-center justify-center shrink-0 shadow-lg">
-        <Icon icon="ph:gear-six-bold" class="text-primary text-2xl" />
-      </div>
-      <div>
-        <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none">
-          {{ t('settings.title') }}
-        </h1>
-        <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider">
-          {{ t('settings.subtitle') }}
-        </div>
-      </div>
-    </div>
+    <!-- Header Section -->
+    <DashboardHeader
+      :title="t('settings.title')"
+      :subtitle="t('settings.subtitle')"
+      icon="ph:gear-six-bold"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('settings.title', 'Pengaturan') }
+      ]"
+    />
 
     <!-- Settings Nav Tabs -->
-    <div class="flex gap-1 bg-gray-100 rounded-2xl p-1.5 overflow-x-auto no-scrollbar">
+    <div class="flex gap-1 bg-slate-100 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm">
       <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-        :class="activeTab === tab.value ? 'bg-white shadow-sm text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
-        class="flex items-center justify-center gap-2 flex-1 min-w-[120px] px-4 py-2.5 rounded-xl text-sm font-black transition-all">
-        <Icon :icon="tab.icon" class="text-base" />
-        <span>{{ tab.label }}</span>
+        :class="activeTab === tab.value ? 'bg-white shadow-sm text-navy font-black' : 'text-slate-500 hover:text-navy hover:bg-white/50 font-bold'"
+        class="flex items-center justify-center gap-2 flex-1 min-w-[120px] sm:min-w-[140px] px-4 py-2.5 rounded-xl text-xs sm:text-sm whitespace-nowrap shrink-0 transition-all">
+        <Icon :icon="tab.icon" class="text-base shrink-0" />
+        <span class="whitespace-nowrap">{{ tab.label }}</span>
       </button>
     </div>
 
@@ -116,57 +112,6 @@
           </div>
         </div>
 
-        <!-- Connected Login Methods -->
-        <div class="mb-8">
-          <h4 class="text-sm font-black text-navy tracking-widest mb-4 flex items-center gap-2">
-            <Icon icon="ph:link-bold" class="text-primary" />
-            {{ t('settings.connected_methods') }}
-          </h4>
-          <div class="space-y-3">
-            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center">
-                  <Icon icon="flat-color-icons:google" class="text-xl" />
-                </div>
-                <div>
-                  <div class="font-bold text-navy">{{ t('settings.google_login') }}</div>
-                  <div class="text-xs text-gray-400">Google Account</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-2">
-                <span v-if="userData?.google_id"
-                  class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">
-                  Connected
-                </span>
-                <template v-else>
-                  <span class="px-3 py-1 bg-gray-200 text-gray-500 text-xs font-bold rounded-full mr-2">
-                    Not Connected
-                  </span>
-                  <BaseButton variant="outline" size="sm" @click="linkGoogle">
-                    Connect
-                  </BaseButton>
-                </template>
-              </div>
-            </div>
-            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center">
-                  <Icon icon="ph:envelope-bold" class="text-xl text-gray-400" />
-                </div>
-                <div>
-                  <div class="font-bold text-navy">{{ t('settings.email_password') }}</div>
-                  <div class="text-xs text-gray-400">Email & Password</div>
-                </div>
-              </div>
-              <span
-                :class="hasPassword ? 'px-3 py-1 bg-green-100 text-green-600' : 'px-3 py-1 bg-gray-200 text-gray-500'"
-                class="text-xs font-bold rounded-full">
-                {{ hasPassword ? 'Active' : 'Inactive' }}
-              </span>
-            </div>
-          </div>
-        </div>
-
         <!-- Change Password Form -->
         <div class="pt-8 border-t border-gray-100">
           <h4 class="text-sm font-black text-navy tracking-widest mb-6 flex items-center gap-2">
@@ -236,7 +181,7 @@
               </div>
             </div>
             <div class="text-xs text-gray-400 capitalize">
-              {{ t('organization_settings_page.theme_desc', { key: key }) }}
+              {{ t('settings.theme_desc', 'Tema tampilan untuk dashboard') }}
             </div>
           </div>
 
@@ -247,17 +192,14 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Save Button (Optional depending on tab) -->
-  <div v-if="activeTab === 'theme'" class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
-    <BaseButton variant="outline" size="md" @click="resetForm" :loading="isResetting">
-      {{ t('settings.security_tab') }}
-    </BaseButton>
-    <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral">
-      Save Changes
-    </BaseButton>
+      <!-- Save Button (Optional depending on tab) -->
+      <div v-if="activeTab === 'theme'" class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
+        <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral">
+          {{ t('settings.save_changes', 'Simpan Perubahan') }}
+        </BaseButton>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -280,7 +222,7 @@ definePageMeta({
 })
 
 useHead({
-  title: () => t('settings.title') + ' - Archeris Dashboard'
+  title: computed(() => `${t('settings.title', 'Settings')} - ArcheryHub Dashboard`)
 })
 const { login, user, organizerProfile } = useAuth()
 const { get, put } = useApi()

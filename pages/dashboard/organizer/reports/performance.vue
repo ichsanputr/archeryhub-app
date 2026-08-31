@@ -1,26 +1,23 @@
 <template>
   <div class="space-y-8">
     <!-- Header Section -->
-    <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
-      <div class="absolute inset-0"
-        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
-      <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="flex items-center gap-5">
-          <NuxtLink :to="getBackLink()"
-            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner text-white hover:bg-white/20 transition-all">
-            <Icon icon="ph:arrow-left-bold" class="text-primary text-xl sm:text-2xl" />
-          </NuxtLink>
-          <div>
-            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none">{{ t('dashboard.reports.performance_title') }}</h1>
-            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider">Review Event Fill Rates, Category Registration Statistics, and Quota Utilization.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <DashboardHeader
+      :title="t('dashboard.reports.performance_title')"
+      subtitle="Review Event Fill Rates, Category Registration Statistics, and Quota Utilization."
+      icon="ph:trend-up-bold"
+      :back-to="getBackLink()"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('dashboard.reports.title', 'Laporan'), to: '/dashboard/organizer/reports' },
+        { label: t('dashboard.reports.performance_title') }
+      ]"
+    >
+      <template #actions>
+        <BaseButton variant="primary" icon="ph:download-simple-bold" class="h-11 px-5 text-xs font-black" @click="handleExportExcel">
+          Ekspor Excel
+        </BaseButton>
+      </template>
+    </DashboardHeader>
 
     <!-- Filters Panel -->
     <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
@@ -32,13 +29,13 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <!-- Start Date Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.start_date') }}</label>
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.start_date') }}</label>
           <BaseDatePicker v-model="filters.start_date" :placeholder="t('dashboard.reports.start_date')" />
         </div>
 
         <!-- End Date Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 uppercase tracking-wider">{{ t('dashboard.reports.end_date') }}</label>
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.end_date') }}</label>
           <BaseDatePicker v-model="filters.end_date" :placeholder="t('dashboard.reports.end_date')" />
         </div>
       </div>
@@ -133,6 +130,9 @@ definePageMeta({
   layout: 'dashboard'
 })
 
+useHead({ title: computed(() => t('reports.performance', 'Performance Report') + ' - ArcheryHub Dashboard') })
+
+
 const { t } = useI18n()
 const route = useRoute()
 const api = useApi()
@@ -181,6 +181,34 @@ const resetFilters = () => {
   filters.start_date = ''
   filters.end_date = ''
   fetchReportData()
+}
+
+import { exportToExcel } from '~/utils/exportExcel'
+
+const handleExportExcel = () => {
+  const list = stats.value.events_performance || []
+  const data = list.map((p, idx) => ({
+    no: idx + 1,
+    event_name: p.name || p.event_name || '-',
+    date_range: formatDateRange(p.start_date, p.end_date),
+    quota: p.quota || p.capacity || 0,
+    registered: p.participants_count || p.registered_count || p.participants || 0,
+    fill_rate: `${p.fill_rate || 0}%`,
+    status: p.status || '-'
+  }))
+  exportToExcel(
+    'Laporan_Performa_Event_ArcheryHub',
+    [
+      { key: 'no', label: 'No' },
+      { key: 'event_name', label: 'Nama Event' },
+      { key: 'date_range', label: 'Jadwal Event' },
+      { key: 'quota', label: 'Kapasitas Kuota' },
+      { key: 'registered', label: 'Jumlah Terdaftar' },
+      { key: 'fill_rate', label: 'Tingkat Keterisian (%)' },
+      { key: 'status', label: 'Status Event' }
+    ],
+    data
+  )
 }
 
 const formatDateRange = (startStr, endStr) => {

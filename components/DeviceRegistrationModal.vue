@@ -19,11 +19,7 @@
         <!-- Registration Form -->
         <div v-if="!registeredDevice" class="space-y-4">
           <div>
-            <label class="block text-brand-gold text-xs font-bold  mb-1.5 pl-1">Target Tournament</label>
-            <select v-model="form.tournament_id" class="input w-full">
-              <option value="" disabled>Select a tournament</option>
-              <option v-for="t in tournaments" :key="t.id" :value="t.id">{{ t.name }}</option>
-            </select>
+            <BaseSelect v-model="form.tournament_id" :options="tournamentOptions" label="Target Tournament" placeholder="Select a tournament" required class="w-full" />
           </div>
 
           <div class="grid grid-cols-2 gap-4">
@@ -32,12 +28,7 @@
               <input v-model="form.device_name" type="text" class="input w-full" placeholder="e.g. Tablet 01" />
             </div>
             <div>
-              <label class="block text-brand-gold text-xs font-bold  mb-1.5 pl-1">Device Type</label>
-              <select v-model="form.device_type" class="input w-full">
-                <option value="tablet">Tablet</option>
-                <option value="phone">Smartphone</option>
-                <option value="kiosk">Kiosk</option>
-              </select>
+              <BaseSelect v-model="form.device_type" :options="deviceTypeOptions" label="Device Type" class="w-full" />
             </div>
           </div>
 
@@ -96,6 +87,15 @@ const { get, post } = useApi()
 
 const loading = ref(false)
 const tournaments = ref([])
+const tournamentOptions = computed(() => {
+  return tournaments.value.map(t => ({ title: t.name, value: t.id }))
+})
+
+const deviceTypeOptions = [
+  { title: 'Tablet', value: 'tablet' },
+  { title: 'Smartphone', value: 'phone' },
+  { title: 'Kiosk', value: 'kiosk' }
+]
 const registeredDevice = ref(null)
 const qrCodeUrl = ref('')
 

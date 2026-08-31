@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </div>
-                    <NuxtLink :to="`/dashboard/${userPersona}/subscription`"
+                    <NuxtLink :to="`/dashboard/${userPersona}/package`"
                         class="bg-primary hover:bg-white text-navy font-black text-[10px] sm:text-xs px-4 sm:px-5 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2 whitespace-nowrap tracking-widest active:scale-95 shrink-0">
                         <Icon icon="ph:crown-bold" class="text-xs sm:text-sm" />
                         <span class="hidden xs:inline">{{ t('dashboard.expired_banner.action') }}</span>

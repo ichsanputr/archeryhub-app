@@ -59,8 +59,8 @@
 
                     <!-- Qual Rank Badge -->
                     <div class="flex flex-col items-center md:items-end justify-center">
-                        <p class="text-[10px] font-black text-slate-400 tracking-widest mb-1">Peringkat
-                            Kualifikasi</p>
+                        <div class="text-[10px] font-black text-slate-400 tracking-widest mb-1">Peringkat
+                            Kualifikasi</div>
                         <div class="flex items-baseline gap-1">
                             <span class="text-4xl font-black text-primary tracking-tighter">{{ qualRank || '-' }}</span>
                             <span class="text-sm font-bold text-primary">{{ getOrdinal(qualRank) }}</span>
@@ -142,8 +142,8 @@
                                 <tr v-else>
                                     <td colspan="4" class="py-20 text-center">
                                         <Icon icon="ph:target-light" class="text-6xl mx-auto mb-4 opacity-10" />
-                                        <p class="text-xs font-black tracking-widest text-slate-300">Data
-                                            tidak tersedia</p>
+                                        <div class="text-xs font-black tracking-widest text-slate-300">Data
+                                            tidak tersedia</div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -156,7 +156,9 @@
 </template>
 
 <script setup>
+const { t } = useI18n()
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 const { get } = useApi()
 const route = useRoute()
 const router = useRouter()
@@ -165,6 +167,9 @@ const eventId = route.params.id
 definePageMeta({
     layout: 'dashboard'
 })
+
+useHead({ title: computed(() => t('qualification.my_results', 'My Qualification Results') + ' - ArcheryHub Dashboard') })
+
 
 const isLoading = ref(true)
 const userProfile = ref(null)

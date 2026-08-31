@@ -13,7 +13,7 @@
             <Icon icon="ph:clipboard-text-bold" class="text-2xl" />
           </div>
           <h3 class="text-xl font-black text-navy mb-2">{{ t('event_detail.registration_data') }}</h3>
-          <p class="text-sm text-gray-400 font-bold">{{ t('event_detail.registration_data_desc') }}</p>
+          <div class="text-sm text-gray-400 font-bold">{{ t('event_detail.registration_data_desc') }}</div>
           <div class="mt-6 flex items-center gap-2 text-amber-500 text-xs font-black tracking-widest">
             {{ t('event_detail.open_data') }}
             <Icon icon="ph:arrow-right-bold" />
@@ -30,7 +30,7 @@
             <Icon icon="ph:chart-line-up-bold" class="text-2xl" />
           </div>
           <h3 class="text-xl font-black text-navy mb-2">{{ t('event_detail.qualification_results') }}</h3>
-          <p class="text-sm text-gray-400 font-bold">{{ t('event_detail.qualification_results_desc') }}</p>
+          <div class="text-sm text-gray-400 font-bold">{{ t('event_detail.qualification_results_desc') }}</div>
           <div class="mt-6 flex items-center gap-2 text-emerald-500 text-xs font-black tracking-widest">
             {{ t('event_detail.open_results') }}
             <Icon icon="ph:arrow-right-bold" />
@@ -47,7 +47,7 @@
             <Icon icon="ph:git-merge-bold" class="text-2xl" />
           </div>
           <h3 class="text-xl font-black text-navy mb-2">{{ t('event_detail.elimination_results') }}</h3>
-          <p class="text-sm text-gray-400 font-bold">{{ t('event_detail.elimination_results_desc') }}</p>
+          <div class="text-sm text-gray-400 font-bold">{{ t('event_detail.elimination_results_desc') }}</div>
           <div class="mt-6 flex items-center gap-2 text-indigo-500 text-xs font-black tracking-widest">
             {{ t('event_detail.open_results') }}
             <Icon icon="ph:arrow-right-bold" />
@@ -64,9 +64,9 @@
             <Icon icon="ph:info-bold" class="text-white text-2xl" />
             {{ t('event_detail.important_info') }}
           </h4>
-          <p class="text-slate-300 text-sm max-w-2xl leading-relaxed mb-6">
+          <div class="text-slate-300 text-sm max-w-2xl leading-relaxed mb-6">
             {{ t('event_detail.important_info_desc') }}
-          </p>
+          </div>
           <div class="flex flex-wrap gap-4">
             <div class="px-4 py-2 bg-white/5 rounded-xl border border-white/10 text-xs font-bold text-slate-300">
               {{ t('event_detail.check_in_time') }}
@@ -86,10 +86,10 @@
           <Icon icon="ph:info-bold" class="text-primary" /> {{ t('event_detail.about_tournament') }}
         </h2>
         <div class="prose max-w-none text-text-sub leading-relaxed space-y-4">
-          <p>{{ t('event_detail.about_tournament_desc') }}</p>
+          <div>{{ t('event_detail.about_tournament_desc') }}</div>
           <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 mt-6">
             <h4 class="font-bold text-navy mb-2">{{ t('event_detail.technical_handbook') }}</h4>
-            <p class="text-sm text-text-sub mb-3">{{ t('event_detail.technical_handbook_desc') }}</p>
+            <div class="text-sm text-text-sub mb-3">{{ t('event_detail.technical_handbook_desc') }}</div>
             <BaseButton variant="white" size="sm" icon="ph:download-simple"
               class="text-navy font-bold text-sm border-none shadow-none p-0 h-auto hover:underline">
               {{ t('event_detail.download_pdf') }}

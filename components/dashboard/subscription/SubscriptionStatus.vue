@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div v-else class="mt-4">
-                <NuxtLink :to="`/dashboard/${userPersona}/subscription`"
+                <NuxtLink :to="`/dashboard/${userPersona}/package`"
                     class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-navy text-primary hover:bg-white hover:text-navy border border-navy rounded-xl text-xs font-black transition-all shadow-xl shadow-navy/10 tracking-widest active:scale-95">
                     <Icon icon="ph:sketch-logo-bold" />
                     {{ t('subscription.header.choose_new', 'Pilih Paket Baru') }}

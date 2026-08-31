@@ -104,7 +104,7 @@
           class="flex items-center gap-2 px-3 h-9 rounded-xl bg-gray-100 dark:bg-white/5 border border-transparent dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 transition-all duration-300 text-xs font-bold tracking-widest text-gray-700 dark:text-slate-300">
           <Icon :icon="langFlags[locale] || 'ph:globe-bold'"
             class="text-lg rounded-full overflow-hidden border border-gray-200 dark:border-white/10 shrink-0" />
-          <span class="uppercase">{{ locale }}</span>
+          <span class="capitalize font-black tracking-wider">{{ (locale || 'ID').toUpperCase() }}</span>
         </button>
 
         <Transition enter-active-class="transition duration-200 ease-out"
