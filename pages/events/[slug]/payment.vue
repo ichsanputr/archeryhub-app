@@ -78,7 +78,7 @@
                                     <div
                                         class="animate-spin size-8 border-2 border-navy border-t-transparent rounded-full">
                                     </div>
-                                    <p class="text-[10px] font-black text-gray-400">Memuat...</p>
+                                    <div class="text-[10px] font-black text-gray-400">Memuat...</div>
                                 </div>
 
                                 <div v-else-if="channels.length === 0" class="text-center py-12 bg-gray-50 rounded-2xl">
@@ -197,9 +197,9 @@
                                         <span class="text-xl font-black text-navy tracking-tight">Rp {{
                                             formatNumber(totalAmount) }}</span>
                                     </div>
-                                    <p v-if="selectedChannelData" class="text-[9px] text-gray-400 font-bold italic">
+                                    <div v-if="selectedChannelData" class="text-[9px] text-gray-400 font-bold italic">
                                         *Sudah termasuk biaya admin {{ selectedChannelData.name }}
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -213,12 +213,12 @@
                                 <div class="p-3 bg-gray-50 rounded-xl border border-gray-100">
                                     <div class="flex gap-2">
                                         <Icon icon="ph:shield-check-bold" class="text-navy/20 text-sm shrink-0" />
-                                        <p class="text-[9px] text-gray-500 font-bold leading-relaxed italic">
+                                        <div class="text-[9px] text-gray-500 font-bold leading-relaxed italic">
                                             Transaksi aman & terenkripsi. Segera selesaikan pembayaran untuk
                                             mengamankan
                                             slot
                                             Anda.
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -379,10 +379,11 @@ const handlePayment = async () => {
 
     loading.value = true
     try {
-        // Use registration UUID for the transaction creation
         const res = await payment.createParticipantPayment(registration.value.id, selectedChannel.value)
 
-        if (res && res.reference) {
+        if (res && res.checkout_url) {
+            window.location.href = res.checkout_url
+        } else if (res && res.reference) {
             router.push(`/payment/status/${res.reference}`)
         }
     } catch (err) {

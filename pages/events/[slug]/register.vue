@@ -611,7 +611,7 @@
                                 <!-- Tab Content 1: Online Payment -->
                                 <div v-if="form.payment_type === 'online'" class="space-y-2">
 
-                                    <!-- Tripay channels -->
+                                    <!-- Mayar channels -->
                                     <div v-for="ch in onlineChannels" :key="ch.code"
                                         class="rounded-xl border-2 transition-all overflow-hidden"
                                         :class="form.online_channel === ch.code ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
@@ -1352,13 +1352,8 @@ const isFormValid = computed(() => {
 })
 
 const buttonText = computed(() => {
-    if (form.value.payment_type === 'online') {
-        if (form.value.online_channel?.startsWith('paddle_')) {
-            return 'Pay with Paddle'
-        }
-        if (form.value.online_channel) {
-            return 'Pay Now'
-        }
+    if (form.value.payment_type === 'online' && form.value.online_channel) {
+        return 'Pay Now'
     }
     return 'Register Now'
 })
@@ -1401,7 +1396,6 @@ const getChannelIcon = (ch) => {
 // Online channel expansion panel: fetch & show payment instructions
 const selectOnlineChannel = async (code) => {
     form.value.online_channel = code
-    if (code.startsWith('paddle_')) return
     if (channelInstructionsCache.value[code]) return
     channelInstructionsLoading.value = code
     try {

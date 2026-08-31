@@ -203,10 +203,8 @@ const createPayment = async () => {
 
     isProcessing.value = true
     try {
-        // For now, we'll create a simple platform fee payment
-        // This would need a dedicated endpoint for org platform fees
         const result = await post('/payment/create', {
-            tournament_id: tournamentId,
+            event_id: tournamentId,
             method: selectedChannel.value.code,
             amount: totalAmount.value,
             type: 'platform_fee'
@@ -214,7 +212,13 @@ const createPayment = async () => {
 
         if (result) {
             paymentData.value = result
-            showInstructionsDialog.value = true
+            if (result.checkout_url) {
+                window.location.href = result.checkout_url
+            } else if (result.reference) {
+                navigateTo(`/payment/status/${result.reference}`)
+            } else {
+                showInstructionsDialog.value = true
+            }
         }
     } catch (error) {
         console.error('Payment creation failed:', error)
@@ -226,7 +230,7 @@ const createPayment = async () => {
 onMounted(async () => {
     try {
         const result = await get('/payment/channels')
-        channels.value = result || []
+        channels.value = result?.data || result || []
     } catch (error) {
         console.error('Failed to load payment channels:', error)
     } finally {

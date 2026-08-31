@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800 antialiased font-sans">
     <LayoutAppHeaderDynamic />
 
@@ -18,9 +18,9 @@
 
         <div>
           <h2 class="text-2xl font-black text-navy tracking-tight mb-2">Pembayaran Gagal / Expired</h2>
-          <p class="text-xs text-slate-500 font-medium leading-relaxed">
+          <div class="text-xs text-slate-500 font-medium leading-relaxed">
             Waktu pembayaran telah kedaluwarsa atau terjadi kendala pada transaksi. Slot peserta Anda mungkin telah dirilis kembali.
-          </p>
+          </div>
         </div>
 
         <div v-if="tx" class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3.5 text-left text-xs">

@@ -512,8 +512,7 @@ const submitManualProof = async () => {
     }
 }
 
-// Parses Tripay instructions JSON into [{title, steps[]}] groups.
-// Tripay format: [{ "title": "Internet Banking", "steps": ["Login...", ...] }]
+// Parses Mayar/VA instructions JSON into [{title, steps[]}] groups.
 const parseInstructionGroups = (raw) => {
     if (!raw) return []
     try {
@@ -532,70 +531,12 @@ const parseInstructionGroups = (raw) => {
     return []
 }
 
-const isPaddleTransaction = (transaction) => {
-    const method = (transaction?.payment_method || '').toLowerCase()
-    const checkoutUrl = transaction?.checkout_url || ''
-    return method === 'paddle' || checkoutUrl.includes('paddle.io')
-}
-
-const getPaddleTransactionId = (transaction) => {
-    if (transaction?.tripay_reference) return transaction.tripay_reference
-    const checkoutUrl = transaction?.checkout_url || ''
-    const match = checkoutUrl.match(/[?&]_ptxn=([^&]+)/)
-    return match ? decodeURIComponent(match[1]) : ''
-}
-
-const waitForPaddle = async () => {
-    if (!import.meta.client) return null
-    for (let i = 0; i < 20; i++) {
-        if (window.Paddle?.Checkout) return window.Paddle
-        await new Promise(resolve => setTimeout(resolve, 150))
-    }
-    return null
-}
-
-const openPaddleCheckout = async (transaction) => {
-    const txId = getPaddleTransactionId(transaction)
-    if (!txId) {
-        toast.error(t('my_registration.toast_payment_failed'))
-        return
-    }
-
-    if (txId.includes('mock')) {
-        await $fetch(`${apiBaseUrl}/payment/simulate-success/${transaction.reference}`, {
-            method: 'GET',
-            credentials: 'include'
-        })
-        toast.success(t('my_registration.toast_payment_success') || 'Payment successful')
-        await fetchInitialData()
-        return
-    }
-
-    const paddle = await waitForPaddle()
-    if (!paddle) {
-        toast.error(t('my_registration.toast_payment_failed'))
-        return
-    }
-
-    paddle.Checkout.open({
-        transactionId: txId,
-        eventCallback: async (data) => {
-            if (data.name === 'checkout.completed') {
-                toast.success(t('my_registration.toast_payment_success') || 'Payment successful')
-                await fetchInitialData()
-            }
-        }
-    })
-}
-
 const handleTransactionPayment = async (transaction) => {
-    if (!transaction?.checkout_url && !transaction?.tripay_reference) return
-    if (isPaddleTransaction(transaction)) {
-        await openPaddleCheckout(transaction)
-        return
-    }
+    if (!transaction) return
     if (transaction.checkout_url) {
         window.location.href = transaction.checkout_url
+    } else if (transaction.reference) {
+        navigateTo(`/payment/status/${transaction.reference}`)
     }
 }
 
