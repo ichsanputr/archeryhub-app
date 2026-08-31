@@ -559,7 +559,7 @@ const initiatePaymentGateway = async () => {
     isProcessingPayment.value = true
     try {
         const response = await post(`/events/${eventId}/participants/me/checkout`)
-        if (response?.checkout_url || response?.tripay_reference) {
+        if (response?.checkout_url || response?.transaction_id || response?.reference) {
             await handleTransactionPayment(response)
             await fetchInitialData()
         }
