@@ -194,9 +194,9 @@
 
           <!-- Action Buttons -->
           <div class="space-y-3">
-            <a v-if="isRealTripayCheckoutUrl(tx.checkout_url)" :href="tx.checkout_url" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-navy font-black text-sm py-3.5 px-4 rounded-xl shadow-xs transition-colors">
+            <a v-if="isRealCheckoutUrl(tx.checkout_url)" :href="tx.checkout_url" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-navy font-black text-sm py-3.5 px-4 rounded-xl shadow-xs transition-colors">
               <Icon icon="ph:arrow-square-out-bold" class="text-base" />
-              <span>Bayar Langsung via Halaman Tripay</span>
+              <span>Bayar Langsung via Mayar</span>
             </a>
             <BaseButton :to="dashboardBackUrl" variant="navy" size="lg" class="w-full justify-center font-bold">
               {{ dashboardBackLabel }}
@@ -211,7 +211,7 @@
               <Icon icon="ph:x-circle-bold" class="text-3xl" />
             </div>
             <h2 class="text-2xl font-black text-navy tracking-tight">Pembayaran Gagal</h2>
-            <p class="text-xs text-slate-500 font-medium">Transaksi ini berstatus <span class="font-bold text-red-600 capitalize">{{ formatTitleCase(tx.status) }}</span> dan tidak dapat dilanjutkan.</p>
+            <div class="text-xs text-slate-500 font-medium">Transaksi ini berstatus <span class="font-bold text-red-600 capitalize">{{ formatTitleCase(tx.status) }}</span> dan tidak dapat dilanjutkan.</div>
           </div>
 
           <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3">
@@ -291,7 +291,7 @@ const copied = ref(false)
 const activeGroupIdx = ref(0)
 const isSimulating = ref(false)
 
-const isRealTripayCheckoutUrl = (url) => {
+const isRealCheckoutUrl = (url) => {
     if (!url) return false
     if (url.includes('/payment/status/') || url.includes('localhost:3003')) return false
     return url.startsWith('http://') || url.startsWith('https://')
@@ -306,6 +306,7 @@ const formatPaymentMethodName = (method) => {
     if (!method) return '-'
     const m = method.toUpperCase()
     if (m === 'MANUAL') return 'Transfer Bank Manual'
+    if (m === 'MAYAR') return 'Mayar (Online)'
     if (m === 'GOPAY') return 'GoPay'
     if (m === 'QRIS') return 'QRIS'
     if (m === 'BRIVA') return 'BRI Virtual Account'
@@ -313,7 +314,6 @@ const formatPaymentMethodName = (method) => {
     if (m === 'MANDIRIVA' || m === 'MANDIRI') return 'Mandiri Virtual Account'
     if (m === 'BNIVA' || m === 'BNI') return 'BNI Virtual Account'
     if (m === 'PERMATAVA' || m === 'PERMATA') return 'Permata Virtual Account'
-    if (m === 'PADDLE') return 'Paddle'
     return formatTitleCase(method)
 }
 

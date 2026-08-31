@@ -39,7 +39,7 @@
                     <Icon icon="ph:check-bold" class="text-4xl text-navy" />
                 </div>
                 <h1 class="text-2xl font-black text-white text-center">Registration Successful!</h1>
-                <p class="text-white/50 text-sm font-medium text-center">Redirecting to payment page...</p>
+                <div class="text-white/50 text-sm font-medium text-center">Redirecting to payment page...</div>
                 <Icon icon="ph:circle-notch-bold" class="text-2xl text-primary animate-spin mt-2" />
             </div>
         </div>
@@ -102,11 +102,11 @@
                                 : 'Status Pendaftaran Event' }}
                         </h2>
                         
-                        <p class="text-xs sm:text-sm text-slate-500 font-medium max-w-md mx-auto leading-relaxed">
+                        <div class="text-xs sm:text-sm text-slate-500 font-medium max-w-md mx-auto leading-relaxed">
                             {{ existingRegistration.payment_status === 'paid' || existingRegistration.payment_status === 'lunas'
                                 ? 'Pendaftaran Anda telah lunas dan terverifikasi untuk event ini.'
                                 : 'Anda memiliki pendaftaran aktif untuk event ini. Silakan selesaikan pembayaran atau batalkan pendaftaran jika ingin mendaftar ulang.' }}
-                        </p>
+                        </div>
                     </div>
 
                     <!-- Registration Summary Card -->
@@ -237,9 +237,9 @@
                         <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white leading-tight">
                             {{ t('guest_reg.login_required_title') }}
                         </h2>
-                        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
+                        <div class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
                             {{ t('guest_reg.login_required_desc') }}
-                        </p>
+                        </div>
                     </div>
 
                     <!-- Micro Feature Tags -->
@@ -610,40 +610,7 @@
                             <div class="p-6">
                                 <!-- Tab Content 1: Online Payment -->
                                 <div v-if="form.payment_type === 'online'" class="space-y-2">
-                                    <!-- Paddle: PayPal -->
-                                    <div class="rounded-xl border-2 transition-all overflow-hidden"
-                                        :class="form.online_channel === 'paddle_paypal' ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
-                                        <div @click="selectOnlineChannel('paddle_paypal'); form.payment_type = 'online'; form.manual_method_id = ''"
-                                            class="w-full p-3.5 flex items-center gap-3 cursor-pointer">
-                                            <div class="h-9 w-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
-                                                <Icon icon="logos:paypal" class="text-lg" />
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <span class="text-sm font-black text-navy block leading-tight">PayPal</span>
-                                                <span class="text-xs text-gray-400 font-medium">International · Powered by Paddle</span>
-                                            </div>
-                                            <div v-if="form.online_channel === 'paddle_paypal'" class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0">
-                                                <Icon icon="ph:check-bold" class="text-navy text-xs" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Paddle: Google Pay -->
-                                    <div class="rounded-xl border-2 transition-all overflow-hidden"
-                                        :class="form.online_channel === 'paddle_gpay' ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
-                                        <div @click="selectOnlineChannel('paddle_gpay'); form.payment_type = 'online'; form.manual_method_id = ''"
-                                            class="w-full p-3.5 flex items-center gap-3 cursor-pointer">
-                                            <div class="h-9 w-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
-                                                <Icon icon="logos:google-pay" class="text-2xl" />
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <span class="text-sm font-black text-navy block leading-tight">Google Pay</span>
-                                                <span class="text-xs text-gray-400 font-medium">International · Powered by Paddle</span>
-                                            </div>
-                                            <div v-if="form.online_channel === 'paddle_gpay'" class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0">
-                                                <Icon icon="ph:check-bold" class="text-navy text-xs" />
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <!-- Tripay channels -->
                                     <div v-for="ch in onlineChannels" :key="ch.code"
                                         class="rounded-xl border-2 transition-all overflow-hidden"
@@ -1575,9 +1542,7 @@ const handleSubmit = async () => {
 
         // create transaction
         const registrationId = response.registration_id || response.uuid
-        const selectedChannel = form.value.payment_type === 'online'
-            ? (form.value.online_channel.startsWith('paddle_') ? 'paddle' : form.value.online_channel)
-            : 'manual'
+        const selectedChannel = form.value.payment_type === 'online' ? 'mayar' : 'manual'
 
         try {
             const payResult = await post('/payment/create', {
@@ -1604,32 +1569,7 @@ const handleSubmit = async () => {
                 registrationSuccess.value = true
                 await nextTick()
                 setTimeout(() => navigateTo(`/payment/status/${ref}`), 1000)
-            } else if (selectedChannel === 'paddle') {
-                const txId = payResult.tripay_reference
-                if (txId && !txId.includes('mock') && window.Paddle) {
-                    // Paddle popup overlay
-                    window.Paddle.Checkout.open({
-                        transactionId: txId,
-                        eventCallback: (data) => {
-                            if (data.name === 'checkout.completed') {
-                                navigateTo(`/payment/status/${ref}`)
-                            }
-                        }
-                    })
-                } else if (payResult.checkout_url && payResult.checkout_url.includes('txn_mock_')) {
-                    // Dev mock simulation
-                    alert('Simulasi pembayaran berhasil! Karena tidak ada Paddle API key, sistem otomatis menyelesaikan transaksi.')
-                    await $fetch(`${apiBaseUrl}/payment/simulate-success/${ref}`, {
-                        method: 'GET',
-                        credentials: 'include'
-                    })
-                    navigateTo(`/payment/status/${ref}`)
-                } else {
-                    navigateTo(`/payment/status/${ref}`)
-                }
             } else {
-                // All Tripay online channels (VA, QRIS, e-wallet, etc.)
-                // Always go to dedicated payment status page
                 registrationSuccess.value = true
                 await nextTick()
                 setTimeout(() => navigateTo(`/payment/status/${ref}`), 800)

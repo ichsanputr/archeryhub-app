@@ -101,7 +101,7 @@
             <div class="text-xs sm:text-sm font-black text-navy truncate">{{ formatPaymentMethodName(tx.payment_method) }}</div>
             <div class="text-[11px] text-slate-400 font-semibold mt-1 flex items-center gap-1.5 truncate">
               <Icon icon="ph:shield-check-bold" class="text-xs text-primary shrink-0" />
-              <span>Tripay Payment Gateway</span>
+              <span>Mayar Payment Gateway</span>
             </div>
           </div>
         </div>
@@ -164,7 +164,7 @@
           </div>
 
           <!-- 2. Virtual Account Display (Shown when Payment Method is VA) -->
-          <div v-else class="bg-white p-4 sm:p-5 rounded-xl border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
+          <div v-else-if="tx.pay_code || tx.va_number" class="bg-white p-4 sm:p-5 rounded-xl border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
             <div>
               <span class="text-[10px] font-bold text-slate-400 capitalize block">{{ t('package_detail.va_number_label', 'Nomor Virtual Account') }} ({{ formatPaymentMethodName(tx.payment_method) }})</span>
               <span class="font-mono text-xl sm:text-2xl font-black text-navy tracking-wider">{{ tx.pay_code || tx.va_number || '-' }}</span>
@@ -177,6 +177,15 @@
                 <span>{{ copied ? t('package_detail.copied', 'Tersalin') : t('package_detail.copy', 'Salin Nomor') }}</span>
               </button>
             </div>
+          </div>
+
+          <!-- 3. Mayar Direct Checkout Link -->
+          <div v-if="tx.checkout_url" class="pt-1">
+            <a :href="tx.checkout_url" target="_blank" rel="noopener noreferrer"
+              class="w-full py-3.5 px-4 bg-primary hover:bg-primary-hover text-navy rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer">
+              <Icon icon="ph:arrow-square-out-bold" class="text-lg" />
+              <span>Bayar Sekarang via Mayar (QRIS, VA, E-Wallet)</span>
+            </a>
           </div>
         </div>
 
@@ -492,15 +501,15 @@ function formatStatus(status: string) {
 }
 
 function formatPaymentMethodName(method: string) {
-  if (!method) return 'Tripay Payment'
+  if (!method) return 'Mayar Payment'
   const m = method.toUpperCase()
+  if (m === 'MAYAR') return 'Mayar (Online)'
   if (m === 'QRIS') return 'QRIS (Semua E-Wallet)'
   if (m === 'MYBCAVA' || m === 'BCAVA' || m === 'BCA') return 'BCA Virtual Account'
   if (m === 'BRIVA' || m === 'BRI') return 'BRI Virtual Account'
   if (m === 'MANDIRIVA' || m === 'MANDIRI') return 'Mandiri Virtual Account'
   if (m === 'BNIVA' || m === 'BNI') return 'BNI Virtual Account'
   if (m === 'PERMATAVA' || m === 'PERMATA') return 'Permata Virtual Account'
-  if (m === 'PADDLE') return 'Paddle (Credit Card/Global)'
   return method
 }
 

@@ -365,9 +365,9 @@
     "pay_now": "Pay Now",
     "secure_transaction": "Transactions are secured & encrypted by {gateway}",
     "select_method_error": "Please select a payment method",
-    "paddle_link_error": "Failed to get Paddle payment link from server",
+    "paddle_link_error": "Failed to get Mayar payment link from server",
     "paddle_success_simulation": "payment simulation successful! because there is no paddle api key in the backend, the system automatically completed the transaction locally.",
-    "paddle_process_error": "Failed to process payment via Paddle",
+    "paddle_process_error": "Failed to process payment via Mayar",
     "generic_payment_error": "An error occurred while processing the payment",
     "page_title": "Select Payment Method - Archeris.net",
     "paddle_name": "Credit Card / PayPal (Global)",
@@ -608,7 +608,7 @@
     "stat_archived": "Archived",
     "allowed_payments": "Allowed Payment Methods",
     "allowed_payments_desc": "Select allowed payment methods for buyers of this product.",
-    "payment_auto": "Automatic Payment (Virtual Account / QRIS / E-Wallet via Tripay)",
+    "payment_auto": "Automatic Payment (Virtual Account / QRIS / E-Wallet via Mayar)",
     "payment_auto_desc": "Automated purchases verified via official payment gateway.",
     "payment_wallet": "Wallet Balance Payment (Archeris Wallet)",
     "payment_wallet_desc": "Buyers can pay directly using registered wallet balance.",
@@ -1780,9 +1780,9 @@
     "cancel": "Cancel",
     "gateway_modal_title": "Select Payment Method",
     "gateway_modal_desc": "Choose the payment system you want to use to purchase event quota.",
-    "tripay_name": "Tripay (IDR / Rupiah)",
+    "tripay_name": "Mayar (IDR / Rupiah)",
     "tripay_desc": "Local Indonesian payments via QRIS, Virtual Accounts (BCA, Mandiri, BNI, BRI), GoPay, OVO, DANA, ShopeePay.",
-    "paddle_name": "Paddle (Global / USD)",
+    "paddle_name": "Mayar (Global / USD)",
     "paddle_desc": "International payments via Credit/Debit Cards, PayPal, Apple Pay, Google Pay.",
     "basic_features_list": [
       "Standard Event Quota",
@@ -1792,7 +1792,7 @@
       "Live Qualification & Elimination Scoring",
       "Standard Digital Certificates (Automated)",
       "Full 6 Tournament Printouts Download",
-      "Automated Payment Gateway (Tripay QRIS & VA)"
+      "Automated Payment Gateway (Mayar QRIS & VA)"
     ],
     "free_features_list": [
       "1 Free Event Quota Slot",
@@ -1806,7 +1806,7 @@
       "Unlimited Scorekeeper Accounts",
       "Custom Certificate Design Templates (16:9 & A4)",
       "Live Embed Bracket & Leaderboard Widgets (OBS / Web)",
-      "Local & Global Payment Gateway (Tripay & Paddle USD)",
+      "Local & Global Payment Gateway (Mayar & Mayar USD)",
       "Full Excel Export & Financial Statements",
       "Priority Technical Event Support"
     ],

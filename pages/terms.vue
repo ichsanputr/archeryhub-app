@@ -54,9 +54,9 @@
             organizers require an active subscription to access specific limits (e.g. creating unlimited tournaments, adding scorekeepers, and exporting registration sheets):
           </p>
           <ul class="list-disc pl-6 space-y-2 marker:text-primary">
-            <li><strong>plans & billing:</strong> subscriptions are processed securely via paddle. billing cycles recur monthly or annually.</li>
+            <li><strong>plans & billing:</strong> subscriptions and quotas are processed securely via mayar. billing cycles recur monthly, annually, or per-event quota packages.</li>
             <li><strong>expired subscriptions:</strong> if a subscription expires, organizers can still log in, view existing tournament lists, detail pages, and browse sidebar routes. however, form actions to add, edit, or delete event details, categories, targets, or withdraw balances will be locked until the subscription is renewed.</li>
-            <li><strong>invoice processing:</strong> entry fee collections from athletes are processed using tripay local invoices. payouts to organizers and sellers are disbursed after deducting administrative commissions.</li>
+            <li><strong>invoice processing:</strong> entry fee collections from athletes are processed using mayar instant invoices. payouts to organizers and sellers are disbursed after deducting administrative commissions.</li>
           </ul>
 
           <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Scoring Integrity and Tournament Results</h3>

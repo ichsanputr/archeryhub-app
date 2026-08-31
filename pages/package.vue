@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
                                 <h3 class="text-2xl font-black text-white mb-2">{{ $t('subscription_page.basic_title', 'Standar EO') }}</h3>
-                                <p class="text-slate-300 text-xs font-semibold leading-relaxed mb-6">{{ $t('subscription_page.basic_desc', 'Solusi turnamen lengkap untuk klub & kejuaraan panahan skala menengah.') }}</p>
+                                <div class="text-slate-300 text-xs font-semibold leading-relaxed mb-6">{{ $t('subscription_page.basic_desc', 'Solusi turnamen lengkap untuk klub & kejuaraan panahan skala menengah.') }}</div>
                                 
                                 <!-- Strikethrough Price + Promo Free Display -->
                                 <div class="mb-4">
@@ -76,9 +76,9 @@
                                         <span class="text-5xl font-black text-white tracking-tighter">0</span>
                                         <span class="text-primary font-bold tracking-wider text-xs">/event</span>
                                     </div>
-                                    <p class="text-[11px] text-amber-200/90 font-medium mt-2 leading-relaxed">
+                                    <div class="text-[11px] text-amber-200/90 font-medium mt-2 leading-relaxed">
                                         {{ $t('subscription_page.promo_subtext', 'Gratis masa promo 3 bulan ke depan, setelahnya berlaku tarif normal Rp 49.900/event.') }}
-                                    </p>
+                                    </div>
                                 </div>
 
                                 <div class="h-px bg-white/10 mb-6"></div>
@@ -119,7 +119,7 @@
                                     </div>
                                 </div>
                                 <h3 class="text-2xl font-black text-navy mb-2">{{ $t('subscription_page.free_title', 'Free EO') }}</h3>
-                                <p class="text-gray-500 text-xs font-semibold leading-relaxed mb-6">{{ $t('subscription_page.free_desc', 'Coba dan kelola turnamen pertama Anda secara instan tanpa biaya.') }}</p>
+                                <div class="text-gray-500 text-xs font-semibold leading-relaxed mb-6">{{ $t('subscription_page.free_desc', 'Coba dan kelola turnamen pertama Anda secara instan tanpa biaya.') }}</div>
                                 
                                 <div class="mb-8">
                                     <div class="flex items-baseline gap-1">
@@ -167,7 +167,7 @@
                                     </span>
                                 </div>
                                 <h3 class="text-2xl font-black text-white mb-2">{{ $t('subscription_page.elite_title', 'Elite EO') }}</h3>
-                                <p class="text-slate-400 text-xs font-semibold leading-relaxed mb-6">{{ $t('subscription_page.elite_desc', 'Fitur terlengkap tanpa batas untuk kejuaraan profesional dan skala besar.') }}</p>
+                                <div class="text-slate-400 text-xs font-semibold leading-relaxed mb-6">{{ $t('subscription_page.elite_desc', 'Fitur terlengkap tanpa batas untuk kejuaraan profesional dan skala besar.') }}</div>
                                 
                                 <div class="mb-8">
                                     <div class="flex items-baseline gap-1">
@@ -363,7 +363,7 @@ const eoBasicFeatures = computed(() => {
             'Scoring Kualifikasi & Bagan Eliminasi Live',
             'Sertifikat Digital Standar (Otomatis)',
             'Unduh 6 Jenis Printout Turnamen Lengkap',
-            'Gateway Pembayaran Otomatis (Tripay QRIS & VA)'
+            'Gateway Pembayaran Otomatis (Mayar QRIS & VA)'
         ]
     }
     return raw.map((item, idx) => resolveMessage(`subscription_page.basic_features_list.${idx}`, item))
@@ -391,7 +391,7 @@ const eoEliteFeatures = computed(() => {
             'Wasit & Scorekeeper Tanpa Batas',
             'Custom Desain Template Sertifikat (16:9 & A4)',
             'Live Embed Widget Bracket & Leaderboard (OBS / Web)',
-            'Multi-Payment Gateway Lokal & Global (Tripay & Paddle USD)',
+            'Multi-Payment Gateway Lengkap (Mayar QRIS, VA, E-Wallet)',
             'Ekspor Rekap Excel Lengkap & Laporan Keuangan',
             'Prioritas Dukungan Teknis Penyelenggaraan'
         ]
@@ -446,8 +446,8 @@ const eoComparisonData = computed(() => {
         {
             feature: t('subscription_page.comparison.payment_gateway', 'Gateway Pembayaran Otomatis'),
             free: false,
-            standar: 'Tripay (QRIS, VA)',
-            elite: 'Tripay & Paddle (USD)'
+            standar: 'Mayar (QRIS, VA)',
+            elite: 'Mayar (QRIS, VA, E-Wallet)'
         },
         {
             feature: t('subscription_page.comparison.live_widgets', 'Live Widget Embed (OBS / Web)'),

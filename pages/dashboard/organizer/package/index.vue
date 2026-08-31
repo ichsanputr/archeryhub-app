@@ -169,14 +169,14 @@
                                 <div class="pt-3 border-t border-slate-200/60 mt-3">
                                     <div class="flex items-center gap-2 mb-0.5">
                                         <span class="text-xs text-slate-400 font-bold line-through">
-                                            {{ selectedMethod === 'paddle' ? '$3.00' : 'Rp 49.900' }}
+                                            Rp 49.900
                                         </span>
                                         <span class="text-[9px] font-black uppercase text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
                                             {{ t('organizer_subscription.promo_badge_50', 'PROMO 50% OFF') }}
                                         </span>
                                     </div>
                                     <div class="text-lg font-black text-navy">
-                                        {{ selectedMethod === 'paddle' ? '$1.50' : 'Rp 24.950' }}
+                                        Rp 24.950
                                         <span class="text-[10px] font-bold text-slate-500">{{ t('organizer_subscription.per_event') }}</span>
                                     </div>
                                     <div class="text-[10px] text-amber-700 font-medium mt-1">
@@ -205,14 +205,14 @@
                                 <div class="pt-3 border-t border-slate-200/60 mt-3">
                                     <div class="flex items-center gap-2 mb-0.5">
                                         <span class="text-xs text-slate-400 font-bold line-through">
-                                            {{ selectedMethod === 'paddle' ? '$5.00' : 'Rp 79.900' }}
+                                            Rp 79.900
                                         </span>
                                         <span class="text-[9px] font-black uppercase text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
                                             {{ t('organizer_subscription.promo_badge_50', 'PROMO 50% OFF') }}
                                         </span>
                                     </div>
                                     <div class="text-lg font-black text-navy">
-                                        {{ selectedMethod === 'paddle' ? '$2.50' : 'Rp 39.950' }}
+                                        Rp 39.950
                                         <span class="text-[10px] font-bold text-slate-500">{{ t('organizer_subscription.per_event') }}</span>
                                     </div>
                                     <div class="text-[10px] text-amber-700 font-medium mt-1">
@@ -291,52 +291,16 @@
                             {{ t('organizer_subscription.step_payment') }}
                         </label>
                         
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <button @click="selectedMethod = 'tripay'"
-                                :class="[
-                                    'p-4 rounded-xl border-2 flex items-center gap-4 transition-all text-left',
-                                    selectedMethod === 'tripay' 
-                                        ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-xs' 
-                                        : 'border-slate-200 hover:border-primary/40 bg-white'
-                                ]">
-                                <div class="size-11 rounded-xl bg-slate-100 flex items-center justify-center text-navy shrink-0">
-                                    <Icon icon="ph:qr-code-bold" class="text-2xl" />
+                        <div class="p-4 rounded-2xl border-2 border-primary bg-primary/5 flex items-center gap-4 text-left">
+                            <div class="size-12 rounded-xl bg-navy text-primary flex items-center justify-center shrink-0 shadow-xs">
+                                <Icon icon="ph:shield-check-bold" class="text-2xl" />
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <div class="font-black text-navy text-sm flex items-center gap-2">
+                                    <span>Mayar Payment Gateway</span>
+                                    <span class="text-[10px] font-bold bg-primary/20 text-navy px-2 py-0.5 rounded-full">Instan & Aman</span>
                                 </div>
-                                <div class="min-w-0">
-                                    <div class="font-black text-navy text-sm">Tripay (IDR)</div>
-                                    <div class="text-[10px] text-slate-500 mt-0.5">{{ t('organizer_subscription.tripay_desc') }}</div>
-                                </div>
-                            </button>
-
-                            <button @click="selectedMethod = 'paddle'"
-                                :class="[
-                                    'p-4 rounded-xl border-2 flex items-center gap-4 transition-all text-left',
-                                    selectedMethod === 'paddle' 
-                                        ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-xs' 
-                                        : 'border-slate-200 hover:border-primary/40 bg-white'
-                                ]">
-                                <div class="size-11 rounded-xl bg-slate-100 flex items-center justify-center text-navy shrink-0">
-                                    <Icon icon="ph:credit-card-bold" class="text-2xl" />
-                                </div>
-                                <div class="min-w-0">
-                                    <div class="font-black text-navy text-sm">Paddle (USD)</div>
-                                    <div class="text-[10px] text-slate-500 mt-0.5">{{ t('organizer_subscription.paddle_desc') }}</div>
-                                </div>
-                            </button>
-                        </div>
-
-                        <!-- Tripay Channel Specific Selector Pills -->
-                        <div v-if="selectedMethod === 'tripay'" class="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-3">
-                            <span class="text-[11px] font-black text-slate-500">{{ t('organizer_subscription.select_tripay_method', 'Pilih Metode Pembayaran Tripay:') }}</span>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                                <button v-for="ch in tripayChannels" :key="ch.code"
-                                    type="button"
-                                    @click="selectedTripayChannel = ch.code"
-                                    :class="selectedTripayChannel === ch.code ? 'border-primary bg-primary/10 text-navy font-black shadow-2xs' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 font-bold'"
-                                    class="p-2.5 rounded-xl border-2 text-xs flex items-center gap-2 transition-all text-left">
-                                    <Icon :icon="ch.icon" class="text-base shrink-0" :class="selectedTripayChannel === ch.code ? 'text-primary' : 'text-slate-400'" />
-                                    <span class="truncate">{{ ch.name }}</span>
-                                </button>
+                                <div class="text-[11px] text-slate-500 mt-0.5">Mendukung QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), dan E-Wallet</div>
                             </div>
                         </div>
                     </div>
@@ -364,17 +328,17 @@
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-400 font-medium">{{ t('organizer_subscription.unit_price_label') }}</span>
                                 <span class="font-bold text-slate-200">
-                                    {{ selectedMethod === 'paddle' ? '$' + basePriceUSD.toFixed(2) : 'Rp ' + new Intl.NumberFormat('id-ID').format(basePrice) }}
+                                    Rp {{ new Intl.NumberFormat('id-ID').format(basePrice) }}
                                 </span>
                             </div>
                             <div v-if="discountPct > 0" class="flex justify-between items-center text-primary font-bold">
                                 <span>{{ t('organizer_subscription.bundle_discount', { pct: discountPct }) }}</span>
-                                <span>- {{ selectedMethod === 'paddle' ? '$' + ((basePriceUSD * selectedQty) - parseFloat(totalUSD)).toFixed(2) : 'Rp ' + new Intl.NumberFormat('id-ID').format((basePrice * selectedQty) - totalIDR) }}</span>
+                                <span>- Rp {{ new Intl.NumberFormat('id-ID').format((basePrice * selectedQty) - totalIDR) }}</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-slate-400 font-medium">{{ t('organizer_subscription.payment_method_label') }}</span>
                                 <span class="font-bold text-slate-200 capitalize">
-                                    {{ selectedMethod === 'tripay' ? (tripayChannels.find(c => c.code === selectedTripayChannel)?.name || 'Tripay') : 'Paddle (USD)' }}
+                                    Mayar (QRIS / VA / E-Wallet)
                                 </span>
                             </div>
                         </div>
@@ -387,10 +351,7 @@
                                     <div class="text-[11px] text-slate-400 mt-0.5">{{ t('organizer_subscription.total_payment_desc') }}</div>
                                 </div>
                                 <div class="text-right">
-                                    <div v-if="selectedMethod === 'paddle'" class="text-2xl sm:text-3xl font-black text-primary leading-none">
-                                        ${{ totalUSD }}
-                                    </div>
-                                    <div v-else class="text-2xl sm:text-3xl font-black text-primary leading-none">
+                                    <div class="text-2xl sm:text-3xl font-black text-primary leading-none">
                                         Rp {{ new Intl.NumberFormat('id-ID').format(totalIDR) }}
                                     </div>
                                 </div>
@@ -451,7 +412,7 @@
                             <td class="py-4 px-5 font-black text-navy">
                                 {{ item.currency === 'USD' ? '$' + (item.amount || item.total_amount) : 'Rp ' + new Intl.NumberFormat('id-ID').format(item.amount || item.total_amount || 0) }}
                             </td>
-                            <td class="py-4 px-5 capitalize font-medium text-slate-500">{{ item.payment_method || 'Tripay' }}</td>
+                            <td class="py-4 px-5 capitalize font-medium text-slate-500">{{ item.payment_method || 'Mayar' }}</td>
                             <td class="py-4 px-5 text-center">
                                 <span :class="[
                                     'px-3 py-1 text-[10px] font-black rounded-lg capitalize inline-block border',
@@ -560,9 +521,6 @@ const selectedTier = ref('standard')
 const selectedQty = ref(1)
 const isCustomQty = ref(false)
 const customQtyInput = ref(10)
-const selectedMethod = ref('tripay')
-const selectedTripayChannel = ref('BCAVA')
-
 const setPresetQty = (qty) => {
     isCustomQty.value = false
     selectedQty.value = qty
@@ -576,15 +534,6 @@ const enableCustomQty = () => {
 const onCustomQtyChange = () => {
     selectedQty.value = Math.max(1, customQtyInput.value || 1)
 }
-
-const tripayChannels = [
-    { code: 'BCAVA', name: 'BCA Virtual Account', icon: 'ph:bank-bold' },
-    { code: 'BRIVA', name: 'BRI Virtual Account', icon: 'ph:bank-bold' },
-    { code: 'MANDIRIVA', name: 'Mandiri Virtual Account', icon: 'ph:bank-bold' },
-    { code: 'BNIVA', name: 'BNI Virtual Account', icon: 'ph:bank-bold' },
-    { code: 'QRIS', name: 'QRIS (Semua E-Wallet)', icon: 'ph:qr-code-bold' },
-    { code: 'DANA', name: 'DANA E-Wallet', icon: 'ph:wallet-bold' },
-]
 const isPurchasing = ref(false)
 
 const formatDate = (dateStr) => {
@@ -660,15 +609,16 @@ async function buyQuota() {
         const res = await post('/organizers/me/quota/purchase', {
             plan_id,
             quantity: selectedQty.value,
-            payment_method: selectedMethod.value,
-            channel: selectedMethod.value === 'tripay' ? selectedTripayChannel.value : 'PADDLE',
-            currency: selectedMethod.value === 'paddle' ? 'USD' : 'IDR'
+            currency: 'IDR'
         })
         
-        // Stay inside ArcheryHub internal detail payment page!
-        const trxRef = res?.reference || res?.purchase_id || res?.tripay_reference || res?.transaction_id || ''
+        const trxRef = res?.purchase_id || res?.reference || res?.transaction_id || ''
         toast.success(t('organizer_subscription.order_success_toast', 'Pesanan paket kuota berhasil dibuat'))
-        router.push(`/dashboard/organizer/package/detail?trx_id=${trxRef}`)
+        if (res?.checkout_url) {
+            window.location.href = res.checkout_url
+        } else {
+            router.push(`/dashboard/organizer/package/detail?trx_id=${trxRef}`)
+        }
     } catch (e) {
         console.error(e)
         toast.error(e?.data?.error || t('organizer_subscription.buy_error', 'Gagal memproses pembelian paket kuota.'))

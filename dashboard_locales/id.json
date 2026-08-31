@@ -365,9 +365,9 @@
     "pay_now": "Bayar Sekarang",
     "secure_transaction": "Transaksi aman & terenkripsi oleh {gateway}",
     "select_method_error": "Silakan pilih metode pembayaran",
-    "paddle_link_error": "Gagal mendapatkan tautan pembayaran Paddle dari server",
+    "paddle_link_error": "Gagal mendapatkan tautan pembayaran Mayar dari server",
     "paddle_success_simulation": "simulasi pembayaran berhasil! karena tidak ada paddle api key di backend, sistem secara otomatis menyelesaikan transaksi secara lokal.",
-    "paddle_process_error": "Gagal memproses pembayaran via Paddle",
+    "paddle_process_error": "Gagal memproses pembayaran via Mayar",
     "generic_payment_error": "Terjadi kesalahan saat memproses pembayaran",
     "page_title": "Pilih Metode Pembayaran - Archeris.net",
     "paddle_name": "Kartu Kredit / PayPal (Global)",
@@ -608,7 +608,7 @@
     "stat_archived": "Arsip",
     "allowed_payments": "Metode Pembayaran Yang Diizinkan",
     "allowed_payments_desc": "Pilih metode pembayaran yang diizinkan untuk pembeli produk ini.",
-    "payment_auto": "Pembayaran Otomatis (Virtual Account / QRIS / E-Wallet via Tripay)",
+    "payment_auto": "Pembayaran Otomatis (Virtual Account / QRIS / E-Wallet via Mayar)",
     "payment_auto_desc": "Pembelian otomatis terverifikasi via payment gateway resmi.",
     "payment_wallet": "Pembayaran Saldo Dompet (Wallet Archeris)",
     "payment_wallet_desc": "Pembeli dapat membayar langsung menggunakan saldo dompet terdaftar.",
@@ -1816,9 +1816,9 @@
     "cancel": "Batal",
     "gateway_modal_title": "Pilih Metode Pembayaran",
     "gateway_modal_desc": "Pilih sistem pembayaran yang ingin Anda gunakan untuk membeli kuota event.",
-    "tripay_name": "Tripay (Rupiah)",
+    "tripay_name": "Mayar (Rupiah)",
     "tripay_desc": "Pembayaran lokal Indonesia via QRIS, Virtual Account (BCA, Mandiri, BNI, BRI), GoPay, OVO, DANA, ShopeePay.",
-    "paddle_name": "Paddle (Global / USD)",
+    "paddle_name": "Mayar (Global / USD)",
     "paddle_desc": "Pembayaran internasional via Kartu Kredit/Debit, PayPal, Apple Pay, Google Pay.",
     "basic_features_list": [
       "Kuota Event Standar",
@@ -1828,7 +1828,7 @@
       "Scoring Kualifikasi & Bagan Eliminasi Live",
       "Sertifikat Digital Standar (Otomatis)",
       "Unduh 6 Jenis Printout Turnamen Lengkap",
-      "Gateway Pembayaran Otomatis (Tripay QRIS & VA)"
+      "Gateway Pembayaran Otomatis (Mayar QRIS & VA)"
     ],
     "free_features_list": [
       "1 Slot Kuota Event Gratis",
@@ -1842,7 +1842,7 @@
       "Wasit & Scorekeeper Tanpa Batas",
       "Custom Desain Template Sertifikat (16:9 & A4)",
       "Live Embed Widget Bracket & Leaderboard (OBS / Web)",
-      "Multi-Payment Gateway Lokal & Global (Tripay & Paddle USD)",
+      "Multi-Payment Gateway Lokal & Global (Mayar & Mayar USD)",
       "Ekspor Rekap Excel Lengkap & Laporan Keuangan",
       "Prioritas Dukungan Teknis Penyelenggaraan"
     ],

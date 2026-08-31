@@ -68,7 +68,7 @@
             we process transactional data related to subscriptions, entry fees, and store sales:
           </p>
           <ul class="list-disc pl-6 space-y-2 marker:text-primary">
-            <li>billing information, billing details, invoices, and transaction histories processed through paddle (for subscriptions) and tripay (for tournament invoices).</li>
+            <li>billing information, billing details, invoices, and transaction histories processed through mayar (for subscriptions, quota, and tournament invoices).</li>
             <li>bank account details, holder names, account numbers, and withdrawal transaction logs for payout distributions.</li>
           </ul>
 
@@ -89,7 +89,7 @@
             <li><strong>account management:</strong> creating, configuring, and verifying athlete, organizer, scorekeeper, and seller accounts.</li>
             <li><strong>tournament execution:</strong> managing registrations, target boards, qualifications, and live elimination brackets.</li>
             <li><strong>public scoreboards:</strong> compiling and publishing tournament results, rankings, and athlete achievements (which are public by design).</li>
-            <li><strong>payment and payouts:</strong> processing tournament invoices, subscription plans, matching paddle transactions, and executing seller commission payouts.</li>
+            <li><strong>payment and payouts:</strong> processing tournament invoices, subscription plans, matching transaction payments, and executing seller commission payouts.</li>
             <li><strong>communications:</strong> sending transaction receipts, notification alerts, and updates regarding tournament schedule changes.</li>
           </ol>
 
@@ -99,7 +99,7 @@
           </p>
           <ul class="list-disc pl-6 space-y-2 marker:text-primary">
             <li><strong>public tournament results:</strong> score log history, division placements, categories, and athlete names are shared publicly on leaderboards.</li>
-            <li><strong>payment gateways:</strong> payment info is sent directly to paddle.com and tripay.co.id for secure processing.</li>
+            <li><strong>payment gateways:</strong> payment info is sent directly to mayar.id for secure processing.</li>
             <li><strong>legal obligations:</strong> if required to comply with regulatory audits, court subpoenas, or protection of platform integrity.</li>
           </ul>
 

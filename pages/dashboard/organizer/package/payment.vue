@@ -51,23 +51,12 @@ const { data: channelsRes, pending: loadingChannels, error: fetchError } = useFe
 })
 
 const channels = computed(() => {
-    const list = [
-        {
-            code: 'paddle',
-            name: t('subscription_payment_page.paddle_name', 'Kartu Kredit / PayPal (Global)'),
-            icon_url: 'https://cdn.paddle.com/paddle/assets/images/logos/paddle-logo-dark.svg',
-            feeLabel: t('subscription_payment_page.fee_integrated', 'Terintegrasi'),
-            group: t('subscription_payment_page.paddle_group', 'Kartu Kredit & Internasional'),
-            active: true
-        }
-    ]
-    if (!channelsRes.value) return list
+    if (!channelsRes.value) return []
     const data = channelsRes.value.data || channelsRes.value || []
     if (Array.isArray(data)) {
-        const filteredData = isUSD.value ? [] : data.filter((c) => c.active)
-        return [...list, ...filteredData]
+        return data.filter((c) => c.active !== false)
     }
-    return list
+    return []
 })
 
 const groupedChannels = computed(() => {
@@ -86,7 +75,7 @@ const groupedChannels = computed(() => {
     return groups
 })
 
-const selectedChannel = ref(route.query.gateway || (organizerProfile.value?.country !== 'Indonesia' ? 'paddle' : null))
+const selectedChannel = ref(route.query.gateway || 'mayar')
 const selectedMonths = ref(1)
 const isProcessing = ref(false)
 const errorMessage = ref('')
@@ -94,7 +83,7 @@ const instructions = ref([])
 const loadingInstructions = ref(false)
 
 watch(selectedChannel, async (code) => {
-    if (!code || code === 'paddle') { instructions.value = []; return }
+    if (!code) { instructions.value = []; return }
     loadingInstructions.value = true
     instructions.value = await payment.getInstruction(code)
     loadingInstructions.value = false
@@ -114,53 +103,7 @@ const handlePayment = async () => {
     isProcessing.value = true
     errorMessage.value = ''
 
-    if (selectedChannel.value === 'paddle') {
-        try {
-            // 1. Initiate transaction on Go Backend which returns secure hosted checkout_url
-            const res = await $fetch(`${apiBaseUrl}/payment/paddle/initiate`, {
-                method: 'POST',
-                body: {
-                    plan_id: parseInt(planId.value),
-                    months: selectedMonths.value
-                },
-                credentials: 'include'
-            })
 
-            if (!res || !res.checkout_url) {
-                throw new Error(t('subscription_payment_page.paddle_link_error'))
-            }
-
-            // 2. Redirect user directly to Paddle secure hosted checkout page (adblocker immune!)
-            if (res.checkout_url.includes('txn_mock_')) {
-                alert(t('subscription_payment_page.paddle_success_simulation'))
-                await $fetch(`${apiBaseUrl}/payment/simulate-success/${res.reference}`, {
-                    method: 'GET',
-                    credentials: 'include'
-                })
-                router.push('/dashboard/organizer/package?status=success')
-            } else {
-                if (window.Paddle && res.tripay_reference) {
-                    window.Paddle.Checkout.open({
-                        transactionId: res.tripay_reference,
-                        eventCallback: (data) => {
-                            if (data.name === 'checkout.completed') {
-                                router.push('/dashboard/organizer/package?status=success')
-                            }
-                        }
-                    })
-                } else {
-                    window.location.href = res.checkout_url
-                }
-            }
-
-        } catch (err) {
-            console.error('Paddle payment initiation failed:', err)
-            errorMessage.value = err.data?.error || err.message || t('subscription_payment_page.paddle_process_error')
-        } finally {
-            isProcessing.value = false
-        }
-        return
-    }
 
     try {
         const res = await $fetch(`${apiBaseUrl}/payment/create`, {
@@ -353,7 +296,7 @@ useHead({
                         </button>
 
                         <div class="text-[10px] text-center text-gray-400 font-bold tracking-widest mt-6">
-                            {{ t('subscription_payment_page.secure_transaction', 'Transaksi aman & terenkripsi oleh {gateway}', { gateway: selectedChannel === 'paddle' ? 'Paddle' : 'Tripay' }) }}
+                            {{ t('subscription_payment_page.secure_transaction', 'Transaksi aman & terenkripsi oleh {gateway}', { gateway: 'Mayar' }) }}
                         </div>
                     </div>
                 </div>

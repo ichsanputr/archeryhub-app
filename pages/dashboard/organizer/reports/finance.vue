@@ -230,11 +230,7 @@ const eventsDropdownItems = computed(() => [
 
 const methodOptions = [
   { title: 'All Methods', value: 'all' },
-  { title: 'Paddle', value: 'paddle' },
-  { title: 'BCA VA', value: 'BCAVA' },
-  { title: 'BNI VA', value: 'BNIVA' },
-  { title: 'BRI VA', value: 'BRIVA' },
-  { title: 'Mandiri VA', value: 'MANDIRIVA' },
+  { title: 'Mayar (Online)', value: 'mayar' },
   { title: 'Manual Transfer', value: 'manual' }
 ]
 
