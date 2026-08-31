@@ -33,13 +33,13 @@
     </DashboardHeader>
 
     <!-- ── 2. Loading State ── -->
-    <div v-if="isLoading" class="bg-white rounded-3xl border border-gray-100 p-16 text-center shadow-xs print:hidden">
+    <div v-if="isLoading" class="max-w-3xl mx-auto bg-white rounded-3xl border border-gray-100 p-16 text-center shadow-xs print:hidden">
       <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-3 mx-auto" />
       <div class="text-slate-600 font-bold text-sm">{{ t('package_detail.loading', 'Memuat Rincian Transaksi...') }}</div>
     </div>
 
     <!-- ── 3. Error State ── -->
-    <div v-else-if="errorMsg" class="bg-white rounded-3xl border border-gray-100 p-10 text-center shadow-xs space-y-4 print:hidden">
+    <div v-else-if="errorMsg" class="max-w-3xl mx-auto bg-white rounded-3xl border border-gray-100 p-10 text-center shadow-xs space-y-4 print:hidden">
       <div class="size-14 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center mx-auto border border-rose-100">
         <Icon icon="ph:warning-circle-bold" class="text-3xl" />
       </div>
@@ -50,99 +50,120 @@
       </NuxtLink>
     </div>
 
-    <!-- ── 4. Main 2-Column Dashboard View ── -->
-    <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-6 print:hidden">
+    <!-- ── 4. Main 1-Column Dashboard View ── -->
+    <div v-else class="max-w-3xl mx-auto space-y-6 print:hidden">
       
-      <!-- LEFT COLUMN: Status Hero, Service Breakdown, Payment Info (2 Cols) -->
-      <div class="lg:col-span-2 space-y-6">
-        
-        <!-- A. STATUS HERO BANNER -->
-        <!-- Paid Hero -->
-        <div v-if="isPaid" class="bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-500/20 rounded-3xl p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-xs">
-          <div class="flex items-start gap-4">
-            <div class="size-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/20">
-              <Icon icon="ph:check-bold" class="text-2xl" />
+      <!-- A. STATUS HERO BANNER -->
+      <!-- Paid Hero Banner -->
+      <div v-if="isPaid" class="bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-500/20 rounded-3xl p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-xs">
+        <div class="flex items-start gap-4">
+          <div class="size-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/20">
+            <Icon icon="ph:check-bold" class="text-2xl" />
+          </div>
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800">
+                {{ t('package_detail.paid_badge', 'Lunas / Terverifikasi') }}
+              </span>
+              <span class="text-xs text-slate-400 font-semibold">{{ formatDate(tx.purchased_at || tx.created_at) }}</span>
             </div>
+            <div class="text-base sm:text-lg font-black text-navy">{{ t('package_detail.paid_title', 'Pembayaran Berhasil & Terverifikasi') }}</div>
+            <div class="text-xs text-slate-500 font-medium">
+              {{ t('package_detail.paid_desc', 'Kuota turnamen panahan Anda telah aktif secara instan dan dapat langsung digunakan untuk membuka event baru.') }}
+            </div>
+          </div>
+        </div>
+        <div class="shrink-0 pt-2 sm:pt-0">
+          <NuxtLink to="/dashboard/organizer/events"
+            class="w-full sm:w-auto px-5 py-3 rounded-xl bg-navy hover:bg-navy-dark text-white text-xs font-black flex items-center justify-center gap-2 shadow-xs transition-all">
+            <Icon icon="ph:plus-circle-bold" class="text-base text-primary" />
+            <span>{{ t('package_detail.btn_create_event', 'Buat Event Sekarang') }}</span>
+          </NuxtLink>
+        </div>
+      </div>
+
+      <!-- Pending Hero Banner (Single Primary Mayar Payment Card) -->
+      <div v-else-if="isPending" class="bg-white rounded-3xl border border-navy/10 p-6 sm:p-7 shadow-sm space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
+              <Icon icon="ph:clock-bold" class="text-xl" />
+            </div>
+            <div>
+              <div class="text-xs font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.status_label', 'Status Pembayaran') }}</div>
+              <div class="text-base font-black text-navy">{{ t('package_detail.awaiting_payment', 'Menunggu Pembayaran Online') }}</div>
+            </div>
+          </div>
+          <div v-if="tx.expiry_date" class="px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200/70 text-amber-900 text-xs font-bold flex items-center gap-1.5 w-fit">
+            <Icon icon="ph:hourglass-medium-bold" class="text-sm text-amber-600" />
+            <span>{{ t('package_detail.pay_before', 'Bayar Sebelum') }}: {{ formatExpiry(tx.expiry_date) }}</span>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-navy/5 via-navy/[0.02] to-primary/5 border-2 border-primary/40 rounded-2xl p-5 sm:p-6 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div class="space-y-1">
-              <div class="flex items-center gap-2">
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800">
-                  {{ t('package_detail.paid_badge', 'Lunas / Terverifikasi') }}
-                </span>
-                <span class="text-xs text-slate-400 font-semibold">{{ formatDate(tx.purchased_at || tx.created_at) }}</span>
+              <div class="text-sm sm:text-base font-black text-navy flex items-center gap-2">
+                <Icon icon="ph:shield-check-fill" class="text-primary text-lg" />
+                <span>{{ t('package_detail.pay_via_mayar_title', 'Selesaikan Pembayaran via Mayar') }}</span>
               </div>
-              <div class="text-base sm:text-lg font-black text-navy">{{ t('package_detail.paid_title', 'Pembayaran Berhasil & Terverifikasi') }}</div>
-              <div class="text-xs text-slate-500 font-medium">
-                {{ t('package_detail.paid_desc', 'Kuota turnamen panahan Anda telah aktif secara instan dan dapat langsung digunakan untuk membuka event baru.') }}
+              <div class="text-xs text-slate-500 font-medium leading-relaxed max-w-lg">
+                {{ t('package_detail.pay_via_mayar_desc', 'Bayar secara aman menggunakan QRIS (BCA, Mandiri, BRI, BNI, GoPay, OVO, DANA, ShopeePay) atau Virtual Account resmi.') }}
               </div>
             </div>
+            <div class="sm:text-right shrink-0">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">{{ t('package_detail.total_paid', 'Total Tagihan') }}</span>
+              <span class="text-xl sm:text-2xl font-black text-navy tabular-nums">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
+            </div>
           </div>
-          <div class="shrink-0 pt-2 sm:pt-0">
-            <NuxtLink to="/dashboard/organizer/events"
-              class="w-full sm:w-auto px-5 py-3 rounded-xl bg-navy hover:bg-navy-dark text-white text-xs font-black flex items-center justify-center gap-2 shadow-xs transition-all">
-              <Icon icon="ph:plus-circle-bold" class="text-base text-primary" />
-              <span>{{ t('package_detail.btn_create_event', 'Buat Event Sekarang') }}</span>
-            </NuxtLink>
+
+          <!-- Single Direct Payment CTA Button -->
+          <a v-if="tx.checkout_url" :href="tx.checkout_url" target="_blank" rel="noopener noreferrer"
+            class="w-full py-4 px-6 bg-primary hover:bg-primary-hover text-navy rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md shadow-primary/20 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer">
+            <Icon icon="ph:arrow-square-out-bold" class="text-xl" />
+            <span>{{ t('package_detail.btn_pay_now', 'Bayar Sekarang di Mayar') }}</span>
+          </a>
+
+          <!-- Supported Payment Methods -->
+          <div class="pt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-500 font-semibold">
+            <span class="text-slate-400">{{ t('package_detail.available_methods', 'Metode Tersedia') }}:</span>
+            <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">{{ t('package_detail.method_qris', 'QRIS (Semua E-Wallet)') }}</span>
+            <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">BCA VA</span>
+            <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">Mandiri VA</span>
+            <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">BRI VA</span>
+            <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">BNI VA</span>
+            <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">Permata VA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- B. MAIN INVOICE ORDER CARD -->
+      <div class="bg-white rounded-3xl border border-gray-100 p-6 sm:p-8 shadow-xs space-y-6">
+        
+        <!-- Invoice Metadata Header -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pb-6 border-b border-gray-100 text-xs">
+          <div class="space-y-1">
+            <span class="text-slate-400 font-bold block">{{ t('package_detail.invoice_number', 'Nomor Invoice') }}</span>
+            <span class="font-mono font-black text-navy truncate block select-all">{{ tx.reference || reference }}</span>
+          </div>
+          <div class="space-y-1">
+            <span class="text-slate-400 font-bold block">{{ t('package_detail.purchase_time', 'Waktu Pembelian') }}</span>
+            <span class="font-bold text-navy block">{{ formatDate(tx.purchased_at || tx.created_at) }}</span>
+          </div>
+          <div class="space-y-1">
+            <span class="text-slate-400 font-bold block">{{ t('package_detail.method_label', 'Metode') }}</span>
+            <span class="font-bold text-navy block capitalize">{{ formatPaymentMethodName(tx.payment_method) }}</span>
+          </div>
+          <div class="space-y-1">
+            <span class="text-slate-400 font-bold block">{{ t('package_detail.status', 'Status') }}</span>
+            <span :class="statusBadgeClasses" class="px-2.5 py-0.5 rounded-lg text-[10px] font-black capitalize border shadow-2xs inline-block">
+              {{ formatStatus(tx.status || tx.payment_status) }}
+            </span>
           </div>
         </div>
 
-        <!-- Pending Hero: Direct Mayar Online Checkout Card -->
-        <div v-else-if="isPending" class="bg-white rounded-3xl border border-navy/10 p-6 sm:p-7 shadow-sm space-y-5">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
-            <div class="flex items-center gap-3">
-              <div class="size-10 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
-                <Icon icon="ph:clock-bold" class="text-xl" />
-              </div>
-              <div>
-                <div class="text-xs font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.status_label', 'Status Pembayaran') }}</div>
-                <div class="text-base font-black text-navy">{{ t('package_detail.awaiting_payment', 'Menunggu Pembayaran Online') }}</div>
-              </div>
-            </div>
-            <div v-if="tx.expiry_date" class="px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200/70 text-amber-900 text-xs font-bold flex items-center gap-1.5 w-fit">
-              <Icon icon="ph:hourglass-medium-bold" class="text-sm text-amber-600" />
-              <span>{{ t('package_detail.pay_before', 'Bayar Sebelum') }}: {{ formatExpiry(tx.expiry_date) }}</span>
-            </div>
-          </div>
-
-          <!-- Mayar Payment Action Box (Single Primary Payment CTA) -->
-          <div class="bg-gradient-to-br from-navy/5 via-navy/[0.02] to-primary/5 border-2 border-primary/40 rounded-2xl p-5 sm:p-6 space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div class="space-y-1">
-                <div class="text-sm sm:text-base font-black text-navy flex items-center gap-2">
-                  <Icon icon="ph:shield-check-fill" class="text-primary text-lg" />
-                  <span>{{ t('package_detail.pay_via_mayar_title', 'Selesaikan Pembayaran via Mayar') }}</span>
-                </div>
-                <div class="text-xs text-slate-500 font-medium leading-relaxed max-w-lg">
-                  {{ t('package_detail.pay_via_mayar_desc', 'Bayar secara aman menggunakan QRIS (BCA, Mandiri, BRI, BNI, GoPay, OVO, DANA, ShopeePay) atau Virtual Account resmi.') }}
-                </div>
-              </div>
-              <div class="sm:text-right shrink-0">
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">{{ t('package_detail.total_paid', 'Total Tagihan') }}</span>
-                <span class="text-xl sm:text-2xl font-black text-navy tabular-nums">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
-              </div>
-            </div>
-
-            <!-- Single Direct Payment Action -->
-            <a v-if="tx.checkout_url" :href="tx.checkout_url" target="_blank" rel="noopener noreferrer"
-              class="w-full py-4 px-6 bg-primary hover:bg-primary-hover text-navy rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md shadow-primary/20 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer">
-              <Icon icon="ph:arrow-square-out-bold" class="text-xl" />
-              <span>{{ t('package_detail.btn_pay_now', 'Bayar Sekarang di Mayar') }}</span>
-            </a>
-
-            <!-- Supported Badges -->
-            <div class="pt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-500 font-semibold">
-              <span class="text-slate-400">{{ t('package_detail.available_methods', 'Metode Tersedia') }}:</span>
-              <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">{{ t('package_detail.method_qris', 'QRIS (Semua E-Wallet)') }}</span>
-              <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">BCA VA</span>
-              <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">Mandiri VA</span>
-              <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">BRI VA</span>
-              <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">BNI VA</span>
-              <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">Permata VA</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- B. ITEM DETAILS TABLE -->
-        <div class="bg-white rounded-3xl border border-gray-100 p-6 sm:p-7 shadow-xs space-y-4">
+        <!-- Service Itemized Breakdown -->
+        <div class="space-y-4">
           <div class="flex items-center justify-between">
             <h3 class="text-sm font-black text-navy flex items-center gap-2">
               <Icon icon="ph:list-dashes-bold" class="text-primary text-base" />
@@ -209,7 +230,7 @@
         </div>
 
         <!-- C. PAYMENT INSTRUCTIONS (If Pending) -->
-        <div v-if="isPending && instructionGroups.length > 0" class="bg-white rounded-3xl border border-gray-100 p-6 sm:p-7 shadow-xs space-y-4">
+        <div v-if="isPending && instructionGroups.length > 0" class="border-t border-gray-100 pt-6 space-y-4">
           <h4 class="text-sm font-black text-navy flex items-center gap-2">
             <Icon icon="ph:info-bold" class="text-primary text-base" />
             <span>{{ t('package_detail.instructions_title', 'Petunjuk Cara Pembayaran') }}</span>
@@ -232,79 +253,25 @@
           </ol>
         </div>
 
-      </div>
-
-      <!-- RIGHT COLUMN: Order Summary Sidebar & Support (1 Col, Zero Duplication) -->
-      <div class="space-y-6">
-        
-        <!-- Summary & Navigation Card -->
-        <div class="bg-white rounded-3xl border border-gray-100 p-6 shadow-xs space-y-5">
-          <div class="space-y-1 pb-4 border-b border-gray-100">
-            <div class="text-xs font-bold text-slate-400 capitalize">{{ t('package_detail.summary_title', 'Ringkasan Invoice') }}</div>
-            <div class="font-mono text-sm font-black text-navy truncate select-all">{{ tx.reference || reference }}</div>
+        <!-- D. Bottom Navigation Links (Clean & Non-repetitive) -->
+        <div class="border-t border-gray-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-2 text-xs text-slate-400">
+            <Icon icon="ph:shield-check-bold" class="text-emerald-500 text-base" />
+            <span>{{ t('package_detail.security_title', 'Jaminan Pembayaran Aman') }} (Mayar SSL 256-bit)</span>
           </div>
 
-          <div class="space-y-3 text-xs">
-            <div class="flex justify-between items-center text-slate-500">
-              <span>{{ t('package_detail.status', 'Status') }}</span>
-              <span :class="statusBadgeClasses" class="px-2.5 py-1 rounded-lg text-[10px] font-black capitalize border shadow-2xs">
-                {{ formatStatus(tx.status || tx.payment_status) }}
-              </span>
-            </div>
-            <div class="flex justify-between items-center text-slate-500">
-              <span>{{ t('package_detail.method_label', 'Metode') }}</span>
-              <span class="font-bold text-navy">{{ formatPaymentMethodName(tx.payment_method) }}</span>
-            </div>
-            <div class="flex justify-between items-center text-slate-500">
-              <span>{{ t('package_detail.purchase_time', 'Waktu Pembelian') }}</span>
-              <span class="font-bold text-navy">{{ formatDate(tx.purchased_at || tx.created_at) }}</span>
-            </div>
-            <div class="h-px bg-slate-100 my-1"></div>
-            <div class="flex justify-between items-baseline">
-              <span class="text-xs font-black text-navy">{{ t('package_detail.total_paid', 'Total Tagihan') }}</span>
-              <span class="text-xl font-black text-navy tabular-nums">
-                Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Non-repetitive Navigation Actions -->
-          <div class="space-y-2.5 pt-2">
+          <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
             <NuxtLink :to="`/payment/status/${tx.reference || reference}`"
-              class="w-full py-3 px-4 bg-navy hover:bg-navy-dark text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs">
-              <Icon icon="ph:globe-bold" class="text-base" />
+              class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all flex items-center gap-1.5 w-full sm:w-auto justify-center">
+              <Icon icon="ph:globe-bold" class="text-sm" />
               <span>{{ t('package_detail.btn_public_status', 'Halaman Status Publik') }}</span>
             </NuxtLink>
 
             <NuxtLink to="/dashboard/organizer/package"
-              class="w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all text-center">
+              class="px-4 py-2.5 rounded-xl bg-navy hover:bg-navy-dark text-white text-xs font-bold transition-all flex items-center gap-1.5 w-full sm:w-auto justify-center shadow-xs">
               <span>{{ t('package_detail.btn_back', 'Kembali ke Paket') }}</span>
             </NuxtLink>
           </div>
-        </div>
-
-        <!-- Security & Help Card -->
-        <div class="bg-white rounded-3xl border border-gray-100 p-6 shadow-xs space-y-4">
-          <div class="flex items-start gap-3">
-            <div class="size-9 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0">
-              <Icon icon="ph:shield-check-bold" class="text-lg" />
-            </div>
-            <div class="space-y-1">
-              <div class="text-xs font-black text-navy">{{ t('package_detail.security_title', 'Jaminan Pembayaran Aman') }}</div>
-              <div class="text-[11px] text-slate-400 leading-relaxed">
-                {{ t('package_detail.security_desc', 'Diproses secara otomatis dan terenkripsi menggunakan gateway resmi Mayar Headless API.') }}
-              </div>
-            </div>
-          </div>
-
-          <div class="h-px bg-slate-100"></div>
-
-          <a href="https://wa.me/6281234567890?text=Halo%20Admin,%20saya%20butuh%20bantuan%20terkait%20transaksi%20"
-            target="_blank"
-            class="inline-flex items-center justify-center gap-2 w-full py-2.5 text-xs text-slate-500 hover:text-navy font-bold transition-colors">
-            <Icon icon="ph:whatsapp-logo-bold" class="text-emerald-500 text-base" />
-            <span>{{ t('package_detail.help_cs', 'Butuh Bantuan? Hubungi CS') }}</span>
-          </a>
         </div>
 
       </div>
