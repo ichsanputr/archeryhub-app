@@ -33,13 +33,13 @@
     </DashboardHeader>
 
     <!-- ── 2. Loading State ── -->
-    <div v-if="isLoading" class="max-w-3xl mx-auto bg-white rounded-3xl border border-gray-100 p-16 text-center shadow-xs print:hidden">
+    <div v-if="isLoading" class="w-full bg-white rounded-3xl border border-gray-100 p-16 text-center shadow-xs print:hidden">
       <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-3 mx-auto" />
       <div class="text-slate-600 font-bold text-sm">{{ t('package_detail.loading', 'Memuat Rincian Transaksi...') }}</div>
     </div>
 
     <!-- ── 3. Error State ── -->
-    <div v-else-if="errorMsg" class="max-w-3xl mx-auto bg-white rounded-3xl border border-gray-100 p-10 text-center shadow-xs space-y-4 print:hidden">
+    <div v-else-if="errorMsg" class="w-full bg-white rounded-3xl border border-gray-100 p-10 text-center shadow-xs space-y-4 print:hidden">
       <div class="size-14 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center mx-auto border border-rose-100">
         <Icon icon="ph:warning-circle-bold" class="text-3xl" />
       </div>
@@ -50,8 +50,8 @@
       </NuxtLink>
     </div>
 
-    <!-- ── 4. Main 1-Column Dashboard View ── -->
-    <div v-else class="max-w-3xl mx-auto space-y-6 print:hidden">
+    <!-- ── 4. Main 1-Column Dashboard View (Matches DashboardHeader full width) ── -->
+    <div v-else class="w-full space-y-6 print:hidden">
       
       <!-- A. STATUS HERO BANNER -->
       <!-- Paid Hero Banner -->
