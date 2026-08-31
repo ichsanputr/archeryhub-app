@@ -97,11 +97,29 @@
             <h2 class="text-2xl font-black text-navy tracking-tight">
               {{ (tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'Bukti Pembayaran Diterima' : 'Menunggu Pembayaran' }}
             </h2>
-            <p class="text-xs text-slate-500 font-medium">
+            <div class="text-xs text-slate-500 font-medium">
               {{ (tx.payment_method === 'manual' || tx.status === 'awaiting_verification')
                 ? 'Bukti transfer Anda telah kami terima. Harap tunggu verifikasi dari penyelenggara.'
                 : 'Silakan selesaikan pembayaran Anda sebelum batas waktu kadaluarsa.' }}
-            </p>
+            </div>
+          </div>
+
+          <!-- Direct Mayar Online Checkout Card -->
+          <div v-if="isRealCheckoutUrl(tx.checkout_url)" class="bg-navy/[0.02] border-2 border-primary/40 rounded-2xl p-5 space-y-4 shadow-sm">
+            <div class="space-y-1">
+              <div class="text-sm font-black text-navy flex items-center gap-2">
+                <Icon icon="ph:shield-check-fill" class="text-primary text-lg" />
+                <span>Selesaikan Pembayaran via Mayar</span>
+              </div>
+              <div class="text-xs text-slate-500 font-medium leading-relaxed">
+                Pilih QRIS (Semua E-Wallet/Mobile Banking) atau Virtual Account (BCA, Mandiri, BRI, BNI, Permata) langsung di portal invoice Mayar.
+              </div>
+            </div>
+
+            <a :href="tx.checkout_url" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-hover text-navy font-black text-sm sm:text-base py-3.5 px-5 rounded-xl shadow-md shadow-primary/20 hover:shadow-lg transition-all cursor-pointer">
+              <Icon icon="ph:arrow-square-out-bold" class="text-lg" />
+              <span>Bayar Sekarang di Mayar</span>
+            </a>
           </div>
 
           <!-- Manual payment notice -->
@@ -123,8 +141,8 @@
             </div>
           </div>
 
-          <!-- VA / Pay code / QRIS display -->
-          <div v-if="tx.qr_url || tx.va_number || tx.pay_code" class="bg-amber-50/60 border border-amber-200/70 rounded-2xl p-5 space-y-4">
+          <!-- VA / Pay code / QRIS display (Only if no checkout_url or specific VA is returned) -->
+          <div v-else-if="tx.qr_url || tx.va_number || tx.pay_code" class="bg-amber-50/60 border border-amber-200/70 rounded-2xl p-5 space-y-4">
             <!-- Simple QRIS Image -->
             <div v-if="tx.qr_url" class="flex flex-col items-center justify-center space-y-2 py-1">
               <span class="text-xs font-black text-amber-900 tracking-wider">Pindai QRIS Pembayaran</span>

@@ -139,15 +139,40 @@
             </div>
           </div>
 
-          <!-- 1. QRIS Display (Shown when Payment Method is QRIS) -->
-          <div v-if="isQR" class="bg-white p-5 sm:p-6 rounded-xl border border-gray-100 text-center space-y-4 shadow-2xs">
+          <!-- 1. Mayar Direct Checkout Link (Primary Online Action) -->
+          <div v-if="tx.checkout_url" class="bg-white p-5 sm:p-6 rounded-2xl border border-navy/15 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="space-y-1">
+                <div class="text-sm sm:text-base font-black text-navy flex items-center gap-2">
+                  <Icon icon="ph:shield-check-fill" class="text-primary text-lg" />
+                  <span>Selesaikan Pembayaran via Mayar</span>
+                </div>
+                <div class="text-xs text-slate-500 font-medium leading-relaxed">
+                  Buka invoice resmi Mayar untuk membayar dengan QRIS (Semua E-Wallet/M-Banking) atau Virtual Account (BCA, Mandiri, BRI, BNI, Permata).
+                </div>
+              </div>
+              <div class="text-right shrink-0">
+                <span class="text-[10px] font-bold text-slate-400 block uppercase tracking-wider">Total Tagihan</span>
+                <span class="text-lg sm:text-xl font-black text-navy">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
+              </div>
+            </div>
+
+            <a :href="tx.checkout_url" target="_blank" rel="noopener noreferrer"
+              class="w-full py-4 px-6 bg-primary hover:bg-primary-hover text-navy rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md shadow-primary/20 hover:shadow-lg transition-all cursor-pointer">
+              <Icon icon="ph:arrow-square-out-bold" class="text-xl" />
+              <span>Bayar Sekarang di Mayar (Buka Halaman Pembayaran)</span>
+            </a>
+          </div>
+
+          <!-- 2. QRIS Display (Shown when specific QR is returned and no direct checkout link) -->
+          <div v-else-if="isQR" class="bg-white p-5 sm:p-6 rounded-xl border border-gray-100 text-center space-y-4 shadow-2xs">
             <div>
               <div class="text-xs sm:text-sm font-black text-navy">{{ t('package_detail.scan_qris_instruction', 'Pindai QRIS Menggunakan Aplikasi Mobile Banking / E-Wallet') }}</div>
               <div class="text-[11px] text-slate-400 mt-0.5">BCA Mobile, Livin Mandiri, BRImo, BNI Mobile, GoPay, OVO, DANA, ShopeePay, LinkAja</div>
             </div>
 
             <div class="inline-block p-3 bg-white rounded-2xl border border-slate-200/80 shadow-xs mx-auto">
-              <img :src="tx.qr_url || `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=DEV-QRIS-${tx.reference}`"
+              <img :src="tx.qr_url"
                 alt="QRIS Barcode" class="size-48 sm:size-56 object-contain rounded-lg" />
             </div>
 
@@ -163,7 +188,7 @@
             </div>
           </div>
 
-          <!-- 2. Virtual Account Display (Shown when Payment Method is VA) -->
+          <!-- 3. Virtual Account Display (Shown when specific VA is returned and no checkout link) -->
           <div v-else-if="tx.pay_code || tx.va_number" class="bg-white p-4 sm:p-5 rounded-xl border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs">
             <div>
               <span class="text-[10px] font-bold text-slate-400 capitalize block">{{ t('package_detail.va_number_label', 'Nomor Virtual Account') }} ({{ formatPaymentMethodName(tx.payment_method) }})</span>
@@ -177,15 +202,6 @@
                 <span>{{ copied ? t('package_detail.copied', 'Tersalin') : t('package_detail.copy', 'Salin Nomor') }}</span>
               </button>
             </div>
-          </div>
-
-          <!-- 3. Mayar Direct Checkout Link -->
-          <div v-if="tx.checkout_url" class="pt-1">
-            <a :href="tx.checkout_url" target="_blank" rel="noopener noreferrer"
-              class="w-full py-3.5 px-4 bg-primary hover:bg-primary-hover text-navy rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer">
-              <Icon icon="ph:arrow-square-out-bold" class="text-lg" />
-              <span>Bayar Sekarang via Mayar (QRIS, VA, E-Wallet)</span>
-            </a>
           </div>
         </div>
 
