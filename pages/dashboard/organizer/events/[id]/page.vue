@@ -1472,12 +1472,18 @@ const fetchEventData = async () => {
 }
 
 const saveEventPage = async () => {
-    // Validation
+    // Per-tab validation
     const toast = useToast()
-    if (!form.value.venue || !form.value.address || !form.value.gmaps_link) {
-        toast.error(t('dashboard_events_page.toasts.fill_required'))
-        activeTab.value = 'lokasi' // Switch to location tab if any of these are missing
-        return
+    if (activeTab.value === 'informasi') {
+        if (!form.value.name || !form.value.name.trim()) {
+            toast.error(t('dashboard_events_page.toasts.fill_event_name', 'Mohon lengkapi Nama Event'))
+            return
+        }
+    } else if (activeTab.value === 'lokasi') {
+        if (!form.value.venue || !form.value.address || !form.value.gmaps_link) {
+            toast.error(t('dashboard_events_page.toasts.fill_required', 'Mohon lengkapi Nama Venue, Alamat, dan Link Google Maps'))
+            return
+        }
     }
 
     saving.value = true

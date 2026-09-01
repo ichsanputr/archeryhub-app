@@ -3189,7 +3189,8 @@
       "file_success": "File {name} uploaded successfully",
       "file_failed": "Failed to upload file {name}",
       "save_success": "Event page successfully updated",
-      "save_failed": "Failed to save event"
+      "save_failed": "Failed to save event",
+      "fill_event_name": "Please enter event name"
     },
     "seo_title": "Seo Title"
   },

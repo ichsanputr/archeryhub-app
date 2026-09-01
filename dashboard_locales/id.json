@@ -1248,7 +1248,10 @@
     "location": {
       "address_placeholder": "Address Placeholder"
     },
-    "seo_title": "Seo Title"
+    "seo_title": "Seo Title",
+    "toasts": {
+      "fill_event_name": "Mohon lengkapi Nama Event"
+    }
   },
   "dashboard_events_participants_add": {
     "title": "Tambah Peserta Event",

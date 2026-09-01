@@ -3105,7 +3105,8 @@
       "file_success": "File {name} berhasil diupload",
       "file_failed": "Gagal mengupload file {name}",
       "save_success": "Halaman event berhasil diperbarui",
-      "save_failed": "Gagal menyimpan event"
+      "save_failed": "Gagal menyimpan event",
+      "fill_event_name": "Mohon lengkapi Nama Event"
     },
     "seo_title": "Seo Title"
   },

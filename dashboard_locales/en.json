@@ -1212,7 +1212,10 @@
     "location": {
       "address_placeholder": "Address Placeholder"
     },
-    "seo_title": "Seo Title"
+    "seo_title": "Seo Title",
+    "toasts": {
+      "fill_event_name": "Please enter event name"
+    }
   },
   "dashboard_events_participants_add": {
     "title": "Add Event Participant",
