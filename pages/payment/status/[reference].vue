@@ -15,13 +15,13 @@
     <!-- Main Content Container -->
     <main class="relative z-10 flex-grow pt-28 pb-16 px-4 sm:px-6 flex items-center justify-center">
       <!-- Loading State -->
-      <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 bg-white/90 backdrop-blur-md rounded-[28px] border border-slate-200/90 shadow-xl shadow-slate-200/50 max-w-md w-full p-8 text-center">
+      <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 bg-white/90 backdrop-blur-sm rounded-[28px] border border-slate-200/90 shadow-sm max-w-md w-full p-8 text-center">
         <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
         <div class="text-slate-600 font-bold text-sm">{{ t('payment_status.loading_status', 'Memuat Status Pembayaran...') }}</div>
       </div>
 
       <!-- Error State -->
-      <div v-else-if="errorMsg" class="max-w-md w-full bg-white/90 backdrop-blur-md border border-slate-200/90 rounded-[28px] p-6 sm:p-8 text-center shadow-xl shadow-slate-200/50 relative overflow-hidden">
+      <div v-else-if="errorMsg" class="max-w-md w-full bg-white/90 backdrop-blur-sm border border-slate-200/90 rounded-[28px] p-6 sm:p-8 text-center shadow-sm relative overflow-hidden">
         <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-red-400 via-red-500 to-rose-500"></div>
         <div class="size-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-5 mx-auto border border-red-100 shadow-xs">
           <Icon icon="ph:warning-circle-bold" class="text-3xl" />
@@ -36,13 +36,13 @@
       <!-- Transaction Details Card -->
       <div v-else class="max-w-lg w-full space-y-6">
         <!-- 1. PAID STATE -->
-        <div v-if="tx.status === 'paid' || tx.status === 'PAID'" class="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-xl shadow-slate-200/50 space-y-6 relative overflow-hidden">
+        <div v-if="tx.status === 'paid' || tx.status === 'PAID'" class="bg-white/95 backdrop-blur-sm border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6 relative overflow-hidden">
           <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-500"></div>
           
           <div class="text-center space-y-2 pt-1">
             <div class="relative size-20 mx-auto mb-2 flex items-center justify-center">
-              <div class="absolute inset-0 bg-emerald-500/20 rounded-3xl blur-md animate-pulse"></div>
-              <div class="relative size-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-500/25">
+              <div class="absolute inset-0 bg-emerald-500/20 rounded-3xl blur-sm"></div>
+              <div class="relative size-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-white flex items-center justify-center shadow-xs">
                 <Icon icon="ph:check-bold" class="text-3xl" />
               </div>
             </div>
@@ -100,13 +100,13 @@
         </div>
 
         <!-- 2. PENDING / AWAITING VERIFICATION STATE -->
-        <div v-else-if="tx.status === 'pending' || tx.status === 'UNPAID' || tx.status === 'awaiting_verification' || tx.status === 'AWAITING_VERIFICATION'" class="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-xl shadow-slate-200/50 space-y-6 relative overflow-hidden">
+        <div v-else-if="tx.status === 'pending' || tx.status === 'UNPAID' || tx.status === 'awaiting_verification' || tx.status === 'AWAITING_VERIFICATION'" class="bg-white/95 backdrop-blur-sm border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6 relative overflow-hidden">
           <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-amber-400 via-primary to-amber-500"></div>
           
           <div class="text-center space-y-2 pt-1">
             <div class="relative size-20 mx-auto mb-2 flex items-center justify-center">
-              <div class="absolute inset-0 rounded-3xl blur-md" :class="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'bg-blue-400/20' : 'bg-amber-400/20'"></div>
-              <div class="relative size-16 rounded-2xl flex items-center justify-center shadow-md"
+              <div class="absolute inset-0 rounded-3xl blur-sm" :class="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'bg-blue-400/20' : 'bg-amber-400/20'"></div>
+              <div class="relative size-16 rounded-2xl flex items-center justify-center shadow-xs"
                 :class="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'bg-gradient-to-br from-blue-50 to-blue-100/80 text-blue-600 border border-blue-200 shadow-blue-500/10' : 'bg-gradient-to-br from-amber-50 to-amber-100/80 text-amber-600 border border-amber-200 shadow-amber-500/10'">
                 <Icon :icon="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'ph:receipt-bold' : 'ph:clock-bold'" class="text-3xl" />
               </div>
@@ -138,7 +138,7 @@
             </div>
 
             <!-- Single, Primary Direct Checkout CTA -->
-            <a :href="tx.checkout_url" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-hover text-navy font-black text-sm sm:text-base py-3.5 px-5 rounded-xl shadow-md shadow-primary/20 hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer">
+            <a :href="tx.checkout_url" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-hover text-navy font-black text-sm sm:text-base py-3.5 px-5 rounded-xl shadow-xs hover:shadow-sm hover:-translate-y-0.5 transition-all cursor-pointer">
               <Icon icon="ph:arrow-square-out-bold" class="text-xl" />
               <span>{{ t('payment_status.btn_pay_now_mayar', 'Bayar Sekarang di Mayar') }}</span>
             </a>
@@ -241,7 +241,7 @@
         </div>
 
         <!-- 3. FAILED / EXPIRED STATE -->
-        <div v-else class="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-xl shadow-slate-200/50 space-y-6 relative overflow-hidden">
+        <div v-else class="bg-white/95 backdrop-blur-sm border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6 relative overflow-hidden">
           <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-red-400 via-red-500 to-rose-500"></div>
           
           <div class="text-center space-y-2 pt-1">
