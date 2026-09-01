@@ -1320,9 +1320,9 @@ const formatDateTime = (d) => {
 }
 
 const isFormValid = computed(() => {
-    const categoriesSelected = form.value.category_ids.length > 0
+    const categoriesSelected = form.value.category_ids && form.value.category_ids.length > 0
     const archerProfileExists = !!archerProfile.value
-    const profileComplete = !!profileForm.value.full_name && !!profileForm.value.gender && !!profileForm.value.date_of_birth && !!profileForm.value.bow_type
+    const profileComplete = !!profileForm.value.full_name && !!profileForm.value.gender && !!profileForm.value.date_of_birth
     // For team/mixed: all selected categories must have complete partners
     const partnersComplete = form.value.category_ids.every(catId => {
         const category = categories.value.find(c => c.id === catId)
@@ -1333,9 +1333,9 @@ const isFormValid = computed(() => {
         }
         return true
     })
-    // Payment: either online channel selected OR manual method + proof uploaded
+    // Payment: either online channel (Mayar) selected OR manual method + proof uploaded
     const paymentSelected = totalFee.value > 0
-        ? (form.value.payment_type === 'online' ? !!form.value.online_channel : (!!form.value.manual_method_id && !!proofFileUrl.value))
+        ? (form.value.payment_type === 'online' ? true : (!!form.value.manual_method_id && !!proofFileUrl.value))
         : true
     return categoriesSelected && archerProfileExists && profileComplete && partnersComplete && paymentSelected && registrationStatus.value === 'open'
 })
