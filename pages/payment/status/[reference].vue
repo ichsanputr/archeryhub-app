@@ -40,11 +40,8 @@
           <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-500"></div>
           
           <div class="text-center space-y-2 pt-1">
-            <div class="relative size-20 mx-auto mb-2 flex items-center justify-center">
-              <div class="absolute inset-0 bg-emerald-500/20 rounded-3xl blur-sm"></div>
-              <div class="relative size-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-white flex items-center justify-center shadow-xs">
-                <Icon icon="ph:check-bold" class="text-3xl" />
-              </div>
+            <div class="size-14 rounded-2xl mx-auto mb-2 flex items-center justify-center bg-emerald-50 border border-emerald-200/80 text-emerald-600 shadow-2xs">
+              <Icon icon="ph:check-circle-bold" class="text-3xl" />
             </div>
             <h2 class="text-2xl font-black text-navy tracking-tight">{{ t('payment_status.paid_title', 'Pembayaran Berhasil!') }}</h2>
             <div class="text-xs text-slate-500 font-medium max-w-sm mx-auto">{{ t('payment_status.paid_desc', 'Terima kasih, pembayaran Anda telah diverifikasi dan dikonfirmasi secara instan.') }}</div>
@@ -104,12 +101,9 @@
           <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-amber-400 via-primary to-amber-500"></div>
           
           <div class="text-center space-y-2 pt-1">
-            <div class="relative size-20 mx-auto mb-2 flex items-center justify-center">
-              <div class="absolute inset-0 rounded-3xl blur-sm" :class="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'bg-blue-400/20' : 'bg-amber-400/20'"></div>
-              <div class="relative size-16 rounded-2xl flex items-center justify-center shadow-xs"
-                :class="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'bg-gradient-to-br from-blue-50 to-blue-100/80 text-blue-600 border border-blue-200 shadow-blue-500/10' : 'bg-gradient-to-br from-amber-50 to-amber-100/80 text-amber-600 border border-amber-200 shadow-amber-500/10'">
-                <Icon :icon="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'ph:receipt-bold' : 'ph:clock-bold'" class="text-3xl" />
-              </div>
+            <div class="size-14 rounded-2xl mx-auto mb-2 flex items-center justify-center border shadow-2xs"
+              :class="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'bg-blue-50 border-blue-200/80 text-blue-600' : 'bg-amber-50 border-amber-200/80 text-amber-600'">
+              <Icon :icon="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'ph:receipt-bold' : 'ph:clock-bold'" class="text-3xl" />
             </div>
             <h2 class="text-2xl font-black text-navy tracking-tight">
               {{ (tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? t('payment_status.proof_received_title', 'Bukti Pembayaran Diterima') : t('payment_status.awaiting_payment_title', 'Menunggu Pembayaran') }}
@@ -245,7 +239,7 @@
           <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-red-400 via-red-500 to-rose-500"></div>
           
           <div class="text-center space-y-2 pt-1">
-            <div class="size-16 rounded-2xl bg-red-50 text-red-500 border border-red-200 flex items-center justify-center mx-auto shadow-xs">
+            <div class="size-14 rounded-2xl mx-auto mb-2 flex items-center justify-center bg-red-50 border border-red-200/80 text-red-600 shadow-2xs">
               <Icon icon="ph:x-circle-bold" class="text-3xl" />
             </div>
             <h2 class="text-2xl font-black text-navy tracking-tight">{{ t('payment_status.failed_title', 'Pembayaran Gagal') }}</h2>
