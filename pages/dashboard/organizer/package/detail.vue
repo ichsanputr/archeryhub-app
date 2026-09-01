@@ -1,3 +1,170 @@
+<script setup lang="ts">
+import { Icon } from '@iconify/vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from '#app'
+import { usePayment } from '~/composables/usePayment'
+import { useAuth } from '~/composables/useAuth'
+import useDashboardI18n from '~/composables/useDashboardI18n'
+
+definePageMeta({
+  layout: 'dashboard'
+})
+
+const { t } = useDashboardI18n()
+useHead({ title: computed(() => t('package_detail.page_title', 'Detail Invoice Pembayaran') + ' - ArcheryHub') })
+
+const route = useRoute()
+const payment = usePayment()
+const { organizerProfile } = useAuth()
+const apiBaseUrl = useApiBaseUrl()
+
+const reference = computed(() => (route.query.trx_id || route.query.ref || route.params.id || '').toString())
+
+const tx = ref<any>({})
+const isLoading = ref(true)
+const errorMsg = ref('')
+const activeGroupIdx = ref(0)
+
+const isPaid = computed(() => {
+  const s = (tx.value.status || tx.value.payment_status || '').toLowerCase()
+  return s === 'paid' || s === 'completed' || s === 'sukses'
+})
+
+const isPending = computed(() => {
+  const s = (tx.value.status || tx.value.payment_status || '').toLowerCase()
+  return s === 'pending' || s === 'unpaid' || s === 'waiting'
+})
+
+const statusBadgeClasses = computed(() => {
+  if (isPaid.value) return 'bg-emerald-50 text-emerald-800 border-emerald-200/80'
+  if (isPending.value) return 'bg-amber-50 text-amber-800 border-amber-200/80'
+  return 'bg-rose-50 text-rose-800 border-rose-200/80'
+})
+
+function formatStatus(status: string) {
+  if (!status) return t('package_detail.status_pending', 'Menunggu Pembayaran')
+  const s = status.toLowerCase()
+  if (s === 'paid') return t('package_detail.status_paid', 'Lunas')
+  if (s === 'pending') return t('package_detail.status_pending', 'Menunggu Pembayaran')
+  if (s === 'expired') return t('package_detail.status_expired', 'Kadaluwarsa')
+  if (s === 'failed') return t('package_detail.status_failed', 'Gagal')
+  return status
+}
+
+function formatPaymentMethodName(method: string) {
+  if (!method) return t('package_detail.method_mayar', 'Mayar (QRIS, VA, E-Wallet)')
+  const m = method.toUpperCase()
+  if (m === 'MAYAR') return t('package_detail.method_mayar', 'Mayar (QRIS, VA, E-Wallet)')
+  if (m === 'QRIS') return t('package_detail.method_qris_full', 'QRIS (Semua E-Wallet)')
+  if (m === 'MYBCAVA' || m === 'BCAVA' || m === 'BCA') return t('package_detail.method_bca_va', 'BCA Virtual Account')
+  if (m === 'BRIVA' || m === 'BRI') return t('package_detail.method_bri_va', 'BRI Virtual Account')
+  if (m === 'MANDIRIVA' || m === 'MANDIRI') return t('package_detail.method_mandiri_va', 'Mandiri Virtual Account')
+  if (m === 'BNIVA' || m === 'BNI') return t('package_detail.method_bni_va', 'BNI Virtual Account')
+  if (m === 'PERMATAVA' || m === 'PERMATA') return t('package_detail.method_permata_va', 'Permata Virtual Account')
+  return method
+}
+
+function formatNumber(val: any) {
+  const num = Number(val)
+  if (isNaN(num)) return '0'
+  return new Intl.NumberFormat('id-ID').format(num)
+}
+
+function formatDate(dateStr: string) {
+  if (!dateStr) return '-'
+  return new Date(dateStr).toLocaleString('id-ID', {
+    day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
+  })
+}
+
+function formatExpiry(val: any) {
+  if (!val) return '-'
+  if (typeof val === 'number') {
+    return new Date(val * 1000).toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+  }
+  return new Date(val).toLocaleString('id-ID')
+}
+
+function getInvoicePdfUrl(ref: string) {
+  return `${apiBaseUrl}/payment/invoice/${ref}`
+}
+
+function printInvoice() {
+  window.print()
+}
+
+const instructionGroups = computed(() => {
+  if (!tx.value || !tx.value.instructions) return []
+  try {
+    const parsed = typeof tx.value.instructions === 'string' ? JSON.parse(tx.value.instructions) : tx.value.instructions
+    if (Array.isArray(parsed)) {
+      return parsed.map((g: any) => ({ title: g.title || 'Petunjuk', steps: Array.isArray(g.steps) ? g.steps : [] })).filter((g: any) => g.steps.length > 0)
+    }
+  } catch {}
+  return []
+})
+
+const activeGroupSteps = computed(() => {
+  const groups = instructionGroups.value
+  if (groups && groups[activeGroupIdx.value]) {
+    return groups[activeGroupIdx.value].steps || []
+  }
+  return []
+})
+
+async function loadDetails() {
+  if (!reference.value) {
+    errorMsg.value = t('package_detail.id_missing', 'ID Transaksi tidak ditemukan.')
+    isLoading.value = false
+    return
+  }
+  isLoading.value = true
+  errorMsg.value = ''
+  try {
+    const res: any = await payment.getPaymentStatus(reference.value)
+    if (res) {
+      tx.value = res
+    } else {
+      errorMsg.value = t('package_detail.tx_not_found', 'Transaksi dengan referensi tersebut tidak ditemukan.')
+    }
+  } catch (err: any) {
+    errorMsg.value = err?.data?.error || t('package_detail.load_failed', 'Gagal memuat status pembayaran.')
+  } finally {
+    isLoading.value = false
+  }
+}
+
+let pollingInterval: any = null
+
+onMounted(async () => {
+  const token = route.query.token
+  const payerId = route.query.PayerID
+  if (token) {
+    try {
+      await $fetch(`${apiBaseUrl}/payment/paypal/capture`, {
+        method: 'POST',
+        body: { order_id: token, reference: reference.value }
+      })
+    } catch (e) {
+      console.error('PayPal auto-capture error:', e)
+    }
+  }
+
+  loadDetails()
+  pollingInterval = setInterval(async () => {
+    if (isPaid.value || !isPending.value) return
+    try {
+      const res: any = await payment.getPaymentStatus(reference.value)
+      if (res) tx.value = res
+    } catch {}
+  }, 5000)
+})
+
+onUnmounted(() => {
+  if (pollingInterval) clearInterval(pollingInterval)
+})
+</script>
+
 <template>
   <div class="space-y-6 pb-16">
     
@@ -442,173 +609,6 @@
 
   </div>
 </template>
-
-<script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useRoute } from '#app'
-import { usePayment } from '~/composables/usePayment'
-import { useAuth } from '~/composables/useAuth'
-import { useI18n } from 'vue-i18n'
-
-definePageMeta({
-  layout: 'dashboard'
-})
-
-const { t } = useI18n()
-useHead({ title: computed(() => t('package_detail.page_title', 'Detail Invoice Pembayaran') + ' - ArcheryHub') })
-
-const route = useRoute()
-const payment = usePayment()
-const { organizerProfile } = useAuth()
-const apiBaseUrl = useApiBaseUrl()
-
-const reference = computed(() => (route.query.trx_id || route.query.ref || route.params.id || '').toString())
-
-const tx = ref<any>({})
-const isLoading = ref(true)
-const errorMsg = ref('')
-const activeGroupIdx = ref(0)
-
-const isPaid = computed(() => {
-  const s = (tx.value.status || tx.value.payment_status || '').toLowerCase()
-  return s === 'paid' || s === 'completed' || s === 'sukses'
-})
-
-const isPending = computed(() => {
-  const s = (tx.value.status || tx.value.payment_status || '').toLowerCase()
-  return s === 'pending' || s === 'unpaid' || s === 'waiting'
-})
-
-const statusBadgeClasses = computed(() => {
-  if (isPaid.value) return 'bg-emerald-50 text-emerald-800 border-emerald-200/80'
-  if (isPending.value) return 'bg-amber-50 text-amber-800 border-amber-200/80'
-  return 'bg-rose-50 text-rose-800 border-rose-200/80'
-})
-
-function formatStatus(status: string) {
-  if (!status) return t('package_detail.status_pending', 'Menunggu Pembayaran')
-  const s = status.toLowerCase()
-  if (s === 'paid') return t('package_detail.status_paid', 'Lunas')
-  if (s === 'pending') return t('package_detail.status_pending', 'Menunggu Pembayaran')
-  if (s === 'expired') return t('package_detail.status_expired', 'Kadaluwarsa')
-  if (s === 'failed') return t('package_detail.status_failed', 'Gagal')
-  return status
-}
-
-function formatPaymentMethodName(method: string) {
-  if (!method) return t('package_detail.method_mayar', 'Mayar (QRIS, VA, E-Wallet)')
-  const m = method.toUpperCase()
-  if (m === 'MAYAR') return t('package_detail.method_mayar', 'Mayar (QRIS, VA, E-Wallet)')
-  if (m === 'QRIS') return t('package_detail.method_qris_full', 'QRIS (Semua E-Wallet)')
-  if (m === 'MYBCAVA' || m === 'BCAVA' || m === 'BCA') return t('package_detail.method_bca_va', 'BCA Virtual Account')
-  if (m === 'BRIVA' || m === 'BRI') return t('package_detail.method_bri_va', 'BRI Virtual Account')
-  if (m === 'MANDIRIVA' || m === 'MANDIRI') return t('package_detail.method_mandiri_va', 'Mandiri Virtual Account')
-  if (m === 'BNIVA' || m === 'BNI') return t('package_detail.method_bni_va', 'BNI Virtual Account')
-  if (m === 'PERMATAVA' || m === 'PERMATA') return t('package_detail.method_permata_va', 'Permata Virtual Account')
-  return method
-}
-
-function formatNumber(val: any) {
-  const num = Number(val)
-  if (isNaN(num)) return '0'
-  return new Intl.NumberFormat('id-ID').format(num)
-}
-
-function formatDate(dateStr: string) {
-  if (!dateStr) return '-'
-  return new Date(dateStr).toLocaleString('id-ID', {
-    day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
-  })
-}
-
-function formatExpiry(val: any) {
-  if (!val) return '-'
-  if (typeof val === 'number') {
-    return new Date(val * 1000).toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-  }
-  return new Date(val).toLocaleString('id-ID')
-}
-
-function getInvoicePdfUrl(ref: string) {
-  return `${apiBaseUrl}/payment/invoice/${ref}`
-}
-
-function printInvoice() {
-  window.print()
-}
-
-const instructionGroups = computed(() => {
-  if (!tx.value || !tx.value.instructions) return []
-  try {
-    const parsed = typeof tx.value.instructions === 'string' ? JSON.parse(tx.value.instructions) : tx.value.instructions
-    if (Array.isArray(parsed)) {
-      return parsed.map((g: any) => ({ title: g.title || 'Petunjuk', steps: Array.isArray(g.steps) ? g.steps : [] })).filter((g: any) => g.steps.length > 0)
-    }
-  } catch {}
-  return []
-})
-
-const activeGroupSteps = computed(() => {
-  const groups = instructionGroups.value
-  if (groups && groups[activeGroupIdx.value]) {
-    return groups[activeGroupIdx.value].steps || []
-  }
-  return []
-})
-
-async function loadDetails() {
-  if (!reference.value) {
-    errorMsg.value = t('package_detail.id_missing', 'ID Transaksi tidak ditemukan.')
-    isLoading.value = false
-    return
-  }
-  isLoading.value = true
-  errorMsg.value = ''
-  try {
-    const res: any = await payment.getPaymentStatus(reference.value)
-    if (res) {
-      tx.value = res
-    } else {
-      errorMsg.value = t('package_detail.tx_not_found', 'Transaksi dengan referensi tersebut tidak ditemukan.')
-    }
-  } catch (err: any) {
-    errorMsg.value = err?.data?.error || t('package_detail.load_failed', 'Gagal memuat status pembayaran.')
-  } finally {
-    isLoading.value = false
-  }
-}
-
-let pollingInterval: any = null
-
-onMounted(async () => {
-  const token = route.query.token
-  const payerId = route.query.PayerID
-  if (token) {
-    try {
-      await $fetch(`${apiBaseUrl}/payment/paypal/capture`, {
-        method: 'POST',
-        body: { order_id: token, reference: reference.value }
-      })
-    } catch (e) {
-      console.error('PayPal auto-capture error:', e)
-    }
-  }
-
-  loadDetails()
-  pollingInterval = setInterval(async () => {
-    if (isPaid.value || !isPending.value) return
-    try {
-      const res: any = await payment.getPaymentStatus(reference.value)
-      if (res) tx.value = res
-    } catch {}
-  }, 5000)
-})
-
-onUnmounted(() => {
-  if (pollingInterval) clearInterval(pollingInterval)
-})
-</script>
 
 <style>
 @page {
