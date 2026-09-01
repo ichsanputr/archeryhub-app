@@ -1063,7 +1063,11 @@
     "mayar_instant_secure": "빠르고 안전함",
     "mayar_supported_methods": "QRIS, 가상 계좌(BCA, Mandiri, BRI, BNI, Permata) 및 전자지갑 지원",
     "sort_asc": "오름차순 정렬",
-    "sort_desc": "내림차순 정렬"
+    "sort_desc": "내림차순 정렬",
+    "payment_channel_mayar": "국내 결제 (Mayar - IDR)",
+    "payment_channel_paypal": "해외 결제 (PayPal - USD)",
+    "paypal_desc": "PayPal 잔액, 해외 카드 결제 (USD 통화)",
+    "pay_with_paypal": "PayPal로 결제하기"
   },
   "package_detail": {
     "page_title": "결제 송장 상세",
@@ -1206,7 +1210,13 @@
     "login_now": "지금 로그인",
     "athlete_account_required": "선수 계정 필요",
     "athlete_account_required_desc": "이 등록은 선수 프로필 전용입니다.",
-    "register_as_athlete": "선수로 회원가입"
+    "register_as_athlete": "선수로 회원가입",
+    "paypal_payment": "PayPal (해외 결제)",
+    "paypal_gateway_name": "PayPal 글로벌 결제",
+    "paypal_supported_desc": "PayPal 잔액 또는 해외 신용/체크카드(Visa, Mastercard, AMEX)로 안전하게 결제하세요. USD로 처리됩니다.",
+    "tag_paypal_balance": "PayPal 잔액",
+    "tag_intl_cards": "Visa / Mastercard / AMEX",
+    "pay_now_paypal": "PayPal로 지금 결제"
   },
   "payment_status": {
     "status_title": "결제 상태",
@@ -1243,6 +1253,8 @@
     "failed_desc": "이 거래의 상태는 {status}이며 진행할 수 없습니다.",
     "back_package": "패키지 및 참가권 관리로 돌아가기",
     "back_orders": "상점 주문으로 돌아가기",
-    "back_payments": "결제 내역으로 돌아가기"
+    "back_payments": "결제 내역으로 돌아가기",
+    "pay_via_paypal": "PayPal로 지금 결제",
+    "paypal_pending_desc": "PayPal 결제 페이지에서 승인을 완료해 주세요."
   }
 }

@@ -1153,7 +1153,13 @@
     "login_now": "Login Now",
     "athlete_account_required": "Athlete Account Required",
     "athlete_account_required_desc": "Registration is specifically for athlete profiles.",
-    "register_as_athlete": "Register as Athlete"
+    "register_as_athlete": "Register as Athlete",
+    "paypal_payment": "PayPal (International)",
+    "paypal_gateway_name": "PayPal International Checkout",
+    "paypal_supported_desc": "Pay securely using your PayPal balance or international credit/debit cards (Visa, Mastercard, AMEX, Discover). Processed in USD.",
+    "tag_paypal_balance": "PayPal Balance",
+    "tag_intl_cards": "Visa / Mastercard / AMEX",
+    "pay_now_paypal": "Pay Now via PayPal"
   },
   "profile": {
     "country": "Country",
@@ -1935,7 +1941,11 @@
     "mayar_instant_secure": "Instant & Secure",
     "mayar_supported_methods": "Supports QRIS, Virtual Accounts (BCA, Mandiri, BRI, BNI, Permata), and E-Wallets",
     "sort_asc": "Sort Ascending",
-    "sort_desc": "Sort Descending"
+    "sort_desc": "Sort Descending",
+    "payment_channel_mayar": "Domestic (Mayar - IDR)",
+    "payment_channel_paypal": "International (PayPal - USD)",
+    "paypal_desc": "PayPal Balance, Visa, Mastercard, AMEX (USD Currency)",
+    "pay_with_paypal": "Checkout with PayPal"
   },
   "premium": {
     "subscription_expired": "Package Expired",
@@ -2235,6 +2245,8 @@
     "failed_desc": "This transaction status is {status} and cannot be processed.",
     "back_package": "Back to Packages & Quota",
     "back_orders": "Back to Store Orders",
-    "back_payments": "Back to Payment History"
+    "back_payments": "Back to Payment History",
+    "pay_via_paypal": "Pay Now via PayPal",
+    "paypal_pending_desc": "Please complete your payment authorization on the PayPal portal."
   }
 }

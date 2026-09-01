@@ -2389,7 +2389,13 @@
     "login_required_desc": "Silakan login sebagai atlet untuk mendaftar.",
     "athlete_account_required": "Diperlukan Akun Atlet",
     "athlete_account_required_desc": "Pendaftaran ini khusus untuk profil atlet.",
-    "register_as_athlete": "Daftar sebagai Atlet"
+    "register_as_athlete": "Daftar sebagai Atlet",
+    "paypal_payment": "PayPal (Internasional)",
+    "paypal_gateway_name": "PayPal International Checkout",
+    "paypal_supported_desc": "Bayar aman menggunakan saldo PayPal atau kartu kredit/debit internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.",
+    "tag_paypal_balance": "Saldo PayPal (PayPal Balance)",
+    "tag_intl_cards": "Visa / Mastercard / AMEX",
+    "pay_now_paypal": "Bayar Sekarang via PayPal"
   },
   "subscription_payment_page": {
     "back": "Kembali ke Subscription",
@@ -4027,7 +4033,11 @@
     "standard_tier_name": "Standard",
     "elite_tier_name": "Elite",
     "custom_tier_name": "Kustom",
-    "no_history_desc": "Riwayat pembelian kuota Standard & Elite akan tercatat di sini. Kuota Free (Bonus Awal) digunakan langsung tanpa transaksi pembelian."
+    "no_history_desc": "Riwayat pembelian kuota Standard & Elite akan tercatat di sini. Kuota Free (Bonus Awal) digunakan langsung tanpa transaksi pembelian.",
+    "payment_channel_mayar": "Domestik (Mayar - IDR)",
+    "payment_channel_paypal": "Internasional (PayPal - USD)",
+    "paypal_desc": "Saldo PayPal, Visa, Mastercard, AMEX (Mata uang USD)",
+    "pay_with_paypal": "Checkout via PayPal"
   },
   "org_checkout": {
     "title": "Pembayaran Biaya Platform",
@@ -4675,6 +4685,8 @@
     "failed_desc": "Transaksi ini berstatus {status} dan tidak dapat dilanjutkan.",
     "back_package": "Kembali ke Manajemen Paket & Kuota",
     "back_orders": "Kembali ke Pesanan Toko",
-    "back_payments": "Kembali ke Riwayat Pembayaran"
+    "back_payments": "Kembali ke Riwayat Pembayaran",
+    "pay_via_paypal": "Bayar Sekarang via PayPal",
+    "paypal_pending_desc": "Silakan selesaikan otorisasi pembayaran Anda di halaman PayPal."
   }
 }

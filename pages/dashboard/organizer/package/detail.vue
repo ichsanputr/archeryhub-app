@@ -100,8 +100,48 @@
           </div>
         </div>
 
-        <!-- Vibrant Warm Gold Card Inner (Clean, Non-gray) -->
-        <div class="bg-gradient-to-br from-amber-500/10 via-amber-50/70 to-primary/20 border-2 border-primary/60 rounded-2xl p-5 sm:p-6 space-y-4 shadow-sm">
+        <!-- PayPal Card if payment_method is paypal -->
+        <div v-if="tx.payment_method === 'paypal'"
+          class="bg-gradient-to-br from-blue-500/10 via-sky-50/70 to-blue-500/20 border-2 border-blue-400/80 rounded-2xl p-5 sm:p-6 space-y-4 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="space-y-1">
+              <div class="text-sm sm:text-base font-black text-navy flex items-center gap-2">
+                <Icon icon="logos:paypal" class="text-xl" />
+                <span>Selesaikan Pembayaran via PayPal</span>
+              </div>
+              <div class="text-xs text-slate-600 font-medium leading-relaxed max-w-lg">
+                Bayar secara aman menggunakan Saldo PayPal atau Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.
+              </div>
+            </div>
+            <div class="sm:text-right shrink-0">
+              <span class="text-[10px] font-bold text-slate-400 capitalize tracking-wider block">{{ t('package_detail.total_paid', 'Total Tagihan') }}</span>
+              <span class="text-xl sm:text-2xl font-black text-navy tabular-nums">
+                Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}
+                <span class="text-xs font-mono font-bold text-blue-600 block">
+                  (~${{ (Math.ceil(((tx.total_amount || tx.amount || 0) / 16000) * 100) / 100).toFixed(2) }} USD)
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <a v-if="tx.checkout_url" :href="tx.checkout_url" target="_blank" rel="noopener noreferrer"
+            class="w-full py-4 px-6 bg-[#0070ba] hover:bg-[#005ea6] text-white rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md transition-all cursor-pointer">
+            <Icon icon="logos:paypal" class="text-xl" />
+            <span>Bayar Sekarang di PayPal</span>
+          </a>
+
+          <div class="pt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-600 font-semibold">
+            <span class="text-slate-400">Metode Tersedia:</span>
+            <span class="px-2.5 py-0.5 rounded-lg bg-white border border-blue-200/80 font-bold text-slate-800 shadow-2xs">Saldo PayPal</span>
+            <span class="px-2.5 py-0.5 rounded-lg bg-white border border-blue-200/80 font-bold text-slate-800 shadow-2xs">Visa</span>
+            <span class="px-2.5 py-0.5 rounded-lg bg-white border border-blue-200/80 font-bold text-slate-800 shadow-2xs">Mastercard</span>
+            <span class="px-2.5 py-0.5 rounded-lg bg-white border border-blue-200/80 font-bold text-slate-800 shadow-2xs">AMEX</span>
+          </div>
+        </div>
+
+        <!-- Mayar Card (Default Domestik) -->
+        <div v-else
+          class="bg-gradient-to-br from-amber-500/10 via-amber-50/70 to-primary/20 border-2 border-primary/60 rounded-2xl p-5 sm:p-6 space-y-4 shadow-sm">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div class="space-y-1">
               <div class="text-sm sm:text-base font-black text-navy flex items-center gap-2">
@@ -541,7 +581,20 @@ async function loadDetails() {
 
 let pollingInterval: any = null
 
-onMounted(() => {
+onMounted(async () => {
+  const token = route.query.token
+  const payerId = route.query.PayerID
+  if (token) {
+    try {
+      await $fetch(`${apiBaseUrl}/payment/paypal/capture`, {
+        method: 'POST',
+        body: { order_id: token, reference: reference.value }
+      })
+    } catch (e) {
+      console.error('PayPal auto-capture error:', e)
+    }
+  }
+
   loadDetails()
   pollingInterval = setInterval(async () => {
     if (isPaid.value || !isPending.value) return

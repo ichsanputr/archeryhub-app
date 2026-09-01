@@ -594,27 +594,34 @@
 
                             <!-- Segmented Pill Tab Switcher -->
                             <div class="p-4 sm:p-5 pb-0">
-                                <div class="bg-slate-100/80 p-1 rounded-2xl flex gap-1 border border-slate-200/60">
+                                <div class="bg-slate-100/80 p-1 rounded-2xl flex flex-wrap sm:flex-nowrap gap-1 border border-slate-200/60">
                                     <button type="button"
                                         @click="form.payment_type = 'online'; form.manual_method_id = ''"
                                         :class="form.payment_type === 'online' ? 'bg-white text-navy font-black shadow-xs' : 'text-slate-500 hover:text-navy font-bold'"
-                                        class="flex-1 py-2.5 px-3 text-center rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                        class="flex-1 py-2.5 px-2 text-center rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
                                         <Icon icon="ph:lightning-bold" class="text-base" :class="form.payment_type === 'online' ? 'text-primary' : 'text-slate-400'" />
-                                        <span>{{ t('my_registration.online_payment', 'Pembayaran Online') }}</span>
+                                        <span class="truncate">{{ t('my_registration.online_payment', 'Mayar (IDR)') }}</span>
+                                    </button>
+                                    <button type="button"
+                                        @click="form.payment_type = 'paypal'; form.manual_method_id = ''"
+                                        :class="form.payment_type === 'paypal' ? 'bg-white text-navy font-black shadow-xs' : 'text-slate-500 hover:text-navy font-bold'"
+                                        class="flex-1 py-2.5 px-2 text-center rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                        <Icon icon="logos:paypal" class="text-base" />
+                                        <span class="truncate">{{ t('my_registration.paypal_payment', 'PayPal (USD)') }}</span>
                                     </button>
                                     <button v-if="orgManualMethods.length > 0 || paymentMethods.length > 0"
                                         type="button"
-                                        @click="form.payment_type = 'manual'; form.online_channel = ''"
+                                        @click="form.payment_type = 'manual'"
                                         :class="form.payment_type === 'manual' ? 'bg-white text-navy font-black shadow-xs' : 'text-slate-500 hover:text-navy font-bold'"
-                                        class="flex-1 py-2.5 px-3 text-center rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                        class="flex-1 py-2.5 px-2 text-center rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
                                         <Icon icon="ph:bank-bold" class="text-base" :class="form.payment_type === 'manual' ? 'text-primary' : 'text-slate-400'" />
-                                        <span>{{ t('my_registration.manual_transfer', 'Transfer Manual') }}</span>
+                                        <span class="truncate">{{ t('my_registration.manual_transfer', 'Manual') }}</span>
                                     </button>
                                 </div>
                             </div>
 
                             <div class="p-4 sm:p-5 pt-3">
-                                <!-- Tab Content 1: Online Payment (Unified Mayar Gateway Card) -->
+                                <!-- Tab Content 1: Online Payment (Unified Mayar Gateway Card - Domestik) -->
                                 <div v-if="form.payment_type === 'online'">
                                     <div class="p-4 sm:p-5 rounded-2xl border-2 border-primary/60 bg-gradient-to-br from-amber-500/10 via-amber-50/60 to-primary/15 space-y-2.5 shadow-2xs">
                                         <div class="flex items-center gap-3">
@@ -623,19 +630,19 @@
                                             </div>
                                             <div>
                                                 <div class="font-black text-navy text-sm">
-                                                    {{ t('my_registration.mayar_gateway_name', 'Mayar Payment Gateway') }}
+                                                    {{ t('my_registration.mayar_gateway_name', 'Mayar Payment Gateway (Domestik)') }}
                                                 </div>
                                                 <div class="text-[11px] text-slate-500 font-medium">
-                                                    QRIS · Virtual Account · Kartu Kredit (International)
+                                                    QRIS · Virtual Account Bank Lokal · E-Wallet (IDR)
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="text-xs text-slate-600 font-medium leading-relaxed">
-                                            {{ t('my_registration.mayar_supported_desc', 'Bayar instan via QRIS, Virtual Account bank, atau Kartu Kredit/Debit internasional (Visa, Mastercard, JCB). Terverifikasi otomatis.') }}
+                                            {{ t('my_registration.mayar_supported_desc', 'Bayar instan via QRIS, Virtual Account bank BCA/Mandiri/BRI/BNI/Permata, atau E-Wallet. Terverifikasi otomatis.') }}
                                         </div>
 
-                                        <!-- Clean Plain Text Chips (No leading icons, no checkmarks) -->
+                                        <!-- Clean Plain Text Chips -->
                                         <div class="pt-1 flex flex-wrap items-center gap-1.5 text-[10px] font-bold text-slate-700">
                                             <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
                                                 {{ t('my_registration.tag_qris', 'QRIS (E-Wallet & M-Banking)') }}
@@ -643,8 +650,42 @@
                                             <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
                                                 {{ t('my_registration.tag_va', 'Virtual Account (Semua Bank)') }}
                                             </span>
-                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
-                                                {{ t('my_registration.tag_cc', 'Kartu Kredit / Debit (International)') }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tab Content 2: PayPal International Gateway Card -->
+                                <div v-if="form.payment_type === 'paypal'">
+                                    <div class="p-4 sm:p-5 rounded-2xl border-2 border-blue-400/80 bg-gradient-to-br from-blue-500/10 via-sky-50/60 to-blue-500/15 space-y-3 shadow-2xs">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <div class="size-10 rounded-xl bg-white border border-blue-200/80 flex items-center justify-center p-1.5 shrink-0 shadow-2xs">
+                                                    <Icon icon="logos:paypal" class="text-2xl" />
+                                                </div>
+                                                <div>
+                                                    <div class="font-black text-navy text-sm">
+                                                        {{ t('my_registration.paypal_gateway_name', 'PayPal International Checkout') }}
+                                                    </div>
+                                                    <div class="text-[11px] text-slate-500 font-medium">
+                                                        PayPal Balance · Visa · Mastercard · AMEX
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span class="text-xs font-mono font-black text-blue-700 bg-blue-100/80 px-2.5 py-1 rounded-lg border border-blue-200">
+                                                ~${{ (Math.ceil((totalFee / 16000) * 100) / 100).toFixed(2) }} USD
+                                            </span>
+                                        </div>
+
+                                        <div class="text-xs text-slate-600 font-medium leading-relaxed">
+                                            {{ t('my_registration.paypal_supported_desc', 'Bayar aman menggunakan saldo PayPal atau kartu kredit/debit internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.') }}
+                                        </div>
+
+                                        <div class="pt-1 flex flex-wrap items-center gap-1.5 text-[10px] font-bold text-slate-700">
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-blue-200/80 shadow-2xs">
+                                                {{ t('my_registration.tag_paypal_balance', 'Saldo PayPal (PayPal Balance)') }}
+                                            </span>
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-blue-200/80 shadow-2xs">
+                                                {{ t('my_registration.tag_intl_cards', 'Visa / Mastercard / AMEX') }}
                                             </span>
                                         </div>
                                     </div>
@@ -1341,7 +1382,7 @@ const isFormValid = computed(() => {
 })
 
 const buttonText = computed(() => {
-    if (form.value.payment_type === 'online' && (form.value.payment_amount || 0) > 0) {
+    if ((form.value.payment_type === 'online' || form.value.payment_type === 'paypal') && (form.value.payment_amount || 0) > 0) {
         return t('my_registration.btn_pay_now', 'Bayar Sekarang via Mayar')
     }
     return t('my_registration.btn_register_now', 'Daftar Sekarang')
@@ -1525,7 +1566,7 @@ const handleSubmit = async () => {
 
         // create transaction
         const registrationId = response.registration_id || response.uuid
-        const selectedChannel = form.value.payment_type === 'online' ? 'mayar' : 'manual'
+        const selectedChannel = form.value.payment_type === 'paypal' ? 'paypal' : (form.value.payment_type === 'online' ? 'mayar' : 'manual')
 
         try {
             const payResult = await post('/payment/create', {

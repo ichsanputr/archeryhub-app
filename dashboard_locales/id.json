@@ -1153,7 +1153,13 @@
     "login_now": "Login Sekarang",
     "athlete_account_required": "Diperlukan Akun Atlet",
     "athlete_account_required_desc": "Pendaftaran ini khusus untuk profil atlet.",
-    "register_as_athlete": "Daftar sebagai Atlet"
+    "register_as_athlete": "Daftar sebagai Atlet",
+    "paypal_payment": "PayPal (Internasional)",
+    "paypal_gateway_name": "PayPal International Checkout",
+    "paypal_supported_desc": "Bayar aman menggunakan saldo PayPal atau kartu kredit/debit internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.",
+    "tag_paypal_balance": "Saldo PayPal (PayPal Balance)",
+    "tag_intl_cards": "Visa / Mastercard / AMEX",
+    "pay_now_paypal": "Bayar Sekarang via PayPal"
   },
   "profile": {
     "title": "Profil Pemanah",
@@ -1971,7 +1977,11 @@
     "mayar_instant_secure": "Instan & Aman",
     "mayar_supported_methods": "Mendukung QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), dan E-Wallet",
     "sort_asc": "Urutkan Menaik",
-    "sort_desc": "Urutkan Menurun"
+    "sort_desc": "Urutkan Menurun",
+    "payment_channel_mayar": "Domestik (Mayar - IDR)",
+    "payment_channel_paypal": "Internasional (PayPal - USD)",
+    "paypal_desc": "Saldo PayPal, Visa, Mastercard, AMEX (Mata uang USD)",
+    "pay_with_paypal": "Checkout via PayPal"
   },
   "premium": {
     "subscription_expired": "Paket Habis",
@@ -2271,6 +2281,8 @@
     "failed_desc": "Transaksi ini berstatus {status} dan tidak dapat dilanjutkan.",
     "back_package": "Kembali ke Manajemen Paket & Kuota",
     "back_orders": "Kembali ke Pesanan Toko",
-    "back_payments": "Kembali ke Riwayat Pembayaran"
+    "back_payments": "Kembali ke Riwayat Pembayaran",
+    "pay_via_paypal": "Bayar Sekarang via PayPal",
+    "paypal_pending_desc": "Silakan selesaikan otorisasi pembayaran Anda di halaman PayPal."
   }
 }

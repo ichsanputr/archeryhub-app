@@ -291,16 +291,53 @@
                             {{ t('organizer_subscription.step_payment') }}
                         </label>
                         
-                        <div class="p-4 rounded-2xl border-2 border-primary bg-primary/5 flex items-center gap-4 text-left">
-                            <div class="size-12 rounded-xl bg-navy text-primary flex items-center justify-center shrink-0 shadow-xs">
-                                <Icon icon="ph:shield-check-bold" class="text-2xl" />
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <div class="font-black text-navy text-sm flex items-center gap-2">
-                                    <span>{{ t('organizer_subscription.mayar_gateway_name', 'Mayar Payment Gateway') }}</span>
-                                    <span class="text-[10px] font-bold bg-primary/20 text-navy px-2 py-0.5 rounded-full">{{ t('organizer_subscription.mayar_instant_secure', 'Instan & Aman') }}</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <!-- Mayar Domestik Card -->
+                            <div @click="selectedPaymentMethod = 'mayar'"
+                                :class="selectedPaymentMethod === 'mayar' ? 'border-primary bg-primary/5 shadow-xs' : 'border-slate-200 bg-white hover:border-slate-300'"
+                                class="p-4 rounded-2xl border-2 cursor-pointer transition-all space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="size-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center p-1 shrink-0">
+                                            <img src="/mayar-logo.png" alt="Mayar" class="w-full h-full object-contain" />
+                                        </div>
+                                        <div>
+                                            <div class="font-black text-navy text-xs">Mayar (Domestik)</div>
+                                            <div class="text-[10px] text-slate-500 font-medium">Mata Uang: IDR (Rp)</div>
+                                        </div>
+                                    </div>
+                                    <div class="size-5 rounded-full flex items-center justify-center text-xs"
+                                        :class="selectedPaymentMethod === 'mayar' ? 'bg-primary text-navy font-black' : 'border border-slate-300 text-transparent'">
+                                        <Icon icon="ph:check-bold" />
+                                    </div>
                                 </div>
-                                <div class="text-[11px] text-slate-500 mt-0.5">{{ t('organizer_subscription.mayar_supported_methods', 'Mendukung QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), dan E-Wallet') }}</div>
+                                <div class="text-[11px] text-slate-600 font-medium">
+                                    QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), E-Wallet
+                                </div>
+                            </div>
+
+                            <!-- PayPal International Card -->
+                            <div @click="selectedPaymentMethod = 'paypal'"
+                                :class="selectedPaymentMethod === 'paypal' ? 'border-blue-500 bg-blue-50/50 shadow-xs' : 'border-slate-200 bg-white hover:border-slate-300'"
+                                class="p-4 rounded-2xl border-2 cursor-pointer transition-all space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="size-9 rounded-xl bg-white border border-blue-200 flex items-center justify-center p-1 shrink-0">
+                                            <Icon icon="logos:paypal" class="text-xl" />
+                                        </div>
+                                        <div>
+                                            <div class="font-black text-navy text-xs">PayPal (International)</div>
+                                            <div class="text-[10px] text-blue-600 font-bold">Mata Uang: USD ($)</div>
+                                        </div>
+                                    </div>
+                                    <div class="size-5 rounded-full flex items-center justify-center text-xs"
+                                        :class="selectedPaymentMethod === 'paypal' ? 'bg-blue-600 text-white font-black' : 'border border-slate-300 text-transparent'">
+                                        <Icon icon="ph:check-bold" />
+                                    </div>
+                                </div>
+                                <div class="text-[11px] text-slate-600 font-medium">
+                                    Saldo PayPal, Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX)
+                                </div>
                             </div>
                         </div>
                     </div>

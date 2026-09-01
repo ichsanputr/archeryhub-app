@@ -2412,7 +2412,13 @@
     "login_required_desc": "Please log in as an athlete to register.",
     "athlete_account_required": "Athlete Account Required",
     "athlete_account_required_desc": "Registration is specifically for athlete profiles.",
-    "register_as_athlete": "Register as Athlete"
+    "register_as_athlete": "Register as Athlete",
+    "paypal_payment": "PayPal (International)",
+    "paypal_gateway_name": "PayPal International Checkout",
+    "paypal_supported_desc": "Pay securely using your PayPal balance or international credit/debit cards (Visa, Mastercard, AMEX, Discover). Processed in USD.",
+    "tag_paypal_balance": "PayPal Balance",
+    "tag_intl_cards": "Visa / Mastercard / AMEX",
+    "pay_now_paypal": "Pay Now via PayPal"
   },
   "subscription_payment_page": {
     "back": "Back to Subscription",
@@ -4142,7 +4148,11 @@
     "standard_tier_name": "Standard",
     "elite_tier_name": "Elite",
     "custom_tier_name": "Custom",
-    "no_history_desc": "Standard & Elite quota purchases will be recorded here. Free Tier (Initial Bonus) quota is used directly without purchase invoices."
+    "no_history_desc": "Standard & Elite quota purchases will be recorded here. Free Tier (Initial Bonus) quota is used directly without purchase invoices.",
+    "payment_channel_mayar": "Domestic (Mayar - IDR)",
+    "payment_channel_paypal": "International (PayPal - USD)",
+    "paypal_desc": "PayPal Balance, Visa, Mastercard, AMEX (USD Currency)",
+    "pay_with_paypal": "Checkout with PayPal"
   },
   "org_checkout": {
     "title": "Platform Fee Payment",
@@ -4772,6 +4782,8 @@
     "failed_desc": "This transaction status is {status} and cannot be processed.",
     "back_package": "Back to Packages & Quota",
     "back_orders": "Back to Store Orders",
-    "back_payments": "Back to Payment History"
+    "back_payments": "Back to Payment History",
+    "pay_via_paypal": "Pay Now via PayPal",
+    "paypal_pending_desc": "Please complete your payment authorization on the PayPal portal."
   }
 }

@@ -376,7 +376,20 @@ const loadPaymentDetails = async () => {
     }
 }
 
-onMounted(() => {
+onMounted(async () => {
+    const token = route.query.token
+    const payerId = route.query.PayerID
+    if (token) {
+        try {
+            await $fetch(`${apiBaseUrl}/payment/paypal/capture`, {
+                method: 'POST',
+                body: { order_id: token, reference }
+            })
+        } catch (e) {
+            console.error('PayPal auto-capture error:', e)
+        }
+    }
+
     loadPaymentDetails()
 
     // Auto-poll every 5 seconds while payment is pending
