@@ -577,83 +577,110 @@
                     <!-- RIGHT COLUMN — Payment + CTA (sticky) -->
                     <div class="lg:col-span-2 lg:sticky lg:top-6 space-y-5">
 
-                        <!-- Combined Payment Methods -->
-                        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                            <!-- Header with primary bg-color icon, same as Athlete Data -->
-                            <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
-                                <div class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
-                                    <Icon icon="ph:credit-card-bold" class="text-lg" />
+                        <!-- Combined Payment Methods Card (Modernized UI) -->
+                        <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+                            <!-- Header -->
+                            <div class="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-slate-50/80 to-white flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs shrink-0">
+                                        <Icon icon="ph:credit-card-bold" class="text-xl" />
+                                    </div>
+                                    <div>
+                                        <h2 class="text-base font-black text-navy">{{ t('my_registration.payment_methods', 'Metode Pembayaran') }}</h2>
+                                        <div class="text-xs text-slate-400 font-medium">{{ t('my_registration.payment_methods_desc', 'Pilih cara pembayaran pendaftaran') }}</div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h2 class="text-base font-black text-navy">{{ t('my_registration.payment_methods') }}</h2>
-                                    <span class="text-xs text-gray-400 font-medium block">{{ t('my_registration.payment_methods_desc') }}</span>
+                                <div class="text-right">
+                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Tagihan</span>
+                                    <span class="text-base font-black text-navy tabular-nums">{{ formatPrice(totalFee) }}</span>
                                 </div>
                             </div>
 
-                            <!-- Tabs Switcher -->
-                            <div class="flex border-b border-gray-100">
-                                <button type="button"
-                                    @click="form.payment_type = 'online'; form.manual_method_id = ''"
-                                    :class="form.payment_type === 'online' ? 'border-primary text-navy font-black' : 'border-transparent text-gray-400 hover:text-gray-600'"
-                                    class="flex-1 py-3 text-center border-b-2 text-xs transition-all tracking-wide">
-                                    {{ t('my_registration.online_payment') }}
-                                </button>
-                                <button v-if="orgManualMethods.length > 0 || paymentMethods.length > 0"
-                                    type="button"
-                                    @click="form.payment_type = 'manual'; form.online_channel = ''"
-                                    :class="form.payment_type === 'manual' ? 'border-primary text-navy font-black' : 'border-transparent text-gray-400 hover:text-gray-600'"
-                                    class="flex-1 py-3 text-center border-b-2 text-xs transition-all tracking-wide">
-                                    {{ t('my_registration.manual_transfer') }}
-                                </button>
+                            <!-- Segmented Pill Tab Switcher -->
+                            <div class="p-4 sm:p-5 pb-0">
+                                <div class="bg-slate-100/80 p-1 rounded-2xl flex gap-1 border border-slate-200/60">
+                                    <button type="button"
+                                        @click="form.payment_type = 'online'; form.manual_method_id = ''"
+                                        :class="form.payment_type === 'online' ? 'bg-white text-navy font-black shadow-xs' : 'text-slate-500 hover:text-navy font-bold'"
+                                        class="flex-1 py-2.5 px-3 text-center rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                        <Icon icon="ph:lightning-bold" class="text-base" :class="form.payment_type === 'online' ? 'text-primary' : 'text-slate-400'" />
+                                        <span>{{ t('my_registration.online_payment', 'Pembayaran Online') }}</span>
+                                    </button>
+                                    <button v-if="orgManualMethods.length > 0 || paymentMethods.length > 0"
+                                        type="button"
+                                        @click="form.payment_type = 'manual'; form.online_channel = ''"
+                                        :class="form.payment_type === 'manual' ? 'bg-white text-navy font-black shadow-xs' : 'text-slate-500 hover:text-navy font-bold'"
+                                        class="flex-1 py-2.5 px-3 text-center rounded-xl text-xs transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                        <Icon icon="ph:bank-bold" class="text-base" :class="form.payment_type === 'manual' ? 'text-primary' : 'text-slate-400'" />
+                                        <span>{{ t('my_registration.manual_transfer', 'Transfer Manual') }}</span>
+                                    </button>
+                                </div>
                             </div>
 
-                            <div class="p-6">
-                                <!-- Tab Content 1: Online Payment (Unified Mayar Gateway Card) -->
-                                <div v-if="form.payment_type === 'online'" class="space-y-4">
-                                    <div class="p-4 sm:p-5 rounded-2xl border-2 border-primary bg-primary/5 flex items-start gap-4">
-                                        <div class="size-12 rounded-xl bg-navy text-primary flex items-center justify-center shrink-0 shadow-xs">
-                                            <Icon icon="ph:shield-check-bold" class="text-2xl" />
+                            <div class="p-4 sm:p-5 pt-3">
+                                <!-- Tab Content 1: Online Payment (Mayar Card) -->
+                                <div v-if="form.payment_type === 'online'" class="space-y-3.5">
+                                    <div class="p-4 sm:p-5 rounded-2xl border-2 border-primary/60 bg-gradient-to-br from-amber-500/10 via-amber-50/60 to-primary/15 space-y-3 shadow-2xs">
+                                        <div class="flex items-start justify-between gap-3">
+                                            <div class="flex items-center gap-3">
+                                                <div class="size-11 rounded-xl bg-navy text-primary flex items-center justify-center shrink-0 shadow-xs">
+                                                    <Icon icon="ph:shield-check-bold" class="text-2xl" />
+                                                </div>
+                                                <div>
+                                                    <div class="font-black text-navy text-sm flex items-center gap-2">
+                                                        <span>{{ t('my_registration.mayar_gateway_name', 'Mayar Payment Gateway') }}</span>
+                                                        <span class="text-[10px] font-black bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">{{ t('my_registration.mayar_instant_secure', 'Instan & Otomatis') }}</span>
+                                                    </div>
+                                                    <div class="text-[11px] text-slate-500 font-semibold mt-0.5">
+                                                        QRIS · Virtual Account · E-Wallet
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0 mt-1 shadow-xs">
+                                                <Icon icon="ph:check-bold" class="text-navy text-xs" />
+                                            </div>
                                         </div>
-                                        <div class="min-w-0 flex-1 space-y-1">
-                                            <div class="font-black text-navy text-sm flex items-center gap-2">
-                                                <span>{{ t('my_registration.mayar_gateway_name', 'Mayar Payment Gateway (Online)') }}</span>
-                                                <span class="text-[10px] font-bold bg-primary/20 text-navy px-2 py-0.5 rounded-full">{{ t('my_registration.mayar_instant_secure', 'Instan & Otomatis') }}</span>
-                                            </div>
-                                            <div class="text-xs text-slate-500 font-medium leading-relaxed">
-                                                {{ t('my_registration.mayar_supported_desc', 'Bayar secara instan menggunakan QRIS (Semua E-Wallet/M-Banking) atau Virtual Account (BCA, Mandiri, BRI, BNI, Permata, BSI). Pendaftaran langsung terverifikasi otomatis setelah pembayaran.') }}
-                                            </div>
-                                            <div class="pt-2 flex flex-wrap items-center gap-1.5 text-[10px] text-slate-600 font-bold">
-                                                <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200">QRIS</span>
-                                                <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200">BCA VA</span>
-                                                <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200">Mandiri VA</span>
-                                                <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200">BRI VA</span>
-                                                <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200">BNI VA</span>
-                                                <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200">Permata VA</span>
-                                            </div>
+
+                                        <div class="text-xs text-slate-600 font-medium leading-relaxed">
+                                            {{ t('my_registration.mayar_supported_desc', 'Bayar secara instan menggunakan QRIS (BCA, Mandiri, BRI, BNI, GoPay, OVO, DANA, ShopeePay) atau Virtual Account resmi. Pendaftaran langsung aktif seketika setelah pembayaran.') }}
+                                        </div>
+
+                                        <!-- Available Methods Pill Badges -->
+                                        <div class="pt-1 flex flex-wrap items-center gap-1.5 text-[10px] font-bold text-slate-700">
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">QRIS (Semua E-Wallet)</span>
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">BCA VA</span>
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">Mandiri VA</span>
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">BRI VA</span>
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">BNI VA</span>
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">Permata VA</span>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-2 pt-1">
-                                        <Icon icon="ph:shield-check-bold" class="text-emerald-500 text-sm shrink-0" />
-                                        <span class="text-xs text-gray-400 font-medium">Enkripsi 256-bit SSL · Terverifikasi Otomatis</span>
+
+                                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-medium px-1">
+                                        <div class="flex items-center gap-1.5">
+                                            <Icon icon="ph:lock-key-bold" class="text-emerald-500 text-sm shrink-0" />
+                                            <span>Enkripsi 256-bit SSL</span>
+                                        </div>
+                                        <span class="text-emerald-600 font-bold">Bebas Biaya Admin</span>
                                     </div>
                                 </div>
 
                                 <!-- Tab Content 2: Manual Transfer -->
-                                <div v-if="form.payment_type === 'manual'" class="space-y-2">
+                                <div v-if="form.payment_type === 'manual'" class="space-y-3">
                                     <div v-if="orgManualMethods.length === 0"
-                                        class="p-6 text-center border-2 border-dashed border-gray-100 rounded-xl bg-gray-50/50">
-                                        <Icon icon="ph:credit-card-light" class="text-3xl text-gray-300 mb-1.5 mx-auto" />
-                                        <span class="text-xs text-navy font-black block">Manual Transfer Not Available</span>
-                                        <span class="text-xs text-gray-400 block mt-1">This event does not support manual transfer. Please configure a payment method in your organizer settings or use online payment channels.</span>
+                                        class="p-6 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
+                                        <Icon icon="ph:credit-card-light" class="text-3xl text-slate-300 mb-1.5 mx-auto" />
+                                        <div class="text-xs text-navy font-black">Transfer Manual Tidak Tersedia</div>
+                                        <div class="text-xs text-slate-400 mt-1">Event ini belum mengatur rekening bank manual. Silakan gunakan opsi Pembayaran Online.</div>
                                     </div>
                                     <div v-else v-for="method in orgManualMethods"
                                         :key="method.uuid || method.account_number"
                                         @click="form.manual_method_id = (method.uuid || method.account_number); form.payment_type = 'manual'; form.online_channel = ''"
-                                        class="flex items-center gap-3 p-3.5 rounded-xl border-2 cursor-pointer transition-all"
+                                        class="flex items-center gap-3 p-3.5 rounded-2xl border-2 cursor-pointer transition-all"
                                         :class="form.manual_method_id === (method.uuid || method.account_number)
-                                            ? 'border-primary bg-primary/5'
-                                            : 'border-gray-100 hover:border-gray-200 bg-white'">
-                                        <div class="h-10 w-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1.5 shadow-sm">
+                                            ? 'border-primary bg-primary/5 shadow-xs'
+                                            : 'border-slate-100 hover:border-slate-200 bg-white'">
+                                        <div class="h-10 w-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center shrink-0 overflow-hidden p-1.5 shadow-2xs">
                                             <img v-if="getPaymentMethodImage(method.bank_name || method.payment_method)"
                                                 :src="getPaymentMethodImage(method.bank_name || method.payment_method)"
                                                 class="w-full h-full object-contain" />
@@ -661,49 +688,50 @@
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <div class="text-sm font-black text-navy leading-tight">{{ method.custom_name || method.bank_name || method.payment_method }}</div>
-                                            <div class="font-mono text-xs font-bold text-gray-500 mt-0.5">{{ method.account_number }}</div>
-                                            <div class="text-xs text-gray-400">{{ method.account_name }}</div>
+                                            <div class="font-mono text-xs font-bold text-slate-600 mt-0.5">{{ method.account_number }}</div>
+                                            <div class="text-xs text-slate-400">{{ method.account_name }}</div>
                                         </div>
                                         <div class="flex items-center gap-2 shrink-0">
                                             <button @click.stop="copyToClipboard(method.account_number)"
-                                                class="p-1.5 rounded-lg bg-gray-100 hover:bg-primary hover:text-navy text-gray-500 transition-colors">
+                                                class="p-2 rounded-xl bg-slate-100 hover:bg-primary hover:text-navy text-slate-500 transition-colors">
                                                 <Icon icon="ph:copy-bold" class="text-xs" />
                                             </button>
                                             <div v-if="form.manual_method_id === (method.uuid || method.account_number)"
-                                                class="size-5 rounded-full bg-primary flex items-center justify-center">
+                                                class="size-5 rounded-full bg-primary flex items-center justify-center shadow-xs">
                                                 <Icon icon="ph:check-bold" class="text-navy text-xs" />
                                             </div>
                                         </div>
                                     </div>
+
                                     <!-- Upload proof when manual selected -->
-                                    <div v-if="form.manual_method_id" class="pt-3 border-t border-gray-100 space-y-3">
+                                    <div v-if="form.manual_method_id" class="pt-3 border-t border-slate-100 space-y-3">
                                         <div class="space-y-1">
-                                            <label class="text-xs font-black text-gray-500 tracking-widest block">{{ t('my_registration.sender_name') }}</label>
+                                            <label class="text-xs font-black text-slate-500 uppercase tracking-wider block">{{ t('my_registration.sender_name', 'Nama Pengirim') }}</label>
                                             <input type="text" v-model="form.sender_name" 
-                                                class="w-full px-3.5 py-2.5 text-xs border border-gray-200 rounded-xl focus:outline-none focus:border-primary font-medium"
-                                                :placeholder="t('my_registration.sender_name_placeholder')" />
+                                                class="w-full px-3.5 py-2.5 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-primary font-medium"
+                                                :placeholder="t('my_registration.sender_name_placeholder', 'Nama pemilik rekening pengirim...')" />
                                         </div>
-                                        <div class="text-xs font-black text-gray-500 tracking-widest">{{ t('my_registration.upload_proof') }}</div>
+                                        <div class="text-xs font-black text-slate-500 uppercase tracking-wider">{{ t('my_registration.upload_proof', 'Bukti Transfer') }}</div>
                                         <div @click="triggerFileInput"
-                                            class="border-2 border-dashed rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-gray-50"
-                                            :class="proofFileUrl ? 'border-primary/50 bg-primary/5' : 'border-gray-200'">
+                                            class="border-2 border-dashed rounded-2xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-slate-50"
+                                            :class="proofFileUrl ? 'border-primary/50 bg-primary/5' : 'border-slate-200'">
                                             <input type="file" ref="proofInput" class="hidden" accept="image/*" @change="handleProofUpload" />
                                             <template v-if="uploadingProof">
                                                 <Icon icon="ph:circle-notch-bold" class="text-2xl text-primary animate-spin mb-2" />
-                                                <span class="text-xs text-gray-500 font-bold">uploading...</span>
+                                                <div class="text-xs text-slate-500 font-bold">Mengunggah bukti...</div>
                                             </template>
                                             <template v-else-if="proofFileUrl">
-                                                <img :src="proofFileUrl" class="max-h-28 object-contain rounded-lg mb-2 border border-gray-100" />
-                                                <span class="text-xs text-green-600 font-bold">proof uploaded ✓</span>
-                                                <span class="text-xs text-gray-400">click to change</span>
+                                                <img :src="proofFileUrl" class="max-h-28 object-contain rounded-xl mb-2 border border-slate-100" />
+                                                <div class="text-xs text-emerald-600 font-bold">Bukti berhasil diunggah ✓</div>
+                                                <div class="text-[11px] text-slate-400">Klik untuk mengubah foto</div>
                                             </template>
                                             <template v-else>
-                                                <Icon icon="ph:cloud-arrow-up-bold" class="text-2xl text-gray-400 mb-2" />
-                                                <span class="text-xs text-gray-500 font-bold">click to upload proof</span>
-                                                <span class="text-xs text-gray-400">jpeg, png (max 10mb)</span>
+                                                <Icon icon="ph:cloud-arrow-up-bold" class="text-2xl text-slate-400 mb-1.5" />
+                                                <div class="text-xs text-slate-600 font-bold">Klik untuk mengunggah bukti transfer</div>
+                                                <div class="text-[10px] text-slate-400">JPG, PNG (maks. 10MB)</div>
                                             </template>
                                         </div>
-                                        <span v-if="uploadError" class="text-xs text-red-500 font-bold block">{{ uploadError }}</span>
+                                        <div v-if="uploadError" class="text-xs text-red-500 font-bold">{{ uploadError }}</div>
                                     </div>
                                 </div>
                             </div>
