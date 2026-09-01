@@ -293,14 +293,12 @@
                     <div class="lg:col-span-3 space-y-5">
 
                         <!-- Archer Profile Card -->
-                        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm">
-                            <div
-                                class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
-                                <div
-                                    class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
-                                    <Icon icon="ph:user-bold" class="text-lg" />
+                        <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+                            <div class="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-slate-50/80 to-white flex items-center gap-3">
+                                <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs shrink-0">
+                                    <Icon icon="ph:user-bold" class="text-xl" />
                                 </div>
-                                <h2 class="text-base font-black text-navy">Athlete Data</h2>
+                                <h2 class="text-base font-black text-navy">{{ t('my_registration.athlete_data', 'Data Atlet') }}</h2>
                             </div>
                             <div class="p-6">
                                 <!-- Not logged in -->
@@ -368,45 +366,45 @@
                         </section>
 
                         <!-- Participant Type Selection -->
-                        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-5">
-                            <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
-                                <div class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
-                                    <Icon icon="ph:users-three-bold" class="text-lg" />
+                        <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden mb-5">
+                            <div class="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-slate-50/80 to-white flex items-center gap-3">
+                                <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs shrink-0">
+                                    <Icon icon="ph:users-three-bold" class="text-xl" />
                                 </div>
                                 <div>
-                                    <h2 class="text-base font-black text-navy">{{ t('my_registration.select_participant_type') || 'Select Participant Type' }}</h2>
-                                    <span class="text-xs text-gray-400 font-medium block">{{ t('my_registration.select_participant_type_desc') || 'Choose your participation type' }}</span>
+                                    <h2 class="text-base font-black text-navy">{{ t('my_registration.select_participant_type', 'Pilih Tipe Peserta') }}</h2>
+                                    <div class="text-xs text-slate-400 font-medium">{{ t('my_registration.select_participant_type_desc', 'Tentukan jenis kepesertaan Anda') }}</div>
                                 </div>
                             </div>
                             <div class="p-6">
                                 <div class="grid grid-cols-2 gap-3">
                                     <button type="button"
                                         @click="participantType = 'individual'"
-                                        :class="participantType === 'individual' ? 'border-primary bg-primary/5 ring-2 ring-primary' : 'border-gray-200 hover:border-primary/40'"
-                                        class="flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all text-left cursor-pointer">
-                                        <div class="size-10 rounded-xl flex items-center justify-center" :class="participantType === 'individual' ? 'bg-primary text-navy' : 'bg-gray-100 text-gray-500'">
+                                        :class="participantType === 'individual' ? 'border-primary/80 bg-primary/5 shadow-2xs' : 'border-slate-200 hover:border-slate-300 bg-white'"
+                                        class="flex flex-col items-center gap-2.5 p-4 rounded-2xl border transition-all text-left cursor-pointer">
+                                        <div class="size-10 rounded-xl flex items-center justify-center" :class="participantType === 'individual' ? 'bg-primary text-navy' : 'bg-slate-100 text-slate-500'">
                                             <Icon icon="ph:user-bold" class="text-xl" />
                                         </div>
-                                        <div>
-                                            <div class="text-sm font-black text-navy">Individual</div>
-                                            <div class="text-xs text-gray-500">Daftar sendiri di satu atau lebih kategori</div>
+                                        <div class="text-center">
+                                            <div class="text-sm font-black text-navy">{{ t('my_registration.individual_type', 'Individu') }}</div>
+                                            <div class="text-xs text-slate-500 font-medium mt-0.5">{{ t('my_registration.individual_type_desc', 'Daftar sendiri di satu atau lebih kategori') }}</div>
                                         </div>
-                                        <div v-if="participantType === 'individual'" class="ml-auto text-primary">
+                                        <div v-if="participantType === 'individual'" class="text-primary mt-auto">
                                             <Icon icon="ph:check-circle-fill" class="text-lg" />
                                         </div>
                                     </button>
                                     <button type="button"
                                         @click="participantType = 'team'"
-                                        :class="participantType === 'team' ? 'border-primary bg-primary/5 ring-2 ring-primary' : 'border-gray-200 hover:border-primary/40'"
-                                        class="flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all text-left cursor-pointer">
-                                        <div class="size-10 rounded-xl flex items-center justify-center" :class="participantType === 'team' ? 'bg-primary text-navy' : 'bg-gray-100 text-gray-500'">
+                                        :class="participantType === 'team' ? 'border-primary/80 bg-primary/5 shadow-2xs' : 'border-slate-200 hover:border-slate-300 bg-white'"
+                                        class="flex flex-col items-center gap-2.5 p-4 rounded-2xl border transition-all text-left cursor-pointer">
+                                        <div class="size-10 rounded-xl flex items-center justify-center" :class="participantType === 'team' ? 'bg-primary text-navy' : 'bg-slate-100 text-slate-500'">
                                             <Icon icon="ph:users-three-bold" class="text-xl" />
                                         </div>
-                                        <div>
-                                            <div class="text-sm font-black text-navy">Beregu / Tim</div>
-                                            <div class="text-xs text-gray-500">Daftar bersama anggota tim beregu</div>
+                                        <div class="text-center">
+                                            <div class="text-sm font-black text-navy">{{ t('my_registration.team_type', 'Beregu / Tim') }}</div>
+                                            <div class="text-xs text-slate-500 font-medium mt-0.5">{{ t('my_registration.team_type_desc', 'Daftar bersama anggota tim beregu') }}</div>
                                         </div>
-                                        <div v-if="participantType === 'team'" class="ml-auto text-primary">
+                                        <div v-if="participantType === 'team'" class="text-primary mt-auto">
                                             <Icon icon="ph:check-circle-fill" class="text-lg" />
                                         </div>
                                     </button>
@@ -415,14 +413,14 @@
                         </section>
 
                         <!-- Category Selection -->
-                        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                            <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
-                                <div class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
-                                    <Icon icon="ph:tag-bold" class="text-lg" />
+                        <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+                            <div class="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-slate-50/80 to-white flex items-center gap-3">
+                                <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs shrink-0">
+                                    <Icon icon="ph:tag-bold" class="text-xl" />
                                 </div>
                                 <div>
-                                    <h2 class="text-base font-black text-navy">{{ t('my_registration.select_category') }}</h2>
-                                    <span class="text-xs text-gray-400 font-medium block">{{ t('my_registration.select_participant_type_desc') }}</span>
+                                    <h2 class="text-base font-black text-navy">{{ t('my_registration.select_category', 'Pilih Kategori') }}</h2>
+                                    <div class="text-xs text-slate-400 font-medium">{{ t('my_registration.select_participant_type_desc', 'Tentukan kategori event yang ingin diikuti') }}</div>
                                 </div>
                             </div>
                             <div class="p-6 space-y-4">
@@ -515,12 +513,12 @@
                         </section>
 
                         <!-- Order Summary -->
-                        <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                            <div class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
-                                <div class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm shrink-0">
-                                    <Icon icon="ph:receipt-bold" class="text-lg" />
+                        <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+                            <div class="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-slate-50/80 to-white flex items-center gap-3">
+                                <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs shrink-0">
+                                    <Icon icon="ph:receipt-bold" class="text-xl" />
                                 </div>
-                                <h2 class="text-base font-black text-navy">{{ t('my_registration.summary') }}</h2>
+                                <h2 class="text-base font-black text-navy">{{ t('my_registration.summary', 'Ringkasan Pendaftaran') }}</h2>
                             </div>
                             <div class="p-6">
                                 <!-- Selected Categories Receipt -->
@@ -575,7 +573,7 @@
                     </div>
 
                     <!-- RIGHT COLUMN — Payment + CTA (sticky) -->
-                    <div class="lg:col-span-2 lg:sticky lg:top-6 space-y-5">
+                    <div class="lg:col-span-2 lg:sticky lg:top-24 space-y-5">
 
                         <!-- Combined Payment Methods Card (Modernized UI) -->
                         <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
@@ -618,50 +616,53 @@
                             </div>
 
                             <div class="p-4 sm:p-5 pt-3">
-                                <!-- Tab Content 1: Online Payment (Mayar Card) -->
-                                <div v-if="form.payment_type === 'online'" class="space-y-3.5">
-                                    <div class="p-4 sm:p-5 rounded-2xl border-2 border-primary/60 bg-gradient-to-br from-amber-500/10 via-amber-50/60 to-primary/15 space-y-3 shadow-2xs">
+                                <!-- Tab Content 1: Online Payment (Unified Mayar Gateway Card) -->
+                                <div v-if="form.payment_type === 'online'" class="space-y-3">
+                                    <div class="p-4 sm:p-5 rounded-2xl border-2 border-primary/60 bg-gradient-to-br from-amber-500/10 via-amber-50/60 to-primary/15 space-y-2.5 shadow-2xs">
                                         <div class="flex items-start justify-between gap-3">
                                             <div class="flex items-center gap-3">
-                                                <div class="size-11 rounded-xl bg-navy text-primary flex items-center justify-center shrink-0 shadow-xs">
-                                                    <Icon icon="ph:shield-check-bold" class="text-2xl" />
+                                                <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shrink-0 shadow-xs">
+                                                    <Icon icon="ph:shield-check-bold" class="text-xl" />
                                                 </div>
                                                 <div>
                                                     <div class="font-black text-navy text-sm flex items-center gap-2">
                                                         <span>{{ t('my_registration.mayar_gateway_name', 'Mayar Payment Gateway') }}</span>
                                                         <span class="text-[10px] font-black bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">{{ t('my_registration.mayar_instant_secure', 'Instan & Otomatis') }}</span>
                                                     </div>
-                                                    <div class="text-[11px] text-slate-500 font-semibold mt-0.5">
-                                                        QRIS · Virtual Account · E-Wallet
+                                                    <div class="text-[11px] text-slate-500 font-medium">
+                                                        QRIS · Virtual Account · Kartu Kredit (International)
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0 mt-1 shadow-xs">
+                                            <div class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
                                                 <Icon icon="ph:check-bold" class="text-navy text-xs" />
                                             </div>
                                         </div>
 
                                         <div class="text-xs text-slate-600 font-medium leading-relaxed">
-                                            {{ t('my_registration.mayar_supported_desc', 'Bayar secara instan menggunakan QRIS (BCA, Mandiri, BRI, BNI, GoPay, OVO, DANA, ShopeePay) atau Virtual Account resmi. Pendaftaran langsung aktif seketika setelah pembayaran.') }}
+                                            {{ t('my_registration.mayar_supported_desc', 'Bayar instan via QRIS, Virtual Account bank, atau Kartu Kredit/Debit internasional (Visa, Mastercard, JCB). Terverifikasi otomatis.') }}
                                         </div>
 
-                                        <!-- Available Methods Pill Badges -->
-                                        <div class="pt-1 flex flex-wrap items-center gap-1.5 text-[10px] font-bold text-slate-700">
-                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">QRIS (Semua E-Wallet)</span>
-                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">BCA VA</span>
-                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">Mandiri VA</span>
-                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">BRI VA</span>
-                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">BNI VA</span>
-                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">Permata VA</span>
+                                        <!-- 3 Concise High-Level Chips -->
+                                        <div class="pt-0.5 flex flex-wrap items-center gap-1.5 text-[10px] font-bold text-slate-700">
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs flex items-center gap-1">
+                                                <Icon icon="ph:qr-code-bold" class="text-xs text-navy" />
+                                                {{ t('my_registration.tag_qris', 'QRIS (E-Wallet & M-Banking)') }}
+                                            </span>
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs flex items-center gap-1">
+                                                <Icon icon="ph:bank-bold" class="text-xs text-navy" />
+                                                {{ t('my_registration.tag_va', 'Virtual Account (Semua Bank)') }}
+                                            </span>
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs flex items-center gap-1">
+                                                <Icon icon="ph:credit-card-bold" class="text-xs text-navy" />
+                                                {{ t('my_registration.tag_cc', 'Kartu Kredit / Debit (International)') }}
+                                            </span>
                                         </div>
                                     </div>
 
-                                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-medium px-1">
-                                        <div class="flex items-center gap-1.5">
-                                            <Icon icon="ph:lock-key-bold" class="text-emerald-500 text-sm shrink-0" />
-                                            <span>Enkripsi 256-bit SSL</span>
-                                        </div>
-                                        <span class="text-emerald-600 font-bold">Bebas Biaya Admin</span>
+                                    <div class="flex items-center gap-1.5 text-[11px] text-slate-400 font-medium px-1">
+                                        <Icon icon="ph:lock-key-bold" class="text-emerald-500 text-sm shrink-0" />
+                                        <span>{{ t('my_registration.ssl_encryption', 'Enkripsi 256-bit SSL') }}</span>
                                     </div>
                                 </div>
 
@@ -748,10 +749,9 @@
                             </BaseButton>
                             <span v-if="submitError" class="text-sm text-red-500 font-bold text-center block">{{
                                 submitError }}</span>
-                            <span
-                                class="text-xs text-gray-400 text-center font-medium leading-relaxed block">Automatic
-                                confirmation after
-                                successful payment.</span>
+                            <div class="text-xs text-slate-400 text-center font-medium leading-relaxed">
+                                {{ t('my_registration.auto_confirm_note', 'Konfirmasi otomatis setelah pembayaran berhasil.') }}
+                            </div>
                         </div>
                     </div>
                 </div>
