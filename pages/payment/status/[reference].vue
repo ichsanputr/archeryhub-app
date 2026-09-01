@@ -100,11 +100,7 @@
         <div v-else-if="tx.status === 'pending' || tx.status === 'UNPAID' || tx.status === 'awaiting_verification' || tx.status === 'AWAITING_VERIFICATION'" class="bg-white/95 backdrop-blur-sm border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-sm space-y-6 relative overflow-hidden">
           <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-amber-400 via-primary to-amber-500"></div>
           
-          <div class="text-center space-y-2 pt-1">
-            <div class="size-14 rounded-2xl mx-auto mb-2 flex items-center justify-center border shadow-2xs"
-              :class="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'bg-blue-50 border-blue-200/80 text-blue-600' : 'bg-amber-50 border-amber-200/80 text-amber-600'">
-              <Icon :icon="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'ph:receipt-bold' : 'ph:clock-bold'" class="text-3xl" />
-            </div>
+          <div class="text-center space-y-2 pt-2">
             <h2 class="text-2xl font-black text-navy tracking-tight">
               {{ (tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? t('payment_status.proof_received_title', 'Bukti Pembayaran Diterima') : t('payment_status.awaiting_payment_title', 'Menunggu Pembayaran') }}
             </h2>
