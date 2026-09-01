@@ -1,13 +1,199 @@
+<script setup>
+import { Icon } from '@iconify/vue'
+import { ref, computed, onMounted } from 'vue'
+import { useApi } from '~/composables/useApi'
+import useDashboardI18n from '~/composables/useDashboardI18n'
+
+definePageMeta({ layout: 'dashboard' })
+
+const { t } = useDashboardI18n()
+useHead({ title: computed(() => t('organizer_subscription.page_title', 'Paket Event & Kuota') + ' - ArcheryHub') })
+
+const { get, post } = useApi()
+const toast = useToast()
+const router = useRouter()
+
+const quota = ref({ quota_free: 20, quota_standard: 0, quota_elite: 0 })
+const history = ref([])
+const page = ref(1)
+const limit = ref(10)
+const total = ref(0)
+const totalPages = ref(1)
+const isLoadingHistory = ref(false)
+
+// Table sorting state
+const sortKey = ref('date')
+const sortOrder = ref('desc')
+
+function toggleSort(key) {
+    if (sortKey.value === key) {
+        sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+    } else {
+        sortKey.value = key
+        sortOrder.value = key === 'date' ? 'desc' : 'asc'
+    }
+}
+
+function getSortIcon(key) {
+    if (sortKey.value !== key) return 'ph:caret-up-down-bold'
+    return sortOrder.value === 'asc' ? 'ph:caret-up-bold' : 'ph:caret-down-bold'
+}
+
+const sortedHistory = computed(() => {
+    if (!history.value || !history.value.length) return []
+    const list = [...history.value]
+    return list.sort((a, b) => {
+        let valA = ''
+        let valB = ''
+        if (sortKey.value === 'date') {
+            valA = new Date(a.purchased_at || a.created_at || 0).getTime()
+            valB = new Date(b.purchased_at || b.created_at || 0).getTime()
+        } else if (sortKey.value === 'package') {
+            valA = (a.plan_name || '').toLowerCase()
+            valB = (b.plan_name || '').toLowerCase()
+        } else if (sortKey.value === 'qty') {
+            valA = Number(a.quantity || 0)
+            valB = Number(b.quantity || 0)
+        } else if (sortKey.value === 'total') {
+            valA = Number(a.total_amount || a.amount || 0)
+            valB = Number(b.total_amount || b.amount || 0)
+        } else if (sortKey.value === 'method') {
+            valA = (a.payment_method || '').toLowerCase()
+            valB = (b.payment_method || '').toLowerCase()
+        } else if (sortKey.value === 'status') {
+            valA = (a.payment_status || a.status || '').toLowerCase()
+            valB = (b.payment_status || b.status || '').toLowerCase()
+        }
+        if (valA < valB) return sortOrder.value === 'asc' ? -1 : 1
+        if (valA > valB) return sortOrder.value === 'asc' ? 1 : -1
+        return 0
+    })
+})
+
+const selectedTier = ref('standard')
+const selectedQty = ref(1)
+const isCustomQty = ref(false)
+const customQtyInput = ref(10)
+const selectedPaymentMethod = ref('mayar')
+const isPurchasing = ref(false)
+
+const setPresetQty = (qty) => {
+    isCustomQty.value = false
+    selectedQty.value = qty
+}
+
+const enableCustomQty = () => {
+    isCustomQty.value = true
+    selectedQty.value = Math.max(1, customQtyInput.value || 1)
+}
+
+const onCustomQtyChange = () => {
+    selectedQty.value = Math.max(1, customQtyInput.value || 1)
+}
+
+const formatDate = (dateStr) => {
+    if (!dateStr) return '-'
+    return new Date(dateStr).toLocaleDateString('id-ID', {
+        day: 'numeric', month: 'short', year: 'numeric'
+    })
+}
+
+async function loadHistory(targetPage = 1) {
+    isLoadingHistory.value = true
+    page.value = targetPage
+    try {
+        const h = await get(`/organizers/me/quota/history?limit=${limit.value}&page=${page.value}`)
+        if (h) {
+            history.value = h.data || (Array.isArray(h) ? h : [])
+            total.value = h.total !== undefined ? h.total : history.value.length
+            totalPages.value = h.total_pages || Math.ceil(total.value / limit.value) || 1
+        }
+    } catch (e) {
+        console.error(e)
+    } finally {
+        isLoadingHistory.value = false
+    }
+}
+
+function changePage(newPage) {
+    if (newPage < 1 || newPage > totalPages.value) return
+    loadHistory(newPage)
+}
+
+const visiblePages = computed(() => {
+    const pages = []
+    const start = Math.max(1, page.value - 2)
+    const end = Math.min(totalPages.value, start + 4)
+    for (let i = start; i <= end; i++) {
+        pages.push(i)
+    }
+    return pages
+})
+
+onMounted(async () => {
+    try {
+        const q = await get('/organizers/me/quota')
+        if (q) quota.value = q
+    } catch (e) {}
+    loadHistory(1)
+})
+
+const basePrice = computed(() => selectedTier.value === 'standard' ? 24950 : 39950)
+const basePriceUSD = computed(() => selectedTier.value === 'standard' ? 1.50 : 2.50)
+
+const discountPct = computed(() => {
+    const q = selectedQty.value
+    if (q >= 10) return 20
+    if (q >= 5) return 12
+    if (q >= 3) return 7
+    return 0
+})
+
+const totalIDR = computed(() => {
+    return Math.round(basePrice.value * selectedQty.value * (1 - discountPct.value / 100))
+})
+
+const totalUSD = computed(() => {
+    return (Math.ceil((totalIDR.value / 16000) * 100) / 100).toFixed(2)
+})
+
+async function buyQuota() {
+    isPurchasing.value = true
+    try {
+        const plan_id = selectedTier.value === 'standard' ? 7 : 8
+        const res = await post('/organizers/me/quota/purchase', {
+            plan_id,
+            quantity: selectedQty.value,
+            payment_method: selectedPaymentMethod.value,
+            currency: selectedPaymentMethod.value === 'paypal' ? 'USD' : 'IDR'
+        })
+        
+        const trxRef = res?.purchase_id || res?.reference || res?.transaction_id || ''
+        toast.success(t('organizer_subscription.order_success_toast', 'Pesanan paket kuota berhasil dibuat'))
+        if (res?.checkout_url) {
+            window.location.href = res.checkout_url
+        } else {
+            router.push(`/dashboard/organizer/package/detail?trx_id=${trxRef}`)
+        }
+    } catch (e) {
+        console.error(e)
+        toast.error(e?.data?.error || t('organizer_subscription.buy_error', 'Gagal memproses pembelian paket kuota.'))
+    } finally {
+        isPurchasing.value = false
+    }
+}
+</script>
+
 <template>
     <div class="space-y-8 pb-12">
         <!-- ── Header ── -->
         <DashboardHeader
-            :title="t('organizer_subscription.page_title')"
-            :subtitle="t('organizer_subscription.subtitle')"
+            :title="t('organizer_subscription.page_title', 'Paket Event & Kuota')"
+            :subtitle="t('organizer_subscription.subtitle', 'Kelola kuota event, beli paket tambahan, dan pantau riwayat transaksi.')"
             icon="ph:crown-simple-bold"
             :breadcrumbs="[
                 { label: 'Dashboard', to: '/dashboard/organizer' },
-                { label: t('organizer_subscription.breadcrumb') }
+                { label: t('organizer_subscription.breadcrumb', 'Paket & Kuota') }
             ]"
         />
 
@@ -54,10 +240,10 @@
                 <div class="flex items-start justify-between gap-4 mb-5">
                     <div class="space-y-1">
                         <span class="inline-block px-2.5 py-0.5 bg-primary/10 text-navy border border-primary/20 rounded-lg text-[10px] font-black tracking-wider capitalize">
-                            {{ t('organizer_subscription.standard_tier_badge') }}
+                            {{ t('organizer_subscription.standard_tier_badge', 'Paling Populer') }}
                         </span>
-                        <h3 class="text-lg font-black text-navy pt-1">{{ t('organizer_subscription.standard_title') }}</h3>
-                        <div class="text-xs text-slate-500">{{ t('organizer_subscription.standard_desc') }}</div>
+                        <h3 class="text-lg font-black text-navy pt-1">{{ t('organizer_subscription.standard_title', 'Paket Standard') }}</h3>
+                        <div class="text-xs text-slate-500">{{ t('organizer_subscription.standard_desc', 'Ideal untuk kejuaraan daerah & sirkuit panahan') }}</div>
                     </div>
                     <div class="size-12 rounded-xl bg-slate-50 border border-primary/20 flex items-center justify-center text-navy shadow-xs shrink-0 group-hover:scale-105 transition-transform">
                         <Icon icon="ph:lightning-bold" class="text-2xl text-navy" />
@@ -66,21 +252,21 @@
 
                 <div class="flex items-baseline gap-2 mb-6">
                     <span class="text-4xl font-black text-navy">{{ quota.quota_standard || 0 }}</span>
-                    <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.slot_available') }}</span>
+                    <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.slot_available', 'slot event aktif') }}</span>
                 </div>
 
                 <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium">
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.std_feat_1')"></span>
+                        <span v-html="t('organizer_subscription.std_feat_1', 'Hingga <strong>300 Peserta</strong> per event')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.std_feat_2')"></span>
+                        <span v-html="t('organizer_subscription.std_feat_2', 'Kategori lomba & bantalan <strong>Tak Terbatas</strong>')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.std_feat_3')"></span>
+                        <span v-html="t('organizer_subscription.std_feat_3', 'Fitur <strong>Kualifikasi & Eliminasi</strong> Lengkap')"></span>
                     </div>
                 </div>
             </div>
@@ -90,10 +276,10 @@
                 <div class="flex items-start justify-between gap-4 mb-5">
                     <div class="space-y-1">
                         <span class="inline-block px-2.5 py-0.5 bg-primary/15 text-navy border border-primary/30 rounded-lg text-[10px] font-black tracking-wider capitalize">
-                            {{ t('organizer_subscription.elite_tier_badge') }}
+                            {{ t('organizer_subscription.elite_tier_badge', 'Skala Nasional') }}
                         </span>
-                        <h3 class="text-lg font-black text-navy pt-1">{{ t('organizer_subscription.elite_title') }}</h3>
-                        <div class="text-xs text-slate-500">{{ t('organizer_subscription.elite_desc') }}</div>
+                        <h3 class="text-lg font-black text-navy pt-1">{{ t('organizer_subscription.elite_title', 'Paket Elite') }}</h3>
+                        <div class="text-xs text-slate-500">{{ t('organizer_subscription.elite_desc', 'Untuk turnamen besar, open championship, & kejurnas') }}</div>
                     </div>
                     <div class="size-12 rounded-xl bg-slate-50 border border-primary/20 flex items-center justify-center text-navy shadow-xs shrink-0 group-hover:scale-105 transition-transform">
                         <Icon icon="ph:crown-simple-bold" class="text-2xl text-navy" />
@@ -102,64 +288,47 @@
 
                 <div class="flex items-baseline gap-2 mb-6">
                     <span class="text-4xl font-black text-navy">{{ quota.quota_elite || 0 }}</span>
-                    <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.slot_available') }}</span>
+                    <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.slot_available', 'slot event aktif') }}</span>
                 </div>
 
                 <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium">
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.elite_feat_1')"></span>
+                        <span v-html="t('organizer_subscription.elite_feat_1', 'Peserta <strong>Tak Terbatas</strong>')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.elite_feat_2')"></span>
+                        <span v-html="t('organizer_subscription.elite_feat_2', 'Live scoring & bagan eliminasi multi-lapangan')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.elite_feat_3')"></span>
+                        <span v-html="t('organizer_subscription.elite_feat_3', 'Sertifikat digital otomatis dengan QR verifikasi')"></span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ── Section 2: Buy Quota Interactive Builder ── -->
-        <div class="bg-white rounded-2xl border border-primary/20 p-6 sm:p-8 shadow-sm space-y-8">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-5">
-                <div>
-                    <h3 class="text-xl font-black text-navy flex items-center gap-2">
-                        <Icon icon="ph:shopping-cart-simple-bold" class="text-primary text-2xl" />
-                        <span>{{ t('organizer_subscription.buy_title') }}</span>
-                    </h3>
-                    <div class="text-xs text-slate-500 mt-1">{{ t('organizer_subscription.buy_subtitle') }}</div>
-                </div>
-                <div class="flex items-center gap-2 text-xs font-bold text-navy bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-xl">
-                    <Icon icon="ph:shield-check-bold" class="text-primary text-base" />
-                    <span>{{ t('organizer_subscription.instant_activation') }}</span>
-                </div>
-            </div>
-            
+        <!-- ── Section 2: Interactive Topup / Buy Quota Box ── -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <!-- Left Configuration (7 cols) -->
-                <div class="lg:col-span-7 space-y-8">
-                    
-                    <!-- 1. Tier Selection -->
+                <div class="lg:col-span-7 space-y-7">
+                    <!-- 1. Select Tier -->
                     <div class="space-y-3">
                         <label class="text-xs font-black text-slate-400 capitalize tracking-widest">
-                            {{ t('organizer_subscription.step_tier') }}
+                            {{ t('organizer_subscription.step_tier', '1. Pilih Jenis Paket Event') }}
                         </label>
-                        
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div @click="selectedTier = 'standard'"
-                                :class="[
-                                    'p-5 rounded-xl border-2 cursor-pointer transition-all relative flex flex-col justify-between',
-                                    selectedTier === 'standard' 
-                                        ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-xs' 
-                                        : 'border-slate-200 hover:border-primary/40 bg-white'
-                                ]">
-                                <div class="flex items-start justify-between mb-3">
-                                    <div>
-                                        <h4 class="font-black text-navy text-base">{{ t('organizer_subscription.standard_tier_name', 'Standard') }}</h4>
-                                        <div class="text-[11px] text-slate-500 mt-0.5">{{ t('organizer_subscription.standard_capacity') }}</div>
+                            <!-- Standard Selection Card -->
+                            <div 
+                                @click="selectedTier = 'standard'"
+                                :class="selectedTier === 'standard' ? 'border-primary bg-primary/5 shadow-xs' : 'border-slate-200 hover:border-slate-300 bg-white'"
+                                class="p-5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col justify-between relative group">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div class="space-y-1">
+                                        <div class="text-xs font-bold text-slate-400 capitalize">{{ t('organizer_subscription.standard_tier_badge', 'Paling Populer') }}</div>
+                                        <div class="font-black text-navy text-base">{{ t('organizer_subscription.standard_title', 'Paket Standard') }}</div>
+                                        <div class="text-[11px] text-slate-500 leading-relaxed">{{ t('organizer_subscription.standard_desc', 'Ideal untuk kejuaraan daerah & sirkuit') }}</div>
                                     </div>
                                     <div class="size-6 rounded-full flex items-center justify-center text-xs"
                                         :class="selectedTier === 'standard' ? 'bg-primary text-navy font-black' : 'border border-slate-300 text-transparent'">
@@ -172,30 +341,29 @@
                                             Rp 49.900
                                         </span>
                                         <span class="text-[9px] font-black capitalize text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
-                                            {{ t('organizer_subscription.promo_badge_50', 'PROMO 50% OFF') }}
+                                            {{ t('organizer_subscription.promo_badge_50', 'Diskon Launching 50%') }}
                                         </span>
                                     </div>
                                     <div class="text-lg font-black text-navy">
                                         Rp 24.950
-                                        <span class="text-[10px] font-bold text-slate-500">{{ t('organizer_subscription.per_event') }}</span>
+                                        <span class="text-[10px] font-bold text-slate-500">{{ t('organizer_subscription.per_event', '/ event') }}</span>
                                     </div>
                                     <div class="text-[10px] text-amber-700 font-medium mt-1">
-                                        {{ t('organizer_subscription.promo_subtext', 'Diskon launching 50% untuk semua tier') }}
+                                        {{ t('organizer_subscription.promo_subtext', 'Diskon launching 50% untuk semua paket') }}
                                     </div>
                                 </div>
                             </div>
 
-                            <div @click="selectedTier = 'elite'"
-                                :class="[
-                                    'p-5 rounded-xl border-2 cursor-pointer transition-all relative flex flex-col justify-between',
-                                    selectedTier === 'elite' 
-                                        ? 'border-primary bg-primary/5 ring-1 ring-primary shadow-xs' 
-                                        : 'border-slate-200 hover:border-primary/40 bg-white'
-                                ]">
-                                <div class="flex items-start justify-between mb-3">
-                                    <div>
-                                        <h4 class="font-black text-navy text-base">{{ t('organizer_subscription.elite_tier_name', 'Elite') }}</h4>
-                                        <div class="text-[11px] text-slate-500 mt-0.5">{{ t('organizer_subscription.elite_capacity') }}</div>
+                            <!-- Elite Selection Card -->
+                            <div 
+                                @click="selectedTier = 'elite'"
+                                :class="selectedTier === 'elite' ? 'border-primary bg-primary/5 shadow-xs' : 'border-slate-200 hover:border-slate-300 bg-white'"
+                                class="p-5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col justify-between relative group">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div class="space-y-1">
+                                        <div class="text-xs font-bold text-slate-400 capitalize">{{ t('organizer_subscription.elite_tier_badge', 'Skala Nasional') }}</div>
+                                        <div class="font-black text-navy text-base">{{ t('organizer_subscription.elite_title', 'Paket Elite') }}</div>
+                                        <div class="text-[11px] text-slate-500 leading-relaxed">{{ t('organizer_subscription.elite_desc', 'Untuk turnamen besar & kejurnas') }}</div>
                                     </div>
                                     <div class="size-6 rounded-full flex items-center justify-center text-xs"
                                         :class="selectedTier === 'elite' ? 'bg-primary text-navy font-black' : 'border border-slate-300 text-transparent'">
@@ -208,26 +376,26 @@
                                             Rp 79.900
                                         </span>
                                         <span class="text-[9px] font-black capitalize text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
-                                            {{ t('organizer_subscription.promo_badge_50', 'PROMO 50% OFF') }}
+                                            {{ t('organizer_subscription.promo_badge_50', 'Diskon Launching 50%') }}
                                         </span>
                                     </div>
                                     <div class="text-lg font-black text-navy">
                                         Rp 39.950
-                                        <span class="text-[10px] font-bold text-slate-500">{{ t('organizer_subscription.per_event') }}</span>
+                                        <span class="text-[10px] font-bold text-slate-500">{{ t('organizer_subscription.per_event', '/ event') }}</span>
                                     </div>
                                     <div class="text-[10px] text-amber-700 font-medium mt-1">
-                                        {{ t('organizer_subscription.promo_subtext', 'Diskon launching 50% untuk semua tier') }}
+                                        {{ t('organizer_subscription.promo_subtext', 'Diskon launching 50% untuk semua paket') }}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 2. Quantity & Bundle (Custom Slot Input) -->
+                    <!-- 2. Quantity & Bundle -->
                     <div class="space-y-3">
                         <div class="flex items-center justify-between flex-wrap gap-2">
                             <label class="text-xs font-black text-slate-400 capitalize tracking-widest">
-                                {{ t('organizer_subscription.step_qty') }}
+                                {{ t('organizer_subscription.step_qty', '2. Jumlah Kuota Event') }}
                             </label>
                             <span v-if="discountPct > 0" class="text-[11px] font-black text-navy bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20">
                                 {{ t('organizer_subscription.save_with_bundle', { pct: discountPct }) }}
@@ -239,26 +407,26 @@
                                 type="button"
                                 @click="setPresetQty(qty)"
                                 :class="[
-                                    'p-4 rounded-xl border-2 text-center transition-all flex flex-col items-center justify-center gap-1',
+                                    'p-4 rounded-xl border-2 text-center transition-all flex flex-col items-center justify-center gap-1 cursor-pointer',
                                     (!isCustomQty && selectedQty === qty) 
                                         ? 'border-primary bg-navy text-white shadow-xs' 
                                         : 'border-slate-200 text-navy hover:border-primary/40 bg-white'
                                 ]">
                                 <span class="text-lg font-black">{{ qty }} {{ t('organizer_subscription.event_unit', 'Event') }}</span>
                                 <span class="text-[10px] font-bold" :class="(!isCustomQty && selectedQty === qty) ? 'text-primary' : 'text-slate-500'">
-                                    {{ qty === 1 ? t('organizer_subscription.single_package') : t('organizer_subscription.save_pct', { pct: {3: 7, 5: 12}[qty] }) }}
+                                    {{ qty === 1 ? t('organizer_subscription.single_package', 'Paket Satuan') : t('organizer_subscription.save_pct', { pct: {3: 7, 5: 12}[qty] }) }}
                                 </span>
                             </button>
                             <button
                                 type="button"
                                 @click="enableCustomQty"
                                 :class="[
-                                    'p-4 rounded-xl border-2 text-center transition-all flex flex-col items-center justify-center gap-1',
+                                    'p-4 rounded-xl border-2 text-center transition-all flex flex-col items-center justify-center gap-1 cursor-pointer',
                                     isCustomQty 
                                         ? 'border-primary bg-navy text-white shadow-xs' 
                                         : 'border-slate-200 text-navy hover:border-primary/40 bg-white'
                                 ]">
-                                <span class="text-lg font-black">{{ t('organizer_subscription.custom_tier_name', 'Custom') }}</span>
+                                <span class="text-lg font-black">{{ t('organizer_subscription.custom_tier_name', 'Kustom') }}</span>
                                 <span class="text-[10px] font-bold" :class="isCustomQty ? 'text-primary' : 'text-slate-500'">
                                     {{ t('organizer_subscription.custom_slot_label', 'Tentukan Sendiri') }}
                                 </span>
@@ -288,7 +456,7 @@
                     <!-- 3. Payment Method -->
                     <div class="space-y-4">
                         <label class="text-xs font-black text-slate-400 capitalize tracking-widest">
-                            {{ t('organizer_subscription.step_payment') }}
+                            {{ t('organizer_subscription.step_payment', '3. Metode Pembayaran') }}
                         </label>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -302,7 +470,7 @@
                                             <img src="/mayar-logo.png" alt="Mayar" class="w-full h-full object-contain" />
                                         </div>
                                         <div>
-                                            <div class="font-black text-navy text-xs">Mayar (Domestik)</div>
+                                            <div class="font-black text-navy text-xs">{{ t('organizer_subscription.payment_channel_mayar', 'Domestik (Mayar - IDR)') }}</div>
                                             <div class="text-[10px] text-slate-500 font-medium">Mata Uang: IDR (Rp)</div>
                                         </div>
                                     </div>
@@ -311,8 +479,8 @@
                                         <Icon icon="ph:check-bold" />
                                     </div>
                                 </div>
-                                <div class="text-[11px] text-slate-600 font-medium">
-                                    QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), E-Wallet
+                                <div class="text-[11px] text-slate-600 font-medium leading-relaxed">
+                                    {{ t('organizer_subscription.mayar_supported_methods', 'Mendukung QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), dan E-Wallet') }}
                                 </div>
                             </div>
 
@@ -326,7 +494,7 @@
                                             <Icon icon="logos:paypal" class="text-xl" />
                                         </div>
                                         <div>
-                                            <div class="font-black text-navy text-xs">PayPal (International)</div>
+                                            <div class="font-black text-navy text-xs">{{ t('organizer_subscription.payment_channel_paypal', 'Internasional (PayPal - USD)') }}</div>
                                             <div class="text-[10px] text-blue-600 font-bold">Mata Uang: USD ($)</div>
                                         </div>
                                     </div>
@@ -335,8 +503,8 @@
                                         <Icon icon="ph:check-bold" />
                                     </div>
                                 </div>
-                                <div class="text-[11px] text-slate-600 font-medium">
-                                    Saldo PayPal, Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX)
+                                <div class="text-[11px] text-slate-600 font-medium leading-relaxed">
+                                    {{ t('organizer_subscription.paypal_desc', 'Saldo PayPal, Visa, Mastercard, AMEX (Mata uang USD)') }}
                                 </div>
                             </div>
                         </div>
@@ -350,59 +518,65 @@
 
                         <!-- Header -->
                         <div class="flex items-center justify-between border-b border-white/10 pb-4">
-                            <h4 class="font-black text-white text-base tracking-tight">{{ t('organizer_subscription.order_summary') }}</h4>
+                            <h4 class="font-black text-white text-base tracking-tight">{{ t('organizer_subscription.order_summary', 'Ringkasan Pesanan') }}</h4>
                             <span class="text-[10px] font-mono font-bold text-primary capitalize bg-primary/10 px-2 py-0.5 rounded border border-primary/20">ArcheryHub EO</span>
                         </div>
 
                         <!-- Details breakdown -->
-                        <div class="space-y-3 text-xs">
-                            <div class="flex justify-between items-center">
-                                <span class="text-slate-400 font-medium">{{ t('organizer_subscription.selected_package') }}</span>
-                                <span class="font-black text-white capitalize bg-white/10 px-2.5 py-1 rounded-lg border border-white/10">
-                                    {{ selectedTier }} Tier ({{ selectedQty }} Event)
-                                </span>
+                        <div class="space-y-3.5 text-xs">
+                            <div class="flex justify-between items-center text-slate-300">
+                                <span>{{ t('organizer_subscription.summary_tier', 'Jenis Paket') }}</span>
+                                <span class="font-black text-white capitalize">{{ selectedTier === 'standard' ? t('organizer_subscription.standard_title', 'Paket Standard') : t('organizer_subscription.elite_title', 'Paket Elite') }}</span>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-slate-400 font-medium">{{ t('organizer_subscription.unit_price_label') }}</span>
-                                <span class="font-bold text-slate-200">
-                                    Rp {{ new Intl.NumberFormat('id-ID').format(basePrice) }}
-                                </span>
-                            </div>
-                            <div v-if="discountPct > 0" class="flex justify-between items-center text-primary font-bold">
-                                <span>{{ t('organizer_subscription.bundle_discount', { pct: discountPct }) }}</span>
-                                <span>- Rp {{ new Intl.NumberFormat('id-ID').format((basePrice * selectedQty) - totalIDR) }}</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-slate-400 font-medium">{{ t('organizer_subscription.payment_method_label') }}</span>
-                                <span class="font-bold text-slate-200 capitalize">
-                                    Mayar (QRIS / VA / E-Wallet)
-                                </span>
-                            </div>
-                        </div>
 
-                        <!-- Total & CTA Box (Integrated together with zero awkward gap) -->
-                        <div class="pt-5 border-t border-white/10 space-y-4">
-                            <div class="flex justify-between items-end">
-                                <div>
-                                    <div class="text-[10px] font-black capitalize text-slate-400 tracking-wider">{{ t('organizer_subscription.total_payment') }}</div>
-                                    <div class="text-[11px] text-slate-400 mt-0.5">{{ t('organizer_subscription.total_payment_desc') }}</div>
-                                </div>
-                                <div class="text-right">
-                                    <div class="text-2xl sm:text-3xl font-black text-primary leading-none">
-                                        Rp {{ new Intl.NumberFormat('id-ID').format(totalIDR) }}
+                            <div class="flex justify-between items-center text-slate-300">
+                                <span>{{ t('organizer_subscription.summary_qty', 'Jumlah Slot') }}</span>
+                                <span class="font-black text-white">{{ selectedQty }} {{ t('organizer_subscription.event_unit', 'Event') }}</span>
+                            </div>
+
+                            <div class="flex justify-between items-center text-slate-300">
+                                <span>{{ t('organizer_subscription.summary_unit_price', 'Harga per Slot') }}</span>
+                                <span class="font-medium text-slate-200">Rp {{ basePrice.toLocaleString('id-ID') }}</span>
+                            </div>
+
+                            <div v-if="discountPct > 0" class="flex justify-between items-center text-primary font-bold">
+                                <span>{{ t('organizer_subscription.summary_discount', 'Diskon Bundle') }} ({{ discountPct }}%)</span>
+                                <span>-Rp {{ Math.round(basePrice * selectedQty * discountPct / 100).toLocaleString('id-ID') }}</span>
+                            </div>
+
+                            <div class="flex justify-between items-center text-slate-300">
+                                <span>{{ t('organizer_subscription.col_method', 'Metode') }}</span>
+                                <span class="font-black text-white">{{ selectedPaymentMethod === 'paypal' ? 'PayPal (USD)' : 'Mayar (IDR)' }}</span>
+                            </div>
+
+                            <div class="pt-3 border-t border-white/10 space-y-1">
+                                <div class="flex justify-between items-baseline">
+                                    <span class="font-black text-white text-sm">{{ t('organizer_subscription.summary_total', 'Total Tagihan') }}</span>
+                                    <div class="text-right">
+                                        <div class="text-2xl font-black text-primary tabular-nums">
+                                            Rp {{ totalIDR.toLocaleString('id-ID') }}
+                                        </div>
+                                        <div v-if="selectedPaymentMethod === 'paypal'" class="text-xs font-mono font-bold text-sky-400">
+                                            ~${{ totalUSD }} USD
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <BaseButton @click="buyQuota" variant="primary" :loading="isPurchasing" 
-                                class="w-full h-12 shadow-md shadow-primary/20 text-xs sm:text-sm font-black tracking-wider flex items-center justify-center gap-2">
-                                <span>{{ t('organizer_subscription.pay_now') }}</span>
-                                <Icon icon="ph:arrow-right-bold" class="text-base" />
-                            </BaseButton>
+                        <!-- CTA Button -->
+                        <div class="space-y-3 pt-2">
+                            <button 
+                                type="button"
+                                @click="buyQuota"
+                                :disabled="isPurchasing"
+                                class="w-full py-4 px-6 bg-gradient-to-r from-amber-400 via-primary to-amber-500 hover:opacity-95 text-navy font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50">
+                                <Icon :icon="isPurchasing ? 'ph:spinner-gap-bold' : (selectedPaymentMethod === 'paypal' ? 'logos:paypal' : 'ph:rocket-launch-bold')" :class="isPurchasing ? 'animate-spin' : ''" class="text-lg" />
+                                <span>{{ isPurchasing ? t('organizer_subscription.btn_processing', 'Memproses Pembayaran...') : (selectedPaymentMethod === 'paypal' ? t('organizer_subscription.pay_with_paypal', 'Checkout via PayPal') : t('organizer_subscription.btn_pay_now', 'Bayar Sekarang')) }}</span>
+                            </button>
 
-                            <div class="flex items-center justify-center gap-2 text-[10px] text-slate-400 text-center pt-1">
-                                <Icon icon="ph:lock-simple-bold" class="text-primary text-xs" />
-                                <span>{{ t('organizer_subscription.ssl_note') }}</span>
+                            <div class="text-[11px] text-center text-slate-400 font-medium">
+                                {{ t('organizer_subscription.secure_note', 'Transaksi aman, terverifikasi otomatis secara instan') }}
                             </div>
                         </div>
                     </div>
@@ -410,91 +584,100 @@
             </div>
         </div>
 
-        <!-- ── Section 3: Purchase History Table ── -->
-        <div class="bg-white rounded-2xl border border-primary/20 overflow-hidden shadow-sm">
-            <div class="p-6 sm:p-7 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <h3 class="text-base font-black text-navy">{{ t('organizer_subscription.history_title') }}</h3>
-                    <div class="text-xs text-slate-500 mt-0.5">{{ t('organizer_subscription.history_subtitle') }}</div>
-                </div>
-                <div class="text-xs font-bold text-navy bg-primary/10 border border-primary/20 px-3 py-1 rounded-lg">
-                    {{ t('organizer_subscription.total_transactions', { n: history.length }) }}
+        <!-- ── Section 3: Quota Purchase History Table ── -->
+        <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="p-6 sm:p-7 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="size-10 rounded-xl bg-slate-100 flex items-center justify-center text-navy shrink-0">
+                        <Icon icon="ph:receipt-bold" class="text-xl text-navy" />
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-navy">{{ t('organizer_subscription.history_title', 'Riwayat Pembelian Kuota') }}</h3>
+                        <div class="text-xs text-slate-400">{{ t('organizer_subscription.history_subtitle', 'Daftar invoice dan transaksi kuota event Anda') }}</div>
+                    </div>
                 </div>
             </div>
 
+            <!-- Table -->
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs">
-                    <thead>
-                        <tr class="bg-slate-50/70 text-slate-400 font-black tracking-wider border-b border-slate-100 select-none">
-                            <th class="py-3.5 px-5 cursor-pointer hover:text-navy transition-colors" @click="toggleSort('date')">
+                <table class="w-full text-left text-xs min-w-[700px]">
+                    <thead class="bg-slate-50 text-slate-500 font-bold border-b border-gray-100 text-[11px]">
+                        <tr>
+                            <th class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-slate-100 transition-colors" @click="toggleSort('date')">
                                 <div class="flex items-center gap-1.5">
-                                    <span>{{ t('organizer_subscription.col_date') }}</span>
-                                    <Icon :icon="getSortIcon('date')" class="text-xs shrink-0" :class="{ 'text-primary': sortKey === 'date' }" />
+                                    <span>{{ t('organizer_subscription.col_date', 'Tanggal') }}</span>
+                                    <Icon :icon="getSortIcon('date')" class="text-xs text-slate-400" />
                                 </div>
                             </th>
-                            <th class="py-3.5 px-5 cursor-pointer hover:text-navy transition-colors" @click="toggleSort('package')">
+                            <th class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-slate-100 transition-colors" @click="toggleSort('package')">
                                 <div class="flex items-center gap-1.5">
-                                    <span>{{ t('organizer_subscription.col_package') }}</span>
-                                    <Icon :icon="getSortIcon('package')" class="text-xs shrink-0" :class="{ 'text-primary': sortKey === 'package' }" />
+                                    <span>{{ t('organizer_subscription.col_package', 'Paket') }}</span>
+                                    <Icon :icon="getSortIcon('package')" class="text-xs text-slate-400" />
                                 </div>
                             </th>
-                            <th class="py-3.5 px-5 cursor-pointer hover:text-navy transition-colors" @click="toggleSort('qty')">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('organizer_subscription.col_qty') }}</span>
-                                    <Icon :icon="getSortIcon('qty')" class="text-xs shrink-0" :class="{ 'text-primary': sortKey === 'qty' }" />
-                                </div>
-                            </th>
-                            <th class="py-3.5 px-5 cursor-pointer hover:text-navy transition-colors" @click="toggleSort('total')">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('organizer_subscription.col_total') }}</span>
-                                    <Icon :icon="getSortIcon('total')" class="text-xs shrink-0" :class="{ 'text-primary': sortKey === 'total' }" />
-                                </div>
-                            </th>
-                            <th class="py-3.5 px-5 cursor-pointer hover:text-navy transition-colors" @click="toggleSort('method')">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('organizer_subscription.col_method') }}</span>
-                                    <Icon :icon="getSortIcon('method')" class="text-xs shrink-0" :class="{ 'text-primary': sortKey === 'method' }" />
-                                </div>
-                            </th>
-                            <th class="py-3.5 px-5 text-center cursor-pointer hover:text-navy transition-colors" @click="toggleSort('status')">
+                            <th class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-slate-100 transition-colors text-center" @click="toggleSort('qty')">
                                 <div class="flex items-center justify-center gap-1.5">
-                                    <span>{{ t('organizer_subscription.col_status') }}</span>
-                                    <Icon :icon="getSortIcon('status')" class="text-xs shrink-0" :class="{ 'text-primary': sortKey === 'status' }" />
+                                    <span>{{ t('organizer_subscription.col_qty', 'Jumlah') }}</span>
+                                    <Icon :icon="getSortIcon('qty')" class="text-xs text-slate-400" />
                                 </div>
                             </th>
-                            <th class="py-3.5 px-5 text-right">{{ t('organizer_subscription.col_action', 'Aksi') }}</th>
+                            <th class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-slate-100 transition-colors" @click="toggleSort('total')">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('organizer_subscription.col_total', 'Total Tagihan') }}</span>
+                                    <Icon :icon="getSortIcon('total')" class="text-xs text-slate-400" />
+                                </div>
+                            </th>
+                            <th class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-slate-100 transition-colors" @click="toggleSort('method')">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('organizer_subscription.col_method', 'Metode') }}</span>
+                                    <Icon :icon="getSortIcon('method')" class="text-xs text-slate-400" />
+                                </div>
+                            </th>
+                            <th class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-slate-100 transition-colors" @click="toggleSort('status')">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('organizer_subscription.col_status', 'Status') }}</span>
+                                    <Icon :icon="getSortIcon('status')" class="text-xs text-slate-400" />
+                                </div>
+                            </th>
+                            <th class="py-3 px-4 sm:px-6 text-right">{{ t('organizer_subscription.col_action', 'Aksi') }}</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100">
-                        <tr v-for="item in sortedHistory" :key="item.id || item.uuid" class="hover:bg-slate-50/50 transition-colors">
-                            <td class="py-4 px-5 text-slate-500 font-medium">{{ formatDate(item.purchased_at || item.created_at) }}</td>
-                            <td class="py-4 px-5 font-bold text-navy capitalize">
-                                <div class="flex items-center gap-2">
-                                    <Icon :icon="(item.plan_name && item.plan_name.toLowerCase().includes('elite')) ? 'ph:crown-simple-bold' : 'ph:lightning-bold'" 
-                                        class="text-base text-primary" />
-                                    <span>{{ item.plan_name || (item.plan_id === 7 ? 'Standard Event' : 'Elite Event') }}</span>
-                                </div>
+                    <tbody class="divide-y divide-gray-100 font-medium">
+                        <tr v-for="item in sortedHistory" :key="item.uuid" class="hover:bg-slate-50/80 transition-colors">
+                            <td class="py-3.5 px-4 sm:px-6 text-slate-500 whitespace-nowrap">
+                                {{ formatDate(item.purchased_at || item.created_at) }}
                             </td>
-                            <td class="py-4 px-5 font-bold text-navy">{{ item.quantity }} {{ t('organizer_subscription.slot_unit') }}</td>
-                            <td class="py-4 px-5 font-black text-navy">
-                                {{ item.currency === 'USD' ? '$' + (item.amount || item.total_amount) : 'Rp ' + new Intl.NumberFormat('id-ID').format(item.amount || item.total_amount || 0) }}
+                            <td class="py-3.5 px-4 sm:px-6 font-bold text-navy">
+                                {{ item.plan_name || (item.quota_type === 'elite' ? t('organizer_subscription.elite_title', 'Paket Elite') : t('organizer_subscription.standard_title', 'Paket Standard')) }}
                             </td>
-                            <td class="py-4 px-5 capitalize font-medium text-slate-500">{{ item.payment_method || 'Mayar' }}</td>
-                            <td class="py-4 px-5 text-center">
-                                <span :class="[
-                                    'px-3 py-1 text-[10px] font-black rounded-lg capitalize inline-block border',
-                                    (item.payment_status === 'paid' || item.status === 'paid' || item.status === 'success') 
-                                        ? 'bg-emerald-50 text-emerald-800 border-emerald-200' 
-                                        : 'bg-amber-50 text-amber-800 border-amber-200'
-                                ]">
-                                    {{ (item.payment_status === 'paid' || item.status === 'paid' || item.status === 'success') ? t('organizer_subscription.status_paid', 'Lunas') : t('organizer_subscription.status_pending', 'Menunggu Pembayaran') }}
+                            <td class="py-3.5 px-4 sm:px-6 text-center font-bold text-navy">
+                                {{ item.quantity }} {{ t('organizer_subscription.event_unit', 'Event') }}
+                            </td>
+                            <td class="py-3.5 px-4 sm:px-6 font-black text-navy tabular-nums whitespace-nowrap">
+                                Rp {{ (item.total_amount || item.amount || 0).toLocaleString('id-ID') }}
+                            </td>
+                            <td class="py-3.5 px-4 sm:px-6 capitalize text-slate-600 font-bold">
+                                {{ item.payment_method === 'paypal' ? 'PayPal' : 'Mayar' }}
+                            </td>
+                            <td class="py-3.5 px-4 sm:px-6 whitespace-nowrap">
+                                <span v-if="item.payment_status === 'paid' || item.status === 'paid'"
+                                    class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    {{ t('organizer_subscription.status_paid', 'Lunas') }}
+                                </span>
+                                <span v-else-if="item.payment_status === 'pending' || item.status === 'pending'"
+                                    class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize bg-amber-100 text-amber-800 border border-amber-200">
+                                    {{ t('organizer_subscription.status_pending', 'Menunggu Pembayaran') }}
+                                </span>
+                                <span v-else
+                                    class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize bg-rose-100 text-rose-800 border border-rose-200">
+                                    {{ item.payment_status || item.status }}
                                 </span>
                             </td>
-                            <td class="py-4 px-5 text-right">
-                                <NuxtLink :to="`/dashboard/organizer/package/detail?trx_id=${item.payment_reference || item.id || item.uuid}`"
-                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-navy hover:bg-navy-dark text-white text-xs font-bold transition-all shadow-2xs">
-                                    <Icon icon="ph:receipt-bold" />
-                                    <span>{{ t('organizer_subscription.btn_pay_detail', 'Detail Bayar') }}</span>
+                            <td class="py-3.5 px-4 sm:px-6 text-right">
+                                <NuxtLink :to="`/dashboard/organizer/package/detail?trx_id=${item.payment_reference || item.uuid}`"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy font-bold text-[11px] transition-colors">
+                                    <Icon icon="ph:receipt" class="text-sm" />
+                                    <span>{{ t('organizer_subscription.btn_view_invoice', 'Detail Invoice') }}</span>
                                 </NuxtLink>
                             </td>
                         </tr>
@@ -563,183 +746,3 @@
         </div>
     </div>
 </template>
-
-<script setup>
-import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted } from 'vue'
-import { useApi } from '~/composables/useApi'
-import { useI18n } from 'vue-i18n'
-
-definePageMeta({ layout: 'dashboard' })
-
-const { t } = useI18n()
-useHead({ title: computed(() => t('organizer_subscription.page_title') + ' - ArcheryHub') })
-
-const { get, post } = useApi()
-const quota = ref({ quota_free: 20, quota_standard: 0, quota_elite: 0 })
-const history = ref([])
-const page = ref(1)
-const limit = ref(10)
-const total = ref(0)
-const totalPages = ref(1)
-const isLoadingHistory = ref(false)
-
-// Table sorting state
-const sortKey = ref('date')
-const sortOrder = ref('desc')
-
-function toggleSort(key) {
-    if (sortKey.value === key) {
-        sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
-    } else {
-        sortKey.value = key
-        sortOrder.value = key === 'date' ? 'desc' : 'asc'
-    }
-}
-
-function getSortIcon(key) {
-    if (sortKey.value !== key) return 'ph:caret-up-down-bold'
-    return sortOrder.value === 'asc' ? 'ph:caret-up-bold' : 'ph:caret-down-bold'
-}
-
-const sortedHistory = computed(() => {
-    if (!history.value || !history.value.length) return []
-    const list = [...history.value]
-    return list.sort((a, b) => {
-        let valA = ''
-        let valB = ''
-        if (sortKey.value === 'date') {
-            valA = new Date(a.purchased_at || a.created_at || 0).getTime()
-            valB = new Date(b.purchased_at || b.created_at || 0).getTime()
-        } else if (sortKey.value === 'package') {
-            valA = (a.plan_name || '').toLowerCase()
-            valB = (b.plan_name || '').toLowerCase()
-        } else if (sortKey.value === 'qty') {
-            valA = Number(a.quantity || 0)
-            valB = Number(b.quantity || 0)
-        } else if (sortKey.value === 'total') {
-            valA = Number(a.total_amount || a.amount || 0)
-            valB = Number(b.total_amount || b.amount || 0)
-        } else if (sortKey.value === 'method') {
-            valA = (a.payment_method || '').toLowerCase()
-            valB = (b.payment_method || '').toLowerCase()
-        } else if (sortKey.value === 'status') {
-            valA = (a.payment_status || a.status || '').toLowerCase()
-            valB = (b.payment_status || b.status || '').toLowerCase()
-        }
-        if (valA < valB) return sortOrder.value === 'asc' ? -1 : 1
-        if (valA > valB) return sortOrder.value === 'asc' ? 1 : -1
-        return 0
-    })
-})
-
-const selectedTier = ref('standard')
-const selectedQty = ref(1)
-const isCustomQty = ref(false)
-const customQtyInput = ref(10)
-const setPresetQty = (qty) => {
-    isCustomQty.value = false
-    selectedQty.value = qty
-}
-
-const enableCustomQty = () => {
-    isCustomQty.value = true
-    selectedQty.value = Math.max(1, customQtyInput.value || 1)
-}
-
-const onCustomQtyChange = () => {
-    selectedQty.value = Math.max(1, customQtyInput.value || 1)
-}
-const isPurchasing = ref(false)
-
-const formatDate = (dateStr) => {
-    if (!dateStr) return '-'
-    return new Date(dateStr).toLocaleDateString('id-ID', {
-        day: 'numeric', month: 'short', year: 'numeric'
-    })
-}
-
-async function loadHistory(targetPage = 1) {
-    isLoadingHistory.value = true
-    page.value = targetPage
-    try {
-        const h = await get(`/organizers/me/quota/history?limit=${limit.value}&page=${page.value}`)
-        if (h) {
-            history.value = h.data || (Array.isArray(h) ? h : [])
-            total.value = h.total !== undefined ? h.total : history.value.length
-            totalPages.value = h.total_pages || Math.ceil(total.value / limit.value) || 1
-        }
-    } catch (e) {
-        console.error(e)
-    } finally {
-        isLoadingHistory.value = false
-    }
-}
-
-function changePage(newPage) {
-    if (newPage < 1 || newPage > totalPages.value) return
-    loadHistory(newPage)
-}
-
-const visiblePages = computed(() => {
-    const pages = []
-    const start = Math.max(1, page.value - 2)
-    const end = Math.min(totalPages.value, start + 4)
-    for (let i = start; i <= end; i++) {
-        pages.push(i)
-    }
-    return pages
-})
-
-onMounted(async () => {
-    try { const q = await get('/organizers/me/quota'); if (q) quota.value = q } catch (e) {}
-    loadHistory(1)
-})
-
-const basePrice = computed(() => selectedTier.value === 'standard' ? 24950 : 39950)
-const basePriceUSD = computed(() => selectedTier.value === 'standard' ? 1.50 : 2.50)
-
-const discountPct = computed(() => {
-    const q = selectedQty.value
-    if (q >= 10) return 20
-    if (q >= 5) return 12
-    if (q >= 3) return 7
-    return 0
-})
-
-const totalIDR = computed(() => {
-    return Math.round(basePrice.value * selectedQty.value * (1 - discountPct.value / 100))
-})
-
-const totalUSD = computed(() => {
-    return (basePriceUSD.value * selectedQty.value * (1 - discountPct.value / 100)).toFixed(2)
-})
-
-const toast = useToast()
-const router = useRouter()
-
-async function buyQuota() {
-    isPurchasing.value = true
-    try {
-        const plan_id = selectedTier.value === 'standard' ? 7 : 8
-        const res = await post('/organizers/me/quota/purchase', {
-            plan_id,
-            quantity: selectedQty.value,
-            currency: 'IDR'
-        })
-        
-        const trxRef = res?.purchase_id || res?.reference || res?.transaction_id || ''
-        toast.success(t('organizer_subscription.order_success_toast', 'Pesanan paket kuota berhasil dibuat'))
-        if (res?.checkout_url) {
-            window.location.href = res.checkout_url
-        } else {
-            router.push(`/dashboard/organizer/package/detail?trx_id=${trxRef}`)
-        }
-    } catch (e) {
-        console.error(e)
-        toast.error(e?.data?.error || t('organizer_subscription.buy_error', 'Gagal memproses pembelian paket kuota.'))
-    } finally {
-        isPurchasing.value = false
-    }
-}
-</script>
