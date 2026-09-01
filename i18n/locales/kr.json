@@ -1910,7 +1910,10 @@
     "summary": "요약",
     "selected_categories": "선택된 카테고리",
     "participant_types": "참가자 유형",
-    "total": "합계"
+    "total": "합계",
+    "mayar_gateway_name": "Mayar 결제 게이트웨이 (온라인)",
+    "mayar_instant_secure": "실시간 자동 확인",
+    "mayar_supported_desc": "QRIS(모든 전자지갑/모바일 뱅킹) 또는 가상 계좌(BCA, Mandiri, BRI, BNI, Permata, BSI)로 즉시 결제하세요. 결제 완료 시 등록이 자동으로 확인됩니다."
   },
   "subscription_payment_page": {
     "back": "구독으로 돌아가기",

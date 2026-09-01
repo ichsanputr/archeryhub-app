@@ -1093,7 +1093,10 @@
     "toast_create_failed": "Toast Create Failed"
   },
   "my_registration": {
-    "toast_payment_success": "Toast Payment Success"
+    "toast_payment_success": "Toast Payment Success",
+    "mayar_gateway_name": "Mayar Payment Gateway (Online)",
+    "mayar_instant_secure": "Instan & Otomatis",
+    "mayar_supported_desc": "Bayar secara instan menggunakan QRIS (Semua E-Wallet/M-Banking) atau Virtual Account (BCA, Mandiri, BRI, BNI, Permata, BSI). Pendaftaran langsung terverifikasi otomatis setelah pembayaran."
   },
   "profile": {
     "title": "Profil Pemanah",

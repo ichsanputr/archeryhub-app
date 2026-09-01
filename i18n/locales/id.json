@@ -2344,7 +2344,10 @@
     "header_subtitle": "Status registrasi, invoice pembayaran, dan QR check-in event Anda.",
     "qr_checkin_title": "QR CHECK-IN / RE-REGISTRASI",
     "qr_checkin_hint": "Tunjukkan QR ini saat check-in atau registrasi ulang di lokasi pertandingan (venue).",
-    "paid_confirmed_msg": "Pembayaran Terverifikasi (Lunas). Pendaftaran Anda telah dikonfirmasi."
+    "paid_confirmed_msg": "Pembayaran Terverifikasi (Lunas). Pendaftaran Anda telah dikonfirmasi.",
+    "mayar_gateway_name": "Mayar Payment Gateway (Online)",
+    "mayar_instant_secure": "Instan & Otomatis",
+    "mayar_supported_desc": "Bayar secara instan menggunakan QRIS (Semua E-Wallet/M-Banking) atau Virtual Account (BCA, Mandiri, BRI, BNI, Permata, BSI). Pendaftaran langsung terverifikasi otomatis setelah pembayaran."
   },
   "subscription_payment_page": {
     "back": "Kembali ke Subscription",

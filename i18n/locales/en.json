@@ -2367,7 +2367,10 @@
     "header_subtitle": "Registration status, payment invoice, and tournament venue check-in QR code.",
     "qr_checkin_title": "CHECK-IN / RE-REGISTRATION QR",
     "qr_checkin_hint": "Present this QR code when checking in or re-registering at the tournament venue.",
-    "paid_confirmed_msg": "Payment Verified (Paid in Full). Your registration is confirmed."
+    "paid_confirmed_msg": "Payment Verified (Paid in Full). Your registration is confirmed.",
+    "mayar_gateway_name": "Mayar Payment Gateway (Online)",
+    "mayar_instant_secure": "Instant & Automatic",
+    "mayar_supported_desc": "Pay instantly using QRIS (All E-Wallets/Mobile Banking) or Bank Virtual Accounts (BCA, Mandiri, BRI, BNI, Permata, BSI). Registration is verified automatically upon payment."
   },
   "subscription_payment_page": {
     "back": "Back to Subscription",

@@ -1145,5 +1145,10 @@
     "method_mandiri_va": "Mandiri 가상 계좌",
     "method_bni_va": "BNI 가상 계좌",
     "method_permata_va": "Permata 가상 계좌"
+  },
+  "my_registration": {
+    "mayar_gateway_name": "Mayar 결제 게이트웨이 (온라인)",
+    "mayar_instant_secure": "실시간 자동 확인",
+    "mayar_supported_desc": "QRIS(모든 전자지갑/모바일 뱅킹) 또는 가상 계좌(BCA, Mandiri, BRI, BNI, Permata, BSI)로 즉시 결제하세요. 결제 완료 시 등록이 자동으로 확인됩니다."
   }
 }

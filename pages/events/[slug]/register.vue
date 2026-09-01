@@ -608,56 +608,33 @@
                             </div>
 
                             <div class="p-6">
-                                <!-- Tab Content 1: Online Payment -->
-                                <div v-if="form.payment_type === 'online'" class="space-y-2">
-
-                                    <!-- Mayar channels -->
-                                    <div v-for="ch in onlineChannels" :key="ch.code"
-                                        class="rounded-xl border-2 transition-all overflow-hidden"
-                                        :class="form.online_channel === ch.code ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
-                                        <div @click="selectOnlineChannel(ch.code); form.payment_type = 'online'; form.manual_method_id = ''"
-                                            class="w-full p-3.5 flex items-center gap-3 cursor-pointer">
-                                            <div class="h-9 w-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
-                                                <img v-if="getChannelIcon(ch)" :src="getChannelIcon(ch)" class="w-full h-full object-contain" />
-                                                <Icon v-else icon="ph:credit-card-bold" class="text-navy text-sm" />
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <span class="text-sm font-black text-navy block leading-tight">{{ ch.label }}</span>
-                                                <span class="text-xs text-gray-400 font-medium">{{ ch.type }}</span>
-                                            </div>
-                                            <div v-if="form.online_channel === ch.code" class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0">
-                                                <Icon icon="ph:check-bold" class="text-navy text-xs" />
-                                            </div>
+                                <!-- Tab Content 1: Online Payment (Unified Mayar Gateway Card) -->
+                                <div v-if="form.payment_type === 'online'" class="space-y-4">
+                                    <div class="p-4 sm:p-5 rounded-2xl border-2 border-primary bg-primary/5 flex items-start gap-4">
+                                        <div class="size-12 rounded-xl bg-navy text-primary flex items-center justify-center shrink-0 shadow-xs">
+                                            <Icon icon="ph:shield-check-bold" class="text-2xl" />
                                         </div>
-                                        <div v-if="form.online_channel === ch.code" class="border-t border-gray-100 bg-white/80 px-4 pb-4 pt-2">
-                                            <div v-if="channelInstructionsLoading === ch.code" class="flex items-center gap-2 py-4 text-gray-500">
-                                                <Icon icon="ph:circle-notch-bold" class="animate-spin text-lg" />
-                                                <span class="text-xs font-medium">Loading payment guide...</span>
+                                        <div class="min-w-0 flex-1 space-y-1">
+                                            <div class="font-black text-navy text-sm flex items-center gap-2">
+                                                <span>{{ t('my_registration.mayar_gateway_name', 'Mayar Payment Gateway (Online)') }}</span>
+                                                <span class="text-[10px] font-bold bg-primary/20 text-navy px-2 py-0.5 rounded-full">{{ t('my_registration.mayar_instant_secure', 'Instan & Otomatis') }}</span>
                                             </div>
-                                            <div v-else-if="channelInstructionGroups(ch.code).length" class="space-y-4">
-                                                <div v-if="channelInstructionGroups(ch.code).length > 1" class="flex gap-2 flex-wrap border-b border-gray-100 pb-2 mb-2">
-                                                    <div v-for="(group, gi) in channelInstructionGroups(ch.code)" :key="group.title"
-                                                        @click="setActiveInstructionTab(ch.code, gi)"
-                                                        :class="getActiveInstructionTab(ch.code) === gi ? 'bg-navy text-white border-navy' : 'bg-white text-gray-500 border-gray-200 hover:border-navy/40'"
-                                                        class="px-3 py-1.5 rounded-lg border text-xs font-black tracking-widest transition-colors cursor-pointer">
-                                                        {{ group.title }}
-                                                    </div>
-                                                </div>
-                                                <div v-for="(group, gi) in channelInstructionGroups(ch.code)" :key="group.title"
-                                                    v-show="channelInstructionGroups(ch.code).length === 1 || getActiveInstructionTab(ch.code) === gi"
-                                                    class="space-y-2.5">
-                                                    <div v-for="(step, si) in (group.steps || [])" :key="si" class="flex gap-3">
-                                                        <span class="size-5 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-xs">{{ si + 1 }}</span>
-                                                        <span v-html="step" class="text-xs text-gray-600 font-medium leading-relaxed"></span>
-                                                    </div>
-                                                </div>
+                                            <div class="text-xs text-slate-500 font-medium leading-relaxed">
+                                                {{ t('my_registration.mayar_supported_desc', 'Bayar secara instan menggunakan QRIS (Semua E-Wallet/M-Banking) atau Virtual Account (BCA, Mandiri, BRI, BNI, Permata, BSI). Pendaftaran langsung terverifikasi otomatis setelah pembayaran.') }}
                                             </div>
-                                            <div v-else class="py-3 text-xs text-gray-500 italic">Guide not available. Instructions will appear after registering.</div>
+                                            <div class="pt-2 flex flex-wrap items-center gap-1.5 text-[10px] text-slate-600 font-bold">
+                                                <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200">QRIS</span>
+                                                <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200">BCA VA</span>
+                                                <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200">Mandiri VA</span>
+                                                <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200">BRI VA</span>
+                                                <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200">BNI VA</span>
+                                                <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200">Permata VA</span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-2 pt-1">
                                         <Icon icon="ph:shield-check-bold" class="text-emerald-500 text-sm shrink-0" />
-                                        <span class="text-xs text-gray-400 font-medium">Secure · Auto-confirmed after payment</span>
+                                        <span class="text-xs text-gray-400 font-medium">Enkripsi 256-bit SSL · Terverifikasi Otomatis</span>
                                     </div>
                                 </div>
 
@@ -1352,10 +1329,10 @@ const isFormValid = computed(() => {
 })
 
 const buttonText = computed(() => {
-    if (form.value.payment_type === 'online' && form.value.online_channel) {
-        return 'Pay Now'
+    if (form.value.payment_type === 'online' && (form.value.payment_amount || 0) > 0) {
+        return t('my_registration.btn_pay_now', 'Bayar Sekarang via Mayar')
     }
-    return 'Register Now'
+    return t('my_registration.btn_register_now', 'Daftar Sekarang')
 })
 
 const loginUrl = computed(() => `/auth/login?redirect=${encodeURIComponent(route.fullPath)}`)
