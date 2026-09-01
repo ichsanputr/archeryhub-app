@@ -297,10 +297,10 @@
                             </div>
                             <div class="min-w-0 flex-1">
                                 <div class="font-black text-navy text-sm flex items-center gap-2">
-                                    <span>Mayar Payment Gateway</span>
-                                    <span class="text-[10px] font-bold bg-primary/20 text-navy px-2 py-0.5 rounded-full">Instan & Aman</span>
+                                    <span>{{ t('organizer_subscription.mayar_gateway_name', 'Mayar Payment Gateway') }}</span>
+                                    <span class="text-[10px] font-bold bg-primary/20 text-navy px-2 py-0.5 rounded-full">{{ t('organizer_subscription.mayar_instant_secure', 'Instan & Aman') }}</span>
                                 </div>
-                                <div class="text-[11px] text-slate-500 mt-0.5">Mendukung QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), dan E-Wallet</div>
+                                <div class="text-[11px] text-slate-500 mt-0.5">{{ t('organizer_subscription.mayar_supported_methods', 'Mendukung QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), dan E-Wallet') }}</div>
                             </div>
                         </div>
                     </div>
@@ -388,18 +388,48 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse text-xs">
                     <thead>
-                        <tr class="bg-slate-50/70 text-slate-400 font-black tracking-wider border-b border-slate-100">
-                            <th class="py-3.5 px-5">{{ t('organizer_subscription.col_date') }}</th>
-                            <th class="py-3.5 px-5">{{ t('organizer_subscription.col_package') }}</th>
-                            <th class="py-3.5 px-5">{{ t('organizer_subscription.col_qty') }}</th>
-                            <th class="py-3.5 px-5">{{ t('organizer_subscription.col_total') }}</th>
-                            <th class="py-3.5 px-5">{{ t('organizer_subscription.col_method') }}</th>
-                            <th class="py-3.5 px-5 text-center">{{ t('organizer_subscription.col_status') }}</th>
+                        <tr class="bg-slate-50/70 text-slate-400 font-black tracking-wider border-b border-slate-100 select-none">
+                            <th class="py-3.5 px-5 cursor-pointer hover:text-navy transition-colors" @click="toggleSort('date')">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('organizer_subscription.col_date') }}</span>
+                                    <Icon :icon="getSortIcon('date')" class="text-xs shrink-0" :class="{ 'text-primary': sortKey === 'date' }" />
+                                </div>
+                            </th>
+                            <th class="py-3.5 px-5 cursor-pointer hover:text-navy transition-colors" @click="toggleSort('package')">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('organizer_subscription.col_package') }}</span>
+                                    <Icon :icon="getSortIcon('package')" class="text-xs shrink-0" :class="{ 'text-primary': sortKey === 'package' }" />
+                                </div>
+                            </th>
+                            <th class="py-3.5 px-5 cursor-pointer hover:text-navy transition-colors" @click="toggleSort('qty')">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('organizer_subscription.col_qty') }}</span>
+                                    <Icon :icon="getSortIcon('qty')" class="text-xs shrink-0" :class="{ 'text-primary': sortKey === 'qty' }" />
+                                </div>
+                            </th>
+                            <th class="py-3.5 px-5 cursor-pointer hover:text-navy transition-colors" @click="toggleSort('total')">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('organizer_subscription.col_total') }}</span>
+                                    <Icon :icon="getSortIcon('total')" class="text-xs shrink-0" :class="{ 'text-primary': sortKey === 'total' }" />
+                                </div>
+                            </th>
+                            <th class="py-3.5 px-5 cursor-pointer hover:text-navy transition-colors" @click="toggleSort('method')">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('organizer_subscription.col_method') }}</span>
+                                    <Icon :icon="getSortIcon('method')" class="text-xs shrink-0" :class="{ 'text-primary': sortKey === 'method' }" />
+                                </div>
+                            </th>
+                            <th class="py-3.5 px-5 text-center cursor-pointer hover:text-navy transition-colors" @click="toggleSort('status')">
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <span>{{ t('organizer_subscription.col_status') }}</span>
+                                    <Icon :icon="getSortIcon('status')" class="text-xs shrink-0" :class="{ 'text-primary': sortKey === 'status' }" />
+                                </div>
+                            </th>
                             <th class="py-3.5 px-5 text-right">{{ t('organizer_subscription.col_action', 'Aksi') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
-                        <tr v-for="item in history" :key="item.id || item.uuid" class="hover:bg-slate-50/50 transition-colors">
+                        <tr v-for="item in sortedHistory" :key="item.id || item.uuid" class="hover:bg-slate-50/50 transition-colors">
                             <td class="py-4 px-5 text-slate-500 font-medium">{{ formatDate(item.purchased_at || item.created_at) }}</td>
                             <td class="py-4 px-5 font-bold text-navy capitalize">
                                 <div class="flex items-center gap-2">
@@ -516,6 +546,55 @@ const limit = ref(10)
 const total = ref(0)
 const totalPages = ref(1)
 const isLoadingHistory = ref(false)
+
+// Table sorting state
+const sortKey = ref('date')
+const sortOrder = ref('desc')
+
+function toggleSort(key) {
+    if (sortKey.value === key) {
+        sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+    } else {
+        sortKey.value = key
+        sortOrder.value = key === 'date' ? 'desc' : 'asc'
+    }
+}
+
+function getSortIcon(key) {
+    if (sortKey.value !== key) return 'ph:caret-up-down-bold'
+    return sortOrder.value === 'asc' ? 'ph:caret-up-bold' : 'ph:caret-down-bold'
+}
+
+const sortedHistory = computed(() => {
+    if (!history.value || !history.value.length) return []
+    const list = [...history.value]
+    return list.sort((a, b) => {
+        let valA = ''
+        let valB = ''
+        if (sortKey.value === 'date') {
+            valA = new Date(a.purchased_at || a.created_at || 0).getTime()
+            valB = new Date(b.purchased_at || b.created_at || 0).getTime()
+        } else if (sortKey.value === 'package') {
+            valA = (a.plan_name || '').toLowerCase()
+            valB = (b.plan_name || '').toLowerCase()
+        } else if (sortKey.value === 'qty') {
+            valA = Number(a.quantity || 0)
+            valB = Number(b.quantity || 0)
+        } else if (sortKey.value === 'total') {
+            valA = Number(a.total_amount || a.amount || 0)
+            valB = Number(b.total_amount || b.amount || 0)
+        } else if (sortKey.value === 'method') {
+            valA = (a.payment_method || '').toLowerCase()
+            valB = (b.payment_method || '').toLowerCase()
+        } else if (sortKey.value === 'status') {
+            valA = (a.payment_status || a.status || '').toLowerCase()
+            valB = (b.payment_status || b.status || '').toLowerCase()
+        }
+        if (valA < valB) return sortOrder.value === 'asc' ? -1 : 1
+        if (valA > valB) return sortOrder.value === 'asc' ? 1 : -1
+        return 0
+    })
+})
 
 const selectedTier = ref('standard')
 const selectedQty = ref(1)

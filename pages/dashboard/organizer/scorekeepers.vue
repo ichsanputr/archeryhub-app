@@ -65,16 +65,12 @@
             <!-- Empty State -->
             <div v-else-if="!loading && scorekeepers.length === 0"
                 class="flex flex-col items-center justify-center py-24 px-6 text-center">
-                <div class="space-y-2 mb-8 max-w-sm">
+                <div class="space-y-2 max-w-sm">
                     <h3 class="text-2xl font-black text-navy tracking-tight">{{ t('organizer.scorekeepers.empty_title', 'Belum Ada Staff') }}</h3>
                     <div class="text-sm text-gray-500 leading-relaxed">
                         {{ t('organizer.scorekeepers.empty_desc', 'Daftarkan akun staff pencatat skor untuk membantu penyelenggara Anda dalam mengelola nilai dan hasil pertandingan di lapangan.') }}
                     </div>
                 </div>
-                <BaseButton @click="openAddModal" variant="primary" icon="ph:plus-bold"
-                    class="px-8 h-11 text-xs font-black tracking-widest shadow-xl shadow-primary/20">
-                    {{ t('organizer.scorekeepers.add_first', 'Tambah Scorekeeper Pertama') }}
-                </BaseButton>
             </div>
 
             <!-- No Results State -->

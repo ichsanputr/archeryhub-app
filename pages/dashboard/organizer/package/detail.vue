@@ -50,7 +50,7 @@
       </NuxtLink>
     </div>
 
-    <!-- ── 4. Main 1-Column Dashboard View (Matches DashboardHeader full width) ── -->
+    <!-- ── 4. Main 1-Column Dashboard View ── -->
     <div v-else class="w-full space-y-6 print:hidden">
       
       <!-- A. STATUS HERO BANNER -->
@@ -82,9 +82,9 @@
         </div>
       </div>
 
-      <!-- Pending Hero Banner (Single Primary Mayar Payment Card) -->
-      <div v-else-if="isPending" class="bg-white rounded-3xl border border-navy/10 p-6 sm:p-7 shadow-sm space-y-5">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+      <!-- Pending Hero Banner (Warm Gold/Amber Vibrant Inner Card - No Dull Gray) -->
+      <div v-else-if="isPending" class="bg-white rounded-3xl border border-amber-200/60 p-6 sm:p-7 shadow-sm space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-amber-100">
           <div class="flex items-center gap-3">
             <div class="size-10 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
               <Icon icon="ph:clock-bold" class="text-xl" />
@@ -100,14 +100,15 @@
           </div>
         </div>
 
-        <div class="bg-gradient-to-br from-navy/5 via-navy/[0.02] to-primary/5 border-2 border-primary/40 rounded-2xl p-5 sm:p-6 space-y-4">
+        <!-- Vibrant Warm Gold Card Inner (Clean, Non-gray) -->
+        <div class="bg-gradient-to-br from-amber-500/10 via-amber-50/70 to-primary/20 border-2 border-primary/60 rounded-2xl p-5 sm:p-6 space-y-4 shadow-sm">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div class="space-y-1">
               <div class="text-sm sm:text-base font-black text-navy flex items-center gap-2">
                 <Icon icon="ph:shield-check-fill" class="text-primary text-lg" />
                 <span>{{ t('package_detail.pay_via_mayar_title', 'Selesaikan Pembayaran via Mayar') }}</span>
               </div>
-              <div class="text-xs text-slate-500 font-medium leading-relaxed max-w-lg">
+              <div class="text-xs text-slate-600 font-medium leading-relaxed max-w-lg">
                 {{ t('package_detail.pay_via_mayar_desc', 'Bayar secara aman menggunakan QRIS (BCA, Mandiri, BRI, BNI, GoPay, OVO, DANA, ShopeePay) atau Virtual Account resmi.') }}
               </div>
             </div>
@@ -125,14 +126,14 @@
           </a>
 
           <!-- Supported Payment Methods -->
-          <div class="pt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-500 font-semibold">
+          <div class="pt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-600 font-semibold">
             <span class="text-slate-400">{{ t('package_detail.available_methods', 'Metode Tersedia') }}:</span>
-            <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">{{ t('package_detail.method_qris', 'QRIS (Semua E-Wallet)') }}</span>
-            <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">BCA VA</span>
-            <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">Mandiri VA</span>
-            <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">BRI VA</span>
-            <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">BNI VA</span>
-            <span class="px-2 py-0.5 rounded-md bg-white border border-slate-200/80 font-bold text-slate-700">Permata VA</span>
+            <span class="px-2.5 py-0.5 rounded-lg bg-white border border-amber-200/80 font-bold text-slate-800 shadow-2xs">{{ t('package_detail.method_qris', 'QRIS (Semua E-Wallet)') }}</span>
+            <span class="px-2.5 py-0.5 rounded-lg bg-white border border-amber-200/80 font-bold text-slate-800 shadow-2xs">BCA VA</span>
+            <span class="px-2.5 py-0.5 rounded-lg bg-white border border-amber-200/80 font-bold text-slate-800 shadow-2xs">Mandiri VA</span>
+            <span class="px-2.5 py-0.5 rounded-lg bg-white border border-amber-200/80 font-bold text-slate-800 shadow-2xs">BRI VA</span>
+            <span class="px-2.5 py-0.5 rounded-lg bg-white border border-amber-200/80 font-bold text-slate-800 shadow-2xs">BNI VA</span>
+            <span class="px-2.5 py-0.5 rounded-lg bg-white border border-amber-200/80 font-bold text-slate-800 shadow-2xs">Permata VA</span>
           </div>
         </div>
       </div>
@@ -278,25 +279,25 @@
 
     </div>
 
-    <!-- ── 5. Standard Clean HTML Invoice (Print Mode) ── -->
-    <div class="hidden print:block text-slate-800 bg-white font-sans a4-invoice-container">
+    <!-- ── 5. Standard Clean HTML Invoice (Print Mode - Beautiful Professional Layout) ── -->
+    <div class="hidden print:block text-slate-800 bg-white font-sans a4-invoice-container p-6 sm:p-8">
       
       <!-- Invoice Top Bar: Logo & Invoice Header -->
-      <div class="flex justify-between items-start border-b border-slate-200 pb-5 mb-6">
+      <div class="flex justify-between items-start border-b-2 border-slate-900 pb-5 mb-6">
         <div>
           <div class="text-2xl font-black text-slate-900 tracking-tight">ArcheryHub.id</div>
-          <div class="text-xs text-slate-600 font-bold mt-1">PT. Archeris Teknologi Indonesia</div>
-          <div class="text-[11px] text-slate-400">Platform Manajemen Turnamen Panahan Digital</div>
-          <div class="text-[11px] text-slate-400">Jakarta, Indonesia | info@archeryhub.id</div>
+          <div class="text-xs text-slate-700 font-bold mt-1">{{ t('package_detail.company_name', 'PT. Archeris Teknologi Indonesia') }}</div>
+          <div class="text-[11px] text-slate-500">{{ t('package_detail.platform_subtitle', 'Platform Manajemen Turnamen Panahan Digital') }}</div>
+          <div class="text-[11px] text-slate-400">{{ t('package_detail.location_info', 'Jakarta, Indonesia | info@archeryhub.id') }}</div>
         </div>
 
         <div class="text-right">
-          <div class="text-xl font-black tracking-wider text-slate-900">INVOICE</div>
-          <div class="font-mono text-xs font-bold text-slate-700 mt-1">No: {{ tx.reference || reference }}</div>
-          <div class="text-xs text-slate-500 mt-0.5">{{ t('package_detail.purchase_time', 'Tanggal') }}: {{ formatDate(tx.purchased_at || tx.created_at) }}</div>
+          <div class="text-2xl font-black tracking-widest text-slate-900">{{ t('package_detail.invoice_label', 'INVOICE') }}</div>
+          <div class="font-mono text-xs font-bold text-slate-700 mt-1">{{ t('package_detail.invoice_no_prefix', 'No:') }} {{ tx.reference || reference }}</div>
+          <div class="text-xs text-slate-500 mt-0.5">{{ t('package_detail.date_label', 'Tanggal') }}: {{ formatDate(tx.purchased_at || tx.created_at) }}</div>
           <div class="mt-2">
-            <span class="inline-block px-2.5 py-0.5 rounded text-[11px] font-black border"
-              :class="isPaid ? 'bg-slate-50 text-slate-900 border-slate-300' : 'bg-slate-50 text-slate-600 border-slate-200'">
+            <span class="inline-block px-3 py-1 rounded-md text-[11px] font-black border"
+              :class="isPaid ? 'bg-emerald-50 text-emerald-900 border-emerald-300' : 'bg-amber-50 text-amber-900 border-amber-300'">
               {{ isPaid ? t('package_detail.status_paid', 'Lunas / Paid') : t('package_detail.status_pending', 'Menunggu Pembayaran / Unpaid') }}
             </span>
           </div>
@@ -306,76 +307,94 @@
       <!-- Bill-To / Publisher Information -->
       <div class="grid grid-cols-2 gap-8 mb-6 text-xs">
         <div class="space-y-1">
-          <div class="text-[10px] font-bold text-slate-400 capitalize tracking-wider">Diterbitkan Oleh:</div>
-          <div class="font-black text-slate-900">ArcheryHub.id Billing Department</div>
-          <div class="text-slate-500">PT. Archeris Teknologi Indonesia</div>
-          <div class="text-slate-500">archeryhub.id</div>
+          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{{ t('package_detail.issued_by', 'Diterbitkan Oleh:') }}</div>
+          <div class="font-black text-slate-900">{{ t('package_detail.billing_dept', 'ArcheryHub.id Billing Department') }}</div>
+          <div class="text-slate-600">{{ t('package_detail.company_name', 'PT. Archeris Teknologi Indonesia') }}</div>
+          <div class="text-slate-400">https://archeryhub.id</div>
         </div>
 
         <div class="space-y-1">
-          <div class="text-[10px] font-bold text-slate-400 capitalize tracking-wider">Ditagihkan Kepada:</div>
-          <div class="font-black text-slate-900">{{ organizerProfile?.name || tx.organizer_name || 'Penyelenggara Event' }}</div>
-          <div class="text-slate-500">{{ organizerProfile?.email || tx.organizer_email || '-' }}</div>
-          <div class="text-slate-500">Penyelenggara Resmi ArcheryHub.id</div>
+          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{{ t('package_detail.billed_to', 'Ditagihkan Kepada:') }}</div>
+          <div class="font-black text-slate-900">{{ organizerProfile?.name || tx.organizer_name || t('package_detail.default_organizer', 'Penyelenggara Event') }}</div>
+          <div class="text-slate-600">{{ organizerProfile?.email || tx.organizer_email || '-' }}</div>
+          <div class="text-slate-400">{{ t('package_detail.official_organizer_role', 'Penyelenggara Resmi ArcheryHub.id') }}</div>
         </div>
       </div>
 
       <!-- Clean Itemized Table with Light Borders -->
       <table class="w-full text-left text-xs mb-6 border-collapse">
         <thead>
-          <tr class="border-b border-slate-200 text-slate-600 font-bold bg-slate-50/50">
-            <th class="py-2.5 px-2 w-10">No</th>
-            <th class="py-2.5 px-2">{{ t('package_detail.col_item', 'Deskripsi Layanan') }}</th>
-            <th class="py-2.5 px-2 text-center w-24">{{ t('package_detail.col_qty', 'Jumlah') }}</th>
-            <th class="py-2.5 px-2 text-right w-28">{{ t('package_detail.col_unit_price', 'Harga Satuan') }}</th>
-            <th class="py-2.5 px-2 text-right w-32">{{ t('package_detail.col_subtotal', 'Total (IDR)') }}</th>
+          <tr class="border-y border-slate-300 text-slate-700 font-black bg-slate-50">
+            <th class="py-2.5 px-3 w-10">{{ t('package_detail.col_no', 'No') }}</th>
+            <th class="py-2.5 px-3">{{ t('package_detail.col_item', 'Deskripsi Layanan') }}</th>
+            <th class="py-2.5 px-3 text-center w-24">{{ t('package_detail.col_qty', 'Jumlah') }}</th>
+            <th class="py-2.5 px-3 text-right w-32">{{ t('package_detail.col_unit_price', 'Harga Satuan') }}</th>
+            <th class="py-2.5 px-3 text-right w-36">{{ t('package_detail.col_total_idr', 'Total (IDR)') }}</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-slate-100">
+        <tbody class="divide-y divide-slate-200">
           <tr>
-            <td class="py-3 px-2 text-slate-400 font-medium">1</td>
-            <td class="py-3 px-2">
+            <td class="py-3.5 px-3 text-slate-400 font-medium">1</td>
+            <td class="py-3.5 px-3">
               <div class="font-bold text-slate-900">{{ tx.plan_name || 'Paket Kuota Event' }}</div>
-              <div class="text-[10px] text-slate-400 mt-0.5">{{ t('package_detail.quota_note', 'Aktivasi turnamen resmi, OBS overlay, dan scoring live') }}</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">{{ t('package_detail.quota_note', 'Aktivasi turnamen resmi, OBS overlay, dan scoring live') }}</div>
             </td>
-            <td class="py-3 px-2 text-center font-semibold text-slate-800">{{ tx.quantity || 1 }} {{ t('package_detail.event_unit', 'Event') }}</td>
-            <td class="py-3 px-2 text-right text-slate-600">Rp {{ formatNumber((tx.total_amount || tx.amount || 0) / (tx.quantity || 1)) }}</td>
-            <td class="py-3 px-2 text-right font-bold text-slate-900">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</td>
+            <td class="py-3.5 px-3 text-center font-semibold text-slate-800">{{ tx.quantity || 1 }} {{ t('package_detail.event_unit', 'Event') }}</td>
+            <td class="py-3.5 px-3 text-right text-slate-700 font-medium">Rp {{ formatNumber((tx.total_amount || tx.amount || 0) / (tx.quantity || 1)) }}</td>
+            <td class="py-3.5 px-3 text-right font-black text-slate-900">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</td>
           </tr>
         </tbody>
       </table>
 
       <!-- Totals & Payment Summary -->
-      <div class="flex justify-between items-start border-t border-slate-200 pt-4 mb-8 text-xs">
-        <div class="space-y-1 text-slate-500 max-w-xs">
-          <div class="font-bold text-slate-800">Informasi Pembayaran:</div>
-          <div>Metode: {{ formatPaymentMethodName(tx.payment_method) }}</div>
-          <div>Status: {{ isPaid ? t('package_detail.status_paid', 'Lunas (Terverifikasi Sistem)') : t('package_detail.status_pending', 'Menunggu Pembayaran') }}</div>
+      <div class="flex justify-between items-start border-t border-slate-300 pt-4 mb-6 text-xs">
+        <div class="space-y-1 text-slate-600 max-w-xs">
+          <div class="font-black text-slate-900">{{ t('package_detail.payment_info_title', 'Informasi Pembayaran:') }}</div>
+          <div>{{ t('package_detail.method_label', 'Metode') }}: {{ formatPaymentMethodName(tx.payment_method) }}</div>
+          <div>{{ t('package_detail.status', 'Status') }}: {{ isPaid ? t('package_detail.status_paid', 'Lunas (Terverifikasi Sistem)') : t('package_detail.status_pending', 'Menunggu Pembayaran') }}</div>
         </div>
 
-        <div class="w-60 space-y-1.5 text-right">
-          <div class="flex justify-between text-slate-500">
+        <div class="w-64 space-y-1.5 text-right">
+          <div class="flex justify-between text-slate-600">
             <span>{{ t('package_detail.col_subtotal', 'Subtotal') }}:</span>
-            <span class="font-semibold text-slate-800">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
+            <span class="font-semibold text-slate-900">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
           </div>
-          <div class="flex justify-between text-slate-500">
+          <div class="flex justify-between text-slate-600">
             <span>{{ t('package_detail.admin_fee', 'Biaya Layanan') }}:</span>
-            <span class="font-semibold text-slate-800">{{ t('package_detail.free', 'Rp 0') }}</span>
+            <span class="font-semibold text-emerald-700">{{ t('package_detail.free', 'Rp 0') }}</span>
           </div>
-          <div class="border-t border-slate-200 pt-2 flex justify-between text-sm font-black text-slate-900">
+          <div class="border-t border-slate-300 pt-2 flex justify-between text-sm font-black text-slate-900">
             <span>{{ t('package_detail.total_payment', 'Total Tagihan') }}:</span>
-            <span>Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
+            <span class="text-base">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
           </div>
         </div>
       </div>
 
-      <!-- Refined Minimal PDF / Print Footer -->
-      <div class="border-t border-slate-200 pt-4 flex justify-between items-center text-[10px] text-slate-400">
+      <!-- Professional Authorization & Terms Footer in Print Mode -->
+      <div class="grid grid-cols-2 gap-8 border-t border-slate-200 pt-6 mb-6 text-xs">
+        <div class="space-y-1 text-slate-500">
+          <div class="font-bold text-slate-800">{{ t('package_detail.terms_title', 'Ketentuan & Syarat:') }}</div>
+          <div class="text-[10px] leading-relaxed text-slate-600">{{ t('package_detail.terms_desc', '1. Kuitansi ini sah dan diterbitkan secara elektronik oleh sistem ArcheryHub.') }}</div>
+          <div class="text-[10px] leading-relaxed text-slate-600">{{ t('package_detail.terms_desc_2', '2. Kuota turnamen yang telah aktif siap digunakan untuk membuka event baru.') }}</div>
+        </div>
+
+        <div class="text-right space-y-1.5 flex flex-col items-end">
+          <div class="text-[10px] text-slate-400 font-semibold">{{ t('package_detail.authorized_by', 'Otorisasi Resmi Digital:') }}</div>
+          <div class="px-4 py-2 border-2 border-emerald-500/40 rounded-xl bg-emerald-50 text-emerald-800 flex items-center gap-2 text-xs font-black tracking-wider">
+            <Icon icon="ph:seal-check-bold" class="text-lg text-emerald-600" />
+            <span>{{ t('package_detail.verified_stamp', 'VERIFIED DIGITAL SEAL') }}</span>
+          </div>
+          <div class="text-[11px] font-bold text-slate-800">{{ t('package_detail.company_name', 'PT. Archeris Teknologi Indonesia') }}</div>
+        </div>
+      </div>
+
+      <!-- Bottom Minimal PDF / Print Footer -->
+      <div class="border-t border-slate-200 pt-3 flex justify-between items-center text-[10px] text-slate-400">
         <div>
           {{ t('package_detail.official_receipt_note', 'Faktur ini merupakan bukti pembayaran elektronik resmi yang sah dari ArcheryHub.id.') }}
         </div>
-        <div class="font-bold text-slate-500">
-          ArcheryHub.id Digital Receipt
+        <div class="font-bold text-slate-600">
+          {{ t('package_detail.digital_receipt_footer', 'ArcheryHub.id Digital Receipt') }}
         </div>
       </div>
 
@@ -438,15 +457,15 @@ function formatStatus(status: string) {
 }
 
 function formatPaymentMethodName(method: string) {
-  if (!method) return 'Mayar Payment Gateway'
+  if (!method) return t('package_detail.method_mayar', 'Mayar (QRIS, VA, E-Wallet)')
   const m = method.toUpperCase()
-  if (m === 'MAYAR') return 'Mayar (QRIS, VA, E-Wallet)'
-  if (m === 'QRIS') return 'QRIS (Semua E-Wallet)'
-  if (m === 'MYBCAVA' || m === 'BCAVA' || m === 'BCA') return 'BCA Virtual Account'
-  if (m === 'BRIVA' || m === 'BRI') return 'BRI Virtual Account'
-  if (m === 'MANDIRIVA' || m === 'MANDIRI') return 'Mandiri Virtual Account'
-  if (m === 'BNIVA' || m === 'BNI') return 'BNI Virtual Account'
-  if (m === 'PERMATAVA' || m === 'PERMATA') return 'Permata Virtual Account'
+  if (m === 'MAYAR') return t('package_detail.method_mayar', 'Mayar (QRIS, VA, E-Wallet)')
+  if (m === 'QRIS') return t('package_detail.method_qris_full', 'QRIS (Semua E-Wallet)')
+  if (m === 'MYBCAVA' || m === 'BCAVA' || m === 'BCA') return t('package_detail.method_bca_va', 'BCA Virtual Account')
+  if (m === 'BRIVA' || m === 'BRI') return t('package_detail.method_bri_va', 'BRI Virtual Account')
+  if (m === 'MANDIRIVA' || m === 'MANDIRI') return t('package_detail.method_mandiri_va', 'Mandiri Virtual Account')
+  if (m === 'BNIVA' || m === 'BNI') return t('package_detail.method_bni_va', 'BNI Virtual Account')
+  if (m === 'PERMATAVA' || m === 'PERMATA') return t('package_detail.method_permata_va', 'Permata Virtual Account')
   return method
 }
 

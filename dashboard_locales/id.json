@@ -1903,7 +1903,12 @@
     "breadcrumb": "Paket Event",
     "subtitle": "Kelola kuota event, beli paket, dan pantau riwayat transaksi.",
     "no_history": "Belum Ada Riwayat Pembelian",
-    "no_history_desc": "Riwayat pembelian kuota Standard & Elite akan tercatat di sini. Kuota Free (Bonus Awal) digunakan langsung tanpa transaksi pembelian."
+    "no_history_desc": "Riwayat pembelian kuota Standard & Elite akan tercatat di sini. Kuota Free (Bonus Awal) digunakan langsung tanpa transaksi pembelian.",
+    "mayar_gateway_name": "Mayar Payment Gateway",
+    "mayar_instant_secure": "Instan & Aman",
+    "mayar_supported_methods": "Mendukung QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), dan E-Wallet",
+    "sort_asc": "Urutkan Menaik",
+    "sort_desc": "Urutkan Menurun"
   },
   "premium": {
     "subscription_expired": "Paket Habis",
@@ -2139,6 +2144,33 @@
     "status_failed": "Gagal",
     "id_missing": "ID Transaksi tidak ditemukan.",
     "tx_not_found": "Transaksi dengan referensi tersebut tidak ditemukan.",
-    "load_failed": "Gagal memuat status pembayaran."
+    "load_failed": "Gagal memuat status pembayaran.",
+    "platform_subtitle": "Platform Manajemen Turnamen Panahan Digital",
+    "location_info": "Jakarta, Indonesia | info@archeryhub.id",
+    "invoice_label": "INVOICE",
+    "invoice_no_prefix": "No:",
+    "date_label": "Tanggal",
+    "issued_by": "Diterbitkan Oleh:",
+    "billing_dept": "ArcheryHub.id Billing Department",
+    "company_name": "PT. Archeris Teknologi Indonesia",
+    "billed_to": "Ditagihkan Kepada:",
+    "default_organizer": "Penyelenggara Event",
+    "official_organizer_role": "Penyelenggara Resmi ArcheryHub.id",
+    "col_no": "No",
+    "col_total_idr": "Total (IDR)",
+    "payment_info_title": "Informasi Pembayaran:",
+    "terms_title": "Ketentuan & Syarat:",
+    "terms_desc": "1. Kuitansi ini sah dan diterbitkan secara elektronik oleh sistem ArcheryHub.",
+    "terms_desc_2": "2. Kuota turnamen yang telah aktif siap digunakan untuk membuka event baru.",
+    "authorized_by": "Otorisasi Resmi Digital:",
+    "verified_stamp": "VERIFIED",
+    "digital_receipt_footer": "ArcheryHub.id Digital Receipt",
+    "method_mayar": "Mayar (QRIS, VA, E-Wallet)",
+    "method_qris_full": "QRIS (Semua E-Wallet)",
+    "method_bca_va": "BCA Virtual Account",
+    "method_bri_va": "BRI Virtual Account",
+    "method_mandiri_va": "Mandiri Virtual Account",
+    "method_bni_va": "BNI Virtual Account",
+    "method_permata_va": "Permata Virtual Account"
   }
 }

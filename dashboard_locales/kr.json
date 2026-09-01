@@ -1057,7 +1057,12 @@
   },
   "organizer_subscription": {
     "no_history": "구매 내역이 없습니다",
-    "no_history_desc": "Standard 및 Elite 쿼터 구매 내역이 여기에 기록됩니다. Free 쿼터(시작 보너스)는 구매 결제 없이 즉시 사용됩니다."
+    "no_history_desc": "Standard 및 Elite 쿼터 구매 내역이 여기에 기록됩니다. Free 쿼터(시작 보너스)는 구매 결제 없이 즉시 사용됩니다.",
+    "mayar_gateway_name": "Mayar 결제 게이트웨이",
+    "mayar_instant_secure": "빠르고 안전함",
+    "mayar_supported_methods": "QRIS, 가상 계좌(BCA, Mandiri, BRI, BNI, Permata) 및 전자지갑 지원",
+    "sort_asc": "오름차순 정렬",
+    "sort_desc": "내림차순 정렬"
   },
   "package_detail": {
     "page_title": "결제 송장 상세",
@@ -1111,6 +1116,33 @@
     "status_failed": "실패",
     "id_missing": "거래 ID가 누락되었습니다.",
     "tx_not_found": "해당 참조의 거래를 찾을 수 없습니다.",
-    "load_failed": "결제 상태를 불러오지 못했습니다."
+    "load_failed": "결제 상태를 불러오지 못했습니다.",
+    "platform_subtitle": "디지털 양궁 대회 관리 플랫폼",
+    "location_info": "자카르타, 인도네시아 | info@archeryhub.id",
+    "invoice_label": "송장 (INVOICE)",
+    "invoice_no_prefix": "번호:",
+    "date_label": "날짜",
+    "issued_by": "발행처:",
+    "billing_dept": "ArcheryHub.id 청구 부서",
+    "company_name": "PT. Archeris Teknologi Indonesia",
+    "billed_to": "청구 대상:",
+    "default_organizer": "이벤트 주최자",
+    "official_organizer_role": "공식 ArcheryHub.id 주최자",
+    "col_no": "번호",
+    "col_total_idr": "총액 (IDR)",
+    "payment_info_title": "결제 정보:",
+    "terms_title": "이용 약관:",
+    "terms_desc": "1. 본 영수증은 ArcheryHub 시스템에서 전자적으로 유효하게 발행되었습니다.",
+    "terms_desc_2": "2. 활성화된 토너먼트 쿼터는 즉시 새 이벤트를 생성하는 데 사용할 수 있습니다.",
+    "authorized_by": "공식 디지털 승인:",
+    "verified_stamp": "인증됨",
+    "digital_receipt_footer": "ArcheryHub.id 디지털 영수증",
+    "method_mayar": "Mayar (QRIS, 가상계좌, 전자지갑)",
+    "method_qris_full": "QRIS (모든 전자지갑)",
+    "method_bca_va": "BCA 가상 계좌",
+    "method_bri_va": "BRI 가상 계좌",
+    "method_mandiri_va": "Mandiri 가상 계좌",
+    "method_bni_va": "BNI 가상 계좌",
+    "method_permata_va": "Permata 가상 계좌"
   }
 }
