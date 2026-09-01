@@ -289,12 +289,12 @@
             <main v-else class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 items-start">
 
-                    <!-- LEFT COLUMN — Archer Info + Category -->
-                    <div class="lg:col-span-3 space-y-5">
+                    <!-- LEFT COLUMN — Archer Info + Category (Unified Parent Card) -->
+                    <div class="lg:col-span-3 bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden divide-y divide-slate-100">
 
-                        <!-- Archer Profile Card -->
-                        <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-                            <div class="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-slate-50/80 to-white flex items-center gap-3">
+                        <!-- 1. Archer Profile Section -->
+                        <div>
+                            <div class="px-6 py-5 bg-gradient-to-r from-slate-50/80 to-white flex items-center gap-3">
                                 <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs shrink-0">
                                     <Icon icon="ph:user-bold" class="text-xl" />
                                 </div>
@@ -307,10 +307,9 @@
                                         class="h-14 w-14 bg-primary rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-primary/20">
                                         <Icon icon="ph:lock-bold" class="text-2xl text-navy" />
                                     </div>
-                                    <h3 class="font-black text-navy mb-2">Login Required</h3>
-                                    <span class="text-sm text-gray-500 mb-5 block">Please log in as an athlete to
-                                        register.</span>
-                                    <BaseButton :to="loginUrl" variant="navy" size="md">Login Now</BaseButton>
+                                    <h3 class="font-black text-navy mb-2">{{ t('my_registration.login_required', 'Login Required') }}</h3>
+                                    <span class="text-sm text-gray-500 mb-5 block">{{ t('my_registration.login_required_desc', 'Please log in as an athlete to register.') }}</span>
+                                    <BaseButton :to="loginUrl" variant="navy" size="md">{{ t('my_registration.login_now', 'Login Now') }}</BaseButton>
                                 </div>
 
                                 <!-- Not an archer -->
@@ -318,11 +317,9 @@
                                     <div class="h-14 w-14 bg-primary rounded-2xl flex items-center justify-center mb-4">
                                         <Icon icon="ph:user-plus-bold" class="text-2xl text-navy" />
                                     </div>
-                                    <h3 class="font-black text-navy mb-2">Athlete Account Required</h3>
-                                    <span class="text-sm text-gray-500 mb-5 block">Specifically for athlete
-                                        profiles.</span>
-                                    <BaseButton to="/auth/register?type=archer" variant="navy" size="md">Register as
-                                        Athlete</BaseButton>
+                                    <h3 class="font-black text-navy mb-2">{{ t('my_registration.athlete_account_required', 'Athlete Account Required') }}</h3>
+                                    <span class="text-sm text-gray-500 mb-5 block">{{ t('my_registration.athlete_account_required_desc', 'Specifically for athlete profiles.') }}</span>
+                                    <BaseButton to="/auth/register?type=archer" variant="navy" size="md">{{ t('my_registration.register_as_athlete', 'Register as Athlete') }}</BaseButton>
                                 </div>
 
                                 <!-- Logged in archer -->
@@ -364,11 +361,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </section>
+                        </div>
 
-                        <!-- Participant Type Selection -->
-                        <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden mb-5">
-                            <div class="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-slate-50/80 to-white flex items-center gap-3">
+                        <!-- 2. Participant Type Selection Section -->
+                        <div>
+                            <div class="px-6 py-5 bg-gradient-to-r from-slate-50/80 to-white flex items-center gap-3">
                                 <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs shrink-0">
                                     <Icon icon="ph:users-three-bold" class="text-xl" />
                                 </div>
@@ -411,11 +408,11 @@
                                     </button>
                                 </div>
                             </div>
-                        </section>
+                        </div>
 
-                        <!-- Category Selection -->
-                        <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-                            <div class="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-slate-50/80 to-white flex items-center gap-3">
+                        <!-- 3. Category Selection Section -->
+                        <div>
+                            <div class="px-6 py-5 bg-gradient-to-r from-slate-50/80 to-white flex items-center gap-3">
                                 <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs shrink-0">
                                     <Icon icon="ph:tag-bold" class="text-xl" />
                                 </div>
@@ -454,7 +451,7 @@
                                                 class="text-xs font-black tabular-nums shrink-0 ml-2 text-navy">
                                                 {{ formatPrice(getFeeForCategory(category.id)) }}
                                             </span>
-                                            <span v-else-if="event.fee_mode !== 'per_type'" class="text-xs text-gray-400 shrink-0">Free</span>
+                                            <span v-else-if="event.fee_mode !== 'per_type'" class="text-xs text-gray-400 shrink-0">{{ t('my_registration.free', 'Gratis') }}</span>
                                         </div>
 
                                         <!-- Team partner section (per_type + mixed_team, when category is selected) -->
@@ -463,14 +460,14 @@
                                             @click.stop>
                                             <div class="flex items-center justify-between">
                                                 <div class="text-xs font-black text-gray-500 tracking-widest ">
-                                                    {{ getCategoryType(category) === 'mixed_team' ? 'Partner (1 Required)' : 'Team Members (2 Required)' }}
+                                                    {{ getCategoryType(category) === 'mixed_team' ? t('my_registration.partner_required_mixed', 'Partner (1 Dibutuhkan)') : t('my_registration.partner_required_team', 'Anggota Tim (2 Dibutuhkan)') }}
                                                 </div>
                                                 <button type="button"
                                                     @click="openPartnerDialog(category.id)"
                                                     :disabled="getPartnersForCategory(category.id).length >= (getCategoryType(category) === 'mixed_team' ? 1 : 2)"
                                                     class="text-xs font-black text-primary hover:text-primary/80 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1">
                                                     <Icon icon="ph:plus-bold" class="text-xs" />
-                                                    Add
+                                                    {{ t('my_registration.add_partner', 'Tambah') }}
                                                 </button>
                                             </div>
                                             <!-- Added partners -->
@@ -489,13 +486,13 @@
                                             </div>
                                             <!-- Empty state -->
                                             <div v-else class="text-xs text-gray-400 italic">
-                                                No Partners Added Yet
+                                                {{ t('my_registration.no_partners_yet', 'Belum ada partner yang ditambahkan') }}
                                             </div>
                                             <!-- Incomplete warning -->
                                             <div v-if="!isPartnerComplete(category.id)"
                                                 class="flex items-center gap-1.5 text-xs text-amber-600 font-bold">
                                                 <Icon icon="ph:warning-bold" class="text-xs" />
-                                                {{ getCategoryType(category) === 'mixed_team' ? '1 Partner Required' : '2 Team Members Required' }}
+                                                {{ getCategoryType(category) === 'mixed_team' ? t('my_registration.warning_mixed_partner', '1 Partner Dibutuhkan') : t('my_registration.warning_team_partner', '2 Anggota Tim Dibutuhkan') }}
                                             </div>
                                         </div>
                                     </div>
@@ -511,11 +508,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </section>
+                        </div>
 
-                        <!-- Order Summary -->
-                        <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
-                            <div class="px-6 py-5 border-b border-slate-100 bg-gradient-to-r from-slate-50/80 to-white flex items-center gap-3">
+                        <!-- 4. Order Summary Section -->
+                        <div>
+                            <div class="px-6 py-5 bg-gradient-to-r from-slate-50/80 to-white flex items-center gap-3">
                                 <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs shrink-0">
                                     <Icon icon="ph:receipt-bold" class="text-xl" />
                                 </div>
@@ -550,7 +547,7 @@
                                             <span class="text-xs font-medium text-navy truncate">{{ getCategoryName(catId) }}</span>
                                         </div>
                                         <span v-if="event.fee_mode !== 'per_type'" class="text-xs font-black text-navy tabular-nums shrink-0">{{ formatPrice(getFeeForCategory(catId)) }}</span>
-                                        <span v-else class="text-xs text-gray-400 shrink-0 capitalize">Included</span>
+                                        <span v-else class="text-xs text-gray-400 shrink-0 capitalize">{{ t('my_registration.included_fee', 'Termasuk') }}</span>
                                     </div>
                                 </div>
                                 <div v-else class="py-4 text-center border-2 border-dashed border-slate-100 rounded-2xl">
@@ -570,7 +567,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </section>
+                        </div>
                     </div>
 
                     <!-- RIGHT COLUMN — Payment + CTA (sticky) -->
@@ -618,25 +615,19 @@
 
                             <div class="p-4 sm:p-5 pt-3">
                                 <!-- Tab Content 1: Online Payment (Unified Mayar Gateway Card) -->
-                                <div v-if="form.payment_type === 'online'" class="space-y-3">
+                                <div v-if="form.payment_type === 'online'">
                                     <div class="p-4 sm:p-5 rounded-2xl border-2 border-primary/60 bg-gradient-to-br from-amber-500/10 via-amber-50/60 to-primary/15 space-y-2.5 shadow-2xs">
-                                        <div class="flex items-start justify-between gap-3">
-                                            <div class="flex items-center gap-3">
-                                                <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shrink-0 shadow-xs">
-                                                    <Icon icon="ph:shield-check-bold" class="text-xl" />
-                                                </div>
-                                                <div>
-                                                    <div class="font-black text-navy text-sm flex items-center gap-2">
-                                                        <span>{{ t('my_registration.mayar_gateway_name', 'Mayar Payment Gateway') }}</span>
-                                                        <span class="text-[10px] font-black bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">{{ t('my_registration.mayar_instant_secure', 'Instan & Otomatis') }}</span>
-                                                    </div>
-                                                    <div class="text-[11px] text-slate-500 font-medium">
-                                                        QRIS · Virtual Account · Kartu Kredit (International)
-                                                    </div>
-                                                </div>
+                                        <div class="flex items-center gap-3">
+                                            <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shrink-0 shadow-xs">
+                                                <Icon icon="ph:shield-check-bold" class="text-xl" />
                                             </div>
-                                            <div class="size-5 rounded-full bg-primary flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
-                                                <Icon icon="ph:check-bold" class="text-navy text-xs" />
+                                            <div>
+                                                <div class="font-black text-navy text-sm">
+                                                    {{ t('my_registration.mayar_gateway_name', 'Mayar Payment Gateway') }}
+                                                </div>
+                                                <div class="text-[11px] text-slate-500 font-medium">
+                                                    QRIS · Virtual Account · Kartu Kredit (International)
+                                                </div>
                                             </div>
                                         </div>
 
@@ -644,26 +635,18 @@
                                             {{ t('my_registration.mayar_supported_desc', 'Bayar instan via QRIS, Virtual Account bank, atau Kartu Kredit/Debit internasional (Visa, Mastercard, JCB). Terverifikasi otomatis.') }}
                                         </div>
 
-                                        <!-- 3 Concise High-Level Chips -->
-                                        <div class="pt-0.5 flex flex-wrap items-center gap-1.5 text-[10px] font-bold text-slate-700">
-                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs flex items-center gap-1">
-                                                <Icon icon="ph:qr-code-bold" class="text-xs text-navy" />
+                                        <!-- Clean Plain Text Chips (No leading icons, no checkmarks) -->
+                                        <div class="pt-1 flex flex-wrap items-center gap-1.5 text-[10px] font-bold text-slate-700">
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
                                                 {{ t('my_registration.tag_qris', 'QRIS (E-Wallet & M-Banking)') }}
                                             </span>
-                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs flex items-center gap-1">
-                                                <Icon icon="ph:bank-bold" class="text-xs text-navy" />
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
                                                 {{ t('my_registration.tag_va', 'Virtual Account (Semua Bank)') }}
                                             </span>
-                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs flex items-center gap-1">
-                                                <Icon icon="ph:credit-card-bold" class="text-xs text-navy" />
+                                            <span class="px-2.5 py-1 rounded-lg bg-white border border-amber-200/80 shadow-2xs">
                                                 {{ t('my_registration.tag_cc', 'Kartu Kredit / Debit (International)') }}
                                             </span>
                                         </div>
-                                    </div>
-
-                                    <div class="flex items-center gap-1.5 text-[11px] text-slate-400 font-medium px-1">
-                                        <Icon icon="ph:lock-key-bold" class="text-emerald-500 text-sm shrink-0" />
-                                        <span>{{ t('my_registration.ssl_encryption', 'Enkripsi 256-bit SSL') }}</span>
                                     </div>
                                 </div>
 
