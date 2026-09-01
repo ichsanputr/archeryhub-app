@@ -188,14 +188,7 @@ onUnmounted(() => {
           <span>{{ t('package_detail.btn_print', 'Cetak Invoice') }}</span>
         </button>
 
-        <a
-          v-if="isPaid"
-          :href="getInvoicePdfUrl(tx.reference || reference)"
-          target="_blank"
-          class="h-10 px-4 rounded-xl bg-navy hover:bg-navy-dark text-white text-xs font-black flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer">
-          <Icon icon="ph:file-pdf-bold" class="text-sm text-primary" />
-          <span>{{ t('package_detail.btn_download_pdf', 'Unduh PDF') }}</span>
-        </a>
+
       </template>
     </DashboardHeader>
 
@@ -240,13 +233,7 @@ onUnmounted(() => {
             </div>
           </div>
         </div>
-        <div class="shrink-0 pt-2 sm:pt-0">
-          <NuxtLink to="/dashboard/organizer/events"
-            class="w-full sm:w-auto px-5 py-3 rounded-xl bg-navy hover:bg-navy-dark text-white text-xs font-black flex items-center justify-center gap-2 shadow-xs transition-all">
-            <Icon icon="ph:plus-circle-bold" class="text-base text-primary" />
-            <span>{{ t('package_detail.btn_create_event', 'Buat Event Sekarang') }}</span>
-          </NuxtLink>
-        </div>
+
       </div>
 
       <!-- Pending Hero Banner (Warm Gold/Amber Vibrant Inner Card - No Dull Gray) -->
@@ -469,11 +456,7 @@ onUnmounted(() => {
           </div>
 
           <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-            <NuxtLink :to="`/payment/status/${tx.reference || reference}`"
-              class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all flex items-center gap-1.5 w-full sm:w-auto justify-center">
-              <Icon icon="ph:globe-bold" class="text-sm" />
-              <span>{{ t('package_detail.btn_public_status', 'Halaman Status Publik') }}</span>
-            </NuxtLink>
+
 
             <NuxtLink to="/dashboard/organizer/package"
               class="px-4 py-2.5 rounded-xl bg-navy hover:bg-navy-dark text-white text-xs font-bold transition-all flex items-center gap-1.5 w-full sm:w-auto justify-center shadow-xs">
