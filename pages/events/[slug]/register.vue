@@ -570,8 +570,8 @@
                         </div>
                     </div>
 
-                    <!-- RIGHT COLUMN — Payment + CTA (sticky) -->
-                    <div class="lg:col-span-2 lg:sticky lg:top-24 space-y-5">
+                    <!-- RIGHT COLUMN — Payment + CTA -->
+                    <div class="lg:col-span-2 space-y-5">
 
                         <!-- Combined Payment Methods Card (Modernized UI) -->
                         <section class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
