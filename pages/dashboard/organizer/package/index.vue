@@ -471,7 +471,7 @@ async function buyQuota() {
                                         </div>
                                         <div>
                                             <div class="font-black text-navy text-xs">{{ t('organizer_subscription.payment_channel_mayar', 'Domestik (Mayar - IDR)') }}</div>
-                                            <div class="text-[10px] text-slate-500 font-medium">Mata Uang: IDR (Rp)</div>
+                                            <div class="text-[10px] text-slate-500 font-medium">{{ t('organizer_subscription.currency_idr', 'Mata Uang: IDR (Rp)') }}</div>
                                         </div>
                                     </div>
                                     <div class="size-5 rounded-full flex items-center justify-center text-xs"
@@ -480,7 +480,7 @@ async function buyQuota() {
                                     </div>
                                 </div>
                                 <div class="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                    {{ t('organizer_subscription.mayar_supported_methods', 'Mendukung QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), dan E-Wallet') }}
+                                    {{ t('organizer_subscription.mayar_methods_desc', 'QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), E-Wallet') }}
                                 </div>
                             </div>
 
@@ -495,7 +495,7 @@ async function buyQuota() {
                                         </div>
                                         <div>
                                             <div class="font-black text-navy text-xs">{{ t('organizer_subscription.payment_channel_paypal', 'Internasional (PayPal - USD)') }}</div>
-                                            <div class="text-[10px] text-blue-600 font-bold">Mata Uang: USD ($)</div>
+                                            <div class="text-[10px] text-blue-600 font-bold">{{ t('organizer_subscription.currency_usd', 'Mata Uang: USD ($)') }}</div>
                                         </div>
                                     </div>
                                     <div class="size-5 rounded-full flex items-center justify-center text-xs"
@@ -504,7 +504,7 @@ async function buyQuota() {
                                     </div>
                                 </div>
                                 <div class="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                    {{ t('organizer_subscription.paypal_desc', 'Saldo PayPal, Visa, Mastercard, AMEX (Mata uang USD)') }}
+                                    {{ t('organizer_subscription.paypal_methods_desc', 'Saldo PayPal, Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX)') }}
                                 </div>
                             </div>
                         </div>

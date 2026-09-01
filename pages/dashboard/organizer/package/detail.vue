@@ -107,10 +107,10 @@
             <div class="space-y-1">
               <div class="text-sm sm:text-base font-black text-navy flex items-center gap-2">
                 <Icon icon="logos:paypal" class="text-xl" />
-                <span>Selesaikan Pembayaran via PayPal</span>
+                <span>{{ t('package_detail.pay_via_paypal_title', 'Selesaikan Pembayaran via PayPal') }}</span>
               </div>
               <div class="text-xs text-slate-600 font-medium leading-relaxed max-w-lg">
-                Bayar secara aman menggunakan Saldo PayPal atau Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.
+                {{ t('package_detail.pay_via_paypal_desc', 'Bayar secara aman menggunakan Saldo PayPal atau Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.') }}
               </div>
             </div>
             <div class="sm:text-right shrink-0">
@@ -127,11 +127,11 @@
           <a v-if="tx.checkout_url" :href="tx.checkout_url" target="_blank" rel="noopener noreferrer"
             class="w-full py-4 px-6 bg-[#0070ba] hover:bg-[#005ea6] text-white rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md transition-all cursor-pointer">
             <Icon icon="logos:paypal" class="text-xl" />
-            <span>Bayar Sekarang di PayPal</span>
+            <span>{{ t('package_detail.btn_pay_now_paypal', 'Bayar Sekarang di PayPal') }}</span>
           </a>
 
           <div class="pt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-600 font-semibold">
-            <span class="text-slate-400">Metode Tersedia:</span>
+            <span class="text-slate-400">{{ t('package_detail.available_methods_label', 'Metode Tersedia:') }}</span>
             <span class="px-2.5 py-0.5 rounded-lg bg-white border border-blue-200/80 font-bold text-slate-800 shadow-2xs">Saldo PayPal</span>
             <span class="px-2.5 py-0.5 rounded-lg bg-white border border-blue-200/80 font-bold text-slate-800 shadow-2xs">Visa</span>
             <span class="px-2.5 py-0.5 rounded-lg bg-white border border-blue-200/80 font-bold text-slate-800 shadow-2xs">Mastercard</span>

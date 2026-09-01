@@ -4051,7 +4051,15 @@
     "secure_note": "Transaksi aman, terverifikasi otomatis secara instan",
     "status_failed": "Gagal",
     "status_expired": "Kadaluarsa",
-    "btn_view_invoice": "Detail Invoice"
+    "btn_view_invoice": "Detail Invoice",
+    "currency_idr": "Mata Uang: IDR (Rp)",
+    "currency_usd": "Mata Uang: USD ($)",
+    "mayar_methods_desc": "QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), E-Wallet",
+    "paypal_methods_desc": "Saldo PayPal, Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX)",
+    "pay_via_paypal_title": "Selesaikan Pembayaran via PayPal",
+    "pay_via_paypal_desc": "Bayar secara aman menggunakan Saldo PayPal atau Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.",
+    "btn_pay_now_paypal": "Bayar Sekarang di PayPal",
+    "available_methods_label": "Metode Tersedia:"
   },
   "org_checkout": {
     "title": "Pembayaran Biaya Platform",
@@ -4618,7 +4626,15 @@
     "verified_instant": "Terverifikasi Instan",
     "expires_in": "Batas Waktu",
     "waiting_transfer": "Menunggu Transfer",
-    "download_qr": "Unduh Gambar QR"
+    "download_qr": "Unduh Gambar QR",
+    "currency_idr": "Mata Uang: IDR (Rp)",
+    "currency_usd": "Mata Uang: USD ($)",
+    "mayar_methods_desc": "QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), E-Wallet",
+    "paypal_methods_desc": "Saldo PayPal, Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX)",
+    "pay_via_paypal_title": "Selesaikan Pembayaran via PayPal",
+    "pay_via_paypal_desc": "Bayar secara aman menggunakan Saldo PayPal atau Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.",
+    "btn_pay_now_paypal": "Bayar Sekarang di PayPal",
+    "available_methods_label": "Metode Tersedia:"
   },
   "reports": {
     "select_bow_type": "Pilih Jenis Busur",

@@ -1134,7 +1134,15 @@
     "btn_prev": "이전",
     "btn_next": "다음",
     "order_success_toast": "쿼터 패키지 주문이 성공적으로 생성되었습니다",
-    "buy_error": "쿼터 패키지 결제 처리에 실패했습니다."
+    "buy_error": "쿼터 패키지 결제 처리에 실패했습니다.",
+    "currency_idr": "통화: IDR (Rp)",
+    "currency_usd": "통화: USD ($)",
+    "mayar_methods_desc": "QRIS, 가상계좌(BCA, Mandiri, BRI, BNI, Permata), E-Wallet",
+    "paypal_methods_desc": "PayPal 잔액, 해외 신용/체크카드 (Visa, Mastercard, AMEX)",
+    "pay_via_paypal_title": "PayPal로 결제 완료하기",
+    "pay_via_paypal_desc": "PayPal 잔액 또는 해외 신용/체크카드(Visa, Mastercard, AMEX)로 안전하게 결제하세요. USD로 처리됩니다.",
+    "btn_pay_now_paypal": "PayPal에서 지금 결제",
+    "available_methods_label": "이용 가능한 결제 수단:"
   },
   "package_detail": {
     "page_title": "결제 송장 상세",
@@ -1215,7 +1223,15 @@
     "method_bri_va": "BRI 가상 계좌",
     "method_mandiri_va": "Mandiri 가상 계좌",
     "method_bni_va": "BNI 가상 계좌",
-    "method_permata_va": "Permata 가상 계좌"
+    "method_permata_va": "Permata 가상 계좌",
+    "currency_idr": "통화: IDR (Rp)",
+    "currency_usd": "통화: USD ($)",
+    "mayar_methods_desc": "QRIS, 가상계좌(BCA, Mandiri, BRI, BNI, Permata), E-Wallet",
+    "paypal_methods_desc": "PayPal 잔액, 해외 신용/체크카드 (Visa, Mastercard, AMEX)",
+    "pay_via_paypal_title": "PayPal로 결제 완료하기",
+    "pay_via_paypal_desc": "PayPal 잔액 또는 해외 신용/체크카드(Visa, Mastercard, AMEX)로 안전하게 결제하세요. USD로 처리됩니다.",
+    "btn_pay_now_paypal": "PayPal에서 지금 결제",
+    "available_methods_label": "이용 가능한 결제 수단:"
   },
   "my_registration": {
     "mayar_gateway_name": "Mayar 결제 게이트웨이",

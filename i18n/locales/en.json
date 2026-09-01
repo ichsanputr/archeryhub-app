@@ -4166,7 +4166,15 @@
     "secure_note": "Secure transaction, verified automatically and instantly",
     "status_failed": "Failed",
     "status_expired": "Expired",
-    "btn_view_invoice": "Invoice Details"
+    "btn_view_invoice": "Invoice Details",
+    "currency_idr": "Currency: IDR (Rp)",
+    "currency_usd": "Currency: USD ($)",
+    "mayar_methods_desc": "QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), E-Wallet",
+    "paypal_methods_desc": "PayPal Balance, International Credit/Debit Cards (Visa, Mastercard, AMEX)",
+    "pay_via_paypal_title": "Complete Payment with PayPal",
+    "pay_via_paypal_desc": "Pay securely using your PayPal balance or international credit/debit cards (Visa, Mastercard, AMEX, Discover). Processed in USD.",
+    "btn_pay_now_paypal": "Pay Now on PayPal",
+    "available_methods_label": "Available Methods:"
   },
   "org_checkout": {
     "title": "Platform Fee Payment",
@@ -4733,7 +4741,15 @@
     "verified_instant": "Instantly Verified",
     "expires_in": "Expires In",
     "waiting_transfer": "Waiting for Transfer",
-    "download_qr": "Download QR Image"
+    "download_qr": "Download QR Image",
+    "currency_idr": "Currency: IDR (Rp)",
+    "currency_usd": "Currency: USD ($)",
+    "mayar_methods_desc": "QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), E-Wallet",
+    "paypal_methods_desc": "PayPal Balance, International Credit/Debit Cards (Visa, Mastercard, AMEX)",
+    "pay_via_paypal_title": "Complete Payment with PayPal",
+    "pay_via_paypal_desc": "Pay securely using your PayPal balance or international credit/debit cards (Visa, Mastercard, AMEX, Discover). Processed in USD.",
+    "btn_pay_now_paypal": "Pay Now on PayPal",
+    "available_methods_label": "Available Methods:"
   },
   "reports": {
     "select_bow_type": "Select Bow Type",

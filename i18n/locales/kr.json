@@ -3288,13 +3288,29 @@
     "status_failed": "결제 실패",
     "status_expired": "만료됨",
     "btn_view_invoice": "인보이스 보기",
-    "buy_error": "쿼터 패키지 결제 처리에 실패했습니다."
+    "buy_error": "쿼터 패키지 결제 처리에 실패했습니다.",
+    "currency_idr": "통화: IDR (Rp)",
+    "currency_usd": "통화: USD ($)",
+    "mayar_methods_desc": "QRIS, 가상계좌(BCA, Mandiri, BRI, BNI, Permata), E-Wallet",
+    "paypal_methods_desc": "PayPal 잔액, 해외 신용/체크카드 (Visa, Mastercard, AMEX)",
+    "pay_via_paypal_title": "PayPal로 결제 완료하기",
+    "pay_via_paypal_desc": "PayPal 잔액 또는 해외 신용/체크카드(Visa, Mastercard, AMEX)로 안전하게 결제하세요. USD로 처리됩니다.",
+    "btn_pay_now_paypal": "PayPal에서 지금 결제",
+    "available_methods_label": "이용 가능한 결제 수단:"
   },
   "package_detail": {
     "verified_instant": "즉시 확인됨",
     "expires_in": "만료 시간",
     "waiting_transfer": "이체 대기 중",
-    "download_qr": "QR 이미지 다운로드"
+    "download_qr": "QR 이미지 다운로드",
+    "currency_idr": "통화: IDR (Rp)",
+    "currency_usd": "통화: USD ($)",
+    "mayar_methods_desc": "QRIS, 가상계좌(BCA, Mandiri, BRI, BNI, Permata), E-Wallet",
+    "paypal_methods_desc": "PayPal 잔액, 해외 신용/체크카드 (Visa, Mastercard, AMEX)",
+    "pay_via_paypal_title": "PayPal로 결제 완료하기",
+    "pay_via_paypal_desc": "PayPal 잔액 또는 해외 신용/체크카드(Visa, Mastercard, AMEX)로 안전하게 결제하세요. USD로 처리됩니다.",
+    "btn_pay_now_paypal": "PayPal에서 지금 결제",
+    "available_methods_label": "이용 가능한 결제 수단:"
   },
   "news": {
     "management_title": "뉴스 관리"

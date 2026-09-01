@@ -2009,7 +2009,15 @@
     "btn_prev": "Previous",
     "btn_next": "Next",
     "order_success_toast": "Quota package order created successfully",
-    "buy_error": "Failed to process quota package purchase."
+    "buy_error": "Failed to process quota package purchase.",
+    "currency_idr": "Currency: IDR (Rp)",
+    "currency_usd": "Currency: USD ($)",
+    "mayar_methods_desc": "QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), E-Wallet",
+    "paypal_methods_desc": "PayPal Balance, International Credit/Debit Cards (Visa, Mastercard, AMEX)",
+    "pay_via_paypal_title": "Complete Payment with PayPal",
+    "pay_via_paypal_desc": "Pay securely using your PayPal balance or international credit/debit cards (Visa, Mastercard, AMEX, Discover). Processed in USD.",
+    "btn_pay_now_paypal": "Pay Now on PayPal",
+    "available_methods_label": "Available Methods:"
   },
   "premium": {
     "subscription_expired": "Package Expired",
@@ -2272,7 +2280,15 @@
     "method_bri_va": "BRI Virtual Account",
     "method_mandiri_va": "Mandiri Virtual Account",
     "method_bni_va": "BNI Virtual Account",
-    "method_permata_va": "Permata Virtual Account"
+    "method_permata_va": "Permata Virtual Account",
+    "currency_idr": "Currency: IDR (Rp)",
+    "currency_usd": "Currency: USD ($)",
+    "mayar_methods_desc": "QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), E-Wallet",
+    "paypal_methods_desc": "PayPal Balance, International Credit/Debit Cards (Visa, Mastercard, AMEX)",
+    "pay_via_paypal_title": "Complete Payment with PayPal",
+    "pay_via_paypal_desc": "Pay securely using your PayPal balance or international credit/debit cards (Visa, Mastercard, AMEX, Discover). Processed in USD.",
+    "btn_pay_now_paypal": "Pay Now on PayPal",
+    "available_methods_label": "Available Methods:"
   },
   "payment_status": {
     "status_title": "Payment Status",

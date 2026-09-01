@@ -2045,7 +2045,15 @@
     "btn_prev": "Sebelumnya",
     "btn_next": "Selanjutnya",
     "order_success_toast": "Pesanan paket kuota berhasil dibuat",
-    "buy_error": "Gagal memproses pembelian paket kuota."
+    "buy_error": "Gagal memproses pembelian paket kuota.",
+    "currency_idr": "Mata Uang: IDR (Rp)",
+    "currency_usd": "Mata Uang: USD ($)",
+    "mayar_methods_desc": "QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), E-Wallet",
+    "paypal_methods_desc": "Saldo PayPal, Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX)",
+    "pay_via_paypal_title": "Selesaikan Pembayaran via PayPal",
+    "pay_via_paypal_desc": "Bayar secara aman menggunakan Saldo PayPal atau Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.",
+    "btn_pay_now_paypal": "Bayar Sekarang di PayPal",
+    "available_methods_label": "Metode Tersedia:"
   },
   "premium": {
     "subscription_expired": "Paket Habis",
@@ -2308,7 +2316,15 @@
     "method_bri_va": "BRI Virtual Account",
     "method_mandiri_va": "Mandiri Virtual Account",
     "method_bni_va": "BNI Virtual Account",
-    "method_permata_va": "Permata Virtual Account"
+    "method_permata_va": "Permata Virtual Account",
+    "currency_idr": "Mata Uang: IDR (Rp)",
+    "currency_usd": "Mata Uang: USD ($)",
+    "mayar_methods_desc": "QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), E-Wallet",
+    "paypal_methods_desc": "Saldo PayPal, Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX)",
+    "pay_via_paypal_title": "Selesaikan Pembayaran via PayPal",
+    "pay_via_paypal_desc": "Bayar secara aman menggunakan Saldo PayPal atau Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.",
+    "btn_pay_now_paypal": "Bayar Sekarang di PayPal",
+    "available_methods_label": "Metode Tersedia:"
   },
   "payment_status": {
     "status_title": "Status Pembayaran",
