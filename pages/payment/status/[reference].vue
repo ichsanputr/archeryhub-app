@@ -111,8 +111,37 @@
             </div>
           </div>
 
-          <!-- Direct Mayar Online Checkout Card -->
-          <div v-if="isRealCheckoutUrl(tx.checkout_url)" class="bg-gradient-to-br from-amber-500/10 via-amber-50/80 to-primary/20 border-2 border-primary/60 rounded-2xl p-5 sm:p-6 space-y-4 shadow-sm relative overflow-hidden">
+          <!-- Direct Online Checkout Card (PayPal vs Mayar Dynamic Gateway) -->
+          <!-- PayPal Online Checkout Card -->
+          <div v-if="isRealCheckoutUrl(tx.checkout_url) && tx.payment_method === 'paypal'" class="bg-gradient-to-br from-blue-500/10 via-sky-50/80 to-blue-500/20 border-2 border-blue-400/80 rounded-2xl p-5 sm:p-6 space-y-4 shadow-sm relative overflow-hidden">
+            <div class="flex items-center justify-between gap-3.5">
+              <div class="flex items-center gap-3.5">
+                <div class="size-11 rounded-xl bg-white border border-blue-200/80 flex items-center justify-center p-1.5 shrink-0 shadow-2xs">
+                  <Icon icon="logos:paypal" class="text-2xl" />
+                </div>
+                <div class="space-y-0.5 min-w-0 flex-1">
+                  <div class="text-sm font-black text-navy leading-tight">
+                    {{ t('package_detail.pay_via_paypal_title', 'Selesaikan Pembayaran via PayPal') }}
+                  </div>
+                  <div class="text-xs text-slate-600 font-medium leading-relaxed">
+                    {{ t('package_detail.pay_via_paypal_desc', 'Bayar secara aman menggunakan Saldo PayPal atau Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.') }}
+                  </div>
+                </div>
+              </div>
+              <span class="text-xs font-mono font-black text-blue-700 bg-blue-100/80 px-2.5 py-1 rounded-lg border border-blue-200 shrink-0">
+                ~${{ (Math.ceil(((tx.total_amount || tx.amount || 0) / 16000) * 100) / 100).toFixed(2) }} USD
+              </span>
+            </div>
+
+            <!-- Single, Primary Direct Checkout CTA for PayPal -->
+            <a :href="tx.checkout_url" class="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-amber-400 via-primary to-amber-500 hover:opacity-95 text-navy font-black text-sm sm:text-base py-3.5 px-5 rounded-xl shadow-xs hover:shadow-sm hover:-translate-y-0.5 transition-all cursor-pointer">
+              <Icon icon="logos:paypal" class="text-xl" />
+              <span>{{ t('package_detail.btn_pay_now_paypal', 'Bayar Sekarang di PayPal') }}</span>
+            </a>
+          </div>
+
+          <!-- Mayar Online Checkout Card -->
+          <div v-else-if="isRealCheckoutUrl(tx.checkout_url)" class="bg-gradient-to-br from-amber-500/10 via-amber-50/80 to-primary/20 border-2 border-primary/60 rounded-2xl p-5 sm:p-6 space-y-4 shadow-sm relative overflow-hidden">
             <div class="flex items-center gap-3.5">
               <div class="size-11 rounded-xl bg-white border border-amber-200/80 flex items-center justify-center p-1.5 shrink-0 shadow-2xs">
                 <img src="/mayar-logo.png" alt="Mayar" class="w-full h-full object-contain" />
@@ -127,7 +156,7 @@
               </div>
             </div>
 
-            <!-- Single, Primary Direct Checkout CTA -->
+            <!-- Single, Primary Direct Checkout CTA for Mayar -->
             <a :href="tx.checkout_url" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-hover text-navy font-black text-sm sm:text-base py-3.5 px-5 rounded-xl shadow-xs hover:shadow-sm hover:-translate-y-0.5 transition-all cursor-pointer">
               <Icon icon="ph:arrow-square-out-bold" class="text-xl" />
               <span>{{ t('payment_status.btn_pay_now_mayar', 'Bayar Sekarang di Mayar') }}</span>
@@ -335,6 +364,7 @@ const formatTitleCase = (str) => {
 const formatPaymentMethodName = (method) => {
     if (!method) return '-'
     const m = method.toUpperCase()
+    if (m === 'PAYPAL') return 'PayPal (USD)'
     if (m === 'MANUAL') return 'Transfer Bank Manual'
     if (m === 'MAYAR') return 'Mayar (Online)'
     if (m === 'GOPAY') return 'GoPay'
