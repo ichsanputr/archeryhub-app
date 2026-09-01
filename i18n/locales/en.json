@@ -2418,7 +2418,9 @@
     "paypal_supported_desc": "Pay securely using your PayPal balance or international credit/debit cards (Visa, Mastercard, AMEX, Discover). Processed in USD.",
     "tag_paypal_balance": "PayPal Balance",
     "tag_intl_cards": "Visa / Mastercard / AMEX",
-    "pay_now_paypal": "Pay Now via PayPal"
+    "pay_now_paypal": "Pay Now via PayPal",
+    "btn_pay_now_mayar": "Pay Now with Mayar",
+    "btn_pay_now_paypal": "Pay Now with PayPal"
   },
   "subscription_payment_page": {
     "back": "Back to Subscription",

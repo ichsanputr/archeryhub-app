@@ -2395,7 +2395,9 @@
     "paypal_supported_desc": "Bayar aman menggunakan saldo PayPal atau kartu kredit/debit internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.",
     "tag_paypal_balance": "Saldo PayPal (PayPal Balance)",
     "tag_intl_cards": "Visa / Mastercard / AMEX",
-    "pay_now_paypal": "Bayar Sekarang via PayPal"
+    "pay_now_paypal": "Bayar Sekarang via PayPal",
+    "btn_pay_now_mayar": "Bayar Sekarang via Mayar",
+    "btn_pay_now_paypal": "Bayar Sekarang via PayPal"
   },
   "subscription_payment_page": {
     "back": "Kembali ke Subscription",

@@ -1299,7 +1299,9 @@
     "paypal_supported_desc": "PayPal 잔액 또는 해외 신용/체크카드(Visa, Mastercard, AMEX)로 안전하게 결제하세요. USD로 처리됩니다.",
     "tag_paypal_balance": "PayPal 잔액",
     "tag_intl_cards": "Visa / Mastercard / AMEX",
-    "pay_now_paypal": "PayPal로 지금 결제"
+    "pay_now_paypal": "PayPal로 지금 결제",
+    "btn_pay_now_mayar": "Mayar로 지금 결제",
+    "btn_pay_now_paypal": "PayPal로 지금 결제"
   },
   "payment_status": {
     "status_title": "결제 상태",
