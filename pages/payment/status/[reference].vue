@@ -1,18 +1,28 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800 antialiased font-sans">
+  <div class="min-h-screen flex flex-col bg-slate-50 relative overflow-hidden text-slate-800 antialiased font-sans">
+    <!-- Ambient Background Lighting & Motif -->
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      <div class="absolute -top-40 -right-40 size-[500px] rounded-full bg-primary/10 blur-3xl"></div>
+      <div class="absolute top-1/3 -left-40 size-[400px] rounded-full bg-amber-400/10 blur-3xl"></div>
+      <div class="absolute -bottom-40 right-1/4 size-[450px] rounded-full bg-navy/5 blur-3xl"></div>
+      <div class="absolute inset-0 opacity-[0.015]"
+        style="background-image: radial-gradient(circle at 1px 1px, black 1px, transparent 0); background-size: 24px 24px;"></div>
+    </div>
+
     <!-- App Global Header -->
     <LayoutAppHeaderDynamic />
 
     <!-- Main Content Container -->
-    <main class="flex-grow pt-28 pb-16 px-4 sm:px-6 flex items-center justify-center">
+    <main class="relative z-10 flex-grow pt-28 pb-16 px-4 sm:px-6 flex items-center justify-center">
       <!-- Loading State -->
-      <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-slate-200/80 shadow-sm max-w-md w-full p-8 text-center">
+      <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 bg-white/90 backdrop-blur-md rounded-[28px] border border-slate-200/90 shadow-xl shadow-slate-200/50 max-w-md w-full p-8 text-center">
         <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
         <div class="text-slate-600 font-bold text-sm">{{ t('payment_status.loading_status', 'Memuat Status Pembayaran...') }}</div>
       </div>
 
       <!-- Error State -->
-      <div v-else-if="errorMsg" class="max-w-md w-full bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 text-center shadow-md">
+      <div v-else-if="errorMsg" class="max-w-md w-full bg-white/90 backdrop-blur-md border border-slate-200/90 rounded-[28px] p-6 sm:p-8 text-center shadow-xl shadow-slate-200/50 relative overflow-hidden">
+        <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-red-400 via-red-500 to-rose-500"></div>
         <div class="size-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-5 mx-auto border border-red-100 shadow-xs">
           <Icon icon="ph:warning-circle-bold" class="text-3xl" />
         </div>
@@ -26,23 +36,25 @@
       <!-- Transaction Details Card -->
       <div v-else class="max-w-lg w-full space-y-6">
         <!-- 1. PAID STATE -->
-        <div v-if="tx.status === 'paid' || tx.status === 'PAID'" class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
-          <div class="text-center space-y-2">
-            <div class="relative size-16 mx-auto mb-3">
-              <div class="absolute inset-0 bg-emerald-500/20 rounded-full blur-md animate-pulse"></div>
-              <div class="relative size-16 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-500/20">
+        <div v-if="tx.status === 'paid' || tx.status === 'PAID'" class="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-xl shadow-slate-200/50 space-y-6 relative overflow-hidden">
+          <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-500"></div>
+          
+          <div class="text-center space-y-2 pt-1">
+            <div class="relative size-20 mx-auto mb-2 flex items-center justify-center">
+              <div class="absolute inset-0 bg-emerald-500/20 rounded-3xl blur-md animate-pulse"></div>
+              <div class="relative size-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-white flex items-center justify-center shadow-lg shadow-emerald-500/25">
                 <Icon icon="ph:check-bold" class="text-3xl" />
               </div>
             </div>
             <h2 class="text-2xl font-black text-navy tracking-tight">{{ t('payment_status.paid_title', 'Pembayaran Berhasil!') }}</h2>
-            <div class="text-xs text-slate-500 font-medium">{{ t('payment_status.paid_desc', 'Terima kasih, pembayaran Anda telah diverifikasi dan dikonfirmasi secara instan.') }}</div>
+            <div class="text-xs text-slate-500 font-medium max-w-sm mx-auto">{{ t('payment_status.paid_desc', 'Terima kasih, pembayaran Anda telah diverifikasi dan dikonfirmasi secara instan.') }}</div>
           </div>
 
-          <!-- Transaction Details -->
-          <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3.5">
+          <!-- Transaction Details Box -->
+          <div class="bg-gradient-to-b from-slate-50/90 to-slate-50/50 border border-slate-200/80 rounded-2xl p-5 space-y-3.5 shadow-2xs">
             <div class="flex justify-between items-center text-xs">
               <span class="text-slate-500 font-bold">{{ t('payment_status.ref_number', 'Nomor Referensi') }}</span>
-              <span class="font-mono text-navy font-black">{{ tx.reference }}</span>
+              <span class="font-mono text-navy font-black bg-white px-2.5 py-1 rounded-lg border border-slate-200/80 shadow-2xs">{{ tx.reference }}</span>
             </div>
             
             <div v-if="tx.description || tx.event_name" class="flex justify-between items-start text-xs gap-4">
@@ -88,16 +100,21 @@
         </div>
 
         <!-- 2. PENDING / AWAITING VERIFICATION STATE -->
-        <div v-else-if="tx.status === 'pending' || tx.status === 'UNPAID' || tx.status === 'awaiting_verification' || tx.status === 'AWAITING_VERIFICATION'" class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
-          <div class="text-center space-y-2">
-            <div class="size-16 rounded-2xl flex items-center justify-center mx-auto shadow-xs"
-              :class="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'bg-blue-50 text-blue-600 border border-blue-200' : 'bg-amber-50 text-amber-600 border border-amber-200'">
-              <Icon :icon="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'ph:receipt-bold' : 'ph:clock-bold'" class="text-3xl" />
+        <div v-else-if="tx.status === 'pending' || tx.status === 'UNPAID' || tx.status === 'awaiting_verification' || tx.status === 'AWAITING_VERIFICATION'" class="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-xl shadow-slate-200/50 space-y-6 relative overflow-hidden">
+          <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-amber-400 via-primary to-amber-500"></div>
+          
+          <div class="text-center space-y-2 pt-1">
+            <div class="relative size-20 mx-auto mb-2 flex items-center justify-center">
+              <div class="absolute inset-0 rounded-3xl blur-md" :class="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'bg-blue-400/20' : 'bg-amber-400/20'"></div>
+              <div class="relative size-16 rounded-2xl flex items-center justify-center shadow-md"
+                :class="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'bg-gradient-to-br from-blue-50 to-blue-100/80 text-blue-600 border border-blue-200 shadow-blue-500/10' : 'bg-gradient-to-br from-amber-50 to-amber-100/80 text-amber-600 border border-amber-200 shadow-amber-500/10'">
+                <Icon :icon="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'ph:receipt-bold' : 'ph:clock-bold'" class="text-3xl" />
+              </div>
             </div>
             <h2 class="text-2xl font-black text-navy tracking-tight">
               {{ (tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? t('payment_status.proof_received_title', 'Bukti Pembayaran Diterima') : t('payment_status.awaiting_payment_title', 'Menunggu Pembayaran') }}
             </h2>
-            <div class="text-xs text-slate-500 font-medium">
+            <div class="text-xs text-slate-500 font-medium max-w-sm mx-auto">
               {{ (tx.payment_method === 'manual' || tx.status === 'awaiting_verification')
                 ? t('payment_status.proof_received_desc', 'Bukti transfer Anda telah kami terima. Harap tunggu verifikasi dari penyelenggara.')
                 : t('payment_status.awaiting_payment_desc', 'Silakan selesaikan pembayaran Anda sebelum batas waktu kedaluwarsa.') }}
@@ -105,8 +122,8 @@
           </div>
 
           <!-- Direct Mayar Online Checkout Card -->
-          <div v-if="isRealCheckoutUrl(tx.checkout_url)" class="bg-gradient-to-br from-amber-500/10 via-amber-50/70 to-primary/15 border-2 border-primary/60 rounded-2xl p-5 sm:p-6 space-y-4 shadow-2xs">
-            <div class="flex items-center gap-3">
+          <div v-if="isRealCheckoutUrl(tx.checkout_url)" class="bg-gradient-to-br from-amber-500/10 via-amber-50/80 to-primary/20 border-2 border-primary/60 rounded-2xl p-5 sm:p-6 space-y-4 shadow-sm relative overflow-hidden">
+            <div class="flex items-center gap-3.5">
               <div class="size-11 rounded-xl bg-white border border-amber-200/80 flex items-center justify-center p-1.5 shrink-0 shadow-2xs">
                 <img src="/mayar-logo.png" alt="Mayar" class="w-full h-full object-contain" />
               </div>
@@ -174,11 +191,11 @@
             </div>
           </div>
 
-          <!-- Transaction Summary -->
-          <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3">
+          <!-- Transaction Summary Box -->
+          <div class="bg-gradient-to-b from-slate-50/90 to-slate-50/50 border border-slate-200/80 rounded-2xl p-5 space-y-3.5 shadow-2xs">
             <div class="flex justify-between items-center text-xs">
               <span class="text-slate-500 font-bold">{{ t('payment_status.ref_number', 'Nomor Referensi') }}</span>
-              <span class="font-mono text-navy font-black">{{ tx.reference }}</span>
+              <span class="font-mono text-navy font-black bg-white px-2.5 py-1 rounded-lg border border-slate-200/80 shadow-2xs">{{ tx.reference }}</span>
             </div>
             <div class="flex justify-between items-center text-xs">
               <span class="text-slate-500 font-bold">{{ t('payment_status.payment_method', 'Metode Pembayaran') }}</span>
@@ -224,8 +241,10 @@
         </div>
 
         <!-- 3. FAILED / EXPIRED STATE -->
-        <div v-else class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
-          <div class="text-center space-y-2">
+        <div v-else class="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-[28px] p-6 sm:p-8 shadow-xl shadow-slate-200/50 space-y-6 relative overflow-hidden">
+          <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-red-400 via-red-500 to-rose-500"></div>
+          
+          <div class="text-center space-y-2 pt-1">
             <div class="size-16 rounded-2xl bg-red-50 text-red-500 border border-red-200 flex items-center justify-center mx-auto shadow-xs">
               <Icon icon="ph:x-circle-bold" class="text-3xl" />
             </div>
@@ -235,10 +254,10 @@
             </div>
           </div>
 
-          <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3">
+          <div class="bg-gradient-to-b from-slate-50/90 to-slate-50/50 border border-slate-200/80 rounded-2xl p-5 space-y-3.5 shadow-2xs">
             <div class="flex justify-between items-center text-xs">
               <span class="text-slate-500 font-bold">{{ t('payment_status.ref_number', 'Nomor Referensi') }}</span>
-              <span class="font-mono text-navy font-black">{{ tx.reference }}</span>
+              <span class="font-mono text-navy font-black bg-white px-2.5 py-1 rounded-lg border border-slate-200/80 shadow-2xs">{{ tx.reference }}</span>
             </div>
             <div class="flex justify-between items-center text-xs">
               <span class="text-slate-500 font-bold">{{ t('payment_status.total_bill', 'Total Tagihan') }}</span>
