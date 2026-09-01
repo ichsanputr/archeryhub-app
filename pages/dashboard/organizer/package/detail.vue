@@ -62,7 +62,7 @@
           </div>
           <div class="space-y-1">
             <div class="flex items-center gap-2">
-              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black capitalize tracking-wider bg-emerald-100 text-emerald-800">
                 {{ t('package_detail.paid_badge', 'Lunas / Terverifikasi') }}
               </span>
               <span class="text-xs text-slate-400 font-semibold">{{ formatDate(tx.purchased_at || tx.created_at) }}</span>
@@ -113,7 +113,7 @@
               </div>
             </div>
             <div class="sm:text-right shrink-0">
-              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">{{ t('package_detail.total_paid', 'Total Tagihan') }}</span>
+              <span class="text-[10px] font-bold text-slate-400 capitalize tracking-wider block">{{ t('package_detail.total_paid', 'Total Tagihan') }}</span>
               <span class="text-xl sm:text-2xl font-black text-navy tabular-nums">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
             </div>
           </div>
@@ -307,14 +307,14 @@
       <!-- Bill-To / Publisher Information -->
       <div class="grid grid-cols-2 gap-8 mb-6 text-xs">
         <div class="space-y-1">
-          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{{ t('package_detail.issued_by', 'Diterbitkan Oleh:') }}</div>
+          <div class="text-[10px] font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.issued_by', 'Diterbitkan Oleh:') }}</div>
           <div class="font-black text-slate-900">{{ t('package_detail.billing_dept', 'ArcheryHub.id Billing Department') }}</div>
           <div class="text-slate-600">{{ t('package_detail.company_name', 'PT. Archeris Teknologi Indonesia') }}</div>
           <div class="text-slate-400">https://archeryhub.id</div>
         </div>
 
         <div class="space-y-1">
-          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{{ t('package_detail.billed_to', 'Ditagihkan Kepada:') }}</div>
+          <div class="text-[10px] font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.billed_to', 'Ditagihkan Kepada:') }}</div>
           <div class="font-black text-slate-900">{{ organizerProfile?.name || tx.organizer_name || t('package_detail.default_organizer', 'Penyelenggara Event') }}</div>
           <div class="text-slate-600">{{ organizerProfile?.email || tx.organizer_email || '-' }}</div>
           <div class="text-slate-400">{{ t('package_detail.official_organizer_role', 'Penyelenggara Resmi ArcheryHub.id') }}</div>

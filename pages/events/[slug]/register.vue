@@ -587,7 +587,7 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Tagihan</span>
+                                    <span class="text-[10px] font-bold text-slate-400 capitalize tracking-wider block">{{ t('my_registration.total_bill', 'Total Tagihan') }}</span>
                                     <span class="text-base font-black text-navy tabular-nums">{{ formatPrice(totalFee) }}</span>
                                 </div>
                             </div>
@@ -691,12 +691,12 @@
                                     <!-- Upload proof when manual selected -->
                                     <div v-if="form.manual_method_id" class="pt-3 border-t border-slate-100 space-y-3">
                                         <div class="space-y-1">
-                                            <label class="text-xs font-black text-slate-500 uppercase tracking-wider block">{{ t('my_registration.sender_name', 'Nama Pengirim') }}</label>
+                                            <label class="text-xs font-black text-slate-500 capitalize tracking-wider block">{{ t('my_registration.sender_name', 'Nama Pengirim') }}</label>
                                             <input type="text" v-model="form.sender_name" 
                                                 class="w-full px-3.5 py-2.5 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-primary font-medium"
                                                 :placeholder="t('my_registration.sender_name_placeholder', 'Nama pemilik rekening pengirim...')" />
                                         </div>
-                                        <div class="text-xs font-black text-slate-500 uppercase tracking-wider">{{ t('my_registration.upload_proof', 'Bukti Transfer') }}</div>
+                                        <div class="text-xs font-black text-slate-500 capitalize tracking-wider">{{ t('my_registration.upload_proof', 'Bukti Transfer') }}</div>
                                         <div @click="triggerFileInput"
                                             class="border-2 border-dashed rounded-2xl p-4 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-slate-50"
                                             :class="proofFileUrl ? 'border-primary/50 bg-primary/5' : 'border-slate-200'">

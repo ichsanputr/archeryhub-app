@@ -171,7 +171,7 @@
                                         <span class="text-xs text-slate-400 font-bold line-through">
                                             Rp 49.900
                                         </span>
-                                        <span class="text-[9px] font-black uppercase text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
+                                        <span class="text-[9px] font-black capitalize text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
                                             {{ t('organizer_subscription.promo_badge_50', 'PROMO 50% OFF') }}
                                         </span>
                                     </div>
@@ -207,7 +207,7 @@
                                         <span class="text-xs text-slate-400 font-bold line-through">
                                             Rp 79.900
                                         </span>
-                                        <span class="text-[9px] font-black uppercase text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
+                                        <span class="text-[9px] font-black capitalize text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
                                             {{ t('organizer_subscription.promo_badge_50', 'PROMO 50% OFF') }}
                                         </span>
                                     </div>
