@@ -618,8 +618,8 @@
                                 <div v-if="form.payment_type === 'online'">
                                     <div class="p-4 sm:p-5 rounded-2xl border-2 border-primary/60 bg-gradient-to-br from-amber-500/10 via-amber-50/60 to-primary/15 space-y-2.5 shadow-2xs">
                                         <div class="flex items-center gap-3">
-                                            <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shrink-0 shadow-xs">
-                                                <Icon icon="ph:shield-check-bold" class="text-xl" />
+                                            <div class="size-10 rounded-xl bg-white border border-amber-200/80 flex items-center justify-center p-1.5 shrink-0 shadow-2xs">
+                                                <img src="/mayar-logo.png" alt="Mayar" class="w-full h-full object-contain" />
                                             </div>
                                             <div>
                                                 <div class="font-black text-navy text-sm">
