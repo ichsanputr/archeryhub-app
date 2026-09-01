@@ -1139,7 +1139,21 @@
     "upload_proof_hint": "JPG, PNG (maks. 10MB)",
     "btn_pay_now": "Bayar Sekarang via Mayar",
     "btn_register_now": "Daftar Sekarang",
-    "auto_confirm_note": "Konfirmasi otomatis setelah pembayaran berhasil."
+    "auto_confirm_note": "Konfirmasi otomatis setelah pembayaran berhasil.",
+    "full_name": "Nama Lengkap",
+    "full_name_placeholder": "Nama lengkap atlet...",
+    "gender": "Jenis Kelamin",
+    "date_of_birth": "Tanggal Lahir",
+    "country": "Negara",
+    "club": "Klub / Institusi",
+    "club_hint": "Tidak dapat diubah di sini",
+    "ensure_data_correct": "Pastikan data sudah benar sebelum melanjutkan pendaftaran.",
+    "login_required": "Diperlukan Login",
+    "login_required_desc": "Silakan login sebagai atlet untuk mendaftar.",
+    "login_now": "Login Sekarang",
+    "athlete_account_required": "Diperlukan Akun Atlet",
+    "athlete_account_required_desc": "Pendaftaran ini khusus untuk profil atlet.",
+    "register_as_athlete": "Daftar sebagai Atlet"
   },
   "profile": {
     "title": "Profil Pemanah",

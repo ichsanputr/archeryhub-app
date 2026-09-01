@@ -2400,7 +2400,19 @@
     "upload_proof_hint": "JPG, PNG (max 10MB)",
     "btn_pay_now": "Pay Now via Mayar",
     "btn_register_now": "Register Now",
-    "auto_confirm_note": "Automatic confirmation after successful payment."
+    "auto_confirm_note": "Automatic confirmation after successful payment.",
+    "full_name": "Full Name",
+    "full_name_placeholder": "Athlete's full name...",
+    "gender": "Gender",
+    "date_of_birth": "Date of Birth",
+    "country": "Country",
+    "club": "Club / Institution",
+    "club_hint": "Cannot be changed here",
+    "ensure_data_correct": "Please ensure the data is correct before proceeding.",
+    "login_required_desc": "Please log in as an athlete to register.",
+    "athlete_account_required": "Athlete Account Required",
+    "athlete_account_required_desc": "Registration is specifically for athlete profiles.",
+    "register_as_athlete": "Register as Athlete"
   },
   "subscription_payment_page": {
     "back": "Back to Subscription",

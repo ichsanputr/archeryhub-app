@@ -344,22 +344,23 @@
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <BaseInput v-model="profileForm.full_name" label="Full Name"
-                                            placeholder="Full name" required icon="ph:user-bold" />
-                                        <BaseSelect v-model="profileForm.gender" :items="genderOptions" label="Gender"
-                                            placeholder="Select Gender" required icon="ph:gender-intersex" />
-                                        <BaseDatePicker v-model="profileForm.date_of_birth" label="Date of Birth"
+                                        <BaseInput v-model="profileForm.full_name" :label="t('my_registration.full_name', 'Nama Lengkap')"
+                                            :placeholder="t('my_registration.full_name_placeholder', 'Nama lengkap')" required icon="ph:user-bold" />
+                                        <BaseSelect v-model="profileForm.gender" :items="genderOptions" :label="t('my_registration.gender', 'Jenis Kelamin')"
+                                            :placeholder="t('my_registration.gender', 'Pilih Jenis Kelamin')" required icon="ph:gender-intersex" />
+                                        <BaseDatePicker v-model="profileForm.date_of_birth" :label="t('my_registration.date_of_birth', 'Tanggal Lahir')"
                                             required />
 
-                                        <BaseSelect v-model="profileForm.country" :items="countries" label="Country"
-                                            placeholder="Select Country" icon="ph:globe-hemisphere-east-bold" />
-                                        <BaseInput v-model="profileForm.club_name" label="Club / Institution"
-                                            icon="ph:users-bold" hint="Cannot be changed here" disabled readonly />
+                                        <BaseSelect v-model="profileForm.country" :items="countries" :label="t('my_registration.country', 'Negara')"
+                                            :placeholder="t('my_registration.country', 'Pilih Negara')" icon="ph:globe-hemisphere-east-bold" />
+                                        <BaseInput v-model="profileForm.club_name" :label="t('my_registration.club', 'Klub / Institusi')"
+                                            icon="ph:users-bold" :hint="t('my_registration.club_hint', 'Tidak dapat diubah di sini')" disabled readonly />
                                     </div>
                                     <div class="p-3.5 bg-primary/10 border border-primary/20 rounded-xl flex gap-2.5">
                                         <Icon icon="ph:info-bold" class="text-navy shrink-0 mt-0.5" />
-                                        <span class="text-xs text-navy/80 font-medium leading-relaxed block">Please
-                                            ensure the data is correct before proceeding with registration.</span>
+                                        <div class="text-xs text-navy/80 font-medium leading-relaxed">
+                                            {{ t('my_registration.ensure_data_correct', 'Pastikan data sudah benar sebelum melanjutkan pendaftaran.') }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -428,8 +429,8 @@
                                 <!-- Category search -->
                                 <div class="relative">
                                     <input v-model="categorySearch" type="text"
-                                        placeholder="Search division or category..."
-                                        class="w-full h-10 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium" />
+                                        :placeholder="t('my_registration.search_category_placeholder', 'Cari divisi atau kategori...')"
+                                        class="w-full h-10 px-4 pl-10 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium" />
                                     <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                                 </div>
 
@@ -499,14 +500,14 @@
                                         </div>
                                     </div>
 
-                                    <div v-if="filteredCategories.length === 0" class="py-10 text-center text-gray-400">
+                                    <div v-if="filteredCategories.length === 0" class="py-10 text-center text-slate-400">
                                         <Icon icon="ph:magnifying-glass-slash" class="text-3xl mx-auto mb-2 opacity-40" />
-                                        <span class="text-xs font-bold tracking-widest block">Category Not Found</span>
+                                        <div class="text-xs font-bold tracking-wider">{{ t('my_registration.category_not_found', 'Kategori Tidak Ditemukan') }}</div>
                                     </div>
                                     <div v-if="categories.length === 0 && !pending"
                                         class="p-4 bg-amber-50 border border-amber-100 rounded-xl flex gap-2.5">
                                         <Icon icon="ph:warning-bold" class="text-amber-500 shrink-0" />
-                                        <span class="text-sm text-amber-700 font-medium block">Category Not Yet Available. Please Contact The Organizer.</span>
+                                        <div class="text-sm text-amber-700 font-medium">{{ t('my_registration.category_not_available', 'Kategori belum tersedia. Silakan hubungi penyelenggara.') }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -552,9 +553,9 @@
                                         <span v-else class="text-xs text-gray-400 shrink-0 capitalize">Included</span>
                                     </div>
                                 </div>
-                                <div v-else class="py-4 text-center border-2 border-dashed border-gray-100 rounded-xl">
-                                    <Icon icon="ph:tag-light" class="text-3xl text-gray-300 mb-1 mx-auto" />
-                                    <span class="text-xs text-gray-300 font-bold tracking-widest block">No Categories Selected Yet</span>
+                                <div v-else class="py-4 text-center border-2 border-dashed border-slate-100 rounded-2xl">
+                                    <Icon icon="ph:tag-light" class="text-3xl text-slate-300 mb-1 mx-auto" />
+                                    <div class="text-xs text-slate-400 font-bold tracking-wider">{{ t('my_registration.no_categories_selected', 'Belum ada kategori yang dipilih') }}</div>
                                 </div>
                                 <div class="pt-4 border-t border-gray-100 space-y-1.5 mt-4">
                                     <div class="flex items-center justify-between text-sm">

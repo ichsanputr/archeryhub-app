@@ -1943,7 +1943,19 @@
     "upload_proof_hint": "JPG, PNG (최대 10MB)",
     "btn_pay_now": "Mayar에서 지금 결제",
     "btn_register_now": "지금 등록하기",
-    "auto_confirm_note": "결제 완료 후 자동으로 확인됩니다."
+    "auto_confirm_note": "결제 완료 후 자동으로 확인됩니다.",
+    "full_name": "성명",
+    "full_name_placeholder": "선수 성명 입력...",
+    "gender": "성별",
+    "date_of_birth": "생년월일",
+    "country": "국가",
+    "club": "소속 클럽 / 기관",
+    "club_hint": "여기서는 변경할 수 없습니다",
+    "ensure_data_correct": "등록을 진행하기 전에 정보가 정확한지 확인하세요.",
+    "login_required_desc": "등록하려면 선수 계정으로 로그인하세요.",
+    "athlete_account_required": "선수 계정 필요",
+    "athlete_account_required_desc": "이 등록은 선수 프로필 전용입니다.",
+    "register_as_athlete": "선수로 회원가입"
   },
   "subscription_payment_page": {
     "back": "구독으로 돌아가기",
