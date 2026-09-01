@@ -1161,7 +1161,8 @@
     "tag_intl_cards": "Visa / Mastercard / AMEX",
     "pay_now_paypal": "Pay Now via PayPal",
     "btn_pay_now_mayar": "Pay Now with Mayar",
-    "btn_pay_now_paypal": "Pay Now with PayPal"
+    "btn_pay_now_paypal": "Pay Now with PayPal",
+    "view_payment_detail": "View Payment & Invoice Details"
   },
   "profile": {
     "country": "Country",

@@ -178,10 +178,18 @@
                             <div class="w-full space-y-4">
                                 <div class="flex items-center justify-between px-1">
                                     <span class="text-[10px] font-black tracking-widest text-slate-400">{{ t('my_registration.payment_status') }}</span>
-                                    <span :class="getStatusClass(participant.payment_status)"
-                                        class="px-2.5 py-1 rounded-xl text-[10px] font-black tracking-widest border">
-                                        {{ getDisplayStatus(participant.payment_status) }}
-                                    </span>
+                                    <div class="flex items-center gap-2">
+                                        <span :class="getStatusClass(participant.payment_status)"
+                                            class="px-2.5 py-1 rounded-xl text-[10px] font-black tracking-widest border">
+                                            {{ getDisplayStatus(participant.payment_status) }}
+                                        </span>
+                                        <NuxtLink v-if="participant.transaction?.reference || participant.payment_reference || participant.payment_id"
+                                            :to="`/payment/status/${participant.transaction?.reference || participant.payment_reference || participant.payment_id}`"
+                                            class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors"
+                                            :title="t('my_registration.view_payment_detail', 'Lihat Detail Invoice & Pembayaran')">
+                                            <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
+                                        </NuxtLink>
+                                    </div>
                                 </div>
 
                                 <!-- Active Transaction / Methods -->
@@ -197,10 +205,13 @@
                                         </div>
                                     </div>
                                     <div class="pt-3 border-t border-slate-100 dark:border-slate-700 space-y-3">
-                                        <div class="flex justify-between text-[10px] font-bold">
+                                        <div class="flex justify-between items-center text-[10px] font-bold">
                                             <span class="text-slate-400">{{ t('my_registration.invoice_no') }}</span>
-                                            <span class="text-navy dark:text-white font-mono truncate max-w-[160px] text-right">{{
-                                                participant.transaction.reference }}</span>
+                                            <NuxtLink :to="`/payment/status/${participant.transaction.reference}`"
+                                                class="text-navy dark:text-white font-mono truncate max-w-[160px] text-right hover:text-primary transition-colors flex items-center gap-1 group">
+                                                <span>{{ participant.transaction.reference }}</span>
+                                                <Icon icon="ph:arrow-square-out-bold" class="text-xs text-slate-400 group-hover:text-primary transition-colors" />
+                                            </NuxtLink>
                                         </div>
 
                                         <!-- VA / Pay code -->

@@ -1161,7 +1161,8 @@
     "tag_intl_cards": "Visa / Mastercard / AMEX",
     "pay_now_paypal": "Bayar Sekarang via PayPal",
     "btn_pay_now_mayar": "Bayar Sekarang via Mayar",
-    "btn_pay_now_paypal": "Bayar Sekarang via PayPal"
+    "btn_pay_now_paypal": "Bayar Sekarang via PayPal",
+    "view_payment_detail": "Lihat Detail Invoice & Pembayaran"
   },
   "profile": {
     "title": "Profil Pemanah",

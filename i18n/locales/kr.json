@@ -1963,7 +1963,8 @@
     "tag_intl_cards": "Visa / Mastercard / AMEX",
     "pay_now_paypal": "PayPal로 지금 결제",
     "btn_pay_now_mayar": "Mayar로 지금 결제",
-    "btn_pay_now_paypal": "PayPal로 지금 결제"
+    "btn_pay_now_paypal": "PayPal로 지금 결제",
+    "view_payment_detail": "결제 및 인보이스 상세 보기"
   },
   "subscription_payment_page": {
     "back": "구독으로 돌아가기",
