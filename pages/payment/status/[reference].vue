@@ -8,7 +8,7 @@
       <!-- Loading State -->
       <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-slate-200/80 shadow-sm max-w-md w-full p-8 text-center">
         <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
-        <div class="text-slate-600 font-bold text-sm">Memuat Status Pembayaran...</div>
+        <div class="text-slate-600 font-bold text-sm">{{ t('payment_status.loading_status', 'Memuat Status Pembayaran...') }}</div>
       </div>
 
       <!-- Error State -->
@@ -16,8 +16,8 @@
         <div class="size-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mb-5 mx-auto border border-red-100 shadow-xs">
           <Icon icon="ph:warning-circle-bold" class="text-3xl" />
         </div>
-        <h2 class="text-xl font-black text-navy mb-2">Transaksi Tidak Ditemukan</h2>
-        <p class="text-slate-500 text-xs font-medium leading-relaxed mb-6">{{ errorMsg }}</p>
+        <h2 class="text-xl font-black text-navy mb-2">{{ t('payment_status.not_found_title', 'Transaksi Tidak Ditemukan') }}</h2>
+        <div class="text-slate-500 text-xs font-medium leading-relaxed mb-6">{{ errorMsg }}</div>
         <BaseButton :to="dashboardBackUrl" variant="navy" size="md" class="w-full justify-center">
           {{ dashboardBackLabel }}
         </BaseButton>
@@ -34,43 +34,43 @@
                 <Icon icon="ph:check-bold" class="text-3xl" />
               </div>
             </div>
-            <h2 class="text-2xl font-black text-navy tracking-tight">Pembayaran Berhasil!</h2>
-            <p class="text-xs text-slate-500 font-medium">Terima kasih, pembayaran Anda telah diverifikasi dan dikonfirmasi secara instan.</p>
+            <h2 class="text-2xl font-black text-navy tracking-tight">{{ t('payment_status.paid_title', 'Pembayaran Berhasil!') }}</h2>
+            <div class="text-xs text-slate-500 font-medium">{{ t('payment_status.paid_desc', 'Terima kasih, pembayaran Anda telah diverifikasi dan dikonfirmasi secara instan.') }}</div>
           </div>
 
           <!-- Transaction Details -->
           <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3.5">
             <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-500 font-bold">Nomor Referensi</span>
+              <span class="text-slate-500 font-bold">{{ t('payment_status.ref_number', 'Nomor Referensi') }}</span>
               <span class="font-mono text-navy font-black">{{ tx.reference }}</span>
             </div>
             
             <div v-if="tx.description || tx.event_name" class="flex justify-between items-start text-xs gap-4">
-              <span class="text-slate-500 font-bold shrink-0">Item / Deskripsi</span>
+              <span class="text-slate-500 font-bold shrink-0">{{ t('payment_status.item_description', 'Item / Deskripsi') }}</span>
               <span class="text-navy font-black text-right">{{ tx.event_name || tx.plan_name || tx.description }}</span>
             </div>
 
             <div v-if="tx.athlete_name" class="flex justify-between items-center text-xs">
-              <span class="text-slate-500 font-bold">Nama Atlet</span>
+              <span class="text-slate-500 font-bold">{{ t('payment_status.athlete_name', 'Nama Atlet') }}</span>
               <span class="text-navy font-black">{{ tx.athlete_name }}</span>
             </div>
 
             <div v-if="tx.division || tx.category" class="flex justify-between items-center text-xs">
-              <span class="text-slate-500 font-bold">Kategori Lomba</span>
+              <span class="text-slate-500 font-bold">{{ t('payment_status.competition_category', 'Kategori Lomba') }}</span>
               <span class="text-navy font-black text-right">
                 {{ tx.division || '' }} {{ tx.category ? ` ${tx.category}` : '' }}
               </span>
             </div>
 
             <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-500 font-bold">Metode Pembayaran</span>
+              <span class="text-slate-500 font-bold">{{ t('payment_status.payment_method', 'Metode Pembayaran') }}</span>
               <span class="text-navy font-black">{{ formatPaymentMethodName(tx.payment_method) }}</span>
             </div>
 
             <div class="h-px bg-slate-200/80 my-1"></div>
 
             <div class="flex justify-between items-center">
-              <span class="text-xs text-slate-500 font-bold">Total Bayar</span>
+              <span class="text-xs text-slate-500 font-bold">{{ t('payment_status.total_paid', 'Total Bayar') }}</span>
               <span class="text-xl font-black text-navy tabular-nums">Rp {{ formatNumber(tx.total_amount) }}</span>
             </div>
           </div>
@@ -82,7 +82,7 @@
             </BaseButton>
             <a :href="getInvoiceUrl(tx.reference)" target="_blank" class="flex items-center justify-center gap-2 border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 transition-colors text-navy text-xs font-bold py-3 px-4 rounded-xl shadow-2xs">
               <Icon icon="ph:file-pdf" class="text-base text-red-500" />
-              Unduh Invoice (PDF)
+              <span>{{ t('payment_status.download_invoice', 'Unduh Invoice (PDF)') }}</span>
             </a>
           </div>
         </div>
@@ -95,30 +95,35 @@
               <Icon :icon="(tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'ph:receipt-bold' : 'ph:clock-bold'" class="text-3xl" />
             </div>
             <h2 class="text-2xl font-black text-navy tracking-tight">
-              {{ (tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? 'Bukti Pembayaran Diterima' : 'Menunggu Pembayaran' }}
+              {{ (tx.payment_method === 'manual' || tx.status === 'awaiting_verification') ? t('payment_status.proof_received_title', 'Bukti Pembayaran Diterima') : t('payment_status.awaiting_payment_title', 'Menunggu Pembayaran') }}
             </h2>
             <div class="text-xs text-slate-500 font-medium">
               {{ (tx.payment_method === 'manual' || tx.status === 'awaiting_verification')
-                ? 'Bukti transfer Anda telah kami terima. Harap tunggu verifikasi dari penyelenggara.'
-                : 'Silakan selesaikan pembayaran Anda sebelum batas waktu kadaluarsa.' }}
+                ? t('payment_status.proof_received_desc', 'Bukti transfer Anda telah kami terima. Harap tunggu verifikasi dari penyelenggara.')
+                : t('payment_status.awaiting_payment_desc', 'Silakan selesaikan pembayaran Anda sebelum batas waktu kedaluwarsa.') }}
             </div>
           </div>
 
           <!-- Direct Mayar Online Checkout Card -->
-          <div v-if="isRealCheckoutUrl(tx.checkout_url)" class="bg-navy/[0.02] border-2 border-primary/40 rounded-2xl p-5 space-y-4 shadow-sm">
-            <div class="space-y-1">
-              <div class="text-sm font-black text-navy flex items-center gap-2">
-                <Icon icon="ph:shield-check-fill" class="text-primary text-lg" />
-                <span>Selesaikan Pembayaran via Mayar</span>
+          <div v-if="isRealCheckoutUrl(tx.checkout_url)" class="bg-gradient-to-br from-amber-500/10 via-amber-50/70 to-primary/15 border-2 border-primary/60 rounded-2xl p-5 sm:p-6 space-y-4 shadow-2xs">
+            <div class="flex items-center gap-3">
+              <div class="size-11 rounded-xl bg-white border border-amber-200/80 flex items-center justify-center p-1.5 shrink-0 shadow-2xs">
+                <img src="/mayar-logo.png" alt="Mayar" class="w-full h-full object-contain" />
               </div>
-              <div class="text-xs text-slate-500 font-medium leading-relaxed">
-                Pilih QRIS (Semua E-Wallet/Mobile Banking) atau Virtual Account (BCA, Mandiri, BRI, BNI, Permata) langsung di portal invoice Mayar.
+              <div class="space-y-0.5 min-w-0 flex-1">
+                <div class="text-sm font-black text-navy leading-tight">
+                  {{ t('payment_status.pay_via_mayar_title', 'Selesaikan Pembayaran via Mayar') }}
+                </div>
+                <div class="text-xs text-slate-600 font-medium leading-relaxed">
+                  {{ t('payment_status.pay_via_mayar_desc', 'Pilih QRIS (Semua E-Wallet/Mobile Banking) atau Virtual Account (BCA, Mandiri, BRI, BNI, Permata) langsung di portal invoice Mayar.') }}
+                </div>
               </div>
             </div>
 
-            <a :href="tx.checkout_url" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-hover text-navy font-black text-sm sm:text-base py-3.5 px-5 rounded-xl shadow-md shadow-primary/20 hover:shadow-lg transition-all cursor-pointer">
-              <Icon icon="ph:arrow-square-out-bold" class="text-lg" />
-              <span>Bayar Sekarang di Mayar</span>
+            <!-- Single, Primary Direct Checkout CTA -->
+            <a :href="tx.checkout_url" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2.5 bg-primary hover:bg-primary-hover text-navy font-black text-sm sm:text-base py-3.5 px-5 rounded-xl shadow-md shadow-primary/20 hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer">
+              <Icon icon="ph:arrow-square-out-bold" class="text-xl" />
+              <span>{{ t('payment_status.btn_pay_now_mayar', 'Bayar Sekarang di Mayar') }}</span>
             </a>
           </div>
 
@@ -127,14 +132,14 @@
             <div class="flex items-start gap-3">
               <Icon icon="ph:info-bold" class="text-blue-600 shrink-0 mt-0.5" />
               <div class="space-y-1">
-                <div class="text-xs font-black text-blue-900">Status: Menunggu Verifikasi Penyelenggara</div>
+                <div class="text-xs font-black text-blue-900">{{ t('payment_status.manual_verif_title', 'Status: Menunggu Verifikasi Penyelenggara') }}</div>
                 <div class="text-xs text-blue-700 font-medium leading-relaxed">
-                  Penyelenggara akan memverifikasi bukti pembayaran Anda dalam 1x24 jam. Anda akan mendapat notifikasi setelah dikonfirmasi.
+                  {{ t('payment_status.manual_verif_desc', 'Penyelenggara akan memverifikasi bukti pembayaran Anda dalam 1x24 jam. Anda akan mendapat notifikasi setelah dikonfirmasi.') }}
                 </div>
               </div>
             </div>
             <div v-if="tx.proof_url" class="mt-3 pt-3 border-t border-blue-100/80 flex flex-col items-center gap-2">
-              <span class="text-[11px] font-bold text-blue-900">Bukti Pembayaran Diunggah:</span>
+              <span class="text-[11px] font-bold text-blue-900">{{ t('payment_status.proof_uploaded_label', 'Bukti Pembayaran Diunggah:') }}</span>
               <a :href="tx.proof_url" target="_blank" rel="noopener noreferrer" class="block rounded-xl overflow-hidden border border-blue-200/80 shadow-2xs hover:scale-105 transition-transform">
                 <img :src="tx.proof_url" alt="Bukti Transfer" class="h-32 object-cover" />
               </a>
@@ -145,50 +150,50 @@
           <div v-else-if="tx.qr_url || tx.va_number || tx.pay_code" class="bg-amber-50/60 border border-amber-200/70 rounded-2xl p-5 space-y-4">
             <!-- Simple QRIS Image -->
             <div v-if="tx.qr_url" class="flex flex-col items-center justify-center space-y-2 py-1">
-              <span class="text-xs font-black text-amber-900 tracking-wider">Pindai QRIS Pembayaran</span>
+              <span class="text-xs font-black text-amber-900 capitalize tracking-wider">{{ t('payment_status.scan_qris', 'Pindai QRIS Pembayaran') }}</span>
               <img :src="tx.qr_url" alt="QRIS Code" class="size-56 sm:size-64 object-contain rounded-xl shadow-2xs border border-amber-200/60 bg-white p-2" />
             </div>
 
             <!-- Virtual Account or Pay Code -->
             <div v-if="tx.va_number || tx.pay_code" class="space-y-2">
-              <div class="text-[10px] font-black text-amber-700 tracking-wider">
-                {{ tx.payment_method?.includes('VA') || tx.va_number ? 'Nomor Virtual Account' : 'Kode Bayar' }}
+              <div class="text-[10px] font-black text-amber-700 capitalize tracking-wider">
+                {{ tx.payment_method?.includes('VA') || tx.va_number ? t('payment_status.va_number', 'Nomor Virtual Account') : t('payment_status.pay_code', 'Kode Bayar') }}
               </div>
               <div class="flex items-center justify-between gap-3 bg-white border border-amber-200 rounded-xl px-4 py-3 shadow-2xs">
                 <span class="font-mono font-black text-navy text-lg sm:text-xl tracking-wider select-all">{{ tx.va_number || tx.pay_code }}</span>
                 <button type="button" @click="copyText(tx.va_number || tx.pay_code)" class="flex items-center gap-1 text-xs font-bold text-amber-700 hover:text-amber-800 transition-colors bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-lg border border-amber-200 shrink-0">
                   <Icon :icon="copied ? 'ph:check-bold' : 'ph:copy-bold'" class="text-sm" />
-                  {{ copied ? 'Tersalin' : 'Salin' }}
+                  <span>{{ copied ? t('payment_status.copied', 'Tersalin') : t('payment_status.copy', 'Salin') }}</span>
                 </button>
               </div>
             </div>
 
             <div v-if="tx.expired_at" class="text-[11px] text-amber-700/80 font-medium flex items-center gap-1.5 pt-1 justify-center sm:justify-start">
               <Icon icon="ph:hourglass-medium-bold" />
-              <span>Batas Waktu Pembayaran: {{ formatExpiry(tx.expired_at) }}</span>
+              <span>{{ t('payment_status.pay_before', 'Batas Waktu Pembayaran') }}: {{ formatExpiry(tx.expired_at) }}</span>
             </div>
           </div>
 
           <!-- Transaction Summary -->
           <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3">
             <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-500 font-bold">Nomor Referensi</span>
+              <span class="text-slate-500 font-bold">{{ t('payment_status.ref_number', 'Nomor Referensi') }}</span>
               <span class="font-mono text-navy font-black">{{ tx.reference }}</span>
             </div>
             <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-500 font-bold">Metode Pembayaran</span>
+              <span class="text-slate-500 font-bold">{{ t('payment_status.payment_method', 'Metode Pembayaran') }}</span>
               <span class="text-navy font-black">{{ formatPaymentMethodName(tx.payment_method) }}</span>
             </div>
             <div class="h-px bg-slate-200/80 my-1"></div>
             <div class="flex justify-between items-center">
-              <span class="text-xs text-slate-500 font-bold">Total Tagihan</span>
+              <span class="text-xs text-slate-500 font-bold">{{ t('payment_status.total_bill', 'Total Tagihan') }}</span>
               <span class="text-xl font-black text-navy tabular-nums">Rp {{ formatNumber(tx.total_amount) }}</span>
             </div>
           </div>
 
           <!-- Instructions Tabs -->
           <div v-if="instructionGroups.length > 0" class="space-y-3">
-            <h3 class="text-xs font-black text-slate-400 tracking-wider">Instruksi Pembayaran</h3>
+            <h3 class="text-xs font-black text-slate-400 capitalize tracking-wider">{{ t('payment_status.payment_instructions', 'Instruksi Pembayaran') }}</h3>
             <div class="flex flex-wrap gap-2">
               <button v-for="(group, idx) in instructionGroups" :key="idx" @click="activeGroupIdx = idx" type="button" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all border" :class="activeGroupIdx === idx ? 'bg-navy text-white border-navy shadow-xs' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'">
                 {{ group.title }}
@@ -203,19 +208,15 @@
           <div v-if="tx.reference && tx.reference.includes('DEV-')" class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl space-y-2">
             <div class="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
               <Icon icon="ph:wrench-bold" />
-              Simulasi Pembayaran (Mode Pengembangan)
+              <span>Simulasi Pembayaran (Mode Pengembangan)</span>
             </div>
             <BaseButton @click="triggerInstantConfirmation" variant="primary" size="md" :loading="isSimulating" class="w-full justify-center font-bold">
               Simulasi Pembayaran Lunas
             </BaseButton>
           </div>
 
-          <!-- Action Buttons -->
-          <div class="space-y-3">
-            <a v-if="isRealCheckoutUrl(tx.checkout_url)" :href="tx.checkout_url" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-navy font-black text-sm py-3.5 px-4 rounded-xl shadow-xs transition-colors">
-              <Icon icon="ph:arrow-square-out-bold" class="text-base" />
-              <span>Bayar Langsung via Mayar</span>
-            </a>
+          <!-- Single Back Action Button (No Duplicate CTA) -->
+          <div class="pt-2">
             <BaseButton :to="dashboardBackUrl" variant="navy" size="lg" class="w-full justify-center font-bold">
               {{ dashboardBackLabel }}
             </BaseButton>
@@ -228,17 +229,19 @@
             <div class="size-16 rounded-2xl bg-red-50 text-red-500 border border-red-200 flex items-center justify-center mx-auto shadow-xs">
               <Icon icon="ph:x-circle-bold" class="text-3xl" />
             </div>
-            <h2 class="text-2xl font-black text-navy tracking-tight">Pembayaran Gagal</h2>
-            <div class="text-xs text-slate-500 font-medium">Transaksi ini berstatus <span class="font-bold text-red-600 capitalize">{{ formatTitleCase(tx.status) }}</span> dan tidak dapat dilanjutkan.</div>
+            <h2 class="text-2xl font-black text-navy tracking-tight">{{ t('payment_status.failed_title', 'Pembayaran Gagal') }}</h2>
+            <div class="text-xs text-slate-500 font-medium">
+              {{ t('payment_status.failed_desc', { status: formatTitleCase(tx.status) }).replace('{status}', formatTitleCase(tx.status)) }}
+            </div>
           </div>
 
           <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 space-y-3">
             <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-500 font-bold">Nomor Referensi</span>
+              <span class="text-slate-500 font-bold">{{ t('payment_status.ref_number', 'Nomor Referensi') }}</span>
               <span class="font-mono text-navy font-black">{{ tx.reference }}</span>
             </div>
             <div class="flex justify-between items-center text-xs">
-              <span class="text-slate-500 font-bold">Total Tagihan</span>
+              <span class="text-slate-500 font-bold">{{ t('payment_status.total_bill', 'Total Tagihan') }}</span>
               <span class="text-navy font-black tabular-nums">Rp {{ formatNumber(tx.total_amount) }}</span>
             </div>
           </div>
@@ -258,20 +261,20 @@
 </template>
 
 <script setup>
-const { t } = useI18n()
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from '#app'
 import { usePayment } from '~/composables/usePayment'
 import { useRuntimeConfig } from '#imports'
 
+const { t } = useI18n()
+
 definePageMeta({
     layout: 'blank'
 })
 
-useHead({ title: computed(() => t('payment.status_title', 'Payment Status') + ' - ArcheryHub') })
-
+useHead({ title: computed(() => t('payment_status.status_title', 'Status Pembayaran') + ' - ArcheryHub') })
 
 const route = useRoute()
 const router = useRouter()
@@ -293,12 +296,12 @@ const dashboardBackUrl = computed(() => {
 
 const dashboardBackLabel = computed(() => {
     if (reference?.startsWith('QUOTA-') || userPersona.value === 'organizer') {
-        return 'Kembali ke Manajemen Paket & Kuota'
+        return t('payment_status.back_package', 'Kembali ke Manajemen Paket & Kuota')
     }
     if (userPersona.value === 'seller') {
-        return 'Kembali ke Pesanan Toko'
+        return t('payment_status.back_orders', 'Kembali ke Pesanan Toko')
     }
-    return 'Kembali ke Riwayat Pembayaran'
+    return t('payment_status.back_payments', 'Kembali ke Riwayat Pembayaran')
 })
 
 const tx = ref(null)
@@ -341,7 +344,7 @@ const loadPaymentDetails = async () => {
     try {
         const res = await payment.getPaymentStatus(reference)
         if (!res) {
-            errorMsg.value = 'Transaksi tidak ditemukan atau tanggapan kosong.'
+            errorMsg.value = t('payment_status.not_found_title', 'Transaksi tidak ditemukan atau tanggapan kosong.')
             return
         }
         tx.value = res
@@ -358,7 +361,7 @@ const loadPaymentDetails = async () => {
         }
     } catch (err) {
         console.error('Failed to load payment details:', err)
-        errorMsg.value = err?.data?.error || 'Gagal memuat rincian transaksi.'
+        errorMsg.value = err?.data?.error || t('payment_status.not_found_title', 'Gagal memuat rincian transaksi.')
     } finally {
         isLoading.value = false
     }
