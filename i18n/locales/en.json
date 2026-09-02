@@ -3314,9 +3314,9 @@
       "approve_error": "Failed to approve payment"
     },
     "edit": {
-      "title": "Edit Participant Registration",
+      "title": "Edit Participant Data",
       "title_short": "Edit",
-      "subtitle": "Modify competition categories, payment status, and athlete registration data.",
+      "subtitle": "Modify tournament categories, payment status, and archer registration info.",
       "actions": {
         "save_changes": "Save Changes"
       },
@@ -3341,8 +3341,23 @@
         "select_category": "Please select an event category first"
       },
       "subscription_expired": "Your plan has expired. Please renew your plan to edit participants.",
-      "save_success": "Registration data updated successfully",
-      "save_error": "Failed to save changes"
+      "save_success": "Participant data updated successfully",
+      "save_error": "Failed to save changes",
+      "payment_title": "Payment Status & Amount",
+      "field_assignment": "Field Assignment",
+      "accreditation_status": "Accreditation Status",
+      "select_accreditation": "Select Accreditation Status",
+      "status_approved": "Approved",
+      "status_pending": "Pending",
+      "status_rejected": "Rejected",
+      "status_cancelled": "Cancelled",
+      "target_number": "Target Number",
+      "target_face": "Target Face Position",
+      "additional_notes": "Additional Notes",
+      "form_actions": "Form Actions",
+      "categories_selected": "Categories Selected",
+      "no_categories": "No tournament categories available.",
+      "independent": "Independent Club"
     },
     "status": {
       "registered": "Registered",

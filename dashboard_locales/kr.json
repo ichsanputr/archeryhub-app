@@ -1429,5 +1429,27 @@
     "event_dates_label": "대회 일정",
     "download_thb": "대회 요강 (THB) 다운로드",
     "schedule_rundown": "경기 일정 및 런다운"
+  },
+  "participant": {
+    "edit": {
+      "title": "선수 정보 수정",
+      "subtitle": "대회 부문, 결제 상태 및 참가 등록 정보를 변경합니다.",
+      "payment_title": "결제 상태 및 금액",
+      "field_assignment": "현장 배정",
+      "accreditation_status": "출전 승인 상태",
+      "select_accreditation": "출전 승인 상태 선택",
+      "status_approved": "승인됨 (Approved)",
+      "status_pending": "대기 중 (Pending)",
+      "status_rejected": "반려됨 (Rejected)",
+      "status_cancelled": "취소됨",
+      "target_number": "표적 번호",
+      "target_face": "표적 페이스 위치",
+      "additional_notes": "추가 메모",
+      "form_actions": "양식 작업",
+      "categories_selected": "선택된 부문",
+      "no_categories": "등록 가능한 대회 부문이 없습니다.",
+      "independent": "독립 클럽",
+      "save_success": "선수 정보가 성공적으로 저장되었습니다"
+    }
   }
 }

@@ -2269,10 +2269,25 @@
       "approve_error": "Gagal menyetujui pembayaran"
     },
     "edit": {
-      "title": "Edit Registrasi Peserta",
+      "title": "Edit Data Peserta",
       "subtitle": "Ubah kategori lomba, status pembayaran, dan data registrasi atlet.",
-      "save_success": "Data registrasi berhasil diperbarui",
-      "save_error": "Gagal menyimpan perubahan"
+      "save_success": "Perubahan data peserta berhasil disimpan",
+      "save_error": "Gagal menyimpan perubahan",
+      "payment_title": "Status & Nominal Pembayaran",
+      "field_assignment": "Penugasan Lapangan",
+      "accreditation_status": "Status Akreditasi",
+      "select_accreditation": "Pilih Status Akreditasi",
+      "status_approved": "Disetujui (Approved)",
+      "status_pending": "Menunggu (Pending)",
+      "status_rejected": "Ditolak (Rejected)",
+      "status_cancelled": "Dibatalkan",
+      "target_number": "Nomor Bantalan",
+      "target_face": "Posisi Target (Face)",
+      "additional_notes": "Catatan Tambahan",
+      "form_actions": "Aksi Formulir",
+      "categories_selected": "Kategori Dipilih",
+      "no_categories": "Belum ada kategori turnamen yang tersedia.",
+      "independent": "Klub Independen"
     }
   },
   "doc_search": {

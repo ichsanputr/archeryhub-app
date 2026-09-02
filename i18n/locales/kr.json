@@ -2794,9 +2794,9 @@
       }
     },
     "edit": {
-      "title": "참가자 편집",
+      "title": "선수 정보 수정",
       "title_short": "편집",
-      "subtitle": "참가자 등록 정보 수정",
+      "subtitle": "대회 부문, 결제 상태 및 참가 등록 정보를 변경합니다.",
       "actions": {
         "save_changes": "변경 사항 저장"
       },
@@ -2820,7 +2820,23 @@
       "errors": {
         "select_category": "먼저 이벤트 카테고리를 선택해 주세요"
       },
-      "subscription_expired": "요금제 기간이 만료되었습니다. 참가자를 편집하려면 요금제를 갱신하세요."
+      "subscription_expired": "요금제 기간이 만료되었습니다. 참가자를 편집하려면 요금제를 갱신하세요.",
+      "payment_title": "결제 상태 및 금액",
+      "field_assignment": "현장 배정",
+      "accreditation_status": "출전 승인 상태",
+      "select_accreditation": "출전 승인 상태 선택",
+      "status_approved": "승인됨 (Approved)",
+      "status_pending": "대기 중 (Pending)",
+      "status_rejected": "반려됨 (Rejected)",
+      "status_cancelled": "취소됨",
+      "target_number": "표적 번호",
+      "target_face": "표적 페이스 위치",
+      "additional_notes": "추가 메모",
+      "form_actions": "양식 작업",
+      "categories_selected": "선택된 부문",
+      "no_categories": "등록 가능한 대회 부문이 없습니다.",
+      "independent": "독립 클럽",
+      "save_success": "선수 정보가 성공적으로 저장되었습니다"
     },
     "status": {
       "registered": "등록 완료",

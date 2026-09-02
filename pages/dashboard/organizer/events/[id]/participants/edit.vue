@@ -38,14 +38,20 @@ const form = reactive({
     notes: ''
 })
 
-const paymentStatusOptions = [
-    { label: 'Terdaftar (Lunas)', value: 'paid' },
-    { label: 'Menunggu Pembayaran', value: 'pending' },
-    { label: 'Dibatalkan', value: 'rejected' }
-]
+const paymentStatusOptions = computed(() => [
+    { label: t('dashboard.participants_list.status_options.paid', 'Terdaftar (Lunas)'), value: 'paid' },
+    { label: t('dashboard.participants_list.status_options.pending', 'Menunggu Pembayaran'), value: 'pending' },
+    { label: t('participant.edit.status_cancelled', 'Dibatalkan'), value: 'rejected' }
+])
+
+const accreditationOptions = computed(() => [
+    { label: t('participant.edit.status_approved', 'Disetujui (Approved)'), value: 'approved' },
+    { label: t('participant.edit.status_pending', 'Menunggu (Pending)'), value: 'pending' },
+    { label: t('participant.edit.status_rejected', 'Ditolak (Rejected)'), value: 'rejected' }
+])
 
 useHead({
-    title: computed(() => `${t('participant.edit.title', 'Edit Registrasi Peserta')} - ArcheryHub Dashboard`)
+    title: computed(() => `${t('participant.edit.title', 'Edit Data Peserta')} - ArcheryHub Dashboard`)
 })
 
 onMounted(async () => {
@@ -60,11 +66,24 @@ const fetchParticipantData = async () => {
             get(`/events/${eventId.value}/participants/${archerId.value}`),
             get(`/events/${eventId.value}/categories`)
         ])
-        const p = partRes.data || partRes
+        const p = partRes?.data || partRes
         participant.value = p
-        categories.value = catRes.data || catRes || []
+        
+        // Extract categories list properly from catRes
+        const catList = catRes?.events || catRes?.categories || catRes?.data || (Array.isArray(catRes) ? catRes : [])
+        categories.value = catList
 
-        form.category_ids = p.category_ids || (p.category_id ? [p.category_id] : [])
+        // Populate registered category IDs
+        if (p.categories && Array.isArray(p.categories) && p.categories.length > 0) {
+            form.category_ids = p.categories.map(c => c.category_id || c.id).filter(Boolean)
+        } else if (p.category_id) {
+            form.category_ids = [p.category_id]
+        } else if (p.category_ids && Array.isArray(p.category_ids)) {
+            form.category_ids = [...p.category_ids]
+        } else {
+            form.category_ids = []
+        }
+
         form.payment_status = p.payment_status || p.status || 'pending'
         form.payment_amount = p.payment_amount || p.total_fee || 0
         form.accreditation_status = p.accreditation_status || 'pending'
@@ -79,13 +98,37 @@ const fetchParticipantData = async () => {
     }
 }
 
+const getCategoryTitle = (cat) => {
+    if (!cat) return '-'
+    if (cat.label) return cat.label
+    if (cat.name) return cat.name
+    const parts = [
+        cat.division_name,
+        cat.category_name,
+        cat.event_type_name,
+        cat.gender_division_name
+    ].filter(Boolean)
+    return parts.length > 0 ? parts.join(' - ') : '-'
+}
+
+const getCategorySubtitle = (cat) => {
+    if (!cat) return '-'
+    if (cat.description) return cat.description
+    if (cat.class_name) return cat.class_name
+    const details = [
+        cat.event_type_name,
+        cat.gender_division_name
+    ].filter(Boolean)
+    return details.length > 0 ? details.join(' • ') : '-'
+}
+
 const filteredCategories = computed(() => {
     if (!categorySearch.value) return categories.value
     const q = categorySearch.value.toLowerCase()
     return categories.value.filter(c => {
-        const name = (c.label || c.name || '').toLowerCase()
-        const desc = (c.description || c.class_name || '').toLowerCase()
-        return name.includes(q) || desc.includes(q)
+        const title = getCategoryTitle(c).toLowerCase()
+        const subtitle = getCategorySubtitle(c).toLowerCase()
+        return title.includes(q) || subtitle.includes(q)
     })
 })
 
@@ -193,9 +236,9 @@ const handleSubmit = async () => {
                         <div class="flex-1 min-w-0">
                             <div class="font-bold text-slate-900 text-lg sm:text-xl">{{ participant.full_name }}</div>
                             <div class="flex flex-wrap items-center gap-3 text-sm text-slate-500 font-medium mt-1">
-                                <span>{{ participant.athlete_code || 'ID: ' + (participant.archer_id || '').substring(0, 8) }}</span>
+                                <span>{{ participant.athlete_code || 'ID: ' + (participant.archer_id || '-').substring(0, 8) }}</span>
                                 <span>•</span>
-                                <span>{{ participant.club_name || 'Klub Independen' }}</span>
+                                <span>{{ participant.club_name || t('participant.edit.independent', 'Klub Independen') }}</span>
                                 <span>•</span>
                                 <span>{{ participant.email || '-' }}</span>
                             </div>
@@ -210,7 +253,7 @@ const handleSubmit = async () => {
                                 <span>{{ t('participant.detail.division_label', 'Pilih Kategori Turnamen') }}</span>
                             </h2>
                             <span class="text-sm font-semibold text-slate-500">
-                                {{ form.category_ids.length }} Kategori Dipilih
+                                {{ form.category_ids.length }} {{ t('participant.edit.categories_selected', 'Kategori Dipilih') }}
                             </span>
                         </div>
 
@@ -221,7 +264,7 @@ const handleSubmit = async () => {
                             <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base" />
                         </div>
 
-                        <div class="max-h-[380px] overflow-y-auto pr-2 space-y-2.5">
+                        <div v-if="filteredCategories.length > 0" class="max-h-[380px] overflow-y-auto pr-2 space-y-2.5">
                             <div v-for="category in filteredCategories" :key="category.id"
                                 class="p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between group"
                                 :class="form.category_ids.includes(category.id)
@@ -236,11 +279,18 @@ const handleSubmit = async () => {
                                         <Icon v-if="form.category_ids.includes(category.id)" icon="ph:check-bold" class="text-xs" />
                                     </div>
                                     <div>
-                                        <div class="text-sm sm:text-base font-bold text-slate-900 leading-tight">{{ category.label || category.name }}</div>
-                                        <div class="text-xs sm:text-sm text-slate-500 mt-0.5">{{ category.description || category.class_name || '-' }}</div>
+                                        <div class="text-sm sm:text-base font-bold text-slate-900 leading-tight">
+                                            {{ getCategoryTitle(category) }}
+                                        </div>
+                                        <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
+                                            {{ getCategorySubtitle(category) }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div v-else class="py-8 text-center text-sm text-slate-400 italic">
+                            {{ t('participant.edit.no_categories', 'Belum ada kategori turnamen yang tersedia.') }}
                         </div>
                     </div>
 
@@ -248,7 +298,7 @@ const handleSubmit = async () => {
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
                         <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
                             <Icon icon="ph:currency-circle-dollar-bold" class="text-slate-600 text-xl" />
-                            <span>Status & Nominal Pembayaran</span>
+                            <span>{{ t('participant.edit.payment_title', 'Status & Nominal Pembayaran') }}</span>
                         </h2>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-1">
@@ -268,27 +318,23 @@ const handleSubmit = async () => {
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
                         <h2 class="text-base font-bold text-slate-900 flex items-center gap-2 mb-1">
                             <Icon icon="ph:seal-check-bold" class="text-slate-600 text-xl" />
-                            <span>Penugasan Lapangan</span>
+                            <span>{{ t('participant.edit.field_assignment', 'Penugasan Lapangan') }}</span>
                         </h2>
 
-                        <BaseSelect v-model="form.accreditation_status" label="Status Akreditasi" required
-                            :items="[
-                                { label: 'Approved (Disetujui)', value: 'approved' },
-                                { label: 'Pending (Menunggu)', value: 'pending' },
-                                { label: 'Rejected (Ditolak)', value: 'rejected' }
-                            ]"
+                        <BaseSelect v-model="form.accreditation_status" :label="t('participant.edit.accreditation_status', 'Status Akreditasi')" required
+                            :items="accreditationOptions"
                             item-title="label" item-value="value"
-                            placeholder="Pilih Status Akreditasi" />
+                            :placeholder="t('participant.edit.select_accreditation', 'Pilih Status Akreditasi')" />
 
-                        <BaseInput v-model="form.target_number" label="Nomor Bantalan" placeholder="Contoh: 12" />
-                        <BaseInput v-model="form.target_face" label="Posisi Target (Face)" placeholder="Contoh: A / B / C / D" />
+                        <BaseInput v-model="form.target_number" :label="t('participant.edit.target_number', 'Nomor Bantalan')" placeholder="Contoh: 12" />
+                        <BaseInput v-model="form.target_face" :label="t('participant.edit.target_face', 'Posisi Target (Face)')" placeholder="Contoh: A / B / C / D" />
                         
-                        <BaseInput v-model="form.notes" label="Catatan Tambahan" placeholder="Catatan internal panitia..." type="textarea" />
+                        <BaseInput v-model="form.notes" :label="t('participant.edit.additional_notes', 'Catatan Tambahan')" placeholder="Catatan internal panitia..." type="textarea" />
                     </div>
 
                     <!-- Action Card -->
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-3">
-                        <span class="text-xs font-semibold text-slate-400 block mb-1">Aksi Formulir</span>
+                        <span class="text-xs font-semibold text-slate-400 block mb-1">{{ t('participant.edit.form_actions', 'Aksi Formulir') }}</span>
                         <BaseButton type="submit" variant="primary" icon="ph:floppy-disk-bold"
                             class="w-full h-11 justify-center text-sm font-bold shadow-md shadow-primary/20"
                             :loading="isSubmitting">
