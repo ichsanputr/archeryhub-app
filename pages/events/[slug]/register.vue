@@ -409,35 +409,62 @@
                                 </div>
                             </div>
                             <div class="p-6">
-                                <div class="grid grid-cols-2 gap-3">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                    <!-- Individual Option -->
                                     <button type="button"
                                         @click="participantType = 'individual'"
-                                        :class="participantType === 'individual' ? 'border-primary/80 bg-primary/5 shadow-2xs' : 'border-slate-200 hover:border-slate-300 bg-white'"
-                                        class="flex flex-col items-center gap-2.5 p-4 rounded-2xl border transition-all text-left cursor-pointer">
-                                        <div class="size-10 rounded-xl flex items-center justify-center" :class="participantType === 'individual' ? 'bg-primary text-navy' : 'bg-slate-100 text-slate-500'">
-                                            <Icon icon="ph:user-bold" class="text-xl" />
+                                        :class="participantType === 'individual' 
+                                            ? 'border-primary bg-primary/5 shadow-xs ring-1 ring-primary/30' 
+                                            : 'border-slate-200 hover:border-slate-300 bg-white shadow-2xs'"
+                                        class="relative flex flex-col items-center gap-3 p-5 rounded-2xl border-2 transition-all text-center cursor-pointer group">
+                                        <!-- Absolute Top Corner Check Badge -->
+                                        <div class="absolute top-3 right-3 size-6 rounded-full flex items-center justify-center transition-all"
+                                            :class="participantType === 'individual' 
+                                                ? 'bg-primary text-navy shadow-xs scale-100' 
+                                                : 'border-2 border-slate-300 bg-white group-hover:border-slate-400'">
+                                            <Icon v-if="participantType === 'individual'" icon="ph:check-bold" class="text-xs font-black" />
                                         </div>
-                                        <div class="text-center">
-                                            <div class="text-sm font-black text-navy">{{ t('my_registration.individual_type', 'Individu') }}</div>
-                                            <div class="text-xs text-slate-500 font-medium mt-0.5">{{ t('my_registration.individual_type_desc', 'Daftar sendiri di satu atau lebih kategori') }}</div>
+
+                                        <div class="size-12 rounded-xl flex items-center justify-center transition-colors"
+                                            :class="participantType === 'individual' ? 'bg-primary text-navy shadow-xs' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200/70'">
+                                            <Icon icon="ph:user-bold" class="text-2xl" />
                                         </div>
-                                        <div v-if="participantType === 'individual'" class="text-primary mt-auto">
-                                            <Icon icon="ph:check-circle-fill" class="text-lg" />
+                                        <div>
+                                            <div class="text-sm sm:text-base font-black text-navy leading-tight">
+                                                {{ t('my_registration.individual_type', 'Individu') }}
+                                            </div>
+                                            <div class="text-xs text-slate-500 font-medium mt-1 leading-snug">
+                                                {{ t('my_registration.individual_type_desc', 'Daftar sendiri di satu atau lebih kategori') }}
+                                            </div>
                                         </div>
                                     </button>
+
+                                    <!-- Team Option -->
                                     <button type="button"
                                         @click="participantType = 'team'"
-                                        :class="participantType === 'team' ? 'border-primary/80 bg-primary/5 shadow-2xs' : 'border-slate-200 hover:border-slate-300 bg-white'"
-                                        class="flex flex-col items-center gap-2.5 p-4 rounded-2xl border transition-all text-left cursor-pointer">
-                                        <div class="size-10 rounded-xl flex items-center justify-center" :class="participantType === 'team' ? 'bg-primary text-navy' : 'bg-slate-100 text-slate-500'">
-                                            <Icon icon="ph:users-three-bold" class="text-xl" />
+                                        :class="participantType === 'team' 
+                                            ? 'border-primary bg-primary/5 shadow-xs ring-1 ring-primary/30' 
+                                            : 'border-slate-200 hover:border-slate-300 bg-white shadow-2xs'"
+                                        class="relative flex flex-col items-center gap-3 p-5 rounded-2xl border-2 transition-all text-center cursor-pointer group">
+                                        <!-- Absolute Top Corner Check Badge -->
+                                        <div class="absolute top-3 right-3 size-6 rounded-full flex items-center justify-center transition-all"
+                                            :class="participantType === 'team' 
+                                                ? 'bg-primary text-navy shadow-xs scale-100' 
+                                                : 'border-2 border-slate-300 bg-white group-hover:border-slate-400'">
+                                            <Icon v-if="participantType === 'team'" icon="ph:check-bold" class="text-xs font-black" />
                                         </div>
-                                        <div class="text-center">
-                                            <div class="text-sm font-black text-navy">{{ t('my_registration.team_type', 'Beregu / Tim') }}</div>
-                                            <div class="text-xs text-slate-500 font-medium mt-0.5">{{ t('my_registration.team_type_desc', 'Daftar bersama anggota tim beregu') }}</div>
+
+                                        <div class="size-12 rounded-xl flex items-center justify-center transition-colors"
+                                            :class="participantType === 'team' ? 'bg-primary text-navy shadow-xs' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200/70'">
+                                            <Icon icon="ph:users-three-bold" class="text-2xl" />
                                         </div>
-                                        <div v-if="participantType === 'team'" class="text-primary mt-auto">
-                                            <Icon icon="ph:check-circle-fill" class="text-lg" />
+                                        <div>
+                                            <div class="text-sm sm:text-base font-black text-navy leading-tight">
+                                                {{ t('my_registration.team_type', 'Beregu / Tim') }}
+                                            </div>
+                                            <div class="text-xs text-slate-500 font-medium mt-1 leading-snug">
+                                                {{ t('my_registration.team_type_desc', 'Daftar bersama anggota tim beregu') }}
+                                            </div>
                                         </div>
                                     </button>
                                 </div>
