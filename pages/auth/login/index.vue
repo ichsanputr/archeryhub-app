@@ -22,9 +22,9 @@
                             class="text-logo-id">.net</span></span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display" v-html="t('auth.login.title')"></h1>
-                <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
+                <div class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
                     {{ t('auth.login.desc') }}
-                </p>
+                </div>
                 <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
                     <div class="flex -space-x-2">
                         <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
@@ -57,17 +57,8 @@
                 </div>
 
                 <div class="text-center sm:text-left">
-                    <div v-if="userAvatar" class="mb-6 flex justify-center sm:justify-start">
-                        <div class="relative">
-                            <img :src="userAvatar" alt="User Avatar"
-                                class="w-20 h-20 rounded-full object-cover border-4 border-primary shadow-lg transition-all duration-500 scale-110" />
-                            <div
-                                class="absolute -bottom-1 -right-1 bg-green-500 w-5 h-5 rounded-full border-2 border-white">
-                            </div>
-                        </div>
-                    </div>
                     <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display">{{ t('auth.login.welcome') }}</h2>
-                    <p class="mt-2 text-slate-500 text-sm font-body">{{ t('auth.login.welcome_sub') }}</p>
+                    <div class="mt-2 text-slate-500 text-sm font-body">{{ t('auth.login.welcome_sub') }}</div>
                 </div>
 
                 <form @submit.prevent="handleEmailAuth" class="space-y-6">
@@ -125,12 +116,12 @@
                     </BaseButton>
                 </div>
 
-                <p class="mt-8 text-center text-sm text-slate-600 font-body">
+                <div class="mt-8 text-center text-sm text-slate-600 font-body">
                     {{ t('auth.login.dont_have_account') }}
                     <NuxtLink to="/auth/register"
                         class="font-black text-navy hover:text-primary-hover hover:underline transition-all">{{ t('auth.login.register_here') }}
                     </NuxtLink>
-                </p>
+                </div>
             </div>
         </div>
     </div>
