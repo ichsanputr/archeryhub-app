@@ -985,6 +985,11 @@
       "scope_national": "National",
       "scope_provincial": "Provincial",
       "scope_club": "Club / Internal"
+    },
+    "register": {
+      "loading_badge": "Official Registration Portal",
+      "preparing_title": "Preparing Registration",
+      "preparing_desc": "Loading tournament categories, quota status, and athlete pass..."
     }
   },
   "event_qualification": {

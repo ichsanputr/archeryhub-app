@@ -1858,6 +1858,11 @@
       "active": "진행 중",
       "draft": "초안",
       "completed": "완료"
+    },
+    "register": {
+      "loading_badge": "공식 참가 등록 포털",
+      "preparing_title": "참가 등록 준비 중",
+      "preparing_desc": "대회 부문, 참가 정원 및 선수 정보 데이터를 로드하고 있습니다..."
     }
   },
   "my_registration": {

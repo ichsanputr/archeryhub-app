@@ -217,6 +217,11 @@
       "participants_label": "참가자",
       "categories_label": "카테고리",
       "manage": "관리"
+    },
+    "register": {
+      "loading_badge": "공식 참가 등록 포털",
+      "preparing_title": "참가 등록 준비 중",
+      "preparing_desc": "대회 부문, 참가 정원 및 선수 정보 데이터를 로드하고 있습니다..."
     }
   },
   "dashboard_events_page": {

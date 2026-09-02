@@ -2310,6 +2310,11 @@
       "active": "Active",
       "draft": "Draft",
       "completed": "Completed"
+    },
+    "register": {
+      "loading_badge": "Official Registration Portal",
+      "preparing_title": "Preparing Registration",
+      "preparing_desc": "Loading tournament categories, quota status, and athlete pass..."
     }
   },
   "my_registration": {

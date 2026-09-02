@@ -985,6 +985,11 @@
       "scope_national": "Nasional",
       "scope_provincial": "Provinsi",
       "scope_club": "Klub / Internal"
+    },
+    "register": {
+      "loading_badge": "Portal Registrasi Resmi",
+      "preparing_title": "Menyiapkan Pendaftaran",
+      "preparing_desc": "Memuat data kategori turnamen, kuota, dan data atlet..."
     }
   },
   "event_qualification": {

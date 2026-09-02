@@ -2287,6 +2287,11 @@
       "active": "Aktif",
       "draft": "Draft",
       "completed": "Selesai"
+    },
+    "register": {
+      "loading_badge": "Portal Registrasi Resmi",
+      "preparing_title": "Menyiapkan Pendaftaran",
+      "preparing_desc": "Memuat data kategori turnamen, kuota, dan data atlet..."
     }
   },
   "my_registration": {

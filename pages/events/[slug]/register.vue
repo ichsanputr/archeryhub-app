@@ -1,10 +1,44 @@
 <template>
     <div class="min-h-screen bg-gray-50 font-body text-navy pb-16">
-        <!-- Loading -->
-        <div v-if="showPageLoader" class="min-h-screen flex items-center justify-center">
-            <div class="text-center">
-                <Icon icon="ph:circle-notch-bold" class="text-4xl text-primary animate-spin mb-4" />
-                <span class="text-gray-500 font-medium block">Preparing registration...</span>
+        <!-- Enhanced Branded Loading State -->
+        <div v-if="showPageLoader" class="fixed inset-0 z-50 bg-navy flex items-center justify-center p-4 overflow-hidden select-none">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.15);">
+            </div>
+
+            <!-- Ambient Glow Elements -->
+            <div class="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+            <div class="relative z-10 w-full max-w-sm rounded-3xl border border-white/10 bg-white/5 p-8 text-center shadow-2xl backdrop-blur-xl">
+                <!-- Archery Target Pulse Graphic -->
+                <div class="relative mx-auto mb-6 flex h-24 w-24 items-center justify-center">
+                    <div class="absolute inset-0 rounded-full border border-primary/20 animate-ping opacity-25"></div>
+                    <div class="absolute inset-2 rounded-full border-2 border-primary/40 animate-pulse"></div>
+                    <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-tr from-primary to-yellow-200 text-navy shadow-lg shadow-primary/30">
+                        <Icon icon="hugeicons:archer" class="text-3xl text-navy" />
+                    </div>
+                </div>
+
+                <!-- Text Content -->
+                <div class="mb-6 space-y-2">
+                    <div class="text-[11px] font-black uppercase tracking-widest text-primary">
+                        {{ t('events.register.loading_badge', 'Portal Registrasi Resmi') }}
+                    </div>
+                    <h2 class="text-xl font-black tracking-tight text-white">
+                        {{ t('events.register.preparing_title', 'Menyiapkan Pendaftaran') }}
+                    </h2>
+                    <div class="text-xs font-medium leading-relaxed text-slate-300">
+                        {{ t('events.register.preparing_desc', 'Memuat data kategori turnamen, kuota, dan data atlet...') }}
+                    </div>
+                </div>
+
+                <!-- Animated Progress Track -->
+                <div class="relative h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+                    <div class="absolute inset-0 h-full w-2/3 rounded-full bg-gradient-to-r from-primary via-yellow-200 to-primary animate-pulse mx-auto"></div>
+                </div>
             </div>
         </div>
 
