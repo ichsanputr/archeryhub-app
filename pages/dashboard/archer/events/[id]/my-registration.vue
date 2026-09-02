@@ -211,39 +211,51 @@ onMounted(() => {
 
 <template>
     <div class="flex flex-col gap-6 md:gap-8 pb-16">
-        <!-- Header Banner -->
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="size-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
-                        <Icon icon="ph:ticket-bold" class="text-2xl" />
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2 text-xs text-slate-400 mb-1">
-                            <NuxtLink to="/dashboard/archer/events" class="hover:text-slate-700 transition-colors">
-                                {{ t('my_registration.my_events', 'Event Saya') }}
-                            </NuxtLink>
-                            <Icon icon="ph:caret-right-bold" class="text-[10px]" />
-                            <span class="text-slate-600 font-medium">{{ t('my_registration.registration_status', 'Pendaftaran & Tiket') }}</span>
-                        </div>
-                        <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                            {{ t('my_registration.page_title', 'Detail Pendaftaran & Tiket Pertandingan') }}
-                        </h1>
-                    </div>
-                </div>
+        <!-- Header (Standard Dashboard Navy Style) -->
+        <div
+            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
+            </div>
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
 
-                <div class="flex items-center gap-2.5 shrink-0">
-                    <NuxtLink :to="`/dashboard/archer/events/${eventId}/overview`"
-                        class="inline-flex items-center gap-1.5 h-10 px-4 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
-                        <Icon icon="ph:arrow-left-bold" class="text-xs" />
-                        <span>{{ t('my_registration.back_to_overview', 'Ringkasan Event') }}</span>
+            <div class="relative p-6 sm:p-8">
+                <div class="flex items-center gap-2 text-xs text-white/60 mb-3">
+                    <NuxtLink to="/dashboard/archer/events" class="hover:text-white transition-colors">
+                        {{ t('my_registration.my_events', 'Event Saya') }}
                     </NuxtLink>
-                    <div v-if="participant && !isPaid(participant.payment_status)">
-                        <BaseButton variant="danger" @click="showCancelConfirm = true" :loading="isCancelling"
-                            class="h-10 px-4 text-xs font-bold">
-                            <Icon icon="ph:x-circle-bold" class="mr-1.5" />
-                            {{ t('my_registration.cancel', 'Batalkan Pendaftaran') }}
-                        </BaseButton>
+                    <Icon icon="ph:caret-right-bold" class="text-[10px]" />
+                    <span class="text-primary font-medium">{{ t('my_registration.registration_status', 'Pendaftaran & Tiket') }}</span>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex items-start gap-4">
+                        <div class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md shrink-0">
+                            <Icon icon="ph:ticket-bold" class="text-primary text-2xl" />
+                        </div>
+                        <div class="min-w-0">
+                            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight text-white">
+                                {{ t('my_registration.page_title', 'Detail Pendaftaran & Tiket Pertandingan') }}
+                            </h1>
+                            <div class="text-slate-300 text-xs mt-1">
+                                {{ t('my_registration.header_subtitle', 'Kelola informasi pendaftaran, penugasan target bantalan, dan pass tiket resmi Anda.') }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2.5 shrink-0">
+                        <NuxtLink :to="`/dashboard/archer/events/${eventId}/overview`"
+                            class="inline-flex items-center gap-1.5 h-10 px-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-bold text-white backdrop-blur-sm transition-colors shadow-xs">
+                            <Icon icon="ph:arrow-left-bold" class="text-xs" />
+                            <span>{{ t('my_registration.back_to_overview', 'Ringkasan Event') }}</span>
+                        </NuxtLink>
+                        <div v-if="participant && !isPaid(participant.payment_status)">
+                            <BaseButton variant="danger" @click="showCancelConfirm = true" :loading="isCancelling"
+                                class="h-10 px-4 text-xs font-bold shadow-md shadow-red-500/20">
+                                <Icon icon="ph:x-circle-bold" class="mr-1.5" />
+                                {{ t('my_registration.cancel', 'Batalkan Pendaftaran') }}
+                            </BaseButton>
+                        </div>
                     </div>
                 </div>
             </div>

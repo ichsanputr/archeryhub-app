@@ -102,34 +102,46 @@ const formatDate = (d) => {
     <div class="flex flex-col gap-6 pb-12">
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
-        <!-- Header -->
-        <div class="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <div class="size-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
-                        <Icon icon="ph:user-bold" class="text-xl" />
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2 text-xs text-slate-400 mb-1">
-                            <NuxtLink :to="`/dashboard/organizer/events/${eventId}/participants`" class="hover:text-slate-700 transition-colors">
-                                {{ t('dashboard.participants_list.title', 'Daftar Peserta') }}
-                            </NuxtLink>
-                            <Icon icon="ph:caret-right-bold" class="text-[10px]" />
-                            <span class="text-slate-600 font-medium">{{ t('participant.detail.title', 'Detail Peserta') }}</span>
-                        </div>
-                        <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                            {{ participant?.full_name || t('participant.detail.title', 'Detail Peserta') }}
-                        </h1>
-                    </div>
-                </div>
+        <!-- Page Header (Standard Dashboard Navy Style) -->
+        <div
+            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
+            </div>
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
 
-                <div class="flex items-center gap-2.5 shrink-0">
-                    <BaseButton :to="`/dashboard/organizer/events/${eventId}/participants`" variant="white" icon="ph:arrow-left-bold" class="h-10 px-4 text-xs font-semibold">
-                        {{ t('common.back', 'Kembali') }}
-                    </BaseButton>
-                    <BaseButton v-if="archerId" :to="`/dashboard/organizer/events/${eventId}/participants/edit?archer_id=${archerId}`" variant="primary" icon="ph:pencil-simple-bold" class="h-10 px-4 text-xs font-bold">
-                        {{ t('dashboard.participants_list.edit_button', 'Edit Data') }}
-                    </BaseButton>
+            <div class="relative p-6 sm:p-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                    <div class="flex items-center gap-4">
+                        <div class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md shrink-0">
+                            <Icon icon="ph:user-bold" class="text-white text-2xl" />
+                        </div>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2 text-xs text-white/60 mb-1">
+                                <NuxtLink :to="`/dashboard/organizer/events/${eventId}/participants`" class="hover:text-white transition-colors">
+                                    {{ t('dashboard.participants_list.title', 'Daftar Peserta') }}
+                                </NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px]" />
+                                <span class="text-primary font-medium">{{ t('participant.detail.title', 'Detail Peserta') }}</span>
+                            </div>
+                            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight text-white truncate">
+                                {{ participant?.full_name || t('participant.detail.title', 'Detail Peserta') }}
+                            </h1>
+                            <div class="text-slate-300 text-xs mt-1">
+                                {{ t('participant.detail.subtitle', 'Informasi lengkap pendaftaran, profil atlet, dan status pembayaran peserta.') }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 shrink-0">
+                        <BaseButton :to="`/dashboard/organizer/events/${eventId}/participants`" variant="white" icon="ph:arrow-left-bold" class="h-10 px-4 text-xs font-bold">
+                            {{ t('common.back', 'Kembali') }}
+                        </BaseButton>
+                        <BaseButton v-if="archerId" :to="`/dashboard/organizer/events/${eventId}/participants/edit?archer_id=${archerId}`" variant="primary" icon="ph:pencil-simple-bold" class="h-10 px-5 text-xs font-black shadow-md shadow-primary/20">
+                            {{ t('dashboard.participants_list.edit_button', 'Edit Data') }}
+                        </BaseButton>
+                    </div>
                 </div>
             </div>
         </div>
