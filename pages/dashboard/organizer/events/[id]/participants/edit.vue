@@ -33,8 +33,6 @@ const form = reactive({
     payment_status: 'pending',
     payment_amount: 0,
     accreditation_status: 'pending',
-    target_number: '',
-    target_face: '',
     notes: ''
 })
 
@@ -87,8 +85,6 @@ const fetchParticipantData = async () => {
         form.payment_status = p.payment_status || p.status || 'pending'
         form.payment_amount = p.payment_amount || p.total_fee || 0
         form.accreditation_status = p.accreditation_status || 'pending'
-        form.target_number = p.target_number || ''
-        form.target_face = p.target_face || ''
         form.notes = p.notes || ''
     } catch (err) {
         console.error('Failed to load participant for edit:', err)
@@ -150,8 +146,6 @@ const handleSubmit = async () => {
             payment_status: form.payment_status,
             payment_amount: Number(form.payment_amount) || 0,
             accreditation_status: form.accreditation_status,
-            target_number: form.target_number,
-            target_face: form.target_face,
             notes: form.notes
         })
         toast.success(t('participant.edit.save_success', 'Perubahan data peserta berhasil disimpan'))
@@ -326,15 +320,14 @@ const handleSubmit = async () => {
                             item-title="label" item-value="value"
                             :placeholder="t('participant.edit.select_accreditation', 'Pilih Status Akreditasi')" />
 
-                        <BaseInput v-model="form.target_number" :label="t('participant.edit.target_number', 'Nomor Bantalan')" placeholder="Contoh: 12" />
-                        <BaseInput v-model="form.target_face" :label="t('participant.edit.target_face', 'Posisi Target (Face)')" placeholder="Contoh: A / B / C / D" />
+
                         
                         <BaseInput v-model="form.notes" :label="t('participant.edit.additional_notes', 'Catatan Tambahan')" placeholder="Catatan internal panitia..." type="textarea" />
                     </div>
 
                     <!-- Action Card -->
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-3">
-                        <span class="text-xs font-semibold text-slate-400 block mb-1">{{ t('participant.edit.form_actions', 'Aksi Formulir') }}</span>
+                        
                         <BaseButton type="submit" variant="primary" icon="ph:floppy-disk-bold"
                             class="w-full h-11 justify-center text-sm font-bold shadow-md shadow-primary/20"
                             :loading="isSubmitting">

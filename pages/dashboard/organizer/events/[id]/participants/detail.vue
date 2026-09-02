@@ -170,17 +170,17 @@ const formatDate = (d) => {
                                     <h2 class="text-lg font-bold text-slate-900 truncate">{{ participant.full_name }}</h2>
                                     <span v-if="isPaidStatus(participant.payment_status || participant.status)"
                                         class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                        Lunas
+                                        {{ t('dashboard.participants_list.status_options.paid', 'Lunas') }}
                                     </span>
                                     <span v-else
                                         class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-                                        Menunggu Pembayaran
+                                        {{ t('dashboard.participants_list.status_options.pending', 'Menunggu Pembayaran') }}
                                     </span>
                                 </div>
                                 <div class="flex flex-wrap items-center gap-3 mt-1 text-xs text-slate-500">
                                     <span>{{ participant.athlete_code || 'ID: ' + (participant.archer_id || '-').substring(0, 8) }}</span>
                                     <span>•</span>
-                                    <span>{{ participant.club_name || 'Klub Independen' }}</span>
+                                    <span>{{ participant.club_name || t('participant.detail.independent', 'Klub Independen') }}</span>
                                     <template v-if="participant.city">
                                         <span>•</span>
                                         <span>{{ participant.city }}</span>
@@ -192,27 +192,27 @@ const formatDate = (d) => {
                         <!-- Data Fields List -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1 font-medium">Alamat Email</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">{{ t('participant.detail.email_label', 'Alamat Email') }}</span>
                                 <span class="text-sm sm:text-base text-slate-900 font-bold truncate block">{{ participant.email || '-' }}</span>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1 font-medium">Nomor WhatsApp / Telepon</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">{{ t('participant.detail.phone_label', 'Nomor WhatsApp / Telepon') }}</span>
                                 <span class="text-sm sm:text-base text-slate-900 font-bold block">{{ participant.phone || '-' }}</span>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1 font-medium">Jenis Kelamin</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">{{ t('participant.detail.gender_label', 'Jenis Kelamin') }}</span>
                                 <span class="text-sm sm:text-base text-slate-900 font-bold block capitalize">{{ participant.gender || '-' }}</span>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1 font-medium">Tanggal Lahir</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">{{ t('participant.detail.birth_date_label', 'Tanggal Lahir') }}</span>
                                 <span class="text-sm sm:text-base text-slate-900 font-bold block">{{ formatDate(participant.birth_date) }}</span>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1 font-medium">Divisi Busur Utama</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">{{ t('participant.detail.bow_division_label', 'Divisi Busur Utama') }}</span>
                                 <span class="text-sm sm:text-base text-slate-900 font-bold block capitalize">{{ participant.bow_type || '-' }}</span>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1 font-medium">Dominasi Tangan</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">{{ t('participant.detail.hand_dominance_label', 'Dominasi Tangan') }}</span>
                                 <span class="text-sm sm:text-base text-slate-900 font-bold block capitalize">{{ participant.hand_dominance || '-' }}</span>
                             </div>
                         </div>
@@ -223,10 +223,10 @@ const formatDate = (d) => {
                         <div class="flex items-center justify-between">
                             <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
                                 <Icon icon="ph:trophy-bold" class="text-slate-500" />
-                                <span>Kategori yang Diikuti</span>
+                                <span>{{ t('participant.detail.division_label', 'Kategori Turnamen yang Diikuti') }}</span>
                             </h3>
                             <span class="text-xs text-slate-400 font-medium">
-                                {{ enrolledCategories.length }} Kategori
+                                {{ t('participant.detail.categories_count', { count: enrolledCategories.length }) }}
                             </span>
                         </div>
 
@@ -249,7 +249,7 @@ const formatDate = (d) => {
                             </div>
                         </div>
                         <div v-else class="py-6 text-center text-slate-400 text-xs italic">
-                            Belum ada kategori lomba yang terdaftar.
+                            {{ t('participant.detail.no_categories', 'Belum ada kategori turnamen yang terdaftar.') }}
                         </div>
                     </div>
 
@@ -258,31 +258,31 @@ const formatDate = (d) => {
                         <div class="flex items-center justify-between">
                             <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
                                 <Icon icon="ph:credit-card-bold" class="text-slate-500" />
-                                <span>Informasi Pembayaran</span>
+                                <span>{{ t('participant.detail.payment_title', 'Informasi Pembayaran') }}</span>
                             </h3>
                             <BaseButton v-if="!isPaidStatus(participant.payment_status || participant.status)"
                                 variant="primary" size="sm" icon="ph:check-circle-bold"
                                 :loading="isApproving"
                                 @click="handleApprovePayment">
-                                Konfirmasi Lunas
+                                {{ t('participant.detail.confirm_paid', 'Konfirmasi Lunas') }}
                             </BaseButton>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1 font-medium">Status</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">{{ t('participant.detail.status_label', 'Status') }}</span>
                                 <span class="text-sm sm:text-base font-bold" :class="isPaidStatus(participant.payment_status || participant.status) ? 'text-emerald-700' : 'text-amber-700'">
                                     {{ isPaidStatus(participant.payment_status || participant.status) ? 'Lunas' : 'Menunggu Pembayaran' }}
                                 </span>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1 font-medium">Total Biaya</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">{{ t('participant.detail.total_fee_label', 'Total Biaya') }}</span>
                                 <span class="text-sm sm:text-base text-slate-900 font-bold">
                                     Rp {{ formatCurrency(participant.payment_amount || participant.total_fee || 0) }}
                                 </span>
                             </div>
                             <div>
-                                <span class="text-xs text-slate-500 block mb-1 font-medium">Metode Pembayaran</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">{{ t('participant.detail.payment_method_label', 'Metode Pembayaran') }}</span>
                                 <span class="text-sm sm:text-base text-slate-900 font-bold capitalize">
                                     {{ participant.transaction?.payment_method || participant.payment_method || 'Online Gateway' }}
                                 </span>
@@ -291,14 +291,14 @@ const formatDate = (d) => {
 
                         <!-- Manual Payment Proof Preview if present -->
                         <div v-if="participant.transaction?.proof_url" class="pt-4 border-t border-slate-100">
-                            <span class="text-xs text-slate-400 font-medium block mb-2">Bukti Transfer</span>
+                            <span class="text-xs text-slate-400 font-medium block mb-2">{{ t('participant.detail.transfer_proof_label', 'Bukti Transfer') }}</span>
                             <div class="flex items-center gap-4">
                                 <a :href="participant.transaction.proof_url" target="_blank" class="block max-w-[120px] rounded-lg overflow-hidden border border-slate-200">
                                     <img :src="participant.transaction.proof_url" alt="Bukti Transfer" class="h-20 w-32 object-cover" />
                                 </a>
                                 <div class="text-xs space-y-1 text-slate-600">
-                                    <div>Pengirim: <span class="font-semibold text-slate-900">{{ participant.transaction.sender_name || '-' }}</span></div>
-                                    <div>Nominal: <span class="font-semibold text-slate-900">Rp {{ formatCurrency(participant.transaction.amount) }}</span></div>
+                                    <div>{{ t('participant.detail.sender_label', 'Pengirim:') }} <span class="font-semibold text-slate-900">{{ participant.transaction.sender_name || '-' }}</span></div>
+                                    <div>{{ t('participant.detail.amount_label', 'Nominal:') }} <span class="font-semibold text-slate-900">Rp {{ formatCurrency(participant.transaction.amount) }}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -311,24 +311,18 @@ const formatDate = (d) => {
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
                         <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
                             <Icon icon="ph:seal-check-bold" class="text-slate-500" />
-                            <span>Status Pertandingan</span>
+                            <span>{{ t('participant.detail.match_status_title', 'Status Pertandingan') }}</span>
                         </h3>
 
                         <div class="divide-y divide-slate-100 text-sm">
                             <div class="py-3 flex items-center justify-between">
-                                <span class="text-slate-500 font-medium">Daftar Ulang (Check-in)</span>
+                                <span class="text-slate-500 font-medium">{{ t('participant.detail.checkin_label', 'Daftar Ulang (Check-in)') }}</span>
                                 <span class="font-bold" :class="participant.last_reregistration_at ? 'text-emerald-600' : 'text-slate-600'">
-                                    {{ participant.last_reregistration_at ? 'Sudah Check-in' : 'Belum Check-in' }}
+                                    {{ participant.last_reregistration_at ? t('participant.detail.checked_in', 'Sudah Check-in') : t('participant.detail.not_checked_in', 'Belum Check-in') }}
                                 </span>
                             </div>
                             <div class="py-3 flex items-center justify-between">
-                                <span class="text-slate-500 font-medium">Bantalan / Target</span>
-                                <span class="font-bold text-slate-900">
-                                    {{ participant.target_number ? `${participant.target_number}${participant.target_face || ''}` : 'Belum Ditentukan' }}
-                                </span>
-                            </div>
-                            <div class="py-3 flex items-center justify-between">
-                                <span class="text-slate-500 font-medium">Tanggal Registrasi</span>
+                                <span class="text-slate-500 font-medium">{{ t('participant.detail.registration_date_label', 'Tanggal Registrasi') }}</span>
                                 <span class="font-bold text-slate-700">
                                     {{ formatDate(participant.registration_date || participant.created_at) }}
                                 </span>
@@ -338,14 +332,14 @@ const formatDate = (d) => {
 
                     <!-- Actions -->
                     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-3">
-                        <span class="text-xs font-semibold text-slate-400 block mb-1">Aksi Cepat</span>
+                        <span class="text-xs font-semibold text-slate-400 block mb-1">{{ t('participant.detail.quick_actions', 'Aksi Cepat') }}</span>
                         <BaseButton :to="`/dashboard/organizer/events/${eventId}/participants/edit?archer_id=${archerId}`"
                             variant="primary" icon="ph:pencil-simple-bold" class="w-full h-10 justify-center text-xs font-bold">
-                            Edit Data Peserta
+                            {{ t('dashboard.participants_list.edit_button', 'Edit Data Peserta') }}
                         </BaseButton>
                         <BaseButton :to="`/dashboard/organizer/events/${eventId}/printout/id-cards?archer_id=${archerId}`"
                             variant="white" icon="ph:identification-card-bold" class="w-full h-10 justify-center text-xs font-semibold">
-                            Cetak ID Card
+                            {{ t('participant.detail.print_id_card', 'Cetak ID Card') }}
                         </BaseButton>
                     </div>
                 </div>

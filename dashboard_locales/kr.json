@@ -1450,6 +1450,36 @@
       "no_categories": "등록 가능한 대회 부문이 없습니다.",
       "independent": "독립 클럽",
       "save_success": "선수 정보가 성공적으로 저장되었습니다"
+    },
+    "detail": {
+      "title": "선수 상세 정보",
+      "subtitle": "참가 등록 정보, 선수 프로필 및 결제 상태에 대한 종합 정보입니다.",
+      "loading": "선수 데이터 로드 중...",
+      "independent": "독립 클럽",
+      "email_label": "이메일 주소",
+      "phone_label": "전화번호 / WhatsApp",
+      "gender_label": "성별",
+      "birth_date_label": "생년월일",
+      "bow_division_label": "주 활 부문",
+      "hand_dominance_label": "주로 사용하는 손",
+      "division_label": "참가 등록 종목",
+      "categories_count": "{count}개 부문",
+      "no_categories": "등록된 대회 부문이 없습니다.",
+      "payment_title": "결제 정보",
+      "confirm_paid": "결제 확인 완료",
+      "status_label": "상태",
+      "total_fee_label": "총 참가비",
+      "payment_method_label": "결제 수단",
+      "transfer_proof_label": "이체 증빙",
+      "sender_label": "입금자:",
+      "amount_label": "금액:",
+      "match_status_title": "경기 현황",
+      "checkin_label": "현장 확인 (체크인)",
+      "checked_in": "체크인 완료",
+      "not_checked_in": "체크인 미완료",
+      "registration_date_label": "등록일시",
+      "quick_actions": "빠른 작업",
+      "print_id_card": "ID 카드 인쇄"
     }
   }
 }
