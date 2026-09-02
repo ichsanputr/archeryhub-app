@@ -91,11 +91,13 @@
       <div v-if="eventId && (canManageEvents || isArcher)" class="flex flex-col gap-1"
         :class="isOnEventSubPage ? '' : 'mt-4'">
         <!-- Back to Events button when on subpage -->
-        <NuxtLink v-if="isOnEventSubPage" :to="isArcher ? '/dashboard/archer/events' : '/dashboard/organizer/events'"
-          class="flex items-center gap-2 px-3 py-2 text-xs font-bold text-slate-400 hover:text-white mb-1 rounded-xl hover:bg-white/5 transition-all">
-          <Icon icon="ph:arrow-left-bold" class="text-sm" />
-          <span v-if="!isSidebarCollapsed">{{ t('sidebar.back_to_events', t('dashboard.sidebar.back_to_events', 'Semua Event')) }}</span>
-        </NuxtLink>
+        <div v-if="isOnEventSubPage" class="mb-2">
+          <NuxtLink :to="isArcher ? '/dashboard/archer/events' : '/dashboard/organizer/events'"
+            class="flex items-center gap-2 px-3 py-2 text-xs font-bold text-slate-400 hover:text-white rounded-xl hover:bg-white/5 transition-all">
+            <Icon icon="ph:arrow-left-bold" class="text-sm" />
+            <span v-if="!isSidebarCollapsed">{{ t('sidebar.back_to_events', 'Semua Event') }}</span>
+          </NuxtLink>
+        </div>
         <div v-if="!isOnEventSubPage && !isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
         <div v-if="!isSidebarCollapsed && !isOnEventSubPage" class="px-3 mb-2">
           <div class="text-xs font-bold text-gray-500">{{ t('sidebar.event_management', t('dashboard.sidebar.event_management', 'Manajemen Event')) }}</div>
@@ -222,20 +224,12 @@ const eventLinks = computed(() => {
 
   if (isArcher) {
     return [
-      // ── Event Info ───────────────────────────────────────────
-      { type: 'label', label: t('sidebar.event', 'Event') },
-      { label: t('sidebar.event_overview', 'Info Event'), icon: 'ph:info-bold', path: `${prefix}/events/${eventId.value}/overview` },
-      // ── Registration ────────────────────────────────────────
-      { type: 'label', label: t('sidebar.registration_section', 'Pendaftaran') },
-      { label: t('sidebar.registration_section', 'Pendaftaran'), icon: 'ph:clipboard-text', path: `${prefix}/events/${eventId.value}/my-registration` },
-      { label: t('sidebar.my_target', 'Target'), icon: 'ph:target', path: `${prefix}/events/${eventId.value}/my-target` },
-      // ── Competition ─────────────────────────────────────────
-      { type: 'label', label: t('sidebar.competition_section', 'Kompetisi') },
-      { label: t('sidebar.qualification', 'Kualifikasi'), icon: 'ph:chart-line-up-bold', path: `${prefix}/events/${eventId.value}/my-qualification` },
-      { label: t('sidebar.elimination', 'Eliminasi'), icon: 'ph:git-merge-bold', path: `${prefix}/events/${eventId.value}/my-elimination` },
-      { label: t('sidebar.teams', 'Tim'), icon: 'ph:users-four', path: `${prefix}/events/${eventId.value}/my-team` },
-      // ── Results ─────────────────────────────────────────────
-      { type: 'label', label: t('sidebar.results_section', 'Hasil') },
+      { label: t('sidebar.event_overview', 'Ringkasan Event'), icon: 'ph:squares-four-bold', path: `${prefix}/events/${eventId.value}/overview` },
+      { label: t('sidebar.my_registration', 'Pendaftaran & Tiket'), icon: 'ph:ticket-bold', path: `${prefix}/events/${eventId.value}/my-registration` },
+      { label: t('sidebar.my_target', 'Target & Jadwal'), icon: 'ph:target-bold', path: `${prefix}/events/${eventId.value}/my-target` },
+      { label: t('sidebar.qualification', 'Skor Kualifikasi'), icon: 'ph:chart-line-up-bold', path: `${prefix}/events/${eventId.value}/my-qualification` },
+      { label: t('sidebar.elimination', 'Bagan Eliminasi'), icon: 'ph:git-merge-bold', path: `${prefix}/events/${eventId.value}/my-elimination` },
+      { label: t('sidebar.teams', 'Regu & Tim'), icon: 'ph:users-four-bold', path: `${prefix}/events/${eventId.value}/my-team` },
       { label: t('sidebar.certificates', 'Sertifikat'), icon: 'ph:certificate-bold', path: `${prefix}/events/${eventId.value}/my-certificate` },
     ]
   }
