@@ -32,7 +32,7 @@ export default defineNuxtRouteMiddleware((to) => {
 
             // Avoid infinite loop if target is same as current (shouldn't happen with our logic)
             if (to.path !== target) {
-                return navigateTo(target, { replace: true })
+                return navigateTo({ path: target, query: to.query, hash: to.hash }, { replace: true })
             }
         }
     }

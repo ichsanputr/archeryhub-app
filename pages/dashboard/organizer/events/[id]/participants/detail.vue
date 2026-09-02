@@ -38,10 +38,10 @@
 
                     <!-- Action Buttons -->
                     <div class="flex items-center gap-3 flex-shrink-0">
-                        <BaseButton :to="`/dashboard/events/${eventId}/participants`" variant="white" icon="ph:arrow-left-bold" class="h-10 md:h-11 px-4 md:px-5 font-bold">
+                        <BaseButton :to="`/dashboard/organizer/events/${eventId}/participants`" variant="white" icon="ph:arrow-left-bold" class="h-10 md:h-11 px-4 md:px-5 font-bold">
                             {{ t('common.back', 'Kembali') }}
                         </BaseButton>
-                        <BaseButton :to="`/dashboard/events/${eventId}/participants/edit?archer_id=${archerId}`" variant="primary" icon="ph:pencil-simple-bold"
+                        <BaseButton :to="`/dashboard/organizer/events/${eventId}/participants/edit?archer_id=${archerId}`" variant="primary" icon="ph:pencil-simple-bold"
                             class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all font-black">
                             {{ t('dashboard.participants_list.edit_button', 'Edit Data Registrasi') }}
                         </BaseButton>
@@ -272,11 +272,11 @@
                         <h2 class="text-xs font-black text-gray-400 tracking-widest uppercase mb-4">
                             Aksi Cepat
                         </h2>
-                        <BaseButton :to="`/dashboard/events/${eventId}/participants/edit?archer_id=${archerId}`"
+                        <BaseButton :to="`/dashboard/organizer/events/${eventId}/participants/edit?archer_id=${archerId}`"
                             variant="primary" icon="ph:pencil-simple-bold" class="w-full h-11 justify-center font-black shadow-md shadow-primary/20">
                             Edit Data Registrasi
                         </BaseButton>
-                        <BaseButton :to="`/dashboard/events/${eventId}/printout/id-cards?archer_id=${archerId}`"
+                        <BaseButton :to="`/dashboard/organizer/events/${eventId}/printout/id-cards?archer_id=${archerId}`"
                             variant="white" icon="ph:identification-card-bold" class="w-full h-11 justify-center font-bold">
                             Cetak ID Card Atlet
                         </BaseButton>

@@ -38,7 +38,7 @@
 
                     <!-- Action Buttons -->
                     <div class="flex items-center gap-3 flex-shrink-0">
-                        <BaseButton :to="`/dashboard/events/${eventId}/participants/detail?archer_id=${archerId}`" variant="white" class="h-10 md:h-11 px-4 md:px-5 font-bold">
+                        <BaseButton :to="`/dashboard/organizer/events/${eventId}/participants/detail?archer_id=${archerId}`" variant="white" class="h-10 md:h-11 px-4 md:px-5 font-bold">
                             {{ t('common.cancel', 'Batal') }}
                         </BaseButton>
                         <BaseButton variant="primary" icon="ph:floppy-disk-bold"
@@ -168,7 +168,7 @@
                             :loading="isSubmitting">
                             {{ t('common.save_changes', 'Simpan Perubahan') }}
                         </BaseButton>
-                        <BaseButton :to="`/dashboard/events/${eventId}/participants/detail?archer_id=${archerId}`"
+                        <BaseButton :to="`/dashboard/organizer/events/${eventId}/participants/detail?archer_id=${archerId}`"
                             variant="white" class="w-full h-11 justify-center font-bold">
                             {{ t('common.cancel', 'Batal') }}
                         </BaseButton>

@@ -203,12 +203,12 @@
                                 <td class="px-6 py-4 text-right align-top w-28">
                                     <div class="flex items-center justify-end gap-1.5">
                                         <BaseButton
-                                            :to="`/dashboard/events/${eventId}/participants/detail?archer_id=${participant.archer_id || participant.athlete_code}`"
+                                            :to="`/dashboard/organizer/events/${eventId}/participants/detail?archer_id=${participant.archer_id || participant.athlete_code}`"
                                             variant="white" size="sm" icon="ph:eye-bold"
                                             class="h-9 w-9 p-0 text-gray-400 hover:text-navy border-gray-100 hover:border-navy/20 shadow-none"
                                             :title="t('dashboard.participants_list.view_details')" />
                                         <BaseButton
-                                            :to="`/dashboard/events/${eventId}/participants/edit?archer_id=${participant.archer_id || participant.athlete_code}`"
+                                            :to="`/dashboard/organizer/events/${eventId}/participants/edit?archer_id=${participant.archer_id || participant.athlete_code}`"
                                             variant="white" size="sm" icon="ph:pencil-simple-bold"
                                             class="h-9 w-9 p-0 text-gray-400 hover:text-primary hover:border-primary/30 border-gray-100 shadow-none"
                                             :title="t('dashboard.participants_list.edit_button', 'Edit Data Registrasi')" />
