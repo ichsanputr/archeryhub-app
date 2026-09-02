@@ -4579,7 +4579,7 @@
     "status_expired": "Expired",
     "status_failed": "Failed",
     "pay_now": "Complete Payment",
-    "view_invoice": "View Invoice & Receipt",
+    "view_invoice": "View Invoice",
     "no_transactions": "No payment transactions found.",
     "date_range_placeholder": "Date range...",
     "no_matched_transactions": "No Matching Transactions",
@@ -4610,7 +4610,16 @@
     "base_amount": "Base Amount",
     "handling_fee": "Service / Handling Fee",
     "grand_total": "Grand Total",
-    "record_note": "Official transaction record logged in ArcheryHub system."
+    "record_note": "Official transaction record logged in ArcheryHub system.",
+    "proof_of_payment": "Transfer Payment Proof",
+    "proof_uploaded": "Proof Uploaded",
+    "proof_pending": "Proof Not Uploaded",
+    "sender_name": "Sender Name:",
+    "transfer_nominal": "Stated Amount:",
+    "verification_note": "Payment proof is being reviewed by event organizers.",
+    "upload_proof_prompt": "Please upload your transfer payment proof",
+    "upload_proof_desc": "Your registration cannot be verified until transfer receipt is uploaded.",
+    "upload_now": "Upload Proof Now"
   },
   "seller_order_detail": {
     "title": "Order Details",

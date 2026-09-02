@@ -4426,7 +4426,7 @@
     "status_expired": "Kedaluwarsa",
     "status_failed": "Gagal",
     "pay_now": "Bayar Sekarang",
-    "view_invoice": "Lihat Invoice & Rincian",
+    "view_invoice": "Buka Invoice",
     "no_transactions": "Belum ada riwayat transaksi pembayaran.",
     "date_range_placeholder": "Rentang Tanggal...",
     "no_matched_transactions": "Tidak Ada Transaksi Cocok",
@@ -4457,7 +4457,16 @@
     "base_amount": "Nominal Pokok",
     "handling_fee": "Biaya Layanan / Penanganan",
     "grand_total": "Total Keseluruhan",
-    "record_note": "Catatan transaksi resmi tersimpan di sistem ArcheryHub."
+    "record_note": "Catatan transaksi resmi tersimpan di sistem ArcheryHub.",
+    "proof_of_payment": "Bukti Pembayaran Transfer",
+    "proof_uploaded": "Bukti Terunggah",
+    "proof_pending": "Belum Unggah Bukti",
+    "sender_name": "Nama Pengirim:",
+    "transfer_nominal": "Nominal Tertera:",
+    "verification_note": "Bukti pembayaran sedang dalam proses verifikasi panitia penyelenggara.",
+    "upload_proof_prompt": "Silakan unggah bukti transfer manual Anda",
+    "upload_proof_desc": "Pesanan belum dapat dikonfirmasi sebelum bukti transfer dikirimkan ke panitia.",
+    "upload_now": "Unggah Bukti Sekarang"
   },
   "seller_order_detail": {
     "title": "Rincian Pesanan",

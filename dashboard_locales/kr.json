@@ -1486,5 +1486,17 @@
       "quick_actions": "빠른 작업",
       "print_id_card": "ID 카드 인쇄"
     }
+  },
+  "archer_payments_list": {
+    "proof_of_payment": "계좌 이체 영수증 증빙",
+    "proof_uploaded": "증빙 업로드 완료",
+    "proof_pending": "증빙 미업로드",
+    "sender_name": "입금자명:",
+    "transfer_nominal": "이체 금액:",
+    "verification_note": "대회 주최 측에서 결제 증빙을 확인하고 있습니다.",
+    "view_invoice": "인보이스 보기",
+    "upload_proof_prompt": "계좌 이체 영수증을 업로드해 주세요",
+    "upload_proof_desc": "이체 증빙이 제출될 때까지 참가가 확정되지 않습니다.",
+    "upload_now": "지금 증빙 업로드"
   }
 }

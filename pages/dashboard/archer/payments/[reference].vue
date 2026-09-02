@@ -71,22 +71,304 @@
             <div class="flex items-center gap-2 font-black text-blue-900 dark:text-blue-200 text-sm">
               <Icon icon="ph:info-bold" class="text-lg text-primary" />
               <span>{{ t("archer_payment_detail.payment_instructions") }}</span>
+    
+          <!-- Manual Payment Proof Card -->
+          <div v-if="payment.proof_url || payment.payment_method === 'manual'" class="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+              <h3 class="font-black text-navy dark:text-white text-base flex items-center gap-2">
+                <Icon icon="ph:image-bold" class="text-primary text-lg" />
+                <span>{{ t('archer_payments_list.proof_of_payment', 'Bukti Pembayaran Transfer') }}</span>
+              </h3>
+              <span v-if="payment.proof_url" class="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                <Icon icon="ph:check-circle-bold" />
+                <span>{{ t('archer_payments_list.proof_uploaded', 'Bukti Terunggah') }}</span>
+              </span>
             </div>
+
+            <div v-if="payment.proof_url" class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 bg-slate-50 dark:bg-slate-700/40 rounded-2xl border border-slate-100 dark:border-slate-700">
+              <div class="relative group cursor-pointer shrink-0" @click="openImageModal(payment.proof_url)">
+                <img :src="payment.proof_url" alt="Bukti Transfer" class="h-24 w-36 object-cover rounded-xl border border-slate-200 dark:border-slate-600 shadow-xs" />
+                <div class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center text-white text-xs font-bold gap-1">
+                  <Icon icon="ph:magnifying-glass-plus-bold" />
+                  <span>Zoom</span>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 space-y-1.5 text-xs">
+                <div v-if="payment.sender_name" class="flex items-center gap-2">
+                  <span class="text-slate-400 font-medium">{{ t('archer_payments_list.sender_name', 'Nama Pengirim:') }}</span>
+                  <span class="font-bold text-navy dark:text-white text-sm">{{ payment.sender_name }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-slate-400 font-medium">{{ t('archer_payments_list.transfer_nominal', 'Nominal Tertera:') }}</span>
+                  <span class="font-mono font-bold text-navy dark:text-white">Rp {{ (payment.amount || 0).toLocaleString('id-ID') }}</span>
+                </div>
+                <div class="text-xs text-slate-400">
+                  {{ t('archer_payments_list.verification_note', 'Bukti pembayaran sedang dalam proses verifikasi panitia penyelenggara.') }}
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="p-4 bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-800/40 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div class="text-xs text-amber-800 dark:text-amber-300 space-y-0.5">
+                <div class="font-bold">{{ t('archer_payments_list.upload_proof_prompt', 'Silakan unggah bukti transfer manual Anda') }}</div>
+                <div class="text-[11px] text-amber-700/80 dark:text-amber-400">{{ t('archer_payments_list.upload_proof_desc', 'Pesanan belum dapat dikonfirmasi sebelum bukti transfer dikirimkan ke panitia.') }}</div>
+              </div>
+              <BaseButton size="sm" variant="primary" icon="ph:upload-simple-bold" :to="`/payment/status/${reference}`">
+                {{ t('archer_payments_list.upload_now', 'Unggah Bukti Sekarang') }}
+              </BaseButton>
+            </div>
+          </div>
+        </div>
             
             <div v-if="payment.pay_code || payment.va_number" class="bg-white dark:bg-slate-800 p-4 rounded-xl flex items-center justify-between border border-blue-100 dark:border-blue-900">
               <div>
                 <div class="text-xs text-slate-500 font-bold">{{ t("archer_payment_detail.va_pay_code") }}</div>
                 <div class="font-mono font-black text-xl text-navy dark:text-white tracking-wider">{{ payment.pay_code || payment.va_number }}</div>
+      
+          <!-- Manual Payment Proof Card -->
+          <div v-if="payment.proof_url || payment.payment_method === 'manual'" class="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+              <h3 class="font-black text-navy dark:text-white text-base flex items-center gap-2">
+                <Icon icon="ph:image-bold" class="text-primary text-lg" />
+                <span>{{ t('archer_payments_list.proof_of_payment', 'Bukti Pembayaran Transfer') }}</span>
+              </h3>
+              <span v-if="payment.proof_url" class="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                <Icon icon="ph:check-circle-bold" />
+                <span>{{ t('archer_payments_list.proof_uploaded', 'Bukti Terunggah') }}</span>
+              </span>
+            </div>
+
+            <div v-if="payment.proof_url" class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 bg-slate-50 dark:bg-slate-700/40 rounded-2xl border border-slate-100 dark:border-slate-700">
+              <div class="relative group cursor-pointer shrink-0" @click="openImageModal(payment.proof_url)">
+                <img :src="payment.proof_url" alt="Bukti Transfer" class="h-24 w-36 object-cover rounded-xl border border-slate-200 dark:border-slate-600 shadow-xs" />
+                <div class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center text-white text-xs font-bold gap-1">
+                  <Icon icon="ph:magnifying-glass-plus-bold" />
+                  <span>Zoom</span>
+                </div>
               </div>
+              <div class="flex-1 min-w-0 space-y-1.5 text-xs">
+                <div v-if="payment.sender_name" class="flex items-center gap-2">
+                  <span class="text-slate-400 font-medium">{{ t('archer_payments_list.sender_name', 'Nama Pengirim:') }}</span>
+                  <span class="font-bold text-navy dark:text-white text-sm">{{ payment.sender_name }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-slate-400 font-medium">{{ t('archer_payments_list.transfer_nominal', 'Nominal Tertera:') }}</span>
+                  <span class="font-mono font-bold text-navy dark:text-white">Rp {{ (payment.amount || 0).toLocaleString('id-ID') }}</span>
+                </div>
+                <div class="text-xs text-slate-400">
+                  {{ t('archer_payments_list.verification_note', 'Bukti pembayaran sedang dalam proses verifikasi panitia penyelenggara.') }}
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="p-4 bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-800/40 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div class="text-xs text-amber-800 dark:text-amber-300 space-y-0.5">
+                <div class="font-bold">{{ t('archer_payments_list.upload_proof_prompt', 'Silakan unggah bukti transfer manual Anda') }}</div>
+                <div class="text-[11px] text-amber-700/80 dark:text-amber-400">{{ t('archer_payments_list.upload_proof_desc', 'Pesanan belum dapat dikonfirmasi sebelum bukti transfer dikirimkan ke panitia.') }}</div>
+              </div>
+              <BaseButton size="sm" variant="primary" icon="ph:upload-simple-bold" :to="`/payment/status/${reference}`">
+                {{ t('archer_payments_list.upload_now', 'Unggah Bukti Sekarang') }}
+              </BaseButton>
+            </div>
+          </div>
+        </div>
               <BaseButton variant="white" size="xs" @click="copyText(payment.pay_code || payment.va_number)">
                 <Icon icon="ph:copy-bold" class="mr-1" /> {{ t("archer_payment_detail.copy") }}
               </BaseButton>
+    
+          <!-- Manual Payment Proof Card -->
+          <div v-if="payment.proof_url || payment.payment_method === 'manual'" class="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+              <h3 class="font-black text-navy dark:text-white text-base flex items-center gap-2">
+                <Icon icon="ph:image-bold" class="text-primary text-lg" />
+                <span>{{ t('archer_payments_list.proof_of_payment', 'Bukti Pembayaran Transfer') }}</span>
+              </h3>
+              <span v-if="payment.proof_url" class="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                <Icon icon="ph:check-circle-bold" />
+                <span>{{ t('archer_payments_list.proof_uploaded', 'Bukti Terunggah') }}</span>
+              </span>
             </div>
+
+            <div v-if="payment.proof_url" class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 bg-slate-50 dark:bg-slate-700/40 rounded-2xl border border-slate-100 dark:border-slate-700">
+              <div class="relative group cursor-pointer shrink-0" @click="openImageModal(payment.proof_url)">
+                <img :src="payment.proof_url" alt="Bukti Transfer" class="h-24 w-36 object-cover rounded-xl border border-slate-200 dark:border-slate-600 shadow-xs" />
+                <div class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center text-white text-xs font-bold gap-1">
+                  <Icon icon="ph:magnifying-glass-plus-bold" />
+                  <span>Zoom</span>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 space-y-1.5 text-xs">
+                <div v-if="payment.sender_name" class="flex items-center gap-2">
+                  <span class="text-slate-400 font-medium">{{ t('archer_payments_list.sender_name', 'Nama Pengirim:') }}</span>
+                  <span class="font-bold text-navy dark:text-white text-sm">{{ payment.sender_name }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-slate-400 font-medium">{{ t('archer_payments_list.transfer_nominal', 'Nominal Tertera:') }}</span>
+                  <span class="font-mono font-bold text-navy dark:text-white">Rp {{ (payment.amount || 0).toLocaleString('id-ID') }}</span>
+                </div>
+                <div class="text-xs text-slate-400">
+                  {{ t('archer_payments_list.verification_note', 'Bukti pembayaran sedang dalam proses verifikasi panitia penyelenggara.') }}
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="p-4 bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-800/40 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div class="text-xs text-amber-800 dark:text-amber-300 space-y-0.5">
+                <div class="font-bold">{{ t('archer_payments_list.upload_proof_prompt', 'Silakan unggah bukti transfer manual Anda') }}</div>
+                <div class="text-[11px] text-amber-700/80 dark:text-amber-400">{{ t('archer_payments_list.upload_proof_desc', 'Pesanan belum dapat dikonfirmasi sebelum bukti transfer dikirimkan ke panitia.') }}</div>
+              </div>
+              <BaseButton size="sm" variant="primary" icon="ph:upload-simple-bold" :to="`/payment/status/${reference}`">
+                {{ t('archer_payments_list.upload_now', 'Unggah Bukti Sekarang') }}
+              </BaseButton>
+            </div>
+          </div>
+        </div>
 
             <div v-if="payment.checkout_url" class="pt-2">
               <a :href="payment.checkout_url" target="_blank" class="inline-flex items-center justify-center w-full py-3 bg-primary text-navy font-black rounded-xl hover:bg-yellow-400 transition-colors text-sm shadow-sm">
                 <Icon icon="ph:credit-card-bold" class="mr-2" /> {{ t("archer_payment_detail.pay_now") }}
               </a>
+    
+          <!-- Manual Payment Proof Card -->
+          <div v-if="payment.proof_url || payment.payment_method === 'manual'" class="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+              <h3 class="font-black text-navy dark:text-white text-base flex items-center gap-2">
+                <Icon icon="ph:image-bold" class="text-primary text-lg" />
+                <span>{{ t('archer_payments_list.proof_of_payment', 'Bukti Pembayaran Transfer') }}</span>
+              </h3>
+              <span v-if="payment.proof_url" class="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                <Icon icon="ph:check-circle-bold" />
+                <span>{{ t('archer_payments_list.proof_uploaded', 'Bukti Terunggah') }}</span>
+              </span>
+            </div>
+
+            <div v-if="payment.proof_url" class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 bg-slate-50 dark:bg-slate-700/40 rounded-2xl border border-slate-100 dark:border-slate-700">
+              <div class="relative group cursor-pointer shrink-0" @click="openImageModal(payment.proof_url)">
+                <img :src="payment.proof_url" alt="Bukti Transfer" class="h-24 w-36 object-cover rounded-xl border border-slate-200 dark:border-slate-600 shadow-xs" />
+                <div class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center text-white text-xs font-bold gap-1">
+                  <Icon icon="ph:magnifying-glass-plus-bold" />
+                  <span>Zoom</span>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 space-y-1.5 text-xs">
+                <div v-if="payment.sender_name" class="flex items-center gap-2">
+                  <span class="text-slate-400 font-medium">{{ t('archer_payments_list.sender_name', 'Nama Pengirim:') }}</span>
+                  <span class="font-bold text-navy dark:text-white text-sm">{{ payment.sender_name }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-slate-400 font-medium">{{ t('archer_payments_list.transfer_nominal', 'Nominal Tertera:') }}</span>
+                  <span class="font-mono font-bold text-navy dark:text-white">Rp {{ (payment.amount || 0).toLocaleString('id-ID') }}</span>
+                </div>
+                <div class="text-xs text-slate-400">
+                  {{ t('archer_payments_list.verification_note', 'Bukti pembayaran sedang dalam proses verifikasi panitia penyelenggara.') }}
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="p-4 bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-800/40 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div class="text-xs text-amber-800 dark:text-amber-300 space-y-0.5">
+                <div class="font-bold">{{ t('archer_payments_list.upload_proof_prompt', 'Silakan unggah bukti transfer manual Anda') }}</div>
+                <div class="text-[11px] text-amber-700/80 dark:text-amber-400">{{ t('archer_payments_list.upload_proof_desc', 'Pesanan belum dapat dikonfirmasi sebelum bukti transfer dikirimkan ke panitia.') }}</div>
+              </div>
+              <BaseButton size="sm" variant="primary" icon="ph:upload-simple-bold" :to="`/payment/status/${reference}`">
+                {{ t('archer_payments_list.upload_now', 'Unggah Bukti Sekarang') }}
+              </BaseButton>
+            </div>
+          </div>
+        </div>
+  
+          <!-- Manual Payment Proof Card -->
+          <div v-if="payment.proof_url || payment.payment_method === 'manual'" class="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+              <h3 class="font-black text-navy dark:text-white text-base flex items-center gap-2">
+                <Icon icon="ph:image-bold" class="text-primary text-lg" />
+                <span>{{ t('archer_payments_list.proof_of_payment', 'Bukti Pembayaran Transfer') }}</span>
+              </h3>
+              <span v-if="payment.proof_url" class="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                <Icon icon="ph:check-circle-bold" />
+                <span>{{ t('archer_payments_list.proof_uploaded', 'Bukti Terunggah') }}</span>
+              </span>
+            </div>
+
+            <div v-if="payment.proof_url" class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 bg-slate-50 dark:bg-slate-700/40 rounded-2xl border border-slate-100 dark:border-slate-700">
+              <div class="relative group cursor-pointer shrink-0" @click="openImageModal(payment.proof_url)">
+                <img :src="payment.proof_url" alt="Bukti Transfer" class="h-24 w-36 object-cover rounded-xl border border-slate-200 dark:border-slate-600 shadow-xs" />
+                <div class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center text-white text-xs font-bold gap-1">
+                  <Icon icon="ph:magnifying-glass-plus-bold" />
+                  <span>Zoom</span>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 space-y-1.5 text-xs">
+                <div v-if="payment.sender_name" class="flex items-center gap-2">
+                  <span class="text-slate-400 font-medium">{{ t('archer_payments_list.sender_name', 'Nama Pengirim:') }}</span>
+                  <span class="font-bold text-navy dark:text-white text-sm">{{ payment.sender_name }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-slate-400 font-medium">{{ t('archer_payments_list.transfer_nominal', 'Nominal Tertera:') }}</span>
+                  <span class="font-mono font-bold text-navy dark:text-white">Rp {{ (payment.amount || 0).toLocaleString('id-ID') }}</span>
+                </div>
+                <div class="text-xs text-slate-400">
+                  {{ t('archer_payments_list.verification_note', 'Bukti pembayaran sedang dalam proses verifikasi panitia penyelenggara.') }}
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="p-4 bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-800/40 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div class="text-xs text-amber-800 dark:text-amber-300 space-y-0.5">
+                <div class="font-bold">{{ t('archer_payments_list.upload_proof_prompt', 'Silakan unggah bukti transfer manual Anda') }}</div>
+                <div class="text-[11px] text-amber-700/80 dark:text-amber-400">{{ t('archer_payments_list.upload_proof_desc', 'Pesanan belum dapat dikonfirmasi sebelum bukti transfer dikirimkan ke panitia.') }}</div>
+              </div>
+              <BaseButton size="sm" variant="primary" icon="ph:upload-simple-bold" :to="`/payment/status/${reference}`">
+                {{ t('archer_payments_list.upload_now', 'Unggah Bukti Sekarang') }}
+              </BaseButton>
+            </div>
+          </div>
+        </div>
+
+          <!-- Manual Payment Proof Card -->
+          <div v-if="payment.proof_url || payment.payment_method === 'manual'" class="space-y-4 pt-4 border-t border-slate-100 dark:border-slate-700">
+            <div class="flex items-center justify-between">
+              <h3 class="font-black text-navy dark:text-white text-base flex items-center gap-2">
+                <Icon icon="ph:image-bold" class="text-primary text-lg" />
+                <span>{{ t('archer_payments_list.proof_of_payment', 'Bukti Pembayaran Transfer') }}</span>
+              </h3>
+              <span v-if="payment.proof_url" class="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                <Icon icon="ph:check-circle-bold" />
+                <span>{{ t('archer_payments_list.proof_uploaded', 'Bukti Terunggah') }}</span>
+              </span>
+            </div>
+
+            <div v-if="payment.proof_url" class="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 bg-slate-50 dark:bg-slate-700/40 rounded-2xl border border-slate-100 dark:border-slate-700">
+              <div class="relative group cursor-pointer shrink-0" @click="openImageModal(payment.proof_url)">
+                <img :src="payment.proof_url" alt="Bukti Transfer" class="h-24 w-36 object-cover rounded-xl border border-slate-200 dark:border-slate-600 shadow-xs" />
+                <div class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center text-white text-xs font-bold gap-1">
+                  <Icon icon="ph:magnifying-glass-plus-bold" />
+                  <span>Zoom</span>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 space-y-1.5 text-xs">
+                <div v-if="payment.sender_name" class="flex items-center gap-2">
+                  <span class="text-slate-400 font-medium">{{ t('archer_payments_list.sender_name', 'Nama Pengirim:') }}</span>
+                  <span class="font-bold text-navy dark:text-white text-sm">{{ payment.sender_name }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-slate-400 font-medium">{{ t('archer_payments_list.transfer_nominal', 'Nominal Tertera:') }}</span>
+                  <span class="font-mono font-bold text-navy dark:text-white">Rp {{ (payment.amount || 0).toLocaleString('id-ID') }}</span>
+                </div>
+                <div class="text-xs text-slate-400">
+                  {{ t('archer_payments_list.verification_note', 'Bukti pembayaran sedang dalam proses verifikasi panitia penyelenggara.') }}
+                </div>
+              </div>
+            </div>
+
+            <div v-else class="p-4 bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-800/40 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div class="text-xs text-amber-800 dark:text-amber-300 space-y-0.5">
+                <div class="font-bold">{{ t('archer_payments_list.upload_proof_prompt', 'Silakan unggah bukti transfer manual Anda') }}</div>
+                <div class="text-[11px] text-amber-700/80 dark:text-amber-400">{{ t('archer_payments_list.upload_proof_desc', 'Pesanan belum dapat dikonfirmasi sebelum bukti transfer dikirimkan ke panitia.') }}</div>
+              </div>
+              <BaseButton size="sm" variant="primary" icon="ph:upload-simple-bold" :to="`/payment/status/${reference}`">
+                {{ t('archer_payments_list.upload_now', 'Unggah Bukti Sekarang') }}
+              </BaseButton>
             </div>
           </div>
         </div>
@@ -112,6 +394,13 @@
         </div>
       </div>
     </div>
+
+    <!-- Image Preview Dialog -->
+    <AppDialog v-model:show="showImageModal" title="Bukti Transfer Pembayaran" message="" type="info" icon="ph:image-bold">
+      <div class="flex justify-center p-2">
+        <img :src="selectedImage" class="max-w-full max-h-[70vh] object-contain rounded-xl shadow-md" />
+      </div>
+    </AppDialog>
   </div>
 </template>
 
@@ -126,6 +415,13 @@ const { get } = useApi()
 
 const reference = computed(() => route.params.reference as string)
 const isLoading = ref(true)
+const showImageModal = ref(false)
+const selectedImage = ref('')
+
+const openImageModal = (url: string) => {
+  selectedImage.value = url
+  showImageModal.value = true
+}
 const payment = ref<any>(null)
 
 async function fetchDetail() {

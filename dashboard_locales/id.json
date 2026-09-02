@@ -2497,5 +2497,17 @@
     "event_dates_label": "Tanggal Pelaksanaan",
     "download_thb": "Unduh Petunjuk Teknis (THB)",
     "schedule_rundown": "Jadwal & Rundown"
+  },
+  "archer_payments_list": {
+    "proof_of_payment": "Bukti Pembayaran Transfer",
+    "proof_uploaded": "Bukti Terunggah",
+    "proof_pending": "Belum Unggah Bukti",
+    "sender_name": "Nama Pengirim:",
+    "transfer_nominal": "Nominal Tertera:",
+    "verification_note": "Bukti pembayaran sedang dalam proses verifikasi panitia penyelenggara.",
+    "view_invoice": "Buka Invoice",
+    "upload_proof_prompt": "Silakan unggah bukti transfer manual Anda",
+    "upload_proof_desc": "Pesanan belum dapat dikonfirmasi sebelum bukti transfer dikirimkan ke panitia.",
+    "upload_now": "Unggah Bukti Sekarang"
   }
 }

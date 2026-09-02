@@ -2461,5 +2461,17 @@
     "event_dates_label": "Event Dates",
     "download_thb": "Download Technical Handbook (THB)",
     "schedule_rundown": "Schedule & Rundown"
+  },
+  "archer_payments_list": {
+    "proof_of_payment": "Transfer Payment Proof",
+    "proof_uploaded": "Proof Uploaded",
+    "proof_pending": "Proof Not Uploaded",
+    "sender_name": "Sender Name:",
+    "transfer_nominal": "Stated Amount:",
+    "verification_note": "Payment proof is being reviewed by event organizers.",
+    "view_invoice": "View Invoice",
+    "upload_proof_prompt": "Please upload your transfer payment proof",
+    "upload_proof_desc": "Your registration cannot be verified until transfer receipt is uploaded.",
+    "upload_now": "Upload Proof Now"
   }
 }
