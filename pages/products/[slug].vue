@@ -562,14 +562,14 @@ const categoryLabels = {
 
 useHead(() => ({
     title: product.value?.name
-        ? `${product.value.name} | Archery Products | ArcheryHub`
-        : t('shop.product_detail', 'Product Detail') + ' | ArcheryHub',
+        ? `${product.value.name} | Archery Products | Archeris`
+        : t('shop.product_detail', 'Product Detail') + ' | Archeris',
     meta: [
         {
             name: 'description',
             content: product.value?.description
                 ? String(product.value.description).slice(0, 160)
-                : 'Lihat detail produk panahan, foto, spesifikasi, dan harga terbaru di ArcheryHub.'
+                : 'Lihat detail produk panahan, foto, spesifikasi, dan harga terbaru di Archeris.'
         }
     ]
 }))
@@ -688,7 +688,7 @@ const discountPercent = computed(() => {
 
 const share = (platform) => {
     const url = window.location.href
-    const text = `Cek ${product.value.name} di ArcheryHub! Rp ${formatPrice(finalPrice.value)}`
+    const text = `Cek ${product.value.name} di Archeris! Rp ${formatPrice(finalPrice.value)}`
 
     const links = {
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,

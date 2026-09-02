@@ -1,6 +1,6 @@
 <script setup>
 
-useHead({ title: computed(() => t('dashboard.title', 'Dashboard') + ' - ArcheryHub Dashboard') })
+useHead({ title: computed(() => t('dashboard.title', 'Dashboard') + ' - Archeris Dashboard') })
 import useDashboardI18n from '~/composables/useDashboardI18n'
 import { useI18n } from 'vue-i18n'
 const { t } = useDashboardI18n()

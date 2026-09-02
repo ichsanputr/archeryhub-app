@@ -1,31 +1,69 @@
 <template>
     <div class="space-y-8">
-        <!-- Map Card -->
-        <section class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-            <div class="h-[400px] w-full bg-gray-50 relative group">
-                <iframe v-if="gmapsEmbedUrl" :src="gmapsEmbedUrl" width="100%" height="100%" style="border:0;"
+        <!-- Empty State -->
+        <div v-if="isLocationEmpty"
+            class="bg-white rounded-3xl p-12 sm:p-16 shadow-sm border border-gray-100 text-center flex flex-col items-center justify-center">
+            <div class="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center mb-6 shadow-2xs">
+                <Icon icon="ph:map-pin-line-bold" class="text-4xl text-gray-300" />
+            </div>
+            <h3 class="text-lg sm:text-xl font-black text-navy mb-2">
+                {{ t('event_venue.empty_title', 'Informasi Lokasi Belum Tersedia') }}
+            </h3>
+            <p class="text-gray-400 font-medium text-sm max-w-sm mx-auto leading-relaxed">
+                {{ t('event_venue.empty_desc', 'Penyelenggara belum menambahkan detail lokasi atau peta untuk event ini.') }}
+            </p>
+        </div>
+
+        <!-- Venue Details & Map Card -->
+        <section v-else class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
+            <!-- Map Embed -->
+            <div v-if="gmapsEmbedUrl" class="h-[360px] sm:h-[420px] w-full bg-gray-50 relative group">
+                <iframe :src="gmapsEmbedUrl" width="100%" height="100%" style="border:0;"
                     allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                 </iframe>
-                <div v-else class="w-full h-full flex items-center justify-center bg-gray-100">
-                    <Icon icon="ph:map-pin" class="text-4xl text-gray-300" />
-                </div>
             </div>
-            <div class="p-6 md:p-8 flex flex-col md:flex-row gap-8 justify-between items-start">
-                <div class="flex-grow space-y-4">
-                    <div class="flex items-center gap-2">
-                        <div>
-                            <Icon icon="ph:map-pin" class="text-2xl text-primary" />
+
+            <!-- Venue Details Content -->
+            <div class="p-6 sm:p-8 md:p-10 space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 sm:size-12 rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
+                                <Icon icon="ph:map-pin-fill" class="text-xl sm:text-2xl text-primary" />
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-black text-gray-400 tracking-widest block">{{ t('event_venue.venue_title', 'Lokasi & Tempat Pertandingan') }}</span>
+                                <h2 class="text-xl sm:text-2xl font-black text-navy leading-tight">
+                                    {{ venue || t('event_schedule.main_venue', 'Venue Utama') }}
+                                </h2>
+                            </div>
                         </div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-navy">{{ venue }}</h2>
+
+                        <p v-if="address" class="text-sm sm:text-base text-gray-600 leading-relaxed pl-0 md:pl-15">
+                            {{ address }}
+                        </p>
                     </div>
-                    <div class="flex items-start gap-2 text-gray-600">
-                        <div class="text-sm sm:text-base">{{ address }}</div>
+
+                    <!-- Direct Google Maps Action -->
+                    <div v-if="directGmapsUrl" class="shrink-0 pl-0 md:pl-0">
+                        <a :href="directGmapsUrl" target="_blank" rel="noopener noreferrer"
+                            class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-navy text-white text-xs sm:text-sm font-bold hover:bg-navy/90 hover:shadow-md transition-all">
+                            <Icon icon="ph:arrow-square-out-bold" class="text-base text-primary" />
+                            <span>{{ t('event_venue.open_gmaps', 'Buka di Google Maps') }}</span>
+                        </a>
                     </div>
-                    <div v-if="accessibility && accessibility.length > 0" class="flex flex-wrap gap-4 pt-2">
+                </div>
+
+                <!-- Accessibility / Facilities Badges -->
+                <div v-if="accessibility && accessibility.length > 0" class="pt-6 border-t border-gray-100">
+                    <h4 class="text-xs font-black text-gray-400 tracking-widest mb-4">
+                        {{ t('event_venue.accessibility_title', 'Akses & Fasilitas Lokasi') }}
+                    </h4>
+                    <div class="flex flex-wrap gap-2.5">
                         <div v-for="option in accessibility" :key="option"
-                            class="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
-                            <span class="material-symbols-outlined text-sm">{{ getAccessibilityIcon(option) }}</span>
-                            {{ option }}
+                            class="flex items-center gap-2 text-xs font-bold text-gray-600 bg-gray-50/80 px-3.5 py-2 rounded-xl border border-gray-100 shadow-2xs">
+                            <Icon :icon="getAccessibilityIcon(option)" class="text-base text-primary" />
+                            <span>{{ option }}</span>
                         </div>
                     </div>
                 </div>
@@ -35,21 +73,36 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { Icon } from '@iconify/vue'
+
+const { t } = useI18n()
+
 const props = defineProps({
     venue: String,
     address: String,
-    gmapsEmbed: String, // Optional direct embed URL
-    gmapsLink: String,  // Optional direct link
+    gmapsEmbed: String,
+    gmapsLink: String,
     accessibility: {
         type: Array,
         default: () => []
     }
 })
 
+const isLocationEmpty = computed(() => {
+    return !props.venue?.trim() && !props.address?.trim() && !props.gmapsEmbed && !props.gmapsLink
+})
+
 // Google Maps embed URL
 const gmapsEmbedUrl = computed(() => {
     if (props.gmapsEmbed) return props.gmapsEmbed
-    if (!props.gmapsLink) return null
+    if (!props.gmapsLink) {
+        if (props.venue || props.address) {
+            const query = [props.venue, props.address].filter(Boolean).join(', ')
+            return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`
+        }
+        return null
+    }
 
     try {
         const link = props.gmapsLink
@@ -69,32 +122,27 @@ const gmapsEmbedUrl = computed(() => {
     }
 })
 
+const directGmapsUrl = computed(() => {
+    if (props.gmapsLink) return props.gmapsLink
+    if (props.venue || props.address) {
+        const query = [props.venue, props.address].filter(Boolean).join(', ')
+        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
+    }
+    return null
+})
+
 const getAccessibilityIcon = (option) => {
     const icons = {
-        'Terjangkau Mobil/Motor': 'directions_car',
-        'Akses Transportasi Umum': 'train',
-        'Parkir Luas': 'local_parking',
-        'Fasilitas Toilet': 'wc',
-        'Area Makan': 'restaurant',
-        'Tempat Duduk': 'chair',
-        'Akses Disabilitas': 'accessible',
-        'Area Parkir Motor': 'moped',
-        'Area Parkir Mobil': 'directions_car'
+        'Terjangkau Mobil/Motor': 'ph:car-bold',
+        'Akses Transportasi Umum': 'ph:train-bold',
+        'Parkir Luas': 'ph:park-bold',
+        'Fasilitas Toilet': 'ph:toilet-bold',
+        'Area Makan': 'ph:fork-knife-bold',
+        'Tempat Duduk': 'ph:armchair-bold',
+        'Akses Disabilitas': 'ph:wheelchair-bold',
+        'Area Parkir Motor': 'ph:motorcycle-bold',
+        'Area Parkir Mobil': 'ph:car-bold'
     }
-    return icons[option] || 'info'
+    return icons[option] || 'ph:check-circle-bold'
 }
-
-const facilities = [
-    { name: 'Musholla', icon: 'mosque' },
-    { name: 'Food Court', icon: 'restaurant' },
-    { name: 'Toilet Bersih', icon: 'wc' },
-    { name: 'Area Parkir', icon: 'local_parking' },
-    { name: 'Pos Medis', icon: 'medical_services' },
-    { name: 'WiFi Gratis', icon: 'wifi' },
-    { name: 'Tribun Penonton', icon: 'chair' },
-    { name: 'Charging Station', icon: 'battery_charging_full' }
-]
-
-import { computed } from 'vue'
-import { Icon } from '@iconify/vue'
 </script>

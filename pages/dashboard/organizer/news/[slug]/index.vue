@@ -385,7 +385,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => (article.value?.title || t('organizer_news.detail.title_short', 'Detail Berita')) + ' - ArcheryHub Dashboard')
+    title: computed(() => (article.value?.title || t('organizer_news.detail.title_short', 'Detail Berita')) + ' - Archeris Dashboard')
 })
 
 const route = useRoute()
@@ -554,7 +554,7 @@ const copyPublicUrl = async () => {
 
 const shareTo = (platform) => {
     const url = encodeURIComponent(publicNewsUrl.value)
-    const text = encodeURIComponent(article.value.title || 'Berita ArcheryHub')
+    const text = encodeURIComponent(article.value.title || 'Berita Archeris')
 
     let shareUrl = ''
     if (platform === 'whatsapp') {

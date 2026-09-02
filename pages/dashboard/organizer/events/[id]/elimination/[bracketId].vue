@@ -413,7 +413,7 @@ const pageTitle = computed(() => {
 })
 
 useHead({
-    title: computed(() => `${pageTitle.value} - ArcheryHub Dashboard`)
+    title: computed(() => `${pageTitle.value} - Archeris Dashboard`)
 })
 
 const targetOptions = computed(() => {

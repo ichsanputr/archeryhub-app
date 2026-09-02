@@ -68,7 +68,7 @@
             <Icon icon="ph:users-three-bold" class="text-2xl" />
           </div>
           <h3 class="text-base font-black text-navy mb-2">{{ t('event_printout.participants.title', 'Daftar Peserta') }}</h3>
-          <div class="text-xs text-gray-500 mb-6 leading-relaxed">{{ t('event_printout.participants.desc', 'Daftar hadir dan rekap peserta event per abjad, klub, atau per sesi akreditasi.') }}</div>
+          <div class="text-xs text-gray-500 mb-6 leading-relaxed">{{ t('event_printout.participants.desc', 'Daftar hadir dan rekap peserta event per abjad atau per klub / kontingen.') }}</div>
         </div>
 
         <div class="flex items-center gap-1.5 text-navy font-bold text-xs group-hover:text-primary transition-colors pt-4 border-t border-gray-50">

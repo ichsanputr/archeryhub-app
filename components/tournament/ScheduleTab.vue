@@ -5,7 +5,7 @@
 
             <div v-if="isLoading" class="py-20 flex flex-col items-center justify-center text-gray-400 gap-4">
                 <Icon icon="ph:spinner-gap-bold" class="text-4xl animate-spin text-primary" />
-                <p class="text-sm font-bold tracking-widest text-navy">Memuat jadwal...</p>
+                <p class="text-sm font-bold tracking-widest text-navy">{{ t('event_schedule.loading', 'Memuat jadwal...') }}</p>
             </div>
 
             <div v-else-if="!props.schedules.length"
@@ -13,7 +13,10 @@
                 <div class="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center mb-6">
                     <Icon icon="ph:calendar-blank-bold" class="text-5xl text-gray-200" />
                 </div>
-                <p class="text-gray-400 font-black tracking-widest text-sm">Jadwal belum tersedia.</p>
+                <h3 class="text-lg font-black text-navy mb-1">{{ t('event_schedule.empty_title', 'Jadwal Belum Tersedia') }}</h3>
+                <p class="text-gray-400 font-medium text-sm max-w-sm mx-auto">
+                    {{ t('event_schedule.empty_desc', 'Penyelenggara belum mempublikasikan jadwal pertandingan untuk event ini.') }}
+                </p>
             </div>
 
             <div v-else class="space-y-16">
@@ -23,8 +26,7 @@
                     <div class="flex items-center gap-4">
                         <h2 class="text-lg sm:text-xl font-black text-navy tracking-tight whitespace-nowrap">
                             {{ formatDate(groupedByDay[day][0]?.start_time) }} <span
-                                class="text-[10px] sm:text-xs font-bold text-gray-400 ml-2 tracking-normal">/ HARI {{
-                                    day }}</span>
+                                class="text-[10px] sm:text-xs font-bold text-gray-400 ml-2 tracking-normal">{{ t('event_schedule.day_count', { day }) }}</span>
                         </h2>
                         <div class="h-[2px] flex-1 bg-gray-100"></div>
                     </div>
@@ -45,11 +47,11 @@
                                 </span>
                                 <div v-if="getSessionStatus(session) === 'ongoing'"
                                     class="text-[8px] sm:text-[9px] text-primary-hover block md:text-right font-black tracking-tighter mt-1.5 whitespace-nowrap">
-                                    Berlangsung
+                                    {{ t('event_schedule.status_ongoing', 'Berlangsung') }}
                                 </div>
                                 <div v-else-if="getSessionStatus(session) === 'completed'"
                                     class="text-[8px] sm:text-[9px] text-gray-400 block md:text-right font-bold mt-1.5 whitespace-nowrap">
-                                    Selesai
+                                    {{ t('event_schedule.status_completed', 'Selesai') }}
                                 </div>
                             </div>
 
@@ -77,15 +79,15 @@
                                     <div v-if="getSessionStatus(session) === 'ongoing'"
                                         class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[10px] font-black bg-primary text-btn-text capitalize tracking-widest shadow-lg shadow-primary/20">
                                         <span class="w-1.5 h-1.5 rounded-full bg-navy animate-pulse"></span>
-                                        LIVE NOW
+                                        {{ t('event_schedule.status_live', 'LIVE NOW') }}
                                     </div>
                                     <div v-else-if="getSessionStatus(session) === 'completed'"
                                         class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-gray-100 text-gray-500 capitalize tracking-widest">
-                                        Selesai
+                                        {{ t('event_schedule.status_completed', 'Selesai') }}
                                     </div>
                                     <div v-else
                                         class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-blue-50 text-blue-600 capitalize tracking-widest">
-                                        Mendatang
+                                        {{ t('event_schedule.status_upcoming', 'Mendatang') }}
                                     </div>
                                 </div>
 
@@ -99,9 +101,9 @@
                                         <div>
                                             <p
                                                 class="text-[8px] sm:text-[9px] font-black text-gray-400 tracking-widest leading-none mb-1">
-                                                LOKASI</p>
+                                                {{ t('event_schedule.location', 'LOKASI') }}</p>
                                             <p class="text-xs sm:text-sm font-black text-navy">{{ session.location ||
-                                                'Venue Utama' }}</p>
+                                                t('event_schedule.main_venue', 'Venue Utama') }}</p>
                                         </div>
                                     </div>
 
@@ -113,7 +115,7 @@
                                         <div>
                                             <p
                                                 class="text-[8px] sm:text-[9px] font-black text-gray-400 tracking-widest leading-none mb-1">
-                                                DETAIL</p>
+                                                {{ t('event_schedule.detail', 'DETAIL') }}</p>
                                             <p class="text-xs sm:text-sm font-black text-navy line-clamp-1">{{
                                                 session.description }}</p>
                                         </div>
@@ -130,6 +132,9 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { ref, computed } from 'vue'
+
+const { t, locale } = useI18n()
 
 const props = defineProps({
     eventId: {
@@ -166,7 +171,8 @@ const sortedDays = computed(() => {
 
 const formatStartTime = (timeStr) => {
     if (!timeStr) return '--:--'
-    return new Date(timeStr).toLocaleTimeString('id-ID', {
+    const loc = locale.value === 'id' ? 'id-ID' : 'en-US'
+    return new Date(timeStr).toLocaleTimeString(loc, {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false
@@ -175,7 +181,8 @@ const formatStartTime = (timeStr) => {
 
 const formatDate = (timeStr) => {
     if (!timeStr) return ''
-    return new Date(timeStr).toLocaleDateString('id-ID', {
+    const loc = locale.value === 'id' ? 'id-ID' : 'en-US'
+    return new Date(timeStr).toLocaleDateString(loc, {
         day: 'numeric',
         month: 'short',
         year: 'numeric'

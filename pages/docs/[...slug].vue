@@ -577,7 +577,7 @@ watch(currentSlug, () => {
 }, { immediate: true })
 
 useHead(computed(() => ({
-    title: currentDoc.value ? `${currentDoc.value.title} - ArcheryHub Docs` : t('docs.title', 'Documentation') + ' - ArcheryHub',
+    title: currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : t('docs.title', 'Documentation') + ' - Archeris',
     meta: [{ name: 'description', content: currentDoc.value?.excerpt || '' }]
 })))
 </script>

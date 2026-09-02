@@ -11,7 +11,7 @@ definePageMeta({
 })
 
 const { t } = useDashboardI18n()
-useHead({ title: computed(() => t('package_detail.page_title', 'Detail Invoice Pembayaran') + ' - ArcheryHub') })
+useHead({ title: computed(() => t('package_detail.page_title', 'Detail Invoice Pembayaran') + ' - Archeris') })
 
 const route = useRoute()
 const payment = usePayment()
@@ -400,7 +400,7 @@ onUnmounted(() => {
           <!-- Total Calculation Breakdown -->
           <div class="pt-3 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
             <div class="text-xs text-slate-400 space-y-1">
-              <div>{{ t('package_detail.official_receipt_note', 'Kuitansi resmi diterbitkan oleh ArcheryHub.id') }}</div>
+              <div>{{ t('package_detail.official_receipt_note', 'Kuitansi resmi diterbitkan oleh Archeris.net') }}</div>
               <div class="text-[11px] text-slate-400">{{ t('package_detail.tax_note', 'Pajak sudah termasuk dalam total pembayaran (PPN 0%)') }}</div>
             </div>
 
@@ -475,10 +475,10 @@ onUnmounted(() => {
       <!-- Invoice Top Bar: Logo & Invoice Header -->
       <div class="flex justify-between items-start border-b-2 border-slate-900 pb-5 mb-6">
         <div>
-          <div class="text-2xl font-black text-slate-900 tracking-tight">ArcheryHub.id</div>
+          <div class="text-2xl font-black text-slate-900 tracking-tight">Archeris.net</div>
           <div class="text-xs text-slate-700 font-bold mt-1">{{ t('package_detail.company_name', 'PT. Archeris Teknologi Indonesia') }}</div>
           <div class="text-[11px] text-slate-500">{{ t('package_detail.platform_subtitle', 'Platform Manajemen Turnamen Panahan Digital') }}</div>
-          <div class="text-[11px] text-slate-400">{{ t('package_detail.location_info', 'Jakarta, Indonesia | info@archeryhub.id') }}</div>
+          <div class="text-[11px] text-slate-400">{{ t('package_detail.location_info', 'Jakarta, Indonesia | info@archeris.net') }}</div>
         </div>
 
         <div class="text-right">
@@ -498,16 +498,16 @@ onUnmounted(() => {
       <div class="grid grid-cols-2 gap-8 mb-6 text-xs">
         <div class="space-y-1">
           <div class="text-[10px] font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.issued_by', 'Diterbitkan Oleh:') }}</div>
-          <div class="font-black text-slate-900">{{ t('package_detail.billing_dept', 'ArcheryHub.id Billing Department') }}</div>
+          <div class="font-black text-slate-900">{{ t('package_detail.billing_dept', 'Archeris.net Billing Department') }}</div>
           <div class="text-slate-600">{{ t('package_detail.company_name', 'PT. Archeris Teknologi Indonesia') }}</div>
-          <div class="text-slate-400">https://archeryhub.id</div>
+          <div class="text-slate-400">https://archeris.net</div>
         </div>
 
         <div class="space-y-1">
           <div class="text-[10px] font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.billed_to', 'Ditagihkan Kepada:') }}</div>
           <div class="font-black text-slate-900">{{ organizerProfile?.name || tx.organizer_name || t('package_detail.default_organizer', 'Penyelenggara Event') }}</div>
           <div class="text-slate-600">{{ organizerProfile?.email || tx.organizer_email || '-' }}</div>
-          <div class="text-slate-400">{{ t('package_detail.official_organizer_role', 'Penyelenggara Resmi ArcheryHub.id') }}</div>
+          <div class="text-slate-400">{{ t('package_detail.official_organizer_role', 'Penyelenggara Resmi Archeris.net') }}</div>
         </div>
       </div>
 
@@ -564,7 +564,7 @@ onUnmounted(() => {
       <div class="grid grid-cols-2 gap-8 border-t border-slate-200 pt-6 mb-6 text-xs">
         <div class="space-y-1 text-slate-500">
           <div class="font-bold text-slate-800">{{ t('package_detail.terms_title', 'Ketentuan & Syarat:') }}</div>
-          <div class="text-[10px] leading-relaxed text-slate-600">{{ t('package_detail.terms_desc', '1. Kuitansi ini sah dan diterbitkan secara elektronik oleh sistem ArcheryHub.') }}</div>
+          <div class="text-[10px] leading-relaxed text-slate-600">{{ t('package_detail.terms_desc', '1. Kuitansi ini sah dan diterbitkan secara elektronik oleh sistem Archeris.') }}</div>
           <div class="text-[10px] leading-relaxed text-slate-600">{{ t('package_detail.terms_desc_2', '2. Kuota turnamen yang telah aktif siap digunakan untuk membuka event baru.') }}</div>
         </div>
 
@@ -581,10 +581,10 @@ onUnmounted(() => {
       <!-- Bottom Minimal PDF / Print Footer -->
       <div class="border-t border-slate-200 pt-3 flex justify-between items-center text-[10px] text-slate-400">
         <div>
-          {{ t('package_detail.official_receipt_note', 'Faktur ini merupakan bukti pembayaran elektronik resmi yang sah dari ArcheryHub.id.') }}
+          {{ t('package_detail.official_receipt_note', 'Faktur ini merupakan bukti pembayaran elektronik resmi yang sah dari Archeris.net.') }}
         </div>
         <div class="font-bold text-slate-600">
-          {{ t('package_detail.digital_receipt_footer', 'ArcheryHub.id Digital Receipt') }}
+          {{ t('package_detail.digital_receipt_footer', 'Archeris.net Digital Receipt') }}
         </div>
       </div>
 

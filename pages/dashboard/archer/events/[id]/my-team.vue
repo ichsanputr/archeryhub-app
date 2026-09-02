@@ -128,7 +128,7 @@ const { get } = useApi()
 const eventId = computed(() => route.params.id as string)
 
 useHead({
-  title: computed(() => `${t('my_team.title', 'My Team & Squad')} - ArcheryHub Dashboard`)
+  title: computed(() => `${t('my_team.title', 'My Team & Squad')} - Archeris Dashboard`)
 })
 
 const isLoading = ref(true)

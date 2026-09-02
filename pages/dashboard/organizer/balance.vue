@@ -313,7 +313,7 @@ definePageMeta({
 })
 
 useHead({
-    title: () => `${t('organizer.balance.header.title')} - ArcheryHub Dashboard`
+    title: () => `${t('organizer.balance.header.title')} - Archeris Dashboard`
 })
 
 // Security State

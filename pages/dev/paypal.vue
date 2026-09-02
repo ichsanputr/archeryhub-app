@@ -376,7 +376,7 @@ definePageMeta({
   layout: 'blank'
 })
 
-useHead({ title: 'PayPal Sandbox Testing Console - ArcheryHub' })
+useHead({ title: 'PayPal Sandbox Testing Console - Archeris' })
 
 const route = useRoute()
 const apiBaseUrl = useApiBaseUrl()
@@ -400,7 +400,7 @@ const authStatus = ref({
 const orderForm = ref({
   amount: '15.00',
   currency: 'USD',
-  description: 'ArcheryHub Championship 2026 Entry Ticket',
+  description: 'Archeris Championship 2026 Entry Ticket',
   reference_id: `DEV-PP-${Date.now().toString().slice(-6)}`
 })
 

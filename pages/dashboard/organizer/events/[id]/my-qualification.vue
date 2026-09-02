@@ -168,7 +168,7 @@ definePageMeta({
     layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('qualification.my_results', 'My Qualification Results') + ' - ArcheryHub Dashboard') })
+useHead({ title: computed(() => t('qualification.my_results', 'My Qualification Results') + ' - Archeris Dashboard') })
 
 
 const isLoading = ref(true)

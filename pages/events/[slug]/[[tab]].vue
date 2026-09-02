@@ -61,9 +61,10 @@
                     <!-- Left Column -->
                     <div :class="activeTab === 'Hasil' ? 'space-y-10' : 'lg:col-span-2 space-y-10'" :key="activeTab">
                         <TournamentTabsSkeleton v-if="isTabLoading" :tab="activeTab" />
-                        <div v-else-if="activeTab === 'Ringkasan'" class="space-y-8">
+                        <div v-else-if="activeTab === 'Ringkasan'"
+                            class="bg-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-sm border border-gray-100 space-y-10 md:space-y-12">
                             <!-- About Section -->
-                            <section class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100">
+                            <section>
                                 <h2
                                     class="font-black text-navy text-lg sm:text-2xl mb-6 flex items-center gap-2 md:gap-3">
                                     <div
@@ -95,12 +96,12 @@
                                 </div>
                             </section>
 
+                            <!-- Divider -->
+                            <div v-if="divisionsData.length > 0" class="h-px bg-gray-100"></div>
+
                             <!-- Divisions Section -->
-                            <section v-if="divisionsData.length > 0"
-                                class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100 relative overflow-hidden">
-
-
-                                <div class="flex items-center justify-between mb-10 relative z-10">
+                            <section v-if="divisionsData.length > 0" class="relative overflow-hidden">
+                                <div class="flex items-center justify-between mb-8 relative z-10">
                                     <div>
                                         <h2
                                             class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
@@ -139,7 +140,7 @@
                                         </button>
                                     </div>
                                     <div ref="scrollContainer"
-                                        class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-8 -mx-1 px-1">
+                                        class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 -mx-1 px-1">
                                         <div v-for="division in divisionsData" :key="division.name"
                                             class="min-w-[300px] md:min-w-[340px] group relative bg-gray-50 border border-gray-100 rounded-[2rem] p-7">
                                             <!-- Card Header -->
@@ -161,7 +162,7 @@
                                             <!-- Categories List -->
                                             <div class="space-y-3 max-h-[220px] overflow-y-auto no-scrollbar pr-1">
                                                 <div v-for="cat in division.categories" :key="cat"
-                                                    class="flex items-start gap-3 p-3 rounded-2xl bg-gray-50 border border-transparent bg-white border-gray-100 shadow-sm transition-all duration-300">
+                                                    class="flex items-start gap-3 p-3 rounded-2xl bg-white border border-gray-100 shadow-sm transition-all duration-300">
                                                     <Icon icon="ph:check-circle-fill"
                                                         class="text-primary mt-0.5 shrink-0" />
                                                     <span class="text-[13px] font-bold text-navy leading-tight">
@@ -174,8 +175,11 @@
                                 </div>
                             </section>
 
+                            <!-- Divider -->
+                            <div class="h-px bg-gray-100"></div>
+
                             <!-- Registration Fees Section -->
-                            <section class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100">
+                            <section>
                                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 relative z-10">
                                     <div>
                                         <h2 class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
@@ -196,7 +200,7 @@
                                 <div v-if="tournament.fee_mode === 'per_type' && formattedFees.length > 0"
                                     class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                                     <div v-for="fee in formattedFees" :key="fee.name"
-                                        class="bg-white border border-gray-200 p-6 rounded-[2rem] hover:border-primary hover:shadow-md transition-all relative">
+                                        class="bg-gray-50/70 border border-gray-100 p-6 rounded-[2rem] hover:border-primary hover:shadow-md transition-all relative">
                                         <div class="flex items-center gap-3 mb-4">
                                             <div class="size-10 rounded-xl bg-navy/5 flex items-center justify-center shrink-0">
                                                 <Icon :icon="fee.iconName || 'ph:user-bold'" class="text-navy text-xl" />
@@ -239,7 +243,7 @@
                                 <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                                     <template v-if="formattedFees.length > 0">
                                         <div v-for="(fee, idx) in formattedFees" :key="idx"
-                                            class="bg-white border border-gray-200 p-6 rounded-2xl hover:border-primary hover:shadow-md transition-all">
+                                            class="bg-gray-50/70 border border-gray-100 p-6 rounded-2xl hover:border-primary hover:shadow-md transition-all">
                                             <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2">{{ fee.typeLabel }}</div>
                                             <h3 class="text-lg font-black text-navy mb-4">{{ fee.name }}</h3>
                                             <div class="text-2xl sm:text-3xl font-black text-navy mb-4 tracking-tight">
@@ -250,7 +254,7 @@
                                         </div>
                                     </template>
                                     <template v-else>
-                                        <div class="bg-white border border-gray-200 p-6 rounded-2xl">
+                                        <div class="bg-gray-50/70 border border-gray-100 p-6 rounded-2xl">
                                             <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2">{{ t('event_detail.flat_fee') }}</div>
                                             <h3 class="text-lg font-black text-navy mb-4">{{ t('event_detail.all_categories') }}</h3>
                                             <div class="text-2xl sm:text-3xl font-black text-navy mb-4 tracking-tight">
@@ -273,12 +277,12 @@
 
                                 <!-- Integrated Payment Methods inside Fee Section -->
                                 <div v-if="tournament.payment_methods && tournament.payment_methods.length > 0"
-                                    class="pt-8 mt-8 border-t border-gray-200">
+                                    class="pt-8 mt-8 border-t border-gray-100">
                                     <h3 class="text-xs font-black text-gray-400 tracking-[0.2em] mb-5">{{ t('event_detail.payment_methods') }}</h3>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                         <div v-for="(method, idx) in tournament.payment_methods" :key="idx"
-                                            class="p-4 rounded-2xl bg-white border border-gray-200 flex items-center gap-4">
-                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-slate-50 shadow-sm flex items-center justify-center shrink-0 overflow-hidden p-1.5">
+                                            class="p-4 rounded-2xl bg-gray-50/70 border border-gray-100 flex items-center gap-4">
+                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0 overflow-hidden p-1.5">
                                                 <img v-if="getPaymentMethodImage(method.bank_name)"
                                                     :src="getPaymentMethodImage(method.bank_name)"
                                                     class="w-full h-full object-contain" :alt="method.bank_name" />
@@ -294,7 +298,10 @@
                                 </div>
                             </section>
 
+                            <!-- Divider -->
+                            <div v-if="tournament.total_prize > 0 || tournament.prizes?.first" class="h-px bg-gray-100"></div>
 
+                            <!-- Prize Pool Section -->
                             <section v-if="tournament.total_prize > 0 || tournament.prizes?.first"
                                 class="flex flex-col lg:flex-row overflow-hidden rounded-3xl border border-gray-100 shadow-sm">
                                 <div
@@ -381,9 +388,12 @@
                                 </div>
                             </section>
 
+                            <!-- Divider -->
+                            <div v-if="tournament.faq && tournament.faq.length > 0" class="h-px bg-gray-100"></div>
+
                             <!-- FAQ Section -->
                             <section v-if="tournament.faq && tournament.faq.length > 0"
-                                class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100 overflow-hidden relative">
+                                class="overflow-hidden relative">
                                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 relative z-10">
                                     <div>
                                         <h2 class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
@@ -1153,9 +1163,9 @@ definePageMeta({
 useHead({
     title: () => {
         if (!activeTab.value || activeTab.value === 'Ringkasan') {
-            return `${tournament.value.name} - Archeryhub.id`
+            return `${tournament.value.name} - Archeris.net`
         }
-        return `${activeTab.value} ${tournament.value.name} - Archeryhub.id`
+        return `${activeTab.value} ${tournament.value.name} - Archeris.net`
     },
     link: [
         { rel: 'canonical', href: useRequestURL().href }

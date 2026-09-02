@@ -116,7 +116,7 @@ definePageMeta({
 })
  
 useHead({
-    title: computed(() => t('news.edit_title', 'Edit News') + ' - ArcheryHub Dashboard')
+    title: computed(() => t('news.edit_title', 'Edit News') + ' - Archeris Dashboard')
 })
  
 const route = useRoute()

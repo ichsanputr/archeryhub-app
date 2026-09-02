@@ -163,7 +163,7 @@ definePageMeta({
 })
 
 useHead({
-    title: () => `${t('organizer.bank_accounts.title')} - ArcheryHub Dashboard`
+    title: () => `${t('organizer.bank_accounts.title')} - Archeris Dashboard`
 })
 
 const bankAccounts = ref([])

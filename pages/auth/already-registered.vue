@@ -62,7 +62,7 @@ definePageMeta({ layout: 'default' })
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => (t ? t('auth.already_registered', 'Email Already Registered') : 'Email Already Registered') + ' - ArcheryHub')
+  title: computed(() => (t ? t('auth.already_registered', 'Email Already Registered') : 'Email Already Registered') + ' - Archeris')
 })
 
 const route = useRoute()

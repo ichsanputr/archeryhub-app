@@ -248,7 +248,7 @@ const { user } = useAuth()
 const eventId = computed(() => route.params.id as string)
 
 useHead({
-  title: computed(() => `${t('leaderboard_page.title', 'Event Leaderboard')} - ArcheryHub Dashboard`)
+  title: computed(() => `${t('leaderboard_page.title', 'Event Leaderboard')} - Archeris Dashboard`)
 })
 
 const isLoading = ref(true)

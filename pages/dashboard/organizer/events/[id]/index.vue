@@ -162,7 +162,7 @@ const divisions = computed(() => [
 ])
 
 useHead({
-  title: computed(() => `${t('dashboard.sidebar.event')} Dashboard - ArcheryHub`)
+  title: computed(() => `${t('dashboard.sidebar.event')} Dashboard - Archeris`)
 })
 
 const prizes = computed(() => [

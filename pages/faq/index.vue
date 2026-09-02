@@ -109,6 +109,6 @@ const faqs = [
 ]
 
 useHead({
-    title: computed(() => t('faq.title', 'FAQ - Frequently Asked Questions') + ' - ArcheryHub')
+    title: computed(() => t('faq.title', 'FAQ - Frequently Asked Questions') + ' - Archeris')
 })
 </script>

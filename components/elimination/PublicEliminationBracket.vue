@@ -51,7 +51,7 @@
                 class="size-32 rounded-[2.5rem] bg-slate-50 shadow-inner flex items-center justify-center mx-auto mb-8 border border-slate-100">
                 <Icon icon="ph:brackets-curly-bold" class="text-6xl text-slate-200" />
             </div>
-            <h2 class="text-3xl font-black text-navy tracking-tight">Bracket Belum Di-generate</h2>
+            <h2 class="text-3xl font-black text-navy tracking-tight">{{ t('event_results.bracket_not_generated', 'Bagan Eliminasi Belum Dibuat') }}</h2>
         </div>
     </div>
 </template>
@@ -61,6 +61,8 @@ import { Icon } from '@iconify/vue'
 import { computed } from 'vue'
 import PublicBracketRound from './PublicBracketRound.vue'
 import PublicChampionshipTower from './PublicChampionshipTower.vue'
+
+const { t } = useI18n()
 
 const props = defineProps({
     bracket: { type: Object, required: true },

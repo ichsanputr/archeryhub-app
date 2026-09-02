@@ -190,7 +190,7 @@
 
 <script setup>
 
-useHead({ title: computed(() => t('profile.title', 'Profile') + ' - ArcheryHub Dashboard') })
+useHead({ title: computed(() => t('profile.title', 'Profile') + ' - Archeris Dashboard') })
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()

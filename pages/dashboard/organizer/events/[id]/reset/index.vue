@@ -286,7 +286,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('reset_event.title', 'Reset Event Data') + ' - ArcheryHub Dashboard')
+  title: computed(() => t('reset_event.title', 'Reset Event Data') + ' - Archeris Dashboard')
 })
 
 const route = useRoute()

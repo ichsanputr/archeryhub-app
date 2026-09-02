@@ -52,6 +52,12 @@
               <!-- Country Select -->
               <BaseSelect v-model="form.country" :label="t('organizer.profile.country_label')" :placeholder="t('organizer.profile.country_placeholder')" required
                 :items="countries" searchable />
+
+              <!-- Registration Number / SK -->
+              <BaseInput v-model="form.registration_number" label="Nomor Registrasi / SK Resmi" placeholder="Contoh: SK-PERPANI-001/2024" />
+
+              <!-- Established Date -->
+              <BaseInput v-model="form.established_date" type="date" label="Tanggal Berdiri Organisasi" />
             </div>
             <div>
               <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.about_label') }}</label>
@@ -340,7 +346,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => `${t('organizer.profile.title')} - ArcheryHub Dashboard`)
+  title: computed(() => `${t('organizer.profile.title')} - Archeris Dashboard`)
 })
 
 const router = useRouter()
@@ -404,6 +410,8 @@ const form = reactive({
   bannerUrl: '',
   logoUrl: '',
   country: 'Indonesia',
+  registration_number: '',
+  established_date: '',
   description: '',
   whatsapp_no: '',
   email: '',
@@ -557,6 +565,8 @@ const loadProfile = async () => {
     if (org && (org.id || org.uuid || org.name)) {
       form.name = org.name || ''
       form.slug = org.slug || ''
+      form.registration_number = org.registration_number || ''
+      form.established_date = org.established_date ? org.established_date.split('T')[0] : ''
       form.bannerUrl = org.banner_url || ''
       form.logoUrl = org.avatar_url || org.logo_url || ''
       form.country = org.country || 'Indonesia'
@@ -608,6 +618,8 @@ const saveProfile = async () => {
       logo_url: form.logoUrl,
       avatar_url: form.logoUrl, // Some APIs might expect avatar_url
       country: form.country,
+      registration_number: form.registration_number,
+      established_date: form.established_date,
       description: form.description,
       whatsapp_no: form.whatsapp_no,
       website: form.website,

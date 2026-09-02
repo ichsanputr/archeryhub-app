@@ -967,7 +967,7 @@ import { Icon } from '@iconify/vue'
 import { useDateFormat } from '@vueuse/core'
 
 const { t } = useI18n()
-useHead({ title: computed(() => t('event.register_title', 'Register for Event') + ' - ArcheryHub') })
+useHead({ title: computed(() => t('event.register_title', 'Register for Event') + ' - Archeris') })
 
 const route = useRoute()
 const router = useRouter()

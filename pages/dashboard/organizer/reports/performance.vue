@@ -130,7 +130,7 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('reports.performance', 'Performance Report') + ' - ArcheryHub Dashboard') })
+useHead({ title: computed(() => t('reports.performance', 'Performance Report') + ' - Archeris Dashboard') })
 
 
 const { t } = useI18n()
@@ -197,7 +197,7 @@ const handleExportExcel = () => {
     status: p.status || '-'
   }))
   exportToExcel(
-    'Laporan_Performa_Event_ArcheryHub',
+    'Laporan_Performa_Event_Archeris',
     [
       { key: 'no', label: 'No' },
       { key: 'event_name', label: 'Nama Event' },

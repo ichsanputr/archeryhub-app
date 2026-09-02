@@ -253,7 +253,7 @@ onUnmounted(() => {
 })
 
 useHead({
-    title: computed(() => t('about.title', 'About Us') + ' - ArcheryHub | Archery Event Platform'),
+    title: computed(() => t('about.title', 'About Us') + ' - Archeris | Archery Event Platform'),
     meta: [
         { name: 'description', content: 'Learn about Archeris.net - the modern digital platform for archery tournament organizers, scorekeepers, and athletes.' }
     ]

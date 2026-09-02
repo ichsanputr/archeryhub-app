@@ -192,7 +192,7 @@ definePageMeta({
     layout: 'landing'
 })
 
-useHead({ title: computed(() => t('shop.title', 'Archery Shop') + ' - ArcheryHub') })
+useHead({ title: computed(() => t('shop.title', 'Archery Shop') + ' - Archeris') })
 
 
 useSeoMeta({

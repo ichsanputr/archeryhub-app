@@ -222,7 +222,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => `${t('settings.title', 'Settings')} - ArcheryHub Dashboard`)
+  title: computed(() => `${t('settings.title', 'Settings')} - Archeris Dashboard`)
 })
 const { login, user, organizerProfile } = useAuth()
 const { get, put } = useApi()

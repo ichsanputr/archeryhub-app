@@ -271,7 +271,7 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 
 useHead({
-    title: computed(() => t('comparison.title', 'Archeris vs Ianseo') + ' - ArcheryHub'),
+    title: computed(() => t('comparison.title', 'Archeris vs Ianseo') + ' - Archeris'),
     meta: [
         { name: 'description', content: 'Detailed comparison between Archeris.net and Ianseo.net tournament management platforms.' }
     ]

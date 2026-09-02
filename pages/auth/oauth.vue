@@ -33,7 +33,7 @@ const { setToken } = useAuth()
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => (t ? t('auth.login_success', 'Login Successful') : 'Login Successful') + ' - ArcheryHub')
+  title: computed(() => (t ? t('auth.login_success', 'Login Successful') : 'Login Successful') + ' - Archeris')
 })
 
 onMounted(() => {

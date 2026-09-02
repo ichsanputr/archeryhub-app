@@ -42,7 +42,7 @@
                             <td class="px-8 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
                                     <a v-if="invoice.status === 'pending' && invoice.checkout_url"
-                                        :href="invoice.checkout_url"
+                                        :href="invoice.checkout_url" target="_blank" rel="noopener noreferrer"
                                         class="px-4 py-2 bg-primary text-btn-text text-[10px] font-black tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-sm">
                                         {{ t('subscription.billing.pay_now', 'Bayar Sekarang') }}
                                     </a>

@@ -96,6 +96,6 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('legal.terms', 'Terms & Conditions') + ' - ArcheryHub')
+  title: computed(() => t('legal.terms', 'Terms & Conditions') + ' - Archeris')
 })
 </script>

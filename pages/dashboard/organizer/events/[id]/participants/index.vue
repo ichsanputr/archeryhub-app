@@ -255,7 +255,7 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-    title: computed(() => `${t('dashboard.participants_list.meta_title', 'Daftar Peserta')} - ArcheryHub Dashboard`)
+    title: computed(() => `${t('dashboard.participants_list.meta_title', 'Daftar Peserta')} - Archeris Dashboard`)
 })
 
 const route = useRoute()

@@ -56,9 +56,8 @@
       </button>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Main Content Area -->
-      <div class="lg:col-span-2 space-y-6">
+    <!-- Main Full-Width Customization Area -->
+    <div class="w-full space-y-6">
         
         <!-- TAB 1: INFORMASI PRIBADI, KONTAK & SOSIAL -->
         <div v-if="activeTab === 'information'" class="space-y-6">
@@ -130,7 +129,7 @@
               {{ t('profile.identity_desc') }}
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
               <BaseInput v-model="accountForm.full_name" :label="t('profile.full_name')" :placeholder="t('profile.full_name_placeholder')" required />
               
               <BaseInput v-model="accountForm.username" :label="t('profile.username')" placeholder="username"
@@ -193,7 +192,7 @@
               {{ t('profile.contact_title') }}
             </h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
               <BaseInput v-model="accountForm.phone" :label="t('profile.phone')" type="tel" placeholder="+62 812-3456-7890"
                 icon="ph:phone" numberOnly />
 
@@ -212,7 +211,7 @@
               {{ t('profile.address_title') }}
             </h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
               <BaseSelect v-model="accountForm.country" :label="t('profile.country')" :items="countries"
                 :placeholder="t('profile.select_country', 'Select Country...')" icon="ph:globe" searchable />
 
@@ -222,7 +221,7 @@
 
               <BaseInput v-model="accountForm.postal_code" :label="t('profile.postal_code')" placeholder="55281" icon="ph:mailbox-bold" />
 
-              <div class="md:col-span-2">
+              <div class="sm:col-span-2 lg:col-span-4">
                 <BaseTextarea v-model="accountForm.address" :label="t('profile.address')" :placeholder="t('profile.address_placeholder')"
                   :rows="3" icon="ph:house" />
               </div>
@@ -258,7 +257,7 @@
 
             <div class="text-xs text-gray-500">{{ t('profile.social_media_desc') }}</div>
 
-            <div class="grid grid-cols-1 gap-4 mt-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
               <div v-for="(social, idx) in userSocials" :key="social.platform"
                 class="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 space-y-3">
                 <div class="flex items-center justify-between">
@@ -373,11 +372,11 @@
               <div class="text-sm text-gray-600">
                 {{ t('profile.event_history_desc') }}
               </div>
-              <div class="p-4 bg-gray-50 rounded-xl flex items-center justify-between">
+              <div class="p-4 bg-gray-50 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div class="text-sm text-gray-500">
-                  {{ t('profile.total_events_label') }} <span class="font-black text-navy">{{ userStats.totalEvents || 0 }} Event</span>
+                  {{ t('profile.total_events_label') }} <span class="font-black text-navy text-base">{{ userStats.totalEvents || 0 }} Event</span>
                 </div>
-                <NuxtLink to="/dashboard/archer/certificates" class="text-xs font-bold text-navy hover:text-primary flex items-center gap-1">
+                <NuxtLink to="/dashboard/archer/certificates" class="text-xs font-bold text-navy hover:text-primary flex items-center gap-1.5 transition-colors">
                   <span>{{ t('profile.view_all_certificates') }}</span>
                   <Icon icon="ph:arrow-right-bold" />
                 </NuxtLink>
@@ -385,53 +384,7 @@
             </div>
           </div>
 
-
         </div>
-
-      </div>
-
-      <!-- Live Profile Card Preview Sidebar -->
-      <div class="space-y-6">
-        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm overflow-hidden relative">
-          <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
-          <div class="flex flex-col items-center text-center mt-4">
-            <div
-              class="w-24 h-24 rounded-full bg-primary/10 border-4 border-white p-1 mb-4 overflow-hidden shadow-lg relative">
-              <img
-                :src="useImageOrDefault(accountForm.avatar_url || user?.avatar_url, accountForm.full_name || user?.full_name)"
-                class="w-full h-full object-cover rounded-full" />
-            </div>
-            <h4 class="font-black text-navy text-lg leading-tight">{{ accountForm.full_name || user?.full_name || 'Nama Atlet' }}</h4>
-            <div class="text-gray-400 text-xs font-bold mt-1">@{{ accountForm.username || user?.username || 'username' }}</div>
-
-            <div class="flex flex-wrap items-center justify-center gap-2 mt-3">
-              <span v-if="accountForm.bow_type" class="px-2 py-1 bg-primary/10 text-navy font-bold text-[10px] rounded-lg capitalize tracking-wider">
-                {{ accountForm.bow_type }}
-              </span>
-              <span v-if="accountForm.blood_type" class="px-2 py-1 bg-rose-50 text-rose-700 font-bold text-[10px] rounded-lg">
-                Gol. {{ accountForm.blood_type }}
-              </span>
-            </div>
-
-            <div v-if="profile.bio" class="mt-4 px-2">
-              <div class="text-xs text-gray-500 italic line-clamp-3 prose prose-xs" v-html="profile.bio"></div>
-            </div>
-
-            <div class="w-full h-px bg-gray-100 my-6"></div>
-
-            <div class="grid grid-cols-2 w-full gap-4">
-              <div class="text-center">
-                <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">Events</div>
-                <div class="text-navy font-black text-lg">{{ userStats.totalEvents || 0 }}</div>
-              </div>
-              <div class="text-center border-l border-gray-100">
-                <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">Best Score</div>
-                <div class="text-navy font-black text-lg">{{ userStats.bestScore || '-' }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Media Library Modal -->
@@ -458,7 +411,7 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => `${t('profile.title')} - ArcheryHub Dashboard`)
+  title: computed(() => `${t('profile.title')} - Archeris Dashboard`)
 })
 
 const { user, archerProfile } = useAuth()

@@ -30,26 +30,11 @@ const categorySearch = ref('')
 
 const form = reactive({
     category_ids: [],
-    payment_status: 'pending',
-    payment_amount: 0,
-    accreditation_status: 'pending',
     notes: ''
 })
 
-const paymentStatusOptions = computed(() => [
-    { label: t('dashboard.participants_list.status_options.paid', 'Terdaftar (Lunas)'), value: 'paid' },
-    { label: t('dashboard.participants_list.status_options.pending', 'Menunggu Pembayaran'), value: 'pending' },
-    { label: t('participant.edit.status_cancelled', 'Dibatalkan'), value: 'rejected' }
-])
-
-const accreditationOptions = computed(() => [
-    { label: t('participant.edit.status_approved', 'Disetujui (Approved)'), value: 'approved' },
-    { label: t('participant.edit.status_pending', 'Menunggu (Pending)'), value: 'pending' },
-    { label: t('participant.edit.status_rejected', 'Ditolak (Rejected)'), value: 'rejected' }
-])
-
 useHead({
-    title: computed(() => `${t('participant.edit.title', 'Edit Data Peserta')} - ArcheryHub Dashboard`)
+    title: computed(() => `${t('participant.edit.title', 'Edit Data Peserta')} - Archeris Dashboard`)
 })
 
 onMounted(async () => {
@@ -82,9 +67,6 @@ const fetchParticipantData = async () => {
             form.category_ids = []
         }
 
-        form.payment_status = p.payment_status || p.status || 'pending'
-        form.payment_amount = p.payment_amount || p.total_fee || 0
-        form.accreditation_status = p.accreditation_status || 'pending'
         form.notes = p.notes || ''
     } catch (err) {
         console.error('Failed to load participant for edit:', err)
@@ -100,11 +82,11 @@ const getCategoryTitle = (cat) => {
     if (cat.name) return cat.name
     const parts = [
         cat.division_name,
-        cat.category_name,
+        cat.category_name || cat.age_category_name,
         cat.event_type_name,
         cat.gender_division_name
     ].filter(Boolean)
-    return parts.length > 0 ? parts.join(' - ') : '-'
+    return parts.length > 0 ? parts.join(' • ') : (cat.category_code || 'Kategori')
 }
 
 const getCategorySubtitle = (cat) => {
@@ -130,7 +112,11 @@ const filteredCategories = computed(() => {
 
 const toggleCategory = (id) => {
     const idx = form.category_ids.indexOf(id)
-    if (idx >= 0) {
+    if (idx > -1) {
+        if (form.category_ids.length === 1) {
+            toast.warning(t('participant.edit.min_one_category', 'Peserta minimal harus mengikuti 1 kategori'))
+            return
+        }
         form.category_ids.splice(idx, 1)
     } else {
         form.category_ids.push(id)
@@ -143,9 +129,6 @@ const handleSubmit = async () => {
     try {
         await put(`/events/${eventId.value}/participants/${archerId.value}`, {
             category_ids: form.category_ids,
-            payment_status: form.payment_status,
-            payment_amount: Number(form.payment_amount) || 0,
-            accreditation_status: form.accreditation_status,
             notes: form.notes
         })
         toast.success(t('participant.edit.save_success', 'Perubahan data peserta berhasil disimpan'))
@@ -219,34 +202,40 @@ const handleSubmit = async () => {
 
         <template v-else-if="participant">
             <form @submit.prevent="handleSubmit" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Left 2 Cols: Main Form -->
-                <div class="lg:col-span-2 space-y-6">
+                <!-- Left 2 Columns: All-in-One White Card -->
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-6">
 
-                    <!-- Participant Summary Card -->
-                    <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                        <div class="h-16 w-16 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center">
+                    <!-- Section 1: Profile Summary -->
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-4 pb-6 border-b border-slate-100">
+                        <div class="size-16 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center">
                             <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)" class="w-full h-full object-cover">
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="font-bold text-slate-900 text-lg sm:text-xl">{{ participant.full_name }}</div>
-                            <div class="flex flex-wrap items-center gap-3 text-sm text-slate-500 font-medium mt-1">
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-lg font-bold text-slate-900 truncate">{{ participant.full_name }}</h2>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-3 mt-1 text-xs text-slate-500">
                                 <span>{{ participant.athlete_code || 'ID: ' + (participant.archer_id || '-').substring(0, 8) }}</span>
                                 <span>•</span>
                                 <span>{{ participant.club_name || t('participant.edit.independent', 'Klub Independen') }}</span>
                                 <span>•</span>
                                 <span>{{ participant.email || '-' }}</span>
+                                <template v-if="participant.city">
+                                    <span>•</span>
+                                    <span>{{ participant.city }}</span>
+                                </template>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 1. Category Selection -->
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
+                    <!-- Section 2: Category Selection -->
+                    <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                                <Icon icon="ph:trophy-bold" class="text-slate-600 text-xl" />
+                            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                                <Icon icon="ph:trophy-bold" class="text-slate-500" />
                                 <span>{{ t('participant.detail.division_label', 'Pilih Kategori Turnamen') }}</span>
-                            </h2>
-                            <span class="text-sm font-semibold text-slate-500">
+                            </h3>
+                            <span class="text-xs text-slate-400 font-medium">
                                 {{ form.category_ids.length }} {{ t('participant.edit.categories_selected', 'Kategori Dipilih') }}
                             </span>
                         </div>
@@ -254,87 +243,64 @@ const handleSubmit = async () => {
                         <div class="relative">
                             <input v-model="categorySearch" type="text"
                                 :placeholder="t('participant.detail.search_placeholder', 'Cari kategori lomba...')"
-                                class="w-full h-11 px-4 pl-10 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-slate-800 transition-all font-medium" />
-                            <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base" />
+                                class="w-full h-10 px-4 pl-10 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-slate-800 transition-all font-medium" />
+                            <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
                         </div>
 
-                        <div v-if="filteredCategories.length > 0" class="max-h-[380px] overflow-y-auto pr-2 space-y-2.5">
+                        <div v-if="filteredCategories.length > 0" class="max-h-[360px] overflow-y-auto pr-1 space-y-2">
                             <div v-for="category in filteredCategories" :key="category.id"
-                                class="p-4 rounded-xl border transition-all cursor-pointer flex items-center justify-between group"
+                                class="p-3.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between group"
                                 :class="form.category_ids.includes(category.id)
                                     ? 'border-slate-800 bg-slate-50 shadow-xs'
                                     : 'border-slate-200 bg-white hover:border-slate-300'"
                                 @click="toggleCategory(category.id)">
-                                <div class="flex items-center gap-3.5">
-                                    <div class="size-6 rounded-md border flex items-center justify-center transition-all"
+                                <div class="flex items-center gap-3">
+                                    <div class="size-5 rounded-md border flex items-center justify-center transition-all"
                                         :class="form.category_ids.includes(category.id)
                                             ? 'bg-slate-900 border-slate-900 text-white'
                                             : 'bg-white border-slate-300 group-hover:border-slate-500'">
-                                        <Icon v-if="form.category_ids.includes(category.id)" icon="ph:check-bold" class="text-xs" />
+                                        <Icon v-if="form.category_ids.includes(category.id)" icon="ph:check-bold" class="text-[10px]" />
                                     </div>
                                     <div>
-                                        <div class="text-sm sm:text-base font-bold text-slate-900 leading-tight">
+                                        <div class="text-sm font-bold text-slate-900 leading-tight">
                                             {{ getCategoryTitle(category) }}
                                         </div>
-                                        <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
+                                        <div class="text-xs text-slate-500 mt-0.5">
                                             {{ getCategorySubtitle(category) }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div v-else class="py-8 text-center text-sm text-slate-400 italic">
+                        <div v-else class="py-6 text-center text-xs text-slate-400 italic">
                             {{ t('participant.edit.no_categories', 'Belum ada kategori turnamen yang tersedia.') }}
-                        </div>
-                    </div>
-
-                    <!-- 2. Payment Data -->
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
-                        <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                            <Icon icon="ph:currency-circle-dollar-bold" class="text-slate-600 text-xl" />
-                            <span>{{ t('participant.edit.payment_title', 'Status & Nominal Pembayaran') }}</span>
-                        </h2>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-1">
-                            <BaseSelect v-model="form.payment_status" :label="t('participant.detail.payment_status_label', 'Status Pembayaran')" required
-                                icon="ph:currency-circle-dollar" :items="paymentStatusOptions" item-title="label" item-value="value"
-                                :placeholder="t('dashboard.participants_list.select_status', 'Pilih Status Pembayaran')" />
-
-                            <BaseInput v-model="form.payment_amount" :label="t('participant.detail.payment_amount_label', 'Nominal Pembayaran (Rp)')"
-                                placeholder="0" icon="ph:money" kind="currency" required />
                         </div>
                     </div>
                 </div>
 
-                <!-- Right 1 Col: Status & Controls -->
-                <div class="space-y-6">
-                    <!-- Tournament Status Card -->
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
-                        <h2 class="text-base font-bold text-slate-900 flex items-center gap-2 mb-1">
-                            <Icon icon="ph:seal-check-bold" class="text-slate-600 text-xl" />
-                            <span>{{ t('participant.edit.field_assignment', 'Penugasan Lapangan') }}</span>
-                        </h2>
+                <!-- Right Sidebar Column: All-in-One White Card -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-6">
+                    <!-- Section 1: Internal Notes -->
+                    <div class="space-y-4">
+                        <div class="border-b border-slate-100 pb-3">
+                            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                                <Icon icon="ph:note-pencil-bold" class="text-slate-500 text-base" />
+                                <span>{{ t('participant.edit.additional_notes', 'Catatan Internal') }}</span>
+                            </h3>
+                        </div>
 
-                        <BaseSelect v-model="form.accreditation_status" :label="t('participant.edit.accreditation_status', 'Status Akreditasi')" required
-                            :items="accreditationOptions"
-                            item-title="label" item-value="value"
-                            :placeholder="t('participant.edit.select_accreditation', 'Pilih Status Akreditasi')" />
-
-
-                        
-                        <BaseInput v-model="form.notes" :label="t('participant.edit.additional_notes', 'Catatan Tambahan')" placeholder="Catatan internal panitia..." type="textarea" />
+                        <BaseInput v-model="form.notes" :label="t('participant.edit.additional_notes_label', 'Catatan Panitia')" placeholder="Catatan internal panitia..." type="textarea" rows="4" />
                     </div>
 
-                    <!-- Action Card -->
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-3">
-                        
+                    <!-- Section 2: Form Actions -->
+                    <div class="border-t border-slate-100 pt-6 space-y-3">
                         <BaseButton type="submit" variant="primary" icon="ph:floppy-disk-bold"
-                            class="w-full h-11 justify-center text-sm font-bold shadow-md shadow-primary/20"
+                            class="w-full h-10 justify-center text-xs font-black shadow-md shadow-primary/20"
                             :loading="isSubmitting">
                             {{ t('common.save_changes', 'Simpan Perubahan') }}
                         </BaseButton>
                         <BaseButton :to="`/dashboard/organizer/events/${eventId}/participants/detail?archer_id=${archerId}`"
-                            variant="white" class="w-full h-11 justify-center text-sm font-semibold">
+                            variant="white" class="w-full h-10 justify-center text-xs font-bold border-slate-200">
                             {{ t('common.cancel', 'Batal') }}
                         </BaseButton>
                     </div>

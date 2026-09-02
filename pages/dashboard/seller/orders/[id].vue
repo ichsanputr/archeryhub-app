@@ -373,7 +373,7 @@ import { useDashboardI18n } from '~/composables/useDashboardI18n'
 definePageMeta({ layout: 'dashboard' })
 
 
-useHead({ title: computed(() => `${t('seller_order_detail.title', 'Detail Pesanan')} - ArcheryHub Dashboard`) })
+useHead({ title: computed(() => `${t('seller_order_detail.title', 'Detail Pesanan')} - Archeris Dashboard`) })
 
 const route = useRoute()
 const { get, put } = useApi()

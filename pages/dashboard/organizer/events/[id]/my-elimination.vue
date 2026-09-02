@@ -148,7 +148,7 @@ definePageMeta({
     layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('elimination.my_bracket', 'My Elimination Bracket') + ' - ArcheryHub Dashboard') })
+useHead({ title: computed(() => t('elimination.my_bracket', 'My Elimination Bracket') + ' - Archeris Dashboard') })
 
 
 const isLoading = ref(true)

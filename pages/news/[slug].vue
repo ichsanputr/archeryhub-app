@@ -426,13 +426,13 @@ const article = computed(() => {
         date: data.published_at ? new Date(data.published_at).toLocaleDateString(lang, { day: 'numeric', month: 'long', year: 'numeric' }) : new Date(data.created_at).toLocaleDateString(lang, { day: 'numeric', month: 'long', year: 'numeric' }),
         author: {
             name: data.author_name || 'Tim Redaksi',
-            role: 'Archery Hub Editor',
+            role: 'Archeris Editor',
             avatar: useImageOrDefault(null)
         },
         image: useImageOrDefault(data.image_url),
-        imageCredit: 'Archery Hub Documentation',
+        imageCredit: 'Archeris Documentation',
         content: data.content || '',
-        tags: ['Panahan', 'Indonesia', 'ArcheryHub'], // Fake tags for design since API lacks them
+        tags: ['Panahan', 'Indonesia', 'Archeris'], // Fake tags for design since API lacks them
         organization_id: data.organization_id,
         club_id: data.club_id
     }

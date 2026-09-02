@@ -194,7 +194,7 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => `${t('org_teams.title')} - ArcheryHub Dashboard`)
+  title: computed(() => `${t('org_teams.title')} - Archeris Dashboard`)
 })
 
 const { get, delete: del } = useApi()

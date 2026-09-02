@@ -308,7 +308,7 @@ useHead({
 })
 
 useSeoMeta({
-    title: () => `${tournament.value.name} - Archeryhub.id`,
+    title: () => `${tournament.value.name} - Archeris.net`,
     description: () => tournament.value.description,
     ogTitle: () => tournament.value.name,
     ogDescription: () => tournament.value.description,
@@ -318,7 +318,7 @@ useSeoMeta({
 
 const copySuccess = ref(false)
 const publicEventUrl = computed(() => {
-    const origin = window?.location?.origin || 'https://archeryhub.id'
+    const origin = window?.location?.origin || 'https://archeris.net'
     return `${origin}/events/${slug}`
 })
 

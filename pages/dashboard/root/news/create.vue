@@ -119,7 +119,7 @@ definePageMeta({
 })
  
 useHead({
-    title: computed(() => t('news.create_title', 'Create News') + ' - ArcheryHub Dashboard')
+    title: computed(() => t('news.create_title', 'Create News') + ' - Archeris Dashboard')
 })
  
 const { post } = useApi()

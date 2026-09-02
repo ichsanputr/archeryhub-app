@@ -7,7 +7,7 @@ import useDashboardI18n from '~/composables/useDashboardI18n'
 definePageMeta({ layout: 'dashboard' })
 
 const { t } = useDashboardI18n()
-useHead({ title: computed(() => t('organizer_subscription.page_title', 'Paket Event & Kuota') + ' - ArcheryHub') })
+useHead({ title: computed(() => t('organizer_subscription.page_title', 'Paket Event & Kuota') + ' - Archeris') })
 
 const { get, post } = useApi()
 const toast = useToast()
@@ -171,7 +171,8 @@ async function buyQuota() {
         const trxRef = res?.purchase_id || res?.reference || res?.transaction_id || ''
         toast.success(t('organizer_subscription.order_success_toast', 'Pesanan paket kuota berhasil dibuat'))
         if (res?.checkout_url) {
-            window.location.href = res.checkout_url
+            window.open(res.checkout_url, '_blank')
+            router.push(`/dashboard/organizer/package/detail?trx_id=${trxRef}`)
         } else {
             router.push(`/dashboard/organizer/package/detail?trx_id=${trxRef}`)
         }
@@ -519,7 +520,7 @@ async function buyQuota() {
                         <!-- Header -->
                         <div class="flex items-center justify-between border-b border-white/10 pb-4">
                             <h4 class="font-black text-white text-base tracking-tight">{{ t('organizer_subscription.order_summary', 'Ringkasan Pesanan') }}</h4>
-                            <span class="text-[10px] font-mono font-bold text-primary capitalize bg-primary/10 px-2 py-0.5 rounded border border-primary/20">ArcheryHub EO</span>
+                            <span class="text-[10px] font-mono font-bold text-primary capitalize bg-primary/10 px-2 py-0.5 rounded border border-primary/20">Archeris EO</span>
                         </div>
 
                         <!-- Details breakdown -->

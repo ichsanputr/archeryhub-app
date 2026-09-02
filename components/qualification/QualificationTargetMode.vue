@@ -11,7 +11,7 @@
             <div class="flex items-center gap-3">
                 <BaseButton variant="white" icon="ph:trash-bold" size="md"
                     :disabled="isReseting || isAssigning || props.archers.length === unassignedArchersCount"
-                    :loading="isReseting" class="!text-red-600 !border-red-200 hover:!bg-red-50 font-black text-xs sm:text-sm h-10 sm:h-11 px-4 sm:px-5"
+                    :loading="isReseting" class="!text-red-600 !border-red-200 hover:!bg-red-50 font-bold text-sm h-11 px-5"
                     @click="isSubscriptionActive ? resetAssignments() : (showPremiumModal = true)">
                     {{ t('event_qualification.reset') }}
                 </BaseButton>
@@ -19,114 +19,135 @@
                 <div class="relative dropdown-container">
                     <BaseButton variant="primary" icon="fa7-solid:random" size="md"
                         :disabled="isAssigning || isReseting || props.archers.length === 0" :loading="isAssigning"
-                        class="font-black text-xs sm:text-sm h-10 sm:h-11 px-4 sm:px-5 shadow-md shadow-primary/20"
+                        class="font-black text-sm h-11 px-5 shadow-md shadow-primary/20"
                         @click="isSubscriptionActive ? (showAutoAssignMenu = !showAutoAssignMenu) : (showPremiumModal = true)">
                         {{ t('event_qualification.auto_assign') }}
-                        <Icon icon="ph:caret-down-bold" class="ml-1.5 text-xs" />
+                        <Icon icon="ph:caret-down-bold" class="ml-1.5 text-xs transition-transform duration-200"
+                            :class="{ 'rotate-180': showAutoAssignMenu }" />
                     </BaseButton>
- 
-                    <transition enter-active-class="transition ease-out duration-100"
-                        enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
-                        leave-active-class="transition ease-in duration-75"
-                        leave-from-class="transform opacity-100 scale-100"
-                        leave-to-class="transform opacity-0 scale-95">
+
+                    <transition enter-active-class="transition ease-out duration-150"
+                        enter-from-class="transform opacity-0 scale-95 -translate-y-2" enter-to-class="transform opacity-100 scale-100 translate-y-0"
+                        leave-active-class="transition ease-in duration-100"
+                        leave-from-class="transform opacity-100 scale-100 translate-y-0"
+                        leave-to-class="transform opacity-0 scale-95 -translate-y-2">
                         <div v-if="showAutoAssignMenu" v-click-outside="() => showAutoAssignMenu = false"
-                            class="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-gray-100 py-3 z-[1001] origin-top-right">
-                            <div class="px-4 py-2 border-b border-gray-50 mb-2">
-                                <span class="text-[10px] font-black text-gray-400 tracking-widest">
-                                    {{ t('event_qualification.select_draw_type') }}
-                                </span>
+                            class="absolute right-0 mt-2 w-80 sm:w-88 bg-white rounded-2xl shadow-2xl border border-slate-200/90 p-2.5 z-[1001] origin-top-right space-y-2">
+                            
+                            <!-- Menu Header -->
+                            <div class="px-3 py-2 bg-gradient-to-r from-navy via-navy to-navy/90 text-white rounded-xl flex items-center justify-between shadow-2xs">
+                                <div class="flex items-center gap-2">
+                                    <Icon icon="ph:shuffle-bold" class="text-primary text-base" />
+                                    <span class="text-xs font-black tracking-wide">{{ t('event_qualification.select_draw_type', 'Pilih Metode Undian') }}</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-300 bg-white/10 px-2 py-0.5 rounded-md">Auto Assign</span>
                             </div>
- 
+
+                            <!-- Option 1: Standard Draw -->
                             <button type="button" @click="handleAutoAssignSelection('standard')"
-                                class="w-full px-4 py-3 flex items-start gap-3 hover:bg-gray-50 transition-colors text-left group">
-                                <div
-                                    class="size-8 rounded-lg bg-gray-100 text-gray-400 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-colors">
-                                    <Icon icon="ph:list-numbers-bold" class="text-lg" />
+                                class="w-full p-3 rounded-xl border border-slate-100 hover:border-primary/50 hover:bg-slate-50/80 transition-all text-left group flex items-start gap-3.5 shadow-2xs cursor-pointer">
+                                <div class="size-10 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 group-hover:bg-primary group-hover:text-navy group-hover:border-primary flex items-center justify-center transition-all shrink-0 shadow-2xs">
+                                    <Icon icon="ph:list-numbers-bold" class="text-xl" />
                                 </div>
-                                <div class="flex-1">
-                                    <div
-                                        class="text-xs font-black text-navy group-hover:text-primary transition-colors">
-                                        {{ t('event_qualification.standard_draw') }}</div>
-                                    <div class="text-[10px] text-gray-400 leading-tight mt-0.5">
-                                        {{ t('event_qualification.standard_draw_desc') }}
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-1 mb-0.5">
+                                        <span class="text-xs font-black text-slate-900 group-hover:text-primary transition-colors">
+                                            {{ t('event_qualification.standard_draw', 'Undian Standar (Acak Sekaligus)') }}
+                                        </span>
                                     </div>
+                                    <p class="text-[11px] text-slate-500 font-medium leading-snug">
+                                        {{ t('event_qualification.standard_draw_desc', 'Mengacak seluruh pemanah sekaligus dan mengisi target secara berurutan.') }}
+                                    </p>
                                 </div>
+                                <Icon icon="ph:caret-right-bold" class="text-slate-300 group-hover:text-primary group-hover:translate-x-0.5 transition-all text-sm shrink-0 self-center" />
                             </button>
- 
+
+                            <!-- Option 2: Field Draw -->
                             <button type="button" @click="handleAutoAssignSelection('field')"
-                                class="w-full px-4 py-3 flex items-start gap-3 hover:bg-gray-50 transition-colors text-left group">
-                                <div
-                                    class="size-8 rounded-lg bg-gray-100 text-gray-400 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-colors">
-                                    <Icon icon="ph:steps-bold" class="text-lg" />
+                                class="w-full p-3 rounded-xl border border-slate-100 hover:border-primary/50 hover:bg-slate-50/80 transition-all text-left group flex items-start gap-3.5 shadow-2xs cursor-pointer">
+                                <div class="size-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 group-hover:bg-primary group-hover:text-navy group-hover:border-primary flex items-center justify-center transition-all shrink-0 shadow-2xs">
+                                    <Icon icon="ph:tree-structure-bold" class="text-xl" />
                                 </div>
-                                <div class="flex-1">
-                                    <div
-                                        class="text-xs font-black text-navy group-hover:text-primary transition-colors">
-                                        {{ t('event_qualification.field_draw') }}</div>
-                                    <div class="text-[10px] text-gray-400 leading-tight mt-0.5">
-                                        {{ t('event_qualification.field_draw_desc') }}
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-1 mb-0.5">
+                                        <span class="text-xs font-black text-slate-900 group-hover:text-primary transition-colors">
+                                            {{ t('event_qualification.field_draw', 'Undian Lapangan (Sebar Klub)') }}
+                                        </span>
                                     </div>
+                                    <p class="text-[11px] text-slate-500 font-medium leading-snug">
+                                        {{ t('event_qualification.field_draw_desc', 'Mendistribusikan atlet dari klub yang sama ke target berbeda agar tidak satu bantalan.') }}
+                                    </p>
                                 </div>
+                                <Icon icon="ph:caret-right-bold" class="text-slate-300 group-hover:text-primary group-hover:translate-x-0.5 transition-all text-sm shrink-0 self-center" />
                             </button>
                         </div>
                     </transition>
                 </div>
             </div>
         </div>
- 
+
         <!-- Kanban Board Layout -->
         <div class="flex flex-col lg:flex-row gap-6">
             <!-- Unassigned Column -->
             <div class="lg:w-80 shrink-0 lg:self-start lg:sticky lg:top-4">
-                <div class="bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 p-4 min-h-[500px] flex flex-col gap-4"
+                <div class="bg-slate-100/90 rounded-2xl border border-slate-200/90 p-4 min-h-[520px] flex flex-col gap-3.5 shadow-xs"
                      @dragover.prevent @drop="handleDropOnUnassigned">
-                    <div class="flex items-center justify-between px-2">
-                        <h3 class="font-black text-navy text-xs tracking-widest">{{ t('event_qualification.unassigned') }}</h3>
-                        <span class="bg-navy text-white text-[10px] font-black px-2 py-0.5 rounded-full">{{
-                            unassignedArchersCount }}</span>
+                    <div class="flex items-center justify-between px-1">
+                        <div class="flex items-center gap-2">
+                            <Icon icon="ph:users-three-bold" class="text-slate-600 text-base" />
+                            <h3 class="font-black text-slate-900 text-xs tracking-wide">{{ t('event_qualification.unassigned', 'Belum Diatur') }}</h3>
+                        </div>
+                        <span class="bg-navy text-white text-[11px] font-black px-2.5 py-0.5 rounded-full shadow-2xs font-mono">
+                            {{ unassignedArchersCount }}
+                        </span>
                     </div>
- 
+
                     <div v-if="unassignedArchersCount === 0"
-                        class="flex-1 flex flex-col items-center justify-center text-center p-8 opacity-30">
-                        <Icon icon="ph:check-circle-bold" class="text-4xl mb-2" />
-                        <div class="text-[10px] font-bold">{{ t('event_qualification.all_assigned') }}</div>
+                        class="flex-1 flex flex-col items-center justify-center text-center p-8 text-slate-400 bg-white/50 rounded-xl border border-dashed border-slate-200">
+                        <Icon icon="ph:check-circle-bold" class="text-4xl mb-2 text-emerald-500" />
+                        <div class="text-xs font-bold text-slate-700">{{ t('event_qualification.all_assigned', 'Semua pemanah telah ditempatkan') }}</div>
                     </div>
- 
-                    <div v-else class="flex flex-col gap-0 max-h-[700px] overflow-y-auto no-scrollbar pb-10">
+
+                    <div v-else class="flex flex-col gap-0 max-h-[700px] overflow-y-auto custom-scrollbar pr-0.5 pb-6">
                         <div v-for="group in unassignedArchersByClub" :key="group.clubName" class="space-y-2">
                             <!-- Group Divider -->
-                            <div class="flex items-center gap-3 px-2 py-3">
-                                <div class="flex-1 h-[1px] bg-gray-200"></div>
+                            <div class="flex items-center gap-2 px-1 py-2.5">
+                                <div class="flex-1 h-px bg-slate-200"></div>
                                 <span
-                                    class="text-[9px] font-black text-gray-400 tracking-widest whitespace-nowrap bg-gray-50 px-2 rounded-full border border-gray-100 shadow-sm">
-                                    {{ group.clubName === 'Independen' ? t('event_qualification.independent') : group.clubName }}
+                                    class="text-[10px] font-bold text-slate-600 bg-white px-2.5 py-0.5 rounded-full border border-slate-200 shadow-2xs truncate max-w-[200px]">
+                                    {{ group.clubName === 'Independen' ? t('event_qualification.independent', 'Independen') : group.clubName }}
                                 </span>
-                                <div class="flex-1 h-[1px] bg-gray-200"></div>
+                                <div class="flex-1 h-px bg-slate-200"></div>
                             </div>
- 
+
                             <div v-for="archer in group.archers" :key="archer.uuid" :draggable="isSubscriptionActive"
                                 @dragstart="(e) => handleDragStart(e, archer)" @dragend="handleDragEnd"
-                                class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm cursor-grab active:cursor-grabbing hover:border-primary/50 hover:shadow-md transition-all flex items-center gap-3 group mx-1">
+                                class="bg-white p-3 rounded-xl border border-slate-200/90 shadow-2xs cursor-grab active:cursor-grabbing hover:border-primary hover:shadow-md transition-all flex items-center gap-3 group select-none">
                                 <div
-                                    class="size-9 rounded-full border border-gray-100 overflow-hidden shrink-0 bg-gray-50 pointer-events-none">
+                                    class="size-9 rounded-xl border border-slate-100 overflow-hidden shrink-0 bg-slate-50 pointer-events-none shadow-2xs">
                                     <img :src="useImageOrDefault(archer.avatar_url, archer.name)" draggable="false"
                                         class="w-full h-full object-cover">
                                 </div>
                                 <div class="flex-1 min-w-0 pointer-events-none">
-                                    <div class=" text-xs font-black text-navy truncate">{{ archer.name }}</div>
-                                    <div class="text-[9px] text-gray-400 font-bold truncate tracking-tighter">
-                                        {{ archer.club || t('event_qualification.independent') }}
+                                    <div class="flex items-center gap-1.5 justify-between">
+                                        <div class="text-xs font-black text-slate-900 group-hover:text-primary transition-colors truncate leading-snug">{{ archer.name }}</div>
+                                        <span v-if="archer.has_score || archer.total_score > 0"
+                                            class="text-[9px] font-black text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded-md shrink-0 font-mono shadow-2xs">
+                                            {{ archer.total_score }} pts
+                                        </span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-500 font-semibold truncate tracking-tight mt-0.5">
+                                        {{ archer.club || t('event_qualification.independent', 'Independen') }}
                                     </div>
                                 </div>
                                 <Icon icon="ph:dots-six-vertical-bold"
-                                    class="text-gray-300 group-hover:text-primary pointer-events-none" />
+                                    class="text-slate-300 group-hover:text-primary pointer-events-none text-base shrink-0" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
- 
+
             <!-- Target Grid Column -->
             <div class="flex-1">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -158,35 +179,44 @@
                                     t('event_qualification.slots_available', { count: target.availableLetters.length - target.assignedCount }) }}
                             </span>
                         </div>
- 
+
                         <div class="p-4 space-y-3">
                             <div v-for="pos in target.availableLetters" :key="pos" class="group" @dragover.prevent
                                 @drop="isSubscriptionActive ? handleDropOnTarget(target, pos) : null">
                                 <div v-if="target.slots[pos]" :draggable="isSubscriptionActive"
                                     @dragstart="(e) => handleDragStart(e, target.slots[pos], target, pos)"
                                     @dragend="handleDragEnd"
-                                    class="flex items-center gap-3 p-2.5 rounded-xl bg-gray-50 border border-transparent hover:border-primary/30 transition-all cursor-grab active:cursor-grabbing shadow-sm group/slot-filled"
+                                    class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50/90 border border-slate-200/80 hover:border-primary/50 hover:bg-white hover:shadow-sm transition-all cursor-grab active:cursor-grabbing group/slot-filled select-none"
                                     :class="{ 'opacity-50': draggedArcher?.archer.uuid === target.slots[pos].uuid }">
                                     <span
-                                        class="flex items-center justify-center size-7 rounded-lg bg-white border border-gray-200 text-xs font-black text-navy shadow-sm shrink-0">
+                                        class="flex items-center justify-center size-7 rounded-lg bg-white border border-slate-200 text-xs font-black text-navy shadow-2xs shrink-0">
                                         {{ pos }}
                                     </span>
                                     <div
-                                        class="size-8 rounded-full border border-gray-200 overflow-hidden shrink-0 bg-white pointer-events-none">
+                                        class="size-8 rounded-xl border border-slate-200 overflow-hidden shrink-0 bg-white pointer-events-none shadow-2xs">
                                         <img :src="useImageOrDefault(target.slots[pos].avatar_url, target.slots[pos].name)"
                                             draggable="false" class="w-full h-full object-cover"
                                             :alt="target.slots[pos].name" />
                                     </div>
                                     <div class="flex-1 min-w-0 pointer-events-none">
-                                        <div class=" text-xs font-black text-navy truncate leading-tight">{{
-                                            target.slots[pos].name }}</div>
-                                        <div class="text-[9px] text-gray-500 truncate font-bold tracking-tighter">
-                                            {{ target.slots[pos].club || t('event_qualification.independent') }}
+                                        <div class="flex items-center gap-1.5 justify-between">
+                                            <div class="text-xs font-black text-slate-900 truncate leading-tight">{{
+                                                target.slots[pos].name }}</div>
+                                            <span v-if="target.slots[pos].has_score || target.slots[pos].total_score > 0"
+                                                class="text-[9px] font-black text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded-md shrink-0 font-mono shadow-2xs">
+                                                {{ target.slots[pos].total_score }} pts
+                                            </span>
+                                        </div>
+                                        <div class="text-[10px] text-slate-500 truncate font-semibold tracking-tight mt-0.5">
+                                            {{ target.slots[pos].club || t('event_qualification.independent', 'Independen') }}
                                         </div>
                                     </div>
-                                    <BaseButton variant="white" size="sm" icon="ph:x-bold"
-                                        class="!size-6 !p-0 !rounded-lg text-gray-400 hover:!text-red-500 hover:!bg-red-50 opacity-0 group-hover/slot-filled:opacity-100"
-                                        @click="isSubscriptionActive ? unassignArcherFromTarget(target.slots[pos].assignmentId) : (showPremiumModal = true)" />
+                                    <button type="button"
+                                        class="size-7 rounded-lg bg-red-50 hover:bg-red-500 text-red-500 hover:text-white border border-red-200 hover:border-red-500 flex items-center justify-center transition-all opacity-0 group-hover/slot-filled:opacity-100 shadow-2xs shrink-0 cursor-pointer"
+                                        :title="t('common.remove', 'Lepaskan dari target')"
+                                        @click.stop="isSubscriptionActive ? unassignArcherFromTarget(target.slots[pos].assignmentId) : (showPremiumModal = true)">
+                                        <Icon icon="ph:trash-bold" class="text-xs" />
+                                    </button>
                                 </div>
  
                                 <!-- Custom Archer Dropdown -->
@@ -273,23 +303,271 @@
             </div>
         </div>
     </div>
-    <AppDialog v-model:show="showResetDialog" type="danger" :title="t('event_qualification.reset_confirm_title')"
-        :message="t('event_qualification.reset_confirm_msg')"
-        :confirmText="t('event_qualification.yes_reset')" :cancelText="t('event_qualification.cancel')" icon="ph:trash-bold" @confirm="confirmReset" />
- 
-    <AppDialog v-model:show="showAutoAssignDialog" type="warning" :title="t('event_qualification.auto_assign_confirm_title')"
-        :confirmText="t('event_qualification.yes_assign')" :cancelText="t('event_qualification.cancel')" icon="fa7-solid:random" @confirm="confirmAutoAssign">
-        <template #default>
-            <div class="space-y-4 text-left">
-                <div class="text-sm text-gray-500">
-                    {{ t('event_qualification.auto_assign_confirm_msg') }}
-                    <span class="font-black text-navy block mt-1 ">
-                        {{ drawType === 'standard' ? t('event_qualification.standard_draw') : t('event_qualification.field_draw') }}
-                    </span>
+    <!-- Redesigned Placement Confirmation Modal -->
+    <Transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0"
+      enter-to-class="opacity-100" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100"
+      leave-to-class="opacity-0">
+      <div v-if="showAutoAssignDialog" class="fixed inset-0 z-[1002] flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+          @click="showAutoAssignDialog = false"></div>
+
+        <!-- Modal Card -->
+        <div
+          class="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all z-10">
+
+          <!-- Header -->
+          <div class="relative bg-navy text-white p-6 sm:p-7 overflow-hidden">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0 opacity-15 pointer-events-none"
+              style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.15);"></div>
+
+            <div class="relative z-10 flex items-start justify-between gap-4">
+              <div class="flex items-center gap-3.5">
+                <div class="size-11 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-primary backdrop-blur-sm shadow-inner shrink-0">
+                  <Icon icon="ph:shuffle-bold" class="text-2xl" />
                 </div>
+                <div>
+                  <h3 class="text-lg sm:text-xl font-black text-white leading-tight">
+                    {{ t('event_qualification.auto_assign_confirm_title', 'Konfirmasi Penempatan Target') }}
+                  </h3>
+                  <p class="text-xs text-slate-300 font-medium mt-0.5">
+                    {{ t('event_qualification.auto_assign_confirm_subtitle', 'Penempatan pemanah ke bantalan target secara otomatis') }}
+                  </p>
+                </div>
+              </div>
+              <button type="button" @click="showAutoAssignDialog = false"
+                class="size-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer">
+                <Icon icon="ph:x-bold" class="text-base" />
+              </button>
             </div>
-        </template>
-    </AppDialog>
+          </div>
+
+          <!-- Body Content -->
+          <div class="p-6 space-y-4">
+            <!-- Mode Selection with Smart Protection -->
+            <div class="space-y-2">
+              <label class="text-xs font-black text-navy block">{{ t('event_qualification.select_draw_type', 'Metode Penempatan') }}</label>
+              
+              <div class="space-y-2">
+                <label class="flex items-start gap-3 p-3 rounded-2xl border cursor-pointer transition-all"
+                  :class="assignMode === 'unassigned_only' ? 'border-primary bg-primary/5 ring-1 ring-primary/30' : 'border-slate-200 bg-white hover:border-slate-300'">
+                  <input type="radio" v-model="assignMode" value="unassigned_only" class="mt-0.5 text-primary focus:ring-primary" />
+                  <div class="flex-1 min-w-0">
+                    <div class="text-xs font-black text-slate-900">
+                      {{ t('event_qualification.auto_assign_mode_unassigned', 'Hanya Isi Peserta Belum Diatur (Rekomendasi)') }}
+                    </div>
+                    <p class="text-[11px] text-slate-500 font-medium leading-snug mt-0.5">
+                      {{ t('event_qualification.auto_assign_mode_unassigned_desc', 'Mengisi slot target kosong hanya untuk peserta yang belum memiliki target. Target atlet yang sudah bertanding tetap aman.') }}
+                    </p>
+                  </div>
+                </label>
+
+                <label class="flex items-start gap-3 p-3 rounded-2xl border transition-all"
+                  :class="[
+                    scoredArchersCount > 0 ? 'opacity-50 cursor-not-allowed bg-slate-50 border-slate-200' : 
+                    assignMode === 'all' ? 'border-primary bg-primary/5 ring-1 ring-primary/30 cursor-pointer' : 'border-slate-200 bg-white hover:border-slate-300 cursor-pointer'
+                  ]">
+                  <input type="radio" v-model="assignMode" value="all" :disabled="scoredArchersCount > 0" class="mt-0.5 text-primary focus:ring-primary" />
+                  <div class="flex-1 min-w-0">
+                    <div class="text-xs font-black text-slate-900">
+                      {{ t('event_qualification.auto_assign_mode_all', 'Acak Ulang Seluruh Peserta') }}
+                    </div>
+                    <p class="text-[11px] text-slate-500 font-medium leading-snug mt-0.5">
+                      {{ scoredArchersCount > 0 ? t('event_qualification.auto_assign_mode_all_disabled', 'Tidak dapat acak ulang karena sebagian peserta sudah memiliki skor kualifikasi.') : t('event_qualification.auto_assign_mode_all_desc', 'Mengacak ulang seluruh target peserta di kategori ini (hanya dapat dilakukan jika belum ada skor).') }}
+                    </p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Single Unified Info Box -->
+            <div class="bg-slate-50 border border-slate-200/90 rounded-2xl p-4 space-y-4">
+              <!-- Method Detail -->
+              <div class="flex items-start gap-3.5">
+                <div :class="drawType === 'standard' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-amber-50 text-amber-600 border-amber-100'"
+                  class="size-10 rounded-xl border flex items-center justify-center shrink-0 shadow-2xs">
+                  <Icon :icon="drawType === 'standard' ? 'ph:list-numbers-bold' : 'ph:tree-structure-bold'" class="text-xl" />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h4 class="text-sm font-black text-slate-900 mb-0.5">
+                    {{ drawType === 'standard' ? t('event_qualification.standard_draw', 'Undian Standar (Acak Sekaligus)') : t('event_qualification.field_draw', 'Undian Lapangan (Sebar Klub)') }}
+                  </h4>
+                  <p class="text-xs text-slate-500 font-medium leading-relaxed">
+                    {{ drawType === 'standard' ? t('event_qualification.standard_draw_desc', 'Mengacak seluruh pemanah sekaligus dan mengisi target secara berurutan.') : t('event_qualification.field_draw_desc', 'Mendistribusikan atlet dari klub yang sama ke target berbeda agar tidak satu bantalan.') }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="h-px bg-slate-200/80"></div>
+
+              <!-- Inline Stats Row -->
+              <div class="grid grid-cols-2 gap-4">
+                <div class="flex items-center gap-3">
+                  <div class="size-9 rounded-xl bg-primary/15 text-navy border border-primary/20 flex items-center justify-center shrink-0">
+                    <Icon icon="ph:users-three-bold" class="text-lg" />
+                  </div>
+                  <div class="min-w-0">
+                    <span class="text-xs font-bold text-slate-500 block truncate">{{ t('event_qualification.total_archers', 'Total Pemanah') }}</span>
+                    <span class="text-sm font-black text-slate-900">{{ props.archers.length }} {{ t('event_qualification.archers', 'Pemanah') }}</span>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <div class="size-9 rounded-xl bg-navy/10 text-navy border border-navy/20 flex items-center justify-center shrink-0">
+                    <Icon icon="ph:target-bold" class="text-lg" />
+                  </div>
+                  <div class="min-w-0">
+                    <span class="text-xs font-bold text-slate-500 block truncate">{{ t('event_qualification.capacity_per_target', 'Kapasitas Target') }}</span>
+                    <span class="text-sm font-black text-slate-900">{{ props.sessionData?.archers_per_target || 4 }} {{ t('event_qualification.archers', 'Pemanah') }}/{{ t('event_qualification.target_single', 'Target') }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions Footer -->
+          <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3 rounded-b-3xl">
+            <BaseButton variant="white" class="h-11 px-6 text-sm font-bold border-slate-200"
+              @click="showAutoAssignDialog = false" :disabled="isAssigning">
+              {{ t('event_qualification.cancel', 'Batal') }}
+            </BaseButton>
+            <BaseButton :disabled="isAssigning" :loading="isAssigning" variant="primary" icon="ph:check-circle-bold"
+              class="h-11 px-6 text-sm font-black shadow-md shadow-primary/20"
+              @click="async () => { await confirmAutoAssign(); showAutoAssignDialog = false }">
+              {{ t('event_qualification.yes_assign', 'Terapkan Penempatan') }}
+            </BaseButton>
+          </div>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Redesigned Reset Confirmation Modal -->
+    <Transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0"
+      enter-to-class="opacity-100" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100"
+      leave-to-class="opacity-0">
+      <div v-if="showResetDialog" class="fixed inset-0 z-[1002] flex items-center justify-center p-4">
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+          @click="showResetDialog = false"></div>
+
+        <div
+          class="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all z-10">
+          <div class="p-6 text-center space-y-4">
+            <div class="size-16 rounded-2xl bg-red-50 border border-red-100 text-red-600 flex items-center justify-center mx-auto shadow-inner">
+              <Icon icon="ph:trash-bold" class="text-3xl" />
+            </div>
+            <div>
+              <h3 class="text-xl font-black text-slate-900 leading-tight">
+                {{ t('event_qualification.reset_confirm_title', 'Reset Penempatan Target?') }}
+              </h3>
+              <p class="text-sm text-slate-500 font-medium mt-2 leading-relaxed">
+                {{ t('event_qualification.reset_confirm_msg', 'Pemanah tanpa skor akan dikembalikan ke daftar belum diatur (unassigned).') }}
+              </p>
+            </div>
+
+            <!-- Smart Protection Alert in Reset -->
+            <div v-if="scoredArchersCount > 0" class="p-3 bg-emerald-50 border border-emerald-200/80 rounded-2xl flex items-start gap-2.5 text-left">
+              <Icon icon="ph:shield-check-bold" class="text-emerald-600 text-lg shrink-0 mt-0.5" />
+              <p class="text-xs text-emerald-800 font-medium leading-relaxed">
+                {{ t('event_qualification.reset_scored_notice', { count: scoredArchersCount }).replace('{count}', String(scoredArchersCount)) }}
+              </p>
+            </div>
+          </div>
+
+          <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3 rounded-b-3xl">
+            <BaseButton variant="white" class="h-11 px-6 text-sm font-bold border-slate-200"
+              @click="showResetDialog = false" :disabled="isReseting">
+              {{ t('event_qualification.cancel', 'Batal') }}
+            </BaseButton>
+            <BaseButton :disabled="isReseting" :loading="isReseting" variant="danger" icon="ph:trash-bold"
+              class="h-11 px-6 text-sm font-black shadow-md shadow-red-200"
+              @click="confirmReset">
+              {{ t('event_qualification.yes_reset', 'Ya, Reset Penempatan') }}
+            </BaseButton>
+          </div>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Confirmation Modal: Move Archer with Scores -->
+    <Transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0"
+      enter-to-class="opacity-100" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100"
+      leave-to-class="opacity-0">
+      <div v-if="showMoveScoredModal" class="fixed inset-0 z-[1002] flex items-center justify-center p-4">
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" @click="showMoveScoredModal = false"></div>
+        <div class="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden z-10">
+          <div class="p-6 text-center space-y-4">
+            <div class="size-16 rounded-2xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center mx-auto shadow-inner">
+              <Icon icon="ph:arrows-left-right-bold" class="text-3xl" />
+            </div>
+            <div>
+              <h3 class="text-xl font-black text-slate-900 leading-tight">
+                {{ t('event_qualification.move_scored_confirm_title', 'Pindahkan Target Pemanah Berskor?') }}
+              </h3>
+              <p class="text-sm text-slate-600 font-medium mt-2 leading-relaxed">
+                {{ t('event_qualification.move_scored_confirm_desc', {
+                  name: pendingMoveData?.movingArcher?.name || '',
+                  ends: pendingMoveData?.movingArcher?.ends_completed || 1,
+                  score: pendingMoveData?.movingArcher?.total_score || 0
+                }).replace('{name}', pendingMoveData?.movingArcher?.name || '')
+                  .replace('{ends}', String(pendingMoveData?.movingArcher?.ends_completed || 1))
+                  .replace('{score}', String(pendingMoveData?.movingArcher?.total_score || 0)) }}
+              </p>
+            </div>
+          </div>
+          <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3 rounded-b-3xl">
+            <BaseButton variant="white" class="h-11 px-6 text-sm font-bold border-slate-200"
+              @click="showMoveScoredModal = false">
+              {{ t('event_qualification.cancel', 'Batal') }}
+            </BaseButton>
+            <BaseButton variant="primary" icon="ph:check-bold" class="h-11 px-6 text-sm font-black shadow-md shadow-primary/20"
+              @click="confirmMoveScoredArcher">
+              {{ t('event_qualification.move_here', 'Ya, Pindahkan Target') }}
+            </BaseButton>
+          </div>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Confirmation Modal: Unassign Archer with Scores -->
+    <Transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0"
+      enter-to-class="opacity-100" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100"
+      leave-to-class="opacity-0">
+      <div v-if="showUnassignScoredModal" class="fixed inset-0 z-[1002] flex items-center justify-center p-4">
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" @click="showUnassignScoredModal = false"></div>
+        <div class="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden z-10">
+          <div class="p-6 text-center space-y-4">
+            <div class="size-16 rounded-2xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center mx-auto shadow-inner">
+              <Icon icon="ph:warning-bold" class="text-3xl" />
+            </div>
+            <div>
+              <h3 class="text-xl font-black text-slate-900 leading-tight">
+                {{ t('event_qualification.unassign_scored_confirm_title', 'Lepas Target Pemanah Berskor?') }}
+              </h3>
+              <p class="text-sm text-slate-600 font-medium mt-2 leading-relaxed">
+                {{ t('event_qualification.unassign_scored_confirm_desc', {
+                  name: pendingUnassignData?.archer?.name || '',
+                  ends: pendingUnassignData?.archer?.ends_completed || 1,
+                  score: pendingUnassignData?.archer?.total_score || 0
+                }).replace('{name}', pendingUnassignData?.archer?.name || '')
+                  .replace('{ends}', String(pendingUnassignData?.archer?.ends_completed || 1))
+                  .replace('{score}', String(pendingUnassignData?.archer?.total_score || 0)) }}
+              </p>
+            </div>
+          </div>
+          <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3 rounded-b-3xl">
+            <BaseButton variant="white" class="h-11 px-6 text-sm font-bold border-slate-200"
+              @click="showUnassignScoredModal = false">
+              {{ t('event_qualification.cancel', 'Batal') }}
+            </BaseButton>
+            <BaseButton variant="danger" icon="ph:trash-bold" class="h-11 px-6 text-sm font-black shadow-md shadow-red-200"
+              @click="confirmUnassignScoredArcher">
+              {{ t('event_qualification.delete_btn', 'Ya, Lepaskan Target') }}
+            </BaseButton>
+          </div>
+        </div>
+      </div>
+    </Transition>
 </template>
 
 <script setup>
@@ -331,18 +609,41 @@ const showAutoAssignDialog = ref(false)
 const showAutoAssignMenu = ref(false)
 const drawType = ref('standard')
 
+// Smart Protection state & counts
+const assignMode = ref('unassigned_only')
+const scoredArchersCount = computed(() => {
+    return props.archers.filter(a => a.has_score || (a.total_score && a.total_score > 0) || (a.ends_completed && a.ends_completed > 0)).length
+})
+
+const showMoveScoredModal = ref(false)
+const pendingMoveData = ref(null)
+
+const showUnassignScoredModal = ref(false)
+const pendingUnassignData = ref(null)
+
 // Click outside directive implementation
 const vClickOutside = {
     mounted(el, binding) {
         el.clickOutsideEvent = (event) => {
-            if (!(el === event.target || el.contains(event.target))) {
-                binding.value(event)
+            if (el && !(el === event.target || el.contains(event.target))) {
+                if (typeof binding.value === 'function') {
+                    binding.value(event)
+                }
             }
         }
-        document.addEventListener('mousedown', el.clickOutsideEvent)
+        if (typeof document !== 'undefined') {
+            document.addEventListener('mousedown', el.clickOutsideEvent)
+        }
+    },
+    beforeUnmount(el) {
+        if (typeof document !== 'undefined' && el.clickOutsideEvent) {
+            document.removeEventListener('mousedown', el.clickOutsideEvent)
+        }
     },
     unmounted(el) {
-        document.removeEventListener('mousedown', el.clickOutsideEvent)
+        if (typeof document !== 'undefined' && el.clickOutsideEvent) {
+            document.removeEventListener('mousedown', el.clickOutsideEvent)
+        }
     }
 }
 
@@ -451,7 +752,7 @@ const getBoardCode = (boardName) => {
     const num = parseInt(boardName.match(/\d+/)?.[0])
     if (!num) return null
     const found = props.boardCodes.find(bc => bc.board_number === num)
-    return found ? found.code : null
+    return found ? found.board_code : null
 }
 
 const getPositionCode = (targetName, pos) => {
@@ -468,7 +769,6 @@ const handleDragStart = (event, archer, targetRecord = null, pos = null) => {
     event.dataTransfer.effectAllowed = 'move'
     draggedArcher.value = { archer, sourceTarget: targetRecord, sourcePos: pos }
     isDragging.value = true
-    console.log('Drag started:', archer.name, 'from:', targetRecord?.name || 'Unassigned')
 }
 
 const handleDragEnd = () => {
@@ -477,11 +777,7 @@ const handleDragEnd = () => {
 }
 
 const handleDropOnTarget = async (targetRecord, pos) => {
-    console.log('Drop event on:', targetRecord.name, pos)
-    if (!draggedArcher.value) {
-        console.warn('Drop failed: No dragged archer found in state')
-        return
-    }
+    if (!draggedArcher.value) return
 
     const { archer: movingArcher, sourceTarget, sourcePos } = draggedArcher.value
 
@@ -492,6 +788,22 @@ const handleDropOnTarget = async (targetRecord, pos) => {
 
     const existingArcher = targetRecord.slots[pos]
 
+    // Smart Protection: Prompt confirmation if moving archer or existing archer has scores
+    const hasScoreMoving = movingArcher.has_score || (movingArcher.total_score && movingArcher.total_score > 0)
+    const hasScoreExisting = existingArcher && (existingArcher.has_score || (existingArcher.total_score && existingArcher.total_score > 0))
+
+    if (hasScoreMoving || hasScoreExisting) {
+        pendingMoveData.value = { targetRecord, pos, movingArcher, existingArcher, sourceTarget }
+        showMoveScoredModal.value = true
+        handleDragEnd()
+        return
+    }
+
+    await executeMoveOrSwap(targetRecord, pos, movingArcher, existingArcher, sourceTarget)
+    handleDragEnd()
+}
+
+const executeMoveOrSwap = async (targetRecord, pos, movingArcher, existingArcher, sourceTarget) => {
     try {
         isSyncing.value = true
 
@@ -510,23 +822,32 @@ const handleDropOnTarget = async (targetRecord, pos) => {
         }
     } finally {
         isSyncing.value = false
-        handleDragEnd()
     }
+}
+
+const confirmMoveScoredArcher = async () => {
+    if (!pendingMoveData.value) return
+    const { targetRecord, pos, movingArcher, existingArcher, sourceTarget } = pendingMoveData.value
+    showMoveScoredModal.value = false
+    await executeMoveOrSwap(targetRecord, pos, movingArcher, existingArcher, sourceTarget)
+    pendingMoveData.value = null
 }
 
 const handleDropOnUnassigned = async () => {
     if (!draggedArcher.value) return
     const { archer: movingArcher } = draggedArcher.value
 
-    try {
-        isSyncing.value = true
-        if (movingArcher.assignmentId) {
-            await unassignArcherFromTarget(movingArcher.assignmentId)
+    if (movingArcher.assignmentId) {
+        const hasScore = movingArcher.has_score || (movingArcher.total_score && movingArcher.total_score > 0)
+        if (hasScore) {
+            pendingUnassignData.value = { assignmentId: movingArcher.assignmentId, archer: movingArcher }
+            showUnassignScoredModal.value = true
+            handleDragEnd()
+            return
         }
-    } finally {
-        isSyncing.value = false
-        handleDragEnd()
+        await unassignArcherFromTarget(movingArcher.assignmentId)
     }
+    handleDragEnd()
 }
 
 const toggleDropdown = (targetId, pos) => {
@@ -614,6 +935,18 @@ const swapAssignments = async (participantAUuid, participantBUuid, originalTarge
 const unassignArcherFromTarget = async (assignmentId) => {
     if (!assignmentId) return
     const archerObj = props.archers.find(a => a.assignmentId === assignmentId)
+
+    const hasScore = archerObj && (archerObj.has_score || (archerObj.total_score && archerObj.total_score > 0))
+    if (hasScore) {
+        pendingUnassignData.value = { assignmentId, archer: archerObj }
+        showUnassignScoredModal.value = true
+        return
+    }
+
+    await executeUnassign(assignmentId, archerObj)
+}
+
+const executeUnassign = async (assignmentId, archerObj) => {
     const originalTarget = archerObj ? archerObj.assignedTarget : ''
     const originalAssignmentId = archerObj ? archerObj.assignmentId : null
 
@@ -642,20 +975,30 @@ const unassignArcherFromTarget = async (assignmentId) => {
     }
 }
 
+const confirmUnassignScoredArcher = async () => {
+    if (!pendingUnassignData.value) return
+    const { assignmentId, archer } = pendingUnassignData.value
+    showUnassignScoredModal.value = false
+    await executeUnassign(assignmentId, archer)
+    pendingUnassignData.value = null
+}
+
 const autoAssignTargets = async () => {
     try {
         isAssigning.value = true
         await post(`/qualification/sessions/${props.sessionData.uuid}/auto-assign`, {
             category_id: props.selectedCategory,
             archers_per_target: props.sessionData.archers_per_target || 4,
-            draw_type: drawType.value
+            draw_type: drawType.value,
+            assign_mode: assignMode.value
         })
 
         toast.success(t('event_qualification.toast_auto_assign_success'))
         emit('updated')
     } catch (error) {
         console.error('Auto-assign failed:', error)
-        toast.error(t('event_qualification.toast_auto_assign_failed'))
+        const errorMsg = error?.data?.error || error?.response?.data?.error || t('event_qualification.toast_auto_assign_failed')
+        toast.error(errorMsg)
     } finally {
         isAssigning.value = false
     }
@@ -672,11 +1015,18 @@ const resetAssignments = () => {
 const confirmReset = async () => {
     try {
         isReseting.value = true
-        await post(`/qualification/sessions/${props.sessionData.uuid}/reset-assignments`, {
+        const res = await post(`/qualification/sessions/${props.sessionData.uuid}/reset-assignments`, {
             category_id: props.selectedCategory
         })
 
-        toast.success(t('event_qualification.toast_reset_success'))
+        const resetCount = res?.reset_count ?? 0
+        const retainedCount = res?.retained_count ?? 0
+
+        if (retainedCount > 0) {
+            toast.success(`${resetCount} pemanah di-reset. ${retainedCount} pemanah berskor tetap aman dipertahankan.`)
+        } else {
+            toast.success(t('event_qualification.toast_reset_success'))
+        }
         emit('updated')
     } catch (error) {
         console.error('Reset assignments failed:', error)
@@ -697,5 +1047,28 @@ const handleAutoAssignSelection = (type) => {
 <style scoped>
 .no-scrollbar::-webkit-scrollbar {
     display: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
 }
 </style>

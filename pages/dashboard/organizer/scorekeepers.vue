@@ -257,7 +257,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => `${t('organizer.scorekeepers.title')} - ArcheryHub Dashboard`)
+    title: computed(() => `${t('organizer.scorekeepers.title')} - Archeris Dashboard`)
 })
 
 const { isSubscriptionActive } = useSubscription()

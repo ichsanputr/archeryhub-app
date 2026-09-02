@@ -20,7 +20,7 @@ const { get, post, upload, delete: del } = useApi()
 const eventId = route.params.id
 
 useHead({
-    title: computed(() => `${t('my_registration.title', 'Pendaftaran & Tiket')} - ArcheryHub Dashboard`)
+    title: computed(() => `${t('my_registration.title', 'Pendaftaran & Tiket')} - Archeris Dashboard`)
 })
 
 const isLoading = ref(true)
@@ -113,7 +113,10 @@ const parseInstructionGroups = (raw) => {
 const handleTransactionPayment = async (transaction) => {
     if (!transaction) return
     if (transaction.checkout_url) {
-        window.location.href = transaction.checkout_url
+        window.open(transaction.checkout_url, '_blank')
+        if (transaction.reference) {
+            navigateTo(`/payment/status/${transaction.reference}`)
+        }
     } else if (transaction.reference) {
         navigateTo(`/payment/status/${transaction.reference}`)
     }
@@ -271,11 +274,11 @@ onMounted(() => {
 
         <template v-else-if="participant">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-                <!-- Left Column (2 cols): Athlete Pass, Target & Session, Categories -->
-                <div class="lg:col-span-2 space-y-6 md:space-y-8">
+                <!-- Left Column (2 cols): All-in-One White Card -->
+                <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-6">
 
-                    <!-- Athlete Pass Card -->
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-6">
+                    <!-- Section 1: Athlete Pass Header & Metrics -->
+                    <div class="space-y-6">
                         <div class="flex flex-col sm:flex-row sm:items-center gap-4 pb-6 border-b border-slate-100">
                             <div class="size-16 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden shrink-0 flex items-center justify-center">
                                 <img :src="useImageOrDefault(participant.avatar_url || participant.avatar, participant.full_name)"
@@ -335,8 +338,8 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <!-- Target & Session Details Card -->
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
+                    <!-- Section 2: Target & Session Details -->
+                    <div class="border-t border-slate-100 pt-6 space-y-4">
                         <div class="flex items-center justify-between">
                             <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
                                 <Icon icon="ph:crosshair-bold" class="text-slate-500 text-base" />
@@ -369,8 +372,8 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <!-- Registered Categories Card -->
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
+                    <!-- Section 3: Registered Categories -->
+                    <div class="border-t border-slate-100 pt-6 space-y-4">
                         <div class="flex items-center justify-between">
                             <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
                                 <Icon icon="ph:stack-bold" class="text-slate-500 text-base" />
@@ -402,11 +405,11 @@ onMounted(() => {
 
                 </div>
 
-                <!-- Right Column (1 col): Check-in QR Pass & Payment Card -->
-                <div class="space-y-6 md:space-y-8">
+                <!-- Right Column (1 col): All-in-One White Card -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-6">
 
-                    <!-- Official Field Check-in QR Pass -->
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4 text-center">
+                    <!-- Section 1: Official Field Check-in QR Pass -->
+                    <div class="space-y-4 text-center">
                         <div class="flex items-center justify-between text-xs pb-3 border-b border-slate-100">
                             <span class="font-bold text-slate-400 capitalize">{{ t('my_registration.field_pass', 'Pass Registrasi Lapangan') }}</span>
                             <span v-if="isPaid(participant.payment_status)" class="text-emerald-700 font-bold">
@@ -427,8 +430,8 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <!-- Payment Details Card -->
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
+                    <!-- Section 2: Payment Details -->
+                    <div class="border-t border-slate-100 pt-6 space-y-4">
                         <div class="flex items-center justify-between">
                             <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
                                 <Icon icon="ph:credit-card-bold" class="text-slate-500 text-base" />
@@ -526,8 +529,8 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <!-- THB Guidebook & Event Info -->
-                    <div v-if="event?.technical_guidebook_url" class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 text-center space-y-2">
+                    <!-- Section 3: THB Guidebook & Event Info -->
+                    <div v-if="event?.technical_guidebook_url" class="border-t border-slate-100 pt-6 text-center space-y-2">
                         <span class="text-xs text-slate-400 font-medium block capitalize">Buku Petunjuk Teknis</span>
                         <a :href="event.technical_guidebook_url" target="_blank"
                             class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 text-xs font-bold transition-colors border border-slate-200">

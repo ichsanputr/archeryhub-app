@@ -12,7 +12,7 @@
             </div>
             <div>
               <h3 class="text-lg font-black tracking-tight">{{ t('csv_import.import_title', 'Import Peserta via CSV') }}</h3>
-              <div class="text-xs text-slate-300">{{ t('csv_import.import_subtitle', 'Unggah file CSV untuk mendaftarkan peserta secara masal') }}</div>
+              <div class="text-xs text-slate-300">{{ t('csv_import.import_subtitle', 'Unggah file CSV untuk mendaftarkan peserta secara massal') }}</div>
             </div>
           </div>
           <button @click="closeModal" class="size-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-300 hover:text-white transition-colors">
@@ -27,8 +27,8 @@
             <div class="flex items-center gap-3">
               <Icon icon="ph:info-bold" class="text-2xl text-primary shrink-0" />
               <div class="text-xs text-navy font-medium">
-                <div class="font-bold">Format CSV Resmi</div>
-                <div class="text-gray-500">Gunakan template resmi agar kolom terpetakan dengan benar</div>
+                <div class="font-bold">{{ t('csv_import.official_format_title', 'Format CSV Resmi') }}</div>
+                <div class="text-gray-500">{{ t('csv_import.official_format_desc', 'Gunakan template resmi agar kolom dan data terpetakan dengan benar') }}</div>
               </div>
             </div>
             <BaseButton @click="downloadTemplate" variant="white" size="sm" icon="ph:download-simple-bold" class="shrink-0 text-xs font-bold shadow-sm">
@@ -58,14 +58,14 @@
                 <Icon icon="ph:cloud-arrow-up-bold" class="text-3xl" />
               </div>
               <div class="text-sm font-bold text-navy">{{ t('csv_import.select_file', 'Klik atau Tarik File CSV ke Sini') }}</div>
-              <div class="text-xs text-gray-400">Mendukung format file .csv (UTF-8)</div>
+              <div class="text-xs text-gray-400">{{ t('csv_import.support_hint', 'Mendukung format file .csv (UTF-8)') }}</div>
             </div>
           </div>
 
           <!-- Errors List Summary if any -->
           <div v-if="importResult && importResult.errors && importResult.errors.length > 0" class="p-4 bg-red-50 border border-red-100 rounded-2xl space-y-2 max-h-36 overflow-y-auto text-xs text-red-700">
             <div class="font-bold flex items-center gap-2">
-              <Icon icon="ph:warning-circle-bold" class="text-base" /> Catatan Baris Terlewati / Error:
+              <Icon icon="ph:warning-circle-bold" class="text-base" /> {{ t('csv_import.errors_title', 'Catatan Baris Terlewati / Error:') }}
             </div>
             <ul class="list-disc pl-4 space-y-1">
               <li v-for="(err, idx) in importResult.errors" :key="idx">{{ err }}</li>
@@ -92,7 +92,7 @@ import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
-import useDashboardI18n from '~/composables/useDashboardI18n'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
   show: { type: Boolean, default: false },
@@ -101,7 +101,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:show', 'imported', 'parsed'])
 
-const { t } = useDashboardI18n()
+const { t } = useI18n()
 const { post } = useApi()
 const toast = useToast()
 
@@ -126,7 +126,7 @@ const handleFileChange = (e) => {
   if (file && file.name.endsWith('.csv')) {
     selectedFile.value = file
   } else if (file) {
-    toast.error('File harus berformat .csv')
+    toast.error(t('csv_import.invalid_format', 'File harus berformat .csv'))
   }
 }
 
@@ -136,7 +136,7 @@ const handleDrop = (e) => {
   if (file && file.name.endsWith('.csv')) {
     selectedFile.value = file
   } else if (file) {
-    toast.error('File harus berformat .csv')
+    toast.error(t('csv_import.invalid_format', 'File harus berformat .csv'))
   }
 }
 
@@ -149,9 +149,9 @@ const formatFileSize = (bytes) => {
 }
 
 const downloadTemplate = () => {
-  const csvContent = 'full_name,email,phone,gender,bow_type,club_name,category_name,payment_status,payment_amount\n' +
-    'Budi Santoso,budi@example.com,081234567890,M,recurve,Klub Panahan Sleman,Recurve 70m - Putra,paid,150000\n' +
-    'Siti Aminah,siti@example.com,081298765432,F,barebow,Archery Club Jogja,Barebow 50m - Putri,unpaid,0'
+  const csvContent = 'full_name,email,phone,password,gender,bow_type,club_name,category_name,payment_status,payment_amount\n' +
+    'Budi Santoso,budi@example.com,081234567890,Archeris123!,M,recurve,Klub Panahan Sleman,Recurve 70m - Putra,paid,150000\n' +
+    'Siti Aminah,siti@example.com,081298765432,Archeris123!,F,barebow,Archery Club Jogja,Barebow 50m - Putri,unpaid,0'
   
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
   const url = URL.createObjectURL(blob)
@@ -174,7 +174,7 @@ const uploadCSV = async () => {
     const lines = text.split(/\r\n|\n/).map(l => l.trim()).filter(Boolean)
 
     if (lines.length <= 1) {
-      toast.error('File CSV kosong atau hanya berisi header')
+      toast.error(t('csv_import.empty_or_header_only', 'File CSV kosong atau hanya berisi header'))
       isUploading.value = false
       return
     }
@@ -184,7 +184,7 @@ const uploadCSV = async () => {
     header.forEach((h, idx) => { colIdx[h] = idx })
 
     if (!('full_name' in colIdx)) {
-      toast.error("Kolom wajib 'full_name' tidak ditemukan di CSV")
+      toast.error(t('csv_import.missing_fullname', "Kolom wajib 'full_name' tidak ditemukan di CSV"))
       isUploading.value = false
       return
     }
@@ -207,14 +207,14 @@ const uploadCSV = async () => {
 
       const fullName = getVal('full_name')
       if (!fullName) {
-        errors.push(`Baris ${i + 1}: Nama lengkap kosong`)
+        errors.push(t('csv_import.empty_fullname_row', { row: i + 1 }))
         continue
       }
 
       const email = getVal('email')
       const phone = getVal('phone')
       const clubName = getVal('club_name')
-      const pass = 'Archeris123!'
+      const pass = getVal('password') || 'Archeris123!'
 
       const tempId = `csv-${Date.now()}-${i}`
       parsedArchers.push({
@@ -232,14 +232,14 @@ const uploadCSV = async () => {
 
     if (parsedArchers.length > 0) {
       emit('parsed', parsedArchers)
-      toast.success(`Berhasil memuat ${parsedArchers.length} pemanah dari file CSV ke daftar sementara!`)
+      toast.success(t('csv_import.parsed_success', { count: parsedArchers.length }))
       closeModal()
     } else {
-      toast.error('Tidak ada baris pemanah valid yang dapat dimuat')
+      toast.error(t('csv_import.no_valid_rows', 'Tidak ada baris pemanah valid yang dapat dimuat'))
     }
   } catch (error) {
     console.error('Failed to parse CSV:', error)
-    toast.error('Gagal mengurai file CSV')
+    toast.error(t('csv_import.parse_failed', 'Gagal mengurai file CSV'))
   } finally {
     isUploading.value = false
   }

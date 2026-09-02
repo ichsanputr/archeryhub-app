@@ -175,7 +175,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => (form.value.title || t('organizer_news.edit.title_short', 'Edit Berita')) + ' - ArcheryHub Dashboard')
+    title: computed(() => (form.value.title || t('organizer_news.edit.title_short', 'Edit Berita')) + ' - Archeris Dashboard')
 })
 
 const route = useRoute()

@@ -324,7 +324,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => `${t('dashboard.sidebar.organizer')} Dashboard - ArcheryHub Dashboard`)
+    title: computed(() => `${t('dashboard.sidebar.organizer')} Dashboard - Archeris Dashboard`)
 })
 
 const router = useRouter()

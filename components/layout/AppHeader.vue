@@ -218,7 +218,7 @@ const searchQuery = ref('')
 const showNotifications = ref(false)
 const searchDialog = ref(null)
 const notifications = ref([
-  { id: 1, type: 'info', title: 'Selamat Datang!', message: 'Selamat bergabung di Archery Hub. Lengkapi profil klub Anda sekarang.', time: '2 MENIT LALU', read: false },
+  { id: 1, type: 'info', title: 'Selamat Datang!', message: 'Selamat bergabung di Archeris. Lengkapi profil klub Anda sekarang.', time: '2 MENIT LALU', read: false },
   { id: 2, type: 'success', title: 'Profil Diperbarui', message: 'Informasi klub Anda telah berhasil diperbarui.', time: '1 JAM LALU', read: true },
   { id: 3, type: 'warning', title: 'Keanggotaan Baru', message: 'Ada 5 permintaan join klub baru yang menunggu persetujuan.', time: '3 JAM LALU', read: false }
 ])

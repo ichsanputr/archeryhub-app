@@ -35,7 +35,7 @@ const { t } = useI18n()
 const { handleCallback, user, fetchProfileSSR } = useAuth()
 
 useHead({
-  title: computed(() => (t ? t('auth.connecting', 'Connecting Account...') : 'Connecting Account...') + ' - ArcheryHub')
+  title: computed(() => (t ? t('auth.connecting', 'Connecting Account...') : 'Connecting Account...') + ' - Archeris')
 })
 
 const loading = ref(true)

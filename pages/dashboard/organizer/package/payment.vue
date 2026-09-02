@@ -119,9 +119,12 @@ const handlePayment = async () => {
         })
 
         if (res.reference) {
+            if (res.checkout_url) {
+                window.open(res.checkout_url, '_blank')
+            }
             navigateTo(`/payment/status/${res.reference}`)
         } else if (res.checkout_url) {
-            window.location.href = res.checkout_url
+            window.open(res.checkout_url, '_blank')
         } else {
             errorMessage.value = t('subscription_payment_page.generic_payment_error')
         }

@@ -197,7 +197,7 @@ import useDashboardI18n from '~/composables/useDashboardI18n'
 const { t } = useDashboardI18n()
 
 useHead({
-    title: computed(() => t('profile.edit.head_title'), 'Edit Profil - ArcheryHub Dashboard')
+    title: computed(() => t('profile.edit.head_title'), 'Edit Profil - Archeris Dashboard')
 })
 
 const profileData = ref({

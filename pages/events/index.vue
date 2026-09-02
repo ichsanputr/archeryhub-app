@@ -462,7 +462,7 @@ const scrollToContent = () => {
 }
 
 useHead({
-    title: computed(() => `${t('events_page.all_events', 'All Events')} - ArcheryHub`),
+    title: computed(() => `${t('events_page.all_events', 'All Events')} - Archeris`),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ]

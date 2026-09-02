@@ -84,9 +84,6 @@
               <BaseButton variant="white" size="sm" icon="ph:pencil-simple-bold"
                 class="!size-9 !p-0 !rounded-xl text-gray-400 hover:!text-navy hover:scale-110 active:scale-95 shadow-md"
                 @click.stop="isSubscriptionActive ? editSession(session) : (showPremiumModal = true)" />
-              <BaseButton variant="white" size="sm" icon="ph:trash-bold"
-                class="!size-9 !p-0 !rounded-xl text-gray-400 hover:!text-red-500 hover:scale-110 active:scale-95 shadow-md"
-                @click.stop="isSubscriptionActive ? confirmDeleteSession(session) : (showPremiumModal = true)" />
             </div>
 
             <div class="flex items-start justify-between mb-4">
@@ -361,212 +358,213 @@
       </div>
     </div>
 
-    <!-- Create Session Modal Dialog -->
+    <!-- Create / Edit Session Modal Dialog -->
     <Transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0"
       enter-to-class="opacity-100" leave-active-class="transition duration-150 ease-in"
       leave-from-class="opacity-100" leave-to-class="opacity-0">
       <div v-if="showSessionDialog"
-        class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+        class="fixed inset-0 z-50 overflow-y-auto bg-navy/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6"
         @click.self="showSessionDialog = false">
-        <div class="bg-white rounded-3xl shadow-md max-w-lg w-full overflow-hidden border border-white/20">
-          <!-- Modal Header -->
-          <div class="bg-navy p-6 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-              <div
-                class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-md shadow-primary/20">
-                <Icon icon="ph:calendar-plus-bold" class="text-2xl text-navy" />
+        <div class="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200/80 flex flex-col my-auto">
+          
+          <!-- Signature Navy Header -->
+          <div class="relative overflow-hidden px-6 py-5 bg-gradient-to-r from-navy via-navy to-navy/90 text-white flex items-center justify-between border-b border-primary/20">
+            <div class="absolute inset-0"
+              style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
+            </div>
+            <div class="absolute -top-10 -left-10 h-32 w-32 rounded-full bg-primary/10 blur-2xl"></div>
+
+            <div class="relative flex items-center gap-3.5 min-w-0">
+              <div class="size-11 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-primary text-xl shrink-0 shadow-sm">
+                <Icon :icon="editingSessionId ? 'ph:pencil-simple-bold' : 'ph:calendar-plus-bold'" />
               </div>
-              <div>
-                <h3 class="text-xl font-black text-white leading-tight">{{ modalTitle }}</h3>
-                <div class="text-gray-400 text-xs mt-0.5">{{ t('event_qualification.configure_schedule_desc') }}</div>
+              <div class="min-w-0">
+                <h3 class="text-lg font-black tracking-tight text-white leading-tight truncate">
+                  {{ modalTitle }}
+                </h3>
+                <div class="text-xs text-slate-300 truncate mt-0.5">
+                  {{ t('event_qualification.configure_schedule_desc', 'Atur jadwal dan ketentuan scoring sesi kualifikasi.') }}
+                </div>
               </div>
             </div>
+
             <button @click="showSessionDialog = false"
-              class="size-10 flex items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/20 transition-all group">
-              <Icon icon="ph:x-bold" class="text-xl group-hover:rotate-90 transition-transform" />
+              class="relative size-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-300 hover:text-white transition-colors shrink-0 ml-4">
+              <Icon icon="ph:x-bold" class="text-sm" />
             </button>
           </div>
 
-          <!-- Modal Body -->
-          <div class="p-8 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
-            <div class="space-y-4">
-              <div>
-                <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ t('event_qualification.session_title_label') }}</label>
-                <div class="relative group">
-                  <Icon icon="ph:text-t-bold"
-                    class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" />
-                  <input v-model="newSessionName" type="text" :placeholder="t('event_qualification.session_title_placeholder')"
-                    class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border-2 border-transparent rounded-2xl focus:outline-none focus:border-primary focus:bg-white transition-all text-navy font-bold placeholder:font-normal placeholder:text-gray-300" />
-                </div>
+          <!-- Modal Body (Sectioned Cards) -->
+          <div class="p-6 space-y-5 max-h-[75vh] overflow-y-auto custom-scrollbar">
+            
+            <!-- Section 1: Schedule & Session Info -->
+            <div class="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-4">
+              <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
+                <Icon icon="ph:calendar-check-bold" class="text-slate-600 text-base" />
+                <span>{{ t('event_qualification.session_info', 'Informasi & Jadwal Sesi') }}</span>
               </div>
 
-              <div>
-                <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ t('event_qualification.session_date_label') }}</label>
-                <BaseDatePicker v-model="newSessionDate" :placeholder="t('event_qualification.select_date') || 'Select date'" />
-              </div>
- 
-              <div class="grid grid-cols-2 gap-4">
+              <div class="space-y-3.5">
                 <div>
-                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ t('event_qualification.start_time_label') }}</label>
-                  <BaseTimePicker v-model="newSessionStart" placeholder="08:00" />
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                    {{ t('event_qualification.session_title_label', 'Nama Sesi') }} <span class="text-red-500">*</span>
+                  </label>
+                  <div class="relative">
+                    <Icon icon="ph:text-t-bold"
+                      class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none" />
+                    <input v-model="newSessionName" type="text"
+                      :placeholder="t('event_qualification.session_title_placeholder', 'Contoh: Sesi 1 - Divisi Recurve & Compound')"
+                      class="w-full h-11 pl-10 pr-4 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-slate-800 transition-all shadow-xs" />
+                  </div>
                 </div>
+
                 <div>
-                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">{{ t('event_qualification.end_time_label') }}</label>
-                  <BaseTimePicker v-model="newSessionEnd" placeholder="12:00" />
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                    {{ t('event_qualification.session_date_label', 'Tanggal Sesi') }}
+                  </label>
+                  <BaseDatePicker v-model="newSessionDate" :placeholder="t('event_qualification.select_date') || 'Pilih tanggal'" />
                 </div>
-              </div>
 
-              <div class="grid grid-cols-2 gap-4 pt-2">
-                <div
-                  class="p-4 bg-gray-50 rounded-2xl border-2 border-transparent hover:border-gray-100 transition-all">
-                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-3 text-center">{{ t('event_qualification.number_of_ends') }}</label>
-                  <div class="flex items-center justify-between gap-3">
-                    <button @click="newSessionEnds = Math.max(1, newSessionEnds - 1)"
-                      class="size-8 rounded-lg bg-white shadow-sm border border-gray-100 flex items-center justify-center text-navy hover:text-primary transition-colors">
-                      <Icon icon="ph:minus-bold" />
-                    </button>
-                    <span class="text-xl font-black text-navy">{{ newSessionEnds }}</span>
-                    <button @click="newSessionEnds++"
-                      class="size-8 rounded-lg bg-white shadow-sm border border-gray-100 flex items-center justify-center text-navy hover:text-primary transition-colors">
-                      <Icon icon="ph:plus-bold" />
-                    </button>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                      {{ t('event_qualification.start_time_label', 'Waktu Mulai') }}
+                    </label>
+                    <BaseTimePicker v-model="newSessionStart" placeholder="08:00" />
                   </div>
-                </div>
-                <div
-                  class="p-4 bg-gray-50 rounded-2xl border-2 border-transparent hover:border-gray-100 transition-all">
-                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-3 text-center">{{ t('event_qualification.arrows_per_end') }}</label>
-                  <div class="flex items-center justify-between gap-3">
-                    <button @click="newSessionArrows = Math.max(1, newSessionArrows - 1)"
-                      class="size-8 rounded-lg bg-white shadow-sm border border-gray-100 flex items-center justify-center text-navy hover:text-primary transition-colors">
-                      <Icon icon="ph:minus-bold" />
-                    </button>
-                    <span class="text-xl font-black text-navy">{{ newSessionArrows }}</span>
-                    <button @click="newSessionArrows = Math.min(12, newSessionArrows + 1)"
-                      class="size-8 rounded-lg bg-white shadow-sm border border-gray-100 flex items-center justify-center text-navy hover:text-primary transition-colors">
-                      <Icon icon="ph:plus-bold" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Category Selection -->
-              <div>
-                <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-3 px-1 ">{{ t('event_qualification.event_category_label') }}</label>
-                <div
-                  class="bg-gray-50 rounded-2xl p-4 border border-gray-100 max-h-48 overflow-y-auto space-y-2 custom-scrollbar">
-                  <div v-for="category in categories" :key="category.id"
-                    class="flex items-center gap-3 p-3 bg-white rounded-xl border border-transparent hover:border-primary/20 transition-all cursor-pointer shadow-sm"
-                    @click="toggleSessionCategory(category.id)">
-                    <div class="size-5 rounded border-2 flex items-center justify-center transition-all"
-                      :class="selectedSessionCategoryIds.includes(category.id) ? 'bg-primary border-primary' : 'bg-white border-gray-200'">
-                      <Icon v-if="selectedSessionCategoryIds.includes(category.id)" icon="ph:check-bold"
-                        class="text-navy text-xs" />
-                    </div>
-                    <span class="text-xs font-bold text-navy">{{ getCategoryName(category) }}</span>
-                  </div>
-                  <div v-if="categories.length === 0" class="text-center py-4 text-xs text-gray-400 font-medium italic">
-                    {{ t('event_qualification.loading_categories') }}
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                      {{ t('event_qualification.end_time_label', 'Waktu Selesai') }}
+                    </label>
+                    <BaseTimePicker v-model="newSessionEnd" placeholder="12:00" />
                   </div>
                 </div>
               </div>
             </div>
+
+            <!-- Section 2: Format Pertandingan & Scoring Rules -->
+            <div class="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
+                  <Icon icon="ph:target-bold" class="text-slate-600 text-base" />
+                  <span>{{ t('event_qualification.scoring_rules', 'Format Seri & Panah (Scoring)') }}</span>
+                </div>
+                <div class="px-2.5 py-1 bg-primary/15 text-navy font-bold text-[11px] rounded-lg border border-primary/30">
+                  Total: {{ (newSessionEnds || 0) * (newSessionArrows || 0) }} {{ t('event_qualification.arrows', 'Panah') }}
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <!-- Stepper 1: Ends -->
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+                  <label class="text-[11px] font-bold text-slate-500 block mb-2 text-center truncate">
+                    {{ t('event_qualification.number_of_ends', 'Jumlah Seri (Ends)') }}
+                  </label>
+                  <div class="flex items-center justify-between gap-2">
+                    <button type="button" @click="newSessionEnds = Math.max(1, newSessionEnds - 1)"
+                      class="size-8 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 flex items-center justify-center text-slate-700 active:scale-95 transition-all">
+                      <Icon icon="ph:minus-bold" class="text-xs" />
+                    </button>
+                    <span class="text-base sm:text-lg font-black text-slate-900 tabular-nums">{{ newSessionEnds }}</span>
+                    <button type="button" @click="newSessionEnds++"
+                      class="size-8 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 flex items-center justify-center text-slate-700 active:scale-95 transition-all">
+                      <Icon icon="ph:plus-bold" class="text-xs" />
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Stepper 2: Arrows Per End -->
+                <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+                  <label class="text-[11px] font-bold text-slate-500 block mb-2 text-center truncate">
+                    {{ t('event_qualification.arrows_per_end', 'Panah per Seri') }}
+                  </label>
+                  <div class="flex items-center justify-between gap-2">
+                    <button type="button" @click="newSessionArrows = Math.max(1, newSessionArrows - 1)"
+                      class="size-8 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 flex items-center justify-center text-slate-700 active:scale-95 transition-all">
+                      <Icon icon="ph:minus-bold" class="text-xs" />
+                    </button>
+                    <span class="text-base sm:text-lg font-black text-slate-900 tabular-nums">{{ newSessionArrows }}</span>
+                    <button type="button" @click="newSessionArrows = Math.min(12, newSessionArrows + 1)"
+                      class="size-8 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-200 flex items-center justify-center text-slate-700 active:scale-95 transition-all">
+                      <Icon icon="ph:plus-bold" class="text-xs" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section 3: Category Assignment -->
+            <div class="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-3.5">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
+                  <Icon icon="ph:trophy-bold" class="text-slate-600 text-base" />
+                  <span>{{ t('event_qualification.event_category_label', 'Kategori Turnamen') }} <span class="text-red-500">*</span></span>
+                </div>
+                <span class="text-[11px] font-semibold text-slate-500">
+                  {{ selectedSessionCategoryIds.length }} {{ t('participant.edit.categories_selected', 'Dipilih') }}
+                </span>
+              </div>
+
+              <!-- Search Bar for Categories -->
+              <div v-if="categories.length > 5" class="relative">
+                <Icon icon="ph:magnifying-glass"
+                  class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none" />
+                <input v-model="sessionCategorySearch" type="text"
+                  :placeholder="t('event_qualification.search_category', 'Cari kategori lomba...')"
+                  class="w-full h-9 pl-9 pr-3 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-slate-800 transition-all" />
+              </div>
+
+              <!-- Category List -->
+              <div class="bg-white rounded-xl border border-slate-200/80 p-2 max-h-48 overflow-y-auto space-y-1.5 custom-scrollbar">
+                <div v-for="category in filteredSessionCategories" :key="category.id"
+                  class="flex items-center gap-3 p-2.5 rounded-lg border transition-all cursor-pointer select-none group"
+                  :class="selectedSessionCategoryIds.includes(category.id)
+                    ? 'bg-slate-50 border-slate-800 text-slate-900 shadow-2xs'
+                    : 'bg-white border-transparent hover:border-slate-200 text-slate-700'"
+                  @click="toggleSessionCategory(category.id)">
+                  <div class="size-4.5 rounded-md border flex items-center justify-center transition-all shrink-0"
+                    :class="selectedSessionCategoryIds.includes(category.id)
+                      ? 'bg-slate-900 border-slate-900 text-white'
+                      : 'bg-white border-slate-300 group-hover:border-slate-400'">
+                    <Icon v-if="selectedSessionCategoryIds.includes(category.id)" icon="ph:check-bold" class="text-[10px]" />
+                  </div>
+                  <div class="flex-1 min-w-0 flex items-center justify-between gap-2">
+                    <span class="text-xs font-bold truncate">{{ getCategoryName(category) }}</span>
+                    <span v-if="category.participant_count" class="text-[10px] text-slate-400 shrink-0 font-medium">
+                      {{ category.participant_count }} {{ t('event_qualification.archers', 'peserta').toLowerCase() }}
+                    </span>
+                  </div>
+                </div>
+
+                <div v-if="categories.length === 0" class="text-center py-6 text-xs text-slate-400 italic">
+                  {{ t('event_qualification.loading_categories', 'Memuat daftar kategori lomba...') }}
+                </div>
+                <div v-else-if="filteredSessionCategories.length === 0" class="text-center py-6 text-xs text-slate-400 italic">
+                  {{ t('event_qualification.no_categories_match', 'Tidak ada kategori yang cocok dengan pencarian.') }}
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          <div class="p-8 bg-gray-50 flex gap-4">
-            <BaseButton variant="white" class="flex-1 !py-4 !rounded-2xl font-black !tracking-widest !text-xs "
+          <!-- Modal Footer -->
+          <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3 rounded-b-3xl">
+            <BaseButton variant="white" class="h-10 px-5 text-xs font-bold border-slate-200"
               @click="showSessionDialog = false">
-              {{ t('event_qualification.cancel') }}
+              {{ t('event_qualification.cancel', 'Batal') }}
             </BaseButton>
             <BaseButton :disabled="creatingSession || !newSessionName || selectedSessionCategoryIds.length === 0"
-              :loading="creatingSession" variant="primary"
-              class="flex-[2] py-4 rounded-2xl font-black shadow-lg shadow-primary/10 tracking-widest text-xs "
+              :loading="creatingSession" variant="primary" icon="ph:check-circle-bold"
+              class="h-10 px-6 text-xs font-black shadow-md shadow-primary/20"
               @click="saveSession">
               {{ submitButtonLabel }}
             </BaseButton>
           </div>
+
         </div>
       </div>
     </Transition>
 
-    <!-- Delete Confirmation Dialog -->
-    <BaseDialogForm v-if="showDeleteDialog" v-model="showDeleteDialog" @close="showDeleteDialog = false">
-      <template #header>
-        <div class="flex items-center gap-3">
-          <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
-            <Icon icon="ph:trash-bold" class="text-xl text-red-600" />
-          </div>
-          <h2 class="text-xl font-black text-navy">{{ t('event_qualification.delete_session_confirm') }}</h2>
-        </div>
-      </template>
-      <div class="space-y-6 pt-2">
-        <!-- Warning Banner -->
-        <div class="p-6 bg-red-50 border-2 border-red-100 rounded-3xl relative overflow-hidden group">
-          <div class="absolute -right-4 -top-4 opacity-10 group-hover:scale-120 transition-transform duration-700">
-            <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-600" />
-          </div>
-          <div class="relative z-10">
-            <h4 class="text-sm font-black text-red-700 tracking-widest mb-2">{{ t('event_qualification.delete_warning') }}</h4>
-            <div class="text-xs font-bold text-red-600/80 leading-relaxed mb-4">
-              {{ t('event_qualification.delete_warning_desc') }}
-            </div>
-
-            <div class="flex items-center gap-2 px-3 py-1.5 bg-red-100 rounded-xl w-fit">
-              <Icon icon="ph:info-bold" class="text-red-600" />
-              <span class="text-[10px] font-black tracking-wider text-red-700">{{ t('event_qualification.data_deleted_forever') }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Session Overview -->
-        <div class="p-5 rounded-2xl bg-navy text-white relative overflow-hidden group shadow-sm">
-          <div class="absolute inset-0 opacity-10 pointer-events-none"
-            style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);">
-          </div>
-          <div class="relative z-10">
-            <h4 class="text-[9px] font-black text-primary tracking-[0.2em] mb-2">{{ t('event_qualification.session_info') }}</h4>
-            <div class="text-lg font-black leading-tight mb-1">
-              {{ sessionToDelete?.name }}
-            </div>
-            <div class="text-xs font-bold text-slate-300">
-              {{ t('event_qualification.code') }}: {{ sessionToDelete?.session_code }} • {{ sessionToDelete?.session_date ?
-                formatDate(sessionToDelete.session_date) : t('event_qualification.no_date') }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Impact Grid -->
-        <div class="grid grid-cols-2 gap-4">
-          <div v-for="stat in [
-            { label: t('event_qualification.archers'), count: sessionToDelete?.participant_count || 0, icon: 'ph:users-bold' },
-            { label: t('event_qualification.board_assignments'), count: sessionToDelete?.participant_count || 0, icon: 'ph:target-bold' },
-            { label: t('event_qualification.total_score'), count: t('event_qualification.entire'), icon: 'ph:rows-bold', isWarning: true },
-            { label: t('event_qualification.scoring_code'), count: t('event_qualification.all'), icon: 'ph:lock-key-bold', isWarning: true }
-          ]" :key="stat.label" class="p-4 rounded-2xl border transition-all duration-300 shadow-sm"
-            :class="stat.count !== 0 ? 'bg-red-50 border-red-100' : 'bg-gray-50 border-gray-50 opacity-60'">
-            <div class="flex items-center justify-between mb-2">
-              <div class="size-9 rounded-lg flex items-center justify-center transition-colors shadow-inner"
-                :class="stat.count !== 0 ? 'bg-red-100 text-red-600' : 'bg-gray-200 text-gray-400'">
-                <Icon :icon="stat.icon" class="text-lg" />
-              </div>
-              <div class="text-base font-black" :class="stat.count !== 0 ? 'text-red-700' : 'text-gray-400'">
-                {{ stat.count }}
-              </div>
-            </div>
-            <span class="text-[9px] font-black text-gray-400 tracking-wider">{{ stat.label }}</span>
-          </div>
-        </div>
-      </div>
-
-      <template #action>
-        <BaseButton variant="white" @click="showDeleteDialog = false" class="px-6 font-bold tracking-wider text-xs">
-          {{ t('event_qualification.cancel') }}
-        </BaseButton>
-        <BaseButton variant="danger" @click="handleDeleteSession" :disabled="savingDelete" :loading="savingDelete"
-          icon="ph:trash-bold" class="px-8 font-black tracking-wider text-xs shadow-lg shadow-red-200">
-          {{ t('event_qualification.delete_permanently') }}
-        </BaseButton>
-      </template>
-    </BaseDialogForm>
   </div>
 </template>
 
@@ -610,10 +608,6 @@ const creatingSession = ref(false)
 const showSessionDialog = ref(false)
 const editingSessionId = ref(null)
 
-const showDeleteDialog = ref(false)
-const sessionToDelete = ref(null)
-const savingDelete = ref(false)
-
 // New/Edit Session Form
 const newSessionName = ref('')
 const newSessionDate = ref(new Date().toISOString().split('T')[0])
@@ -622,6 +616,16 @@ const newSessionEnd = ref('12:00')
 const newSessionEnds = ref(6)
 const newSessionArrows = ref(3)
 const selectedSessionCategoryIds = ref([])
+const sessionCategorySearch = ref('')
+
+const filteredSessionCategories = computed(() => {
+  if (!sessionCategorySearch.value) return categories.value
+  const q = sessionCategorySearch.value.toLowerCase()
+  return categories.value.filter(cat => {
+    const name = getCategoryName(cat).toLowerCase()
+    return name.includes(q)
+  })
+})
 
 // Pagination Computed
 const totalPages = computed(() => Math.ceil(reportEntries.value.length / pageSize.value))
@@ -672,15 +676,16 @@ const submitButtonLabel = computed(() => editingSessionId.value ? (creatingSessi
 
 const breadcrumbItems = computed(() => [
   { label: 'Events', to: '/dashboard/events' },
-  { label: eventName.value, to: `/dashboard/events/${eventId.value}` }
+  { label: eventName?.value || 'Event', to: `/dashboard/events/${eventId.value}` }
 ])
 
 useHead({
-  title: computed(() =>
-    eventName.value === 'Loading...'
-      ? `${t('event_qualification.title')} - ArcheryHub Dashboard`
-      : `${t('event_qualification.title')} - ${eventName.value} - ArcheryHub Dashboard`
-  )
+  title: computed(() => {
+    const name = eventName?.value
+    return !name || name === 'Loading...'
+      ? `${t('event_qualification.title')} - Archeris Dashboard`
+      : `${t('event_qualification.title')} - ${name} - Archeris Dashboard`
+  })
 })
 
 // Methods
@@ -693,6 +698,7 @@ const openCreateModal = () => {
   newSessionEnds.value = 6
   newSessionArrows.value = 3
   selectedSessionCategoryIds.value = []
+  sessionCategorySearch.value = ''
   showSessionDialog.value = true
 }
 
@@ -714,6 +720,7 @@ const editSession = (session) => {
   newSessionEnds.value = session.total_ends
   newSessionArrows.value = session.arrows_per_end
   selectedSessionCategoryIds.value = session.category_ids || []
+  sessionCategorySearch.value = ''
   showSessionDialog.value = true
 }
 
@@ -776,29 +783,6 @@ const saveSession = async () => {
     toast.error(t('event_qualification.toast_session_save_failed'))
   } finally {
     creatingSession.value = false
-  }
-}
-
-const confirmDeleteSession = (session) => {
-  sessionToDelete.value = session
-  showDeleteDialog.value = true
-}
-
-const handleDeleteSession = async () => {
-  if (!sessionToDelete.value) return
-
-  savingDelete.value = true
-  try {
-    await del(`/events/${eventId.value}/qualification/sessions/${sessionToDelete.value.uuid}`)
-    toast.success(t('event_qualification.toast_session_deleted'))
-    showDeleteDialog.value = false
-    sessionToDelete.value = null
-    await fetchQualificationSessions() // Changed from fetchSessions to fetchQualificationSessions
-  } catch (error) {
-    console.error('Failed to delete session:', error)
-    toast.error(error.response?.data?.error || t('event_qualification.toast_session_delete_failed'))
-  } finally {
-    savingDelete.value = false
   }
 }
 

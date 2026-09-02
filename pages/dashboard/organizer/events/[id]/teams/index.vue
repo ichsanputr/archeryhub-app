@@ -486,7 +486,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => `${eventName.value && eventName.value !== 'Loading...' ? eventName.value + ' - ' : ''}${t('event_teams.title', 'Tim Beregu')} - ArcheryHub Dashboard`)
+    title: computed(() => `${eventName.value && eventName.value !== 'Loading...' ? eventName.value + ' - ' : ''}${t('event_teams.title', 'Tim Beregu')} - Archeris Dashboard`)
 })
 
 // State Management

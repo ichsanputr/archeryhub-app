@@ -229,7 +229,7 @@ const { t } = useI18n()
 const router = useRouter()
 
 useHead({
-    title: computed(() => t('cart.title') + ' - ArcheryHub Dashboard')
+    title: computed(() => t('cart.title') + ' - Archeris Dashboard')
 })
 
 const { user } = useAuth()

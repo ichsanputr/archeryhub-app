@@ -328,7 +328,7 @@ definePageMeta({
     layout: 'landing'
 })
 
-useHead({ title: computed(() => t('nav.pricing', 'Event Packages') + ' - ArcheryHub') })
+useHead({ title: computed(() => t('nav.pricing', 'Event Packages') + ' - Archeris') })
 
 const isUSD = computed(() => {
     if (user.value && organizerProfile.value) {
@@ -509,7 +509,7 @@ const faqs = computed(() => {
 })
 
 useSeoMeta({
-    title: () => `${t('subscription_page.title', 'Skalakan Manajemen Panahan Anda')} - ArcheryHub`,
+    title: () => `${t('subscription_page.title', 'Skalakan Manajemen Panahan Anda')} - Archeris`,
     description: () => t('subscription_page.description', 'Pilihan paket turnamen panahan terbaik untuk penyelenggara.')
 })
 </script>

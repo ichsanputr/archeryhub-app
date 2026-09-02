@@ -262,7 +262,7 @@ definePageMeta({ layout: 'dashboard' })
 const { t } = useDashboardI18n()
 
 useHead({
-    title: computed(() => `${t('seller_products.title')} - ArcheryHub Dashboard`)
+    title: computed(() => `${t('seller_products.title')} - Archeris Dashboard`)
 })
 
 const { get, delete: del } = useApi()

@@ -167,7 +167,7 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('reports.attendance', 'Attendance Report') + ' - ArcheryHub Dashboard') })
+useHead({ title: computed(() => t('reports.attendance', 'Attendance Report') + ' - Archeris Dashboard') })
 
 
 const { t } = useI18n()
@@ -283,7 +283,7 @@ const handleExportExcel = () => {
     checked_in_at: a.checked_in_at ? formatDateTime(a.checked_in_at) : (a.time || '-')
   }))
   exportToExcel(
-    'Laporan_Kehadiran_Turnamen_ArcheryHub',
+    'Laporan_Kehadiran_Turnamen_Archeris',
     [
       { key: 'no', label: 'No' },
       { key: 'archer_name', label: 'Nama Peserta' },

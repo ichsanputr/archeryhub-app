@@ -1,10 +1,39 @@
 <template>
-    <div class="flex flex-col gap-8 pb-12">
-        <!-- Header -->
-        <div class="flex flex-col gap-4">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-extrabold text-navy tracking-tight">{{ t('dashboard_events_participants_add.title', 'Tambah Peserta Event') }}</h1>
-                <div class="text-gray-500 font-medium mt-1 text-sm md:text-base">{{ t('dashboard_events_participants_add.subtitle', 'Daftarkan pemanah terdaftar atau buat profil pemanah baru langsung ke event ini') }}</div>
+    <div class="flex flex-col gap-6 pb-12">
+        <!-- Enhanced Header Banner -->
+        <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
+            </div>
+
+            <!-- Decorative Background Elements -->
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary">
+            </div>
+
+            <!-- Header Content -->
+            <div class="relative p-6 sm:p-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+                    <div class="flex items-start gap-4">
+                        <div class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg shrink-0">
+                            <Icon icon="ph:user-plus-bold" class="text-white text-2xl" />
+                        </div>
+                        <div>
+                            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-1 text-white">
+                                {{ t('dashboard_events_participants_add.title', 'Tambah Peserta Event') }}
+                            </h1>
+                            <div class="text-slate-300 text-xs sm:text-sm max-w-2xl">
+                                {{ t('dashboard_events_participants_add.subtitle', 'Daftarkan pemanah terdaftar atau buat profil pemanah baru langsung ke event ini') }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <BaseButton :to="`/dashboard/events/${route.params.id}/participants`" variant="white" icon="ph:arrow-left-bold" class="h-11 px-5 text-xs font-bold shrink-0 shadow-md">
+                        {{ t('dashboard_events_participants_add.back_to_list', 'Kembali ke Daftar Peserta') }}
+                    </BaseButton>
+                </div>
             </div>
         </div>
 
@@ -64,55 +93,62 @@
 
                             <!-- Search Results / Default List -->
                             <div class="max-h-[520px] min-h-[220px] flex-1 overflow-y-auto border border-gray-100 rounded-xl bg-white shadow-sm custom-scrollbar">
-                                    <template v-if="filteredArchers.length > 0">
-                                        <div v-for="archer in filteredArchers" :key="archer.uuid || archer.id"
-                                            @click="toggleArcher(archer)"
-                                            :class="isArcherSelected(archer) ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50'"
-                                            class="w-full p-4 text-left border-b border-gray-100 last:border-b-0 transition-colors group cursor-pointer">
-                                            <div class="flex items-center gap-3">
-                                                <div class="flex-shrink-0">
-                                                    <div v-if="isArcherSelected(archer)"
-                                                        class="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
-                                                        <Icon icon="ph:check" class="text-white text-xs" />
-                                                    </div>
-                                                    <div v-else class="h-5 w-5 rounded-full border-2 border-gray-300">
-                                                    </div>
+                                <template v-if="filteredArchers.length > 0">
+                                    <div v-for="archer in filteredArchers" :key="archer.uuid || archer.id"
+                                        @click="toggleArcher(archer)"
+                                        :class="isArcherSelected(archer) ? 'bg-slate-50 border-slate-300' : 'hover:bg-gray-50/80'"
+                                        class="w-full p-4 text-left border-b border-gray-100 last:border-b-0 transition-colors group cursor-pointer">
+                                        <div class="flex items-center gap-3">
+                                            <div class="flex-shrink-0">
+                                                <div v-if="isArcherSelected(archer)"
+                                                    class="h-5 w-5 rounded-md bg-navy text-white flex items-center justify-center shadow-xs">
+                                                    <Icon icon="ph:check-bold" class="text-xs" />
                                                 </div>
-                                                <div
-                                                    class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs  overflow-hidden border border-gray-200 group-hover:border-primary/50 transition-colors">
-                                                    <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
-                                                        class="w-full h-full object-cover" />
+                                                <div v-else class="h-5 w-5 rounded-md border-2 border-gray-300 group-hover:border-slate-400 transition-colors">
                                                 </div>
-                                                <div class="flex-1 min-w-0">
-                                                    <div :class="isArcherSelected(archer) ? 'text-primary' : 'text-navy'"
-                                                        class="font-bold group-hover:text-primary transition-colors truncate">
-                                                        {{ archer.full_name }}</div>
-                                                    <div class="text-xs text-gray-500 truncate">{{ archer.email ||
-                                                        archer.phone || '-' }}</div>
-                                                    <div class="flex items-center gap-2 text-xs text-gray-400 mt-1">
-                                                        <span>{{ archer.club_name || 'Individual' }}</span>
-                                                        <span v-if="archer.city"
-                                                            class="w-1 h-1 rounded-full bg-gray-300"></span>
-                                                        <span v-if="archer.city">{{ archer.city }}</span>
-                                                    </div>
+                                            </div>
+                                            <div
+                                                class="h-10 w-10 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xs overflow-hidden border border-gray-200 group-hover:border-navy transition-colors shrink-0">
+                                                <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
+                                                    class="w-full h-full object-cover" />
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div :class="isArcherSelected(archer) ? 'text-navy font-black' : 'text-navy font-bold'"
+                                                    class="text-sm truncate">
+                                                    {{ archer.full_name }}</div>
+                                                <div class="text-xs text-gray-500 truncate">{{ archer.email ||
+                                                    archer.phone || '-' }}</div>
+                                                <div class="flex items-center gap-2 text-xs text-gray-400 mt-1">
+                                                    <span>{{ archer.club_name || 'Individual' }}</span>
+                                                    <span v-if="archer.city"
+                                                        class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                                    <span v-if="archer.city">{{ archer.city }}</span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </template>
-                                    <!-- Empty Result State -->
-                                    <div v-else-if="!isSearchingArchers" class="p-8 text-center">
-                                        <Icon icon="ph:user-minus" class="text-3xl text-gray-300 mx-auto mb-2" />
-                                        <div class="text-sm font-bold text-gray-500">{{ t('dashboard_events_participants_add.not_found') }}</div>
-                                        <div class="text-xs text-gray-400 mt-1">{{ t('dashboard_events_participants_add.not_found_desc') }}</div>
+                                    </div>
+                                </template>
+                                <!-- Empty Result State -->
+                                <div v-else-if="!isSearchingArchers" class="p-8 text-center space-y-2">
+                                    <Icon icon="ph:user-minus" class="text-3xl text-gray-300 mx-auto" />
+                                    <div v-if="archers.length > 0" class="text-xs font-bold text-gray-500">
+                                        {{ t('dashboard_events_participants_add.all_already_registered', 'Semua pemanah yang ditemukan sudah terdaftar dalam event ini.') }}
+                                    </div>
+                                    <div v-else class="text-xs font-bold text-gray-500">
+                                        {{ t('dashboard_events_participants_add.not_found', 'Pemanah tidak ditemukan') }}
+                                    </div>
+                                    <div class="text-[11px] text-gray-400 max-w-xs mx-auto">
+                                        {{ archers.length > 0 ? t('dashboard_events_participants_add.all_already_registered_desc', 'Gunakan tab "Buat Profil Pemanah Baru" jika ingin mendaftarkan atlet baru.') : t('dashboard_events_participants_add.not_found_desc', 'Coba gunakan kata kunci pencarian lain.') }}
                                     </div>
                                 </div>
+                            </div>
 
-                                <div v-if="isSearchingArchers"
-                                    class="flex items-center justify-center py-8 gap-2 text-sm text-gray-400 font-medium">
-                                    <span
-                                        class="inline-block h-4 w-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
-                                    {{ t('dashboard_events_participants_add.searching') }}
-                                </div>
+                            <div v-if="isSearchingArchers"
+                                class="flex items-center justify-center py-8 gap-2 text-sm text-gray-400 font-medium">
+                                <span
+                                    class="inline-block h-4 w-4 border-2 border-navy border-t-transparent rounded-full animate-spin"></span>
+                                {{ t('dashboard_events_participants_add.searching') }}
+                            </div>
                             </div>
 
                         <!-- New Archer Form Info -->
@@ -198,49 +234,86 @@
                         </div>
 
                         <!-- Selected / Added Participants List Section -->
-                        <div class="p-5 bg-gray-50/80 border border-gray-200/60 rounded-2xl space-y-3 mt-4">
-                            <div class="flex items-center justify-between border-b border-gray-200/60 pb-3">
-                                <div class="text-sm font-black text-navy">{{ t('dashboard_events_participants_add.selected_title', { count: selectedArchers.length }) }}</div>
+                        <div class="p-5 bg-slate-50 border border-slate-200/80 rounded-2xl space-y-4 mt-4">
+                            <div class="flex items-center justify-between border-b border-slate-200/70 pb-3">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="size-8 rounded-xl bg-navy text-primary flex items-center justify-center font-black text-xs shadow-xs">
+                                        <Icon icon="ph:users-three-bold" />
+                                    </div>
+                                    <div class="text-sm font-black text-navy">{{ t('dashboard_events_participants_add.selected_title', { count: selectedArchers.length }) }}</div>
+                                </div>
                                 <BaseButton v-if="selectedArchers.length > 0" @click="selectedArchers = []" variant="white" size="xs"
-                                    class="text-red-500 font-bold border-none shadow-none hover:underline p-0 h-auto">
-                                    {{ t('dashboard_events_participants_add.clear_all') }}
+                                    class="text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border-red-200/80 font-bold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1">
+                                    <Icon icon="ph:trash-bold" class="text-xs" />
+                                    <span>{{ t('dashboard_events_participants_add.clear_all', 'Hapus Semua') }}</span>
                                 </BaseButton>
                             </div>
 
                             <!-- List Items -->
-                            <div v-if="selectedArchers.length > 0" class="space-y-2 max-h-60 overflow-y-auto pr-1 custom-scrollbar">
-                                <div v-for="(archer, index) in selectedArchers" :key="archer.uuid || archer.id"
-                                    class="bg-white border border-gray-200/60 rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-xs hover:border-primary/50 transition-colors group">
-                                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                            <div v-if="selectedArchers.length > 0" class="space-y-2.5 max-h-80 overflow-y-auto pr-1 custom-scrollbar">
+                                <div v-for="(archer, index) in selectedArchers" :key="archer.uuid || archer.id || index"
+                                    class="bg-white border border-slate-200 rounded-2xl p-4 flex items-center justify-between gap-4 shadow-2xs hover:border-slate-300 transition-all group">
+                                    <div class="flex items-center gap-3.5 min-w-0 flex-1">
+                                        <!-- Index Number Pill -->
+                                        <div class="size-7 rounded-lg bg-slate-100 text-slate-500 font-mono font-black text-xs flex items-center justify-center shrink-0">
+                                            #{{ index + 1 }}
+                                        </div>
+
+                                        <!-- Avatar -->
                                         <div
-                                            class="h-10 w-10 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xs overflow-hidden border border-gray-200 shrink-0">
+                                            class="size-11 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xs overflow-hidden border border-gray-200 shrink-0 shadow-2xs">
                                             <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                                                 class="w-full h-full object-cover" />
                                         </div>
-                                        <div class="flex-1 min-w-0">
-                                            <div class="font-bold text-navy text-sm truncate flex items-center gap-2">
-                                                <span>{{ archer.full_name }}</span>
-                                                <span v-if="archer.is_new_profile" class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-extrabold rounded-md capitalize">Baru</span>
+
+                                        <!-- Archer Information -->
+                                        <div class="flex-1 min-w-0 space-y-1">
+                                            <div class="flex flex-wrap items-center gap-2">
+                                                <span class="font-black text-navy text-sm truncate">{{ archer.full_name }}</span>
+                                                <span v-if="archer.is_new_profile" class="px-2 py-0.5 bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-extrabold rounded-md">
+                                                    {{ t('dashboard_events_participants_add.create_new_short', 'Baru') }}
+                                                </span>
+                                                <span v-else class="px-2 py-0.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-extrabold rounded-md">
+                                                    {{ t('dashboard_events_participants_add.registered_badge', 'Terdaftar') }}
+                                                </span>
                                             </div>
-                                            <div class="text-xs text-gray-500 truncate mt-0.5">
-                                                {{ archer.email || archer.phone || archer.club_name || '-' }}
+
+                                            <div class="flex flex-wrap items-center gap-2.5 text-xs text-slate-500">
+                                                <!-- Club Badge -->
+                                                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-700 font-bold text-[11px] border border-slate-200/60">
+                                                    <Icon icon="ph:shield-chevron-bold" class="text-slate-500 text-xs" />
+                                                    <span class="truncate max-w-[200px]">{{ getArcherClubName(archer) }}</span>
+                                                </div>
+
+                                                <!-- Contact Info -->
+                                                <span v-if="archer.email" class="inline-flex items-center gap-1 text-[11px] text-slate-400 font-medium truncate max-w-[220px]">
+                                                    <Icon icon="ph:envelope-simple-bold" />
+                                                    <span class="truncate">{{ archer.email }}</span>
+                                                </span>
+                                                <span v-if="archer.phone" class="inline-flex items-center gap-1 text-[11px] text-slate-400 font-medium">
+                                                    <Icon icon="ph:phone-bold" />
+                                                    <span>{{ archer.phone }}</span>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Delete Single Archer Button -->
                                     <button type="button" @click="removeArcher(index)"
-                                        class="size-8 rounded-lg bg-red-50 hover:bg-red-100 text-red-500 flex items-center justify-center transition-colors shrink-0">
+                                        class="size-9 rounded-xl bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-600 border border-slate-200 hover:border-red-200 flex items-center justify-center transition-colors shrink-0"
+                                        title="Hapus dari daftar">
                                         <Icon icon="ph:trash-bold" class="text-sm" />
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Empty State -->
-                            <div v-else class="py-8 px-4 text-center border-2 border-dashed border-gray-200 rounded-xl bg-white/80">
-                                <div class="size-12 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-2 text-gray-400">
+                            <div v-else class="py-10 px-4 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-white">
+                                <div class="size-12 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-2 text-slate-400">
                                     <Icon icon="ph:users-thin" class="text-3xl" />
                                 </div>
-                                <div class="text-sm font-bold text-navy">{{ t('dashboard_events_participants_add.empty_list_title', 'Belum ada pemanah yang ditambahkan') }}</div>
-                                <div class="text-xs text-gray-400 max-w-xs mx-auto mt-1">{{ t('dashboard_events_participants_add.empty_list_desc', 'Pilih pemanah terdaftar atau buat profil baru dan klik Tambah ke Daftar Peserta untuk mendaftarkan peserta.') }}</div>
+                                <div class="text-sm font-black text-navy">{{ t('dashboard_events_participants_add.empty_list_title', 'Belum ada pemanah yang ditambahkan') }}</div>
+                                <div class="text-xs text-slate-400 max-w-sm mx-auto mt-1">{{ t('dashboard_events_participants_add.empty_list_desc', 'Pilih pemanah terdaftar atau buat profil baru dan klik Tambah ke Daftar Peserta untuk mendaftarkan peserta.') }}</div>
                             </div>
                         </div>
                     </div>
@@ -257,23 +330,23 @@
                             <div v-for="category in categories" :key="category.id || category.uuid"
                                 class="p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between group"
                                 :class="form.category_ids.includes(category.id || category.uuid)
-                                    ? 'border-primary bg-primary/5 shadow-sm'
+                                    ? 'border-navy bg-navy/5 shadow-sm'
                                     : 'border-gray-100 bg-gray-50/50 hover:border-gray-200'"
                                 @click="toggleCategory(category.id || category.uuid)">
                                 <div class="flex items-center gap-4">
                                     <div class="size-6 rounded-lg border-2 flex items-center justify-center transition-all"
                                         :class="form.category_ids.includes(category.id || category.uuid)
-                                            ? 'bg-primary border-primary'
+                                            ? 'bg-navy border-navy text-white'
                                             : 'bg-white border-gray-300 group-hover:border-navy'">
                                         <Icon v-if="form.category_ids.includes(category.id || category.uuid)"
-                                            icon="ph:check-bold" class="text-navy text-xs" />
+                                            icon="ph:check-bold" class="text-white text-xs" />
                                     </div>
                                     <span class="text-sm font-bold text-navy">{{ category.name ||
                                         getCategoryName(category)
                                         }}</span>
                                 </div>
                                 <div v-if="form.category_ids.includes(category.id || category.uuid)"
-                                    class="px-2 py-1 bg-primary text-navy text-[10px] font-black tracking-widest rounded-md">
+                                    class="px-2 py-1 bg-navy text-white text-[10px] font-black tracking-widest rounded-md">
                                     {{ t('dashboard_events_participants_add.selected') }}
                                 </div>
                             </div>
@@ -325,9 +398,9 @@ import { useEventContext } from '~/composables/useEventContext'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
 import { useSubscription } from '~/composables/useSubscription'
-import useDashboardI18n from '~/composables/useDashboardI18n'
+import { useI18n } from 'vue-i18n'
 
-const { t } = useDashboardI18n()
+const { t } = useI18n()
 
 definePageMeta({
     layout: 'dashboard',
@@ -335,7 +408,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => `${t('dashboard_events_participants_add.title', 'Tambah Peserta Event')} - ArcheryHub Dashboard`)
+    title: computed(() => `${t('dashboard_events_participants_add.title', 'Tambah Peserta Event')} - Archeris Dashboard`)
 })
 
 const route = useRoute()
@@ -425,10 +498,53 @@ const sourceOptions = computed(() => [
 ])
 
 const isSearchingArchers = ref(false)
+const existingParticipants = ref([])
+
+const existingArcherSet = computed(() => {
+    const set = new Set()
+    for (const p of existingParticipants.value) {
+        if (p.archer_id) set.add(String(p.archer_id).toLowerCase().trim())
+        if (p.user_id) set.add(String(p.user_id).toLowerCase().trim())
+        if (p.athlete_id) set.add(String(p.athlete_id).toLowerCase().trim())
+        if (p.id) set.add(String(p.id).toLowerCase().trim())
+        if (p.uuid) set.add(String(p.uuid).toLowerCase().trim())
+        if (p.email) set.add(String(p.email).toLowerCase().trim())
+        if (p.athlete_code) set.add(String(p.athlete_code).toLowerCase().trim())
+        if (p.full_name) set.add(String(p.full_name).toLowerCase().trim())
+    }
+    return set
+})
 
 const filteredArchers = computed(() => {
-    return archers.value || []
+    const registered = existingArcherSet.value
+    return (archers.value || []).filter(archer => {
+        const id = String(archer.id || '').toLowerCase().trim()
+        const uuid = String(archer.uuid || '').toLowerCase().trim()
+        const userId = String(archer.user_id || '').toLowerCase().trim()
+        const email = String(archer.email || '').toLowerCase().trim()
+        const code = String(archer.athlete_code || '').toLowerCase().trim()
+        const name = String(archer.full_name || '').toLowerCase().trim()
+
+        if (id && registered.has(id)) return false
+        if (uuid && registered.has(uuid)) return false
+        if (userId && registered.has(userId)) return false
+        if (email && registered.has(email)) return false
+        if (code && registered.has(code)) return false
+        if (name && registered.has(name)) return false
+
+        return true
+    })
 })
+
+const fetchExistingParticipants = async () => {
+    try {
+        const res = await get(`/events/${route.params.id}/participants?limit=1000`)
+        existingParticipants.value = res?.participants || res?.data || (Array.isArray(res) ? res : [])
+    } catch (err) {
+        console.error('Failed to fetch existing event participants:', err)
+        existingParticipants.value = []
+    }
+}
 
 const getCategoryName = (cat) => {
     if (!cat) return ''
@@ -567,6 +683,15 @@ const generateUsername = () => {
     newArcherForm.username = username
 }
 
+const getArcherClubName = (archer) => {
+    if (archer.club_name) return archer.club_name
+    if (archer.club_id) {
+        const found = clubs.value.find(c => (c.uuid || c.id) === archer.club_id)
+        if (found) return found.name
+    }
+    return t('dashboard_events_participants_add.no_club', 'Tanpa Klub / Individu')
+}
+
 const generateRandomPassword = () => {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$'
     let pass = ''
@@ -577,15 +702,15 @@ const generateRandomPassword = () => {
 }
 
 const downloadCsvTemplate = () => {
-    const csvContent = 'full_name,email,phone,gender,bow_type,club_name,category_name,payment_status,payment_amount\n' +
-        'Budi Santoso,budi@example.com,081234567890,M,recurve,Klub Panahan Sleman,Recurve 70m - Putra,paid,150000\n' +
-        'Siti Aminah,siti@example.com,081298765432,F,barebow,Archery Club Jogja,Barebow 50m - Putri,unpaid,0'
+    const csvContent = 'full_name,email,phone,password,gender,bow_type,club_name,category_name,payment_status,payment_amount\n' +
+        'Budi Santoso,budi@example.com,081234567890,Archeris123!,M,recurve,Klub Panahan Sleman,Recurve 70m - Putra,paid,150000\n' +
+        'Siti Aminah,siti@example.com,081298765432,Archeris123!,F,barebow,Archery Club Jogja,Barebow 50m - Putri,unpaid,0'
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.setAttribute('href', url)
-    link.setAttribute('download', 'template_import_peserta_archeryhub.csv')
+    link.setAttribute('download', 'template_import_peserta_archeris.csv')
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -720,13 +845,24 @@ const submit = async () => {
         // Process any newly created profiles first
         for (const archer of selectedArchers.value) {
             if (archer.is_new_profile) {
+                let targetClubId = archer.club_id
+                if (!targetClubId && archer.club_name && Array.isArray(clubs.value)) {
+                    const matched = clubs.value.find(c =>
+                        (c.name || '').trim().toLowerCase() === archer.club_name.trim().toLowerCase()
+                    )
+                    if (matched) {
+                        targetClubId = matched.uuid || matched.id
+                    }
+                }
+
                 const archerResponse = await post('/archers', {
                     full_name: archer.full_name,
                     username: archer.username || undefined,
                     email: archer.email || undefined,
                     password: archer.password || undefined,
                     phone: archer.phone || undefined,
-                    club_id: archer.club_id || undefined,
+                    club_id: targetClubId || undefined,
+                    club_name: archer.club_name || undefined,
                     avatar_url: archer.avatar_url || undefined
                 })
                 const newId = archerResponse.uuid || archerResponse.archer_id || archerResponse.id
@@ -746,15 +882,15 @@ const submit = async () => {
                 event_category_ids: form.category_ids,
                 payment_amount: 0,
                 payment_status: 'paid',
-                registration_source: 'admin_created'
+                registration_source: 'invited'
             }
             const result = await post(`/events/${route.params.id}/participants/batch`, payload)
             const count = result?.registered ?? allArcherIds.length
             const skipped = result?.skipped ?? 0
             const msg = skipped > 0
-                ? t('dashboard_events_participants_add.toasts.batch_success_with_skipped', { count, skipped }).replace('{count}', String(count)).replace('{skipped}', String(skipped))
-                : t('dashboard_events_participants_add.toasts.batch_success', { count }).replace('{count}', String(count))
-            toast.success(msg)
+                ? t('dashboard_events_participants_add.toasts.batch_success_with_skipped', { count, skipped })
+                : t('dashboard_events_participants_add.toasts.batch_success', { count })
+            toast.success(msg || `${count} peserta berhasil didaftarkan!`)
         }
 
         router.push(`/dashboard/events/${route.params.id}/participants`)
@@ -790,6 +926,7 @@ watch(searchArcherQuery, (newVal) => {
 })
 
 onMounted(() => {
+    fetchExistingParticipants()
     searchArchers()
     fetchEventDetails()
     fetchCategories()

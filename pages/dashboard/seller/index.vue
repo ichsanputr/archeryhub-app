@@ -144,7 +144,7 @@ import useDashboardI18n from '~/composables/useDashboardI18n'
 const { t } = useDashboardI18n()
 
 definePageMeta({ layout: 'dashboard' })
-useHead({ title: computed(() => t('seller.dashboard_title', 'Store Dashboard') + ' - ArcheryHub Dashboard') })
+useHead({ title: computed(() => t('seller.dashboard_title', 'Store Dashboard') + ' - Archeris Dashboard') })
 
 const api = useApi()
 

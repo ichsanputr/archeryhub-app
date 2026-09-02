@@ -256,9 +256,9 @@ onMounted(async () => {
 
 // SEO
 useHead({
-  title: `${username} - Profil | Archeryhub.id`,
+  title: `${username} - Profil | Archeris.net`,
   meta: [
-    { name: 'description', content: `Lihat profil panahan, statistik, dan riwayat turnamen ${username} di Archeryhub.id` }
+    { name: 'description', content: `Lihat profil panahan, statistik, dan riwayat turnamen ${username} di Archeris.net` }
   ]
 })
 </script>

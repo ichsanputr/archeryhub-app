@@ -108,7 +108,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => t('earnings.title') + ' - ArcheryHub Dashboard')
+    title: computed(() => t('earnings.title') + ' - Archeris Dashboard')
 })
 
 const earningsHistoryData = ref([])
@@ -169,7 +169,7 @@ const handleExportExcel = () => {
         amount: item.amount || 0
     }))
     exportToExcel(
-        'Rekap_Pendapatan_Turnamen_ArcheryHub',
+        'Rekap_Pendapatan_Turnamen_Archeris',
         [
             { key: 'no', label: 'No' },
             { key: 'eventName', label: 'Nama Event' },

@@ -365,7 +365,7 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => `${t('event_create.page_title')} - ArcheryHub Dashboard`)
+  title: computed(() => `${t('event_create.page_title')} - Archeris Dashboard`)
 })
 
 const router = useRouter()

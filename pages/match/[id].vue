@@ -363,7 +363,7 @@ const matchId = route.params.id
 
 definePageMeta({ layout: 'blank' })
 
-useHead({ title: computed(() => t('match.title', 'Match') + ' - ArcheryHub') })
+useHead({ title: computed(() => t('match.title', 'Match') + ' - Archeris') })
 
 
 const isLoading = ref(true)

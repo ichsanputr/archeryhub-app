@@ -35,18 +35,22 @@
                 <div class="h-5 w-24 bg-white/5 rounded animate-pulse"></div>
               </div>
               <div v-else
-                class="flex flex-wrap items-center gap-1.5 sm:gap-4 text-[10px] sm:text-xs text-slate-300 font-bold tracking-widest">
-                <span class="px-2 py-0.5 rounded bg-white/10 border border-white/10 font-mono">{{
-                  sessionData?.session_code
-                }}</span>
-                <span class="opacity-20 hidden sm:inline">•</span>
-                <div class="flex items-center gap-1.5">
-                  <Icon icon="ph:arrow-clockwise-bold" class="text-xs sm:text-sm text-primary" />
+                class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-slate-300 font-bold">
+                <!-- Session Code Chip -->
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-xs font-bold backdrop-blur-xs font-mono">
+                  <Icon icon="ph:hash-bold" class="text-xs text-primary" />
+                  <span>{{ sessionData?.session_code }}</span>
+                </div>
+
+                <!-- Total Ends Chip -->
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-xs font-bold backdrop-blur-xs">
+                  <Icon icon="ph:arrow-clockwise-bold" class="text-xs text-primary" />
                   <span>{{ sessionData?.total_ends || 0 }} {{ t('event_qualification.ends') }}</span>
                 </div>
-                <span class="opacity-20 hidden sm:inline">•</span>
-                <div class="flex items-center gap-1.5">
-                  <Icon icon="ph:crosshair-bold" class="text-xs sm:text-sm text-primary" />
+
+                <!-- Arrows per End Chip -->
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-xs font-bold backdrop-blur-xs">
+                  <Icon icon="ph:crosshair-bold" class="text-xs text-primary" />
                   <span>{{ sessionData?.arrows_per_end || 0 }} {{ t('event_qualification.arrows').toLowerCase() }}/{{ t('event_qualification.ends').toLowerCase().replace(/s$/, '') }}</span>
                 </div>
               </div>
@@ -186,7 +190,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => `${t('event_qualification.title')} - ArcheryHub Dashboard`)
+  title: computed(() => `${t('event_qualification.title')} - Archeris Dashboard`)
 })
 
 // State
@@ -349,7 +353,10 @@ const loadExistingAssignments = async (categoryId, preLoadedAssignments = null) 
         return {
           ...archer,
           assignedTarget: existing ? existing.target_id : '',
-          assignmentId: existing ? (existing.uuid || existing.id) : null
+          assignmentId: existing ? (existing.uuid || existing.id) : null,
+          has_score: Boolean(existing?.has_score || (existing?.ends_completed && existing.ends_completed > 0)),
+          total_score: existing?.total_score || 0,
+          ends_completed: existing?.ends_completed || 0
         }
       })
       archersByCategory.value = {
@@ -385,6 +392,10 @@ const fetchTargetAssignments = async (categoryId, preLoadedAssignments = null) =
     const allScores = scoresRes?.scores || []
 
     targetAssignments.value = assignments.map(a => {
+      const participantInfo = allParticipants.value.find(p => p.id === a.participant_id || p.uuid === a.participant_id)
+      const clubName = a.club_name || a.club || participantInfo?.club_name || participantInfo?.club || ''
+      const avatarUrl = a.avatar_url || a.archer_avatar_url || participantInfo?.avatar_url || participantInfo?.photo_url || ''
+      const archerName = a.archer_name || a.name || participantInfo?.full_name || participantInfo?.archer_name || ''
       const archerScore = allScores.find(s => s.participant_uuid === a.participant_id)
       const allEndScores = {}
       let currentEnd = 1
@@ -415,6 +426,9 @@ const fetchTargetAssignments = async (categoryId, preLoadedAssignments = null) =
 
       return {
         ...a,
+        archer_name: archerName,
+        club_name: clubName,
+        avatar_url: avatarUrl,
         currentEnd,
         currentEndScores: allEndScores[currentEnd] ? [...allEndScores[currentEnd]] : [],
         allEndScores
@@ -502,17 +516,20 @@ onMounted(async () => {
     fetchTargets()
   ])
 
-  // No auto-select first category as requested
-  /*
   if (categories.value.length > 0) {
     await selectCategory(categories.value[0].id)
   }
-  */
 
   isLoading.value = false
 
   // Ensure we finish full list fetch in background
   await participantsPromise
+})
+
+watch(activeTab, (newTab) => {
+  if (newTab === 'input' && selectedCategory.value) {
+    fetchTargetAssignments(selectedCategory.value)
+  }
 })
 </script>
 

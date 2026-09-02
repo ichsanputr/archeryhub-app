@@ -259,7 +259,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => t('news.management_title', 'News Management') + ' - ArcheryHub Dashboard')
+    title: computed(() => t('news.management_title', 'News Management') + ' - Archeris Dashboard')
 })
 
 import { useApi } from '~/composables/useApi'

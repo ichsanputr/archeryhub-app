@@ -31,7 +31,7 @@ const primaryCategory = computed(() => {
 })
 
 useHead({
-  title: computed(() => `${event.value?.name || 'Ringkasan Event'} - ArcheryHub Dashboard`)
+  title: computed(() => `${event.value?.name || 'Ringkasan Event'} - Archeris Dashboard`)
 })
 
 const isPaid = (status) => {
@@ -149,9 +149,9 @@ onMounted(() => {
                 <Icon icon="hugeicons:archer" class="text-2xl text-slate-800" />
               </div>
               <div>
-                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">{{ t("archer_event_overview.archer_participation_status", "Status Partisipasi Atlet") }}</span>
+                <span class="text-xs font-semibold text-slate-400 capitalize block">{{ t("archer_event_overview.archer_participation_status", "Status Partisipasi Atlet") }}</span>
                 <h3 class="text-lg font-black text-slate-900">{{ participant?.full_name || user?.full_name || t('archer_event_overview.default_archer_name', 'Nama Atlet') }}</h3>
-                <div class="text-xs text-slate-500 font-medium">{{ participant?.club_name || t('archer_event_overview.independent_archer', 'Klub Independen') }}</div>
+                <div class="text-xs text-slate-500 font-medium capitalize">{{ participant?.club_name || t('archer_event_overview.independent_archer', 'Klub Independen') }}</div>
               </div>
             </div>
 
@@ -164,7 +164,7 @@ onMounted(() => {
                 </div>
                 <div>
                   <div class="text-xs font-semibold text-emerald-800 capitalize">{{ t('archer_event_overview.registration_status_label', 'Status Registrasi') }}</div>
-                  <div class="text-xs font-black text-emerald-950">{{ t('archer_event_overview.registered_confirmed', 'Terdaftar & Lunas') }}</div>
+                  <div class="text-xs font-black text-emerald-950 capitalize">{{ t('archer_event_overview.registered_confirmed', 'Terdaftar & Lunas') }}</div>
                 </div>
               </div>
               <div v-else
@@ -174,7 +174,7 @@ onMounted(() => {
                 </div>
                 <div>
                   <div class="text-xs font-semibold text-amber-800 capitalize">{{ t('archer_event_overview.registration_status_label', 'Status Registrasi') }}</div>
-                  <div class="text-xs font-black text-amber-950">{{ t('archer_event_overview.waiting_payment', 'Menunggu Pembayaran') }}</div>
+                  <div class="text-xs font-black text-amber-950 capitalize">{{ t('archer_event_overview.waiting_payment', 'Menunggu Pembayaran') }}</div>
                 </div>
               </div>
             </div>
@@ -185,7 +185,7 @@ onMounted(() => {
             <!-- Target / Bantalan -->
             <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
               <div class="text-xs font-semibold text-slate-400 capitalize">{{ t("archer_event_overview.target_face_label", "Bantalan Target") }}</div>
-              <div class="text-base sm:text-lg font-black text-slate-900 mt-1 truncate">
+              <div class="text-base sm:text-lg font-black text-slate-900 mt-1 truncate capitalize">
                 {{ primaryCategory?.target_name || t('archer_event_overview.not_assigned', 'Belum Diatur') }}
               </div>
             </div>
@@ -193,7 +193,7 @@ onMounted(() => {
             <!-- Kategori -->
             <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
               <div class="text-xs font-semibold text-slate-400 capitalize">{{ t("archer_event_overview.category_label", "Kategori Turnamen") }}</div>
-              <div class="text-xs sm:text-sm font-black text-slate-900 mt-1 truncate" :title="primaryCategory?.category_name">
+              <div class="text-xs sm:text-sm font-black text-slate-900 mt-1 truncate capitalize" :title="primaryCategory?.category_name">
                 {{ primaryCategory?.category_name || t('archer_event_overview.general_category', 'Umum') }}
               </div>
             </div>
@@ -201,7 +201,7 @@ onMounted(() => {
             <!-- Divisi Busur -->
             <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
               <div class="text-xs font-semibold text-slate-400 capitalize">{{ t("archer_event_overview.bow_division_label", "Divisi Busur") }}</div>
-              <div class="text-xs sm:text-sm font-black text-slate-900 mt-1 truncate">
+              <div class="text-xs sm:text-sm font-black text-slate-900 mt-1 truncate capitalize">
                 {{ primaryCategory?.division_name || 'Recurve' }}
               </div>
             </div>

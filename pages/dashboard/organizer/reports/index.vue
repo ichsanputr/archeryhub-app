@@ -56,7 +56,7 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('reports.title', 'Reports') + ' - ArcheryHub Dashboard') })
+useHead({ title: computed(() => t('reports.title', 'Reports') + ' - Archeris Dashboard') })
 
 
 const { t } = useI18n()

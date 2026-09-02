@@ -126,6 +126,6 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('legal.privacy', 'Privacy Policy') + ' - ArcheryHub')
+  title: computed(() => t('legal.privacy', 'Privacy Policy') + ' - Archeris')
 })
 </script>

@@ -34,8 +34,8 @@
       </div>
     </div>
 
-    <!-- 3 Participant Printout Options -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+    <!-- 2 Participant Printout Options -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch max-w-4xl">
       
       <!-- Option 1: By Alphabet -->
       <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm flex flex-col justify-between hover:border-primary/40 transition-all">
@@ -71,23 +71,6 @@
         </div>
       </div>
 
-      <!-- Option 3: By Session Accreditation -->
-      <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm flex flex-col justify-between hover:border-primary/40 transition-all">
-        <div>
-          <div class="size-14 bg-navy text-primary rounded-xl flex items-center justify-center mb-5">
-            <Icon icon="ph:identification-badge-bold" class="text-2xl" />
-          </div>
-          <h2 class="text-base font-black text-navy mb-2">{{ t('event_printout.participants.by_session', 'Akreditasi Per Sesi') }}</h2>
-          <div class="text-xs text-gray-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_session_desc', 'Daftar akreditasi dan verifikasi kehadiran atlet dikelompokkan per sesi kualifikasi dan nomor target.') }}</div>
-        </div>
-
-        <div class="pt-4 border-t border-gray-50">
-          <BaseButton @click="printAccreditation('session')" variant="primary" size="lg" icon="ph:file-pdf-bold" class="w-full font-black text-sm">
-            {{ t('event_printout.print_pdf', 'Cetak PDF') }}
-          </BaseButton>
-        </div>
-      </div>
-
     </div>
   </div>
 </template>
@@ -114,12 +97,6 @@ useHead({
 const printList = (type) => {
   const baseUrl = config.public.apiBase || 'http://localhost:8001'
   const url = `${baseUrl}/events/${eventId}/participants/printout?type=${type}&autoprint=1`
-  window.open(url, '_blank')
-}
-
-const printAccreditation = (type) => {
-  const baseUrl = config.public.apiBase || 'http://localhost:8001'
-  const url = `${baseUrl}/events/${eventId}/accreditation/printout?type=${type}&autoprint=1`
   window.open(url, '_blank')
 }
 </script>

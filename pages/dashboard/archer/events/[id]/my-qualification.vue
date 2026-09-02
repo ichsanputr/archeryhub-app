@@ -261,7 +261,7 @@ const eventId = route.params.id
 
 definePageMeta({ layout: 'dashboard' })
 
-useHead({ title: computed(() => `${t('dashboard.my_qualification', 'Hasil Kualifikasi Saya')} - ArcheryHub Dashboard`) })
+useHead({ title: computed(() => `${t('dashboard.my_qualification', 'Hasil Kualifikasi Saya')} - Archeris Dashboard`) })
 
 const isLoading = ref(true)
 const userProfile = ref(null)

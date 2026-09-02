@@ -277,7 +277,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => `${t('seller.settings.title', 'Pengaturan')} - ArcheryHub Dashboard`)
+    title: computed(() => `${t('seller.settings.title', 'Pengaturan')} - Archeris Dashboard`)
 })
 
 const { login, user } = useAuth()

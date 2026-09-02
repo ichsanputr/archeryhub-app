@@ -68,7 +68,7 @@
                                     class="absolute inset-0 bg-navy/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[1px]">
                                     <a :href="file.url" target="_blank"
                                         class="px-6 py-2 bg-white rounded-full text-navy text-xs font-bold shadow-sm border border-gray-100 hover:bg-navy hover:text-white transition-all">
-                                        Lihat Berkas
+                                        {{ t('event_results.view_file', 'Lihat Berkas') }}
                                     </a>
                                 </div>
                             </div>
@@ -76,20 +76,20 @@
                             <!-- Info Area & Actions -->
                             <div class="p-5 flex flex-col gap-4">
                                 <h4 class="font-bold text-navy text-sm line-clamp-2" :title="file.title || file.name">
-                                    {{ file.title || file.name || 'Dokumen Hasil' }}
+                                    {{ file.title || file.name || t('event_results.result_doc', 'Dokumen Hasil') }}
                                 </h4>
                                 <div class="flex gap-3">
                                     <a :href="file.url" target="_blank"
-                                        class="flex-1 py-3 bg-gray-50 hover:bg-navy hover:text-white text-navy font-black  text-xs rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 border border-transparent">
+                                        class="flex-1 py-3 bg-gray-50 hover:bg-navy hover:text-white text-navy font-black text-xs rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 border border-transparent">
                                         <Icon icon="ph:eye-bold" class="text-sm" />
-                                        Lihat
+                                        {{ t('common.view', 'Lihat') }}
                                     </a>
                                     <BaseButton variant="primary" size="sm"
-                                        class="flex-1 !rounded-2xl !py-4 font-black  text-xs h-auto"
+                                        class="flex-1 !rounded-2xl !py-4 font-black text-xs h-auto"
                                         :loading="downloadingIndex === index" @click="handleDownload(file, index)">
                                         <Icon v-if="downloadingIndex !== index" icon="ph:download-simple-bold"
                                             class="text-sm mr-2" />
-                                        Unduh
+                                        {{ t('common.download', 'Unduh') }}
                                     </BaseButton>
                                 </div>
                             </div>
@@ -102,9 +102,9 @@
                     <div class="h-24 w-24 bg-gray-50 rounded-full mx-auto flex items-center justify-center mb-6">
                         <Icon icon="ph:file-dashed" class="text-5xl text-gray-300" />
                     </div>
-                    <h3 class="text-xl font-black text-navy mb-3">Belum Ada Dokumen Hasil</h3>
+                    <h3 class="text-xl font-black text-navy mb-3">{{ t('event_results.no_manual_results_title', 'Belum Ada Dokumen Hasil') }}</h3>
                     <p class="text-gray-500 leading-relaxed text-sm">
-                        Dokumen hasil lomba belum diunggah oleh penyelenggara.
+                        {{ t('event_results.no_manual_results_desc', 'Dokumen hasil lomba belum diunggah oleh penyelenggara.') }}
                     </p>
                 </div>
             </template>
@@ -113,12 +113,12 @@
             <template v-else>
                 <!-- Category Selector -->
                 <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-                    <h2 class="text-base font-bold text-navy mb-4">Pilih Kategori Lomba</h2>
+                    <h2 class="text-base font-bold text-navy mb-4">{{ t('event_results.select_category', 'Pilih Kategori Lomba') }}</h2>
 
                     <div v-if="categories.length === 0" class="text-center py-8 text-gray-400">
                         <div class="flex flex-col items-center">
                             <Icon icon="ph:folder-notch-open" class="text-4xl mb-2" />
-                            <p>Kategori tidak ditemukan</p>
+                            <p>{{ t('event_results.category_not_found', 'Kategori tidak ditemukan') }}</p>
                         </div>
                     </div>
 
@@ -145,8 +145,7 @@
                                         {{ category.category_name }}</p>
                                     <div class="flex items-center gap-2 text-xs text-gray-500">
                                         <Icon icon="ph:users-three" class="text-base" />
-                                        <span class="font-semibold">{{ category.participant_count || 0 }}
-                                            pemanah</span>
+                                        <span class="font-semibold">{{ t('event_results.archers_count', { count: category.participant_count || 0 }) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -173,7 +172,7 @@
                         <div class="bg-gradient-to-r from-navy to-navy-light p-4 md:p-6">
                             <h3 class="!text-base !md:text-lg font-black text-white flex items-center gap-2">
                                 <Icon icon="ph:trophy" class="text-primary" />
-                                Eliminasi Bracket - {{ currentCategoryName }}
+                                {{ t('event_results.elimination_bracket', 'Eliminasi Bracket') }} - {{ currentCategoryName }}
                             </h3>
                         </div>
                         <PublicEliminationBracket :bracket="currentElimBracket" :rounds="sortedElimRounds" />
@@ -197,7 +196,7 @@
                             class="p-12 text-center">
                             <div class="flex flex-col items-center">
                                 <Icon icon="ph:clipboard-text" class="text-6xl text-gray-300 mb-4" />
-                                <p class="text-gray-500 font-medium">Hasil kualifikasi belum tersedia</p>
+                                <p class="text-gray-500 font-medium">{{ t('event_results.qualification_not_available', 'Hasil kualifikasi belum tersedia') }}</p>
                             </div>
                         </div>
 
@@ -207,21 +206,23 @@
                                 class="bg-gradient-to-r from-navy to-navy-light p-4 md:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <h3 class="!text-sm !md:text-base font-black text-white flex items-center gap-2">
                                     <Icon icon="ph:target" class="text-primary text-xl" />
-                                    Kualifikasi Rangking - {{ currentCategoryName }}
+                                    {{ t('event_results.qualification_ranking', 'Peringkat Kualifikasi') }} - {{ currentCategoryName }}
                                 </h3>
 
                                 <!-- Session Selector -->
                                 <div class="flex items-center gap-3">
                                     <span
-                                        class="text-[10px] font-black text-white/60 tracking-widest hidden sm:block">Filter
-                                        Sesi:</span>
+                                        class="text-[10px] font-black text-white/60 tracking-widest hidden sm:block">
+                                        {{ t('event_results.filter_session', 'Filter Sesi:') }}
+                                    </span>
                                     <select v-model="selectedSession"
                                         class="bg-white/10 border border-white/20 text-white text-xs font-bold px-4 py-2 rounded-xl outline-none focus:border-primary transition-all">
                                         <option v-if="availableSessions.length > 1" value="total" class="text-navy">
-                                            Hasil Akhir (Semua Sesi)</option>
+                                            {{ t('event_results.all_sessions', 'Hasil Akhir (Semua Sesi)') }}
+                                        </option>
                                         <option v-for="sCode in availableSessions" :key="sCode" :value="sCode"
                                             class="text-navy">
-                                            Sesi {{ sCode.replace('S', '') }}
+                                            {{ t('event_results.session_label', { code: sCode.replace('S', '') }) }}
                                         </option>
                                     </select>
                                 </div>
@@ -234,23 +235,23 @@
                                         <tr>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                                 class="px-4 py-3 text-left text-xs font-black text-gray-500 tracking-wider sticky left-0 bg-gray-50 z-10 border-r border-gray-200">
-                                                Rank
+                                                {{ t('event_results.rank', 'Rank') }}
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                                 class="px-4 py-3 text-left text-xs font-black text-gray-500 tracking-wider min-w-[200px]">
-                                                Atlet
+                                                {{ t('event_results.archer', 'Atlet') }}
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                                 class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider">
-                                                Klub
+                                                {{ t('event_results.club', 'Klub') }}
                                             </th>
                                             <th v-if="selectedSession !== 'total'" :colspan="displayTotalEnds"
                                                 class="px-4 py-2 text-center text-xs font-black text-gray-500 tracking-wider border-b border-gray-300">
-                                                Skor Per End
+                                                {{ t('event_results.score_per_end', 'Skor Per End') }}
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                                 class="px-4 py-3 text-center text-xs font-black text-navy tracking-wider bg-navy/5 border-l-2 border-navy/20">
-                                                Total
+                                                {{ t('event_results.total', 'Total') }}
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                                 class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider">
@@ -284,8 +285,8 @@
                                                 </td>
                                                 <td class="px-4 py-4">
                                                     <div class="flex items-center gap-3">
-                                                        <img :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${result.archer_name}`"
-                                                            class="size-8 rounded-full border-2 border-gray-200" />
+                                                        <img :src="result.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${result.archer_name}`"
+                                                            class="size-8 rounded-full border-2 border-gray-200 object-cover" />
                                                         <span class="text-sm font-bold text-navy whitespace-nowrap">{{
                                                             result.archer_name }}</span>
                                                     </div>
@@ -336,6 +337,8 @@ import { useApi } from '~/composables/useApi'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import PublicEliminationBracket from './elimination/PublicEliminationBracket.vue'
 import BaseButton from '~/components/common/BaseButton.vue'
+
+const { t } = useI18n()
 
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
@@ -566,8 +569,8 @@ const loadQualificationResults = async (categoryUuid) => {
     qualificationLoading.value = true
     try {
         const response = await get(`/events/${props.eventId}/results/qualification?category_id=${categoryUuid}`)
-        qualificationData.value[categoryUuid] = response?.results || []
-        totalEnds.value = response?.total_ends || 12
+        qualificationData.value[categoryUuid] = response?.leaderboard || response?.results || []
+        totalEnds.value = response?.total_cumulative_ends || response?.total_ends || 12
     } catch (error) {
         console.error('Failed to fetch qualification results:', error)
         qualificationData.value[categoryUuid] = []

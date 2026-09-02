@@ -130,7 +130,7 @@ const isLoading = ref(true)
 const categoryName = ref('')
 const participants = ref([])
 
-useHead({ title: computed(() => t('category.detail', 'Category Detail') + ' - ArcheryHub Dashboard') })
+useHead({ title: computed(() => t('category.detail', 'Category Detail') + ' - Archeris Dashboard') })
 
 const fetchData = async () => {
     isLoading.value = true

@@ -157,7 +157,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => t('payment.title', 'Payment') + ' - ArcheryHub Dashboard')
+    title: computed(() => t('payment.title', 'Payment') + ' - Archeris Dashboard')
 })
 
 const { t } = useI18n()
@@ -213,7 +213,12 @@ const createPayment = async () => {
         if (result) {
             paymentData.value = result
             if (result.checkout_url) {
-                window.location.href = result.checkout_url
+                window.open(result.checkout_url, '_blank')
+                if (result.reference) {
+                    navigateTo(`/payment/status/${result.reference}`)
+                } else {
+                    showInstructionsDialog.value = true
+                }
             } else if (result.reference) {
                 navigateTo(`/payment/status/${result.reference}`)
             } else {

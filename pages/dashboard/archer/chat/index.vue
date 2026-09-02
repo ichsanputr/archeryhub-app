@@ -117,9 +117,6 @@
           <div class="text-sm text-gray-400 font-medium max-w-[260px] leading-relaxed">
             {{ t('chat.select_conversation_desc') }}
           </div>
-          <BaseButton to="/products" variant="primary" size="sm" icon="ph:storefront-bold" class="mt-6 !rounded-xl">
-            {{ t('chat.explore_products') }}
-          </BaseButton>
         </div>
 
         <!-- Active conversation -->
@@ -262,7 +259,7 @@ definePageMeta({ layout: 'dashboard' })
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => t('chat.title') + ' - ArcheryHub Dashboard')
+  title: computed(() => t('chat.title') + ' - Archeris Dashboard')
 })
 
 const route = useRoute()

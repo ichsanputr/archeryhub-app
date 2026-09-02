@@ -312,7 +312,7 @@ definePageMeta({
     layout: 'landing'
 })
 
-useHead({ title: computed(() => t('news.all_title', 'News & Articles') + ' - ArcheryHub') })
+useHead({ title: computed(() => t('news.all_title', 'News & Articles') + ' - Archeris') })
 
 
 const { t, locale } = useI18n()

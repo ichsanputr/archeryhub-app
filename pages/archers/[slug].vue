@@ -32,12 +32,12 @@
                                 <div class="flex-1 min-w-0 space-y-3">
                                     <!-- Badges row -->
                                     <div class="flex flex-wrap items-center gap-2">
-                                        <span class="px-3 py-1 bg-primary text-navy text-[9px] font-black rounded-lg capitalize tracking-widest">
+                                        <span class="px-3 py-1 bg-primary text-navy text-xs font-bold rounded-lg capitalize">
                                             {{ t('archers.public.pro_archer') }}
                                         </span>
                                         <div v-if="archer.club_name" class="flex items-center gap-1.5 px-3 py-1 bg-white/10 backdrop-blur-sm border border-white/15 rounded-lg">
                                             <Icon icon="ph:shield-star-fill" class="text-primary text-xs" />
-                                            <span class="text-[9px] font-black tracking-widest text-white/90 capitalize">{{ archer.club_name }}</span>
+                                            <span class="text-xs font-bold text-white/90 capitalize">{{ archer.club_name }}</span>
                                         </div>
                                     </div>
 
@@ -64,26 +64,22 @@
                             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
                                 <div class="flex items-center gap-px bg-white/5 border border-white/10 rounded-2xl overflow-hidden shrink-0 backdrop-blur-md">
                                     <div class="text-center px-5 py-3.5 sm:px-6 sm:py-4">
-                                        <div class="text-[9px] font-black text-white/40 tracking-widest capitalize mb-1">{{ t('archers.public.events') }}</div>
+                                        <div class="text-xs font-medium text-white/60 capitalize mb-1">{{ t('archers.public.events') }}</div>
                                         <div class="text-2xl font-black text-white">{{ statsSummary.totalEvents }}</div>
                                     </div>
                                     <div class="w-px h-10 bg-white/10"></div>
                                     <div class="text-center px-5 py-3.5 sm:px-6 sm:py-4">
-                                        <div class="text-[9px] font-black text-primary tracking-widest capitalize mb-1">{{ t('archers.public.wins') }}</div>
+                                        <div class="text-xs font-bold text-primary capitalize mb-1">{{ t('archers.public.wins') }}</div>
                                         <div class="text-2xl font-black text-primary">{{ statsSummary.wins }}</div>
                                     </div>
                                     <div class="w-px h-10 bg-white/10"></div>
                                     <div class="text-center px-5 py-3.5 sm:px-6 sm:py-4">
-                                        <div class="text-[9px] font-black text-white/40 tracking-widest capitalize mb-1">{{ t('archers.public.avg_rank') }}</div>
+                                        <div class="text-xs font-medium text-white/60 capitalize mb-1">{{ t('archers.public.avg_rank') }}</div>
                                         <div class="text-2xl font-black text-white">#{{ statsSummary.avgRank }}</div>
                                     </div>
                                 </div>
 
-                                <button @click="openShareDialog"
-                                    class="flex items-center justify-center gap-2 py-3 px-4 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl text-xs font-black tracking-wider text-white backdrop-blur-md transition-all">
-                                    <Icon icon="ph:share-network-bold" class="text-base text-primary" />
-                                    <span>{{ t('archers.public.share') }}</span>
-                                </button>
+
                             </div>
                         </div>
                     </div>
@@ -98,22 +94,29 @@
                             <!-- Left Column: Bio & Trend -->
                             <div class="lg:col-span-8 space-y-8">
                                 <!-- Biography -->
-                                <div class="space-y-4">
-                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 capitalize">
-                                        {{ t('archers.public.athlete_biography') }} <span class="h-px flex-1 bg-gray-100"></span>
-                                    </h3>
-                                    <div class="text-sm sm:text-base text-navy/80 leading-relaxed font-light prose prose-sm max-w-none"
-                                        v-html="archer.bio || `${archer.full_name} adalah atlet panahan profesional berdedikasi tinggi yang berkompetisi aktif di kategori ${bowTypeLabel || 'Recurve'}. Berfokus pada presisi tinggi dan konsistensi mental untuk meraih podium kejuaraan nasional.`">
+                                <div class="space-y-3">
+                                    <div class="flex items-center gap-3">
+                                        <h3 class="text-sm font-bold text-slate-900">
+                                            {{ t('archers.public.athlete_biography', 'Biografi Atlet') }}
+                                        </h3>
+                                        <div class="h-px flex-1 bg-slate-100"></div>
+                                    </div>
+                                    <div v-if="archer.bio" class="text-sm sm:text-base text-slate-700 leading-relaxed font-normal prose prose-sm max-w-none"
+                                        v-html="archer.bio">
+                                    </div>
+                                    <div v-else class="p-5 rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 flex items-center gap-3.5 text-slate-400">
+                                        <Icon icon="ph:user-circle-bold" class="text-2xl text-slate-300 shrink-0" />
+                                        <span class="text-xs font-medium">Atlet belum menambahkan ringkasan biografi profil.</span>
                                     </div>
                                 </div>
 
                                 <!-- Performance Trend -->
                                 <div v-if="perfBars.length >= 2" class="space-y-4 pt-2">
                                     <div class="flex items-center justify-between">
-                                        <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 capitalize">
+                                        <h3 class="text-xs font-black tracking-normal text-slate-400 font-bold flex items-center gap-4 capitalize">
                                             {{ t('archers.public.performance_trend') }}
                                         </h3>
-                                        <span class="text-[10px] font-black text-slate-400 tracking-wider capitalize">{{ t('archers.public.qual_scores_last_6') }}</span>
+                                        <span class="text-xs font-medium text-slate-400 capitalize">{{ t('archers.public.qual_scores_last_6') }}</span>
                                     </div>
 
                                     <div class="relative w-full h-48 bg-navy-dark rounded-2xl p-4 overflow-hidden shadow-inner group">
@@ -121,8 +124,8 @@
                                         <svg class="w-full h-full" viewBox="0 0 600 150" preserveAspectRatio="none">
                                             <defs>
                                                 <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#c3f53c" stop-opacity="0.3" />
-                                                    <stop offset="100%" stop-color="#c3f53c" stop-opacity="0" />
+                                                    <stop offset="0%" stop-color="#eab308" stop-opacity="0.3" />
+                                                    <stop offset="100%" stop-color="#eab308" stop-opacity="0" />
                                                 </linearGradient>
                                             </defs>
                                             <line x1="20" y1="20" x2="580" y2="20" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
@@ -130,18 +133,18 @@
                                             <line x1="20" y1="130" x2="580" y2="130" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
 
                                             <path :d="svgAreaPath" fill="url(#areaGrad)" />
-                                            <path :d="svgPath" fill="none" stroke="#c3f53c" stroke-width="3" stroke-linecap="round" />
+                                            <path :d="svgPath" fill="none" stroke="#eab308" stroke-width="3" stroke-linecap="round" />
 
                                             <circle v-for="(p, i) in svgPoints" :key="i"
-                                                :cx="p.x" :cy="p.y" r="5" fill="#0f172a" stroke="#c3f53c" stroke-width="3" />
+                                                :cx="p.x" :cy="p.y" r="5" fill="#0f172a" stroke="#eab308" stroke-width="3" />
                                         </svg>
 
-                                        <div class="absolute inset-x-0 bottom-1.5 px-6 flex justify-between text-[9px] font-black text-slate-400 tracking-wider">
+                                        <div class="absolute inset-x-0 bottom-1.5 px-6 flex justify-between text-xs font-medium text-slate-400">
                                             <span v-for="(p, i) in svgPoints" :key="i">{{ p.label }}</span>
                                         </div>
 
                                         <div v-for="(p, i) in svgPoints" :key="i"
-                                            class="absolute text-[9px] font-black text-white px-1.5 py-0.5 bg-navy border border-white/10 rounded-md transform -translate-x-1/2 -translate-y-full"
+                                            class="absolute text-xs font-bold text-white px-1.5 py-0.5 bg-navy border border-white/10 rounded-md transform -translate-x-1/2 -translate-y-full"
                                             :style="{ left: `${(p.x / 600) * 100}%`, top: `${(p.y / 150) * 100 - 8}%` }">
                                             {{ p.score }}
                                         </div>
@@ -150,7 +153,7 @@
 
                                 <!-- Recent Competition Summary -->
                                 <div class="space-y-4 pt-2">
-                                    <h3 class="text-xs font-black tracking-[0.2em] text-navy/40 flex items-center gap-4 capitalize">
+                                    <h3 class="text-xs font-black tracking-normal text-slate-400 font-bold flex items-center gap-4 capitalize">
                                         {{ t('archers.public.recent_competition') }} <span class="h-px flex-1 bg-gray-100"></span>
                                     </h3>
                                     <div v-if="groupedEventHistory.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -159,23 +162,23 @@
                                             @click="router.push(`/events/${event.slug}`)">
                                             <div class="flex items-center gap-4 mb-3">
                                                 <div class="w-11 h-11 bg-navy rounded-xl flex flex-col items-center justify-center shrink-0">
-                                                    <span class="text-[8px] font-black text-white/50">{{ formatDate(event.date, 'MMM') }}</span>
+                                                    <span class="text-xs font-bold text-white/70">{{ formatDate(event.date, 'MMM') }}</span>
                                                     <span class="text-sm font-black text-white leading-none">{{ formatDate(event.date, 'DD') }}</span>
                                                 </div>
                                                 <div class="min-w-0 flex-1">
                                                     <h4 class="font-black text-navy truncate text-xs sm:text-sm capitalize">{{ event.name }}</h4>
-                                                    <p class="text-[11px] text-slate-400 mt-0.5 truncate">{{ event.city }}</p>
+                                                    <div class="text-xs text-slate-500 font-medium mt-0.5 truncate">{{ event.city }}</div>
                                                 </div>
                                             </div>
                                             <div class="flex items-center justify-between pt-3 border-t border-gray-200/60">
                                                 <div class="flex flex-wrap gap-1">
                                                     <span v-for="cat in event.categories.slice(0, 1)" :key="cat"
-                                                        class="px-2 py-0.5 bg-white border border-gray-200 rounded-md text-[9px] font-black text-slate-600 capitalize">
+                                                        class="px-2 py-0.5 bg-white border border-gray-200 rounded-md text-xs font-semibold text-slate-600 capitalize">
                                                         {{ cat }}
                                                     </span>
                                                 </div>
                                                 <div class="text-right">
-                                                    <span class="text-[8px] font-black text-slate-400 tracking-wider block capitalize">{{ t('archers.public.table_placement') }}</span>
+                                                    <span class="text-xs font-medium text-slate-500 block capitalize">{{ t('archers.public.table_placement') }}</span>
                                                     <span class="text-base font-black text-navy">#{{ event.rank || '-' }}</span>
                                                 </div>
                                             </div>
@@ -194,7 +197,7 @@
                                     <div class="absolute -right-12 -bottom-12 opacity-5 pointer-events-none">
                                         <Icon icon="ph:trophy-bold" class="text-[14rem]" />
                                     </div>
-                                    <h3 class="text-xs font-black tracking-[0.2em] text-slate-400 capitalize mb-5 flex items-center gap-2">
+                                    <h3 class="text-xs font-black tracking-normal text-slate-400 font-bold capitalize mb-5 flex items-center gap-2">
                                         <Icon icon="ph:crown-bold" class="text-primary text-base" />
                                         {{ t('archers.public.top_highlights') }}
                                     </h3>
@@ -207,38 +210,70 @@
                                     </div>
                                     <div v-else class="text-center py-6 border border-white/10 rounded-xl bg-white/5">
                                         <Icon icon="ph:shield-warning-bold" class="text-2xl text-white/30 mx-auto mb-2" />
-                                        <div class="text-[10px] font-black text-white/40 tracking-wider capitalize">{{ t('archers.public.no_highlights') }}</div>
+                                        <div class="text-xs font-medium text-white/60 capitalize">{{ t('archers.public.no_highlights') }}</div>
                                     </div>
                                 </div>
 
 
-                                <!-- Social Channels -->
+                                                                <!-- Social Channels -->
                                 <div class="space-y-3">
-                                    <h4 class="text-xs font-black tracking-[0.2em] text-navy/40 capitalize">
-                                        {{ t('archers.public.social_channels') }}
+                                    <h4 class="text-sm font-bold text-slate-900">
+                                        {{ t('archers.public.social_channels', 'Media Sosial') }}
                                     </h4>
-                                    <div class="grid grid-cols-2 gap-2.5">
+                                    <div v-if="hasAnySocial" class="grid grid-cols-2 gap-2.5">
                                         <a v-if="archer.social_instagram"
                                             :href="`https://instagram.com/${archer.social_instagram.replace('@', '')}`"
                                             target="_blank"
-                                            class="flex items-center gap-2.5 p-3 bg-gray-50 hover:bg-gray-100 border border-gray-200/60 rounded-xl group transition-all text-navy">
-                                            <Icon icon="ph:instagram-logo-bold" class="text-base text-gray-400 group-hover:text-pink-600 transition-colors" />
-                                            <span class="text-[10px] font-bold tracking-wider truncate capitalize">{{ t('archers.public.instagram') }}</span>
+                                            class="flex items-center gap-2.5 p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 rounded-xl group transition-all text-slate-800">
+                                            <Icon icon="ph:instagram-logo-bold" class="text-base text-slate-400 group-hover:text-pink-600 transition-colors" />
+                                            <span class="text-xs font-bold truncate">Instagram</span>
                                         </a>
                                         <a v-if="archer.social_tiktok"
                                             :href="`https://tiktok.com/@${archer.social_tiktok.replace('@', '')}`"
                                             target="_blank"
-                                            class="flex items-center gap-2.5 p-3 bg-gray-50 hover:bg-gray-100 border border-gray-200/60 rounded-xl group transition-all text-navy">
-                                            <Icon icon="ph:tiktok-logo-bold" class="text-base text-gray-400 group-hover:text-slate-800 transition-colors" />
-                                            <span class="text-[10px] font-bold tracking-wider truncate capitalize">{{ t('archers.public.tiktok') }}</span>
+                                            class="flex items-center gap-2.5 p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 rounded-xl group transition-all text-slate-800">
+                                            <Icon icon="ph:tiktok-logo-bold" class="text-base text-slate-400 group-hover:text-slate-900 transition-colors" />
+                                            <span class="text-xs font-bold truncate">TikTok</span>
+                                        </a>
+                                        <a v-if="archer.social_facebook"
+                                            :href="archer.social_facebook.startsWith('http') ? archer.social_facebook : `https://${archer.social_facebook}`"
+                                            target="_blank"
+                                            class="flex items-center gap-2.5 p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 rounded-xl group transition-all text-slate-800">
+                                            <Icon icon="ph:facebook-logo-bold" class="text-base text-slate-400 group-hover:text-blue-600 transition-colors" />
+                                            <span class="text-xs font-bold truncate">Facebook</span>
+                                        </a>
+                                        <a v-if="archer.social_twitter"
+                                            :href="`https://twitter.com/${archer.social_twitter.replace('@', '')}`"
+                                            target="_blank"
+                                            class="flex items-center gap-2.5 p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 rounded-xl group transition-all text-slate-800">
+                                            <Icon icon="ph:x-logo-bold" class="text-base text-slate-400 group-hover:text-slate-900 transition-colors" />
+                                            <span class="text-xs font-bold truncate">X / Twitter</span>
+                                        </a>
+                                        <a v-if="archer.social_youtube"
+                                            :href="archer.social_youtube.startsWith('http') ? archer.social_youtube : `https://youtube.com/${archer.social_youtube}`"
+                                            target="_blank"
+                                            class="flex items-center gap-2.5 p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 rounded-xl group transition-all text-slate-800">
+                                            <Icon icon="ph:youtube-logo-bold" class="text-base text-slate-400 group-hover:text-red-600 transition-colors" />
+                                            <span class="text-xs font-bold truncate">YouTube</span>
+                                        </a>
+                                        <a v-if="archer.social_website"
+                                            :href="archer.social_website.startsWith('http') ? archer.social_website : `https://${archer.social_website}`"
+                                            target="_blank"
+                                            class="flex items-center gap-2.5 p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 rounded-xl group transition-all text-slate-800">
+                                            <Icon icon="ph:globe-bold" class="text-base text-slate-400 group-hover:text-primary transition-colors" />
+                                            <span class="text-xs font-bold truncate">Website</span>
                                         </a>
                                         <a v-if="archer.social_whatsapp"
                                             :href="`https://wa.me/${archer.social_whatsapp.replace(/[^0-9]/g, '')}`"
                                             target="_blank"
-                                            class="flex items-center gap-2.5 p-3 bg-gray-50 hover:bg-gray-100 border border-gray-200/60 rounded-xl group transition-all col-span-2 text-navy">
-                                            <Icon icon="ph:whatsapp-logo-bold" class="text-base text-gray-400 group-hover:text-green-600 transition-colors" />
-                                            <span class="text-[10px] font-bold tracking-wider capitalize">{{ t('archers.public.contact_athlete') }}</span>
+                                            class="flex items-center gap-2.5 p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 rounded-xl group transition-all col-span-2 text-slate-800">
+                                            <Icon icon="ph:whatsapp-logo-bold" class="text-base text-slate-400 group-hover:text-green-600 transition-colors" />
+                                            <span class="text-xs font-bold">WhatsApp Atlet</span>
                                         </a>
+                                    </div>
+                                    <div v-else class="p-4 rounded-xl border border-dashed border-slate-200 bg-slate-50/50 text-center space-y-1">
+                                        <Icon icon="ph:share-network" class="text-xl text-slate-300 mx-auto" />
+                                        <div class="text-xs text-slate-400 font-medium">Belum ada tautan media sosial</div>
                                     </div>
                                 </div>
                             </div>
@@ -256,82 +291,88 @@
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                                <!-- Specifications Grid -->
-                                <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div class="p-5 bg-gray-50/60 rounded-2xl border border-gray-100 flex items-start gap-4">
-                                        <div class="p-3 bg-white rounded-xl shadow-xs border border-gray-100 text-navy shrink-0">
-                                            <Icon icon="ph:student-bold" class="text-xl" />
+                            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                                <!-- Compact Specifications Grid -->
+                                <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80 flex items-center gap-3">
+                                        <div class="size-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 shrink-0 shadow-2xs">
+                                            <Icon icon="ph:shield-star-bold" class="text-lg text-primary" />
                                         </div>
                                         <div class="min-w-0">
-                                            <span class="text-[9px] font-black text-slate-400 tracking-widest capitalize">{{ t('archers.public.education_affiliation') }}</span>
-                                            <h5 class="font-bold text-navy mt-1 text-xs sm:text-sm capitalize truncate">{{ archer.school || archer.club_name || '-' }}</h5>
+                                            <span class="text-xs font-medium text-slate-500 block leading-none mb-1">{{ t('archers.public.education_affiliation', 'Klub / Afiliasi') }}</span>
+                                            <div class="font-bold text-slate-900 text-xs sm:text-sm capitalize truncate">{{ archer.club_name || archer.school || '-' }}</div>
                                         </div>
                                     </div>
 
-                                    <div class="p-5 bg-gray-50/60 rounded-2xl border border-gray-100 flex items-start gap-4">
-                                        <div class="p-3 bg-white rounded-xl shadow-xs border border-gray-100 text-navy shrink-0">
-                                            <Icon icon="ph:gender-intersex-bold" class="text-xl" />
+                                    <div class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80 flex items-center gap-3">
+                                        <div class="size-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 shrink-0 shadow-2xs">
+                                            <Icon icon="ph:gender-intersex-bold" class="text-lg text-slate-700" />
                                         </div>
                                         <div class="min-w-0">
-                                            <span class="text-[9px] font-black text-slate-400 tracking-widest capitalize">{{ t('archers.public.gender_profile') }}</span>
-                                            <h5 class="font-bold text-navy mt-1 text-xs sm:text-sm capitalize">
-                                                {{ archer.gender === 'male' ? t('archers.public.male') : t('archers.public.female') }}
-                                                <span v-if="age" class="text-slate-400 ml-1">({{ age }} {{ t('archers.public.years_old') }})</span>
-                                            </h5>
+                                            <span class="text-xs font-medium text-slate-500 block leading-none mb-1">{{ t('archers.public.gender_profile', 'Profil & Usia') }}</span>
+                                            <div class="font-bold text-slate-900 text-xs sm:text-sm capitalize truncate">
+                                                {{ archer.gender === 'male' ? 'Laki-laki' : (archer.gender === 'female' ? 'Perempuan' : '-') }}
+                                                <span v-if="age" class="text-slate-400 font-medium ml-1">({{ age }} thn)</span>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="p-5 bg-gray-50/60 rounded-2xl border border-gray-100 flex items-start gap-4">
-                                        <div class="p-3 bg-white rounded-xl shadow-xs border border-gray-100 text-navy shrink-0">
-                                            <Icon icon="ph:fingerprint-bold" class="text-xl" />
+                                    <div class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80 flex items-center gap-3">
+                                        <div class="size-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 shrink-0 shadow-2xs">
+                                            <Icon icon="ph:crosshair-bold" class="text-lg text-slate-700" />
                                         </div>
                                         <div class="min-w-0">
-                                            <span class="text-[9px] font-black text-slate-400 tracking-widest capitalize">{{ t('archers.public.archer_id_tag') }}</span>
-                                            <h5 class="font-mono text-navy mt-1 text-xs sm:text-sm font-black">{{ archer.id || '-' }}</h5>
+                                            <span class="text-xs font-medium text-slate-500 block leading-none mb-1">Divisi Busur</span>
+                                            <div class="font-bold text-slate-900 text-xs sm:text-sm capitalize truncate">{{ bowTypeLabel || '-' }}</div>
                                         </div>
                                     </div>
 
-                                    <div class="p-5 bg-gray-50/60 rounded-2xl border border-gray-100 flex items-start gap-4">
-                                        <div class="p-3 bg-white rounded-xl shadow-xs border border-gray-100 text-navy shrink-0">
-                                            <Icon icon="ph:map-pin-bold" class="text-xl" />
+                                    <div v-if="archer.hand_dominance" class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80 flex items-center gap-3">
+                                        <div class="size-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 shrink-0 shadow-2xs">
+                                            <Icon icon="ph:hand-pointing-bold" class="text-lg text-slate-700" />
                                         </div>
                                         <div class="min-w-0">
-                                            <span class="text-[9px] font-black text-slate-400 tracking-widest capitalize">{{ t('archers.public.resident_address') }}</span>
-                                            <h5 class="font-bold text-navy mt-1 text-xs capitalize leading-tight truncate">
-                                                {{ [archer.address, archer.city, archer.province].filter(Boolean).join(', ') || '-' }}
-                                            </h5>
+                                            <span class="text-xs font-medium text-slate-500 block leading-none mb-1">Dominansi Tangan</span>
+                                            <div class="font-bold text-slate-900 text-xs sm:text-sm capitalize truncate">{{ handDominanceLabel }}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80 flex items-center gap-3">
+                                        <div class="size-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 shrink-0 shadow-2xs">
+                                            <Icon icon="ph:map-pin-bold" class="text-lg text-slate-700" />
+                                        </div>
+                                        <div class="min-w-0">
+                                            <span class="text-xs font-medium text-slate-500 block leading-none mb-1">{{ t('archers.public.resident_address', 'Domisili / Asal') }}</span>
+                                            <div class="font-bold text-slate-900 text-xs sm:text-sm capitalize leading-tight truncate">
+                                                {{ [archer.city, archer.province].filter(Boolean).join(', ') || 'Indonesia' }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Performance Summary Box -->
-                                <div class="lg:col-span-4 bg-navy rounded-2xl p-6 text-white relative overflow-hidden shadow-md border border-white/5 space-y-4">
-                                    <div>
-                                        <h3 class="text-xs font-black tracking-[0.2em] text-slate-400 capitalize">{{ t('archers.public.performance_summary') }}</h3>
-                                        <span class="text-[9px] font-bold text-slate-400 tracking-wider capitalize">{{ t('archers.public.historical_records_breakdown') }}</span>
+                                <!-- Compact Performance Summary Box -->
+                                <div class="lg:col-span-5 bg-navy rounded-2xl p-5 text-white relative overflow-hidden shadow-xs border border-white/10 space-y-3">
+                                    <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+                                        <span class="text-xs font-medium text-slate-400">{{ t('archers.public.performance_summary', 'Ringkasan Statistik') }}</span>
+                                        <span class="text-xs font-mono font-bold text-primary">{{ statsSummary.totalEvents }} Event</span>
                                     </div>
 
-                                    <div class="space-y-3">
-                                        <div class="flex justify-between items-center py-2 border-b border-white/10">
-                                            <span class="text-xs text-slate-300 font-bold capitalize">{{ t('archers.public.podium_finishes') }}</span>
-                                            <span class="text-sm font-black text-primary italic">{{ statsSummary.podiums }} {{ t('archers.public.times_unit') }}</span>
+                                    <div class="grid grid-cols-2 gap-3 text-xs">
+                                        <div class="bg-white/5 border border-white/10 rounded-xl p-2.5">
+                                            <span class="text-slate-400 font-medium block leading-none mb-1">Podium Kejuaraan</span>
+                                            <span class="text-base font-black text-primary">{{ statsSummary.podiums }}x Podium</span>
                                         </div>
-                                        <div class="flex justify-between items-center py-2 border-b border-white/10">
-                                            <span class="text-xs text-slate-300 font-bold capitalize">{{ t('archers.public.gold_medals') }}</span>
-                                            <span class="text-sm font-black text-white italic">{{ statsSummary.wins }} {{ t('archers.public.wins_unit') }}</span>
+                                        <div class="bg-white/5 border border-white/10 rounded-xl p-2.5">
+                                            <span class="text-slate-400 font-medium block leading-none mb-1">Medali Emas</span>
+                                            <span class="text-base font-black text-white">{{ statsSummary.wins }} Emas</span>
                                         </div>
-                                        <div class="flex justify-between items-center py-2 border-b border-white/10">
-                                            <span class="text-xs text-slate-300 font-bold capitalize">{{ t('archers.public.average_score') }}</span>
-                                            <span class="text-sm font-black text-white italic">{{ statsSummary.avgScore }} {{ t('archers.public.pts_unit') }}</span>
+                                        <div class="bg-white/5 border border-white/10 rounded-xl p-2.5">
+                                            <span class="text-slate-400 font-medium block leading-none mb-1">Skor Tertinggi</span>
+                                            <span class="text-base font-black text-primary">{{ statsSummary.maxScore || '-' }} Pts</span>
                                         </div>
-                                        <div class="flex justify-between items-center py-2 border-b border-white/10">
-                                            <span class="text-xs text-slate-300 font-bold capitalize">{{ t('archers.public.personal_best') }}</span>
-                                            <span class="text-sm font-black text-primary italic">{{ statsSummary.maxScore }} {{ t('archers.public.pts_unit') }}</span>
-                                        </div>
-                                        <div class="flex justify-between items-center py-2">
-                                            <span class="text-xs text-slate-300 font-bold capitalize">{{ t('archers.public.active_class') }}</span>
-                                            <span class="text-sm font-black text-white italic capitalize">{{ bowTypeLabel || '-' }}</span>
+                                        <div class="bg-white/5 border border-white/10 rounded-xl p-2.5">
+                                            <span class="text-slate-400 font-medium block leading-none mb-1">Rata-rata Skor</span>
+                                            <span class="text-base font-black text-white">{{ statsSummary.avgScore || '-' }} Pts</span>
                                         </div>
                                     </div>
                                 </div>
@@ -367,12 +408,12 @@
                         <!-- Divider Line -->
                         <div class="h-px bg-gray-100 w-full"></div>
 
-                        <!-- ── 4. Tournament & Competition Database ── -->
-                        <div class="space-y-6">
+                        <!-- ── 4. Tournament & Competition History ── -->
+                        <div class="space-y-4">
                             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                 <div>
-                                    <h3 class="text-base font-black text-navy capitalize tracking-wider">{{ t('archers.public.tournament_database') }}</h3>
-                                    <div class="text-xs text-slate-400 mt-0.5">{{ t('archers.public.tournament_database_subtitle') }}</div>
+                                    <h3 class="text-base font-black text-navy tracking-tight">Riwayat Turnamen & Kejuaraan</h3>
+                                    <div class="text-xs text-slate-500 font-medium mt-0.5">Catatan keikutsertaan turnamen resmi, kategori lomba, dan peringkat atlet.</div>
                                 </div>
                                 <!-- Search input -->
                                 <div class="relative w-full sm:w-72 shrink-0">
@@ -389,10 +430,10 @@
                                 <table class="w-full text-left text-sm whitespace-nowrap min-w-[600px]">
                                     <thead>
                                         <tr class="bg-gray-50 text-slate-400 border-y border-gray-100">
-                                            <th class="px-6 py-3.5 text-[10px] font-black tracking-widest capitalize">{{ t('archers.public.table_date') }}</th>
-                                            <th class="px-6 py-3.5 text-[10px] font-black tracking-widest capitalize">{{ t('archers.public.table_tournament') }}</th>
-                                            <th class="px-6 py-3.5 text-[10px] font-black tracking-widest capitalize">{{ t('archers.public.table_division') }}</th>
-                                            <th class="px-6 py-3.5 text-[10px] font-black tracking-widest capitalize text-center">{{ t('archers.public.table_placement') }}</th>
+                                            <th class="px-6 py-3.5 text-xs font-bold text-slate-500 capitalize tracking-normal">{{ t('archers.public.table_date') }}</th>
+                                            <th class="px-6 py-3.5 text-xs font-bold text-slate-500 capitalize tracking-normal">{{ t('archers.public.table_tournament') }}</th>
+                                            <th class="px-6 py-3.5 text-xs font-bold text-slate-500 capitalize tracking-normal">{{ t('archers.public.table_division') }}</th>
+                                            <th class="px-6 py-3.5 text-xs font-bold text-slate-500 capitalize tracking-normal text-center">{{ t('archers.public.table_placement') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
@@ -402,12 +443,12 @@
                                             <td class="px-6 py-4 font-mono text-xs text-slate-400">{{ formatDate(event.date, 'DD MMM YYYY') }}</td>
                                             <td class="px-6 py-4">
                                                 <div class="font-black text-navy transition-colors text-xs sm:text-sm capitalize">{{ event.name }}</div>
-                                                <div class="text-[10px] text-slate-400 font-bold tracking-wider mt-0.5 capitalize">{{ event.city }}</div>
+                                                <div class="text-xs text-slate-500 font-medium mt-0.5 capitalize">{{ event.city }}</div>
                                             </td>
                                             <td class="px-6 py-4">
                                                 <div class="flex flex-wrap gap-1">
                                                     <span v-for="cat in event.categories" :key="cat"
-                                                        class="px-2 py-0.5 bg-gray-100 rounded-md text-[9px] font-black text-slate-600 capitalize tracking-wider">
+                                                        class="px-2 py-0.5 bg-gray-100 rounded-md text-xs font-semibold text-slate-600 capitalize tracking-wider">
                                                         {{ cat }}
                                                     </span>
                                                 </div>
@@ -426,7 +467,7 @@
                                         <tr v-if="filteredEventHistory.length === 0">
                                             <td colspan="4" class="px-6 py-12 text-center text-slate-400">
                                                 <Icon icon="ph:folder-open-bold" class="text-3xl mx-auto mb-2 opacity-50" />
-                                                <p class="text-xs font-black capitalize tracking-widest text-slate-300">{{ t('archers.public.no_matching_tournaments') }}</p>
+                                                <div class="text-xs font-medium text-slate-400">{{ t('archers.public.no_matching_tournaments') }}</div>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -439,37 +480,7 @@
             </div>
         </Transition>
 
-        <!-- ── Share Modal Dialog ── -->
-        <Transition name="modal">
-            <div v-if="showShareDialog" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60 backdrop-blur-xs" @click.self="closeShareDialog">
-                <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100 space-y-6 relative">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-base font-black text-navy">Bagikan Profil Atlet</h3>
-                        <button @click="closeShareDialog" class="text-slate-400 hover:text-navy">
-                            <Icon icon="ph:x-bold" class="text-lg" />
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-4 gap-3">
-                        <button v-for="p in platforms" :key="p.id" @click="shareTo(p.id)"
-                            class="flex flex-col items-center gap-2 p-3 rounded-2xl transition-all border border-slate-100"
-                            :class="p.bg">
-                            <span v-html="p.iconHtml"></span>
-                            <span class="text-[10px] font-bold">{{ p.name }}</span>
-                        </button>
-                    </div>
-
-                    <div class="pt-2">
-                        <div class="flex items-center gap-2 p-2 bg-slate-50 border border-slate-200 rounded-xl">
-                            <input readonly :value="shareUrl" class="bg-transparent text-xs text-slate-600 flex-1 px-2 outline-none font-mono" />
-                            <button @click="copyLink" class="px-3 py-1.5 bg-navy text-primary text-xs font-black rounded-lg">
-                                {{ copied ? 'Tersalin!' : 'Salin' }}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </Transition>
+        
     </div>
 </template>
 
@@ -588,17 +599,17 @@ const filteredEventHistory = computed(() => {
 
 useSeoMeta({
     title: () => archer.value?.full_name
-        ? `${archer.value.full_name} — ${t('archers.athlete_profile', 'Archer Profile')} | ArcheryHub`
-        : `${t('archers.athlete_profile', 'Archer Profile')} — ArcheryHub`,
+        ? `${archer.value.full_name} — ${t('archers.athlete_profile', 'Archer Profile')} | Archeris`
+        : `${t('archers.athlete_profile', 'Archer Profile')} — Archeris`,
     description: () => archer.value?.full_name
-        ? `${t('archers.profile_desc_prefix', 'View the profile of')} ${archer.value.full_name}${archer.value.bow_type ? `, a ${archer.value.bow_type} archer` : ''}${archer.value.city ? ` from ${archer.value.city}` : ''}. Stats, event history, and achievements at ArcheryHub.`
-        : t('archers.profile_desc_default', 'Archer profiles and stats at ArcheryHub'),
+        ? `${t('archers.profile_desc_prefix', 'View the profile of')} ${archer.value.full_name}${archer.value.bow_type ? `, a ${archer.value.bow_type} archer` : ''}${archer.value.city ? ` from ${archer.value.city}` : ''}. Stats, event history, and achievements at Archeris.`
+        : t('archers.profile_desc_default', 'Archer profiles and stats at Archeris'),
 })
 
 useHead({
     title: computed(() => archer.value?.full_name
-        ? `${archer.value.full_name} - ${t('archers.athlete_profile', 'Archer Profile')} | ArcheryHub`
-        : `${t('archers.athlete_profile', 'Archer Profile')} - ArcheryHub`
+        ? `${archer.value.full_name} - ${t('archers.athlete_profile', 'Archer Profile')} | Archeris`
+        : `${t('archers.athlete_profile', 'Archer Profile')} - Archeris`
     )
 })
 
@@ -631,6 +642,26 @@ const bowTypes = computed(() => {
         label: labels[type] || type.charAt(0).toUpperCase() + type.slice(1),
         icon: getBowIcon(type)
     }))
+})
+
+const hasAnySocial = computed(() => {
+    return Boolean(
+        archer.value?.social_instagram ||
+        archer.value?.social_tiktok ||
+        archer.value?.social_whatsapp ||
+        archer.value?.social_facebook ||
+        archer.value?.social_twitter ||
+        archer.value?.social_youtube ||
+        archer.value?.social_website
+    )
+})
+
+const handDominanceLabel = computed(() => {
+    const val = archer.value?.hand_dominance
+    if (!val) return '-'
+    if (val === 'right') return 'Tangan Kanan'
+    if (val === 'left') return 'Tangan Kiri'
+    return val
 })
 
 const bowTypeLabel = computed(() => bowTypes.value.map(t => t.label).join(', '))
@@ -738,40 +769,6 @@ const statsSummary = computed(() => {
         avgRank
     }
 })
-
-// ── Share System ──
-const showShareDialog = ref(false)
-const copied = ref(false)
-const shareUrl = computed(() => typeof window !== 'undefined' ? window.location.href : '')
-
-const openShareDialog = () => showShareDialog.value = true
-const closeShareDialog = () => { showShareDialog.value = false; copied.value = false }
-
-const platforms = [
-    { id: 'whatsapp', name: 'WhatsApp', bg: 'bg-green-50 text-green-600 hover:bg-green-600 hover:text-white', iconHtml: '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.038 3.069l-.669 2.445 2.511-.659c.722.451 1.591.696 2.891.696 3.128 0 5.768-2.586 5.768-5.766 0-3.18-2.585-5.766-5.762-5.766zm3.369 8.303c-.144.405-.842.755-1.168.807-.326.052-.728.093-2.185-.484-1.85-.733-3.038-2.613-3.13-2.733-.093-.12-.76-.997-.76-1.996 0-1 .475-1.5.692-1.742.176-.192.42-.312.693-.312s.273.012.396.024c.123 0 .285-.048.438.312.153.36.525 1.261.57 1.356.045.093.076.204.015.324-.312.612-.342.66-.45.804-.108.144-.225.216-.108.408.117.192.52.852 1.118 1.38.77.684 1.411.897 1.613.997.202.102.321.084.441-.054.12-.138.514-.594.651-.798.136-.204.272-.171.459-.102.187.069 1.187.561 1.391.663z"/></svg>' },
-    { id: 'facebook', name: 'Facebook', bg: 'bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white', iconHtml: '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>' },
-    { id: 'twitter', name: 'X', bg: 'bg-slate-50 text-slate-800 hover:bg-slate-800 hover:text-white', iconHtml: '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>' },
-    { id: 'copy', name: 'Salin', bg: 'bg-gray-100 text-slate-600 hover:bg-[#0e1e3a] hover:text-white', iconHtml: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10"/></svg>' }
-]
-
-const copyLink = async () => {
-    try {
-        await navigator.clipboard.writeText(shareUrl.value)
-        copied.value = true
-        setTimeout(() => copied.value = false, 2000)
-    } catch { }
-}
-
-const shareTo = (platform) => {
-    if (platform === 'copy') return copyLink()
-    const text = encodeURIComponent(`Profil Atlet Panahan: ${archer.value?.full_name} | Archery Hub Indonesia`)
-    const url = encodeURIComponent(shareUrl.value)
-    let link = ''
-    if (platform === 'whatsapp') link = `https://wa.me/?text=${text}%20${url}`
-    else if (platform === 'facebook') link = `https://www.facebook.com/sharer/sharer.php?u=${url}`
-    else if (platform === 'twitter') link = `https://twitter.com/intent/tweet?text=${text}&url=${url}`
-    if (link) { window.open(link, '_blank', 'noopener,noreferrer'); closeShareDialog() }
-}
 </script>
 
 <style scoped>

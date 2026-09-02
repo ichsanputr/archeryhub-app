@@ -252,7 +252,7 @@ definePageMeta({ layout: 'dashboard' })
 
 const { t } = useDashboardI18n()
 
-useHead({ title: computed(() => `${t('seller_product_form.edit_title', 'Edit Produk')} - ArcheryHub Dashboard`) })
+useHead({ title: computed(() => `${t('seller_product_form.edit_title', 'Edit Produk')} - Archeris Dashboard`) })
 
 const route = useRoute()
 const router = useRouter()

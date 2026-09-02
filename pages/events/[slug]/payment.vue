@@ -240,7 +240,7 @@ definePageMeta({
     layout: 'blank'
 })
 
-useHead({ title: computed(() => t('payment.event_payment', 'Event Payment') + ' - ArcheryHub') })
+useHead({ title: computed(() => t('payment.event_payment', 'Event Payment') + ' - Archeris') })
 
 
 const route = useRoute()
@@ -382,7 +382,10 @@ const handlePayment = async () => {
         const res = await payment.createParticipantPayment(registration.value.id, selectedChannel.value)
 
         if (res && res.checkout_url) {
-            window.location.href = res.checkout_url
+            window.open(res.checkout_url, '_blank')
+            if (res.reference) {
+                router.push(`/payment/status/${res.reference}`)
+            }
         } else if (res && res.reference) {
             router.push(`/payment/status/${res.reference}`)
         }

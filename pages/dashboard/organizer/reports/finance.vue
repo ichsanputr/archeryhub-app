@@ -215,7 +215,7 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('reports.finance', 'Finance Report') + ' - ArcheryHub Dashboard') })
+useHead({ title: computed(() => t('reports.finance', 'Finance Report') + ' - Archeris Dashboard') })
 
 
 const { t } = useI18n()
@@ -351,7 +351,7 @@ const handleExportExcel = () => {
     date: t.created_at || '-'
   }))
   exportToExcel(
-    'Laporan_Keuangan_Turnamen_ArcheryHub',
+    'Laporan_Keuangan_Turnamen_Archeris',
     [
       { key: 'no', label: 'No' },
       { key: 'reference', label: 'No. Referensi' },

@@ -271,12 +271,56 @@
                 </div>
             </div>
 
-        <!-- Image Preview Dialog -->
-        <AppDialog v-model:show="showImageModal" title="Bukti Transfer Pembayaran" message="" type="info" icon="ph:image-bold">
-            <div class="flex justify-center p-2">
-                <img :src="selectedImage" class="max-w-full max-h-[70vh] object-contain rounded-xl shadow-md" />
+    <!-- Simple Image Preview Lightbox Modal -->
+    <ClientOnly>
+      <Teleport to="body">
+        <Transition
+          enter-active-class="transition duration-150 ease-out"
+          enter-from-class="opacity-0"
+          enter-to-class="opacity-100"
+          leave-active-class="transition duration-100 ease-in"
+          leave-from-class="opacity-100"
+          leave-to-class="opacity-0">
+          <div v-if="showImageModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 select-none">
+            <!-- Dark Backdrop -->
+            <div @click="showImageModal = false" class="absolute inset-0 bg-slate-900/80 backdrop-blur-xs transition-opacity"></div>
+
+            <!-- Simple Lightbox Card -->
+            <div class="relative z-10 bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden space-y-3 p-4 sm:p-5">
+              <!-- Top Header Bar -->
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2 text-xs font-bold text-slate-800">
+                  <Icon icon="ph:receipt-bold" class="text-slate-500 text-base" />
+                  <span>Bukti Transfer</span>
+                </div>
+                <button type="button" @click="showImageModal = false"
+                  class="size-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer">
+                  <Icon icon="ph:x-bold" class="text-xs" />
+                </button>
+              </div>
+
+              <!-- Image Display -->
+              <div class="flex items-center justify-center bg-slate-50 rounded-xl p-2 border border-slate-100 overflow-hidden">
+                <img :src="selectedImage" alt="Bukti Transfer" class="max-h-[65vh] w-auto object-contain rounded-lg shadow-2xs" />
+              </div>
+
+              <!-- Footer with direct open -->
+              <div class="flex items-center justify-between pt-1 text-xs">
+                <a :href="selectedImage" target="_blank" rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1.5 text-slate-600 hover:text-slate-900 font-semibold transition-colors">
+                  <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
+                  <span>Buka Ukuran Penuh</span>
+                </a>
+                <button type="button" @click="showImageModal = false"
+                  class="px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors cursor-pointer">
+                  Tutup
+                </button>
+              </div>
             </div>
-        </AppDialog>
+          </div>
+        </Transition>
+      </Teleport>
+    </ClientOnly>
 
             <!-- Pagination -->
             <div v-if="total > limit" class="flex justify-center pt-4">
@@ -301,7 +345,7 @@ const { t } = useI18n()
 const { get } = useApi()
 
 useHead({
-    title: computed(() => `${t('payments.seo_title', 'Riwayat Pembayaran')} - ArcheryHub Dashboard`)
+    title: computed(() => `${t('payments.seo_title', 'Riwayat Pembayaran')} - Archeris Dashboard`)
 })
 
 const payments = ref<any[]>([])

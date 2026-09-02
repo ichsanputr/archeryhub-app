@@ -161,7 +161,7 @@
  })
 
  useHead({
-   title: computed(() => t('contact.title', 'Contact Us') + ' - ArcheryHub')
+   title: computed(() => t('contact.title', 'Contact Us') + ' - Archeris')
  })
 
  const loading = ref(false)

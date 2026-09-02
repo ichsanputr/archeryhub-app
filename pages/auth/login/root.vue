@@ -115,7 +115,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Root Login - ArcheryHub'
+    title: 'Root Login - Archeris'
 })
 
 const slides = ['/slide-1.jpeg', '/slide-2.jpeg', '/slide-3.jpeg']

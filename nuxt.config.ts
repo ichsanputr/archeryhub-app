@@ -97,7 +97,7 @@ export default defineNuxtConfig({
     public: {
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:8001',
       siteUrl: 'https://archeris.net',
-      siteName: 'Archeris.net',
+      siteName: 'Archeris',
       paddleClientToken: process.env.NUXT_PUBLIC_PADDLE_CLIENT_TOKEN || 'test_e8c89b33a59fa8730ad3d1000bb',
       paddleSandbox: process.env.NUXT_PUBLIC_PADDLE_SANDBOX !== 'false',
     }
@@ -109,7 +109,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en'
       },
-      title: 'Archeris.net - All In One Archery Event Management Platform',
+      title: 'All In One Archery Event Management Platform - Archeris',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -119,13 +119,13 @@ export default defineNuxtConfig({
         },
         // Open Graph / Facebook / WhatsApp
         { property: 'og:type', content: 'website' },
-        { property: 'og:site_name', content: 'Archeris.net' },
-        { property: 'og:title', content: 'Archeris.net - Platform Panahan Terintegrasi' },
+        { property: 'og:site_name', content: 'Archeris' },
+        { property: 'og:title', content: 'Platform Panahan Terintegrasi - Archeris' },
         { property: 'og:description', content: 'Kelola event panahan, skor kualifikasi & eliminasi, pendaftaran, dan informasi kompetisi panahan Indonesia.' },
         { property: 'og:image', content: 'https://archeris.net/og-default.jpg' },
         // Twitter Card
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: 'Archeris.net - Platform Panahan Terintegrasi' },
+        { name: 'twitter:title', content: 'Platform Panahan Terintegrasi - Archeris' },
         { name: 'twitter:description', content: 'Kelola event panahan, skor kualifikasi & eliminasi, pendaftaran, dan informasi kompetisi panahan Indonesia.' },
         { name: 'twitter:image', content: 'https://archeris.net/og-default.jpg' },
       ],

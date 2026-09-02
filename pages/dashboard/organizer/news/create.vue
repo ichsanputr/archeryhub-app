@@ -174,7 +174,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => t('organizer_news.create.meta_title', 'Tulis Berita') + ' - ArcheryHub Dashboard')
+    title: computed(() => t('organizer_news.create.meta_title', 'Tulis Berita') + ' - Archeris Dashboard')
 })
 
 const { post } = useApi()

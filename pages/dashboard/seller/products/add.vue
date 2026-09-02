@@ -274,7 +274,7 @@ definePageMeta({
 
 
 useHead({
-    title: computed(() => `${t('seller_product_form.add_title', 'Tambah Produk Baru')} - ArcheryHub Dashboard`)
+    title: computed(() => `${t('seller_product_form.add_title', 'Tambah Produk Baru')} - Archeris Dashboard`)
 })
 
 const router = useRouter()

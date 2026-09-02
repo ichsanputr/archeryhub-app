@@ -179,7 +179,7 @@ const eventId = computed(() => route.params.id)
 const eventName = ref('')
 
 useHead({
-  title: computed(() => `${t('my_certificate_page.title', 'Sertifikat Event')} - ArcheryHub Dashboard`)
+  title: computed(() => `${t('my_certificate_page.title', 'Sertifikat Event')} - Archeris Dashboard`)
 })
 
 const { data: certificate, pending } = await useAsyncData(`archer-certificate-${eventId.value}`, async () => {

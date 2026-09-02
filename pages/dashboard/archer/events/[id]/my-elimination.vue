@@ -287,7 +287,7 @@ const route = useRoute()
 const eventId = computed(() => route.params.id as string)
 
 useHead({
-  title: computed(() => `${t('elimination.title', 'My Elimination Matches')} - ArcheryHub Dashboard`)
+  title: computed(() => `${t('elimination.title', 'My Elimination Matches')} - Archeris Dashboard`)
 })
 
 const isLoading = ref(true)

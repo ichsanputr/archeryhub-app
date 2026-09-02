@@ -111,7 +111,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => t('earnings.event_detail', 'Event Earnings Detail') + ' - ArcheryHub Dashboard')
+    title: computed(() => t('earnings.event_detail', 'Event Earnings Detail') + ' - Archeris Dashboard')
 })
 
 const eventId = route.params.id

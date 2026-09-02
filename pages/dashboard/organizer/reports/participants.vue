@@ -251,7 +251,7 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({ layout: 'dashboard' })
 
-useHead({ title: computed(() => t('reports.participants', 'Participants Report') + ' - ArcheryHub Dashboard') })
+useHead({ title: computed(() => t('reports.participants', 'Participants Report') + ' - Archeris Dashboard') })
 
 
 const { t } = useI18n()
@@ -386,7 +386,7 @@ const handleExportExcel = () => {
     registered_at: p.created_at ? formatDate(p.created_at) : '-'
   }))
   exportToExcel(
-    'Laporan_Peserta_Turnamen_ArcheryHub',
+    'Laporan_Peserta_Turnamen_Archeris',
     [
       { key: 'no', label: 'No' },
       { key: 'name', label: 'Nama Peserta' },

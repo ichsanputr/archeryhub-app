@@ -751,7 +751,7 @@ const registrationStats = computed(() => {
 
 const publicEventUrl = computed(() => {
     const slug = event.value?.slug || route.params.id
-    const origin = window?.location?.origin || 'https://archeryhub.id'
+    const origin = window?.location?.origin || 'https://archeris.net'
     return `${origin}/events/${slug}`
 })
 
