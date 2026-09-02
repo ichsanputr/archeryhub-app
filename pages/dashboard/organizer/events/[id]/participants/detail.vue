@@ -190,30 +190,30 @@ const formatDate = (d) => {
                         </div>
 
                         <!-- Data Fields List -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 text-xs">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
                             <div>
-                                <span class="text-slate-400 block mb-0.5 font-medium">Alamat Email</span>
-                                <span class="text-slate-900 font-semibold truncate block">{{ participant.email || '-' }}</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">Alamat Email</span>
+                                <span class="text-sm sm:text-base text-slate-900 font-bold truncate block">{{ participant.email || '-' }}</span>
                             </div>
                             <div>
-                                <span class="text-slate-400 block mb-0.5 font-medium">Nomor WhatsApp / Telepon</span>
-                                <span class="text-slate-900 font-semibold block">{{ participant.phone || '-' }}</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">Nomor WhatsApp / Telepon</span>
+                                <span class="text-sm sm:text-base text-slate-900 font-bold block">{{ participant.phone || '-' }}</span>
                             </div>
                             <div>
-                                <span class="text-slate-400 block mb-0.5 font-medium">Jenis Kelamin</span>
-                                <span class="text-slate-900 font-semibold block capitalize">{{ participant.gender || '-' }}</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">Jenis Kelamin</span>
+                                <span class="text-sm sm:text-base text-slate-900 font-bold block capitalize">{{ participant.gender || '-' }}</span>
                             </div>
                             <div>
-                                <span class="text-slate-400 block mb-0.5 font-medium">Tanggal Lahir</span>
-                                <span class="text-slate-900 font-semibold block">{{ formatDate(participant.birth_date) }}</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">Tanggal Lahir</span>
+                                <span class="text-sm sm:text-base text-slate-900 font-bold block">{{ formatDate(participant.birth_date) }}</span>
                             </div>
                             <div>
-                                <span class="text-slate-400 block mb-0.5 font-medium">Divisi Busur Utama</span>
-                                <span class="text-slate-900 font-semibold block capitalize">{{ participant.bow_type || '-' }}</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">Divisi Busur Utama</span>
+                                <span class="text-sm sm:text-base text-slate-900 font-bold block capitalize">{{ participant.bow_type || '-' }}</span>
                             </div>
                             <div>
-                                <span class="text-slate-400 block mb-0.5 font-medium">Dominasi Tangan</span>
-                                <span class="text-slate-900 font-semibold block capitalize">{{ participant.hand_dominance || '-' }}</span>
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">Dominasi Tangan</span>
+                                <span class="text-sm sm:text-base text-slate-900 font-bold block capitalize">{{ participant.hand_dominance || '-' }}</span>
                             </div>
                         </div>
                     </div>
@@ -232,17 +232,17 @@ const formatDate = (d) => {
 
                         <div v-if="enrolledCategories.length > 0" class="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden">
                             <div v-for="cat in enrolledCategories" :key="cat.id"
-                                class="p-4 flex items-center justify-between hover:bg-slate-50/50 transition-colors">
+                                class="p-4 sm:p-5 flex items-center justify-between hover:bg-slate-50/50 transition-colors">
                                 <div>
-                                    <div class="text-sm font-semibold text-slate-900 leading-tight">
+                                    <div class="text-sm sm:text-base font-bold text-slate-900 leading-tight">
                                         {{ cat.category_name || cat.label || cat.name }}
                                     </div>
-                                    <div class="text-xs text-slate-400 mt-0.5">
+                                    <div class="text-xs sm:text-sm text-slate-500 mt-1">
                                         {{ cat.division_name || '' }} <span v-if="cat.division_name && cat.event_type_name">•</span> {{ cat.event_type_name || cat.class_name || '' }}
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <span class="text-xs font-semibold text-slate-700">
+                                    <span class="text-sm sm:text-base font-bold text-slate-900">
                                         Rp {{ formatCurrency(cat.payment_amount || cat.fee || 0) }}
                                     </span>
                                 </div>
@@ -268,22 +268,22 @@ const formatDate = (d) => {
                             </BaseButton>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs pt-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
                             <div>
-                                <span class="text-slate-400 block mb-0.5 font-medium">Status</span>
-                                <span class="font-semibold" :class="isPaidStatus(participant.payment_status || participant.status) ? 'text-emerald-700' : 'text-amber-700'">
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">Status</span>
+                                <span class="text-sm sm:text-base font-bold" :class="isPaidStatus(participant.payment_status || participant.status) ? 'text-emerald-700' : 'text-amber-700'">
                                     {{ isPaidStatus(participant.payment_status || participant.status) ? 'Lunas' : 'Menunggu Pembayaran' }}
                                 </span>
                             </div>
                             <div>
-                                <span class="text-slate-400 block mb-0.5 font-medium">Total Biaya</span>
-                                <span class="text-slate-900 font-semibold">
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">Total Biaya</span>
+                                <span class="text-sm sm:text-base text-slate-900 font-bold">
                                     Rp {{ formatCurrency(participant.payment_amount || participant.total_fee || 0) }}
                                 </span>
                             </div>
                             <div>
-                                <span class="text-slate-400 block mb-0.5 font-medium">Metode Pembayaran</span>
-                                <span class="text-slate-900 font-semibold capitalize">
+                                <span class="text-xs text-slate-500 block mb-1 font-medium">Metode Pembayaran</span>
+                                <span class="text-sm sm:text-base text-slate-900 font-bold capitalize">
                                     {{ participant.transaction?.payment_method || participant.payment_method || 'Online Gateway' }}
                                 </span>
                             </div>
@@ -314,22 +314,22 @@ const formatDate = (d) => {
                             <span>Status Pertandingan</span>
                         </h3>
 
-                        <div class="divide-y divide-slate-100 text-xs">
-                            <div class="py-2.5 flex items-center justify-between">
+                        <div class="divide-y divide-slate-100 text-sm">
+                            <div class="py-3 flex items-center justify-between">
                                 <span class="text-slate-500 font-medium">Daftar Ulang (Check-in)</span>
-                                <span class="font-semibold" :class="participant.last_reregistration_at ? 'text-emerald-600' : 'text-slate-500'">
+                                <span class="font-bold" :class="participant.last_reregistration_at ? 'text-emerald-600' : 'text-slate-600'">
                                     {{ participant.last_reregistration_at ? 'Sudah Check-in' : 'Belum Check-in' }}
                                 </span>
                             </div>
-                            <div class="py-2.5 flex items-center justify-between">
+                            <div class="py-3 flex items-center justify-between">
                                 <span class="text-slate-500 font-medium">Bantalan / Target</span>
-                                <span class="font-semibold text-slate-900">
+                                <span class="font-bold text-slate-900">
                                     {{ participant.target_number ? `${participant.target_number}${participant.target_face || ''}` : 'Belum Ditentukan' }}
                                 </span>
                             </div>
-                            <div class="py-2.5 flex items-center justify-between">
+                            <div class="py-3 flex items-center justify-between">
                                 <span class="text-slate-500 font-medium">Tanggal Registrasi</span>
-                                <span class="font-semibold text-slate-700">
+                                <span class="font-bold text-slate-700">
                                     {{ formatDate(participant.registration_date || participant.created_at) }}
                                 </span>
                             </div>

@@ -149,7 +149,7 @@ onMounted(() => {
                 <Icon icon="hugeicons:archer" class="text-2xl text-slate-800" />
               </div>
               <div>
-                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">{{ t("archer_event_overview.archer_participation_status", "Status Partisipasi Atlet") }}</span>
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">{{ t("archer_event_overview.archer_participation_status", "Status Partisipasi Atlet") }}</span>
                 <h3 class="text-lg font-black text-slate-900">{{ participant?.full_name || user?.full_name || t('archer_event_overview.default_archer_name', 'Nama Atlet') }}</h3>
                 <div class="text-xs text-slate-500 font-medium">{{ participant?.club_name || t('archer_event_overview.independent_archer', 'Klub Independen') }}</div>
               </div>
@@ -163,7 +163,7 @@ onMounted(() => {
                   <Icon icon="ph:seal-check-bold" class="text-base" />
                 </div>
                 <div>
-                  <div class="text-[10px] font-bold text-emerald-800 capitalize">{{ t('archer_event_overview.registration_status_label', 'Status Registrasi') }}</div>
+                  <div class="text-xs font-semibold text-emerald-800 capitalize">{{ t('archer_event_overview.registration_status_label', 'Status Registrasi') }}</div>
                   <div class="text-xs font-black text-emerald-950">{{ t('archer_event_overview.registered_confirmed', 'Terdaftar & Lunas') }}</div>
                 </div>
               </div>
@@ -173,7 +173,7 @@ onMounted(() => {
                   <Icon icon="ph:clock-bold" class="text-base" />
                 </div>
                 <div>
-                  <div class="text-[10px] font-bold text-amber-800 capitalize">{{ t('archer_event_overview.registration_status_label', 'Status Registrasi') }}</div>
+                  <div class="text-xs font-semibold text-amber-800 capitalize">{{ t('archer_event_overview.registration_status_label', 'Status Registrasi') }}</div>
                   <div class="text-xs font-black text-amber-950">{{ t('archer_event_overview.waiting_payment', 'Menunggu Pembayaran') }}</div>
                 </div>
               </div>
@@ -184,7 +184,7 @@ onMounted(() => {
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
             <!-- Target / Bantalan -->
             <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
-              <div class="text-[10px] font-bold text-slate-400 capitalize">{{ t("archer_event_overview.target_face_label", "Bantalan Target") }}</div>
+              <div class="text-xs font-semibold text-slate-400 capitalize">{{ t("archer_event_overview.target_face_label", "Bantalan Target") }}</div>
               <div class="text-base sm:text-lg font-black text-slate-900 mt-1 truncate">
                 {{ primaryCategory?.target_name || t('archer_event_overview.not_assigned', 'Belum Diatur') }}
               </div>
@@ -192,7 +192,7 @@ onMounted(() => {
 
             <!-- Kategori -->
             <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
-              <div class="text-[10px] font-bold text-slate-400 capitalize">{{ t("archer_event_overview.category_label", "Kategori Turnamen") }}</div>
+              <div class="text-xs font-semibold text-slate-400 capitalize">{{ t("archer_event_overview.category_label", "Kategori Turnamen") }}</div>
               <div class="text-xs sm:text-sm font-black text-slate-900 mt-1 truncate" :title="primaryCategory?.category_name">
                 {{ primaryCategory?.category_name || t('archer_event_overview.general_category', 'Umum') }}
               </div>
@@ -200,7 +200,7 @@ onMounted(() => {
 
             <!-- Divisi Busur -->
             <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
-              <div class="text-[10px] font-bold text-slate-400 capitalize">{{ t("archer_event_overview.bow_division_label", "Divisi Busur") }}</div>
+              <div class="text-xs font-semibold text-slate-400 capitalize">{{ t("archer_event_overview.bow_division_label", "Divisi Busur") }}</div>
               <div class="text-xs sm:text-sm font-black text-slate-900 mt-1 truncate">
                 {{ primaryCategory?.division_name || 'Recurve' }}
               </div>
@@ -208,7 +208,7 @@ onMounted(() => {
 
             <!-- Nomor Atlet / Kode -->
             <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
-              <div class="text-[10px] font-bold text-slate-400 capitalize">{{ t("archer_event_overview.athlete_code_label", "Nomor Atlet") }}</div>
+              <div class="text-xs font-semibold text-slate-400 capitalize">{{ t("archer_event_overview.athlete_code_label", "Nomor Atlet") }}</div>
               <div class="text-xs sm:text-sm font-black text-slate-900 mt-1 font-mono truncate">
                 {{ participant?.athlete_code || ('ARC-' + (participant?.archer_id || '').substring(0, 5).toUpperCase()) }}
               </div>
@@ -318,7 +318,7 @@ onMounted(() => {
         <!-- Live Leaderboard Quick Widget -->
         <div class="bg-gradient-to-br from-navy to-slate-900 text-white rounded-3xl p-6 border border-white/10 shadow-xs space-y-4">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-bold text-primary capitalize tracking-wider">{{ t("archer_event_overview.live_badge", "Pembaruan Langsung") }}</span>
+            <span class="text-xs font-semibold text-primary capitalize tracking-wider">{{ t("archer_event_overview.live_badge", "Pembaruan Langsung") }}</span>
             <span class="flex h-2 w-2 relative">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
