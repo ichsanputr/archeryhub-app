@@ -1,51 +1,27 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
-        <!-- Enhanced Header -->
-        <div
-            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-
-            <!-- Decorative Background Elements -->
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-            <!-- Header Content -->
-            <div class="relative p-6 sm:p-8">
-                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                    <div class="flex items-start gap-4">
-                        <!-- Icon Badge -->
-                        <div
-                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-                            <Icon icon="ph:tag" class="text-white text-2xl" />
-                        </div>
-
-                        <!-- Title Section -->
-                        <div class="flex-1">
-                            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
-                                {{ t('event_categories.title') }}
-                            </h1>
-                            <div class="text-slate-300 text-sm max-w-2xl">
-                                {{ t('event_categories.desc') }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex gap-3 flex-shrink-0">
-                        <BaseButton variant="primary" icon="ph:plus-bold"
-                            class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
-                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
-                            @click="isSubscriptionActive ? openCreateDialog() : (showPremiumModal = true)">
-                            {{ t('event_categories.add_category') }}
-                        </BaseButton>
-                    </div>
+        <!-- Header -->
+        <DashboardHeader
+            :title="t('event_categories.title', 'Kategori & Divisi Lomba')"
+            :subtitle="t('event_categories.desc', 'Atur kategori lomba, jarak bantalan, kelompok usia, dan kuota pemanah.')"
+            icon="ph:tag"
+            :breadcrumbs="[
+                { label: 'Dashboard', to: '/dashboard/organizer' },
+                { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/events' },
+                { label: t('event_categories.title', 'Kategori & Divisi') }
+            ]"
+        >
+            <template #actions>
+                <div class="flex gap-3 flex-shrink-0">
+                    <BaseButton variant="primary" icon="ph:plus-bold"
+                        class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
+                        :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                        @click="isSubscriptionActive ? openCreateDialog() : (showPremiumModal = true)">
+                        {{ t('event_categories.add_category', 'Tambah Kategori') }}
+                    </BaseButton>
                 </div>
-            </div>
-        </div>
+            </template>
+        </DashboardHeader>
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
         <!-- Categories List -->
@@ -463,7 +439,7 @@ const totalQuota = computed(() => {
 const formatDate = (dateStr) => {
     if (!dateStr) return '-'
     try {
-        const localeCode = locale.value === 'id' ? 'id-ID' : locale.value === 'kr' ? 'ko-KR' : 'en-US'
+        const localeCode = locale.value === 'id' ? 'id-ID' : 'en-US'
         return new Date(dateStr).toLocaleDateString(localeCode, {
             day: 'numeric',
             month: 'short',

@@ -3,7 +3,7 @@
         <!-- Loading State -->
         <div v-if="isLoading" class="min-h-screen flex items-center justify-center">
             <div class="text-center">
-                <span class="material-symbols-outlined text-4xl text-navy animate-spin mb-4">sync</span>
+                <Icon icon="ph:arrows-clockwise-bold" class="text-4xl text-navy animate-spin mb-4 mx-auto" />
                 <div class="text-gray-500">Memuat data pembayaran...</div>
             </div>
         </div>
@@ -12,7 +12,7 @@
         <div v-else-if="error" class="min-h-screen flex items-center justify-center px-4">
             <div class="text-center max-w-md">
                 <div class="h-16 w-16 bg-red-50 rounded-full flex items-center justify-center mb-4 mx-auto">
-                    <span class="material-symbols-outlined text-3xl text-red-500">error</span>
+                    <Icon icon="ph:warning-circle-bold" class="text-3xl text-red-500" />
                 </div>
                 <h2 class="text-xl font-black text-navy mb-3">Gagal Memuat Data</h2>
                 <div class="text-gray-500 mb-6">{{ error }}</div>
@@ -246,6 +246,7 @@ useHead({ title: computed(() => t('payment.event_payment', 'Event Payment') + ' 
 const route = useRoute()
 const router = useRouter()
 const { get } = useApi()
+const toast = useToast()
 const slug = route.params.slug
 const registrationId = route.query.registration_id || route.query.id
 const payment = usePayment()
@@ -391,15 +392,9 @@ const handlePayment = async () => {
         }
     } catch (err) {
         console.error('Payment error:', err)
-        alert(err?.data?.error || 'Gagal memproses pembayaran. Silakan coba lagi.')
+        toast.error(err?.data?.error || 'Gagal memproses pembayaran. Silakan coba lagi.')
     } finally {
         loading.value = false
     }
 }
 </script>
-
-<style scoped>
-.material-symbols-outlined {
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-</style>

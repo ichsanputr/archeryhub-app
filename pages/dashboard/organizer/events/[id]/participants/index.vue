@@ -1,58 +1,34 @@
 <template>
-    <div class="flex flex-col gap-6 pb-12">
-        <!-- Header -->
-        <!-- Enhanced Header -->
-        <div
-            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-
-            <!-- Decorative Background Elements -->
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary">
-            </div>
-            <!-- Header Content -->
-            <div class="relative p-6 sm:p-8">
-                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                    <div class="flex items-start gap-4">
-                        <!-- Icon Badge -->
-                        <div
-                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-                            <Icon icon="ph:users" class="text-white text-2xl" />
-                        </div>
-
-                        <div>
-                            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
-                                {{ t('dashboard.participants_list.title') }}
-                            </h1>
-                            <div class="text-slate-300 text-sm max-w-2xl">
-                                {{ t('dashboard.participants_list.subtitle') }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex gap-3 flex-shrink-0">
-                        <BaseButton variant="white" icon="ph:download" class="h-11 px-5"
-                            @click="canExportData ? exportCSV() : (showPremiumModal = true)"
-                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !canExportData }">
-                            <span class="hidden sm:inline">{{ t('dashboard.participants_list.export_csv') }}</span>
-                            <span class="sm:hidden">{{ t('dashboard.participants_list.export_short') }}</span>
-                        </BaseButton>
-                        <BaseButton :to="canCreateEvent ? `/dashboard/events/${eventId}/participants/add` : undefined"
-                            variant="primary" icon="ph:plus-bold" @click="!canCreateEvent && (showPremiumModal = true)"
-                            class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
-                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !canCreateEvent }">
-                            <span class="hidden sm:inline">{{ t('dashboard.participants_list.add_participant') }}</span>
-                            <span class="sm:hidden">{{ t('dashboard.participants_list.add_short') }}</span>
-                        </BaseButton>
-                    </div>
-                </div>
-            </div>
+  <div class="flex flex-col gap-6 pb-12">
+    <!-- Header -->
+    <DashboardHeader
+      :title="t('dashboard.participants_list.title', 'Daftar Peserta')"
+      :subtitle="t('dashboard.participants_list.subtitle', 'Kelola data atlet terdaftar, status pembayaran, dan verifikasi berkas.')"
+      icon="ph:users"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/events' },
+        { label: t('dashboard.participants_list.title', 'Daftar Peserta') }
+      ]"
+    >
+      <template #actions>
+        <div class="flex gap-3 flex-shrink-0">
+          <BaseButton variant="white" icon="ph:download" class="h-10 sm:h-11 px-5 border-white/20 text-xs sm:text-sm font-bold"
+            @click="canExportData ? exportCSV() : (showPremiumModal = true)"
+            :class="{ 'opacity-50 grayscale cursor-not-allowed': !canExportData }">
+            <span class="hidden sm:inline">{{ t('dashboard.participants_list.export_csv') }}</span>
+            <span class="sm:hidden">{{ t('dashboard.participants_list.export_short') }}</span>
+          </BaseButton>
+          <BaseButton :to="canCreateEvent ? `/dashboard/events/${eventId}/participants/add` : undefined"
+            variant="primary" icon="ph:user-plus-bold"
+            class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
+            :class="{ 'opacity-50 grayscale cursor-not-allowed': !canCreateEvent }"
+            @click="!canCreateEvent && (showPremiumModal = true)">
+            {{ t('dashboard.participants_list.add_participant') }}
+          </BaseButton>
         </div>
+      </template>
+    </DashboardHeader>
         <PremiumRequiredModal v-model:show="showPremiumModal" :feature="premiumFeature" />
         <ImportParticipantsModal v-model:show="showImportModal" :event-id="eventId" @imported="loadParticipants" />
 
@@ -77,6 +53,10 @@
                         :placeholder="t('dashboard.participants_list.select_status', 'Pilih Status Pembayaran')"
                         @update:model-value="handleFilterStatus" />
                 </div>
+                <BaseButton v-if="isFiltered" variant="white" icon="ph:funnel" @click="resetFilters"
+                    class="h-11 px-4 rounded-xl text-xs font-black tracking-widest shrink-0">
+                    {{ t('common.reset', 'Reset') }}
+                </BaseButton>
             </div>
 
             <div class="flex items-center gap-2">
@@ -342,6 +322,15 @@ const categoryFilterOptions = computed(() => {
 })
 
 const hasActiveCategoryFilter = computed(() => Array.isArray(categoryFilter.value) && categoryFilter.value.length > 0)
+const isFiltered = computed(() => !!searchQuery.value || statusFilter.value !== 'Semua' || hasActiveCategoryFilter.value)
+
+const resetFilters = () => {
+    searchQuery.value = ''
+    statusFilter.value = 'Semua'
+    categoryFilter.value = []
+    page.value = 1
+    fetchParticipants()
+}
 
 const searchTimeout = ref(null)
 

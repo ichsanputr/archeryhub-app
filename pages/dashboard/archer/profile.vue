@@ -142,13 +142,6 @@
                 { title: t('profile.female'), value: 'female' }
               ]" icon="ph:gender-intersex" />
 
-              <BaseSelect v-model="accountForm.blood_type" :label="t('profile.blood_type')" :items="[
-                { title: 'A', value: 'A' },
-                { title: 'B', value: 'B' },
-                { title: 'AB', value: 'AB' },
-                { title: 'O', value: 'O' }
-              ]" icon="ph:drop-bold" :placeholder="t('profile.select_blood_type')" />
-
               <BaseInput v-model.number="accountForm.height_cm" :label="t('profile.height_label')" type="number" placeholder="170" icon="ph:arrows-out-line-vertical-bold" />
               
               <BaseInput v-model.number="accountForm.weight_kg" :label="t('profile.weight_label')" type="number" placeholder="65" icon="ph:scales-bold" />
@@ -192,15 +185,13 @@
               {{ t('profile.contact_title') }}
             </h3>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
               <BaseInput v-model="accountForm.phone" :label="t('profile.phone')" type="tel" placeholder="+62 812-3456-7890"
                 icon="ph:phone" numberOnly />
 
               <BaseInput v-model="accountForm.email" label="Email" type="email" placeholder="archer@example.com" icon="ph:envelope-simple-bold" />
 
               <BaseInput v-model="accountForm.emergency_contact_name" :label="t('profile.emergency_name')" placeholder="Nama Lengkap" icon="ph:user-bold" />
-              
-              <BaseInput v-model="accountForm.emergency_contact_phone" :label="t('profile.emergency_phone')" type="tel" placeholder="+62 812-..." icon="ph:phone-call-bold" />
             </div>
           </div>
 
@@ -211,17 +202,13 @@
               {{ t('profile.address_title') }}
             </h3>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
               <BaseSelect v-model="accountForm.country" :label="t('profile.country')" :items="countries"
                 :placeholder="t('profile.select_country', 'Select Country...')" icon="ph:globe" searchable />
 
-              <BaseInput v-model="accountForm.province" :label="t('profile.province')" placeholder="D.I. Yogyakarta" icon="ph:map-trifold-bold" />
+              <BaseInput v-model="accountForm.city" :label="t('profile.city')" placeholder="Kabupaten / Kota" icon="ph:buildings-bold" />
 
-              <BaseInput v-model="accountForm.city" :label="t('profile.city')" placeholder="Kabupaten Sleman" icon="ph:buildings-bold" />
-
-              <BaseInput v-model="accountForm.postal_code" :label="t('profile.postal_code')" placeholder="55281" icon="ph:mailbox-bold" />
-
-              <div class="sm:col-span-2 lg:col-span-4">
+              <div class="sm:col-span-2">
                 <BaseTextarea v-model="accountForm.address" :label="t('profile.address')" :placeholder="t('profile.address_placeholder')"
                   :rows="3" icon="ph:house" />
               </div>
@@ -502,17 +489,13 @@ const accountForm = ref({
   nik: '',
   date_of_birth: '',
   gender: 'male',
-  blood_type: '',
   hand_dominance: 'right',
   height_cm: null,
   weight_kg: null,
   phone: '',
   email: '',
   emergency_contact_name: '',
-  emergency_contact_phone: '',
   city: '',
-  province: '',
-  postal_code: '',
   country: 'Indonesia',
   bow_type: 'recurve',
   address: '',
@@ -581,17 +564,13 @@ const loadProfile = async () => {
       nik: data.nik || '',
       date_of_birth: data.date_of_birth ? new Date(data.date_of_birth).toISOString().split('T')[0] : '',
       gender: data.gender || 'male',
-      blood_type: data.blood_type || '',
       hand_dominance: data.hand_dominance || 'right',
       height_cm: data.height_cm || null,
       weight_kg: data.weight_kg || null,
       phone: data.phone || '',
       email: data.email || '',
       emergency_contact_name: data.emergency_contact_name || '',
-      emergency_contact_phone: data.emergency_contact_phone || '',
       city: data.city || '',
-      province: data.province || '',
-      postal_code: data.postal_code || '',
       country: data.country || 'Indonesia',
       bow_type: data.bow_type || 'recurve',
       address: data.address || '',

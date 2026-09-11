@@ -9,7 +9,7 @@
                 <Icon icon="ph:caret-right-bold" class="text-[10px] text-gray-300 flex-shrink-0" />
             </li>
 
-            <li v-for="(item, index) in items" :key="index" class="flex items-center gap-2">
+            <li v-for="(item, index) in items" :key="item.path || item.label || index" class="flex items-center gap-2">
                 <NuxtLink v-if="item.path" :to="item.path"
                     class="text-gray-400 hover:text-primary transition-colors truncate max-w-[120px] md:max-w-none"
                     :class="{ 'text-navy font-bold': index === items.length - 1 && !current }">

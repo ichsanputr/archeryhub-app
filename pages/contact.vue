@@ -178,10 +178,11 @@
  })
 
  const { post } = useApi()
+ const toast = useToast()
 
  const handleSubmit = async () => {
    if (!form.name || !form.email || !form.subject || !form.message) {
-     alert('Please fill in all fields.')
+     toast.error('Please fill in all fields.')
      return
    }
 
@@ -194,7 +195,7 @@
        message: form.message
      })
 
-     alert('Thank you! Your message has been sent.')
+     toast.success('Thank you! Your message has been sent.')
      // Reset form
      form.name = ''
      form.email = ''
@@ -202,7 +203,7 @@
      form.message = ''
    } catch (error) {
      console.error('Failed to send message:', error)
-     alert('Failed to send message. Please try again later.')
+     toast.error('Failed to send message. Please try again later.')
    } finally {
      loading.value = false
    }

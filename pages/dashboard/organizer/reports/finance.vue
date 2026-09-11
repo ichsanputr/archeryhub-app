@@ -108,15 +108,15 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- payment method split -->
       <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4 lg:col-span-2">
-        <h3 class="text-navy-dark font-black text-sm flex items-center gap-2">
+        <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:credit-card-bold" class="text-primary" />
-          Payment Methods Split
+          {{ t('organizer_reports.finance.payment_methods_split', 'Payment Methods Split') }}
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div v-for="item in stats.payment_method_split" :key="item.name" class="p-4 bg-gray-50 rounded-xl space-y-2 border border-gray-100">
             <div class="flex justify-between text-xs font-bold">
-              <span class="text-navy-dark ">{{ item.name }}</span>
-              <span class="text-gray-500">{{ item.count }} Txn</span>
+              <span class="text-navy font-bold capitalize">{{ formatPaymentMethodName(item.name) }}</span>
+              <span class="text-gray-500 font-semibold">{{ item.count }} Txn</span>
             </div>
             <div class="text-lg font-black text-navy">Rp {{ formatPrice(item.amount) }}</div>
             <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
@@ -124,7 +124,7 @@
             </div>
             <div class="text-[10px] text-gray-400 font-bold text-right">{{ getPercent(item.amount) }}% of Total</div>
           </div>
-          <div v-if="!stats.payment_method_split?.length" class="text-center col-span-2 py-6 text-xs text-gray-400">No Payment Methods Split Data.</div>
+          <div v-if="!stats.payment_method_split?.length" class="text-center col-span-2 py-6 text-xs text-gray-400 font-medium">No Payment Methods Split Data.</div>
         </div>
       </div>
 
@@ -364,6 +364,20 @@ const handleExportExcel = () => {
     ],
     data
   )
+}
+
+const formatPaymentMethodName = (name) => {
+  if (!name) return '-'
+  const map = {
+    'bank_transfer': 'Bank Transfer',
+    'manual_transfer': 'Manual Transfer',
+    'qris': 'QRIS',
+    'credit_card': 'Credit Card',
+    'e_wallet': 'E-Wallet',
+    'mayar': 'Mayar Gateway',
+    'midtrans': 'Midtrans Gateway'
+  }
+  return map[name.toLowerCase()] || name.replace(/_/g, ' ')
 }
 
 const formatDate = (dateStr) => {

@@ -1,7 +1,7 @@
 <template>
-    <div class="bracket-visualization rounded-[40px] shadow-sm overflow-hidden border border-[#d1dcf0]">
-        <div class="bracket-scroll-container no-scrollbar">
-            <div v-if="Object.keys(rounds).length > 0" class="flex items-center justify-center min-w-max gap-4 p-12">
+    <div class="bracket-visualization rounded-3xl shadow-sm overflow-hidden border border-slate-200/90 bg-slate-50">
+        <div class="bracket-scroll-container custom-scrollbar">
+            <div v-if="Object.keys(rounds).length > 0" class="flex items-center justify-center min-w-max gap-4 p-8 sm:p-12 relative z-10">
 
                 <!-- LEFT SIDE ROUNDS -->
                 <template v-for="rNo in leftSideRoundNumbers" :key="'left-' + rNo">
@@ -51,14 +51,15 @@
             </div>
         </div>
 
-        <div v-if="Object.keys(rounds).length === 0" class="text-center py-16 bg-white">
+        <div v-if="Object.keys(rounds).length === 0" class="text-center py-20 bg-white/80 backdrop-blur-sm">
             <div
-                class="size-20 rounded-2xl bg-slate-50 shadow-inner flex items-center justify-center mx-auto mb-6 border border-slate-100">
-                <Icon icon="ph:brackets-curly-bold" class="text-3xl text-slate-200" />
+                class="size-20 rounded-3xl bg-slate-100/80 shadow-inner flex items-center justify-center mx-auto mb-5 border border-slate-200">
+                <Icon icon="ph:brackets-curly-bold" class="text-3xl text-slate-400" />
             </div>
-            <h2 class="text-lg font-black text-navy tracking-tight mb-6">{{ t('event_elimination.bracket_not_generated') }}</h2>
+            <h2 class="text-lg font-black text-slate-900 tracking-tight mb-2">{{ t('event_elimination.bracket_not_generated') }}</h2>
+            <div class="text-xs text-slate-400 max-w-sm mx-auto mb-6">{{ t('event_elimination.generate_bracket_desc', 'Bagan pertandingan belum dibuat. Klik tombol di bawah untuk membuat bagan otomatis.') }}</div>
             <button @click="$emit('generate-bracket')"
-                class="px-5 py-2.5 rounded-xl bg-navy text-primary text-xs font-black tracking-widest hover:brightness-110 shadow-lg shadow-navy/20 transition-all flex items-center gap-2.5 mx-auto">
+                class="px-6 py-2.5 rounded-xl bg-navy text-primary text-xs font-black tracking-widest hover:brightness-110 shadow-lg shadow-navy/20 active:scale-95 transition-all flex items-center gap-2.5 mx-auto">
                 <Icon icon="ph:magic-wand-bold" class="text-base" />
                 {{ t('event_elimination.generate_bracket_now') }}
             </button>
@@ -69,6 +70,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Icon } from '@iconify/vue'
 import BracketRound from './BracketRound.vue'
 import ChampionshipTower from './ChampionshipTower.vue'
 
@@ -169,9 +171,7 @@ const calculateConnectorPath = (i, roundNo, side = 'left', isSingle = false) => 
 <style scoped>
 .bracket-visualization {
     @apply relative min-h-[500px];
-    background-color: #EEF2FB;
-    background-image: radial-gradient(#d1dcf0 2px, transparent 2px);
-    background-size: 32px 32px;
+    background-color: #f8fafc;
 }
 
 .bracket-scroll-container {
@@ -184,14 +184,10 @@ const calculateConnectorPath = (i, roundNo, side = 'left', isSingle = false) => 
 }
 
 .connector-line {
-    @apply fill-none stroke-[#d1dcf0] stroke-[2.5px] transition-all duration-500;
+    @apply fill-none stroke-slate-300 stroke-[2px] transition-all duration-300;
 }
 
 .bracket-round:hover+.connector-space .connector-line {
-    @apply stroke-primary/40 stroke-[3.5px];
-}
-
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
+    @apply stroke-slate-700 stroke-[2.5px];
 }
 </style>

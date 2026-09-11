@@ -33,7 +33,7 @@ try {
   })
 }
 
-await navigateTo(`/dashboard/archer/events/${eventId}/my-registration`, {
+await navigateTo(`/dashboard/archer/events/${eventId}/overview`, {
   redirectCode: 302,
   replace: true,
 })

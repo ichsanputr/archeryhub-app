@@ -1,5 +1,5 @@
 <template>
-  <div class="relative inline-block text-left" v-click-outside="closePicker">
+  <div ref="pickerContainer" class="relative inline-block text-left" v-click-outside="closePicker">
     <button type="button" @click="togglePicker"
       class="p-2.5 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-xl transition-all flex items-center justify-center shrink-0"
       :title="t('chat.emoji_picker') || 'Emoji'">
@@ -9,7 +9,11 @@
     <!-- Popover Container -->
     <Transition name="fade-up">
       <div v-if="isOpen"
-        class="absolute bottom-14 right-0 sm:left-0 z-50 w-72 sm:w-80 bg-white rounded-2xl border border-gray-200 shadow-2xl overflow-hidden flex flex-col h-80">
+        class="absolute z-50 w-72 sm:w-80 bg-white rounded-2xl border border-gray-200 shadow-2xl overflow-hidden flex flex-col h-80"
+        :class="[
+          isFlippedTop ? 'bottom-full mb-2 origin-bottom' : 'top-full mt-2 origin-top',
+          isAlignedRight ? 'right-0' : 'left-0'
+        ]">
         
         <!-- Search bar -->
         <div class="p-2.5 border-b border-gray-100 bg-gray-50/80 flex items-center gap-2">
@@ -48,12 +52,16 @@
 import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
 import useDashboardI18n from '~/composables/useDashboardI18n'
+import { useDropdownPosition } from '~/composables/useDropdownPosition'
 
 const { t } = useDashboardI18n()
 const emit = defineEmits(['select'])
 const isOpen = ref(false)
 const search = ref('')
 const activeCat = ref('Smileys')
+const pickerContainer = ref(null)
+
+const { isFlippedTop, isAlignedRight } = useDropdownPosition(pickerContainer, isOpen, { panelHeight: 330, panelWidth: 320 })
 
 const togglePicker = () => {
   isOpen.value = !isOpen.value

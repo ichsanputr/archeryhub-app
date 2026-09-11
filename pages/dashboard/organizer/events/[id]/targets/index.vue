@@ -1,65 +1,41 @@
 <template>
   <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
-    <!-- Enhanced Header -->
-    <div
-      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <!-- Theme Motif Pattern -->
-      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-
-      <!-- Decorative Background Elements -->
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-      <!-- Header Content -->
-      <div class="relative p-6 sm:p-8">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <div class="flex items-start gap-4">
-            <!-- Icon Badge -->
-            <div
-              class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-              <Icon icon="ph:target" class="text-white text-2xl" />
-            </div>
-
-            <!-- Title Section -->
-            <div class="flex-1">
-              <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
-                {{ t('event_targets.title') }}
-              </h1>
-              <div class="text-slate-300 text-sm max-w-2xl">
-                {{ t('event_targets.manage_desc', { event: eventName }) }}
-              </div>
-            </div>
+    <DashboardHeader
+      :title="t('event_targets.title', 'Bantalan Target')"
+      :subtitle="t('event_targets.manage_desc', { event: eventName || 'Event' })"
+      icon="ph:target"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/events' },
+        { label: t('event_targets.title', 'Bantalan Target') }
+      ]"
+    >
+      <template #actions>
+        <div class="flex items-center gap-3 flex-shrink-0">
+          <!-- View Toggle -->
+          <div class="hidden sm:flex bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 mr-2">
+            <button @click="viewMode = 'grid'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
+              :class="viewMode === 'grid' ? 'bg-primary text-navy shadow-md font-bold' : 'text-slate-300 hover:text-white'">
+              <Icon icon="ph:grid-four-bold" />
+              <span class="text-[10px] font-black tracking-wider">{{ t('event_targets.view_grid') }}</span>
+            </button>
+            <button @click="viewMode = 'table'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
+              :class="viewMode === 'table' ? 'bg-primary text-navy shadow-md font-bold' : 'text-slate-300 hover:text-white'">
+              <Icon icon="ph:table-bold" />
+              <span class="text-[10px] font-black tracking-wider">{{ t('event_targets.view_table') }}</span>
+            </button>
           </div>
 
-          <!-- Action Buttons -->
-          <div class="flex items-center gap-3 flex-shrink-0">
-            <!-- View Toggle -->
-            <div class="hidden sm:flex bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 mr-2">
-              <button @click="viewMode = 'grid'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
-                :class="viewMode === 'grid' ? 'bg-primary text-btn-text shadow-md' : 'text-slate-300 hover:text-white'">
-                <Icon icon="ph:grid-four-bold" />
-                <span class="text-[10px] font-black tracking-wider">{{ t('event_targets.view_grid') }}</span>
-              </button>
-              <button @click="viewMode = 'table'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
-                :class="viewMode === 'table' ? 'bg-primary text-btn-text shadow-md' : 'text-slate-300 hover:text-white'">
-                <Icon icon="ph:table-bold" />
-                <span class="text-[10px] font-black tracking-wider">{{ t('event_targets.view_table') }}</span>
-              </button>
-            </div>
-
-            <BaseButton @click="isSubscriptionActive ? (showCreateDialog = true) : (showPremiumModal = true)" variant="primary" icon="ph:plus-bold"
-              class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
-              :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
-              <span class="hidden sm:inline">{{ t('event_targets.add_target') }}</span>
-              <span class="sm:hidden">{{ t('event_targets.add') }}</span>
-            </BaseButton>
-          </div>
+          <BaseButton @click="isSubscriptionActive ? (showCreateDialog = true) : (showPremiumModal = true)" variant="primary" icon="ph:plus-bold"
+            class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
+            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
+            <span class="hidden sm:inline">{{ t('event_targets.add_target') }}</span>
+            <span class="sm:hidden">{{ t('event_targets.add') }}</span>
+          </BaseButton>
         </div>
-      </div>
-    </div>
+      </template>
+    </DashboardHeader>
     <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
     <!-- Grid View -->
@@ -263,9 +239,9 @@
         enter-to-class="opacity-100" leave-active-class="transition duration-150 ease-in" leave-from-class="opacity-100"
         leave-to-class="opacity-0">
         <div v-if="showCreateDialog || showEditDialog"
-          class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+          class="fixed inset-0 z-50 flex items-center justify-center bg-navy/60 backdrop-blur-sm p-4"
           @click.self="closeDialog">
-          <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-visible">
+          <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-visible">
             <!-- Dialog Header -->
             <div class="sticky top-0 bg-white px-6 py-4 rounded-t-2xl border-b border-gray-200 z-10">
               <div class="flex items-center justify-between">
@@ -349,9 +325,9 @@
         enter-to-class="opacity-100" leave-active-class="transition duration-150 ease-in" leave-from-class="opacity-100"
         leave-to-class="opacity-0">
         <div v-if="showDeleteDialog"
-          class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+          class="fixed inset-0 z-50 flex items-center justify-center bg-navy/60 backdrop-blur-sm p-4"
           @click.self="showDeleteDialog = false">
-          <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+          <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full">
             <div class="p-6">
               <div class="flex items-start gap-4 mb-4">
                 <div class="size-12 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">

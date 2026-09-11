@@ -5,7 +5,7 @@
       <span v-if="required" class="text-red-500">*</span>
     </label>
 
-    <div class="relative">
+    <div ref="triggerEl" class="relative">
       <!-- trigger -->
       <div @click="toggleDropdown"
         class="w-full min-h-[44px] px-4 rounded-xl border border-gray-200 bg-gray-50/50 text-sm font-medium transition-all group cursor-pointer
@@ -85,14 +85,15 @@
       <!-- dropdown -->
       <transition
         enter-active-class="transition duration-200 ease-out"
-        enter-from-class="translate-y-2 opacity-0 scale-95"
+        :enter-from-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'"
         enter-to-class="translate-y-0 opacity-100 scale-100"
         leave-active-class="transition duration-150 ease-in"
         leave-from-class="translate-y-0 opacity-100 scale-100"
-        leave-to-class="translate-y-2 opacity-0 scale-95">
+        :leave-to-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'">
 
         <div v-if="isOpen"
-          class="absolute left-0 right-0 top-full z-[10000] mt-2 bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col shadow-2xl"
+          class="absolute left-0 right-0 z-[10000] bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col shadow-2xl"
+          :class="isFlippedTop ? 'bottom-full mb-2 origin-bottom' : 'top-full mt-2 origin-top'"
           style="box-shadow: 0 20px 60px -10px rgba(15,23,42,0.25); max-height: 320px">
 
           <!-- multiple: search header (single has inline) -->
@@ -199,6 +200,7 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
+import { useDropdownPosition } from '~/composables/useDropdownPosition'
 
 const { t } = useI18n()
 
@@ -225,6 +227,9 @@ const emit = defineEmits(['update:modelValue'])
 const isOpen = ref(false)
 const searchQuery = ref('')
 const searchInput = ref(null)
+const triggerEl = ref(null)
+
+const { isFlippedTop, isAlignedRight } = useDropdownPosition(triggerEl, isOpen, { panelHeight: 320 })
 
 const allItems = computed(() => (Array.isArray(props.options) ? props.options : props.items) || [])
 

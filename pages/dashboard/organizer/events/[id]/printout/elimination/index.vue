@@ -1,46 +1,24 @@
 <template>
   <div class="flex flex-col gap-6 pb-16 font-body text-navy antialiased">
-    <!-- Enhanced Header with Back Navigation -->
-    <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-      <div class="relative p-6 sm:p-8">
-        <!-- Breadcrumbs -->
-        <nav class="flex text-xs font-bold text-white/50 tracking-wider mb-3 items-center gap-1.5">
-          <NuxtLink :to="`/dashboard/organizer/events/${eventId}/printout`" class="hover:text-white transition-colors">
-            {{ t('event_printout.breadcrumb_printout', 'Cetak Dokumen') }}
-          </NuxtLink>
-          <Icon icon="ph:caret-right-bold" class="text-[10px]" />
-          <span class="text-white">{{ t('event_printout.elimination.title', 'Bagan Eliminasi') }}</span>
-        </nav>
-
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex items-center sm:items-start gap-4">
-            <NuxtLink :to="`/dashboard/organizer/events/${eventId}/printout`"
-              class="size-14 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center shadow-md transition-colors shrink-0">
-              <Icon icon="ph:arrow-left-bold" class="text-white text-xl" />
-            </NuxtLink>
-            <div class="min-w-0 text-left">
-              <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2 truncate">
-                {{ t('event_printout.elimination.title', 'Bagan Eliminasi') }}
-              </h1>
-              <div class="text-slate-300 text-sm max-w-2xl">
-                {{ t('event_printout.elimination.page_desc', 'Cetak bagan eliminasi per kategori untuk informasi peserta dan penonton.') }}
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3 shrink-0" v-if="bracket && bracket.rounds?.length > 0">
-            <BaseButton variant="primary" icon="ph:printer-bold" size="lg" class="font-black text-sm" @click="printBracket">
-              {{ t('event_printout.elimination.btn_print_bracket', 'Cetak Bagan') }}
-            </BaseButton>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Header -->
+    <DashboardHeader
+      :title="t('event_printout.elimination.title', 'Bagan Eliminasi')"
+      :subtitle="t('event_printout.elimination.page_desc', 'Cetak bagan eliminasi per kategori untuk informasi peserta dan penonton.')"
+      icon="ph:arrow-left-bold"
+      :back-to="`/dashboard/organizer/events/${eventId}/printout`"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/events' },
+        { label: t('event_printout.breadcrumb_printout', 'Cetak Dokumen'), to: `/dashboard/organizer/events/${eventId}/printout` },
+        { label: t('event_printout.elimination.title', 'Bagan Eliminasi') }
+      ]"
+    >
+      <template #actions v-if="bracket && bracket.rounds?.length > 0">
+        <BaseButton variant="primary" icon="ph:printer-bold" class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest" @click="printBracket">
+          {{ t('event_printout.elimination.btn_print_bracket', 'Cetak Bagan') }}
+        </BaseButton>
+      </template>
+    </DashboardHeader>
 
     <!-- Filter Controls Card -->
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">

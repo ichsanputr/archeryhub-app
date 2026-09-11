@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
     <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
@@ -37,7 +37,10 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <input v-model="search" type="text" :placeholder="t('org_qual_results.search_placeholder')" class="px-4 py-2 text-xs font-bold bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl w-60 focus:outline-none" />
+        <div class="relative w-64">
+          <Icon icon="ph:magnifying-glass-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
+          <input v-model="search" type="text" :placeholder="t('org_qual_results.search_placeholder')" class="w-full h-10 pl-9 pr-4 text-xs font-medium bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-navy dark:text-white placeholder:text-slate-400" />
+        </div>
       </div>
     </div>
 
@@ -108,12 +111,17 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { Icon } from '@iconify/vue'
 
 const { t } = useI18n()
 const route = useRoute()
 const { get } = useApi()
 
 const eventId = computed(() => route.params.id as string)
+
+useHead({
+  title: computed(() => (t ? t('org_qual_results.header_title', 'Hasil Kualifikasi') : 'Hasil Kualifikasi') + ' - Archeris Dashboard')
+})
 const isLoading = ref(false)
 const categories = ref<any[]>([])
 const selectedCategory = ref('')

@@ -1,4 +1,8 @@
 <script setup>
+useHead({
+  title: 'Metode Pembayaran - Archeris Dashboard'
+})
+
 definePageMeta({
   middleware: [
     function () {

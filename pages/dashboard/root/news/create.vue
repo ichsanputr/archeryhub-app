@@ -131,7 +131,7 @@ const showMediaLibrary = ref(false)
 const form = ref({
     title: '',
     category: 'pengumuman',
-    status: 'draft',
+    status: 'published',
     tags: '',
     excerpt: '',
     content: '',

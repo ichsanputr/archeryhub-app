@@ -21,7 +21,7 @@
 
             <!-- Page Numbers -->
             <div class="flex items-center gap-1 sm:gap-1.5">
-                <template v-for="(page, index) in displayedPages" :key="index">
+                <template v-for="(page, index) in displayedPages" :key="`page-${page}-${index}`">
                     <button v-if="typeof page === 'number'" @click="emitPage(page)" :class="[
                         'size-10 flex items-center justify-center rounded-xl font-black text-sm transition-all duration-300 transform active:scale-90',
                         currentPage === page

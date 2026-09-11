@@ -1,50 +1,27 @@
 <template>
   <div class="flex flex-col gap-6 pb-12">
-    <!-- Enhanced Header -->
-    <div
-      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <!-- Theme Motif Pattern -->
-      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-
-      <!-- Decorative Background Elements -->
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-      <!-- Header Content -->
-      <div class="relative p-5 sm:p-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div class="flex items-center sm:items-start gap-4 flex-1">
-            <!-- Icon Badge -->
-            <div
-              class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-              <Icon icon="ph:crosshair" class="text-white text-xl sm:text-2xl" />
-            </div>
-
-            <!-- Title Section -->
-            <div class="min-w-0">
-              <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                {{ t('event_qualification.title') }}
-              </h1>
-              <div class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
-                {{ t('event_qualification.manage_desc', { event: eventName }) }}
-              </div>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex flex-col sm:flex-row gap-3">
-             <BaseButton variant="primary" icon="ph:plus-bold"
-               class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
-               :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
-               @click="isSubscriptionActive ? openCreateModal() : (showPremiumModal = true)">
-               {{ t('event_qualification.add_session') }}
-             </BaseButton>
-           </div>
-        </div>
-      </div>
-    </div>
+    <!-- Header -->
+    <DashboardHeader
+      :title="t('event_qualification.title', 'Manajemen Kualifikasi')"
+      :subtitle="t('event_qualification.manage_desc', { event: eventName || 'Event' })"
+      icon="ph:crosshair"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/events' },
+        { label: t('event_qualification.title', 'Kualifikasi') }
+      ]"
+    >
+      <template #actions>
+        <BaseButton
+          variant="primary"
+          icon="ph:plus-bold"
+          class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
+          :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+          @click="isSubscriptionActive ? openCreateModal() : (showPremiumModal = true)">
+          {{ t('event_qualification.add_session', 'Tambah Sesi') }}
+        </BaseButton>
+      </template>
+    </DashboardHeader>
     <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
     <!-- Sessions List View -->
@@ -76,76 +53,84 @@
 
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div v-for="session in qualificationSessions" :key="session.uuid" @click="goToSession(session)"
-            class="p-5 bg-gradient-to-br from-white to-gray-50 rounded-3xl border-2 border-gray-100 hover:border-primary hover:shadow-md hover:shadow-primary/10 transition-all cursor-pointer group flex flex-col h-full relative overflow-hidden">
+            class="rounded-3xl border border-slate-200/90 hover:border-primary transition-colors duration-200 bg-white flex flex-col justify-between overflow-hidden relative group cursor-pointer text-left">
 
-            <!-- Action Icons -->
-            <div
-              class="absolute top-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-              <BaseButton variant="white" size="sm" icon="ph:pencil-simple-bold"
-                class="!size-9 !p-0 !rounded-xl text-gray-400 hover:!text-navy hover:scale-110 active:scale-95 shadow-md"
-                @click.stop="isSubscriptionActive ? editSession(session) : (showPremiumModal = true)" />
-            </div>
+            <!-- Themed Signature Navy Card Header -->
+            <div class="relative overflow-hidden p-5 bg-gradient-to-r from-navy via-navy to-navy/95 text-white border-b border-primary/20">
+              <!-- Theme Motif Pattern -->
+              <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
+              <!-- Decorative Top Accent Line -->
+              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
 
-            <div class="flex items-start justify-between mb-4">
-              <div class="flex items-center gap-4">
-                <div
-                  class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:bg-primary transition-colors duration-500 shadow-inner">
-                  <Icon icon="ph:calendar-check-bold" class="text-3xl text-navy" />
-                </div>
-                <div>
-                  <h3 class="font-black text-navy text-lg leading-tight group-hover:text-primary transition-colors">{{
-                    session.name }}</h3>
-                  <div class="flex items-center gap-1.5 mt-1">
-                    <span
-                      class="text-[10px] font-black  tracking-widest text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{
-                        session.session_code }}</span>
+              <div class="relative z-10 flex items-start justify-between gap-3">
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-black text-white text-base sm:text-lg leading-tight group-hover:text-primary transition-colors truncate">
+                    {{ session.name }}
+                  </h3>
+                  <div class="flex items-center gap-1.5 mt-1.5">
+                    <span class="text-[10px] font-bold font-mono text-primary bg-primary/15 border border-primary/30 px-2.5 py-0.5 rounded-lg">
+                      {{ session.session_code }}
+                    </span>
                   </div>
                 </div>
+
+                <!-- Action Edit Button in Header -->
+                <button type="button"
+                  @click.stop="isSubscriptionActive ? editSession(session) : (showPremiumModal = true)"
+                  class="size-8 rounded-xl bg-white/10 hover:bg-primary hover:text-navy text-white/80 border border-white/15 transition-all flex items-center justify-center active:scale-95 shrink-0"
+                  :title="t('event_qualification.edit_session', 'Edit Sesi')">
+                  <Icon icon="ph:pencil-simple-bold" class="text-sm" />
+                </button>
               </div>
             </div>
 
-            <div class="space-y-4 mb-6 flex-1">
-              <div class="flex items-center gap-3">
-                <div class="size-8 rounded-lg bg-navy/5 flex items-center justify-center text-navy">
-                  <Icon icon="ph:calendar-bold" class="text-lg" />
+            <!-- Card Body: Date, Time & Format Details -->
+            <div class="p-5 sm:p-6 bg-slate-50/70 flex-1 space-y-3.5">
+              <!-- Schedule Box -->
+              <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 space-y-2.5">
+                <div class="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <div class="size-6 rounded-lg bg-navy text-primary flex items-center justify-center shrink-0">
+                    <Icon icon="ph:calendar-blank-bold" class="text-xs" />
+                  </div>
+                  <span class="truncate">{{ session.session_date ? formatDate(session.session_date) : t('event_qualification.not_set') }}</span>
                 </div>
-                <span class="text-sm font-bold text-gray-600">{{ session.session_date ? formatDate(session.session_date)
-                  : t('event_qualification.not_set') }}</span>
+
+                <div class="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <div class="size-6 rounded-lg bg-navy text-primary flex items-center justify-center shrink-0">
+                    <Icon icon="ph:clock-bold" class="text-xs" />
+                  </div>
+                  <span v-if="session.start_time || session.end_time" class="truncate font-mono">
+                    {{ formatTime(session.start_time) }} - {{ formatTime(session.end_time) }}
+                  </span>
+                  <span v-else class="text-xs font-medium text-slate-400 italic">{{ t('event_qualification.time_not_set') }}</span>
+                </div>
               </div>
 
-              <div class="flex items-center gap-3">
-                <div class="size-8 rounded-lg bg-navy/5 flex items-center justify-center text-navy">
-                  <Icon icon="ph:clock-bold" class="text-lg" />
+              <!-- Format Rule Metrics (2-column pill grid) -->
+              <div class="grid grid-cols-2 gap-2.5">
+                <div class="flex items-center gap-2 px-3 py-2.5 bg-white rounded-xl border border-slate-200/80">
+                  <Icon icon="ph:arrow-clockwise-bold" class="text-primary text-base shrink-0" />
+                  <span class="text-xs font-black text-navy truncate">{{ session.total_ends }} {{ t('event_qualification.ends') }}</span>
                 </div>
-                <span v-if="session.start_time || session.end_time" class="text-sm font-bold text-gray-600">
-                  {{ formatTime(session.start_time) }} - {{ formatTime(session.end_time) }}
-                </span>
-                <span v-else class="text-sm font-medium text-gray-400 italic">{{ t('event_qualification.time_not_set') }}</span>
-              </div>
-
-              <div class="grid grid-cols-2 gap-3 pt-2">
-                <div class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border border-gray-100">
-                  <Icon icon="ph:arrow-clockwise-bold" class="text-primary text-lg" />
-                  <span class="text-xs font-black text-navy">{{ session.total_ends }} {{ t('event_qualification.ends') }}</span>
-                </div>
-                <div class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border border-gray-100">
-                  <Icon icon="ph:crosshair-bold" class="text-primary text-lg" />
-                  <span class="text-xs font-black text-navy">{{ session.arrows_per_end }} {{ t('event_qualification.arrows') }}</span>
+                <div class="flex items-center gap-2 px-3 py-2.5 bg-white rounded-xl border border-slate-200/80">
+                  <Icon icon="ph:crosshair-bold" class="text-primary text-base shrink-0" />
+                  <span class="text-xs font-black text-navy truncate">{{ session.arrows_per_end }} {{ t('event_qualification.arrows') }}</span>
                 </div>
               </div>
             </div>
 
-            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-              <div class="flex items-center gap-2 px-3 py-1.5 bg-navy/5 rounded-xl">
-                <Icon icon="ph:users-three-bold" class="text-navy text-base" />
-                <span class="text-xs font-bold text-navy">
-                  <span class="text-sm">{{ session.participant_count || 0 }}</span> {{ t('event_qualification.archers') }}
+            <!-- Card Footer -->
+            <div class="flex items-center justify-between px-5 sm:px-6 py-3.5 bg-white border-t border-slate-200/80 mt-auto">
+              <div class="flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-xl">
+                <Icon icon="ph:users-three-bold" class="text-navy text-sm shrink-0" />
+                <span class="text-xs font-black text-navy">
+                  <span>{{ session.participant_count || 0 }}</span> {{ t('event_qualification.archers') }}
                 </span>
               </div>
               <div
-                class="flex items-center gap-1 font-black text-[10px]  tracking-widest group-hover:gap-2 transition-all">
+                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-navy text-primary group-hover:bg-primary group-hover:text-navy text-xs font-black transition-all active:scale-95">
                 <span>{{ t('event_qualification.manage') }}</span>
-                <Icon icon="ph:arrow-right-bold" class="text-sm" />
+                <Icon icon="ph:arrow-right-bold" class="text-xs" />
               </div>
             </div>
           </div>
@@ -153,10 +138,28 @@
       </div>
 
       <!-- Results Section -->
-      <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <h2 class="text-base font-bold text-navy">{{ t('event_qualification.qualification_results') }}</h2>
-          <div class="w-full sm:w-80">
+      <div class="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 space-y-5">
+        <!-- Section Header Bar (Input Scoring Style) -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center font-black shrink-0">
+              <Icon icon="ph:trophy-bold" class="text-xl" />
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-base sm:text-lg font-black text-navy leading-tight">
+                  {{ t('event_qualification.qualification_results') }}
+                </h2>
+                <span class="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md font-mono">
+                  {{ categories.length }} {{ t('event_categories.title', 'Kategori') }}
+                </span>
+              </div>
+              <div class="text-xs text-slate-500 font-medium mt-0.5">
+                {{ t('event_qualification.choose_category', 'Pilih kategori event untuk melihat rekapitulasi nilai dan peringkat kualifikasi.') }}
+              </div>
+            </div>
+          </div>
+          <div class="w-full sm:w-72">
             <BaseSelect
               v-model="selectedCategory"
               :items="mappedCategoriesForFilter"
@@ -167,54 +170,49 @@
           </div>
         </div>
 
-        <!-- Category Selection -->
-        <div v-if="loadingCategories" class="flex gap-4 overflow-hidden pb-2">
-          <div v-for="i in 4" :key="i" class="flex-shrink-0 w-72 p-5 rounded-xl border border-gray-100 animate-pulse">
-            <div class="flex items-start gap-3">
-              <div class="size-12 bg-gray-100 rounded-xl"></div>
-              <div class="flex-1">
-                <div class="h-5 bg-gray-100 rounded mb-2"></div>
-                <div class="h-4 bg-gray-50 rounded w-24"></div>
-              </div>
-            </div>
-          </div>
+        <!-- Category Selector Chips (Input Scoring Chips Style) -->
+        <div v-if="loadingCategories" class="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-hide">
+          <div v-for="i in 4" :key="i" class="h-11 w-48 bg-slate-100 rounded-xl animate-pulse shrink-0"></div>
         </div>
 
         <div v-else-if="categories.length === 0"
-          class="text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
-          <Icon icon="ph:folder-notch-open" class="text-4xl text-gray-300 mx-auto mb-3" />
-          <div class="text-sm font-bold text-gray-600 mb-1">{{ t('event_qualification.no_category') }}</div>
-          <div class="text-xs text-gray-400">{{ t('event_qualification.no_category_desc') }}</div>
+          class="text-center py-10 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+          <Icon icon="ph:folder-notch-open" class="text-3xl text-slate-300 mx-auto mb-2" />
+          <div class="text-xs font-bold text-slate-600 mb-0.5">{{ t('event_qualification.no_category') }}</div>
+          <div class="text-[11px] text-slate-400">{{ t('event_qualification.no_category_desc') }}</div>
         </div>
 
         <div v-else>
-          <div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide mb-6">
-            <button v-for="category in categories" :key="category.id" @click="selectCategory(category.id)" :class="[
-              'flex-shrink-0 w-72 p-5 rounded-xl border-2 transition-all text-left group hover:shadow-md relative',
-              selectedCategory === category.id
-                ? 'border-primary bg-primary/5 shadow-sm'
-                : 'border-gray-200 bg-white hover:border-gray-300'
-            ]">
-              <div class="absolute top-0 left-0 w-1.5 h-full rounded-l-xl transition-colors"
-                :class="selectedCategory === category.id ? 'bg-primary' : 'bg-transparent'"></div>
-              <div class="flex items-start gap-3 pl-2">
-                <div
-                  class="size-12 bg-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden p-2 group-hover:bg-primary transition-colors">
-                  <img
-                    :src="'/' + getCategoryIcon(`${category.division_name} ${category.event_type_name} ${category.gender_division_name}`)"
-                    :alt="category.division_name"
-                    class="w-full h-full object-contain invert group-hover:invert-0 transition-all" />
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div
-                    class="font-bold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2">
-                    {{ getCategoryName(category) }}</div>
-                  <div class="flex items-center gap-2 text-xs text-gray-500">
-                    <Icon icon="ph:users-three" class="text-base" />
-                    <span class="font-semibold">{{ category.participant_count || 0 }} {{ t('event_qualification.archers').toLowerCase() }}</span>
-                  </div>
-                </div>
+          <!-- Horizontal Chips Match Switcher Style for Categories -->
+          <div class="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-hide mb-6">
+            <button v-for="category in categories" :key="category.id" @click="selectCategory(category.id)"
+              type="button"
+              :class="[
+                'px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-3 cursor-pointer shrink-0 border select-none',
+                selectedCategory === category.id
+                  ? 'bg-navy text-primary border-navy ring-2 ring-primary/20 font-black'
+                  : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-primary hover:bg-white'
+              ]">
+              <!-- Division Icon -->
+              <div class="size-6 rounded-lg flex items-center justify-center p-1 shrink-0 overflow-hidden"
+                :class="selectedCategory === category.id ? 'bg-white/15' : 'bg-navy/5'">
+                <img
+                  :src="'/' + getCategoryIcon(`${category.division_name} ${category.event_type_name} ${category.gender_division_name}`)"
+                  :alt="category.division_name"
+                  class="w-full h-full object-contain"
+                  :class="selectedCategory === category.id ? 'brightness-0 invert' : ''" />
               </div>
+
+              <!-- Category Name -->
+              <span class="truncate max-w-[200px]">{{ getCategoryName(category) }}</span>
+
+              <!-- Participant Count Badge -->
+              <span :class="[
+                'px-2 py-0.5 rounded-lg text-[11px] font-mono font-bold',
+                selectedCategory === category.id ? 'bg-primary text-navy' : 'bg-slate-200 text-slate-700'
+              ]">
+                {{ category.participant_count || 0 }}
+              </span>
             </button>
           </div>
 
@@ -226,7 +224,7 @@
             <div class="text-gray-500 mt-4">{{ t('event_qualification.loading_report') }}</div>
           </div>
 
-          <div v-else-if="selectedCategory && reportEntries.length > 0"
+          <div v-else-if="selectedCategory && validReportEntries.length > 0"
             class="bg-white rounded-xl border border-gray-200 overflow-x-auto no-scrollbar">
             <table class="w-full">
               <thead>
@@ -316,7 +314,7 @@
             <div v-if="totalPages > 1"
               class="px-6 py-4 bg-gray-50/30 border-t border-gray-100 flex items-center justify-between">
               <div class="text-xs text-gray-400 font-bold">
-                {{ t('event_qualification.showing_pagination', { start: (currentPage - 1) * pageSize + 1, end: Math.min(currentPage * pageSize, reportEntries.length), total: reportEntries.length }) }}
+                {{ t('event_qualification.showing_pagination', { start: (currentPage - 1) * pageSize + 1, end: Math.min(currentPage * pageSize, validReportEntries.length), total: validReportEntries.length }) }}
               </div>
               <div class="flex items-center gap-2">
                 <button @click="currentPage = Math.max(1, currentPage - 1)" :disabled="currentPage === 1"
@@ -347,7 +345,7 @@
           <div v-else-if="selectedCategory"
             class="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
             <Icon icon="ph:users-three" class="text-5xl text-gray-300 mx-auto mb-4" />
-            <div class="text-gray-500">{{ t('event_qualification.no_archer_in_category') }}</div>
+            <div class="text-gray-500">{{ t('event_qualification.no_scores_in_category', 'Belum ada data skor kualifikasi pada kategori ini.') }}</div>
           </div>
 
           <div v-else class="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
@@ -627,8 +625,17 @@ const filteredSessionCategories = computed(() => {
   })
 })
 
+// Valid Report Entries (only archers who have recorded scores)
+const validReportEntries = computed(() => {
+  return reportEntries.value.filter(entry => 
+    (entry.ends_completed && entry.ends_completed > 0) ||
+    (entry.total_score && entry.total_score > 0) ||
+    (entry.sessions && entry.sessions.length > 0)
+  )
+})
+
 // Pagination Computed
-const totalPages = computed(() => Math.ceil(reportEntries.value.length / pageSize.value))
+const totalPages = computed(() => Math.ceil(validReportEntries.value.length / pageSize.value))
 const paginatedEntries = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value
   const end = start + pageSize.value
@@ -638,7 +645,7 @@ const paginatedEntries = computed(() => {
     new Date(a.created_at) - new Date(b.created_at)
   )
 
-  return reportEntries.value.slice(start, end).map(entry => {
+  return validReportEntries.value.slice(start, end).map(entry => {
     const sessions = (entry.sessions || []).map(s => {
       const allScores = s.end_scores ? s.end_scores.split(', ') : []
       const sessionIdx = sortedSessions.findIndex(session => session.session_code === s.session_code)
@@ -658,7 +665,7 @@ const paginatedEntries = computed(() => {
   })
 })
 
-watch(reportEntries, () => {
+watch(validReportEntries, () => {
   currentPage.value = 1
 })
 

@@ -26,37 +26,37 @@
           :to="backTo"
           class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all backdrop-blur-md border border-white/10 shadow-2xs"
         >
-          <Icon icon="ph:arrow-left-bold" class="text-sm text-primary" />
+          <Icon icon="ph:arrow-left-bold" class="text-sm text-white" />
           <span>{{ backText || t('common.back', 'Kembali') }}</span>
         </NuxtLink>
 
         <!-- Breadcrumbs Navigation -->
         <slot name="breadcrumbs">
-          <nav v-if="breadcrumbs?.length || parentTitle" class="flex items-center gap-2 text-xs font-semibold text-slate-300 flex-wrap">
+          <nav v-if="breadcrumbs?.length || parentTitle" class="flex text-xs font-bold text-white/50 tracking-wider items-center gap-1.5 flex-wrap">
             <template v-if="parentTitle && parentTo">
-              <NuxtLink :to="parentTo" class="hover:text-primary transition-colors text-white/70">{{ parentTitle }}</NuxtLink>
-              <Icon icon="ph:caret-right-bold" class="text-[10px] text-slate-400" />
+              <NuxtLink :to="parentTo" class="hover:text-white transition-colors text-white/60">{{ parentTitle }}</NuxtLink>
+              <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
             </template>
 
             <template v-for="(crumb, idx) in breadcrumbs" :key="idx">
               <NuxtLink
                 v-if="crumb.to && idx < breadcrumbs.length - 1"
                 :to="crumb.to"
-                class="hover:text-primary transition-colors text-white/70"
+                class="hover:text-white transition-colors text-white/60"
               >
                 {{ crumb.label }}
               </NuxtLink>
-              <span v-else-if="idx < breadcrumbs.length - 1" class="text-white/70">
+              <span v-else-if="idx < breadcrumbs.length - 1" class="text-white/60">
                 {{ crumb.label }}
               </span>
-              <span v-else class="text-primary font-bold truncate max-w-[200px] sm:max-w-xs">
+              <span v-else class="text-white font-bold truncate max-w-[200px] sm:max-w-xs">
                 {{ crumb.label }}
               </span>
 
               <Icon
                 v-if="idx < breadcrumbs.length - 1"
                 icon="ph:caret-right-bold"
-                class="text-[10px] text-slate-400"
+                class="text-[10px] text-white/40"
               />
             </template>
           </nav>
@@ -73,7 +73,7 @@
               v-if="icon"
               class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shadow-lg shrink-0"
             >
-              <Icon :icon="icon" class="text-2xl sm:text-3xl text-primary" :class="iconClass" />
+              <Icon :icon="icon" class="text-2xl sm:text-3xl text-white" :class="iconClass" />
             </div>
           </slot>
 
@@ -81,7 +81,7 @@
             <!-- Inline Badge / Category Chip above Title if provided -->
             <div v-if="badge" class="mb-1.5">
               <span
-                class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border shadow-2xs"
+                class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider border shadow-2xs"
                 :class="badgeClasses"
               >
                 {{ badge }}

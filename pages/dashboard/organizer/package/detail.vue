@@ -27,18 +27,19 @@ const activeGroupIdx = ref(0)
 
 const isPaid = computed(() => {
   const s = (tx.value.status || tx.value.payment_status || '').toLowerCase()
-  return s === 'paid' || s === 'completed' || s === 'sukses'
+  return s === 'paid' || s === 'completed' || s === 'sukses' || s === 'success' || s === 'settlement' || s === 'lunas' || s === 'done' || s === 'verified'
 })
 
 const isPending = computed(() => {
+  if (isPaid.value) return false
   const s = (tx.value.status || tx.value.payment_status || '').toLowerCase()
-  return s === 'pending' || s === 'unpaid' || s === 'waiting'
+  return s === 'pending' || s === 'unpaid' || s === 'waiting' || s === 'awaiting_payment' || s === 'menunggu'
 })
 
 const statusBadgeClasses = computed(() => {
-  if (isPaid.value) return 'bg-emerald-50 text-emerald-800 border-emerald-200/80'
-  if (isPending.value) return 'bg-amber-50 text-amber-800 border-amber-200/80'
-  return 'bg-rose-50 text-rose-800 border-rose-200/80'
+  if (isPaid.value) return 'bg-emerald-50 text-emerald-800 border-emerald-200/80 font-black'
+  if (isPending.value) return 'bg-amber-50 text-amber-800 border-amber-200/80 font-black'
+  return 'bg-rose-50 text-rose-800 border-rose-200/80 font-black'
 })
 
 function formatStatus(status: string) {

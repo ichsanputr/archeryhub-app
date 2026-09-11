@@ -86,83 +86,157 @@
                     </div>
                 </div>
 
-                <!-- Right: Withdrawal History -->
+                <!-- Right: Withdrawal History & Mutation Ledger Tabs -->
                 <div class="lg:col-span-2">
                     <div
                         class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm h-full flex flex-col">
-                        <div class="p-6 border-b border-gray-100 flex items-center justify-between">
-                            <h3 class="font-black text-navy tracking-widest text-sm">{{ t('organizer.balance.withdrawals.title') }}</h3>
+                        <div class="p-4 sm:p-6 border-b border-gray-100 flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center gap-2 p-1 bg-gray-100/80 rounded-xl">
+                                <button type="button" @click="activeTab = 'withdrawals'"
+                                    :class="activeTab === 'withdrawals' ? 'bg-white text-navy shadow-xs font-black' : 'text-gray-500 hover:text-navy font-bold'"
+                                    class="px-3.5 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5">
+                                    <Icon icon="ph:clock-counter-clockwise-bold" class="text-sm" />
+                                    <span>{{ t('organizer.balance.withdrawals.title', 'Riwayat Penarikan') }}</span>
+                                </button>
+                                <button type="button" @click="activeTab = 'mutations'"
+                                    :class="activeTab === 'mutations' ? 'bg-white text-navy shadow-xs font-black' : 'text-gray-500 hover:text-navy font-bold'"
+                                    class="px-3.5 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5">
+                                    <Icon icon="ph:receipt-bold" class="text-sm" />
+                                    <span>{{ t('organizer.balance.mutations.title', 'Buku Mutasi Saldo') }}</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="flex-grow overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead>
-                                    <tr
-                                        class="bg-gray-50/50 text-gray-500 font-black text-[10px] tracking-widest border-b border-gray-100">
-                                        <th class="px-6 py-4">{{ t('organizer.balance.withdrawals.table_tx_id') }}</th>
-                                        <th @click="toggleSort('created_at')"
-                                            class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
-                                            <div class="flex items-center gap-2">
-                                                {{ t('organizer.balance.withdrawals.table_date') }}
-                                                <Icon v-if="sortBy === 'created_at'"
-                                                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                                    class="text-primary  text-xs" />
-                                                <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
-                                            </div>
-                                        </th>
-                                        <th @click="toggleSort('status')"
-                                            class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
-                                            <div class="flex items-center gap-2">
-                                                {{ t('organizer.balance.withdrawals.table_status') }}
-                                                <Icon v-if="sortBy === 'status'"
-                                                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                                    class="text-primary  text-xs" />
-                                                <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
-                                            </div>
-                                        </th>
-                                        <th @click="toggleSort('amount')"
-                                            class="px-6 py-4 text-right cursor-pointer hover:text-navy transition-colors">
-                                            <div class="flex items-center justify-end gap-2">
-                                                {{ t('organizer.balance.withdrawals.table_amount') }}
-                                                <Icon v-if="sortBy === 'amount'"
-                                                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                                    class="text-primary  text-xs" />
-                                                <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <tr v-for="item in withdrawalHistory" :key="item.id"
-                                        class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-6 py-4">
-                                            <span class="font-mono text-[10px] font-bold text-gray-400">#{{ item.txId
-                                                }}</span>
-                                        </td>
-                                        <td class="px-6 py-4 text-sm text-navy font-bold">{{ item.date }}</td>
-                                        <td class="px-6 py-4">
-                                            <span :class="getStatusClass(item.status)"
-                                                class="px-3 py-1 rounded-full text-[10px] font-black tracking-widest">
-                                                {{ item.status }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 text-right font-black text-navy">
-                                            Rp {{ item.amount.toLocaleString('id-ID') }}
-                                        </td>
-                                    </tr>
-                                    <tr v-if="!withdrawalHistory.length">
-                                        <td colspan="4" class="px-6 py-12 text-center">
-                                            <div class="opacity-20 mb-2">
-                                                <Icon icon="ph:clock-counter-clockwise" class="text-4xl mx-auto" />
-                                            </div>
-                                            <div class="text-gray-400 text-sm font-bold tracking-tight">{{ t('organizer.balance.withdrawals.empty') }}</div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+
+                        <!-- Tab 1: Withdrawal History Table -->
+                        <div v-if="activeTab === 'withdrawals'" class="flex-grow flex flex-col">
+                            <div class="flex-grow overflow-x-auto">
+                                <table class="w-full text-left">
+                                    <thead>
+                                        <tr
+                                            class="bg-gray-50/50 text-gray-500 font-black text-[10px] tracking-widest border-b border-gray-100">
+                                            <th class="px-6 py-4">{{ t('organizer.balance.withdrawals.table_tx_id') }}</th>
+                                            <th @click="toggleSort('created_at')"
+                                                class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
+                                                <div class="flex items-center gap-2">
+                                                    {{ t('organizer.balance.withdrawals.table_date') }}
+                                                    <Icon v-if="sortBy === 'created_at'"
+                                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                                        class="text-primary text-xs" />
+                                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                                </div>
+                                            </th>
+                                            <th @click="toggleSort('status')"
+                                                class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
+                                                <div class="flex items-center gap-2">
+                                                    {{ t('organizer.balance.withdrawals.table_status') }}
+                                                    <Icon v-if="sortBy === 'status'"
+                                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                                        class="text-primary text-xs" />
+                                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                                </div>
+                                            </th>
+                                            <th @click="toggleSort('amount')"
+                                                class="px-6 py-4 text-right cursor-pointer hover:text-navy transition-colors">
+                                                <div class="flex items-center justify-end gap-2">
+                                                    {{ t('organizer.balance.withdrawals.table_amount') }}
+                                                    <Icon v-if="sortBy === 'amount'"
+                                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                                        class="text-primary text-xs" />
+                                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        <tr v-for="item in withdrawalHistory" :key="item.id"
+                                            class="hover:bg-gray-50 transition-colors">
+                                            <td class="px-6 py-4">
+                                                <span class="font-mono text-[10px] font-bold text-gray-400">#{{ item.txId
+                                                    }}</span>
+                                            </td>
+                                            <td class="px-6 py-4 text-sm text-navy font-bold">{{ item.date }}</td>
+                                            <td class="px-6 py-4">
+                                                <span :class="getStatusClass(item.status)"
+                                                    class="px-3 py-1 rounded-full text-[10px] font-black tracking-widest">
+                                                    {{ item.status }}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 text-right font-black text-navy">
+                                                Rp {{ item.amount.toLocaleString('id-ID') }}
+                                            </td>
+                                        </tr>
+                                        <tr v-if="!withdrawalHistory.length">
+                                            <td colspan="4" class="px-6 py-12 text-center">
+                                                <div class="opacity-20 mb-2">
+                                                    <Icon icon="ph:clock-counter-clockwise" class="text-4xl mx-auto" />
+                                                </div>
+                                                <div class="text-gray-400 text-sm font-bold tracking-tight">{{ t('organizer.balance.withdrawals.empty') }}</div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div v-if="totalItems > itemsPerPage" class="px-6 py-4 bg-gray-50 border-t border-gray-100 mt-auto">
+                                <BasePagination v-model:items-per-page="itemsPerPage" :current-page="currentPage"
+                                    :total-items="totalItems" @change-page="currentPage = $event" />
+                            </div>
                         </div>
-                        <div v-if="totalItems > itemsPerPage" class="px-6 py-4 bg-gray-50 border-t border-gray-100">
-                            <BasePagination v-model:items-per-page="itemsPerPage" :current-page="currentPage"
-                                :total-items="totalItems" @change-page="currentPage = $event" />
+
+                        <!-- Tab 2: Mutation Ledger Table -->
+                        <div v-else class="flex-grow flex flex-col">
+                            <div class="flex-grow overflow-x-auto">
+                                <table class="w-full text-left">
+                                    <thead>
+                                        <tr
+                                            class="bg-gray-50/50 text-gray-500 font-black text-[10px] tracking-widest border-b border-gray-100">
+                                            <th class="px-6 py-4">{{ t('organizer.balance.mutations.table_date', 'Waktu / Tanggal') }}</th>
+                                            <th class="px-6 py-4">{{ t('organizer.balance.mutations.table_desc', 'Keterangan & Ref') }}</th>
+                                            <th class="px-6 py-4">{{ t('organizer.balance.mutations.table_type', 'Tipe') }}</th>
+                                            <th class="px-6 py-4 text-right">{{ t('organizer.balance.mutations.table_amount', 'Nominal') }}</th>
+                                            <th class="px-6 py-4 text-right">{{ t('organizer.balance.mutations.table_balance_after', 'Saldo Akhir') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-100">
+                                        <tr v-for="m in mutationHistory" :key="m.id"
+                                            class="hover:bg-gray-50 transition-colors">
+                                            <td class="px-6 py-4 text-xs text-slate-500 font-medium whitespace-nowrap">
+                                                {{ m.date }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <div class="text-xs font-bold text-navy">{{ m.description }}</div>
+                                                <div v-if="m.refId" class="font-mono text-[10px] text-gray-400">#{{ m.refId }}</div>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <span :class="m.type === 'credit' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200'"
+                                                    class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider border">
+                                                    {{ m.type === 'credit' ? '+ Masuk' : '- Keluar' }}
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 text-right font-black"
+                                                :class="m.type === 'credit' ? 'text-emerald-600' : 'text-rose-600'">
+                                                {{ m.type === 'credit' ? '+' : '-' }} Rp {{ m.amount.toLocaleString('id-ID') }}
+                                            </td>
+                                            <td class="px-6 py-4 text-right font-mono text-xs font-bold text-navy">
+                                                Rp {{ m.balanceAfter.toLocaleString('id-ID') }}
+                                            </td>
+                                        </tr>
+                                        <tr v-if="!mutationHistory.length">
+                                            <td colspan="5" class="px-6 py-12 text-center">
+                                                <div class="opacity-20 mb-2">
+                                                    <Icon icon="ph:receipt" class="text-4xl mx-auto" />
+                                                </div>
+                                                <div class="text-gray-400 text-sm font-bold tracking-tight">
+                                                    {{ t('organizer.balance.mutations.empty', 'Belum ada mutasi saldo tercatat') }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div v-if="mutationTotalItems > mutationItemsPerPage" class="px-6 py-4 bg-gray-50 border-t border-gray-100 mt-auto">
+                                <BasePagination v-model:items-per-page="mutationItemsPerPage" :current-page="mutationCurrentPage"
+                                    :total-items="mutationTotalItems" @change-page="mutationCurrentPage = $event" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -321,17 +395,27 @@ const isVerified = ref(false)
 const password = ref('')
 const verifying = ref(false)
 
+// Tab State
+const activeTab = ref('withdrawals')
+
 // Data State
 const balance = ref(0)
 const withdrawalHistory = ref([])
 const loading = ref(true)
 
-// Sort & Pagination
+// Withdrawals Sort & Pagination
 const sortBy = ref('created_at')
 const order = ref('DESC')
 const currentPage = ref(1)
 const totalItems = ref(0)
 const itemsPerPage = ref(10)
+
+// Mutations State & Pagination
+const mutationHistory = ref([])
+const mutationCurrentPage = ref(1)
+const mutationTotalItems = ref(0)
+const mutationItemsPerPage = ref(10)
+const mutationLoading = ref(false)
 
 // Withdrawal Dialog State
 const showWithdrawDialog = ref(false)
@@ -423,7 +507,7 @@ const fetchWithdrawals = async () => {
         withdrawalHistory.value = data.map(wd => ({
             id: wd.id,
             txId: wd.reference_no,
-            date: new Date(wd.created_at).toLocaleDateString(locale.value === 'id' ? 'id-ID' : locale.value === 'kr' ? 'ko-KR' : 'en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
+            date: new Date(wd.created_at).toLocaleDateString(locale.value === 'id' ? 'id-ID' : 'en-US', { day: '2-digit', month: 'short', year: 'numeric' }),
             status: wd.status.toUpperCase(),
             amount: wd.amount
         }))
@@ -444,6 +528,44 @@ const toggleSort = (field) => {
 
 watch([sortBy, order, currentPage], () => {
     fetchWithdrawals()
+})
+
+const fetchMutations = async () => {
+    mutationLoading.value = true
+    try {
+        const res = await api.get('/organizers/wallet/mutations', {
+            query: {
+                page: mutationCurrentPage.value,
+                limit: mutationItemsPerPage.value
+            }
+        })
+        const data = res?.data || []
+        mutationHistory.value = data.map(m => ({
+            id: m.uuid,
+            date: new Date(m.created_at).toLocaleDateString(locale.value === 'id' ? 'id-ID' : 'en-US', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+            type: m.mutation_type,
+            amount: m.amount,
+            balanceBefore: m.balance_before,
+            balanceAfter: m.balance_after,
+            refId: m.reference_id,
+            description: m.description || m.reference_type
+        }))
+        mutationTotalItems.value = res?.meta?.total_items || 0
+    } catch (error) {
+        console.error('Failed to fetch wallet mutations:', error)
+    } finally {
+        mutationLoading.value = false
+    }
+}
+
+watch(activeTab, (newTab) => {
+    if (newTab === 'mutations' && !mutationHistory.value.length) {
+        fetchMutations()
+    }
+})
+
+watch(mutationCurrentPage, () => {
+    fetchMutations()
 })
 
 const bankAccounts = ref([])
@@ -482,6 +604,7 @@ const initData = async () => {
     await Promise.all([
         fetchWallet(),
         fetchWithdrawals(),
+        fetchMutations(),
         fetchPrimaryAccount()
     ])
     loading.value = false

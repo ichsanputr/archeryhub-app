@@ -220,26 +220,14 @@
             </div>
 
             <!-- Pagination -->
-            <div v-if="filteredUsers.length > 0"
-                class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="text-xs font-bold text-gray-400 tracking-widest">
-                    {{ t('root.subscriptions.pagination_showing', { from: subStartIndex + 1, to: Math.min(subEndIndex, filteredUsers.length), total: filteredUsers.length }) }}
-                </div>
-                <div class="flex items-center gap-2">
-                    <button @click="currentPage--" :disabled="currentPage === 1"
-                        class="size-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-500 hover:border-primary hover:text-primary transition-all disabled:opacity-30 disabled:pointer-events-none shadow-sm">
-                        <Icon icon="ph:caret-left-bold" />
-                    </button>
-                    <div class="flex items-center gap-1 px-3">
-                        <span class="text-xs font-black text-navy">{{ currentPage }}</span>
-                        <span class="text-[10px] font-bold text-gray-300">/</span>
-                        <span class="text-[10px] font-bold text-gray-400">{{ totalPages }}</span>
-                    </div>
-                    <button @click="currentPage++" :disabled="currentPage === totalPages"
-                        class="size-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-500 hover:border-primary hover:text-primary transition-all disabled:opacity-30 disabled:pointer-events-none shadow-sm">
-                        <Icon icon="ph:caret-right-bold" />
-                    </button>
-                </div>
+            <div v-if="filteredUsers.length > 0" class="px-6 py-4 bg-gray-50/50 border-t border-gray-100">
+                <BasePagination
+                    v-model:currentPage="currentPage"
+                    :totalItems="filteredUsers.length"
+                    :itemsPerPage="itemsPerPage"
+                    :showPageSize="false"
+                    noMargin
+                />
             </div>
         </div>
 
@@ -431,6 +419,7 @@ const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
 const route = useRoute()
 const { t } = useI18n()
+const toast = useToast()
 
 definePageMeta({ layout: 'dashboard', middleware: ['auth'] })
 useHead({ title: computed(() => t('root.index.title') + ' - Root Terminal') })
@@ -523,7 +512,7 @@ const submitAddClub = async () => {
         setTimeout(() => { showSuccessToast.value = false }, 5000)
         await refreshSubs()
     } catch (err) {
-        alert(err.data?.error || 'Failed to save club')
+        toast.error(err.data?.error || 'Failed to save club')
     } finally {
         addClubLoading.value = false
     }
@@ -541,7 +530,7 @@ const deleteClub = async (club) => {
         setTimeout(() => { showSuccessToast.value = false }, 5000)
         await refreshSubs()
     } catch (err) {
-        alert(err.data?.error || 'Failed to delete club')
+        toast.error(err.data?.error || 'Failed to delete club')
     }
 }
 
@@ -625,7 +614,7 @@ const executeAction = async () => {
         setTimeout(() => { showSuccessToast.value = false }, 5000)
         await refreshSubs()
     } catch (err) {
-        alert(err.data?.error || t('root.index.error_message', 'Failed to change account status'))
+        toast.error(err.data?.error || t('root.index.error_message', 'Failed to change account status'))
     } finally {
         actionLoading.value = false
     }
@@ -656,7 +645,7 @@ const executeChangePassword = async () => {
         showSuccessToast.value = true
         setTimeout(() => { showSuccessToast.value = false }, 5000)
     } catch (err) {
-        alert(err.data?.error || t('root.index.change_password_error'))
+        toast.error(err.data?.error || t('root.index.change_password_error'))
     } finally {
         passwordLoading.value = false
     }
@@ -702,7 +691,7 @@ const submitEditSubscription = async () => {
         setTimeout(() => { showSuccessToast.value = false }, 5000)
         await refreshSubs()
     } catch (err) {
-        alert(err.data?.error || t('root.subscriptions.error_message', 'Failed to update subscription'))
+        toast.error(err.data?.error || t('root.subscriptions.error_message', 'Failed to update subscription'))
     } finally {
         editLoading.value = false
     }

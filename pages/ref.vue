@@ -148,6 +148,10 @@ import { ref } from 'vue'
 
 definePageMeta({ layout: false })
 
+useHead({
+    title: 'Design Reference - Archeris'
+})
+
 const sites = [
     {
         name: 'Jersey Watch',

@@ -45,8 +45,26 @@ export const useApi = () => {
       return await $fetch<T>(url, fetchOptions)
     } catch (error: any) {
       const status = error.response?.status || error.statusCode || error.status
-      // If 401 Unauthorized or 403 Forbidden on protected API endpoints
-      if ((status === 401 || status === 403) && !url.includes('/auth/login') && !url.includes('/auth/register')) {
+
+      // If 401 Unauthorized, attempt a silent token refresh before giving up
+      if (status === 401 && !url.includes('/auth/login') && !url.includes('/auth/register') && !url.includes('/auth/refresh')) {
+        try {
+          // Attempt silent refresh
+          await $fetch(`${apiBaseUrl}/auth/refresh`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' }
+          })
+
+          // Retry the original request with fresh credentials
+          return await $fetch<T>(url, fetchOptions)
+        } catch (refreshErr) {
+          console.warn('[useApi] Silent refresh failed. Session is permanently expired.')
+        }
+      }
+
+      // If still unauthorized or 403 Forbidden on protected API endpoints
+      if ((status === 401 || status === 403) && !url.includes('/auth/login') && !url.includes('/auth/register') && !url.includes('/auth/refresh')) {
         console.warn(`[useApi] Session expired or unauthorized (status ${status}) on ${url}. Cleaning auth state...`)
         if (import.meta.client) {
           // Clear cookies across all possible domain scopes and paths

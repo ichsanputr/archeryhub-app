@@ -5,7 +5,7 @@
         class="bg-white dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 text-center space-y-6">
         <div
           class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">
-          <span class="material-symbols-outlined text-4xl">info</span>
+          <Icon icon="ph:info-bold" class="text-4xl" />
         </div>
         <div class="space-y-2">
           <h1 class="text-2xl font-bold text-gray-900 dark:text-white font-display">
@@ -18,14 +18,14 @@
 
         <div class="rounded-xl bg-gray-50 dark:bg-gray-800/50 p-4 text-left space-y-3">
           <div v-if="email" class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-xl">mail</span>
+            <Icon icon="ph:envelope-simple-bold" class="text-gray-500 dark:text-gray-400 text-xl" />
             <div class="min-w-0 flex-1">
               <div class="text-xs font-medium text-gray-500 dark:text-gray-400  tracking-wider">Email</div>
               <div class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ email }}</div>
             </div>
           </div>
           <div v-if="userTypeLabel" class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-xl">badge</span>
+            <Icon icon="ph:identification-card-bold" class="text-gray-500 dark:text-gray-400 text-xl" />
             <div class="min-w-0 flex-1">
               <div class="text-xs font-medium text-gray-500 dark:text-gray-400  tracking-wider">Account type</div>
               <div class="text-sm font-medium text-gray-900 dark:text-white">{{ userTypeLabel }}</div>
@@ -39,7 +39,7 @@
 
         <NuxtLink to="/auth/login"
           class="inline-flex items-center justify-center gap-2 w-full px-6 py-3 bg-primary text-navy font-bold rounded-xl hover:bg-primary-hover transition-colors shadow-sm shadow-primary/20">
-          <span class="material-symbols-outlined">login</span>
+          <Icon icon="ph:sign-in-bold" class="text-lg" />
           Log in to account
         </NuxtLink>
 

@@ -18,6 +18,8 @@
                 <div class="flex items-center gap-2 text-sm text-white/60 mb-4">
                     <NuxtLink to="/dashboard/archer/events" class="hover:text-white transition-colors">{{ t('qualification.nav_event', 'Event Saya') }}</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-base" />
+                    <NuxtLink :to="`/dashboard/archer/events/${eventId}/overview`" class="hover:text-white transition-colors">{{ eventName || 'Event' }}</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-base" />
                     <span class="text-primary font-medium">{{ t('qualification.nav_title', 'Scorecard Kualifikasi') }}</span>
                 </div>
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -33,10 +35,20 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-3 flex-shrink-0">
-                        <BaseSelect v-if="myCategories.length > 0" v-model="categoryId" :options="categoryOptions" item-title="title" item-value="value" class="w-56 text-xs" @update:model-value="updateResultsData" />
-                        <div v-else-if="categoryName"
-                            class="px-3 py-1.5 rounded-xl bg-white/10 border border-white/20 text-xs font-black tracking-wider">
-                            {{ categoryName }}
+                        <div v-if="myCategories.length > 1" class="relative">
+                            <select
+                                v-model="categoryId"
+                                @change="updateResultsData"
+                                class="h-10 sm:h-11 pl-4 pr-9 bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-primary cursor-pointer transition-colors appearance-none">
+                                <option v-for="c in categoryOptions" :key="c.value" :value="c.value" class="bg-navy text-white py-2">
+                                    {{ c.title }}
+                                </option>
+                            </select>
+                            <Icon icon="ph:caret-down-bold" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 pointer-events-none text-xs" />
+                        </div>
+                        <div v-else-if="categoryName || (categoryOptions.length === 1)"
+                            class="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-xs font-bold text-white tracking-wide">
+                            {{ categoryName || categoryOptions[0]?.title }}
                         </div>
                     </div>
                 </div>
@@ -251,17 +263,20 @@
 import { Icon } from '@iconify/vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useI18n } from 'vue-i18n'
+import { useEventContext } from '~/composables/useEventContext'
 
 const { t } = useI18n()
 
 const { get } = useApi()
 const route = useRoute()
 const router = useRouter()
+const { setEvent } = useEventContext()
 const eventId = route.params.id
+const eventName = ref('')
 
 definePageMeta({ layout: 'dashboard' })
 
-useHead({ title: computed(() => `${t('dashboard.my_qualification', 'Hasil Kualifikasi Saya')} - Archeris Dashboard`) })
+useHead({ title: computed(() => `${eventName.value || t('dashboard.my_qualification', 'Hasil Kualifikasi Saya')} - Archeris Dashboard`) })
 
 const isLoading = ref(true)
 const userProfile = ref(null)
@@ -327,17 +342,31 @@ const handleBack = () => router.back()
 const fetchInitialData = async () => {
     isLoading.value = true
     try {
-        const profileRes = await get('/archer/me')
-        userProfile.value = profileRes?.data
+        const [profileRes, eventRes, meRes] = await Promise.allSettled([
+            get('/archer/me'),
+            get(`/events/${eventId}`),
+            get(`/events/${eventId}/participants/me`)
+        ])
+
+        if (profileRes.status === 'fulfilled') {
+            userProfile.value = profileRes.value?.data || profileRes.value
+        }
+
+        if (eventRes.status === 'fulfilled') {
+            const evtData = eventRes.value?.event || eventRes.value?.data || eventRes.value
+            if (evtData?.name) {
+                eventName.value = evtData.name
+                setEvent({ id: eventId, name: evtData.name })
+            }
+        }
 
         // Use direct participants/me endpoint
-        const meRes = await get(`/events/${eventId}/participants/me`)
-        if (meRes?.categories?.length) {
-            myCategories.value = meRes.categories
-            const cat = meRes.categories[0]
+        if (meRes.status === 'fulfilled' && meRes.value?.categories?.length) {
+            myCategories.value = meRes.value.categories
+            const cat = meRes.value.categories[0]
             categoryId.value = cat.category_id
             categoryName.value = `${cat.division_name} - ${cat.category_name}`
-            archerUuid.value = meRes.archer_id
+            archerUuid.value = meRes.value.archer_id
         }
         await updateResultsData()
     } catch (e) {

@@ -77,13 +77,13 @@ const getCategoryIcon = (icon) => {
       <!-- Loading State -->
       <div v-if="categoriesPending" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="i in 6" :key="i"
-          class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 h-full animate-pulse">
+          class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 h-full animate-pulse">
           <div class="flex flex-col items-center text-center gap-4">
-            <div class="w-16 h-16 bg-gray-200 rounded-lg"></div>
-            <div class="flex-1 w-full">
-              <div class="h-5 bg-gray-200 rounded mb-2"></div>
-              <div class="h-4 bg-gray-200 rounded mb-3 w-3/4 mx-auto"></div>
-              <div class="h-3 bg-gray-200 rounded w-1/2 mx-auto"></div>
+            <div class="w-16 h-16 bg-gray-100 rounded-2xl"></div>
+            <div class="flex-1 w-full space-y-2">
+              <div class="h-5 bg-gray-100 rounded-xl"></div>
+              <div class="h-4 bg-gray-100 rounded-xl w-3/4 mx-auto"></div>
+              <div class="h-3 bg-gray-100 rounded-xl w-1/2 mx-auto"></div>
             </div>
           </div>
         </div>
@@ -94,9 +94,9 @@ const getCategoryIcon = (icon) => {
         <NuxtLink v-for="category in categories" :key="category.id" :to="`/category/${category.slug}`"
           class="group">
           <div
-            class="block bg-white rounded-lg shadow-sm border border-gray-200 p-6 h-full transition-all duration-300 hover:border-yellow-200 hover:shadow-md">
+            class="block bg-white rounded-2xl shadow-sm border border-gray-100 p-6 h-full transition-all duration-300 hover:border-yellow-200 hover:shadow-md">
             <div class="flex flex-col items-center text-center gap-4">
-              <div class="p-4 bg-yellow-100 rounded-lg group-hover:bg-yellow-200 transition-colors duration-300">
+              <div class="p-4 bg-yellow-100 rounded-2xl group-hover:bg-yellow-200 transition-colors duration-300">
                 <Icon :icon="getCategoryIcon(category.icon)" class="w-8 h-8 text-yellow-600" />
               </div>
               <div class="flex-1 min-w-0 w-full">

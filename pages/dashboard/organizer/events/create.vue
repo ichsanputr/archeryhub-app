@@ -25,7 +25,7 @@
               <!-- Quota Balance Header Bar -->
               <div class="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
                 <div class="flex flex-wrap items-center gap-3">
-                  <span class="text-xs font-black uppercase tracking-wider text-slate-500">Saldo Kuota Anda:</span>
+                  <span class="text-xs font-black tracking-wider text-slate-500">Saldo Kuota Anda:</span>
                   <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white text-navy border border-slate-200 text-xs font-bold shadow-2xs">
                     <Icon icon="ph:gift-bold" class="text-sm text-primary" />
                     Free: {{ quotaBalance.quota_free ?? 20 }}/20 Kuota
@@ -62,7 +62,7 @@
                 >
                   <div>
                     <div class="flex items-center justify-between gap-2 mb-3">
-                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-700">
+                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black tracking-wider bg-slate-100 text-slate-700">
                         Bonus Awal (20 Kuota)
                       </div>
                       <div
@@ -123,7 +123,7 @@
                 >
                   <div>
                     <div class="flex items-center justify-between gap-2 mb-3">
-                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-700">
+                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black tracking-wider bg-slate-100 text-slate-700">
                         Event Komunitas
                       </div>
                       <div
@@ -186,7 +186,7 @@
                 >
                   <div>
                     <div class="flex items-center justify-between gap-2 mb-3">
-                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-700">
+                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black tracking-wider bg-slate-100 text-slate-700">
                         Kejurnas & Open
                       </div>
                       <div

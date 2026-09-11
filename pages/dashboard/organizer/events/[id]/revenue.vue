@@ -1,23 +1,16 @@
 <template>
   <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
-    <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: 0.2;"></div>
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-      <div class="relative p-6 sm:p-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
-            <div class="h-14 w-14 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center">
-              <Icon icon="ph:coins-bold" class="text-primary text-2xl" />
-            </div>
-            <div>
-              <h1 class="text-2xl sm:text-3xl font-black tracking-tight">{{ t("org_revenue.header_title") }}</h1>
-              <div class="text-slate-300 text-sm mt-1">{{ t("org_revenue.header_subtitle") }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <DashboardHeader
+      :title="t('org_revenue.header_title', 'Pendapatan Event')"
+      :subtitle="t('org_revenue.header_subtitle', 'Ringkasan penerimaan pendaftaran, potongan biaya platform, dan pendapatan bersih event.')"
+      icon="ph:coins-bold"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/events' },
+        { label: t('org_revenue.header_title', 'Pendapatan Event') }
+      ]"
+    />
 
     <!-- Revenue Summary Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -79,6 +72,10 @@ const route = useRoute()
 const { get } = useApi()
 
 const eventId = computed(() => route.params.id as string)
+
+useHead({
+  title: computed(() => (t ? t('org_revenue.header_title', 'Pendapatan Event') : 'Pendapatan Event') + ' - Archeris Dashboard')
+})
 const isLoading = ref(true)
 const participants = ref<any[]>([])
 

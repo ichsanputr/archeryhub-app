@@ -1,30 +1,23 @@
 <template>
   <div class="space-y-8">
-    <!-- Enhanced Header Section -->
-    <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-      <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="flex items-center gap-4 sm:gap-5">
-          <div
-            class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-lg">
-            <Icon icon="ph:shopping-cart-bold" class="text-primary text-2xl sm:text-3xl" />
-          </div>
-          <div>
-            <h1 class="text-xl sm:text-3xl font-black tracking-tight leading-tight">{{ t('seller_orders.title', 'Pesanan Toko') }}</h1>
-            <div class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('seller_orders.subtitle', 'Kelola daftar pesanan, konfirmasi pembayaran, dan status pengiriman') }}</div>
-          </div>
-        </div>
+    <!-- Standardized Dashboard Header -->
+    <DashboardHeader
+      :title="t('seller_orders.title', 'Pesanan Toko')"
+      :subtitle="t('seller_orders.subtitle', 'Kelola daftar pesanan, konfirmasi pembayaran, dan status pengiriman.')"
+      icon="ph:shopping-cart-bold"
+      :breadcrumbs="[
+        { label: t('common.dashboard', 'Dashboard'), to: '/dashboard' },
+        { label: t('seller.title', 'Toko Saya'), to: '/dashboard/seller' },
+        { label: t('seller_orders.title', 'Pesanan Toko') }
+      ]"
+    >
+      <template #actions>
         <BaseButton variant="primary" icon="ph:download-bold" @click="exportOrders" :loading="isExporting"
           class="h-11 px-6 font-black tracking-widest text-xs shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
           {{ t('seller_orders.export_button', 'Ekspor Laporan') }}
         </BaseButton>
-      </div>
-    </div>
+      </template>
+    </DashboardHeader>
 
     <!-- Advanced Search & Filters Bar -->
     <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">

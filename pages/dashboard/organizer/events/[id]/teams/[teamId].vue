@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
     <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
@@ -88,6 +88,10 @@ const { get } = useApi()
 
 const eventId = computed(() => route.params.id as string)
 const teamId = computed(() => route.params.teamId as string)
+
+useHead({
+  title: computed(() => (team.value?.name ? `Tim ${team.value.name}` : 'Detail Tim') + ' - Archeris Dashboard')
+})
 
 const isLoading = ref(true)
 const team = ref<any>(null)

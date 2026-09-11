@@ -7,19 +7,19 @@
                 <div class="relative w-full">
                     <Icon icon="ph:magnifying-glass"
                         class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
-                    <input v-model="searchQuery" type="text" placeholder="Cari atlet atau klub..."
+                    <input v-model="searchQuery" type="text" :placeholder="t('event_detail.search_athlete_placeholder', 'Cari atlet atau klub...')"
                         class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-100 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-sm text-sm">
                 </div>
             </div>
 
             <!-- Tipe / Divisi -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-                <p class="text-xs font-bold text-gray-500  tracking-widest mb-3">Tipe / Divisi</p>
+                <p class="text-xs font-bold text-gray-500 tracking-widest mb-3">{{ t('event_detail.type_division', 'Tipe / Divisi') }}</p>
                 <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
-                    <button v-for="cat in categories" :key="cat" @click="activeCategory = cat; currentPage = 1"
+                    <button v-for="cat in categories" :key="cat.key" @click="activeCategory = cat.key; currentPage = 1"
                         class="px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap shadow-sm border"
-                        :class="activeCategory === cat ? 'bg-navy text-primary border-navy' : 'bg-white text-gray-500 border-gray-100 hover:border-navy hover:text-navy'">
-                        {{ cat }}
+                        :class="activeCategory === cat.key ? 'bg-navy text-primary border-navy' : 'bg-white text-gray-500 border-gray-100 hover:border-navy hover:text-navy'">
+                        {{ cat.label }}
                     </button>
                 </div>
             </div>
@@ -55,10 +55,10 @@
 
                 <div class="flex flex-wrap justify-center gap-2 mb-4">
                     <span
-                        class="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-bold  tracking-wider text-center">{{
+                        class="px-2.5 py-1 bg-gray-50 text-gray-600 rounded-full text-[10px] font-bold tracking-wider text-center">{{
                             athlete.division }}</span>
                     <span
-                        class="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-bold  tracking-wider text-center">{{
+                        class="px-2.5 py-1 bg-gray-50 text-gray-600 rounded-full text-[10px] font-bold tracking-wider text-center">{{
                             athlete.category }}</span>
                 </div>
 
@@ -67,22 +67,21 @@
                         <div>
                             <Icon icon="ph:trophy" class="text-sm" />
                         </div>
-                        <div class="text-[10px] mt-0.5 font-bold">{{ athlete.rank === '-' ? 'Belum ada ranking' : `Rank
-                            ${athlete.rank}` }}</div>
+                        <div class="text-[10px] mt-0.5 font-bold">{{ athlete.rank === '-' ? t('event_detail.no_rank', 'Belum ada ranking') : `Rank ${athlete.rank}` }}</div>
                     </div>
                     <NuxtLink v-if="athlete.username" :to="`/archers/${athlete.username}`"
                         class="textfont-bold text-xs hover:underline flex items-center gap-1">
-                        Profil
+                        {{ t('event_detail.profile', 'Profil') }}
                         <Icon icon="ph:arrow-square-out" class="text-sm" />
                     </NuxtLink>
-                    <span v-else class="text-xs text-gray-400 italic">Profil tidak tersedia</span>
+                    <span v-else class="text-xs text-gray-400 italic">{{ t('event_detail.profile_unavailable', 'Profil tidak tersedia') }}</span>
                 </div>
             </div>
         </div>
 
         <div v-else class="bg-white rounded-2xl p-12 text-center border border-gray-100 shadow-sm mt-8">
             <Icon icon="ph:users-three" class="text-6xl text-gray-200 mb-4 mx-auto" />
-            <p class="text-gray-500 font-medium">Belum ada peserta yang terdaftar untuk kategori ini.</p>
+            <p class="text-gray-500 font-medium">{{ t('event_detail.no_participants_category', 'Belum ada peserta yang terdaftar untuk kategori ini.') }}</p>
         </div>
 
         <!-- Pagination -->
@@ -94,6 +93,8 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 
+const { t } = useI18n()
+
 const props = defineProps({
     participants: {
         type: Array,
@@ -101,7 +102,7 @@ const props = defineProps({
     }
 })
 
-const activeCategory = ref('Semua')
+const activeCategory = ref('ALL')
 const searchQuery = ref('')
 const currentPage = ref(1)
 const limit = 12
@@ -113,8 +114,11 @@ const categories = computed(() => {
             categorySet.add(`${p.division_name} ${p.gender_division_name}`)
         }
     })
-    const sorted = Array.from(categorySet).sort()
-    return ['Semua', ...sorted]
+    const sorted = Array.from(categorySet).sort().map(cat => ({
+        key: cat,
+        label: cat
+    }))
+    return [{ key: 'ALL', label: t('common.all', 'Semua') }, ...sorted]
 })
 
 const filteredAthletes = computed(() => {
@@ -130,7 +134,7 @@ const filteredAthletes = computed(() => {
     }
 
     // Filter by Category
-    if (activeCategory.value !== 'Semua') {
+    if (activeCategory.value !== 'ALL') {
         result = result.filter(p => {
             const catName = `${p.division_name} ${p.gender_division_name}`
             return catName === activeCategory.value

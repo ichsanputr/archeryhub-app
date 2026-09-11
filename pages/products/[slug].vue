@@ -832,6 +832,16 @@ const formatChatTime = (dt) => {
     if (!dt) return ''
     return new Date(dt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
 }
+
+// Dynamic SEO & OpenGraph Meta Tags
+useSeoMeta({
+    title: () => `${product.value?.name || 'Produk Panahan'} - Archeris Marketplace`,
+    ogTitle: () => `${product.value?.name || 'Produk Panahan'} - Archeris Marketplace`,
+    description: () => product.value?.description ? product.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Beli perlengkapan panahan ${product.value?.name || ''} dengan harga terbaik di Archeris.net.`,
+    ogDescription: () => product.value?.description ? product.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Beli perlengkapan panahan ${product.value?.name || ''} dengan harga terbaik di Archeris.net.`,
+    ogImage: () => selectedImage.value || product.value?.images?.[0]?.url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop',
+    twitterCard: 'summary_large_image',
+})
 </script>
 
 <style scoped>

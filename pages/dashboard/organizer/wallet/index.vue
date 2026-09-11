@@ -91,6 +91,11 @@
 import { ref, onMounted } from 'vue'
 
 const { get, post } = useApi()
+const toast = useToast()
+
+useHead({
+  title: 'Dompet Penyelenggara - Archeris Dashboard'
+})
 
 const isLoading = ref(true)
 const isSubmitting = ref(false)
@@ -122,12 +127,13 @@ async function submitWithdrawal() {
       amount: withdrawAmount.value,
       notes: withdrawNotes.value
     })
+    toast.success('Pengajuan penarikan dana berhasil dikirim')
     showWithdrawForm.value = false
     withdrawAmount.value = null
     withdrawNotes.value = ''
     await fetchData()
   } catch (err: any) {
-    alert(err?.data?.error || 'Gagal mengajukan penarikan')
+    toast.error(err?.data?.error || 'Gagal mengajukan penarikan')
   } finally { isSubmitting.value = false }
 }
 

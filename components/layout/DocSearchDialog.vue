@@ -52,7 +52,7 @@
             <!-- Empty / Default state: quick links -->
             <template v-else>
               <div class="px-5 pt-5 pb-4">
-                <p class="text-xs text-gray-400 font-bold tracking-widest mb-3 uppercase">{{ $t('doc_search.quick_navigation', 'Navigasi Cepat') }}</p>
+                <p class="text-xs text-gray-400 font-bold tracking-widest mb-3">{{ $t('doc_search.quick_navigation', 'Navigasi Cepat') }}</p>
                 <div class="flex flex-col gap-1">
                   <NuxtLink v-for="(page, i) in quickLinks" :key="page.path" :to="page.path" @click="close"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors text-xs text-gray-600 border border-gray-100"

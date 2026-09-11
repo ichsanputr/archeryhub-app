@@ -26,7 +26,7 @@
                 <div class="w-full">
                     <!-- Category Tag -->
                     <span
-                        class="inline-block bg-primary text-navy text-[10px] sm:text-xs font-black px-2 py-1 mb-6 tracking-widest rounded-sm">
+                        class="inline-block bg-primary text-navy text-[10px] sm:text-xs font-black px-3 py-1 mb-6 tracking-widest rounded-full">
                         {{ $t(`news_page.categories.${article.category}`) || article.category }}
                     </span>
 
@@ -83,29 +83,29 @@
 
         <!-- MAIN BODY -->
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-                <!-- Article Content -->
-                <article class="lg:col-span-8">
-                    <div class="prose prose-slate max-w-none dark:prose-invert 
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+                <!-- Article Content: 1 Parent Card with BG White -->
+                <article class="lg:col-span-8 bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-10 space-y-10">
+                    <div class="prose prose-slate max-w-none 
                         prose-headings:text-navy prose-headings:font-black 
-                        prose-p:text-[#0f172a]/70 prose-p:leading-relaxed prose-p:mb-6 prose-p:font-medium
+                        prose-p:text-slate-600 prose-p:leading-relaxed prose-p:mb-6 prose-p:font-medium
                         prose-a:text-primary prose-a:font-bold prose-a:no-underline 
                         prose-strong:text-navy prose-strong:font-black
-                        prose-img:rounded-2xl prose-img:shadow-xl">
+                        prose-img:rounded-2xl prose-img:shadow-md">
                         <div v-html="article.content"></div>
                     </div>
 
-                    <!-- Tags -->
-                    <div class="mt-12 pt-8 border-t border-[#0f172a]/10">
+                    <!-- Tags & Share Box -->
+                    <div class="pt-8 border-t border-slate-100">
                         <div v-if="article.tags?.length" class="flex flex-wrap gap-2 mb-8">
                             <span v-for="tag in article.tags" :key="tag"
-                                class="px-3 py-1 border border-[#0f172a]/20 text-[10px] font-black tracking-wider hover:bg-navy hover:text-primary hover:border-navy transition-all cursor-default">
+                                class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold hover:bg-navy hover:text-white transition-all cursor-default">
                                 #{{ tag }}
                             </span>
                         </div>
 
                         <!-- Footer Share CTA -->
-                        <div class="p-8 bg-navy rounded-3xl text-white relative overflow-hidden group">
+                        <div class="p-6 sm:p-8 bg-navy rounded-2xl text-white relative overflow-hidden group border border-white/10 shadow-md">
                             <div
                                 class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-primary/20 transition-all">
                             </div>
@@ -133,91 +133,88 @@
                     </div>
 
                     <!-- COMMENT SECTION -->
-                    <section class="mt-16 pt-16 border-t border-navy/5">
-                        <div class="flex items-center justify-between mb-10">
-                            <h3 class="text-xl font-bold text-navy tracking-widest flex items-center gap-3">
+                    <section class="pt-8 border-t border-slate-100">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 class="text-xl font-bold text-navy tracking-tight flex items-center gap-3">
                                 <Icon icon="ph:chats-circle-bold" class="text-navy text-2xl" />
                                 {{ $t('news_detail_page.comments_title') }} ({{ totalComments }})
                             </h3>
                         </div>
 
                         <!-- Comment Form -->
-                        <div class="bg-white rounded-3xl p-8 border border-navy/10 mb-12 relative overflow-hidden">
-                            <h4 class="font-bold text-navy tracking-widest text-[10px] mb-6 opacity-40">{{ $t('news_detail_page.write_comment') }}</h4>
+                        <div class="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100 mb-10 relative overflow-hidden">
+                            <h4 class="font-bold text-slate-500 text-xs mb-6">{{ $t('news_detail_page.write_comment') }}</h4>
 
-                            <form @submit.prevent="submitComment" class="space-y-6">
+                            <form @submit.prevent="submitComment" class="space-y-5">
                                 <div v-if="!isLoggedIn" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="space-y-2">
-                                        <label class="text-[10px] font-bold tracking-widest text-navy/40 ml-1">{{ $t('news_detail_page.your_name') }}</label>
+                                        <label class="text-xs font-bold text-slate-600 ml-1">{{ $t('news_detail_page.your_name') }}</label>
                                         <input v-model="commentForm.guest_name" type="text"
                                             :placeholder="$t('news_detail_page.name_placeholder')"
-                                            class="w-full px-5 py-3 rounded-xl bg-navy/[0.02] border border-navy/10 focus:ring-1 focus:ring-navy/30 text-navy font-bold placeholder:text-navy/20 transition-all outline-none"
+                                            class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 text-navy font-medium placeholder:text-slate-400 transition-all outline-none text-sm shadow-2xs"
                                             required />
                                     </div>
                                 </div>
                                 <div v-else
-                                    class="flex items-center gap-3 mb-4 p-3 bg-navy/[0.02] rounded-xl border border-navy/5">
+                                    class="flex items-center gap-3 mb-4 p-3 bg-white rounded-xl border border-slate-200/80 shadow-2xs">
                                     <div
                                         class="w-8 h-8 rounded-full bg-navy flex items-center justify-center text-white font-bold text-xs">
                                         {{ user?.full_name?.charAt(0) || user?.name?.charAt(0) || 'U' }}
                                     </div>
-                                    <div class="text-xs font-bold text-navy/60 tracking-widest">
+                                    <div class="text-xs font-bold text-slate-500">
                                         {{ $t('news_detail_page.comment_as') }} 
-                                        <span class="text-navy">{{ user?.full_name || user?.name }}</span>
+                                        <span class="text-navy font-bold">{{ user?.full_name || user?.name }}</span>
                                     </div>
                                 </div>
 
                                 <div class="space-y-2">
-                                    <label class="text-[10px] font-bold tracking-widest text-navy/40 ml-1">{{ $t('news_detail_page.message_label') }}</label>
+                                    <label class="text-xs font-bold text-slate-600 ml-1">{{ $t('news_detail_page.message_label') }}</label>
                                     <textarea v-model="commentForm.content" rows="4"
                                         :placeholder="$t('news_detail_page.message_placeholder')"
-                                        class="w-full px-5 py-4 rounded-xl bg-navy/[0.02] border border-navy/10 focus:ring-1 focus:ring-navy/30 text-navy font-medium placeholder:text-navy/20 transition-all outline-none"
+                                        class="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 text-navy font-medium placeholder:text-slate-400 transition-all outline-none text-sm leading-relaxed shadow-2xs"
                                         required></textarea>
                                 </div>
 
-                                <button type="submit" :disabled="isSubmittingComment"
-                                    class="inline-flex items-center gap-3 bg-navy text-white px-8 py-4 rounded-xl font-bold tracking-widest text-[10px] hover:bg-navy-light transition-all active:scale-95 disabled:opacity-50">
-                                    <Icon v-if="isSubmittingComment" icon="ph:spinner" class="animate-spin" />
-                                    <Icon v-else icon="ph:paper-plane-tilt-bold" />
+                                <BaseButton type="submit" variant="navy" size="md" :loading="isSubmittingComment" icon="ph:paper-plane-tilt-bold">
                                     {{ isSubmittingComment ? $t('news_detail_page.submitting_button') : $t('news_detail_page.submit_button') }}
-                                </button>
+                                </BaseButton>
                             </form>
                         </div>
 
                         <!-- Comment List -->
                         <div class="space-y-6">
-                            <div v-if="isCommentsLoading" class="flex flex-col items-center py-12 text-navy/20">
+                            <div v-if="isCommentsLoading" class="flex flex-col items-center py-12 text-slate-300">
                                 <Icon icon="ph:spinner" class="text-3xl animate-spin mb-4" />
-                                <span class="font-bold tracking-widest text-[10px]">{{ $t('news_detail_page.loading_comments') }}</span>
+                                <span class="font-bold text-xs text-slate-400">{{ $t('news_detail_page.loading_comments') }}</span>
                             </div>
 
                             <div v-else-if="comments.length === 0"
-                                class="text-center py-16 bg-navy/[0.01] rounded-3xl border border-dashed border-navy/10">
-                                <Icon icon="ph:chat-teardrop-dots-bold" class="text-4xl text-navy/10 mx-auto mb-4" />
-                                <p class="text-navy/30 text-[10px] font-bold tracking-widest">{{ $t('news_detail_page.no_comments') }}</p>
+                                class="text-center py-12 bg-slate-50 rounded-2xl border border-dashed border-slate-200 p-8">
+                                <Icon icon="ph:chat-teardrop-dots-bold" class="text-4xl text-slate-300 mx-auto mb-3" />
+                                <p class="text-slate-400 text-xs font-bold">{{ $t('news_detail_page.no_comments') }}</p>
                             </div>
 
                             <div v-else v-for="comment in comments" :key="comment.id" class="group">
                                 <div class="flex gap-4 sm:gap-6 items-start">
                                     <div class="flex-shrink-0">
                                         <div
-                                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-navy/5 border border-navy/10 flex items-center justify-center text-navy font-bold text-lg group-hover:bg-navy group-hover:text-white transition-all duration-300">
+                                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-navy font-bold text-base group-hover:bg-navy group-hover:text-white transition-all duration-300 shadow-2xs">
                                             {{ comment.user_name?.charAt(0) || '?' }}
                                         </div>
                                     </div>
-                                    <div class="flex-grow pt-1">
-                                        <div class="flex items-center justify-between mb-2">
+                                    <div class="flex-grow pt-0.5">
+                                        <div class="flex items-center justify-between mb-1.5">
                                             <div class="flex items-center gap-2">
-                                                <h5 class="font-bold text-navy text-xs tracking-widest">{{
+                                                <h5 class="font-bold text-navy text-xs tracking-wide">{{
                                                     comment.user_name }}</h5>
                                                 <span v-if="comment.user_type !== 'guest'"
-                                                    class="bg-navy/10 text-navy text-[7px] font-bold px-2 py-0.5 rounded-full tracking-tighter">{{ $t('news_detail_page.member_tag') }}</span>
+                                                    class="bg-primary/20 text-navy text-[8px] font-bold px-2 py-0.5 rounded-full tracking-wider">{{ $t('news_detail_page.member_tag') }}</span>
                                             </div>
-                                            <span class="text-[8px] font-bold text-navy/20 tracking-widest">{{
+                                            <span class="text-[10px] font-medium text-slate-400 tracking-wide">{{
                                                 formatDate(comment.created_at) }}</span>
                                         </div>
                                         <div
-                                            class="text-navy/70 text-sm leading-relaxed font-medium bg-white p-5 rounded-2xl rounded-tl-none border border-navy/5 group-hover:border-navy/20 transition-all">
+                                            class="text-slate-700 text-sm leading-relaxed font-normal bg-slate-50 p-4 sm:p-5 rounded-2xl rounded-tl-none border border-slate-100 group-hover:border-slate-200 transition-all">
                                             {{ comment.content }}
                                         </div>
                                     </div>
@@ -231,21 +228,21 @@
                 <aside class="lg:col-span-4 space-y-8">
                     <!-- Related News -->
                     <div
-                        class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                        <h3 class="text-lg font-bold text-navy dark:text-white mb-6 flex items-center gap-2">
+                        class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                        <h3 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
                             <span class="w-1 h-6 bg-primary rounded-full"></span>
                             {{ $t('news_detail_page.related_articles') }}
                         </h3>
-                        <div class="space-y-6">
+                        <div class="space-y-5">
                             <NuxtLink v-for="item in relatedArticles" :key="item.slug" :to="localePath(`/news/${item.slug}`)"
                                 class="group flex gap-4 items-start">
-                                <div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 relative">
+                                <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 relative border border-slate-100 bg-slate-100">
                                     <img :src="item.image" :alt="item.title"
-                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                        class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
                                 </div>
-                                <div>
+                                <div class="min-w-0 flex-1">
                                     <h4
-                                        class="font-bold text-navy text-sm leading-snug mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+                                        class="font-bold text-navy text-sm leading-snug mb-1 line-clamp-2">
                                         {{ item.title }}
                                     </h4>
                                     <span class="text-xs text-slate-400">{{ item.date }}</span>
@@ -253,16 +250,16 @@
                             </NuxtLink>
                         </div>
                         <NuxtLink :to="localePath('/news')"
-                            class="block w-full text-center mt-6 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            class="block w-full text-center mt-6 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors">
                             {{ $t('news_detail_page.all_news') }}
                         </NuxtLink>
                     </div>
 
                     <!-- Upcoming Tournaments -->
-                    <div class="bg-navy rounded-2xl p-6 shadow-lg text-white relative overflow-hidden">
-                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-2xl"></div>
+                    <div class="bg-navy rounded-2xl p-6 shadow-md text-white relative overflow-hidden border border-white/10">
+                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl"></div>
                         <h3 class="text-lg font-bold mb-6 flex items-center gap-2 relative z-10">
-                            <Icon icon="ph:trophy" class="text-primary" />
+                            <Icon icon="ph:trophy-bold" class="text-primary" />
                             {{ $t('news_page.upcoming_title') }}
                         </h3>
                         <div class="space-y-4 relative z-10">
@@ -271,44 +268,41 @@
                                 <p class="text-sm text-white/60">{{ $t('news_page.no_upcoming') }}</p>
                             </div>
                             <NuxtLink v-for="t in upcomingTournaments" :key="t.id" :to="localePath(`/events/${t.id}`)"
-                                class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
+                                class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition-colors cursor-pointer group">
                                 <div
-                                    class="bg-white/10 rounded-lg w-12 h-12 flex flex-col items-center justify-center text-center flex-shrink-0">
-                                    <span class="text-[10px] font-bold text-primary">{{ t.month }}</span>
-                                    <span class="text-lg font-bold leading-none">{{ t.day }}</span>
+                                    class="bg-white/10 rounded-xl w-12 h-12 flex flex-col items-center justify-center text-center shrink-0 group-hover:bg-primary group-hover:text-navy transition-colors">
+                                    <span class="text-[9px] font-bold text-primary group-hover:text-navy/70 leading-none mb-0.5">{{ t.month }}</span>
+                                    <span class="text-lg font-black leading-none">{{ t.day }}</span>
                                 </div>
-                                <div>
-                                    <h4 class="font-bold text-sm leading-tight mb-0.5">{{ t.title }}</h4>
-                                    <div class="flex items-center gap-1 text-xs text-slate-300">
-                                        <Icon icon="ph:map-pin" class="text-[10px]" />
-                                        {{ t.location }}
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="font-bold text-xs sm:text-sm leading-tight truncate mb-1">{{ t.title }}</h4>
+                                    <div class="flex items-center gap-1 text-[11px] text-slate-400">
+                                        <Icon icon="ph:map-pin-bold" class="text-xs shrink-0" />
+                                        <span class="truncate">{{ t.location }}</span>
                                     </div>
                                 </div>
                             </NuxtLink>
                         </div>
                         <NuxtLink :to="localePath('/events')"
-                            class="inline-flex items-center gap-2 text-primary text-xs font-black mt-6 hover:text-white transition-all group">
+                            class="inline-flex items-center gap-1.5 text-primary text-xs font-bold mt-6 hover:text-white transition-colors relative z-10">
                             {{ $t('news_page.all_tournaments') }}
-                            <Icon icon="ph:arrow-right-bold"
-                                class="transform group-hover:translate-x-1 transition-transform" />
+                            <Icon icon="ph:arrow-right-bold" />
                         </NuxtLink>
                     </div>
 
                     <!-- Subscribe Card -->
                     <div
-                        class="bg-gradient-to-br from-primary to-primary-hover rounded-2xl p-6 shadow-sm border border-primary relative overflow-hidden">
+                        class="bg-gradient-to-br from-primary to-amber-400 rounded-2xl p-6 shadow-md relative overflow-hidden">
                         <div class="relative z-10">
-                            <h4 class="font-bold text-navy text-lg mb-2">{{ $t('news_page.subscribe_title') }}</h4>
-                            <p class="text-navy/80 text-sm mb-4">{{ $t('news_page.subscribe_desc') }}</p>
-                            <form @submit.prevent="handleSubscribe" class="space-y-2">
+                            <h4 class="font-black text-navy text-lg mb-1">{{ $t('news_page.subscribe_title') }}</h4>
+                            <p class="text-navy/80 text-xs sm:text-sm mb-4 leading-relaxed font-medium">{{ $t('news_page.subscribe_desc') }}</p>
+                            <form @submit.prevent="handleSubscribe" class="space-y-2.5">
                                 <input v-model="subscribeEmail"
-                                    class="w-full px-3 py-2 rounded-lg text-sm border-0 focus:ring-2 focus:ring-navy/50 text-slate-800"
+                                    class="w-full px-4 py-2.5 rounded-xl text-sm border-0 focus:ring-2 focus:ring-navy/50 outline-none text-navy placeholder:text-navy/40 shadow-xs"
                                     :placeholder="$t('news_page.subscribe_placeholder')" type="email" required />
-                                <button
-                                    class="w-full bg-navy text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-navy-dark transition-colors"
-                                    :disabled="isSubscribing">
+                                <BaseButton type="submit" variant="navy" block :loading="isSubscribing">
                                     {{ isSubscribing ? $t('news_page.subscribing_button') : $t('news_page.subscribe_button') }}
-                                </button>
+                                </BaseButton>
                             </form>
                         </div>
                         <Icon icon="ph:envelope" class="absolute -bottom-6 -right-6 text-[8rem] text-navy/10 rotate-12 pointer-events-none" />
@@ -324,6 +318,7 @@ import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useDateFormat } from '@vueuse/core'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
@@ -341,6 +336,7 @@ const localePath = useLocalePath()
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
 const toast = useToast()
+const requestUrl = useRequestURL()
 
 const route = useRoute()
 const slug = route.params.slug
@@ -356,8 +352,8 @@ const commentForm = ref({
 
 const { data: commentsResponse, pending: isCommentsLoading, refresh: refreshComments } = await useAsyncData(
     `news-comments-${slug}`,
-    () => api.get(`/news/${slug}/comments`),
-    { server: true, lazy: true }
+    () => api.get(`/news/${slug}/comments`).catch(() => ({ comments: [], count: 0 })),
+    { server: false, lazy: true }
 )
 
 const comments = computed(() => commentsResponse.value?.comments || [])
@@ -365,14 +361,12 @@ const totalComments = computed(() => commentsResponse.value?.count || 0)
 
 const formatDate = (dateStr) => {
     if (!dateStr) return ''
-    const lang = locale.value === 'id' ? 'id-ID' : locale.value === 'kr' ? 'ko-KR' : 'en-US'
-    return new Date(dateStr).toLocaleDateString(lang, {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    })
+    const lang = locale.value === 'id' ? 'id-ID' : 'en-US'
+    try {
+        return useDateFormat(dateStr, 'DD MMM YYYY, HH:mm', { locales: lang }).value
+    } catch {
+        return dateStr
+    }
 }
 
 const submitComment = async () => {
@@ -400,30 +394,51 @@ const submitComment = async () => {
     }
 }
 
-const { data: newsResponse, pending: isLoading } = await useAsyncData(
+const { data: newsResponse, pending: isLoading, error: newsError } = await useAsyncData(
     `news-${slug}`,
-    () => $fetch(`${apiBaseUrl}/news/${slug}`),
+    () => $fetch(`${apiBaseUrl}/news/${slug}`).catch(() => null),
     { server: true }
 )
 
-const article = computed(() => {
-    const data = newsResponse.value?.data || newsResponse.value
-    const lang = locale.value === 'id' ? 'id-ID' : locale.value === 'kr' ? 'ko-KR' : 'en-US'
+const rawArticleData = computed(() => newsResponse.value?.data || newsResponse.value)
 
-    if (!data) return {
+if (newsError.value || (!rawArticleData.value && !isLoading.value)) {
+    throw createError({
+        statusCode: 404,
+        statusMessage: t('news_detail_page.not_found', 'Berita tidak ditemukan'),
+        fatal: true
+    })
+}
+
+const article = computed(() => {
+    const data = rawArticleData.value
+    const lang = locale.value === 'id' ? 'id-ID' : 'en-US'
+
+    if (!data || !data.title) return {
         title: '',
-        category: 'event',
+        excerpt: '',
+        published_at: null,
+        created_at: null,
+        updated_at: null,
+        category: 'berita',
         date: '',
-        author: { name: '', role: '', avatar: '' },
+        author: { name: 'Archeris Editorial', role: 'Tim Redaksi', avatar: useImageOrDefault(null) },
         image: '',
         content: '',
         tags: []
     }
 
+    const rawDate = data.published_at || data.created_at
+    const cleanExcerpt = data.excerpt || (data.content ? data.content.replace(/<[^>]*>?/gm, '').substring(0, 160) : '')
+
     return {
         title: data.title,
-        category: data.category || 'event',
-        date: data.published_at ? new Date(data.published_at).toLocaleDateString(lang, { day: 'numeric', month: 'long', year: 'numeric' }) : new Date(data.created_at).toLocaleDateString(lang, { day: 'numeric', month: 'long', year: 'numeric' }),
+        excerpt: cleanExcerpt,
+        published_at: data.published_at,
+        created_at: data.created_at,
+        updated_at: data.updated_at,
+        category: data.category || 'berita',
+        date: rawDate ? useDateFormat(rawDate, 'DD MMMM YYYY', { locales: lang }).value : '',
         author: {
             name: data.author_name || 'Tim Redaksi',
             role: 'Archeris Editor',
@@ -432,7 +447,7 @@ const article = computed(() => {
         image: useImageOrDefault(data.image_url),
         imageCredit: 'Archeris Documentation',
         content: data.content || '',
-        tags: ['Panahan', 'Indonesia', 'Archeris'], // Fake tags for design since API lacks them
+        tags: data.tags ? (typeof data.tags === 'string' ? data.tags.split(',').map(s => s.trim()) : data.tags) : ['Panahan', 'Indonesia', 'Archeris'],
         organization_id: data.organization_id,
         club_id: data.club_id
     }
@@ -448,14 +463,14 @@ const readTime = computed(() => {
 })
 
 const { data: relatedResponse } = await useAsyncData(
-    'related-news',
-    () => $fetch(`${apiBaseUrl}/news`),
+    `news-related-${slug}`,
+    () => $fetch(`${apiBaseUrl}/news`).catch(() => null),
     { server: true, lazy: true }
 )
 
 const relatedArticles = computed(() => {
     const rawData = relatedResponse.value?.data || relatedResponse.value || []
-    const lang = locale.value === 'id' ? 'id-ID' : locale.value === 'kr' ? 'ko-KR' : 'en-US'
+    const lang = locale.value === 'id' ? 'id-ID' : 'en-US'
 
     return rawData
         .filter(a => a.slug !== slug)
@@ -463,14 +478,14 @@ const relatedArticles = computed(() => {
         .map(a => ({
             slug: a.slug,
             title: a.title,
-            date: a.published_at ? new Date(a.published_at).toLocaleDateString(lang, { day: 'numeric', month: 'short', year: 'numeric' }) : '',
+            date: a.published_at ? useDateFormat(a.published_at, 'DD MMM YYYY', { locales: lang }).value : '',
             image: useImageOrDefault(a.image_url)
         }))
 })
 
 const { data: upcomingResponse } = await useAsyncData(
-    'upcoming-events-news-sidebar',
-    () => $fetch(`${apiBaseUrl}/events?limit=3&status=published`),
+    `news-upcoming-${slug}`,
+    () => $fetch(`${apiBaseUrl}/events?limit=3&status=published`).catch(() => null),
     { server: true, lazy: true }
 )
 
@@ -478,7 +493,7 @@ const upcomingTournaments = computed(() => {
     const rawData = upcomingResponse.value?.data || upcomingResponse.value || []
     const events = Array.isArray(rawData) ? rawData : []
     const now = new Date()
-    const lang = locale.value === 'id' ? 'id-ID' : locale.value === 'kr' ? 'ko-KR' : 'en-US'
+    const lang = locale.value === 'id' ? 'id-ID' : 'en-US'
 
     return events
         .filter(e => {
@@ -539,10 +554,12 @@ const openShareDialog = () => {
     copyToClipboard()
 }
 
+const currentUrl = computed(() => requestUrl?.href || '')
+
 useHead({
-    title: computed(() => `${article.value.title} - Archeris.net`),
+    title: computed(() => `${article.value.title || 'Berita'} - Archeris.net`),
     link: [
-        { rel: 'canonical', href: useRequestURL().href }
+        { rel: 'canonical', href: currentUrl }
     ],
     script: [
         {
@@ -564,22 +581,22 @@ useHead({
                     'name': 'Archeris.net',
                     'url': 'https://archeris.net'
                 },
-                'url': useRequestURL().href
+                'url': currentUrl.value
             }))
         }
     ]
 })
 
 useSeoMeta({
-    title: () => `${article.value.title} - Archeris.net`,
-    description: () => article.value.excerpt,
-    ogTitle: () => article.value.title,
-    ogDescription: () => article.value.excerpt,
+    title: () => `${article.value.title || 'Berita'} - Archeris.net`,
+    description: () => article.value.excerpt || '',
+    ogTitle: () => article.value.title || 'Berita',
+    ogDescription: () => article.value.excerpt || '',
     ogImage: () => article.value.image || 'https://archeris.net/og-default.jpg',
     ogType: 'article',
     twitterCard: 'summary_large_image',
-    twitterTitle: () => article.value.title,
-    twitterDescription: () => article.value.excerpt,
+    twitterTitle: () => article.value.title || 'Berita',
+    twitterDescription: () => article.value.excerpt || '',
     twitterImage: () => article.value.image || 'https://archeris.net/og-default.jpg',
 })
 </script>
@@ -590,30 +607,5 @@ useSeoMeta({
     --tw-prose-headings: #0f172a;
     --tw-prose-links: #0f172a;
     --tw-prose-bold: #0f172a;
-}
-
-:deep(.prose a) {
-    text-decoration: none;
-    background-image: linear-gradient(#D9FF00, #D9FF00);
-    background-position: 0% 100%;
-    background-repeat: no-repeat;
-    background-size: 0% 2px;
-    transition: background-size 0.25s ease;
-}
-
-:deep(.prose a:hover) {
-    background-size: 100% 2px;
-}
-
-/* Underline-slide link effect for sidebar */
-.underline-link {
-    background-image: linear-gradient(var(--color-primary, #D9FF00), var(--color-primary, #D9FF00));
-    background-position: 0% 100%;
-    background-repeat: no-repeat;
-    background-size: 0% 1.5px;
-    transition: background-size 0.3s ease;
-}
-.group:hover .underline-link {
-    background-size: 100% 1.5px;
 }
 </style>

@@ -6,7 +6,7 @@
     </label>
 
     <!-- trigger -->
-    <div class="relative group" @click="toggleCalendar">
+    <div ref="triggerEl" class="relative group" @click="toggleCalendar">
       <div class="absolute left-4 top-1/2 -translate-y-1/2 z-10 pointer-events-none transition-colors"
         :class="isOpen ? 'text-primary' : 'text-gray-400'">
         <Icon icon="ph:calendar-blank" class="text-[18px]" />
@@ -58,15 +58,19 @@
     <!-- panel -->
     <transition
       enter-active-class="transition duration-200 ease-out"
-      enter-from-class="translate-y-2 opacity-0 scale-95"
+      :enter-from-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'"
       enter-to-class="translate-y-0 opacity-100 scale-100"
       leave-active-class="transition duration-150 ease-in"
       leave-from-class="translate-y-0 opacity-100 scale-100"
-      leave-to-class="translate-y-2 opacity-0 scale-95">
+      :leave-to-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'">
 
       <div v-if="isOpen"
-        class="absolute left-0 top-full z-[9999] mt-2 bg-white border border-gray-100 rounded-2xl overflow-hidden select-none"
-        :class="range ? 'flex-nowrap' : ''"
+        class="absolute z-[9999] bg-white border border-gray-100 rounded-2xl overflow-hidden select-none"
+        :class="[
+          isFlippedTop ? 'bottom-full mb-2 origin-bottom' : 'top-full mt-2 origin-top',
+          isAlignedRight ? 'right-0' : 'left-0',
+          range ? 'flex-nowrap' : ''
+        ]"
         :style="range ? 'width:560px; box-shadow:0 20px 60px -10px rgba(15,23,42,0.15)' : 'width:288px; box-shadow:0 20px 60px -10px rgba(15,23,42,0.15)'">
 
         <!-- range: two panels side by side -->
@@ -188,6 +192,7 @@
 <script setup>
 import { ref, computed, watch, defineComponent, h } from 'vue'
 import { Icon } from '@iconify/vue'
+import { useDropdownPosition } from '~/composables/useDropdownPosition'
 
 // ── constants ──────────────────────────────────────
 const MONTH_NAMES = ['January','February','March','April','May','June',
@@ -323,6 +328,12 @@ const emit = defineEmits(['update:modelValue'])
 // ── state ──────────────────────────────────────────
 const isOpen = ref(false)
 const showYearMonth = ref(false)
+const triggerEl = ref(null)
+
+const { isFlippedTop, isAlignedRight } = useDropdownPosition(triggerEl, isOpen, {
+  panelHeight: 360,
+  panelWidth: computed(() => props.range ? 560 : 288)
+})
 
 const today = new Date()
 const todayStr = toDateStr(today)

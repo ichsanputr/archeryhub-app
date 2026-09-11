@@ -27,30 +27,29 @@
                     <div class="mt-10 flex flex-col sm:flex-row gap-4 max-w-xl">
                         <div class="relative flex-1">
                             <Icon icon="ph:magnifying-glass-bold"
-                                class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
+                                class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl" />
                             <input v-model="searchQuery" type="text" :placeholder="$t('products_page.search_placeholder_hero')"
-                                class="w-full pl-12 pr-4 py-4 rounded-xl bg-white text-navy font-medium placeholder:text-gray-400 focus:ring-4 focus:ring-primary/30 outline-none transition-all text-base" />
+                                class="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white text-navy font-medium placeholder:text-slate-400 focus:ring-4 focus:ring-primary/30 outline-none transition-all text-sm shadow-sm" />
                         </div>
-                        <button
-                            class="px-6 py-3.5 bg-primary hover:bg-primary-hover text-navy font-black rounded-xl transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
+                        <BaseButton variant="primary" size="lg" class="shrink-0" @click="currentPage = 1">
                             <Icon icon="ph:magnifying-glass-bold" />
                             {{ $t('products_page.search_button') }}
-                        </button>
+                        </BaseButton>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Search & Filter Bar -->
-        <section class="sticky top-0 z-20 bg-white border-b border-gray-200 shadow-sm">
+        <section class="sticky top-0 z-20 bg-white border-b border-slate-100 shadow-sm">
             <div class="container mx-auto px-4 max-w-7xl py-4">
                 <div class="flex flex-col md:flex-row gap-4 items-center">
                     <div class="flex-grow w-full md:max-w-md">
                         <div class="relative">
                             <Icon icon="ph:magnifying-glass"
-                                class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
+                                class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
                             <input v-model="searchQuery" type="text" :placeholder="$t('products_page.search_placeholder_sticky')"
-                                class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
+                                class="w-full pl-12 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
                         </div>
                     </div>
                     <div class="flex items-center gap-3 w-full md:w-auto">
@@ -68,14 +67,14 @@
 
         <!-- Categories -->
         <section class="container mx-auto px-4 max-w-7xl py-8">
-            <div class="flex items-center gap-3 overflow-x-auto pb-2 no-scrollbar">
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
                 <button v-for="cat in categories" :key="cat.value" @click="categoryFilter = cat.value" :class="[
-                    'flex items-center gap-2 px-5 py-2.5 rounded-full font-medium text-sm whitespace-nowrap transition-all',
+                    'flex items-center gap-2 px-4 py-2 rounded-full font-bold text-xs whitespace-nowrap transition-all border',
                     categoryFilter === cat.value
-                        ? 'bg-navy text-white shadow-sm shadow-navy/20'
-                        : 'bg-white text-gray-600 border border-gray-200 hover:border-primary hover:text-navy'
+                        ? 'bg-navy text-white border-navy shadow-sm'
+                        : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:text-navy'
                 ]">
-                    <Icon :icon="cat.icon" class="text-lg" />
+                    <Icon :icon="cat.icon" class="text-base" />
                     {{ cat.label }}
                 </button>
             </div>
@@ -83,93 +82,91 @@
 
         <!-- Products Grid -->
         <section class="container mx-auto px-4 max-w-7xl pb-16">
-            <Transition name="fade" mode="out-in">
-                <ProductListSkeleton v-if="isLoading" key="skeleton" />
-                <div v-else-if="filteredProducts.length === 0 && !isLoading" key="empty"
-                    class="flex flex-col items-center justify-center py-20">
-                    <Icon icon="ph:package-light" class="text-7xl text-gray-200 mb-6" />
-                    <h3 class="text-lg sm:text-2xl font-black text-navy mb-3">{{ $t('products_page.not_found') }}</h3>
-                    <p class="text-gray-500 max-w-md mx-auto text-center">{{ $t('products_page.not_found_desc') }}</p>
+            <PublicCardSkeleton v-if="isLoading" :count="8" grid="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6" />
+            <div v-else-if="filteredProducts.length === 0"
+                class="text-center py-16 bg-white rounded-2xl border border-slate-100 shadow-sm p-8 max-w-lg mx-auto">
+                <div class="w-16 h-16 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-slate-300 shadow-sm">
+                    <Icon icon="ph:package-light" class="text-3xl" />
                 </div>
-                <div v-else key="content" class="space-y-12">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                        <!-- Product Card Premium -->
-                        <a v-for="product in paginatedProducts" :key="product.id"
-                            :href="localePath(`/products/${product.slug || product.id}`)"
-                            class="bg-white rounded-3xl border border-stone-200 flex flex-col shadow-sm hover:border-stone-300 transition-all group overflow-hidden h-full">
+                <h3 class="text-lg font-bold text-navy mb-1">{{ $t('products_page.not_found') }}</h3>
+                <p class="text-sm text-slate-500 font-medium leading-relaxed mb-6">{{ $t('products_page.not_found_desc') }}</p>
+                <BaseButton v-if="searchQuery || categoryFilter !== 'all'" variant="outline" size="sm" @click="searchQuery = ''; categoryFilter = 'all'">
+                    {{ $t('common.reset_filters', 'Reset Filter') }}
+                </BaseButton>
+            </div>
+            <div v-else class="space-y-12">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                    <!-- Product Card -->
+                    <NuxtLink v-for="product in paginatedProducts" :key="product.id"
+                        :to="localePath(`/products/${product.slug || product.id}`)"
+                        class="bg-white rounded-2xl border border-slate-100 flex flex-col shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300 group overflow-hidden h-full">
 
-                            <!-- Product Image Container -->
-                            <div class="relative pt-[100%] bg-stone-50 overflow-hidden">
-                                <img :src="getProductImage(product.image_url)" :alt="product.name"
-                                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
+                        <!-- Product Image Container -->
+                        <div class="relative pt-[100%] bg-slate-50 overflow-hidden">
+                            <img :src="getProductImage(product.image_url)" :alt="product.name"
+                                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
 
-                                <!-- Premium Overlays -->
+                            <!-- Sale Badge -->
+                            <div v-if="product.sale_price" class="absolute top-3 left-3 z-10">
                                 <div
-                                    class="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                                    class="px-2.5 py-1 bg-navy text-primary text-[10px] font-black rounded-lg shadow-sm flex items-center gap-1">
+                                    <Icon icon="ph:tag-fill" />
+                                    {{ $t('products_page.promo') }}
                                 </div>
+                            </div>
+                        </div>
 
-                                <!-- Sale Badge -->
-                                <div v-if="product.sale_price" class="absolute top-4 left-4 z-10">
-                                    <div
-                                        class="px-3 py-1 bg-stone-900 text-white text-[10px] font-black rounded-lg shadow-sm flex items-center gap-1">
-                                        <Icon icon="ph:tag-fill" />
-                                        {{ $t('products_page.promo') }}
-                                    </div>
-                                </div>
-
+                        <!-- Product Content -->
+                        <div class="p-5 flex flex-col flex-1">
+                            <!-- Category & Status -->
+                            <div class="flex items-center justify-between mb-2.5">
+                                <span
+                                    class="text-[10px] font-black text-slate-600 tracking-wider bg-slate-100 px-2 py-0.5 rounded-md capitalize">
+                                    {{ getCategoryLabel(product.category) }}
+                                </span>
+                                <span v-if="product.stock > 0"
+                                    class="text-[10px] font-bold text-emerald-600 flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                    {{ $t('products_page.in_stock') }}
+                                </span>
                             </div>
 
-                            <!-- Product Content -->
-                            <div class="p-6 flex flex-col flex-1">
-                                <!-- Category & Status -->
-                                <div class="flex items-center justify-between mb-3">
-                                    <span
-                                        class="text-[10px] font-black text-stone-600 tracking-widest bg-stone-100 px-2 py-0.5 rounded-md">
-                                        {{ getCategoryLabel(product.category) }}
-                                    </span>
-                                    <span v-if="product.stock > 0"
-                                        class="text-[10px] font-bold text-emerald-700 flex items-center gap-1">
-                                        <span class="w-1.5 h-1.5 bg-emerald-600 rounded-full"></span>
-                                        {{ $t('products_page.in_stock') }}
-                                    </span>
-                                </div>
+                            <!-- Title -->
+                            <h3
+                                class="font-black text-navy text-sm md:text-base mb-3 leading-snug line-clamp-2 group-hover:text-primary transition-colors">
+                                {{ product.name }}
+                            </h3>
 
-                                <!-- Title -->
-                                <h3
-                                    class="font-black text-navy text-sm md:text-base mb-3 leading-snug break-words group-hover:text-stone-700 transition-colors">
-                                    {{ product.name }}
-                                </h3>
-
-                                <!-- Price Section -->
-                                <div class="mt-auto pt-4 border-t border-stone-100">
-                                    <div class="flex flex-col">
-                                        <span v-if="product.sale_price"
-                                            class="text-[10px] text-stone-400 line-through mb-0.5">
-                                            Rp {{ formatPrice(product.price) }}
+                            <!-- Price Section -->
+                            <div class="mt-auto pt-3.5 border-t border-slate-100">
+                                <div class="flex flex-col">
+                                    <span v-if="product.sale_price"
+                                        class="text-[10px] text-slate-400 line-through mb-0.5">
+                                        Rp {{ formatPrice(product.price) }}
+                                    </span>
+                                    <div class="flex items-center justify-between">
+                                        <span
+                                            class="text-base font-black text-navy">
+                                            Rp {{ formatPrice(product.sale_price || product.price) }}
                                         </span>
-                                        <div class="flex items-center justify-between">
-                                            <span
-                                                class="text-lg font-black text-navy group-hover:text-stone-700 transition-colors">
-                                                Rp {{ formatPrice(product.sale_price || product.price) }}
-                                            </span>
-                                            <div
-                                                class="w-8 h-8 rounded-lg bg-stone-100 group-hover:bg-stone-200 flex items-center justify-center text-stone-500 group-hover:text-stone-700 transition-all">
-                                                <Icon icon="ph:arrow-right-bold" class="text-xs" />
-                                            </div>
+                                        <div
+                                            class="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-primary group-hover:text-navy flex items-center justify-center text-slate-400 transition-all">
+                                            <Icon icon="ph:arrow-right-bold" class="text-xs" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </a>
-                    </div>
-
-                    <!-- BasePagination -->
-                    <div v-if="filteredProducts.length > itemsPerPage" class="flex justify-center pt-8 border-t border-stone-100">
-                        <BasePagination :current-page="currentPage" :total-items="filteredProducts.length" :items-per-page="itemsPerPage"
-                            @change-page="currentPage = $event" />
-                    </div>
+                        </div>
+                    </NuxtLink>
                 </div>
-            </Transition>
+
+                <!-- BasePagination -->
+                <div v-if="filteredProducts.length > itemsPerPage" class="flex justify-center pt-8 border-t border-slate-100">
+                    <BasePagination :current-page="currentPage" :total-items="filteredProducts.length" :items-per-page="itemsPerPage"
+                        :show-page-size="false"
+                        @change-page="currentPage = $event" />
+                </div>
+            </div>
         </section>
 
 

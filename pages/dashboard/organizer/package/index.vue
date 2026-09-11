@@ -215,9 +215,26 @@ async function buyQuota() {
                     </div>
                 </div>
 
-                <div class="flex items-baseline gap-2 mb-6">
-                    <span class="text-4xl font-black text-navy">{{ quota.quota_free ?? 20 }}</span>
-                    <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.free_tier_slot', '/ 20 slot tersedia') }}</span>
+                <div class="space-y-2.5 mb-6">
+                    <div class="flex items-baseline justify-between">
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="text-4xl font-black text-navy">{{ quota.quota_free ?? 20 }}</span>
+                            <span class="text-xs font-bold text-slate-400">/ 20 slot tersisa</span>
+                        </div>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            {{ Math.max(0, 20 - (quota.quota_free ?? 20)) }} terpakai
+                        </span>
+                    </div>
+                    <!-- Progress bar indicating remaining quota -->
+                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                        <div class="bg-emerald-500 h-full rounded-full transition-all duration-500"
+                             :style="{ width: Math.min(100, Math.max(0, ((quota.quota_free ?? 20) / 20) * 100)) + '%' }">
+                        </div>
+                    </div>
+                    <div class="flex justify-between text-[10px] text-slate-400 font-bold">
+                        <span>Awal: 20 Slot Gratis</span>
+                        <span>Sisa: {{ quota.quota_free ?? 20 }} Event</span>
+                    </div>
                 </div>
 
                 <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium">

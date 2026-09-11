@@ -1,12 +1,13 @@
 <template>
     <div class="bracket-round">
         <div class="round-header group">
-            <span class="text-[10px] font-black tracking-[0.3em] text-navy/30">
+            <span class="text-[10px] font-black tracking-[0.25em] text-slate-400 capitalize">
                 {{ roundName }}
             </span>
             <button type="button" @click="$emit('navigate', roundNo)"
-                class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy hover:bg-navy hover:text-primary transition-all shadow-sm">
-                Manage
+                class="mt-2 px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-[10px] font-black tracking-wider text-slate-700 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all shadow-sm flex items-center gap-1.5 active:scale-95">
+                <Icon icon="ph:gear-six-bold" class="text-xs text-slate-400 group-hover:text-primary transition-colors" />
+                <span>{{ t('event_elimination.manage', 'Kelola') }}</span>
             </button>
         </div>
         <div class="slots-container flex flex-col justify-center" :style="{ height: totalHeight + 'px' }">
@@ -20,7 +21,11 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 import EliminationMatchCard from './EliminationMatchCard.vue'
+
+const { t } = useI18n()
 
 const props = defineProps({
     roundNo: { type: [Number, String], required: true },

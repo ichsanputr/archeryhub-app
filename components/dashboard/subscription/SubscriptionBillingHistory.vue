@@ -24,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
-                        <tr v-for="(invoice, index) in invoices" :key="index"
+                        <tr v-for="(invoice, index) in invoices" :key="invoice.id || invoice.invoice_number || index"
                             class="hover:bg-slate-50 transition-colors group">
                             <td class="px-8 py-4 text-xs font-bold text-gray-500">{{ invoice.date }}</td>
                             <td class="px-8 py-4 text-sm font-black text-navy">{{ invoice.description }}</td>
@@ -32,9 +32,9 @@
                             <td class="px-8 py-4">
                                 <span class="px-2.5 py-1 rounded-full text-[9px] font-black capitalize tracking-wider"
                                     :class="{
-                                        'bg-green-100 text-green-700': invoice.status === 'paid',
-                                        'bg-orange-100 text-orange-700': invoice.status === 'pending',
-                                        'bg-red-100 text-red-700': ['expired', 'failed'].includes(invoice.status)
+                                        'bg-emerald-50 text-emerald-700 border border-emerald-200/80': invoice.status === 'paid',
+                                        'bg-amber-50 text-amber-700 border border-amber-200/80': invoice.status === 'pending',
+                                        'bg-red-50 text-red-700 border border-red-200/80': ['expired', 'failed'].includes(invoice.status)
                                     }">
                                     {{ getStatusLabel(invoice.status) }}
                                 </span>
@@ -82,6 +82,7 @@ const { t } = useDashboardI18n()
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
 const api = useApi()
+const toast = useToast()
 
 defineProps({
     invoices: Array
@@ -107,7 +108,7 @@ const handleDownload = async () => {
         window.URL.revokeObjectURL(url)
     } catch (err) {
         console.error('Failed to download report:', err)
-        alert(t('subscription.billing.download_failed', 'Gagal mengunduh laporan. Silakan coba lagi.'))
+        toast.error(t('subscription.billing.download_failed', 'Gagal mengunduh laporan. Silakan coba lagi.'))
     }
 }
 

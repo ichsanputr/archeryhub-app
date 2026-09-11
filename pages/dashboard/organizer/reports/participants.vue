@@ -26,32 +26,16 @@
         <h3 class="text-sm font-black text-navy">Report Filters</h3>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         <!-- event -->
         <BaseSelect
           v-model="filters.event_id"
           :items="eventSelectItems"
           item-title="name"
           item-value="id"
-          :placeholder="t('dashboard.reports.all_events')"
-          :label="t('dashboard.reports.select_event')"
+          :placeholder="t('dashboard.reports.all_events', 'Semua Event')"
+          :label="t('dashboard.reports.select_event', 'Pilih Event')"
           :searchable="true"
-          clearable
-        />
-
-        <!-- start date -->
-        <BaseDatePicker
-          v-model="filters.start_date"
-          :label="t('dashboard.reports.start_date')"
-          placeholder="Select start date"
-          clearable
-        />
-
-        <!-- end date -->
-        <BaseDatePicker
-          v-model="filters.end_date"
-          :label="t('dashboard.reports.end_date')"
-          placeholder="Select end date"
           clearable
         />
 
@@ -61,8 +45,19 @@
           :items="bowTypeItems"
           item-title="label"
           item-value="value"
-          label="Bow Type"
-          :placeholder="t('reports.select_bow_type', 'Pilih Jenis Busur')"
+          label="Jenis Busur (Division)"
+          placeholder="Semua Jenis Busur"
+          :searchable="false"
+        />
+
+        <!-- gender -->
+        <BaseSelect
+          v-model="filters.gender"
+          :items="genderItems"
+          item-title="label"
+          item-value="value"
+          label="Kategori Gender"
+          placeholder="Semua Gender"
           :searchable="false"
         />
 
@@ -72,8 +67,8 @@
           :items="statusItems"
           item-title="label"
           item-value="value"
-          label="Check-in Status"
-          :placeholder="t('reports.select_status', 'Pilih Status')"
+          label="Status Registrasi Ulang"
+          placeholder="Semua Status"
           :searchable="false"
         />
       </div>
@@ -274,31 +269,38 @@ const stats = ref({
 
 const filters = reactive({
   event_id: route.query.event_id || 'all',
-  start_date: '',
-  end_date: '',
   gender: 'all',
   bow_type: 'all',
   status: 'all'
 })
 
 const eventSelectItems = computed(() => [
-  { id: 'all', name: t('dashboard.reports.all_events') },
+  { id: 'all', name: t('dashboard.reports.all_events', 'Semua Event') },
   ...eventsList.value
 ])
 
 const bowTypeItems = [
-  { value: 'all', label: 'All Bow Types' },
+  { value: 'all', label: 'Semua Jenis Busur' },
   { value: 'Recurve', label: 'Recurve' },
   { value: 'Compound', label: 'Compound' },
   { value: 'Barebow', label: 'Barebow' },
   { value: 'Traditional', label: 'Traditional' },
-  { value: 'Standard', label: 'Standard' },
+  { value: 'Standard', label: 'Standard Bow' },
+]
+
+const genderItems = [
+  { value: 'all', label: 'Semua Gender' },
+  { value: 'Pria', label: 'Putra / Pria' },
+  { value: 'Wanita', label: 'Putri / Wanita' },
+  { value: 'Male', label: 'Male' },
+  { value: 'Female', label: 'Female' },
+  { value: 'Campuran', label: 'Mix / Campuran' },
 ]
 
 const statusItems = [
-  { value: 'all', label: 'All Status' },
-  { value: 'checked_in', label: 'Checked In' },
-  { value: 'pending', label: 'Not Checked In' },
+  { value: 'all', label: 'Semua Status' },
+  { value: 'checked_in', label: 'Sudah Registrasi Ulang (Checked In)' },
+  { value: 'pending', label: 'Belum Registrasi Ulang (Pending)' },
 ]
 
 onMounted(() => { fetchReportData() })
@@ -306,12 +308,10 @@ onMounted(() => { fetchReportData() })
 const fetchReportData = async () => {
   try {
     const queryParams = new URLSearchParams()
-    if (filters.event_id !== 'all') queryParams.append('event_id', filters.event_id)
-    if (filters.start_date) queryParams.append('start_date', filters.start_date)
-    if (filters.end_date) queryParams.append('end_date', filters.end_date)
-    if (filters.gender !== 'all') queryParams.append('gender', filters.gender)
-    if (filters.bow_type !== 'all') queryParams.append('bow_type', filters.bow_type)
-    if (filters.status !== 'all') queryParams.append('status', filters.status)
+    if (filters.event_id && filters.event_id !== 'all') queryParams.append('event_id', filters.event_id)
+    if (filters.gender && filters.gender !== 'all') queryParams.append('gender', filters.gender)
+    if (filters.bow_type && filters.bow_type !== 'all') queryParams.append('bow_type', filters.bow_type)
+    if (filters.status && filters.status !== 'all') queryParams.append('status', filters.status)
 
     const res = await api.get(`/organizers/reports/participants?${queryParams.toString()}`)
     if (res) {
@@ -332,8 +332,6 @@ const applyFilters = () => fetchReportData()
 
 const resetFilters = () => {
   filters.event_id = route.query.event_id || 'all'
-  filters.start_date = ''
-  filters.end_date = ''
   filters.gender = 'all'
   filters.bow_type = 'all'
   filters.status = 'all'

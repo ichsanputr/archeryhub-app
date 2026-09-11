@@ -1,57 +1,34 @@
 <template>
     <div class="flex flex-col gap-8">
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
+        
         <!-- Header -->
-        <div
-            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-
-            <!-- Decorative Background Elements -->
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-            <!-- Header Content -->
-            <div class="relative p-6 sm:p-8">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div class="flex items-center sm:items-start gap-4">
-                        <!-- Icon Badge -->
-                        <div
-                            class="size-12 sm:size-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg shrink-0">
-                            <Icon icon="ph:browser-bold" class="text-primary text-xl sm:text-2xl" />
-                        </div>
-
-                        <!-- Title Section -->
-                        <div class="flex-1 min-w-0">
-                            <h1 class="text-xl sm:text-2xl lg:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2">
-                                {{ $t('dashboard_events_page.title') }}
-                            </h1>
-                            <div class="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
-                                {{ $t('dashboard_events_page.subtitle') }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
-                        <BaseButton variant="outline" icon="ph:eye-bold" :to="`/events/${eventData.slug}`" target="_blank" size="md"
-                            class="h-10 sm:h-11 px-5 text-white border-white/30 hover:bg-white/10 backdrop-blur-sm text-xs sm:text-sm font-bold">
-                            {{ $t('dashboard_events_page.view_button') }}
-                        </BaseButton>
-                        <BaseButton variant="primary" icon="ph:floppy-disk-bold"
-                            @click="isSubscriptionActive ? saveEventPage() : (showPremiumModal = true)"
-                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
-                            :loading="saving" size="md"
-                            class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 text-xs sm:text-sm font-black">
-                            {{ $t('dashboard_events_page.save_button') }}
-                        </BaseButton>
-                    </div>
+        <DashboardHeader
+            :title="t('dashboard_events_page.title', 'Pengaturan Halaman Event')"
+            :subtitle="t('dashboard_events_page.subtitle', 'Atur konten, jadwal, lokasi, galeri, dan tampilan publik halaman event Anda.')"
+            icon="ph:browser-bold"
+            :breadcrumbs="[
+                { label: 'Dashboard', to: '/dashboard/organizer' },
+                { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/events' },
+                { label: t('dashboard_events_page.title', 'Halaman Event') }
+            ]"
+        >
+            <template #actions>
+                <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+                    <BaseButton variant="white" icon="ph:eye-bold" :to="`/events/${eventData.slug}`" target="_blank"
+                        class="h-10 sm:h-11 px-5 border-white/20 text-xs sm:text-sm font-bold">
+                        {{ t('dashboard_events_page.view_button', 'Pratinjau Halaman') }}
+                    </BaseButton>
+                    <BaseButton variant="primary" icon="ph:floppy-disk-bold"
+                        @click="isSubscriptionActive ? saveEventPage() : (showPremiumModal = true)"
+                        :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                        :loading="saving"
+                        class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all text-xs sm:text-sm font-black tracking-widest">
+                        {{ t('dashboard_events_page.save_button', 'Simpan Perubahan') }}
+                    </BaseButton>
                 </div>
-            </div>
-        </div>
+            </template>
+        </DashboardHeader>
 
         <!-- Tabs Navigation -->
         <div class="flex gap-1 bg-gray-100/80 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm mt-2">
@@ -558,7 +535,7 @@
                             </div>
                             <button v-else @click="openMediaLibrary('banner')"
                                 class="w-full aspect-video rounded-xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400">
-                                <Icon icon="material-symbols:image-outline" class="text-3xl mb-2" />
+                                <Icon icon="ph:image-bold" class="text-3xl mb-2" />
                                 <span class="text-xs font-bold">{{ $t('dashboard_events_page.media.select_banner') }}</span>
                             </button>
                         </div>

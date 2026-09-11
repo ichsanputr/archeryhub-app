@@ -407,8 +407,15 @@ const handleLogout = () => { showLogoutDialog.value = true }
 </script>
 
 <style scoped>
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .bg-navy {

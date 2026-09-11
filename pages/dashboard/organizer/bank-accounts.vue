@@ -13,7 +13,7 @@
             <template #actions>
                 <BaseButton @click="isSubscriptionActive ? openAddModal() : (showPremiumModal = true)" variant="primary" icon="ph:plus-bold"
                     :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
-                    class="font-black tracking-widest text-[10px] h-11 px-6 shadow-lg shadow-primary/20 !rounded-xl">
+                    class="font-bold text-xs h-11 px-6 shadow-md shadow-primary/20 !rounded-xl">
                     {{ t('organizer.bank_accounts.add') }}
                 </BaseButton>
             </template>
@@ -23,64 +23,95 @@
         <!-- Bank Accounts Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div v-for="account in bankAccounts" :key="account.id"
-                class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm relative group hover:shadow-md hover:-translate-y-1 transition-all duration-300">
-                <div class="flex justify-between items-start mb-6">
-                    <div
-                        class="size-12 rounded-2xl bg-navy/5 flex items-center justify-center text-navy shrink-0 overflow-hidden p-2">
-                        <img v-if="getBankLogo(account.bank_name)"
-                            :src="`/payment-method/${getBankLogo(account.bank_name)}`"
-                            class="h-full w-full object-contain" />
-                        <Icon v-else :icon="getBankIcon(account.bank_name)" class="text-2xl" />
+                class="rounded-2xl p-5 relative group transition-all duration-200 flex flex-col justify-between bg-white border border-slate-200/80 hover:border-slate-300 shadow-2xs hover:shadow-xs">
+                
+                <div class="space-y-4">
+                    <!-- Card Top Header -->
+                    <div class="flex justify-between items-start gap-3">
+                        <div class="flex items-center gap-3 min-w-0 flex-1">
+                            <div class="size-11 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center p-2 shrink-0 shadow-2xs">
+                                <img v-if="getBankLogo(account.bank_name)"
+                                    :src="`/payment-method/${getBankLogo(account.bank_name)}`"
+                                    class="h-full w-full object-contain"
+                                    :alt="account.bank_name" />
+                                <Icon v-else :icon="getBankIcon(account.bank_name)" class="text-2xl text-slate-400" />
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-2">
+                                    <h4 class="text-base font-bold text-navy leading-tight truncate">{{ account.bank_name }}</h4>
+                                </div>
+                                <p class="text-xs text-slate-500 font-normal truncate mt-0.5">{{ account.account_name }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Primary Tag at top -->
+                        <span v-if="account.is_primary"
+                            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80 text-[11px] font-medium shrink-0">
+                            <Icon icon="ph:check-circle-fill" class="text-xs text-emerald-600" />
+                            <span>{{ t('organizer.bank_accounts.badge_primary', 'Rekening utama') }}</span>
+                        </span>
                     </div>
-                    <div class="flex gap-1.5 items-center">
-                        <button @click="isSubscriptionActive ? openEditModal(account) : (showPremiumModal = true)"
-                            class="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-navy transition-colors">
-                            <Icon icon="ph:pencil-simple-bold" />
-                        </button>
-                        <button @click="isSubscriptionActive ? confirmDelete(account) : (showPremiumModal = true)"
-                            class="p-2 hover:bg-red-50 rounded-lg text-gray-400 hover:text-red-500 transition-colors">
-                            <Icon icon="ph:trash-bold" />
+
+                    <!-- Account Number Box -->
+                    <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-100 flex items-center justify-between gap-2">
+                        <div class="min-w-0">
+                            <span class="text-[11px] font-medium text-slate-400 block leading-none mb-1.5">
+                                {{ t('organizer.bank_accounts.fields.account_number', 'Nomor rekening') }}
+                            </span>
+                            <span class="text-base font-bold font-mono text-navy tracking-tight block select-all">
+                                {{ account.account_number }}
+                            </span>
+                        </div>
+                        <button @click="copyToClipboard(account.account_number)"
+                            class="size-8 rounded-lg bg-white border border-slate-200/80 text-slate-400 hover:text-navy hover:border-slate-300 flex items-center justify-center transition-colors shadow-2xs shrink-0"
+                            :title="t('common.copy', 'Salin')">
+                            <Icon icon="ph:copy-bold" class="text-sm" />
                         </button>
                     </div>
                 </div>
 
-                    <div class="space-y-4">
+                <!-- Footer Status & Action -->
+                <div class="pt-3.5 mt-4 border-t border-slate-100 flex items-center justify-between">
+                    <!-- Left status/action -->
                     <div>
-                        <div class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
-                            {{ t('organizer.bank_accounts.fields.bank_name') }}
-                        </div>
-                        <div class="text-sm font-black text-navy">{{ account.bank_name }}</div>
+                        <span v-if="account.is_primary" class="text-xs text-slate-400 font-normal">
+                            {{ t('organizer.bank_accounts.badge_primary', 'Rekening utama') }}
+                        </span>
+                        <button v-else-if="isSubscriptionActive" 
+                            @click="handleSetPrimary(account)"
+                            class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-navy hover:bg-slate-100 px-2.5 py-1.5 rounded-lg transition-colors border border-slate-200/80">
+                            <Icon icon="ph:star" class="text-xs text-amber-500" />
+                            <span>{{ t('organizer.bank_accounts.set_as_primary', 'Jadikan rekening utama') }}</span>
+                        </button>
+                        <span v-else class="text-xs text-slate-400 font-normal">Rekening tambahan</span>
                     </div>
-                    <div>
-                        <div class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
-                            {{ t('organizer.bank_accounts.fields.account_number') }}
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <div class="text-lg font-black text-navy tracking-tight">{{ account.account_number }}</div>
-                            <button @click="copyToClipboard(account.account_number)" class="transition-transform">
-                                <Icon icon="ph:copy-bold" />
-                            </button>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="text-[10px] font-black text-gray-400 tracking-widest mb-1">
-                            {{ t('organizer.bank_accounts.fields.account_name') }}
-                        </div>
-                        <div class="text-sm font-bold text-gray-700 truncate">{{ account.account_name }}</div>
+
+                    <!-- Right actions (Edit / Delete) -->
+                    <div class="flex gap-1 items-center shrink-0">
+                        <button @click="isSubscriptionActive ? openEditModal(account) : (showPremiumModal = true)"
+                            class="size-8 rounded-lg text-slate-400 hover:text-navy hover:bg-slate-100 flex items-center justify-center transition-colors"
+                            :title="t('common.edit', 'Edit')">
+                            <Icon icon="ph:pencil-simple" class="text-sm" />
+                        </button>
+                        <button @click="isSubscriptionActive ? confirmDelete(account) : (showPremiumModal = true)"
+                            class="size-8 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 flex items-center justify-center transition-colors"
+                            :title="t('common.delete', 'Hapus')">
+                            <Icon icon="ph:trash" class="text-sm" />
+                        </button>
                     </div>
                 </div>
             </div>
 
             <!-- Empty State / Add Card -->
             <button @click="isSubscriptionActive ? openAddModal() : (showPremiumModal = true)"
-                class="border-2 border-dotted border-gray-200 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/5 transition-all group min-h-[280px]">
+                class="border-2 border-dashed border-slate-200 hover:border-primary/60 hover:bg-slate-50/50 rounded-2xl p-6 flex flex-col items-center justify-center gap-3 transition-all group min-h-[220px]">
                 <div
-                    class="size-14 rounded-full bg-gray-50 flex items-center justify-center text-gray-300 group-hover:bg-primary group-hover:text-white transition-all">
-                    <Icon icon="ph:plus-bold" class="text-2xl" />
+                    class="size-12 rounded-full bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 group-hover:bg-primary group-hover:border-primary group-hover:text-navy transition-all">
+                    <Icon icon="ph:plus-bold" class="text-xl" />
                 </div>
                 <div class="text-center">
-                    <div class="text-sm font-black text-navy tracking-widest">{{ t('organizer.bank_accounts.add_new') }}</div>
-                    <div class="text-xs text-gray-400 font-medium mt-1">{{ t('organizer.bank_accounts.add_new_desc') }}</div>
+                    <div class="text-sm font-bold text-navy">{{ t('organizer.bank_accounts.add_new', 'Tambah rekening baru') }}</div>
+                    <div class="text-xs text-slate-400 font-normal mt-0.5">{{ t('organizer.bank_accounts.add_new_desc', 'Gunakan rekening lain untuk pencairan dana') }}</div>
                 </div>
             </button>
         </div>
@@ -90,8 +121,8 @@
             :header="modal.isEdit ? t('organizer.bank_accounts.modal.edit_title') : t('organizer.bank_accounts.modal.add_title')">
             <div class="space-y-4">
                 <div class="space-y-2">
-                    <label class="text-xs font-black text-gray-400 tracking-widest">
-                        {{ t('organizer.bank_accounts.modal.pick_bank') }}
+                    <label class="text-xs font-bold text-slate-500">
+                        {{ t('organizer.bank_accounts.modal.pick_bank', 'Pilih bank') }}
                     </label>
                     <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
                         <button v-for="bank in supportedBanks" :key="bank.id" type="button"
@@ -99,25 +130,31 @@
                             class="flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all gap-1.5"
                             :class="form.bankName === bank.name ? 'border-primary bg-primary/5' : 'border-gray-100 hover:border-primary/30'">
                             <img :src="`/payment-method/${bank.logo}`" :alt="bank.name" class="h-6 object-contain" />
-                            <span class="text-[8px] font-black text-gray-500">{{ bank.name }}</span>
+                            <span class="text-[9px] font-bold text-slate-600">{{ bank.name }}</span>
                         </button>
                     </div>
                 </div>
-                <BaseInput v-model="form.bankName" :label="t('organizer.bank_accounts.modal.custom_bank_label')"
-                    :placeholder="t('organizer.bank_accounts.modal.custom_bank_placeholder')" />
-                <BaseInput v-model="form.accountNumber" :label="t('organizer.bank_accounts.modal.account_number_label')"
-                    :placeholder="t('organizer.bank_accounts.modal.account_number_placeholder')"
+                <BaseInput v-model="form.bankName" :label="t('organizer.bank_accounts.modal.custom_bank_label', 'Nama bank kustom')"
+                    :placeholder="t('organizer.bank_accounts.modal.custom_bank_placeholder', 'Jika bank tidak ada di daftar')" />
+                <BaseInput v-model="form.accountNumber" :label="t('organizer.bank_accounts.modal.account_number_label', 'Nomor rekening')"
+                    :placeholder="t('organizer.bank_accounts.modal.account_number_placeholder', 'Masukkan nomor rekening')"
                     required />
-                <BaseInput v-model="form.accountName" :label="t('organizer.bank_accounts.modal.account_name_label')"
-                    :placeholder="t('organizer.bank_accounts.modal.account_name_placeholder')"
+                <BaseInput v-model="form.accountName" :label="t('organizer.bank_accounts.modal.account_name_label', 'Nama pemilik rekening')"
+                    :placeholder="t('organizer.bank_accounts.modal.account_name_placeholder', 'Sesuai buku tabungan')"
                     required />
 
-                <div class="flex items-center gap-2 mt-2">
-                    <input type="checkbox" v-model="form.isPrimary" id="isPrimary"
-                        class="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4">
-                    <label for="isPrimary" class="text-xs font-bold text-navy tracking-widest">
-                        {{ t('organizer.bank_accounts.modal.set_primary_label') }}
-                    </label>
+                <div class="space-y-1 mt-2">
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" v-model="form.isPrimary" id="isPrimary"
+                            :disabled="bankAccounts.length === 0 || (modal.isEdit && bankAccounts.length === 1)"
+                            class="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4 disabled:opacity-50">
+                        <label for="isPrimary" class="text-xs font-medium text-navy cursor-pointer">
+                            {{ t('organizer.bank_accounts.modal.set_primary_label', 'Jadikan sebagai rekening utama') }}
+                        </label>
+                    </div>
+                    <p v-if="bankAccounts.length === 0 || (modal.isEdit && bankAccounts.length === 1)" class="text-[11px] text-slate-400 ml-6">
+                        {{ t('organizer.bank_accounts.modal.single_primary_hint', 'Rekening pertama otomatis menjadi rekening utama.') }}
+                    </p>
                 </div>
             </div>
 
@@ -260,6 +297,21 @@ const handleSubmit = async () => {
         toast.error(error.response?.data?.error || t('organizer.bank_accounts.messages.failed_to_save_account'))
     } finally {
         modal.loading = false
+    }
+}
+
+const handleSetPrimary = async (account) => {
+    try {
+        await api.put(`/organizers/bank-accounts/${account.id}`, {
+            bank_name: account.bank_name,
+            account_number: account.account_number,
+            account_name: account.account_name,
+            is_primary: true
+        })
+        toast.success(`Rekening ${account.bank_name} berhasil dijadikan rekening utama`)
+        fetchBankAccounts()
+    } catch (error) {
+        toast.error('Gagal memperbarui status rekening utama')
     }
 }
 

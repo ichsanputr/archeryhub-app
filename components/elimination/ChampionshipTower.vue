@@ -3,18 +3,20 @@
         <!-- Consolidated Header for Semi and Final -->
         <div class="round-header !flex-row !gap-4 !items-end !mb-12">
             <div class="flex flex-col items-center">
-                <span class="text-[10px] font-black tracking-[0.3em] text-navy/30">Semifinal</span>
+                <span class="text-[10px] font-black tracking-[0.25em] text-slate-400 capitalize">{{ t('event_elimination.semifinal', 'Semifinal') }}</span>
                 <button type="button" @click="$emit('navigate', totalRounds - 1)"
-                    class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy hover:bg-navy hover:text-primary transition-all shadow-sm">
-                    Manage
+                    class="mt-2 px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-[10px] font-black tracking-wider text-slate-700 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all shadow-sm flex items-center gap-1.5 active:scale-95">
+                    <Icon icon="ph:gear-six-bold" class="text-xs text-slate-400 group-hover:text-primary transition-colors" />
+                    <span>{{ t('event_elimination.manage', 'Kelola') }}</span>
                 </button>
             </div>
-            <div class="h-8 w-px bg-[#d1dcf0] mb-1"></div>
+            <div class="h-8 w-px bg-slate-200 mb-1"></div>
             <div class="flex flex-col items-center">
-                <span class="text-[10px] font-black tracking-[0.3em] text-navy/30">Finals</span>
+                <span class="text-[10px] font-black tracking-[0.25em] text-slate-400 capitalize">{{ t('event_elimination.finals', 'Final') }}</span>
                 <button type="button" @click="$emit('navigate', totalRounds)"
-                    class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy hover:bg-navy hover:text-primary transition-all shadow-sm">
-                    Manage
+                    class="mt-2 px-3.5 py-1.5 rounded-xl bg-white border border-slate-200 text-[10px] font-black tracking-wider text-slate-700 hover:bg-slate-900 hover:text-white hover:border-slate-900 transition-all shadow-sm flex items-center gap-1.5 active:scale-95">
+                    <Icon icon="ph:gear-six-bold" class="text-xs text-slate-400 group-hover:text-primary transition-colors" />
+                    <span>{{ t('event_elimination.manage', 'Kelola') }}</span>
                 </button>
             </div>
         </div>
@@ -22,12 +24,12 @@
         <div class="final-arena mx-10 relative !p-0" :style="{ height: totalHeight + 'px' }">
             <!-- CHAMPIONSHIP / FINAL (Top) -->
             <div class="gold-match-container absolute -top-6 inset-x-0 w-full flex flex-col items-center z-10">
-                <div class="arena-title mb-4">
+                <div class="arena-title mb-3">
                     <div class="flex flex-col items-center">
                         <div
-                            class="flex items-center gap-3 px-6 py-2 rounded-2xl bg-white border-2 border-primary shadow-sm relative overflow-hidden group/title">
-                            <Icon icon="ph:crown-simple-fill" class="text-primary text-lg" />
-                            <span class="text-xs font-black text-navy tracking-[0.3em] ">Grand Final</span>
+                            class="flex items-center gap-2 px-4 py-1.5 rounded-xl bg-amber-500/15 border border-amber-400/40 shadow-sm relative overflow-hidden group/title">
+                            <Icon icon="ph:crown-simple-fill" class="text-amber-600 text-sm" />
+                            <span class="text-[11px] font-black text-amber-950 tracking-wider">{{ t('event_elimination.grand_final', 'Grand Final') }}</span>
                         </div>
                     </div>
                 </div>
@@ -55,24 +57,24 @@
                     <!-- Winners to Grand Final (Starting from top of Semis: CY - 65) -->
                     <path v-for="x in [144, 456]" :key="'win-' + x"
                         :d="`M ${x} ${totalHeight / 2 - 65} V ${totalHeight / 2 - 130} H 300 V ${totalHeight / 2 - 210}`"
-                        class="stroke-navy/30 stroke-[2.5px]" />
+                        class="stroke-slate-300 stroke-[2px]" />
                     <!-- Losers to Bronze Match (Starting from bottom of Semis: CY + 65) -->
                     <path v-for="x in [144, 456]" :key="'lose-' + x"
                         :d="`M ${x} ${totalHeight / 2 + 65} V ${totalHeight / 2 + 130} H 300 V ${totalHeight / 2 + 210}`"
-                        class="stroke-orange-500/20 stroke-[2.5px] stroke-dasharray-[5,5]" />
+                        class="stroke-amber-600/30 stroke-[2px] stroke-dasharray-[4,4]" />
                 </svg>
             </div>
 
             <!-- 3rd PLACE MATCH (Bottom) -->
             <div class="bronze-match-container absolute bottom-4 inset-x-0 w-full flex flex-col items-center z-10">
-                <div class="flex items-center gap-4 w-full mb-4 relative">
-                    <div class="h-px flex-1 bg-[#d1dcf0]"></div>
+                <div class="flex items-center gap-3 w-full mb-3 relative">
+                    <div class="h-px flex-1 bg-slate-200"></div>
                     <div
-                        class="flex items-center gap-2 px-6 py-2 rounded-xl bg-white border border-[#d1dcf0] shadow-sm">
-                        <Icon icon="ph:shield-bold" class="text-orange-500 text-sm" />
-                        <span class="text-[9px] font-black text-navy/40 tracking-[0.2em] ">Bronze Match</span>
+                        class="flex items-center gap-1.5 px-3.5 py-1 rounded-lg bg-white border border-slate-200 shadow-sm">
+                        <Icon icon="ph:shield-bold" class="text-amber-600 text-xs" />
+                        <span class="text-[9px] font-black text-slate-600 tracking-wider">{{ t('event_elimination.bronze_medal_match', 'Bronze Match') }}</span>
                     </div>
-                    <div class="h-px flex-1 bg-[#d1dcf0]"></div>
+                    <div class="h-px flex-1 bg-slate-200"></div>
                 </div>
                 <div v-if="bronzeMatch" class="relative group">
                     <EliminationMatchCard :match="bronzeMatch" :bracket-format="bracketFormat"
@@ -85,7 +87,11 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 import EliminationMatchCard from './EliminationMatchCard.vue'
+
+const { t } = useI18n()
 
 const props = defineProps({
     totalRounds: { type: Number, required: true },

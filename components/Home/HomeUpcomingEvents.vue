@@ -11,8 +11,8 @@
                 class="flex items-center gap-1 text-navy text-xs sm:text-sm font-semibold hover:text-primary transition-colors group">
                 <span class="hidden sm:inline"><span class="link-underline">Cek Semua</span></span>
                 <span class="sm:hidden"><span class="link-underline">Semua</span></span>
-                <span
-                    class="material-symbols-outlined text-base sm:text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                <Icon icon="ph:arrow-right-bold"
+                    class="text-base sm:text-lg group-hover:translate-x-1 transition-transform" />
             </NuxtLink>
         </div>
 
@@ -69,7 +69,7 @@
                     </div>
                     <div
                         class="hidden lg:flex items-center gap-2 bg-primary text-navy text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-300">
-                        <span>Lihat</span>
+                        <span>{{ $t('common.view', 'Lihat') }}</span>
                         <Icon icon="ph:arrow-right-bold" />
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                 <div>
                     <Icon icon="ph:calendar-blank-light" class="text-7xl text-gray-200 mb-4" />
                 </div>
-                <div class="text-sm text-gray-400">Belum ada event terbaru.</div>
+                <div class="text-sm text-gray-400">{{ $t('nav.no_latest_events', 'Belum ada event terbaru.') }}</div>
             </div>
         </div>
     </div>

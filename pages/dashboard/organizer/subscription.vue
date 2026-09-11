@@ -1,4 +1,8 @@
 <script setup>
+useHead({
+  title: 'Langganan Penyelenggara - Archeris Dashboard'
+})
+
 definePageMeta({
   middleware: [
     function () {

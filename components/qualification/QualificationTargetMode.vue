@@ -307,9 +307,9 @@
     <Transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0"
       enter-to-class="opacity-100" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100"
       leave-to-class="opacity-0">
-      <div v-if="showAutoAssignDialog" class="fixed inset-0 z-[1002] flex items-center justify-center p-4">
+      <div v-if="showAutoAssignDialog" class="fixed inset-0 z-50 flex items-center justify-center p-4">
         <!-- Backdrop -->
-        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+        <div class="fixed inset-0 bg-navy/60 backdrop-blur-sm transition-opacity"
           @click="showAutoAssignDialog = false"></div>
 
         <!-- Modal Card -->
@@ -446,8 +446,8 @@
     <Transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0"
       enter-to-class="opacity-100" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100"
       leave-to-class="opacity-0">
-      <div v-if="showResetDialog" class="fixed inset-0 z-[1002] flex items-center justify-center p-4">
-        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+      <div v-if="showResetDialog" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="fixed inset-0 bg-navy/60 backdrop-blur-sm transition-opacity"
           @click="showResetDialog = false"></div>
 
         <div
@@ -493,8 +493,8 @@
     <Transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0"
       enter-to-class="opacity-100" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100"
       leave-to-class="opacity-0">
-      <div v-if="showMoveScoredModal" class="fixed inset-0 z-[1002] flex items-center justify-center p-4">
-        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" @click="showMoveScoredModal = false"></div>
+      <div v-if="showMoveScoredModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="fixed inset-0 bg-navy/60 backdrop-blur-sm" @click="showMoveScoredModal = false"></div>
         <div class="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden z-10">
           <div class="p-6 text-center space-y-4">
             <div class="size-16 rounded-2xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center mx-auto shadow-inner">
@@ -533,8 +533,8 @@
     <Transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0"
       enter-to-class="opacity-100" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100"
       leave-to-class="opacity-0">
-      <div v-if="showUnassignScoredModal" class="fixed inset-0 z-[1002] flex items-center justify-center p-4">
-        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" @click="showUnassignScoredModal = false"></div>
+      <div v-if="showUnassignScoredModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="fixed inset-0 bg-navy/60 backdrop-blur-sm" @click="showUnassignScoredModal = false"></div>
         <div class="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden z-10">
           <div class="p-6 text-center space-y-4">
             <div class="size-16 rounded-2xl bg-amber-50 border border-amber-100 text-amber-600 flex items-center justify-center mx-auto shadow-inner">

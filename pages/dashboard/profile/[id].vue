@@ -97,7 +97,7 @@
                 <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-lg font-bold text-navy flex items-center gap-2 font-display">
-                            <span class="material-symbols-outlined text-primary">monitoring</span>
+                            <Icon icon="ph:chart-line-up-bold" class="text-primary text-xl" />
                             {{ t('profile_public.performance_trend') }}
                         </h3>
                     </div>
@@ -120,7 +120,7 @@
                 <!-- Equipment Setup -->
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                     <h3 class="text-lg font-bold text-navy flex items-center gap-2 mb-6 font-display">
-                        <span class="material-symbols-outlined text-primary">build</span>
+                        <Icon icon="ph:wrench-bold" class="text-primary text-xl" />
                         {{ t('profile_public.equipment_specs') }}
                     </h3>
                     <div class="space-y-4">

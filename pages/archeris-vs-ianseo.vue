@@ -25,7 +25,7 @@
         </div>
 
         <!-- ── HERO SECTION ── -->
-        <div class="bg-navy pt-32 pb-20 relative overflow-hidden text-white">
+        <div class="bg-navy pt-36 pb-16 md:pt-48 md:pb-24 relative overflow-hidden text-white">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-homepage.jpeg" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/60"></div>
@@ -33,14 +33,14 @@
             </div>
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div>
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 border border-primary/30 text-primary text-xs font-black tracking-wider mb-4">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-primary/20 text-primary text-xs font-bold tracking-widest mb-6 shadow-sm">
                         <Icon icon="ph:scales-bold" class="text-base" />
                         <span>{{ $t('home.comparison_page.hero_badge') }}</span>
                     </div>
-                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight mb-4">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight mb-6">
                         {{ $t('home.comparison_page.hero_title') }}
                     </h1>
-                    <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-3xl">
+                    <p class="text-slate-200 text-sm md:text-lg leading-relaxed max-w-3xl">
                         {{ $t('home.comparison_page.hero_subtitle') }} {{ $t('home.comparison_page.hero_desc') }}
                     </p>
                 </div>
@@ -51,16 +51,16 @@
         <main class="flex-grow max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 mb-20 relative z-20 space-y-10">
             
             <!-- Summary Versus Header Card -->
-            <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-sm">
+            <div class="bg-white rounded-2xl border border-slate-100 p-6 sm:p-8 shadow-sm">
                 <div class="grid grid-cols-1 md:grid-cols-11 gap-6 items-center">
                     
                     <!-- Archeris Side (Highlight) -->
-                    <div class="md:col-span-5 flex flex-col items-center sm:items-start text-center sm:text-left p-6 rounded-2xl bg-gradient-to-br from-navy to-slate-900 text-white border border-primary/30 shadow-md relative overflow-hidden">
+                    <div class="md:col-span-5 flex flex-col items-center sm:items-start text-center sm:text-left p-6 rounded-2xl bg-navy text-white border border-primary/30 shadow-md relative overflow-hidden">
                         <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
                             <Icon icon="ph:lightning-bold" class="text-7xl text-primary" />
                         </div>
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-14 h-14 flex items-center justify-center p-2.5 bg-white/10 rounded-2xl border border-white/20 shrink-0">
+                        <div class="flex items-center gap-3 mb-3 relative z-10">
+                            <div class="w-14 h-14 flex items-center justify-center p-2.5 bg-white/10 rounded-xl border border-white/20 shrink-0 shadow-sm">
                                 <img src="/logo.png" class="h-8 w-auto object-contain" alt="Archeris Logo" />
                             </div>
                             <div>
@@ -70,22 +70,22 @@
                                 </span>
                             </div>
                         </div>
-                        <p class="text-xs text-slate-300 leading-relaxed font-medium">
+                        <p class="text-xs text-slate-300 leading-relaxed font-medium relative z-10">
                             Platform manajemen turnamen panahan terintegrasi: pendaftaran online, auto-payment QRIS/VA, dan real-time live scoring berbasis web.
                         </p>
                     </div>
 
                     <!-- VS Divider -->
                     <div class="md:col-span-1 flex justify-center">
-                        <div class="size-12 rounded-2xl bg-slate-100 border-2 border-slate-200 flex items-center justify-center shadow-xs">
+                        <div class="size-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center shadow-xs">
                             <span class="text-xs font-black text-slate-400 tracking-wider">VS</span>
                         </div>
                     </div>
 
                     <!-- Ianseo Side -->
-                    <div class="md:col-span-5 flex flex-col items-center sm:items-start text-center sm:text-left p-6 rounded-2xl bg-slate-50 border border-slate-200 text-slate-700">
+                    <div class="md:col-span-5 flex flex-col items-center sm:items-start text-center sm:text-left p-6 rounded-2xl bg-slate-50 border border-slate-100 text-slate-700">
                         <div class="flex items-center gap-3 mb-3">
-                            <div class="w-14 h-14 flex items-center justify-center p-2.5 bg-white rounded-2xl border border-slate-200 shrink-0 shadow-2xs">
+                            <div class="w-14 h-14 flex items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200 shrink-0 shadow-xs">
                                 <img src="/ianseo-logo.png" class="h-8 w-auto object-contain" alt="Ianseo Logo" />
                             </div>
                             <div>
@@ -103,10 +103,13 @@
             </div>
 
             <!-- ── 1. EXECUTIVE SUMMARY (ABOVE FEATURE COMPARISON) ── -->
-            <div class="bg-white rounded-3xl border border-slate-200/80 p-6 md:p-10 shadow-sm space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm space-y-6">
                 <div class="border-b border-slate-100 pb-4">
-                    <span class="text-xs font-black text-primary tracking-wider">{{ $t('home.comparison_page.blog_badge') }}</span>
-                    <h2 class="text-xl md:text-2xl font-black text-navy mt-1">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-primary/20 text-navy font-black text-xs border border-primary/30">
+                        <Icon icon="ph:article-bold" />
+                        {{ $t('home.comparison_page.blog_badge') }}
+                    </span>
+                    <h2 class="text-xl md:text-2xl font-black text-navy mt-3">
                         {{ $t('home.comparison_page.blog_title') }}
                     </h2>
                 </div>
@@ -121,29 +124,33 @@
             </div>
 
             <!-- ── 2. REDESIGNED FEATURE COMPARISON CARD & TABLE ── -->
-            <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+            <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
                 
                 <!-- Card Header -->
-                <div class="p-6 md:p-8 border-b border-slate-100 bg-slate-50/60">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div>
-                            <div class="flex items-center gap-2 text-navy font-black text-lg md:text-xl">
-                                <Icon icon="ph:list-checks-bold" class="text-primary text-2xl" />
-                                <span>{{ $t('home.comparison_page.section_features_title') }}</span>
+                <div class="p-6 md:p-8 border-b border-slate-100 bg-white">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                        <div class="flex items-start gap-4">
+                            <div class="size-12 rounded-2xl bg-slate-100 text-navy flex items-center justify-center shrink-0 border border-slate-200/60 shadow-xs">
+                                <Icon icon="ph:list-checks-bold" class="text-2xl text-navy" />
                             </div>
-                            <p class="text-slate-500 text-xs md:text-sm mt-1">
-                                {{ $t('home.comparison_page.section_features_desc') }}
-                            </p>
+                            <div>
+                                <h3 class="text-navy font-black text-lg md:text-xl">
+                                    {{ $t('home.comparison_page.section_features_title') }}
+                                </h3>
+                                <p class="text-slate-500 text-xs md:text-sm mt-1">
+                                    {{ $t('home.comparison_page.section_features_desc') }}
+                                </p>
+                            </div>
                         </div>
 
                         <!-- Category Filter Pills -->
-                        <div class="flex items-center gap-1.5 flex-wrap bg-white p-1.5 rounded-2xl border border-slate-200/70 shadow-2xs">
+                        <div class="flex items-center gap-2 flex-wrap">
                             <button v-for="cat in featureCategories" :key="cat.id"
                                 type="button"
                                 @click="activeCategory = cat.id"
-                                :class="activeCategory === cat.id ? 'bg-navy text-white font-black shadow-xs' : 'text-slate-500 hover:text-navy hover:bg-slate-50 font-bold'"
-                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs transition-all">
-                                <Icon :icon="cat.icon" class="text-xs" />
+                                :class="activeCategory === cat.id ? 'bg-navy text-white border-navy shadow-sm' : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-300 hover:text-navy'"
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all border">
+                                <Icon :icon="cat.icon" class="text-sm" />
                                 <span>{{ cat.label }}</span>
                             </button>
                         </div>
@@ -151,7 +158,7 @@
                 </div>
 
                 <!-- Sticky Header for Columns (Desktop) -->
-                <div class="hidden md:grid md:grid-cols-12 gap-4 px-8 py-3 bg-slate-100/70 border-b border-slate-200/80 text-xs font-black tracking-wider text-slate-500">
+                <div class="hidden md:grid md:grid-cols-12 gap-4 px-8 py-3.5 bg-slate-50 border-b border-slate-100 text-xs font-black tracking-wider text-slate-500">
                     <div class="md:col-span-4 flex items-center gap-2">
                         <span>{{ $t('home.comparison.col_feature') }}</span>
                     </div>
@@ -168,14 +175,14 @@
                 <!-- Comparison Rows -->
                 <div class="divide-y divide-slate-100">
                     <div v-for="item in filteredFeatures" :key="item.id"
-                        class="p-5 md:p-7 hover:bg-slate-50/40 transition-colors">
+                        class="p-5 md:p-6 hover:bg-slate-50/40 transition-colors">
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
                             
                             <!-- Feature Name & Tag (4 cols) -->
                             <div class="md:col-span-4 flex flex-col justify-center gap-1.5">
-                                <div class="flex items-center gap-2">
-                                    <div class="size-8 rounded-xl bg-navy/5 text-navy flex items-center justify-center shrink-0">
-                                        <Icon :icon="item.icon" class="text-base text-primary" />
+                                <div class="flex items-center gap-3">
+                                    <div class="size-10 rounded-xl bg-slate-100 text-navy flex items-center justify-center shrink-0 border border-slate-200/60 shadow-xs">
+                                        <Icon :icon="item.icon" class="text-lg text-navy" />
                                     </div>
                                     <div>
                                         <h4 class="font-black text-navy text-sm leading-snug">
@@ -189,14 +196,14 @@
                             </div>
 
                             <!-- Archeris.net Card (4 cols) -->
-                            <div class="md:col-span-4 rounded-2xl p-4 bg-gradient-to-br from-primary/[0.07] to-navy/[0.02] border border-primary/25 shadow-2xs flex flex-col justify-between">
+                            <div class="md:col-span-4 rounded-xl p-4 bg-primary/5 border border-primary/25 shadow-xs flex flex-col justify-between">
                                 <div class="space-y-1.5">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-1.5 text-navy font-black text-xs">
-                                            <Icon icon="ph:check-circle-fill" class="text-primary text-sm shrink-0" />
+                                            <Icon icon="ph:check-circle-fill" class="text-emerald-600 text-sm shrink-0" />
                                             <span>Archeris.net</span>
                                         </div>
-                                        <span class="text-[9px] bg-primary/20 text-navy font-black px-2 py-0.5 rounded-full tracking-wider">
+                                        <span class="text-[9px] bg-primary text-navy font-black px-2 py-0.5 rounded-md tracking-wider shadow-2xs">
                                             {{ $t('home.comparison_page.badge_cloud_pro') }}
                                         </span>
                                     </div>
@@ -207,14 +214,14 @@
                             </div>
 
                             <!-- Ianseo.net Card (4 cols) -->
-                            <div class="md:col-span-4 rounded-2xl p-4 bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
+                            <div class="md:col-span-4 rounded-xl p-4 bg-slate-50 border border-slate-100 flex flex-col justify-between">
                                 <div class="space-y-1.5">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center gap-1.5 text-slate-500 font-bold text-xs">
                                             <Icon icon="ph:minus-circle-bold" class="text-slate-400 text-sm shrink-0" />
                                             <span>Ianseo.net</span>
                                         </div>
-                                        <span class="text-[9px] bg-slate-200 text-slate-600 font-bold px-2 py-0.5 rounded-full tracking-wider">
+                                        <span class="text-[9px] bg-slate-200 text-slate-600 font-bold px-2 py-0.5 rounded-md tracking-wider">
                                             {{ $t('home.comparison_page.badge_legacy') }}
                                         </span>
                                     </div>
@@ -232,7 +239,7 @@
 
             <!-- CTA Banner -->
             <section class="mt-12">
-                <div class="bg-navy text-white rounded-[32px] p-8 md:p-12 text-center relative overflow-hidden border border-primary/20 shadow-xl">
+                <div class="bg-navy text-white rounded-3xl p-8 md:p-12 text-center relative overflow-hidden border border-primary/20 shadow-xl">
                     <div class="absolute inset-0"
                         style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.12);"></div>
                     <h2 class="text-white text-2xl md:text-4xl font-black tracking-tight mb-4 relative z-10">
@@ -242,13 +249,15 @@
                         {{ $t('home.comparison_page.cta_desc') }}
                     </p>
                     <div class="flex flex-col sm:flex-row gap-3.5 justify-center relative z-10">
-                        <NuxtLink :to="localePath('/auth/register')"
-                            class="px-8 py-3.5 bg-primary text-navy rounded-xl font-black tracking-wider text-xs hover:bg-primary-hover hover:scale-[1.02] transition-all active:scale-[0.98] shadow-lg shadow-primary/20">
-                            {{ $t('home.comparison_page.cta_btn') }}
+                        <NuxtLink :to="localePath('/auth/register')">
+                            <BaseButton variant="primary" size="lg" icon="ph:user-plus-bold">
+                                {{ $t('home.comparison_page.cta_btn') }}
+                            </BaseButton>
                         </NuxtLink>
-                        <NuxtLink :to="localePath('/')"
-                            class="px-8 py-3.5 bg-white/10 text-white rounded-xl font-bold tracking-wider text-xs border border-white/15 hover:bg-white/20 transition-all">
-                            {{ $t('home.comparison_page.back_home') }}
+                        <NuxtLink :to="localePath('/')">
+                            <BaseButton variant="outline" size="lg" icon="ph:house-bold">
+                                {{ $t('home.comparison_page.back_home') }}
+                            </BaseButton>
                         </NuxtLink>
                     </div>
                 </div>

@@ -10,8 +10,8 @@
                     class="text-navy hover:text-primary font-bold text-xs sm:text-sm flex items-center gap-1 group">
                     <span class="hidden sm:inline"><span class="link-underline">{{ $t('home.live_events.check_schedule') }}</span></span>
                     <span class="sm:hidden"><span class="link-underline">{{ $t('home.live_events.schedule_short') }}</span></span>
-                    <span
-                        class="material-symbols-outlined text-base sm:text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
+                    <Icon icon="ph:arrow-right-bold"
+                        class="text-base sm:text-lg transition-transform group-hover:translate-x-1" />
                 </NuxtLink>
             </div>
 
@@ -41,13 +41,13 @@
                             {{ live.name }}
                         </h3>
                         <div class="flex items-center gap-2 text-gray-500 text-sm mb-4">
-                            <Icon icon="mi:location" class="text-lg" />
+                            <Icon icon="ph:map-pin-bold" class="text-lg" />
                             <span class="truncate">{{ live.location }}</span>
                         </div>
                         <div class="mt-auto">
                             <NuxtLink :to="`/events/${live.slug || live.uuid}`"
                                 class="w-full h-10 rounded-lg border-2 border-navy text-navy hover:bg-navy hover:text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined text-lg">visibility</span>
+                                <Icon icon="ph:eye-bold" class="text-lg" />
                                 {{ $t('home.live_events.view_event') }}
                             </NuxtLink>
                         </div>

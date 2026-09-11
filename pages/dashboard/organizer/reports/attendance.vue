@@ -127,8 +127,8 @@
             Recent Check-in Logs
           </h3>
         </div>
-        <div class="overflow-y-auto max-h-96 no-scrollbar">
-          <table class="w-full text-left text-xs">
+        <div class="overflow-x-auto overflow-y-auto max-h-96 no-scrollbar">
+          <table class="w-full text-left text-xs min-w-[500px] sm:min-w-0">
             <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100 sticky top-0">
               <tr>
                 <th class="px-5 py-3">{{ t('dashboard.reports.archer') }}</th>

@@ -18,119 +18,62 @@
             </template>
         </DashboardHeader>
 
-        <!-- Quick Stats Cards (Sleek Unified Brand Suite) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-            
-            <!-- Metric 1: Total Berita -->
-            <div class="relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group flex flex-col justify-between">
-                <div class="absolute top-0 left-0 w-full h-[2px] bg-slate-200 group-hover:bg-primary transition-colors"></div>
-                
-                <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-black text-slate-400 capitalize tracking-wider">{{ t('organizer_news.index.stats_total') }}</span>
-                    <div class="size-11 rounded-2xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center shrink-0 group-hover:bg-navy group-hover:text-primary transition-all duration-300">
-                        <Icon icon="ph:newspaper-bold" class="text-xl" />
-                    </div>
-                </div>
+        <!-- Quick Stats Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <!-- Total Berita -->
+            <StatCard
+                :title="t('organizer_news.index.stats_total', 'Total Berita')"
+                :value="news.length"
+                icon="ph:newspaper-bold"
+                color="primary"
+                :description="t('organizer_news.index.total_content', 'Total Konten Berita')"
+                description-icon="ph:article-bold"
+            />
 
-                <div class="mt-4">
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl sm:text-3xl font-black text-navy tabular-nums">{{ news.length }}</span>
-                        <span class="text-xs font-bold text-slate-400">{{ t('organizer_news.index.article_unit', 'Artikel') }}</span>
-                    </div>
-                    <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-medium text-slate-500">
-                        <span class="flex items-center gap-1.5">
-                            <Icon icon="ph:article-bold" class="text-slate-400 text-xs shrink-0" />
-                            <span>{{ t('organizer_news.index.total_content', 'Total Konten') }}</span>
-                        </span>
-                        <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold text-[10px]">{{ t('organizer_news.index.all_tag', 'Semua') }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Metric 2: Berita Terbit -->
-            <div class="relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group flex flex-col justify-between">
-                <div class="absolute top-0 left-0 w-full h-[2px] bg-slate-200 group-hover:bg-primary transition-colors"></div>
-
-                <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-black text-slate-400 capitalize tracking-wider">{{ t('organizer_news.index.stats_published') }}</span>
-                    <div class="size-11 rounded-2xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center shrink-0 group-hover:bg-navy group-hover:text-primary transition-all duration-300">
-                        <Icon icon="ph:check-circle-bold" class="text-xl" />
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl sm:text-3xl font-black text-navy tabular-nums">{{ publishedCount }}</span>
-                        <span class="text-xs font-bold text-slate-400">{{ t('organizer_news.index.published_unit', 'Terbit') }}</span>
-                    </div>
-                    
-                    <div class="mt-3 pt-3 border-t border-slate-100 space-y-1.5">
-                        <div class="flex items-center justify-between text-[11px] font-medium text-slate-500">
-                            <span class="flex items-center gap-1.5">
-                                <span class="size-1.5 rounded-full bg-slate-700"></span>
+            <!-- Berita Terbit -->
+            <StatCard
+                :title="t('organizer_news.index.stats_published', 'Berita Terbit')"
+                :value="publishedCount"
+                icon="ph:check-circle-bold"
+                color="primary"
+                :description="`${publishedRate}% ${t('organizer_news.index.publish_ratio', 'Rasio Publikasi')}`"
+                description-icon="ph:chart-line-up-bold"
+            >
+                <template #footer>
+                    <div class="space-y-1.5 w-full">
+                        <div class="flex items-center justify-between text-[10px] font-bold text-slate-400">
+                            <span class="flex items-center gap-1">
+                                <Icon icon="ph:chart-line-up-bold" class="text-[12px]" />
                                 <span>{{ t('organizer_news.index.publish_ratio', 'Rasio Publikasi') }}</span>
                             </span>
-                            <span class="text-navy font-bold text-[10px]">{{ publishedRate }}%</span>
+                            <span class="text-navy font-bold font-mono">{{ publishedRate }}%</span>
                         </div>
                         <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                            <div class="bg-navy h-1.5 rounded-full transition-all duration-700" :style="{ width: `${publishedRate}%` }"></div>
+                            <div class="bg-primary h-1.5 rounded-full transition-all duration-700" :style="{ width: `${publishedRate}%` }"></div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </template>
+            </StatCard>
 
-            <!-- Metric 3: Draf Berita -->
-            <div class="relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group flex flex-col justify-between">
-                <div class="absolute top-0 left-0 w-full h-[2px] bg-slate-200 group-hover:bg-primary transition-colors"></div>
+            <!-- Draf Berita -->
+            <StatCard
+                :title="t('organizer_news.index.stats_draft', 'Draf Berita')"
+                :value="draftCount"
+                icon="ph:file-text-bold"
+                color="primary"
+                :description="t('organizer_news.index.not_published', 'Belum Terbit')"
+                description-icon="ph:pencil-simple-bold"
+            />
 
-                <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-black text-slate-400 capitalize tracking-wider">{{ t('organizer_news.index.stats_draft') }}</span>
-                    <div class="size-11 rounded-2xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center shrink-0 group-hover:bg-navy group-hover:text-primary transition-all duration-300">
-                        <Icon icon="ph:file-text-bold" class="text-xl" />
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl sm:text-3xl font-black text-navy tabular-nums">{{ draftCount }}</span>
-                        <span class="text-xs font-bold text-slate-400">{{ t('organizer_news.index.draft_unit', 'Draf') }}</span>
-                    </div>
-                    <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-medium text-slate-500">
-                        <span class="flex items-center gap-1.5">
-                            <Icon icon="ph:pencil-simple-bold" class="text-slate-400 text-xs shrink-0" />
-                            <span>{{ t('organizer_news.index.not_published', 'Belum Terbit') }}</span>
-                        </span>
-                        <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold text-[10px]">{{ draftCount }} {{ t('organizer_news.index.draft_unit', 'Draf') }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Metric 4: Total Pembaca -->
-            <div class="relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group flex flex-col justify-between">
-                <div class="absolute top-0 left-0 w-full h-[2px] bg-slate-200 group-hover:bg-primary transition-colors"></div>
-
-                <div class="flex items-center justify-between">
-                    <span class="text-[11px] font-black text-slate-400 capitalize tracking-wider">{{ t('organizer_news.index.stats_total_view') }}</span>
-                    <div class="size-11 rounded-2xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center shrink-0 group-hover:bg-navy group-hover:text-primary transition-all duration-300">
-                        <Icon icon="ph:eye-bold" class="text-xl" />
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl sm:text-3xl font-black text-navy tabular-nums">{{ totalViews.toLocaleString('id-ID') }}</span>
-                        <span class="text-xs font-bold text-slate-400">{{ t('organizer_news.index.views_unit', 'Views') }}</span>
-                    </div>
-                    <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-medium text-slate-500">
-                        <span class="flex items-center gap-1.5">
-                            <Icon icon="ph:chart-line-up-bold" class="text-slate-400 text-xs shrink-0" />
-                            <span>{{ t('organizer_news.index.average', 'Rata-rata') }}</span>
-                        </span>
-                        <span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold text-[10px]">~{{ avgViews.toLocaleString('id-ID') }} / {{ t('organizer_news.index.per_article', 'artikel') }}</span>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Total Pembaca -->
+            <StatCard
+                :title="t('organizer_news.index.stats_total_view', 'Total Pembaca')"
+                :value="totalViews.toLocaleString('id-ID')"
+                icon="ph:eye-bold"
+                color="primary"
+                :description="`~${avgViews.toLocaleString('id-ID')} / ${t('organizer_news.index.per_article', 'artikel')}`"
+                description-icon="ph:users-bold"
+            />
         </div>
 
         <!-- Search & Filter -->

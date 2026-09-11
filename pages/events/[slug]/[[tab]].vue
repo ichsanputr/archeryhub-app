@@ -560,8 +560,8 @@
                             <!-- New Per-Category Quota Section (Always Scrollable) -->
                             <div class="mb-6">
                                 <div class="flex items-center justify-between mb-3 px-1">
-                                    <span class="text-xs font-black text-gray-400  tracking-widest">{{ t('event_detail.slot_availability') }}</span>
-                                    <span class="text-xs font-bold text-navy bg-gray-100 px-2 py-1 rounded-md">
+                                    <span class="text-[10px] font-black tracking-widest text-gray-400">{{ t('event_detail.slot_availability') }}</span>
+                                    <span class="text-xs font-bold text-navy bg-gray-100 px-2.5 py-0.5 rounded-full">
                                         {{ tournament.participant_count || 0 }} {{ t('event_detail.registered') }}</span>
                                 </div>
 
@@ -651,8 +651,8 @@
                                         {{ tournament.organizer }}
                                     </NuxtLink>
                                     <h4 v-else class="font-bold text-navy text-sm">{{ tournament.organizer }}</h4>
-                                    <div class="text-xs text-gray-500">Penyelenggara Terverifikasi <span
-                                            class="material-symbols-outlined text-[14px] align-middle text-blue-500">verified</span>
+                                    <div class="text-xs text-gray-500">Penyelenggara Terverifikasi <Icon
+                                            icon="ph:seal-check-fill" class="text-[14px] inline align-middle text-blue-500" />
                                     </div>
                                 </div>
                             </div>

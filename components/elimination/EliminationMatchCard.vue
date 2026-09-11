@@ -1,19 +1,34 @@
 <template>
-    <div @click="$emit('select', match)" class="match-node-card group/card shadow-sm"
-        :class="{ 'selected': isSelected, 'completed': match.winner_entry_id, 'is-final': isFinal }">
-        <div class="match-card-header" :class="{ '!bg-primary/5': isFinal, '!bg-orange-50/50': isBronze }">
+    <div @click="$emit('select', match)" class="match-node-card group/card"
+        :class="{ 
+            'selected': isSelected, 
+            'completed': match.winner_entry_id, 
+            'is-final': isFinal,
+            'is-bronze': isBronze
+        }">
+        <!-- Card Header Bar -->
+        <div class="match-card-header" :class="headerBgClass">
             <div class="flex items-center gap-1.5" :class="headerTextStyle">
-                <Icon :icon="headerIcon" class="text-[10px]" />
-                <span class="text-[8px] font-black tracking-widest ">{{ headerLabel }}</span>
+                <Icon :icon="headerIcon" class="text-xs shrink-0" />
+                <span class="text-[9px] font-black tracking-wider truncate">{{ headerLabel }}</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+                <span v-if="match.winner_entry_id" class="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-700 text-[8px] font-black tracking-wider flex items-center gap-1">
+                    <span class="size-1 rounded-full bg-emerald-500"></span>
+                    <span>Done</span>
+                </span>
+                <span v-else class="text-[9px] font-black text-slate-400 tracking-wider">M{{ match.match_no }}</span>
             </div>
         </div>
+
+        <!-- Archer Sides List -->
         <div class="archer-list">
             <div v-for="side in ['A', 'B']" :key="side" class="archer-item"
                 :class="{ 'is-winner': isWinner(side), 'is-loser': isLoser(side) }">
                 <div class="avatar-wrapper relative">
-                    <img :src="getAvatarUrl(getName(side))" class="avatar-img" />
-                    <div v-if="isWinner(side)" class="winner-indicator">
-                        <Icon icon="ph:crown-fill" />
+                    <img :src="getAvatarUrl(getName(side))" :alt="getName(side) || 'Archer'" @error="(e) => e.target.src = 'https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8'" class="avatar-img" />
+                    <div v-if="isWinner(side)" class="winner-indicator" title="Winner">
+                        <Icon icon="ph:crown-simple-fill" />
                     </div>
                     <div v-if="showSeed && getSeed(side)" class="avatar-seed-badge">
                         {{ getSeed(side) }}
@@ -34,6 +49,10 @@
 
 <script setup>
 import { computed } from 'vue'
+import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
     match: { type: Object, required: true },
@@ -47,21 +66,27 @@ const props = defineProps({
 defineEmits(['select'])
 
 const headerLabel = computed(() => {
-    if (props.isFinal) return 'Perebutan Juara 1 & 2'
-    if (props.isBronze) return 'Perebutan Juara 3'
-    return `Match ${props.match.match_no}`
+    if (props.isFinal) return t('event_elimination.gold_medal_final', 'Gold Medal Final')
+    if (props.isBronze) return t('event_elimination.bronze_medal_match', 'Bronze Medal Match')
+    return t('event_elimination.match_label', 'Match {no}', { no: props.match.match_no })
 })
 
 const headerIcon = computed(() => {
-    if (props.isFinal) return 'ph:medal-fill'
-    if (props.isBronze) return 'ph:medal-bold'
+    if (props.isFinal) return 'ph:crown-fill'
+    if (props.isBronze) return 'ph:medal-fill'
     return 'ph:trophy-bold'
 })
 
+const headerBgClass = computed(() => {
+    if (props.isFinal) return 'bg-amber-500/10 border-b border-amber-400/30'
+    if (props.isBronze) return 'bg-amber-600/10 border-b border-amber-500/20'
+    return 'bg-slate-50/90 border-b border-slate-100'
+})
+
 const headerTextStyle = computed(() => {
-    if (props.isFinal) return 'text-navy font-black'
-    if (props.isBronze) return 'text-orange-700 font-bold'
-    return 'opacity-60'
+    if (props.isFinal) return 'text-amber-950 font-black'
+    if (props.isBronze) return 'text-amber-900 font-black'
+    return 'text-slate-500 font-bold'
 })
 
 const getAvatarUrl = (name) => {
@@ -94,23 +119,23 @@ const isLoser = (side) => {
 
 <style scoped>
 .match-node-card {
-    @apply relative w-[280px] h-[130px] bg-white rounded-2xl border border-[#d1dcf0] transition-all duration-300 cursor-pointer overflow-hidden flex flex-col;
+    @apply relative w-[280px] h-[126px] bg-white rounded-2xl border border-slate-200 shadow-sm transition-all duration-200 cursor-pointer overflow-hidden flex flex-col;
 }
 
 .match-node-card:hover {
-    @apply border-primary shadow-lg scale-[1.02] -translate-y-1;
+    @apply border-navy shadow-md scale-[1.01] -translate-y-0.5;
 }
 
 .match-node-card.selected {
-    @apply ring-4 ring-primary/20 border-primary shadow-lg shadow-primary/10 z-20;
+    @apply ring-2 ring-primary border-navy shadow-lg z-20;
 }
 
 .match-node-card.completed {
-    @apply border-green-500/20;
+    @apply border-slate-200/90;
 }
 
 .match-card-header {
-    @apply flex justify-between items-center px-4 py-2 bg-slate-50 border-b border-[#d1dcf0];
+    @apply flex justify-between items-center px-3.5 py-1.5 transition-colors;
 }
 
 .archer-list {
@@ -118,11 +143,11 @@ const isLoser = (side) => {
 }
 
 .archer-item {
-    @apply flex items-center gap-3 px-4 flex-1 transition-all relative;
+    @apply flex items-center gap-2.5 px-3 flex-1 transition-all relative border-b last:border-b-0 border-slate-100/70;
 }
 
 .avatar-wrapper {
-    @apply size-8 rounded-lg overflow-visible shrink-0 bg-slate-100 border border-slate-200 p-0.5;
+    @apply size-8 rounded-lg overflow-visible shrink-0 bg-slate-100 border border-slate-200/80 p-0.5 shadow-sm;
 }
 
 .avatar-img {
@@ -130,51 +155,46 @@ const isLoser = (side) => {
 }
 
 .avatar-seed-badge {
-    @apply absolute -left-2 -bottom-1 min-w-[14px] h-3.5 px-1 bg-navy text-primary text-[8px] font-black rounded-full flex items-center justify-center border border-white shadow-sm transition-all z-20;
+    @apply absolute -left-1.5 -bottom-0.5 min-w-[15px] h-3.5 px-0.5 bg-navy text-primary text-[8px] font-black rounded flex items-center justify-center border border-white shadow-sm z-10;
 }
 
 .winner-indicator {
-    @apply absolute -top-1.5 -right-1.5 size-4 bg-primary text-primary-text rounded-full flex items-center justify-center text-[8px] shadow-sm border border-white z-20;
+    @apply absolute -top-1 -right-1 size-4 bg-primary text-navy rounded-full flex items-center justify-center text-[9px] shadow-sm border border-white z-10;
 }
 
 .archer-info {
-    @apply flex items-center gap-2 flex-1 min-w-0;
+    @apply flex items-center gap-1.5 flex-1 min-w-0;
 }
 
 .archer-name {
-    @apply  text-xs font-black text-black truncate tracking-tight;
+    @apply text-xs font-black text-slate-800 truncate tracking-tight;
 }
 
 .score-display {
-    @apply text-base font-black text-black/40 tabular-nums min-w-[44px] h-full flex items-center justify-end border-l border-[#d1dcf0] bg-slate-50/50 px-3;
+    @apply text-sm font-black text-slate-500 tabular-nums min-w-[42px] h-full flex items-center justify-center border-l border-slate-100 bg-slate-50/70 shrink-0 transition-colors;
+}
+
+.is-winner {
+    @apply bg-primary/5;
 }
 
 .is-winner .score-display {
-    @apply text-black text-lg font-black;
-    animation: celebrate 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes celebrate {
-    0% {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+    @apply bg-navy text-primary text-sm font-black;
 }
 
 .is-winner .archer-name {
-    @apply text-black font-black;
+    @apply text-navy font-black;
 }
 
 .is-loser {
-    @apply opacity-30 grayscale-[0.5];
+    @apply opacity-35 grayscale-[0.4];
 }
 
 .is-final {
-    @apply w-[320px] h-[150px] bg-white border-2;
+    @apply w-[310px] h-[140px] bg-white border-2 border-primary/80 shadow-md ring-1 ring-primary/30;
+}
+
+.is-bronze {
+    @apply border-amber-600/40;
 }
 </style>

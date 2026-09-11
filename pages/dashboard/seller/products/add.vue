@@ -1,32 +1,19 @@
 <template>
     <div class="space-y-8 pb-12">
-        <!-- Enhanced Header Section -->
-        <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-            <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div class="flex items-center gap-4 sm:gap-5">
-                    <div class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-lg">
-                        <Icon icon="ph:plus-circle-bold" class="text-primary text-2xl sm:text-3xl" />
-                    </div>
-                    <div>
-                        <h1 class="text-xl sm:text-3xl font-black tracking-tight leading-tight">{{ t('seller_product_form.add_title', 'Tambah Produk Baru') }}</h1>
-                        <div class="text-slate-300 text-xs sm:text-sm font-medium mt-1">{{ t('seller_product_form.add_subtitle', 'Lengkapi informasi produk untuk ditambahkan ke marketplace.') }}</div>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <NuxtLink to="/dashboard/seller/products">
-                        <BaseButton variant="outline" size="sm" icon="ph:arrow-left-bold"
-                            class="h-11 px-6 font-black tracking-widest text-xs !rounded-xl border-white/20 text-white hover:bg-white/10 transition-all">
-                            Kembali
-                        </BaseButton>
-                    </NuxtLink>
-                </div>
-            </div>
-        </div>
+        <!-- Standardized Dashboard Header -->
+        <DashboardHeader
+            :title="t('seller_product_form.add_title', 'Tambah Produk Baru')"
+            :subtitle="t('seller_product_form.add_subtitle', 'Lengkapi informasi produk untuk ditambahkan ke marketplace.')"
+            icon="ph:plus-circle-bold"
+            back-to="/dashboard/seller/products"
+            :back-text="t('common.back', 'Kembali')"
+            :breadcrumbs="[
+                { label: t('common.dashboard', 'Dashboard'), to: '/dashboard' },
+                { label: t('seller.title', 'Toko Saya'), to: '/dashboard/seller' },
+                { label: t('seller_products.title', 'Produk'), to: '/dashboard/seller/products' },
+                { label: t('seller_product_form.add_title_short', 'Tambah Produk') }
+            ]"
+        />
 
         <form @submit.prevent="handleSubmit" class="space-y-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -65,25 +52,22 @@
                         <div class="space-y-5">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ t("seller_products.normal_price_label") }}</label>
-                                    <div class="relative">
-                                        <span
-                                            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
-                                        <input v-model.number="form.price" type="number" min="0" step="1000" required
-                                            class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                            placeholder="0" />
-                                    </div>
+                                    <BaseInput
+                                        v-model="form.price"
+                                        kind="currency"
+                                        :label="t('seller_products.normal_price_label')"
+                                        placeholder="0"
+                                        required
+                                    />
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ t("seller_products.sale_price_label") }}</label>
-                                    <div class="relative">
-                                        <span
-                                            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
-                                        <input v-model.number="form.sale_price" type="number" min="0" step="1000"
-                                            class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                            placeholder="0 (opsional)" />
-                                    </div>
-                                    <div class="text-xs text-gray-400 mt-1">{{ t("seller_products.optional_discount_hint") }}</div>
+                                    <BaseInput
+                                        v-model="form.sale_price"
+                                        kind="currency"
+                                        :label="t('seller_products.sale_price_label')"
+                                        :placeholder="t('seller_product_form.sale_price_placeholder', '0 (opsional)')"
+                                        :hint="t('seller_products.optional_discount_hint')"
+                                    />
                                 </div>
                             </div>
                             <div>
@@ -140,19 +124,19 @@
 
                     <!-- Colors -->
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
-                        <h2 class="text-xl font-bold text-navy mb-2">Warna Produk</h2>
-                        <div class="text-sm text-gray-500 mb-5">Tambahkan opsi warna yang tersedia untuk produk ini.</div>
+                        <h2 class="text-xl font-bold text-navy mb-2">{{ t('seller_product_form.colors_title', 'Warna Produk') }}</h2>
+                        <div class="text-sm text-gray-500 mb-5">{{ t('seller_product_form.colors_subtitle', 'Tambahkan opsi warna yang tersedia untuk produk ini.') }}</div>
 
                         <div class="flex flex-col sm:flex-row gap-3 mb-4">
                             <input
                                 v-model="newColor"
                                 type="text"
                                 class="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                placeholder="Contoh: Hitam, Navy, Merah"
+                                :placeholder="t('seller_product_form.add_color_placeholder', 'Contoh: Hitam, Navy, Merah')"
                                 @keyup.enter.prevent="addColor"
                             />
                             <BaseButton type="button" variant="white" icon="ph:plus-bold" @click="addColor">
-                                Tambah Warna
+                                {{ t('seller_product_form.add_color_btn', 'Tambah Warna') }}
                             </BaseButton>
                         </div>
 
@@ -173,12 +157,12 @@
 
                     <!-- Specifications -->
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
-                        <h2 class="text-xl font-bold text-navy mb-6">Spesifikasi</h2>
+                        <h2 class="text-xl font-bold text-navy mb-6">{{ t('seller_product_form.specifications_title', 'Spesifikasi') }}</h2>
                         <div class="space-y-4">
                             <div v-for="(spec, key) in specifications" :key="key" class="flex gap-3">
-                                <input v-model="spec.key" type="text" placeholder="Nama Spesifikasi"
+                                <input v-model="spec.key" type="text" :placeholder="t('seller_product_form.spec_name_placeholder', 'Nama Spesifikasi')"
                                     class="flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                                <input v-model="spec.value" type="text" placeholder="Nilai"
+                                <input v-model="spec.value" type="text" :placeholder="t('seller_product_form.spec_value_placeholder', 'Nilai')"
                                     class="flex-1 px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                                 <button type="button" @click="removeSpecification(key)"
                                     class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
@@ -188,15 +172,15 @@
                             <button type="button" @click="addSpecification"
                                 class="w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2">
                                 <Icon icon="ph:plus-bold" />
-                                Tambah Spesifikasi
+                                {{ t('seller_product_form.add_spec_btn', 'Tambah Spesifikasi') }}
                             </button>
                         </div>
                     </div>
 
                     <!-- Shipping Methods -->
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
-                        <h2 class="text-xl font-bold text-navy mb-2">Metode Pengiriman</h2>
-                        <div class="text-sm text-gray-500 mb-5">Tentukan metode pengiriman yang didukung seller untuk produk ini.</div>
+                        <h2 class="text-xl font-bold text-navy mb-2">{{ t('seller_product_form.shipping_title', 'Metode Pengiriman') }}</h2>
+                        <div class="text-sm text-gray-500 mb-5">{{ t('seller_product_form.shipping_subtitle', 'Tentukan metode pengiriman yang didukung seller untuk produk ini.') }}</div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <label
@@ -222,30 +206,30 @@
                 <!-- Sidebar -->
                 <div class="lg:col-span-1">
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                        <h3 class="text-lg font-bold text-navy mb-4">Aksi</h3>
+                        <h3 class="text-lg font-bold text-navy mb-4">{{ t('seller_product_form.actions_title', 'Aksi') }}</h3>
                         <div class="space-y-3">
                             <BaseButton type="submit" variant="primary" size="lg" class="w-full"
                                 :loading="isSubmitting">
-                                Simpan Produk
+                                {{ t('seller_product_form.save_product', 'Simpan Produk') }}
                             </BaseButton>
                             <BaseButton type="button" variant="white" size="lg" class="w-full" @click="$router.back()">
-                                Batal
+                                {{ t('common.cancel', 'Batal') }}
                             </BaseButton>
                         </div>
                         <div class="mt-6 pt-6 border-t border-gray-100">
-                            <h4 class="text-sm font-bold text-gray-700 mb-3">Tips</h4>
+                            <h4 class="text-sm font-bold text-gray-700 mb-3">{{ t('seller_product_form.tips_title', 'Tips') }}</h4>
                             <ul class="space-y-2 text-xs text-gray-500">
                                 <li class="flex items-start gap-2">
                                     <Icon icon="ph:check-circle" class="text-green-500 mt-0.5 flex-shrink-0" />
-                                    <span>Gunakan gambar berkualitas tinggi</span>
+                                    <span>{{ t('seller_product_form.tip_high_quality_image', 'Gunakan gambar berkualitas tinggi') }}</span>
                                 </li>
                                 <li class="flex items-start gap-2">
                                     <Icon icon="ph:check-circle" class="text-green-500 mt-0.5 flex-shrink-0" />
-                                    <span>Isi deskripsi yang jelas dan detail</span>
+                                    <span>{{ t('seller_product_form.tip_clear_description', 'Isi deskripsi yang jelas dan detail') }}</span>
                                 </li>
                                 <li class="flex items-start gap-2">
                                     <Icon icon="ph:check-circle" class="text-green-500 mt-0.5 flex-shrink-0" />
-                                    <span>Pastikan harga sesuai dengan pasar</span>
+                                    <span>{{ t('seller_product_form.tip_competitive_price', 'Pastikan harga sesuai dengan pasar') }}</span>
                                 </li>
                             </ul>
                         </div>

@@ -1,148 +1,155 @@
 <template>
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-slate-50 font-body text-navy">
         <!-- Hero Section -->
-        <section class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-48 md:pb-24">
+        <section class="bg-navy relative overflow-hidden pt-36 pb-16 md:pt-48 md:pb-24 text-white">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-archer.jpeg" alt="Archers Background" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
-                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90"></div>
             </div>
 
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
+                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-xs sm:text-sm font-bold tracking-widest mb-6">
                         <Icon icon="ph:user-circle-gear-bold" class="text-base sm:text-lg" />
-                        <span>{{ $t('archers.badge') }}</span>
+                        <span>{{ t('archers.badge') }}</span>
                     </div>
                     <h1
-                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6 font-display">
-                        {{ $t('archers.title') }}
+                        class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4 font-display">
+                        {{ t('archers.title') }}
                     </h1>
-                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl font-light">
-                        {{ $t('archers.description') }}
+                    <p class="text-white/80 text-sm md:text-lg leading-relaxed max-w-xl">
+                        {{ t('archers.description') }}
                     </p>
                 </div>
             </div>
         </section>
 
         <!-- Filter Bar -->
-        <section class="container mx-auto px-4 max-w-7xl py-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <section class="container mx-auto px-4 max-w-7xl -mt-8 relative z-20">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 sm:p-6 space-y-4">
+                <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
+                    <!-- Search Archer -->
+                    <div class="flex-1 w-full relative">
+                        <BaseInput v-model="searchQuery" type="text" :placeholder="t('archers.search_placeholder')"
+                            icon="ph:magnifying-glass" />
+                    </div>
+
+                    <!-- View Toggle & Count -->
+                    <div class="flex items-center justify-between w-full lg:w-auto gap-4 shrink-0">
+                        <p class="text-slate-500 text-xs sm:text-sm font-medium whitespace-nowrap">
+                            <span class="font-bold text-navy">{{ totalArchers }}</span> {{ t('archers.count_unit', 'Atlet') }}
+                        </p>
+                        <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+                            <button @click="viewMode = 'grid'"
+                                :class="['p-2 rounded-lg transition-all', viewMode === 'grid' ? 'bg-white shadow-sm text-navy' : 'text-slate-400 hover:text-navy']"
+                                :title="t('common.grid_view', 'Grid View')">
+                                <Icon icon="ph:squares-four-bold" class="text-lg" />
+                            </button>
+                            <button @click="viewMode = 'list'"
+                                :class="['p-2 rounded-lg transition-all', viewMode === 'list' ? 'bg-white shadow-sm text-navy' : 'text-slate-400 hover:text-navy']"
+                                :title="t('common.list_view', 'List View')">
+                                <Icon icon="ph:list-bold" class="text-lg" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Bow Type Filters -->
-                <div class="lg:col-span-4 flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 md:pb-0">
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-1 border-t border-slate-50">
                     <button v-for="type in localizedBowTypes" :key="type.value" @click="activeBowType = type.value" :class="[
-                        'px-5 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all border-2',
+                        'px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all border',
                         activeBowType === type.value
-                            ? 'bg-navy text-white border-navy shadow-lg shadow-navy/20'
-                            : 'bg-white text-gray-600 border-gray-200 hover:border-navy hover:text-navy'
+                            ? 'bg-navy text-white border-navy shadow-sm'
+                            : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-300 hover:text-navy'
                     ]">
                         {{ type.label }}
                     </button>
                 </div>
-
-                <!-- Search Archer -->
-                <div class="lg:col-span-5 relative group">
-                    <Icon icon="ph:magnifying-glass-bold"
-                        class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-navy transition-colors text-lg" />
-                    <input v-model="searchQuery" type="text" :placeholder="$t('archers.search_placeholder')"
-                        class="w-full pl-12 pr-4 py-3.5 bg-white border-2 border-gray-100 rounded-2xl text-sm font-bold focus:border-navy focus:ring-4 focus:ring-navy/5 outline-none transition-all placeholder:text-gray-400 shadow-sm" />
-                </div>
-
-                <!-- View Toggle & Count -->
-                <div class="lg:col-span-3 flex items-center justify-between lg:justify-end gap-6">
-                    <p class="text-gray-500 text-sm font-medium whitespace-nowrap">
-                        <span class="font-bold text-navy">{{ totalArchers }}</span> {{ $t('archers.count_unit') }}
-                    </p>
-                    <div class="flex items-center gap-1 bg-gray-100 p-1.5 rounded-xl">
-                        <button @click="viewMode = 'grid'"
-                            :class="['p-2.5 rounded-lg transition-all', viewMode === 'grid' ? 'bg-white shadow-sm text-navy' : 'text-gray-400 hover:text-navy']">
-                            <Icon icon="ph:squares-four-bold" class="text-xl" />
-                        </button>
-                        <button @click="viewMode = 'list'"
-                            :class="['p-2.5 rounded-lg transition-all', viewMode === 'list' ? 'bg-white shadow-sm text-navy' : 'text-gray-400 hover:text-navy']">
-                            <Icon icon="ph:list-bold" class="text-xl" />
-                        </button>
-                    </div>
-                </div>
             </div>
         </section>
 
-        <!-- Archers Grid -->
-        <section class="container mx-auto px-4 max-w-7xl pb-16">
-            <div v-if="isLoading"
-                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-60 pointer-events-none">
-                <div v-for="i in 6" :key="i"
-                    class="h-[400px] bg-white rounded-2xl border-2 border-gray-100 animate-pulse"></div>
+        <!-- Archers Grid / List Content -->
+        <section class="container mx-auto px-4 max-w-7xl py-12 md:py-16">
+            <!-- Loading Skeleton -->
+            <PublicCardSkeleton v-if="isLoading" :count="viewMode === 'list' ? 8 : 6" :type="viewMode === 'list' ? 'list' : 'card'" />
+
+            <!-- Empty State -->
+            <div v-else-if="archers.length === 0" class="py-16 px-6 text-center max-w-sm mx-auto">
+                <div class="w-16 h-16 bg-white border border-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-slate-300 shadow-sm">
+                    <Icon icon="ph:user-focus" class="text-3xl" />
+                </div>
+                <h3 class="text-lg font-bold text-navy mb-1">{{ t('archers.not_found', 'Atlet Tidak Ditemukan') }}</h3>
+                <p class="text-sm text-slate-500 font-medium leading-relaxed mb-6">{{ t('archers.not_found_desc', 'Belum ada data atlet panahan yang sesuai dengan filter pencarian.') }}</p>
+                <BaseButton v-if="searchQuery || activeBowType !== 'all'" variant="outline" size="sm" @click="resetFilters">
+                    {{ t('events_page.reset_button', 'Hapus Filter') }}
+                </BaseButton>
             </div>
 
+            <!-- Grid View -->
             <div v-else-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <NuxtLink v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
                     :to="localePath(`/archers/${archer.username || archer.slug}`)"
-                    class="group bg-white rounded-3xl border border-gray-100 p-6 transition-all duration-500 hover:border-primary/50 hover:shadow-sm hover:shadow-primary/5">
-                    <div class="flex items-center gap-5">
-                        <!-- Avatar -->
-                        <div class="relative flex-shrink-0">
-                            <div
-                                class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-amber-400 p-0.5 overflow-hidden shadow-sm transition-transform duration-500 group-hover:scale-105">
-                                <div class="w-full h-full rounded-[14px] overflow-hidden bg-white">
-                                    <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
-                                        class="w-full h-full object-cover transition-transform duration-500" />
+                    class="group bg-white rounded-2xl border border-slate-100 p-6 shadow-sm transition-all duration-300 hover:border-primary/40 hover:shadow-md flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-4">
+                            <!-- Avatar -->
+                            <div class="relative shrink-0">
+                                <div
+                                    class="w-16 h-16 rounded-xl bg-gradient-to-br from-primary to-amber-400 p-0.5 overflow-hidden shadow-sm transition-transform duration-300 group-hover:scale-105">
+                                    <div class="w-full h-full rounded-[10px] overflow-hidden bg-white">
+                                        <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
+                                            class="w-full h-full object-cover" />
+                                    </div>
                                 </div>
                             </div>
-                            <div
-                                class="absolute -bottom-1 -right-1 w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-md border border-gray-50">
-                                <Icon icon="ph:sketch-logo-fill" class="text-primary text-sm" />
+
+                            <!-- Name & Basic Info -->
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-bold text-navy text-lg group-hover:text-primary transition-colors truncate">
+                                    {{ archer.full_name }}
+                                </h3>
+                                <div class="flex flex-col gap-0.5 mt-0.5">
+                                    <span class="text-slate-400 text-xs font-medium flex items-center gap-1.5 truncate">
+                                        <Icon icon="ph:shield-bold" class="text-xs shrink-0" />
+                                        <span class="truncate">{{ archer.club_name || archer.club || 'Independent' }}</span>
+                                    </span>
+                                    <span v-if="archer.city"
+                                        class="text-slate-400 text-xs font-medium flex items-center gap-1.5 truncate">
+                                        <Icon icon="ph:map-pin-bold" class="text-xs shrink-0" />
+                                        <span class="truncate">{{ archer.city }}</span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Name & Basic Info -->
-                        <div class="flex-1 min-w-0">
-                            <h3 class="font-black text-navy text-xl leading-tight transition-colors truncate mb-1">
-                                {{ archer.full_name }}
-                            </h3>
-                            <div class="flex flex-col gap-0.5">
-                                <span class="text-gray-400 text-sm font-bold flex items-center gap-1.5">
-                                    <Icon icon="ph:shield-bold" class="text-xs" />
-                                    <span class="truncate">{{ archer.club_name || archer.club || 'Independent' }}</span>
-                                </span>
-                                <span v-if="archer.city"
-                                    class="text-gray-400  text-xs font-bold flex items-center gap-1.5  tracking-wider">
-                                    <Icon icon="ph:map-pin-bold" class="text-xs" />
-                                    {{ archer.city }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Archer Details Grid -->
-                    <div class="grid grid-cols-2 gap-3 mt-8">
-                        <div
-                            class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all group-hover:bg-primary/5 group-hover:border-primary/10">
-                            <span
-                                class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5 ">{{ $t('archers.division') }}</span>
-                            <div class="flex items-center gap-2">
-                                <div
-                                    class="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center p-1 border border-gray-100 group-hover:border-primary/20">
-                                    <img :src="getBowIcon(archer.bow_type)" :alt="archer.bow_type"
-                                        class="w-full h-full object-contain" />
+                        <!-- Archer Details Grid -->
+                        <div class="grid grid-cols-2 gap-2.5 mt-6">
+                            <div
+                                class="bg-slate-50 rounded-xl p-3 border border-slate-100/60 transition-all group-hover:bg-primary/5 group-hover:border-primary/10">
+                                <span
+                                    class="block text-[10px] text-slate-400 font-bold tracking-widest mb-1">{{ t('archers.division', 'Divisi') }}</span>
+                                <div class="flex items-center gap-2">
+                                    <div
+                                        class="w-6 h-6 rounded-lg bg-white shadow-sm flex items-center justify-center p-0.5 border border-slate-100">
+                                        <img :src="getBowIcon(archer.bow_type)" :alt="archer.bow_type"
+                                            class="w-full h-full object-contain" />
+                                    </div>
+                                    <span class="text-xs font-bold text-navy truncate capitalize">{{ archer.bow_type || 'Recurve' }}</span>
                                 </div>
-                                <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
-                                    'Recurve'
-                                    }}</span>
                             </div>
-                        </div>
-                        <div
-                            class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all group-hover:bg-amber-50 group-hover:border-amber-100">
-                            <span
-                                class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5 ">{{ $t('archers.competition') }}</span>
-                            <div class="flex items-center gap-2">
-                                <div
-                                    class="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center border border-gray-100 group-hover:border-amber-200">
-                                    <Icon icon="ph:medal-bold" class="text-amber-500 text-sm" />
+                            <div
+                                class="bg-slate-50 rounded-xl p-3 border border-slate-100/60 transition-all group-hover:bg-amber-50/50 group-hover:border-amber-100">
+                                <span
+                                    class="block text-[10px] text-slate-400 font-bold tracking-widest mb-1">{{ t('archers.competition', 'Kompetisi') }}</span>
+                                <div class="flex items-center gap-2">
+                                    <div
+                                        class="w-6 h-6 rounded-lg bg-white shadow-sm flex items-center justify-center border border-slate-100">
+                                        <Icon icon="ph:medal-bold" class="text-amber-500 text-xs" />
+                                    </div>
+                                    <span class="text-xs font-bold text-navy">{{ t('archers.events_count', { count: archer.total_events || 0 }) }}</span>
                                 </div>
-                                <span class="text-xs font-black text-navy">{{ $t('archers.events_count', { count: archer.total_events || 0 }) }}</span>
                             </div>
                         </div>
                     </div>
@@ -150,44 +157,40 @@
             </div>
 
             <!-- List View -->
-            <div v-else class="space-y-4">
-                <div v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
-                    class="bg-white rounded-xl border-2 border-gray-100 hover:border-primary transition-all p-6">
-                    <NuxtLink :to="localePath(`/archers/${archer.slug}`)" class="flex items-center gap-6 group">
+            <div v-else class="space-y-3">
+                <NuxtLink v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
+                    :to="localePath(`/archers/${archer.slug || archer.username}`)"
+                    class="bg-white rounded-2xl border border-slate-100 hover:border-primary/40 shadow-sm hover:shadow-md transition-all p-4 sm:p-5 flex items-center justify-between gap-4 group">
+                    <div class="flex items-center gap-4 min-w-0">
                         <div
-                            class="w-20 h-20 rounded-xl bg-navy overflow-hidden flex-shrink-0 relative group-hover:shadow-md transition-all duration-500">
+                            class="w-14 h-14 rounded-xl bg-slate-100 overflow-hidden shrink-0">
                             <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                         </div>
-                        <div class="flex-1 min-w-0">
-                            <h3 class="font-black text-navy text-xl transition-colors">
+                        <div class="min-w-0">
+                            <h3 class="font-bold text-navy text-base group-hover:text-primary transition-colors truncate">
                                 {{ archer.full_name }}
                             </h3>
-                            <div class="flex items-center gap-4 mt-2 text-sm text-gray-500 font-semibold">
-                                <span v-if="archer.athlete_code">{{ archer.athlete_code }}</span>
-                                <span v-if="archer.city">{{ archer.city }}</span>
-                                <span v-if="archer.bow_type" class="capitalize">{{ archer.bow_type }}</span>
+                            <div class="flex items-center gap-3 mt-1 text-xs text-slate-500 font-medium truncate">
+                                <span v-if="archer.club_name">{{ archer.club_name }}</span>
+                                <span v-if="archer.city">• {{ archer.city }}</span>
+                                <span v-if="archer.bow_type" class="capitalize">• {{ archer.bow_type }}</span>
                             </div>
                         </div>
-                        <div class="text-right mr-4">
-                            <div class="text-sm text-gray-500 mb-1 font-semibold">{{ $t('archers.total_events') }}</div>
-                            <div class="text-2xl font-black text-navy">{{ archer.total_events || 0 }}</div>
+                    </div>
+                    <div class="flex items-center gap-4 shrink-0">
+                        <div class="text-right hidden sm:block">
+                            <div class="text-xs text-slate-400 font-medium">{{ t('archers.total_events', 'Total Event') }}</div>
+                            <div class="text-lg font-bold text-navy">{{ archer.total_events || 0 }}</div>
                         </div>
-                        <Icon icon="ph:arrow-right" class="text-gray-300 transition-colors" />
-                    </NuxtLink>
-                </div>
-            </div>
-
-            <!-- Empty State -->
-            <div v-if="archers.length === 0 && !isLoading" class="text-center py-20">
-                <Icon icon="ph:user-focus-light" class="text-7xl text-gray-200 mb-6 mx-auto" />
-                <h3 class="text-lg sm:text-2xl font-black text-navy mb-3">{{ $t('archers.not_found') }}</h3>
-                <p class="text-gray-500 max-w-md mx-auto">{{ $t('archers.not_found_desc') }}</p>
+                        <Icon icon="ph:arrow-right-bold" class="text-slate-300 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                    </div>
+                </NuxtLink>
             </div>
 
             <!-- Pagination -->
             <div v-if="totalArchers > pageSize" class="mt-12 flex justify-center">
-                <BasePagination v-model="currentPage" :total-items="totalArchers" :items-per-page="pageSize"
+                <BasePagination :current-page="currentPage" :total-items="totalArchers" :items-per-page="pageSize"
                     @change-page="p => currentPage = p" />
             </div>
         </section>

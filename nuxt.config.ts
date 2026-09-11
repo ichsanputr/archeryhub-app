@@ -26,7 +26,7 @@ function getDashboardPages(dir: string, base: string = 'dashboard'): Record<stri
 
 const dashboardPages = getDashboardPages(path.resolve(__dirname, 'pages/dashboard'))
 
-function makeNonLocalizedPages(pages: Record<string, boolean>, locales: string[] = ['en', 'id', 'kr']) {
+function makeNonLocalizedPages(pages: Record<string, boolean>, locales: string[] = ['en', 'id']) {
   const out: Record<string, Record<string, string>> = {}
   for (const key of Object.keys(pages)) {
     // ensure we produce a normalized path starting with '/'

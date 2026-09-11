@@ -1,143 +1,137 @@
 <template>
-  <div class="flex flex-col gap-6 pb-12">
-    <!-- Enhanced Header -->
-    <div
-      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <!-- Theme Motif Pattern -->
-      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-
-      <!-- Decorative Background Elements -->
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-      <!-- Header Content -->
-      <div class="relative p-5 sm:p-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div class="flex items-center sm:items-start gap-4 flex-1">
-            <!-- Icon Badge -->
-            <div
-              class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-              <Icon icon="ph:brackets-curly" class="text-white text-xl sm:text-2xl" />
-            </div>
-
-            <!-- Title Section -->
-            <div class="min-w-0">
-              <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                {{ t('event_elimination.title') }}
-              </h1>
-              <div class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
-                {{ t('event_elimination.desc', { eventName }) }}
-              </div>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex flex-col sm:flex-row gap-3">
-             <BaseButton variant="primary" icon="ph:plus-bold"
-               class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
-               :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
-               @click="isSubscriptionActive ? (resetForm(), showCreateDialog = true) : (showPremiumModal = true)">
-               {{ t('event_elimination.create_bracket') }}
-             </BaseButton>
-           </div>
-        </div>
-      </div>
-    </div>
+  <div class="flex flex-col gap-6 pb-16 font-body text-navy antialiased">
+    <!-- Header -->
+    <DashboardHeader
+      :title="t('event_elimination.title', 'Bagan & Babak Eliminasi')"
+      :subtitle="t('event_elimination.desc', { eventName: eventName || 'Event' })"
+      icon="mdi:bracket"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/events' },
+        { label: t('event_elimination.title', 'Bagan Eliminasi') }
+      ]"
+    >
+      <template #actions>
+        <BaseButton
+          variant="primary"
+          icon="ph:plus-bold"
+          class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
+          :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+          @click="isSubscriptionActive ? (resetForm(), showCreateDialog = true) : (showPremiumModal = true)">
+          {{ t('event_elimination.create_bracket', 'Buat Bagan Eliminasi') }}
+        </BaseButton>
+      </template>
+    </DashboardHeader>
     <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
-    <!-- Brackets List -->
-    <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+    <!-- Brackets List Section -->
+    <div class="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-xs">
       <div class="flex items-center justify-between mb-6">
         <div>
-          <h2 class="text-lg font-bold text-navy">{{ t('event_elimination.bracket_list') }}</h2>
-          <div class="text-sm text-gray-500 mt-1">{{ t('event_elimination.bracket_list_desc') }}</div>
+          <h2 class="text-base font-black text-navy">{{ t('event_elimination.bracket_list', 'Daftar Bagan Eliminasi') }}</h2>
+          <div class="text-xs text-slate-500 mt-0.5">{{ t('event_elimination.bracket_list_desc', 'Kelola dan monitor bagan pertandingan eliminasi') }}</div>
         </div>
       </div>
 
       <div v-if="loadingBrackets" class="flex gap-4 overflow-x-hidden pb-2">
-        <div v-for="i in 4" :key="i" class="flex-shrink-0 w-72 p-5 rounded-xl border border-gray-100 animate-pulse">
+        <div v-for="i in 4" :key="i" class="flex-shrink-0 w-72 p-5 rounded-2xl border border-slate-100 animate-pulse">
           <div class="flex items-start gap-3">
-            <div class="size-12 bg-gray-100 rounded-xl"></div>
+            <div class="size-12 bg-slate-100 rounded-xl"></div>
             <div class="flex-1">
-              <div class="h-5 bg-gray-100 rounded mb-2"></div>
-              <div class="h-4 bg-gray-50 rounded w-24"></div>
+              <div class="h-5 bg-slate-100 rounded mb-2"></div>
+              <div class="h-4 bg-slate-50 rounded w-24"></div>
             </div>
           </div>
         </div>
       </div>
 
       <div v-else-if="brackets.length === 0"
-        class="text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
-        <Icon icon="ph:brackets-curly" class="text-4xl text-gray-300 mx-auto mb-3" />
-        <div class="text-sm font-bold text-gray-600 mb-1">{{ t('event_elimination.no_brackets') }}</div>
-        <div class="text-xs text-gray-400">{{ t('event_elimination.no_brackets_desc') }}</div>
+        class="text-center py-12 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+        <Icon icon="mdi:bracket" class="text-4xl text-slate-300 mx-auto mb-3" />
+        <div class="text-sm font-bold text-slate-700 mb-1">{{ t('event_elimination.no_brackets', 'Belum Ada Bagan Eliminasi') }}</div>
+        <div class="text-xs text-slate-400">{{ t('event_elimination.no_brackets_desc', 'Buat bagan pertama untuk memulai pertandingan eliminasi') }}</div>
       </div>
 
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <NuxtLink v-for="bracket in brackets" :key="bracket.id"
-          :to="`/dashboard/events/${eventId}/elimination/${bracket.id}`"
-          class="p-5 bg-gradient-to-br from-white to-gray-50 rounded-xl border-2 border-gray-200 hover:border-primary hover:shadow-md transition-all text-left group">
+          :to="route.path.includes('/organizer/') ? `/dashboard/organizer/events/${eventId}/elimination/${bracket.id}` : `/dashboard/events/${eventId}/elimination/${bracket.id}`"
+          class="rounded-3xl border border-slate-200/90 hover:border-navy transition-all duration-200 bg-white flex flex-col justify-between overflow-hidden relative group text-left shadow-xs">
 
-          <!-- Header -->
-          <div class="flex items-start justify-between mb-4">
-            <div class="flex items-center gap-3 flex-1">
-              <div
-                class="w-12 h-12 rounded-lg flex items-center justify-center transition-colors overflow-hidden border bg-primary/50">
-                <img :src="`/${getCategoryIcon(bracket.category_name)}`" class="w-8 h-8 object-contain" />
-              </div>
+          <!-- Themed Signature Navy Card Header -->
+          <div class="relative overflow-hidden p-5 bg-gradient-to-r from-navy via-navy to-navy/95 text-white border-b border-primary/20">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
+            <!-- Decorative Top Accent Line -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+            <div class="relative z-10 flex items-start justify-between gap-3">
               <div class="min-w-0 flex-1">
-                <div class="font-bold text-navy group-hover:text-primary transition-colors line-clamp-2">
+                <h3 class="font-black text-white text-base sm:text-lg leading-tight truncate">
                   {{ getBracketName(bracket) }}
+                </h3>
+                <div class="flex items-center gap-1.5 mt-1.5">
+                  <span class="text-[10px] font-bold font-mono text-slate-300 bg-white/10 px-2.5 py-0.5 rounded-lg">
+                    ID: {{ bracket.id }}
+                  </span>
                 </div>
-                <div class="text-xs text-gray-500 font-mono mt-1">{{ bracket.id }}</div>
               </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <button @click.stop.prevent="isSubscriptionActive ? openEditBracket(bracket) : (showPremiumModal = true)"
-                class="p-2 rounded-lg bg-gray-100 text-gray-400 hover:bg-primary/20 hover:text-primary transition-all">
-                <Icon icon="ph:pencil-simple-bold" class="text-lg" />
-              </button>
-              <button @click.stop.prevent="isSubscriptionActive ? confirmDeleteBracket(bracket) : (showPremiumModal = true)"
-                class="p-2 rounded-lg bg-gray-100 text-gray-400 hover:bg-red-50/80 hover:text-red-500 transition-all">
-                <Icon icon="ph:trash-bold" class="text-lg" />
-              </button>
-            </div>
-          </div>
 
-          <!-- Details -->
-          <div class="space-y-2 mb-4">
-            <div class="flex items-center gap-2 text-xs text-gray-600">
-              <Icon icon="ph:users-three" class="text-sm" />
-              <span class="font-semibold">{{ bracket.bracket_size }} {{ bracket.bracket_type === 'individual' ? (t('event_detail.archers') || 'participants') : (t('event_detail.teams') || 'teams') }}</span>
-            </div>
-            <div class="flex items-center gap-2 text-xs text-gray-600">
-              <Icon icon="ph:crosshair" class="text-sm" />
-              <span class="font-semibold">{{ getFormatLabel(bracket.format) }}</span>
-            </div>
-            <div class="flex items-center gap-2 text-xs text-gray-600">
-              <Icon icon="ph:list" class="text-sm" />
-              <span class="font-semibold">{{ getBracketTypeLabel(bracket.bracket_type) }}</span>
-            </div>
-            <div class="flex items-center gap-3 pt-1">
-              <div class="flex items-center gap-1.5 text-[10px] text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md">
-                <Icon icon="ph:stack-bold" class="text-xs" />
-                <span class="font-bold">{{ bracket.ends_per_match }} End/Match</span>
-              </div>
-              <div class="flex items-center gap-1.5 text-[10px] text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md">
-                <Icon icon="ph:target-bold" class="text-xs" />
-                <span class="font-bold">{{ bracket.arrows_per_end }} Arrow/End</span>
+              <!-- Action Edit Button in Header -->
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button"
+                  @click.stop.prevent="isSubscriptionActive ? openEditBracket(bracket) : (showPremiumModal = true)"
+                  class="size-8 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/15 transition-all flex items-center justify-center active:scale-95"
+                  :title="t('event_elimination.edit_bracket', 'Edit Bracket')">
+                  <Icon icon="ph:pencil-simple-bold" class="text-sm" />
+                </button>
               </div>
             </div>
           </div>
 
-          <!-- Footer -->
-          <div class="flex items-center justify-between pt-3 border-t border-gray-200">
-            <span class="text-xs font-mono text-gray-400">{{ formatDate(bracket.created_at) }}</span>
-            <div class="flex items-center gap-1 font-bold text-xs group-hover:gap-2 transition-all">
-              <span>{{ t('event_elimination.open') || 'Open' }}</span>
-              <Icon icon="ph:arrow-right" class="text-sm" />
+          <!-- Card Body: Format Tags & Match Metric Details -->
+          <div class="p-5 sm:p-6 bg-slate-50/70 flex-1 space-y-3.5">
+            <!-- Format & Type Chips -->
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white text-navy border border-slate-200 text-xs font-bold">
+                <Icon icon="ph:crosshair-bold" class="text-xs text-slate-500" />
+                <span>{{ getFormatLabel(bracket.format) }}</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white text-slate-700 border border-slate-200 text-xs font-bold">
+                <Icon icon="ph:list-bullets-bold" class="text-xs text-slate-500" />
+                <span>{{ getBracketTypeLabel(bracket.bracket_type) }}</span>
+              </span>
+            </div>
+
+            <!-- Bracket Metrics Box -->
+            <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 space-y-2.5">
+              <div class="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                <div class="size-6 rounded-lg bg-slate-100 text-navy flex items-center justify-center shrink-0">
+                  <Icon icon="ph:users-three-bold" class="text-xs" />
+                </div>
+                <span>{{ bracket.bracket_size }} {{ bracket.bracket_type === 'individual' ? (t('event_detail.archers') || 'Pemanah') : (t('event_detail.teams') || 'Tim') }}</span>
+              </div>
+
+              <!-- 2-column Rules Metric -->
+              <div class="grid grid-cols-2 gap-2">
+                <div class="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl border border-slate-100">
+                  <Icon icon="ph:stack-bold" class="text-slate-400 text-sm shrink-0" />
+                  <span class="text-xs font-black text-navy truncate">{{ bracket.ends_per_match }} End/Match</span>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl border border-slate-100">
+                  <Icon icon="ph:target-bold" class="text-slate-400 text-sm shrink-0" />
+                  <span class="text-xs font-black text-navy truncate">{{ bracket.arrows_per_end }} Panah/End</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="flex items-center justify-between px-5 sm:px-6 py-3.5 bg-white border-t border-slate-200/80 mt-auto">
+            <span class="text-xs font-mono text-slate-400">{{ formatDate(bracket.created_at) }}</span>
+            <div
+              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-navy text-white group-hover:bg-primary group-hover:text-navy text-xs font-bold transition-all active:scale-95">
+              <span>{{ t('event_elimination.manage', 'Kelola') }}</span>
+              <Icon icon="ph:arrow-right-bold" class="text-xs" />
             </div>
           </div>
         </NuxtLink>
@@ -146,28 +140,28 @@
 
     <!-- Suggested Categories Section -->
     <div v-if="loadingCategories || categoriesWithoutBracket.length > 0"
-      class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+      class="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-xs">
       <div class="flex items-center justify-between mb-6">
         <div class="flex flex-col sm:flex-row sm:items-center w-full justify-between gap-4">
           <div>
-            <h2 class="text-lg font-bold text-navy">{{ t('event_elimination.categories_without_bracket') }}</h2>
-            <div class="text-sm text-gray-500 mt-1">{{ t('event_elimination.categories_without_bracket_desc') }}</div>
+            <h2 class="text-base font-black text-navy">{{ t('event_elimination.categories_without_bracket', 'Kategori Belum Ada Bagan') }}</h2>
+            <div class="text-xs text-slate-500 mt-0.5">{{ t('event_elimination.categories_without_bracket_desc', 'Daftar kategori perlombaan yang belum memiliki bagan eliminasi') }}</div>
           </div>
           <div class="relative w-full sm:w-72">
-            <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input v-model="searchQuery" type="text" :placeholder="t('event_elimination.search_categories') || 'Cari kategori...'"
-              class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-primary focus:bg-white transition-all font-bold text-navy placeholder:font-normal" />
+            <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input v-model="searchQuery" type="text" :placeholder="t('event_elimination.search_categories', 'Cari kategori...')"
+              class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-navy focus:bg-white transition-all font-bold text-navy placeholder:font-normal" />
           </div>
         </div>
       </div>
 
       <div v-if="loadingCategories" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div v-for="i in 3" :key="i" class="p-4 rounded-xl border border-gray-100 animate-pulse">
+        <div v-for="i in 3" :key="i" class="p-4 rounded-xl border border-slate-100 animate-pulse">
           <div class="flex items-center gap-3">
-            <div class="size-10 bg-gray-100 rounded-lg"></div>
+            <div class="size-10 bg-slate-100 rounded-lg"></div>
             <div class="flex-1">
-              <div class="h-4 bg-gray-100 rounded w-3/4 mb-2"></div>
-              <div class="h-3 bg-gray-50 rounded w-1/2"></div>
+              <div class="h-4 bg-slate-100 rounded w-3/4 mb-2"></div>
+              <div class="h-3 bg-slate-50 rounded w-1/2"></div>
             </div>
           </div>
         </div>
@@ -175,22 +169,25 @@
 
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div v-for="cat in filteredCategoriesWithoutBracket" :key="cat.id"
-          class="p-4 bg-gray-50 hover:bg-white rounded-xl border border-gray-200 hover:border-primary hover:shadow-md transition-all cursor-pointer group"
+          class="p-4 bg-slate-50 hover:bg-white text-navy rounded-2xl border border-slate-200 hover:border-navy transition-all duration-200 cursor-pointer group flex items-center justify-between gap-3 text-left relative overflow-hidden"
           @click="isSubscriptionActive ? openCreateForCategory(cat) : (showPremiumModal = true)">
-          <div class="flex items-center gap-3">
+          
+          <div class="flex items-center gap-3.5 min-w-0 flex-1">
             <div
-              class="w-10 h-10 bg-white rounded-lg border border-gray-100 flex items-center justify-center group-hover:bg-navy transition-all overflow-hidden p-1.5">
+              class="size-11 bg-white rounded-xl border border-slate-200 flex items-center justify-center p-2 shrink-0 group-hover:scale-105 transition-all overflow-hidden">
               <img
                 :src="'/' + getCategoryIcon(`${cat.division_name} ${cat.event_type_name} ${cat.gender_division_name}`)"
-                :alt="cat.division_name" class="w-full h-full object-contain group-hover:invert transition-all" />
+                :alt="cat.division_name" class="w-full h-full object-contain transition-all" />
             </div>
             <div class="min-w-0 flex-1">
-              <div class="text-sm font-bold text-navy group-hover:text-primary transition-colors truncate">
+              <div class="text-xs font-black text-navy truncate">
                 {{ getCategoryName(cat) }}
               </div>
-              <div class="text-[10px] text-gray-500 font-medium">{{ t('event_elimination.click_to_create') }}</div>
+              <div class="text-[11px] text-slate-400 font-medium mt-0.5">{{ t('event_elimination.click_to_create', 'Klik untuk membuat bagan') }}</div>
             </div>
-            <Icon icon="ph:plus" class="text-gray-300 group-hover:text-primary" />
+          </div>
+          <div class="size-8 rounded-xl bg-navy text-white group-hover:bg-primary group-hover:text-navy flex items-center justify-center shrink-0 transition-all font-black">
+            <Icon icon="ph:plus-bold" class="text-xs" />
           </div>
         </div>
       </div>
@@ -212,8 +209,8 @@
             <div class="absolute -top-10 -left-10 h-32 w-32 rounded-full bg-primary/10 blur-2xl"></div>
 
             <div class="relative flex items-center gap-3.5 min-w-0">
-              <div class="size-11 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-primary text-xl shrink-0 shadow-sm">
-                <Icon :icon="isEditing ? 'ph:pencil-simple-bold' : 'ph:brackets-curly-bold'" />
+              <div class="size-11 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white text-xl shrink-0 shadow-sm">
+                <Icon :icon="isEditing ? 'ph:pencil-simple-bold' : 'mdi:bracket'" />
               </div>
               <div class="min-w-0">
                 <h3 class="text-lg font-black tracking-tight text-white leading-tight truncate">
@@ -390,86 +387,6 @@
         </div>
       </div>
     </Transition>
-
-    <!-- Delete Confirmation Dialog -->
-    <BaseDialogForm v-if="showDeleteDialog" v-model="showDeleteDialog" @close="showDeleteDialog = false">
-      <template #header>
-        <div class="flex items-center gap-3">
-          <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
-            <Icon icon="ph:trash-bold" class="text-xl text-red-600" />
-          </div>
-          <h2 class="text-xl font-black text-navy">{{ t('event_elimination.delete_bracket_confirm') }}</h2>
-        </div>
-      </template>
-      <div class="space-y-6 pt-2">
-        <!-- Warning Banner -->
-        <div class="p-6 bg-red-50 border-2 border-red-100 rounded-3xl relative overflow-hidden group">
-          <div class="absolute -right-4 -top-4 opacity-10 group-hover:scale-120 transition-transform duration-700">
-            <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-600" />
-          </div>
-          <div class="relative z-10">
-            <h4 class="text-sm font-black text-red-700 tracking-widest mb-2">{{ t('event_elimination.delete_warning') }}</h4>
-            <div class="text-xs font-bold text-red-600/80 leading-relaxed mb-4">
-              {{ t('event_elimination.delete_warning_desc') }}
-            </div>
-
-            <div class="flex items-center gap-2 px-3 py-1.5 bg-red-100 rounded-xl w-fit">
-              <Icon icon="ph:info-bold" class="text-red-600" />
-              <span class="text-[10px] font-black tracking-wider text-red-700">{{ t('event_elimination.action_irreversible') }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bracket Overview -->
-        <div class="p-5 rounded-2xl bg-navy text-white relative overflow-hidden group shadow-sm">
-          <div class="absolute inset-0 opacity-10 pointer-events-none"
-            style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);">
-          </div>
-          <div class="relative z-10">
-            <h4 class="text-[9px] font-black text-primary tracking-[0.2em] mb-2">{{ t('event_elimination.bracket_info') }}</h4>
-            <div class="text-lg font-black leading-tight mb-1">
-              {{ getBracketName(bracketToDelete) }}
-            </div>
-            <div class="text-xs font-bold text-slate-300">
-              {{ t('event_elimination.bracket_size') }}: {{ bracketToDelete?.bracket_size }} • {{ t('event_elimination.bracket_type') }}: {{
-                getBracketTypeLabel(bracketToDelete?.bracket_type) }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Impact Grid -->
-        <div class="grid grid-cols-2 gap-4">
-          <div v-for="stat in [
-            { label: t('event_elimination.matches'), count: t('common.all') || 'ALL', icon: 'ph:layout-bold' },
-            { label: t('event_elimination.scores'), count: t('common.all') || 'ALL', icon: 'ph:medal-bold' },
-            { label: t('event_elimination.target_codes'), count: t('common.all') || 'ALL', icon: 'ph:lock-key-bold' },
-            { label: t('event_elimination.participants'), count: t('common.all') || 'ALL', icon: 'ph:users-bold' }
-          ]" :key="stat.label"
-            class="p-4 rounded-2xl border transition-all duration-300 shadow-sm bg-red-50 border-red-100">
-            <div class="flex items-center justify-between mb-2">
-              <div
-                class="size-9 rounded-lg flex items-center justify-center transition-colors shadow-inner bg-red-100 text-red-600">
-                <Icon :icon="stat.icon" class="text-lg" />
-              </div>
-              <div class="text-[10px] font-black text-red-700 tracking-widest">
-                {{ stat.count }}
-              </div>
-            </div>
-            <span class="text-[9px] font-black text-gray-400 tracking-wider text-left">{{ stat.label }}</span>
-          </div>
-        </div>
-      </div>
-
-      <template #action>
-        <BaseButton variant="white" @click="showDeleteDialog = false" class="px-6 font-bold tracking-wider text-xs">
-          {{ t('event_elimination.cancel') }}
-        </BaseButton>
-        <BaseButton variant="danger" @click="handleDeleteBracket" :disabled="savingDelete" :loading="savingDelete"
-          icon="ph:trash-bold" class="px-8 font-black tracking-wider text-xs shadow-lg shadow-red-200">
-          {{ t('event_elimination.delete_bracket') }}
-        </BaseButton>
-      </template>
-    </BaseDialogForm>
   </div>
 </template>
 
@@ -512,16 +429,22 @@ const bracketSizeInfo = ref({ participant_count: 0, max_bracket_size: 0, byes: 0
 const creatingBracket = ref(false)
 const showCreateDialog = ref(false)
 
-const showDeleteDialog = ref(false)
-const bracketToDelete = ref(null)
-const savingDelete = ref(false)
-
 const editBracketId = ref(null)
 const isEditing = computed(() => !!editBracketId.value)
 const modalTitle = computed(() => isEditing.value ? (t('event_elimination.edit_bracket') || 'Edit Bracket') : t('event_elimination.create_bracket'))
 const submitButtonLabel = computed(() => {
   if (creatingBracket.value) return isEditing.value ? (t('event_elimination.updating') || 'Updating...') : (t('event_elimination.creating') || 'Creating...')
   return isEditing.value ? (t('event_elimination.save_update') || 'Save Update') : t('event_elimination.create_bracket')
+})
+
+const configuredCategoriesCount = computed(() => {
+  const ids = new Set(brackets.value.map(b => b.category_id).filter(Boolean))
+  return ids.size
+})
+
+const coverageRate = computed(() => {
+  if (!categories.value.length) return 0
+  return Math.min(100, Math.round((configuredCategoriesCount.value / categories.value.length) * 100))
 })
 
 const defaultStartDate = () => new Date().toISOString().split('T')[0]
@@ -754,30 +677,6 @@ const createBracket = async () => {
     toast.error(msg)
   } finally {
     creatingBracket.value = false
-  }
-}
-
-const confirmDeleteBracket = (bracket) => {
-  bracketToDelete.value = bracket
-  showDeleteDialog.value = true
-}
-
-const handleDeleteBracket = async () => {
-  if (!bracketToDelete.value) return
-
-  savingDelete.value = true
-  try {
-    await del(`/events/${eventId.value}/elimination/brackets/${bracketToDelete.value.uuid || bracketToDelete.value.id}`)
-    toast.success(t('event_elimination.toast_bracket_deleted'))
-    showDeleteDialog.value = false
-    bracketToDelete.value = null
-    await fetchBrackets()
-    await fetchCategories()
-  } catch (error) {
-    console.error('Failed to delete bracket:', error)
-    toast.error(t('event_elimination.toast_bracket_delete_failed'))
-  } finally {
-    savingDelete.value = false
   }
 }
 

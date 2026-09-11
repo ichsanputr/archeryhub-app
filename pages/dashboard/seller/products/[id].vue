@@ -90,25 +90,22 @@
                         <div class="space-y-5">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('seller_product_form.price', 'Harga Normal *') }}</label>
-                                    <div class="relative">
-                                        <span
-                                            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
-                                        <input v-model.number="form.price" type="number" min="0" step="1000" required
-                                            class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                            placeholder="0" />
-                                    </div>
+                                    <BaseInput
+                                        v-model="form.price"
+                                        kind="currency"
+                                        :label="t('seller_product_form.price', 'Harga Normal *')"
+                                        placeholder="0"
+                                        required
+                                    />
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">{{ t('seller_product_form.sale_price', 'Harga Diskon') }}</label>
-                                    <div class="relative">
-                                        <span
-                                            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
-                                        <input v-model.number="form.sale_price" type="number" min="0" step="1000"
-                                            class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                            :placeholder="t('seller_product_form.sale_price_placeholder', '0 (opsional)')" />
-                                    </div>
-                                    <div class="text-xs text-gray-400 mt-1">{{ t('seller_product_form.price_sale_hint', 'Kosongkan atau isi 0 untuk tidak terbatas') }}</div>
+                                    <BaseInput
+                                        v-model="form.sale_price"
+                                        kind="currency"
+                                        :label="t('seller_product_form.sale_price', 'Harga Diskon')"
+                                        :placeholder="t('seller_product_form.sale_price_placeholder', '0 (opsional)')"
+                                        :hint="t('seller_product_form.price_sale_hint', 'Kosongkan atau isi 0 untuk tidak terbatas')"
+                                    />
                                 </div>
                             </div>
                             <div>

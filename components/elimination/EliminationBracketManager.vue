@@ -74,103 +74,97 @@
         </div>
 
         <template v-else-if="bracket">
-            <!-- Enhanced Header Section -->
-            <div
-                class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm mb-6">
+            <!-- Enhanced Header Section (Matching Platform Standard Header) -->
+            <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm mb-2">
                 <!-- Theme Motif Pattern -->
-                <div class="absolute inset-0"
-                    style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-                </div>
+                <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
 
                 <!-- Decorative Background Elements -->
                 <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
                 <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary">
-                </div>
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
 
-                <div class="relative p-5 sm:p-8">
-                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                        <div class="flex items-center sm:items-start gap-3 sm:gap-4 flex-1 min-w-0">
-                            <button @click="handleBack"
-                                class="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white/10 text-white hover:bg-primary hover:text-navy transition-all group shrink-0 backdrop-blur-sm border border-white/20">
-                                <Icon icon="ph:arrow-left-bold"
-                                    class="text-lg sm:text-xl group-hover:-translate-x-1 transition-transform" />
-                            </button>
-                            <div class="min-w-0">
-                                <h1
-                                    class="text-lg sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
+                <!-- Header Content -->
+                <div class="relative p-4 sm:p-8">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6">
+                        <div class="flex flex-col gap-3 flex-1 min-w-0">
+                            <!-- Top Row: Back Button & Title -->
+                            <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+                                <!-- Back Button -->
+                                <button type="button"
+                                    @click="handleBack"
+                                    class="size-10 sm:size-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md hover:bg-primary hover:text-navy text-white transition-all shrink-0 cursor-pointer active:scale-95"
+                                    :title="t('event_elimination.back_to_brackets', 'Kembali')">
+                                    <Icon icon="ph:arrow-left-bold" class="text-lg sm:text-2xl" />
+                                </button>
+
+                                <h1 class="text-lg sm:text-2xl lg:text-3xl font-black leading-tight tracking-tight text-white truncate flex-1 min-w-0">
                                     {{ pageTitle }}
                                 </h1>
-                                <!-- Category Info -->
-                                <div
-                                    class="flex items-center gap-1.5 text-[10px] mb-2 sm:text-sm text-slate-300 font-medium">
-                                    <template v-if="categoryInfo">
-                                        <span
-                                            class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] sm:text-[10px] font-black tracking-wider backdrop-blur-md shrink-0">
-                                            {{ categoryInfo.division_name }}
-                                        </span>
-                                        <span class="opacity-40 hidden sm:inline">•</span>
-                                        <span class="truncate hidden sm:inline">{{ categoryInfo.category_name }}</span>
-                                        <span class="opacity-40 hidden sm:inline">•</span>
-                                        <span class="truncate hidden sm:inline">{{ bracket.bracket_size }}
-                                            {{ t('event_elimination.participants') }}</span>
-                                    </template>
+                            </div>
+
+                            <!-- Chips Meta Info (Full-width clean wrapping on mobile) -->
+                            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2.5 text-xs text-slate-300 font-bold sm:pl-[72px] lg:pl-0">
+                                <!-- Bracket ID Chip -->
+                                <div class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-[11px] sm:text-xs font-bold font-mono">
+                                    <Icon icon="ph:hash-bold" class="text-xs text-white/70" />
+                                    <span>{{ bracket.bracket_id || bracketId }}</span>
                                 </div>
 
-                                <!-- Quick Stats - Scrollable row on mobile -->
-                                <div
-                                    class="flex items-center gap-2 overflow-x-auto no-scrollbar sm:gap-3 w-full sm:w-auto mt-1 sm:mt-0">
-                                    <div
-                                        class="flex items-center gap-1 sm:gap-1.5 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10 shrink-0">
-                                        <Icon icon="ph:chart-bar-fill" class="text-primary text-[10px] sm:text-xs" />
-                                        <span
-                                            class="text-[8px] sm:text-[10px] font-black tracking-wide sm:tracking-widest text-white/60 whitespace-nowrap">
-                                            {{ finishedMatchesCount }}/{{ matches.length }} {{ t('event_elimination.done') }}
-                                        </span>
-                                    </div>
-                                    <div v-if="currentRoundNo"
-                                        class="flex items-center gap-1 sm:gap-1.5 bg-blue-500/20 px-2 py-0.5 rounded-lg border border-blue-500/20 shrink-0">
-                                        <Icon icon="ph:users-four-fill" class="text-blue-300 text-[10px] sm:text-xs" />
-                                        <span
-                                            class="text-[8px] sm:text-[10px] font-black tracking-wide sm:tracking-widest text-blue-200 whitespace-nowrap">
-                                            {{ roundMatches.length }} Match
-                                        </span>
-                                    </div>
-                                    <div
-                                        class="flex items-center gap-1 sm:gap-1.5 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10 shrink-0">
-                                        <Icon icon="ph:gear-six-fill" class="text-white/40 text-[10px] sm:text-xs" />
-                                        <span
-                                            class="text-[8px] sm:text-[10px] font-black tracking-wide sm:tracking-widest text-white/60 whitespace-nowrap">
-                                            {{ bracket.format === 'recurve_set' ? 'SET' : 'ACC' }} • {{
-                                                bracket.arrows_per_end }}A/{{
-                                                bracket.ends_per_match }}E
-                                        </span>
-                                    </div>
+                                <!-- Match Count / Done Chip -->
+                                <div class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-[11px] sm:text-xs font-bold">
+                                    <Icon icon="ph:chart-bar-fill" class="text-xs text-white/70" />
+                                    <span>{{ finishedMatchesCount }}/{{ matches.length }} {{ t('event_elimination.done') }}</span>
+                                </div>
+
+                                <!-- Format Chip -->
+                                <div class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-[11px] sm:text-xs font-bold">
+                                    <Icon icon="ph:crosshair-bold" class="text-xs text-white/70" />
+                                    <span>{{ bracket.format === 'recurve_set' ? t('event_elimination.set_system', 'Set System') : t('event_elimination.total_score_format', 'Total Score') }} • {{ t('event_elimination.arrows_ends_format', '{arrows} Panah / {ends} End', { arrows: bracket.arrows_per_end, ends: bracket.ends_per_match }) }}</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                            <!-- Tab Switcher (Management Mode) -->
-                            <div v-if="currentRoundNo"
-                                class="bg-white/10 p-1 sm:p-1.5 rounded-xl sm:rounded-2xl flex gap-1 backdrop-blur-sm border border-white/20">
-                                <button v-for="t in tabs" :key="t.id" @click="activeTab = t.id"
-                                    class="flex-1 sm:flex-none px-4 sm:px-6 py-2 sm:py-2.5 text-[10px] sm:text-xs font-black tracking-widest rounded-lg sm:rounded-xl transition-all flex items-center justify-center gap-2"
-                                    :class="activeTab === t.id ? 'bg-primary text-btn-text shadow-sm' : 'text-slate-300 hover:text-white hover:bg-white/10'">
-                                    <Icon :icon="t.icon" class="text-sm sm:text-lg" />
-                                    <span>{{ t.label }}</span>
-                                </button>
-                            </div>
+                        <!-- Action Buttons (Responsive on Mobile) -->
+                        <div class="flex items-center gap-2.5 sm:gap-3 shrink-0 pt-3 lg:pt-0 border-t border-white/10 lg:border-t-0 w-full sm:w-auto">
+                            <!-- Download / Print Scoresheet Button -->
+                            <button type="button" :disabled="isDownloadingScoresheet"
+                                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 sm:px-4 py-2.5 bg-white/10 text-white hover:bg-primary hover:text-navy border border-white/20 rounded-xl transition-all text-xs font-black disabled:opacity-50 disabled:cursor-not-allowed shadow-sm active:scale-95 cursor-pointer"
+                                @click="downloadScoresheet">
+                                <Icon :icon="isDownloadingScoresheet ? 'ph:spinner' : 'ph:printer-bold'"
+                                    :class="['text-base', isDownloadingScoresheet ? 'animate-spin' : '']" />
+                                <span class="truncate">{{ isDownloadingScoresheet ? t('event_elimination.processing') : t('event_elimination.print_scoresheet', 'Print Scoresheet') }}</span>
+                            </button>
+
+                            <!-- Back to Full Tree Button (when in round mode) -->
+                            <button v-if="currentRoundNo" type="button"
+                                @click="handleBack"
+                                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 sm:px-4 py-2.5 bg-white/10 text-white hover:bg-white/20 border border-white/20 rounded-xl transition-all text-xs font-black shadow-sm active:scale-95 cursor-pointer">
+                                <Icon icon="ph:tree-structure-bold" class="text-base text-white" />
+                                <span class="truncate">{{ t('event_elimination.view_bracket', 'Lihat Bagan') }}</span>
+                            </button>
 
                             <BaseButton v-if="!currentRoundNo && Object.keys(rounds).length === 0"
                                 @click="isSubscriptionActive ? generateBracket() : (showPremiumModal = true)" variant="primary" icon="ph:magic-wand-bold"
-                                class="h-10 sm:h-11 shadow-lg shadow-primary/30 tracking-[0.2em] font-black text-[10px] sm:text-xs">
+                                class="w-full sm:w-auto h-10 sm:h-11 shadow-md shadow-primary/30 tracking-wider font-black text-xs">
                                 {{ t('event_elimination.create_bracket') }}
                             </BaseButton>
-
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Tab Navigation (Matching Qualification Style) -->
+            <div v-if="currentRoundNo"
+                class="flex items-center gap-1 border-b border-gray-200 overflow-x-auto scrollbar-hide bg-white rounded-t-2xl px-2 mb-6">
+                <button v-for="t in tabs" :key="t.id" type="button" @click="activeTab = t.id"
+                    class="px-6 py-4 border-b-2 font-black text-sm sm:text-base flex items-center gap-2.5 whitespace-nowrap transition-colors outline-none cursor-pointer"
+                    :class="activeTab === t.id
+                        ? 'border-primary text-navy bg-primary/5'
+                        : 'border-transparent text-gray-500 hover:text-navy hover:bg-gray-50'">
+                    <Icon :icon="t.icon" class="text-xl" />
+                    <span>{{ t.label }}</span>
+                </button>
             </div>
 
             <!-- ROUND MANAGEMENT MODE -->
@@ -202,8 +196,8 @@
             <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-50 mb-4 mx-auto" />
             <h2 class="text-3xl font-black text-navy tracking-tight">{{ t('event_elimination.bracket_not_found') }}</h2>
             <div class="text-gray-400 mt-2">{{ t('event_elimination.bracket_invalid_desc') }}</div>
-            <button @click="navigateTo(`/dashboard/events/${eventId}/elimination`)"
-                class="mt-10 px-6 py-3 rounded-2xl border-2 border-navy text-navy font-black tracking-widest hover:bg-navy hover:text-white transition-all">
+            <button @click="navigateTo(route.path.includes('/organizer/') ? `/dashboard/organizer/events/${eventId}/elimination` : `/dashboard/events/${eventId}/elimination`)"
+                class="mt-10 px-6 py-3 rounded-2xl border-2 border-navy text-navy font-black tracking-widest hover:bg-navy hover:text-white transition-all cursor-pointer">
                 {{ t('event_elimination.back_to_list') }}
             </button>
         </div>
@@ -214,16 +208,13 @@
         <Teleport to="body">
             <Transition name="modal">
                 <div v-if="showEndMatchDialog"
-                    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60 backdrop-blur-sm">
                     <div
-                        class="relative w-full max-w-lg bg-gradient-to-br from-navy via-navy to-navy/95 rounded-[2rem] shadow-2xl overflow-hidden border border-white/10 max-h-[90vh] overflow-y-auto">
+                        class="relative w-full max-w-lg bg-navy rounded-3xl shadow-2xl overflow-hidden border border-white/10 max-h-[90vh] overflow-y-auto">
                         <!-- Decorative Elements -->
                         <div class="absolute inset-0 opacity-10 pointer-events-none">
                             <Icon icon="ph:target"
                                 class="text-[200px] sm:text-[300px] absolute -right-16 -bottom-16 rotate-12 text-white/20" />
-                        </div>
-                        <div
-                            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary">
                         </div>
 
                         <div class="relative p-6 sm:p-8 text-center">
@@ -353,15 +344,12 @@ import { useI18n } from 'vue-i18n'
 import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
-import EliminationBracketView from '~/components/elimination/EliminationBracketView.vue'
-import EliminationTargetMode from '~/components/elimination/EliminationTargetMode.vue'
-import EliminationScoringMode from '~/components/elimination/EliminationScoringMode.vue'
+import { defineAsyncComponent } from 'vue'
+const EliminationBracketView = defineAsyncComponent(() => import('~/components/elimination/EliminationBracketView.vue'))
+const EliminationTargetMode = defineAsyncComponent(() => import('~/components/elimination/EliminationTargetMode.vue'))
+const EliminationScoringMode = defineAsyncComponent(() => import('~/components/elimination/EliminationScoringMode.vue'))
 
 const { t } = useI18n()
-
-definePageMeta({
-    layout: 'dashboard'
-})
 
 const route = useRoute()
 const router = useRouter()
@@ -392,11 +380,27 @@ const matchEnds = ref({}) // { matchId: { A: { 1: {total: 0, arrows: []} }, B: {
 const manualWinnerId = ref(null)
 const teamMembersMap = ref({})
 const isResetting = ref(false)
+
+const isByeMatch = (match) => {
+    if (!match) return false
+    return match.is_bye === true || 
+           match.is_bye === 1 || 
+           match.is_bye === '1' ||
+           match.entry_b_name === 'BYE' || 
+           match.entry_a_name === 'BYE' ||
+           (!match.entry_b_id && match.entry_a_id && !match.entry_b_uuid) ||
+           (!match.entry_a_id && match.entry_b_id && !match.entry_a_uuid)
+}
+
 const isMatchFinished = computed(() => {
     return selectedScoringMatch.value?.status === 'finished' || !!selectedScoringMatch.value?.winner_entry_id
 })
 
-const currentRoundNo = computed(() => route.query.round)
+const currentRoundNo = computed(() => {
+    const raw = route.params.round || route.query.round
+    if (!raw) return null
+    return typeof raw === 'string' ? raw.replace(/^round-?/i, '') : String(raw)
+})
 const roundMatches = computed(() => {
     if (!currentRoundNo.value) return []
     return rounds.value[currentRoundNo.value] || []
@@ -428,22 +432,39 @@ const activeTab = ref(route.query.mode === 'scoring' ? 'scoring' : 'target')
 const tabs = computed(() => [
     { id: 'target', label: t('event_elimination.target_codes') || 'Target', icon: 'ph:target-bold' },
     { id: 'scoring', label: t('event_elimination.scores') || 'Penilaian', icon: 'ph:pencil-circle-bold' }
-])
+    ])
 
 // Sync activeTab with route query
 watch(() => route.query.mode, (newMode) => {
     if (newMode === 'scoring' || newMode === 'target') {
-        activeTab.value = newMode
+        if (activeTab.value !== newMode) {
+            activeTab.value = newMode
+        }
+    }
+}, { immediate: true })
+
+watch(activeTab, (newTab) => {
+    if (route.query.mode !== newTab) {
+        router.replace({ path: route.path, query: { ...route.query, mode: newTab } })
     }
 })
 
-watch(activeTab, (newTab) => {
-    const query = { ...route.query, mode: newTab }
-    router.replace({ query })
+// Auto-select first playable match when in scoring mode or when round changes
+watchEffect(() => {
+    if (activeTab.value === 'scoring' && currentRoundNo.value && roundMatches.value.length > 0) {
+        if (!selectedScoringMatch.value || !roundMatches.value.some(m => m.id === selectedScoringMatch.value?.id)) {
+            // Find first playable (non-BYE) match first, fallback to first match
+            const firstPlayable = roundMatches.value.find(m => !isByeMatch(m))
+            selectedScoringMatch.value = firstPlayable || roundMatches.value[0]
+            currentEnd.value = 1
+            activeSide.value = 'A'
+            selectedArrowIndex.value = 0
+        }
+    }
 })
 
 // Reset selected match when round changes - fixes caching issue
-watch(() => route.query.round, (newRound, oldRound) => {
+watch(currentRoundNo, (newRound, oldRound) => {
     if (newRound !== oldRound) {
         selectedScoringMatch.value = null
         currentEnd.value = 1
@@ -454,7 +475,7 @@ watch(() => route.query.round, (newRound, oldRound) => {
 const statusBadgeClasses = computed(() => {
     const s = bracket.value?.status
     if (s === 'running') return 'bg-blue-500 text-white shadow-blue-200'
-    if (s === 'finished') return 'bg-green-500 text-white shadow-green-200'
+    if (s === 'finished') return 'bg-emerald-500 text-white shadow-emerald-200'
     if (s === 'generated') return 'bg-navy text-primary shadow-navy/20'
     return 'bg-gray-100 text-gray-400 border border-gray-200'
 })
@@ -589,11 +610,7 @@ const generateBracket = async () => {
     }
 }
 
-const downloadScoresheet = async () => { openScoresheet('color') }
-
-
-
-
+const downloadScoresheet = async () => { openScoresheet() }
 
 const openScoresheet = async () => {
     if (isDownloadingScoresheet.value) return
@@ -602,19 +619,51 @@ const openScoresheet = async () => {
         const apiBase = apiBaseUrl
         const params = new URLSearchParams({ autoprint: '1' })
         const url = `${apiBase}/events/${eventId}/elimination/brackets/${bracketId}/scoresheet?${params}`
-        const win = window.open(url, '_blank')
-        if (!win) {
-            toast.addToast(t('event_elimination.popup_blocked'), 'warning')
+
+        // Silent in-page printing via hidden iframe (No new tab opened)
+        let iframe = document.getElementById('elimination-scoresheet-print-frame')
+        if (!iframe) {
+            iframe = document.createElement('iframe')
+            iframe.id = 'elimination-scoresheet-print-frame'
+            iframe.style.position = 'fixed'
+            iframe.style.right = '0'
+            iframe.style.bottom = '0'
+            iframe.style.width = '0'
+            iframe.style.height = '0'
+            iframe.style.border = '0'
+            iframe.style.visibility = 'hidden'
+            document.body.appendChild(iframe)
         }
+
+        iframe.onload = () => {
+            setTimeout(() => {
+                try {
+                    iframe.contentWindow?.focus()
+                    iframe.contentWindow?.print()
+                } catch (err) {
+                    console.error('Failed to trigger iframe print:', err)
+                } finally {
+                    isDownloadingScoresheet.value = false
+                }
+            }, 300)
+        }
+
+        iframe.src = url
     } catch {
         toast.addToast(t('event_elimination.toast_failed_open_scoresheet'), 'error')
-    } finally {
         isDownloadingScoresheet.value = false
     }
 }
 
 const navigateToRound = (roundNo) => {
-    router.push({ query: { ...route.query, round: roundNo } })
+    const isOrganizer = route.path.includes('/organizer/')
+    const base = isOrganizer 
+        ? `/dashboard/organizer/events/${eventId}/elimination/${bracketId}`
+        : `/dashboard/events/${eventId}/elimination/${bracketId}`
+    router.push({
+        path: `${base}/${roundNo}`,
+        query: { mode: activeTab.value }
+    })
 }
 
 const selectMatch = (match) => {
@@ -628,10 +677,17 @@ const selectMatch = (match) => {
 }
 
 const handleBack = () => {
+    const isOrganizer = route.path.includes('/organizer/')
     if (currentRoundNo.value) {
-        router.push({ query: {} })
+        const base = isOrganizer 
+            ? `/dashboard/organizer/events/${eventId}/elimination/${bracketId}`
+            : `/dashboard/events/${eventId}/elimination/${bracketId}`
+        router.push(base)
     } else {
-        navigateTo(`/dashboard/events/${eventId}/elimination`)
+        const list = isOrganizer 
+            ? `/dashboard/organizer/events/${eventId}/elimination`
+            : `/dashboard/events/${eventId}/elimination`
+        router.push(list)
     }
 }
 
@@ -853,6 +909,10 @@ const calculateEndStats = (matchId, endNo, side) => {
 
 const addArrowScore = (score) => {
     if (!selectedScoringMatch.value) return
+    if (isByeMatch(selectedScoringMatch.value)) {
+        toast.info(t('event_elimination.bye_no_scoring_needed', 'Pertandingan BYE tidak memerlukan input skor.'))
+        return
+    }
     if (isMatchFinished.value) {
         toast.info(t('event_elimination.toast_match_finished_no_edit'))
         return
@@ -889,6 +949,11 @@ const addArrowScore = (score) => {
     // Update at selected index
     end.arrows.splice(selectedArrowIndex.value, 1, score)
 
+    // Tactile haptic feedback on devices with vibration support
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate(20)
+    }
+
     // Recalculate total immediately for UI
     end.total = calculateEndTotal(matchId, endNo, side)
 
@@ -906,6 +971,7 @@ const addArrowScore = (score) => {
 
 const deleteLastArrow = () => {
     if (!selectedScoringMatch.value) return
+    if (isByeMatch(selectedScoringMatch.value)) return
     if (isMatchFinished.value) return
     const matchId = selectedScoringMatch.value.id
     const endNo = currentEnd.value
@@ -913,6 +979,11 @@ const deleteLastArrow = () => {
 
     const end = matchEnds.value[matchId]?.[side]?.[endNo]
     if (!end || !end.arrows) return
+
+    // Tactile haptic feedback on delete
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate(10)
+    }
 
     // Clear current selected box
     end.arrows.splice(selectedArrowIndex.value, 1, null)
@@ -932,6 +1003,7 @@ const deleteLastArrow = () => {
 }
 
 const selectArrowBox = (side, index) => {
+    if (isByeMatch(selectedScoringMatch.value)) return
     activeSide.value = side
     selectedArrowIndex.value = index
 }
@@ -941,7 +1013,7 @@ const saveAndNext = async () => {
         showPremiumModal.value = true
         return
     }
-    if (!selectedScoringMatch.value || isMatchFinished.value) return
+    if (!selectedScoringMatch.value || isMatchFinished.value || isByeMatch(selectedScoringMatch.value)) return
     isSaving.value = true
     try {
         const matchId = selectedScoringMatch.value.id
@@ -980,6 +1052,10 @@ const resetMatch = async () => {
         return
     }
     if (!selectedScoringMatch.value) return
+    if (isByeMatch(selectedScoringMatch.value)) {
+        toast.info(t('event_elimination.bye_no_scoring_needed', 'Pertandingan BYE otomatis selesai dan tidak dapat di-reset.'))
+        return
+    }
     const confirmed = confirm(t('event_elimination.confirm_reset_match'))
     if (!confirmed) return
 
@@ -1005,8 +1081,33 @@ const resetMatch = async () => {
     }
 }
 
+const finishByeMatch = async (match) => {
+    if (!isSubscriptionActive.value) {
+        showPremiumModal.value = true
+        return
+    }
+    isEndingMatch.value = true
+    try {
+        const winnerId = match.entry_a_id || match.entry_b_id
+        await post(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${match.id}/finish`, {
+            winner_entry_id: winnerId
+        })
+        toast.success(t('event_elimination.toast_match_finished'))
+        await fetchBracket()
+    } catch (e) {
+        toast.error(t('event_elimination.toast_finish_match_failed'))
+    } finally {
+        isEndingMatch.value = false
+    }
+}
+
 const endMatch = () => {
-    if (!selectedScoringMatch.value || !canEndMatch.value || isMatchFinished.value) return
+    if (!selectedScoringMatch.value || isMatchFinished.value) return
+    if (isByeMatch(selectedScoringMatch.value)) {
+        finishByeMatch(selectedScoringMatch.value)
+        return
+    }
+    if (!canEndMatch.value) return
     manualWinnerId.value = null // Reset selection
     showEndMatchDialog.value = true
 }
@@ -1074,8 +1175,8 @@ const autoAssignTargets = async () => {
     isAutoAssigning.value = true
     try {
         const roundNo = currentRoundNo.value || 1
-        const response = await post(`/events/${eventId}/elimination/brackets/${bracketId}/targets/auto-assign?round=${roundNo}`)
-        toast.success(response?.message || t('event_elimination.toast_auto_assign_success'))
+        await post(`/events/${eventId}/elimination/brackets/${bracketId}/targets/auto-assign?round=${roundNo}`)
+        toast.success(t('event_elimination.toast_auto_assign_success'))
         await fetchBracket(true)
     } catch (e) {
         toast.error(e?.data?.error || t('event_elimination.toast_auto_assign_failed'))

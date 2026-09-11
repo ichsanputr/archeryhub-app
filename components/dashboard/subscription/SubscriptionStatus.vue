@@ -5,7 +5,7 @@
             :class="isExpired ? 'border-2 border-primary/20 ring-4 ring-primary/5' : 'border border-gray-200 hover:border-primary/30'">
             <div class="absolute top-4 right-4">
                 <span class="px-3 py-1 text-[10px] font-black tracking-widest rounded-full"
-                    :class="isExpired ? 'bg-navy text-primary' : 'bg-primary/20 text-navy'">
+                    :class="isExpired ? 'bg-red-50 text-red-700 border border-red-200/80' : 'bg-emerald-50 text-emerald-700 border border-emerald-200/80'">
                     {{ isExpired ? t('subscription.status.expired', 'Expired') : t('subscription.status.active', 'Aktif') }}
                 </span>
             </div>

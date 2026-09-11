@@ -8,7 +8,7 @@
         <div class="relative group">
             <div v-if="icon"
                 class="absolute left-4 top-4 text-gray-400 group-focus-within:text-primary transition-colors">
-                <Icon :icon="icon.includes(':') ? icon : `material-symbols:${icon}`" class="text-[20px]" />
+                <Icon :icon="icon.includes(':') ? icon : `ph:${icon}`" class="text-[20px]" />
             </div>
 
             <textarea :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"

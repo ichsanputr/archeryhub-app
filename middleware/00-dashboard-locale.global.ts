@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware((to) => {
-  const localeCodes = ['en', 'id', 'kr']
+  const localeCodes = ['en', 'id']
   const segments = to.path.split('/').filter(Boolean)
 
   if (segments.length >= 2 && localeCodes.includes(segments[0]) && segments[1] === 'dashboard') {

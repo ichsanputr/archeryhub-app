@@ -288,11 +288,11 @@ onMounted(() => {
                                 <div class="flex flex-wrap items-center gap-3">
                                     <h2 class="text-lg font-bold text-slate-900 truncate">{{ participant.full_name }}</h2>
                                     <span v-if="isPaid(participant.payment_status)"
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                                         {{ t('my_registration.paid', 'Terdaftar & Lunas') }}
                                     </span>
                                     <span v-else
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
                                         {{ t('my_registration.pending', 'Menunggu Pembayaran') }}
                                     </span>
                                 </div>
@@ -411,22 +411,34 @@ onMounted(() => {
                     <!-- Section 1: Official Field Check-in QR Pass -->
                     <div class="space-y-4 text-center">
                         <div class="flex items-center justify-between text-xs pb-3 border-b border-slate-100">
-                            <span class="font-bold text-slate-400 capitalize">{{ t('my_registration.field_pass', 'Pass Registrasi Lapangan') }}</span>
-                            <span v-if="isPaid(participant.payment_status)" class="text-emerald-700 font-bold">
-                                ✓ {{ t('my_registration.ready_to_compete', 'Siap Tanding') }}
+                            <span class="font-black text-navy uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                                <Icon icon="ph:qr-code-bold" class="text-primary text-sm" />
+                                <span>QR Registrasi Ulang</span>
                             </span>
-                            <span v-else class="text-amber-700 font-bold">
-                                {{ t('my_registration.unverified', 'Belum Lunas') }}
+                            <span v-if="isPaid(participant.payment_status)" class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 text-[10px]">
+                                ✓ Siap Tanding
+                            </span>
+                            <span v-else class="text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200 text-[10px]">
+                                Menunggu Pembayaran
                             </span>
                         </div>
 
-                        <div class="flex justify-center p-3 bg-slate-50 rounded-xl border border-slate-100">
+                        <div class="flex flex-col items-center justify-center p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-3">
                             <img :src="`https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(participant?.qr_raw || ('ARCHERIS-CHECKIN:' + (participant?.archer_id || eventId)))}&size=200x200&color=051923`"
-                                alt="Check-in QR Code" class="w-40 h-40 rounded-lg p-2 bg-white border border-slate-200" />
+                                alt="QR Registrasi Ulang" class="w-44 h-44 rounded-xl p-2.5 bg-white border border-slate-200 shadow-xs" />
+                            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-navy text-primary text-[11px] font-black font-mono">
+                                <span>{{ participant.athlete_code || ('ARC-' + (participant.archer_id || '').substring(0, 6).toUpperCase()) }}</span>
+                            </div>
                         </div>
 
-                        <div class="text-xs text-slate-500 leading-relaxed font-medium">
-                            {{ t("my_registration.qr_checkin_hint", "Tunjukkan kode QR ini kepada panitia meja registrasi saat verifikasi alat di venue.") }}
+                        <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-left space-y-1">
+                            <div class="text-[11px] font-black text-amber-900 flex items-center gap-1.5">
+                                <Icon icon="ph:info-bold" class="text-xs shrink-0 text-amber-700" />
+                                <span>Penting untuk Registrasi Ulang</span>
+                            </div>
+                            <p class="text-[11px] text-amber-800/90 leading-relaxed font-medium">
+                                Tunjukkan QR Code ini kepada panitia meja registrasi saat verifikasi alat di venue untuk konfirmasi kehadiran (Check-in) dan penugasan bantalan tanding.
+                            </p>
                         </div>
                     </div>
 
@@ -489,7 +501,7 @@ onMounted(() => {
                             <div class="space-y-1">
                                 <label class="text-xs font-medium text-slate-600 block">{{ t('my_registration.sender_name', 'Nama Pengirim') }}</label>
                                 <input type="text" v-model="senderName"
-                                    class="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-slate-800"
+                                    class="w-full h-11 px-4 text-xs font-medium border border-slate-200 bg-slate-50/50 rounded-xl focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none"
                                     :placeholder="t('my_registration.sender_name_placeholder', 'Nama pemilik rekening pengirim')" />
                             </div>
 

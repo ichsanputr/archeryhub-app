@@ -181,15 +181,7 @@ onMounted(() => {
           </div>
 
           <!-- Highlight Metric Grid for Archer -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-            <!-- Target / Bantalan -->
-            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
-              <div class="text-xs font-semibold text-slate-400 capitalize">{{ t("archer_event_overview.target_face_label", "Bantalan Target") }}</div>
-              <div class="text-base sm:text-lg font-black text-slate-900 mt-1 truncate capitalize">
-                {{ primaryCategory?.target_name || t('archer_event_overview.not_assigned', 'Belum Diatur') }}
-              </div>
-            </div>
-
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
             <!-- Kategori -->
             <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-center">
               <div class="text-xs font-semibold text-slate-400 capitalize">{{ t("archer_event_overview.category_label", "Kategori Turnamen") }}</div>
@@ -225,7 +217,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Navigation Hub: 6 Core Performance Cards -->
+        <!-- Navigation Hub: Performance Cards -->
         <div class="space-y-4">
           <div class="flex items-center justify-between">
             <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
@@ -248,19 +240,7 @@ onMounted(() => {
               </div>
             </NuxtLink>
 
-            <!-- Card 2: My Target -->
-            <NuxtLink :to="`/dashboard/archer/events/${eventId}/my-target`"
-              class="group bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs hover:border-primary/40 transition-all flex items-start gap-4">
-              <div class="size-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
-                <Icon icon="ph:target-bold" class="text-2xl" />
-              </div>
-              <div class="flex-1 min-w-0">
-                <h4 class="text-sm font-black text-slate-900 group-hover:text-primary transition-colors">{{ t("archer_event_overview.card_target_title", "Target & Sesi Tanding") }}</h4>
-                <div class="text-xs text-slate-500 mt-1 line-clamp-2">{{ t("archer_event_overview.card_target_desc", "Lihat nomor bantalan, sesi kualifikasi, dan jarak tembak.") }}</div>
-              </div>
-            </NuxtLink>
-
-            <!-- Card 3: Scorecard Qualification -->
+            <!-- Card 2: Scorecard Qualification -->
             <NuxtLink :to="`/dashboard/archer/events/${eventId}/my-qualification`"
               class="group bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs hover:border-primary/40 transition-all flex items-start gap-4">
               <div class="size-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center shrink-0 group-hover:bg-primary/10 group-hover:text-primary transition-colors">

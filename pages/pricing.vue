@@ -8,6 +8,10 @@
 import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
 
+useHead({
+  title: 'Paket & Harga - Archeris'
+})
+
 const router = useRouter()
 
 onMounted(() => {

@@ -1,59 +1,34 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
-        <!-- Enhanced Header -->
-        <div
-            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-
-            <!-- Decorative Background Elements -->
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-            <!-- Header Content -->
-            <div class="relative p-6 sm:p-8">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div class="flex items-center sm:items-start gap-4">
-                        <!-- Icon Badge -->
-                        <div
-                            class="size-12 sm:size-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg shrink-0">
-                            <Icon icon="ph:users-three" class="text-white text-xl sm:text-2xl" />
-                        </div>
-
-                        <!-- Title Section -->
-                        <div class="flex-1">
-                            <h1
-                                class="text-xl sm:text-2xl lg:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2">
-                                {{ t('event_teams.title') }}
-                            </h1>
-                            <div class="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
-                                {{ t('event_teams.subtitle') }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex flex-col sm:flex-row gap-3 shrink-0" v-if="selectedCategory">
-                        <BaseButton variant="white" icon="ph:arrows-clockwise"
-                            class="h-10 sm:h-11 px-5 w-full sm:w-auto text-xs sm:text-sm"
-                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
-                            @click="isSubscriptionActive ? handleSyncTeams() : (showPremiumModal = true)"
-                            :loading="isSyncing">
-                            {{ t('event_teams.auto_sync') }}
-                        </BaseButton>
-                        <BaseButton variant="primary" icon="ph:plus-bold"
-                            class="h-10 sm:h-11 px-5 w-full sm:w-auto shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all text-xs sm:text-sm"
-                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
-                            @click="isSubscriptionActive ? openAddTeamModal() : (showPremiumModal = true)">
-                            {{ t('event_teams.add_manual') }}
-                        </BaseButton>
-                    </div>
+        <!-- Header -->
+        <DashboardHeader
+            :title="t('event_teams.title', 'Tim & Beregu')"
+            :subtitle="t('event_teams.subtitle', 'Kelola tim resmi, anggota beregu, dan sinkronisasi otomatis per kategori.')"
+            icon="ph:users-three"
+            :breadcrumbs="[
+                { label: 'Dashboard', to: '/dashboard/organizer' },
+                { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/events' },
+                { label: t('event_teams.title', 'Tim & Beregu') }
+            ]"
+        >
+            <template #actions>
+                <div class="flex flex-wrap items-center gap-3 shrink-0" v-if="selectedCategory">
+                    <BaseButton variant="white" icon="ph:arrows-clockwise"
+                        class="h-10 sm:h-11 px-5 border-white/20 text-xs sm:text-sm font-bold"
+                        :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                        @click="isSubscriptionActive ? handleSyncTeams() : (showPremiumModal = true)"
+                        :loading="isSyncing">
+                        {{ t('event_teams.auto_sync', 'Sinkron Tim') }}
+                    </BaseButton>
+                    <BaseButton variant="primary" icon="ph:plus-bold"
+                        class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
+                        :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                        @click="isSubscriptionActive ? openAddTeamModal() : (showPremiumModal = true)">
+                        {{ t('event_teams.add_manual', 'Tambah Tim') }}
+                    </BaseButton>
                 </div>
-            </div>
-        </div>
+            </template>
+        </DashboardHeader>
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
         <!-- Category Selection -->

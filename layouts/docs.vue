@@ -45,7 +45,7 @@
                           class="flex items-center gap-2 px-3 h-9 rounded-xl bg-gray-100 border border-transparent hover:bg-gray-200 transition-all duration-300 text-xs font-bold tracking-widest text-gray-700">
                           <Icon :icon="langFlags[locale] || 'ph:globe-bold'"
                             class="text-lg rounded-full overflow-hidden border border-gray-200 shrink-0" />
-                          <span class="font-black uppercase">{{ locale.toUpperCase() }}</span>
+                          <span class="font-black">{{ locale.toUpperCase() }}</span>
                         </button>
                 
                         <Transition enter-active-class="transition duration-200 ease-out"

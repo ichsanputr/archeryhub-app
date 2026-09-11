@@ -393,27 +393,41 @@ ${checkoutForm.value.notes}` : '',
     }
 }
 
-const updateQty = async (item, delta) => {
+const pendingSync = {}
+
+const syncQtyToApi = async (uuid, quantity) => {
+    try {
+        await put(`/cart/${uuid}`, { quantity })
+    } catch (e) {
+        console.error('Failed to sync cart item quantity', e)
+        fetchCart() // Re-fetch to rollback on failure
+    }
+}
+
+const updateQty = (item, delta) => {
     const newQty = item.quantity + delta
 
     // Minimum quantity is 1 (removal handled separately)
     if (newQty < 1) return removeItem(item.uuid)
 
     // Stock validation
-    if (newQty > item.product_stock) {
+    if (item.product_stock && newQty > item.product_stock) {
         toast.error(t('cart.stock_limit', { stock: item.product_stock }))
         return
     }
 
-    isProcessing.value = true
-    try {
-        await put(`/cart/${item.uuid}`, { quantity: newQty })
-        item.quantity = newQty
-    } catch (e) {
-        toast.error(t('cart.update_failed'))
-    } finally {
-        isProcessing.value = false
+    // Instant optimistic UI update
+    item.quantity = newQty
+
+    // Debounced API sync to prevent request flooding
+    if (pendingSync[item.uuid]) {
+        clearTimeout(pendingSync[item.uuid])
     }
+
+    pendingSync[item.uuid] = setTimeout(() => {
+        syncQtyToApi(item.uuid, newQty)
+        delete pendingSync[item.uuid]
+    }, 300)
 }
 
 const removeItem = async (uuid) => {

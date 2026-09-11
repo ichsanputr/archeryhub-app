@@ -42,20 +42,24 @@
 
     <!-- Empty State (Certificate Not Yet Issued) -->
     <div v-else-if="!certificate"
-      class="bg-white dark:bg-slate-800 rounded-3xl p-8 sm:p-12 text-center border border-slate-200/80 dark:border-slate-700 shadow-sm w-full space-y-6">
-      <div class="relative size-20 mx-auto">
-        <div class="absolute inset-0 bg-primary/10 rounded-full blur-md"></div>
-        <div class="relative size-20 rounded-2xl bg-amber-500/10 text-amber-600 border border-amber-500/20 flex items-center justify-center shadow-sm">
-          <Icon icon="ph:certificate-bold" class="text-4xl" />
-        </div>
+      class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200/90 dark:border-slate-700 shadow-xs p-8 sm:p-14 text-center w-full flex flex-col items-center justify-center space-y-6">
+      <div class="size-20 rounded-3xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200/80 dark:border-slate-600 flex items-center justify-center text-slate-400 shadow-2xs">
+        <Icon icon="ph:certificate-bold" class="text-4xl text-slate-400" />
       </div>
-      <div class="space-y-2">
-        <h3 class="text-lg sm:text-xl font-black text-navy dark:text-white tracking-tight">
+      <div class="space-y-2 max-w-lg mx-auto">
+        <h3 class="text-xl font-black text-navy dark:text-white tracking-tight">
           {{ t('my_certificate_page.not_issued_title', 'Sertifikat Belum Diterbitkan') }}
         </h3>
-        <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed max-w-md mx-auto">
+        <p class="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
           {{ t('my_certificate_page.not_issued_desc', 'Sertifikat untuk event ini belum diterbitkan oleh panitia penyelenggara. Sertifikat biasanya diterbitkan setelah seluruh rangkaian event selesai.') }}
-        </div>
+        </p>
+      </div>
+      <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+        <NuxtLink :to="`/dashboard/archer/events/${eventId}/overview`">
+          <BaseButton variant="primary" icon="ph:arrow-left-bold" class="font-bold text-xs h-11 px-6 shadow-sm shadow-primary/20">
+            {{ t('my_team.btn_overview', 'Kembali ke Ringkasan Event') }}
+          </BaseButton>
+        </NuxtLink>
       </div>
     </div>
 
@@ -168,12 +172,14 @@ import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useDashboardI18n } from '~/composables/useDashboardI18n'
+import { useToast } from '~/composables/useToast'
 
 definePageMeta({ layout: 'dashboard' })
 
 const { t, locale } = useDashboardI18n()
 const route = useRoute()
 const api = useApi()
+const toast = useToast()
 
 const eventId = computed(() => route.params.id)
 const eventName = ref('')
@@ -189,25 +195,18 @@ const { data: certificate, pending } = await useAsyncData(`archer-certificate-${
     const match = list.find(c => 
       c.event_id === eventId.value || 
       c.event_slug === eventId.value || 
-      c.id === eventId.value ||
-      (c.event_slug && (eventId.value.includes(c.event_slug) || c.event_slug.includes(eventId.value))) ||
-      (c.event_id && (eventId.value.includes(c.event_id) || c.event_id.includes(eventId.value)))
-    ) || (list.length > 0 ? list[0] : null)
-    if (match) {
-      eventName.value = match.event_name
-      return match
-    }
-    return null
-  } catch (err) {
-    console.error('Failed to fetch event certificate:', err)
+      String(c.event_id) === String(eventId.value)
+    )
+    return match || null
+  } catch {
     return null
   }
 })
 
 const formatDate = (dateStr) => {
   if (!dateStr) return '-'
-  const loc = locale.value === 'id' ? 'id-ID' : locale.value === 'kr' ? 'ko-KR' : 'en-US'
   try {
+    const loc = locale?.value === 'en' ? 'en-US' : 'id-ID'
     return new Date(dateStr).toLocaleDateString(loc, {
       day: 'numeric',
       month: 'long',
@@ -221,13 +220,13 @@ const formatDate = (dateStr) => {
 const copyCertNo = () => {
   if (certificate.value?.certificate_no) {
     navigator.clipboard?.writeText(certificate.value.certificate_no)
-    alert(t('my_certificate_page.link_copied', 'Nomor sertifikat berhasil disalin!'))
+    toast.success(t('my_certificate_page.link_copied', 'Nomor sertifikat berhasil disalin!'))
   }
 }
 
 const copyShareLink = () => {
   const url = window.location.href
   navigator.clipboard?.writeText(url)
-  alert(t('my_certificate_page.link_copied', 'Tautan sertifikat berhasil disalin!'))
+  toast.success(t('my_certificate_page.link_copied', 'Tautan sertifikat berhasil disalin!'))
 }
 </script>

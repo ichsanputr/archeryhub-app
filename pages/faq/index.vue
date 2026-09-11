@@ -14,14 +14,14 @@
                     <div
                         class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
                         <Icon icon="ph:question-bold" class="text-base sm:text-lg" />
-                        <span>Support Center</span>
+                        <span>{{ $t('faq_page.badge') }}</span>
                     </div>
                     <h1
                         class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
-                        Frequently <span class="text-primary">Asked Questions</span>
+                        {{ $t('faq_page.title_main') }} <span class="text-primary">{{ $t('faq_page.title_highlight') }}</span>
                     </h1>
                     <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
-                        Find quick answers to common questions about registration, organizers, and the Archeris.net scoring system.
+                        {{ $t('faq_page.description') }}
                     </p>
                 </div>
             </div>
@@ -31,39 +31,38 @@
         <section class="container mx-auto px-4 max-w-4xl py-16">
             <div class="space-y-4">
                 <div v-for="(faq, index) in faqs" :key="index"
-                     class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-sm transition-all">
+                     class="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm hover:border-slate-200 transition-all">
                     <button @click="toggleFaq(index)"
                         class="w-full px-6 py-5 flex items-center justify-between text-left group">
-                        <span class="font-bold text-navy group-hover:text-primary transition-colors">{{ faq.question
-                            }}</span>
+                        <span class="font-bold text-navy group-hover:text-primary transition-colors text-sm sm:text-base">{{ faq.question }}</span>
                         <Icon icon="ph:caret-down-bold"
-                            :class="['text-gray-400 transition-transform duration-300', activeFaq === index ? 'rotate-180' : '']" />
+                            :class="['text-slate-400 transition-transform duration-300 shrink-0 ml-4', activeFaq === index ? 'rotate-180 text-primary' : '']" />
                     </button>
-                    <div v-show="activeFaq === index" class="px-6 pb-6 text-gray-500 text-sm leading-relaxed">
+                    <div v-show="activeFaq === index" class="px-6 pb-6 text-slate-500 text-sm leading-relaxed border-t border-slate-50 pt-4">
                         {{ faq.answer }}
                     </div>
                 </div>
             </div>
 
             <!-- Still Need Help? -->
-            <div class="mt-16 bg-white rounded-3xl p-8 md:p-12 text-center border border-gray-100 shadow-sm">
+            <div class="mt-16 bg-white rounded-3xl p-8 md:p-12 text-center border border-slate-100 shadow-sm">
                 <div
-                    class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary">
-                    <Icon icon="ph:chat-circle-dots-bold" class="text-3xl" />
+                    class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary border border-primary/20">
+                    <Icon icon="ph:chat-circle-dots-bold" class="text-3xl text-navy" />
                 </div>
-                <h2 class="text-lg sm:text-2xl font-black text-navy mb-3">Still Need Help?</h2>
-                <p class="text-gray-500 mb-8 max-w-md mx-auto">
-                    Our support team is ready to assist you with technical issues or any other questions.
+                <h2 class="text-lg sm:text-2xl font-black text-navy mb-3">{{ $t('faq_page.need_help_title') }}</h2>
+                <p class="text-slate-500 mb-8 max-w-md mx-auto text-sm leading-relaxed">
+                    {{ $t('faq_page.need_help_desc') }}
                 </p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <NuxtLink to="/contact">
+                    <NuxtLink :to="localePath('/contact')">
                         <BaseButton variant="primary" size="lg" icon="ph:envelope-simple-bold">
-                            Contact Us
+                            {{ $t('faq_page.contact_us') }}
                         </BaseButton>
                     </NuxtLink>
-                    <NuxtLink to="/docs">
+                    <NuxtLink :to="localePath('/docs')">
                         <BaseButton variant="outline" size="lg" icon="ph:book-open-bold">
-                            Documentation
+                            {{ $t('faq_page.documentation') }}
                         </BaseButton>
                     </NuxtLink>
                 </div>
@@ -75,40 +74,50 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({
     layout: 'landing'
 })
+
+const { t, tm } = useI18n()
+const localePath = useLocalePath()
 
 const activeFaq = ref(0)
 const toggleFaq = (index) => {
     activeFaq.value = activeFaq.value === index ? null : index
 }
 
-const faqs = [
-    {
-        question: 'How do I register an organizer on Archeris.net?',
-        answer: 'You can register your organizer via the registration page by choosing the "Organizer" account type. Once your email is verified, you can complete your organizer profile and start managing events.'
-    },
-    {
-        question: 'Can the scoring system be used for offline tournaments?',
-        answer: 'Absolutely! Archeris.net is designed to simplify offline tournament scoring digitally. Scores can be entered directly by referees or participants through the application.'
-    },
-    {
-        question: 'How does the event registration payment process work?',
-        answer: 'We support various automated payment methods such as Bank Transfer, E-Wallet, and QRIS. Registration status is updated automatically upon successful payment.'
-    },
-    {
-        question: 'Is athlete data kept secure?',
-        answer: 'We implement strict data security standards and end-to-end encryption to ensure all athletes\' personal information is stored securely.'
-    },
-    {
-        question: 'How do I request technical assistance?',
-        answer: 'If you encounter any technical issues, please contact our support team through the Contact page or send an email to support@archeris.net.'
+const faqs = computed(() => {
+    const items = tm('faq_page.items')
+    if (Array.isArray(items) && items.length > 0) {
+        return items
     }
-]
+    return [
+        {
+            question: t('faq_page.items.0.question', 'How do I register an organizer on Archeris.net?'),
+            answer: t('faq_page.items.0.answer', 'You can register your organizer via the registration page by choosing the "Organizer" account type. Once your email is verified, you can complete your organizer profile and start managing events.')
+        },
+        {
+            question: t('faq_page.items.1.question', 'Can the scoring system be used for offline tournaments?'),
+            answer: t('faq_page.items.1.answer', 'Absolutely! Archeris.net is designed to simplify offline tournament scoring digitally. Scores can be entered directly by referees or participants through the application.')
+        },
+        {
+            question: t('faq_page.items.2.question', 'How does the event registration payment process work?'),
+            answer: t('faq_page.items.2.answer', 'We support various automated payment methods such as Bank Transfer, E-Wallet, and QRIS. Registration status is updated automatically upon successful payment.')
+        },
+        {
+            question: t('faq_page.items.3.question', 'Is athlete data kept secure?'),
+            answer: t('faq_page.items.3.answer', 'We implement strict data security standards and end-to-end encryption to ensure all athletes\' personal information is stored securely.')
+        },
+        {
+            question: t('faq_page.items.4.question', 'How do I request technical assistance?'),
+            answer: t('faq_page.items.4.answer', "If you encounter any technical issues, please contact our support team through the Contact page or send an email to support{'@'}archeris.net.")
+        }
+    ]
+})
 
 useHead({
-    title: computed(() => t('faq.title', 'FAQ - Frequently Asked Questions') + ' - Archeris')
+    title: computed(() => t('faq_page.badge') + ' - Archeris')
 })
 </script>

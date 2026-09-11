@@ -36,7 +36,7 @@
                     <div v-for="cat in sidebarVisibleCategories" :key="cat.id" class="mb-4">
                         <div class="flex items-center gap-2 px-2 py-1.5 mb-1">
                             <Icon :icon="cat.icon" class="text-sm text-gray-400" />
-                            <span class="text-xs font-black text-gray-400 tracking-widest ">{{ $t(cat.label) }}</span>
+                            <span class="text-[10px] font-black tracking-widest text-gray-400">{{ $t(cat.label) }}</span>
                         </div>
                         <div class="space-y-0.5">
                             <NuxtLink v-for="doc in filteredSidebarDocs(cat.id)" :key="doc.slug"
@@ -84,7 +84,7 @@
 
                     <!-- Share Social Media -->
                     <div class="px-6 md:px-10 pb-8 pt-4 border-t border-gray-100">
-                        <h4 class="text-xs font-black text-gray-400 tracking-widest mb-3">{{ $t('docs.share_title') || 'Share this article' }}</h4>
+                        <h4 class="text-[10px] font-black tracking-widest text-gray-400 mb-3">{{ $t('docs.share_title') || 'Share this article' }}</h4>
                         <div class="flex flex-wrap gap-2">
                             <button @click="shareTo('twitter')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 hover:bg-primary/10 text-navy text-xs font-bold transition-all border border-gray-100 hover:border-primary/30">
                                 <Icon icon="simple-icons:x" class="text-sm" />
@@ -310,6 +310,7 @@ import { Icon } from '@iconify/vue'
 import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useDateFormat } from '@vueuse/core'
 
 definePageMeta({
     layout: 'docs',
@@ -357,7 +358,7 @@ const getCategoryLabel = (id) => {
 
 // Fetch all docs list for sidebar navigation & prev/next calculations
 const { data: docsList } = await useAsyncData(
-    'docs-api-sidebar',
+    () => `docs-api-sidebar-${locale.value}`,
     () => $fetch(`${apiBaseUrl}/docs?lang=${locale.value}`),
     {
         watch: [locale]
@@ -557,16 +558,10 @@ const submitComment = async () => {
 
 const formatDate = (dateStr) => {
     if (!dateStr) return ''
+    const lang = locale.value === 'id' ? 'id-ID' : 'en-US'
     try {
-        const date = new Date(dateStr)
-        return date.toLocaleDateString(locale.value === 'id' ? 'id-ID' : 'en-US', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        })
-    } catch (e) {
+        return useDateFormat(dateStr, 'DD MMM YYYY, HH:mm', { locales: lang }).value
+    } catch {
         return dateStr
     }
 }

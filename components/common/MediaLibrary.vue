@@ -6,24 +6,24 @@
                 <div ref="backdrop" @click="handleClose" class="absolute inset-0 bg-navy-dark/80 backdrop-blur-sm"
                     aria-hidden="true" />
 
-                <!-- Dialog Card (same pattern as other dialogs: margin from p-4, rounded-2xl, max-h) -->
+                <!-- Dialog Card (same pattern as other dialogs: margin from p-4, rounded-3xl, max-h) -->
                 <div ref="dialog"
-                    class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col relative overflow-hidden border border-gray-100">
+                    class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col relative overflow-hidden border border-gray-100">
                     <!-- Decorative Border Top -->
                     <div class="bg-primary h-1.5 w-full shrink-0" />
 
                     <!-- Header: compact on mobile -->
                     <div
-                        class="flex items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 bg-white shrink-0">
+                        class="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 border-b border-gray-100 bg-white shrink-0">
                         <h2
                             class="text-base sm:text-xl font-black text-navy-dark tracking-tight flex items-center gap-2 min-w-0">
                             <Icon icon="ph:images-square-bold" class="text-primary shrink-0 text-lg sm:text-xl" />
                             <span class="truncate">{{ t('media_library.title') }}</span>
                         </h2>
                         <button type="button" @click="handleClose"
-                            class="shrink-0 p-2 -m-2 text-gray-400 hover:text-navy-dark rounded-xl hover:bg-gray-100 transition-colors touch-manipulation"
+                            class="size-8 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-400 hover:text-navy transition-colors flex items-center justify-center shrink-0"
                             :aria-label="t('media_library.close')">
-                            <Icon icon="ph:x-bold" class="text-xl" />
+                            <Icon icon="ph:x-bold" class="text-base" />
                         </button>
                     </div>
 
@@ -52,8 +52,8 @@
                         <div v-if="activeTab === 'browse'">
                             <!-- Loading State -->
                             <div v-if="isLoadingLibrary" class="flex flex-col items-center justify-center py-16">
-                                <Icon icon="ph:spinner" class="text-4xl text-primary animate-spin mb-4" />
-                                <p class="text-gray-500 text-sm">Memuat media library...</p>
+                                <Icon icon="ph:spinner-bold" class="text-4xl text-primary animate-spin mb-4" />
+                                <div class="text-gray-500 text-sm">Memuat media library...</div>
                             </div>
 
                             <!-- Empty State -->
@@ -62,8 +62,8 @@
                                 <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
                                     <Icon icon="ph:image-broken" class="text-3xl text-gray-400" />
                                 </div>
-                                <p class="text-gray-600 font-medium">{{ t('media_library.empty_title') }}</p>
-                                <p class="text-gray-400 text-sm mt-1">{{ t('media_library.empty_desc') }}</p>
+                                <div class="text-gray-600 font-medium">{{ t('media_library.empty_title') }}</div>
+                                <div class="text-gray-400 text-sm mt-1">{{ t('media_library.empty_desc') }}</div>
                                 <button @click="activeTab = 'upload'"
                                     class="mt-4 px-4 py-2 bg-primary text-navy font-bold text-sm rounded-lg hover:bg-primary-hover transition-colors">
                                     {{ t('media_library.upload_now') }}
@@ -101,8 +101,8 @@
                                         class="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 sm:group-hover:opacity-100 group-active:opacity-100 transition-opacity">
                                         <div
                                             class="absolute bottom-0 left-0 right-0 p-2 sm:p-3 flex items-center justify-between gap-2">
-                                            <p class="text-white text-[10px] font-medium truncate flex-1 min-w-0">{{
-                                                file.filename }}</p>
+                                            <span class="text-white text-[10px] font-medium truncate flex-1 min-w-0">{{
+                                                file.filename }}</span>
                                             <button @click.stop="deleteMedia(file)"
                                                 class="w-8 h-8 sm:w-7 sm:h-7 rounded-lg bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-colors touch-manipulation shrink-0">
                                                 <Icon icon="ph:trash" class="text-sm" />
@@ -122,8 +122,8 @@
                                 </label>
                                 <input v-model="uploadCaption" type="text"
                                     placeholder="Contoh: Banner Turnamen Jakarta 2026"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent touch-manipulation" />
-                                <p class="text-xs text-gray-400 mt-1">Caption akan digunakan sebagai nama file</p>
+                                    class="w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all placeholder:text-gray-400 touch-manipulation" />
+                                <div class="text-xs text-gray-400 mt-1">Caption akan digunakan sebagai nama file</div>
                             </div>
 
                             <!-- Upload Zone -->
@@ -139,15 +139,15 @@
                                 <div v-if="!isUploading && !uploadedPreview" class="pointer-events-none">
                                     <Icon icon="ph:cloud-arrow-up"
                                         class="text-4xl sm:text-5xl text-gray-400 mx-auto mb-3 sm:mb-4" />
-                                    <p class="text-gray-600 font-medium text-sm sm:text-base">{{ uploadZoneText }}</p>
-                                    <p class="text-xs text-gray-400 mt-2">{{ t('media_library.upload_hint') }}</p>
+                                    <div class="text-gray-600 font-medium text-sm sm:text-base">{{ uploadZoneText }}</div>
+                                    <div class="text-xs text-gray-400 mt-2">{{ t('media_library.upload_hint') }}</div>
                                 </div>
 
                                 <!-- Uploading State -->
                                 <div v-else-if="isUploading" class="py-8">
                                     <Icon icon="ph:spinner" class="text-5xl text-primary animate-spin mx-auto mb-4" />
-                                    <p class="text-gray-600 font-medium">{{ t('media_library.uploading') }}</p>
-                                    <p class="text-xs text-gray-400 mt-1">{{ t('media_library.uploading_wait') }}</p>
+                                    <div class="text-gray-600 font-medium">{{ t('media_library.uploading') }}</div>
+                                    <div class="text-xs text-gray-400 mt-1">{{ t('media_library.uploading_wait') }}</div>
                                 </div>
 
                                 <!-- Upload Success Preview -->
@@ -159,8 +159,8 @@
                                         class="w-full h-32 flex flex-col items-center justify-center bg-gray-50 rounded-lg">
                                         <Icon :icon="getFileIcon(uploadedMimeType)"
                                             class="text-5xl text-gray-400 mb-2" />
-                                        <p class="text-xs text-gray-500 font-medium px-4 truncate w-full text-center">{{
-                                            uploadCaption }}</p>
+                                        <span class="text-xs text-gray-500 font-medium px-4 truncate w-full text-center">{{
+                                            uploadCaption }}</span>
                                     </div>
 
                                     <div class="mt-4 flex items-center justify-center gap-2 text-green-600">
@@ -177,21 +177,21 @@
                             </div>
 
                             <!-- Error Message: show API "file too large" and other errors -->
-                            <p v-if="uploadError" class="text-red-500 text-sm flex items-center gap-2 mt-3 flex-wrap">
+                            <div v-if="uploadError" class="text-red-500 text-sm flex items-center gap-2 mt-3 flex-wrap">
                                 <Icon icon="ph:warning-circle" class="shrink-0" />
                                 <span>{{ uploadError }}</span>
-                            </p>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Footer: stack on mobile, touch-friendly -->
                     <div
                         class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 px-4 sm:px-6 py-4 border-t border-gray-100 bg-gray-50 shrink-0">
-                        <p v-if="selectedMedia"
+                        <div v-if="selectedMedia"
                             class="text-sm font-medium text-text-secondary truncate order-2 sm:order-1">
                             <span class="text-navy-dark">{{ selectedMedia.filename }}</span>
-                        </p>
-                        <p v-else class="text-sm font-medium text-gray-400 order-2 sm:order-1">{{ t('media_library.select_hint') }}</p>
+                        </div>
+                        <div v-else class="text-sm font-medium text-gray-400 order-2 sm:order-1">{{ t('media_library.select_hint') }}</div>
 
                         <div class="flex gap-3 order-1 sm:order-2 w-full sm:w-auto">
                             <button type="button" @click="handleClose"
@@ -226,6 +226,7 @@ const props = defineProps({
 const emit = defineEmits(['close', 'select'])
 
 const { get, upload, delete: del } = useApi()
+const toast = useToast()
 
 // Max 10MB, same as API
 const MAX_FILE_SIZE_MB = 10
@@ -378,7 +379,7 @@ const deleteMedia = async (file) => {
         await loadMediaLibrary()
     } catch (error) {
         console.error('Failed to delete media:', error)
-        alert('Gagal menghapus media')
+        toast.error('Gagal menghapus media')
     }
 }
 

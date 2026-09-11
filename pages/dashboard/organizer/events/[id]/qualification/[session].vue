@@ -490,12 +490,39 @@ const downloadScoresheet = async () => {
     const apiBase = apiBaseUrl
     const params = new URLSearchParams({ autoprint: '1' })
     const url = `${apiBase}/events/${eventId}/qualification/sessions/${sessionData.value.session_code}/scoresheet?${params}`
-    const win = window.open(url, '_blank')
-    if (!win) {
-      toast.addToast(t('event_qualification.popup_blocked'), 'warning')
+
+    const res = await fetch(url, { credentials: 'include' })
+    if (!res.ok) {
+      const errJson = await res.json().catch(() => null)
+      throw new Error(errJson?.error || `HTTP error! status: ${res.status}`)
     }
-  } catch {
-    toast.addToast(t('event_qualification.failed_open_scoresheet'), 'error')
+
+    let filename = `Scoresheet-Sesi-${sessionData.value.session_code}.pdf`
+    const disposition = res.headers.get('content-disposition')
+    if (disposition && disposition.includes('filename=')) {
+      const match = disposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)
+      if (match && match[1]) {
+        filename = match[1].replace(/['"]/g, '').trim()
+      }
+    }
+    if (!filename.toLowerCase().endsWith('.pdf')) {
+      filename += '.pdf'
+    }
+
+    const blob = await res.blob()
+    const blobUrl = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = blobUrl
+    link.setAttribute('download', filename)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(blobUrl)
+
+    toast.addToast(t('event_qualification.toast_scoresheet_downloaded', 'Scoresheet PDF berhasil diunduh'), 'success')
+  } catch (err) {
+    console.error('Failed to download scoresheet PDF:', err)
+    toast.addToast(err?.message || t('event_qualification.failed_open_scoresheet'), 'error')
   } finally {
     isDownloadingScoresheet.value = false
   }

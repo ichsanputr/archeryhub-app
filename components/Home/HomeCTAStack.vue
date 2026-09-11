@@ -7,7 +7,7 @@
             </div>
             <div class="relative z-10">
                 <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-navy mb-5">
-                    <span class="material-symbols-outlined text-xl">person_add</span>
+                    <Icon icon="ph:user-plus-bold" class="text-xl" />
                 </div>
                 <h3 class="text-lg sm:text-2xl font-black text-white mb-2 font-display">Gabung Jadi Pemanah
                 </h3>
@@ -19,7 +19,7 @@
                 <NuxtLink to="/auth/register?type=archer"
                     class="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-6 py-3 rounded-xl transition-all">
                     Daftar Sekarang
-                    <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                    <Icon icon="ph:arrow-right-bold" class="text-lg" />
                 </NuxtLink>
             </div>
         </div>
@@ -28,7 +28,7 @@
             class="relative overflow-hidden group bg-white border border-border-subtle rounded-2xl sm:rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-sm transition-all duration-300 flex-1 min-h-[240px] sm:min-h-[280px]">
             <div class="relative z-10">
                 <div class="w-10 h-10 rounded-xl bg-navy flex items-center justify-center text-white mb-5">
-                    <span class="material-symbols-outlined text-xl">domain_add</span>
+                    <Icon icon="ph:buildings-bold" class="text-xl" />
                 </div>
                 <h3 class="text-lg sm:text-2xl font-black text-navy mb-2 font-display">Penyelenggara</h3>
                 <div class="text-text-sub text-sm mb-6">Kelola penyelenggara kamu, buat event sebanyaknya.</div>
@@ -37,7 +37,7 @@
                 <NuxtLink to="/auth/register?type=organizer"
                     class="w-full inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy-light text-white text-sm font-bold px-6 py-3 rounded-xl transition-all">
                     Bikin Akun Penyelenggara
-                    <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                    <Icon icon="ph:arrow-right-bold" class="text-lg" />
                 </NuxtLink>
             </div>
         </div>

@@ -129,7 +129,7 @@
               class="text-xs text-red-500 hover:text-red-700 font-bold flex items-center gap-1"
             >
               <Icon icon="ph:trash" />
-              <span>Hapus</span>
+              <span>{{ t('common.delete', 'Hapus') }}</span>
             </button>
           </div>
 

@@ -1,23 +1,16 @@
-﻿<template>
+<template>
   <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
-    <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: 0.2;"></div>
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-      <div class="relative p-6 sm:p-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
-            <div class="h-14 w-14 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center">
-              <Icon icon="ph:credit-card-bold" class="text-white text-2xl" />
-            </div>
-            <div>
-              <h1 class="text-2xl sm:text-3xl font-black tracking-tight">{{ t("org_event_payments.title") }}</h1>
-              <div class="text-slate-300 text-sm mt-1">{{ t("org_event_payments.subtitle") }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <DashboardHeader
+      :title="t('org_event_payments.title', 'Pembayaran & Keuangan Event')"
+      :subtitle="t('org_event_payments.subtitle', 'Monitor transaksi pendaftaran, bukti transfer, dan status pembayaran peserta.')"
+      icon="ph:credit-card-bold"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/events' },
+        { label: t('org_event_payments.title', 'Pembayaran') }
+      ]"
+    />
 
     <!-- Filters & Stats -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -40,7 +33,10 @@
       <div class="p-6 border-b border-slate-100 dark:border-slate-700 flex flex-wrap gap-4 items-center justify-between">
         <h3 class="font-black text-navy dark:text-white text-lg">{{ t("org_event_payments.transaction_list") }}</h3>
         <div class="flex gap-3">
-          <input v-model="search" type="text" :placeholder="t('org_event_payments.search_placeholder')" class="px-4 py-2 text-xs font-bold bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl w-60 focus:outline-none" />
+          <div class="relative w-64">
+            <Icon icon="ph:magnifying-glass-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
+            <input v-model="search" type="text" :placeholder="t('org_event_payments.search_placeholder')" class="w-full h-10 pl-9 pr-4 text-xs font-medium bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-navy dark:text-white placeholder:text-slate-400" />
+          </div>
         </div>
       </div>
 
@@ -78,7 +74,7 @@
               </td>
               <td class="p-4 text-right space-x-2">
                 <button v-if="p.payment_method === 'manual' && p.payment_status !== 'paid'"
-                  @click="verifyPayment(p)" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg font-bold text-[10px] hover:bg-emerald-700">
+                  @click="verifyPayment(p)" class="px-3 py-1.5 bg-emerald-600 text-white rounded-xl font-bold text-[10px] hover:bg-emerald-700 transition-colors">
                   {{ t("org_event_payments.btn_approve") }}
                 </button>
               </td>
@@ -93,11 +89,17 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { Icon } from '@iconify/vue'
 
 const route = useRoute()
 const { get, post } = useApi()
+const toast = useToast()
 
 const eventId = computed(() => route.params.id as string)
+
+useHead({
+  title: 'Verifikasi Pembayaran - Archeris Dashboard'
+})
 const isLoading = ref(true)
 const payments = ref<any[]>([])
 const search = ref('')
@@ -141,9 +143,10 @@ async function verifyPayment(p: any) {
   if (!confirm(`Verifikasi pembayaran untuk ${p.full_name}?`)) return
   try {
     await post(`/events/${eventId.value}/participants/${p.uuid || p.id}/verify-payment`, { status: 'paid' })
+    toast.success('Pembayaran berhasil diverifikasi')
     await fetchPayments()
   } catch (err: any) {
-    alert('Gagal memverifikasi pembayaran')
+    toast.error(err?.data?.error || 'Gagal memverifikasi pembayaran')
   }
 }
 

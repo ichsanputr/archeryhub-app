@@ -166,57 +166,58 @@
                 </TBtn>
                 <div v-if="tableMenuOpen" class="dropdown-menu min-w-[200px]">
                     <template v-if="!editor.isActive('table')">
-                        <button type="button" @click="insertTable"
+                        <button type="button"
+                            @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(); tableMenuOpen = false"
                             class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 rounded-lg">
-                            <Icon icon="ph:plus-bold" class="text-primary" /> Buat Tabel 3×3
+                            <Icon icon="ph:plus-bold" class="text-primary" /> {{ $t('editor.table.create', 'Buat Tabel 3×3') }}
                         </button>
                     </template>
                     <template v-else>
-                        <div class="px-3 py-1.5 text-[10px] font-black text-gray-400 tracking-widest">BARIS</div>
+                        <div class="px-3 py-1.5 text-[10px] font-black text-gray-400 tracking-widest">{{ $t('editor.table.row', 'BARIS') }}</div>
                         <button type="button"
                             @click="editor.chain().focus().addRowBefore().run(); tableMenuOpen = false"
                             class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2">
-                            <Icon icon="ph:arrow-line-up-bold" class="text-navy" /> Tambah Atas
+                            <Icon icon="ph:arrow-line-up-bold" class="text-navy" /> {{ $t('editor.table.add_row_above', 'Tambah Atas') }}
                         </button>
                         <button type="button" @click="editor.chain().focus().addRowAfter().run(); tableMenuOpen = false"
                             class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2">
-                            <Icon icon="ph:arrow-line-down-bold" class="text-navy" /> Tambah Bawah
+                            <Icon icon="ph:arrow-line-down-bold" class="text-navy" /> {{ $t('editor.table.add_row_below', 'Tambah Bawah') }}
                         </button>
                         <button type="button" @click="editor.chain().focus().deleteRow().run(); tableMenuOpen = false"
                             class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 text-red-600 flex items-center gap-2">
-                            <Icon icon="ph:trash-bold" /> Hapus Baris
+                            <Icon icon="ph:trash-bold" /> {{ $t('editor.table.delete_row', 'Hapus Baris') }}
                         </button>
                         <div class="border-t border-gray-100 my-1"></div>
-                        <div class="px-3 py-1.5 text-[10px] font-black text-gray-400 tracking-widest">KOLOM</div>
+                        <div class="px-3 py-1.5 text-[10px] font-black text-gray-400 tracking-widest">{{ $t('editor.table.col', 'KOLOM') }}</div>
                         <button type="button"
                             @click="editor.chain().focus().addColumnBefore().run(); tableMenuOpen = false"
                             class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2">
-                            <Icon icon="ph:arrow-line-left-bold" class="text-navy" /> Kolom Sebelum
+                            <Icon icon="ph:arrow-line-left-bold" class="text-navy" /> {{ $t('editor.table.add_col_before', 'Kolom Sebelum') }}
                         </button>
                         <button type="button"
                             @click="editor.chain().focus().addColumnAfter().run(); tableMenuOpen = false"
                             class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2">
-                            <Icon icon="ph:arrow-line-right-bold" class="text-navy" /> Kolom Sesudah
+                            <Icon icon="ph:arrow-line-right-bold" class="text-navy" /> {{ $t('editor.table.add_col_after', 'Kolom Sesudah') }}
                         </button>
                         <button type="button"
                             @click="editor.chain().focus().deleteColumn().run(); tableMenuOpen = false"
                             class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 text-red-600 flex items-center gap-2">
-                            <Icon icon="ph:trash-bold" /> Hapus Kolom
+                            <Icon icon="ph:trash-bold" /> {{ $t('editor.table.delete_col', 'Hapus Kolom') }}
                         </button>
                         <div class="border-t border-gray-100 my-1"></div>
-                        <div class="px-3 py-1.5 text-[10px] font-black text-gray-400 tracking-widest">SEL</div>
+                        <div class="px-3 py-1.5 text-[10px] font-black text-gray-400 tracking-widest">{{ $t('editor.table.cell', 'SEL') }}</div>
                         <button type="button" @click="editor.chain().focus().mergeCells().run(); tableMenuOpen = false"
                             class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2">
-                            <Icon icon="ph:arrows-merge-bold" class="text-navy" /> Gabung Sel
+                            <Icon icon="ph:arrows-merge-bold" class="text-navy" /> {{ $t('editor.table.merge_cells', 'Gabung Sel') }}
                         </button>
                         <button type="button" @click="editor.chain().focus().splitCell().run(); tableMenuOpen = false"
                             class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2">
-                            <Icon icon="ph:arrows-split-bold" class="text-navy" /> Pisahkan Sel
+                            <Icon icon="ph:arrows-split-bold" class="text-navy" /> {{ $t('editor.table.split_cell', 'Pisahkan Sel') }}
                         </button>
                         <div class="border-t border-gray-100 my-1"></div>
                         <button type="button" @click="editor.chain().focus().deleteTable().run(); tableMenuOpen = false"
                             class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 text-red-600 flex items-center gap-2 rounded-b-lg">
-                            <Icon icon="ph:trash-bold" /> Hapus Tabel
+                            <Icon icon="ph:trash-bold" /> {{ $t('editor.table.delete_table', 'Hapus Tabel') }}
                         </button>
                     </template>
                 </div>
@@ -351,8 +352,7 @@
             <div v-if="uploading"
                 class="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center rounded-xl z-50">
                 <div class="flex flex-col items-center gap-3">
-                    <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin">
-                    </div>
+                    <Icon icon="ph:spinner-bold" class="text-4xl text-primary animate-spin" />
                     <span class="text-sm font-black text-navy">Mengupload gambar...</span>
                 </div>
             </div>

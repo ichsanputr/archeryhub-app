@@ -8,7 +8,7 @@
         <div class="relative group">
             <div v-if="icon"
                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors z-10">
-                <Icon :icon="icon.includes(':') ? icon : `material-symbols:${icon}`" class="text-[20px]" />
+                <Icon :icon="icon.includes(':') ? icon : `ph:${icon}`" class="text-[20px]" />
             </div>
 
             <!-- Currency Input -->
@@ -130,16 +130,17 @@ const currencyDisplayValue = ref('')
 
 const displayValue = computed(() => {
     if (props.kind === 'currency') {
-        // Use ref for real-time display during typing
         if (currencyDisplayValue.value !== '') {
             return currencyDisplayValue.value
         }
-        // Fallback to formatted modelValue when not typing
-        if (props.modelValue === null || props.modelValue === undefined || props.modelValue === '' || props.modelValue === 0) {
+        if (props.modelValue === null || props.modelValue === undefined || props.modelValue === '') {
             return ''
         }
+        if (props.modelValue === 0 || props.modelValue === '0') {
+            return '0'
+        }
         const numValue = typeof props.modelValue === 'string' ? parseFloat(props.modelValue.replace(/[^\d]/g, '')) : props.modelValue
-        if (isNaN(numValue) || numValue === 0) return ''
+        if (isNaN(numValue)) return ''
         return new Intl.NumberFormat('id-ID').format(numValue)
     }
     return props.modelValue
@@ -166,28 +167,27 @@ const handleCurrencyKeydown = (event) => {
 const handleCurrencyInput = (event) => {
     let rawValue = event.target.value.replace(/[^\d]/g, '')
 
-    // Remove ALL leading zeros
-    rawValue = rawValue.replace(/^0+/, '')
+    if (rawValue.length > 1) {
+        rawValue = rawValue.replace(/^0+/, '')
+    }
 
-    // If empty after removing zeros, set to empty
     if (rawValue === '') {
         currencyDisplayValue.value = ''
-        emit('update:modelValue', null)
-        validateInternal(null) // Validate on currency input
+        emit('update:modelValue', 0)
+        validateInternal(0)
         return
     }
 
-    // Format the number for display immediately
     const numValue = parseInt(rawValue, 10)
-    if (!isNaN(numValue) && numValue > 0) {
+    if (!isNaN(numValue)) {
         const formatted = new Intl.NumberFormat('id-ID').format(numValue)
         currencyDisplayValue.value = formatted
         emit('update:modelValue', numValue)
-        validateInternal(numValue) // Validate on currency input
+        validateInternal(numValue)
     } else {
         currencyDisplayValue.value = ''
-        emit('update:modelValue', null)
-        validateInternal(null) // Validate on currency input
+        emit('update:modelValue', 0)
+        validateInternal(0)
     }
 }
 

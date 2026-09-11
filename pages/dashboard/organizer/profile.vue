@@ -54,10 +54,10 @@
                 :items="countries" searchable />
 
               <!-- Registration Number / SK -->
-              <BaseInput v-model="form.registration_number" label="Nomor Registrasi / SK Resmi" placeholder="Contoh: SK-PERPANI-001/2024" />
+              <BaseInput v-model="form.registration_number" label="Nomor registrasi / SK resmi" placeholder="Contoh: SK-PERPANI-001/2024" />
 
               <!-- Established Date -->
-              <BaseInput v-model="form.established_date" type="date" label="Tanggal Berdiri Organisasi" />
+              <BaseInput v-model="form.established_date" type="date" label="Tanggal berdiri organisasi" />
             </div>
             <div>
               <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.about_label') }}</label>
@@ -77,13 +77,18 @@
               <div class="space-y-4">
                 <div>
                   <label class="block text-sm font-bold text-navy">{{ t('organizer.profile.logo_label') }}</label>
-                  <div class="text-xs text-gray-400 font-medium mt-1">{{ t('organizer.profile.logo_desc') }}</div>
+                  <div class="text-xs text-gray-400 font-medium mt-1">{{ t('organizer.profile.logo_desc') }} (format kotak 1:1, maks 500x500px)</div>
                 </div>
                 <div class="flex flex-col items-center gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100">
                   <div
-                    class="w-32 h-32 rounded-2xl bg-white border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center shadow-inner group">
-                    <img :src="useImageOrDefault(form.logoUrl, form.name)"
+                    class="relative w-36 h-36 rounded-2xl bg-white border-2 border-dashed border-primary/50 overflow-hidden flex flex-col items-center justify-center shadow-inner group">
+                    <img v-if="form.logoUrl" :src="useImageOrDefault(form.logoUrl, form.name)"
                       class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <div v-else class="text-center p-3">
+                      <Icon icon="ph:image-square-bold" class="text-3xl text-slate-300 mx-auto mb-1" />
+                      <span class="text-[10px] font-bold text-slate-400 block">1:1 persegi</span>
+                    </div>
+                    <span class="absolute bottom-1 bg-navy/80 text-primary text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-xs">Rasio 1:1</span>
                   </div>
                   <div class="flex gap-2 w-full">
                     <BaseButton @click="openMediaLibrary('logo')" variant="primary" size="sm"
@@ -205,60 +210,56 @@
           </div>
         </div>
 
-        <!-- Tab: Visi, Misi & Sejarah -->
+        <!-- Tab: Visi & Misi (Sejarah dihapus) -->
         <div v-if="activeTab === 'about'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <h3 class="text-sm font-bold text-navy flex items-center gap-2">
-              <Icon icon="ph:eye-bold" class="text-primary text-xl" /> {{ t('organizer.profile.vision_section') }}
+              <Icon icon="ph:eye-bold" class="text-primary text-xl" /> {{ t('organizer.profile.vision_section', 'Visi & Misi Organisasi') }}
             </h3>
             <div>
-              <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.vision_label') }}</label>
-              <TiptapEditor v-model="form.vision" :placeholder="t('organizer.profile.vision_placeholder')" minHeight="120px" />
+              <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.vision_label', 'Visi') }}</label>
+              <TiptapEditor v-model="form.vision" :placeholder="t('organizer.profile.vision_placeholder', 'Tuliskan visi utama organisasi...')" minHeight="120px" />
             </div>
             <div>
-              <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.mission_label') }}</label>
-              <TiptapEditor v-model="form.mission" :placeholder="t('organizer.profile.mission_placeholder')"
+              <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.mission_label', 'Misi') }}</label>
+              <TiptapEditor v-model="form.mission" :placeholder="t('organizer.profile.mission_placeholder', 'Tuliskan poin-poin misi organisasi...')"
                 minHeight="180px" />
-            </div>
-          </div>
-
-          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-sm font-bold text-navy flex items-center gap-2">
-              <Icon icon="ph:book-open-bold" class="text-primary text-xl" /> {{ t('organizer.profile.history_section') }}
-            </h3>
-            <div>
-              <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.history_label') }}</label>
-              <TiptapEditor v-model="form.history" :placeholder="t('organizer.profile.history_placeholder')"
-                minHeight="240px" />
             </div>
           </div>
         </div>
 
-        <!-- Tab: FAQ -->
+        <!-- Tab: FAQ (Modern Makeover) -->
         <div v-if="activeTab === 'faq'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-sm font-bold text-navy flex items-center gap-2">
-                <Icon icon="ph:question-bold" class="text-primary text-xl" /> {{ t('organizer.profile.faq_section') }}
-              </h3>
-              <button @click="addFAQ"
-                class="text-xs font-bold text-primary hover:text-primary-dark flex items-center gap-1 transition">
-                <Icon icon="ph:plus-circle-bold" /> {{ t('organizer.profile.add_faq') }}
-              </button>
+              <div>
+                <h3 class="text-base font-bold text-navy flex items-center gap-2">
+                  <Icon icon="ph:question-bold" class="text-primary text-xl" /> {{ t('organizer.profile.faq_section', 'Tanya jawab (FAQ)') }}
+                </h3>
+                <p class="text-xs text-slate-400 font-medium mt-0.5">Daftar pertanyaan yang sering diajukan atlet atau peserta</p>
+              </div>
+              <BaseButton variant="primary" size="sm" @click="addFAQ" icon="ph:plus-circle-bold" class="text-xs font-bold h-9">
+                {{ t('organizer.profile.add_faq', 'Tambah pertanyaan') }}
+              </BaseButton>
             </div>
 
             <div class="space-y-4">
               <div v-for="(item, idx) in form.faq" :key="idx"
-                class="p-6 bg-gray-50 rounded-2xl border border-gray-100 space-y-4 relative group">
-                <button @click="removeFAQ(idx)"
-                  class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors">
-                  <Icon icon="ph:trash-bold" />
-                </button>
-                <BaseInput v-model="item.question" :label="t('organizer.profile.faq_question_label')"
-                  :placeholder="t('organizer.profile.faq_question_placeholder')" />
+                class="p-6 bg-slate-50/80 rounded-2xl border border-slate-200/80 space-y-4 relative group hover:bg-white hover:shadow-xs transition-all">
+                <div class="flex items-center justify-between pb-2 border-b border-slate-200/60">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-navy text-primary text-[10px] font-bold font-mono">
+                    FAQ #{{ idx + 1 }}
+                  </span>
+                  <button @click="removeFAQ(idx)"
+                    class="size-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center transition-colors">
+                    <Icon icon="ph:trash-bold" class="text-sm" />
+                  </button>
+                </div>
+                <BaseInput v-model="item.question" :label="t('organizer.profile.faq_question_label', 'Pertanyaan')"
+                  :placeholder="t('organizer.profile.faq_question_placeholder', 'Contoh: Apakah pemula boleh mendaftar?')" />
                 <div>
-                  <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.faq_answer_label') }}</label>
-                  <TiptapEditor v-model="item.answer" :placeholder="t('organizer.profile.faq_answer_placeholder')" minHeight="120px" />
+                  <label class="block text-xs font-bold text-navy mb-2">{{ t('organizer.profile.faq_answer_label', 'Jawaban') }}</label>
+                  <TiptapEditor v-model="item.answer" :placeholder="t('organizer.profile.faq_answer_placeholder', 'Tuliskan jawaban yang informatif...')" minHeight="120px" />
                 </div>
               </div>
 
@@ -274,18 +275,97 @@
         </div>
       </div>
 
-      <!-- Side card -->
+      <!-- Side card: Redesigned Page Visibility -->
       <div class="space-y-4">
-        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-5">
-          <h3 class="text-sm font-bold text-navy flex items-center gap-2">
-            <Icon icon="ph:gear-six-bold" class="text-primary text-lg" /> {{ t('organizer.profile.visibility_section') }}
-          </h3>
-          <div class="text-xs text-gray-500 font-medium">{{ t('organizer.profile.visibility_desc') }}</div>
-          <div class="space-y-4 pt-2">
-            <BaseCheckbox v-model="pageSettings.sections.identity" :label="t('organizer.profile.visibility_identity')" />
-            <BaseCheckbox v-model="pageSettings.sections.contact" :label="t('organizer.profile.visibility_contact')" />
-            <BaseCheckbox v-model="pageSettings.sections.about" :label="t('organizer.profile.visibility_about')" />
-            <BaseCheckbox v-model="pageSettings.sections.faq" :label="t('organizer.profile.visibility_faq')" />
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-4">
+          <div>
+            <h3 class="text-sm font-bold text-navy flex items-center gap-2">
+              <Icon icon="ph:eye-bold" class="text-primary text-lg" />
+              <span>Visibilitas halaman publik</span>
+            </h3>
+            <div class="text-[11px] text-slate-400 font-medium mt-0.5">Atur bagian profil yang tampil di web publik</div>
+          </div>
+
+          <div class="space-y-2.5 pt-1">
+            <!-- Item: Identitas -->
+            <div @click="pageSettings.sections.identity = !pageSettings.sections.identity"
+              class="p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between"
+              :class="pageSettings.sections.identity ? 'bg-primary/5 border-primary/40' : 'bg-slate-50 border-slate-200/80 opacity-60'">
+              <div class="flex items-center gap-3">
+                <div class="size-8 rounded-xl flex items-center justify-center"
+                  :class="pageSettings.sections.identity ? 'bg-navy text-primary' : 'bg-slate-200 text-slate-500'">
+                  <Icon icon="ph:identification-card-bold" class="text-base" />
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-navy leading-tight">Profil & identitas</div>
+                  <div class="text-[10px] text-slate-400 font-medium">Nama, logo, banner & deskripsi</div>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold"
+                :class="pageSettings.sections.identity ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'">
+                {{ pageSettings.sections.identity ? 'Tampil' : 'Sembunyi' }}
+              </span>
+            </div>
+
+            <!-- Item: Kontak -->
+            <div @click="pageSettings.sections.contact = !pageSettings.sections.contact"
+              class="p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between"
+              :class="pageSettings.sections.contact ? 'bg-primary/5 border-primary/40' : 'bg-slate-50 border-slate-200/80 opacity-60'">
+              <div class="flex items-center gap-3">
+                <div class="size-8 rounded-xl flex items-center justify-center"
+                  :class="pageSettings.sections.contact ? 'bg-navy text-primary' : 'bg-slate-200 text-slate-500'">
+                  <Icon icon="ph:phone-call-bold" class="text-base" />
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-navy leading-tight">Kontak & medsos</div>
+                  <div class="text-[10px] text-slate-400 font-medium">WhatsApp, alamat & link sosmed</div>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold"
+                :class="pageSettings.sections.contact ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'">
+                {{ pageSettings.sections.contact ? 'Tampil' : 'Sembunyi' }}
+              </span>
+            </div>
+
+            <!-- Item: Visi Misi -->
+            <div @click="pageSettings.sections.about = !pageSettings.sections.about"
+              class="p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between"
+              :class="pageSettings.sections.about ? 'bg-primary/5 border-primary/40' : 'bg-slate-50 border-slate-200/80 opacity-60'">
+              <div class="flex items-center gap-3">
+                <div class="size-8 rounded-xl flex items-center justify-center"
+                  :class="pageSettings.sections.about ? 'bg-navy text-primary' : 'bg-slate-200 text-slate-500'">
+                  <Icon icon="ph:target-bold" class="text-base" />
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-navy leading-tight">Visi & misi</div>
+                  <div class="text-[10px] text-slate-400 font-medium">Tujuan dan komitmen klub/EO</div>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold"
+                :class="pageSettings.sections.about ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'">
+                {{ pageSettings.sections.about ? 'Tampil' : 'Sembunyi' }}
+              </span>
+            </div>
+
+            <!-- Item: FAQ -->
+            <div @click="pageSettings.sections.faq = !pageSettings.sections.faq"
+              class="p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between"
+              :class="pageSettings.sections.faq ? 'bg-primary/5 border-primary/40' : 'bg-slate-50 border-slate-200/80 opacity-60'">
+              <div class="flex items-center gap-3">
+                <div class="size-8 rounded-xl flex items-center justify-center"
+                  :class="pageSettings.sections.faq ? 'bg-navy text-primary' : 'bg-slate-200 text-slate-500'">
+                  <Icon icon="ph:question-bold" class="text-base" />
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-navy leading-tight">Tanya jawab (FAQ)</div>
+                  <div class="text-[10px] text-slate-400 font-medium">Daftar pertanyaan umum</div>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold"
+                :class="pageSettings.sections.faq ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'">
+                {{ pageSettings.sections.faq ? 'Tampil' : 'Sembunyi' }}
+              </span>
+            </div>
           </div>
         </div>
 

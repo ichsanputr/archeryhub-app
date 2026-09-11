@@ -8,6 +8,10 @@
 import { useRoute, useRouter } from 'vue-router'
 import { onMounted } from 'vue'
 
+useHead({
+  title: 'Edit Peserta - Archeris Dashboard'
+})
+
 const route = useRoute()
 const router = useRouter()
 

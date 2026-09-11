@@ -76,7 +76,7 @@
 
                         <!-- Status Badge -->
                         <div :class="getStatusClass(payment.status)"
-                            class="px-2.5 py-1 rounded-lg text-[10px] font-black tracking-wider capitalize border inline-flex items-center gap-1.5 shadow-2xs">
+                            class="px-2.5 py-1 rounded-full text-[10px] font-black tracking-wider capitalize border inline-flex items-center gap-1.5 shadow-2xs">
                             <span :class="getStatusDotClass(payment.status)" class="size-1.5 rounded-full shrink-0"></span>
                             <Icon :icon="payment.status === 'paid' ? 'ph:check-circle-bold' : (payment.status === 'pending' ? 'ph:clock-bold' : 'ph:x-circle-bold')" class="text-xs shrink-0" />
                             <span>{{ getStatusLabel(payment.status) }}</span>
@@ -89,19 +89,26 @@
                             <Icon :icon="getPaymentIcon(payment)" class="text-2xl md:text-3xl text-navy" />
                         </div>
                         <div class="min-w-0 flex-1 space-y-1.5">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-navy text-primary">
+                                    {{ payment.purpose || (payment.subscription_plan_id ? 'Langganan' : (payment.event_name ? 'Turnamen' : 'Pembayaran')) }}
+                                </span>
+                                <span v-if="payment.category_name"
+                                    class="font-bold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded-md text-[11px] border border-slate-200/80 flex items-center gap-1">
+                                    <Icon icon="ph:target-bold" class="text-xs text-primary" />
+                                    {{ payment.category_name }}
+                                </span>
+                            </div>
+
                             <h3 class="text-lg md:text-xl font-black text-navy leading-snug">
-                                {{ payment.event_name || payment.plan_name || t('payments.payment_title_default') }}
+                                {{ payment.event_name || payment.plan_name || payment.title || t('payments.payment_title_default') }}
                             </h3>
-                            <div class="flex items-center gap-2 flex-wrap text-xs">
+
+                            <div class="flex items-center gap-2 flex-wrap text-xs pt-0.5">
                                 <span v-if="payment.payment_method"
                                     class="font-bold text-navy dark:text-slate-200 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-200/80 dark:border-slate-700 flex items-center gap-1.5 text-xs">
                                     <Icon icon="ph:credit-card-bold" class="text-slate-400 text-xs" />
                                     {{ payment.payment_method }}
-                                </span>
-                                <span v-if="payment.category_name"
-                                    class="font-bold text-navy dark:text-primary bg-primary/10 px-2.5 py-1 rounded-lg border border-primary/30 flex items-center gap-1.5 text-xs">
-                                    <span class="size-1.5 rounded-full bg-primary shrink-0"></span>
-                                    {{ payment.category_name }}
                                 </span>
                             </div>
                         </div>
@@ -139,7 +146,7 @@
                     
                     <!-- Header of Expanded Report -->
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2 text-xs font-black text-navy dark:text-white capitalize tracking-wider">
+                        <div class="flex items-center gap-2 text-[10px] font-black tracking-widest text-navy dark:text-white">
                             <Icon icon="ph:file-text-bold" class="text-primary text-base" />
                             <span>{{ t('archer_payments_list.breakdown_title') }}</span>
                         </div>
@@ -151,20 +158,20 @@
                     <!-- Meta Grid (4 Columns) -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-white dark:bg-slate-800 p-4 rounded-xl border border-primary/20 shadow-2xs text-xs">
                         <div>
-                            <span class="text-slate-400 font-bold block text-[10px] tracking-wider capitalize mb-1">{{ t('archer_payments_list.ref_no') }}</span>
+                            <span class="text-slate-400 font-bold block text-[10px] tracking-widest mb-1">{{ t('archer_payments_list.ref_no') }}</span>
                             <span class="font-mono text-navy dark:text-white font-black text-xs select-all">{{ payment.reference }}</span>
                         </div>
                         <div>
-                            <span class="text-slate-400 font-bold block text-[10px] tracking-wider capitalize mb-1">{{ t('archer_payments_list.date_time') }}</span>
+                            <span class="text-slate-400 font-bold block text-[10px] tracking-widest mb-1">{{ t('archer_payments_list.date_time') }}</span>
                             <span class="text-navy dark:text-white font-bold text-xs">{{ formatDate(payment.created_at) }}</span>
                         </div>
                         <div>
-                            <span class="text-slate-400 font-bold block text-[10px] tracking-wider capitalize mb-1">{{ t('archer_payments_list.payment_method_label') }}</span>
+                            <span class="text-slate-400 font-bold block text-[10px] tracking-widest mb-1">{{ t('archer_payments_list.payment_method_label') }}</span>
                             <span class="text-navy dark:text-white font-bold text-xs capitalize">{{ payment.payment_method || '-' }}</span>
                         </div>
                         <div>
-                            <span class="text-slate-400 font-bold block text-[10px] tracking-wider capitalize mb-1">{{ t('archer_payments_list.status_label') }}</span>
-                            <span class="inline-flex px-2.5 py-0.5 rounded-lg text-[10px] font-black tracking-wider capitalize" :class="getStatusClass(payment.status)">
+                            <span class="text-slate-400 font-bold block text-[10px] tracking-widest mb-1">{{ t('archer_payments_list.status_label') }}</span>
+                            <span class="inline-flex px-2.5 py-0.5 rounded-lg text-[10px] font-black tracking-widest" :class="getStatusClass(payment.status)">
                                 {{ getStatusLabel(payment.status) }}
                             </span>
                         </div>
@@ -172,7 +179,7 @@
 
                     <!-- Cost Breakdown Itemization Table -->
                     <div class="bg-white dark:bg-slate-800 rounded-xl border border-primary/20 overflow-hidden shadow-2xs">
-                        <div class="px-4 py-3 bg-slate-50/80 dark:bg-slate-700/50 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between text-[11px] font-black text-slate-500 dark:text-slate-400 capitalize tracking-wider">
+                        <div class="px-4 py-3 bg-slate-50/80 dark:bg-slate-700/50 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between text-[10px] font-black tracking-widest text-slate-500 dark:text-slate-400">
                             <span>{{ t('archer_payments_list.item_description') }}</span>
                             <span>{{ t('archer_payments_list.item_subtotal') }}</span>
                         </div>
@@ -218,11 +225,11 @@
                                 <Icon icon="ph:image-bold" class="text-primary text-base" />
                                 <span>{{ t('archer_payments_list.proof_of_payment', 'Bukti Pembayaran Transfer') }}</span>
                             </div>
-                            <span v-if="payment.proof_url" class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 px-2 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800">
+                            <span v-if="payment.proof_url" class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/30 px-2.5 py-0.5 rounded-full border border-emerald-200/80 dark:border-emerald-800">
                                 <Icon icon="ph:check-circle-bold" class="text-xs" />
                                 <span>{{ t('archer_payments_list.proof_uploaded', 'Bukti Terunggah') }}</span>
                             </span>
-                            <span v-else class="inline-flex items-center gap-1 text-[11px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/30 px-2 py-0.5 rounded-md border border-amber-200 dark:border-amber-800">
+                            <span v-else class="inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 bg-amber-50 dark:bg-amber-950/30 px-2.5 py-0.5 rounded-full border border-amber-200/80 dark:border-amber-800">
                                 <Icon icon="ph:warning-circle-bold" class="text-xs" />
                                 <span>{{ t('archer_payments_list.proof_pending', 'Belum Unggah Bukti') }}</span>
                             </span>
@@ -338,6 +345,7 @@ definePageMeta({
 
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
+import { useDateFormat } from '@vueuse/core'
 import { useApi } from '~/composables/useApi'
 import { useI18n } from 'vue-i18n'
 
@@ -512,16 +520,10 @@ const getStatusLabel = (status) => {
     }
 }
 
-const formatDate = (str) => {
+const formatDate = (str: string | null | undefined) => {
     if (!str) return '-'
     try {
-        return new Date(str).toLocaleDateString('id-ID', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        })
+        return useDateFormat(str, 'DD MMM YYYY, HH:mm', { locales: 'id-ID' }).value
     } catch {
         return str
     }

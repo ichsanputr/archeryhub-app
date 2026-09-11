@@ -59,19 +59,17 @@
                                                 class="flex-1 flex flex-col items-center justify-center text-center">
                                                 <Icon icon="ph:calendar-blank-light"
                                                     class="text-4xl text-white/20 mb-3" />
-                                                <p class="text-white/40 text-xs">Belum ada event unggulan.</p>
+                                                <p class="text-white/40 text-xs">{{ $t('nav.no_featured_event', 'Belum ada event unggulan.') }}</p>
                                             </div>
                                         </div>
 
                                         <!-- Latest Events -->
                                         <div class="col-span-7 p-6 flex flex-col">
                                             <div class="flex items-center justify-between mb-3">
-                                                <span class="text-gray-400 text-xs font-bold  tracking-wider">Event
-                                                    Terakhir</span>
+                                                <span class="text-gray-400 text-xs font-bold tracking-wider">{{ $t('nav.latest_events', 'Event Terakhir') }}</span>
                                                 <NuxtLink :to="localePath('/events')"
                                                     class="text-navy hover:text-primary text-xs font-bold transition-colors">
-                                                    Lihat
-                                                    Semua</NuxtLink>
+                                                    {{ $t('nav.view_all', 'Lihat Semua') }}</NuxtLink>
                                             </div>
                                             <div v-if="latestEvents.length > 0"
                                                 class="space-y-2 flex-1 flex flex-col justify-start">
@@ -88,7 +86,7 @@
                                                             {{ event.name }}
                                                         </span>
                                                         <span class="block text-gray-400 text-[10px] font-medium">{{
-                                                            event.location }} â€¢ {{ event.date }}</span>
+                                                            event.location }} • {{ event.date }}</span>
                                                     </div>
                                                 </NuxtLink>
                                             </div>
@@ -96,7 +94,7 @@
                                                 class="flex-1 flex flex-col items-center justify-center text-center">
                                                 <Icon icon="ph:calendar-blank-light"
                                                     class="text-4xl text-gray-100 mb-2" />
-                                                <p class="text-gray-400 text-xs">Belum ada event terbaru.</p>
+                                                <p class="text-gray-400 text-xs">{{ $t('nav.no_latest_events', 'Belum ada event terbaru.') }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -143,12 +141,12 @@
                             <div v-if="showLangMenu" class="absolute right-0 top-full pt-2 w-40">
                                 <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2">
                                     <button v-for="loc in locales" :key="loc.code" @click="setLocale(loc.code)"
-                                        class="flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold transition-colors hover:bg-gray-50"
-                                        :class="locale === loc.code ? 'text-primary' : 'text-navy'">
+                                        class="flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold transition-all"
+                                        :class="locale === loc.code ? 'bg-navy text-white' : 'text-slate-700 hover:bg-slate-50'">
                                         <Icon :icon="langFlags[loc.code] || 'ph:globe-bold'"
                                             class="text-base rounded-full overflow-hidden border border-gray-100" />
                                         <span class="flex-1 text-left">{{ loc.name }}</span>
-                                        <Icon v-if="locale === loc.code" icon="ph:check-bold" />
+                                        <Icon v-if="locale === loc.code" icon="ph:check-bold" class="text-primary text-xs shrink-0" />
                                     </button>
                                 </div>
                             </div>
@@ -255,12 +253,12 @@
                                 <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2">
                                     <button v-for="loc in locales" :key="loc.code"
                                         @click="setLocale(loc.code); showLangMenuMobile = false"
-                                        class="flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold transition-colors hover:bg-gray-50 text-left"
-                                        :class="locale === loc.code ? 'text-primary' : 'text-navy'">
+                                        class="flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold transition-all text-left"
+                                        :class="locale === loc.code ? 'bg-navy text-white' : 'text-slate-700 hover:bg-slate-50'">
                                         <Icon :icon="langFlags[loc.code] || 'ph:globe-bold'"
                                             class="text-base rounded-full overflow-hidden border border-gray-100" />
                                         <span class="flex-1 text-left">{{ loc.name }}</span>
-                                        <Icon v-if="locale === loc.code" icon="ph:check-bold" />
+                                        <Icon v-if="locale === loc.code" icon="ph:check-bold" class="text-primary text-xs shrink-0" />
                                     </button>
                                 </div>
                             </div>

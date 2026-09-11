@@ -69,14 +69,17 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Best Selling Products -->
-      <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-        <div class="p-5 px-6 border-b border-gray-100 flex items-center justify-between">
-            <h2 class="text-xs font-black text-navy capitalize tracking-widest flex items-center gap-2">
-            <Icon icon="ph:fire-bold" class="text-primary" />
+      <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+        <div class="h-16 px-6 border-b border-gray-100 flex items-center justify-between">
+          <h2 class="text-sm font-black text-navy capitalize flex items-center gap-2">
+            <Icon icon="ph:fire-bold" class="text-primary text-lg" />
             {{ t('seller.sections.top_selling', 'Produk Paling Laris') }}
           </h2>
+          <span class="px-2.5 py-1 bg-primary/15 text-navy font-bold text-xs rounded-lg border border-primary/30">
+            Top 5
+          </span>
         </div>
-        <div class="divide-y divide-gray-50">
+        <div class="divide-y divide-gray-50 flex-1">
           <div v-for="product in topSellingProducts" :key="product.id"
             class="p-4 px-6 flex items-center gap-4 hover:bg-gray-50/50 transition-colors">
             <div class="size-12 rounded-xl bg-gray-50 overflow-hidden shrink-0">
@@ -84,11 +87,11 @@
             </div>
             <div class="flex-1 min-w-0">
               <div class="text-sm font-black text-navy truncate">{{ product.name }}</div>
-              <div class="text-[10px] text-gray-400 font-bold tracking-wider">{{ product.category }}</div>
+              <div class="text-[10px] text-gray-400 font-bold tracking-wider capitalize">{{ product.category }}</div>
             </div>
             <div class="text-right">
               <div class="text-sm font-black text-navy">{{ product.sold }} {{ t('seller.stats.sold_unit', 'Terjual') }}</div>
-              <div class="text-[10px] text-primary font-bold tracking-wider">Rp {{ formatCurrencyValue(product.price) }}
+              <div class="text-xs text-primary-text font-bold">Rp {{ formatCurrencyValue(product.price) }}
               </div>
             </div>
           </div>
@@ -99,18 +102,18 @@
       </div>
 
       <!-- Latest Products -->
-      <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-        <div class="p-5 px-6 border-b border-gray-100 flex items-center justify-between">
-            <h2 class="text-xs font-black text-navy capitalize tracking-widest flex items-center gap-2">
-            <Icon icon="ph:clock-bold" class="text-primary" />
+      <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+        <div class="h-16 px-6 border-b border-gray-100 flex items-center justify-between">
+          <h2 class="text-sm font-black text-navy capitalize flex items-center gap-2">
+            <Icon icon="ph:clock-bold" class="text-primary text-lg" />
             {{ t('seller.sections.latest', 'Produk Terbaru') }}
           </h2>
           <NuxtLink to="/dashboard/seller/products">
-            <BaseButton variant="ghost" class="text-xs font-black tracking-widest text-primary">{{ t('common.view_all', 'Lihat Semua') }}
+            <BaseButton variant="ghost" class="text-xs font-bold text-navy hover:text-primary">{{ t('common.view_all', 'Lihat Semua') }}
             </BaseButton>
           </NuxtLink>
         </div>
-        <div class="divide-y divide-gray-50">
+        <div class="divide-y divide-gray-50 flex-1">
           <div v-for="product in latestProducts" :key="product.id"
             class="p-4 px-6 flex items-center gap-4 hover:bg-gray-50/50 transition-colors">
             <div class="size-12 rounded-xl bg-gray-100 overflow-hidden shrink-0">

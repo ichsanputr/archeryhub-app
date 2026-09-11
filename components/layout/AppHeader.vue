@@ -65,7 +65,7 @@
         </NuxtLink>
         <div class="h-6 w-px bg-gray-200"></div>
         <h1 class="text-lg font-black text-header-text truncate">
-          {{ eventTitle || 'Event Management' }}
+          {{ eventTitle || fetchedEventName || t('dashboard.header.event_management', 'Event') }}
         </h1>
       </div>
 
@@ -114,15 +114,40 @@
           <div v-if="showLangMenu" class="absolute right-0 top-full pt-2 w-40 z-[99]">
             <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-gray-100 dark:border-slate-800 overflow-hidden py-2">
               <button v-for="loc in locales" :key="loc.code" @click="changeDashboardLocale(loc.code)"
-                class="flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold transition-colors hover:bg-gray-50 dark:hover:bg-slate-800"
-                :class="locale === loc.code ? 'text-primary' : 'text-gray-700 dark:text-slate-300'">
+                class="flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold transition-all"
+                :class="locale === loc.code ? 'bg-navy text-white' : 'text-gray-700 hover:bg-gray-50 dark:text-slate-300 dark:hover:bg-slate-800'">
                 <Icon :icon="langFlags[loc.code] || 'ph:globe-bold'"
                   class="text-base rounded-full overflow-hidden border border-gray-100 dark:border-slate-800" />
                 <span class="flex-1 text-left">{{ loc.name }}</span>
-                <Icon v-if="locale === loc.code" icon="ph:check-bold" />
+                <Icon v-if="locale === loc.code" icon="ph:check-bold" class="text-primary text-xs shrink-0" />
               </button>
             </div>
           </div>
+        </Transition>
+      </div>
+
+      <!-- Notification Bell -->
+      <div v-if="user" ref="notificationRef" class="relative">
+        <button @click.stop="toggleNotifications" :class="[
+          isScrolled || !transparent
+            ? 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-navy dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10'
+            : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white border border-white/20'
+        ]" class="relative flex items-center justify-center h-9 w-9 rounded-xl transition-all"
+          :title="t('notifications.title', 'Notifikasi')">
+          <Icon icon="ph:bell-bold" class="text-lg" />
+          <span v-if="unreadCount > 0"
+            class="absolute -top-1 -right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-black text-white shadow-sm ring-2 ring-white dark:ring-slate-900">
+            {{ unreadCount > 99 ? '99+' : unreadCount }}
+          </span>
+        </button>
+
+        <!-- Dropdown Component -->
+        <Transition enter-active-class="transition duration-200 ease-out"
+          enter-from-class="opacity-0 translate-y-2 scale-95" enter-to-class="opacity-100 translate-y-0 scale-100"
+          leave-active-class="transition duration-150 ease-in"
+          leave-from-class="opacity-100 translate-y-0 scale-100" leave-to-class="opacity-0 translate-y-2 scale-95">
+          <NotificationList v-if="showNotifications" :notifications="notifications" :unread-count="unreadCount"
+            @close="showNotifications = false" @mark-all-read="handleMarkAllRead" @mark-read="markAsRead" @delete="deleteNotification" @click="handleNotificationSelect" />
         </Transition>
       </div>
 
@@ -153,9 +178,9 @@
 </template>
 
 <script setup>
-import NotificationList from './NotificationList.vue'
-import DocSearchDialog from './DocSearchDialog.vue'
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, defineAsyncComponent } from 'vue'
+const NotificationList = defineAsyncComponent(() => import('./NotificationList.vue'))
+const DocSearchDialog = defineAsyncComponent(() => import('./DocSearchDialog.vue'))
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useEventContext } from '~/composables/useEventContext'
@@ -207,7 +232,39 @@ const isEventManageMode = computed(() => {
   return !excludedPaths.includes(subPath)
 })
 
+const { get } = useApi()
+const { setEvent, currentEvent } = useEventContext()
+const fetchedEventName = ref('')
 
+const currentEventId = computed(() => {
+  const path = route.path
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organizer|seller|events)\/events\/([^/]+)/) ||
+    path.match(/\/dashboard\/events\/([^/]+)/)
+  return eventPathMatch ? eventPathMatch[1] : (route.params.id || '')
+})
+
+const loadEventName = async (id) => {
+  if (!id) {
+    fetchedEventName.value = ''
+    return
+  }
+  try {
+    const res = await get(`/events/${id}`)
+    const data = res?.event || res?.data || res
+    if (data?.name) {
+      fetchedEventName.value = data.name
+      setEvent({ id, name: data.name })
+    }
+  } catch (e) {
+    console.error('Failed to load event header name:', e)
+  }
+}
+
+watch(currentEventId, (id) => {
+  if (id && (!eventTitle.value || currentEvent.value?.id !== id)) {
+    loadEventName(id)
+  }
+}, { immediate: true })
 
 const backToDashboardPath = computed(() => {
   return `/dashboard/${userPersona.value}/events`
@@ -217,12 +274,46 @@ const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const searchQuery = ref('')
 const showNotifications = ref(false)
 const searchDialog = ref(null)
-const notifications = ref([
-  { id: 1, type: 'info', title: 'Selamat Datang!', message: 'Selamat bergabung di Archeris. Lengkapi profil klub Anda sekarang.', time: '2 MENIT LALU', read: false },
-  { id: 2, type: 'success', title: 'Profil Diperbarui', message: 'Informasi klub Anda telah berhasil diperbarui.', time: '1 JAM LALU', read: true },
-  { id: 3, type: 'warning', title: 'Keanggotaan Baru', message: 'Ada 5 permintaan join klub baru yang menunggu persetujuan.', time: '3 JAM LALU', read: false }
-])
-const userAvatar = computed(() => useImageOrDefault(user.value?.avatar_url))
+
+const {
+  notifications,
+  unreadCount,
+  fetchNotifications,
+  fetchUnreadCount,
+  markAsRead,
+  markAllAsRead,
+  deleteNotification,
+  startPolling,
+  stopPolling
+} = useNotifications()
+
+const toggleNotifications = (event) => {
+  if (event) {
+    event.stopPropagation()
+  }
+  showNotifications.value = !showNotifications.value
+  if (showNotifications.value) {
+    fetchNotifications({ limit: 10 })
+  }
+}
+
+const handleMarkAllRead = async () => {
+  await markAllAsRead()
+}
+
+const handleNotificationSelect = async (note) => {
+  if (!note.is_read) {
+    await markAsRead(note.id)
+  }
+  if (note.link) {
+    router.push(note.link)
+  }
+}
+
+// Close notifications on route change
+watch(() => route.path, () => {
+  showNotifications.value = false
+})
 
 // Notification panel ref for click outside
 const notificationRef = ref(null)
@@ -230,7 +321,21 @@ onClickOutside(notificationRef, () => {
   if (showNotifications.value) {
     showNotifications.value = false
   }
-})
+}, { capture: true })
+
+const handleDocumentClickOutside = (event) => {
+  if (showNotifications.value && notificationRef.value) {
+    if (!notificationRef.value.contains(event.target)) {
+      showNotifications.value = false
+    }
+  }
+}
+
+const handleKeyDown = (event) => {
+  if (event.key === 'Escape' && showNotifications.value) {
+    showNotifications.value = false
+  }
+}
 
 // Scroll state for transparency transition
 const isScrolled = ref(false)
@@ -244,10 +349,21 @@ onMounted(() => {
     window.addEventListener('scroll', handleScroll)
     handleScroll()
   }
+  if (user.value) {
+    fetchUnreadCount()
+    startPolling(45000)
+  }
+  window.addEventListener('click', handleDocumentClickOutside, true)
+  window.addEventListener('pointerdown', handleDocumentClickOutside, true)
+  window.addEventListener('keydown', handleKeyDown)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('click', handleDocumentClickOutside, true)
+  window.removeEventListener('pointerdown', handleDocumentClickOutside, true)
+  window.removeEventListener('keydown', handleKeyDown)
+  stopPolling()
 })
 
 const navClasses = computed(() => {

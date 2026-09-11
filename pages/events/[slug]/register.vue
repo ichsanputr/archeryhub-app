@@ -24,7 +24,7 @@
 
                 <!-- Text Content -->
                 <div class="mb-6 space-y-2">
-                    <div class="text-[11px] font-black uppercase tracking-widest text-primary">
+                    <div class="text-[11px] font-black tracking-widest text-primary">
                         {{ t('events.register.loading_badge', 'Portal Registrasi Resmi') }}
                     </div>
                     <h2 class="text-xl font-black tracking-tight text-white">
@@ -48,17 +48,17 @@
                 <div class="h-16 w-16 bg-red-50 rounded-full flex items-center justify-center mb-4 mx-auto">
                     <Icon icon="ph:warning-circle-fill" class="text-3xl text-red-500" />
                 </div>
-                <h2 class="text-xl font-black text-navy mb-3">Failed to Load Data</h2>
-                <span class="text-gray-500 mb-6 block">{{ fetchError.message || 'An error occurred.' }}</span>
-                <BaseButton @click="refresh()" variant="navy" size="md">Try Again</BaseButton>
+                <h2 class="text-xl font-black text-navy mb-3">{{ t('events.register.failed_load', 'Gagal Memuat Data') }}</h2>
+                <span class="text-gray-500 mb-6 block">{{ fetchError.message || t('common.error_occurred', 'Terjadi kesalahan.') }}</span>
+                <BaseButton @click="refresh()" variant="navy" size="md">{{ t('common.try_again', 'Coba Lagi') }}</BaseButton>
             </div>
         </div>
 
         <!-- No Data -->
         <div v-else-if="!data || !data.event" class="min-h-screen flex items-center justify-center px-4">
             <div class="text-center max-w-md">
-                <h2 class="text-xl font-black text-navy mb-3">Event Not Found</h2>
-                <BaseButton to="/events" variant="navy" size="md">View Other Events</BaseButton>
+                <h2 class="text-xl font-black text-navy mb-3">{{ t('events.register.event_not_found', 'Event Tidak Ditemukan') }}</h2>
+                <BaseButton to="/events" variant="navy" size="md">{{ t('events.register.view_other_events', 'Lihat Event Lainnya') }}</BaseButton>
             </div>
         </div>
 
@@ -72,8 +72,8 @@
                 <div class="size-20 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
                     <Icon icon="ph:check-bold" class="text-4xl text-navy" />
                 </div>
-                <h1 class="text-2xl font-black text-white text-center">Registration Successful!</h1>
-                <div class="text-white/50 text-sm font-medium text-center">Redirecting to payment page...</div>
+                <h1 class="text-2xl font-black text-white text-center">{{ t('events.register.success_title', 'Pendaftaran Berhasil!') }}</h1>
+                <div class="text-white/50 text-sm font-medium text-center">{{ t('events.register.redirecting_to_payment', 'Mengalihkan ke halaman pembayaran...') }}</div>
                 <Icon icon="ph:circle-notch-bold" class="text-2xl text-primary animate-spin mt-2" />
             </div>
         </div>
@@ -859,7 +859,7 @@
         <!-- Partner Search Dialog -->
         <Teleport to="body">
         <div v-if="showPartnerDialog"
-            class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-navy/60 backdrop-blur-sm"
             @click.self="showPartnerDialog = false">
             <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden">
                 <!-- Header -->
@@ -967,6 +967,7 @@ import { Icon } from '@iconify/vue'
 import { useDateFormat } from '@vueuse/core'
 
 const { t } = useI18n()
+const toast = useToast()
 useHead({ title: computed(() => t('event.register_title', 'Register for Event') + ' - Archeris') })
 
 const route = useRoute()
@@ -1157,10 +1158,11 @@ const handleCancelRegistration = async () => {
         })
         manualCancelled.value = true
         if (data.value) data.value.myRegistration = null
+        toast.success('Pendaftaran berhasil dibatalkan')
         await refresh()
     } catch (err) {
         console.error('Gagal membatalkan pendaftaran:', err)
-        alert(err.data?.error || err.message || 'Gagal membatalkan pendaftaran. Silakan coba lagi.')
+        toast.error(err.data?.error || err.message || 'Gagal membatalkan pendaftaran. Silakan coba lagi.')
     } finally {
         isCancellingReg.value = false
     }

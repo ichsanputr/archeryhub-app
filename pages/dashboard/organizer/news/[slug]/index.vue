@@ -14,11 +14,11 @@
       <template #title>
         <div>
           <div class="flex items-center gap-2 mb-1.5 flex-wrap">
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-primary/20 text-primary border border-primary/30">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider bg-primary/20 text-primary border border-primary/30">
               {{ capitalizeChip(article.category || 'Berita') }}
             </span>
             <span
-              class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider"
+              class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider"
               :class="article.status === 'published' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'"
             >
               {{ article.status === 'published' ? t('organizer_news.detail.status_published', 'Terbit') : t('organizer_news.detail.status_draft', 'Draf') }}
@@ -162,7 +162,7 @@
               <span>{{ t('organizer_news.detail.status_heading', 'Status & Publikasi') }}</span>
             </h3>
             <span
-              class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider"
+              class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider"
               :class="article.status === 'published' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-700 border border-slate-200'"
             >
               {{ article.status === 'published' ? t('organizer_news.detail.status_published', 'Terbit') : t('organizer_news.detail.status_draft', 'Draf') }}

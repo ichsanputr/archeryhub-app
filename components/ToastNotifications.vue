@@ -57,7 +57,7 @@ const getIconClasses = (type) => {
     <div class="fixed top-4 right-4 !z-[9999999] space-y-2 max-w-sm">
       <TransitionGroup name="toast" tag="div" class="space-y-2">
         <div v-for="toast in toasts" :key="toast.id" :class="[
-          'flex items-center p-4 rounded-lg border shadow-lg transition-all duration-300',
+          'flex items-center p-4 rounded-2xl border shadow-xl transition-all duration-300',
           getToastClasses(toast.type)
         ]">
           <div>
@@ -68,7 +68,7 @@ const getIconClasses = (type) => {
           <div class="flex items-center space-x-2">
             <!-- Action Button -->
             <button v-if="toast.action" @click="toast.action.onClick"
-              class="px-3 py-1 text-xs font-medium rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
+              class="px-3 py-1.5 text-xs font-bold rounded-xl bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
               {{ toast.action.label }}
             </button>
             <!-- Close Button -->

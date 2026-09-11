@@ -55,19 +55,22 @@
             <!-- Initial Loading State -->
             <div v-if="loading && scorekeepers.length === 0"
                 class="flex flex-col items-center justify-center py-24 gap-4">
-                <div class="h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
+                <Icon icon="ph:spinner-bold" class="text-4xl text-primary animate-spin" />
                 <div class="text-center">
-                    <div class="text-navy font-bold">{{ t('common.loading', 'Memuat...') }}</div>
+                    <div class="text-navy font-bold text-sm">{{ t('common.loading', 'Memuat...') }}</div>
                     <div class="text-xs text-gray-400 font-medium">{{ t('organizer.scorekeepers.loading_desc', 'Menyiapkan profil staff') }}</div>
                 </div>
             </div>
 
             <!-- Empty State -->
             <div v-else-if="!loading && scorekeepers.length === 0"
-                class="flex flex-col items-center justify-center py-24 px-6 text-center">
+                class="flex flex-col items-center justify-center py-20 px-6 text-center">
+                <div class="size-16 rounded-2xl bg-gray-50 flex items-center justify-center mb-4 text-gray-300 border border-gray-100 shadow-2xs">
+                    <Icon icon="ph:user-focus-duotone" class="text-3xl text-gray-400" />
+                </div>
                 <div class="space-y-2 max-w-sm">
-                    <h3 class="text-2xl font-black text-navy tracking-tight">{{ t('organizer.scorekeepers.empty_title', 'Belum Ada Staff') }}</h3>
-                    <div class="text-sm text-gray-500 leading-relaxed">
+                    <h3 class="text-xl font-black text-navy tracking-tight">{{ t('organizer.scorekeepers.empty_title', 'Belum Ada Staff') }}</h3>
+                    <div class="text-xs text-gray-500 leading-relaxed">
                         {{ t('organizer.scorekeepers.empty_desc', 'Daftarkan akun staff pencatat skor untuk membantu penyelenggara Anda dalam mengelola nilai dan hasil pertandingan di lapangan.') }}
                     </div>
                 </div>
@@ -76,17 +79,17 @@
             <!-- No Results State -->
             <div v-else-if="!loading && filteredScorekeepers.length === 0"
                 class="flex flex-col items-center justify-center py-32 px-6 text-center">
-                <div class="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 text-gray-300">
-                    <Icon icon="ph:magnifying-glass-duotone" class="text-4xl" />
+                <div class="size-16 bg-gray-50 rounded-2xl flex items-center justify-center mb-4 text-gray-300 border border-gray-100 shadow-2xs">
+                    <Icon icon="ph:magnifying-glass-duotone" class="text-3xl text-gray-400" />
                 </div>
-                <div class="space-y-1 mb-8">
+                <div class="space-y-1 mb-6">
                     <h3 class="text-lg font-bold text-navy">{{ t('common.no_results') }}</h3>
                     <div class="text-sm text-gray-500 max-w-xs mx-auto">
                         {{ t('common.no_results_desc') }} "<span class="font-bold text-navy">{{ searchQuery
                             }}</span>".
                     </div>
                 </div>
-                <BaseButton @click="searchQuery = ''" variant="white" size="sm" class="font-bold">
+                <BaseButton @click="searchQuery = ''" variant="white" size="sm" class="font-bold text-xs rounded-xl">
                     {{ t('common.clear_search') }}
                 </BaseButton>
             </div>
@@ -97,7 +100,7 @@
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
                             <th @click="toggleSort('name')"
-                                class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                class="px-6 py-4 text-[10px] font-black text-slate-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
                                     {{ t('organizer.scorekeepers.table_profile') }}
                                     <Icon v-if="sortBy === 'name'"
@@ -107,7 +110,7 @@
                                 </div>
                             </th>
                             <th @click="toggleSort('code')"
-                                class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                class="px-6 py-4 text-[10px] font-black text-slate-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
                                     {{ t('organizer.scorekeepers.table_code') }}
                                     <Icon v-if="sortBy === 'code'"
@@ -117,7 +120,7 @@
                                 </div>
                             </th>
                             <th @click="toggleSort('status')"
-                                class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                class="px-6 py-4 text-[10px] font-black text-slate-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
                                     {{ t('organizer.scorekeepers.table_status') }}
                                     <Icon v-if="sortBy === 'status'"
@@ -127,7 +130,7 @@
                                 </div>
                             </th>
                             <th @click="toggleSort('created_at')"
-                                class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                class="px-6 py-4 text-[10px] font-black text-slate-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
                                     {{ t('organizer.scorekeepers.table_joined') }}
                                     <Icon v-if="sortBy === 'created_at'"
@@ -136,7 +139,7 @@
                                     <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                                 </div>
                             </th>
-                            <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right">
+                            <th class="px-6 py-4 text-[10px] font-black text-slate-400 tracking-widest text-right">
                                 {{ t('common.actions') }}</th>
                         </tr>
                     </thead>
@@ -160,9 +163,9 @@
                             </td>
                             <td class="px-6 py-5">
                                 <span
-                                    :class="sk.status === 'active' ? 'bg-green-50 text-green-700 border-green-100' : 'bg-red-50 text-red-700 border-red-100'"
-                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg  text-xs font-bold border capitalize tracking-wider">
-                                    <span :class="sk.status === 'active' ? 'bg-green-500' : 'bg-red-500'"
+                                    :class="sk.status === 'active' ? 'bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-400' : 'bg-red-50 text-red-700 border-red-100 dark:bg-red-950/40 dark:text-red-400'"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black border tracking-widest">
+                                    <span :class="sk.status === 'active' ? 'bg-emerald-500' : 'bg-red-500'"
                                         class="h-1.5 w-1.5 rounded-full"></span>
                                     {{ sk.status === 'active' ? t('common.active') : t('common.inactive') }}
                                 </span>

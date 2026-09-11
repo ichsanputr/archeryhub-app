@@ -458,6 +458,10 @@ const route = useRoute()
 const { get } = useApi()
 
 const reference = computed(() => route.params.reference as string)
+
+useHead({
+  title: computed(() => (t ? t('payment_detail.page_title', 'Detail Pembayaran') : 'Detail Pembayaran') + ` #${reference.value} - Archeris Dashboard`)
+})
 const isLoading = ref(true)
 const showImageModal = ref(false)
 const selectedImage = ref('')

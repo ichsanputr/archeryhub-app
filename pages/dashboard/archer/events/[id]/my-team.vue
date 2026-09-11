@@ -39,23 +39,23 @@
 
     <!-- Empty State: Not In Any Team -->
     <div v-else-if="!team"
-      class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm p-8 sm:p-14 text-center w-full flex flex-col items-center justify-center space-y-6">
-      <div class="size-20 bg-slate-50 dark:bg-slate-700/50 rounded-3xl flex items-center justify-center mx-auto text-slate-300 border border-slate-100 dark:border-slate-700">
+      class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200/90 dark:border-slate-700 shadow-xs p-8 sm:p-14 text-center w-full flex flex-col items-center justify-center space-y-6">
+      <div class="size-20 rounded-3xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200/80 dark:border-slate-600 flex items-center justify-center text-slate-400 shadow-2xs">
         <Icon icon="ph:users-three-bold" class="text-4xl text-slate-400" />
       </div>
       <div class="space-y-2 max-w-lg mx-auto">
         <h3 class="text-xl font-black text-navy dark:text-white tracking-tight">
           {{ t('my_team.not_in_team_title', 'Belum Terdaftar di Tim') }}
         </h3>
-        <div class="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+        <p class="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
           {{ t('my_team.not_in_team_desc', 'Anda terdaftar pada kategori individu atau belum dimasukkan ke dalam susunan regu/tim oleh ofisial klub maupun panitia pertandingan.') }}
-        </div>
+        </p>
       </div>
       <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
-        <NuxtLink :to="`/dashboard/archer/events/${eventId}/overview`"
-          class="inline-flex items-center gap-2 px-6 py-3 bg-navy hover:bg-navy/90 text-white text-xs font-bold rounded-xl transition-all shadow-sm">
-          <Icon icon="ph:house-bold" class="text-primary text-base" />
-          <span>{{ t('my_team.btn_overview', 'Ringkasan Event') }}</span>
+        <NuxtLink :to="`/dashboard/archer/events/${eventId}/overview`">
+          <BaseButton variant="primary" icon="ph:arrow-left-bold" class="font-bold text-xs h-11 px-6 shadow-sm shadow-primary/20">
+            {{ t('my_team.btn_overview', 'Kembali ke Ringkasan Event') }}
+          </BaseButton>
         </NuxtLink>
       </div>
     </div>

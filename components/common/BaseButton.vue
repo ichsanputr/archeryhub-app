@@ -3,32 +3,30 @@
     <NuxtLink v-if="to" :to="to" :disabled="disabled || loading"
         class="inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         :class="[sizeClass, variantClass, (fullWidth || block) ? 'w-full' : '']" @click="$emit('click', $event)">
-        <LoadingSpinner v-if="loading" size="sm" />
-        <template v-else>
-            <Icon v-if="icon && isIconify(icon)" :icon="icon" :class="iconSizeClass" />
-            <span v-else-if="icon" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ icon }}</span>
-            <slot />
-            <Icon v-if="iconRight && isIconify(iconRight)" :icon="iconRight" :class="iconSizeClass" />
-            <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
-                }}</span>
+        <template v-if="loading">
+            <LoadingSpinner size="sm" />
+            <span v-if="loadingText" class="ml-1">{{ loadingText }}</span>
         </template>
-        <span v-if="!loading && loadingText" class="ml-2">{{ loadingText }}</span>
+        <template v-else>
+            <Icon v-if="icon" :icon="formatIcon(icon)" :class="iconSizeClass" />
+            <slot />
+            <Icon v-if="iconRight" :icon="formatIcon(iconRight)" :class="iconSizeClass" />
+        </template>
     </NuxtLink>
 
     <!-- Use regular button otherwise -->
     <button v-else :type="type" :disabled="disabled || loading"
         class="inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         :class="[sizeClass, variantClass, (fullWidth || block) ? 'w-full' : '']" @click="$emit('click', $event)">
-        <LoadingSpinner v-if="loading" size="sm" />
-        <template v-else>
-            <Icon v-if="icon && isIconify(icon)" :icon="icon" :class="iconSizeClass" />
-            <span v-else-if="icon" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ icon }}</span>
-            <slot />
-            <Icon v-if="iconRight && isIconify(iconRight)" :icon="iconRight" :class="iconSizeClass" />
-            <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
-                }}</span>
+        <template v-if="loading">
+            <LoadingSpinner size="sm" />
+            <span v-if="loadingText" class="ml-1">{{ loadingText }}</span>
         </template>
-        <span v-if="!loading && loadingText" class="ml-2">{{ loadingText }}</span>
+        <template v-else>
+            <Icon v-if="icon" :icon="formatIcon(icon)" :class="iconSizeClass" />
+            <slot />
+            <Icon v-if="iconRight" :icon="formatIcon(iconRight)" :class="iconSizeClass" />
+        </template>
     </button>
 </template>
 
@@ -87,7 +85,10 @@ const props = defineProps({
 defineEmits(['click'])
 
 
-const isIconify = (iconPath) => iconPath.includes(':')
+const formatIcon = (iconPath) => {
+    if (!iconPath) return ''
+    return iconPath.includes(':') ? iconPath : `ph:${iconPath}`
+}
 
 const variantClass = computed(() => {
     const variants = {

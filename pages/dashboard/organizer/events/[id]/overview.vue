@@ -1,69 +1,29 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
-        <!-- Enhanced Header -->
-        <div
-            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-
-            <!-- Decorative Background Elements -->
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-            <!-- Header Content -->
-            <div class="relative p-6 sm:p-8">
-                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                    <div class="flex items-start gap-4">
-                        <!-- Icon Badge -->
-                        <div
-                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-                            <Icon icon="ph:calendar-check" class="text-white text-2xl" />
-                        </div>
-
-                        <!-- Title Section -->
-                        <div class="flex-1">
-                            <div v-if="isLoading" class="space-y-3">
-                                <div class="h-8 w-64 bg-white/10 animate-pulse rounded-lg"></div>
-                                <div class="h-4 w-48 bg-white/5 animate-pulse rounded"></div>
-                                <div class="h-4 w-24 bg-white/5 animate-pulse rounded"></div>
-                            </div>
-                            <template v-else>
-                                <div class="flex items-center gap-3 mb-2">
-                                    <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">
-                                        {{ event?.name || $t('dashboard_event_overview.summary_title') }}
-                                    </h1>
-                                </div>
-                                <div v-if="event" class="text-slate-300 text-sm mb-2">
-                                    {{ event.venue || $t('dashboard_event_overview.venue_fallback') }} • {{ event.location || $t('dashboard_event_overview.address_fallback') }}
-                                </div>
-                                <div class="flex flex-wrap items-center gap-4">
-                                    <div
-                                        class="flex items-center gap-2 text-slate-300 text-xs font-bold  tracking-wider">
-                                        <Icon icon="ph:hash-bold" class="text-white text-sm" />
-                                        <span>{{ event?.code }}</span>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex flex-wrap gap-3 flex-shrink-0">
-                        <BaseButton v-if="event?.status === 'draft'" variant="primary" icon="ph:rocket-launch-bold"
-                            class="h-11 px-5 shadow-sm font-bold" @click="showQuotaModal = true">
-                            {{ $t('dashboard_event_overview.publish', 'Publikasikan') }}
-                        </BaseButton>
-                        <BaseButton variant="white" icon="ph:share-network-bold"
-                            class="h-11 px-5 border-white/20 shadow-sm font-bold" @click="openShareDialog">
-                            {{ $t('dashboard_event_overview.share_button') }}
-                        </BaseButton>
-                    </div>
+        <!-- Header -->
+        <DashboardHeader
+            :title="event?.name || t('dashboard_event_overview.summary_title', 'Ringkasan Event')"
+            :subtitle="event ? `${event.venue || t('dashboard_event_overview.venue_fallback', 'Venue Belum Diatur')} • ${event.location || t('dashboard_event_overview.address_fallback', 'Lokasi')}` : t('dashboard_event_overview.summary_title', 'Ringkasan Event')"
+            icon="ph:calendar-check"
+            :breadcrumbs="[
+                { label: 'Dashboard', to: '/dashboard/organizer' },
+                { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/events' },
+                { label: event?.name || t('dashboard_event_overview.summary_title', 'Ringkasan Event') }
+            ]"
+        >
+            <template #actions>
+                <div class="flex flex-wrap items-center gap-3 shrink-0">
+                    <BaseButton v-if="event?.status === 'draft'" variant="primary" icon="ph:rocket-launch-bold"
+                        class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest" @click="showQuotaModal = true">
+                        {{ t('dashboard_event_overview.publish', 'Publikasikan') }}
+                    </BaseButton>
+                    <BaseButton variant="white" icon="ph:share-network-bold"
+                        class="h-10 sm:h-11 px-5 border-white/20 shadow-sm font-bold text-xs sm:text-sm" @click="openShareDialog">
+                        {{ t('dashboard_event_overview.share_button', 'Bagikan') }}
+                    </BaseButton>
                 </div>
-            </div>
-        </div>
+            </template>
+        </DashboardHeader>
 
         <!-- Main Content (Overview) -->
 
@@ -302,7 +262,7 @@
                             </h3>
                             <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{{ $t('dashboard_event_overview.top_archers_badge', 'Top 6 Pemanah') }}</span>
                         </div>
-                        <div class="flex-1 overflow-y-auto max-h-[460px] p-4">
+                        <div class="flex-1 overflow-y-auto max-h-[460px] p-4 custom-scrollbar">
                             <div class="space-y-3">
                                 <div v-for="(participant, idx) in topParticipants" :key="participant.id"
                                     @click="navigateTo(`/dashboard/events/${route.params.id}/participants/${participant.athlete_code || participant.id}`)"
@@ -425,9 +385,9 @@
         <!-- Share Dialog (Teleported) -->
         <ClientOnly>
             <Teleport to="body">
-                <div v-if="showShareDialog" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                <div v-if="showShareDialog" class="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <!-- Backdrop -->
-                    <div class="share-dialog-backdrop absolute inset-0 bg-navy-dark/80 backdrop-blur-sm"
+                    <div class="share-dialog-backdrop absolute inset-0 bg-navy/60 backdrop-blur-sm"
                         @click="closeShareDialog"></div>
 
                     <!-- Dialog Card -->
@@ -436,7 +396,7 @@
                         <!-- Decorative Border Top -->
                         <div class="bg-primary h-1.5 w-full"></div>
 
-                        <div class="p-8">
+                        <div class="p-6 sm:p-8">
                             <!-- Close Button -->
                             <BaseButton @click="closeShareDialog" variant="white" size="sm" icon="ph:x-bold"
                                 class="absolute right-6 top-6 h-10 w-10 p-0 border-none shadow-none text-gray-400 hover:text-navy" />
@@ -504,53 +464,155 @@
             <!-- Quota Selection Modal -->
             <Teleport to="body">
                 <div v-if="showQuotaModal"
-                    class="fixed inset-0 z-[110] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+                    class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
                     <div class="fixed inset-0 bg-navy/60 backdrop-blur-sm transition-opacity"
                         @click="showQuotaModal = false"></div>
                     <div class="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 z-10 border border-slate-100">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-4">
                             <div class="flex items-center gap-3">
-                                <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                    <Icon icon="ph:rocket-launch-bold" class="text-primary text-xl" />
+                                <div class="size-10 rounded-xl bg-primary/20 text-navy flex items-center justify-center shadow-xs">
+                                    <Icon icon="ph:rocket-launch-bold" class="text-navy text-xl" />
                                 </div>
                                 <div>
-                                    <h3 class="font-black text-navy text-lg">{{ $t('dashboard_event_overview.quota_modal.title', 'Pilih Tier Event') }}</h3>
-                                    <div class="text-xs text-slate-500">{{ $t('dashboard_event_overview.quota_modal.desc', 'Gunakan quota event Anda untuk mempublikasikan.') }}</div>
+                                    <h3 class="font-black text-navy text-lg leading-tight">{{ $t('dashboard_event_overview.quota_modal.title', 'Pilih Tier Event') }}</h3>
+                                    <div class="text-xs text-slate-500 font-medium">{{ $t('dashboard_event_overview.quota_modal.desc', 'Gunakan quota event Anda untuk mempublikasikan.') }}</div>
                                 </div>
                             </div>
-                            <button @click="showQuotaModal = false" class="text-slate-400 hover:text-navy p-1">
-                                <Icon icon="ph:x-bold" class="text-lg" />
+                            <button @click="showQuotaModal = false" class="size-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-400 hover:text-navy flex items-center justify-center transition-colors">
+                                <Icon icon="ph:x-bold" class="text-base" />
                             </button>
                         </div>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <!-- Standard -->
-                            <button @click="confirmPublish('standard')" class="text-left bg-white rounded-2xl border-2 border-slate-100 hover:border-primary p-5 transition-all group">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <div class="size-10 rounded-xl bg-amber-100 flex items-center justify-center">
-                                        <Icon icon="ph:lightning-bold" class="text-amber-600 text-xl" />
+                            <!-- Standard Tier -->
+                            <div :class="[
+                                'rounded-2xl border-2 p-5 transition-all flex flex-col justify-between',
+                                (quotaData?.quota_standard || 0) > 0
+                                    ? 'border-slate-200 hover:border-primary bg-white shadow-xs'
+                                    : 'border-slate-200/80 bg-slate-50/70'
+                            ]">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 mb-3">
+                                        <div class="size-10 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600">
+                                            <Icon icon="ph:lightning-bold" class="text-xl" />
+                                        </div>
+                                        <span :class="[
+                                            'px-2 py-0.5 rounded-md text-[10px] font-black',
+                                            (quotaData?.quota_standard || 0) > 0 ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-600'
+                                        ]">
+                                            {{ (quotaData?.quota_standard || 0) > 0 ? `${quotaData.quota_standard} Sisa` : '0 Kuota' }}
+                                        </span>
                                     </div>
-                                    <div>
-                                        <div class="text-[10px] font-black text-gray-400 tracking-widest">STANDARD</div>
-                                        <div class="text-xl font-black text-navy">{{ quotaData?.quota_standard || 0 }} <span class="text-xs font-normal text-gray-500">quota</span></div>
-                                    </div>
+                                    <div class="text-[10px] font-black text-slate-400 tracking-widest">STANDARD</div>
+                                    <div class="text-xl font-black text-navy">{{ quotaData?.quota_standard || 0 }} <span class="text-xs font-normal text-slate-400">kuota</span></div>
+                                    <div class="text-xs text-slate-500 mt-2 leading-relaxed font-medium">{{ $t('dashboard_event_overview.quota_modal.standard_desc', 'Maksimal 200 peserta, 10 kategori, 3 scorekeeper.') }}</div>
                                 </div>
-                                <div class="text-xs text-gray-500 mt-2">{{ $t('dashboard_event_overview.quota_modal.standard_desc', 'Maksimal 200 peserta, 10 kategori, 3 scorekeeper.') }}</div>
-                            </button>
 
-                            <!-- Elite -->
-                            <button @click="confirmPublish('elite')" class="text-left bg-white rounded-2xl border-2 border-slate-100 hover:border-primary p-5 transition-all group">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <div class="size-10 rounded-xl bg-purple-100 flex items-center justify-center">
-                                        <Icon icon="ph:crown-simple-bold" class="text-purple-600 text-xl" />
-                                    </div>
-                                    <div>
-                                        <div class="text-[10px] font-black text-gray-400 tracking-widest">ELITE</div>
-                                        <div class="text-xl font-black text-navy">{{ quotaData?.quota_elite || 0 }} <span class="text-xs font-normal text-gray-500">quota</span></div>
-                                    </div>
+                                <div class="pt-4 mt-2">
+                                    <BaseButton
+                                        v-if="(quotaData?.quota_standard || 0) > 0"
+                                        @click="confirmPublish('standard')"
+                                        variant="primary" size="sm" block class="font-black">
+                                        {{ $t('dashboard_event_overview.publish', 'Publikasikan') }}
+                                    </BaseButton>
+                                    <BaseButton
+                                        v-else
+                                        to="/dashboard/organizer/package"
+                                        variant="outline" size="sm" block class="font-bold text-xs text-amber-700 border-amber-300 hover:bg-amber-50">
+                                        {{ $t('dashboard_event_overview.quota_modal.get_quota', 'Dapatkan Kuota') }}
+                                    </BaseButton>
                                 </div>
-                                <div class="text-xs text-gray-500 mt-2">{{ $t('dashboard_event_overview.quota_modal.elite_desc', 'Tanpa batas peserta, kategori, scorekeeper.') }}</div>
-                            </button>
+                            </div>
+
+                            <!-- Elite Tier -->
+                            <div :class="[
+                                'rounded-2xl border-2 p-5 transition-all flex flex-col justify-between',
+                                (quotaData?.quota_elite || 0) > 0
+                                    ? 'border-slate-200 hover:border-primary bg-white shadow-xs'
+                                    : 'border-slate-200/80 bg-slate-50/70'
+                            ]">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2 mb-3">
+                                        <div class="size-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600">
+                                            <Icon icon="ph:crown-simple-bold" class="text-xl" />
+                                        </div>
+                                        <span :class="[
+                                            'px-2 py-0.5 rounded-md text-[10px] font-black',
+                                            (quotaData?.quota_elite || 0) > 0 ? 'bg-purple-100 text-purple-800' : 'bg-slate-200 text-slate-600'
+                                        ]">
+                                            {{ (quotaData?.quota_elite || 0) > 0 ? `${quotaData.quota_elite} Sisa` : '0 Kuota' }}
+                                        </span>
+                                    </div>
+                                    <div class="text-[10px] font-black text-slate-400 tracking-widest">ELITE</div>
+                                    <div class="text-xl font-black text-navy">{{ quotaData?.quota_elite || 0 }} <span class="text-xs font-normal text-slate-400">kuota</span></div>
+                                    <div class="text-xs text-slate-500 mt-2 leading-relaxed font-medium">{{ $t('dashboard_event_overview.quota_modal.elite_desc', 'Tanpa batas peserta, kategori, scorekeeper.') }}</div>
+                                </div>
+
+                                <div class="pt-4 mt-2">
+                                    <BaseButton
+                                        v-if="(quotaData?.quota_elite || 0) > 0"
+                                        @click="confirmPublish('elite')"
+                                        variant="primary" size="sm" block class="font-black">
+                                        {{ $t('dashboard_event_overview.publish', 'Publikasikan') }}
+                                    </BaseButton>
+                                    <BaseButton
+                                        v-else
+                                        to="/dashboard/organizer/package"
+                                        variant="outline" size="sm" block class="font-bold text-xs text-purple-700 border-purple-300 hover:bg-purple-50">
+                                        {{ $t('dashboard_event_overview.quota_modal.get_quota', 'Dapatkan Kuota') }}
+                                    </BaseButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Teleport>
+
+            <!-- Zero / Insufficient Quota Modal (Flow Error Handler) -->
+            <Teleport to="body">
+                <div v-if="showInsufficientQuotaModal"
+                    class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+                    <div class="fixed inset-0 bg-navy/60 backdrop-blur-sm transition-opacity"
+                        @click="showInsufficientQuotaModal = false"></div>
+                    <div class="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 z-10 border border-slate-100 text-center">
+                        <div class="size-16 rounded-2xl bg-amber-50 border border-amber-200/60 text-amber-600 flex items-center justify-center mx-auto shadow-xs">
+                            <Icon icon="ph:crown-simple-bold" class="text-3xl" />
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-black text-navy tracking-tight">
+                                {{ $t('dashboard_event_overview.quota_modal.insufficient_title', 'Kuota Event Tidak Mencukupi') }}
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
+                                {{ $t('dashboard_event_overview.quota_modal.insufficient_desc', 'Anda tidak memiliki kuota event yang cukup untuk mempublikasikan turnamen ini. Klaim promo gratis 3 bulan atau beli kuota tambahan.') }}
+                            </p>
+                        </div>
+
+                        <!-- Quota Balance Card -->
+                        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 grid grid-cols-2 gap-3 text-center">
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200/60">
+                                <div class="text-[10px] font-black text-slate-400 tracking-wider">STANDARD EO</div>
+                                <div class="text-lg font-black text-navy mt-0.5">{{ quotaData?.quota_standard || 0 }}</div>
+                            </div>
+                            <div class="p-2.5 bg-white rounded-xl border border-slate-200/60">
+                                <div class="text-[10px] font-black text-slate-400 tracking-wider">ELITE EO</div>
+                                <div class="text-lg font-black text-navy mt-0.5">{{ quotaData?.quota_elite || 0 }}</div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="space-y-2.5 pt-1">
+                            <BaseButton
+                                to="/dashboard/organizer/package"
+                                variant="primary" size="lg" block icon="ph:sparkle-bold" class="font-black">
+                                {{ $t('dashboard_event_overview.quota_modal.claim_or_buy_btn', 'Klaim / Beli Kuota Event') }}
+                            </BaseButton>
+                            
+                            <BaseButton
+                                @click="showInsufficientQuotaModal = false"
+                                variant="white" size="md" block class="font-bold">
+                                {{ $t('dashboard_event_overview.quota_modal.cancel', 'Nanti Saja') }}
+                            </BaseButton>
                         </div>
                     </div>
                 </div>
@@ -608,16 +670,20 @@ const { quotaData, fetchQuota } = useSubscription()
 const toast = useToast()
 const router = useRouter()
 const showQuotaModal = ref(false)
+const showInsufficientQuotaModal = ref(false)
 
 const confirmPublish = async (tier) => {
-    if (tier === 'standard' && (quotaData.value?.quota_standard || 0) <= 0) {
-        toast.error(t('dashboard_event_overview.quota_modal.insufficient_standard', 'Quota Standard tidak mencukupi. Silakan beli quota terlebih dahulu.'))
-        router.push('/dashboard/organizer/package')
+    const stdQuota = quotaData.value?.quota_standard || 0
+    const eliteQuota = quotaData.value?.quota_elite || 0
+
+    if (tier === 'standard' && stdQuota <= 0) {
+        showQuotaModal.value = false
+        showInsufficientQuotaModal.value = true
         return
     }
-    if (tier === 'elite' && (quotaData.value?.quota_elite || 0) <= 0) {
-        toast.error(t('dashboard_event_overview.quota_modal.insufficient_elite', 'Quota Elite tidak mencukupi. Silakan beli quota terlebih dahulu.'))
-        router.push('/dashboard/organizer/package')
+    if (tier === 'elite' && eliteQuota <= 0) {
+        showQuotaModal.value = false
+        showInsufficientQuotaModal.value = true
         return
     }
     
@@ -870,11 +936,19 @@ const publishEvent = async (tier = 'standard') => {
     isPublishing.value = true
     try {
         await post(`/events/${route.params.id}/publish?quota_type=${tier}`)
+        toast.success(t('dashboard_event_overview.quota_modal.publish_success', 'Event berhasil dipublikasikan!'))
         await fetchEventDetails()
         await fetchQuota() // Refresh quota
     } catch (error) {
         console.error('Failed to publish event:', error)
-        toast.error('Gagal mempublikasikan event')
+        const errMsg = error?.data?.error || error?.response?.data?.error || error?.message || ''
+        const code = error?.data?.code || error?.response?.data?.code || ''
+        
+        if (code === 'quota_insufficient' || errMsg.toLowerCase().includes('quota') || errMsg.toLowerCase().includes('kuota') || error?.status === 402 || error?.status === 403) {
+            showInsufficientQuotaModal.value = true
+        } else {
+            toast.error(errMsg || t('dashboard_event_overview.publish_failed', 'Gagal mempublikasikan event'))
+        }
     } finally {
         isPublishing.value = false
     }
@@ -931,18 +1005,32 @@ const getRankClass = (idx) => {
 </script>
 
 <style scoped>
+.custom-scrollbar::-webkit-scrollbar,
 .scrollbar-thin::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
 }
 
+.custom-scrollbar::-webkit-scrollbar-track,
 .scrollbar-thin::-webkit-scrollbar-track {
     background: transparent;
 }
 
+.custom-scrollbar::-webkit-scrollbar-thumb,
 .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: #e2e8f0;
-    border-radius: 10px;
+    background: #cbd5e1;
+    border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover,
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.custom-scrollbar,
+.scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
 }
 
 .no-scrollbar::-webkit-scrollbar {

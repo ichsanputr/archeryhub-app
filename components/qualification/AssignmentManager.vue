@@ -2,15 +2,15 @@
     <div class="space-y-6">
         <!-- Auto Assign Section -->
         <div class="bg-gray-50 rounded-xl p-5 border border-gray-200">
-            <h4 class="font-bold text-navy mb-4">Atur Target Otomatis</h4>
+            <h4 class="font-bold text-navy mb-4">{{ t('event_qualification.auto_assign_target', 'Atur Target Otomatis') }}</h4>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <BaseInput v-model.number="autoAssignParams.start_target" type="number" label="Target Awal"
+                <BaseInput v-model.number="autoAssignParams.start_target" type="number" :label="t('event_qualification.start_target', 'Target Awal')"
                     placeholder="1" />
-                <BaseInput v-model.number="autoAssignParams.archers_per_target" type="number" label="Atlet per Target"
+                <BaseInput v-model.number="autoAssignParams.archers_per_target" type="number" :label="t('event_qualification.archers_per_target', 'Atlet per Target')"
                     placeholder="4" />
                 <div class="flex items-end">
                     <BaseButton variant="primary" icon="ph:magic-wand" @click="autoAssign" :loading="assigning" block>
-                        Atur Otomatis
+                        {{ t('event_qualification.auto_assign_btn', 'Atur Otomatis') }}
                     </BaseButton>
                 </div>
             </div>
@@ -18,14 +18,14 @@
 
         <!-- Assignments List -->
         <div v-if="loading" class="text-center py-12">
-            <div class="inline-block h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin">
-            </div>
-            <p class="text-sm text-gray-500 mt-3">Memuat data...</p>
+            <Icon icon="ph:spinner-bold" class="text-3xl text-primary animate-spin inline-block" />
+            <p class="text-sm text-gray-500 mt-3">{{ t('common.loading', 'Memuat data...') }}</p>
         </div>
 
         <div v-else-if="assignments.length === 0" class="text-center py-12">
-            <p class="text-gray-500">Belum ada peserta yang diatur ke target</p>
-            <p class="text-sm text-gray-400 mt-1">Gunakan fitur atur otomatis di atas</p>
+            <Icon icon="ph:users-three" class="text-4xl text-gray-300 mx-auto mb-2" />
+            <p class="text-gray-500 font-medium">{{ t('event_qualification.empty_target_assignment', 'Belum ada peserta yang diatur ke target') }}</p>
+            <p class="text-sm text-gray-400 mt-1">{{ t('event_qualification.use_auto_assign', 'Gunakan fitur atur otomatis di atas') }}</p>
         </div>
 
         <div v-else class="space-y-6">
@@ -77,6 +77,7 @@ const props = defineProps({
 
 const emit = defineEmits(['updated'])
 
+const { t } = useI18n()
 const { get, post, delete: del } = useApi()
 const toast = useToast()
 

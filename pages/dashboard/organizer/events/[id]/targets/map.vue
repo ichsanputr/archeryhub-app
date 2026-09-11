@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
     <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
@@ -93,6 +93,10 @@ const route = useRoute()
 const { get } = useApi()
 
 const eventId = computed(() => route.params.id as string)
+
+useHead({
+  title: computed(() => (t ? t('org_targets.map_title', 'Peta Target Bantalan') : 'Peta Target Bantalan') + ' - Archeris Dashboard')
+})
 const isLoading = ref(false)
 const sessions = ref<any[]>([])
 const selectedSession = ref('')

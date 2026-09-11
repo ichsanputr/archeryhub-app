@@ -11,7 +11,8 @@
 
     <!-- Dropdown Panel -->
     <div v-if="isClubDropdownOpen" 
-        class="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 p-4 max-h-[320px] overflow-y-auto space-y-3 animate-in fade-in slide-in-from-top-1 duration-150">
+        class="absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 p-4 max-h-[320px] overflow-y-auto space-y-3 duration-150"
+        :class="isFlippedTop ? 'bottom-full mb-1 origin-bottom animate-in fade-in slide-in-from-bottom-1' : 'top-full mt-1 origin-top animate-in fade-in slide-in-from-top-1'">
         
         <!-- Search / List Mode -->
         <div v-if="!isCreatingNewClub" class="space-y-3">
@@ -73,6 +74,7 @@ import { Icon } from '@iconify/vue'
 import { ref, computed, watch, onMounted } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { useApi } from '~/composables/useApi'
+import { useDropdownPosition } from '~/composables/useDropdownPosition'
 
 const props = defineProps({
   modelValue: { type: String, default: '' },
@@ -102,6 +104,8 @@ const newClubForm = ref({
 })
 
 const clubSelectContainer = ref(null)
+const { isFlippedTop } = useDropdownPosition(clubSelectContainer, isClubDropdownOpen, { panelHeight: 320 })
+
 onClickOutside(clubSelectContainer, () => {
     isClubDropdownOpen.value = false
 })

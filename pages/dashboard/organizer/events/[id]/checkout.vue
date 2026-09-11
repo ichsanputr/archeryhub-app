@@ -6,11 +6,11 @@
                 <NuxtLink to="/dashboard"
                     class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">Dashboard
                 </NuxtLink>
-                <span class="material-symbols-outlined text-gray-300 text-sm">chevron_right</span>
+                <Icon icon="ph:caret-right-bold" class="text-gray-300 text-sm" />
                 <NuxtLink :to="`/dashboard/${userPersona}/events`"
                     class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">Events
                 </NuxtLink>
-                <span class="material-symbols-outlined text-gray-300 text-sm">chevron_right</span>
+                <Icon icon="ph:caret-right-bold" class="text-gray-300 text-sm" />
                 <span class="text-navy text-sm font-bold">Pembayaran</span>
             </nav>
 
@@ -28,13 +28,13 @@
             <div class="lg:col-span-2 space-y-6">
                 <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
                     <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary">credit_card</span>
+                        <Icon icon="ph:credit-card-bold" class="text-primary text-xl" />
                         Pilih Metode Pembayaran
                     </h2>
 
                     <!-- Loading State -->
                     <div v-if="isLoadingChannels" class="flex items-center justify-center py-12">
-                        <span class="material-symbols-outlined animate-spin text-4xl text-primary">sync</span>
+                        <Icon icon="ph:arrows-clockwise-bold" class="animate-spin text-4xl text-primary" />
                     </div>
 
                     <!-- Channel Groups -->
@@ -90,7 +90,7 @@
             <div class="lg:col-span-1">
                 <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm sticky top-6">
                     <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary">receipt_long</span>
+                        <Icon icon="ph:receipt-bold" class="text-primary text-xl" />
                         Ringkasan Pembayaran
                     </h2>
 
@@ -112,7 +112,7 @@
 
                     <button @click="createPayment" :disabled="!selectedChannel || isProcessing"
                         class="w-full h-12 rounded-xl bg-navy-dark text-white font-bold hover:bg-navy-light transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span v-if="isProcessing" class="material-symbols-outlined animate-spin">sync</span>
+                        <Icon v-if="isProcessing" icon="ph:arrows-clockwise-bold" class="animate-spin text-lg" />
                         <span>{{ isProcessing ? t('org_checkout.processing') : t('org_checkout.pay_now') }}</span>
                     </button>
 
@@ -126,7 +126,7 @@
         </div>
 
         <!-- Payment Instructions Modal -->
-        <AppDialog v-model:show="showInstructionsDialog" :title="t('org_checkout.instructions_title')" type="primary" icon="payments">
+        <AppDialog v-model:show="showInstructionsDialog" :title="t('org_checkout.instructions_title')" type="primary" icon="ph:credit-card-bold">
             <template #default>
                 <div class="space-y-4">
                     <div v-if="paymentData?.pay_code" class="bg-gray-50 rounded-xl p-4 text-center">

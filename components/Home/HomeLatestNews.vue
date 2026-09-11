@@ -22,13 +22,13 @@
                             class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/60 to-transparent">
                         </div>
                         <span
-                            class="absolute bottom-4 left-4 text-white text-xs font-bold bg-navy px-3 py-1 rounded-md">{{
+                            class="absolute bottom-4 left-4 text-white text-xs font-bold bg-navy px-3 py-1 rounded-full">{{
                                 news.category }}</span>
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center gap-3 text-sm text-gray-500 mb-2">
                             <span class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                <Icon icon="ph:calendar-blank-bold" class="text-sm" />
                                 {{ news.date }}
                             </span>
                         </div>
@@ -41,7 +41,7 @@
                         </div>
                         <span
                             class="text-navy font-bold text-xs sm:text-sm flex items-center gap-1">
-                            {{ $t('home.news.read_more') }} <span class="material-symbols-outlined text-sm">arrow_right_alt</span>
+                            {{ $t('home.news.read_more') }} <Icon icon="ph:arrow-right-bold" class="text-sm" />
                         </span>
                     </div>
                 </NuxtLink>

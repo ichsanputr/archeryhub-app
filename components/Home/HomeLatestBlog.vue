@@ -94,7 +94,7 @@ const { data: newsResponse } = await useAsyncData('home-news', () =>
 const articles = computed(() => {
     const rawData = newsResponse.value?.data || newsResponse.value || []
     const newsData = Array.isArray(rawData) ? rawData : []
-    const lang = locale.value === 'id' ? 'id-ID' : locale.value === 'kr' ? 'ko-KR' : 'en-US'
+    const lang = locale.value === 'id' ? 'id-ID' : 'en-US'
 
     return newsData.slice(0, 6).map(article => ({
         id: article.id || article.uuid,

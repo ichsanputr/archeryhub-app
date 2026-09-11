@@ -118,13 +118,12 @@
               <div class="shrink-0 size-32 sm:size-36 rounded-3xl bg-gradient-to-br from-navy via-navy to-navy/90 text-white p-4 flex flex-col items-center justify-center text-center shadow-md relative overflow-hidden border border-primary/30">
                 <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: 0.15;"></div>
                 <div class="relative z-10 space-y-1">
-                  <span class="text-[10px] font-black text-primary tracking-widest capitalize block">{{ t("my_target.target_badge") }}</span>
-                  <div class="text-3xl sm:text-4xl font-black text-white leading-none tracking-tight">
-                    {{ target.target_name || 'Target 01' }}
+                  <span class="text-[10px] font-black text-primary tracking-widest uppercase block">{{ t("my_target.target_badge", "TARGET") }}</span>
+                  <div class="text-3xl sm:text-4xl font-black text-white leading-none tracking-tight font-mono">
+                    {{ (target.target_name || '1').replace(/^Target\s*/i, '') }}{{ (target.target_board || 'A').toUpperCase() }}
                   </div>
-                  <div v-if="target.target_board"
-                    class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-lg bg-primary text-navy font-black text-xs tracking-wider capitalize shadow-2xs">
-                    {{ target.target_board }}
+                  <div class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-lg bg-primary text-navy font-black text-[11px] tracking-wider uppercase shadow-2xs">
+                    {{ target.target_name ? `Bantalan ${target.target_name.replace(/^Target\s*/i, '')}` : 'Bantalan 01' }}
                   </div>
                 </div>
               </div>
@@ -134,16 +133,16 @@
                 <!-- Target Number -->
                 <div class="bg-slate-50 dark:bg-slate-700/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-600/50">
                   <div class="text-slate-400 font-bold mb-1">{{ t('my_target.target_label', 'Nomor Bantalan') }}</div>
-                  <div class="font-black text-navy dark:text-white text-base">
+                  <div class="font-black text-navy dark:text-white text-base font-mono">
                     {{ target.target_name || t('my_target.not_set', 'Belum diatur') }}
                   </div>
                 </div>
 
                 <!-- Position / Board -->
                 <div class="bg-slate-50 dark:bg-slate-700/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-600/50">
-                  <div class="text-slate-400 font-bold mb-1">{{ t('my_target.board_label', 'Posisi / Gelombang') }}</div>
-                  <div class="font-black text-navy dark:text-white text-base flex items-center gap-1.5">
-                    <span>{{ formatWaveLabel(target.target_board) }}</span>
+                  <div class="text-slate-400 font-bold mb-1">{{ t('my_target.board_label', 'Posisi Pemanah') }}</div>
+                  <div class="font-black text-navy dark:text-white text-base flex items-center gap-1.5 font-mono">
+                    <span>Posisi {{ (target.target_board || 'A').toUpperCase() }}</span>
                   </div>
                 </div>
 

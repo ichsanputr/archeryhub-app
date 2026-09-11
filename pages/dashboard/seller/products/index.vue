@@ -1,35 +1,24 @@
 <template>
     <div class="flex flex-col gap-8">
-        <!-- Enhanced Header -->
-        <div
-            class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm mb-2">
-        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-
-            <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div class="flex items-center gap-5">
-                    <div
-                        class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
-                        <Icon icon="ph:package-bold" class="text-primary text-2xl sm:text-3xl" />
-                    </div>
-                    <div>
-                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none capitalize">{{ t('seller_products.title', 'Produk Toko') }}</h1>
-                        <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">
-                            {{ t('seller_products.subtitle', 'Kelola daftar produk, stok, dan harga barang Anda') }}</div>
-                    </div>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <BaseButton variant="primary" icon="ph:plus-bold"
-                        class="w-full sm:w-auto h-11 px-6 shadow-lg shadow-primary/20 font-black capitalize tracking-widest text-[10px] !rounded-xl"
-                        to="/dashboard/seller/products/add">
-                        {{ t('seller_products.add_button', 'Tambah Produk Baru') }}
-                    </BaseButton>
-                </div>
-            </div>
-        </div>
+        <!-- Standardized Dashboard Header -->
+        <DashboardHeader
+            :title="t('seller_products.title', 'Produk Toko')"
+            :subtitle="t('seller_products.subtitle', 'Kelola daftar produk, stok, dan harga barang Anda.')"
+            icon="ph:package-bold"
+            :breadcrumbs="[
+                { label: t('common.dashboard', 'Dashboard'), to: '/dashboard' },
+                { label: t('seller.title', 'Toko Saya'), to: '/dashboard/seller' },
+                { label: t('seller_products.title', 'Produk Toko') }
+            ]"
+        >
+            <template #actions>
+                <BaseButton variant="primary" icon="ph:plus-bold"
+                    class="w-full sm:w-auto h-11 px-6 shadow-lg shadow-primary/20 font-black capitalize tracking-widest text-[10px] !rounded-xl"
+                    to="/dashboard/seller/products/add">
+                    {{ t('seller_products.add_button', 'Tambah Produk Baru') }}
+                </BaseButton>
+            </template>
+        </DashboardHeader>
 
         <!-- Quick Stats -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">

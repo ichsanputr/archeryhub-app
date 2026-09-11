@@ -6,14 +6,16 @@
 import { useAuth } from '~/composables/useAuth'
 import { useEventContext } from '~/composables/useEventContext'
 import { useRouter } from 'vue-router'
-import useDashboardI18n from '~/composables/useDashboardI18n'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
+const { t } = useI18n()
+
 useHead({
-  title: computed(() => useDashboardI18n().t('organizer.events.meta_title'))
+  title: computed(() => t('events.list.title', 'Event & Turnamen Saya') + ' - Archeris')
 })
 
 const { user } = useAuth()

@@ -10,13 +10,13 @@
 
       <div v-else-if="error" class="space-y-6">
         <div class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-red-100 text-red-600">
-          <span class="material-symbols-outlined text-4xl">error</span>
+          <Icon icon="ph:warning-circle-bold" class="text-4xl" />
         </div>
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white font-display">Failed to Log In</h2>
         <div class="text-red-500 mb-6 font-body text-sm">{{ error }}</div>
         <NuxtLink to="/auth/login"
           class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-navy font-bold rounded-xl hover:bg-primary-hover transition-colors shadow-lg shadow-primary/20">
-          <span class="material-symbols-outlined">arrow_back</span>
+          <Icon icon="ph:arrow-left-bold" class="text-lg" />
           Back to Login
         </NuxtLink>
       </div>

@@ -32,10 +32,10 @@
             </div>
 
             <!-- Plan Selection Grid -->
-            <div class="lg:w-8/12 p-8 md:p-12 flex flex-col justify-center bg-slate-50/20">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="lg:w-8/12 p-5 sm:p-8 md:p-12 flex flex-col justify-center bg-slate-50/20">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                     <div v-for="plan in plans" :key="plan.id"
-                        class="bg-white p-8 rounded-[24px] border-2 transition-all duration-300 flex flex-col relative group h-full shadow-sm"
+                        class="bg-white p-5 sm:p-8 rounded-[24px] border-2 transition-all duration-300 flex flex-col relative group h-full shadow-sm"
                         :class="plan.isCurrent ? 'border-primary ring-8 ring-primary/5' : 'border-gray-100 hover:border-primary/20 hover:shadow-md'">
 
                         <div v-if="plan.isCurrent"

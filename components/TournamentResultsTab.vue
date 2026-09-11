@@ -26,7 +26,7 @@
             <template v-if="resultsType === 'manual'">
                 <div v-if="manualResults.length > 0" class="space-y-6">
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
-                        <div v-for="(file, index) in manualResults" :key="index"
+                        <div v-for="(file, index) in manualResults" :key="file.id || file.url || index"
                             class="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all duration-500 flex flex-col h-full">
 
                             <!-- Preview Area -->
@@ -286,6 +286,8 @@
                                                 <td class="px-4 py-4">
                                                     <div class="flex items-center gap-3">
                                                         <img :src="result.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${result.archer_name}`"
+                                                            :alt="result.archer_name || 'Archer'"
+                                                            @error="(e) => e.target.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(result.archer_name || 'A') + '&background=f1f5f9&color=94a3b8'"
                                                             class="size-8 rounded-full border-2 border-gray-200 object-cover" />
                                                         <span class="text-sm font-bold text-navy whitespace-nowrap">{{
                                                             result.archer_name }}</span>

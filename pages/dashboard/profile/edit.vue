@@ -195,6 +195,7 @@ import { Icon } from '@iconify/vue'
 import useDashboardI18n from '~/composables/useDashboardI18n'
 
 const { t } = useDashboardI18n()
+const toast = useToast()
 
 useHead({
     title: computed(() => t('profile.edit.head_title'), 'Edit Profil - Archeris Dashboard')
@@ -208,16 +209,20 @@ const profileData = ref({
     nationality: 'INA',
     club: 'Senayan Archery Club',
     bowType: 'recurve',
-    ageCategory: 'senior',
-    equipment: {
-        riser: 'Hoyt Formula Xi',
-        limbs: 'Hoyt Velos',
-        arrows: 'Easton X10',
-        sight: 'Axcel Achieve XP'
-    },
-    isPublic: true,
-    showStats: true
+    bowDrawWeight: '44 lbs',
+    arrows: 'Easton X10',
+    sight: 'Axcel Achieve XP'
 })
+
+const equipment = ref({
+    riser: 'Hoyt Formula Xi',
+    limbs: 'Hoyt Velos 44 lbs',
+    arrows: 'Easton X10',
+    sight: 'Axcel Achieve XP'
+})
+
+const isPublic = ref(true)
+const showStats = ref(true)
 
 const equipmentFields = [
     { key: 'riser', label: 'Riser', icon: 'ph:arrow-fat-line-right' },
@@ -229,7 +234,7 @@ const equipmentFields = [
 const saveChanges = () => {
     console.log('Saving profile...', profileData.value)
     // Logic to call API would go here
-    alert('Perubahan berhasil disimpan!')
+    toast.success('Perubahan berhasil disimpan!')
 }
 </script>
 

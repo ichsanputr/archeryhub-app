@@ -86,25 +86,25 @@
                     </div>
 
                     <!-- Filters -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                        <div class="p-6 border-b border-slate-100 flex justify-between items-center">
                             <h3 class="text-navy font-bold text-lg flex items-center gap-2">
                                 <Icon icon="ph:funnel-bold" class="text-primary" />
                                 {{ $t('events_page.filter_title') }}
                             </h3>
                             <button @click="resetFilters"
-                                class="text-sm font-bold text-gray-400 hover:text-primary transition-colors">
+                                class="text-sm font-bold text-slate-400 hover:text-navy transition-colors">
                                 {{ $t('events_page.reset_button') }}
                             </button>
                         </div>
-                        <div class="divide-y divide-gray-100">
+                        <div class="divide-y divide-slate-100">
                             <!-- Status Filter -->
                             <details class="group">
                                 <summary
-                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-gray-50 transition-colors">
+                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-slate-50 transition-colors">
                                     <span>{{ $t('events_page.status') }}</span>
                                     <Icon icon="ph:caret-down-bold"
-                                        class="transition group-open:rotate-180 text-gray-400" />
+                                        class="transition group-open:rotate-180 text-slate-400" />
                                 </summary>
                                 <div class="px-6 pb-6 text-sm space-y-3">
                                     <BaseCheckbox
@@ -128,10 +128,10 @@
                             <!-- Country Filter -->
                             <details class="group">
                                 <summary
-                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-gray-50 transition-colors">
+                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-slate-50 transition-colors">
                                     <span>{{ $t('events_page.country') }}</span>
                                     <Icon icon="ph:caret-down-bold"
-                                        class="transition group-open:rotate-180 text-gray-400" />
+                                        class="transition group-open:rotate-180 text-slate-400" />
                                 </summary>
                                 <div class="px-6 pb-6">
                                     <BaseSelect v-model="selectedCountry" :options="countrySelectOptions" class="w-full text-xs" />
@@ -141,10 +141,10 @@
                             <!-- City Filter -->
                             <details class="group">
                                 <summary
-                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-gray-50 transition-colors">
+                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-slate-50 transition-colors">
                                     <span>{{ $t('events_page.city') }}</span>
                                     <Icon icon="ph:caret-down-bold"
-                                        class="transition group-open:rotate-180 text-gray-400" />
+                                        class="transition group-open:rotate-180 text-slate-400" />
                                 </summary>
                                 <div class="px-6 pb-6">
                                     <BaseSelect v-model="selectedCity" :options="citySelectOptions" class="w-full text-xs" />
@@ -154,10 +154,10 @@
                             <!-- Category Filter -->
                             <details class="group">
                                 <summary
-                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-gray-50 transition-colors">
+                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-slate-50 transition-colors">
                                     <span>{{ $t('events_page.category') }}</span>
                                     <Icon icon="ph:caret-down-bold"
-                                        class="transition group-open:rotate-180 text-gray-400" />
+                                        class="transition group-open:rotate-180 text-slate-400" />
                                 </summary>
                                 <div class="px-6 pb-6">
                                     <BaseSelect v-model="selectedCategory" :options="categorySelectOptions" class="w-full text-xs" />
@@ -167,10 +167,10 @@
                             <!-- Organizer Filter -->
                             <details class="group">
                                 <summary
-                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-gray-50 transition-colors">
+                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-slate-50 transition-colors">
                                     <span>{{ $t('events_page.organizer') }}</span>
                                     <Icon icon="ph:caret-down-bold"
-                                        class="transition group-open:rotate-180 text-gray-400" />
+                                        class="transition group-open:rotate-180 text-slate-400" />
                                 </summary>
                                 <div class="px-6 pb-6">
                                     <BaseSelect v-model="selectedOrganizer" :options="organizerSelectOptions" class="w-full text-xs" />
@@ -185,86 +185,85 @@
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
                         <h2 class="text-lg sm:text-2xl font-black text-navy flex items-center gap-3">
                             {{ $t('events_page.all_events') }}
-                            <span class="px-3 py-1 bg-gray-100 text-gray-400 font-bold text-sm rounded-full">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-500 font-bold text-sm rounded-full">
                                 {{ filteredTournaments.length }}
                             </span>
                         </h2>
-                        <div class="flex items-center gap-2 sm:gap-3 bg-white p-2 rounded-xl border border-gray-100 shadow-sm shrink-0">
-                            <span class="text-xs font-black text-gray-400 tracking-wider ml-2 whitespace-nowrap shrink-0">{{ $t('events_page.sort_by') }}:</span>
+                        <div class="flex items-center gap-2 sm:gap-3 bg-white p-2 rounded-xl border border-slate-100 shadow-sm shrink-0">
+                            <span class="text-xs font-black text-slate-400 tracking-wider ml-2 whitespace-nowrap shrink-0">{{ $t('events_page.sort_by') }}:</span>
                             <BaseSelect v-model="sortBy" :options="sortSelectOptions" class="w-44 text-xs shrink-0" />
                         </div>
                     </div>
 
-                    <Transition name="fade" mode="out-in">
-                        <EventsListSkeleton v-if="isLoading" key="skeleton" />
+                    <PublicCardSkeleton v-if="isLoading" :count="6" grid="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" />
 
-                        <!-- Empty State -->
-                        <div v-else-if="!isLoading && filteredTournaments.length === 0" key="empty"
-                            class="text-center py-20">
-                            <Icon icon="ph:calendar-x-light" class="text-7xl text-gray-200 mb-6 mx-auto" />
-                            <h3 class="text-2xl font-black text-navy mb-3">{{ $t('events_page.no_events') }}</h3>
-                            <p class="text-gray-500 text-sm leading-relaxed max-w-sm mx-auto mb-8">
-                                {{ $t('events_page.no_events_desc') }}
-                            </p>
-                            <BaseButton v-if="searchQuery" variant="primary" @click="searchQuery = ''"
-                                class="shadow-sm shadow-primary/20">
-                                {{ $t('events_page.clear_search') }}
-                            </BaseButton>
+                    <!-- Empty State -->
+                    <div v-else-if="filteredTournaments.length === 0"
+                        class="text-center py-16 bg-white rounded-2xl border border-slate-100 shadow-sm p-8 max-w-lg mx-auto">
+                        <div class="w-16 h-16 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-slate-300 shadow-sm">
+                            <Icon icon="ph:calendar-x-light" class="text-3xl" />
                         </div>
+                        <h3 class="text-lg font-bold text-navy mb-1">{{ $t('events_page.no_events') }}</h3>
+                        <p class="text-sm text-slate-500 font-medium leading-relaxed mb-6">
+                            {{ $t('events_page.no_events_desc') }}
+                        </p>
+                        <BaseButton v-if="hasActiveFilters || searchQuery" variant="outline" size="sm" @click="resetFilters">
+                            {{ $t('events_page.reset_button') }}
+                        </BaseButton>
+                    </div>
 
-                        <!-- Grid -->
-                        <div v-else key="content" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                            <NuxtLink v-for="tournament in filteredTournaments.slice(0, displayedLimit)"
-                                :key="tournament.slug || tournament.id"
-                                :to="localePath(`/events/${tournament.slug || tournament.id}`)"
-                                class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:border-primary/50 transition-all duration-500 flex flex-col h-full">
-                                <div class="relative h-52 overflow-hidden bg-gray-100">
-                                    <img :alt="tournament.name"
-                                        class="w-full h-full object-cover transition-transform duration-700"
-                                        :src="tournament.image" />
-                                    <div class="absolute top-4 left-4">
-                                        <span
-                                            class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-[10px] font-black rounded-lg tracking-wider shadow-sm">
-                                            {{ tournament.category || $t('events_page.general_category') }}
-                                        </span>
+                    <!-- Grid -->
+                    <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <NuxtLink v-for="tournament in filteredTournaments.slice(0, displayedLimit)"
+                            :key="tournament.slug || tournament.id"
+                            :to="localePath(`/events/${tournament.slug || tournament.id}`)"
+                            class="group bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:border-primary/40 hover:shadow-md transition-all duration-300 flex flex-col h-full">
+                            <div class="relative h-52 overflow-hidden bg-slate-100">
+                                <img :alt="tournament.name"
+                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                    :src="tournament.image" />
+                                <div class="absolute top-4 left-4">
+                                    <span
+                                        class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-[10px] font-black rounded-lg tracking-wider shadow-sm capitalize">
+                                        {{ tournament.category || $t('events_page.general_category') }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="p-6 flex-1 flex flex-col">
+                                <h3
+                                    class="text-lg font-black text-navy mb-2 leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                                    {{ tournament.name }}
+                                </h3>
+                                <div class="space-y-3 mb-8">
+                                    <div class="flex items-center gap-3 text-slate-500">
+                                        <div
+                                            class="h-8 w-8 rounded-lg bg-slate-100 text-navy flex items-center justify-center transition-colors shadow-xs group-hover:bg-primary/20">
+                                            <Icon icon="ph:calendar-blank-bold" class="text-base" />
+                                        </div>
+                                        <span class="text-xs font-bold text-slate-600">{{ tournament.date }}</span>
+                                    </div>
+                                    <div class="flex items-center gap-3 text-slate-500">
+                                        <div
+                                            class="h-8 w-8 rounded-lg bg-slate-100 text-navy flex items-center justify-center transition-colors shadow-xs group-hover:bg-primary/20">
+                                            <Icon icon="ph:map-pin-bold" class="text-base" />
+                                        </div>
+                                        <span class="text-xs font-bold text-slate-600 truncate">{{ tournament.location }}</span>
                                     </div>
                                 </div>
-                                <div class="p-6 flex-1 flex flex-col">
-                                    <h3
-                                        class="text-lg font-black text-navy mb-2 leading-tight group-hover:text-primary transition-colors line-clamp-2">
-                                        {{ tournament.name }}
-                                    </h3>
-                                    <div class="space-y-3 mb-8">
-                                        <div class="flex items-center gap-3 text-gray-500">
-                                            <div
-                                                class="h-8 w-8 rounded-lg bg-primary text-white flex items-center justify-center transition-colors shadow-sm">
-                                                <Icon icon="ph:calendar-blank-bold" class="text-lg" />
-                                            </div>
-                                            <span class="text-xs font-bold text-gray-600">{{ tournament.date }}</span>
-                                        </div>
-                                        <div class="flex items-center gap-3 text-gray-500">
-                                            <div
-                                                class="h-8 w-8 rounded-lg bg-primary text-white flex items-center justify-center transition-colors shadow-sm">
-                                                <Icon icon="ph:map-pin-bold" class="text-lg" />
-                                            </div>
-                                            <span class="text-xs font-bold text-gray-600 truncate">{{ tournament.location }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="mt-auto">
-                                        <BaseButton variant="primary" block size="lg" iconRight="ph:arrow-right-bold"
-                                            class="shadow-sm group-hover:shadow-sm group-hover:shadow-primary/20 transition-all">
-                                            {{ $t('events_page.event_detail') }}
-                                        </BaseButton>
-                                    </div>
+                                <div class="mt-auto">
+                                    <BaseButton variant="primary" block size="md" iconRight="ph:arrow-right-bold"
+                                        class="shadow-sm group-hover:shadow-primary/20">
+                                        {{ $t('events_page.event_detail') }}
+                                    </BaseButton>
                                 </div>
-                            </NuxtLink>
-                        </div>
-                    </Transition>
+                            </div>
+                        </NuxtLink>
+                    </div>
 
-                    <!-- Pagination -->
+                    <!-- View More Pagination -->
                     <div v-if="!isLoading && displayedLimit < filteredTournaments.length"
-                        class="mt-16 flex justify-center">
-                        <BaseButton variant="outline" size="lg" icon="ph:caret-down-bold" class="rounded-xl px-10"
+                        class="mt-12 flex justify-center">
+                        <BaseButton variant="outline" size="md" icon="ph:caret-down-bold" class="px-8"
                             @click="displayedLimit += 6">
                             {{ $t('events_page.view_more') }}
                         </BaseButton>

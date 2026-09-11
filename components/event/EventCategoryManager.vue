@@ -1,7 +1,7 @@
 <template>
     <div class="space-y-6">
         <!-- Component Header -->
-        <div class="bg-navy rounded-2xl p-8 text-white relative overflow-hidden shadow-xl shadow-navy/20">
+        <div class="bg-navy rounded-2xl p-6 sm:p-8 text-white relative overflow-hidden shadow-xl shadow-navy/20">
             <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
                     <h2 class="text-2xl font-black tracking-tight leading-tight">Konfigurasi Kategori</h2>

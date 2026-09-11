@@ -1,38 +1,18 @@
 <template>
   <div class="flex flex-col gap-6 pb-20 font-body text-navy antialiased">
-    <!-- Enhanced Header with Back Navigation -->
-    <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-      <div class="relative p-6 sm:p-8">
-        <!-- Breadcrumbs -->
-        <nav class="flex text-xs font-bold text-white/50 tracking-wider mb-3 items-center gap-1.5">
-          <NuxtLink :to="`/dashboard/organizer/events/${eventId}/printout`" class="hover:text-white transition-colors">
-            {{ t('event_printout.breadcrumb_printout', 'Cetak Dokumen') }}
-          </NuxtLink>
-          <Icon icon="ph:caret-right-bold" class="text-[10px]" />
-          <span class="text-white">{{ t('event_printout.scoresheet.title', 'Scoresheet Kualifikasi') }}</span>
-        </nav>
-
-        <div class="flex items-center sm:items-start gap-4">
-          <NuxtLink :to="`/dashboard/organizer/events/${eventId}/printout`"
-            class="size-14 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center shadow-md transition-colors shrink-0">
-            <Icon icon="ph:arrow-left-bold" class="text-white text-xl" />
-          </NuxtLink>
-          <div class="min-w-0 text-left">
-            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2 truncate">
-              {{ t('event_printout.scoresheet.title', 'Scoresheet Kualifikasi') }}
-            </h1>
-            <div class="text-slate-300 text-sm max-w-2xl">
-              {{ t('event_printout.scoresheet.page_desc', 'Atur parameter dan cetak lembar skor untuk babak kualifikasi.') }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Header -->
+    <DashboardHeader
+      :title="t('event_printout.scoresheet.title', 'Scoresheet Kualifikasi')"
+      :subtitle="t('event_printout.scoresheet.page_desc', 'Atur parameter dan cetak lembar skor untuk babak kualifikasi.')"
+      icon="ph:arrow-left-bold"
+      :back-to="`/dashboard/organizer/events/${eventId}/printout`"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/organizer' },
+        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/events' },
+        { label: t('event_printout.breadcrumb_printout', 'Cetak Dokumen'), to: `/dashboard/organizer/events/${eventId}/printout` },
+        { label: t('event_printout.scoresheet.title', 'Scoresheet Kualifikasi') }
+      ]"
+    />
 
     <!-- Main Layout -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
@@ -42,7 +22,7 @@
         <!-- Parameter Cetak -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6">
           <div class="flex items-center gap-3">
-            <div class="size-10 bg-navy text-primary rounded-xl flex items-center justify-center">
+            <div class="size-10 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
               <Icon icon="ph:gear-six-bold" class="text-xl" />
             </div>
             <h2 class="text-base font-black text-navy">{{ t('event_printout.scoresheet.parameters_title', 'Parameter Cetak') }}</h2>
@@ -89,7 +69,7 @@
         <!-- Konten Tambahan -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6">
           <div class="flex items-center gap-3">
-            <div class="size-10 bg-navy text-primary rounded-xl flex items-center justify-center">
+            <div class="size-10 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
               <Icon icon="ph:list-checks-bold" class="text-xl" />
             </div>
             <h2 class="text-base font-black text-navy">{{ t('event_printout.scoresheet.additional_content_title', 'Konten & Tampilan Tambahan') }}</h2>
@@ -128,7 +108,7 @@
         <!-- Opsi Cetak -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8 shadow-sm space-y-6">
           <div class="flex items-center gap-3">
-            <div class="size-10 bg-navy text-primary rounded-xl flex items-center justify-center">
+            <div class="size-10 bg-slate-100 border border-slate-200 text-navy rounded-xl flex items-center justify-center">
               <Icon icon="ph:printer-bold" class="text-xl" />
             </div>
             <h2 class="text-base font-black text-navy">{{ t('event_printout.scoresheet.print_options_title', 'Opsi Percetakan') }}</h2>
@@ -159,7 +139,7 @@
           
           <div class="relative z-10 flex flex-col items-center text-center space-y-4">
             <div class="size-16 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 flex items-center justify-center">
-              <Icon icon="ph:file-pdf-bold" class="text-3xl text-primary" />
+              <Icon icon="ph:file-pdf-bold" class="text-3xl text-white" />
             </div>
 
             <div>
@@ -183,10 +163,10 @@
             </div>
 
             <div class="w-full pt-4">
-              <BaseButton variant="primary" icon="ph:printer-bold" size="lg"
+              <BaseButton variant="primary" icon="ph:download-simple-bold" size="lg"
                 class="w-full font-black text-sm"
-                :disabled="!form.session || isProcessing" :loading="isProcessing" @click="handlePrint">
-                {{ t('event_printout.print_pdf', 'Cetak PDF') }}
+                :disabled="!form.session || isProcessing" :loading="isProcessing" :loading-text="t('event_printout.downloading', 'Mengunduh PDF...')" @click="handlePrint">
+                {{ t('event_printout.download_pdf', 'Unduh PDF') }}
               </BaseButton>
             </div>
 
@@ -260,15 +240,14 @@ const fetchCategories = async () => {
   }
 }
 
-const handlePrint = () => {
-  if (!form.value.session) return
+const handlePrint = async () => {
+  if (!form.value.session || isProcessing.value) return
 
   isProcessing.value = true
 
   const apiBase = config.public.apiBase || 'http://localhost:8001'
   const params = new URLSearchParams()
 
-  params.append('autoprint', form.value.autoPrint ? '1' : '0')
   params.append('blank', form.value.blankScoresheet ? '1' : '0')
   params.append('header', form.value.addCompetitionHeader ? '1' : '0')
   params.append('images', form.value.addCompetitionImages ? '1' : '0')
@@ -282,8 +261,36 @@ const handlePrint = () => {
 
   const url = `${apiBase}/events/${eventId}/qualification/sessions/${form.value.session}/scoresheet?${params.toString()}`
 
-  window.open(url, '_blank')
-  isProcessing.value = false
+  try {
+    const res = await fetch(url, { credentials: 'include' })
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+
+    let filename = `Scoresheet-Sesi-${form.value.session}.pdf`
+    const disposition = res.headers.get('content-disposition')
+    if (disposition && disposition.includes('filename=')) {
+      const match = disposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)
+      if (match && match[1]) {
+        filename = match[1].replace(/['"]/g, '').trim()
+      }
+    }
+    if (!filename.toLowerCase().endsWith('.pdf')) {
+      filename += '.pdf'
+    }
+
+    const blob = await res.blob()
+    const blobUrl = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = blobUrl
+    link.setAttribute('download', filename)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    window.URL.revokeObjectURL(blobUrl)
+  } catch (err) {
+    console.error('Failed to download scoresheet PDF:', err)
+  } finally {
+    isProcessing.value = false
+  }
 }
 
 onMounted(() => {

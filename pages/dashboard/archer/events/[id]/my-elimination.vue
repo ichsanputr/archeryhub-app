@@ -18,6 +18,8 @@
         <div class="flex items-center gap-2 text-sm text-white/60 mb-4">
           <NuxtLink to="/dashboard/archer/events" class="hover:text-white transition-colors">{{ t('elimination.nav_event', 'Event Saya') }}</NuxtLink>
           <Icon icon="ph:caret-right-bold" class="text-base" />
+          <NuxtLink :to="`/dashboard/archer/events/${eventId}/overview`" class="hover:text-white transition-colors">{{ eventName || 'Event' }}</NuxtLink>
+          <Icon icon="ph:caret-right-bold" class="text-base" />
           <span class="text-primary font-medium">{{ t('elimination.nav_title', 'Bagan Eliminasi') }}</span>
         </div>
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -33,33 +35,22 @@
             </div>
           </div>
 
-          <!-- Category Selector & Status Badge -->
+          <!-- Category Selector -->
           <div v-if="!isLoading" class="flex-shrink-0 flex items-center gap-3">
-            <BaseSelect
-              v-if="myCategories.length > 0"
-              v-model="categoryId"
-              :options="categoryOptions"
-              item-title="title"
-              item-value="value"
-              class="w-60 text-xs"
-              @update:model-value="updateResultsData"
-            />
-            <div v-else-if="categoryName"
-              class="px-3 py-2 rounded-xl bg-white/10 border border-white/20 text-xs font-black tracking-wider">
-              {{ categoryName }}
+            <div v-if="myCategories.length > 1" class="relative">
+              <select
+                v-model="categoryId"
+                @change="updateResultsData"
+                class="h-10 sm:h-11 pl-4 pr-9 bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-primary cursor-pointer transition-colors appearance-none">
+                <option v-for="c in categoryOptions" :key="c.value" :value="c.value" class="bg-navy text-white py-2">
+                  {{ c.title }}
+                </option>
+              </select>
+              <Icon icon="ph:caret-down-bold" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 pointer-events-none text-xs" />
             </div>
-
-            <!-- Status badge -->
-            <div class="flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-black shadow-sm"
-              :class="elimStatusLabel === t('elimination.status_champion', 'Champion')
-                ? 'bg-primary text-navy border-primary/40 font-black'
-                : elimStatusLabel === t('elimination.status_active', 'In Competition')
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
-                  : 'bg-white/10 text-white border-white/20'">
-              <Icon
-                :icon="elimStatusLabel === t('elimination.status_champion', 'Champion') ? 'ph:crown-fill' : elimStatusLabel === t('elimination.status_active', 'In Competition') ? 'ph:play-circle-fill' : 'ph:trophy-bold'"
-                class="text-sm" />
-              <span>{{ elimStatusLabel }}</span>
+            <div v-else-if="categoryName || (categoryOptions.length === 1)"
+              class="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-xs font-bold text-white tracking-wide">
+              {{ categoryName || categoryOptions[0]?.title }}
             </div>
           </div>
         </div>
@@ -278,16 +269,19 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { useEventContext } from '~/composables/useEventContext'
 
 definePageMeta({ layout: 'dashboard' })
 
 const { t } = useI18n()
 const { get } = useApi()
 const route = useRoute()
+const { setEvent } = useEventContext()
 const eventId = computed(() => route.params.id as string)
+const eventName = ref('')
 
 useHead({
-  title: computed(() => `${t('elimination.title', 'My Elimination Matches')} - Archeris Dashboard`)
+  title: computed(() => `${eventName.value || t('elimination.title', 'My Elimination Matches')} - Archeris Dashboard`)
 })
 
 const isLoading = ref(true)
@@ -329,16 +323,30 @@ function getRoundLabel(roundNo: number): string {
 async function fetchInitialData() {
   isLoading.value = true
   try {
-    const profileRes = await get('/archer/me')
-    userProfile.value = profileRes?.data || profileRes
+    const [profileRes, eventRes, meRes] = await Promise.allSettled([
+      get('/archer/me'),
+      get(`/events/${eventId.value}`),
+      get(`/events/${eventId.value}/participants/me`)
+    ])
 
-    const meRes = await get(`/events/${eventId.value}/participants/me`)
-    if (meRes?.categories?.length) {
-      myCategories.value = meRes.categories
-      const cat = meRes.categories[0]
+    if (profileRes.status === 'fulfilled') {
+      userProfile.value = profileRes.value?.data || profileRes.value
+    }
+
+    if (eventRes.status === 'fulfilled') {
+      const evtData = eventRes.value?.event || eventRes.value?.data || eventRes.value
+      if (evtData?.name) {
+        eventName.value = evtData.name
+        setEvent({ id: eventId.value, name: evtData.name })
+      }
+    }
+
+    if (meRes.status === 'fulfilled' && meRes.value?.categories?.length) {
+      myCategories.value = meRes.value.categories
+      const cat = meRes.value.categories[0]
       categoryId.value = cat.category_id || cat.uuid
       categoryName.value = cat.category_name_custom || `${cat.division_name || ''} - ${cat.category_name || ''}`
-      archerUuid.value = meRes.archer_id
+      archerUuid.value = meRes.value.archer_id
     } else {
       // Fallback to event categories
       const catRes = await get(`/events/${eventId.value}/categories`)

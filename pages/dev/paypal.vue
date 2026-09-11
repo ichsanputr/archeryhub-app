@@ -10,7 +10,7 @@
           <div>
             <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2">
               PayPal Sandbox Testing Console
-              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              <span class="text-[10px] font-bold tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
                 Sandbox Mode
               </span>
             </h1>
@@ -55,19 +55,19 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-700/50 space-y-1">
-                <div class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Sandbox Payer / Merchant</div>
+                <div class="text-slate-400 text-[10px] font-bold tracking-wider">Sandbox Payer / Merchant</div>
                 <div class="font-mono text-slate-200 truncate font-semibold">sb-s4csl31953066@business.example.com</div>
               </div>
               <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-700/50 space-y-1">
-                <div class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Client ID (Masked)</div>
+                <div class="text-slate-400 text-[10px] font-bold tracking-wider">Client ID (Masked)</div>
                 <div class="font-mono text-primary font-bold">{{ authStatus.client_id || 'AZMq...MyzK' }}</div>
               </div>
               <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-700/50 space-y-1">
-                <div class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Base API URL</div>
+                <div class="text-slate-400 text-[10px] font-bold tracking-wider">Base API URL</div>
                 <div class="font-mono text-slate-300 truncate">https://api-m.sandbox.paypal.com</div>
               </div>
               <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-700/50 space-y-1">
-                <div class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Exchange Rate (USD/IDR)</div>
+                <div class="text-slate-400 text-[10px] font-bold tracking-wider">Exchange Rate (USD/IDR)</div>
                 <div class="font-mono text-amber-400 font-black">1 USD = Rp {{ (authStatus.exchange_rate || 16000).toLocaleString('id-ID') }}</div>
               </div>
             </div>
@@ -192,7 +192,7 @@
                 <Icon icon="ph:credit-card-bold" class="text-primary text-lg shrink-0" />
                 <span class="truncate">Order: <span class="font-mono text-primary">{{ activeOrder.order_id }}</span></span>
               </div>
-              <span class="text-[11px] font-mono font-black uppercase px-2.5 py-1 rounded-md shrink-0"
+              <span class="text-[11px] font-mono font-black px-2.5 py-1 rounded-md shrink-0"
                 :class="getStatusBadgeClass(activeOrder.status)">
                 {{ activeOrder.status }}
               </span>
@@ -200,15 +200,15 @@
 
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
               <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-700/60">
-                <div class="text-slate-400 text-[10px] uppercase font-bold">Total Amount</div>
+                <div class="text-slate-400 text-[10px] font-bold">Total Amount</div>
                 <div class="font-black text-white text-sm">{{ activeOrder.amount }} {{ activeOrder.currency }}</div>
               </div>
               <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-700/60">
-                <div class="text-slate-400 text-[10px] uppercase font-bold">Reference</div>
+                <div class="text-slate-400 text-[10px] font-bold">Reference</div>
                 <div class="font-mono text-slate-200 text-xs truncate">{{ activeOrder.reference_id }}</div>
               </div>
               <div class="p-2.5 bg-slate-900 rounded-xl border border-slate-700/60 col-span-2 sm:col-span-1">
-                <div class="text-slate-400 text-[10px] uppercase font-bold">Payer</div>
+                <div class="text-slate-400 text-[10px] font-bold">Payer</div>
                 <div class="font-mono text-slate-300 text-[11px] truncate">{{ activeOrder.payer_email || 'Pending...' }}</div>
               </div>
             </div>
@@ -300,7 +300,7 @@
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
             <thead>
-              <tr class="border-b border-slate-700/80 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              <tr class="border-b border-slate-700/80 text-[11px] font-bold text-slate-400 tracking-wider">
                 <th class="py-3 px-3">Order ID</th>
                 <th class="py-3 px-3">Reference / Deskripsi</th>
                 <th class="py-3 px-3">Nominal</th>
@@ -380,6 +380,7 @@ useHead({ title: 'PayPal Sandbox Testing Console - Archeris' })
 
 const route = useRoute()
 const apiBaseUrl = useApiBaseUrl()
+const toast = useToast()
 
 const isCheckingAuth = ref(false)
 const isCreatingOrder = ref(false)
@@ -541,7 +542,7 @@ const handleCreateOrder = async () => {
     generateNewRef()
   } catch (err) {
     latestLog.value = err?.data || { error: err.message }
-    alert('Failed to create order: ' + (err?.data?.error || err.message))
+    toast.error('Failed to create order: ' + (err?.data?.error || err.message))
   } finally {
     isCreatingOrder.value = false
   }
@@ -590,7 +591,7 @@ const fetchOrderDetails = async (orderId) => {
     saveOrderListToStorage()
   } catch (err) {
     latestLog.value = err?.data || { error: err.message }
-    alert('Failed to fetch order: ' + (err?.data?.error || err.message))
+    toast.error('Failed to fetch order: ' + (err?.data?.error || err.message))
   } finally {
     isFetchingOrder.value = false
   }
@@ -624,7 +625,7 @@ const handleCaptureOrder = async (orderId) => {
     latestLog.value = res
   } catch (err) {
     latestLog.value = err?.data || { error: err.message }
-    alert('Failed to capture order: ' + (err?.data?.error || err.message))
+    toast.error('Failed to capture order: ' + (err?.data?.error || err.message))
   } finally {
     isCapturing.value = false
   }
