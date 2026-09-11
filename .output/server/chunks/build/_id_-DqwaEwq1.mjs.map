@@ -1,0 +1,1 @@
+{"version":3,"file":"_id_-DqwaEwq1.mjs","sources":["../../../../pages/dashboard/archer/events/[id].vue"],"sourcesContent":null,"names":["useRoute","params","id","_push","_ssrRenderAttrs","_mergeProps","class","_attrs"],"mappings":"gpBAacA,IACIC,OAAOC,yBAbhBC,EAAA,OAAAC,EAAAC,EAAA,CAAAC,MAAM,kFAAgFC"}
