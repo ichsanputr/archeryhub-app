@@ -47,22 +47,14 @@
             organizers are strongly advised to maintain paper fallback scorecards at each target board. archeris will not be held liable for match delays, scoring disputes, or tournament scheduling conflicts caused by platform downtime.
           </p>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. E-commerce and Product Liability</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Payment Processing</h3>
           <p>
-            gear and merchandise listed on archeris are uploaded, priced, and sold by independent sellers. we do not inspect, warrant, or guarantee the quality, safety, legality, or suitability of any archery equipment purchased through our platform.
-          </p>
-          <p>
-            any disputes regarding item defects, shipping delays, customs fees, or returns must be resolved directly between the buyer and the seller. archeris is not a party to these transactions and bears no liability for equipment performance.
+            all checkout payments, registrations, and invoices are handled by third-party processor (mayar.id). we do not store full payment credential details. any transaction failures, merchant account freezes, or payout delays are subject to the terms of the payment processor.
           </p>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Payment Processing</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Consent</h3>
           <p>
-            all checkout payments, registrations, invoices, and payouts are handled by third-party processor (mayar.id). we do not store full payment credential details. any transaction failures, merchant account freezes, or payout delays are subject to the terms of the payment processor.
-          </p>
-
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">5. Consent</h3>
-          <p>
-            by registering and using the platform, you acknowledge and agree that you access all tournament data, scoring tools, and e-commerce listings at your own risk.
+            by registering and using the platform, you acknowledge and agree that you access all tournament data and scoring tools at your own risk.
           </p>
         </div>
       </div>

@@ -394,18 +394,12 @@ const dashboardBackUrl = computed(() => {
     if (reference?.startsWith('QUOTA-') || userPersona.value === 'organizer') {
         return '/dashboard/organizer/package'
     }
-    if (userPersona.value === 'seller') {
-        return '/dashboard/seller/orders'
-    }
     return '/dashboard/archer/payments'
 })
 
 const dashboardBackLabel = computed(() => {
     if (reference?.startsWith('QUOTA-') || userPersona.value === 'organizer') {
         return t('payment_status.back_package', 'Kembali ke Manajemen Paket & Kuota')
-    }
-    if (userPersona.value === 'seller') {
-        return t('payment_status.back_orders', 'Kembali ke Pesanan Toko')
     }
     return t('payment_status.back_payments', 'Kembali ke Riwayat Pembayaran')
 })

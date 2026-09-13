@@ -96,17 +96,6 @@ export const useAuth = () => {
     return null
   })
 
-  const sellerProfile = useState<any | null>('auth.sellerProfile', () => {
-    // Populate sellerProfile from server context if user is a seller
-    if (import.meta.server) {
-      const event = useRequestEvent()
-      if (event?.context?.user && (event.context.user.role === 'seller' || event.context.user.user_type === 'seller')) {
-        return event.context.user
-      }
-    }
-    return null
-  })
-
   const isUserLoading = useState<boolean>('auth.isUserLoading', () => false)
   const isLoggedIn = computed(() => !!user.value)
   const config = useRuntimeConfig()
@@ -178,7 +167,6 @@ export const useAuth = () => {
     user.value = null
     archerProfile.value = null
     organizerProfile.value = null
-    sellerProfile.value = null
 
     if (import.meta.client) {
       // Clear cookies across all possible domain scopes and paths
@@ -245,9 +233,6 @@ export const useAuth = () => {
         } else if (userType === 'organizer') {
           const profileRes = await $fetch<{ data: any }>(`${baseUrl}/organizer/me`, fetchOptions)
           organizerProfile.value = profileRes?.data || profileRes
-        } else if (userType === 'seller') {
-          const profileRes = await $fetch<{ data: any }>(`${baseUrl}/seller/me`, fetchOptions)
-          sellerProfile.value = profileRes?.data || profileRes
         }
       }
     } catch (error: unknown) {
@@ -284,7 +269,6 @@ export const useAuth = () => {
     const roleMap: Record<string, string> = {
       'archer': 'archer',
       'organizer': 'organizer',
-      'seller': 'seller',
       'root': 'root',
       'admin': 'organizer'
     }
@@ -296,7 +280,6 @@ export const useAuth = () => {
     userPersona,
     archerProfile: readonly(archerProfile),
     organizerProfile: readonly(organizerProfile),
-    sellerProfile: readonly(sellerProfile),
     isUserLoading: readonly(isUserLoading),
     isLoggedIn,
     login,

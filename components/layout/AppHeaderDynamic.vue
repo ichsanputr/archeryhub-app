@@ -112,16 +112,6 @@
 
         <!-- Desktop Auth Buttons -->
         <div class="hidden md:flex items-center gap-3">
-          <!-- Cart Icon (For Archers) -->
-          <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/archer/cart"
-            class="relative p-2 rounded-xl text-navy hover:bg-gray-100 transition-all duration-300 group">
-            <Icon icon="ph:shopping-bag-bold" class="text-2xl" />
-            <span v-if="cartCount > 0"
-              class="absolute top-1 right-1 w-5 h-5 bg-primary text-primary-text text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-primary/20">
-              {{ cartCount }}
-            </span>
-          </NuxtLink>
-
           <!-- Logged In User Avatar -->
           <div v-if="isLoggedIn" class="relative" @mouseenter="showUserMenu = true" @mouseleave="showUserMenu = false">
             <button class="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 transition-colors">
@@ -178,16 +168,6 @@
 
         <!-- Mobile Menu Toggle -->
         <div class="flex items-center gap-1 md:gap-2 md:hidden">
-          <!-- Mobile Cart (For Archers) -->
-          <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/archer/cart"
-            class="relative p-1.5 rounded-lg text-navy transition-all duration-300 mr-0.5">
-            <Icon icon="ph:shopping-bag-bold" class="text-xl" />
-            <span v-if="cartCount > 0"
-              class="absolute top-0.5 right-0.5 w-4 h-4 bg-primary text-navy text-[9px] font-black rounded-full flex items-center justify-center border border-white shadow-sm ring-1 ring-primary/20">
-              {{ cartCount }}
-            </span>
-          </NuxtLink>
-
           <button class="p-1.5 text-navy transition-colors duration-300" @click="mobileMenuOpen = !mobileMenuOpen">
             <Icon :icon="mobileMenuOpen ? 'ph:x-bold' : 'ph:list-bold'" class="text-xl" />
           </button>
@@ -340,22 +320,8 @@ const mobileMenuOpen = ref(false)
 const mobileSubmenuOpen = ref(false)
 const showMegaMenu = ref(false)
 const showUserMenu = ref(false)
-const cartCount = ref(0)
 const latestEvents = ref([])
 const featuredEvent = ref(null)
-
-const fetchCartCount = async () => {
-  if (isLoggedIn.value && user.value?.user_type === 'archer') {
-    try {
-      const response = await get('/cart')
-      cartCount.value = response.data?.length || 0
-    } catch (error) {
-      console.error('Failed to fetch cart count:', error)
-    }
-  } else {
-    cartCount.value = 0
-  }
-}
 
 const fetchLatestEvents = async () => {
   try {
@@ -397,21 +363,8 @@ const handleLogout = async () => {
   await logout()
 }
 
-// Watch for auth changes
-watch(() => isLoggedIn.value, (val) => {
-  if (val) fetchCartCount()
-  else cartCount.value = 0
-}, { immediate: true })
-
-let cartInterval
 onMounted(() => {
-  fetchCartCount()
   fetchLatestEvents()
-  cartInterval = setInterval(fetchCartCount, 30000)
-})
-
-onUnmounted(() => {
-  if (cartInterval) clearInterval(cartInterval)
 })
 
 const isActive = (path) => {

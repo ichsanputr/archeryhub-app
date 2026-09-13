@@ -86,10 +86,10 @@
             we use your information to operate a secure, transparent, and accurate platform for all users:
           </p>
           <ol class="list-decimal pl-6 space-y-2 marker:text-navy marker:font-bold">
-            <li><strong>account management:</strong> creating, configuring, and verifying athlete, organizer, scorekeeper, and seller accounts.</li>
+            <li><strong>account management:</strong> creating, configuring, and verifying athlete, organizer, and scorekeeper accounts.</li>
             <li><strong>tournament execution:</strong> managing registrations, target boards, qualifications, and live elimination brackets.</li>
             <li><strong>public scoreboards:</strong> compiling and publishing tournament results, rankings, and athlete achievements (which are public by design).</li>
-            <li><strong>payment and payouts:</strong> processing tournament invoices, subscription plans, matching transaction payments, and executing seller commission payouts.</li>
+            <li><strong>payment and payouts:</strong> processing tournament invoices, subscription plans, matching transaction payments, and executing organizer payouts.</li>
             <li><strong>communications:</strong> sending transaction receipts, notification alerts, and updates regarding tournament schedule changes.</li>
           </ol>
 

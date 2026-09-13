@@ -32,10 +32,10 @@
         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
         <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed space-y-6">
           <p>
-            welcome to archeris. these terms and conditions govern your use of the archeris website (the "service"), including all features for tournament organizers, athletes, scorekeepers, and merchandise sellers.
+            welcome to archeris. these terms and conditions govern your use of the archeris website (the "service"), including all features for tournament organizers, athletes, and scorekeepers.
           </p>
           <p>
-            by registering an account, organizing a tournament, submitting scores, or listing products on the site, you agree to be bound by these terms. if you do not agree with any part of these terms, you are prohibited from using the service.
+            by registering an account, organizing a tournament, or submitting scores on the site, you agree to be bound by these terms. if you do not agree with any part of these terms, you are prohibited from using the service.
           </p>
 
           <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Account Types and Responsibilities</h3>
@@ -46,7 +46,6 @@
             <li><strong>athletes:</strong> responsible for providing accurate profile information (name, gender, age category, bow type) and maintaining sportsmanship.</li>
             <li><strong>organizers:</strong> responsible for configuring tournament details, setting up target assignments, defining qualification/elimination rules, and resolving participant disputes.</li>
             <li><strong>scorekeepers:</strong> appointed by organizers to record arrow points. scorekeepers must enter points honestly and conform to tournament rules.</li>
-            <li><strong>sellers:</strong> responsible for listing authentic archery gear, managing stock levels, processing buyer orders, and shipping items within the specified timelines.</li>
           </ul>
 
           <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Subscriptions and Financial Transactions</h3>
@@ -56,7 +55,7 @@
           <ul class="list-disc pl-6 space-y-2 marker:text-primary">
             <li><strong>plans & billing:</strong> subscriptions and quotas are processed securely via mayar. billing cycles recur monthly, annually, or per-event quota packages.</li>
             <li><strong>expired subscriptions:</strong> if a subscription expires, organizers can still log in, view existing tournament lists, detail pages, and browse sidebar routes. however, form actions to add, edit, or delete event details, categories, targets, or withdraw balances will be locked until the subscription is renewed.</li>
-            <li><strong>invoice processing:</strong> entry fee collections from athletes are processed using mayar instant invoices. payouts to organizers and sellers are disbursed after deducting administrative commissions.</li>
+            <li><strong>invoice processing:</strong> entry fee collections from athletes are processed using mayar instant invoices. payouts to organizers are disbursed after deducting administrative commissions.</li>
           </ul>
 
           <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Scoring Integrity and Tournament Results</h3>
@@ -68,17 +67,7 @@
             <li>any attempt to falsify score logs, double-entry points, or manipulate brackets will result in the immediate suspension of the offending accounts and nullification of the event results.</li>
           </ol>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Seller Store Policies</h3>
-          <p>
-            sellers listing merchandise on the platform agree that:
-          </p>
-          <ul class="list-disc pl-6 space-y-2 marker:text-primary">
-            <li>they own the rights to the products they sell.</li>
-            <li>all listings must contain accurate descriptions and correct pricing.</li>
-            <li>platform fees and payment processing commissions will be automatically deducted from sales before payout balances are updated.</li>
-          </ul>
-
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">5. Termination and Limitations</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Termination and Limitations</h3>
           <p>
             we reserve the right to suspend or terminate your account at any time, without prior notice, if you violate these terms, act fraudulently, or engage in behavior that compromises the security and accuracy of active tournaments.
           </p>

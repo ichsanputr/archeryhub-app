@@ -79,7 +79,6 @@ const userTypeLabel = computed(() => {
     archer: 'Archer',
     organizer: 'Organizer',
     club: 'Club',
-    seller: 'Seller',
   }
   return labels[type] || type || ''
 })

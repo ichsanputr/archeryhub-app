@@ -171,7 +171,6 @@ const selectedDemoAccount = ref('')
 const demoAccountOptions = [
     { title: 'Archer (archer) - stewie4king@gmail.com', value: 'archer' },
     { title: 'Organizer (club) - ichsanfadhil67@gmail.com', value: 'organizer' },
-    { title: 'Seller (shop) - seller@panahan.com', value: 'seller' },
 ]
 
 const selectDemoUser = (role: string) => {
@@ -179,7 +178,6 @@ const selectDemoUser = (role: string) => {
     const credentials: Record<string, { email: string, password: string }> = {
         archer: { email: 'stewie4king@gmail.com', password: '12345' },
         organizer: { email: 'ichsanfadhil67@gmail.com', password: '123456' },
-        seller: { email: 'seller@panahan.com', password: '12345' }
     }
     const creds = credentials[role]
     if (creds) {

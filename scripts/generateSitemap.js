@@ -24,7 +24,6 @@ async function generateSitemap() {
         '/archers',
 
         '/events',
-        '/products',
         '/organizer',
         '/contact',
         '/faq',
@@ -90,19 +89,6 @@ async function generateSitemap() {
     <loc>${SITE_URL}/organizer/${slug}</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-  </url>`;
-            });
-        }
-
-        // 6. Add Products
-        if (data.products) {
-            console.log(`Adding ${data.products.length} products...`);
-            data.products.forEach(slug => {
-                xml += `
-  <url>
-    <loc>${SITE_URL}/products/${slug}</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
   </url>`;
             });
         }

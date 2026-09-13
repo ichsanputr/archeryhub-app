@@ -62,7 +62,6 @@ export default defineEventHandler(async (event: H3Event) => {
                     if (payload.role === 'archer') endpoint = '/archer/me'
                     else if (payload.role === 'organizer') endpoint = '/organizer/me'
                     else if (payload.role === 'club') endpoint = '/club/me'
-                    else if (payload.role === 'seller') endpoint = '/seller/me'
                     else if (payload.role === 'root') endpoint = '' // No details endpoint for root
 
                     if (endpoint && apiBaseUrl) {

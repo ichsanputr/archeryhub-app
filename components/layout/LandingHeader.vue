@@ -121,18 +121,6 @@
                 <!-- Desktop Auth & Cart Buttons -->
                 <div class="hidden md:flex items-center gap-3">
 
-                    <!-- Cart Icon (For Archers) -->
-                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'"
-                        to="/dashboard/archer/cart"
-                        class="relative p-2 rounded-xl transition-all duration-300 group"
-                        :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
-                        <Icon icon="ph:shopping-bag-bold" class="text-2xl" />
-                        <span v-if="cartCount > 0"
-                            class="absolute top-1 right-1 w-5 h-5 bg-primary text-primary-text text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-primary/20">
-                            {{ cartCount }}
-                        </span>
-                    </NuxtLink>
-
                     <!-- Logged In User Avatar -->
                     <div v-if="isLoggedIn" class="relative" @mouseenter="showUserMenu = true"
                         @mouseleave="showUserMenu = false">
@@ -193,17 +181,6 @@
 
                 <!-- Mobile Menu Toggle -->
                 <div class="flex items-center gap-1 md:gap-2 md:hidden">
-                    <!-- Mobile Cart (For Archers) -->
-                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/archer/cart"
-                        class="relative p-1.5 rounded-lg transition-all duration-300 mr-0.5"
-                        :class="showSolid ? 'text-navy' : 'text-white'">
-                        <Icon icon="ph:shopping-bag-bold" class="text-xl" />
-                        <span v-if="cartCount > 0"
-                            class="absolute top-0.5 right-0.5 w-4 h-4 bg-primary text-navy text-[9px] font-black rounded-full flex items-center justify-center border border-white shadow-sm ring-1 ring-primary/20">
-                            {{ cartCount }}
-                        </span>
-                    </NuxtLink>
-
                     <button class="p-1.5 transition-colors duration-300" :class="mobileToggleClasses"
                         @click="mobileMenuOpen = !mobileMenuOpen">
                         <Icon :icon="mobileMenuOpen ? 'ph:x-bold' : 'ph:list-bold'" class="text-xl" />
@@ -360,21 +337,7 @@ const showUserMenu = ref(false)
 const showLangMenu = ref(false)
 const showLangMenuMobile = ref(false)
 const isScrolled = ref(false)
-const cartCount = ref(0)
 const { get } = useApi()
-
-const fetchCartCount = async () => {
-    if (isLoggedIn.value && user.value?.user_type === 'archer') {
-        try {
-            const response = await get('/cart')
-            cartCount.value = response.data?.length || 0
-        } catch (error) {
-            console.error('Failed to fetch cart count:', error)
-        }
-    } else {
-        cartCount.value = 0
-    }
-}
 
 const handleLogout = async () => {
     await logout()
@@ -384,25 +347,14 @@ const handleScroll = () => {
     isScrolled.value = window.scrollY > 50
 }
 
-// Watch for auth changes to refetch cart count
-watch(() => isLoggedIn.value, (val) => {
-    if (val) fetchCartCount()
-    else cartCount.value = 0
-}, { immediate: true })
-
-// Polling for cart updates (optional, but good for demo)
-let cartInterval
 onMounted(() => {
     window.addEventListener('scroll', handleScroll)
     handleScroll()
-    fetchCartCount()
     fetchLatestEvents()
-    cartInterval = setInterval(fetchCartCount, 30000) // Every 30s
 })
 
 onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
-    if (cartInterval) clearInterval(cartInterval)
 })
 
 // Dynamic classes based on transparent mode and scroll state

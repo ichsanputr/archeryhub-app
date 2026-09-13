@@ -151,7 +151,7 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const route = useRoute()
 const router = useRouter()
-const { user, userPersona, archerProfile, organizerProfile, sellerProfile, logout } = useAuth()
+const { user, userPersona, archerProfile, organizerProfile, logout } = useAuth()
 const { t } = useDashboardI18n()
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
@@ -172,8 +172,6 @@ const userAvatar = computed(() => {
 
   if (role === 'organizer' && (organizerProfile.value?.avatar_url || organizerProfile.value?.logo_url)) {
     url = organizerProfile.value.avatar_url || organizerProfile.value.logo_url
-  } else if (role === 'seller' && sellerProfile.value?.avatar_url) {
-    url = sellerProfile.value.avatar_url
   } else if (role === 'archer' && archerProfile.value?.avatar_url) {
     url = archerProfile.value.avatar_url
   }
@@ -184,7 +182,6 @@ const userAvatar = computed(() => {
 const displayName = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
   if (role === 'organizer' && organizerProfile.value?.name) return organizerProfile.value.name
-  else if (role === 'seller' && sellerProfile.value?.store_name) return sellerProfile.value.store_name
   return user.value?.full_name || user.value?.name || 'Guest'
 })
 
@@ -197,7 +194,7 @@ const isOnEventSubPage = computed(() => {
   // Check if it's an event page under any role
   const isEventPath = path.includes('/events/') && path.includes('/dashboard/')
   if (!isEventPath) return false
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organizer|seller|root|events)\/events\/([^/]+)\/(.+)/) ||
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organizer|root|events)\/events\/([^/]+)\/(.+)/) ||
     path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
   return !!eventPathMatch
 })
@@ -206,7 +203,7 @@ const isEventManagePage = computed(() => {
   const path = route.path
   const isEventPath = path.includes('/events/') && path.includes('/dashboard/')
   if (!isEventPath) return false
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organizer|seller|root|events)\/events\/([^/]+)\/(.+)/) ||
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organizer|root|events)\/events\/([^/]+)\/(.+)/) ||
     path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
   const [, , subPath] = eventPathMatch || []
   if (!subPath) return false
@@ -272,7 +269,6 @@ const userRoleLabel = computed(() => {
     'archer': t('dashboard.sidebar.roles.archer', 'Archer'),
     'organizer': t('dashboard.sidebar.roles.organizer', 'Organizer'),
     'admin': t('dashboard.sidebar.roles.admin', 'Administrator'),
-    'seller': t('dashboard.sidebar.roles.seller', 'Seller Store'),
     'scorekeeper': t('dashboard.sidebar.roles.scorekeeper', 'Scorekeeper')
   }
   return labels[role] || t('dashboard.sidebar.roles.user', 'Member')
@@ -290,26 +286,11 @@ const navSections = computed(() => {
       { type: 'label', label: t('sidebar.activity', 'Turnamen') },
       { label: t('sidebar.my_events', 'Event Saya'), icon: 'ph:trophy-bold', path: '/dashboard/archer/events' },
       { label: t('sidebar.my_certifications', 'Sertifikat'), icon: 'ph:certificate-bold', path: '/dashboard/archer/certificates' },
-      { type: 'label', label: t('sidebar.commerce', 'Belanja') },
+      { type: 'label', label: t('sidebar.commerce', 'Pembayaran') },
       { label: t('sidebar.payments', 'Pembayaran'), icon: 'ph:credit-card-bold', path: '/dashboard/archer/payments' },
-      { label: t('sidebar.cart', 'Keranjang'), icon: 'ph:shopping-cart-bold', path: '/dashboard/archer/cart' },
       { type: 'label', label: t('sidebar.account_section', 'Akun') },
-      { label: t('sidebar.chat', 'Chat'), icon: 'ph:chat-circle-dots-bold', path: '/dashboard/archer/chat', badge: 'New' },
       { label: t('sidebar.archer_profile', 'Profil'), icon: 'ph:user-circle-bold', path: '/dashboard/archer/profile' },
       { label: t('sidebar.settings', 'Pengaturan'), icon: 'ph:gear-bold', path: '/dashboard/archer/settings' },
-    ]
-  }
-
-  if (role === 'seller') {
-    return [
-      { label: t('sidebar.overview', 'Overview'), icon: 'ph:squares-four', path: '/dashboard/seller' },
-      { type: 'label', label: t('sidebar.store_management', 'Toko') },
-      { label: t('sidebar.store_profile', 'Profil Toko'), icon: 'ph:storefront', path: '/dashboard/seller/store' },
-      { label: t('sidebar.products', 'Produk'), icon: 'ph:package', path: '/dashboard/seller/products' },
-      { label: t('sidebar.orders', 'Pesanan'), icon: 'ph:shopping-cart', path: '/dashboard/seller/orders' },
-      { label: t('sidebar.chat', 'Chat'), icon: 'ph:chat-circle-dots', path: '/dashboard/seller/chat', badge: 'New' },
-      { type: 'label', label: t('sidebar.settings', 'Pengaturan') },
-      { label: t('sidebar.settings', 'Pengaturan'), icon: 'ph:gear', path: '/dashboard/seller/settings' },
     ]
   }
 
@@ -390,7 +371,7 @@ const isActive = (path) => {
   }
 
   // Dashboard roots should use exact match and not match sub-pages
-  const dashboardRoots = ['/dashboard/root', '/dashboard/organizer', '/dashboard/seller', '/dashboard/archer']
+  const dashboardRoots = ['/dashboard/root', '/dashboard/organizer', '/dashboard/archer']
   if (dashboardRoots.includes(path)) {
     return route.path === path || route.path === path + '/'
   }

@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware((to) => {
 
     // Only handle dashboard routes that are NOT already persona-prefixed
     // We check if the second segment is NOT in our persona list
-    const personas = ['archer', 'club', 'organizer', 'seller', 'root']
+    const personas = ['archer', 'club', 'organizer', 'root']
     const segments = to.path.split('/').filter(Boolean)
 
     if (segments[0] === 'dashboard') {

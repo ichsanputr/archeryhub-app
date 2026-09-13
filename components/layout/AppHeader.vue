@@ -215,7 +215,7 @@ const isEventManageMode = computed(() => {
   // Check if we're on any event management page
   const path = route.path
   // Match both legacy /dashboard/events/ and new /dashboard/[persona]/events/
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organizer|seller|events)\/events\/([^/]+)\/(.+)/) ||
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organizer|events)\/events\/([^/]+)\/(.+)/) ||
     path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
 
   if (!eventPathMatch) return false
@@ -234,7 +234,7 @@ const fetchedEventName = ref('')
 
 const currentEventId = computed(() => {
   const path = route.path
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organizer|seller|events)\/events\/([^/]+)/) ||
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organizer|events)\/events\/([^/]+)/) ||
     path.match(/\/dashboard\/events\/([^/]+)/)
   return eventPathMatch ? eventPathMatch[1] : (route.params.id || '')
 })

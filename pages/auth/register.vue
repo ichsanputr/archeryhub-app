@@ -130,19 +130,6 @@
                                         :placeholder="t('auth.register.address_label')"></textarea>
                                 </div>
                             </div>
-
-                            <!-- Seller: Nama Toko -->
-                            <div v-if="form.userType === 'seller'">
-                                <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
-                                    <Icon icon="ph:storefront-bold" class="text-primary text-lg" />
-                                    {{ t('auth.register.shop_info') }}
-                                </h4>
-                                <BaseInput v-model="form.storeName" :label="t('auth.register.shop_name_label')" :placeholder="t('auth.register.shop_name_placeholder')"
-                                    required
-                                    :error="errors.storeName || (isNameTaken ? t('auth.register.name_taken_shop') : '')"
-                                    @update:model-value="validate('storeName', form.storeName, [rules.required(), rules.minLength(3)])" />
-                                <p class="mt-2 text-xs text-gray-400">{{ t('auth.register.shop_note') }}</p>
-                            </div>
                         </div>
 
                         <div class="flex flex-col gap-2 pt-6 border-t border-gray-100">
@@ -201,8 +188,7 @@ useHead({
 
 const userTypes = [
     { value: 'archer', label: 'Archer', icon: 'temaki:archery' },
-    { value: 'organizer', label: 'Organizer', icon: 'ph:buildings-bold' },
-    { value: 'seller', label: 'Seller', icon: 'ph:storefront-bold' }
+    { value: 'organizer', label: 'Organizer', icon: 'ph:buildings-bold' }
 ]
 
 const { errors, validate, validateForm, rules } = useFormValidation()
@@ -220,7 +206,7 @@ const startSlideshow = () => {
 // Get initial user type from query param
 const getInitialUserType = () => {
     const typeParam = route.query.type
-    if (typeParam && ['archer', 'organizer', 'seller'].includes(typeParam)) {
+    if (typeParam && ['archer', 'organizer'].includes(typeParam)) {
         return typeParam
     }
     return 'archer'
@@ -231,7 +217,6 @@ const form = ref({
     userType: getInitialUserType(),
     fullName: '',           // For archer
     organizationName: '',   // For organizer
-    storeName: '',          // For seller
     terms: false,
 
     // New Fields
@@ -451,7 +436,6 @@ const getName = () => {
     switch (form.value.userType) {
         case 'archer': return form.value.fullName
         case 'organizer': return form.value.organizationName
-        case 'seller': return form.value.storeName
         default: return ''
     }
 }
