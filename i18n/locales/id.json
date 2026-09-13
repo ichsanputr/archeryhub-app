@@ -3483,7 +3483,7 @@
       "whatsapp_label": "Nomor WhatsApp",
       "whatsapp_placeholder": "Contoh: 081234567890",
       "email_label": "Email resmi",
-      "email_placeholder": "kontak@organisasi.id",
+      "email_placeholder": "kontak{'@'}organisasi.id",
       "website_label": "Website",
       "website_placeholder": "https://organisasi.id",
       "address_label": "Alamat lengkap",

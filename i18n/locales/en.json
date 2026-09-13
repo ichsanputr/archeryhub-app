@@ -52,154 +52,157 @@
   },
   "home": {
     "hero": {
-      "title_part1": "Digitalize Your",
-      "title_part2": "Archery Experience",
-      "description": "An integrated digital infrastructure platform for real-time scoring and more efficient professional archery tournaments.",
-      "cta_primary": "Get Started",
-      "cta_secondary": "Learn More"
+      "title_part1": "Archery Event Management",
+      "title_part2": "& Live Scoring Platform",
+      "description": "The complete digital tournament platform to manage registrations, automate target butt allocations, generate World Archery brackets, and record live scores directly from any mobile device.",
+      "cta_primary": "Host a Tournament",
+      "cta_secondary": "Explore Events & Live Scores"
     },
     "learn": {
-      "title": "Step-by-Step Guide to Using",
-      "subtitle": "Archeris Efficiently",
-      "description": "Start managing your archery tournaments with an integrated and easy-to-use digital system.",
-      "step1_tag": "Step 1: Club Setup",
-      "step1_title": "Roster & Communications",
-      "step1_desc": "Manage members, divisions (recurve/compound), and broadcast instant announcement logs.",
-      "step2_tag": "Step 2: Schedule & Allocations",
-      "step2_title": "Match & Target Butt Allocation",
-      "step2_desc": "Assign lanes (1A, 1B, 2A, 2B), schedule tournaments, and configure match guidelines.",
-      "step3_tag": "Step 3: Scoring & Leaderboards",
-      "step3_title": "Live Scoring & Performance",
-      "step3_desc": "Monitor athlete performance end-by-end (X, 10, 9) and publish real-time public leaderboards."
+      "title": "How Archeris Powers",
+      "subtitle": "Tournaments & Live Scoring",
+      "description": "From initial division setup to championship finals, manage your entire archery competition with an intuitive digital workflow.",
+      "step1_tag": "Step 1: Event & Division Setup",
+      "step1_title": "Divisions & Target Allocations",
+      "step1_desc": "Configure Recurve, Compound, and Barebow divisions, target distances (70m, 50m, 18m), target faces, and automated lane assignments.",
+      "step2_tag": "Step 2: Registrations & Rosters",
+      "step2_title": "Online Registrations & Verified Rosters",
+      "step2_desc": "Collect entry fees with integrated instant payments, verify archer club memberships, and publish official start lists.",
+      "step3_tag": "Step 3: Mobile Live Scoring",
+      "step3_title": "Real-Time Leaderboards & Brackets",
+      "step3_desc": "Archers and judges log arrow scores (X, 10, 9...) end-by-end on mobile, updating live public leaderboards and elimination brackets in real time."
     },
     "features_demo": {
-      "title1": "Built for Archers.",
-      "title2": "Designed for Clubs.",
-      "description": "A complete platform that grows your community and builds sustainable athlete loyalty.",
-      "f1_tag": "White Label App",
-      "f1_title": "Your brand at every step",
-      "f1_desc": "Provide a seamless experience for members—your app, your logo, your name in the App Store. With full Archeris functionality behind the scenes, your brand remains at the center of attention.",
-      "f2_tag": "Club Scheduling",
-      "f2_title": "Maximize every practice hour",
-      "f2_desc": "Smart scheduling that helps you maximize your club's most valuable assets: targets and fields. Automatic target butt allocation management.",
-      "f3_tag": "Integrated Payments",
-      "f3_title": "Frictionless tournament registration",
-      "f3_desc": "Collect registration fees instantly with a secure and integrated payment gateway. Supports QRIS, VA, and Credit Cards.",
-      "f4_tag": "Athlete Portfolio",
-      "f4_title": "Showcase every achievement",
-      "f4_desc": "Every shot arrow will be recorded. Build a comprehensive digital portfolio showing performance trends and digital certificates.",
-      "f1_list_1": "No Archeris branding—only your club",
-      "f1_list_2": "Available on iOS, Android, and mobile web",
-      "f1_list_3": "Consistent look and feel across every touchpoint",
-      "f1_list_4": "Reinforce your brand with every interaction",
-      "f2_list_1": "Optimize range real estate with smarter time-slot management",
-      "f2_list_2": "Waitlist tools and priority access features",
-      "f2_list_3": "Built for multi-discipline and multi-surface facilities",
-      "f3_list_1": "Automated payment verification and receipting",
-      "f3_list_2": "Real-time revenue tracking and financial reporting",
-      "f3_list_3": "Refund management and early-bird discount tools",
-      "f4_list_1": "Dynamic performance charts and scoring averages",
-      "f4_list_2": "Digital trophy cabinet for certificates and badges",
-      "f4_list_3": "Shareable professional profile for scouting and clubs"
+      "title1": "Engineered for Tournament Organizers.",
+      "title2": "Built for Precision Live Scoring.",
+      "description": "A modern digital competition ecosystem that eliminates paper scorecards, simplifies butt allocations, and delivers real-time leaderboards.",
+      "f1_tag": "Live Scorekeeper",
+      "f1_title": "Real-Time Scoring at Every Target Butt",
+      "f1_desc": "Replace paper tally cards with an intuitive mobile scoring interface. Log arrows end-by-end with instant sum calculations, shoot-offs, and judge verification.",
+      "f2_tag": "Target Butt Allocator",
+      "f2_title": "Automated Lane & Target Butt Management",
+      "f2_desc": "Smart target allocation algorithms manage range capacity (1A, 1B, 2A, 2B), schedule flights, and prevent target overcrowding automatically.",
+      "f3_tag": "World Archery Brackets",
+      "f3_title": "Automated Olympic Rounds & Set Points",
+      "f3_desc": "Generate dynamic elimination brackets following official World Archery set point rules (Recurve) and cumulative scoring (Compound).",
+      "f4_tag": "Athlete Performance Passport",
+      "f4_title": "Verified Tournament History & Averages",
+      "f4_desc": "Every shot arrow is recorded into the archer's official digital profile, tracking arrow averages, qualification records, and digital achievement badges.",
+      "f1_list_1": "Intuitive mobile score entry (X, 10, 9...)",
+      "f1_list_2": "Instant public leaderboard synchronization",
+      "f1_list_3": "Works seamlessly on all smartphones & tablets",
+      "f1_list_4": "Official judge score verification & sign-off",
+      "f2_list_1": "Auto-assign lanes (1A, 1B, 1C, 1D) by division",
+      "f2_list_2": "Range capacity & distance management",
+      "f2_list_3": "Dynamic flight scheduling & butt cards",
+      "f3_list_1": "Olympic round set points (6-point win rule)",
+      "f3_list_2": "Compound cumulative 15-arrow match brackets",
+      "f3_list_3": "Automated qualification-to-elimination seeding",
+      "f4_list_1": "Dynamic arrow average charts and statistics",
+      "f4_list_2": "Official match history and verified badges",
+      "f4_list_3": "Shareable athlete profile for club scouting"
     },
     "blog": {
-      "title1": "Operators rely on us.",
-      "title2": "Archers love us.",
-      "view_all": "View All Posts"
+      "title1": "Tournament Updates & Archery News",
+      "title2": "Insights, Rules & Community Highlights",
+      "view_all": "View All Articles"
     },
     "pricing": {
       "title": "Simple, Transparent Pricing",
-      "description": "Choose the best plan for your organizer to manage events, registrations, and digital scoring.",
+      "description": "Choose the best plan for your organization to manage tournaments, registrations, and digital scoring.",
       "standard": {
         "name": "Standard EO",
         "price": "3",
         "currency": "$",
-        "period": "/month",
+        "period": "/event",
         "desc": "Perfect for standard organizers and small-to-medium tournaments.",
         "cta": "Choose Standard"
       },
       "free": {
-        "name": "Free Trial",
+        "name": "Free Starter",
         "price": "Free",
         "currency": "",
-        "period": "",
-        "desc": "Try core features with a free trial.",
-        "cta": "Get Started"
+        "period": "(1 Event)",
+        "desc": "Try core tournament features with 1 free event quota.",
+        "cta": "Get Started Free"
       },
       "elite": {
         "name": "Elite EO",
         "price": "7",
         "currency": "$",
-        "period": "/month",
-        "desc": "Advanced features, unlimited participants, and full branding control.",
+        "period": "/event",
+        "desc": "Advanced features, unlimited participants, custom branding, and priority support.",
         "cta": "Choose Elite"
       },
       "popular": "Popular",
       "trust_note": "No hidden fees. Cancel anytime.",
       "features": {
         "free": [
-          "Access to core platform features",
-          "Create 1 event up to 50 participants",
-          "1 gb media storage (shared)",
-          "Basic registration & live results"
+          "1 Tournament Event Quota",
+          "Up to 64 Participants",
+          "Mobile Scorekeeper & Live Leaderboard",
+          "Basic Target Butt Allocation (1A, 1B)",
+          "Standard Elimination Brackets"
         ],
         "standard": [
-          "Maximum 50 participants / event",
-          "Online registration management",
-          "Digital scoring system",
-          "Live results (public)",
-          "1 gb media storage"
+          "Unlimited Tournaments (Per-Event Quota)",
+          "Up to 256 Participants per Event",
+          "Integrated Online Registrations & Payments",
+          "Automated Target Butt Allocator",
+          "World Archery Olympic Round Brackets",
+          "Custom Certificate Generator",
+          "Email & WhatsApp Notifications"
         ],
         "elite": [
-          "All standard organizer features",
-          "Unlimited participants",
-          "Match finals management",
-          "Automated payment integration",
-          "Advanced analytics & reporting",
-          "5 gb media storage"
+          "Unlimited Tournaments & Participants",
+          "Custom Club & Sponsor Branding",
+          "Multi-Range & Multi-Distance Flights",
+          "Advanced World Archery & Custom Brackets",
+          "Real-Time LED Range Display Mode",
+          "Dedicated Priority Support & Setup Assistance"
         ]
       }
     },
     "mobile": {
-      "title1": "Bring your game",
-      "title2": "anywhere.",
-      "description": "Get the best digital scoring experience right in your hand. Download the Archeris app now and start tracking your achievements in real-time."
+      "title1": "Live Scoring in Your Hands,",
+      "title2": "Anytime, Anywhere.",
+      "description": "Empower your tournament judges and archers with fast, real-time arrow logging on mobile. Download the Archeris app or use any mobile web browser directly on the shooting line."
     },
     "testimonials": {
-      "count": "2,800+",
-      "trust_desc": "sports organizers trust {brand}",
-      "stars": "stars",
-      "reviews": "reviews",
+      "count": "2,500+",
+      "trust_desc": "Archery Clubs & Tournament Organizers Trust {brand}",
+      "stars": "Stars",
+      "reviews": "Reviews",
       "items": [
         {
-          "quote": "Our youth football program went from 23 players to 124 players in one season due to this platform.",
-          "name": "Coach Farhan",
-          "org": "Shabbona Park Saints"
+          "quote": "Paper scorecard tallying used to delay our finals by nearly an hour. With Archeris, live brackets and qualification standings update immediately after every end.",
+          "name": "Coach Budi Santoso",
+          "org": "Jakarta Archery Club"
         },
         {
-          "quote": "The easy-to-use software, affordability, and first-class customer service make Archeris a must-use for sports organizers.",
-          "name": "Rania Nabilla",
-          "org": "Thunder Soccer Club"
+          "quote": "Managing 250+ archers across Recurve and Compound divisions was seamless. The automated target butt allocations saved our scoring team hours of manual sorting.",
+          "name": "Sarah Jenkins",
+          "org": "National Archery Championship"
         },
         {
-          "quote": "Archeris is extremely easy to use and they helped us every step of the way to get us setup very quickly.",
-          "name": "Budi Santoso",
-          "org": "Shadyside Youth Sports"
-        },
-        {
-          "quote": "Spring registration was approaching fast and the move to Archeris could not have gone more smoothly.",
-          "name": "Jessica Lim",
-          "org": "Hueytown Youth Baseball"
-        },
-        {
-          "quote": "I was navigating the site as an admin for the first time last year and the amount of support they've provided speaks volumes.",
+          "quote": "The World Archery Olympic round set points calculation is 100% accurate. Archers and parents loved watching the real-time public leaderboard on their phones.",
           "name": "Marcus Vance",
-          "org": "Columbia Wrestling Club"
+          "org": "Precision Archery Academy"
+        },
+        {
+          "quote": "Setting up online registrations with instant payment confirmation made running our annual open tournament completely stress-free.",
+          "name": "Rania Nabilla",
+          "org": "Centrum Archery Open"
+        },
+        {
+          "quote": "Archeris makes score recording on the target line intuitive for youth and masters archers alike. The mobile scorekeeper is game-changing.",
+          "name": "Jessica Lim",
+          "org": "Golden Arrow Club"
         }
       ]
     },
-    "meta_title": "All-in-One Archery Event Management Platform - Archeris",
-    "meta_desc": "Archeris.net - Integrated archery management platform for tournaments, real-time scoring, and professional athlete development.",
+    "meta_title": "Archeris - Archery Event Management & Live Scoring Platform",
+    "meta_desc": "The modern archery tournament management platform. Live scoring, target butt allocations, World Archery brackets, and real-time public leaderboards.",
     "comparison": {
       "title": "Why Choose Archeris.net?",
       "subtitle": "How we compare with traditional solutions like Ianseo",
@@ -947,40 +950,49 @@
     "elite_subtext": "Full access to all professional features for official tournaments."
   },
   "events_page": {
-    "badge": "Archery Events",
-    "title": "Find Your Victory Target",
-    "description": "Join prestigious archery tournaments. From club level to world level, all available in one platform.",
+    "badge": "Archery Tournaments & Events",
+    "title": "Find Upcoming Archery Tournaments",
+    "description": "Explore upcoming archery championships, club opens, and national tournaments with real-time live scoring and bracket updates.",
     "register_event": "Register Event",
-    "search_title": "Search Event",
-    "search_placeholder": "Search event name...",
-    "filter_title": "Filter",
-    "reset_button": "Reset",
-    "status": "Status",
+    "search_title": "Search Tournaments",
+    "search_placeholder": "Search tournament name or location...",
+    "filter_title": "Filter Tournaments",
+    "reset_button": "Reset Filters",
+    "status": "Tournament Status",
     "status_upcoming": "Upcoming",
-    "status_ongoing": "Ongoing",
+    "status_ongoing": "Live Ongoing",
     "status_completed": "Completed",
     "city": "City",
     "all_cities": "All Cities",
-    "all_events": "All Events",
+    "all_events": "All Tournaments",
     "sort_by": "Sort By",
-    "sort_newest": "Newest",
-    "sort_oldest": "Oldest",
-    "sort_name": "Name A-Z",
-    "no_events": "No Events Found",
-    "no_events_desc": "Try changing your search or filters to find available events.",
+    "sort_newest": "Newest First",
+    "sort_oldest": "Oldest First",
+    "sort_name": "Tournament Name A-Z",
+    "no_events": "No Tournaments Found",
+    "no_events_desc": "Try adjusting your search query or filters to find upcoming tournaments.",
     "clear_search": "Clear Search",
-    "event_detail": "Event Detail",
-    "view_more": "View More",
-    "cta_title": "Have an Archery Event?",
-    "cta_desc": "Register your event on Archeris.net and manage registration and scoring more professionally.",
-    "cta_button": "Create Event Now",
+    "event_detail": "View Tournament",
+    "view_more": "View More Details",
+    "cta_title": "Hosting an Archery Tournament?",
+    "cta_desc": "Publish your championship on Archeris.net to access online registrations, target butt layouts, and live mobile scoring.",
+    "cta_button": "Create Tournament Now",
     "general_category": "General",
     "country": "Country",
-    "category": "Category",
-    "organizer": "Organizer",
+    "category": "Division Category",
+    "organizer": "Tournament Organizer",
     "all_countries": "All Countries",
     "all_categories_filter": "All Categories",
     "all_organizers_filter": "All Organizers"
+  },
+  "archers": {
+    "badge": "Archer Community",
+    "title": "Discover Archers & Athlete Profiles",
+    "description": "Explore verified athlete records, match histories, arrow averages, and tournament achievements across all divisions.",
+    "search_placeholder": "Search archer by name or club...",
+    "count_unit": "Archers",
+    "seo_title": "Archer Profiles & Athlete Rankings - Archeris.net",
+    "seo_desc": "Discover and explore profiles of talented archers. View verified tournament records, arrow averages, and rankings on Archeris.net."
   },
   "products_page": {
     "badge": "Archery Catalog",
@@ -1062,10 +1074,10 @@
     }
   },
   "news_page": {
-    "badge": "News & Articles",
-    "title_main": "Latest Updates from the",
-    "title_highlight": "Archery World",
-    "description": "Follow the latest tournament updates, athlete achievements, and news about the archery community.",
+    "badge": "Archery News & Insights",
+    "title_main": "Latest Archery News &",
+    "title_highlight": "Tournament Updates",
+    "description": "Follow live tournament highlights, World Archery scoring updates, athlete achievements, and equipment guides from the global archery community.",
     "search_placeholder": "Search news...",
     "read_more": "Read More",
     "no_news": "No News Found",
@@ -3637,7 +3649,7 @@
     }
   },
   "footer": {
-    "about_desc": "An integrated digital infrastructure platform for real-time scoring and more efficient professional archery tournaments. Archeris is here to connect and empower all archery enthusiasts globally, from beginner athletes to professional event organizers.",
+    "about_desc": "The modern archery event management and live scoring platform. Empowering tournament organizers, clubs, judges, and archers worldwide with cloud-native scoring, automated target butt allocations, and World Archery brackets.",
     "nav_title": "Navigation",
     "comp_title": "Company",
     "supp_title": "Support",
@@ -3682,7 +3694,7 @@
       "whatsapp_label": "WhatsApp number",
       "whatsapp_placeholder": "Example: 081234567890",
       "email_label": "Official email",
-      "email_placeholder": "contact@organization.id",
+      "email_placeholder": "contact{'@'}organization.id",
       "website_label": "Website",
       "website_placeholder": "https://organization.id",
       "address_label": "Full address",

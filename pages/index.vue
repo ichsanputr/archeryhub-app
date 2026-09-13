@@ -12,9 +12,6 @@
         <!-- Features Demo Section -->
         <HomeFeaturesDemo />
 
-        <!-- Latest Blog Section -->
-        <HomeLatestBlog />
-
         <!-- Pricing Section -->
         <HomePricing />
 
@@ -30,7 +27,6 @@ import HomeLearnToUse from '~/components/Home/HomeLearnToUse.vue'
 import HomeTrustTestimonials from '~/components/Home/HomeTrustTestimonials.vue'
 import HomeFeaturesDemo from '~/components/Home/HomeFeaturesDemo.vue'
 import HomeMobileCTA from '~/components/Home/HomeMobileCTA.vue'
-import HomeLatestBlog from '~/components/Home/HomeLatestBlog.vue'
 import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'
 
 definePageMeta({
@@ -40,16 +36,17 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-    title: computed(() => t('home.meta_title')),
+    title: computed(() => t('home.meta_title', 'Archeris - Archery Event Management & Live Scoring Platform')),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
-    ],
-    meta: [
-        {
-            name: 'description',
-            content: t('home.meta_desc')
-        }
     ]
+})
+
+useSeoMeta({
+    title: () => t('home.meta_title', 'Archeris - Archery Event Management & Live Scoring Platform'),
+    description: () => t('home.meta_desc', 'The modern archery tournament management system. Live scoring, target butt allocations, elimination brackets, and real-time public leaderboards.'),
+    ogTitle: () => t('home.meta_title', 'Archeris - Archery Event Management & Live Scoring Platform'),
+    ogDescription: () => t('home.meta_desc', 'The modern archery tournament management system. Live scoring, target butt allocations, elimination brackets, and real-time public leaderboards.')
 })
 </script>
 

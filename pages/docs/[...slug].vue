@@ -36,7 +36,7 @@
                     <div v-for="cat in sidebarVisibleCategories" :key="cat.id" class="mb-4">
                         <div class="flex items-center gap-2 px-2 py-1.5 mb-1">
                             <Icon :icon="cat.icon" class="text-sm text-gray-400" />
-                            <span class="text-[10px] font-black tracking-widest text-gray-400">{{ $t(cat.label) }}</span>
+                            <span class="text-[10px] font-black tracking-widest text-gray-400">{{ cat.label }}</span>
                         </div>
                         <div class="space-y-0.5">
                             <NuxtLink v-for="doc in filteredSidebarDocs(cat.id)" :key="doc.slug"
@@ -340,20 +340,20 @@ watch(currentSlug, () => {
 })
 
 const categories = [
-    { id: 'dashboard', label: 'docs.categories.dashboard', icon: 'ph:monitor-bold' },
-    { id: 'archer', label: 'docs.categories.archer', icon: 'ph:user-bold' },
-    { id: 'archery', label: 'docs.categories.archery', icon: 'ph:crosshair-bold' },
-    { id: 'subscription', label: 'docs.categories.subscription', icon: 'ph:crown-bold' },
-    { id: 'event', label: 'docs.categories.event', icon: 'ph:trophy-bold' },
-    { id: 'scoring', label: 'docs.categories.scoring', icon: 'ph:target-bold' },
-    { id: 'marketplace', label: 'docs.categories.marketplace', icon: 'ph:storefront-bold' },
+    { id: 'platform', label: 'Platform & Dashboard', icon: 'ph:monitor-bold' },
+    { id: 'archer', label: 'Archer', icon: 'ph:user-bold' },
+    { id: 'archery', label: 'Archery Rules', icon: 'ph:crosshair-bold' },
+    { id: 'subscription', label: 'Subscription', icon: 'ph:crown-bold' },
+    { id: 'event', label: 'Events & Tournaments', icon: 'ph:trophy-bold' },
+    { id: 'scoring', label: 'Scoring System', icon: 'ph:target-bold' },
+    { id: 'marketplace', label: 'Marketplace', icon: 'ph:storefront-bold' },
 ]
 
 const sidebarCategories = categories
 
 const getCategoryLabel = (id) => {
-    const cat = categories.find(c => c.id === id)
-    return cat ? t(cat.label) : id
+    const cat = categories.find(c => c.id === id || (id === 'dashboard' && c.id === 'platform') || (id === 'platform' && c.id === 'platform'))
+    return cat ? cat.label : (id ? id.charAt(0).toUpperCase() + id.slice(1) : '')
 }
 
 // Fetch all docs list for sidebar navigation & prev/next calculations
@@ -393,7 +393,7 @@ watch([docs, currentSlug], () => {
 
 // Fetch details for the current doc slug
 const { data: currentDocData } = await useAsyncData(
-    () => `doc-detail-${currentSlug.value}-${locale.value}`,
+    () => `docs-api-detail-${currentSlug.value}-${locale.value}`,
     () => $fetch(`${apiBaseUrl}/docs/${currentSlug.value}?lang=${locale.value}`),
     {
         watch: [currentSlug, locale]
@@ -409,7 +409,9 @@ const nextDoc = computed(() => currentIndex.value >= 0 && currentIndex.value < d
 
 const filteredSidebarDocs = (categoryId) => {
     return docs.value.filter(d => {
-        const matchCat = d.category === categoryId
+        const matchCat = d.category === categoryId ||
+            (categoryId === 'platform' && (d.category === 'platform' || d.category === 'dashboard')) ||
+            (categoryId === 'dashboard' && (d.category === 'platform' || d.category === 'dashboard'))
         const matchSearch = sidebarSearch.value === '' ||
             d.title.toLowerCase().includes(sidebarSearch.value.toLowerCase())
         return matchCat && matchSearch
@@ -572,9 +574,16 @@ watch(currentSlug, () => {
 }, { immediate: true })
 
 useHead(computed(() => ({
-    title: currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : t('docs.title', 'Documentation') + ' - Archeris',
-    meta: [{ name: 'description', content: currentDoc.value?.excerpt || '' }]
+    title: currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : t('docs.official_docs', 'Documentation') + ' - Archeris'
 })))
+
+useSeoMeta({
+    title: () => currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
+    description: () => currentDoc.value?.excerpt || 'Archeris.net official documentation and tournament management guides.',
+    ogTitle: () => currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
+    ogDescription: () => currentDoc.value?.excerpt || 'Archeris.net official documentation and tournament management guides.',
+    ogType: 'article'
+})
 </script>
 
 <style>

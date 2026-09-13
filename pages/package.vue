@@ -13,14 +13,14 @@
                     <div
                         class="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-xs font-black tracking-widest mb-6 border border-primary/20 shadow-sm">
                         <Icon icon="ph:crown-simple-bold" class="text-base text-primary" />
-                        <span class="capitalize">{{ $t('subscription_page.badge', 'Paket Kuota Event') }}</span>
+                        <span class="capitalize">{{ $t('subscription_page.badge', 'Event Quota Packages') }}</span>
                     </div>
                     <h1
                         class="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tight leading-tight mb-6">
-                        {{ $t('subscription_page.title', 'Skalakan Manajemen Turnamen Panahan Anda') }}
+                        {{ $t('subscription_page.title', 'Scale Your Archery Tournament Management') }}
                     </h1>
                     <div class="text-white/80 text-sm md:text-lg leading-relaxed max-w-2xl font-medium">
-                        {{ $t('subscription_page.description', 'Opsi fleksibel dan transparan untuk penyelenggara turnamen skala klub hingga kejuaraan nasional & internasional. Nikmati promo gratis paket Standard untuk 3 bulan pertama!') }}
+                        {{ $t('subscription_page.description', 'Flexible and transparent pricing options for tournament organizers, from local clubs to national championships. Enjoy free Standard package access for the first 3 months promo!') }}
                     </div>
                 </div>
             </div>
@@ -32,13 +32,13 @@
                 <!-- 3 Cards: Standar (Left - PROMO), Free (Middle), Elite (Right) -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch w-full">
                     
-                    <!-- 1. Standar EO (Left Card — PROMO 3 BULAN GRATIS) -->
+                    <!-- 1. Standar EO (Left Card — PROMO 3 MONTHS FREE) -->
                     <div
                         class="bg-navy rounded-3xl p-8 flex flex-col justify-between h-full shadow-lg relative overflow-hidden transition-all duration-500 hover:-translate-y-2 group hover:shadow-2xl border-2 border-primary/40 ring-2 ring-primary/20">
                         <!-- Promo Ribbon / Badge -->
                         <div class="absolute top-0 right-0 bg-gradient-to-l from-primary to-amber-300 text-navy px-5 py-2 text-[10px] font-black tracking-widest rounded-bl-2xl shadow-md flex items-center gap-1.5">
                             <Icon icon="ph:sparkle-fill" class="text-xs" />
-                            <span>{{ $t('subscription_page.promo_badge', 'PROMO 3 BULAN PERTAMA') }}</span>
+                            <span>{{ $t('subscription_page.promo_badge', 'First 3 Months Free Promo') }}</span>
                         </div>
 
                         <!-- Glow behind card -->
@@ -56,8 +56,8 @@
                                     </div>
                                 </div>
                                 <div class="min-h-[76px] mb-6">
-                                    <h3 class="text-2xl font-black text-white mb-2">{{ $t('subscription_page.basic_title', 'Standar EO') }}</h3>
-                                    <div class="text-slate-300 text-xs font-semibold leading-relaxed">{{ $t('subscription_page.basic_desc', 'Solusi turnamen lengkap untuk klub & kejuaraan panahan skala menengah.') }}</div>
+                                    <h3 class="text-2xl font-black text-white mb-2">{{ $t('subscription_page.basic_title', 'Standard EO') }}</h3>
+                                    <div class="text-slate-300 text-xs font-semibold leading-relaxed">{{ $t('subscription_page.basic_desc', 'Complete tournament solution for clubs and medium-scale archery events.') }}</div>
                                 </div>
                                 
                                 <!-- Strikethrough Price + Promo Free Display -->
@@ -79,7 +79,7 @@
                                         <span class="text-primary font-bold tracking-wider text-xs">{{ $t('subscription_page.per_event', '/event') }}</span>
                                     </div>
                                     <div class="min-h-[32px] text-[11px] text-amber-200/90 font-medium mt-1.5 leading-relaxed">
-                                        {{ $t('subscription_page.promo_subtext', 'Gratis masa promo 3 bulan ke depan, setelahnya berlaku tarif normal.') }}
+                                        {{ $t('subscription_page.promo_subtext', 'Free during the 3-month promo period, standard rate of $3.00/event applies thereafter.') }}
                                     </div>
                                 </div>
 
@@ -99,8 +99,8 @@
                                 size="lg"
                                 block
                                 icon="ph:sparkle-bold"
-                                @click="handleSelectPlan(3, 'Standar', 0)">
-                                {{ $t('subscription_page.claim_standard_promo', 'Klaim Promo Standar') }}
+                                @click="handleSelectPlan(3, 'Standard', 0)">
+                                {{ $t('subscription_page.claim_standard_promo', 'Claim Standard Promo') }}
                             </BaseButton>
                         </div>
                     </div>
@@ -124,7 +124,7 @@
                                 </div>
                                 <div class="min-h-[76px] mb-6">
                                     <h3 class="text-2xl font-black text-navy mb-2">{{ $t('subscription_page.free_title', 'Free EO') }}</h3>
-                                    <div class="text-gray-500 text-xs font-semibold leading-relaxed">{{ $t('subscription_page.free_desc', 'Coba dan kelola turnamen pertama Anda secara instan tanpa biaya.') }}</div>
+                                    <div class="text-gray-500 text-xs font-semibold leading-relaxed">{{ $t('subscription_page.free_desc', 'Try and run your first archery tournament instantly at zero cost.') }}</div>
                                 </div>
                                 
                                 <div class="min-h-[116px] flex flex-col justify-end mb-6">
@@ -134,10 +134,10 @@
                                         </span>
                                     </div>
                                     <div class="flex items-baseline gap-1">
-                                        <span class="text-5xl font-black text-navy tracking-tighter">{{ isUSD ? '$0' : $t('subscription_page.free_price', 'Gratis') }}</span>
+                                        <span class="text-5xl font-black text-navy tracking-tighter">{{ isUSD ? '$0' : $t('subscription_page.free_price', 'Free') }}</span>
                                     </div>
                                     <div class="min-h-[32px] text-[11px] text-slate-400 font-medium mt-1.5 leading-relaxed">
-                                        {{ $t('subscription_page.free_subtext', '1 kuota event gratis untuk mencoba sistem scoring turnamen.') }}
+                                        {{ $t('subscription_page.free_subtext', '1 free event quota to try out our tournament scoring system.') }}
                                     </div>
                                 </div>
 
@@ -158,7 +158,7 @@
                                 block
                                 icon="ph:arrow-right-bold"
                                 @click="handleSelectPlan(0, 'Free', 0)">
-                                {{ $t('subscription_page.choose_plan', 'Pilih Paket') }}
+                                {{ $t('subscription_page.choose_plan', 'Choose Plan') }}
                             </BaseButton>
                         </div>
                     </div>
@@ -180,12 +180,12 @@
                                         <Icon icon="ph:crown-simple-fill" class="text-2xl" />
                                     </div>
                                     <span class="px-3 py-1 bg-white/10 backdrop-blur-sm text-primary text-[9px] font-black tracking-widest rounded-md">
-                                        {{ $t('subscription_page.professional', 'Profesional') }}
+                                        {{ $t('subscription_page.professional', 'Professional') }}
                                     </span>
                                 </div>
                                 <div class="min-h-[76px] mb-6">
                                     <h3 class="text-2xl font-black text-white mb-2">{{ $t('subscription_page.elite_title', 'Elite EO') }}</h3>
-                                    <div class="text-slate-400 text-xs font-semibold leading-relaxed">{{ $t('subscription_page.elite_desc', 'Fitur terlengkap tanpa batas untuk kejuaraan profesional dan skala besar.') }}</div>
+                                    <div class="text-slate-400 text-xs font-semibold leading-relaxed">{{ $t('subscription_page.elite_desc', 'Unlimited features for professional and large-scale championship organizers.') }}</div>
                                 </div>
                                 
                                 <div class="min-h-[116px] flex flex-col justify-end mb-6">
@@ -197,11 +197,11 @@
                                     <div class="flex items-baseline gap-1">
                                         <span v-if="isUSD" class="text-lg font-bold text-white opacity-45">$</span>
                                         <span v-else class="text-lg font-bold text-white opacity-45">Rp</span>
-                                        <span class="text-5xl font-black text-white tracking-tighter">{{ isUSD ? '5.00' : '79.900' }}</span>
+                                        <span class="text-5xl font-black text-white tracking-tighter">{{ isUSD ? '7.00' : '79.900' }}</span>
                                         <span class="text-slate-400 font-bold tracking-wider text-xs">{{ $t('subscription_page.per_event', '/event') }}</span>
                                     </div>
                                     <div class="min-h-[32px] text-[11px] text-slate-400 font-medium mt-1.5 leading-relaxed">
-                                        {{ $t('subscription_page.elite_subtext', 'Akses penuh semua fitur profesional untuk kejuaraan.') }}
+                                        {{ $t('subscription_page.elite_subtext', 'Full access to all professional features for official tournaments.') }}
                                     </div>
                                 </div>
 
@@ -221,8 +221,8 @@
                                 size="lg"
                                 block
                                 icon="ph:crown-simple-bold"
-                                @click="handleSelectPlan(4, 'Elite', isUSD ? 5 : 79900)">
-                                {{ $t('subscription_page.choose_plan', 'Pilih Paket') }}
+                                @click="handleSelectPlan(4, 'Elite', isUSD ? 7 : 79900)">
+                                {{ $t('subscription_page.choose_plan', 'Choose Plan') }}
                             </BaseButton>
                         </div>
                     </div>
@@ -232,7 +232,7 @@
                 <div class="w-full pt-10">
                     <div class="text-center mb-10">
                         <h3 class="text-xs font-black text-slate-400 tracking-[0.25em] mb-3">
-                            {{ $t('subscription_page.detail_comparison', 'Perbandingan Fitur Paket') }}
+                            {{ $t('subscription_page.detail_comparison', 'Detailed Feature Comparison') }}
                         </h3>
                         <div class="h-1 w-12 bg-primary mx-auto rounded-full"></div>
                     </div>
@@ -243,7 +243,7 @@
                             <table class="w-full min-w-[700px] border-collapse">
                                 <thead>
                                     <tr class="border-b border-slate-200 text-xs font-black tracking-widest text-slate-400">
-                                        <th class="pb-6 text-left w-[40%]">{{ $t('subscription_page.feature_header', 'Fitur & Kapasitas') }}</th>
+                                        <th class="pb-6 text-left w-[40%]">{{ $t('subscription_page.feature_header', 'Features & Capacities') }}</th>
                                         <th class="pb-6 text-center w-[20%]">
                                             <span class="inline-block px-3 py-1 bg-slate-100 text-navy rounded-lg">
                                                 {{ $t('subscription_page.free_title', 'Free EO') }}
@@ -251,7 +251,7 @@
                                         </th>
                                         <th class="pb-6 text-center w-[20%] text-navy">
                                             <span class="inline-block px-3 py-1 bg-primary/20 text-navy rounded-lg border border-primary/30">
-                                                {{ $t('subscription_page.basic_title', 'Standar EO') }} ({{ $t('subscription_page.promo_tag', 'Promo') }})
+                                                {{ $t('subscription_page.basic_title', 'Standard EO') }} ({{ $t('subscription_page.promo_tag', 'Promo') }})
                                             </span>
                                         </th>
                                         <th class="pb-6 text-center w-[20%] text-navy">{{ $t('subscription_page.elite_title', 'Elite EO') }}</th>
@@ -259,7 +259,7 @@
                                 </thead>
                                 <tbody class="divide-y divide-slate-200">
                                     <tr v-for="row in eoComparisonData" :key="row.feature"
-                                        class="group hover:bg-slate-50/50 transition-all duration-300">
+                                         class="group hover:bg-slate-50/50 transition-all duration-300">
                                         <td class="py-5 text-sm font-bold text-navy">
                                             {{ row.feature }}
                                         </td>
@@ -305,7 +305,7 @@
                     <div class="text-center mb-12">
                         <h2 class="text-xs font-black text-primary tracking-[0.3em] mb-3">{{ $t('subscription_page.faq_title', 'FAQ') }}</h2>
                         <h4 class="font-black text-navy text-2xl sm:text-3xl md:text-4xl tracking-tight">
-                            {{ $t('subscription_page.faq_subtitle', 'Pertanyaan yang Sering Diajukan') }}
+                            {{ $t('subscription_page.faq_subtitle', 'Frequently Asked Questions') }}
                         </h4>
                     </div>
                     <div class="space-y-3.5">
@@ -358,7 +358,7 @@ definePageMeta({
     layout: 'landing'
 })
 
-useHead({ title: computed(() => t('nav.pricing', 'Event Packages') + ' - Archeris') })
+useHead({ title: computed(() => t('nav.pricing', 'Pricing & Plans') + ' - Archeris') })
 
 const isUSD = computed(() => {
     if (user.value && organizerProfile.value) {
@@ -382,14 +382,14 @@ const eoBasicFeatures = computed(() => {
         return raw.map(item => typeof item === 'string' ? item : (item?.loc?.source || item))
     }
     return [
-        'Kuota Event Standar',
-        'Hingga 200 Peserta / Event',
-        'Hingga 10 Kategori Lomba',
-        '3 Akun Wasit / Scorekeeper',
-        'Scoring Kualifikasi & Bagan Eliminasi Live',
-        'Sertifikat Digital Standar (Otomatis)',
-        'Unduh 6 Jenis Printout Turnamen Lengkap',
-        'Gateway Pembayaran Otomatis (Mayar QRIS & VA)'
+        'Standard Event Quota',
+        'Up to 200 Participants / Event',
+        'Up to 10 Competition Categories',
+        '3 Scorekeeper Accounts',
+        'Live Qualification & Elimination Scoring',
+        'Standard Digital Certificates (Automated)',
+        'Full 6 Tournament Printouts Download',
+        'Automated Payment Gateway (Mayar QRIS & VA)'
     ]
 })
 
@@ -399,11 +399,11 @@ const eoFreeFeatures = computed(() => {
         return raw.map(item => typeof item === 'string' ? item : (item?.loc?.source || item))
     }
     return [
-        '1 Slot Kuota Event Gratis',
-        'Maksimal 10 Peserta / Event',
-        '1 Akun Wasit / Scorekeeper',
-        'Digital Scoring Kualifikasi Dasar',
-        'Laporan Hasil & Printout Dasar (PDF)'
+        '1 Free Event Quota Slot',
+        'Max 10 Participants / Event',
+        '1 Scorekeeper Account',
+        'Basic Digital Qualification Scoring',
+        'Basic Results & Printouts (PDF)'
     ]
 })
 
@@ -413,66 +413,66 @@ const eoEliteFeatures = computed(() => {
         return raw.map(item => typeof item === 'string' ? item : (item?.loc?.source || item))
     }
     return [
-        'Peserta & Kategori Tanpa Batas (Unlimited)',
-        'Wasit & Scorekeeper Tanpa Batas',
-        'Custom Desain Template Sertifikat (16:9 & A4)',
-        'Live Embed Widget Bracket & Leaderboard (OBS / Web)',
-        'Multi-Payment Gateway Lengkap (Mayar QRIS, VA, E-Wallet)',
-        'Ekspor Rekap Excel Lengkap & Laporan Keuangan',
-        'Prioritas Dukungan Teknis Penyelenggaraan'
+        'Unlimited Participants & Categories',
+        'Unlimited Scorekeeper Accounts',
+        'Custom Certificate Design Templates (16:9 & A4)',
+        'Live Embed Bracket & Leaderboard Widgets (OBS / Web)',
+        'Local & Global Payment Gateway (Mayar & PayPal)',
+        'Full Excel Export & Financial Statements',
+        'Priority Technical Event Support'
     ]
 })
 
 const eoComparisonData = computed(() => {
-    const partUnit = t('common.participants', 'Peserta')
-    const catUnit = t('dashboard.sidebar.competition_categories', 'Kategori')
-    const refUnit = t('dashboard.sidebar.roles.scorekeeper', 'Wasit')
+    const partUnit = t('common.participants', 'Participants')
+    const catUnit = t('dashboard.sidebar.competition_categories', 'Categories')
+    const refUnit = t('dashboard.sidebar.roles.scorekeeper', 'Scorekeepers')
 
     return [
         {
-            feature: t('subscription_page.comparison.participants_limit', 'Batas Peserta per Event'),
+            feature: t('subscription_page.comparison.participants_limit', 'Participant Limit per Event'),
             free: `10 ${partUnit}`,
             standar: `200 ${partUnit}`,
-            elite: t('subscription_page.unlimited', 'Tanpa Batas')
+            elite: t('subscription_page.unlimited', 'Unlimited')
         },
         {
-            feature: t('subscription_page.comparison.categories_limit', 'Batas Kategori Lomba'),
+            feature: t('subscription_page.comparison.categories_limit', 'Competition Categories Limit'),
             free: `2 ${catUnit}`,
             standar: `10 ${catUnit}`,
-            elite: t('subscription_page.unlimited', 'Tanpa Batas')
+            elite: t('subscription_page.unlimited', 'Unlimited')
         },
         {
-            feature: t('subscription_page.comparison.scorekeepers_limit', 'Akun Wasit / Scorekeeper'),
+            feature: t('subscription_page.comparison.scorekeepers_limit', 'Scorekeeper Accounts'),
             free: `1 ${refUnit}`,
             standar: `3 ${refUnit}`,
-            elite: t('subscription_page.unlimited', 'Tanpa Batas')
+            elite: t('subscription_page.unlimited', 'Unlimited')
         },
         {
-            feature: t('subscription_page.comparison.digital_scoring', 'Digital Scoring Kualifikasi'),
+            feature: t('subscription_page.comparison.digital_scoring', 'Digital Qualification Scoring'),
             free: true,
             standar: true,
             elite: true
         },
         {
-            feature: t('subscription_page.comparison.elimination_brackets', 'Bagan Eliminasi & Match Play'),
+            feature: t('subscription_page.comparison.elimination_brackets', 'Elimination Brackets & Match Play'),
             free: false,
             standar: true,
             elite: true
         },
         {
-            feature: t('subscription_page.comparison.digital_certificates', 'Sertifikat Digital Pemanah'),
+            feature: t('subscription_page.comparison.digital_certificates', 'Digital Certificates for Archers'),
             free: false,
-            standar: t('subscription_page.cert_basic', 'Template Standar'),
+            standar: t('subscription_page.cert_basic', 'Standard Template'),
             elite: t('subscription_page.cert_custom', 'Custom Template (16:9 & A4)')
         },
         {
-            feature: t('subscription_page.comparison.tournament_printouts', 'Printout Scoresheet & Bagan'),
-            free: t('subscription_page.export_basic', 'Laporan Dasar'),
-            standar: t('subscription_page.export_standard', 'Lengkap (6 Dokumen)'),
-            elite: t('subscription_page.export_elite', 'Lengkap (6 Dokumen)')
+            feature: t('subscription_page.comparison.tournament_printouts', 'Scoresheets & Bracket Printouts'),
+            free: t('subscription_page.export_basic', 'Basic Report'),
+            standar: t('subscription_page.export_standard', 'Complete (6 Types)'),
+            elite: t('subscription_page.export_elite', 'Complete (6 Types)')
         },
         {
-            feature: t('subscription_page.comparison.payment_gateway', 'Gateway Pembayaran Otomatis'),
+            feature: t('subscription_page.comparison.payment_gateway', 'Automated Payment Gateway'),
             free: false,
             standar: isUSD.value ? 'Paddle / PayPal' : 'Mayar (QRIS, VA)',
             elite: isUSD.value ? 'Paddle, PayPal & Credit Card' : 'Mayar (QRIS, VA, E-Wallet)'
@@ -484,22 +484,22 @@ const eoComparisonData = computed(() => {
             elite: true
         },
         {
-            feature: t('subscription_page.comparison.export_analytics', 'Ekspor Data & Rekap Excel'),
+            feature: t('subscription_page.comparison.export_analytics', 'Data Export & Complete Excel'),
             free: 'PDF',
             standar: 'PDF & CSV',
             elite: 'PDF, CSV, & Excel'
         },
         {
-            feature: t('subscription_page.comparison.media_storage', 'Penyimpanan Media'),
+            feature: t('subscription_page.comparison.media_storage', 'Media Storage'),
             free: '250 MB',
             standar: '1 GB',
             elite: '5 GB'
         },
         {
-            feature: t('subscription_page.comparison.technical_support', 'Dukungan Bantuan'),
-            free: t('subscription_page.support_standard', 'Standar'),
-            standar: t('subscription_page.support_fast', 'Dukungan Cepat'),
-            elite: t('subscription_page.support_priority', 'Prioritas VIP')
+            feature: t('subscription_page.comparison.technical_support', 'Customer Support'),
+            free: t('subscription_page.support_standard', 'Standard'),
+            standar: t('subscription_page.support_fast', 'Fast Support'),
+            elite: t('subscription_page.support_priority', 'VIP Priority')
         }
     ]
 })
@@ -514,30 +514,36 @@ const faqs = computed(() => {
     }
     return [
         {
-            question: t('subscription_page.faqs_list.0.question', 'Bagaimana cara kerja promo gratis paket Standar EO selama 3 bulan?'),
-            answer: t('subscription_page.faqs_list.0.answer', 'Selama masa promo 3 bulan pertama, Anda dapat mendaftarkan dan menggunakan paket Standar EO secara gratis (Rp 0) tanpa dipungut biaya kuota untuk mempublikasikan turnamen panahan Anda.')
+            question: t('subscription_page.faqs_list.0.question', 'How does the Standard EO 3-month free promo work?'),
+            answer: t('subscription_page.faqs_list.0.answer', 'During the initial 3-month promotional period, organizers can register and claim Standard EO event quota completely free ($0.00) with no upfront or hidden fees to publish and manage tournaments.')
         },
         {
-            question: t('subscription_page.faqs_list.1.question', 'Apa yang terjadi setelah masa promo 3 bulan berakhir?'),
-            answer: t('subscription_page.faqs_list.1.answer', 'Setelah masa promo 3 bulan berakhir, turnamen yang telah Anda buat tetap aktif dan tidak akan dihapus. Untuk turnamen baru selanjutnya, Anda dapat membeli kuota Standar EO dengan tarif normal Rp 49.900 per event.')
+            question: t('subscription_page.faqs_list.1.question', 'What happens after the 3-month promo period ends?'),
+            answer: t('subscription_page.faqs_list.1.answer', 'All existing tournaments and past event data remain permanently active. For publishing new future events after the promo ends, Standard EO quota is available at the normal flat rate of $3.00 per event.')
         },
         {
-            question: t('subscription_page.faqs_list.2.question', 'Apakah kuota event yang dibeli memiliki batas kedaluwarsa?'),
-            answer: t('subscription_page.faqs_list.2.answer', 'Tidak sama sekali. Seluruh kuota event (baik Standar maupun Elite) yang ada di akun Anda tersimpan permanen tanpa batas kedaluwarsa dan siap digunakan kapan saja.')
+            question: t('subscription_page.faqs_list.2.question', 'Do purchased event quotas have an expiration date?'),
+            answer: t('subscription_page.faqs_list.2.answer', 'No. All event quotas stored in your organizer account never expire. You can keep them and use them whenever your tournament schedule is set.')
         },
         {
-            question: t('subscription_page.faqs_list.3.question', 'Kapan kuota event terpotong dari saldo akun saya?'),
-            answer: t('subscription_page.faqs_list.3.answer', 'Kuota event baru terpotong saat Anda mempublikasikan event (mengubah status event dari Draft ke Publik). Selama event masih dalam tahap perencanaan/draft, kuota belum digunakan.')
+            question: t('subscription_page.faqs_list.3.question', 'When is event quota deducted from my account balance?'),
+            answer: t('subscription_page.faqs_list.3.answer', 'Event quota is only deducted when you publish an event (changing status from Draft to Public). While setting up categories, brackets, and rules in Draft mode, no quota is consumed.')
         },
         {
-            question: t('subscription_page.faqs_list.4.question', 'Apakah saya bisa membeli jumlah slot event kustom (custom slots)?'),
-            answer: t('subscription_page.faqs_list.4.answer', 'Ya! Di dashboard penyelenggara, Anda dapat menentukan sendiri jumlah slot kuota event yang ingin dibeli sesuai jadwal turnamen Anda sepanjang tahun.')
+            question: t('subscription_page.faqs_list.4.question', 'Can I purchase custom numbers of event slots?'),
+            answer: t('subscription_page.faqs_list.4.answer', 'Yes! In your organizer dashboard, you can enter any custom number of event slots you require to plan out your organization yearly calendar.')
         }
     ]
 })
 
+useHead({
+    title: computed(() => 'Tournament Organizer Pricing & Plans - Archeris.net')
+})
+
 useSeoMeta({
-    title: () => `${t('subscription_page.title', 'Skalakan Manajemen Panahan Anda')} - Archeris`,
-    description: () => t('subscription_page.description', 'Pilihan paket turnamen panahan terbaik untuk penyelenggara.')
+    title: () => 'Tournament Organizer Pricing & Plans - Archeris.net',
+    description: () => t('subscription_page.description', 'Flexible and transparent pricing options for tournament organizers, from local clubs to national championships. Enjoy free Standard package access for the first 3 months promo!'),
+    ogTitle: () => 'Tournament Organizer Pricing & Plans - Archeris.net',
+    ogDescription: () => t('subscription_page.description', 'Flexible and transparent pricing options for tournament organizers, from local clubs to national championships. Enjoy free Standard package access for the first 3 months promo!')
 })
 </script>

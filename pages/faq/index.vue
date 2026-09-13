@@ -55,12 +55,12 @@
                     {{ $t('faq_page.need_help_desc') }}
                 </p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <NuxtLink :to="localePath('/contact')">
+                    <NuxtLink to="/contact">
                         <BaseButton variant="primary" size="lg" icon="ph:envelope-simple-bold">
                             {{ $t('faq_page.contact_us') }}
                         </BaseButton>
                     </NuxtLink>
-                    <NuxtLink :to="localePath('/docs')">
+                    <NuxtLink to="/docs">
                         <BaseButton variant="outline" size="lg" icon="ph:book-open-bold">
                             {{ $t('faq_page.documentation') }}
                         </BaseButton>
@@ -73,51 +73,48 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
 
 definePageMeta({
     layout: 'landing'
 })
-
-const { t, tm } = useI18n()
-const localePath = useLocalePath()
 
 const activeFaq = ref(0)
 const toggleFaq = (index) => {
     activeFaq.value = activeFaq.value === index ? null : index
 }
 
-const faqs = computed(() => {
-    const items = tm('faq_page.items')
-    if (Array.isArray(items) && items.length > 0) {
-        return items
+const faqs = [
+    {
+        question: 'How do I register an organizer on Archeris.net?',
+        answer: 'You can register your organizer via the registration page by choosing the "Organizer" account type. Once your email is verified, you can complete your organizer profile and start managing events.'
+    },
+    {
+        question: 'Can the scoring system be used for offline tournaments?',
+        answer: 'Absolutely! Archeris.net is designed to simplify offline tournament scoring digitally. Scores can be entered directly by referees or participants through the application.'
+    },
+    {
+        question: 'How does the event registration payment process work?',
+        answer: 'We support various automated payment methods such as Bank Transfer, E-Wallet, and QRIS. Registration status is updated automatically upon successful payment.'
+    },
+    {
+        question: 'Is athlete data kept secure?',
+        answer: 'We implement strict data security standards and end-to-end encryption to ensure all athletes\' personal information is stored securely.'
+    },
+    {
+        question: 'How do I request technical assistance?',
+        answer: 'If you encounter any technical issues, please contact our support team through the Contact page or send an email to support@archeris.net.'
     }
-    return [
-        {
-            question: t('faq_page.items.0.question', 'How do I register an organizer on Archeris.net?'),
-            answer: t('faq_page.items.0.answer', 'You can register your organizer via the registration page by choosing the "Organizer" account type. Once your email is verified, you can complete your organizer profile and start managing events.')
-        },
-        {
-            question: t('faq_page.items.1.question', 'Can the scoring system be used for offline tournaments?'),
-            answer: t('faq_page.items.1.answer', 'Absolutely! Archeris.net is designed to simplify offline tournament scoring digitally. Scores can be entered directly by referees or participants through the application.')
-        },
-        {
-            question: t('faq_page.items.2.question', 'How does the event registration payment process work?'),
-            answer: t('faq_page.items.2.answer', 'We support various automated payment methods such as Bank Transfer, E-Wallet, and QRIS. Registration status is updated automatically upon successful payment.')
-        },
-        {
-            question: t('faq_page.items.3.question', 'Is athlete data kept secure?'),
-            answer: t('faq_page.items.3.answer', 'We implement strict data security standards and end-to-end encryption to ensure all athletes\' personal information is stored securely.')
-        },
-        {
-            question: t('faq_page.items.4.question', 'How do I request technical assistance?'),
-            answer: t('faq_page.items.4.answer', "If you encounter any technical issues, please contact our support team through the Contact page or send an email to support{'@'}archeris.net.")
-        }
-    ]
-})
+]
 
 useHead({
-    title: computed(() => t('faq_page.badge') + ' - Archeris')
+    title: 'Frequently Asked Questions & Support - Archeris.net'
+})
+
+useSeoMeta({
+    title: 'Frequently Asked Questions & Support - Archeris.net',
+    description: 'Find quick answers to common questions about registration, organizers, and the Archeris.net scoring system.',
+    ogTitle: 'Frequently Asked Questions & Support - Archeris.net',
+    ogDescription: 'Find quick answers to common questions about registration, organizers, and the Archeris.net scoring system.'
 })
 </script>

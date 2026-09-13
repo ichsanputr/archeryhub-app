@@ -74,7 +74,7 @@
                     </div>
 
                     <!-- CTA -->
-                    <NuxtLink :to="localePath('/pricing')"
+                    <NuxtLink to="/pricing"
                         class="group/btn relative z-10 w-full py-4 bg-white/10 hover:bg-white/15 text-white border border-white/15 hover:border-white/25 rounded-xl text-center font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2">
                         <span>{{ $t('home.pricing.standard.cta') }}</span>
                         <Icon icon="ph:arrow-right-bold" class="text-sm transition-transform group-hover/btn:translate-x-1" />
@@ -127,7 +127,7 @@
                     </div>
 
                     <!-- CTA -->
-                    <NuxtLink :to="localePath('/pricing')"
+                    <NuxtLink to="/pricing"
                         class="group/btn relative w-full py-4 bg-primary text-navy rounded-xl text-center font-black text-sm transition-all duration-300 hover:bg-primary/90 flex items-center justify-center gap-2 shadow-lg shadow-primary/25 hover:shadow-primary/40">
                         <span>{{ $t('home.pricing.free.cta') }}</span>
                         <Icon icon="ph:arrow-right-bold" class="text-sm transition-transform group-hover/btn:translate-x-1" />
@@ -179,7 +179,7 @@
                     </div>
 
                     <!-- CTA -->
-                    <NuxtLink :to="localePath('/pricing')"
+                    <NuxtLink to="/pricing"
                         class="group/btn relative z-10 w-full py-4 bg-primary text-navy rounded-xl text-center font-black text-sm transition-all duration-300 hover:bg-primary/90 flex items-center justify-center gap-2 shadow-lg shadow-primary/20">
                         <span>{{ $t('home.pricing.elite.cta') }}</span>
                         <Icon icon="ph:arrow-right-bold" class="text-sm transition-transform group-hover/btn:translate-x-1" />
@@ -206,7 +206,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useI18n } from 'vue-i18n'
 
 const { tm, t } = useI18n()
-const localePath = useLocalePath()
 const sectionRef = ref(null)
 
 onMounted(() => {

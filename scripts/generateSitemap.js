@@ -24,7 +24,6 @@ async function generateSitemap() {
         '/archers',
 
         '/events',
-        '/news',
         '/products',
         '/organizer',
         '/contact',
@@ -103,19 +102,6 @@ async function generateSitemap() {
   <url>
     <loc>${SITE_URL}/products/${slug}</loc>
     <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>`;
-            });
-        }
-
-        // 7. Add News
-        if (data.news) {
-            console.log(`Adding ${data.news.length} news articles...`);
-            data.news.forEach(slug => {
-                xml += `
-  <url>
-    <loc>${SITE_URL}/news/${slug}</loc>
-    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>`;
             });

@@ -342,7 +342,6 @@ const navSections = computed(() => {
       },
       { type: 'label', label: t('sidebar.settings', 'Pengaturan') },
       { label: t('sidebar.package', 'Package'), icon: 'ph:package', path: '/dashboard/organizer/package' },
-      ...(!isEventManagePage.value ? [{ label: t('sidebar.news', 'Berita'), icon: 'ph:newspaper', path: '/dashboard/organizer/news' }] : []),
       ...(!isEventManagePage.value ? [{ label: t('sidebar.settings', 'Pengaturan'), icon: 'ph:gear', path: '/dashboard/organizer/settings' }] : []),
     ]
   }
@@ -352,7 +351,6 @@ const navSections = computed(() => {
     return [
       { type: 'label', label: t('root.index.title', 'Penyelenggara') },
       { label: t('root.index.title', 'Penyelenggara'), icon: 'ph:users-four-bold', path: '/dashboard/root' },
-      { label: t('sidebar.news', 'Berita'), icon: 'ph:newspaper', path: '/dashboard/root/news' },
     ]
   }
 
@@ -363,7 +361,6 @@ const navSections = computed(() => {
     { label: t('sidebar.event', 'Event'), icon: 'ph:trophy', path: `${prefix}/events` },
     ...(!isEventManagePage.value ? [{ label: t('sidebar.earnings', 'Laporan'), icon: 'ph:chart-bar', path: `${prefix}/reports` }] : []),
     { label: t('sidebar.profile', 'Profil'), icon: 'ph:users-four', path: `${prefix}/teams` },
-    ...(!isEventManagePage.value ? [{ label: t('sidebar.news', 'Berita'), icon: 'ph:newspaper', path: `${prefix}/news` }] : []),
     ...(!isEventManagePage.value ? [{ label: t('sidebar.settings', 'Pengaturan'), icon: 'ph:gear', path: `${prefix}/settings` }] : []),
   ]
 })

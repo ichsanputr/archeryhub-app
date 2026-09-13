@@ -22,7 +22,7 @@
                     <span>{{ $t('docs.official_docs') }}</span>
                 </div>
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-5 font-display">
-                    {{ $t('docs.title_part2') }}<br /><span class="text-slate-300">{{ $t('docs.title_part1') }}</span>
+                    {{ $t('docs.title_part2') }} <span class="text-primary">{{ $t('docs.title_part1') }}</span>
                 </h1>
                 <p class="text-slate-300 text-sm md:text-base max-w-xl mx-auto mb-8 leading-relaxed font-medium">
                     {{ $t('docs.description') }}
@@ -51,7 +51,7 @@
                             ? 'bg-primary/20 border border-primary/40 text-navy font-black shadow-sm'
                             : 'text-gray-500 hover:text-navy hover:bg-gray-100 font-bold'">
                         <Icon :icon="cat.icon" class="text-base" />
-                        {{ $t(cat.label) }}
+                        {{ cat.label }}
                     </button>
                 </div>
             </div>
@@ -65,8 +65,8 @@
                         <Icon :icon="cat.icon" class="text-lg text-navy" />
                     </div>
                     <div>
-                        <h2 class="text-lg font-black text-navy">{{ $t(cat.label) }}</h2>
-                        <p class="text-gray-400 text-xs">{{ cat.description ? $t(cat.description) : '' }}</p>
+                        <h2 class="text-lg font-black text-navy">{{ cat.label }}</h2>
+                        <p class="text-gray-400 text-xs">{{ cat.description }}</p>
                     </div>
                 </div>
 
@@ -142,8 +142,14 @@ const { data: docsList } = await useAsyncData(
 const docs = computed(() => (docsList.value as any[]) || [])
 
 useHead({
-    title: computed(() => t('docs.title', 'Documentation') + ' - Archeris.net'),
-    meta: [{ name: 'description', content: 'Dokumentasi resmi Archeris.net. Panduan lengkap tentang platform, jenis busur, sistem berlangganan, dan tata cara turnamen.' }]
+    title: computed(() => 'Documentation & Organizer Guides - Archeris.net')
+})
+
+useSeoMeta({
+    title: () => 'Documentation & Organizer Guides - Archeris.net',
+    description: () => t('docs.description', 'Comprehensive guides on the Archeris platform, bow divisions, tournament rules, scoring, and event management.'),
+    ogTitle: () => 'Documentation & Organizer Guides - Archeris.net',
+    ogDescription: () => t('docs.description', 'Comprehensive guides on the Archeris platform, bow divisions, tournament rules, scoring, and event management.')
 })
 
 const route = useRoute()
@@ -187,25 +193,29 @@ watch(() => route.query.cat, (newCat) => {
 })
 
 const categories = [
-    { id: 'all', label: 'docs.categories.all', icon: 'ph:squares-four-bold', description: '' },
-    { id: 'dashboard', label: 'docs.categories.dashboard', icon: 'ph:monitor-bold', description: 'docs.cat_desc.dashboard' },
-    { id: 'archer', label: 'docs.categories.archer', icon: 'ph:user-bold', description: 'docs.cat_desc.archer' },
-    { id: 'archery', label: 'docs.categories.archery', icon: 'ph:crosshair-bold', description: 'docs.cat_desc.archery' },
-    { id: 'subscription', label: 'docs.categories.subscription', icon: 'ph:crown-bold', description: 'docs.cat_desc.subscription' },
-    { id: 'event', label: 'docs.categories.event', icon: 'ph:trophy-bold', description: 'docs.cat_desc.event' },
-    { id: 'scoring', label: 'docs.categories.scoring', icon: 'ph:target-bold', description: 'docs.cat_desc.scoring' },
-    { id: 'marketplace', label: 'docs.categories.marketplace', icon: 'ph:storefront-bold', description: 'docs.cat_desc.marketplace' },
+    { id: 'all', label: 'All Guides', icon: 'ph:squares-four-bold', description: '' },
+    { id: 'platform', label: 'Platform & Dashboard', icon: 'ph:monitor-bold', description: 'Platform overview, user accounts, roles, and settings' },
+    { id: 'archer', label: 'Archer', icon: 'ph:user-bold', description: 'Guides for archer profiles, event registration, and shopping cart' },
+    { id: 'archery', label: 'Archery Rules', icon: 'ph:crosshair-bold', description: 'Rules, competition categories, distances, and bracket types' },
+    { id: 'subscription', label: 'Subscription', icon: 'ph:crown-bold', description: 'Pricing plans, add-ons, and organizer billing' },
+    { id: 'event', label: 'Events & Tournaments', icon: 'ph:trophy-bold', description: 'Creating and managing archery events and participants' },
+    { id: 'scoring', label: 'Scoring System', icon: 'ph:target-bold', description: 'Live scoring, scorekeeper management, and elimination matches' },
+    { id: 'marketplace', label: 'Marketplace', icon: 'ph:storefront-bold', description: 'Buying and selling archery equipment and products' },
 ]
 
 const filteredCategories = computed(() => {
-    const cats = activeCategory.value === 'all' ? categories.filter(c => c.id !== 'all') : categories.filter(c => c.id === activeCategory.value)
+    const cats = activeCategory.value === 'all'
+        ? categories.filter(c => c.id !== 'all')
+        : categories.filter(c => c.id === activeCategory.value || (activeCategory.value === 'dashboard' && c.id === 'platform'))
     if (searchQuery.value === '') return cats
     return cats.filter(cat => filteredDocs(cat.id).length > 0)
 })
 
 const filteredDocs = (categoryId: string) => {
     return docs.value.filter((d: any) => {
-        const matchCat = d.category === categoryId
+        const matchCat = d.category === categoryId ||
+            (categoryId === 'platform' && (d.category === 'platform' || d.category === 'dashboard')) ||
+            (categoryId === 'dashboard' && (d.category === 'platform' || d.category === 'dashboard'))
         const matchSearch = searchQuery.value === '' ||
             d.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
             d.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase())

@@ -98,7 +98,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                     <!-- Product Card -->
                     <NuxtLink v-for="product in paginatedProducts" :key="product.id"
-                        :to="localePath(`/products/${product.slug || product.id}`)"
+                        :to="`/products/${product.slug || product.id}`"
                         class="bg-white rounded-2xl border border-slate-100 flex flex-col shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300 group overflow-hidden h-full">
 
                         <!-- Product Image Container -->
@@ -183,18 +183,18 @@ const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
 
 const { tm, t } = useI18n()
-const localePath = useLocalePath()
 
 definePageMeta({
     layout: 'landing'
 })
 
-useHead({ title: computed(() => t('shop.title', 'Archery Shop') + ' - Archeris') })
-
+useHead({ title: computed(() => 'Archery Equipment & Gear Marketplace - Archeris.net') })
 
 useSeoMeta({
-    title: () => `${t('products_page.badge')} - Archeris.net`,
-    description: () => t('products_page.description')
+    title: () => 'Archery Equipment & Gear Marketplace - Archeris.net',
+    description: () => t('products_page.description', 'Discover quality archery equipment, bows, arrows, and gear from trusted archery clubs and verified sellers.'),
+    ogTitle: () => 'Archery Equipment & Gear Marketplace - Archeris.net',
+    ogDescription: () => t('products_page.description', 'Discover quality archery equipment, bows, arrows, and gear from trusted archery clubs and verified sellers.')
 })
 
 const searchQuery = ref('')

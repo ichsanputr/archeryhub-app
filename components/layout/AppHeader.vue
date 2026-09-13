@@ -45,15 +45,6 @@
           class="font-black text-sm transition-all h-full flex items-center px-1 border-b-2 border-transparent hover:border-primary">
           {{ t('nav.features') }}
         </NuxtLink>
-
-        <NuxtLink to="/news"
-          :class="[
-            isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white',
-            route.path.startsWith('/news') ? (isScrolled || !transparent ? '!text-navy font-bold !border-primary' : '!text-white font-bold !border-primary') : ''
-          ]"
-          class="font-black text-sm transition-all h-full flex items-center px-1 border-b-2 border-transparent hover:border-primary">
-          {{ t('nav.news') }}
-        </NuxtLink>
       </nav>
 
       <!-- Event Manage Mode (For All Personas) -->
@@ -199,6 +190,11 @@ const langFlags = {
 const changeDashboardLocale = async (code) => {
   await loadLocaleMessages(code)
   locale.value = code
+  if (process.client) {
+    try {
+      localStorage.setItem('dashboard_locale', code)
+    } catch (e) {}
+  }
   setLocaleCookie(code)
   showLangMenu.value = false
 }

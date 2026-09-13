@@ -1302,19 +1302,20 @@ const isAlreadyRegistered = computed(() => {
 
 // Dynamic SEO & Open Graph Meta Tags for Social Sharing & Google Rich Snippets
 useSeoMeta({
-    title: () => `${tournament.value.name || 'Event Panahan'} - Archeris.net`,
-    ogTitle: () => `${tournament.value.name || 'Event Panahan'} - Archeris.net`,
-    description: () => tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Ikuti event panahan ${tournament.value.name} di ${tournament.value.location}. Dapatkan informasi jadwal, kualifikasi, eliminasi, dan pendaftaran resmi.`,
-    ogDescription: () => tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Ikuti event panahan ${tournament.value.name} di ${tournament.value.location}. Dapatkan informasi jadwal, kualifikasi, eliminasi, dan pendaftaran resmi.`,
+    title: () => `${tournament.value.name || 'Archery Tournament'} - Archeris.net`,
+    ogTitle: () => `${tournament.value.name || 'Archery Tournament'} - Archeris.net`,
+    description: () => tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Join ${tournament.value.name || 'archery tournament'} in ${tournament.value.location || 'Indonesia'}. Get schedule details, live qualification & elimination brackets, and registration.`,
+    ogDescription: () => tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Join ${tournament.value.name || 'archery tournament'} in ${tournament.value.location || 'Indonesia'}. Get schedule details, live qualification & elimination brackets, and registration.`,
     ogImage: () => tournament.value.banner_url || tournament.value.logo_url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop',
     twitterCard: 'summary_large_image',
-    twitterTitle: () => `${tournament.value.name || 'Event Panahan'} - Archeris.net`,
-    twitterDescription: () => tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Ikuti event panahan ${tournament.value.name} di ${tournament.value.location}.`,
+    twitterTitle: () => `${tournament.value.name || 'Archery Tournament'} - Archeris.net`,
+    twitterDescription: () => tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Join ${tournament.value.name || 'archery tournament'} in ${tournament.value.location || 'Indonesia'}.`,
     twitterImage: () => tournament.value.banner_url || tournament.value.logo_url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop',
 })
 
 // Canonical Link & SportsEvent JSON-LD Structured Data for Google Rich Snippets
 useHead({
+    title: computed(() => `${tournament.value.name || 'Archery Tournament'} - Archeris.net`),
     link: [
         { rel: 'canonical', href: `https://archeris.net/events/${slug}` }
     ],
@@ -1324,12 +1325,12 @@ useHead({
             children: computed(() => JSON.stringify({
                 '@context': 'https://schema.org',
                 '@type': 'SportsEvent',
-                'name': tournament.value.name || 'Event Panahan',
-                'description': tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 200) : '',
+                'name': tournament.value.name || 'Archery Tournament',
+                'description': tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 200) : 'Archery tournament with live scoring',
                 'image': [tournament.value.banner_url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop'],
                 'location': {
                     '@type': 'Place',
-                    'name': tournament.value.location || 'Lapangan Panahan',
+                    'name': tournament.value.location || 'Archery Range',
                     'address': {
                         '@type': 'PostalAddress',
                         'addressLocality': tournament.value.location || 'Indonesia',
@@ -1338,7 +1339,7 @@ useHead({
                 },
                 'organizer': {
                     '@type': 'Organization',
-                    'name': tournament.value.organizer || 'Penyelenggara Event',
+                    'name': tournament.value.organizer || 'Tournament Organizer',
                     'url': 'https://archeris.net'
                 }
             }))

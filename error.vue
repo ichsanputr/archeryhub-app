@@ -49,10 +49,6 @@
             class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
             Clubs
           </NuxtLink>
-          <NuxtLink to="/news"
-            class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
-            News
-          </NuxtLink>
           <NuxtLink to="/products"
             class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
             Marketplace

@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <p class="text-xs text-slate-300 leading-relaxed font-medium relative z-10">
-                            Platform manajemen turnamen panahan terintegrasi: pendaftaran online, auto-payment QRIS/VA, dan real-time live scoring berbasis web.
+                            Integrated archery tournament management: online registration, automated QRIS/card payments, and cloud-native live scoring.
                         </p>
                     </div>
 
@@ -96,7 +96,7 @@
                             </div>
                         </div>
                         <p class="text-xs text-slate-500 leading-relaxed">
-                            Aplikasi desktop konvensional untuk format World Archery dengan setup database lokal, jaringan kabel, dan penanganan printout manual.
+                            Conventional desktop application for World Archery formats requiring local MySQL server setups, wired LAN cables, and manual printouts.
                         </p>
                     </div>
                 </div>
@@ -249,12 +249,12 @@
                         {{ $t('home.comparison_page.cta_desc') }}
                     </p>
                     <div class="flex flex-col sm:flex-row gap-3.5 justify-center relative z-10">
-                        <NuxtLink :to="localePath('/auth/register')">
+                        <NuxtLink to="/auth/register">
                             <BaseButton variant="primary" size="lg" icon="ph:user-plus-bold">
                                 {{ $t('home.comparison_page.cta_btn') }}
                             </BaseButton>
                         </NuxtLink>
-                        <NuxtLink :to="localePath('/')">
+                        <NuxtLink to="/">
                             <BaseButton variant="outline" size="lg" icon="ph:house-bold">
                                 {{ $t('home.comparison_page.back_home') }}
                             </BaseButton>
@@ -277,23 +277,26 @@ definePageMeta({
 })
 
 const { t } = useI18n()
-const localePath = useLocalePath()
 
 useHead({
-    title: computed(() => t('comparison.title', 'Archeris vs Ianseo') + ' - Archeris'),
-    meta: [
-        { name: 'description', content: 'Detailed comparison between Archeris.net and Ianseo.net tournament management platforms.' }
-    ]
+    title: computed(() => t('home.comparison_page.hero_title', 'Archeris vs Ianseo') + ' - Archeris')
+})
+
+useSeoMeta({
+    title: () => 'Archeris vs Ianseo - Modern Cloud Archery Tournament & Live Scoring Platform',
+    description: () => 'Comprehensive feature comparison between Archeris.net (cloud-native live scoring & event management) and Ianseo.net (legacy desktop software).',
+    ogTitle: () => 'Archeris vs Ianseo - Modern Cloud Archery Tournament & Live Scoring Platform',
+    ogDescription: () => 'Comprehensive feature comparison between Archeris.net (cloud-native live scoring & event management) and Ianseo.net (legacy desktop software).'
 })
 
 const activeCategory = ref('all')
 
 const featureCategories = computed(() => [
-    { id: 'all', label: t('home.comparison_page.cat_all', 'Semua Fitur'), icon: 'ph:squares-four-bold' },
-    { id: 'infra', label: t('home.comparison_page.cat_infra', 'Infrastruktur & Cloud'), icon: 'ph:cloud-check-bold' },
-    { id: 'payment', label: t('home.comparison_page.cat_payment', 'Pendaftaran & Pembayaran'), icon: 'ph:credit-card-bold' },
-    { id: 'tournament', label: t('home.comparison_page.cat_tournament', 'Turnamen & Scoring'), icon: 'ph:target-bold' },
-    { id: 'output', label: t('home.comparison_page.cat_output', 'Output & Printout'), icon: 'ph:printer-bold' }
+    { id: 'all', label: t('home.comparison_page.cat_all', 'All Features'), icon: 'ph:squares-four-bold' },
+    { id: 'infra', label: t('home.comparison_page.cat_infra', 'Infrastructure & Cloud'), icon: 'ph:cloud-check-bold' },
+    { id: 'payment', label: t('home.comparison_page.cat_payment', 'Registration & Payments'), icon: 'ph:credit-card-bold' },
+    { id: 'tournament', label: t('home.comparison_page.cat_tournament', 'Tournament & Scoring'), icon: 'ph:target-bold' },
+    { id: 'output', label: t('home.comparison_page.cat_output', 'Outputs & Printouts'), icon: 'ph:printer-bold' }
 ])
 
 const featuresList = [

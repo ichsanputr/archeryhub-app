@@ -155,13 +155,23 @@
  import { Icon } from '@iconify/vue'
  import { useApi } from '~/composables/useApi'
  import { ref, computed, reactive } from 'vue'
+ import { useI18n } from 'vue-i18n'
+
+ const { t } = useI18n()
 
  definePageMeta({
    layout: 'landing'
  })
 
  useHead({
-   title: computed(() => t('contact.title', 'Contact Us') + ' - Archeris')
+   title: computed(() => 'Contact Support & Partnerships - Archeris.net')
+ })
+
+ useSeoMeta({
+   title: () => 'Contact Support & Partnerships - Archeris.net',
+   description: () => 'Get in touch with the Archeris team for tournament support, partnership inquiries, and custom archery competition solutions.',
+   ogTitle: () => 'Contact Support & Partnerships - Archeris.net',
+   ogDescription: () => 'Get in touch with the Archeris team for tournament support, partnership inquiries, and custom archery competition solutions.'
  })
 
  const loading = ref(false)

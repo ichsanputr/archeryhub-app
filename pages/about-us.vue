@@ -25,17 +25,17 @@
                 <!-- Badge -->
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-primary text-xs font-black tracking-widest mb-8 shadow-inner">
                     <Icon icon="ph:target-bold" class="text-base text-primary" />
-                    <span>Redefining Archery Competitions Through Technology</span>
+                    <span>Archery Event Management & Live Scoring Platform</span>
                 </div>
 
                 <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] mb-6 max-w-4xl mx-auto font-display">
-                    Digitizing the 
-                    <span class="text-navy bg-primary px-5 py-1 rounded-2xl inline-block transform -rotate-1 shadow-lg shadow-primary/20">Future</span> 
-                    of Archery.
+                    Modernizing Archery Tournaments with 
+                    <span class="text-navy bg-primary px-5 py-1 rounded-2xl inline-block transform -rotate-1 shadow-lg shadow-primary/20">Live Scoring</span> 
+                    & Precision.
                 </h1>
 
                 <p class="text-slate-300 text-base sm:text-lg md:text-xl font-medium max-w-3xl mx-auto leading-relaxed mb-12">
-                    We build modern, cloud-native digital infrastructure for archery tournament organizers, athletes, and national federations worldwide. Recording every arrow, sorting brackets instantly, and mapping targets with absolute precision.
+                    We build modern, cloud-native digital tournament infrastructure for archery event organizers, judges, clubs, and athletes worldwide. Simplifying online registrations, automating target butt allocations, generating World Archery elimination brackets, and recording every arrow in real-time.
                 </p>
 
                 <!-- Quick Stat Pills -->
@@ -176,11 +176,11 @@
                         </div>
 
                         <div class="pt-4 flex flex-wrap gap-4">
-                            <NuxtLink :to="localePath('/pricing')"
+                            <NuxtLink to="/pricing"
                                 class="px-6 py-3 bg-navy text-white font-bold rounded-xl text-sm hover:bg-navy-dark transition-colors shadow-md">
                                 Explore Pricing Plans
                             </NuxtLink>
-                            <NuxtLink :to="localePath('/contact')"
+                            <NuxtLink to="/contact"
                                 class="px-6 py-3 bg-slate-100 text-navy font-bold rounded-xl text-sm hover:bg-slate-200 transition-colors">
                                 Contact Sales & Support
                             </NuxtLink>
@@ -203,11 +203,11 @@
                         Register your organization account to access real-time digital scoring, target map configurator, and dynamic bracket generation instantly.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <NuxtLink :to="localePath('/auth/register')"
+                        <NuxtLink to="/auth/register"
                             class="px-8 py-4 bg-primary text-navy rounded-2xl font-black tracking-wider text-sm hover:bg-primary-hover hover:scale-105 transition-all shadow-lg shadow-primary/20">
                             Register as Organizer
                         </NuxtLink>
-                        <NuxtLink :to="localePath('/pricing')"
+                        <NuxtLink to="/pricing"
                             class="px-8 py-4 bg-white/10 text-white rounded-2xl font-bold tracking-wider text-sm border border-white/15 hover:bg-white/20 transition-all">
                             View Pricing & Features
                         </NuxtLink>
@@ -221,12 +221,13 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 definePageMeta({
     layout: 'landing'
 })
-
-const localePath = useLocalePath()
 
 const heroImages = [
     '/hero-event-detail.jpeg',
@@ -253,10 +254,14 @@ onUnmounted(() => {
 })
 
 useHead({
-    title: computed(() => t('about.title', 'About Us') + ' - Archeris | Archery Event Platform'),
-    meta: [
-        { name: 'description', content: 'Learn about Archeris.net - the modern digital platform for archery tournament organizers, scorekeepers, and athletes.' }
-    ]
+    title: computed(() => t('about.title', 'About Us') + ' - Archeris | Archery Event Management & Scoring Platform')
+})
+
+useSeoMeta({
+    title: () => 'About Archeris - Archery Event Management & Live Scoring Platform',
+    description: () => 'Learn about Archeris.net - the modern cloud-native digital infrastructure for archery tournament organizers, judges, scorekeepers, and athletes worldwide.',
+    ogTitle: () => 'About Archeris - Archery Event Management & Live Scoring Platform',
+    ogDescription: () => 'Learn about Archeris.net - the modern cloud-native digital infrastructure for archery tournament organizers, judges, scorekeepers, and athletes worldwide.'
 })
 
 const heroStats = [

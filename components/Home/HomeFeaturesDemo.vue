@@ -1,24 +1,5 @@
 <template>
     <section ref="sectionRef" class="relative py-24 sm:py-32 bg-white overflow-hidden">
-        <!-- Decorative Border Features on Left & Right Sides -->
-        <div class="absolute top-0 bottom-0 left-0 w-[40px] sm:w-[100px] opacity-[0.3] sm:opacity-[0.2] pointer-events-none z-0 mix-blend-multiply"
-            style="
-    background-image: url('/ok1-removebg-preview.png');
-    background-repeat: repeat-y;
-    background-size: 100% auto;
-    transform-origin: center;
-  ">
-        </div>
-
-        <div class="absolute top-0 bottom-0 right-0 w-[40px] sm:w-[100px] opacity-[0.3] sm:opacity-[0.2] pointer-events-none z-0 mix-blend-multiply"
-            style="
-    background-image: url('/ok1-removebg-preview.png');
-    background-repeat: repeat-y;
-    background-size: 100% auto;
-    transform: scaleX(-1);
-  ">
-        </div>
-
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <!-- Main Heading -->
             <div class="text-center mb-24">

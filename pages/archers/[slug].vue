@@ -636,11 +636,18 @@ const filteredEventHistory = computed(() => {
 
 useSeoMeta({
     title: () => archer.value?.full_name
-        ? `${archer.value.full_name} — ${t('archers.athlete_profile', 'Archer Profile')} | Archeris`
-        : `${t('archers.athlete_profile', 'Archer Profile')} — Archeris`,
+        ? `${archer.value.full_name} — ${t('archers.public.pro_archer', 'Archer Profile')} | Archeris`
+        : `${t('archers.title', 'Archer Profile')} — Archeris`,
     description: () => archer.value?.full_name
-        ? `${t('archers.profile_desc_prefix', 'View the profile of')} ${archer.value.full_name}${archer.value.bow_type ? `, a ${archer.value.bow_type} archer` : ''}${archer.value.city ? ` from ${archer.value.city}` : ''}. Stats, event history, and achievements at Archeris.`
-        : t('archers.profile_desc_default', 'Archer profiles and stats at Archeris'),
+        ? `View the athlete profile of ${archer.value.full_name}${archer.value.bow_type ? `, ${archer.value.bow_type} archer` : ''}${archer.value.city ? ` from ${archer.value.city}` : ''}. Tournament history, arrow average, and achievements at Archeris.net.`
+        : 'Archer profiles, tournament records, and verified achievements at Archeris.net',
+    ogTitle: () => archer.value?.full_name
+        ? `${archer.value.full_name} — Archer Profile | Archeris`
+        : 'Archer Profile — Archeris',
+    ogDescription: () => archer.value?.full_name
+        ? `View the athlete profile of ${archer.value.full_name}${archer.value.bow_type ? `, ${archer.value.bow_type} archer` : ''}. Tournament records and stats at Archeris.net.`
+        : 'Archer profiles and verified achievements at Archeris.net',
+    ogType: 'profile'
 })
 
 useHead({

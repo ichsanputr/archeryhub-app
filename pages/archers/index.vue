@@ -90,7 +90,7 @@
             <!-- Grid View -->
             <div v-else-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <NuxtLink v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
-                    :to="localePath(`/archers/${archer.username || archer.slug}`)"
+                    :to="`/archers/${archer.username || archer.slug}`"
                     class="group bg-white rounded-2xl border border-slate-100 p-6 shadow-sm transition-all duration-300 hover:border-primary/40 hover:shadow-md flex flex-col justify-between">
                     <div>
                         <div class="flex items-center gap-4">
@@ -159,7 +159,7 @@
             <!-- List View -->
             <div v-else class="space-y-3">
                 <NuxtLink v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
-                    :to="localePath(`/archers/${archer.slug || archer.username}`)"
+                    :to="`/archers/${archer.slug || archer.username}`"
                     class="bg-white rounded-2xl border border-slate-100 hover:border-primary/40 shadow-sm hover:shadow-md transition-all p-4 sm:p-5 flex items-center justify-between gap-4 group">
                     <div class="flex items-center gap-4 min-w-0">
                         <div
@@ -203,10 +203,20 @@ import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-const localePath = useLocalePath()
 
 definePageMeta({
     layout: 'landing'
+})
+
+useHead({
+    title: computed(() => t('archers.title', 'Archers') + ' - Archeris')
+})
+
+useSeoMeta({
+    title: () => `${t('archers.title', 'Archery Community & Athlete Profiles')} - Archeris.net`,
+    description: () => t('archers.description', 'Explore verified profiles of talented archers, competition statistics, tournament achievements, and athlete passports on Archeris.net.'),
+    ogTitle: () => `${t('archers.title', 'Archery Community & Athlete Profiles')} - Archeris.net`,
+    ogDescription: () => t('archers.description', 'Explore verified profiles of talented archers, competition statistics, tournament achievements, and athlete passports on Archeris.net.')
 })
 
 const config = useRuntimeConfig()
@@ -303,13 +313,17 @@ const activeArchers = computed(() => {
 const filteredArchers = computed(() => archers.value)
 
 useHead({
-    title: computed(() => t('archers.seo_title')),
+    title: computed(() => 'Archer Profiles & Athlete Rankings - Archeris.net'),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
-    ],
-    meta: [
-        { name: 'description', content: t('archers.seo_desc') }
     ]
+})
+
+useSeoMeta({
+    title: () => 'Archer Profiles & Athlete Rankings - Archeris.net',
+    description: () => t('archers.seo_desc', 'Discover and explore profiles of talented archers. View verified tournament records, arrow averages, and rankings on Archeris.net.'),
+    ogTitle: () => 'Archer Profiles & Athlete Rankings - Archeris.net',
+    ogDescription: () => t('archers.seo_desc', 'Discover and explore profiles of talented archers. View verified tournament records, arrow averages, and rankings on Archeris.net.')
 })
 </script>
 

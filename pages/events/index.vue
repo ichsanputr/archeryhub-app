@@ -216,7 +216,7 @@
                     <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                         <NuxtLink v-for="tournament in filteredTournaments.slice(0, displayedLimit)"
                             :key="tournament.slug || tournament.id"
-                            :to="localePath(`/events/${tournament.slug || tournament.id}`)"
+                            :to="`/events/${tournament.slug || tournament.id}`"
                             class="group bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:border-primary/40 hover:shadow-md transition-all duration-300 flex flex-col h-full">
                             <div class="relative h-52 overflow-hidden bg-slate-100">
                                 <img :alt="tournament.name"
@@ -288,10 +288,7 @@ const selectedCountry = ref('')
 const selectedCategory = ref('')
 const selectedOrganizer = ref('')
 const selectedStatuses = ref([])
-const displayedLimit = ref(6)
-
 const { t } = useI18n()
-const localePath = useLocalePath()
 
 // Transform API response to match expected format
 const transformEventData = (event) => {
@@ -461,15 +458,17 @@ const scrollToContent = () => {
 }
 
 useHead({
-    title: computed(() => `${t('events_page.all_events', 'All Events')} - Archeris`),
+    title: computed(() => 'Archery Tournaments & Competitions - Archeris.net'),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ]
 })
 
 useSeoMeta({
-    title: () => `${t('events_page.all_events')} - Archeris.net`,
-    description: () => t('events_page.description')
+    title: () => 'Archery Tournaments & Competitions - Archeris.net',
+    description: () => t('events_page.description', 'Explore upcoming archery championships, national tournaments, and local club events with live qualification and elimination scoring.'),
+    ogTitle: () => 'Archery Tournaments & Competitions - Archeris.net',
+    ogDescription: () => t('events_page.description', 'Explore upcoming archery championships, national tournaments, and local club events with live qualification and elimination scoring.')
 })
 
 definePageMeta({

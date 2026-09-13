@@ -64,15 +64,9 @@ export default defineNuxtConfig({
     lazy: true,
     langDir: 'locales',
     defaultLocale: 'en',
-    fallbackLocale: 'id',
-    strategy: 'prefix_except_default',
-    detectBrowserLanguage: {
-      useCookie: true,
-      cookieKey: 'i18n_redirected',
-      redirectOn: 'root',
-      alwaysRedirect: false,
-      fallbackLocale: 'id'
-    },
+    fallbackLocale: 'en',
+    strategy: 'no_prefix',
+    detectBrowserLanguage: false,
     customRoutes: 'config',
     // keep dashboard routes identical across locales (no prefix change)
     pages: dashboardI18nPages,
@@ -109,24 +103,28 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en'
       },
-      title: 'All In One Archery Event Management Platform - Archeris',
+      title: 'Archeris - Archery Event Management & Live Scoring Platform',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
           name: 'description',
-          content: 'Archeris.net hadir sebagai wadah bagi seluruh penggiat panahan. Dari pemula hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.'
+          content: 'The complete digital platform for archery tournament organizers, clubs, and archers. Features real-time mobile scoring, automated target butt allocations, World Archery brackets, and online tournament registrations.'
+        },
+        {
+          name: 'keywords',
+          content: 'archery event management, archery scoring platform, live archery scoring, mobile scorekeeper, archery tournament bracket, target butt allocation, ianseo alternative, archery club management'
         },
         // Open Graph / Facebook / WhatsApp
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'Archeris' },
-        { property: 'og:title', content: 'Platform Panahan Terintegrasi - Archeris' },
-        { property: 'og:description', content: 'Kelola event panahan, skor kualifikasi & eliminasi, pendaftaran, dan informasi kompetisi panahan Indonesia.' },
+        { property: 'og:title', content: 'Archeris - Archery Event Management & Live Scoring Platform' },
+        { property: 'og:description', content: 'The complete digital platform for archery tournament organizers and archers. Real-time mobile scoring, automated brackets, target allocations, and registrations.' },
         { property: 'og:image', content: 'https://archeris.net/og-default.jpg' },
         // Twitter Card
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: 'Platform Panahan Terintegrasi - Archeris' },
-        { name: 'twitter:description', content: 'Kelola event panahan, skor kualifikasi & eliminasi, pendaftaran, dan informasi kompetisi panahan Indonesia.' },
+        { name: 'twitter:title', content: 'Archeris - Archery Event Management & Live Scoring Platform' },
+        { name: 'twitter:description', content: 'The complete digital platform for archery tournament organizers and archers. Real-time mobile scoring, automated brackets, target allocations, and registrations.' },
         { name: 'twitter:image', content: 'https://archeris.net/og-default.jpg' },
       ],
       link: [
