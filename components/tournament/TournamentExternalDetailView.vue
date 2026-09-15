@@ -61,7 +61,7 @@
         :class="[
           'px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 select-none cursor-pointer',
           activeSectionId === sec.id 
-            ? 'bg-navy text-primary shadow-xs font-bold' 
+            ? 'bg-navy text-white shadow-xs font-bold' 
             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
         ]"
       >
@@ -95,7 +95,7 @@
                   :class="[
                     'px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all block truncate select-none cursor-pointer flex items-center gap-2',
                     activeSectionId === sec.id
-                      ? 'text-navy font-bold bg-primary/15 border-l-3 border-primary'
+                      ? 'text-navy font-bold bg-primary/20 border-l-3 border-navy'
                       : 'text-slate-600 hover:text-navy hover:bg-slate-50'
                   ]"
                 >
@@ -178,8 +178,8 @@
               </div>
             </section>
 
-            <!-- 2. COMPETITION SCHEDULE -->
-            <section v-if="hasScheduleData" id="schedule" class="scroll-mt-24 space-y-5">
+            <!-- 2. COMPETITION SCHEDULE (PREMIUM TIMELINE DESIGN) -->
+            <section v-if="hasScheduleData" id="schedule" class="scroll-mt-24 space-y-6">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
                   <Icon icon="ph:calendar-blank-bold" class="text-xl text-navy" />
@@ -188,62 +188,88 @@
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     Competition Schedule
                   </h2>
-                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Day-by-day timetable, rounds, and session breakdowns.</p>
+                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Sequential timeline of official rounds, qualifications, and finals.</p>
                 </div>
               </div>
 
-              <div class="space-y-3.5">
-                <!-- Day Selector Tabs -->
-                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-                  <button
-                    v-for="(day, dIdx) in scheduleData"
-                    :key="dIdx"
-                    @click="activeScheduleDayIndex = dIdx"
-                    :class="[
-                      'px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 cursor-pointer select-none',
-                      activeScheduleDayIndex === dIdx
-                        ? 'bg-navy text-primary shadow-xs'
-                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-                    ]"
-                  >
-                    <Icon icon="ph:calendar-check" class="text-sm" />
-                    <span>{{ day.date_label }}</span>
-                    <span class="text-[10px] opacity-80">(Day {{ dIdx + 1 }})</span>
-                  </button>
+              <!-- Day Selector Tabs -->
+              <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                <button
+                  v-for="(day, dIdx) in scheduleData"
+                  :key="dIdx"
+                  @click="activeScheduleDayIndex = dIdx"
+                  :class="[
+                    'px-4 py-2 rounded-2xl text-xs font-bold transition-all whitespace-nowrap shrink-0 flex items-center gap-2 cursor-pointer select-none',
+                    activeScheduleDayIndex === dIdx
+                      ? 'bg-navy text-white shadow-md'
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                  ]"
+                >
+                  <Icon icon="ph:calendar-check-bold" class="text-sm" />
+                  <span>{{ day.date_label }}</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded-full" :class="activeScheduleDayIndex === dIdx ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600'">
+                    Day {{ dIdx + 1 }}
+                  </span>
+                </button>
+              </div>
+
+              <!-- Timeline Container with Absolute Line and Circular Nodes -->
+              <div v-if="currentActiveScheduleDay" class="border border-slate-200/80 rounded-3xl p-6 sm:p-8 bg-slate-50/40 space-y-8">
+                <!-- Day Header Badge -->
+                <div class="flex items-center justify-between gap-4 pb-4 border-b border-slate-200/80">
+                  <div class="flex items-center gap-2.5">
+                    <span class="size-3 rounded-full bg-primary ring-4 ring-primary/20"></span>
+                    <h3 class="text-sm sm:text-base font-bold text-navy font-display">
+                      {{ currentActiveScheduleDay.divisions || 'Scheduled Competition Events' }}
+                    </h3>
+                  </div>
+                  <span class="text-xs font-mono font-bold px-3 py-1 rounded-xl bg-white border border-slate-200 text-slate-600 shadow-2xs">
+                    {{ currentActiveScheduleDay.sessions.length }} Sessions
+                  </span>
                 </div>
 
-                <!-- Active Day Sessions List -->
-                <div v-if="currentActiveScheduleDay" class="border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-3.5">
-                  <div class="p-3 rounded-xl bg-navy text-white flex items-center justify-between gap-3">
-                    <div class="text-xs sm:text-sm font-bold font-display">{{ currentActiveScheduleDay.divisions || 'All Scheduled Categories' }}</div>
-                    <span class="text-[11px] px-2 py-0.5 rounded bg-white/10 font-mono">{{ currentActiveScheduleDay.sessions.length }} Sessions</span>
-                  </div>
+                <!-- Timeline Items -->
+                <div class="relative space-y-8 pl-6 sm:pl-8">
+                  <!-- Absolute Vertical Connector Line -->
+                  <div class="absolute left-2.5 sm:left-3 top-3 bottom-3 w-[2px] bg-gradient-to-b from-navy via-slate-300 to-slate-200"></div>
 
-                  <div class="divide-y divide-slate-100 space-y-2.5 pt-1">
-                    <div 
-                      v-for="(session, sIdx) in currentActiveScheduleDay.sessions" 
-                      :key="sIdx"
-                      class="pt-2.5 flex flex-col sm:flex-row sm:items-start justify-between gap-3 hover:bg-slate-50 p-2.5 rounded-xl transition-colors"
-                    >
-                      <div class="flex items-start gap-3">
-                        <div class="w-20 shrink-0 text-right pr-3 border-r border-slate-200 pt-0.5">
-                          <div class="font-mono font-bold text-xs text-navy">{{ session.time_start }}</div>
-                          <div class="text-[10px] text-slate-400 font-mono">{{ session.time_end }}</div>
-                        </div>
-                        <div class="space-y-0.5">
-                          <div class="flex items-center gap-2">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                              {{ toTitleCase(session.type || 'Session') }}
-                            </span>
-                            <span v-if="session.section" class="text-[11px] font-medium text-slate-500">{{ session.section }}</span>
+                  <div 
+                    v-for="(session, sIdx) in currentActiveScheduleDay.sessions" 
+                    :key="sIdx"
+                    class="relative group"
+                  >
+                    <!-- Absolute Timeline Circular Node -->
+                    <div class="absolute -left-6 sm:-left-8 top-1.5 size-5 rounded-full bg-white border-4 border-navy group-hover:border-primary group-hover:scale-110 transition-all shadow-xs z-10"></div>
+
+                    <!-- Session Card -->
+                    <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-2xs group-hover:shadow-sm group-hover:border-slate-300 transition-all space-y-2.5">
+                      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div class="flex items-center gap-2 flex-wrap">
+                          <!-- Time Badge -->
+                          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-navy text-white text-xs font-mono font-bold">
+                            <Icon icon="ph:clock-bold" class="text-xs text-primary" />
+                            <span>{{ session.time_start }} - {{ session.time_end }}</span>
                           </div>
-                          <h4 class="text-xs sm:text-sm font-bold text-navy font-display">{{ session.title }}</h4>
-                          <div v-if="session.notes" class="text-[11px] text-slate-500 font-medium">{{ session.notes }}</div>
+                          <!-- Session Type Tag -->
+                          <span class="px-2 py-0.5 rounded-lg text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                            {{ toTitleCase(session.type || 'Session') }}
+                          </span>
                         </div>
+
+                        <span v-if="session.duration" class="text-xs font-mono text-slate-400">
+                          {{ session.duration }} hrs duration
+                        </span>
                       </div>
 
-                      <div v-if="session.duration" class="text-[11px] font-mono text-slate-500 shrink-0 self-start sm:self-center">
-                        {{ session.duration }} hrs
+                      <!-- Session Title & Details -->
+                      <div>
+                        <h4 class="text-sm sm:text-base font-bold text-navy font-display">{{ session.title }}</h4>
+                        <p v-if="session.notes" class="text-xs text-slate-500 mt-1">{{ session.notes }}</p>
+                      </div>
+
+                      <div v-if="session.section" class="pt-2 border-t border-slate-100 flex items-center gap-1.5 text-xs text-slate-500">
+                        <Icon icon="ph:map-pin" class="text-slate-400" />
+                        <span>{{ session.section }}</span>
                       </div>
                     </div>
                   </div>
@@ -295,7 +321,7 @@
               </div>
             </section>
 
-            <!-- 4. ATHLETES & CLUBS ROSTER -->
+            <!-- 4. ATHLETES & CLUBS ROSTER (WITH SEARCH & PAGINATION CONTROLS) -->
             <section v-if="hasAthletesData" id="athletes" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
@@ -309,10 +335,10 @@
                 </div>
               </div>
 
-              <!-- Directory Controls -->
+              <!-- Directory Controls Toolbar -->
               <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
-                <div class="p-3.5 border-b border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/80">
-                  <div class="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
+                <div class="p-3.5 border-b border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-50/80">
+                  <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
                     <div class="relative w-full sm:w-60">
                       <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
                       <input 
@@ -331,6 +357,20 @@
                         {{ opt.label }}
                       </option>
                     </select>
+
+                    <!-- Items per page selector -->
+                    <div class="flex items-center gap-1.5 text-xs text-slate-500">
+                      <span>Per page:</span>
+                      <select 
+                        v-model="entriesPageSize" 
+                        class="px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-navy"
+                      >
+                        <option :value="10">10</option>
+                        <option :value="15">15</option>
+                        <option :value="25">25</option>
+                        <option :value="50">50</option>
+                      </select>
+                    </div>
                   </div>
 
                   <div class="text-[11px] text-slate-500 self-end sm:self-center">
@@ -415,7 +455,7 @@
               </div>
             </section>
 
-            <!-- 5. QUALIFICATION SCORES & STANDINGS -->
+            <!-- 5. QUALIFICATION SCORES & STANDINGS (WITH SEARCH & PAGINATION) -->
             <section v-if="hasQualificationsData" id="results" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
@@ -441,7 +481,7 @@
                     :class="[
                       'px-3 py-1 rounded-xl text-xs font-semibold transition-all whitespace-nowrap shrink-0 cursor-pointer select-none',
                       selectedDivision === div
-                        ? 'bg-navy text-primary shadow-xs font-bold'
+                        ? 'bg-navy text-white shadow-xs font-bold'
                         : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200/70'
                     ]"
                   >
@@ -459,7 +499,7 @@
                     :class="[
                       'px-3 py-1 rounded-xl text-xs font-semibold transition-all whitespace-nowrap shrink-0 cursor-pointer select-none border',
                       selectedCategoryKey === cat.rawKey
-                        ? 'bg-navy text-primary border-navy shadow-xs font-bold'
+                        ? 'bg-navy text-white border-navy shadow-xs font-bold'
                         : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200/80'
                     ]"
                   >
@@ -468,25 +508,37 @@
                 </div>
               </div>
 
-              <!-- Qualification Table Card with Interactive Sorting -->
+              <!-- Qualification Table Card with Interactive Sorting & Pagination -->
               <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
                 <div class="p-3.5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/80">
                   <div>
                     <h3 class="text-xs sm:text-sm font-bold text-navy font-display">
                       {{ currentCategoryLabel }} - Leaderboard
                     </h3>
-                    <div class="text-[11px] text-slate-500">Showing {{ sortedFilteredCategoryQuals.length }} competitors</div>
+                    <div class="text-[11px] text-slate-500">Showing {{ paginatedQualsData.length }} of {{ sortedFilteredCategoryQuals.length }} competitors</div>
                   </div>
 
-                  <!-- Table Search -->
-                  <div class="relative w-full sm:w-56">
-                    <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
-                    <input 
-                      v-model="resultsSearchQuery"
-                      type="text" 
-                      placeholder="Search athlete, club..."
-                      class="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-navy placeholder:text-slate-400 focus:outline-hidden focus:border-navy"
-                    />
+                  <div class="flex items-center gap-2.5">
+                    <!-- Table Search -->
+                    <div class="relative w-full sm:w-52">
+                      <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
+                      <input 
+                        v-model="resultsSearchQuery"
+                        type="text" 
+                        placeholder="Search athlete, club..."
+                        class="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-navy placeholder:text-slate-400 focus:outline-hidden focus:border-navy"
+                      />
+                    </div>
+
+                    <!-- Items per page selector -->
+                    <select 
+                      v-model="qualPageSize" 
+                      class="px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-navy"
+                    >
+                      <option :value="10">10 / page</option>
+                      <option :value="25">25 / page</option>
+                      <option :value="50">50 / page</option>
+                    </select>
                   </div>
                 </div>
 
@@ -545,7 +597,7 @@
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium">
-                      <tr v-for="(q, qIdx) in sortedFilteredCategoryQuals" :key="qIdx" class="hover:bg-slate-50/70 transition-colors">
+                      <tr v-for="(q, qIdx) in paginatedQualsData" :key="qIdx" class="hover:bg-slate-50/70 transition-colors">
                         <td class="py-2.5 px-3.5 text-center font-bold">
                           <span v-if="q.rank == 1" class="inline-flex size-6 rounded-full bg-amber-400 text-navy items-center justify-center text-xs font-black">1</span>
                           <span v-else-if="q.rank == 2" class="inline-flex size-6 rounded-full bg-slate-300 text-slate-800 items-center justify-center text-xs font-black">2</span>
@@ -560,13 +612,34 @@
                         <td class="py-2.5 px-3.5 text-center font-mono text-slate-500">{{ q.tens || q.ten_count || '-' }}</td>
                         <td class="py-2.5 px-3.5 text-center font-mono text-slate-500">{{ q.x_count || q.xs || '-' }}</td>
                       </tr>
-                      <tr v-if="sortedFilteredCategoryQuals.length === 0">
+                      <tr v-if="paginatedQualsData.length === 0">
                         <td colspan="8" class="py-8 text-center text-slate-400 italic">
                           No qualification scores recorded for this category yet.
                         </td>
                       </tr>
                     </tbody>
                   </table>
+                </div>
+
+                <!-- Qualification Pagination Controls -->
+                <div v-if="totalQualPages > 1" class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex items-center justify-between">
+                  <button
+                    :disabled="qualCurrentPage === 1"
+                    @click="qualCurrentPage--"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    Previous
+                  </button>
+                  <span class="text-xs font-semibold text-slate-600">
+                    Page {{ qualCurrentPage }} of {{ totalQualPages }}
+                  </span>
+                  <button
+                    :disabled="qualCurrentPage === totalQualPages"
+                    @click="qualCurrentPage++"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    Next
+                  </button>
                 </div>
               </div>
             </section>
@@ -676,8 +749,8 @@
               </div>
             </section>
 
-            <!-- 7. MEDAL STANDINGS & 3D OLYMPIC AWARDING PODIUM (CULMINATION OF EVENT) -->
-            <section v-if="hasMedalsData" id="medals" class="scroll-mt-24 space-y-5">
+            <!-- 7. MEDAL STANDINGS & 3D AWARDING PODIUM (CULMINATION OF EVENT) -->
+            <section v-if="hasMedalsData" id="medals" class="scroll-mt-24 space-y-6">
               <div class="flex items-center justify-between border-b border-slate-100 pb-3.5 flex-wrap gap-2">
                 <div class="flex items-center gap-3">
                   <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
@@ -696,11 +769,11 @@
                   <button
                     v-for="cat in availablePodiumCategories"
                     :key="cat"
-                    @click="changePodiumCategory(cat)"
+                    @click="selectedPodiumCategory = cat"
                     :class="[
-                      'px-2.5 py-1 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer',
+                      'px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer',
                       selectedPodiumCategory === cat
-                        ? 'bg-white text-navy shadow-xs'
+                        ? 'bg-navy text-white shadow-xs'
                         : 'text-slate-600 hover:text-navy'
                     ]"
                   >
@@ -709,24 +782,23 @@
                 </div>
               </div>
 
-              <!-- 3D Olympic Podium Stage with Dynamic Particles Canvas -->
-              <div v-if="currentPodiumCategoryData" class="relative rounded-3xl overflow-hidden bg-gradient-to-b from-[#0F172A] via-[#1E293B] to-[#0A0F1D] text-white p-6 sm:p-8 border border-slate-800 shadow-lg">
-                <!-- Ambient Canvas Sparkle Overlay -->
-                <canvas ref="podiumParticleCanvas" class="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-0"></canvas>
+              <!-- Sleek Modern 3D Podium Stage (Clean & Elegant) -->
+              <div v-if="currentPodiumCategoryData" class="relative rounded-3xl overflow-hidden bg-gradient-to-b from-[#0F172A] via-[#1E293B] to-[#0A0F1D] text-white p-6 sm:p-10 border border-slate-800 shadow-xl">
+                <!-- Ambient Subtle Radial Glow -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
 
                 <!-- Header Info inside Podium Stage -->
-                <div class="relative z-10 text-center space-y-1 mb-6 sm:mb-8">
-                  <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 border border-primary/40 text-primary text-xs font-bold font-display">
-                    <Icon icon="ph:crown-fill" class="text-sm" />
-                    <span>Official Awarding Podium</span>
+                <div class="relative z-10 text-center space-y-1 mb-8 sm:mb-10">
+                  <div class="text-xs uppercase tracking-widest text-slate-400 font-display font-bold">
+                    Official Podium Ceremony
                   </div>
-                  <h3 class="text-lg sm:text-xl font-bold text-white font-display">
+                  <h3 class="text-lg sm:text-2xl font-bold text-white font-display">
                     {{ toTitleCase(selectedPodiumCategory) }}
                   </h3>
                 </div>
 
                 <!-- 3D Tiered Blocks Stage -->
-                <div class="relative z-10 grid grid-cols-3 gap-2 sm:gap-4 items-end max-w-2xl mx-auto pt-4">
+                <div class="relative z-10 grid grid-cols-3 gap-3 sm:gap-6 items-end max-w-2xl mx-auto pt-4">
                   
                   <!-- 2nd Place: Silver (Left) -->
                   <div class="flex flex-col items-center text-center group">
@@ -755,13 +827,13 @@
                     </div>
                   </div>
 
-                  <!-- 1st Place: Champion Gold (Center - Elevated) -->
-                  <div class="flex flex-col items-center text-center -mt-4 group">
-                    <!-- Champion Crown & Head -->
+                  <!-- 1st Place: Champion Gold (Center - Elevated with Mascot Trophy) -->
+                  <div class="flex flex-col items-center text-center -mt-6 group">
+                    <!-- Champion Crown & Mascot Trophy Badge -->
                     <div class="mb-3 flex flex-col items-center space-y-1.5">
-                      <div class="flex items-center gap-1 text-amber-400 text-xs font-bold font-display">
-                        <Icon icon="ph:crown-fill" class="text-base text-amber-400 animate-bounce" />
-                        <span>CHAMPION</span>
+                      <!-- Golden Champion Mascot Insignia -->
+                      <div class="flex items-center justify-center size-8 rounded-full bg-amber-400/20 border border-amber-400/50 shadow-sm mb-0.5">
+                        <Icon icon="ph:trophy-fill" class="text-lg text-amber-300" />
                       </div>
                       <div class="relative size-14 sm:size-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-200 text-navy font-black text-base sm:text-lg flex items-center justify-center ring-4 ring-amber-400/50 shadow-xl font-display">
                         {{ getArcherInitials(currentPodiumCategoryData.gold?.name) || '1' }}
@@ -816,11 +888,37 @@
                 </div>
               </div>
 
-              <!-- Club Medal Standings Table -->
-              <div v-if="sortedMedalTally.length > 0" class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
-                <div class="p-3.5 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between">
-                  <div class="text-xs sm:text-sm font-bold text-navy font-display">Club Medal Leaderboard</div>
-                  <div class="text-[11px] text-slate-500 font-medium">{{ sortedMedalTally.length }} Contingents Ranked</div>
+              <!-- Club Medal Standings Table (WITH SEARCH & PAGINATION CONTROLS) -->
+              <div v-if="medalTallyList.length > 0" class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
+                <div class="p-3.5 border-b border-slate-100 bg-slate-50/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                  <div>
+                    <div class="text-xs sm:text-sm font-bold text-navy font-display">Club Medal Leaderboard</div>
+                    <div class="text-[11px] text-slate-500 font-medium">Showing {{ paginatedMedalsData.length }} of {{ sortedMedalTally.length }} contingents</div>
+                  </div>
+
+                  <div class="flex items-center gap-2.5">
+                    <!-- Search Club input -->
+                    <div class="relative w-full sm:w-52">
+                      <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
+                      <input 
+                        v-model="searchMedalClub"
+                        type="text" 
+                        placeholder="Search club..."
+                        class="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-navy placeholder:text-slate-400 focus:outline-hidden focus:border-navy"
+                      />
+                    </div>
+
+                    <!-- Items per page selector -->
+                    <select 
+                      v-model="medalPageSize" 
+                      class="px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-navy"
+                    >
+                      <option :value="5">5 / page</option>
+                      <option :value="10">10 / page</option>
+                      <option :value="20">20 / page</option>
+                      <option :value="50">50 / page</option>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -861,12 +959,12 @@
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium">
-                      <tr v-for="(tally, tIdx) in sortedMedalTally" :key="tally.club" class="hover:bg-slate-50/70 transition-colors">
+                      <tr v-for="(tally, tIdx) in paginatedMedalsData" :key="tally.club" class="hover:bg-slate-50/70 transition-colors">
                         <td class="py-2.5 px-3.5 text-center font-bold">
-                          <span v-if="tIdx === 0" class="inline-flex size-6 rounded-full bg-amber-400 text-navy items-center justify-center text-xs font-black">1</span>
-                          <span v-else-if="tIdx === 1" class="inline-flex size-6 rounded-full bg-slate-300 text-slate-800 items-center justify-center text-xs font-black">2</span>
-                          <span v-else-if="tIdx === 2" class="inline-flex size-6 rounded-full bg-amber-700 text-white items-center justify-center text-xs font-black">3</span>
-                          <span v-else class="text-slate-500 font-mono">{{ tIdx + 1 }}</span>
+                          <span v-if="(medalCurrentPage - 1) * medalPageSize + tIdx === 0" class="inline-flex size-6 rounded-full bg-amber-400 text-navy items-center justify-center text-xs font-black">1</span>
+                          <span v-else-if="(medalCurrentPage - 1) * medalPageSize + tIdx === 1" class="inline-flex size-6 rounded-full bg-slate-300 text-slate-800 items-center justify-center text-xs font-black">2</span>
+                          <span v-else-if="(medalCurrentPage - 1) * medalPageSize + tIdx === 2" class="inline-flex size-6 rounded-full bg-amber-700 text-white items-center justify-center text-xs font-black">3</span>
+                          <span v-else class="text-slate-500 font-mono">{{ (medalCurrentPage - 1) * medalPageSize + tIdx + 1 }}</span>
                         </td>
                         <td class="py-2.5 px-3.5 font-bold text-navy">{{ toTitleCase(tally.club) }}</td>
                         <td class="py-2.5 px-3.5 text-center font-mono font-bold text-amber-600 bg-amber-50/30">{{ tally.gold }}</td>
@@ -874,8 +972,34 @@
                         <td class="py-2.5 px-3.5 text-center font-mono font-bold text-amber-800 bg-orange-50/30">{{ tally.bronze }}</td>
                         <td class="py-2.5 px-3.5 text-center font-mono font-black text-navy">{{ tally.total }}</td>
                       </tr>
+                      <tr v-if="paginatedMedalsData.length === 0">
+                        <td colspan="6" class="py-8 text-center text-slate-400 italic">
+                          No clubs matched the search filter.
+                        </td>
+                      </tr>
                     </tbody>
                   </table>
+                </div>
+
+                <!-- Medal Table Pagination Controls -->
+                <div v-if="totalMedalPages > 1" class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex items-center justify-between">
+                  <button
+                    :disabled="medalCurrentPage === 1"
+                    @click="medalCurrentPage--"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    Previous
+                  </button>
+                  <span class="text-xs font-semibold text-slate-600">
+                    Page {{ medalCurrentPage }} of {{ totalMedalPages }}
+                  </span>
+                  <button
+                    :disabled="medalCurrentPage === totalMedalPages"
+                    @click="medalCurrentPage++"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    Next
+                  </button>
                 </div>
               </div>
             </section>
@@ -1018,7 +1142,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { Icon } from '@iconify/vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 
@@ -1050,7 +1174,7 @@ const ianseoUrl = computed(() => {
 const scrollProgress = ref(0)
 const activeSectionId = ref('overview')
 
-// Dynamic Navigation Sections (Natural Tournament Lifecycle Order: Overview -> Schedule -> FOP -> Athletes -> Qualifications -> Brackets -> Medals)
+// Dynamic Navigation Sections in Logical UX Order
 const navigationSections = computed(() => {
   const list = []
   
@@ -1110,14 +1234,10 @@ function updateScrollSpy() {
 onMounted(() => {
   window.addEventListener('scroll', updateScrollSpy, { passive: true })
   updateScrollSpy()
-  initPodiumCanvas()
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', updateScrollSpy)
-  if (animationFrameId) {
-    cancelAnimationFrame(animationFrameId)
-  }
 })
 
 function scrollToSection(id) {
@@ -1179,7 +1299,7 @@ const currentCategoryLabel = computed(() => {
   return c?.displayName || selectedCategoryKey.value || 'All Categories'
 })
 
-// ── Results & Qualifications ──
+// ── Results & Qualifications (With Search & Pagination) ──
 const qualificationsMap = computed(() => activeTournamentData.value?.qualifications || {})
 const teamQualificationsMap = computed(() => activeTournamentData.value?.team_qualifications || {})
 
@@ -1211,7 +1331,6 @@ const hasQualificationsData = computed(() => {
          categoriesList.value.length > 0
 })
 
-// Qualification Table Interactive Sorting
 const qualSortKey = ref('rank')
 const qualSortAsc = ref(true)
 
@@ -1225,6 +1344,9 @@ function handleSortQual(key) {
 }
 
 const resultsSearchQuery = ref('')
+const qualCurrentPage = ref(1)
+const qualPageSize = ref(15)
+
 const sortedFilteredCategoryQuals = computed(() => {
   let list = [...currentCategoryQuals.value]
   if (resultsSearchQuery.value) {
@@ -1249,6 +1371,17 @@ const sortedFilteredCategoryQuals = computed(() => {
     valB = String(valB || '').toLowerCase()
     return qualSortAsc.value ? valA.localeCompare(valB) : valB.localeCompare(valA)
   })
+})
+
+const totalQualPages = computed(() => Math.ceil(sortedFilteredCategoryQuals.value.length / qualPageSize.value) || 1)
+
+const paginatedQualsData = computed(() => {
+  const start = (qualCurrentPage.value - 1) * qualPageSize.value
+  return sortedFilteredCategoryQuals.value.slice(start, start + qualPageSize.value)
+})
+
+watch([resultsSearchQuery, selectedCategoryKey, qualPageSize], () => {
+  qualCurrentPage.value = 1
 })
 
 // ── Schedule & Field of Play ──
@@ -1333,7 +1466,7 @@ function closeScorecard() {
   selectedScorecardMatch.value = null
 }
 
-// ── Entries / Athletes ──
+// ── Entries / Athletes (With Search, Club Filter & Pagination) ──
 const rawEntries = computed(() => activeTournamentData.value?.entries || [])
 
 const allExtractedAthletes = computed(() => {
@@ -1456,7 +1589,11 @@ const paginatedEntriesData = computed(() => {
   return processedEntriesData.value.slice(start, start + entriesPageSize.value)
 })
 
-// ── Medal Standings & Podium ──
+watch([entriesSearchQuery, entriesClubFilter, entriesPageSize], () => {
+  entriesCurrentPage.value = 1
+})
+
+// ── Medal Standings & Podium (With Search & Pagination) ──
 const finalStandingsMap = computed(() => activeTournamentData.value?.final_standings || {})
 
 const medalTallyList = computed(() => {
@@ -1495,6 +1632,9 @@ const hasMedalsData = computed(() => {
 
 const medalSortKey = ref('total')
 const medalSortAsc = ref(false)
+const searchMedalClub = ref('')
+const medalCurrentPage = ref(1)
+const medalPageSize = ref(10)
 
 function handleSortMedal(key) {
   if (medalSortKey.value === key) {
@@ -1507,6 +1647,12 @@ function handleSortMedal(key) {
 
 const sortedMedalTally = computed(() => {
   let list = [...medalTallyList.value]
+
+  if (searchMedalClub.value) {
+    const q = searchMedalClub.value.toLowerCase()
+    list = list.filter(t => t.club.toLowerCase().includes(q))
+  }
+
   return list.sort((a, b) => {
     if (medalSortKey.value === 'club') {
       const cmp = a.club.localeCompare(b.club)
@@ -1535,6 +1681,17 @@ const sortedMedalTally = computed(() => {
       return a.total - b.total
     }
   })
+})
+
+const totalMedalPages = computed(() => Math.ceil(sortedMedalTally.value.length / medalPageSize.value) || 1)
+
+const paginatedMedalsData = computed(() => {
+  const start = (medalCurrentPage.value - 1) * medalPageSize.value
+  return sortedMedalTally.value.slice(start, start + medalPageSize.value)
+})
+
+watch([searchMedalClub, medalPageSize], () => {
+  medalCurrentPage.value = 1
 })
 
 const availablePodiumCategories = computed(() => {
@@ -1568,56 +1725,6 @@ const currentPodiumCategoryData = computed(() => {
     bronze
   }
 })
-
-// ── Celebratory Canvas Particles Engine ──
-const podiumParticleCanvas = ref(null)
-let animationFrameId = null
-
-function initPodiumCanvas() {
-  const canvas = podiumParticleCanvas.value
-  if (!canvas) return
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return
-
-  const dpr = window.devicePixelRatio || 1
-  const rect = canvas.getBoundingClientRect()
-  canvas.width = (rect.width || 600) * dpr
-  canvas.height = (rect.height || 350) * dpr
-  ctx.scale(dpr, dpr)
-
-  const particles = Array.from({ length: 45 }, () => ({
-    x: Math.random() * (rect.width || 600),
-    y: Math.random() * (rect.height || 350),
-    size: Math.random() * 3 + 1,
-    speedY: Math.random() * 0.6 + 0.2,
-    speedX: (Math.random() - 0.5) * 0.4,
-    color: Math.random() > 0.4 ? 'rgba(255, 184, 0, ' : 'rgba(255, 255, 255, ',
-    alpha: Math.random() * 0.7 + 0.2
-  }))
-
-  function animate() {
-    ctx.clearRect(0, 0, rect.width || 600, rect.height || 350)
-    particles.forEach(p => {
-      p.y -= p.speedY
-      p.x += p.speedX
-      if (p.y < 0) {
-        p.y = (rect.height || 350) + 5
-        p.x = Math.random() * (rect.width || 600)
-      }
-      ctx.fillStyle = `${p.color}${p.alpha})`
-      ctx.beginPath()
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-      ctx.fill()
-    })
-    animationFrameId = requestAnimationFrame(animate)
-  }
-
-  animate()
-}
-
-function changePodiumCategory(cat) {
-  selectedPodiumCategory.value = cat
-}
 
 function getArcherInitials(name) {
   if (!name) return ''
