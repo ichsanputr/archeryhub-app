@@ -107,9 +107,7 @@
             <!-- 1. TOURNAMENT OVERVIEW -->
             <section id="overview" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:info-bold" class="text-xl text-navy" />
-                </div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 aspect-square"><Icon icon="ph:info-bold" class="size-5 text-navy shrink-0" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('overview_title') }}
@@ -129,9 +127,7 @@
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
                   <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
-                    <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0">
-                      <Icon icon="ph:users-three" class="text-xs text-navy" />
-                    </div>
+                    <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 aspect-square"><Icon icon="ph:users-three" class="size-3.5 text-navy shrink-0" /></div>
                     <span>{{ t('metric_archers') }}</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
@@ -142,9 +138,7 @@
 
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
                   <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
-                    <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0">
-                      <Icon icon="ph:shield-chevron" class="text-xs text-navy" />
-                    </div>
+                    <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 aspect-square"><Icon icon="ph:shield-chevron" class="size-3.5 text-navy shrink-0" /></div>
                     <span>{{ t('metric_clubs') }}</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
@@ -155,9 +149,7 @@
 
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
                   <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
-                    <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0">
-                      <Icon icon="ph:crosshair" class="text-xs text-navy" />
-                    </div>
+                    <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 aspect-square"><Icon icon="ph:crosshair" class="size-3.5 text-navy shrink-0" /></div>
                     <span>{{ t('metric_categories') }}</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
@@ -168,9 +160,7 @@
 
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
                   <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
-                    <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0">
-                      <Icon icon="ph:target" class="text-xs text-navy" />
-                    </div>
+                    <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 aspect-square"><Icon icon="ph:target" class="size-3.5 text-navy shrink-0" /></div>
                     <span>{{ t('metric_targets') }}</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
@@ -184,9 +174,7 @@
             <!-- 2. COMPETITION SCHEDULE -->
             <section v-if="hasScheduleData" id="schedule" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:calendar-check-bold" class="text-xl text-navy" />
-                </div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 aspect-square"><Icon icon="ph:calendar-check-bold" class="size-5 text-navy shrink-0" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('schedule_title') }}
@@ -277,9 +265,7 @@
             <!-- 3. FIELD OF PLAY (FOP LAYOUT) -->
             <section v-if="hasFopData" id="fop" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:target-bold" class="text-xl text-navy" />
-                </div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 aspect-square"><Icon icon="ph:target-bold" class="size-5 text-navy shrink-0" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('fop_title') }}
@@ -373,9 +359,7 @@
             <!-- 4. ATHLETES & ENTRIES -->
             <section v-if="hasEntriesData" id="athletes" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:users-four-bold" class="text-xl text-navy" />
-                </div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 aspect-square"><Icon icon="ph:users-four-bold" class="size-5 text-navy shrink-0" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('athletes_title') }}
@@ -571,9 +555,7 @@
             <!-- 5. QUALIFICATION RESULTS -->
             <section v-if="hasQualificationsData" id="qualifications" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:medal-bold" class="text-xl text-navy" />
-                </div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 aspect-square"><Icon icon="ph:medal-bold" class="size-5 text-navy shrink-0" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('qualifications_title') }}
@@ -595,7 +577,7 @@
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   ]"
                 >
-                  {{ cat }}
+                  {{ toTitleCase(cat) }}
                 </button>
               </div>
 
@@ -725,9 +707,7 @@
             <!-- 6. ELIMINATION BRACKETS (REUSABLE ARCHERIS BRACKET COMPONENT) -->
             <section v-if="hasBracketsData" id="brackets" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:sword-bold" class="text-xl text-navy" />
-                </div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 aspect-square"><Icon icon="ph:sword-bold" class="size-5 text-navy shrink-0" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('brackets_title') }}
@@ -771,9 +751,7 @@
             <!-- 7. PODIUM & MEDAL STANDINGS -->
             <section v-if="hasMedalsData" id="medals" class="scroll-mt-24 space-y-7">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:trophy-bold" class="text-xl text-navy" />
-                </div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 aspect-square"><Icon icon="ph:trophy-bold" class="size-5 text-navy shrink-0" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('medals_title') }}
@@ -2289,7 +2267,9 @@ const shareToSocialPlatform = (platform) => {
 // ─────────────────────────────────────────────────────────────
 const toTitleCase = (str) => {
   if (!str) return ''
-  return String(str).toLowerCase().replace(/(^|\s|[-/])\S/g, txt => txt.toUpperCase())
+  return String(str)
+    .toLowerCase()
+    .replace(/(^|[\s\-_/(\[])\w/g, match => match.toUpperCase())
 }
 
 const formatDateRange = (start, end) => {
@@ -2361,6 +2341,9 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+:deep(svg) {
+  vertical-align: middle;
+}
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

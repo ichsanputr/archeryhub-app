@@ -816,7 +816,9 @@ const parsedSetRows = computed(() => {
 // Helpers
 const toTitleCase = (str) => {
   if (!str) return ''
-  return String(str).toLowerCase().replace(/(^|\s|[-/])\S/g, txt => txt.toUpperCase())
+  return String(str)
+    .toLowerCase()
+    .replace(/(^|[\s\-_/(\[])\w/g, match => match.toUpperCase())
 }
 
 const getInitials = (name) => {
@@ -828,6 +830,9 @@ const getInitials = (name) => {
 </script>
 
 <style scoped>
+:deep(svg) {
+  vertical-align: middle;
+}
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
