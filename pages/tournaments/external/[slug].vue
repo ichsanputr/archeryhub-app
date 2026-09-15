@@ -62,6 +62,12 @@ const { data: responseData, pending: isLoading, error } = await useAsyncData(
   }
 )
 
+const isExternalTournamentState = useState('isExternalTournamentPage', () => false)
+isExternalTournamentState.value = true
+onUnmounted(() => {
+  isExternalTournamentState.value = false
+})
+
 const tournament = computed(() => responseData.value?.tournament || null)
 const tournamentData = computed(() => responseData.value?.data || null)
 const errorMessage = computed(() => error.value ? (error.value.message || 'Failed to load tournament data') : '')

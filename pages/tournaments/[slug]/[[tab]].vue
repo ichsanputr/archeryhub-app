@@ -772,13 +772,6 @@ import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import { useI18n } from 'vue-i18n'
 import TournamentExternalDetailView from '~/components/tournament/TournamentExternalDetailView.vue'
 
-const isExternalTournamentState = useState('isExternalTournamentPage', () => false)
-watchEffect(() => {
-    isExternalTournamentState.value = eventData.value?.isExternal === true
-})
-onUnmounted(() => {
-    isExternalTournamentState.value = false
-})
 
 const { t } = useI18n()
 const route = useRoute()
@@ -1086,6 +1079,14 @@ const { data: eventData, error: eventError, pending: isPageLoading } = useAsyncD
     },
     { lazy: true, server: true }
 )
+
+const isExternalTournamentState = useState('isExternalTournamentPage', () => false)
+watchEffect(() => {
+    isExternalTournamentState.value = eventData.value?.isExternal === true
+})
+onUnmounted(() => {
+    isExternalTournamentState.value = false
+})
 
 // Initialize data reactively
 const tournament = computed(() => {
