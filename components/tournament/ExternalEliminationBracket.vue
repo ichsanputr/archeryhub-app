@@ -1,103 +1,11 @@
 <template>
-  <div class="external-bracket-container relative flex flex-col space-y-3" ref="bracketContainerRef">
-    
-    <!-- ── TOP TOOLBAR & CONTROLS ── -->
-    <div class="flex flex-wrap items-center justify-between gap-2 pb-1 border-b border-slate-100 text-xs">
-      <div class="flex items-center gap-2">
-        <span class="text-slate-400 font-semibold text-[11px] flex items-center gap-1">
-          <Icon icon="ph:tree-structure-bold" class="text-xs" />
-          <span>{{ config?.category_name || 'Elimination Tree' }}</span>
-        </span>
-        <span class="size-1 rounded-full bg-slate-300"></span>
-        <span class="text-slate-500 font-mono text-[11px] font-medium">
-          {{ getTotalMatchesCount }} Matches
-        </span>
-      </div>
-
-      <!-- Canvas Controls & Action Buttons -->
-      <div class="flex items-center gap-1.5 ml-auto">
-        <!-- Zoom Out -->
-        <button 
-          type="button" 
-          @click="zoomOut" 
-          class="size-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-colors cursor-pointer"
-          title="Zoom Out"
-        >
-          <Icon icon="ph:minus-bold" class="text-xs" />
-        </button>
-
-        <!-- Reset Zoom -->
-        <button 
-          type="button" 
-          @click="resetZoom" 
-          class="px-2 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono text-[11px] font-bold flex items-center justify-center transition-colors cursor-pointer"
-          title="Reset Zoom"
-        >
-          {{ Math.round(zoomLevel * 100) }}%
-        </button>
-
-        <!-- Zoom In -->
-        <button 
-          type="button" 
-          @click="zoomIn" 
-          class="size-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-colors cursor-pointer"
-          title="Zoom In"
-        >
-          <Icon icon="ph:plus-bold" class="text-xs" />
-        </button>
-
-        <div class="h-4 w-px bg-slate-200 mx-0.5"></div>
-
-        <!-- Fullscreen / Expand Mode Button -->
-        <button 
-          type="button" 
-          @click="isExpandedFullscreen = !isExpandedFullscreen" 
-          class="inline-flex items-center gap-1 px-2.5 h-7 rounded-lg bg-slate-100 hover:bg-navy hover:text-white text-slate-700 font-medium text-[11px] transition-all cursor-pointer"
-          :title="isExpandedFullscreen ? 'Exit Full Screen' : 'Full Screen View'"
-        >
-          <Icon :icon="isExpandedFullscreen ? 'ph:corners-in-bold' : 'ph:corners-out-bold'" class="text-xs" />
-          <span class="hidden sm:inline">{{ isExpandedFullscreen ? 'Exit Full Screen' : 'Full Screen' }}</span>
-        </button>
-
-        <!-- Open in New Tab Button -->
-        <button 
-          v-if="tournamentSlug && !isFullPage"
-          type="button" 
-          @click="openInNewTab" 
-          class="inline-flex items-center gap-1 px-2.5 h-7 rounded-lg bg-primary/20 hover:bg-primary text-navy font-bold text-[11px] transition-all cursor-pointer"
-          title="Open Bracket in Dedicated New Tab"
-        >
-          <Icon icon="ph:arrow-square-out-bold" class="text-xs" />
-          <span class="hidden sm:inline">New Tab</span>
-        </button>
-      </div>
-    </div>
-
+  <div class="external-bracket-container relative flex flex-col" ref="bracketContainerRef">
     <!-- ── BRACKET SCROLLABLE VISUAL CANVAS ── -->
-    <div 
-      :class="[
-        'bracket-canvas-wrapper overflow-x-auto no-scrollbar py-6 px-4 sm:px-6 bg-slate-50/40 rounded-3xl border border-slate-200/80 transition-all',
-        isExpandedFullscreen ? 'fixed inset-0 z-50 bg-slate-900/95 backdrop-blur-md rounded-none border-none p-6 flex flex-col justify-center' : ''
-      ]"
-    >
-      <!-- Floating Fullscreen Close Bar (if in expanded fullscreen) -->
-      <div v-if="isExpandedFullscreen" class="fixed top-4 right-4 z-60 flex items-center gap-2 bg-slate-800/90 border border-slate-700 px-3 py-1.5 rounded-2xl shadow-xl">
-        <span class="text-xs font-bold text-white pr-2">{{ config?.category_name || 'Elimination Bracket' }}</span>
-        <button 
-          type="button" 
-          @click="isExpandedFullscreen = false"
-          class="size-8 rounded-xl bg-slate-700 hover:bg-rose-600 text-white flex items-center justify-center transition-colors cursor-pointer"
-          title="Close Full Screen"
-        >
-          <Icon icon="ph:x-bold" class="text-sm" />
-        </button>
-      </div>
-
+    <div class="bracket-canvas-wrapper overflow-x-auto no-scrollbar py-6 px-4 sm:px-6 bg-slate-50/40 rounded-3xl border border-slate-200/80 transition-all">
       <!-- Bracket Nodes Tree with Scale Transform -->
       <div 
         v-if="hasMatches" 
         class="flex items-center justify-center min-w-max gap-4 sm:gap-6 mx-auto relative z-10 transition-transform duration-150 origin-center"
-        :style="{ transform: `scale(${zoomLevel})` }"
       >
 
         <!-- ── LEFT SIDE ROUNDS (E.G. 1/8, QUARTERFINALS) ── -->
@@ -824,31 +732,7 @@ const props = defineProps({
 })
 
 // ─────────────────────────────────────────────────────────────
-// ZOOM & FULLSCREEN CONTROLS
-// ─────────────────────────────────────────────────────────────
-const zoomLevel = ref(1)
-const isExpandedFullscreen = ref(false)
-
-const zoomIn = () => {
-  if (zoomLevel.value < 1.6) zoomLevel.value = +(zoomLevel.value + 0.1).toFixed(2)
-}
-
-const zoomOut = () => {
-  if (zoomLevel.value > 0.6) zoomLevel.value = +(zoomLevel.value - 0.1).toFixed(2)
-}
-
-const resetZoom = () => {
-  zoomLevel.value = 1
-}
-
-const openInNewTab = () => {
-  if (!props.tournamentSlug) return
-  const cat = props.categoryName || props.config?.category_name || ''
-  const query = cat ? `?category=${encodeURIComponent(cat)}` : ''
-  const url = `/tournaments/external/${props.tournamentSlug}/bracket${query}`
-  window.open(url, '_blank')
-}
-
+// AVATAR & TYPOGRAPHY HELPERS
 // ─────────────────────────────────────────────────────────────
 // AVATAR & TYPOGRAPHY HELPERS
 // ─────────────────────────────────────────────────────────────

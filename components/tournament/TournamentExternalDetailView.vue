@@ -738,10 +738,10 @@
                   </div>
                 </div>
 
-                <!-- Fullscreen & Open New Tab Actions -->
+                <!-- Open New Tab Actions -->
                 <div class="flex items-center gap-2 self-start sm:self-auto">
                   <NuxtLink
-                    :to="`/tournaments/external/${activeTournamentId}/bracket?category=${encodeURIComponent(selectedBracketCategory || availableBracketCategories[0] || '')}`"
+                    :to="`/tournaments/${tournamentId}/bracket?category=${encodeURIComponent(selectedBracketCategory || availableBracketCategories[0] || '')}`"
                     target="_blank"
                     class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
                     title="Open Fullscreen Bracket in New Tab"
@@ -775,7 +775,7 @@
                   <ExternalEliminationBracket
                     :rounds="currentArcherisBracketRounds"
                     :config="currentArcherisBracketConfig"
-                    :tournament-slug="activeTournamentId"
+                    :tournament-slug="tournamentId"
                     :category-name="selectedBracketCategory || availableBracketCategories[0]"
                   />
                 </div>
@@ -1285,6 +1285,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import ExternalEliminationBracket from './ExternalEliminationBracket.vue'
 import TournamentExternalDataTable from './TournamentExternalDataTable.vue'
@@ -1315,8 +1316,12 @@ const props = defineProps({
   }
 })
 
+const route = useRoute()
 const activeTournament = computed(() => props.tournament || {})
 const activeTournamentData = computed(() => props.tournamentData || {})
+const tournamentId = computed(() => {
+  return props.tournament?.external_id || props.tournament?.slug || props.tournament?.id || route.params.slug || '25818'
+})
 
 // ─────────────────────────────────────────────────────────────
 // INTERNATIONALIZATION (ID, EN, IT) - REPLACING KO WITH IT
