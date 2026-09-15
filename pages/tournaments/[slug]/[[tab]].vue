@@ -760,7 +760,6 @@ definePageMeta({
     layout: 'landing',
     headerTransparent: true,
     headerSticky: true,
-    wideContainer: true
 })
 
 import { Icon } from '@iconify/vue'
@@ -772,6 +771,14 @@ import { useDateFormat } from '@vueuse/core'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import { useI18n } from 'vue-i18n'
 import TournamentExternalDetailView from '~/components/tournament/TournamentExternalDetailView.vue'
+
+const isExternalTournamentState = useState('isExternalTournamentPage', () => false)
+watchEffect(() => {
+    isExternalTournamentState.value = eventData.value?.isExternal === true
+})
+onUnmounted(() => {
+    isExternalTournamentState.value = false
+})
 
 const { t } = useI18n()
 const route = useRoute()

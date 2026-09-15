@@ -45,7 +45,6 @@ definePageMeta({
   layout: 'landing',
   headerTransparent: true,
   headerSticky: true,
-  wideContainer: true
 })
 
 const route = useRoute()
