@@ -41,7 +41,7 @@
       <div class="mt-12 pt-8 border-t border-gray-200">
         <p class="text-xs text-gray-400  tracking-widest font-bold mb-4">You might be looking for</p>
         <div class="flex flex-wrap justify-center gap-3">
-          <NuxtLink to="/events"
+          <NuxtLink to="/tournaments"
             class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
             Tournaments
           </NuxtLink>

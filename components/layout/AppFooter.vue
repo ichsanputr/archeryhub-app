@@ -1,6 +1,5 @@
 <script setup>
-// import removed: getPlatformContent not used in footer
-// removed: otherLanguages computed is no longer needed
+import { Icon } from '@iconify/vue'
 </script>
 <template>
   <footer class="bg-navy relative overflow-hidden text-gray-200 border-t border-white/5">
@@ -26,6 +25,25 @@
             <p class="text-gray-400 leading-relaxed text-sm sm:text-base">
               {{ $t('footer.about_desc') }}
             </p>
+
+            <!-- Social Media Icons -->
+            <div class="flex items-center gap-3 pt-2">
+              <a href="https://www.instagram.com/archerisnet/" target="_blank" rel="noopener noreferrer"
+                class="w-10 h-10 rounded-xl bg-white/5 hover:bg-primary hover:text-navy border border-white/10 flex items-center justify-center text-gray-300 hover:scale-110 transition-all duration-200"
+                aria-label="Instagram">
+                <Icon icon="ph:instagram-logo-bold" class="text-xl" />
+              </a>
+              <a href="https://www.threads.com/@archerisnet" target="_blank" rel="noopener noreferrer"
+                class="w-10 h-10 rounded-xl bg-white/5 hover:bg-primary hover:text-navy border border-white/10 flex items-center justify-center text-gray-300 hover:scale-110 transition-all duration-200"
+                aria-label="Threads">
+                <Icon icon="ph:threads-logo-bold" class="text-xl" />
+              </a>
+              <a href="https://www.facebook.com/archerisnet/" target="_blank" rel="noopener noreferrer"
+                class="w-10 h-10 rounded-xl bg-white/5 hover:bg-primary hover:text-navy border border-white/10 flex items-center justify-center text-gray-300 hover:scale-110 transition-all duration-200"
+                aria-label="Facebook">
+                <Icon icon="ph:facebook-logo-bold" class="text-xl" />
+              </a>
+            </div>
           </div>
         </div>
 
@@ -37,7 +55,7 @@
               {{ $t('footer.nav_title') }}
             </h4>
             <div class="flex flex-col gap-3">
-              <NuxtLink to="/events"
+              <NuxtLink to="/tournaments"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 {{ $t('nav.features') }}
               </NuxtLink>
@@ -99,10 +117,6 @@
               <NuxtLink to="/docs"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 {{ $t('footer.docs') }}
-              </NuxtLink>
-              <NuxtLink to="/blog"
-                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                {{ $t('footer.blog') }}
               </NuxtLink>
             </div>
           </div>

@@ -6,10 +6,8 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between">
                 <!-- Left: Logo + Docs badge -->
                 <div class="flex items-center gap-3">
-                    <NuxtLink to="/" class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center">
-                            <img src="/logo.png" alt="archeris.net" class="w-5 h-5 object-contain" />
-                        </div>
+                    <NuxtLink to="/" class="flex items-center gap-2.5 group">
+                        <img src="/logo.png" alt="Archeris" class="w-8 h-8 object-contain transition-transform duration-300 group-hover:scale-105" />
                         <span class="text-lg font-black tracking-tight text-navy">Archeris</span>
                     </NuxtLink>
                     <div class="items-center gap-2">

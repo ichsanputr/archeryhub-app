@@ -150,7 +150,7 @@ const checkAndRedirect = () => {
     if (isLoggedIn.value && user.value) {
         let redirect = (route.query.redirect as string) || '/dashboard'
         if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
-            redirect = '/dashboard/archer/events'
+            redirect = '/dashboard/archer/tournaments'
         }
         window.location.href = redirect
     }
@@ -169,15 +169,17 @@ const isDev = computed(() => {
 
 const selectedDemoAccount = ref('')
 const demoAccountOptions = [
-    { title: 'Archer (archer) - stewie4king@gmail.com', value: 'archer' },
-    { title: 'Organizer (club) - ichsanfadhil67@gmail.com', value: 'organizer' },
+    { title: 'Archer (stewie4king@gmail.com / 12345)', value: 'archer' },
+    { title: 'Archer (ichsanfadhil67@gmail.com / 123456)', value: 'archer_ichsan' },
+    { title: 'Organizer / EO (ngekode24@gmail.com / 123456)', value: 'organizer' },
 ]
 
 const selectDemoUser = (role: string) => {
     if (!role) return
     const credentials: Record<string, { email: string, password: string }> = {
         archer: { email: 'stewie4king@gmail.com', password: '12345' },
-        organizer: { email: 'ichsanfadhil67@gmail.com', password: '123456' },
+        archer_ichsan: { email: 'ichsanfadhil67@gmail.com', password: '123456' },
+        organizer: { email: 'ngekode24@gmail.com', password: '123456' },
     }
     const creds = credentials[role]
     if (creds) {
@@ -276,7 +278,7 @@ const handleEmailAuth = async () => {
         // Full page reload so auth state is restored from cookie/SSR
         let redirect = route.query.redirect || '/dashboard'
         if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
-            redirect = '/dashboard/archer/events'
+            redirect = '/dashboard/archer/tournaments'
         }
         window.location.href = redirect
     } catch (err) {

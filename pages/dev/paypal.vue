@@ -22,7 +22,7 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <NuxtLink to="/events" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 transition-colors border border-slate-700 flex items-center gap-1.5">
+        <NuxtLink to="/tournaments" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 transition-colors border border-slate-700 flex items-center gap-1.5">
           <Icon icon="ph:arrow-left-bold" />
           <span>Back to App</span>
         </NuxtLink>

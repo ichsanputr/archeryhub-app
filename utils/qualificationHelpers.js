@@ -67,7 +67,7 @@ export async function autoAssignTargets(sessionId, params) {
 export async function fetchEventTargets(eventId) {
   const { get } = useApi()
   try {
-    const response = await get(`/events/${eventId}/targets`)
+    const response = await get(`/tournaments/${eventId}/targets`)
     return response?.targets || []
   } catch (error) {
     console.error('Failed to fetch event targets:', error)
@@ -83,7 +83,7 @@ export async function fetchEventTargets(eventId) {
  */
 export async function createEventTarget(eventId, targetData) {
   const { post } = useApi()
-  return await post(`/events/${eventId}/targets`, targetData)
+  return await post(`/tournaments/${eventId}/targets`, targetData)
 }
 
 /**

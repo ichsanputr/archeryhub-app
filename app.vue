@@ -2,6 +2,9 @@
   <div>
     <NetworkStatusBanner />
     <AppThemeLoader v-if="isDashboard" :loading="isThemeLoading" />
+    <ClientOnly>
+      <LottieLoader v-if="!isDashboard" :loading="isPageLoading" />
+    </ClientOnly>
     <NuxtLayout>
       <NuxtPage :page-key="pageKey" />
     </NuxtLayout>
@@ -36,7 +39,7 @@ const router = useRouter()
 const isPageLoading = useState('pageLoadingState', () => false)
 const nuxtApp = useNuxtApp()
 
-// Show loader on page transition (front page only)
+// Show loader on page transition (all front pages except dashboard and docs)
 router.beforeEach((to, from, next) => {
   const isDashboard = to.path.startsWith('/dashboard')
   const isDocs = to.path.startsWith('/docs')

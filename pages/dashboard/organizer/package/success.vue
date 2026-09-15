@@ -41,7 +41,7 @@
         </div>
 
         <div class="space-y-3 pt-2">
-          <BaseButton to="/dashboard/organizer/events" variant="navy" size="lg" class="w-full justify-center font-bold">
+          <BaseButton to="/dashboard/organizer/tournaments" variant="navy" size="lg" class="w-full justify-center font-bold">
             <Icon icon="ph:trophy-bold" class="mr-2" /> {{ t("org_subscription_success.create_event_btn") }}
           </BaseButton>
 

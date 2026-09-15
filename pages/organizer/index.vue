@@ -9,16 +9,11 @@
 
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
-                    <div
-                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-xs sm:text-sm font-bold tracking-widest mb-6">
-                        <Icon icon="ph:buildings-bold" class="text-base sm:text-lg" />
-                        <span>{{ t('organizers_page.badge', 'Penyelenggara Panahan Indonesia') }}</span>
-                    </div>
-                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4">
-                        {{ t('organizers_page.title', 'Temukan Penyelenggara Panahan') }}
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4 font-display">
+                        {{ t('organizers_page.title', 'Tournament Organizers & Scoring Committees') }}
                     </h1>
                     <p class="text-white/80 text-sm md:text-lg leading-relaxed max-w-xl">
-                        {{ t('organizers_page.description', 'Jelajahi federasi, asosiasi, dan penyelenggara event panahan terpercaya di Indonesia.') }}
+                        {{ t('organizers_page.description', 'Explore verified archery organizations, competition administrators, and certified scoring committees.') }}
                     </p>
                 </div>
             </div>
@@ -129,11 +124,42 @@ definePageMeta({
 const { t } = useI18n()
 const apiBaseUrl = useApiBaseUrl()
 
+const structuredData = computed(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'name': 'Archery Tournament Organizers & Scoring Committees',
+    'description': 'Directory of verified tournament organizers and scoring committees on Archeris.',
+    'itemListElement': organizers.value.slice(0, 10).map((org, idx) => ({
+        '@type': 'ListItem',
+        'position': idx + 1,
+        'item': {
+            '@type': 'Organization',
+            'name': org.name,
+            'url': `https://archeris.net/organizer/${org.slug || org.id}`
+        }
+    }))
+}))
+
 useHead({
-    title: computed(() => t('organizers_page.title', 'Archery Organizers') + ' - Archeris.net'),
+    title: 'Tournament Organizers - Archeris Archery Scoring',
     link: [
         { rel: 'canonical', href: useRequestURL().href }
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            children: computed(() => JSON.stringify(structuredData.value))
+        }
     ]
+})
+
+useSeoMeta({
+    title: 'Tournament Organizers - Archeris Archery Scoring',
+    description: 'Explore verified archery tournament organizers, competition committees, and PERPANI administrators using Archeris digital scoring.',
+    ogTitle: 'Tournament Organizers - Archeris Archery Scoring',
+    ogDescription: 'Explore verified archery tournament organizers, competition committees, and PERPANI administrators using Archeris digital scoring.',
+    ogType: 'website',
+    twitterCard: 'summary_large_image'
 })
 
 const searchQuery = ref('')

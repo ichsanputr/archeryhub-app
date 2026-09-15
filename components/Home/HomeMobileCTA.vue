@@ -47,21 +47,21 @@
                         {{ $t('home.mobile.description') }}
                     </div>
 
-                    <div class="flex flex-wrap gap-4">
-                        <a href="#"
-                            class="inline-flex items-center gap-3 bg-navy text-white px-8 py-4 rounded-2xl hover:scale-105 transition-transform shadow-xl">
-                            <Icon icon="ic:baseline-apple" class="text-2xl" />
+                    <div class="flex flex-wrap gap-3.5">
+                        <a href="/downloads/archeris-scoring.apk" download
+                            class="inline-flex items-center gap-2.5 bg-navy text-white px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl hover:scale-102 transition-all shadow-md hover:shadow-lg border border-navy/20">
+                            <Icon icon="material-symbols:android" class="text-xl sm:text-2xl text-primary shrink-0" />
                             <div class="text-left">
-                                <div class="text-[10px] font-bold opacity-60 leading-none">Download on the</div>
-                                <div class="text-lg font-bold leading-none">App Store</div>
+                                <div class="text-[9px] sm:text-[10px] font-semibold text-slate-300 leading-none">Direct Download</div>
+                                <div class="text-sm sm:text-base font-bold leading-tight mt-0.5">Download APK</div>
                             </div>
                         </a>
-                        <a href="#"
-                            class="inline-flex items-center gap-3 bg-navy text-white px-8 py-4 rounded-2xl hover:scale-105 transition-transform shadow-xl">
-                            <Icon icon="logos:google-play-icon" class="text-2xl" />
+                        <a href="https://play.google.com/store/apps" target="_blank" rel="noopener noreferrer"
+                            class="inline-flex items-center gap-2.5 bg-navy text-white px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl hover:scale-102 transition-all shadow-md hover:shadow-lg border border-navy/20">
+                            <Icon icon="logos:google-play-icon" class="text-xl sm:text-2xl shrink-0" />
                             <div class="text-left">
-                                <div class="text-[10px] font-bold opacity-60 leading-none">Get it on</div>
-                                <div class="text-lg font-bold leading-none">Google Play</div>
+                                <div class="text-[9px] sm:text-[10px] font-semibold text-slate-300 leading-none">Get it on</div>
+                                <div class="text-sm sm:text-base font-bold leading-tight mt-0.5">Google Play</div>
                             </div>
                         </a>
                     </div>

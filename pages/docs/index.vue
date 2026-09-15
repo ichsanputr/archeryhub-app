@@ -16,11 +16,6 @@
             </div>
 
             <div class="container mx-auto px-4 max-w-5xl relative z-10 text-center py-6">
-                <div
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/15 backdrop-blur-md rounded-full text-primary text-xs font-bold tracking-widest mb-6 shadow-inner">
-                    <Icon icon="ph:book-open-bold" class="text-base text-primary" />
-                    <span>{{ $t('docs.official_docs') }}</span>
-                </div>
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-5 font-display">
                     {{ $t('docs.title_part2') }} <span class="text-primary">{{ $t('docs.title_part1') }}</span>
                 </h1>
@@ -195,12 +190,6 @@ watch(() => route.query.cat, (newCat) => {
 const categories = [
     { id: 'all', label: 'All Guides', icon: 'ph:squares-four-bold', description: '' },
     { id: 'platform', label: 'Platform & Dashboard', icon: 'ph:monitor-bold', description: 'Platform overview, user accounts, roles, and settings' },
-    { id: 'archer', label: 'Archer', icon: 'ph:user-bold', description: 'Guides for archer profiles, event registration, and shopping cart' },
-    { id: 'archery', label: 'Archery Rules', icon: 'ph:crosshair-bold', description: 'Rules, competition categories, distances, and bracket types' },
-    { id: 'subscription', label: 'Subscription', icon: 'ph:crown-bold', description: 'Pricing plans, add-ons, and organizer billing' },
-    { id: 'event', label: 'Events & Tournaments', icon: 'ph:trophy-bold', description: 'Creating and managing archery events and participants' },
-    { id: 'scoring', label: 'Scoring System', icon: 'ph:target-bold', description: 'Live scoring, scorekeeper management, and elimination matches' },
-    { id: 'marketplace', label: 'Marketplace', icon: 'ph:storefront-bold', description: 'Buying and selling archery equipment and products' },
 ]
 
 const filteredCategories = computed(() => {
@@ -233,18 +222,66 @@ const heroImages = [
 ]
 
 const currentHeroIdx = ref(0)
-let heroTimer: any = null
+const structuredData = computed(() => [
+    {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+            {
+                '@type': 'ListItem',
+                'position': 1,
+                'name': 'Home',
+                'item': 'https://archeris.net/'
+            },
+            {
+                '@type': 'ListItem',
+                'position': 2,
+                'name': 'Documentation',
+                'item': 'https://archeris.net/docs'
+            }
+        ]
+    },
+    {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        'name': 'Archery Scoring Documentation & Guides',
+        'description': 'Official documentation for archery scoring, target butt allocations, and tournament operations.',
+        'itemListElement': docs.value.slice(0, 10).map((d: any, idx: number) => ({
+            '@type': 'ListItem',
+            'position': idx + 1,
+            'item': {
+                '@type': 'TechArticle',
+                'headline': d.title,
+                'description': d.excerpt,
+                'url': `https://archeris.net/docs/${d.slug}`
+            }
+        }))
+    }
+])
 
-onMounted(() => {
-    heroTimer = setInterval(() => {
-        currentHeroIdx.value = (currentHeroIdx.value + 1) % heroImages.length
-    }, 5000)
+useHead({
+    title: 'Archery Scoring Documentation & Guides - Archeris',
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            children: computed(() => JSON.stringify(structuredData.value))
+        }
+    ]
 })
 
-onUnmounted(() => {
-    if (heroTimer) {
-        clearInterval(heroTimer)
-    }
+useSeoMeta({
+    title: 'Archery Scoring Documentation & Guides - Archeris',
+    description: 'Explore step-by-step guides for digital archery scoring, target scorekeeping, World Archery elimination brackets, and tournament setup on Archeris.',
+    ogTitle: 'Archery Scoring Documentation & Guides - Archeris',
+    ogDescription: 'Explore step-by-step guides for digital archery scoring, target scorekeeping, World Archery elimination brackets, and tournament setup on Archeris.',
+    ogType: 'website',
+    ogUrl: 'https://archeris.net/docs',
+    twitterCard: 'summary_large_image',
+    twitterTitle: 'Archery Scoring Documentation & Guides - Archeris',
+    twitterDescription: 'Explore step-by-step guides for digital archery scoring, target scorekeeping, World Archery elimination brackets, and tournament setup on Archeris.'
 })
 </script>
 

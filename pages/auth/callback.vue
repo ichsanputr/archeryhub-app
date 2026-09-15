@@ -62,7 +62,7 @@ onMounted(async () => {
 
       let redirect = route.query.redirect || '/dashboard'
       if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
-        redirect = '/dashboard/archer/events'
+        redirect = '/dashboard/archer/tournaments'
       }
       window.location.href = redirect
       return
@@ -92,7 +92,7 @@ onMounted(async () => {
     // Full page reload so auth state is restored from cookie/SSR
     let redirect = route.query.redirect || '/dashboard'
     if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
-      redirect = '/dashboard/archer/events'
+      redirect = '/dashboard/archer/tournaments'
     }
     window.location.href = redirect
   } catch (err) {

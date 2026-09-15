@@ -11,11 +11,6 @@
 
             <div class="container mx-auto px-4 max-w-4xl relative z-10">
                 <div class="max-w-3xl text-center md:text-left">
-                    <div
-                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
-                        <Icon icon="ph:question-bold" class="text-base sm:text-lg" />
-                        <span>{{ $t('faq_page.badge') }}</span>
-                    </div>
                     <h1
                         class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         {{ $t('faq_page.title_main') }} <span class="text-primary">{{ $t('faq_page.title_highlight') }}</span>
@@ -107,14 +102,38 @@ const faqs = [
     }
 ]
 
+const structuredData = computed(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    'mainEntity': faqs.map(f => ({
+        '@type': 'Question',
+        'name': f.question,
+        'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': f.answer
+        }
+    }))
+}))
+
 useHead({
-    title: 'Frequently Asked Questions & Support - Archeris.net'
+    title: 'Archery Scoring FAQ & Support - Archeris',
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            children: computed(() => JSON.stringify(structuredData.value))
+        }
+    ]
 })
 
 useSeoMeta({
-    title: 'Frequently Asked Questions & Support - Archeris.net',
-    description: 'Find quick answers to common questions about registration, organizers, and the Archeris.net scoring system.',
-    ogTitle: 'Frequently Asked Questions & Support - Archeris.net',
-    ogDescription: 'Find quick answers to common questions about registration, organizers, and the Archeris.net scoring system.'
+    title: 'Archery Scoring FAQ & Support - Archeris',
+    description: 'Frequently asked questions about digital archery scoring, target butt scorekeeping, World Archery rules, and live tournament leaderboards.',
+    ogTitle: 'Archery Scoring FAQ & Support - Archeris',
+    ogDescription: 'Frequently asked questions about digital archery scoring, target butt scorekeeping, World Archery rules, and live tournament leaderboards.',
+    ogType: 'website',
+    twitterCard: 'summary_large_image'
 })
 </script>

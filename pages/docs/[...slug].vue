@@ -59,22 +59,41 @@
             <main class="flex-1 min-w-0 w-full lg:pl-8 lg:pr-6">
                 <div v-if="currentDoc" class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
                     <!-- Doc header -->
-                    <div class="bg-slate-50 border-b border-gray-100 px-8 pt-10 pb-8 relative overflow-hidden">
+                    <div class="relative bg-gradient-to-br from-navy via-slate-900 to-navy text-white px-6 sm:px-10 pt-10 pb-10 overflow-hidden border-b border-white/10">
+                        <!-- Decorative background glow and archery ring watermark -->
+                        <div class="absolute -top-24 -right-24 w-80 h-80 bg-primary/15 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-sky-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                        <div class="absolute right-6 bottom-0 translate-y-1/4 opacity-5 pointer-events-none select-none">
+                            <Icon icon="ph:crosshair-bold" class="text-[240px] text-white" />
+                        </div>
+
                         <div class="relative z-10">
-                            <div
-                                class="inline-flex items-center gap-2 px-3 py-1 bg-navy/5 border border-navy/10 rounded-full text-navy text-xs font-bold mb-4">
-                                <Icon :icon="currentDoc.icon" class="text-sm text-primary" />
-                                {{ getCategoryLabel(currentDoc.category) }}
-                            </div>
-                            <h1 class="text-2xl md:text-3xl xl:text-4xl font-black text-navy mb-3 leading-tight">{{ currentDoc.title }}</h1>
-                            <p class="text-slate-600 text-sm font-medium">{{ currentDoc.excerpt }}</p>
-                            <div class="flex items-center gap-4 mt-4 text-slate-400 text-xs font-medium">
-                                <span class="flex items-center gap-1.5">
-                                    <Icon icon="ph:clock-bold" class="text-sm" /> {{ currentDoc.readTime }}
-                                </span>
-                                <span class="flex items-center gap-1.5">
-                                    <Icon icon="ph:calendar-blank-bold" class="text-sm" /> {{ $t('docs.updated_at') }}
-                                </span>
+                            <!-- Document Title -->
+                            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-3 tracking-tight font-display leading-tight">
+                                {{ currentDoc.title }}
+                            </h1>
+
+                            <!-- Excerpt/Description -->
+                            <p class="text-slate-300 text-sm sm:text-base font-normal leading-relaxed max-w-3xl">
+                                {{ currentDoc.excerpt }}
+                            </p>
+
+                            <!-- Meta info row -->
+                            <div class="flex items-center gap-4 mt-6 pt-5 border-t border-white/10 text-slate-400 text-xs font-medium flex-wrap">
+                                <div class="flex items-center gap-1.5 text-slate-300">
+                                    <Icon icon="ph:shield-check-bold" class="text-primary text-sm" />
+                                    <span>Official Documentation</span>
+                                </div>
+                                <span class="text-white/20">•</span>
+                                <div class="flex items-center gap-1.5">
+                                    <Icon icon="ph:translate-bold" class="text-xs text-slate-400" />
+                                    <span>English</span>
+                                </div>
+                                <span class="text-white/20">•</span>
+                                <div class="flex items-center gap-1.5">
+                                    <Icon icon="ph:check-circle-bold" class="text-emerald-400 text-xs" />
+                                    <span>Verified Guide</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -144,135 +163,6 @@
                         {{ $t('docs.back_to_docs') }}
                     </NuxtLink>
                 </div>
-
-                <!-- Comments Section -->
-                <div v-if="currentDoc" class="mt-8 bg-white rounded-3xl border border-gray-100 shadow-sm p-6 md:p-10">
-                    <h3 class="text-lg font-black text-navy mb-6 flex items-center gap-2">
-                        <Icon icon="ph:chat-circle-dots-bold" class="text-primary text-xl" />
-                        {{ $t('docs.comments_title') || 'Discussion' }} ({{ comments.length }})
-                    </h3>
-
-                    <!-- Comment Form -->
-                    <form @submit.prevent="submitComment" class="mb-8 space-y-4">
-                        <div v-if="!isLoggedIn" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-xs font-bold text-gray-400 mb-2">{{ $t('docs.comment_name') || 'Your Name' }}</label>
-                                <input v-model="commentForm.guest_name" type="text" required
-                                    class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors text-navy placeholder:text-gray-400 font-medium"
-                                    :placeholder="$t('docs.comment_name_placeholder') || 'Enter your name...'" />
-                            </div>
-                        </div>
-                        <div v-else class="text-xs text-gray-500 font-bold mb-2">
-                            {{ $t('docs.commenting_as') || 'Commenting as' }}: <span class="text-navy font-bold">{{ user?.full_name }}</span>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-gray-400 mb-2">{{ $t('docs.comment_message') || 'Comment' }}</label>
-                            <textarea v-model="commentForm.content" rows="4" required
-                                class="w-full bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors text-navy placeholder:text-gray-400 font-medium"
-                                :placeholder="$t('docs.comment_message_placeholder') || 'Write your thoughts...'"></textarea>
-                        </div>
-
-                        <div class="flex justify-end">
-                            <button type="submit" :disabled="isSubmittingComment || !commentForm.content"
-                                class="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover disabled:bg-gray-100 disabled:text-gray-400 text-navy font-bold px-6 py-3 rounded-2xl transition-all text-sm">
-                                <Icon v-if="isSubmittingComment" icon="ph:spinner-bold" class="animate-spin text-base" />
-                                {{ isSubmittingComment ? ($t('docs.submitting') || 'Submitting...') : ($t('docs.submit_comment') || 'Submit Comment') }}
-                            </button>
-                        </div>
-                    </form>
-
-                    <!-- Comments List -->
-                    <div v-if="isCommentsLoading" class="flex flex-col items-center py-10 text-gray-300">
-                        <Icon icon="ph:spinner-bold" class="mx-auto block animate-spin text-3xl mb-2" />
-                        <span class="text-xs font-bold tracking-wider">{{ $t('docs.loading_comments') || 'Loading comments...' }}</span>
-                    </div>
-
-                    <div v-else-if="comments.length === 0" class="text-center py-10 border border-dashed border-gray-100 rounded-2xl">
-                        <Icon icon="ph:chat-circle-dots-light" class="mx-auto block text-4xl text-gray-300 mb-2" />
-                        <p class="text-gray-400 text-xs font-bold tracking-wider">{{ $t('docs.no_comments') || 'No comments yet. Be the first to share your thoughts!' }}</p>
-                    </div>
-
-                    <div v-else class="space-y-6">
-                        <div v-for="comment in threadedComments" :key="comment.id" class="space-y-4">
-                            <!-- Root Comment Card -->
-                            <div class="flex gap-4 p-4 rounded-2xl hover:bg-gray-50/50 transition-colors border border-gray-50 bg-white">
-                                <!-- Avatar -->
-                                <div class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center shrink-0 border border-gray-200 overflow-hidden font-bold text-navy text-sm dark:border-slate-800">
-                                    <Icon icon="ph:user-bold" class="text-gray-400" />
-                                </div>
-                                <!-- Comment Content -->
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex items-center justify-between gap-2 mb-1">
-                                        <h5 class="font-bold text-sm text-navy truncate">{{ comment.user_name }}</h5>
-                                        <span class="text-[10px] font-medium text-gray-400 whitespace-nowrap">{{ formatDate(comment.created_at) }}</span>
-                                    </div>
-                                    <p class="text-gray-600 text-sm leading-relaxed whitespace-pre-line">{{ comment.content }}</p>
-                                    
-                                    <!-- Actions (Reply Button) -->
-                                    <div class="flex items-center gap-4 mt-2">
-                                        <button 
-                                            @click="startReply(comment.id)" 
-                                            class="text-xs font-bold text-primary hover:text-primary-hover flex items-center gap-1 transition-colors capitalize"
-                                        >
-                                            <Icon icon="ph:arrow-bend-up-left-bold" />
-                                            <span>reply</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Reply Form (if replying to this comment) -->
-                            <div v-if="replyingToId === comment.id" class="ml-10 p-4 bg-gray-50 rounded-2xl border border-gray-100 dark:bg-slate-900/50 dark:border-slate-800 space-y-3">
-                                <div class="text-xs text-gray-500 font-bold">
-                                    replying to <span class="text-navy">{{ comment.user_name }}</span>:
-                                </div>
-                                <div v-if="!isLoggedIn" class="grid grid-cols-1 gap-4">
-                                    <input v-model="replyForm.guest_name" type="text" required
-                                        class="w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-primary transition-colors text-navy placeholder:text-gray-400 font-medium"
-                                        placeholder="your name..." />
-                                </div>
-                                <textarea v-model="replyForm.content" rows="2" required
-                                    class="w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-primary transition-colors text-navy placeholder:text-gray-400 font-medium"
-                                    placeholder="write a reply..."></textarea>
-                                <div class="flex justify-end gap-2">
-                                    <button 
-                                        @click="cancelReply" 
-                                        class="px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-800 text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition-all text-xs font-bold"
-                                    >
-                                        cancel
-                                    </button>
-                                    <button 
-                                        @click="submitReply(comment.id)" 
-                                        :disabled="isSubmittingReply || !replyForm.content || (!isLoggedIn && !replyForm.guest_name)"
-                                        class="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary-hover disabled:bg-gray-100 disabled:text-gray-400 text-navy font-bold transition-all text-xs flex items-center gap-1"
-                                    >
-                                        <Icon v-if="isSubmittingReply" icon="ph:spinner-bold" class="animate-spin" />
-                                        <span>submit</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Replies List -->
-                            <div v-if="comment.replies && comment.replies.length > 0" class="ml-10 pl-4 border-l-2 border-gray-100 dark:border-slate-800 space-y-4">
-                                <div v-for="reply in comment.replies" :key="reply.id" class="flex gap-3 p-3.5 rounded-xl bg-gray-50/50 dark:bg-slate-900/30 border border-gray-50 dark:border-slate-800">
-                                    <!-- Avatar -->
-                                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0 border border-gray-200 dark:border-slate-800 overflow-hidden font-bold text-navy text-xs">
-                                        <Icon icon="ph:user-bold" class="text-gray-400" />
-                                    </div>
-                                    <!-- Content -->
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex items-center justify-between gap-2 mb-0.5">
-                                            <h6 class="font-bold text-xs text-navy truncate">{{ reply.user_name }}</h6>
-                                            <span class="text-[9px] font-medium text-gray-400 whitespace-nowrap">{{ formatDate(reply.created_at) }}</span>
-                                        </div>
-                                        <p class="text-gray-600 text-xs leading-relaxed whitespace-pre-line">{{ reply.content }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </main>
 
             <!-- Right sidebar: Table of contents -->
@@ -291,13 +181,19 @@
                     <!-- Divider -->
                     <div class="mt-6 pt-6 border-t border-gray-100">
                         <NuxtLink to="/docs"
-                            class="flex items-center gap-2 text-xs text-gray-400 hover:text-primary transition-colors font-medium mb-3">
-                            <Icon icon="ph:arrow-left-bold" class="text-xs" /> {{ $t('docs.all_docs') }}
+                            class="flex items-center gap-2 text-xs text-gray-400 hover:text-navy transition-colors font-medium mb-3">
+                            <Icon icon="ph:arrow-left-bold" class="text-xs" /> {{ $t('docs.all_docs') || 'All Guides' }}
                         </NuxtLink>
                         <NuxtLink to="/contact"
-                            class="flex items-center gap-2 text-xs text-gray-400 hover:text-primary transition-colors font-medium">
-                            <Icon icon="ph:chat-circle-dots-bold" class="text-sm" /> {{ $t('docs.contact_support') }}
+                            class="flex items-center gap-2 text-xs text-gray-500 hover:text-navy transition-colors font-medium mb-2.5 group">
+                            <Icon icon="ph:paper-plane-tilt-bold" class="text-sm text-primary group-hover:scale-110 transition-transform" />
+                            <span>Contact Form</span>
                         </NuxtLink>
+                        <a href="mailto:contact@archeris.net"
+                            class="flex items-center gap-2 text-xs text-gray-500 hover:text-navy transition-colors font-medium group">
+                            <Icon icon="ph:envelope-simple-bold" class="text-sm text-primary group-hover:scale-110 transition-transform" />
+                            <span>contact@archeris.net</span>
+                        </a>
                     </div>
                 </div>
             </aside>
@@ -310,7 +206,6 @@ import { Icon } from '@iconify/vue'
 import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useDateFormat } from '@vueuse/core'
 
 definePageMeta({
     layout: 'docs',
@@ -341,12 +236,6 @@ watch(currentSlug, () => {
 
 const categories = [
     { id: 'platform', label: 'Platform & Dashboard', icon: 'ph:monitor-bold' },
-    { id: 'archer', label: 'Archer', icon: 'ph:user-bold' },
-    { id: 'archery', label: 'Archery Rules', icon: 'ph:crosshair-bold' },
-    { id: 'subscription', label: 'Subscription', icon: 'ph:crown-bold' },
-    { id: 'event', label: 'Events & Tournaments', icon: 'ph:trophy-bold' },
-    { id: 'scoring', label: 'Scoring System', icon: 'ph:target-bold' },
-    { id: 'marketplace', label: 'Marketplace', icon: 'ph:storefront-bold' },
 ]
 
 const sidebarCategories = categories
@@ -427,10 +316,6 @@ const translateHeadingText = (text) => {
     return text
 }
 
-// Authentication & API
-const { isLoggedIn, user } = useAuth()
-const api = useApi()
-
 // Social Sharing
 const linkCopied = ref(false)
 const shareTo = (platform) => {
@@ -462,127 +347,77 @@ const copyLink = () => {
     })
 }
 
-// Comments
-const isCommentsLoading = ref(false)
-const isSubmittingComment = ref(false)
-const isSubmittingReply = ref(false)
-const comments = ref([])
-const commentForm = ref({
-    guest_name: '',
-    content: ''
-})
-const replyingToId = ref(null)
-const replyForm = ref({
-    guest_name: '',
-    content: ''
-})
-
-const threadedComments = computed(() => {
-    const list = [...comments.value]
-    // Filter root comments (no parent_id)
-    const roots = list.filter(c => !c.parent_id)
-    // Filter replies (have parent_id)
-    const replies = list.filter(c => c.parent_id)
-    
-    // Nest one level of replies under their parent
-    return roots.map(root => {
-        return {
-            ...root,
-            replies: replies.filter(reply => reply.parent_id === root.id)
+const structuredData = computed(() => {
+    if (!currentDoc.value?.title) return null
+    return [
+        {
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            'itemListElement': [
+                {
+                    '@type': 'ListItem',
+                    'position': 1,
+                    'name': 'Home',
+                    'item': 'https://archeris.net/'
+                },
+                {
+                    '@type': 'ListItem',
+                    'position': 2,
+                    'name': 'Documentation',
+                    'item': 'https://archeris.net/docs'
+                },
+                {
+                    '@type': 'ListItem',
+                    'position': 3,
+                    'name': currentDoc.value.title,
+                    'item': `https://archeris.net/docs/${currentSlug.value}`
+                }
+            ]
+        },
+        {
+            '@context': 'https://schema.org',
+            '@type': 'TechArticle',
+            'headline': currentDoc.value.title,
+            'description': currentDoc.value.excerpt || 'Archeris official documentation.',
+            'url': `https://archeris.net/docs/${currentSlug.value}`,
+            'inLanguage': 'en',
+            'mainEntityOfPage': {
+                '@type': 'WebPage',
+                '@id': `https://archeris.net/docs/${currentSlug.value}`
+            },
+            'publisher': {
+                '@type': 'Organization',
+                'name': 'Archeris',
+                'url': 'https://archeris.net',
+                'logo': 'https://archeris.net/logo.png'
+            }
         }
-    })
+    ]
 })
-
-const startReply = (commentId) => {
-    replyingToId.value = commentId
-    replyForm.value.content = ''
-    replyForm.value.guest_name = ''
-}
-
-const cancelReply = () => {
-    replyingToId.value = null
-    replyForm.value.content = ''
-    replyForm.value.guest_name = ''
-}
-
-const submitReply = async (parentId) => {
-    if (!replyForm.value.content) return
-    if (!isLoggedIn.value && !replyForm.value.guest_name) return
-    
-    isSubmittingReply.value = true
-    try {
-        await api.post(`/docs-comments/${currentSlug.value}`, {
-            guest_name: replyForm.value.guest_name,
-            content: replyForm.value.content,
-            parent_id: parentId
-        })
-        cancelReply()
-        await fetchComments()
-    } catch (error) {
-        console.error('Failed to submit reply:', error)
-    } finally {
-        isSubmittingReply.value = false
-    }
-}
-
-const fetchComments = async () => {
-    if (!currentSlug.value) return
-    isCommentsLoading.value = true
-    try {
-        const response = await api.get(`/docs-comments/${currentSlug.value}`)
-        comments.value = response?.comments || []
-    } catch (error) {
-        console.error('Failed to fetch doc comments:', error)
-    } finally {
-        isCommentsLoading.value = false
-    }
-}
-
-const submitComment = async () => {
-    if (!commentForm.value.content) return
-    if (!isLoggedIn.value && !commentForm.value.guest_name) return
-    
-    isSubmittingComment.value = true
-    try {
-        await api.post(`/docs-comments/${currentSlug.value}`, {
-            guest_name: commentForm.value.guest_name,
-            content: commentForm.value.content
-        })
-        commentForm.value.content = ''
-        commentForm.value.guest_name = ''
-        await fetchComments()
-    } catch (error) {
-        console.error('Failed to submit comment:', error)
-    } finally {
-        isSubmittingComment.value = false
-    }
-}
-
-const formatDate = (dateStr) => {
-    if (!dateStr) return ''
-    const lang = locale.value === 'id' ? 'id-ID' : 'en-US'
-    try {
-        return useDateFormat(dateStr, 'DD MMM YYYY, HH:mm', { locales: lang }).value
-    } catch {
-        return dateStr
-    }
-}
-
-// Watch for slug changes to re-fetch comments
-watch(currentSlug, () => {
-    fetchComments()
-}, { immediate: true })
 
 useHead(computed(() => ({
-    title: currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : t('docs.official_docs', 'Documentation') + ' - Archeris'
+    title: currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            children: computed(() => structuredData.value ? JSON.stringify(structuredData.value) : '')
+        }
+    ]
 })))
 
 useSeoMeta({
     title: () => currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
-    description: () => currentDoc.value?.excerpt || 'Archeris.net official documentation and tournament management guides.',
+    description: () => currentDoc.value?.excerpt || 'Archeris official documentation and archery scoring guides.',
     ogTitle: () => currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
-    ogDescription: () => currentDoc.value?.excerpt || 'Archeris.net official documentation and tournament management guides.',
-    ogType: 'article'
+    ogDescription: () => currentDoc.value?.excerpt || 'Archeris official documentation and archery scoring guides.',
+    ogType: 'article',
+    ogUrl: () => `https://archeris.net/docs/${currentSlug.value}`,
+    twitterCard: 'summary_large_image',
+    twitterTitle: () => currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
+    twitterDescription: () => currentDoc.value?.excerpt || 'Archeris official documentation and archery scoring guides.'
 })
 </script>
 

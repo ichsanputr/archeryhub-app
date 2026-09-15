@@ -476,7 +476,7 @@ const toggleSessionLock = async () => {
     try {
         const sessionId = props.sessionData?.uuid || props.sessionData?.id
         const eventId = route.params.id
-        const res = await post(`/events/${eventId}/qualification/sessions/${sessionId}/lock`, {})
+        const res = await post(`/tournaments/${eventId}/qualification/sessions/${sessionId}/lock`, {})
         if (res) {
             props.sessionData.is_locked = res.is_locked
             if (res.is_locked) {

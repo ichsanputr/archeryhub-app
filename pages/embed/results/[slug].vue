@@ -119,7 +119,7 @@ const selectCategory = async (cat) => {
 const fetchBracketData = async (catId) => {
     bracketLoading.value = true
     try {
-        const response = await get(`/events/${slug}/results/elimination`, {
+        const response = await get(`/tournaments/${slug}/results/elimination`, {
             params: { category_id: catId }
         })
         bracket.value = response?.bracket || null
@@ -140,7 +140,7 @@ const init = async () => {
     isLoading.value = true
     try {
         // Fetch all categories for the filter
-        const catResponse = await get(`/events/${slug}/categories`, { params: { limit: 100 } })
+        const catResponse = await get(`/tournaments/${slug}/categories`, { params: { limit: 100 } })
         const rawCats = catResponse?.events || []
 
         categories.value = rawCats.map(cat => ({

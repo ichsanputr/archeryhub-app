@@ -33,10 +33,6 @@
             </div>
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div>
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-primary/20 text-primary text-xs font-bold tracking-widest mb-6 shadow-sm">
-                        <Icon icon="ph:scales-bold" class="text-base" />
-                        <span>{{ $t('home.comparison_page.hero_badge') }}</span>
-                    </div>
                     <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight mb-6">
                         {{ $t('home.comparison_page.hero_title') }}
                     </h1>
@@ -278,15 +274,34 @@ definePageMeta({
 
 const { t } = useI18n()
 
+const structuredData = computed(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    'name': 'Archeris vs Ianseo - Modern Archery Scoring System Comparison',
+    'description': 'Feature comparison between Archeris cloud archery scoring system and legacy desktop Ianseo.',
+    'url': 'https://archeris.net/archeris-vs-ianseo'
+}))
+
 useHead({
-    title: computed(() => t('home.comparison_page.hero_title', 'Archeris vs Ianseo') + ' - Archeris')
+    title: 'Archeris vs Ianseo - Modern Archery Scoring System Comparison',
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            children: computed(() => JSON.stringify(structuredData.value))
+        }
+    ]
 })
 
 useSeoMeta({
-    title: () => 'Archeris vs Ianseo - Modern Cloud Archery Tournament & Live Scoring Platform',
-    description: () => 'Comprehensive feature comparison between Archeris.net (cloud-native live scoring & event management) and Ianseo.net (legacy desktop software).',
-    ogTitle: () => 'Archeris vs Ianseo - Modern Cloud Archery Tournament & Live Scoring Platform',
-    ogDescription: () => 'Comprehensive feature comparison between Archeris.net (cloud-native live scoring & event management) and Ianseo.net (legacy desktop software).'
+    title: 'Archeris vs Ianseo - Modern Archery Scoring System Comparison',
+    description: 'Compare Archeris cloud-native archery scoring system with legacy desktop Ianseo software. Faster target scoring, zero local servers, instant mobile sync.',
+    ogTitle: 'Archeris vs Ianseo - Modern Archery Scoring System Comparison',
+    ogDescription: 'Compare Archeris cloud-native archery scoring system with legacy desktop Ianseo software. Faster target scoring, zero local servers, instant mobile sync.',
+    ogType: 'website',
+    twitterCard: 'summary_large_image'
 })
 
 const activeCategory = ref('all')

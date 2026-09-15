@@ -890,7 +890,7 @@ const assignArcherToTarget = async (baseTarget, position, archerUuid) => {
             ]
         }
 
-        await post(`/events/${props.eventId}/qualification/sessions/${props.sessionData.uuid}/assignments`, payload)
+        await post(`/tournaments/${props.eventId}/qualification/sessions/${props.sessionData.uuid}/assignments`, payload)
 
         toast.success(t('event_qualification.toast_archer_assigned'))
         emit('updated')

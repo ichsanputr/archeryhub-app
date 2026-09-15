@@ -524,7 +524,7 @@ const isImage = (url) => {
 // System results data fetching
 const fetchCategories = async () => {
     try {
-        const response = await get(`/events/${props.eventId}/categories`, { params: { limit: 1000 } })
+        const response = await get(`/tournaments/${props.eventId}/categories`, { params: { limit: 1000 } })
         const cats = response?.events || []
 
         const mappedCats = cats.map(cat => ({
@@ -570,7 +570,7 @@ const loadQualificationResults = async (categoryUuid) => {
 
     qualificationLoading.value = true
     try {
-        const response = await get(`/events/${props.eventId}/results/qualification?category_id=${categoryUuid}`)
+        const response = await get(`/tournaments/${props.eventId}/results/qualification?category_id=${categoryUuid}`)
         qualificationData.value[categoryUuid] = response?.leaderboard || response?.results || []
         totalEnds.value = response?.total_cumulative_ends || response?.total_ends || 12
     } catch (error) {
@@ -586,7 +586,7 @@ const loadEliminationBracket = async (categoryUuid) => {
 
     eliminationLoading.value = true
     try {
-        const response = await get(`/events/${props.eventId}/results/elimination?category_id=${categoryUuid}`)
+        const response = await get(`/tournaments/${props.eventId}/results/elimination?category_id=${categoryUuid}`)
         eliminationData.value[categoryUuid] = response?.bracket || null
     } catch (error) {
         console.error('Failed to fetch elimination bracket:', error)

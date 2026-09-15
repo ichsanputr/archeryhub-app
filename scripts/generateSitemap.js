@@ -23,7 +23,7 @@ async function generateSitemap() {
         '',
         '/archers',
 
-        '/events',
+        '/tournaments',
         '/organizer',
         '/contact',
         '/faq',

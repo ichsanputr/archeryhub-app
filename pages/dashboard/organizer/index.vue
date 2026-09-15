@@ -11,7 +11,7 @@
             ]"
         >
             <template #actions>
-                <NuxtLink to="/dashboard/organizer/events" class="w-full sm:w-auto">
+                <NuxtLink to="/dashboard/organizer/tournaments" class="w-full sm:w-auto">
                     <BaseButton variant="primary" icon="ph:trophy-bold"
                         class="w-full h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl">
                         {{ t('dashboard.org.manage_events') }}
@@ -142,7 +142,7 @@
                         {{ t('dashboard.org.quick_actions', 'Quick Actions') }}
                     </h3>
                     <div class="space-y-2">
-                        <NuxtLink to="/dashboard/organizer/events"
+                        <NuxtLink to="/dashboard/organizer/tournaments"
                             class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
                             <div class="flex items-center gap-3">
                                 <Icon icon="ph:user-circle-check-bold" class="text-lg text-primary" />
@@ -151,7 +151,7 @@
                             <Icon icon="ph:caret-right-bold"
                                 class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
                         </NuxtLink>
-                        <NuxtLink to="/dashboard/organizer/events/create"
+                        <NuxtLink to="/dashboard/organizer/tournaments/create"
                             class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
                             <div class="flex items-center gap-3">
                                 <Icon icon="ph:plus-circle-bold" class="text-lg text-primary" />
@@ -201,7 +201,7 @@
                         <Icon icon="ph:chart-pie-slice-bold" class="text-primary text-lg" />
                         {{ t('dashboard.org.event_recap', 'Event Recap') }}
                     </h3>
-                    <NuxtLink to="/dashboard/organizer/events">
+                    <NuxtLink to="/dashboard/organizer/tournaments">
                         <BaseButton variant="ghost" size="sm" class="text-xs font-bold text-navy hover:text-primary">
                             {{ t('dashboard.org.view_all', 'View All') }}
                         </BaseButton>
@@ -212,7 +212,7 @@
                 <div v-if="orgCompletedEvents && orgCompletedEvents.length" class="p-5 space-y-3 flex-1 overflow-y-auto max-h-[300px] custom-scrollbar">
                     <div v-for="event in orgCompletedEvents" :key="event.id"
                         class="flex items-center justify-between p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-primary/40 transition-all cursor-pointer group"
-                        @click="router.push(`/dashboard/organizer/events/${event.id}/overview`)">
+                        @click="router.push(`/dashboard/organizer/tournaments/${event.id}/overview`)">
                         <div class="flex items-center gap-4 flex-1 min-w-0">
                             <div
                                 class="w-12 h-12 rounded-xl bg-white border border-slate-200 flex flex-col items-center justify-center shrink-0">
@@ -391,7 +391,7 @@ const fetchDashboardStats = async () => {
 
 const fetchOrgCompletedEvents = async () => {
     try {
-        const res = await api.get('/events')
+        const res = await api.get('/tournaments')
         const list = res?.data ?? res ?? []
         const now = new Date().toISOString()
         const completed = (Array.isArray(list) ? list : [])

@@ -74,7 +74,7 @@ onMounted(() => {
 
 const fetchEventName = async () => {
   try {
-    const res = await api.get(`/events/${eventId.value}`)
+    const res = await api.get(`/tournaments/${eventId.value}`)
     if (res && res.name) {
       eventName.value = res.name
     }

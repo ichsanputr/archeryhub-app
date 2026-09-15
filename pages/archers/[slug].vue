@@ -157,7 +157,7 @@
                                     <div v-if="groupedEventHistory.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div v-for="event in groupedEventHistory.slice(0, 2)" :key="event.id"
                                             class="bg-slate-50/50 border border-gray-200/60 rounded-2xl p-5 hover:shadow-xs hover:border-slate-300 transition-all group cursor-pointer"
-                                            @click="router.push(`/events/${event.slug}`)">
+                                            @click="router.push(`/tournaments/${event.slug}`)">
                                             <div class="flex items-center gap-4 mb-3">
                                                 <div class="w-11 h-11 bg-navy rounded-xl flex flex-col items-center justify-center shrink-0">
                                                     <span class="text-xs font-bold text-white/70">{{ formatDate(event.date, 'MMM') }}</span>
@@ -478,7 +478,7 @@
                                     <tbody class="divide-y divide-gray-100">
                                         <tr v-for="event in filteredEventHistory" :key="event.id"
                                             class="hover:bg-gray-50/50 transition-colors group cursor-pointer"
-                                            @click="router.push(`/events/${event.slug}`)">
+                                            @click="router.push(`/tournaments/${event.slug}`)">
                                             <td class="px-6 py-4 font-mono text-xs text-slate-400">{{ formatDate(event.date, 'DD MMM YYYY') }}</td>
                                             <td class="px-6 py-4">
                                                 <div class="font-black text-navy transition-colors text-xs sm:text-sm">{{ event.name }}</div>
@@ -634,19 +634,43 @@ const filteredEventHistory = computed(() => {
     )
 })
 
+const structuredData = computed(() => {
+    if (!archer.value?.full_name) return null
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        'name': archer.value.full_name,
+        'description': archer.value.bio || `Archer scoring profile and official tournament records for ${archer.value.full_name}.`,
+        'image': archer.value.avatar_url || 'https://archeris.net/logo.png',
+        'url': `https://archeris.net/archers/${archer.value.slug || route.params.slug}`
+    }
+})
+
+useHead({
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            children: computed(() => structuredData.value ? JSON.stringify(structuredData.value) : '')
+        }
+    ]
+})
+
 useSeoMeta({
     title: () => archer.value?.full_name
-        ? `${archer.value.full_name} — ${t('archers.public.pro_archer', 'Archer Profile')} | Archeris`
-        : `${t('archers.title', 'Archer Profile')} — Archeris`,
+        ? `${archer.value.full_name} — ${t('archers.public.pro_archer', 'Archer Scoring Profile')} | Archeris`
+        : `Archer Scoring Profile — Archeris`,
     description: () => archer.value?.full_name
-        ? `View the athlete profile of ${archer.value.full_name}${archer.value.bow_type ? `, ${archer.value.bow_type} archer` : ''}${archer.value.city ? ` from ${archer.value.city}` : ''}. Tournament history, arrow average, and achievements at Archeris.net.`
-        : 'Archer profiles, tournament records, and verified achievements at Archeris.net',
+        ? `View the official archery scoring record and profile of ${archer.value.full_name}${archer.value.bow_type ? `, ${archer.value.bow_type} division` : ''}${archer.value.city ? ` from ${archer.value.city}` : ''}. Tournament scores, arrow averages, and qualification history at Archeris.`
+        : 'Archer profiles, tournament scoring records, and verified achievements at Archeris.',
     ogTitle: () => archer.value?.full_name
-        ? `${archer.value.full_name} — Archer Profile | Archeris`
-        : 'Archer Profile — Archeris',
+        ? `${archer.value.full_name} — Archer Scoring Profile | Archeris`
+        : 'Archer Scoring Profile — Archeris',
     ogDescription: () => archer.value?.full_name
-        ? `View the athlete profile of ${archer.value.full_name}${archer.value.bow_type ? `, ${archer.value.bow_type} archer` : ''}. Tournament records and stats at Archeris.net.`
-        : 'Archer profiles and verified achievements at Archeris.net',
+        ? `View the official archery scoring record and profile of ${archer.value.full_name}${archer.value.bow_type ? `, ${archer.value.bow_type} division` : ''}. Tournament scores, arrow averages, and qualification history at Archeris.`
+        : 'Archer profiles, tournament scoring records, and verified achievements at Archeris.',
     ogType: 'profile'
 })
 

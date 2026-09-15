@@ -85,6 +85,49 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('legal.terms', 'Terms & Conditions') + ' - Archeris')
+  title: 'Terms and Conditions - Archeris',
+  link: [
+    { rel: 'canonical', href: useRequestURL().href }
+  ]
 })
+
+useSeoMeta({
+  title: 'Terms and Conditions - Archeris',
+  description: 'Terms and Conditions for using Archeris archery scoring system, tournament management, and athlete services.',
+  ogTitle: 'Terms and Conditions - Archeris',
+  ogDescription: 'Terms and Conditions for using Archeris archery scoring system, tournament management, and athlete services.',
+  ogType: 'website',
+  twitterCard: 'summary_large_image'
+})
+
+useHead({
+  title: 'Terms of Service - Archeris',
+  link: [
+    { rel: 'canonical', href: useRequestURL().href }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          {
+            '@type': 'ListItem',
+            'position': 1,
+            'name': 'Home',
+            'item': 'https://archeris.net/'
+          },
+          {
+            '@type': 'ListItem',
+            'position': 2,
+            'name': 'Terms of Service',
+            'item': 'https://archeris.net/terms'
+          }
+        ]
+      })
+    }
+  ]
+})
+
 </script>

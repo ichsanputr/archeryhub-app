@@ -37,10 +37,10 @@
           class="font-black text-sm transition-all h-full flex items-center px-1 border-b-2 border-transparent hover:border-primary">
           {{ t('nav.home') }}
         </NuxtLink>
-        <NuxtLink to="/events"
+        <NuxtLink to="/tournaments"
           :class="[
             isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white',
-            route.path.startsWith('/events') ? (isScrolled || !transparent ? '!text-navy font-bold !border-primary' : '!text-white font-bold !border-primary') : ''
+            route.path.startsWith('/tournaments') ? (isScrolled || !transparent ? '!text-navy font-bold !border-primary' : '!text-white font-bold !border-primary') : ''
           ]"
           class="font-black text-sm transition-all h-full flex items-center px-1 border-b-2 border-transparent hover:border-primary">
           {{ t('nav.features') }}
@@ -174,7 +174,7 @@ const NotificationList = defineAsyncComponent(() => import('./NotificationList.v
 const DocSearchDialog = defineAsyncComponent(() => import('./DocSearchDialog.vue'))
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
-import { useEventContext } from '~/composables/useEventContext'
+import { useTournamentContext } from '~/composables/useTournamentContext'
 import { onClickOutside } from '@vueuse/core'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 
@@ -209,14 +209,14 @@ const props = defineProps({
 const route = useRoute()
 const router = useRouter()
 const { user, userPersona } = useAuth()
-const { isEventMode, eventTitle } = useEventContext()
+const { isTournamentMode: isEventMode, tournamentTitle: eventTitle } = useTournamentContext()
 
 const isEventManageMode = computed(() => {
   // Check if we're on any event management page
   const path = route.path
-  // Match both legacy /dashboard/events/ and new /dashboard/[persona]/events/
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organizer|events)\/events\/([^/]+)\/(.+)/) ||
-    path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
+  // Match both legacy /events/ and new /tournaments/
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organizer|events)\/(?:tournaments|events)\/([^/]+)\/(.+)/) ||
+    path.match(/\/dashboard\/(?:tournaments|events)\/([^/]+)\/(.+)/)
 
   if (!eventPathMatch) return false
 
@@ -229,13 +229,13 @@ const isEventManageMode = computed(() => {
 })
 
 const { get } = useApi()
-const { setEvent, currentEvent } = useEventContext()
+const { setTournament: setEvent, currentTournament: currentEvent } = useTournamentContext()
 const fetchedEventName = ref('')
 
 const currentEventId = computed(() => {
   const path = route.path
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organizer|events)\/events\/([^/]+)/) ||
-    path.match(/\/dashboard\/events\/([^/]+)/)
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organizer|events)\/(?:tournaments|events)\/([^/]+)/) ||
+    path.match(/\/dashboard\/(?:tournaments|events)\/([^/]+)/)
   return eventPathMatch ? eventPathMatch[1] : (route.params.id || '')
 })
 
@@ -245,7 +245,7 @@ const loadEventName = async (id) => {
     return
   }
   try {
-    const res = await get(`/events/${id}`)
+    const res = await get(`/tournaments/${id}`)
     const data = res?.event || res?.data || res
     if (data?.name) {
       fetchedEventName.value = data.name
@@ -263,7 +263,7 @@ watch(currentEventId, (id) => {
 }, { immediate: true })
 
 const backToDashboardPath = computed(() => {
-  return `/dashboard/${userPersona.value}/events`
+  return `/dashboard/${userPersona.value}/tournaments`
 })
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)

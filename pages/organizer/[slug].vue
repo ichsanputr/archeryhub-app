@@ -313,7 +313,7 @@
                             </div>
 
                             <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <NuxtLink v-for="event in events" :key="event.id" :to="`/events/${event.slug || event.id}`"
+                                <NuxtLink v-for="event in events" :key="event.id" :to="`/tournaments/${event.slug || event.id}`"
                                     class="bg-white p-5 rounded-2xl border border-gray-200 hover:border-primary hover:shadow-lg transition-all group flex gap-5">
                                     <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0">
                                         <img :src="useImageOrDefault(event.logo_url, event.name)" :alt="event.name"

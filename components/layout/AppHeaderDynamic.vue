@@ -3,10 +3,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-14 md:h-16">
         <!-- Logo -->
-        <NuxtLink to="/" class="flex items-center gap-2 md:gap-3">
-          <div class="w-7 h-7 md:w-8 md:h-8 rounded-lg flex items-center justify-center bg-navy transition-all duration-300">
-            <img src="/logo.png" alt="Logo" class="w-4 h-4 md:w-5 md:h-5 object-contain" />
-          </div>
+        <NuxtLink to="/" class="flex items-center gap-2.5 md:gap-3 group">
+          <img src="/logo.png" alt="Archeris" class="h-7 w-7 md:h-8 md:w-8 object-contain transition-transform duration-300 group-hover:scale-105" />
           <span class="text-lg md:text-xl font-black tracking-tight font-display text-navy">Archeris</span>
         </NuxtLink>
 
@@ -16,8 +14,8 @@
           <div class="relative h-full flex items-center" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
             <button
             class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-navy px-1 h-full border-b-2 border-transparent hover:border-primary text-gray-600"
-              :class="{ '!border-primary font-bold text-navy': isActive('/events') }">
-              <span>Event</span>
+              :class="{ '!border-primary font-bold text-navy': isActive('/tournaments') }">
+              <span>{{ t('nav.features') }}</span>
               <Icon icon="ph:caret-down" class="text-xs transition-transform" :class="{ 'rotate-180': showMegaMenu }" />
             </button>
 
@@ -41,7 +39,7 @@
                         </h3>
                         <p class="text-white/70 text-xs mt-1">{{ featuredEvent.location }} â€¢ {{
                           featuredEvent.date }}</p>
-                        <NuxtLink :to="`/events/${featuredEvent.slug || featuredEvent.id}`"
+                        <NuxtLink :to="`/tournaments/${featuredEvent.slug || featuredEvent.id}`"
                           class="inline-flex items-center gap-1 mt-3 text-primary text-xs font-bold hover:text-white transition-colors tracking-widest">
                           {{ t('nav.check_details') }}
                           <Icon icon="ph:arrow-right" />
@@ -57,14 +55,14 @@
                     <div class="col-span-7 p-6 flex flex-col">
                       <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-2">
                         <span class="text-gray-400 text-[10px] font-black tracking-widest ">{{ t('nav.latest_events') }}</span>
-                        <NuxtLink to="/events"
+                        <NuxtLink to="/tournaments"
                           class="text-navy hover:text-primary text-[10px] font-black tracking-widest transition-colors">
                           {{ t('nav.view_all') }}
                         </NuxtLink>
                       </div>
                       <div v-if="latestEvents.length > 0" class="space-y-2 flex-1 flex flex-col justify-start">
                         <NuxtLink v-for="event in latestEvents.slice(0, 5)" :key="event.id"
-                          :to="`/events/${event.slug || event.id}`"
+                          :to="`/tournaments/${event.slug || event.id}`"
                           class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
                           <div class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
                             <img :src="event.image" class="w-full h-full object-cover" />
@@ -91,14 +89,6 @@
           </div>
 
 
-          <NuxtLink to="/archeris-vs-ianseo"
-            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-navy"
-            :class="{ '!border-primary font-bold text-navy': isActive('/archeris-vs-ianseo') }">
-            {{ t('nav.archeris_vs_ianseo') }}</NuxtLink>
-          <NuxtLink to="/blog"
-            class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-navy"
-            :class="{ '!border-primary font-bold text-navy': isActive('/blog') }">
-            {{ t('nav.blog') }}</NuxtLink>
           <NuxtLink to="/docs"
             class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-navy"
             :class="{ '!border-primary font-bold text-navy': isActive('/docs') }">
@@ -191,10 +181,8 @@
         class="fixed top-0 right-0 w-[300px] h-full bg-white z-50 md:hidden shadow-2xl flex flex-col">
         <!-- Drawer Header -->
         <div class="p-6 border-b border-gray-50 flex items-center justify-between bg-white relative">
-          <NuxtLink to="/" @click="mobileMenuOpen = false" class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-lg bg-navy flex items-center justify-center">
-              <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
-            </div>
+          <NuxtLink to="/" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 group">
+            <img src="/logo.png" alt="Archeris" class="w-7 h-7 object-contain transition-transform duration-300 group-hover:scale-105" />
             <span class="text-lg font-black tracking-tight text-navy ">Archeris</span>
           </NuxtLink>
           <button @click="mobileMenuOpen = false" class="p-2 hover:bg-gray-100 rounded-xl transition-all scale-100">
@@ -228,8 +216,6 @@
           <div class="p-4 space-y-1">
             <NuxtLink v-for="link in [
               { to: '/', label: t('nav.home'), icon: 'ph:house-bold' },
-              { to: '/archeris-vs-ianseo', label: t('nav.archeris_vs_ianseo'), icon: 'ph:scales-bold' },
-              { to: '/blog', label: t('nav.blog'), icon: 'ph:newspaper-bold' },
               { to: '/docs', label: t('nav.docs'), icon: 'ph:book-open-bold' },
               { to: '/pricing', label: t('nav.pricing'), icon: 'ph:credit-card-bold' },
             ]" :key="link.to" :to="link.to" @click="mobileMenuOpen = false"
@@ -245,7 +231,7 @@
                 class="w-full flex items-center justify-between p-4 rounded-2xl transition-all text-gray-500 hover:bg-gray-50 hover:text-navy">
                 <div class="flex items-center gap-4 font-black">
                   <Icon icon="ph:target-bold" class="text-xl" />
-                  <span class="font-black text-sm tracking-wider">Event</span>
+                  <span class="font-black text-sm tracking-wider">{{ t('nav.features') }}</span>
                 </div>
                 <Icon icon="ph:caret-down-bold" class="text-xs transition-transform duration-300"
                   :class="{ 'rotate-180': mobileSubmenuOpen }" />
@@ -255,13 +241,13 @@
                 enter-to-class="max-h-96 opacity-100" leave-active-class="transition-all duration-200 ease-in"
                 leave-from-class="max-h-96 opacity-100" leave-to-class="max-h-0 opacity-0">
                 <div v-if="mobileSubmenuOpen" class="pl-12 pr-4 space-y-1 overflow-hidden">
-                  <NuxtLink v-for="event in latestEvents" :key="event.id" :to="`/events/${event.slug || event.id}`"
+                  <NuxtLink v-for="event in latestEvents" :key="event.id" :to="`/tournaments/${event.slug || event.id}`"
                     @click="mobileMenuOpen = false"
                     class="flex items-center gap-3 py-3 text-gray-500 hover:text-navy text-xs font-bold transition-colors">
                     <div class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></div>
                     <span class="truncate">{{ event.name }}</span>
                   </NuxtLink>
-                  <NuxtLink to="/events" @click="mobileMenuOpen = false"
+                  <NuxtLink to="/tournaments" @click="mobileMenuOpen = false"
                     class="flex items-center gap-3 py-3 text-navy text-xs font-black transition-colors border-t border-gray-50 mt-2">
                     <Icon icon="ph:list-bullets-bold" class="text-sm" />
                     {{ t('nav.all_events') }}
@@ -325,7 +311,7 @@ const featuredEvent = ref(null)
 
 const fetchLatestEvents = async () => {
   try {
-    const response = await get('/events?limit=10')
+    const response = await get('/tournaments?limit=10')
     let events = []
     if (Array.isArray(response)) events = response
     else if (response?.data) events = response.data
@@ -374,7 +360,7 @@ const isActive = (path) => {
 
 const dashboardUrl = computed(() => {
   const persona = userPersona.value
-  if (persona === 'organizer' || persona === 'archer') return `/dashboard/${persona}/events`
+  if (persona === 'organizer' || persona === 'archer') return `/dashboard/${persona}/tournaments`
   return `/dashboard/${persona}`
 })
 

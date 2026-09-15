@@ -196,7 +196,7 @@
             <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-50 mb-4 mx-auto" />
             <h2 class="text-3xl font-black text-navy tracking-tight">{{ t('event_elimination.bracket_not_found') }}</h2>
             <div class="text-gray-400 mt-2">{{ t('event_elimination.bracket_invalid_desc') }}</div>
-            <button @click="navigateTo(route.path.includes('/organizer/') ? `/dashboard/organizer/events/${eventId}/elimination` : `/dashboard/events/${eventId}/elimination`)"
+            <button @click="navigateTo(route.path.includes('/organizer/') ? `/dashboard/organizer/tournaments/${eventId}/elimination` : `/dashboard/archer/tournaments/${eventId}/my-elimination`)"
                 class="mt-10 px-6 py-3 rounded-2xl border-2 border-navy text-navy font-black tracking-widest hover:bg-navy hover:text-white transition-all cursor-pointer">
                 {{ t('event_elimination.back_to_list') }}
             </button>
@@ -542,7 +542,7 @@ const showEndMatchDialog = ref(false)
 const fetchBracket = async (silent = false) => {
     if (!silent) isLoading.value = true
     try {
-        const response = await get(`/events/${eventId}/elimination/brackets/${bracketId}`)
+        const response = await get(`/tournaments/${eventId}/elimination/brackets/${bracketId}`)
         bracket.value = response?.bracket || null
         entries.value = response?.entries || []
         matches.value = response?.matches || []
@@ -573,7 +573,7 @@ const fetchBracket = async (silent = false) => {
 
 const fetchCategoryDetails = async (categoryUuid) => {
     try {
-        const response = await get(`/events/${eventId}/categories`)
+        const response = await get(`/tournaments/${eventId}/categories`)
         const cats = response?.events || response.data?.events || []
         categoryInfo.value = cats.find(c => (c.id === categoryUuid || c.uuid === categoryUuid))
     } catch (error) {
@@ -583,7 +583,7 @@ const fetchCategoryDetails = async (categoryUuid) => {
 
 const fetchAvailableTargets = async () => {
     try {
-        const response = await get(`/events/${eventId}/targets/options`)
+        const response = await get(`/tournaments/${eventId}/targets/options`)
         const options = response?.options || response.data?.options || []
         availableTargets.value = options.map(o => ({
             id: o.uuid || o.id,
@@ -596,7 +596,7 @@ const fetchAvailableTargets = async () => {
 
 const generateBracket = async () => {
     try {
-        await post(`/events/${eventId}/elimination/brackets/${bracketId}/generate`)
+        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/generate`)
         toast.success(t('event_elimination.toast_bracket_generated'))
         await fetchBracket()
     } catch (error) {
@@ -658,8 +658,8 @@ const openScoresheet = async () => {
 const navigateToRound = (roundNo) => {
     const isOrganizer = route.path.includes('/organizer/')
     const base = isOrganizer 
-        ? `/dashboard/organizer/events/${eventId}/elimination/${bracketId}`
-        : `/dashboard/events/${eventId}/elimination/${bracketId}`
+        ? `/dashboard/organizer/tournaments/${eventId}/elimination/${bracketId}`
+        : `/dashboard/archer/tournaments/${eventId}/my-elimination`
     router.push({
         path: `${base}/${roundNo}`,
         query: { mode: activeTab.value }
@@ -680,13 +680,13 @@ const handleBack = () => {
     const isOrganizer = route.path.includes('/organizer/')
     if (currentRoundNo.value) {
         const base = isOrganizer 
-            ? `/dashboard/organizer/events/${eventId}/elimination/${bracketId}`
-            : `/dashboard/events/${eventId}/elimination/${bracketId}`
+            ? `/dashboard/organizer/tournaments/${eventId}/elimination/${bracketId}`
+            : `/dashboard/archer/tournaments/${eventId}/my-elimination`
         router.push(base)
     } else {
         const list = isOrganizer 
-            ? `/dashboard/organizer/events/${eventId}/elimination`
-            : `/dashboard/events/${eventId}/elimination`
+            ? `/dashboard/organizer/tournaments/${eventId}/elimination`
+            : `/dashboard/archer/tournaments/${eventId}`
         router.push(list)
     }
 }
@@ -702,7 +702,7 @@ const selectMatchForScoring = (match) => {
 const fetchTeamMembers = async () => {
     if (bracket.value?.bracket_type === 'individual') return
     try {
-        const res = await get(`/events/${eventId}/elimination/brackets/${bracketId}/team-members`)
+        const res = await get(`/tournaments/${eventId}/elimination/brackets/${bracketId}/team-members`)
         teamMembersMap.value = res?.members || {}
     } catch (e) {
         console.error('Failed to fetch team members:', e)
@@ -711,7 +711,7 @@ const fetchTeamMembers = async () => {
 
 const fetchAllScores = async () => {
     try {
-        const response = await get(`/events/${eventId}/elimination/brackets/${bracketId}/scores`)
+        const response = await get(`/tournaments/${eventId}/elimination/brackets/${bracketId}/scores`)
         const ends = response?.ends || []
 
         ends.forEach(end => {
@@ -751,7 +751,7 @@ const fetchAllScores = async () => {
 
 const fetchMatchScores = async (matchId) => {
     try {
-        const response = await get(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}`)
+        const response = await get(`/tournaments/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}`)
         const ends = response?.ends || []
 
         if (!matchEnds.value[matchId]) {
@@ -1020,7 +1020,7 @@ const saveAndNext = async () => {
         const arrowsA = matchEnds.value[matchId].A[currentEnd.value].arrows.map(a => String(a))
         const arrowsB = matchEnds.value[matchId].B[currentEnd.value].arrows.map(a => String(a))
 
-        await post(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/score`, {
+        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/score`, {
             end_no: currentEnd.value,
             score_a: matchEnds.value[matchId].A[currentEnd.value].total,
             score_b: matchEnds.value[matchId].B[currentEnd.value].total,
@@ -1062,7 +1062,7 @@ const resetMatch = async () => {
     isResetting.value = true
     try {
         const matchId = selectedScoringMatch.value.id
-        await post(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/reset`)
+        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/reset`)
         toast.success(t('event_elimination.toast_match_reset_live'))
 
         // Refresh data
@@ -1089,7 +1089,7 @@ const finishByeMatch = async (match) => {
     isEndingMatch.value = true
     try {
         const winnerId = match.entry_a_id || match.entry_b_id
-        await post(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${match.id}/finish`, {
+        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/matches/${match.id}/finish`, {
             winner_entry_id: winnerId
         })
         toast.success(t('event_elimination.toast_match_finished'))
@@ -1124,7 +1124,7 @@ const confirmEndMatch = async () => {
         const matchId = selectedScoringMatch.value.id
 
         // Call API endpoint that will auto-calculate winner from saved scores
-        await post(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/end`, {
+        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/end`, {
             winner_entry_id: manualWinnerId.value
         })
 
@@ -1153,7 +1153,7 @@ const updateTarget = async (match) => {
         return
     }
     try {
-        await put(`/events/${eventId}/elimination/brackets/${bracketId}/targets`, {
+        await put(`/tournaments/${eventId}/elimination/brackets/${bracketId}/targets`, {
             assignments: [
                 {
                     match_id: match.id,
@@ -1175,7 +1175,7 @@ const autoAssignTargets = async () => {
     isAutoAssigning.value = true
     try {
         const roundNo = currentRoundNo.value || 1
-        await post(`/events/${eventId}/elimination/brackets/${bracketId}/targets/auto-assign?round=${roundNo}`)
+        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/targets/auto-assign?round=${roundNo}`)
         toast.success(t('event_elimination.toast_auto_assign_success'))
         await fetchBracket(true)
     } catch (e) {
@@ -1216,7 +1216,7 @@ const finishMatchAction = async (match) => {
             winnerId = totalA >= totalB ? match.entry_a_id : match.entry_b_id
         }
 
-        await post(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${match.id}/finish`, {
+        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/matches/${match.id}/finish`, {
             winner_entry_id: winnerId
         })
         toast.success(t('event_elimination.toast_match_finished'))

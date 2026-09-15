@@ -126,6 +126,49 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('legal.privacy', 'Privacy Policy') + ' - Archeris')
+  title: 'Privacy Policy - Archeris',
+  link: [
+    { rel: 'canonical', href: useRequestURL().href }
+  ]
 })
+
+useSeoMeta({
+  title: 'Privacy Policy - Archeris',
+  description: 'Archeris Privacy Policy regarding athlete data, tournament scoring records, and payment security.',
+  ogTitle: 'Privacy Policy - Archeris',
+  ogDescription: 'Archeris Privacy Policy regarding athlete data, tournament scoring records, and payment security.',
+  ogType: 'website',
+  twitterCard: 'summary_large_image'
+})
+
+useHead({
+  title: 'Privacy Policy - Archeris',
+  link: [
+    { rel: 'canonical', href: useRequestURL().href }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          {
+            '@type': 'ListItem',
+            'position': 1,
+            'name': 'Home',
+            'item': 'https://archeris.net/'
+          },
+          {
+            '@type': 'ListItem',
+            'position': 2,
+            'name': 'Privacy Policy',
+            'item': 'https://archeris.net/privacy'
+          }
+        ]
+      })
+    }
+  ]
+})
+
 </script>

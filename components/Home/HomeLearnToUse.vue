@@ -15,19 +15,19 @@
 
         <div class="max-w-[1600px] mx-auto relative z-10">
             <!-- Section Header -->
-            <div class="text-center mb-16 sm:mb-24 px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 sm:mb-20 px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl sm:text-5xl font-black text-navy leading-tight mb-6 font-display tracking-tight reveal-title">
                     {{ $t('home.learn.title') }} <br class="hidden sm:block" />
                     <span class="text-navy/70">
                         {{ $t('home.learn.subtitle') }}
                     </span>
                 </h2>
-                <p class="text-slate-700 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed reveal-desc">
+                <p class="text-slate-700 text-base sm:text-lg max-w-3xl mx-auto font-light leading-relaxed reveal-desc">
                     {{ $t('home.learn.description') }}
                 </p>
             </div>
 
-            <!-- Horizontal Dashboard Showcase Mockup Container (Identical to Image) -->
+            <!-- Horizontal Feature Showcase Cards Container -->
             <div class="relative w-full overflow-hidden">
                 <!-- Left overlay shadow (fades out from left) -->
                 <div class="absolute left-0 top-0 bottom-0 w-12 sm:w-24 md:w-36 bg-gradient-to-r from-[#DEFEBD] via-[#DEFEBD]/90 to-transparent z-20 pointer-events-none"></div>
@@ -36,79 +36,170 @@
                 <div class="absolute right-0 top-0 bottom-0 w-12 sm:w-24 md:w-36 bg-gradient-to-l from-[#DEFEBD] via-[#DEFEBD]/90 to-transparent z-20 pointer-events-none"></div>
 
                 <!-- Outer Scrolling Area with Faded Mask Edges -->
-                <div ref="scrollContainer" class="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar px-6 sm:px-16 lg:px-24 pb-12">
+                <div ref="scrollContainer" class="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar px-6 sm:px-16 lg:px-24 pb-12 pt-2">
                     
-                    <!-- ── CARD 1: ROSTER & COMMUNICATIONS ── -->
-                    <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
+                    <!-- ── 7 FEATURE CARDS ── -->
+                    <NuxtLink
+                        v-for="(feature, idx) in features"
+                        :key="idx"
+                        :to="localePath(feature.link)"
+                        class="w-[310px] sm:w-[500px] md:w-[600px] lg:w-[660px] shrink-0 snap-center bg-white border border-slate-100/80 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_50px_rgba(15,23,42,0.12)] hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer block"
+                    >
                         <div class="mb-5">
-                            <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black tracking-widest rounded-full mb-3 inline-block">
-                                {{ $t('home.learn.step1_tag') }}
-                            </span>
-                            <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-none font-display">
-                                {{ $t('home.learn.step1_title') }}
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-3.5 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[11px] font-black tracking-wider rounded-full inline-block">
+                                    {{ $t(feature.tagKey) }}
+                                </span>
+                                <span class="text-xs font-bold text-slate-400 group-hover:text-[#63C03B] transition-colors flex items-center gap-1">
+                                    0{{ idx + 1 }}
+                                    <Icon icon="ph:arrow-up-right-bold" class="w-3.5 h-3.5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                                </span>
+                            </div>
+                            <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-snug font-display group-hover:text-[#63C03B] transition-colors">
+                                {{ $t(feature.titleKey) }}
                             </h3>
-                            <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-1">
-                                {{ $t('home.learn.step1_desc') }}
+                            <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed mt-2">
+                                {{ $t(feature.descKey) }}
                             </p>
                         </div>
-                        <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[1.6/1] bg-slate-50">
-                             <img src="/learn-step1.png" alt="Club Setup & Roster Dashboard" class="w-full h-full object-cover object-top" />
+                        <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[16/10] bg-slate-50 mt-auto">
+                            <img 
+                                :src="feature.image" 
+                                :alt="$t(feature.titleKey)" 
+                                class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out" 
+                                loading="lazy" 
+                            />
                         </div>
-                    </div>
-
-                    <!-- ── CARD 2: MATCH SCHEDULE & TARGET ALLOCATION ── -->
-                    <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
-                        <div class="mb-5">
-                            <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black tracking-widest rounded-full mb-3 inline-block">
-                                {{ $t('home.learn.step2_tag') }}
-                            </span>
-                            <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-none font-display">
-                                {{ $t('home.learn.step2_title') }}
-                            </h3>
-                            <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-1">
-                                {{ $t('home.learn.step2_desc') }}
-                            </p>
-                        </div>
-                        <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[1.6/1] bg-slate-50">
-                             <img src="/learn-step2.png" alt="Match Schedule & Target Butt Dashboard" class="w-full h-full object-cover object-top" />
-                        </div>
-                    </div>
-
-                    <!-- ── CARD 3: LIVE SCORING & LEADERBOARD ── -->
-                    <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
-                        <div class="mb-5">
-                            <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black tracking-widest rounded-full mb-3 inline-block">
-                                {{ $t('home.learn.step3_tag') }}
-                            </span>
-                            <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-none font-display">
-                                {{ $t('home.learn.step3_title') }}
-                            </h3>
-                            <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-1">
-                                {{ $t('home.learn.step3_desc') }}
-                            </p>
-                        </div>
-                        <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[1.6/1] bg-slate-50">
-                             <img src="/learn-step3.png" alt="Live Scoring Leaderboard Dashboard" class="w-full h-full object-cover object-top" />
-                        </div>
-                    </div>                  
+                    </NuxtLink>
                 </div>
+            </div>
+
+            <!-- Controls (Scroll Indicators & Prev/Next Arrows) -->
+            <div class="flex items-center justify-center gap-4 mt-2">
+                <button 
+                    @click="scrollPrev"
+                    class="w-11 h-11 rounded-full bg-white border border-slate-200/80 shadow-sm flex items-center justify-center text-slate-700 hover:text-navy hover:border-[#63C03B] hover:shadow transition-all cursor-pointer"
+                    aria-label="Previous Feature"
+                >
+                    <Icon icon="ph:arrow-left-bold" class="w-4 h-4" />
+                </button>
+                <div class="flex items-center gap-2 px-2">
+                    <span 
+                        v-for="(_, idx) in features" 
+                        :key="idx" 
+                        class="w-2.5 h-2.5 rounded-full transition-all duration-300"
+                        :class="activeIdx === idx ? 'bg-[#63C03B] w-6' : 'bg-slate-300/80'"
+                    />
                 </div>
+                <button 
+                    @click="scrollNext"
+                    class="w-11 h-11 rounded-full bg-white border border-slate-200/80 shadow-sm flex items-center justify-center text-slate-700 hover:text-navy hover:border-[#63C03B] hover:shadow transition-all cursor-pointer"
+                    aria-label="Next Feature"
+                >
+                    <Icon icon="ph:arrow-right-bold" class="w-4 h-4" />
+                </button>
+            </div>
         </div>
     </section>
 </template>
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { Icon } from '@iconify/vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+const localePath = useLocalePath()
+
+const features = [
+    {
+        tagKey: 'home.learn.f1_tag',
+        titleKey: 'home.learn.f1_title',
+        descKey: 'home.learn.f1_desc',
+        image: '/features/feature-1.png',
+        link: '/archeris-vs-ianseo'
+    },
+    {
+        tagKey: 'home.learn.f2_tag',
+        titleKey: 'home.learn.f2_title',
+        descKey: 'home.learn.f2_desc',
+        image: '/features/feature-2.png',
+        link: '/tournaments'
+    },
+    {
+        tagKey: 'home.learn.f3_tag',
+        titleKey: 'home.learn.f3_title',
+        descKey: 'home.learn.f3_desc',
+        image: '/features/feature-3.png',
+        link: '/archers'
+    },
+    {
+        tagKey: 'home.learn.f4_tag',
+        titleKey: 'home.learn.f4_title',
+        descKey: 'home.learn.f4_desc',
+        image: '/features/feature-4.png',
+        link: '/package'
+    },
+    {
+        tagKey: 'home.learn.f5_tag',
+        titleKey: 'home.learn.f5_title',
+        descKey: 'home.learn.f5_desc',
+        image: '/features/feature-5.png',
+        link: '/docs'
+    },
+    {
+        tagKey: 'home.learn.f6_tag',
+        titleKey: 'home.learn.f6_title',
+        descKey: 'home.learn.f6_desc',
+        image: '/features/feature-6.png',
+        link: '/faq'
+    },
+    {
+        tagKey: 'home.learn.f7_tag',
+        titleKey: 'home.learn.f7_title',
+        descKey: 'home.learn.f7_desc',
+        image: '/features/feature-7.png',
+        link: '/about-us'
+    }
+]
+
 const sectionRef = ref(null)
 const scrollContainer = ref(null)
+const activeIdx = ref(0)
 let scrollTimer = null
 let ctx = null
 
+const updateActiveIndex = () => {
+    const container = scrollContainer.value
+    if (!container) return
+    const scrollLeft = container.scrollLeft
+    const cardWidth = container.children[0]?.offsetWidth || 300
+    const gap = 32
+    const index = Math.round(scrollLeft / (cardWidth + gap))
+    activeIdx.value = Math.max(0, Math.min(features.length - 1, index))
+}
+
+const scrollPrev = () => {
+    const container = scrollContainer.value
+    if (!container) return
+    const cardWidth = container.children[0]?.offsetWidth || 400
+    container.scrollBy({ left: -(cardWidth + 32), behavior: 'smooth' })
+}
+
+const scrollNext = () => {
+    const container = scrollContainer.value
+    if (!container) return
+    const cardWidth = container.children[0]?.offsetWidth || 400
+    container.scrollBy({ left: cardWidth + 32, behavior: 'smooth' })
+}
+
 onMounted(async () => {
     await nextTick()
+
+    const container = scrollContainer.value
+    if (container) {
+        container.addEventListener('scroll', updateActiveIndex, { passive: true })
+    }
 
     gsap.registerPlugin(ScrollTrigger)
     const el = sectionRef.value
@@ -141,21 +232,21 @@ onMounted(async () => {
         })
     }, el)
 
-    // scroll the second card (step 2) to the center of the screen
+    // Center first or second card smoothly
     scrollTimer = window.setTimeout(() => {
-        const container = scrollContainer.value
-        if (!container) return
+        const c = scrollContainer.value
+        if (!c) return
 
-        const children = container.children
+        const children = c.children
         if (!children || children.length < 2) return
 
         const secondChild = children[1]
-        const containerWidth = container.clientWidth
+        const containerWidth = c.clientWidth
         const childWidth = secondChild.clientWidth
         const childOffset = secondChild.offsetLeft
         const scrollPosition = childOffset - (containerWidth / 2) + (childWidth / 2)
 
-        container.scrollTo({
+        c.scrollTo({
             left: scrollPosition,
             behavior: 'auto'
         })
@@ -163,6 +254,11 @@ onMounted(async () => {
 })
 
 onBeforeUnmount(() => {
+    const container = scrollContainer.value
+    if (container) {
+        container.removeEventListener('scroll', updateActiveIndex)
+    }
+
     if (scrollTimer) {
         clearTimeout(scrollTimer)
         scrollTimer = null

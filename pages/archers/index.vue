@@ -10,11 +10,6 @@
 
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
-                    <div
-                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-xs sm:text-sm font-bold tracking-widest mb-6">
-                        <Icon icon="ph:user-circle-gear-bold" class="text-base sm:text-lg" />
-                        <span>{{ t('archers.badge') }}</span>
-                    </div>
                     <h1
                         class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4 font-display">
                         {{ t('archers.title') }}
@@ -208,15 +203,42 @@ definePageMeta({
     layout: 'landing'
 })
 
+const structuredData = computed(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'name': 'Archer Directory - Official Scoring Profiles',
+    'description': 'Verified archers and athletes with official tournament scoring track records.',
+    'itemListElement': (archers.value || []).slice(0, 12).map((a, idx) => ({
+        '@type': 'ListItem',
+        'position': idx + 1,
+        'item': {
+            '@type': 'Person',
+            'name': a.full_name,
+            'url': `https://archeris.net/archers/${a.slug || a.id}`
+        }
+    }))
+}))
+
 useHead({
-    title: computed(() => t('archers.title', 'Archers') + ' - Archeris')
+    title: 'Archer Directory - Official Scoring Profiles | Archeris',
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            children: computed(() => JSON.stringify(structuredData.value))
+        }
+    ]
 })
 
 useSeoMeta({
-    title: () => `${t('archers.title', 'Archery Community & Athlete Profiles')} - Archeris.net`,
-    description: () => t('archers.description', 'Explore verified profiles of talented archers, competition statistics, tournament achievements, and athlete passports on Archeris.net.'),
-    ogTitle: () => `${t('archers.title', 'Archery Community & Athlete Profiles')} - Archeris.net`,
-    ogDescription: () => t('archers.description', 'Explore verified profiles of talented archers, competition statistics, tournament achievements, and athlete passports on Archeris.net.')
+    title: 'Archer Directory - Official Scoring Profiles | Archeris',
+    description: 'Explore verified athlete profiles, official tournament scoring records, qualification statistics, arrow averages, and personal rankings on Archeris.',
+    ogTitle: 'Archer Directory - Official Scoring Profiles | Archeris',
+    ogDescription: 'Explore verified athlete profiles, official tournament scoring records, qualification statistics, arrow averages, and personal rankings on Archeris.',
+    ogType: 'website',
+    twitterCard: 'summary_large_image'
 })
 
 const config = useRuntimeConfig()

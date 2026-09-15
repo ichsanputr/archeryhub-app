@@ -13,183 +13,232 @@
             </div>
 
             <!-- Feature Block 1: App -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32 feature-row">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center mb-20 sm:mb-28 lg:mb-32 feature-row">
                 <div class="order-2 lg:order-1 text-col">
-                    <span class="text-[10px] font-bold tracking-[0.2em] text-navy/40 mb-4 block">{{
+                    <span class="text-xs font-bold text-slate-500 mb-3 sm:mb-4 block">{{
                         $t('home.features_demo.f1_tag') }}</span>
-                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">{{
+                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight">{{
                         $t('home.features_demo.f1_title') }}</h3>
-                    <p class="text-text-secondary text-base sm:text-lg font-light leading-relaxed mb-10">
+                    <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-8 sm:mb-10">
                         {{ $t('home.features_demo.f1_desc') }}
                     </p>
 
-                    <ul class="space-y-4 border-t border-gray-100 pt-8">
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f1_list_1') }}
-                        </li>
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f1_list_2') }}
-                        </li>
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f1_list_3') }}
-                        </li>
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f1_list_4') }}
-                        </li>
-                    </ul>
+                    <div class="space-y-2.5 sm:space-y-3 pt-6 border-t border-slate-100">
+                        <div v-for="key in ['f1_list_1', 'f1_list_2', 'f1_list_3', 'f1_list_4']" :key="key"
+                            class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 hover:bg-white hover:border-[#63C03B]/40 hover:shadow-md hover:shadow-slate-100 transition-all duration-200 group/item">
+                            <div class="w-6 h-6 rounded-full bg-[#63C03B]/15 text-[#63C03B] flex items-center justify-center shrink-0 group-hover/item:bg-[#63C03B] group-hover/item:text-white transition-colors duration-200">
+                                <Icon icon="ph:check-bold" class="text-xs" />
+                            </div>
+                            <span class="text-navy font-bold text-xs sm:text-sm lg:text-base leading-snug">
+                                {{ $t(`home.features_demo.${key}`) }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="order-1 lg:order-2 relative flex justify-center lg:justify-end image-col">
-                    <div class="absolute inset-0 bg-[#E2F9C2] rounded-[3rem] -rotate-3 scale-95 opacity-50"></div>
-                    <div
-                        class="relative w-full max-w-[400px] aspect-[4/5] bg-[#E2F9C2] rounded-[3rem] flex items-center justify-center p-8">
-                        <img src="/archery_app_mockup_1778934013917.png" alt="Archery App Mockup"
-                            class="w-full h-full object-contain rounded-2xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-700" />
-                    </div>
+                <div class="order-1 lg:order-2 relative flex justify-center image-col w-full">
+                    <AnimatedImageStack 
+                        :images="[
+                            '/features/screenshot-1-quals.png',
+                            '/features/screenshot-2-teamquals.png',
+                            '/features/screenshot-3-entries.png'
+                        ]"
+                        alt="Mobile Archery Scoring & Qualification Standings"
+                    />
                 </div>
             </div>
 
             <!-- Feature Block 2: Scheduling -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32 feature-row">
-                <div class="relative flex justify-center lg:justify-start image-col">
-                    <div class="absolute inset-0 bg-[#E2F9C2] rounded-[3rem] rotate-3 scale-95 opacity-50"></div>
-                    <div
-                        class="relative w-full aspect-video lg:aspect-[4/3] bg-[#E2F9C2] rounded-[3rem] flex items-center justify-center p-8">
-                        <img src="/archery_dashboard_mockup_1778934029945.png" alt="Archery Dashboard Mockup"
-                            class="w-full h-full object-cover rounded-2xl shadow-2xl -rotate-1 hover:rotate-0 transition-transform duration-700" />
-                    </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center mb-20 sm:mb-28 lg:mb-32 feature-row">
+                <div class="order-1 relative flex justify-center image-col w-full">
+                    <AnimatedImageStack 
+                        :images="[
+                            '/features/screenshot-5-schedule.png',
+                            '/features/screenshot-3-entries.png',
+                            '/features/screenshot-1-quals.png'
+                        ]"
+                        alt="Target Lane Assignments & Competition Schedule"
+                    />
                 </div>
 
-                <div class="text-col">
-                    <span class="text-[10px] font-bold tracking-[0.2em] text-navy/40 mb-4 block">{{
+                <div class="order-2 text-col">
+                    <span class="text-xs font-bold text-slate-500 mb-3 sm:mb-4 block">{{
                         $t('home.features_demo.f2_tag') }}</span>
-                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">{{
+                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight">{{
                         $t('home.features_demo.f2_title') }}</h3>
-                    <p class="text-text-secondary text-base sm:text-lg font-light leading-relaxed mb-10">
+                    <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-8 sm:mb-10">
                         {{ $t('home.features_demo.f2_desc') }}
                     </p>
 
-                    <ul class="space-y-4 border-t border-gray-100 pt-8">
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f2_list_1') }}
-                        </li>
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f2_list_2') }}
-                        </li>
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f2_list_3') }}
-                        </li>
-                    </ul>
+                    <div class="space-y-2.5 sm:space-y-3 pt-6 border-t border-slate-100">
+                        <div v-for="key in ['f2_list_1', 'f2_list_2', 'f2_list_3']" :key="key"
+                            class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 hover:bg-white hover:border-[#63C03B]/40 hover:shadow-md hover:shadow-slate-100 transition-all duration-200 group/item">
+                            <div class="w-6 h-6 rounded-full bg-[#63C03B]/15 text-[#63C03B] flex items-center justify-center shrink-0 group-hover/item:bg-[#63C03B] group-hover/item:text-white transition-colors duration-200">
+                                <Icon icon="ph:check-bold" class="text-xs" />
+                            </div>
+                            <span class="text-navy font-bold text-xs sm:text-sm lg:text-base leading-snug">
+                                {{ $t(`home.features_demo.${key}`) }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Feature Block 3: Payments -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32 feature-row">
+            <!-- Feature Block 3: Payments / Brackets -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center mb-20 sm:mb-28 lg:mb-32 feature-row">
                 <div class="order-2 lg:order-1 text-col">
-                    <span class="text-[10px] font-bold tracking-[0.2em] text-navy/40 mb-4 block">{{
+                    <span class="text-xs font-bold text-slate-500 mb-3 sm:mb-4 block">{{
                         $t('home.features_demo.f3_tag') }}</span>
-                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">{{
+                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight">{{
                         $t('home.features_demo.f3_title') }}</h3>
-                    <p class="text-text-secondary text-base sm:text-lg font-light leading-relaxed mb-10">
+                    <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-8 sm:mb-10">
                         {{ $t('home.features_demo.f3_desc') }}
                     </p>
 
-                    <ul class="space-y-4 border-t border-gray-100 pt-8">
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f3_list_1') }}
-                        </li>
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f3_list_2') }}
-                        </li>
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f3_list_3') }}
-                        </li>
-                    </ul>
+                    <div class="space-y-2.5 sm:space-y-3 pt-6 border-t border-slate-100">
+                        <div v-for="key in ['f3_list_1', 'f3_list_2', 'f3_list_3']" :key="key"
+                            class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 hover:bg-white hover:border-[#63C03B]/40 hover:shadow-md hover:shadow-slate-100 transition-all duration-200 group/item">
+                            <div class="w-6 h-6 rounded-full bg-[#63C03B]/15 text-[#63C03B] flex items-center justify-center shrink-0 group-hover/item:bg-[#63C03B] group-hover/item:text-white transition-colors duration-200">
+                                <Icon icon="ph:check-bold" class="text-xs" />
+                            </div>
+                            <span class="text-navy font-bold text-xs sm:text-sm lg:text-base leading-snug">
+                                {{ $t(`home.features_demo.${key}`) }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="order-1 lg:order-2 relative flex justify-center lg:justify-end image-col">
-                    <div class="absolute inset-0 bg-[#E2F9C2] rounded-[3rem] -rotate-3 scale-95 opacity-50"></div>
-                    <div
-                        class="relative w-full max-w-[400px] aspect-[4/5] bg-[#E2F9C2] rounded-[3rem] flex items-center justify-center p-8">
-                        <img src="/archery_payments_mockup_1778934758511.png" alt="Payments Mockup"
-                            class="w-full h-full object-contain rounded-2xl shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-700" />
-                    </div>
+                <div class="order-1 lg:order-2 relative flex justify-center image-col w-full">
+                    <AnimatedImageStack 
+                        :images="[
+                            '/features/screenshot-4-brackets.png',
+                            '/features/screenshot-6-podium.png',
+                            '/features/screenshot-2-teamquals.png'
+                        ]"
+                        alt="Automatic Elimination Brackets & Olympic Podiums"
+                    />
                 </div>
             </div>
 
             <!-- Feature Block 4: Portfolio -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center feature-row">
-                <div class="relative flex justify-center lg:justify-start image-col">
-                    <div class="absolute inset-0 bg-[#E2F9C2] rounded-[3rem] rotate-3 scale-95 opacity-50"></div>
-                    <div
-                        class="relative w-full max-w-[400px] aspect-[4/5] bg-[#E2F9C2] rounded-[3rem] flex items-center justify-center p-8">
-                        <img src="/archery_portfolio_mockup_1778934772420.png" alt="Portfolio Mockup"
-                            class="w-full h-full object-contain rounded-2xl shadow-2xl -rotate-1 hover:rotate-0 transition-transform duration-700" />
-                    </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center feature-row">
+                <div class="order-1 relative flex justify-center image-col w-full">
+                    <AnimatedImageStack 
+                        :images="[
+                            '/features/screenshot-7-tournaments.png',
+                            '/features/screenshot-8-comparison.png',
+                            '/features/screenshot-9-docs.png'
+                        ]"
+                        alt="Archer Profiles, Tournament Directory & Guides"
+                    />
                 </div>
 
-                <div class="text-col">
-                    <span class="text-[10px] font-bold tracking-[0.2em] text-navy/40 mb-4 block">{{
+                <div class="order-2 text-col">
+                    <span class="text-xs font-bold text-slate-500 mb-3 sm:mb-4 block">{{
                         $t('home.features_demo.f4_tag') }}</span>
-                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">{{
+                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight">{{
                         $t('home.features_demo.f4_title') }}</h3>
-                    <p class="text-text-secondary text-base sm:text-lg font-light leading-relaxed mb-10">
+                    <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-8 sm:mb-10">
                         {{ $t('home.features_demo.f4_desc') }}
                     </p>
 
-                    <ul class="space-y-4 border-t border-gray-100 pt-8">
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f4_list_1') }}
-                        </li>
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f4_list_2') }}
-                        </li>
-                        <li class="flex items-center text-navy font-medium py-3 border-b border-gray-50">
-                            {{ $t('home.features_demo.f4_list_3') }}
-                        </li>
-                    </ul>
+                    <div class="space-y-2.5 sm:space-y-3 pt-6 border-t border-slate-100">
+                        <div v-for="key in ['f4_list_1', 'f4_list_2', 'f4_list_3']" :key="key"
+                            class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 hover:bg-white hover:border-[#63C03B]/40 hover:shadow-md hover:shadow-slate-100 transition-all duration-200 group/item">
+                            <div class="w-6 h-6 rounded-full bg-[#63C03B]/15 text-[#63C03B] flex items-center justify-center shrink-0 group-hover/item:bg-[#63C03B] group-hover/item:text-white transition-colors duration-200">
+                                <Icon icon="ph:check-bold" class="text-xs" />
+                            </div>
+                            <span class="text-navy font-bold text-xs sm:text-sm lg:text-base leading-snug">
+                                {{ $t(`home.features_demo.${key}`) }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Comparison Table Section -->
             <div class="mt-32 pt-24 border-t border-gray-100 reveal-comparison">
-                <div class="text-center mb-16">
-                    <span class="text-[10px] font-bold tracking-[0.2em] text-navy/40 mb-4 block ">{{ $t('home.comparison.subtitle') }}</span>
-                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-4">{{ $t('home.comparison.title') }}</h3>
-                    <p class="text-text-secondary text-base sm:text-lg max-w-2xl mx-auto font-light">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h3 class="text-3xl sm:text-4xl md:text-5xl font-black text-navy mb-5 tracking-tight leading-tight">
+                        {{ $t('home.comparison.title') }}
+                    </h3>
+                    <p class="text-slate-600 text-base sm:text-lg leading-relaxed font-normal">
                         {{ $t('home.comparison.description') }}
                     </p>
                 </div>
 
-                <div class="overflow-x-auto rounded-3xl border border-gray-100 shadow-sm">
-                    <table class="w-full text-left border-collapse bg-white min-w-[700px]">
-                        <thead>
-                            <tr class="bg-navy text-white text-xs font-black tracking-wider border-b border-navy">
-                                <th class="py-5 px-6">{{ $t('home.comparison.col_feature') }}</th>
-                                <th class="py-5 px-6 bg-navy/95 border-x border-white/10 text-primary">{{ $t('home.comparison.col_archeris') }}</th>
-                                <th class="py-5 px-6 text-white/70">{{ $t('home.comparison.col_ianseo') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100 text-sm">
-                            <tr v-for="i in 14" :key="i" class="hover:bg-gray-50/50 transition-colors">
-                                <td class="py-6 px-6 font-bold text-navy">
-                                    {{ $t(`home.comparison.f${i}_name`) }}
-                                </td>
-                                <td class="py-6 px-6 bg-[#E2F9C2]/10 border-x border-gray-100 font-medium text-navy">
-                                    <div class="flex items-start gap-2.5">
-                                        <Icon icon="ph:check-circle-fill" class="text-primary text-lg shrink-0 mt-0.5" />
-                                        <span>{{ $t(`home.comparison.f${i}_archeris`) }}</span>
-                                    </div>
-                                </td>
-                                <td class="py-6 px-6 text-gray-500 font-light">
-                                    <div class="flex items-start gap-2.5">
-                                        <Icon icon="ph:minus-circle" class="text-gray-400 text-lg shrink-0 mt-0.5" />
-                                        <span>{{ $t(`home.comparison.f${i}_ianseo`) }}</span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Modern Comparison Table -->
+                <div class="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-xl shadow-slate-200/40">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[760px]">
+                            <thead>
+                                <tr class="bg-navy text-white text-xs font-black tracking-wider border-b border-navy">
+                                    <th class="py-6 px-7 w-1/3 text-slate-200 text-sm font-bold tracking-wide">
+                                        {{ $t('home.comparison.col_feature') }}
+                                    </th>
+                                    <th class="py-6 px-7 w-1/3 bg-slate-900 border-x border-slate-800/80">
+                                        <span class="text-base font-black text-primary tracking-wide">Archeris.net</span>
+                                    </th>
+                                    <th class="py-6 px-7 w-1/3 text-slate-300 text-sm font-bold">
+                                        <span class="text-base font-black text-slate-200 tracking-wide">Ianseo.net</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr v-for="i in 7" :key="i" class="hover:bg-slate-50/70 transition-all duration-200 group">
+                                    <!-- Feature Name -->
+                                    <td class="py-6 px-7 align-top">
+                                        <div class="flex items-start gap-3">
+                                            <div class="w-7 h-7 rounded-xl bg-slate-100 text-navy font-black text-xs flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-primary/20 group-hover:text-navy transition-colors">
+                                                0{{ i }}
+                                            </div>
+                                            <div>
+                                                <h4 class="text-base sm:text-lg font-black text-navy leading-snug">
+                                                    {{ $t(`home.comparison.f${i}_name`) }}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <!-- Archeris Column (Highlighted) -->
+                                    <td class="py-6 px-7 align-top bg-emerald-500/[0.04] border-x border-slate-100 group-hover:bg-emerald-500/[0.08] transition-colors">
+                                        <div class="flex items-start gap-3">
+                                            <div class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm shadow-emerald-500/30">
+                                                <Icon icon="ph:check-bold" class="text-xs" />
+                                            </div>
+                                            <p class="text-sm sm:text-base font-semibold text-slate-900 leading-relaxed">
+                                                {{ $t(`home.comparison.f${i}_archeris`) }}
+                                            </p>
+                                        </div>
+                                    </td>
+
+                                    <!-- Ianseo Column -->
+                                    <td class="py-6 px-7 align-top text-slate-500">
+                                        <div class="flex items-start gap-3">
+                                            <div class="w-6 h-6 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center shrink-0 mt-0.5">
+                                                <Icon icon="ph:x-bold" class="text-xs" />
+                                            </div>
+                                            <p class="text-sm sm:text-base font-normal text-slate-500 leading-relaxed">
+                                                {{ $t(`home.comparison.f${i}_ianseo`) }}
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Bottom Quick CTA Bar -->
+                    <div class="p-6 sm:p-8 bg-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-800">
+                        <div class="text-center sm:text-left">
+                            <h4 class="text-white font-bold text-base sm:text-lg">{{ $t('home.comparison.cta_banner_title', 'Ready to switch to modern archery scoring?') }}</h4>
+                            <p class="text-slate-400 text-xs sm:text-sm">{{ $t('home.comparison.cta_banner_desc', 'Create your tournament account for free without complex server setup.') }}</p>
+                        </div>
+                        <NuxtLink to="/auth/register" class="px-6 py-3 bg-primary text-navy font-black text-sm rounded-xl hover:bg-primary-hover shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shrink-0">
+                            <span>{{ $t('home.comparison.cta_banner_button', 'Get Started Free') }}</span>
+                            <Icon icon="ph:arrow-right-bold" />
+                        </NuxtLink>
+                    </div>
                 </div>
             </div>
         </div>
@@ -198,6 +247,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { Icon } from '@iconify/vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 

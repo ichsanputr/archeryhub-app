@@ -16,6 +16,6 @@ const { t } = useI18n()
 const router = useRouter()
 
 onMounted(() => {
-  router.replace('/dashboard/archer/events')
+  router.replace('/dashboard/archer/tournaments')
 })
 </script>

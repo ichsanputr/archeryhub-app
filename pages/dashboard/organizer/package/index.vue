@@ -3,6 +3,7 @@ import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
 import { useApi } from '~/composables/useApi'
 import useDashboardI18n from '~/composables/useDashboardI18n'
+import { usePricingPlans } from '~/composables/usePricingPlans'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -12,6 +13,7 @@ useHead({ title: computed(() => t('organizer_subscription.page_title', 'Paket Ev
 const { get, post } = useApi()
 const toast = useToast()
 const router = useRouter()
+const { fetchPlans, freePlan, standardPlan, elitePlan, bundleDiscounts } = usePricingPlans()
 
 const quota = ref({ quota_free: 20, quota_standard: 0, quota_elite: 0 })
 const history = ref([])
@@ -131,6 +133,7 @@ const visiblePages = computed(() => {
 })
 
 onMounted(async () => {
+    fetchPlans()
     try {
         const q = await get('/organizers/me/quota')
         if (q) quota.value = q
@@ -138,15 +141,30 @@ onMounted(async () => {
     loadHistory(1)
 })
 
-const basePrice = computed(() => selectedTier.value === 'standard' ? 24950 : 39950)
-const basePriceUSD = computed(() => selectedTier.value === 'standard' ? 1.50 : 2.50)
+const basePrice = computed(() => {
+    if (selectedTier.value === 'standard') {
+        return standardPlan.value?.promo_price_idr || 24950
+    }
+    return elitePlan.value?.promo_price_idr || 39950
+})
+
+const basePriceUSD = computed(() => {
+    if (selectedTier.value === 'standard') {
+        return standardPlan.value?.promo_price_usd || 1.50
+    }
+    return elitePlan.value?.promo_price_usd || 3.50
+})
 
 const discountPct = computed(() => {
     const q = selectedQty.value
-    if (q >= 10) return 20
-    if (q >= 5) return 12
-    if (q >= 3) return 7
-    return 0
+    const rules = bundleDiscounts.value || []
+    let maxDiscount = 0
+    for (const rule of rules) {
+        if (q >= rule.min_qty && rule.discount_pct > maxDiscount) {
+            maxDiscount = rule.discount_pct
+        }
+    }
+    return maxDiscount
 })
 
 const totalIDR = computed(() => {
@@ -199,10 +217,10 @@ async function buyQuota() {
         />
 
         <!-- ── Section 1: Quota Balance Cards ── -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
             <!-- Free Tier Quota Card -->
-            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-7 shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
-                <div class="flex items-start justify-between gap-4 mb-5">
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-7 shadow-sm hover:shadow-md transition-all relative overflow-hidden group flex flex-col justify-between h-full">
+                <div class="flex items-start justify-between gap-4 mb-5 min-h-[92px]">
                     <div class="space-y-1">
                         <span class="inline-block px-2.5 py-0.5 bg-slate-100 text-slate-700 border border-slate-200 rounded-lg text-[10px] font-black tracking-wider capitalize">
                             {{ t('organizer_subscription.free_tier_badge', 'Bonus Awal Registrasi') }}
@@ -215,7 +233,7 @@ async function buyQuota() {
                     </div>
                 </div>
 
-                <div class="space-y-2.5 mb-6">
+                <div class="space-y-2.5 mb-6 min-h-[76px] flex flex-col justify-end">
                     <div class="flex items-baseline justify-between">
                         <div class="flex items-baseline gap-1.5">
                             <span class="text-4xl font-black text-navy">{{ quota.quota_free ?? 20 }}</span>
@@ -237,7 +255,7 @@ async function buyQuota() {
                     </div>
                 </div>
 
-                <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium">
+                <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium mt-auto">
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-base shrink-0" />
                         <span v-html="t('organizer_subscription.free_tier_feat_1', 'Maksimal <strong>50 Peserta</strong> per event')"></span>
@@ -254,8 +272,8 @@ async function buyQuota() {
             </div>
 
             <!-- Standard Quota Card -->
-            <div class="bg-white rounded-2xl border border-primary/20 p-6 sm:p-7 shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
-                <div class="flex items-start justify-between gap-4 mb-5">
+            <div class="bg-white rounded-2xl border border-primary/20 p-6 sm:p-7 shadow-sm hover:shadow-md transition-all relative overflow-hidden group flex flex-col justify-between h-full">
+                <div class="flex items-start justify-between gap-4 mb-5 min-h-[92px]">
                     <div class="space-y-1">
                         <span class="inline-block px-2.5 py-0.5 bg-primary/10 text-navy border border-primary/20 rounded-lg text-[10px] font-black tracking-wider capitalize">
                             {{ t('organizer_subscription.standard_tier_badge', 'Paling Populer') }}
@@ -268,12 +286,14 @@ async function buyQuota() {
                     </div>
                 </div>
 
-                <div class="flex items-baseline gap-2 mb-6">
-                    <span class="text-4xl font-black text-navy">{{ quota.quota_standard || 0 }}</span>
-                    <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.slot_available', 'slot event aktif') }}</span>
+                <div class="flex items-baseline gap-2 mb-6 min-h-[76px] flex flex-col justify-end">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-4xl font-black text-navy">{{ quota.quota_standard || 0 }}</span>
+                        <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.slot_available', 'slot event aktif') }}</span>
+                    </div>
                 </div>
 
-                <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium">
+                <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium mt-auto">
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
                         <span v-html="t('organizer_subscription.std_feat_1', 'Hingga <strong>300 Peserta</strong> per event')"></span>
@@ -290,8 +310,8 @@ async function buyQuota() {
             </div>
             
             <!-- Elite Quota Card -->
-            <div class="bg-white rounded-2xl border border-primary/20 p-6 sm:p-7 shadow-sm hover:shadow-md transition-all relative overflow-hidden group">
-                <div class="flex items-start justify-between gap-4 mb-5">
+            <div class="bg-white rounded-2xl border border-primary/20 p-6 sm:p-7 shadow-sm hover:shadow-md transition-all relative overflow-hidden group flex flex-col justify-between h-full">
+                <div class="flex items-start justify-between gap-4 mb-5 min-h-[92px]">
                     <div class="space-y-1">
                         <span class="inline-block px-2.5 py-0.5 bg-primary/15 text-navy border border-primary/30 rounded-lg text-[10px] font-black tracking-wider capitalize">
                             {{ t('organizer_subscription.elite_tier_badge', 'Skala Nasional') }}
@@ -304,12 +324,14 @@ async function buyQuota() {
                     </div>
                 </div>
 
-                <div class="flex items-baseline gap-2 mb-6">
-                    <span class="text-4xl font-black text-navy">{{ quota.quota_elite || 0 }}</span>
-                    <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.slot_available', 'slot event aktif') }}</span>
+                <div class="flex items-baseline gap-2 mb-6 min-h-[76px] flex flex-col justify-end">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-4xl font-black text-navy">{{ quota.quota_elite || 0 }}</span>
+                        <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.slot_available', 'slot event aktif') }}</span>
+                    </div>
                 </div>
 
-                <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium">
+                <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium mt-auto">
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
                         <span v-html="t('organizer_subscription.elite_feat_1', 'Peserta <strong>Tak Terbatas</strong>')"></span>

@@ -90,7 +90,7 @@
                         </div>
                         <div class="min-w-0 flex-1 space-y-1.5">
                             <div class="flex items-center gap-2 flex-wrap">
-                                <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-navy text-primary">
+                                <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-navy text-primary">
                                     {{ payment.purpose || (payment.subscription_plan_id ? 'Langganan' : (payment.event_name ? 'Turnamen' : 'Pembayaran')) }}
                                 </span>
                                 <span v-if="payment.category_name"

@@ -103,28 +103,28 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en'
       },
-      title: 'Archeris - Archery Event Management & Live Scoring Platform',
+      title: 'Archeris - Modern Archery Scoring & Tournament Management Platform',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
           name: 'description',
-          content: 'The complete digital platform for archery tournament organizers, clubs, and archers. Features real-time mobile scoring, automated target butt allocations, World Archery brackets, and online tournament registrations.'
+          content: 'The modern archery scoring and tournament management platform. Features real-time mobile scoring, automated target butt allocations, World Archery brackets, and live spectator leaderboards.'
         },
         {
           name: 'keywords',
-          content: 'archery event management, archery scoring platform, live archery scoring, mobile scorekeeper, archery tournament bracket, target butt allocation, ianseo alternative, archery club management'
+          content: 'archery scoring, archery scoring app, live archery scoring, archery scoring platform, digital scorekeeper, archery tournament bracket, target butt allocation, ianseo alternative, archery club management'
         },
         // Open Graph / Facebook / WhatsApp
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'Archeris' },
-        { property: 'og:title', content: 'Archeris - Archery Event Management & Live Scoring Platform' },
-        { property: 'og:description', content: 'The complete digital platform for archery tournament organizers and archers. Real-time mobile scoring, automated brackets, target allocations, and registrations.' },
+        { property: 'og:title', content: 'Archeris - Modern Archery Scoring & Tournament Management Platform' },
+        { property: 'og:description', content: 'The modern archery scoring and tournament management platform. Real-time digital scorekeeper, live spectator leaderboards, automated target allocations, and brackets.' },
         { property: 'og:image', content: 'https://archeris.net/og-default.jpg' },
         // Twitter Card
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: 'Archeris - Archery Event Management & Live Scoring Platform' },
-        { name: 'twitter:description', content: 'The complete digital platform for archery tournament organizers and archers. Real-time mobile scoring, automated brackets, target allocations, and registrations.' },
+        { name: 'twitter:title', content: 'Archeris - Modern Archery Scoring & Tournament Management Platform' },
+        { name: 'twitter:description', content: 'The modern archery scoring and tournament management platform. Real-time digital scorekeeper, live spectator leaderboards, automated target allocations, and brackets.' },
         { name: 'twitter:image', content: 'https://archeris.net/og-default.jpg' },
       ],
       link: [
@@ -132,6 +132,14 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap' }
       ],
       script: [
+        {
+          src: 'https://www.googletagmanager.com/gtag/js?id=G-ZCZ6KY7V2C',
+          async: true
+        },
+        {
+          innerHTML: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-ZCZ6KY7V2C');`,
+          type: 'text/javascript'
+        },
         { src: 'https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie_light.min.js', defer: true }
       ]
     }

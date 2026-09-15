@@ -48,14 +48,13 @@
                 <div class="lg:col-span-1 flex flex-col gap-8 md:gap-10 order-2">
                     <div class="space-y-6">
                         <span
-                            class="inline-block py-1 px-3 bg-primary text-navy text-[10px] font-black  tracking-[0.2em] rounded-md">Ekosistem
-                            Presisi</span>
+                            class="inline-block py-1 px-3 bg-primary text-navy text-[10px] font-black  tracking-[0.2em] rounded-md">Precision Ecosystem</span>
                         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-navy leading-[1.1] font-display">
-                            Semua Makin <span
-                                class="text-transparent bg-clip-text bg-gradient-to-r from-navy to-navy/40">Presisi.</span>
+                            Engineered for <span
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-navy to-navy/40">Scoring Precision.</span>
                         </h2>
                         <div class="text-sm sm:text-base lg:text-lg text-text-sub leading-relaxed max-w-md">
-                            Solusi digital lengkap buat semua penggiat panahan Indonesia.
+                            Complete digital infrastructure for archers, organizers, and certified scorekeepers.
                         </div>
                     </div>
 
@@ -194,45 +193,45 @@ onUnmounted(() => {
 
 const featureItems = [
     {
-        title: 'Registrasi Event Simpel',
+        title: 'Seamless Event Registration',
         icon: 'ph:user-plus-bold',
-        description: 'Daftar turnamen dalam satu klik.',
-        longDescription: 'Capek nginput data yang sama berulang kali? Di Archeris, profil atlet kamu udah kesimpan aman. Kamu tinggal pilih event, klik daftar, dan beres!',
+        description: 'One-click tournament entry for archers.',
+        longDescription: 'No repetitive data entry. Archer profile classifications, bow categories, and club details are saved securely for fast registration.',
         image: '/features/feature_registration.png'
     },
     {
-        title: 'Skoring Digital Real-time',
+        title: 'Real-Time Mobile Scoring',
         icon: 'ic:outline-scoreboard',
-        description: 'Input skor langsung di genggaman.',
-        longDescription: 'Nggak ada lagi catat manual pakai kertas. Wasit atau atlet tinggal klik skor di aplikasi, dan hasilnya langsung dihitung otomatis secara akurat.',
+        description: 'Instant arrow values directly at target butts.',
+        longDescription: 'Say goodbye to paper scorecards. Scorekeepers and archers log arrow values with automatic set point calculations and official validation.',
         image: '/features/feature_scoring.png'
     },
     {
-        title: 'Leaderboard Realtime',
+        title: 'Live Spectator Leaderboard',
         icon: 'ph:chart-bar-horizontal-bold',
-        description: 'Pantau posisi rival tanpa jeda.',
-        longDescription: 'Dilengkapi visualisasi bracket eliminasi yang canggih. Kamu bisa terus mantau siapa yang dapet peringkat teratas dan proses eliminasi secara detail.',
+        description: 'Follow qualification ranks and elimination trees.',
+        longDescription: 'Watch real-time Olympic round match play, qualification leaderboards, and instant ranking progression on phones or external LED displays.',
         image: '/features/feature_leaderboard.png'
     },
     {
-        title: 'Laporan Beres Otomatis',
+        title: 'Instant Official Result Booklets',
         icon: 'ph:article-bold',
-        description: 'Laporan event jadi dalam hitungan detik.',
-        longDescription: 'Sistem kami otomatis mengolah semua data pertandingan menjadi laporan PDF yang profesional dan siap cetak untuk panitia dan sponsor.',
+        description: 'Generate standard World Archery result PDFs.',
+        longDescription: 'Automated compiling generates complete scoresheets, elimination brackets, and official tournament result booklets in seconds.',
         image: '/features/feature_report.png'
     },
     {
-        title: 'Pembayaran Terintegrasi',
+        title: 'Integrated Payment Gateway',
         icon: 'ph:credit-card-bold',
-        description: 'Transaksi aman dan instan.',
-        longDescription: 'Bayar pendaftaran turnamen kini lebih mudah dengan virtual account, e-wallet, dan QRIS yang terintegrasi langsung di aplikasi Archeris.',
+        description: 'Instant and secure payment verification.',
+        longDescription: 'Collect tournament entry fees effortlessly via integrated QRIS, Virtual Accounts, and international payment channels.',
         image: '/features/feature_payment.png'
     },
     {
-        title: 'Profil Atlet Digital',
+        title: 'Verified Archer Profiles',
         icon: 'ph:user-circle-gear-bold',
-        description: 'Rekam jejak prestasi yang rapi.',
-        longDescription: 'Simpan semua sertifikat, statistik skor, dan histori turnamen kamu dalam satu profil digital yang bisa diakses kapan saja untuk keperluan verifikasi.',
+        description: 'Career scoring records and digital certificates.',
+        longDescription: 'Store all official tournament scores, arrow averages, and QR-verified achievement certificates in a permanent digital profile.',
         image: '/features/feature_profile.png'
     }
 ]

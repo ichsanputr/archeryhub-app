@@ -63,7 +63,7 @@ const bracket = ref<any>(null)
 
 async function fetchCategories() {
   try {
-    const res = await get(`/events/${slug.value}/categories`)
+    const res = await get(`/tournaments/${slug.value}/categories`)
     categories.value = res?.data || res?.categories || []
     if (categories.value.length > 0) {
       selectedCategory.value = categories.value[0].uuid || categories.value[0].id
@@ -75,7 +75,7 @@ async function fetchBracket() {
   if (!selectedCategory.value) return
   isLoading.value = true
   try {
-    const res = await get(`/events/${slug.value}/results/elimination?category_id=${selectedCategory.value}`)
+    const res = await get(`/tournaments/${slug.value}/results/elimination?category_id=${selectedCategory.value}`)
     bracket.value = res?.bracket || res
   } catch { bracket.value = null }
   finally { isLoading.value = false }
@@ -85,7 +85,7 @@ watch(selectedCategory, fetchBracket)
 
 onMounted(async () => {
   try {
-    const eRes = await get(`/events/${slug.value}`)
+    const eRes = await get(`/tournaments/${slug.value}`)
     tournamentName.value = eRes?.event?.name || eRes?.name || ''
   } catch {}
   await fetchCategories()

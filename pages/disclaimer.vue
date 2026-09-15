@@ -70,6 +70,49 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('legal.disclaimer', 'Disclaimer') + ' - Archeris')
+  title: 'Disclaimer - Archeris',
+  link: [
+    { rel: 'canonical', href: useRequestURL().href }
+  ]
 })
+
+useSeoMeta({
+  title: 'Disclaimer - Archeris',
+  description: 'Archeris disclaimer regarding tournament score accuracy, match operations, scorekeeping integrity, and payment processing.',
+  ogTitle: 'Disclaimer - Archeris',
+  ogDescription: 'Archeris disclaimer regarding tournament score accuracy, match operations, scorekeeping integrity, and payment processing.',
+  ogType: 'website',
+  twitterCard: 'summary_large_image'
+})
+
+useHead({
+  title: 'Disclaimer - Archeris',
+  link: [
+    { rel: 'canonical', href: useRequestURL().href }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          {
+            '@type': 'ListItem',
+            'position': 1,
+            'name': 'Home',
+            'item': 'https://archeris.net/'
+          },
+          {
+            '@type': 'ListItem',
+            'position': 2,
+            'name': 'Disclaimer',
+            'item': 'https://archeris.net/disclaimer'
+          }
+        ]
+      })
+    }
+  ]
+})
+
 </script>

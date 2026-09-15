@@ -15,6 +15,9 @@
         <!-- Pricing Section -->
         <HomePricing />
 
+        <!-- Blog & Knowledge Base Section -->
+        <HomeBlogSection />
+
         <!-- Mobile CTA Section -->
         <HomeMobileCTA />
 
@@ -26,8 +29,8 @@ import HomeHero from '~/components/Home/HomeHero.vue'
 import HomeLearnToUse from '~/components/Home/HomeLearnToUse.vue'
 import HomeTrustTestimonials from '~/components/Home/HomeTrustTestimonials.vue'
 import HomeFeaturesDemo from '~/components/Home/HomeFeaturesDemo.vue'
+import HomeBlogSection from '~/components/Home/HomeBlogSection.vue'
 import HomeMobileCTA from '~/components/Home/HomeMobileCTA.vue'
-import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'
 
 definePageMeta({
     layout: 'landing'
@@ -35,18 +38,69 @@ definePageMeta({
 
 const { t } = useI18n()
 
+const structuredData = computed(() => [
+    {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        'name': 'Archeris',
+        'url': 'https://archeris.net',
+        'potentialAction': {
+            '@type': 'SearchAction',
+            'target': 'https://archeris.net/tournaments?q={search_term_string}',
+            'query-input': 'required name=search_term_string'
+        }
+    },
+    {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        'name': 'Archeris',
+        'url': 'https://archeris.net',
+        'logo': 'https://archeris.net/logo.png',
+        'sameAs': [
+            'https://www.instagram.com/archerisnet/',
+            'https://www.threads.com/@archerisnet',
+            'https://www.facebook.com/archerisnet/'
+        ]
+    },
+    {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        'name': 'Archeris - The Best Archery Scoring System',
+        'applicationCategory': 'SportsApplication',
+        'operatingSystem': 'Web, iOS, Android',
+        'offers': {
+            '@type': 'Offer',
+            'price': '0',
+            'priceCurrency': 'USD'
+        },
+        'description': 'The modern archery scoring system running directly from your phone for tournament scorekeepers, arrow valuation, and World Archery brackets.'
+    }
+])
+
 useHead({
-    title: computed(() => t('home.meta_title', 'Archeris - Archery Event Management & Live Scoring Platform')),
+    title: computed(() => t('home.meta_title', 'Archeris - The Best Archery Scoring System')),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            children: computed(() => JSON.stringify(structuredData.value))
+        }
     ]
 })
 
 useSeoMeta({
-    title: () => t('home.meta_title', 'Archeris - Archery Event Management & Live Scoring Platform'),
-    description: () => t('home.meta_desc', 'The modern archery tournament management system. Live scoring, target butt allocations, elimination brackets, and real-time public leaderboards.'),
-    ogTitle: () => t('home.meta_title', 'Archeris - Archery Event Management & Live Scoring Platform'),
-    ogDescription: () => t('home.meta_desc', 'The modern archery tournament management system. Live scoring, target butt allocations, elimination brackets, and real-time public leaderboards.')
+    title: () => t('home.meta_title', 'Archeris - The Best Archery Scoring System'),
+    description: () => t('home.meta_desc', 'The modern archery scoring system running directly from your phone. Real-time arrow value tracking, target butt scorekeeping, qualification leaderboards, World Archery brackets.'),
+    ogTitle: () => t('home.meta_title', 'Archeris - The Best Archery Scoring System'),
+    ogDescription: () => t('home.meta_desc', 'The modern archery scoring system running directly from your phone. Real-time arrow value tracking, target butt scorekeeping, qualification leaderboards, World Archery brackets.'),
+    ogType: 'website',
+    ogUrl: 'https://archeris.net',
+    ogImage: 'https://archeris.net/og-default.jpg',
+    twitterCard: 'summary_large_image',
+    twitterTitle: () => t('home.meta_title', 'Archeris - The Best Archery Scoring System'),
+    twitterDescription: () => t('home.meta_desc', 'The modern archery scoring system running directly from your phone. Real-time arrow value tracking, target butt scorekeeping, qualification leaderboards, World Archery brackets.')
 })
 </script>
 

@@ -92,7 +92,7 @@
         :class="isOnEventSubPage ? '' : 'mt-4'">
         <!-- Back to Events button when on subpage -->
         <div v-if="isOnEventSubPage" class="mb-2">
-          <NuxtLink :to="isArcher ? '/dashboard/archer/events' : '/dashboard/organizer/events'"
+          <NuxtLink :to="isArcher ? '/dashboard/archer/tournaments' : '/dashboard/organizer/tournaments'"
             class="flex items-center gap-2 px-3 py-2 text-xs font-bold text-slate-400 hover:text-white rounded-xl hover:bg-white/5 transition-all">
             <Icon icon="ph:arrow-left-bold" class="text-sm" />
             <span v-if="!isSidebarCollapsed">{{ t('sidebar.back_to_events', 'Semua Event') }}</span>
@@ -192,7 +192,7 @@ const eventId = computed(() => route.params.id)
 const isOnEventSubPage = computed(() => {
   const path = route.path
   // Check if it's an event page under any role
-  const isEventPath = path.includes('/events/') && path.includes('/dashboard/')
+  const isEventPath = path.includes('/tournaments/') && path.includes('/dashboard/')
   if (!isEventPath) return false
   const eventPathMatch = path.match(/\/dashboard\/(?:archer|organizer|root|events)\/events\/([^/]+)\/(.+)/) ||
     path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
@@ -201,7 +201,7 @@ const isOnEventSubPage = computed(() => {
 
 const isEventManagePage = computed(() => {
   const path = route.path
-  const isEventPath = path.includes('/events/') && path.includes('/dashboard/')
+  const isEventPath = path.includes('/tournaments/') && path.includes('/dashboard/')
   if (!isEventPath) return false
   const eventPathMatch = path.match(/\/dashboard\/(?:archer|organizer|root|events)\/events\/([^/]+)\/(.+)/) ||
     path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
@@ -221,33 +221,33 @@ const eventLinks = computed(() => {
 
   if (isArcher) {
     return [
-      { label: t('sidebar.event_overview', 'Ringkasan Event'), icon: 'ph:squares-four-bold', path: `${prefix}/events/${eventId.value}/overview` },
-      { label: t('sidebar.my_registration', 'Pendaftaran & Tiket'), icon: 'ph:ticket-bold', path: `${prefix}/events/${eventId.value}/my-registration` },
-      { label: t('sidebar.my_target', 'Target & Jadwal'), icon: 'ph:target-bold', path: `${prefix}/events/${eventId.value}/my-target` },
-      { label: t('sidebar.qualification', 'Skor Kualifikasi'), icon: 'ph:chart-line-up-bold', path: `${prefix}/events/${eventId.value}/my-qualification` },
-      { label: t('sidebar.elimination', 'Bagan Eliminasi'), icon: 'ph:git-merge-bold', path: `${prefix}/events/${eventId.value}/my-elimination` },
-      { label: t('sidebar.teams', 'Regu & Tim'), icon: 'ph:users-four-bold', path: `${prefix}/events/${eventId.value}/my-team` },
-      { label: t('sidebar.certificates', 'Sertifikat'), icon: 'ph:certificate-bold', path: `${prefix}/events/${eventId.value}/my-certificate` },
+      { label: t('sidebar.event_overview', 'Ringkasan Turnamen'), icon: 'ph:squares-four-bold', path: `${prefix}/tournaments/${eventId.value}/overview` },
+      { label: t('sidebar.my_registration', 'Pendaftaran & Tiket'), icon: 'ph:ticket-bold', path: `${prefix}/tournaments/${eventId.value}/my-registration` },
+      { label: t('sidebar.my_target', 'Target & Jadwal'), icon: 'ph:target-bold', path: `${prefix}/tournaments/${eventId.value}/my-target` },
+      { label: t('sidebar.qualification', 'Skor Kualifikasi'), icon: 'ph:chart-line-up-bold', path: `${prefix}/tournaments/${eventId.value}/my-qualification` },
+      { label: t('sidebar.elimination', 'Bagan Eliminasi'), icon: 'ph:git-merge-bold', path: `${prefix}/tournaments/${eventId.value}/my-elimination` },
+      { label: t('sidebar.teams', 'Regu & Tim'), icon: 'ph:users-four-bold', path: `${prefix}/tournaments/${eventId.value}/my-team` },
+      { label: t('sidebar.certificates', 'Sertifikat'), icon: 'ph:certificate-bold', path: `${prefix}/tournaments/${eventId.value}/my-certificate` },
     ]
   }
 
   const links = [
-    { label: t('sidebar.summary', 'Ringkasan'), icon: 'ph:squares-four', path: `${prefix}/events/${eventId.value}/overview` },
-    { label: t('sidebar.event_page', 'Event Setting'), icon: 'ph:gear-six-bold', path: `${prefix}/events/${eventId.value}/page` },
-    { label: t('sidebar.participants', 'Peserta'), icon: 'ph:users-three', path: `${prefix}/events/${eventId.value}/participants` },
-    { label: t('sidebar.teams', 'Tim'), icon: 'ph:users-four', path: `${prefix}/events/${eventId.value}/teams` },
+    { label: t('sidebar.summary', 'Ringkasan'), icon: 'ph:squares-four', path: `${prefix}/tournaments/${eventId.value}/overview` },
+    { label: t('sidebar.event_page', 'Pengaturan Turnamen'), icon: 'ph:gear-six-bold', path: `${prefix}/tournaments/${eventId.value}/page` },
+    { label: t('sidebar.participants', 'Peserta'), icon: 'ph:users-three', path: `${prefix}/tournaments/${eventId.value}/participants` },
+    { label: t('sidebar.teams', 'Tim'), icon: 'ph:users-four', path: `${prefix}/tournaments/${eventId.value}/teams` },
   ]
 
   if (isOrganization) {
-    links.push({ label: t('sidebar.competition_categories', 'Kategori'), icon: 'ph:tag', path: `${prefix}/events/${eventId.value}/categories` })
+    links.push({ label: t('sidebar.competition_categories', 'Kategori'), icon: 'ph:tag', path: `${prefix}/tournaments/${eventId.value}/categories` })
   }
 
   links.push(
-    { label: t('sidebar.targets', 'Target'), icon: 'ph:target', path: `${prefix}/events/${eventId.value}/targets` },
-    { label: t('sidebar.qualification', 'Kualifikasi'), icon: 'fluent:table-freeze-column-20-regular', path: `${prefix}/events/${eventId.value}/qualification` },
-    { label: t('sidebar.elimination', 'Eliminasi'), icon: 'mdi:bracket', path: `${prefix}/events/${eventId.value}/elimination` },
-    { label: t('sidebar.printout', 'Printout'), icon: 'ph:printer-bold', path: `${prefix}/events/${eventId.value}/printout` },
-    { label: t('sidebar.certificates', 'Sertifikat'), icon: 'ph:certificate-bold', path: `${prefix}/events/${eventId.value}/certificate` },
+    { label: t('sidebar.targets', 'Target'), icon: 'ph:target', path: `${prefix}/tournaments/${eventId.value}/targets` },
+    { label: t('sidebar.qualification', 'Kualifikasi'), icon: 'fluent:table-freeze-column-20-regular', path: `${prefix}/tournaments/${eventId.value}/qualification` },
+    { label: t('sidebar.elimination', 'Eliminasi'), icon: 'mdi:bracket', path: `${prefix}/tournaments/${eventId.value}/elimination` },
+    { label: t('sidebar.printout', 'Printout'), icon: 'ph:printer-bold', path: `${prefix}/tournaments/${eventId.value}/printout` },
+    { label: t('sidebar.certificates', 'Sertifikat'), icon: 'ph:certificate-bold', path: `${prefix}/tournaments/${eventId.value}/certificate` },
   )
 
   return links
@@ -284,7 +284,7 @@ const navSections = computed(() => {
   if (role === 'archer') {
     return [
       { type: 'label', label: t('sidebar.activity', 'Turnamen') },
-      { label: t('sidebar.my_events', 'Event Saya'), icon: 'ph:trophy-bold', path: '/dashboard/archer/events' },
+      { label: t('sidebar.my_events', 'Event Saya'), icon: 'ph:trophy-bold', path: '/dashboard/archer/tournaments' },
       { label: t('sidebar.my_certifications', 'Sertifikat'), icon: 'ph:certificate-bold', path: '/dashboard/archer/certificates' },
       { type: 'label', label: t('sidebar.commerce', 'Pembayaran') },
       { label: t('sidebar.payments', 'Pembayaran'), icon: 'ph:credit-card-bold', path: '/dashboard/archer/payments' },
@@ -298,7 +298,7 @@ const navSections = computed(() => {
     return [
       { label: t('sidebar.overview', 'Overview'), icon: 'ph:squares-four', path: '/dashboard/organizer' },
       { type: 'label', label: t('sidebar.event', 'Event') },
-      { label: t('sidebar.my_events', 'Event Saya'), icon: 'ph:trophy', path: '/dashboard/organizer/events' },
+      { label: t('sidebar.my_events', 'Event Saya'), icon: 'ph:trophy', path: '/dashboard/organizer/tournaments' },
       { type: 'label', label: t('sidebar.organizer', 'Penyelenggara') },
       {
         label: t('sidebar.organizer', 'Penyelenggara'),
@@ -339,7 +339,7 @@ const navSections = computed(() => {
   const prefix = `/dashboard/${userPersona.value}`
   return [
     { label: t('sidebar.overview', 'Overview'), icon: 'ph:squares-four', path: prefix },
-    { label: t('sidebar.event', 'Event'), icon: 'ph:trophy', path: `${prefix}/events` },
+    { label: t('sidebar.event', 'Turnamen'), icon: 'ph:trophy', path: `${prefix}/tournaments` },
     ...(!isEventManagePage.value ? [{ label: t('sidebar.earnings', 'Laporan'), icon: 'ph:chart-bar', path: `${prefix}/reports` }] : []),
     { label: t('sidebar.profile', 'Profil'), icon: 'ph:users-four', path: `${prefix}/teams` },
     ...(!isEventManagePage.value ? [{ label: t('sidebar.settings', 'Pengaturan'), icon: 'ph:gear', path: `${prefix}/settings` }] : []),

@@ -8,8 +8,8 @@
       "keywords": ["dashboard", "beranda", "home", "ringkasan", "overview"]
     },
     {
-      "path": "/dashboard/archer/events",
-      "title": "Event Saya",
+      "path": "/dashboard/archer/tournaments",
+      "title": "Turnamen Saya",
       "description": "Daftar event yang sudah kamu daftarkan atau ikuti",
       "icon": "ph:trophy",
       "keywords": ["event", "lomba", "kompetisi", "turnamen", "daftar", "terdaftar", "jadwal", "pertandingan"]
@@ -26,7 +26,7 @@
       "title": "Keranjang",
       "description": "Keranjang belanja dan pendaftaran event yang belum diselesaikan",
       "icon": "ph:shopping-cart",
-      "keywords": ["keranjang", "cart", "belanja", "checkout", "daftar event", "bayar pendaftaran"]
+      "keywords": ["keranjang", "cart", "belanja", "checkout", "daftar turnamen", "bayar pendaftaran"]
     },
     {
       "path": "/dashboard/archer/profile",
@@ -64,11 +64,11 @@
       "keywords": ["simpan", "saved", "favorit", "bookmark", "wishlist", "tersimpan"]
     },
     {
-      "path": "/events",
-      "title": "Temukan Event",
+      "path": "/tournaments",
+      "title": "Temukan Turnamen",
       "description": "Jelajahi semua event dan kompetisi panahan",
       "icon": "ph:magnifying-glass",
-      "keywords": ["cari event", "temukan event", "daftar event", "kompetisi", "lomba", "turnamen"]
+      "keywords": ["cari turnamen", "temukan event", "daftar turnamen", "kompetisi", "lomba", "turnamen"]
     }
   ],
   "organization": [
@@ -80,15 +80,15 @@
       "keywords": ["dashboard", "beranda", "home", "ringkasan", "overview", "statistik"]
     },
     {
-      "path": "/dashboard/organization/events",
-      "title": "Event Saya",
+      "path": "/dashboard/organization/tournaments",
+      "title": "Turnamen Saya",
       "description": "Kelola semua event dan kompetisi yang diselenggarakan",
       "icon": "ph:trophy",
-      "keywords": ["event", "lomba", "kompetisi", "turnamen", "kelola event", "manajemen event", "buat event", "daftar event"]
+      "keywords": ["event", "lomba", "kompetisi", "turnamen", "kelola event", "manajemen event", "buat event", "daftar turnamen"]
     },
     {
-      "path": "/dashboard/organization/events/create",
-      "title": "Buat Event",
+      "path": "/dashboard/organization/tournaments/create",
+      "title": "Buat Turnamen",
       "description": "Buat event atau kompetisi panahan baru",
       "icon": "ph:plus-circle",
       "keywords": ["buat event", "tambah event", "create event", "event baru", "kompetisi baru", "turnamen baru"]
@@ -247,11 +247,11 @@
       "keywords": ["beranda", "home", "utama", "Archeris", "panahan"]
     },
     {
-      "path": "/events",
+      "path": "/tournaments",
       "title": "Event",
       "description": "Temukan dan daftarkan diri di event panahan",
       "icon": "ph:trophy",
-      "keywords": ["event", "lomba", "kompetisi", "turnamen", "mencari event", "jadwal", "daftar event"]
+      "keywords": ["event", "lomba", "kompetisi", "turnamen", "mencari turnamen", "jadwal", "daftar turnamen"]
     },
     {
       "path": "/news",

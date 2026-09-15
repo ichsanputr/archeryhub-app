@@ -13,7 +13,7 @@
                 <div class="md:col-span-6 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
                     <!-- Concentric circles background behind count -->
                     <div class="relative flex items-center justify-center">
-                        <div class="absolute w-24 h-24 rounded-full bg-[#DEFEBD]/40 animate-ping opacity-25"></div>
+                        <div class="absolute w-24 h-24 rounded-full bg-[#DEFEBD]/40 opacity-40"></div>
                         <div class="absolute w-20 h-20 rounded-full bg-[#DEFEBD]/30"></div>
                         <div class="w-16 h-16 rounded-full bg-[#DEFEBD] flex items-center justify-center text-navy relative z-10">
                             <!-- Custom SVG Icon replacing original -->

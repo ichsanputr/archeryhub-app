@@ -45,7 +45,7 @@
         </div>
 
         <div class="space-y-3 pt-2">
-          <BaseButton v-if="tx?.event_slug" :to="`/events/${tx.event_slug}`" variant="navy" size="md" class="w-full justify-center font-bold">
+          <BaseButton v-if="tx?.event_slug" :to="`/tournaments/${tx.event_slug}`" variant="navy" size="md" class="w-full justify-center font-bold">
             <Icon icon="ph:arrow-clockwise-bold" class="mr-2" />
             Daftar Ulang Event
           </BaseButton>
