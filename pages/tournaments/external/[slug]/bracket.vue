@@ -20,9 +20,9 @@
               Elimination Bracket
             </span>
           </div>
-          <p class="text-[11px] text-slate-500 font-medium truncate">
+          <div class="text-[11px] text-slate-500 font-medium truncate">
             {{ toTitleCase(tournament?.location || tournament?.venue || 'Indonesia') }}
-          </p>
+          </div>
         </div>
       </div>
 
@@ -63,9 +63,9 @@
             <Icon icon="ph:sword-bold" />
           </div>
           <h2 class="text-lg font-bold text-navy">No Elimination Bracket Available</h2>
-          <p class="text-xs text-slate-500 leading-relaxed">
+          <div class="text-xs text-slate-500 leading-relaxed">
             Elimination brackets have not been published for this tournament yet.
-          </p>
+          </div>
           <NuxtLink :to="`/tournaments/external/${slug}`" class="inline-flex items-center gap-2 px-5 py-2.5 bg-navy hover:bg-navy-light text-white font-bold rounded-xl text-xs transition-colors">
             <Icon icon="ph:arrow-left-bold" />
             <span>Return to Tournament</span>
@@ -304,36 +304,53 @@ const currentArcherisBracketRounds = computed(() => {
   const total = allPreliminaryMatches.length
   const rounds = {}
 
-  if (total === 0 && bronzeMatch) {
-    rounds[1] = [null, bronzeMatch]
-  } else if (total === 1) {
-    rounds[1] = [allPreliminaryMatches[0], bronzeMatch].filter(Boolean)
-  } else if (total === 2) {
-    rounds[1] = [allPreliminaryMatches[0], allPreliminaryMatches[1]]
-  } else if (total <= 4) {
-    rounds[1] = allPreliminaryMatches.slice(0, total - 1)
-    const goldM = allPreliminaryMatches[total - 1]
-    rounds[2] = [goldM, bronzeMatch].filter(Boolean)
-  } else if (total <= 7) {
-    const goldM = allPreliminaryMatches[total - 1]
-    const semis = allPreliminaryMatches.slice(total - 3, total - 1)
-    const quarters = allPreliminaryMatches.slice(0, total - 3)
+  if (total >= 14) {
+    // 16-archer bracket: 8 (1/8) -> 4 (QF) -> 2 (SF) -> Finals
+    rounds[1] = allPreliminaryMatches.slice(0, 8)
+    rounds[2] = allPreliminaryMatches.slice(8, 12)
+    rounds[3] = allPreliminaryMatches.slice(12, 14)
+    const finals = []
+    if (total >= 15) finals.push(allPreliminaryMatches[14])
+    if (bronzeMatch) finals.push(bronzeMatch)
+    rounds[4] = finals
+  } else if (total >= 8) {
+    // 1/8 with byes: last 2 are SF, 4 before SF are QF, rest are 1/8
+    const sf = allPreliminaryMatches.slice(total - 2)
+    const qf = allPreliminaryMatches.slice(total - 6, total - 2)
+    const r16 = allPreliminaryMatches.slice(0, total - 6)
 
     let rIdx = 1
-    if (quarters.length > 0) { rounds[rIdx] = quarters; rIdx++ }
-    if (semis.length > 0) { rounds[rIdx] = semis; rIdx++ }
-    rounds[rIdx] = [goldM, bronzeMatch].filter(Boolean)
-  } else {
-    const goldM = allPreliminaryMatches[total - 1]
-    const semis = allPreliminaryMatches.slice(total - 3, total - 1)
-    const quarters = allPreliminaryMatches.slice(total - 7, total - 3)
-    const round16 = allPreliminaryMatches.slice(0, total - 7)
-
-    let rIdx = 1
-    if (round16.length > 0) { rounds[rIdx] = round16; rIdx++ }
-    if (quarters.length > 0) { rounds[rIdx] = quarters; rIdx++ }
-    if (semis.length > 0) { rounds[rIdx] = semis; rIdx++ }
-    rounds[rIdx] = [goldM, bronzeMatch].filter(Boolean)
+    if (r16.length > 0) {
+      rounds[rIdx] = r16
+      rIdx++
+    }
+    rounds[rIdx] = qf
+    rIdx++
+    rounds[rIdx] = sf
+    rIdx++
+    const finals = []
+    if (bronzeMatch) finals.push(bronzeMatch)
+    rounds[rIdx] = finals
+  } else if (total >= 6) {
+    // 8-archer bracket: 4 (QF) -> 2 (SF) -> Finals
+    rounds[1] = allPreliminaryMatches.slice(0, 4)
+    rounds[2] = allPreliminaryMatches.slice(4, 6)
+    const finals = []
+    if (total >= 7) finals.push(allPreliminaryMatches[6])
+    if (bronzeMatch) finals.push(bronzeMatch)
+    rounds[3] = finals
+  } else if (total >= 2) {
+    // 4-archer bracket: 2 (SF) -> Finals
+    rounds[1] = allPreliminaryMatches.slice(0, 2)
+    const finals = []
+    if (total >= 3) finals.push(allPreliminaryMatches[2])
+    if (bronzeMatch) finals.push(bronzeMatch)
+    rounds[2] = finals
+  } else if (total > 0) {
+    rounds[1] = allPreliminaryMatches
+    if (bronzeMatch) rounds[2] = [bronzeMatch]
+  } else if (bronzeMatch) {
+    rounds[1] = [bronzeMatch]
   }
 
   return rounds

@@ -1,21 +1,22 @@
 <template>
-  <div class="external-bracket-container relative flex flex-col" ref="bracketContainerRef">
+  <div class="external-bracket-container relative flex flex-col font-sans" ref="bracketContainerRef">
     <!-- ── BRACKET SCROLLABLE VISUAL CANVAS ── -->
     <div class="bracket-canvas-wrapper overflow-x-auto no-scrollbar py-6 px-4 sm:px-6 bg-slate-50/40 rounded-3xl border border-slate-200/80 transition-all">
       <!-- Bracket Nodes Tree with Scale Transform -->
       <div 
         v-if="hasMatches" 
-        class="flex items-center justify-center min-w-max gap-4 sm:gap-6 mx-auto relative z-10 transition-transform duration-150 origin-center"
+        class="flex items-start justify-start min-w-max gap-0 mx-auto relative z-10 transition-transform duration-150 origin-left py-2"
       >
 
-        <!-- ── LEFT SIDE ROUNDS (E.G. 1/8, QUARTERFINALS) ── -->
-        <template v-for="rNo in leftSideRoundNumbers" :key="'left-' + rNo">
-          <div class="flex flex-col items-center min-w-[250px] sm:min-w-[270px]">
+        <!-- ── SUCCESSIVE ELIMINATION ROUNDS (1/8, QUARTERFINALS, SEMIFINALS) ── -->
+        <template v-for="(rNo, rIdx) in nonFinalRoundNumbers" :key="'round-' + rNo">
+          <!-- Round Column -->
+          <div class="flex flex-col items-center min-w-[240px] sm:min-w-[260px]">
             <!-- Round Title Header -->
             <div class="h-10 flex flex-col items-center justify-center mb-6">
               <span 
                 :class="[
-                  'text-xs font-bold font-display px-3 py-1 rounded-xl shadow-2xs',
+                  'text-xs font-bold px-3 py-1 rounded-xl shadow-2xs',
                   isExpandedFullscreen ? 'bg-slate-800 text-slate-200 border border-slate-700' : 'bg-white border border-slate-200/80 text-slate-600'
                 ]"
               >
@@ -24,21 +25,21 @@
             </div>
 
             <!-- Match Slots Column -->
-            <div class="flex flex-col justify-around w-full" :style="{ height: getSideTotalHeight + 'px' }">
+            <div class="flex flex-col justify-around w-full" :style="{ height: getCanvasTotalHeight + 'px' }">
               <div 
-                v-for="match in getMatchesForSide(rNo, 'left')" 
+                v-for="match in (rounds[rNo] || [])" 
                 :key="match.id" 
                 class="flex items-center justify-center w-full my-auto"
-                :style="{ height: getSlotHeightForSide(rNo) + 'px' }"
+                :style="{ height: getSlotHeight(rNo) + 'px' }"
               >
-                <!-- Minimalist Match Card Node -->
+                <!-- Match Card Node (No custom fonts) -->
                 <div 
                   @click="selectMatch(match, getRoundName(parseInt(rNo)))"
-                  class="w-[240px] sm:w-[260px] bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:border-navy hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none relative"
+                  class="w-[230px] sm:w-[250px] bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:border-navy hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none relative"
                 >
                   <!-- Card Micro-Header -->
                   <div class="flex items-center justify-between px-3 py-1.5 bg-slate-50/80 border-b border-slate-100 text-[11px] font-semibold text-slate-500">
-                    <div class="flex items-center gap-1.5 font-mono">
+                    <div class="flex items-center gap-1.5">
                       <span class="size-1.5 rounded-full" :class="match.winner_entry_id ? 'bg-emerald-500' : 'bg-slate-300'"></span>
                       <span>Match {{ match.match_no || 1 }}</span>
                     </div>
@@ -56,7 +57,7 @@
                     ]"
                   >
                     <div class="flex items-center gap-2 truncate flex-1 min-w-0 pr-2">
-                      <span v-if="match.entry_a_seed" class="size-4.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
+                      <span v-if="match.entry_a_seed" class="size-4.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">
                         {{ match.entry_a_seed }}
                       </span>
                       <span class="text-xs truncate text-navy" :class="match.winner_entry_id === 'a' ? 'font-bold' : 'font-medium text-slate-700'">
@@ -66,7 +67,7 @@
                     </div>
                     <span 
                       :class="[
-                        'font-mono text-xs px-2 py-0.5 rounded-md font-bold shrink-0 transition-colors',
+                        'text-xs px-2 py-0.5 rounded-md font-bold shrink-0 transition-colors',
                         match.winner_entry_id === 'a' ? 'bg-navy/10 text-navy font-black' : 'text-slate-400'
                       ]"
                     >
@@ -82,7 +83,7 @@
                     ]"
                   >
                     <div class="flex items-center gap-2 truncate flex-1 min-w-0 pr-2">
-                      <span v-if="match.entry_b_seed" class="size-4.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
+                      <span v-if="match.entry_b_seed" class="size-4.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">
                         {{ match.entry_b_seed }}
                       </span>
                       <span class="text-xs truncate text-navy" :class="match.winner_entry_id === 'b' ? 'font-bold' : 'font-medium text-slate-700'">
@@ -92,7 +93,7 @@
                     </div>
                     <span 
                       :class="[
-                        'font-mono text-xs px-2 py-0.5 rounded-md font-bold shrink-0 transition-colors',
+                        'text-xs px-2 py-0.5 rounded-md font-bold shrink-0 transition-colors',
                         match.winner_entry_id === 'b' ? 'bg-navy/10 text-navy font-black' : 'text-slate-400'
                       ]"
                     >
@@ -104,31 +105,26 @@
             </div>
           </div>
 
-          <!-- Connector Path (Left to Next) -->
-          <div class="w-12 sm:w-16 shrink-0 relative" :style="{ height: getSideTotalHeight + 'px' }">
-            <svg class="w-full h-full" :viewBox="`0 0 60 ${getSideTotalHeight}`" preserveAspectRatio="none">
+          <!-- Connector Path Between Rounds -->
+          <div class="w-12 sm:w-14 shrink-0 relative" :style="{ height: getCanvasTotalHeight + 'px', marginTop: '40px' }">
+            <svg class="w-full h-full" :viewBox="`0 0 50 ${getCanvasTotalHeight}`" preserveAspectRatio="none">
               <path 
-                v-for="i in Math.floor(getMatchesForSide(rNo, 'left').length / 2)" 
-                :key="i"
+                v-for="pathD in getConnectorPathsForRound(rNo)" 
+                :key="pathD"
                 class="stroke-slate-300 stroke-[1.5px] fill-none" 
-                :d="calculateConnectorPath(i, rNo, 'left')" 
-              />
-              <path 
-                v-if="getMatchesForSide(rNo, 'left').length === 1" 
-                class="stroke-slate-300 stroke-[1.5px] fill-none" 
-                :d="calculateConnectorPath(1, rNo, 'left', true)" 
+                :d="pathD" 
               />
             </svg>
           </div>
         </template>
 
-        <!-- ── CENTER HUB (FINALS ARENA: GOLD & BRONZE MATCHES) ── -->
-        <div class="flex flex-col items-center min-w-[280px] sm:min-w-[320px] px-2 sm:px-4">
+        <!-- ── FINALS COLUMN (GOLD MEDAL FINAL & BRONZE MEDAL FINAL) ── -->
+        <div class="flex flex-col items-center min-w-[270px] sm:min-w-[290px]">
           <!-- Hub Header -->
           <div class="h-10 flex flex-col items-center justify-center mb-6">
             <span 
               :class="[
-                'text-xs font-bold font-display px-3.5 py-1 rounded-xl shadow-2xs flex items-center gap-1.5',
+                'text-xs font-bold px-3.5 py-1 rounded-xl shadow-2xs flex items-center gap-1.5',
                 isExpandedFullscreen ? 'bg-amber-950/80 text-amber-300 border border-amber-800' : 'bg-amber-500/10 text-amber-950 border border-amber-400/40'
               ]"
             >
@@ -137,20 +133,20 @@
             </span>
           </div>
 
-          <!-- Finals Column -->
-          <div class="flex flex-col justify-around items-center w-full py-2 space-y-6" :style="{ height: getSideTotalHeight + 'px' }">
+          <!-- Finals Cards Container -->
+          <div class="flex flex-col justify-around items-center w-full py-2 space-y-6" :style="{ height: getCanvasTotalHeight + 'px' }">
             
             <!-- 1. Gold Medal Final (Top) -->
             <div class="w-full flex flex-col items-center space-y-2">
-              <div class="px-3 py-1 rounded-xl bg-amber-500/10 border border-amber-400/40 flex items-center gap-1.5 text-xs font-bold text-amber-950 font-display shadow-2xs">
+              <div class="px-3 py-1 rounded-xl bg-amber-500/10 border border-amber-400/40 flex items-center gap-1.5 text-xs font-bold text-amber-950 shadow-2xs">
                 <Icon icon="ph:crown-fill" class="text-amber-600 text-xs" />
                 <span>Gold Medal Final</span>
               </div>
 
               <div 
-                v-if="goldMatch"
-                @click="selectMatch(goldMatch, 'Gold Medal Final')"
-                class="w-[260px] sm:w-[280px] bg-gradient-to-b from-amber-50/40 via-white to-white rounded-2xl border-2 border-amber-400/70 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none"
+                v-if="resolvedGoldMatch"
+                @click="selectMatch(resolvedGoldMatch, 'Gold Medal Final')"
+                class="w-[240px] sm:w-[260px] bg-gradient-to-b from-amber-50/40 via-white to-white rounded-2xl border-2 border-amber-400/70 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none"
               >
                 <!-- Gold Header -->
                 <div class="flex items-center justify-between px-3.5 py-1.5 bg-amber-500/15 border-b border-amber-400/30 text-[11px] font-bold text-amber-950">
@@ -158,7 +154,7 @@
                     <Icon icon="ph:medal-fill" class="text-amber-600 text-xs" />
                     <span>Gold Match</span>
                   </div>
-                  <span v-if="goldMatch.winner_entry_id" class="px-1.5 py-0.2 rounded-md bg-amber-500/25 text-amber-950 text-[10px] font-black">
+                  <span v-if="resolvedGoldMatch.winner_entry_id" class="px-1.5 py-0.2 rounded-md bg-amber-500/25 text-amber-950 text-[10px] font-black">
                     Champion
                   </span>
                 </div>
@@ -167,25 +163,25 @@
                 <div 
                   :class="[
                     'flex items-center justify-between px-3.5 py-2.5 border-b border-slate-100 transition-colors',
-                    goldMatch.winner_entry_id === 'a' ? 'bg-amber-100/50 font-bold border-l-3 border-l-amber-500' : 'border-l-3 border-l-transparent'
+                    resolvedGoldMatch.winner_entry_id === 'a' ? 'bg-amber-100/50 font-bold border-l-3 border-l-amber-500' : 'border-l-3 border-l-transparent'
                   ]"
                 >
                   <div class="flex items-center gap-2 truncate flex-1 min-w-0 pr-2">
-                    <span v-if="goldMatch.entry_a_seed" class="size-5 rounded-md bg-amber-200/70 text-amber-950 text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
-                      {{ goldMatch.entry_a_seed }}
+                    <span v-if="resolvedGoldMatch.entry_a_seed" class="size-5 rounded-md bg-amber-200/70 text-amber-950 text-[10px] font-bold flex items-center justify-center shrink-0">
+                      {{ resolvedGoldMatch.entry_a_seed }}
                     </span>
-                    <span class="text-xs truncate text-navy" :class="goldMatch.winner_entry_id === 'a' ? 'font-black text-navy' : 'font-medium text-slate-700'">
-                      {{ toTitleCase(goldMatch.entry_a_name || 'TBD') }}
+                    <span class="text-xs truncate text-navy" :class="resolvedGoldMatch.winner_entry_id === 'a' ? 'font-black text-navy' : 'font-medium text-slate-700'">
+                      {{ toTitleCase(resolvedGoldMatch.entry_a_name || 'TBD') }}
                     </span>
-                    <Icon v-if="goldMatch.winner_entry_id === 'a'" icon="ph:crown-fill" class="text-amber-500 text-sm shrink-0" />
+                    <Icon v-if="resolvedGoldMatch.winner_entry_id === 'a'" icon="ph:crown-fill" class="text-amber-500 text-sm shrink-0" />
                   </div>
                   <span 
                     :class="[
-                      'font-mono text-sm px-2 py-0.5 rounded-md font-bold shrink-0',
-                      goldMatch.winner_entry_id === 'a' ? 'bg-amber-400 text-amber-950 font-black shadow-2xs' : 'text-slate-400'
+                      'text-sm px-2 py-0.5 rounded-md font-bold shrink-0',
+                      resolvedGoldMatch.winner_entry_id === 'a' ? 'bg-amber-400 text-amber-950 font-black shadow-2xs' : 'text-slate-400'
                     ]"
                   >
-                    {{ goldMatch.set_points_a !== undefined && goldMatch.set_points_a !== '' ? goldMatch.set_points_a : '-' }}
+                    {{ resolvedGoldMatch.set_points_a !== undefined && resolvedGoldMatch.set_points_a !== '' ? resolvedGoldMatch.set_points_a : '-' }}
                   </span>
                 </div>
 
@@ -193,48 +189,49 @@
                 <div 
                   :class="[
                     'flex items-center justify-between px-3.5 py-2.5 transition-colors',
-                    goldMatch.winner_entry_id === 'b' ? 'bg-amber-100/50 font-bold border-l-3 border-l-amber-500' : 'border-l-3 border-l-transparent'
+                    resolvedGoldMatch.winner_entry_id === 'b' ? 'bg-amber-100/50 font-bold border-l-3 border-l-amber-500' : 'border-l-3 border-l-transparent'
                   ]"
                 >
                   <div class="flex items-center gap-2 truncate flex-1 min-w-0 pr-2">
-                    <span v-if="goldMatch.entry_b_seed" class="size-5 rounded-md bg-amber-200/70 text-amber-950 text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
-                      {{ goldMatch.entry_b_seed }}
+                    <span v-if="resolvedGoldMatch.entry_b_seed" class="size-5 rounded-md bg-amber-200/70 text-amber-950 text-[10px] font-bold flex items-center justify-center shrink-0">
+                      {{ resolvedGoldMatch.entry_b_seed }}
                     </span>
-                    <span class="text-xs truncate text-navy" :class="goldMatch.winner_entry_id === 'b' ? 'font-black text-navy' : 'font-medium text-slate-700'">
-                      {{ toTitleCase(goldMatch.entry_b_name || 'TBD') }}
+                    <span class="text-xs truncate text-navy" :class="resolvedGoldMatch.winner_entry_id === 'b' ? 'font-black text-navy' : 'font-medium text-slate-700'">
+                      {{ toTitleCase(resolvedGoldMatch.entry_b_name || 'TBD') }}
                     </span>
-                    <Icon v-if="goldMatch.winner_entry_id === 'b'" icon="ph:crown-fill" class="text-amber-500 text-sm shrink-0" />
+                    <Icon v-if="resolvedGoldMatch.winner_entry_id === 'b'" icon="ph:crown-fill" class="text-amber-500 text-sm shrink-0" />
                   </div>
                   <span 
                     :class="[
-                      'font-mono text-sm px-2 py-0.5 rounded-md font-bold shrink-0',
-                      goldMatch.winner_entry_id === 'b' ? 'bg-amber-400 text-amber-950 font-black shadow-2xs' : 'text-slate-400'
+                      'text-sm px-2 py-0.5 rounded-md font-bold shrink-0',
+                      resolvedGoldMatch.winner_entry_id === 'b' ? 'bg-amber-400 text-amber-950 font-black shadow-2xs' : 'text-slate-400'
                     ]"
                   >
-                    {{ goldMatch.set_points_b !== undefined && goldMatch.set_points_b !== '' ? goldMatch.set_points_b : '-' }}
+                    {{ resolvedGoldMatch.set_points_b !== undefined && resolvedGoldMatch.set_points_b !== '' ? resolvedGoldMatch.set_points_b : '-' }}
                   </span>
                 </div>
               </div>
             </div>
 
             <!-- 2. Bronze Medal Final (Bottom) -->
-            <div v-if="bronzeMatch" class="w-full flex flex-col items-center space-y-2">
-              <div class="px-3 py-1 rounded-xl bg-amber-700/10 border border-amber-700/30 flex items-center gap-1.5 text-xs font-bold text-amber-900 font-display shadow-2xs">
+            <div class="w-full flex flex-col items-center space-y-2">
+              <div class="px-3 py-1 rounded-xl bg-amber-700/10 border border-amber-700/20 flex items-center gap-1.5 text-xs font-bold text-amber-900 shadow-2xs">
                 <Icon icon="ph:medal-fill" class="text-amber-700 text-xs" />
                 <span>Bronze Medal Final</span>
               </div>
 
               <div 
-                @click="selectMatch(bronzeMatch, 'Bronze Medal Final')"
-                class="w-[260px] sm:w-[280px] bg-white rounded-2xl border border-amber-700/30 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none"
+                v-if="resolvedBronzeMatch"
+                @click="selectMatch(resolvedBronzeMatch, 'Bronze Medal Final')"
+                class="w-[240px] sm:w-[260px] bg-white rounded-2xl border border-amber-700/30 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none"
               >
                 <!-- Bronze Header -->
                 <div class="flex items-center justify-between px-3.5 py-1.5 bg-amber-700/10 border-b border-amber-700/20 text-[11px] font-bold text-amber-900">
                   <div class="flex items-center gap-1.5">
-                    <Icon icon="ph:medal-bold" class="text-amber-700 text-xs" />
+                    <Icon icon="ph:medal-fill" class="text-amber-700 text-xs" />
                     <span>Bronze Match</span>
                   </div>
-                  <span v-if="bronzeMatch.winner_entry_id" class="px-1.5 py-0.2 rounded-md bg-amber-700/20 text-amber-900 text-[10px] font-black">
+                  <span v-if="resolvedBronzeMatch.winner_entry_id" class="px-1.5 py-0.2 rounded-md bg-amber-700/20 text-amber-900 text-[10px] font-bold">
                     3rd Place
                   </span>
                 </div>
@@ -243,17 +240,20 @@
                 <div 
                   :class="[
                     'flex items-center justify-between px-3.5 py-2 border-b border-slate-100 transition-colors',
-                    bronzeMatch.winner_entry_id === 'a' ? 'bg-slate-50 font-bold border-l-3 border-l-amber-700' : 'border-l-3 border-l-transparent'
+                    resolvedBronzeMatch.winner_entry_id === 'a' ? 'bg-amber-700/10 font-bold border-l-3 border-l-amber-700' : 'border-l-3 border-l-transparent'
                   ]"
                 >
                   <div class="flex items-center gap-2 truncate flex-1 min-w-0 pr-2">
-                    <span class="text-xs truncate text-navy" :class="bronzeMatch.winner_entry_id === 'a' ? 'font-bold' : 'font-medium text-slate-700'">
-                      {{ toTitleCase(bronzeMatch.entry_a_name || 'TBD') }}
+                    <span v-if="resolvedBronzeMatch.entry_a_seed" class="size-4.5 rounded-md bg-amber-100 text-amber-900 text-[10px] font-bold flex items-center justify-center shrink-0">
+                      {{ resolvedBronzeMatch.entry_a_seed }}
                     </span>
-                    <Icon v-if="bronzeMatch.winner_entry_id === 'a'" icon="ph:medal-fill" class="text-amber-700 text-xs shrink-0" />
+                    <span class="text-xs truncate text-navy" :class="resolvedBronzeMatch.winner_entry_id === 'a' ? 'font-bold' : 'font-medium text-slate-700'">
+                      {{ toTitleCase(resolvedBronzeMatch.entry_a_name || 'TBD') }}
+                    </span>
+                    <Icon v-if="resolvedBronzeMatch.winner_entry_id === 'a'" icon="ph:medal-fill" class="text-amber-700 text-xs shrink-0" />
                   </div>
-                  <span :class="['font-mono text-xs px-2 py-0.5 rounded-md font-bold shrink-0', bronzeMatch.winner_entry_id === 'a' ? 'bg-amber-700/15 text-amber-900 font-black' : 'text-slate-400']">
-                    {{ bronzeMatch.set_points_a !== undefined && bronzeMatch.set_points_a !== '' ? bronzeMatch.set_points_a : '-' }}
+                  <span :class="['text-xs px-2 py-0.5 rounded-md font-bold shrink-0', resolvedBronzeMatch.winner_entry_id === 'a' ? 'bg-amber-700/15 text-amber-900 font-black' : 'text-slate-400']">
+                    {{ resolvedBronzeMatch.set_points_a !== undefined && resolvedBronzeMatch.set_points_a !== '' ? resolvedBronzeMatch.set_points_a : '-' }}
                   </span>
                 </div>
 
@@ -261,17 +261,20 @@
                 <div 
                   :class="[
                     'flex items-center justify-between px-3.5 py-2 transition-colors',
-                    bronzeMatch.winner_entry_id === 'b' ? 'bg-slate-50 font-bold border-l-3 border-l-amber-700' : 'border-l-3 border-l-transparent'
+                    resolvedBronzeMatch.winner_entry_id === 'b' ? 'bg-amber-700/10 font-bold border-l-3 border-l-amber-700' : 'border-l-3 border-l-transparent'
                   ]"
                 >
                   <div class="flex items-center gap-2 truncate flex-1 min-w-0 pr-2">
-                    <span class="text-xs truncate text-navy" :class="bronzeMatch.winner_entry_id === 'b' ? 'font-bold' : 'font-medium text-slate-700'">
-                      {{ toTitleCase(bronzeMatch.entry_b_name || 'TBD') }}
+                    <span v-if="resolvedBronzeMatch.entry_b_seed" class="size-4.5 rounded-md bg-amber-100 text-amber-900 text-[10px] font-bold flex items-center justify-center shrink-0">
+                      {{ resolvedBronzeMatch.entry_b_seed }}
                     </span>
-                    <Icon v-if="bronzeMatch.winner_entry_id === 'b'" icon="ph:medal-fill" class="text-amber-700 text-xs shrink-0" />
+                    <span class="text-xs truncate text-navy" :class="resolvedBronzeMatch.winner_entry_id === 'b' ? 'font-bold' : 'font-medium text-slate-700'">
+                      {{ toTitleCase(resolvedBronzeMatch.entry_b_name || 'TBD') }}
+                    </span>
+                    <Icon v-if="resolvedBronzeMatch.winner_entry_id === 'b'" icon="ph:medal-fill" class="text-amber-700 text-xs shrink-0" />
                   </div>
-                  <span :class="['font-mono text-xs px-2 py-0.5 rounded-md font-bold shrink-0', bronzeMatch.winner_entry_id === 'b' ? 'bg-amber-700/15 text-amber-900 font-black' : 'text-slate-400']">
-                    {{ bronzeMatch.set_points_b !== undefined && bronzeMatch.set_points_b !== '' ? bronzeMatch.set_points_b : '-' }}
+                  <span :class="['text-xs px-2 py-0.5 rounded-md font-bold shrink-0', resolvedBronzeMatch.winner_entry_id === 'b' ? 'bg-amber-700/15 text-amber-900 font-black' : 'text-slate-400']">
+                    {{ resolvedBronzeMatch.set_points_b !== undefined && resolvedBronzeMatch.set_points_b !== '' ? resolvedBronzeMatch.set_points_b : '-' }}
                   </span>
                 </div>
               </div>
@@ -280,132 +283,19 @@
           </div>
         </div>
 
-        <!-- ── RIGHT SIDE ROUNDS (E.G. QUARTERFINALS, 1/8) ── -->
-        <template v-for="rNo in rightSideRoundNumbers" :key="'right-' + rNo">
-          <!-- Connector Path (Right to Previous) -->
-          <div class="w-12 sm:w-16 shrink-0 relative" :style="{ height: getSideTotalHeight + 'px' }">
-            <svg class="w-full h-full" :viewBox="`0 0 60 ${getSideTotalHeight}`" preserveAspectRatio="none">
-              <path 
-                v-for="i in Math.floor(getMatchesForSide(rNo, 'right').length / 2)" 
-                :key="i"
-                class="stroke-slate-300 stroke-[1.5px] fill-none" 
-                :d="calculateConnectorPath(i, rNo, 'right')" 
-              />
-              <path 
-                v-if="getMatchesForSide(rNo, 'right').length === 1" 
-                class="stroke-slate-300 stroke-[1.5px] fill-none" 
-                :d="calculateConnectorPath(1, rNo, 'right', true)" 
-              />
-            </svg>
-          </div>
-
-          <div class="flex flex-col items-center min-w-[250px] sm:min-w-[270px]">
-            <!-- Round Title Header -->
-            <div class="h-10 flex flex-col items-center justify-center mb-6">
-              <span 
-                :class="[
-                  'text-xs font-bold font-display px-3 py-1 rounded-xl shadow-2xs',
-                  isExpandedFullscreen ? 'bg-slate-800 text-slate-200 border border-slate-700' : 'bg-white border border-slate-200/80 text-slate-600'
-                ]"
-              >
-                {{ getRoundName(parseInt(rNo)) }}
-              </span>
-            </div>
-
-            <!-- Match Slots Column -->
-            <div class="flex flex-col justify-around w-full" :style="{ height: getSideTotalHeight + 'px' }">
-              <div 
-                v-for="match in getMatchesForSide(rNo, 'right')" 
-                :key="match.id" 
-                class="flex items-center justify-center w-full my-auto"
-                :style="{ height: getSlotHeightForSide(rNo) + 'px' }"
-              >
-                <!-- Minimalist Match Card Node -->
-                <div 
-                  @click="selectMatch(match, getRoundName(parseInt(rNo)))"
-                  class="w-[240px] sm:w-[260px] bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:border-navy hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none relative"
-                >
-                  <!-- Card Micro-Header -->
-                  <div class="flex items-center justify-between px-3 py-1.5 bg-slate-50/80 border-b border-slate-100 text-[11px] font-semibold text-slate-500">
-                    <div class="flex items-center gap-1.5 font-mono">
-                      <span class="size-1.5 rounded-full" :class="match.winner_entry_id ? 'bg-emerald-500' : 'bg-slate-300'"></span>
-                      <span>Match {{ match.match_no || 1 }}</span>
-                    </div>
-                    <div class="flex items-center gap-1 text-[10px] text-slate-400 group-hover:text-navy transition-colors">
-                      <span>Scorecard</span>
-                      <Icon icon="ph:arrow-right-bold" class="text-[9px]" />
-                    </div>
-                  </div>
-
-                  <!-- Archer A Row -->
-                  <div 
-                    :class="[
-                      'flex items-center justify-between px-3 py-2 border-b border-slate-100 transition-colors',
-                      match.winner_entry_id === 'a' ? 'bg-slate-50/70 font-bold border-l-3 border-l-navy' : 'border-l-3 border-l-transparent'
-                    ]"
-                  >
-                    <div class="flex items-center gap-2 truncate flex-1 min-w-0 pr-2">
-                      <span v-if="match.entry_a_seed" class="size-4.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
-                        {{ match.entry_a_seed }}
-                      </span>
-                      <span class="text-xs truncate text-navy" :class="match.winner_entry_id === 'a' ? 'font-bold' : 'font-medium text-slate-700'">
-                        {{ toTitleCase(match.entry_a_name || 'TBD') }}
-                      </span>
-                      <Icon v-if="match.winner_entry_id === 'a'" icon="ph:crown-fill" class="text-amber-500 text-xs shrink-0" />
-                    </div>
-                    <span 
-                      :class="[
-                        'font-mono text-xs px-2 py-0.5 rounded-md font-bold shrink-0 transition-colors',
-                        match.winner_entry_id === 'a' ? 'bg-navy/10 text-navy font-black' : 'text-slate-400'
-                      ]"
-                    >
-                      {{ match.set_points_a !== undefined && match.set_points_a !== '' ? match.set_points_a : '-' }}
-                    </span>
-                  </div>
-
-                  <!-- Archer B Row -->
-                  <div 
-                    :class="[
-                      'flex items-center justify-between px-3 py-2 transition-colors',
-                      match.winner_entry_id === 'b' ? 'bg-slate-50/70 font-bold border-l-3 border-l-navy' : 'border-l-3 border-l-transparent'
-                    ]"
-                  >
-                    <div class="flex items-center gap-2 truncate flex-1 min-w-0 pr-2">
-                      <span v-if="match.entry_b_seed" class="size-4.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
-                        {{ match.entry_b_seed }}
-                      </span>
-                      <span class="text-xs truncate text-navy" :class="match.winner_entry_id === 'b' ? 'font-bold' : 'font-medium text-slate-700'">
-                        {{ toTitleCase(match.entry_b_name || 'TBD') }}
-                      </span>
-                      <Icon v-if="match.winner_entry_id === 'b'" icon="ph:crown-fill" class="text-amber-500 text-xs shrink-0" />
-                    </div>
-                    <span 
-                      :class="[
-                        'font-mono text-xs px-2 py-0.5 rounded-md font-bold shrink-0 transition-colors',
-                        match.winner_entry_id === 'b' ? 'bg-navy/10 text-navy font-black' : 'text-slate-400'
-                      ]"
-                    >
-                      {{ match.set_points_b !== undefined && match.set_points_b !== '' ? match.set_points_b : '-' }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </template>
       </div>
 
       <!-- Empty State -->
       <div v-else class="text-center py-20 text-slate-400">
         <Icon icon="ph:sword" class="text-3xl mx-auto mb-2 text-slate-300" />
-        <p class="text-xs sm:text-sm font-medium">No matches available in this round bracket.</p>
+        <div class="text-xs sm:text-sm font-medium">No matches available in this round bracket.</div>
       </div>
     </div>
 
-    <!-- ── REFINED INTERACTIVE SCORECARD MODAL DIALOG ── -->
+    <!-- ── REFINED INTERACTIVE SCORECARD MODAL DIALOG (No <p> tags, No custom font) ── -->
     <ClientOnly>
       <Teleport to="body">
-        <!-- Backdrop Transition (Decoupled, Pure Fade) -->
+        <!-- Backdrop Transition -->
         <Transition
           enter-active-class="transition-opacity duration-300 ease-out"
           enter-from-class="opacity-0"
@@ -416,7 +306,7 @@
         >
           <div 
             v-if="selectedMatch" 
-            class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+            class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto font-sans"
           >
             <!-- Overlay with Blur -->
             <div 
@@ -424,7 +314,7 @@
               @click="selectedMatch = null"
             ></div>
 
-            <!-- Modal Dialog Card Transition -->
+            <!-- Modal Dialog Card -->
             <Transition
               enter-active-class="transition duration-300 cubic-bezier(0.16, 1, 0.3, 1)"
               enter-from-class="opacity-0 scale-95 translate-y-4"
@@ -438,7 +328,7 @@
                 v-if="selectedMatch"
                 class="bg-white rounded-3xl border border-slate-100 shadow-2xl max-w-xl w-full overflow-hidden relative z-10 my-auto"
               >
-                <!-- Brand Accent Top Bar (Standard Archeris) -->
+                <!-- Brand Accent Top Bar -->
                 <div class="h-1.5 w-full bg-gradient-to-r from-primary via-primary-hover to-primary"></div>
                 
                 <!-- Modal Header Bar -->
@@ -449,16 +339,16 @@
                     </div>
                     <div>
                       <div class="flex items-center gap-2">
-                        <h3 class="text-base font-bold text-navy font-display">
+                        <h3 class="text-base font-bold text-navy">
                           {{ selectedMatchRoundName || 'Elimination Match' }}
                         </h3>
-                        <span class="px-2 py-0.5 rounded-full bg-slate-200/80 text-slate-700 text-[10px] font-mono font-bold">
+                        <span class="px-2 py-0.5 rounded-full bg-slate-200/80 text-slate-700 text-[10px] font-bold">
                           Match #{{ selectedMatch.match_no || 1 }}
                         </span>
                       </div>
-                      <p class="text-[11px] text-slate-400 font-medium mt-0.5">
+                      <div class="text-[11px] text-slate-400 font-medium mt-0.5">
                         Head-to-head official elimination scorecard
-                      </p>
+                      </div>
                     </div>
                   </div>
 
@@ -513,7 +403,7 @@
                           <div class="font-bold text-navy text-xs sm:text-sm truncate" :title="selectedMatch.entry_a_name">
                             {{ toTitleCase(selectedMatch.entry_a_name || 'TBD') }}
                           </div>
-                          <div v-if="selectedMatch.entry_a_seed" class="inline-flex items-center gap-1 text-[10px] font-mono text-slate-500 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200 mt-1">
+                          <div v-if="selectedMatch.entry_a_seed" class="inline-flex items-center gap-1 text-[10px] text-slate-500 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200 mt-1">
                             <span>Seed #{{ selectedMatch.entry_a_seed }}</span>
                           </div>
                         </div>
@@ -521,7 +411,7 @@
                         <!-- Final Match Points -->
                         <div 
                           :class="[
-                            'text-3xl sm:text-4xl font-black font-display tracking-tight',
+                            'text-3xl sm:text-4xl font-black tracking-tight',
                             selectedMatch.winner_entry_id === 'a' ? 'text-navy' : 'text-slate-400'
                           ]"
                         >
@@ -532,7 +422,7 @@
                       <!-- Center VS Indicator -->
                       <div class="col-span-1 flex flex-col items-center justify-center">
                         <div class="size-8 rounded-full bg-white border border-slate-200 shadow-2xs flex items-center justify-center">
-                          <span class="text-[10px] font-black font-display text-slate-400">VS</span>
+                          <span class="text-[10px] font-black text-slate-400">VS</span>
                         </div>
                       </div>
 
@@ -571,7 +461,7 @@
                           <div class="font-bold text-navy text-xs sm:text-sm truncate" :title="selectedMatch.entry_b_name">
                             {{ toTitleCase(selectedMatch.entry_b_name || 'TBD') }}
                           </div>
-                          <div v-if="selectedMatch.entry_b_seed" class="inline-flex items-center gap-1 text-[10px] font-mono text-slate-500 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200 mt-1">
+                          <div v-if="selectedMatch.entry_b_seed" class="inline-flex items-center gap-1 text-[10px] text-slate-500 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200 mt-1">
                             <span>Seed #{{ selectedMatch.entry_b_seed }}</span>
                           </div>
                         </div>
@@ -579,7 +469,7 @@
                         <!-- Final Match Points -->
                         <div 
                           :class="[
-                            'text-3xl sm:text-4xl font-black font-display tracking-tight',
+                            'text-3xl sm:text-4xl font-black tracking-tight',
                             selectedMatch.winner_entry_id === 'b' ? 'text-navy' : 'text-slate-400'
                           ]"
                         >
@@ -595,46 +485,47 @@
                     <div class="flex items-center justify-between px-0.5">
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:target-bold" class="text-primary text-sm" />
-                        <h4 class="text-xs font-bold text-navy font-display">
+                        <h4 class="text-xs font-bold text-navy">
                           Official Match Record
                         </h4>
                       </div>
-                      <span class="text-[10px] font-mono text-slate-400 font-semibold flex items-center gap-1">
-                        <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-xs" />
+                      <div class="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
+                        <Icon icon="ph:check-circle-fill" class="text-xs" />
                         <span>Set System (Ianseo)</span>
-                      </span>
+                      </div>
                     </div>
 
-                    <div v-if="parsedSetRows.length > 0" class="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
-                      <table class="w-full text-center text-xs border-collapse">
-                        <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold text-xs">
-                          <tr>
-                            <th class="py-2.5 px-3 text-left w-20">Set</th>
-                            <th class="py-2.5 px-3">End Score A</th>
-                            <th class="py-2.5 px-2.5 w-16 text-center">Pts A</th>
-                            <th class="py-2.5 px-2.5 w-16 text-center">Pts B</th>
-                            <th class="py-2.5 px-3">End Score B</th>
-                            <th class="py-2.5 px-3 text-right w-24">Running</th>
+                    <!-- Sets Table -->
+                    <div v-if="parsedSetRows.length > 0" class="overflow-x-auto rounded-2xl border border-slate-200">
+                      <table class="w-full text-center border-collapse text-xs">
+                        <thead>
+                          <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold text-[11px]">
+                            <th class="py-2 px-3 text-left">Set</th>
+                            <th class="py-2 px-3">End Score A</th>
+                            <th class="py-2 px-2">Pts A</th>
+                            <th class="py-2 px-2">Pts B</th>
+                            <th class="py-2 px-3">End Score B</th>
+                            <th class="py-2 px-3 text-right">Running</th>
                           </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 bg-white font-mono">
+                        <tbody class="divide-y divide-slate-100">
                           <tr 
-                            v-for="(row, rIdx) in parsedSetRows" 
-                            :key="rIdx"
-                            class="hover:bg-slate-50/70 transition-colors"
+                            v-for="row in parsedSetRows" 
+                            :key="row.set"
+                            class="hover:bg-slate-50/60 transition-colors"
                           >
-                            <td class="py-2.5 px-3 text-left font-sans font-bold text-slate-500 text-xs">
-                              Set {{ rIdx + 1 }}
+                            <td class="py-2.5 px-3 text-left font-bold text-slate-600">
+                              Set {{ row.set }}
                             </td>
                             <td class="py-2.5 px-3 font-bold text-navy text-xs">
-                              <span class="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200/60 inline-block font-mono">
+                              <span class="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200/60 inline-block">
                                 {{ row.scoreA || '-' }}
                               </span>
                             </td>
-                            <td class="py-2.5 px-2.5 text-xs font-bold text-center">
+                            <td class="py-2.5 px-2">
                               <span 
                                 :class="[
-                                  'inline-flex items-center justify-center size-6 rounded-lg font-bold text-xs',
+                                  'size-6 rounded-lg inline-flex items-center justify-center font-bold text-xs',
                                   row.ptsA > row.ptsB 
                                     ? 'bg-emerald-100 text-emerald-800 font-black' 
                                     : (row.ptsA === row.ptsB ? 'bg-slate-100 text-slate-600' : 'text-slate-400')
@@ -643,10 +534,10 @@
                                 {{ row.ptsA }}
                               </span>
                             </td>
-                            <td class="py-2.5 px-2.5 text-xs font-bold text-center">
+                            <td class="py-2.5 px-2">
                               <span 
                                 :class="[
-                                  'inline-flex items-center justify-center size-6 rounded-lg font-bold text-xs',
+                                  'size-6 rounded-lg inline-flex items-center justify-center font-bold text-xs',
                                   row.ptsB > row.ptsA 
                                     ? 'bg-emerald-100 text-emerald-800 font-black' 
                                     : (row.ptsA === row.ptsB ? 'bg-slate-100 text-slate-600' : 'text-slate-400')
@@ -656,7 +547,7 @@
                               </span>
                             </td>
                             <td class="py-2.5 px-3 font-bold text-navy text-xs">
-                              <span class="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200/60 inline-block font-mono">
+                              <span class="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200/60 inline-block">
                                 {{ row.scoreB || '-' }}
                               </span>
                             </td>
@@ -672,7 +563,7 @@
 
                     <div v-else class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 text-center text-slate-400 text-xs space-y-1">
                       <Icon icon="ph:info-bold" class="text-xl mx-auto text-slate-300" />
-                      <p class="font-medium text-slate-500">No individual arrow end breakdown recorded.</p>
+                      <div class="font-medium text-slate-500">No individual arrow end breakdown recorded.</div>
                     </div>
                   </div>
 
@@ -734,8 +625,6 @@ const props = defineProps({
 // ─────────────────────────────────────────────────────────────
 // AVATAR & TYPOGRAPHY HELPERS
 // ─────────────────────────────────────────────────────────────
-// AVATAR & TYPOGRAPHY HELPERS
-// ─────────────────────────────────────────────────────────────
 const toTitleCase = (str) => {
   if (!str) return ''
   return String(str)
@@ -762,48 +651,109 @@ const roundNumbers = computed(() => {
 const totalRounds = computed(() => roundNumbers.value.length)
 const hasMatches = computed(() => totalRounds.value > 0)
 
-const getTotalMatchesCount = computed(() => {
-  let count = 0
-  Object.values(props.rounds || {}).forEach(arr => {
-    if (Array.isArray(arr)) count += arr.length
-  })
-  return count
-})
-
-const leftSideRoundNumbers = computed(() => {
+// Non-final rounds (e.g., 1/8, QF, SF)
+const nonFinalRoundNumbers = computed(() => {
   const tot = totalRounds.value
   if (tot <= 1) return []
-  const nums = []
-  for (let i = 1; i <= tot - 1; i++) {
-    nums.push(i)
-  }
-  return nums
+  return roundNumbers.value.slice(0, tot - 1)
 })
 
-const rightSideRoundNumbers = computed(() => {
-  const tot = totalRounds.value
-  if (tot <= 1) return []
-  const nums = []
-  for (let i = tot - 1; i >= 1; i--) {
-    nums.push(i)
-  }
-  return nums
+const finalRoundNumber = computed(() => {
+  if (totalRounds.value === 0) return null
+  return roundNumbers.value[totalRounds.value - 1]
 })
 
 const finalMatches = computed(() => {
-  if (totalRounds.value === 0) return []
-  const finalRoundNo = roundNumbers.value[totalRounds.value - 1]
-  return props.rounds[finalRoundNo] || []
+  if (!finalRoundNumber.value) return []
+  return props.rounds[finalRoundNumber.value] || []
 })
 
-const goldMatch = computed(() => finalMatches.value[0] || null)
-const bronzeMatch = computed(() => finalMatches.value[1] || null)
+// Semifinal matches (round right before finals)
+const semiFinalMatches = computed(() => {
+  const tot = totalRounds.value
+  if (tot < 2) return []
+  const semiRoundNo = roundNumbers.value[tot - 2]
+  return props.rounds[semiRoundNo] || []
+})
 
-const getMatchesForSide = (roundNo, side) => {
-  const all = props.rounds[roundNo] || []
-  const half = Math.ceil(all.length / 2)
-  return side === 'left' ? all.slice(0, half) : all.slice(half)
-}
+// Resolve Gold Match: either from finalMatches or construct from Semifinal winners
+const resolvedGoldMatch = computed(() => {
+  const gold = finalMatches.value[0]
+  if (gold && gold.entry_a_name && gold.entry_b_name) {
+    return gold
+  }
+  
+  // Reconstruct from Semifinal Winners if not explicitly provided
+  const semis = semiFinalMatches.value
+  if (semis.length >= 2) {
+    const s1 = semis[0]
+    const s2 = semis[1]
+    const nameA = s1.winner_entry_id === 'b' ? s1.entry_b_name : s1.entry_a_name
+    const seedA = s1.winner_entry_id === 'b' ? s1.entry_b_seed : s1.entry_a_seed
+    const nameB = s2.winner_entry_id === 'b' ? s2.entry_b_name : s2.entry_a_name
+    const seedB = s2.winner_entry_id === 'b' ? s2.entry_b_seed : s2.entry_a_seed
+
+    return {
+      id: 'gold_final_constructed',
+      match_no: 'Gold',
+      phase: 'Gold Medal Final',
+      entry_a_id: 'a',
+      entry_a_name: nameA || 'Winner SF1',
+      entry_a_seed: seedA,
+      set_points_a: gold?.set_points_a || '-',
+      total_score_a: gold?.total_score_a || '-',
+      sets_a: gold?.sets_a || '',
+      entry_b_id: 'b',
+      entry_b_name: nameB || 'Winner SF2',
+      entry_b_seed: seedB,
+      set_points_b: gold?.set_points_b || '-',
+      total_score_b: gold?.total_score_b || '-',
+      sets_b: gold?.sets_b || '',
+      winner_entry_id: gold?.winner_entry_id || null,
+      is_final: true
+    }
+  }
+
+  return gold || null
+})
+
+// Resolve Bronze Match: either from finalMatches[1] or construct from Semifinal losers
+const resolvedBronzeMatch = computed(() => {
+  const bronze = finalMatches.value.length > 1 ? finalMatches.value[1] : (finalMatches.value[0]?.phase?.toLowerCase().includes('bronze') ? finalMatches.value[0] : null)
+  if (bronze) return bronze
+
+  const semis = semiFinalMatches.value
+  if (semis.length >= 2) {
+    const s1 = semis[0]
+    const s2 = semis[1]
+    const nameA = s1.winner_entry_id === 'a' ? s1.entry_b_name : s1.entry_a_name
+    const seedA = s1.winner_entry_id === 'a' ? s1.entry_b_seed : s1.entry_a_seed
+    const nameB = s2.winner_entry_id === 'a' ? s2.entry_b_name : s2.entry_a_name
+    const seedB = s2.winner_entry_id === 'a' ? s2.entry_b_seed : s2.entry_a_seed
+
+    return {
+      id: 'bronze_final_constructed',
+      match_no: 'Bronze',
+      phase: 'Bronze Medal Final',
+      entry_a_id: 'a',
+      entry_a_name: nameA || 'Loser SF1',
+      entry_a_seed: seedA,
+      set_points_a: '-',
+      total_score_a: '-',
+      sets_a: '',
+      entry_b_id: 'b',
+      entry_b_name: nameB || 'Loser SF2',
+      entry_b_seed: seedB,
+      set_points_b: '-',
+      total_score_b: '-',
+      sets_b: '',
+      winner_entry_id: null,
+      is_bronze: true
+    }
+  }
+
+  return null
+})
 
 const getRoundName = (roundNo) => {
   const tot = totalRounds.value
@@ -821,47 +771,66 @@ const getRoundName = (roundNo) => {
 // ─────────────────────────────────────────────────────────────
 // BRACKET CANVAS GEOMETRY & CONNECTOR PATHS
 // ─────────────────────────────────────────────────────────────
-const BASE_MATCH_HEIGHT = 120
+const BASE_MATCH_HEIGHT = 130
 
-const getSideTotalHeight = computed(() => {
+const getCanvasTotalHeight = computed(() => {
   const r1Matches = (props.rounds[1] || []).length
-  const half = Math.max(Math.ceil(r1Matches / 2), 2)
-  return Math.max(half * BASE_MATCH_HEIGHT, 480)
+  const maxMatches = Math.max(r1Matches, 4)
+  return maxMatches * BASE_MATCH_HEIGHT
 })
 
-const getSlotHeightForSide = (roundNo) => {
-  const matchesInSide = getMatchesForSide(roundNo, 'left').length || 1
-  return getSideTotalHeight.value / matchesInSide
+const getSlotHeight = (roundNo) => {
+  const matchesCount = (props.rounds[roundNo] || []).length || 1
+  return getCanvasTotalHeight.value / matchesCount
 }
 
-const calculateConnectorPath = (i, roundNo, side, isSingle = false) => {
+// Crisp, mathematically aligned SVG connectors from round R to R+1
+const getConnectorPathsForRound = (roundNo) => {
   const r = parseInt(roundNo)
-  const slotHeight = getSlotHeightForSide(r)
-  const nextSlotHeight = getSlotHeightForSide(r + 1)
-  const totalH = getSideTotalHeight.value
+  const currentMatches = props.rounds[r] || []
+  const currentSlotHeight = getSlotHeight(r)
+  const nextRoundNo = r + 1
+  const isNextFinal = nextRoundNo === totalRounds.value
 
-  const matchesInSide = getMatchesForSide(r, side).length
-  const roundBlockHeight = matchesInSide * slotHeight
-  const vOffset = (totalH - roundBlockHeight) / 2
+  const paths = []
 
-  const y1 = vOffset + (i - 1) * nextSlotHeight + slotHeight / 2
-  const y2 = vOffset + (i - 1) * nextSlotHeight + slotHeight / 2 + slotHeight
-  const targetY = vOffset + (i - 1) * nextSlotHeight + nextSlotHeight / 2
+  if (isNextFinal) {
+    if (currentMatches.length >= 2) {
+      const ySemi1 = 0.5 * currentSlotHeight
+      const ySemi2 = 1.5 * currentSlotHeight
+      const yGoldMid = getCanvasTotalHeight.value * 0.28
 
-  if (isSingle) {
-    const hubArrivalY = totalH / 2
-    if (side === 'left') {
-      return `M 0 ${y1} H 30 V ${hubArrivalY} H 60`
-    } else {
-      return `M 60 ${y1} H 30 V ${hubArrivalY} H 0`
+      // Fork from Semi 1 and Semi 2 into Gold Medal Final
+      paths.push(`M 0 ${ySemi1} H 25 V ${yGoldMid} H 50`)
+      paths.push(`M 0 ${ySemi2} H 25 V ${yGoldMid} H 50`)
+    } else if (currentMatches.length === 1) {
+      const y1 = 0.5 * currentSlotHeight
+      const yTarget = getCanvasTotalHeight.value * 0.28
+      paths.push(`M 0 ${y1} H 25 V ${yTarget} H 50`)
+    }
+    return paths
+  }
+
+  const nextMatches = props.rounds[nextRoundNo] || []
+  const nextSlotHeight = getSlotHeight(nextRoundNo)
+
+  // Standard binary tree fork connection
+  for (let i = 0; i < nextMatches.length; i++) {
+    const yTarget = (i + 0.5) * nextSlotHeight
+    const idx1 = i * 2
+    const idx2 = i * 2 + 1
+
+    if (idx1 < currentMatches.length) {
+      const y1 = (idx1 + 0.5) * currentSlotHeight
+      paths.push(`M 0 ${y1} H 25 V ${yTarget} H 50`)
+    }
+    if (idx2 < currentMatches.length) {
+      const y2 = (idx2 + 0.5) * currentSlotHeight
+      paths.push(`M 0 ${y2} H 25 V ${yTarget} H 50`)
     }
   }
 
-  if (side === 'left') {
-    return `M 0 ${y1} H 30 V ${targetY} H 60 M 0 ${y2} H 30 V ${targetY} H 60`
-  } else {
-    return `M 60 ${y1} H 30 V ${targetY} H 0 M 60 ${y2} H 30 V ${targetY} H 0`
-  }
+  return paths
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -900,13 +869,14 @@ const parsedSetRows = computed(() => {
     if (!isNaN(numA) && !isNaN(numB)) {
       if (numA > numB) ptsA = 2
       else if (numB > numA) ptsB = 2
-      else if (numA === numB) { ptsA = 1; ptsB = 1 }
+      else { ptsA = 1; ptsB = 1 }
     }
 
     cumulativeA += ptsA
     cumulativeB += ptsB
 
     rows.push({
+      set: i + 1,
       scoreA: sA,
       scoreB: sB,
       ptsA,

@@ -118,9 +118,9 @@
 
               <!-- Tournament Overview Description (Clean Natural Prose) -->
               <div v-if="tournamentDescriptionParagraphs.length > 0" class="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2.5 pt-0.5">
-                <p v-for="(paragraph, pIdx) in tournamentDescriptionParagraphs" :key="pIdx" class="text-justify font-normal">
+                <div v-for="(paragraph, pIdx) in tournamentDescriptionParagraphs" :key="pIdx" class="text-justify font-normal">
                   {{ paragraph }}
-                </p>
+                </div>
               </div>
 
               <!-- Quick Metrics 4 Cards Grid with UNIFIED Typography -->
@@ -328,8 +328,8 @@
 
                 <div v-else class="text-center py-12 rounded-2xl bg-white border border-slate-200/80 text-slate-400 text-xs sm:text-sm space-y-2">
                   <Icon icon="ph:calendar-x" class="text-4xl mx-auto text-slate-300" />
-                  <p class="font-medium text-slate-600">No schedule items found for this filter.</p>
-                  <p class="text-slate-400 text-xs">Try selecting 'All Days' to view full tournament program.</p>
+                  <div class="font-medium text-slate-600">No schedule items found for this filter.</div>
+                  <div class="text-slate-400 text-xs">Try selecting 'All Days' to view full tournament program.</div>
                 </div>
               </div>
             </section>
@@ -1215,17 +1215,17 @@
                 <h3 class="text-base sm:text-lg font-bold text-navy font-display">
                   {{ t('share_event') }}
                 </h3>
-                <p class="text-xs text-slate-500 line-clamp-1 mt-0.5">
+                <div class="text-xs text-slate-500 line-clamp-1 mt-0.5">
                   {{ toTitleCase(activeTournament?.name) }}
-                </p>
+                </div>
               </div>
             </div>
 
             <!-- Modal Body -->
             <div class="space-y-4 pt-4">
-              <p class="text-xs text-slate-600 leading-relaxed">
+              <div class="text-xs text-slate-600 leading-relaxed">
                 {{ t('share_event_desc') }}
-              </p>
+              </div>
 
               <!-- Link Copy Section -->
               <div class="space-y-1.5">
@@ -2192,7 +2192,7 @@ const currentArcherisBracketRounds = computed(() => {
   const rounds = {}
 
   if (total >= 14) {
-    // 16-archer bracket: 8 (1/8) -> 4 (QF) -> 2 (SF) -> 1 (Gold)
+    // 16-archer bracket: 8 (1/8) -> 4 (QF) -> 2 (SF) -> Finals
     rounds[1] = allPreliminaryMatches.slice(0, 8)
     rounds[2] = allPreliminaryMatches.slice(8, 12)
     rounds[3] = allPreliminaryMatches.slice(12, 14)
@@ -2200,13 +2200,26 @@ const currentArcherisBracketRounds = computed(() => {
     if (total >= 15) finals.push(allPreliminaryMatches[14])
     if (bronzeMatch) finals.push(bronzeMatch)
     rounds[4] = finals
-  } else if (total >= 12) {
-    rounds[1] = allPreliminaryMatches.slice(0, 8)
-    rounds[2] = allPreliminaryMatches.slice(8, 12)
-    rounds[3] = allPreliminaryMatches.slice(12, 14)
-    rounds[4] = bronzeMatch ? [bronzeMatch] : []
+  } else if (total >= 8) {
+    // 1/8 with byes: last 2 are SF, 4 before SF are QF, rest are 1/8
+    const sf = allPreliminaryMatches.slice(total - 2)
+    const qf = allPreliminaryMatches.slice(total - 6, total - 2)
+    const r16 = allPreliminaryMatches.slice(0, total - 6)
+
+    let rIdx = 1
+    if (r16.length > 0) {
+      rounds[rIdx] = r16
+      rIdx++
+    }
+    rounds[rIdx] = qf
+    rIdx++
+    rounds[rIdx] = sf
+    rIdx++
+    const finals = []
+    if (bronzeMatch) finals.push(bronzeMatch)
+    rounds[rIdx] = finals
   } else if (total >= 6) {
-    // 8-archer bracket: 4 (QF) -> 2 (SF) -> 1 (Gold)
+    // 8-archer bracket: 4 (QF) -> 2 (SF) -> Finals
     rounds[1] = allPreliminaryMatches.slice(0, 4)
     rounds[2] = allPreliminaryMatches.slice(4, 6)
     const finals = []
@@ -2214,15 +2227,17 @@ const currentArcherisBracketRounds = computed(() => {
     if (bronzeMatch) finals.push(bronzeMatch)
     rounds[3] = finals
   } else if (total >= 2) {
-    // 4-archer bracket: 2 (SF) -> 1 (Gold)
+    // 4-archer bracket: 2 (SF) -> Finals
     rounds[1] = allPreliminaryMatches.slice(0, 2)
     const finals = []
     if (total >= 3) finals.push(allPreliminaryMatches[2])
     if (bronzeMatch) finals.push(bronzeMatch)
     rounds[2] = finals
-  } else {
+  } else if (total > 0) {
     rounds[1] = allPreliminaryMatches
     if (bronzeMatch) rounds[2] = [bronzeMatch]
+  } else if (bronzeMatch) {
+    rounds[1] = [bronzeMatch]
   }
 
   return rounds
