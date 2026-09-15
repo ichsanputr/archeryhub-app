@@ -173,6 +173,7 @@
 
             <!-- 2. COMPETITION SCHEDULE -->
             <section v-if="hasScheduleData" id="schedule" class="scroll-mt-24 space-y-6">
+              <!-- Section Header -->
               <div class="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div class="flex items-center gap-3">
                   <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon">
@@ -188,7 +189,7 @@
                 <div class="hidden sm:flex items-center gap-2">
                   <span class="text-xs font-semibold text-slate-400">Total Program Events:</span>
                   <span class="px-2.5 py-0.5 rounded-full bg-navy/5 text-navy text-xs font-bold font-sans">
-                    {{ filteredScheduleEvents.length }}
+                    {{ totalScheduleEventsCount }}
                   </span>
                 </div>
               </div>
@@ -212,124 +213,153 @@
                       selectedScheduleDay === 'all' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
                     ]"
                   >
-                    {{ (tournamentData?.schedule || []).length }}
+                    {{ parsedScheduleDays.length }}
                   </span>
                 </button>
 
                 <button
-                  v-for="day in availableScheduleDays"
-                  :key="day"
-                  @click="selectedScheduleDay = day"
+                  v-for="(day, dIdx) in parsedScheduleDays"
+                  :key="day.date_label"
+                  @click="selectedScheduleDay = day.date_label"
                   :class="[
                     'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer border',
-                    selectedScheduleDay === day
+                    selectedScheduleDay === day.date_label
                       ? 'bg-navy text-white border-navy shadow-xs'
                       : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                   ]"
                 >
                   <Icon icon="ph:clock-countdown-bold" class="text-sm" />
-                  <span>{{ toTitleCase(day) }}</span>
+                  <span>{{ day.date_label }}</span>
+                  <span class="px-1.5 py-0.2 rounded-md text-[10px] font-bold" :class="selectedScheduleDay === day.date_label ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'">
+                    {{ day.sessions.length }}
+                  </span>
                 </button>
               </div>
 
-              <!-- Program Matrix List Container -->
-              <div class="space-y-3">
-                <div v-if="filteredScheduleEvents.length > 0" class="space-y-3">
-                  <div
-                    v-for="(ev, idx) in filteredScheduleEvents"
-                    :key="idx"
-                    class="group relative bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 hover:border-navy/30 hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
-                  >
-                    <!-- Left: Time & Phase Column -->
-                    <div class="flex items-center gap-3 sm:gap-4 shrink-0 md:w-56">
-                      <div class="size-11 rounded-xl bg-slate-100/90 text-navy flex flex-col items-center justify-center font-sans font-bold border border-slate-200/60 shrink-0">
-                        <Icon icon="ph:clock-bold" class="text-xs text-slate-500 mb-0.5" />
-                        <span class="text-xs text-navy tracking-tight leading-none">{{ ev.time || ev.time_slot || '08:00' }}</span>
-                      </div>
-                      <div>
-                        <div class="text-xs font-bold text-navy">
-                          {{ ev.day || ev.date || (selectedScheduleDay !== 'all' ? toTitleCase(selectedScheduleDay) : 'Competition Day') }}
-                        </div>
-                        <div class="text-[11px] text-slate-400 font-medium mt-0.5">
-                          {{ ev.session || 'Main Range Session' }}
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Middle: Event Details & Division Badges -->
-                    <div class="flex-1 space-y-2 border-t md:border-t-0 md:border-l border-slate-100 pt-3 md:pt-0 md:pl-5">
-                      <div class="flex flex-wrap items-center gap-2">
-                        <h4 class="text-sm sm:text-base font-bold text-navy">
-                          {{ ev.activity || ev.event || ev.name || 'Official Match Schedule' }}
-                        </h4>
-                      </div>
-
-                      <div class="flex flex-wrap items-center gap-2 text-xs">
-                        <!-- Category / Bow Tag -->
-                        <span
-                          v-if="ev.category || ev.division"
-                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-medium"
-                        >
-                          <Icon icon="ph:bow-arrow" class="text-slate-500 text-xs" />
-                          <span>{{ toTitleCase(ev.category || ev.division) }}</span>
-                        </span>
-
-                        <!-- Targets Allocation -->
-                        <span
-                          v-if="ev.targets || ev.target_range"
-                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-navy/5 text-navy font-medium"
-                        >
-                          <Icon icon="ph:target" class="text-navy text-xs" />
-                          <span>Targets {{ ev.targets || ev.target_range }}</span>
-                        </span>
-
-                        <!-- Distance / Notes -->
-                        <span
-                          v-if="ev.distance || ev.notes"
-                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 text-slate-600 border border-slate-200/50 text-[11px]"
-                        >
-                          <Icon icon="ph:ruler" class="text-slate-400 text-xs" />
-                          <span>{{ ev.distance || ev.notes }}</span>
-                        </span>
-                      </div>
-                    </div>
-
-                    <!-- Right: Stage Pill Badge -->
-                    <div class="shrink-0 flex items-center justify-between md:justify-end gap-2 border-t md:border-t-0 border-slate-100 pt-2.5 md:pt-0">
-                      <span
-                        class="px-3 py-1 rounded-xl text-xs font-bold border transition-colors inline-flex items-center gap-1.5"
-                        :class="[
-                          (ev.stage || ev.phase || '').toLowerCase().includes('final')
-                            ? 'bg-amber-50 text-amber-800 border-amber-200'
-                            : (ev.stage || ev.phase || '').toLowerCase().includes('elim')
-                            ? 'bg-rose-50 text-rose-800 border-rose-200'
-                            : (ev.stage || ev.phase || '').toLowerCase().includes('qual')
-                            ? 'bg-primary/20 text-navy border-primary/30'
-                            : 'bg-slate-100 text-slate-700 border-slate-200'
-                        ]"
-                      >
-                        <span
-                          class="size-1.5 rounded-full"
-                          :class="[
-                            (ev.stage || ev.phase || '').toLowerCase().includes('final')
-                              ? 'bg-amber-500'
-                              : (ev.stage || ev.phase || '').toLowerCase().includes('elim')
-                              ? 'bg-rose-500'
-                              : (ev.stage || ev.phase || '').toLowerCase().includes('qual')
-                              ? 'bg-primary'
-                              : 'bg-slate-400'
-                          ]"
-                        ></span>
-                        <span>{{ toTitleCase(ev.stage || ev.phase || 'Competition Round') }}</span>
+              <!-- Schedule Days & Timetable List -->
+              <div class="space-y-6">
+                <div 
+                  v-for="day in filteredScheduleDays" 
+                  :key="day.date_label" 
+                  class="space-y-3"
+                >
+                  <!-- Day Header Banner -->
+                  <div class="bg-slate-100/80 rounded-2xl px-4 py-2.5 flex items-center justify-between border border-slate-200/60">
+                    <div class="flex items-center gap-2">
+                      <Icon icon="ph:calendar-dots-bold" class="text-navy text-base" />
+                      <span class="text-xs sm:text-sm font-bold text-navy">{{ day.date_label }}</span>
+                      <span v-if="day.divisions" class="hidden sm:inline-block px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-600 text-[11px] font-semibold">
+                        {{ day.divisions }}
                       </span>
+                    </div>
+                    <span class="text-[11px] font-bold text-slate-500">
+                      {{ day.sessions.length }} Agenda
+                    </span>
+                  </div>
+
+                  <!-- Session Items -->
+                  <div class="space-y-2.5">
+                    <div
+                      v-for="(session, sIdx) in day.sessions"
+                      :key="sIdx"
+                      :class="[
+                        'rounded-2xl p-3.5 sm:p-4 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border',
+                        session.type === 'break' 
+                          ? 'bg-amber-50/40 border-dashed border-amber-200' 
+                          : (session.type === 'finals' 
+                              ? 'bg-gradient-to-r from-amber-50/40 via-white to-white border-amber-300 shadow-2xs hover:shadow-sm' 
+                              : 'bg-white border-slate-200/90 shadow-2xs hover:border-navy/30 hover:shadow-xs')
+                      ]"
+                    >
+                      <!-- Left: Time & Icon Box -->
+                      <div class="flex items-center gap-3 shrink-0 sm:w-60">
+                        <!-- Icon Avatar Box based on Type -->
+                        <div 
+                          :class="[
+                            'size-11 rounded-xl flex items-center justify-center font-bold border shrink-0 text-base shadow-2xs',
+                            session.type === 'break' ? 'bg-amber-100 text-amber-800 border-amber-300/80' :
+                            session.type === 'finals' ? 'bg-amber-500 text-amber-950 border-amber-400' :
+                            session.type === 'elimination' ? 'bg-rose-50 text-rose-600 border-rose-200' :
+                            session.type === 'team' ? 'bg-teal-50 text-teal-700 border-teal-200' :
+                            session.type === 'qualification' ? 'bg-primary/20 text-navy border-primary/30' :
+                            session.type === 'practice' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                            session.type === 'ceremony' ? 'bg-amber-100 text-amber-900 border-amber-300' :
+                            'bg-slate-100 text-slate-600 border-slate-200'
+                          ]"
+                        >
+                          <Icon v-if="session.type === 'break'" icon="ph:coffee-bold" />
+                          <Icon v-else-if="session.type === 'finals'" icon="ph:crown-fill" />
+                          <Icon v-else-if="session.type === 'elimination'" icon="ph:sword-bold" />
+                          <Icon v-else-if="session.type === 'team'" icon="ph:users-three-bold" />
+                          <Icon v-else-if="session.type === 'qualification'" icon="ph:target-bold" />
+                          <Icon v-else-if="session.type === 'practice'" icon="ph:crosshair-bold" />
+                          <Icon v-else-if="session.type === 'ceremony'" icon="ph:trophy-bold" />
+                          <Icon v-else icon="ph:clock-bold" />
+                        </div>
+
+                        <!-- Time & Duration -->
+                        <div>
+                          <div class="flex items-center gap-1.5 font-bold text-navy text-xs sm:text-sm">
+                            <span>{{ session.time_start }}</span>
+                            <span class="text-slate-400">-</span>
+                            <span>{{ session.time_end }}</span>
+                          </div>
+                          <div class="text-[11px] font-medium text-slate-500 mt-0.5 flex items-center gap-1">
+                            <Icon icon="ph:timer" class="text-xs" />
+                            <span>{{ session.duration }}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Middle: Title & Notes -->
+                      <div class="flex-1 space-y-1.5 border-t sm:border-t-0 sm:border-l border-slate-100 pt-2 sm:pt-0 sm:pl-4">
+                        <div class="font-bold text-xs sm:text-sm text-navy leading-snug">
+                          {{ session.title }}
+                        </div>
+                        <div v-if="session.notes" class="flex flex-wrap items-center gap-1.5">
+                          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-semibold">
+                            <Icon icon="ph:info" class="text-slate-400 text-xs" />
+                            <span>{{ session.notes }}</span>
+                          </span>
+                        </div>
+                      </div>
+
+                      <!-- Right: Stage Pill Badge -->
+                      <div class="shrink-0 flex items-center justify-end">
+                        <span
+                          :class="[
+                            'px-3 py-1 rounded-xl text-[11px] font-bold border transition-colors inline-flex items-center gap-1.5 shadow-2xs',
+                            session.type === 'break' ? 'bg-amber-100/80 text-amber-900 border-amber-300/80' :
+                            session.type === 'finals' ? 'bg-amber-400 text-amber-950 border-amber-500 font-black' :
+                            session.type === 'elimination' ? 'bg-rose-50 text-rose-700 border-rose-200 font-bold' :
+                            session.type === 'team' ? 'bg-teal-50 text-teal-700 border-teal-200' :
+                            session.type === 'qualification' ? 'bg-primary/20 text-navy border-primary/30 font-bold' :
+                            session.type === 'practice' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' :
+                            session.type === 'ceremony' ? 'bg-amber-100 text-amber-900 border-amber-300 font-bold' :
+                            'bg-slate-100 text-slate-700 border-slate-200'
+                          ]"
+                        >
+                          <span 
+                            class="size-1.5 rounded-full"
+                            :class="[
+                              session.type === 'break' ? 'bg-amber-600' :
+                              session.type === 'finals' ? 'bg-amber-950' :
+                              session.type === 'elimination' ? 'bg-rose-500' :
+                              session.type === 'team' ? 'bg-teal-500' :
+                              session.type === 'qualification' ? 'bg-primary' :
+                              'bg-slate-400'
+                            ]"
+                          ></span>
+                          <span>{{ session.stage }}</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div v-else class="text-center py-12 rounded-2xl bg-white border border-slate-200/80 text-slate-400 text-xs sm:text-sm space-y-2">
+                <div v-if="filteredScheduleDays.length === 0" class="text-center py-12 rounded-2xl bg-white border border-slate-200/80 text-slate-400 text-xs sm:text-sm space-y-2">
                   <Icon icon="ph:calendar-x" class="text-4xl mx-auto text-slate-300" />
-                  <div class="font-medium text-slate-600">No schedule items found for this filter.</div>
-                  <div class="text-slate-400 text-xs">Try selecting 'All Days' to view full tournament program.</div>
+                  <div class="font-medium text-slate-600">Tidak ada jadwal pertandingan untuk pilihan ini.</div>
                 </div>
               </div>
             </section>
@@ -1937,19 +1967,60 @@ const navigationSections = computed(() => {
 })
 
 // Schedule Handling
-const availableScheduleDays = computed(() => {
-  const days = new Set()
-  ;(activeTournamentData.value?.schedule || []).forEach(s => {
-    if (s.day) days.add(s.day)
-    if (s.date) days.add(s.date)
+const parsedScheduleDays = computed(() => {
+  const raw = activeTournamentData.value?.schedule || []
+  if (!Array.isArray(raw)) return []
+  
+  if (raw.length > 0 && (raw[0].sessions || raw[0].date_label)) {
+    return raw.map((d, idx) => ({
+      day_index: idx + 1,
+      date_label: d.date_label || `Hari ${idx + 1}`,
+      divisions: d.divisions || '',
+      sessions: Array.isArray(d.sessions) ? d.sessions : []
+    }))
+  }
+  
+  const map = {}
+  raw.forEach(item => {
+    const key = item.date || item.day || 'Day 1'
+    if (!map[key]) {
+      map[key] = {
+        day_index: Object.keys(map).length + 1,
+        date_label: key,
+        divisions: '',
+        sessions: []
+      }
+    }
+    map[key].sessions.push({
+      time_start: item.time || item.time_slot || '08:00',
+      time_end: item.time_end || '',
+      duration: item.duration || '',
+      title: item.activity || item.event || item.name || 'Official Match Schedule',
+      notes: item.notes || item.distance || '',
+      type: item.type || (item.stage?.toLowerCase().includes('final') ? 'finals' : (item.stage?.toLowerCase().includes('elim') ? 'elimination' : (item.stage?.toLowerCase().includes('qual') ? 'qualification' : 'competition'))),
+      stage: item.stage || item.phase || 'Babak Kompetisi'
+    })
   })
-  return Array.from(days)
+  return Object.values(map)
 })
 
-const filteredScheduleEvents = computed(() => {
-  const all = activeTournamentData.value?.schedule || []
-  if (selectedScheduleDay.value === 'all') return all
-  return all.filter(s => (s.day === selectedScheduleDay.value || s.date === selectedScheduleDay.value))
+const availableScheduleDays = computed(() => {
+  return parsedScheduleDays.value.map(d => d.date_label)
+})
+
+const totalScheduleEventsCount = computed(() => {
+  let c = 0
+  parsedScheduleDays.value.forEach(d => {
+    c += d.sessions.length
+  })
+  return c
+})
+
+const filteredScheduleDays = computed(() => {
+  if (selectedScheduleDay.value === 'all') {
+    return parsedScheduleDays.value
+  }
+  return parsedScheduleDays.value.filter(d => d.date_label === selectedScheduleDay.value)
 })
 
 // FOP Handling
