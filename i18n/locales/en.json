@@ -3082,7 +3082,18 @@
       "bow_traditional": "Traditional",
       "currency_label": "Currency",
       "currency_placeholder": "Select Currency",
-      "organizer_tab": "Organizer"
+      "organizer_tab": "Organizer",
+      "confirm_password_label": "Confirm Password",
+      "submit_btn": "Create Account",
+      "google_direct_note": "Direct 1-click verification into your dashboard.",
+      "verify_email_title": "Verify Your Email",
+      "otp_sent_desc": "We have sent a 6-digit verification code to",
+      "verify_and_login": "Verify & Enter Dashboard",
+      "resend_in": "Resend code in",
+      "resending": "Sending code...",
+      "resend_code": "Resend Verification Code",
+      "wrong_email": "Wrong email address? Change email",
+      "back_to_form": "Back to Form"
     },
     "forgot": {
       "reset_title": "Reset <br /> Your Access",

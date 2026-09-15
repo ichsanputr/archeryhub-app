@@ -3137,7 +3137,18 @@
       "bow_traditional": "Tradisional",
       "currency_label": "Mata Uang",
       "currency_placeholder": "Pilih Mata Uang",
-      "organizer_tab": "Penyelenggara / Klub"
+      "organizer_tab": "Penyelenggara / Klub",
+      "confirm_password_label": "Konfirmasi Password",
+      "submit_btn": "Daftar Sekarang",
+      "google_direct_note": "Verifikasi 1-klik langsung masuk ke dashboard Anda.",
+      "verify_email_title": "Verifikasi Email Anda",
+      "otp_sent_desc": "Kami telah mengirimkan 6 digit kode OTP verifikasi ke",
+      "verify_and_login": "Verifikasi & Masuk Dashboard",
+      "resend_in": "Kirim ulang kode dalam",
+      "resending": "Mengirim kode...",
+      "resend_code": "Kirim Ulang Kode OTP",
+      "wrong_email": "Bukan email Anda? Ubah Email",
+      "back_to_form": "Kembali ke Formulir"
     },
     "forgot": {
       "reset_title": "Atur Ulang <br /> Akses Anda",

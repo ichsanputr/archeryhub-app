@@ -163,6 +163,41 @@ export const useAuth = () => {
     return response
   }
 
+  const registerWithEmail = async (userData: Record<string, unknown>): Promise<any> => {
+    const baseUrl = useApiBaseUrl()
+    return await $fetch(`${baseUrl}/auth/register-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: userData,
+      credentials: 'include'
+    })
+  }
+
+  const verifyRegisterOTP = async (email: string, otp: string): Promise<any> => {
+    const baseUrl = useApiBaseUrl()
+    const response = await $fetch<{ user?: AuthUser; token?: string; redirect_url?: string }>(`${baseUrl}/auth/verify-register-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: { email, otp },
+      credentials: 'include'
+    })
+    if (response.user) {
+      user.value = response.user
+      await fetchProfileSSR()
+    }
+    return response
+  }
+
+  const resendRegisterOTP = async (email: string): Promise<any> => {
+    const baseUrl = useApiBaseUrl()
+    return await $fetch(`${baseUrl}/auth/resend-register-otp`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: { email },
+      credentials: 'include'
+    })
+  }
+
   const clearClientAuth = () => {
     user.value = null
     archerProfile.value = null
@@ -285,6 +320,9 @@ export const useAuth = () => {
     login,
     loginWithEmail,
     register,
+    registerWithEmail,
+    verifyRegisterOTP,
+    resendRegisterOTP,
     logout,
     fetchProfileSSR,
     handleCallback,

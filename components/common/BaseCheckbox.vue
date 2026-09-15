@@ -33,7 +33,7 @@
       <div class="flex-1 min-w-0">
         <span
           v-if="label || $slots.default"
-          class="text-xs sm:text-sm font-bold text-navy group-hover:text-primary transition-colors block leading-tight truncate"
+          class="text-xs sm:text-sm font-medium text-slate-700 block leading-normal"
         >
           <slot>{{ label }}</slot>
         </span>

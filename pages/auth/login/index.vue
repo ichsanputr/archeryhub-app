@@ -74,7 +74,7 @@
                     </div>
 
                     <BaseInput v-model="form.email" :label="t('auth.login.email_label')" :placeholder="t('auth.login.email_placeholder')" type="email"
-                        icon="mail" required :error="errors.email"
+                        icon="ph:envelope-simple" required :error="errors.email"
                         @update:model-value="validate('email', form.email, [rules.required(), rules.email()])" />
 
                     <div class="space-y-2">
