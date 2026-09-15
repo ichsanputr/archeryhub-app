@@ -118,7 +118,7 @@
           </div>
         </template>
 
-        <!-- ── FINALS COLUMN (GOLD MEDAL FINAL & BRONZE MEDAL FINAL) ── -->
+        <!-- ── FINALS COLUMN (GOLD MEDAL FINAL IN VERTICAL CENTER & BRONZE MEDAL FINAL) ── -->
         <div class="flex flex-col items-center min-w-[270px] sm:min-w-[290px]">
           <!-- Hub Header -->
           <div class="h-10 flex flex-col items-center justify-center mb-6">
@@ -133,10 +133,10 @@
             </span>
           </div>
 
-          <!-- Finals Cards Container -->
-          <div class="flex flex-col justify-around items-center w-full py-2 space-y-6" :style="{ height: getCanvasTotalHeight + 'px' }">
+          <!-- Finals Cards Container: Vertically Centered at 50% Midpoint -->
+          <div class="flex flex-col justify-center items-center w-full py-2 space-y-4" :style="{ height: getCanvasTotalHeight + 'px' }">
             
-            <!-- 1. Gold Medal Final (Top) -->
+            <!-- 1. Gold Medal Final (Centered at exact vertical midpoint matching connector line) -->
             <div class="w-full flex flex-col items-center space-y-2">
               <div class="px-3 py-1 rounded-xl bg-amber-500/10 border border-amber-400/40 flex items-center gap-1.5 text-xs font-bold text-amber-950 shadow-2xs">
                 <Icon icon="ph:crown-fill" class="text-amber-600 text-xs" />
@@ -213,25 +213,24 @@
               </div>
             </div>
 
-            <!-- 2. Bronze Medal Final (Bottom) -->
-            <div class="w-full flex flex-col items-center space-y-2">
-              <div class="px-3 py-1 rounded-xl bg-amber-700/10 border border-amber-700/20 flex items-center gap-1.5 text-xs font-bold text-amber-900 shadow-2xs">
+            <!-- 2. Bronze Medal Final (Neatly underneath Gold Final) -->
+            <div v-if="resolvedBronzeMatch" class="w-full flex flex-col items-center space-y-1.5 pt-2">
+              <div class="px-2.5 py-0.5 rounded-lg bg-amber-700/10 border border-amber-700/20 flex items-center gap-1.5 text-[10px] font-bold text-amber-900 shadow-2xs">
                 <Icon icon="ph:medal-fill" class="text-amber-700 text-xs" />
-                <span>Bronze Medal Final</span>
+                <span>Bronze Medal Final (3rd Place)</span>
               </div>
 
               <div 
-                v-if="resolvedBronzeMatch"
                 @click="selectMatch(resolvedBronzeMatch, 'Bronze Medal Final')"
                 class="w-[240px] sm:w-[260px] bg-white rounded-2xl border border-amber-700/30 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none"
               >
                 <!-- Bronze Header -->
-                <div class="flex items-center justify-between px-3.5 py-1.5 bg-amber-700/10 border-b border-amber-700/20 text-[11px] font-bold text-amber-900">
-                  <div class="flex items-center gap-1.5">
+                <div class="flex items-center justify-between px-3.5 py-1 bg-amber-700/10 border-b border-amber-700/20 text-[10px] font-bold text-amber-900">
+                  <div class="flex items-center gap-1">
                     <Icon icon="ph:medal-fill" class="text-amber-700 text-xs" />
                     <span>Bronze Match</span>
                   </div>
-                  <span v-if="resolvedBronzeMatch.winner_entry_id" class="px-1.5 py-0.2 rounded-md bg-amber-700/20 text-amber-900 text-[10px] font-bold">
+                  <span v-if="resolvedBronzeMatch.winner_entry_id" class="px-1.5 py-0.2 rounded-md bg-amber-700/20 text-amber-900 text-[9px] font-bold">
                     3rd Place
                   </span>
                 </div>
@@ -795,18 +794,17 @@ const getConnectorPathsForRound = (roundNo) => {
   const paths = []
 
   if (isNextFinal) {
+    const yCenter = getCanvasTotalHeight.value * 0.5
     if (currentMatches.length >= 2) {
       const ySemi1 = 0.5 * currentSlotHeight
       const ySemi2 = 1.5 * currentSlotHeight
-      const yGoldMid = getCanvasTotalHeight.value * 0.28
 
-      // Fork from Semi 1 and Semi 2 into Gold Medal Final
-      paths.push(`M 0 ${ySemi1} H 25 V ${yGoldMid} H 50`)
-      paths.push(`M 0 ${ySemi2} H 25 V ${yGoldMid} H 50`)
+      // Fork from Semi 1 and Semi 2 into Gold Medal Final at vertical midpoint (50%)
+      paths.push(`M 0 ${ySemi1} H 25 V ${yCenter} H 50`)
+      paths.push(`M 0 ${ySemi2} H 25 V ${yCenter} H 50`)
     } else if (currentMatches.length === 1) {
       const y1 = 0.5 * currentSlotHeight
-      const yTarget = getCanvasTotalHeight.value * 0.28
-      paths.push(`M 0 ${y1} H 25 V ${yTarget} H 50`)
+      paths.push(`M 0 ${y1} H 25 V ${yCenter} H 50`)
     }
     return paths
   }
