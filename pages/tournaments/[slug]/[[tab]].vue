@@ -1077,12 +1077,12 @@ const { data: eventData, error: eventError, pending: isPageLoading } = useAsyncD
             throw createError({ statusCode: 404, statusMessage: 'Event not found', fatal: true })
         }
     },
-    { lazy: true, server: true }
+    { lazy: false, server: true }
 )
 
-const isExternalTournamentState = useState('isExternalTournamentPage', () => false)
+const isExternalTournamentState = useState('isExternalTournamentPage', () => /^\d+$/.test(String(slug || '')))
 watchEffect(() => {
-    isExternalTournamentState.value = eventData.value?.isExternal === true
+    isExternalTournamentState.value = eventData.value?.isExternal === true || /^\d+$/.test(String(slug || ''))
 })
 onUnmounted(() => {
     isExternalTournamentState.value = false
