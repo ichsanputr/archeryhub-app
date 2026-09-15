@@ -706,13 +706,28 @@
 
             <!-- 6. ELIMINATION BRACKETS (REUSABLE ARCHERIS BRACKET COMPONENT) -->
             <section v-if="hasBracketsData" id="brackets" class="scroll-mt-24 space-y-5">
-              <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:sword-bold" class="size-5 text-navy shrink-0 m-auto block" /></div>
-                <div>
-                  <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
-                    {{ t('brackets_title') }}
-                  </h2>
-                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">{{ t('brackets_desc') }}</p>
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
+                <div class="flex items-center gap-3">
+                  <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:sword-bold" class="size-5 text-navy shrink-0 m-auto block" /></div>
+                  <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
+                      {{ t('brackets_title') }}
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">{{ t('brackets_desc') }}</p>
+                  </div>
+                </div>
+
+                <!-- Fullscreen & Open New Tab Actions -->
+                <div class="flex items-center gap-2 self-start sm:self-auto">
+                  <NuxtLink
+                    :to="`/tournaments/external/${activeTournamentId}/bracket?category=${encodeURIComponent(selectedBracketCategory || availableBracketCategories[0] || '')}`"
+                    target="_blank"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
+                    title="Open Fullscreen Bracket in New Tab"
+                  >
+                    <Icon icon="ph:arrow-square-out-bold" class="text-xs text-navy" />
+                    <span>Open in New Tab</span>
+                  </NuxtLink>
                 </div>
               </div>
 
@@ -739,6 +754,8 @@
                   <ExternalEliminationBracket
                     :rounds="currentArcherisBracketRounds"
                     :config="currentArcherisBracketConfig"
+                    :tournament-slug="activeTournamentId"
+                    :category-name="selectedBracketCategory || availableBracketCategories[0]"
                   />
                 </div>
                 <div v-else class="text-center py-12 text-slate-400 text-xs sm:text-sm">
