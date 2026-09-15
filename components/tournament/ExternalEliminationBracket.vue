@@ -9,7 +9,7 @@
           <div class="flex flex-col items-center min-w-[240px] sm:min-w-[260px]">
             <!-- Round Title Header -->
             <div class="h-12 flex flex-col items-center justify-center mb-6">
-              <span class="text-xs font-bold text-slate-500 font-display uppercase tracking-wider">
+              <span class="text-xs font-bold text-slate-600 font-display">
                 {{ getRoundName(parseInt(rNo)) }}
               </span>
             </div>
@@ -106,7 +106,7 @@
         <div class="flex flex-col items-center min-w-[280px] sm:min-w-[320px] px-2 sm:px-4">
           <!-- Hub Header -->
           <div class="h-12 flex flex-col items-center justify-center mb-6">
-            <span class="text-xs font-bold text-amber-700 font-display uppercase tracking-wider flex items-center gap-1.5">
+            <span class="text-xs font-bold text-amber-900 font-display flex items-center gap-1.5">
               <Icon icon="ph:crown-simple-fill" class="text-amber-500 text-sm" />
               Finals Arena
             </span>
@@ -184,7 +184,7 @@
 
             <!-- 2. Semifinals (Middle) if present -->
             <div v-if="semifinalMatches.length > 0" class="w-full flex flex-col items-center space-y-2 my-auto">
-              <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              <div class="text-xs font-bold text-slate-500 font-display">
                 Semifinals
               </div>
               <div class="flex flex-col gap-3">
@@ -284,7 +284,7 @@
           <div class="flex flex-col items-center min-w-[240px] sm:min-w-[260px]">
             <!-- Round Title Header -->
             <div class="h-12 flex flex-col items-center justify-center mb-6">
-              <span class="text-xs font-bold text-slate-500 font-display uppercase tracking-wider">
+              <span class="text-xs font-bold text-slate-600 font-display">
                 {{ getRoundName(parseInt(rNo)) }}
               </span>
             </div>
@@ -401,7 +401,7 @@
                 <Icon icon="ph:sword-bold" class="text-xl text-navy" />
               </div>
               <div class="min-w-0 pr-6">
-                <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-display">
+                <div class="text-xs font-bold text-slate-500 font-display">
                   {{ selectedMatchRoundName || 'Elimination Match' }}
                 </div>
                 <h3 class="text-base sm:text-lg font-black text-navy font-display truncate">
@@ -469,7 +469,7 @@
 
               <div v-if="parsedSetRows.length > 0" class="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
                 <table class="w-full text-center text-xs border-collapse">
-                  <thead class="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px]">
+                  <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold text-xs">
                     <tr>
                       <th class="py-2.5 px-3 text-left">Set</th>
                       <th class="py-2.5 px-3">Archer A End</th>

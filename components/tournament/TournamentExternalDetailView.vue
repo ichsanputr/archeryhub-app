@@ -219,7 +219,7 @@
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   ]"
                 >
-                  {{ day }}
+                  {{ toTitleCase(day) }}
                 </button>
               </div>
 
@@ -251,7 +251,7 @@
                           </span>
                         </div>
                         <span v-if="ev.stage || ev.phase" class="px-2 py-0.5 rounded-md bg-primary/15 text-navy text-[11px] font-bold">
-                          {{ ev.stage || ev.phase }}
+                          {{ toTitleCase(ev.stage || ev.phase) }}
                         </span>
                       </div>
 
@@ -261,7 +261,7 @@
 
                       <div v-if="ev.category || ev.division" class="flex items-center gap-2 mt-2 text-xs text-slate-500 font-medium">
                         <Icon icon="ph:tag-bold" class="text-slate-400 text-xs shrink-0" />
-                        <span>{{ ev.category || ev.division }}</span>
+                        <span>{{ toTitleCase(ev.category || ev.division) }}</span>
                       </div>
                     </div>
                   </div>
@@ -455,7 +455,7 @@
               <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
                 <div class="overflow-x-auto">
                   <table class="w-full text-left text-xs border-collapse">
-                    <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
+                    <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-xs">
                       <tr>
                         <th class="py-3 px-4 w-12 text-center">#</th>
                         <th @click="handleSortEntries('name')" class="py-3 px-4 cursor-pointer hover:text-navy select-none">
@@ -614,7 +614,7 @@
               <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
                 <div class="overflow-x-auto">
                   <table class="w-full text-left text-xs border-collapse">
-                    <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
+                    <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-xs">
                       <tr>
                         <th class="py-3 px-4 w-12 text-center">{{ t('col_rank') }}</th>
                         <th class="py-3 px-4">{{ t('col_name') }}</th>
@@ -819,7 +819,7 @@
                           (selectedPodiumCategory || availablePodiumCategories[0]) === cat ? 'bg-primary/20 text-navy font-bold' : 'text-slate-700 hover:bg-slate-50'
                         ]"
                       >
-                        <span class="truncate">{{ cat }}</span>
+                        <span class="truncate">{{ toTitleCase(cat) }}</span>
                         <Icon v-if="(selectedPodiumCategory || availablePodiumCategories[0]) === cat" icon="ph:check-bold" class="text-navy text-xs" />
                       </button>
                     </div>
@@ -908,7 +908,7 @@
                 <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
                   <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs border-collapse">
-                      <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
+                      <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-xs">
                         <tr>
                           <th @click="handleSortMedals('rank')" class="py-3 px-4 w-12 text-center cursor-pointer hover:text-navy select-none">
                             <div class="flex items-center justify-center gap-1">
@@ -1049,7 +1049,7 @@
                     <Icon icon="ph:translate-bold" class="text-primary text-sm" />
                     {{ t('language_selector') }}
                   </span>
-                  <span class="text-[11px] font-mono text-slate-400 uppercase font-semibold">{{ currentLang }}</span>
+                  <span class="text-xs font-mono text-slate-400 font-semibold">{{ currentLang }}</span>
                 </div>
 
                 <div class="grid grid-cols-3 gap-1.5 bg-slate-100/80 p-1 rounded-xl">
@@ -1213,7 +1213,7 @@
 
               <!-- Link Copy Section -->
               <div class="space-y-1.5">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-display">
+                <label class="text-xs font-bold text-slate-500 font-display">
                   {{ t('share_link_label') }}
                 </label>
                 <div class="flex items-center gap-2 p-1 bg-slate-50 border border-slate-200 rounded-2xl">
@@ -1238,7 +1238,7 @@
 
               <!-- Social Broadcast Grid -->
               <div class="space-y-2 pt-2">
-                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-display">
+                <label class="text-xs font-bold text-slate-500 font-display">
                   {{ t('share_to_social') }}
                 </label>
                 <div class="grid grid-cols-3 gap-2">
