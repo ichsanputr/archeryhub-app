@@ -831,7 +831,16 @@ const getInitials = (name) => {
 
 <style scoped>
 :deep(svg) {
-  vertical-align: middle;
+  vertical-align: 0 !important;
+  display: block !important;
+  margin: auto !important;
+}
+:deep(.iconify) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: 0 !important;
+  margin: auto !important;
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
