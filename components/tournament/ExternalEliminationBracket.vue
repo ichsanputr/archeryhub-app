@@ -4,9 +4,9 @@
     <div class="overflow-x-auto no-scrollbar py-6 px-4 sm:px-6 bg-slate-50/40 rounded-3xl border border-slate-200/80">
       <div v-if="hasMatches" class="flex items-center justify-center min-w-max gap-4 sm:gap-6 mx-auto relative z-10">
 
-        <!-- ── LEFT SIDE ROUNDS (E.G. 1/8, 1/4) ── -->
+        <!-- ── LEFT SIDE ROUNDS (E.G. 1/8, QUARTERFINALS) ── -->
         <template v-for="rNo in leftSideRoundNumbers" :key="'left-' + rNo">
-          <div class="flex flex-col items-center min-w-[240px] sm:min-w-[260px]">
+          <div class="flex flex-col items-center min-w-[250px] sm:min-w-[270px]">
             <!-- Round Title Header -->
             <div class="h-10 flex flex-col items-center justify-center mb-6">
               <span class="text-xs font-bold text-slate-500 font-display">
@@ -25,7 +25,7 @@
                 <!-- Minimalist Match Card Node -->
                 <div 
                   @click="selectMatch(match, getRoundName(parseInt(rNo)))"
-                  class="w-[230px] sm:w-[250px] bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:border-navy hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none relative"
+                  class="w-[240px] sm:w-[260px] bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:border-navy hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none relative"
                 >
                   <!-- Card Micro-Header -->
                   <div class="flex items-center justify-between px-3 py-1.5 bg-slate-50/80 border-b border-slate-100 text-[11px] font-semibold text-slate-500">
@@ -34,7 +34,7 @@
                       <span>Match {{ match.match_no || 1 }}</span>
                     </div>
                     <div class="flex items-center gap-1 text-[10px] text-slate-400 group-hover:text-navy transition-colors">
-                      <span>Details</span>
+                      <span>Scorecard</span>
                       <Icon icon="ph:arrow-right-bold" class="text-[9px]" />
                     </div>
                   </div>
@@ -124,7 +124,7 @@
           </div>
 
           <!-- Finals Column -->
-          <div class="flex flex-col justify-between items-center w-full py-2" :style="{ height: getSideTotalHeight + 'px' }">
+          <div class="flex flex-col justify-around items-center w-full py-2 space-y-6" :style="{ height: getSideTotalHeight + 'px' }">
             
             <!-- 1. Gold Medal Final (Top) -->
             <div class="w-full flex flex-col items-center space-y-2">
@@ -203,45 +203,7 @@
               </div>
             </div>
 
-            <!-- 2. Semifinals (Middle) if present -->
-            <div v-if="semifinalMatches.length > 0" class="w-full flex flex-col items-center space-y-2 my-auto">
-              <div class="text-xs font-bold text-slate-400 font-display">
-                Semifinals
-              </div>
-              <div class="flex flex-col gap-3">
-                <div 
-                  v-for="sMatch in semifinalMatches"
-                  :key="sMatch.id"
-                  @click="selectMatch(sMatch, 'Semifinal')"
-                  class="w-[240px] sm:w-[260px] bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:border-navy hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none"
-                >
-                  <div class="flex items-center justify-between px-3 py-1 bg-slate-50 border-b border-slate-100 text-[10px] font-semibold text-slate-500">
-                    <span class="font-mono">Match {{ sMatch.match_no || 1 }}</span>
-                    <span v-if="sMatch.winner_entry_id" class="text-emerald-700 font-bold">Done</span>
-                  </div>
-                  <div 
-                    :class="[
-                      'px-3 py-1.5 flex items-center justify-between border-b border-slate-100 text-xs transition-colors',
-                      sMatch.winner_entry_id === 'a' ? 'bg-slate-50 font-bold border-l-2 border-l-navy' : ''
-                    ]"
-                  >
-                    <span class="truncate text-navy">{{ toTitleCase(sMatch.entry_a_name || 'TBD') }}</span>
-                    <span class="font-mono font-bold">{{ sMatch.set_points_a }}</span>
-                  </div>
-                  <div 
-                    :class="[
-                      'px-3 py-1.5 flex items-center justify-between text-xs transition-colors',
-                      sMatch.winner_entry_id === 'b' ? 'bg-slate-50 font-bold border-l-2 border-l-navy' : ''
-                    ]"
-                  >
-                    <span class="truncate text-navy">{{ toTitleCase(sMatch.entry_b_name || 'TBD') }}</span>
-                    <span class="font-mono font-bold">{{ sMatch.set_points_b }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 3. Bronze Medal Match (Bottom) -->
+            <!-- 2. Bronze Medal Match (Bottom) -->
             <div v-if="bronzeMatch" class="w-full flex flex-col items-center space-y-2 mt-4">
               <div class="px-2.5 py-0.5 rounded-lg bg-amber-700/10 border border-amber-700/30 flex items-center gap-1 text-[11px] font-bold text-amber-900 font-display">
                 <Icon icon="ph:medal-fill" class="text-amber-700 text-xs" />
@@ -293,7 +255,7 @@
           </div>
         </div>
 
-        <!-- ── RIGHT SIDE ROUNDS (E.G. 1/4, 1/8) ── -->
+        <!-- ── RIGHT SIDE ROUNDS (E.G. QUARTERFINALS, 1/8) ── -->
         <template v-for="rNo in rightSideRoundNumbers" :key="'right-' + rNo">
           <!-- Connector Path (Right to Previous) -->
           <div class="w-12 sm:w-16 shrink-0 relative" :style="{ height: getSideTotalHeight + 'px' }">
@@ -312,7 +274,7 @@
             </svg>
           </div>
 
-          <div class="flex flex-col items-center min-w-[240px] sm:min-w-[260px]">
+          <div class="flex flex-col items-center min-w-[250px] sm:min-w-[270px]">
             <!-- Round Title Header -->
             <div class="h-10 flex flex-col items-center justify-center mb-6">
               <span class="text-xs font-bold text-slate-500 font-display">
@@ -331,7 +293,7 @@
                 <!-- Minimalist Match Card Node -->
                 <div 
                   @click="selectMatch(match, getRoundName(parseInt(rNo)))"
-                  class="w-[230px] sm:w-[250px] bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:border-navy hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none relative"
+                  class="w-[240px] sm:w-[260px] bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:border-navy hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none relative"
                 >
                   <!-- Card Micro-Header -->
                   <div class="flex items-center justify-between px-3 py-1.5 bg-slate-50/80 border-b border-slate-100 text-[11px] font-semibold text-slate-500">
@@ -340,7 +302,7 @@
                       <span>Match {{ match.match_no || 1 }}</span>
                     </div>
                     <div class="flex items-center gap-1 text-[10px] text-slate-400 group-hover:text-navy transition-colors">
-                      <span>Details</span>
+                      <span>Scorecard</span>
                       <Icon icon="ph:arrow-right-bold" class="text-[9px]" />
                     </div>
                   </div>
@@ -427,134 +389,125 @@
           class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-navy/60 backdrop-blur-md"
           @click.self="selectedMatch = null"
         >
-          <div class="bg-white rounded-3xl border border-slate-200/80 shadow-2xl max-w-xl w-full overflow-hidden relative animate-in fade-in zoom-in-95 duration-150">
+          <div class="bg-white rounded-3xl border border-slate-200/80 shadow-2xl max-w-lg w-full overflow-hidden relative animate-in fade-in zoom-in-95 duration-150">
             
-            <!-- Hero Dark Banner Header -->
-            <div class="bg-navy p-6 text-white relative overflow-hidden">
-              <!-- Radial background glow -->
-              <div class="absolute -right-10 -bottom-10 size-40 rounded-full bg-primary/20 blur-2xl pointer-events-none"></div>
-              <div class="absolute -left-10 -top-10 size-40 rounded-full bg-sky-500/15 blur-2xl pointer-events-none"></div>
-
-              <!-- Top Bar: Phase Badge & Close Button -->
-              <div class="flex items-center justify-between relative z-10 mb-5">
-                <div class="flex items-center gap-2">
-                  <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-primary font-bold text-xs font-display border border-white/10 flex items-center gap-1.5">
-                    <Icon icon="ph:sword-bold" class="text-xs" />
+            <!-- Modal Header Bar -->
+            <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+              <div class="flex items-center gap-2">
+                <div class="size-8 rounded-xl bg-primary/20 text-navy flex items-center justify-center shrink-0">
+                  <Icon icon="ph:sword-bold" class="text-base text-navy" />
+                </div>
+                <div>
+                  <h3 class="text-sm font-bold text-navy font-display">
                     {{ selectedMatchRoundName || 'Elimination Match' }}
-                  </span>
-                  <span class="text-xs font-mono text-slate-300 font-semibold">
-                    #{{ selectedMatch.match_no || 1 }}
+                  </h3>
+                  <span class="text-[11px] font-mono text-slate-400 font-semibold">
+                    Match #{{ selectedMatch.match_no || 1 }} Scorecard
                   </span>
                 </div>
-
-                <button
-                  type="button"
-                  @click="selectedMatch = null"
-                  class="size-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-200 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
-                >
-                  <Icon icon="ph:x-bold" class="text-sm" />
-                </button>
               </div>
 
-              <!-- Archer Face-Off Hero Comparison Card -->
-              <div class="relative z-10 grid grid-cols-11 items-center gap-2 pt-1">
+              <button
+                type="button"
+                @click="selectedMatch = null"
+                class="size-8 rounded-full bg-slate-200/70 hover:bg-slate-300 text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <Icon icon="ph:x-bold" class="text-xs" />
+              </button>
+            </div>
+
+            <!-- Face-Off Comparison Section -->
+            <div class="p-6 space-y-6">
+              <div class="grid grid-cols-11 items-center gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
                 <!-- Archer A -->
-                <div class="col-span-5 flex flex-col items-center text-center space-y-1.5">
+                <div class="col-span-5 flex flex-col items-center text-center space-y-1">
                   <div class="relative">
                     <div 
                       :class="[
-                        'size-14 rounded-2xl flex items-center justify-center text-base font-black transition-all shadow-md',
+                        'size-13 rounded-2xl flex items-center justify-center text-sm font-black transition-all shadow-2xs',
                         selectedMatch.winner_entry_id === 'a' 
-                          ? 'bg-gradient-to-tr from-primary/30 to-primary/60 text-white ring-2 ring-primary border border-white/30' 
-                          : 'bg-white/10 text-slate-200 border border-white/10'
+                          ? 'bg-navy text-primary ring-2 ring-primary' 
+                          : 'bg-white text-slate-700 border border-slate-200'
                       ]"
                     >
                       {{ getInitials(selectedMatch.entry_a_name) }}
                     </div>
-                    <div v-if="selectedMatch.winner_entry_id === 'a'" class="absolute -top-2 -right-2 size-6 rounded-full bg-amber-400 text-amber-950 flex items-center justify-center shadow-md">
-                      <Icon icon="ph:crown-fill" class="text-xs" />
+                    <div v-if="selectedMatch.winner_entry_id === 'a'" class="absolute -top-1.5 -right-1.5 size-5 rounded-full bg-amber-400 text-amber-950 flex items-center justify-center shadow-xs">
+                      <Icon icon="ph:crown-fill" class="text-[10px]" />
                     </div>
                   </div>
 
                   <div class="w-full px-1">
-                    <div class="font-bold text-white text-xs sm:text-sm truncate" :title="selectedMatch.entry_a_name">
+                    <div class="font-bold text-navy text-xs truncate" :title="selectedMatch.entry_a_name">
                       {{ toTitleCase(selectedMatch.entry_a_name || 'TBD') }}
                     </div>
-                    <div v-if="selectedMatch.entry_a_seed" class="text-[11px] font-mono text-slate-300 font-semibold mt-0.5">
+                    <div v-if="selectedMatch.entry_a_seed" class="text-[10px] font-mono text-slate-400 font-semibold">
                       Seed #{{ selectedMatch.entry_a_seed }}
                     </div>
                   </div>
 
-                  <!-- Final Set Points / Score Display -->
+                  <!-- Final Score -->
                   <div 
                     :class="[
-                      'text-3xl sm:text-4xl font-black font-display tracking-tight mt-1',
-                      selectedMatch.winner_entry_id === 'a' ? 'text-primary' : 'text-slate-300'
+                      'text-2xl sm:text-3xl font-black font-display tracking-tight pt-0.5',
+                      selectedMatch.winner_entry_id === 'a' ? 'text-navy' : 'text-slate-400'
                     ]"
                   >
                     {{ selectedMatch.set_points_a !== undefined && selectedMatch.set_points_a !== '' ? selectedMatch.set_points_a : '-' }}
                   </div>
                 </div>
 
-                <!-- Center VS Divider -->
-                <div class="col-span-1 flex flex-col items-center justify-center space-y-1">
-                  <div class="size-7 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-[10px] font-black text-slate-300 font-display">
-                    VS
-                  </div>
-                  <span class="text-[9px] font-mono text-slate-400 uppercase font-semibold">Final</span>
+                <!-- Center VS -->
+                <div class="col-span-1 flex flex-col items-center justify-center">
+                  <span class="text-[11px] font-black font-display text-slate-300">VS</span>
                 </div>
 
                 <!-- Archer B -->
-                <div class="col-span-5 flex flex-col items-center text-center space-y-1.5">
+                <div class="col-span-5 flex flex-col items-center text-center space-y-1">
                   <div class="relative">
                     <div 
                       :class="[
-                        'size-14 rounded-2xl flex items-center justify-center text-base font-black transition-all shadow-md',
+                        'size-13 rounded-2xl flex items-center justify-center text-sm font-black transition-all shadow-2xs',
                         selectedMatch.winner_entry_id === 'b' 
-                          ? 'bg-gradient-to-tr from-primary/30 to-primary/60 text-white ring-2 ring-primary border border-white/30' 
-                          : 'bg-white/10 text-slate-200 border border-white/10'
+                          ? 'bg-navy text-primary ring-2 ring-primary' 
+                          : 'bg-white text-slate-700 border border-slate-200'
                       ]"
                     >
                       {{ getInitials(selectedMatch.entry_b_name) }}
                     </div>
-                    <div v-if="selectedMatch.winner_entry_id === 'b'" class="absolute -top-2 -right-2 size-6 rounded-full bg-amber-400 text-amber-950 flex items-center justify-center shadow-md">
-                      <Icon icon="ph:crown-fill" class="text-xs" />
+                    <div v-if="selectedMatch.winner_entry_id === 'b'" class="absolute -top-1.5 -right-1.5 size-5 rounded-full bg-amber-400 text-amber-950 flex items-center justify-center shadow-xs">
+                      <Icon icon="ph:crown-fill" class="text-[10px]" />
                     </div>
                   </div>
 
                   <div class="w-full px-1">
-                    <div class="font-bold text-white text-xs sm:text-sm truncate" :title="selectedMatch.entry_b_name">
+                    <div class="font-bold text-navy text-xs truncate" :title="selectedMatch.entry_b_name">
                       {{ toTitleCase(selectedMatch.entry_b_name || 'TBD') }}
                     </div>
-                    <div v-if="selectedMatch.entry_b_seed" class="text-[11px] font-mono text-slate-300 font-semibold mt-0.5">
+                    <div v-if="selectedMatch.entry_b_seed" class="text-[10px] font-mono text-slate-400 font-semibold">
                       Seed #{{ selectedMatch.entry_b_seed }}
                     </div>
                   </div>
 
-                  <!-- Final Set Points / Score Display -->
+                  <!-- Final Score -->
                   <div 
                     :class="[
-                      'text-3xl sm:text-4xl font-black font-display tracking-tight mt-1',
-                      selectedMatch.winner_entry_id === 'b' ? 'text-primary' : 'text-slate-300'
+                      'text-2xl sm:text-3xl font-black font-display tracking-tight pt-0.5',
+                      selectedMatch.winner_entry_id === 'b' ? 'text-navy' : 'text-slate-400'
                     ]"
                   >
                     {{ selectedMatch.set_points_b !== undefined && selectedMatch.set_points_b !== '' ? selectedMatch.set_points_b : '-' }}
                   </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Modal Content Body -->
-            <div class="p-6 space-y-5">
-              
-              <!-- Set by Set Scorecard Section -->
-              <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                  <h4 class="text-xs font-bold text-navy font-display flex items-center gap-1.5">
-                    <Icon icon="ph:list-numbers-bold" class="text-primary text-sm" />
-                    <span>Set-by-Set Arrow Scores</span>
+              <!-- Set by Set Arrow Breakdown Table -->
+              <div class="space-y-2.5">
+                <div class="flex items-center justify-between px-1">
+                  <h4 class="text-xs font-bold text-navy font-display">
+                    Set-by-Set Arrow Scores
                   </h4>
-                  <span class="text-[11px] font-mono text-slate-400 font-semibold">Official Match Logs</span>
+                  <span class="text-[10px] font-mono text-slate-400 font-semibold">Official Match Record</span>
                 </div>
 
                 <div v-if="parsedSetRows.length > 0" class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
@@ -617,9 +570,8 @@
                 </div>
 
                 <div v-else class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 text-center text-slate-400 text-xs space-y-1">
-                  <Icon icon="ph:info-bold" class="text-2xl mx-auto text-slate-300" />
+                  <Icon icon="ph:info-bold" class="text-xl mx-auto text-slate-300" />
                   <p class="font-medium text-slate-500">No individual arrow end breakdown recorded.</p>
-                  <p class="text-[11px] text-slate-400">Match result logged with final set scores.</p>
                 </div>
               </div>
 
@@ -665,7 +617,7 @@ const props = defineProps({
 
 // Layout Calculations
 const BASE_MATCH_HEIGHT = 140
-const HUB_UNIT_HEIGHT = 520
+const HUB_UNIT_HEIGHT = 480
 
 const getTotalRounds = computed(() => Object.keys(props.rounds || {}).length)
 
@@ -677,29 +629,24 @@ const hasMatches = computed(() => {
 const leftSideRoundNumbers = computed(() => {
   const total = getTotalRounds.value
   const nums = []
-  for (let i = 1; i <= Math.max(1, total - 2); i++) nums.push(i)
+  for (let i = 1; i <= Math.max(1, total - 1); i++) nums.push(i)
   return nums
 })
 
 const rightSideRoundNumbers = computed(() => {
   const total = getTotalRounds.value
   const nums = []
-  for (let i = Math.max(1, total - 2); i >= 1; i--) nums.push(i)
+  for (let i = Math.max(1, total - 1); i >= 1; i--) nums.push(i)
   return nums
 })
 
-const semifinalMatches = computed(() => {
-  const total = getTotalRounds.value
-  return props.rounds?.[total - 1] || []
-})
-
-const finalMatches = computed(() => {
+const finalsRoundMatches = computed(() => {
   const total = getTotalRounds.value
   return props.rounds?.[total] || []
 })
 
-const goldMatch = computed(() => finalMatches.value[0] || null)
-const bronzeMatch = computed(() => finalMatches.value[1] || null)
+const goldMatch = computed(() => finalsRoundMatches.value[0] || null)
+const bronzeMatch = computed(() => finalsRoundMatches.value[1] || null)
 
 const getMatchesForSide = (roundNo, side) => {
   const all = props.rounds?.[roundNo] || []
@@ -708,18 +655,17 @@ const getMatchesForSide = (roundNo, side) => {
 }
 
 const getRoundName = (roundNo) => {
-  const size = props.config?.bracket_size || 8
-  const totalRoundsForSize = Math.max(1, Math.round(Math.log2(size)))
-  const roundFromEnd = totalRoundsForSize - roundNo + 1
-  if (roundFromEnd <= 1) return 'Final'
-  if (roundFromEnd === 2) return 'Semifinal'
-  if (roundFromEnd === 3) return 'Quarterfinal'
-  return `1/${Math.pow(2, roundFromEnd)} Final`
+  const totalRounds = getTotalRounds.value
+  const roundFromEnd = totalRounds - roundNo + 1
+  if (roundFromEnd <= 1) return 'Finals'
+  if (roundFromEnd === 2) return 'Semifinals'
+  if (roundFromEnd === 3) return 'Quarterfinals'
+  return `1/${Math.pow(2, roundFromEnd - 1)} Finals`
 }
 
 const getSideTotalHeight = computed(() => {
-  const size = props.config?.bracket_size || 8
-  const maxSideMatches = Math.max(1, size / 4)
+  const round1Matches = props.rounds?.[1] || []
+  const maxSideMatches = Math.max(1, Math.ceil(round1Matches.length / 2))
   const matchesHeight = maxSideMatches * BASE_MATCH_HEIGHT
   return Math.max(matchesHeight, HUB_UNIT_HEIGHT)
 })

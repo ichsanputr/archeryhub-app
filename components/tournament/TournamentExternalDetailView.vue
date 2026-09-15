@@ -397,7 +397,7 @@
                   >
                     <div class="flex items-center gap-1.5 truncate">
                       <Icon icon="ph:shield-chevron" class="text-primary text-sm shrink-0" />
-                      <span class="truncate">{{ entriesClubFilter === 'all' ? t('filter_club_all') : entriesClubFilter }}</span>
+                      <span class="truncate">{{ entriesClubFilter === 'all' ? t('filter_club_all') : toTitleCase(entriesClubFilter) }}</span>
                     </div>
                     <Icon :icon="showClubDropdown ? 'ph:caret-up-bold' : 'ph:caret-down-bold'" class="text-xs text-slate-400 shrink-0" />
                   </button>
@@ -486,7 +486,7 @@
                         </td>
                         <td class="py-3 px-4">
                           <span class="px-2.5 py-1 rounded-lg bg-navy/5 text-navy font-semibold text-[11px]">
-                            {{ athlete.category || '-' }}
+                            {{ toTitleCase(athlete.category || '-') }}
                           </span>
                         </td>
                       </tr>
@@ -729,7 +729,7 @@
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                   ]"
                 >
-                  {{ cat }}
+                  {{ toTitleCase(cat) }}
                 </button>
               </div>
 
@@ -777,7 +777,7 @@
                     >
                       <div class="flex items-center gap-1.5 truncate">
                         <Icon icon="ph:tag-bold" class="text-primary text-sm shrink-0" />
-                        <span class="truncate">{{ selectedPodiumCategory || availablePodiumCategories[0] || 'Select Category' }}</span>
+                        <span class="truncate">{{ toTitleCase(selectedPodiumCategory || availablePodiumCategories[0] || 'Select Category') }}</span>
                       </div>
                       <Icon :icon="showPodiumDropdown ? 'ph:caret-up-bold' : 'ph:caret-down-bold'" class="text-xs text-slate-400 shrink-0" />
                     </button>
@@ -2028,101 +2028,141 @@ const currentArcherisBracketRounds = computed(() => {
     })
   }
 
-  const phaseOrder = (pName) => {
-    const p = String(pName).toLowerCase()
-    if (p.includes('1/32') || p.includes('32')) return 1
-    if (p.includes('1/16') || p.includes('16')) return 2
-    if (p.includes('1/8') || p.includes('8') || p.includes('eighth')) return 3
-    if (p.includes('1/4') || p.includes('4') || p.includes('quarter')) return 4
-    if (p.includes('semi') || p.includes('1/2') || p.includes('2')) return 5
-    if (p.includes('bronze')) return 6.1
-    if (p.includes('gold') || p.includes('final')) return 6.2
-    return 99
+  // Parse all matches using smart Ianseo column detection
+  const parseMatchItem = (m, idx, phaseLabel) => {
+    const a1 = String(m.archer1 || m.name1 || m.archer_a || m.name_a || '').trim()
+    const s1 = String(m.score1 || m.score_a || '').trim()
+    const seed1 = String(m.seed1 || m.seed_a || '').trim()
+    const sets1 = String(m.sets1 || m.sets_a || '').trim()
+
+    const a2 = String(m.archer2 || m.name2 || m.archer_b || m.name_b || '').trim()
+    const s2 = String(m.score2 || m.score_b || '').trim()
+    const seed2 = String(m.seed2 || m.seed_b || '').trim()
+    const sets2 = String(m.sets2 || m.sets_b || '').trim()
+
+    let nameA = 'TBD'
+    let realSeedA = seed1
+    let scoreA = s1
+
+    if (/[a-zA-Z]/.test(a1)) {
+      nameA = a1
+      scoreA = s1
+    } else if (/[a-zA-Z]/.test(s1)) {
+      nameA = s1
+      realSeedA = /^\d+$/.test(a1) ? a1 : seed1
+    }
+
+    let nameB = 'TBD'
+    let realSeedB = seed2
+    let scoreB = s2
+
+    if (/[a-zA-Z]/.test(a2)) {
+      nameB = a2
+      scoreB = s2
+    } else if (/[a-zA-Z]/.test(s2)) {
+      nameB = s2
+      realSeedB = /^\d+$/.test(a2) ? a2 : seed2
+    }
+
+    // If scores are non-numeric or empty, calculate set points from sets1 & sets2
+    const arrA = sets1.split(/\s+/).map(Number).filter(n => !isNaN(n))
+    const arrB = sets2.split(/\s+/).map(Number).filter(n => !isNaN(n))
+
+    if (!/^\d+$/.test(scoreA) && arrA.length > 0 && arrB.length > 0) {
+      let pA = 0
+      let pB = 0
+      for (let i = 0; i < Math.min(arrA.length, arrB.length); i++) {
+        if (arrA[i] > arrB[i]) pA += 2
+        else if (arrB[i] > arrA[i]) pB += 2
+        else { pA += 1; pB += 1 }
+      }
+      scoreA = String(pA)
+      scoreB = String(pB)
+    }
+
+    let winnerId = null
+    const nA = parseFloat(scoreA)
+    const nB = parseFloat(scoreB)
+    if (!isNaN(nA) && !isNaN(nB)) {
+      if (nA > nB) winnerId = 'a'
+      else if (nB > nA) winnerId = 'b'
+    }
+
+    return {
+      id: `m_${phaseLabel}_${idx}`,
+      match_no: idx + 1,
+      phase: phaseLabel,
+      entry_a_id: 'a',
+      entry_a_name: toTitleCase(nameA),
+      entry_a_seed: realSeedA,
+      set_points_a: scoreA,
+      total_score_a: scoreA,
+      sets_a: sets1,
+      entry_b_id: 'b',
+      entry_b_name: toTitleCase(nameB),
+      entry_b_seed: realSeedB,
+      set_points_b: scoreB,
+      total_score_b: scoreB,
+      sets_b: sets2,
+      winner_entry_id: winnerId,
+      is_bye: (nameA.toUpperCase() === 'BYE' || nameB.toUpperCase() === 'BYE')
+    }
   }
 
-  let semis = []
-  let goldMatch = null
+  let allPreliminaryMatches = []
   let bronzeMatch = null
-  let earlierRounds = {}
 
   phasesList.forEach(p => {
-    const pName = p.phase || ''
+    const pName = String(p.phase || '')
     const pLower = pName.toLowerCase()
     const matches = Array.isArray(p.matches) ? p.matches : []
 
     matches.forEach((m, mIdx) => {
-      const score1 = m.score1 ?? m.score_a ?? ''
-      const score2 = m.score2 ?? m.score_b ?? ''
-      const archer1 = m.archer1 || m.name1 || m.archer_a || m.name_a || 'TBD'
-      const archer2 = m.archer2 || m.name2 || m.archer_b || m.name_b || 'TBD'
-      const seed1 = m.seed1 || m.seed_a || ''
-      const seed2 = m.seed2 || m.seed_b || ''
-
-      let winnerId = null
-      const s1Num = parseFloat(score1)
-      const s2Num = parseFloat(score2)
-      if (!isNaN(s1Num) && !isNaN(s2Num)) {
-        if (s1Num > s2Num) winnerId = 'a'
-        else if (s2Num > s1Num) winnerId = 'b'
-      }
-
-      const matchObj = {
-        id: `m_${pName}_${mIdx}`,
-        match_no: mIdx + 1,
-        entry_a_id: 'a',
-        entry_a_name: archer1,
-        entry_a_seed: seed1,
-        set_points_a: score1,
-        total_score_a: score1,
-        sets_a: m.sets1 || m.sets_a || '',
-        entry_b_id: 'b',
-        entry_b_name: archer2,
-        entry_b_seed: seed2,
-        set_points_b: score2,
-        total_score_b: score2,
-        sets_b: m.sets2 || m.sets_b || '',
-        winner_entry_id: winnerId,
-        is_bye: (archer1 === 'BYE' || archer2 === 'BYE')
-      }
-
+      const parsed = parseMatchItem(m, mIdx, pName)
       if (pLower.includes('bronze')) {
-        bronzeMatch = matchObj
-      } else if (pLower.includes('gold') || (pLower.includes('final') && !pLower.includes('semi') && !pLower.includes('quarter'))) {
-        goldMatch = matchObj
-      } else if (pLower.includes('semi')) {
-        semis.push(matchObj)
+        bronzeMatch = parsed
       } else {
-        if (!earlierRounds[pName]) earlierRounds[pName] = []
-        earlierRounds[pName].push(matchObj)
+        allPreliminaryMatches.push(parsed)
       }
     })
   })
 
+  // Structure matches into 1/8, Quarterfinals, Semifinals, Finals
+  const total = allPreliminaryMatches.length
   const rounds = {}
-  let rIdx = 1
-  const sortedEarlier = Object.keys(earlierRounds).sort((a, b) => phaseOrder(a) - phaseOrder(b))
-  sortedEarlier.forEach(pName => {
-    rounds[rIdx] = earlierRounds[pName]
-    rIdx++
-  })
 
-  // Ensure Semifinals Slot
-  if (semis.length > 0) {
-    rounds[rIdx] = semis
-    rIdx++
-  } else if (rIdx > 1 || goldMatch || bronzeMatch) {
-    rounds[rIdx] = []
-    rIdx++
-  }
-
-  // Finals Slot (Gold + Bronze)
-  const finalsList = []
-  if (goldMatch) finalsList.push(goldMatch)
-  if (bronzeMatch) finalsList.push(bronzeMatch)
-  if (finalsList.length > 0) {
-    rounds[rIdx] = finalsList
-  } else if (rIdx === 2) {
-    rounds[rIdx] = []
+  if (total >= 14) {
+    // 16-archer bracket: 8 (1/8) -> 4 (QF) -> 2 (SF) -> 1 (Gold)
+    rounds[1] = allPreliminaryMatches.slice(0, 8)
+    rounds[2] = allPreliminaryMatches.slice(8, 12)
+    rounds[3] = allPreliminaryMatches.slice(12, 14)
+    const finals = []
+    if (total >= 15) finals.push(allPreliminaryMatches[14])
+    if (bronzeMatch) finals.push(bronzeMatch)
+    rounds[4] = finals
+  } else if (total >= 12) {
+    rounds[1] = allPreliminaryMatches.slice(0, 8)
+    rounds[2] = allPreliminaryMatches.slice(8, 12)
+    rounds[3] = allPreliminaryMatches.slice(12, 14)
+    rounds[4] = bronzeMatch ? [bronzeMatch] : []
+  } else if (total >= 6) {
+    // 8-archer bracket: 4 (QF) -> 2 (SF) -> 1 (Gold)
+    rounds[1] = allPreliminaryMatches.slice(0, 4)
+    rounds[2] = allPreliminaryMatches.slice(4, 6)
+    const finals = []
+    if (total >= 7) finals.push(allPreliminaryMatches[6])
+    if (bronzeMatch) finals.push(bronzeMatch)
+    rounds[3] = finals
+  } else if (total >= 2) {
+    // 4-archer bracket: 2 (SF) -> 1 (Gold)
+    rounds[1] = allPreliminaryMatches.slice(0, 2)
+    const finals = []
+    if (total >= 3) finals.push(allPreliminaryMatches[2])
+    if (bronzeMatch) finals.push(bronzeMatch)
+    rounds[2] = finals
+  } else {
+    rounds[1] = allPreliminaryMatches
+    if (bronzeMatch) rounds[2] = [bronzeMatch]
   }
 
   return rounds
