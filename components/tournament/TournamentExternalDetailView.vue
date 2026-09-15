@@ -1304,11 +1304,11 @@ const activeTournamentData = computed(() => props.tournamentData || {})
 // ─────────────────────────────────────────────────────────────
 // INTERNATIONALIZATION (ID, EN, IT) - REPLACING KO WITH IT
 // ─────────────────────────────────────────────────────────────
-const currentLang = ref('id')
+const currentLang = ref('en')
 
 const availableLanguages = [
-  { code: 'id', label: 'Indonesia', flag: 'circle-flags:id' },
   { code: 'en', label: 'English', flag: 'circle-flags:gb' },
+  { code: 'id', label: 'Indonesia', flag: 'circle-flags:id' },
   { code: 'it', label: 'Italiano', flag: 'circle-flags:it' }
 ]
 
