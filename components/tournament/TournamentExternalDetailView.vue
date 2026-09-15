@@ -107,7 +107,7 @@
             <!-- 1. TOURNAMENT OVERVIEW -->
             <section id="overview" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:info-bold" class="size-5 text-navy shrink-0 m-auto block" /></div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon"><Icon icon="ph:info-bold" class="size-5 text-navy" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('overview_title') }}
@@ -174,7 +174,7 @@
             <!-- 2. COMPETITION SCHEDULE -->
             <section v-if="hasScheduleData" id="schedule" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:calendar-check-bold" class="size-5 text-navy shrink-0 m-auto block" /></div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon"><Icon icon="ph:calendar-check-bold" class="size-5 text-navy" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('schedule_title') }}
@@ -265,7 +265,7 @@
             <!-- 3. FIELD OF PLAY (FOP LAYOUT) -->
             <section v-if="hasFopData" id="fop" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:target-bold" class="size-5 text-navy shrink-0 m-auto block" /></div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon"><Icon icon="ph:target-bold" class="size-5 text-navy" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('fop_title') }}
@@ -359,7 +359,7 @@
             <!-- 4. ATHLETES & ENTRIES -->
             <section v-if="hasEntriesData" id="athletes" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:users-four-bold" class="size-5 text-navy shrink-0 m-auto block" /></div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon"><Icon icon="ph:users-four-bold" class="size-5 text-navy" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('athletes_title') }}
@@ -555,7 +555,7 @@
             <!-- 5. QUALIFICATION RESULTS -->
             <section v-if="hasQualificationsData" id="qualifications" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:medal-bold" class="size-5 text-navy shrink-0 m-auto block" /></div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon"><Icon icon="ph:medal-bold" class="size-5 text-navy" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('qualifications_title') }}
@@ -564,151 +564,100 @@
                 </div>
               </div>
 
-              <!-- Category Filter Chips (Single Line Scrolling) -->
-              <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-                <button
-                  v-for="cat in availableQualificationCategories"
-                  :key="cat"
-                  @click="selectedQualCategory = cat; qualCurrentPage = 1"
-                  :class="[
-                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
-                    selectedQualCategory === cat
-                      ? 'bg-navy text-white shadow-xs font-bold'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                  ]"
-                >
-                  {{ toTitleCase(cat) }}
-                </button>
-              </div>
-
-              <!-- Search Filter in Category -->
-              <div class="relative">
-                <Icon icon="ph:magnifying-glass-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
-                <input
-                  v-model="resultsSearchQuery"
-                  type="text"
-                  :placeholder="t('search_athlete_placeholder')"
-                  class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-navy focus:bg-white transition-all"
-                />
-              </div>
-
-              <!-- Qualifications Table Container -->
-              <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
-                <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs border-collapse">
-                    <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-xs">
-                      <tr>
-                        <th class="py-3 px-4 w-12 text-center">{{ t('col_rank') }}</th>
-                        <th class="py-3 px-4">{{ t('col_name') }}</th>
-                        <th class="py-3 px-4">{{ t('col_club') }}</th>
-                        <th class="py-3 px-4 text-center">{{ t('col_score') }}</th>
-                        <th class="py-3 px-4 text-center">{{ t('col_10s') }}</th>
-                        <th class="py-3 px-4 text-center">{{ t('col_xs') }}</th>
-                      </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 bg-white">
-                      <tr
-                        v-for="(score, idx) in paginatedQualScores"
-                        :key="idx"
-                        class="hover:bg-slate-50/60 transition-colors"
-                      >
-                        <td class="py-3 px-4 text-center font-mono font-bold text-navy">
-                          <span
-                            :class="[
-                              'inline-flex items-center justify-center size-6 rounded-full text-xs',
-                              score.rank === 1 ? 'bg-amber-100 text-amber-800 font-black' : '',
-                              score.rank === 2 ? 'bg-slate-200 text-slate-700 font-black' : '',
-                              score.rank === 3 ? 'bg-amber-700/20 text-amber-900 font-black' : ''
-                            ]"
-                          >
-                            {{ score.rank || idx + 1 }}
-                          </span>
-                        </td>
-                        <td class="py-3 px-4">
-                          <div class="font-bold text-navy sm:text-xs">
-                            {{ toTitleCase(score.name || score.athlete_name) }}
-                          </div>
-                        </td>
-                        <td class="py-3 px-4 text-slate-600 font-medium">
-                          {{ toTitleCase(score.club || score.country || '-') }}
-                        </td>
-                        <td class="py-3 px-4 text-center font-mono font-bold text-navy text-sm">
-                          {{ score.score || score.total || '-' }}
-                        </td>
-                        <td class="py-3 px-4 text-center font-mono text-slate-500">
-                          {{ score.tens || score['10s'] || score.tens_count || '-' }}
-                        </td>
-                        <td class="py-3 px-4 text-center font-mono text-slate-500">
-                          {{ score.xs || score['xs'] || score.x_count || '-' }}
-                        </td>
-                      </tr>
-
-                      <tr v-if="paginatedQualScores.length === 0">
-                        <td colspan="6" class="py-8 text-center text-slate-400">
-                          {{ t('no_qual_scores') }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <!-- QUALIFICATIONS FOOTER (ITEMS PER PAGE + PAGINATION ON FOOTER!) -->
-                <div class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                  <!-- Custom Items Per Page Dropdown / Pills -->
-                  <div class="flex items-center gap-2">
-                    <span class="text-slate-500 font-medium">{{ t('items_per_page') }}:</span>
-                    <div class="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-0.5">
-                      <button
-                        v-for="size in [10, 20, 30, 50]"
-                        :key="size"
-                        type="button"
-                        @click="qualPageSize = size; qualCurrentPage = 1"
-                        :class="[
-                          'px-2 py-0.5 rounded-lg text-xs font-semibold transition-all cursor-pointer',
-                          qualPageSize === size
-                            ? 'bg-navy text-white shadow-2xs font-bold'
-                            : 'text-slate-600 hover:text-navy hover:bg-slate-50'
-                        ]"
-                      >
-                        {{ size }}
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Center: Summary Info -->
-                  <div class="text-slate-500 font-medium">
-                    {{ t('showing_x_of_y_scores', { current: paginatedQualScores.length, total: filteredQualScores.length }) }}
-                  </div>
-
-                  <!-- Right: Prev / Next Buttons -->
-                  <div class="flex items-center gap-1">
+              <!-- Unified External Table Component for Qualification Results -->
+              <TournamentExternalDataTable
+                :columns="qualColumns"
+                :items="paginatedQualScores"
+                :total-items="filteredQualScores.length"
+                :current-page="qualCurrentPage"
+                :page-size="qualPageSize"
+                :page-size-options="[10, 20, 30, 50]"
+                :show-search="true"
+                v-model:modelValueSearch="resultsSearchQuery"
+                :search-placeholder="t('search_athlete_placeholder')"
+                @update:currentPage="qualCurrentPage = $event"
+                @update:pageSize="qualPageSize = $event"
+                :empty-text="t('no_qual_scores')"
+                :summary-text="t('showing_x_of_y_scores', { current: paginatedQualScores.length, total: filteredQualScores.length })"
+                :items-per-page-label="t('items_per_page')"
+                :prev-page-label="t('prev_page')"
+                :next-page-label="t('next_page')"
+              >
+                <!-- Category Filter Pills Slot -->
+                <template #categories>
+                  <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
                     <button
-                      :disabled="qualCurrentPage <= 1"
-                      @click="qualCurrentPage--"
-                      class="px-3 py-1 rounded-lg border border-slate-200 bg-white font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-all"
+                      v-for="cat in availableQualificationCategories"
+                      :key="cat"
+                      @click="selectedQualCategory = cat; qualCurrentPage = 1"
+                      :class="[
+                        'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
+                        selectedQualCategory === cat
+                          ? 'bg-navy text-white shadow-xs font-bold'
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      ]"
                     >
-                      {{ t('prev_page') }}
-                    </button>
-                    <span class="px-2 font-bold text-navy">
-                      {{ qualCurrentPage }} / {{ totalQualPages }}
-                    </span>
-                    <button
-                      :disabled="qualCurrentPage >= totalQualPages"
-                      @click="qualCurrentPage++"
-                      class="px-3 py-1 rounded-lg border border-slate-200 bg-white font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-all"
-                    >
-                      {{ t('next_page') }}
+                      {{ toTitleCase(cat) }}
                     </button>
                   </div>
-                </div>
-              </div>
+                </template>
+
+                <!-- Custom Cell: Rank -->
+                <template #cell-rank="{ item, rowIndex }">
+                  <span
+                    :class="[
+                      'inline-flex items-center justify-center size-6 rounded-full text-xs font-mono font-bold',
+                      item.rank === 1 ? 'bg-amber-100 text-amber-800 font-black' : '',
+                      item.rank === 2 ? 'bg-slate-200 text-slate-700 font-black' : '',
+                      item.rank === 3 ? 'bg-amber-700/20 text-amber-900 font-black' : 'text-navy'
+                    ]"
+                  >
+                    {{ item.rank || rowIndex }}
+                  </span>
+                </template>
+
+                <!-- Custom Cell: Name -->
+                <template #cell-name="{ item }">
+                  <div class="font-bold text-navy sm:text-xs">
+                    {{ toTitleCase(item.name || item.athlete_name) }}
+                  </div>
+                </template>
+
+                <!-- Custom Cell: Club -->
+                <template #cell-club="{ item }">
+                  <span class="text-slate-600 font-medium">
+                    {{ toTitleCase(item.club || item.country || '-') }}
+                  </span>
+                </template>
+
+                <!-- Custom Cell: Score -->
+                <template #cell-score="{ item }">
+                  <span class="font-mono font-bold text-navy text-sm">
+                    {{ item.score || item.total || '-' }}
+                  </span>
+                </template>
+
+                <!-- Custom Cell: 10s -->
+                <template #cell-tens="{ item }">
+                  <span class="font-mono text-slate-500">
+                    {{ item.tens || item['10s'] || item.tens_count || '-' }}
+                  </span>
+                </template>
+
+                <!-- Custom Cell: Xs -->
+                <template #cell-xs="{ item }">
+                  <span class="font-mono text-slate-500">
+                    {{ item.xs || item['xs'] || item.x_count || '-' }}
+                  </span>
+                </template>
+              </TournamentExternalDataTable>
             </section>
 
             <!-- 6. ELIMINATION BRACKETS (REUSABLE ARCHERIS BRACKET COMPONENT) -->
             <section v-if="hasBracketsData" id="brackets" class="scroll-mt-24 space-y-5">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
                 <div class="flex items-center gap-3">
-                  <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:sword-bold" class="size-5 text-navy shrink-0 m-auto block" /></div>
+                  <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon"><Icon icon="ph:sword-bold" class="size-5 text-navy" /></div>
                   <div>
                     <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                       {{ t('brackets_title') }}
@@ -768,7 +717,7 @@
             <!-- 7. PODIUM & MEDAL STANDINGS -->
             <section v-if="hasMedalsData" id="medals" class="scroll-mt-24 space-y-7">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:trophy-bold" class="size-5 text-navy shrink-0 m-auto block" /></div>
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon"><Icon icon="ph:trophy-bold" class="size-5 text-navy" /></div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('medals_title') }}
@@ -1266,6 +1215,7 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { Icon } from '@iconify/vue'
 import ExternalEliminationBracket from './ExternalEliminationBracket.vue'
+import TournamentExternalDataTable from './TournamentExternalDataTable.vue'
 
 // Custom click-outside directive for Vue
 const vClickOutside = {
@@ -1962,6 +1912,22 @@ const handleSortEntries = (key) => {
 }
 
 // Qualifications Handling
+const entriesColumns = computed(() => [
+  { key: 'index', label: '#', align: 'center', width: 'w-12', sortable: false },
+  { key: 'name', label: t('col_name'), align: 'left', sortable: true },
+  { key: 'club', label: t('col_club'), align: 'left', sortable: true },
+  { key: 'category', label: t('col_category'), align: 'left', sortable: true }
+])
+
+const qualColumns = computed(() => [
+  { key: 'rank', label: t('col_rank'), align: 'center', width: 'w-16', sortable: false },
+  { key: 'name', label: t('col_name'), align: 'left', sortable: false },
+  { key: 'club', label: t('col_club'), align: 'left', sortable: false },
+  { key: 'score', label: t('col_score'), align: 'center', sortable: false },
+  { key: 'tens', label: t('col_10s'), align: 'center', sortable: false },
+  { key: 'xs', label: t('col_xs'), align: 'center', sortable: false }
+])
+
 const availableQualificationCategories = computed(() => {
   const cats = new Set()
   normalizedQualsList.value.forEach(q => { if (q.category) cats.add(q.category) })
@@ -2398,16 +2364,9 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-:deep(svg) {
+:deep(.section-badge-icon svg) {
   vertical-align: 0 !important;
   display: block !important;
-  margin: auto !important;
-}
-:deep(.iconify) {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  vertical-align: 0 !important;
   margin: auto !important;
 }
 .no-scrollbar::-webkit-scrollbar {
