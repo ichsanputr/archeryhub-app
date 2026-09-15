@@ -21,7 +21,7 @@
           />
         </div>
 
-        <div class="max-w-4xl space-y-3">
+        <div class="w-full space-y-3">
           <!-- Tournament Title (H1) -->
           <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight font-display">
             {{ toTitleCase(activeTournament?.name) }}
@@ -974,6 +974,18 @@
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { Icon } from '@iconify/vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
+
+// Signal external tournament page state for header/footer wide container alignment
+const isExternalTournamentState = useState('isExternalTournamentPage', () => true)
+isExternalTournamentState.value = true
+
+onMounted(() => {
+  isExternalTournamentState.value = true
+})
+
+onUnmounted(() => {
+  isExternalTournamentState.value = false
+})
 
 const props = defineProps({
   tournament: { type: Object, default: () => ({}) },

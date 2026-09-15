@@ -395,7 +395,8 @@ const { isLoggedIn, user, userPersona, logout } = useAuth()
 
 const isBlogRoute = computed(() => route.path.startsWith('/blog'))
 const isSticky = computed(() => route.meta.headerSticky !== false)
-const isWide = computed(() => route.meta.wideContainer === true)
+const isExternalTournamentState = useState('isExternalTournamentPage', () => false)
+const isWide = computed(() => route.meta.wideContainer === true || isExternalTournamentState.value === true || route.path.startsWith('/tournaments/external'))
 
 const mobileMenuOpen = ref(false)
 const mobileSubmenuOpen = ref(false)

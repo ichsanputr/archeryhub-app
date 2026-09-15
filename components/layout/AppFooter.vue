@@ -4,7 +4,8 @@ import { useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
 
 const route = useRoute()
-const isWide = computed(() => route.meta.wideContainer === true)
+const isExternalTournamentState = useState('isExternalTournamentPage', () => false)
+const isWide = computed(() => route.meta.wideContainer === true || isExternalTournamentState.value === true || route.path.startsWith('/tournaments/external'))
 </script>
 <template>
   <footer class="bg-navy relative overflow-hidden text-gray-200 border-t border-white/5">
