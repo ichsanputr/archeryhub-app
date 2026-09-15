@@ -77,29 +77,15 @@
       <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs">
         <div class="grid grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-100">
           
-          <!-- ── COLUMN 1: LEFT TOC (STICKY TOP-24 BELOW NAVBAR, DYNAMIC FILTERED) ── -->
+          <!-- ── COLUMN 1: LEFT TOC (STICKY TOP-24 BELOW NAVBAR, NO TOP ITEM) ── -->
           <aside class="col-span-12 lg:col-span-2 p-5 sm:p-6 bg-slate-50/30 lg:bg-transparent rounded-t-3xl lg:rounded-tr-none lg:rounded-l-3xl">
             <div class="sticky top-20 sm:top-24 space-y-3">
               <div class="text-[11px] font-black uppercase tracking-wider text-slate-400 font-display pl-2.5">
                 Contents
               </div>
 
-              <!-- Semantic Dynamic TOC Links (Filtered to existing data only) -->
+              <!-- Dynamic TOC Links in Logical Order -->
               <nav class="space-y-1">
-                <a
-                  href="#top"
-                  hreflang="id"
-                  @click.prevent="scrollToTop"
-                  :class="[
-                    'px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all block truncate select-none cursor-pointer',
-                    activeSectionId === 'top'
-                      ? 'text-navy font-bold bg-primary/15 border-l-3 border-primary'
-                      : 'text-slate-600 hover:text-navy hover:bg-slate-50'
-                  ]"
-                >
-                  (Top)
-                </a>
-
                 <a
                   v-for="sec in navigationSections"
                   :key="sec.id"
@@ -119,10 +105,10 @@
             </div>
           </aside>
 
-          <!-- ── COLUMN 2: MIDDLE MAIN ARTICLE (GENEROUS WIDTH & PROPORTIONS) ── -->
+          <!-- ── COLUMN 2: MIDDLE MAIN ARTICLE (LOGICAL UX ORDERING) ── -->
           <div class="col-span-12 lg:col-span-7 p-6 sm:p-8 lg:p-10 space-y-10 min-w-0">
 
-            <!-- 1. TOURNAMENT OVERVIEW (ALWAYS VISIBLE) -->
+            <!-- 1. TOURNAMENT OVERVIEW -->
             <section id="overview" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
@@ -132,7 +118,7 @@
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     Tournament Overview
                   </h2>
-                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Key event metrics, competition categories, and technical regulations.</p>
+                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Key event metrics, competition categories, and format specifications.</p>
                 </div>
               </div>
 
@@ -190,153 +176,9 @@
                   <div class="text-[11px] text-slate-400 mt-0.5">Outdoor Archery</div>
                 </div>
               </div>
-
-              <!-- Official Technical Handbook Banner (if available) -->
-              <div v-if="thbDocument?.url || activeTournament?.description" class="p-4 sm:p-5 rounded-2xl bg-navy text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
-                <div class="flex items-start gap-3">
-                  <div class="size-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                    <Icon icon="ph:file-pdf-bold" class="text-xl text-primary" />
-                  </div>
-                  <div class="space-y-0.5">
-                    <div class="inline-block px-2 py-0.5 rounded bg-white/15 text-primary text-[10px] font-bold">
-                      Technical Guidebook
-                    </div>
-                    <h3 class="text-sm sm:text-base font-bold text-white font-display">
-                      Official Technical Handbook (THB)
-                    </h3>
-                    <p class="text-xs text-slate-300">
-                      Download complete tournament regulations, age limits, target butt assignments, and competition rules.
-                    </p>
-                  </div>
-                </div>
-                <a 
-                  :href="thbDocument?.url || ianseoUrl" 
-                  target="_blank"
-                  rel="nofollow noopener noreferrer"
-                  class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-navy font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all shrink-0 cursor-pointer shadow-sm"
-                >
-                  <Icon icon="ph:download-simple-bold" class="text-base" />
-                  <span>Download Handbook</span>
-                </a>
-              </div>
             </section>
 
-            <!-- 2. MEDAL STANDINGS & HTML5 CANVAS AWARDING PODIUM (DYNAMIC FILTERED) -->
-            <section v-if="hasMedalsData" id="medals" class="scroll-mt-24 space-y-5">
-              <div class="flex items-center justify-between border-b border-slate-100 pb-3.5 flex-wrap gap-2">
-                <div class="flex items-center gap-3">
-                  <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
-                    <Icon icon="ph:trophy-bold" class="text-xl text-navy" />
-                  </div>
-                  <div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
-                      Medal Standings & Awarding Podium
-                    </h2>
-                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Official championship podium ceremony & club medal rankings.</p>
-                  </div>
-                </div>
-
-                <!-- Download Podium Poster Button -->
-                <button
-                  @click="downloadPodiumPoster"
-                  class="px-3.5 py-1.5 rounded-xl bg-navy hover:bg-navy-light text-primary font-bold text-xs flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer"
-                >
-                  <Icon icon="ph:download-simple-bold" class="text-sm" />
-                  <span>Download Poster</span>
-                </button>
-              </div>
-
-              <!-- Category Selector Tabs for Awarding Podium -->
-              <div v-if="availablePodiumCategories.length > 0" class="flex items-center gap-2 bg-slate-50/90 p-2.5 rounded-2xl border border-slate-200/70 overflow-x-auto no-scrollbar">
-                <span class="text-xs font-bold text-slate-400 shrink-0 mr-1">Podium Class:</span>
-                <button
-                  v-for="cat in availablePodiumCategories"
-                  :key="cat"
-                  @click="selectedPodiumCategory = cat"
-                  :class="[
-                    'px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer',
-                    selectedPodiumCategory === cat
-                      ? 'bg-navy text-primary font-bold shadow-xs'
-                      : 'bg-white hover:bg-slate-200 text-slate-700 border border-slate-200/80'
-                  ]"
-                >
-                  {{ toTitleCase(cat) }}
-                </button>
-              </div>
-
-              <!-- HTML5 Canvas Awarding Podium Renderer -->
-              <div class="relative w-full rounded-2xl overflow-hidden shadow-sm border border-navy/20 bg-navy">
-                <canvas 
-                  ref="podiumCanvasRef" 
-                  class="w-full h-auto block"
-                ></canvas>
-              </div>
-
-              <!-- Club Medal Standings Table -->
-              <div v-if="sortedMedalTally.length > 0" class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
-                <div class="p-3.5 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between">
-                  <div class="text-xs sm:text-sm font-bold text-navy font-display">Club Medal Leaderboard</div>
-                  <div class="text-[11px] text-slate-500 font-medium">{{ sortedMedalTally.length }} Contingents Ranked</div>
-                </div>
-
-                <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs sm:text-sm text-navy">
-                    <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 select-none">
-                      <tr>
-                        <th class="py-3 px-3.5 w-16 text-center">Rank</th>
-                        <th @click="handleSortMedal('club')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1">
-                            <span>Club / Contingent</span>
-                            <Icon :icon="getSortIcon('club', medalSortKey, medalSortAsc)" class="text-xs text-slate-400" />
-                          </div>
-                        </th>
-                        <th @click="handleSortMedal('gold')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1 text-amber-600">
-                            <Icon icon="ph:medal-fill" class="text-sm" />
-                            <span>Gold</span>
-                          </div>
-                        </th>
-                        <th @click="handleSortMedal('silver')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1 text-slate-500">
-                            <Icon icon="ph:medal-fill" class="text-sm" />
-                            <span>Silver</span>
-                          </div>
-                        </th>
-                        <th @click="handleSortMedal('bronze')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1 text-amber-800">
-                            <Icon icon="ph:medal-fill" class="text-sm" />
-                            <span>Bronze</span>
-                          </div>
-                        </th>
-                        <th @click="handleSortMedal('total')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1">
-                            <span>Total</span>
-                            <Icon :icon="getSortIcon('total', medalSortKey, medalSortAsc)" class="text-xs text-slate-400" />
-                          </div>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 font-medium">
-                      <tr v-for="(tally, tIdx) in sortedMedalTally" :key="tally.club" class="hover:bg-slate-50/70 transition-colors">
-                        <td class="py-2.5 px-3.5 text-center font-bold">
-                          <span v-if="tIdx === 0" class="inline-flex size-6 rounded-full bg-amber-400 text-navy items-center justify-center text-xs font-black">1</span>
-                          <span v-else-if="tIdx === 1" class="inline-flex size-6 rounded-full bg-slate-300 text-slate-800 items-center justify-center text-xs font-black">2</span>
-                          <span v-else-if="tIdx === 2" class="inline-flex size-6 rounded-full bg-amber-700 text-white items-center justify-center text-xs font-black">3</span>
-                          <span v-else class="text-slate-500 font-mono">{{ tIdx + 1 }}</span>
-                        </td>
-                        <td class="py-2.5 px-3.5 font-bold text-navy">{{ toTitleCase(tally.club) }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono font-bold text-amber-600 bg-amber-50/30">{{ tally.gold }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono font-bold text-slate-600 bg-slate-50/30">{{ tally.silver }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono font-bold text-amber-800 bg-orange-50/30">{{ tally.bronze }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono font-black text-navy">{{ tally.total }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </section>
-
-            <!-- 3. COMPETITION SCHEDULE (DYNAMIC FILTERED) -->
+            <!-- 2. COMPETITION SCHEDULE -->
             <section v-if="hasScheduleData" id="schedule" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
@@ -373,7 +215,7 @@
                 <!-- Active Day Sessions List -->
                 <div v-if="currentActiveScheduleDay" class="border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-3.5">
                   <div class="p-3 rounded-xl bg-navy text-white flex items-center justify-between gap-3">
-                    <div class="text-xs sm:text-sm font-bold">{{ currentActiveScheduleDay.divisions || 'All Scheduled Categories' }}</div>
+                    <div class="text-xs sm:text-sm font-bold font-display">{{ currentActiveScheduleDay.divisions || 'All Scheduled Categories' }}</div>
                     <span class="text-[11px] px-2 py-0.5 rounded bg-white/10 font-mono">{{ currentActiveScheduleDay.sessions.length }} Sessions</span>
                   </div>
 
@@ -409,7 +251,7 @@
               </div>
             </section>
 
-            <!-- 4. FIELD OF PLAY (FOP) (DYNAMIC FILTERED) -->
+            <!-- 3. FIELD OF PLAY (FOP) -->
             <section v-if="hasFopData" id="fop" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
@@ -453,7 +295,127 @@
               </div>
             </section>
 
-            <!-- 5. QUALIFICATION SCORES & STANDINGS (DYNAMIC FILTERED) -->
+            <!-- 4. ATHLETES & CLUBS ROSTER -->
+            <section v-if="hasAthletesData" id="athletes" class="scroll-mt-24 space-y-5">
+              <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
+                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
+                  <Icon icon="ph:users-three-bold" class="text-xl text-navy" />
+                </div>
+                <div>
+                  <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
+                    Athletes & Clubs
+                  </h2>
+                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Complete participant roster, target assignments, and club affiliations.</p>
+                </div>
+              </div>
+
+              <!-- Directory Controls -->
+              <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
+                <div class="p-3.5 border-b border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/80">
+                  <div class="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
+                    <div class="relative w-full sm:w-60">
+                      <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
+                      <input 
+                        v-model="entriesSearchQuery"
+                        type="text" 
+                        placeholder="Search athlete, club, bib..."
+                        class="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-navy placeholder:text-slate-400 focus:outline-hidden focus:border-navy"
+                      />
+                    </div>
+
+                    <select 
+                      v-model="entriesClubFilter"
+                      class="w-full sm:w-52 px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-navy font-medium focus:outline-hidden focus:border-navy"
+                    >
+                      <option v-for="opt in entriesClubSelectOptions" :key="opt.value" :value="opt.value">
+                        {{ opt.label }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="text-[11px] text-slate-500 self-end sm:self-center">
+                    Showing {{ paginatedEntriesData.length }} of {{ processedEntriesData.length }} athletes
+                  </div>
+                </div>
+
+                <!-- Sortable Athlete Table -->
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left text-xs sm:text-sm text-navy">
+                    <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 select-none">
+                      <tr>
+                        <th @click="handleSortEntries('target')" class="py-3 px-3.5 w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
+                            <span>Target</span>
+                            <Icon :icon="getSortIcon('target', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
+                          </div>
+                        </th>
+                        <th @click="handleSortEntries('bib')" class="py-3 px-3.5 w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
+                            <span>Bib</span>
+                            <Icon :icon="getSortIcon('bib', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
+                          </div>
+                        </th>
+                        <th @click="handleSortEntries('name')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
+                            <span>Athlete Name</span>
+                            <Icon :icon="getSortIcon('name', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
+                          </div>
+                        </th>
+                        <th @click="handleSortEntries('club')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
+                            <span>Club / Contingent</span>
+                            <Icon :icon="getSortIcon('club', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
+                          </div>
+                        </th>
+                        <th @click="handleSortEntries('category')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
+                            <span>Category</span>
+                            <Icon :icon="getSortIcon('category', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 font-medium">
+                      <tr v-for="(entry, eIdx) in paginatedEntriesData" :key="eIdx" class="hover:bg-slate-50/70 transition-colors">
+                        <td class="py-2.5 px-3.5 font-mono font-bold text-navy">{{ entry.target || '-' }}</td>
+                        <td class="py-2.5 px-3.5 font-mono text-slate-500">{{ entry.bib || '-' }}</td>
+                        <td class="py-2.5 px-3.5 font-bold text-navy">{{ toTitleCase(entry.name) }}</td>
+                        <td class="py-2.5 px-3.5 text-slate-600">{{ toTitleCase(entry.club) }}</td>
+                        <td class="py-2.5 px-3.5 text-slate-600">{{ toTitleCase(entry.category || '-') }}</td>
+                      </tr>
+                      <tr v-if="paginatedEntriesData.length === 0">
+                        <td colspan="5" class="py-8 text-center text-slate-400 italic">
+                          No athletes matched the current filter criteria.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Pagination -->
+                <div v-if="totalEntriesPages > 1" class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex items-center justify-between">
+                  <button
+                    :disabled="entriesCurrentPage === 1"
+                    @click="entriesCurrentPage--"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    Previous
+                  </button>
+                  <span class="text-xs font-semibold text-slate-600">
+                    Page {{ entriesCurrentPage }} of {{ totalEntriesPages }}
+                  </span>
+                  <button
+                    :disabled="entriesCurrentPage === totalEntriesPages"
+                    @click="entriesCurrentPage++"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- 5. QUALIFICATION SCORES & STANDINGS -->
             <section v-if="hasQualificationsData" id="results" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
@@ -609,7 +571,7 @@
               </div>
             </section>
 
-            <!-- 6. ELIMINATION BRACKETS (DYNAMIC FILTERED) -->
+            <!-- 6. ELIMINATION BRACKETS -->
             <section v-if="hasBracketsData" id="brackets" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
@@ -714,122 +676,206 @@
               </div>
             </section>
 
-            <!-- 7. ATHLETES & CLUBS (DYNAMIC FILTERED) -->
-            <section v-if="hasAthletesData" id="athletes" class="scroll-mt-24 space-y-5">
-              <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:users-three-bold" class="text-xl text-navy" />
+            <!-- 7. MEDAL STANDINGS & 3D OLYMPIC AWARDING PODIUM (CULMINATION OF EVENT) -->
+            <section v-if="hasMedalsData" id="medals" class="scroll-mt-24 space-y-5">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-3.5 flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                  <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
+                    <Icon icon="ph:trophy-bold" class="text-xl text-navy" />
+                  </div>
+                  <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
+                      Medal Standings & Champions
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Podium champions and official club medal rankings.</p>
+                  </div>
                 </div>
-                <div>
-                  <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
-                    Athletes & Clubs
-                  </h2>
-                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Complete participant roster, target assignments, and club affiliations.</p>
+
+                <!-- Category Switcher Dropdown / Pills -->
+                <div v-if="availablePodiumCategories.length > 0" class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200/70 overflow-x-auto no-scrollbar">
+                  <button
+                    v-for="cat in availablePodiumCategories"
+                    :key="cat"
+                    @click="changePodiumCategory(cat)"
+                    :class="[
+                      'px-2.5 py-1 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer',
+                      selectedPodiumCategory === cat
+                        ? 'bg-white text-navy shadow-xs'
+                        : 'text-slate-600 hover:text-navy'
+                    ]"
+                  >
+                    {{ toTitleCase(cat) }}
+                  </button>
                 </div>
               </div>
 
-              <!-- Directory Controls -->
-              <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
-                <div class="p-3.5 border-b border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/80">
-                  <div class="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
-                    <div class="relative w-full sm:w-60">
-                      <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
-                      <input 
-                        v-model="entriesSearchQuery"
-                        type="text" 
-                        placeholder="Search athlete, club, bib..."
-                        class="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-navy placeholder:text-slate-400 focus:outline-hidden focus:border-navy"
-                      />
-                    </div>
+              <!-- 3D Olympic Podium Stage with Dynamic Particles Canvas -->
+              <div v-if="currentPodiumCategoryData" class="relative rounded-3xl overflow-hidden bg-gradient-to-b from-[#0F172A] via-[#1E293B] to-[#0A0F1D] text-white p-6 sm:p-8 border border-slate-800 shadow-lg">
+                <!-- Ambient Canvas Sparkle Overlay -->
+                <canvas ref="podiumParticleCanvas" class="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-0"></canvas>
 
-                    <select 
-                      v-model="entriesClubFilter"
-                      class="w-full sm:w-52 px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-navy font-medium focus:outline-hidden focus:border-navy"
-                    >
-                      <option v-for="opt in entriesClubSelectOptions" :key="opt.value" :value="opt.value">
-                        {{ opt.label }}
-                      </option>
-                    </select>
+                <!-- Header Info inside Podium Stage -->
+                <div class="relative z-10 text-center space-y-1 mb-6 sm:mb-8">
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 border border-primary/40 text-primary text-xs font-bold font-display">
+                    <Icon icon="ph:crown-fill" class="text-sm" />
+                    <span>Official Awarding Podium</span>
                   </div>
-
-                  <div class="text-[11px] text-slate-500 self-end sm:self-center">
-                    Showing {{ paginatedEntriesData.length }} of {{ processedEntriesData.length }} athletes
-                  </div>
+                  <h3 class="text-lg sm:text-xl font-bold text-white font-display">
+                    {{ toTitleCase(selectedPodiumCategory) }}
+                  </h3>
                 </div>
 
-                <!-- Sortable Athlete Table -->
+                <!-- 3D Tiered Blocks Stage -->
+                <div class="relative z-10 grid grid-cols-3 gap-2 sm:gap-4 items-end max-w-2xl mx-auto pt-4">
+                  
+                  <!-- 2nd Place: Silver (Left) -->
+                  <div class="flex flex-col items-center text-center group">
+                    <!-- Athlete Head & Medal -->
+                    <div class="mb-3 flex flex-col items-center space-y-1.5">
+                      <div class="relative size-12 sm:size-14 rounded-2xl bg-gradient-to-tr from-slate-400 to-slate-200 text-slate-900 font-black text-sm sm:text-base flex items-center justify-center ring-2 ring-slate-300 shadow-md font-display">
+                        {{ getArcherInitials(currentPodiumCategoryData.silver?.name) || '2' }}
+                        <div class="absolute -bottom-1 -right-1 size-5 rounded-md bg-slate-300 text-slate-900 font-black text-[10px] flex items-center justify-center shadow-xs">
+                          2
+                        </div>
+                      </div>
+                      <div class="font-bold text-xs sm:text-sm text-white font-display truncate max-w-[100px] sm:max-w-[140px]" :title="currentPodiumCategoryData.silver?.name">
+                        {{ toTitleCase(currentPodiumCategoryData.silver?.name || 'Silver') }}
+                      </div>
+                      <div class="text-[10px] sm:text-xs text-slate-400 truncate max-w-[100px] sm:max-w-[140px]">
+                        {{ toTitleCase(currentPodiumCategoryData.silver?.club || 'Club') }}
+                      </div>
+                      <div v-if="currentPodiumCategoryData.silver?.score" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-slate-200">
+                        {{ currentPodiumCategoryData.silver?.score }}
+                      </div>
+                    </div>
+                    <!-- 3D Podium Block -->
+                    <div class="w-full h-28 sm:h-36 rounded-t-2xl bg-gradient-to-b from-slate-300 via-slate-400 to-slate-600 border-t-2 border-x border-slate-200 flex flex-col items-center justify-between py-3 shadow-lg">
+                      <span class="text-xs font-black tracking-widest text-slate-800 font-display">SILVER</span>
+                      <span class="text-3xl sm:text-4xl font-black text-slate-800/80 font-display">2</span>
+                    </div>
+                  </div>
+
+                  <!-- 1st Place: Champion Gold (Center - Elevated) -->
+                  <div class="flex flex-col items-center text-center -mt-4 group">
+                    <!-- Champion Crown & Head -->
+                    <div class="mb-3 flex flex-col items-center space-y-1.5">
+                      <div class="flex items-center gap-1 text-amber-400 text-xs font-bold font-display">
+                        <Icon icon="ph:crown-fill" class="text-base text-amber-400 animate-bounce" />
+                        <span>CHAMPION</span>
+                      </div>
+                      <div class="relative size-14 sm:size-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-200 text-navy font-black text-base sm:text-lg flex items-center justify-center ring-4 ring-amber-400/50 shadow-xl font-display">
+                        {{ getArcherInitials(currentPodiumCategoryData.gold?.name) || '1' }}
+                        <div class="absolute -bottom-1 -right-1 size-6 rounded-lg bg-amber-400 text-navy font-black text-xs flex items-center justify-center shadow-md">
+                          1
+                        </div>
+                      </div>
+                      <div class="font-black text-xs sm:text-base text-amber-300 font-display truncate max-w-[110px] sm:max-w-[160px]" :title="currentPodiumCategoryData.gold?.name">
+                        {{ toTitleCase(currentPodiumCategoryData.gold?.name || 'Champion') }}
+                      </div>
+                      <div class="text-[10px] sm:text-xs text-slate-300 truncate max-w-[110px] sm:max-w-[160px]">
+                        {{ toTitleCase(currentPodiumCategoryData.gold?.club || 'Club') }}
+                      </div>
+                      <div v-if="currentPodiumCategoryData.gold?.score" class="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-amber-400 text-navy shadow-xs">
+                        {{ currentPodiumCategoryData.gold?.score }}
+                      </div>
+                    </div>
+                    <!-- 3D Podium Block -->
+                    <div class="w-full h-36 sm:h-48 rounded-t-2xl bg-gradient-to-b from-amber-400 via-amber-500 to-amber-700 border-t-2 border-x border-amber-300 flex flex-col items-center justify-between py-3 shadow-xl">
+                      <span class="text-xs sm:text-sm font-black tracking-widest text-navy font-display">GOLD</span>
+                      <span class="text-4xl sm:text-5xl font-black text-navy/80 font-display">1</span>
+                    </div>
+                  </div>
+
+                  <!-- 3rd Place: Bronze (Right) -->
+                  <div class="flex flex-col items-center text-center group">
+                    <!-- Athlete Head & Medal -->
+                    <div class="mb-3 flex flex-col items-center space-y-1.5">
+                      <div class="relative size-12 sm:size-14 rounded-2xl bg-gradient-to-tr from-amber-700 to-orange-400 text-white font-black text-sm sm:text-base flex items-center justify-center ring-2 ring-amber-600 shadow-md font-display">
+                        {{ getArcherInitials(currentPodiumCategoryData.bronze?.name) || '3' }}
+                        <div class="absolute -bottom-1 -right-1 size-5 rounded-md bg-amber-700 text-white font-black text-[10px] flex items-center justify-center shadow-xs">
+                          3
+                        </div>
+                      </div>
+                      <div class="font-bold text-xs sm:text-sm text-white font-display truncate max-w-[100px] sm:max-w-[140px]" :title="currentPodiumCategoryData.bronze?.name">
+                        {{ toTitleCase(currentPodiumCategoryData.bronze?.name || 'Bronze') }}
+                      </div>
+                      <div class="text-[10px] sm:text-xs text-slate-400 truncate max-w-[100px] sm:max-w-[140px]">
+                        {{ toTitleCase(currentPodiumCategoryData.bronze?.club || 'Club') }}
+                      </div>
+                      <div v-if="currentPodiumCategoryData.bronze?.score" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-slate-200">
+                        {{ currentPodiumCategoryData.bronze?.score }}
+                      </div>
+                    </div>
+                    <!-- 3D Podium Block -->
+                    <div class="w-full h-20 sm:h-28 rounded-t-2xl bg-gradient-to-b from-amber-600 via-amber-700 to-amber-900 border-t-2 border-x border-amber-500 flex flex-col items-center justify-between py-2 sm:py-3 shadow-lg">
+                      <span class="text-[11px] sm:text-xs font-black tracking-widest text-amber-100 font-display">BRONZE</span>
+                      <span class="text-2xl sm:text-3xl font-black text-amber-200/80 font-display">3</span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Club Medal Standings Table -->
+              <div v-if="sortedMedalTally.length > 0" class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
+                <div class="p-3.5 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between">
+                  <div class="text-xs sm:text-sm font-bold text-navy font-display">Club Medal Leaderboard</div>
+                  <div class="text-[11px] text-slate-500 font-medium">{{ sortedMedalTally.length }} Contingents Ranked</div>
+                </div>
+
                 <div class="overflow-x-auto">
                   <table class="w-full text-left text-xs sm:text-sm text-navy">
                     <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 select-none">
                       <tr>
-                        <th @click="handleSortEntries('target')" class="py-3 px-3.5 w-20 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1">
-                            <span>Target</span>
-                            <Icon :icon="getSortIcon('target', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
-                          </div>
-                        </th>
-                        <th @click="handleSortEntries('bib')" class="py-3 px-3.5 w-20 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1">
-                            <span>Bib</span>
-                            <Icon :icon="getSortIcon('bib', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
-                          </div>
-                        </th>
-                        <th @click="handleSortEntries('name')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1">
-                            <span>Athlete Name</span>
-                            <Icon :icon="getSortIcon('name', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
-                          </div>
-                        </th>
-                        <th @click="handleSortEntries('club')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
+                        <th class="py-3 px-3.5 w-16 text-center">Rank</th>
+                        <th @click="handleSortMedal('club')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
                           <div class="flex items-center gap-1">
                             <span>Club / Contingent</span>
-                            <Icon :icon="getSortIcon('club', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
+                            <Icon :icon="getSortIcon('club', medalSortKey, medalSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortEntries('category')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1">
-                            <span>Category</span>
-                            <Icon :icon="getSortIcon('category', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
+                        <th @click="handleSortMedal('gold')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1 text-amber-600">
+                            <Icon icon="ph:medal-fill" class="text-sm" />
+                            <span>Gold</span>
+                          </div>
+                        </th>
+                        <th @click="handleSortMedal('silver')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1 text-slate-500">
+                            <Icon icon="ph:medal-fill" class="text-sm" />
+                            <span>Silver</span>
+                          </div>
+                        </th>
+                        <th @click="handleSortMedal('bronze')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1 text-amber-800">
+                            <Icon icon="ph:medal-fill" class="text-sm" />
+                            <span>Bronze</span>
+                          </div>
+                        </th>
+                        <th @click="handleSortMedal('total')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1">
+                            <span>Total</span>
+                            <Icon :icon="getSortIcon('total', medalSortKey, medalSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium">
-                      <tr v-for="(entry, eIdx) in paginatedEntriesData" :key="eIdx" class="hover:bg-slate-50/70 transition-colors">
-                        <td class="py-2.5 px-3.5 font-mono font-bold text-navy">{{ entry.target || '-' }}</td>
-                        <td class="py-2.5 px-3.5 font-mono text-slate-500">{{ entry.bib || '-' }}</td>
-                        <td class="py-2.5 px-3.5 font-bold text-navy">{{ toTitleCase(entry.name) }}</td>
-                        <td class="py-2.5 px-3.5 text-slate-600">{{ toTitleCase(entry.club) }}</td>
-                        <td class="py-2.5 px-3.5 text-slate-600">{{ toTitleCase(entry.category || '-') }}</td>
-                      </tr>
-                      <tr v-if="paginatedEntriesData.length === 0">
-                        <td colspan="5" class="py-8 text-center text-slate-400 italic">
-                          No athletes matched the current filter criteria.
+                      <tr v-for="(tally, tIdx) in sortedMedalTally" :key="tally.club" class="hover:bg-slate-50/70 transition-colors">
+                        <td class="py-2.5 px-3.5 text-center font-bold">
+                          <span v-if="tIdx === 0" class="inline-flex size-6 rounded-full bg-amber-400 text-navy items-center justify-center text-xs font-black">1</span>
+                          <span v-else-if="tIdx === 1" class="inline-flex size-6 rounded-full bg-slate-300 text-slate-800 items-center justify-center text-xs font-black">2</span>
+                          <span v-else-if="tIdx === 2" class="inline-flex size-6 rounded-full bg-amber-700 text-white items-center justify-center text-xs font-black">3</span>
+                          <span v-else class="text-slate-500 font-mono">{{ tIdx + 1 }}</span>
                         </td>
+                        <td class="py-2.5 px-3.5 font-bold text-navy">{{ toTitleCase(tally.club) }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-mono font-bold text-amber-600 bg-amber-50/30">{{ tally.gold }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-mono font-bold text-slate-600 bg-slate-50/30">{{ tally.silver }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-mono font-bold text-amber-800 bg-orange-50/30">{{ tally.bronze }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-mono font-black text-navy">{{ tally.total }}</td>
                       </tr>
                     </tbody>
                   </table>
-                </div>
-
-                <!-- Pagination -->
-                <div v-if="totalEntriesPages > 1" class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex items-center justify-between">
-                  <button
-                    :disabled="entriesCurrentPage === 1"
-                    @click="entriesCurrentPage--"
-                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                  >
-                    Previous
-                  </button>
-                  <span class="text-xs font-semibold text-slate-600">
-                    Page {{ entriesCurrentPage }} of {{ totalEntriesPages }}
-                  </span>
-                  <button
-                    :disabled="entriesCurrentPage === totalEntriesPages"
-                    @click="entriesCurrentPage++"
-                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                  >
-                    Next
-                  </button>
                 </div>
               </div>
             </section>
@@ -884,6 +930,7 @@
               <!-- Handbook & External Link Actions -->
               <div class="pt-1.5 space-y-2">
                 <a 
+                  v-if="thbDocument?.url || ianseoUrl"
                   :href="thbDocument?.url || ianseoUrl" 
                   target="_blank"
                   rel="nofollow noopener noreferrer"
@@ -1003,26 +1050,26 @@ const ianseoUrl = computed(() => {
 const scrollProgress = ref(0)
 const activeSectionId = ref('overview')
 
-// Dynamic Navigation Sections (Strictly Filtered to existing data)
+// Dynamic Navigation Sections (Natural Tournament Lifecycle Order: Overview -> Schedule -> FOP -> Athletes -> Qualifications -> Brackets -> Medals)
 const navigationSections = computed(() => {
   const list = []
   
-  // 1. Overview is always available
+  // 1. Overview
   list.push({ id: 'overview', title: 'Tournament Overview', icon: 'ph:info-bold' })
   
-  // 2. Medals
-  if (hasMedalsData.value) {
-    list.push({ id: 'medals', title: 'Medal Standings', icon: 'ph:trophy-bold' })
-  }
-  
-  // 3. Schedule
+  // 2. Schedule
   if (hasScheduleData.value) {
     list.push({ id: 'schedule', title: 'Competition Schedule', icon: 'ph:calendar-blank-bold' })
   }
   
-  // 4. Field of Play
+  // 3. Field of Play
   if (hasFopData.value) {
     list.push({ id: 'fop', title: 'Field of Play', icon: 'ph:crosshair-bold' })
+  }
+  
+  // 4. Athletes
+  if (hasAthletesData.value) {
+    list.push({ id: 'athletes', title: 'Athletes & Clubs', icon: 'ph:users-three-bold' })
   }
   
   // 5. Qualification Scores
@@ -1035,9 +1082,9 @@ const navigationSections = computed(() => {
     list.push({ id: 'brackets', title: 'Elimination Brackets', icon: 'ph:sword-bold' })
   }
   
-  // 7. Athletes
-  if (hasAthletesData.value) {
-    list.push({ id: 'athletes', title: 'Athletes & Clubs', icon: 'ph:users-three-bold' })
+  // 7. Medal Standings & Champions (Culmination)
+  if (hasMedalsData.value) {
+    list.push({ id: 'medals', title: 'Medal Standings', icon: 'ph:trophy-bold' })
   }
   
   return list
@@ -1063,13 +1110,14 @@ function updateScrollSpy() {
 onMounted(() => {
   window.addEventListener('scroll', updateScrollSpy, { passive: true })
   updateScrollSpy()
-  nextTick(() => {
-    drawPodiumCanvas()
-  })
+  initPodiumCanvas()
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', updateScrollSpy)
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId)
+  }
 })
 
 function scrollToSection(id) {
@@ -1079,13 +1127,6 @@ function scrollToSection(id) {
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
-  }
-}
-
-function scrollToTop() {
-  activeSectionId.value = 'top'
-  if (typeof window !== 'undefined') {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
 
@@ -1210,395 +1251,7 @@ const sortedFilteredCategoryQuals = computed(() => {
   })
 })
 
-// ── Medal Standings & HTML5 Canvas Awarding ──
-const finalStandingsMap = computed(() => activeTournamentData.value?.final_standings || {})
-
-const medalTallyList = computed(() => {
-  const tally = {}
-  Object.keys(finalStandingsMap.value).forEach(cat => {
-    const list = finalStandingsMap.value[cat] || []
-    list.forEach(item => {
-      const club = item.club || 'Independen'
-      if (!tally[club]) tally[club] = { club, gold: 0, silver: 0, bronze: 0, total: 0 }
-      if (item.rank == 1) { tally[club].gold++; tally[club].total++; }
-      else if (item.rank == 2) { tally[club].silver++; tally[club].total++; }
-      else if (item.rank == 3) { tally[club].bronze++; tally[club].total++; }
-    })
-  })
-
-  // If final_standings is empty, compute medal tally from qualification top 3
-  if (Object.keys(tally).length === 0) {
-    const qMap = qualificationsMap.value
-    Object.keys(qMap).forEach(cat => {
-      const list = qMap[cat] || []
-      list.forEach(item => {
-        const club = item.club || 'Independen'
-        if (!tally[club]) tally[club] = { club, gold: 0, silver: 0, bronze: 0, total: 0 }
-        if (item.rank == 1) { tally[club].gold++; tally[club].total++; }
-        else if (item.rank == 2) { tally[club].silver++; tally[club].total++; }
-        else if (item.rank == 3) { tally[club].bronze++; tally[club].total++; }
-      })
-    })
-  }
-
-  return Object.values(tally)
-})
-
-const hasMedalsData = computed(() => {
-  return medalTallyList.value.length > 0 || availablePodiumCategories.value.length > 0
-})
-
-// Medal Table Interactive Sorting
-const medalSortKey = ref('total')
-const medalSortAsc = ref(false)
-
-function handleSortMedal(key) {
-  if (medalSortKey.value === key) {
-    medalSortAsc.value = !medalSortAsc.value
-  } else {
-    medalSortKey.value = key
-    medalSortAsc.value = false
-  }
-}
-
-const sortedMedalTally = computed(() => {
-  let list = [...medalTallyList.value]
-  return list.sort((a, b) => {
-    if (medalSortKey.value === 'club') {
-      const cmp = a.club.localeCompare(b.club)
-      return medalSortAsc.value ? cmp : -cmp
-    }
-
-    if (medalSortKey.value === 'gold') {
-      return medalSortAsc.value ? a.gold - b.gold : b.gold - a.gold
-    }
-    if (medalSortKey.value === 'silver') {
-      return medalSortAsc.value ? a.silver - b.silver : b.silver - a.silver
-    }
-    if (medalSortKey.value === 'bronze') {
-      return medalSortAsc.value ? a.bronze - b.bronze : b.bronze - a.bronze
-    }
-
-    if (!medalSortAsc.value) {
-      if (b.gold !== a.gold) return b.gold - a.gold
-      if (b.silver !== a.silver) return b.silver - a.silver
-      if (b.bronze !== a.bronze) return b.bronze - a.bronze
-      return b.total - a.total
-    } else {
-      if (a.gold !== b.gold) return a.gold - b.gold
-      if (a.silver !== b.silver) return a.silver - b.silver
-      if (a.bronze !== b.bronze) return a.bronze - b.bronze
-      return a.total - b.total
-    }
-  })
-})
-
-// ── Olympic Podium Categories & HTML5 Canvas Rendering ──
-const availablePodiumCategories = computed(() => {
-  const map = Object.keys(finalStandingsMap.value).length > 0 ? finalStandingsMap.value : qualificationsMap.value
-  return Object.keys(map).filter(cat => {
-    const list = map[cat] || []
-    return list.some(r => r.rank == 1 || r.rank == 2 || r.rank == 3)
-  })
-})
-
-const selectedPodiumCategory = ref('')
-watch(availablePodiumCategories, (cats) => {
-  if (cats.length > 0 && (!selectedPodiumCategory.value || !cats.includes(selectedPodiumCategory.value))) {
-    selectedPodiumCategory.value = cats[0]
-  }
-}, { immediate: true })
-
-const currentPodiumCategoryData = computed(() => {
-  if (!selectedPodiumCategory.value) return null
-  const map = Object.keys(finalStandingsMap.value).length > 0 ? finalStandingsMap.value : qualificationsMap.value
-  const list = map[selectedPodiumCategory.value] || []
-  const gold = list.find(r => r.rank == 1) || null
-  const silver = list.find(r => r.rank == 2) || null
-  const bronze = list.find(r => r.rank == 3) || null
-
-  if (!gold && !silver && !bronze) return null
-  return {
-    category: selectedPodiumCategory.value,
-    gold,
-    silver,
-    bronze
-  }
-})
-
-// ── HTML5 Canvas Awarding Engine ──
-const podiumCanvasRef = ref(null)
-
-function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
-  if (typeof radius === 'number') {
-    radius = { tl: radius, tr: radius, br: radius, bl: radius }
-  }
-  ctx.beginPath()
-  ctx.moveTo(x + radius.tl, y)
-  ctx.lineTo(x + width - radius.tr, y)
-  ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr)
-  ctx.lineTo(x + width, y + height - radius.br)
-  ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height)
-  ctx.lineTo(x + radius.bl, y + height)
-  ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl)
-  ctx.lineTo(x, y + radius.tl)
-  ctx.quadraticCurveTo(x, y, x + radius.tl, y)
-  ctx.closePath()
-  if (fill) ctx.fill()
-  if (stroke) ctx.stroke()
-}
-
-function drawPodiumStep(ctx, cfg) {
-  const { rank, x, y, width, height, colorTop, colorBottom, medalLabel, archer, isChampion } = cfg
-
-  ctx.save()
-
-  // 1. Podium Block Metallic Gradient
-  const blockGrad = ctx.createLinearGradient(x, y, x, y + height)
-  blockGrad.addColorStop(0, colorTop)
-  blockGrad.addColorStop(1, colorBottom)
-
-  ctx.fillStyle = blockGrad
-  roundRect(ctx, x, y, width, height, { tl: 18, tr: 18, bl: 6, br: 6 }, true, false)
-
-  // Top highlight bevel
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)'
-  ctx.lineWidth = 2
-  ctx.beginPath()
-  ctx.moveTo(x + 18, y + 1)
-  ctx.lineTo(x + width - 18, y + 1)
-  ctx.stroke()
-
-  // Large Podium Rank Number (1, 2, 3)
-  ctx.fillStyle = isChampion ? 'rgba(11, 25, 44, 0.85)' : 'rgba(255, 255, 255, 0.95)'
-  ctx.font = '900 68px system-ui, -apple-system, sans-serif'
-  ctx.textAlign = 'center'
-  ctx.fillText(String(rank), x + width / 2, y + 80)
-
-  // Medal Label Badge
-  ctx.fillStyle = isChampion ? '#0B192C' : 'rgba(11, 25, 44, 0.75)'
-  ctx.font = 'bold 11px system-ui, -apple-system, sans-serif'
-  ctx.fillText(medalLabel, x + width / 2, y + 105)
-
-  // 2. Athlete Information Above Podium Block
-  const avatarCenterY = y - 56
-  const avatarCenterX = x + width / 2
-
-  if (isChampion) {
-    // Crown above 1st place
-    ctx.fillStyle = '#FDE047'
-    ctx.font = '24px system-ui, -apple-system, sans-serif'
-    ctx.textAlign = 'center'
-    ctx.fillText('👑', avatarCenterX, avatarCenterY - 38)
-  }
-
-  // Avatar Circle
-  ctx.beginPath()
-  ctx.arc(avatarCenterX, avatarCenterY, 30, 0, Math.PI * 2)
-  ctx.fillStyle = '#0F253E'
-  ctx.fill()
-  ctx.lineWidth = isChampion ? 4 : 3
-  ctx.strokeStyle = colorTop
-  ctx.stroke()
-
-  // Initials inside avatar
-  const initials = getArcherInitials(archer?.name) || String(rank)
-  ctx.fillStyle = '#FFFFFF'
-  ctx.font = 'bold 17px system-ui, -apple-system, sans-serif'
-  ctx.textAlign = 'center'
-  ctx.fillText(initials, avatarCenterX, avatarCenterY + 6)
-
-  // Athlete Name
-  const rawName = toTitleCase(archer?.name || (isChampion ? 'Gold Medalist' : (rank === 2 ? 'Silver Medalist' : 'Bronze Medalist')))
-  const athleteName = rawName.length > 22 ? rawName.substring(0, 20) + '...' : rawName
-  ctx.fillStyle = '#FFFFFF'
-  ctx.font = isChampion ? 'bold 14px system-ui, -apple-system, sans-serif' : 'bold 13px system-ui, -apple-system, sans-serif'
-  ctx.fillText(athleteName, avatarCenterX, avatarCenterY + 48)
-
-  // Club Name
-  const rawClub = toTitleCase(archer?.club || 'Club')
-  const clubName = rawClub.length > 24 ? rawClub.substring(0, 22) + '...' : rawClub
-  ctx.fillStyle = isChampion ? '#FDE68A' : '#CBD5E1'
-  ctx.font = '500 11px system-ui, -apple-system, sans-serif'
-  ctx.fillText(clubName, avatarCenterX, avatarCenterY + 64)
-
-  // Score Badge
-  const scoreVal = archer?.score || archer?.total_score || archer?.final_score || ''
-  if (scoreVal) {
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.15)'
-    roundRect(ctx, avatarCenterX - 35, avatarCenterY + 70, 70, 18, 9, true, false)
-    ctx.fillStyle = '#FFFFFF'
-    ctx.font = 'bold 10px monospace'
-    ctx.fillText(`Score: ${scoreVal}`, avatarCenterX, avatarCenterY + 83)
-  }
-
-  ctx.restore()
-}
-
-function drawPodiumCanvas() {
-  const canvas = podiumCanvasRef.value
-  if (!canvas) return
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return
-
-  const dpr = typeof window !== 'undefined' ? (window.devicePixelRatio || 1) : 1
-  const width = 960
-  const height = 520
-  
-  canvas.width = width * dpr
-  canvas.height = height * dpr
-  ctx.resetTransform?.() || ctx.setTransform(1, 0, 0, 1, 0, 0)
-  ctx.scale(dpr, dpr)
-
-  // 1. Background gradient (Rich Navy Blue)
-  const bgGrad = ctx.createLinearGradient(0, 0, 0, height)
-  bgGrad.addColorStop(0, '#0B192C')
-  bgGrad.addColorStop(0.5, '#102A45')
-  bgGrad.addColorStop(1, '#060E18')
-  ctx.fillStyle = bgGrad
-  ctx.fillRect(0, 0, width, height)
-
-  // 2. Archery Target Watermark Rings
-  const centerX = width / 2
-  const centerY = 240
-  ctx.save()
-  ctx.lineWidth = 1.5
-  const rings = [220, 175, 130, 90, 50, 20]
-  rings.forEach((r, idx) => {
-    ctx.beginPath()
-    ctx.arc(centerX, centerY, r, 0, Math.PI * 2)
-    ctx.strokeStyle = idx < 2 ? 'rgba(255, 184, 0, 0.07)' : (idx < 4 ? 'rgba(239, 68, 68, 0.05)' : 'rgba(59, 130, 246, 0.05)')
-    ctx.stroke()
-  })
-  ctx.restore()
-
-  // 3. Golden Confetti / Sparkles
-  ctx.save()
-  const particles = [
-    { x: 120, y: 70, s: 4, a: 0.7 }, { x: 240, y: 130, s: 3, a: 0.5 },
-    { x: 380, y: 80, s: 5, a: 0.8 }, { x: 580, y: 100, s: 4, a: 0.6 },
-    { x: 720, y: 65, s: 3, a: 0.7 }, { x: 840, y: 120, s: 5, a: 0.8 },
-    { x: 180, y: 200, s: 3, a: 0.4 }, { x: 790, y: 220, s: 4, a: 0.5 }
-  ]
-  particles.forEach(p => {
-    ctx.fillStyle = `rgba(255, 184, 0, ${p.a})`
-    ctx.beginPath()
-    ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2)
-    ctx.fill()
-  })
-  ctx.restore()
-
-  // 4. Header Badge & Title
-  ctx.save()
-  // Badge Pill
-  ctx.fillStyle = 'rgba(255, 184, 0, 0.18)'
-  ctx.strokeStyle = 'rgba(255, 184, 0, 0.4)'
-  ctx.lineWidth = 1
-  roundRect(ctx, centerX - 130, 20, 260, 24, 12, true, true)
-
-  ctx.fillStyle = '#FFB800'
-  ctx.font = 'bold 11px system-ui, -apple-system, sans-serif'
-  ctx.textAlign = 'center'
-  ctx.fillText('OFFICIAL AWARDING CEREMONY', centerX, 36)
-
-  // Tournament Title
-  const tournamentTitle = toTitleCase(activeTournament.value?.name || 'Archery Championship')
-  ctx.fillStyle = '#FFFFFF'
-  ctx.font = '900 19px system-ui, -apple-system, sans-serif'
-  ctx.textAlign = 'center'
-  const truncatedTitle = tournamentTitle.length > 52 ? tournamentTitle.substring(0, 50) + '...' : tournamentTitle
-  ctx.fillText(truncatedTitle, centerX, 66)
-
-  // Category Subtitle
-  const categoryTitle = toTitleCase(selectedPodiumCategory.value || 'All Categories')
-  ctx.fillStyle = '#94A3B8'
-  ctx.font = '600 13px system-ui, -apple-system, sans-serif'
-  ctx.fillText(categoryTitle, centerX, 86)
-  ctx.restore()
-
-  const data = currentPodiumCategoryData.value
-  const gold = data?.gold
-  const silver = data?.silver
-  const bronze = data?.bronze
-
-  // 5. Draw 3-Tier Podium Blocks & Competitors
-  // Step 2: Silver (Left) - X: 140, Y: 300, W: 200, H: 170
-  drawPodiumStep(ctx, {
-    rank: 2,
-    x: 140,
-    y: 300,
-    width: 200,
-    height: 170,
-    colorTop: '#E2E8F0',
-    colorBottom: '#64748B',
-    accentColor: '#94A3B8',
-    medalLabel: 'SILVER MEDAL',
-    archer: silver
-  })
-
-  // Step 1: Gold (Middle - Elevated) - X: 375, Y: 245, W: 210, H: 225
-  drawPodiumStep(ctx, {
-    rank: 1,
-    x: 375,
-    y: 245,
-    width: 210,
-    height: 225,
-    colorTop: '#FBBF24',
-    colorBottom: '#B45309',
-    accentColor: '#F59E0B',
-    medalLabel: 'CHAMPION GOLD',
-    archer: gold,
-    isChampion: true
-  })
-
-  // Step 3: Bronze (Right) - X: 620, Y: 340, W: 200, H: 130
-  drawPodiumStep(ctx, {
-    rank: 3,
-    x: 620,
-    y: 340,
-    width: 200,
-    height: 130,
-    colorTop: '#D97706',
-    colorBottom: '#78350F',
-    accentColor: '#B45309',
-    medalLabel: 'BRONZE MEDAL',
-    archer: bronze
-  })
-
-  // 6. Watermark Footer on Canvas
-  ctx.save()
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.35)'
-  ctx.font = '500 11px system-ui, -apple-system, sans-serif'
-  ctx.textAlign = 'center'
-  ctx.fillText('Official Live Scoring & Results Verification • Powered by Archeris.net', centerX, 498)
-  ctx.restore()
-}
-
-function downloadPodiumPoster() {
-  const canvas = podiumCanvasRef.value
-  if (!canvas) return
-  const dataUrl = canvas.toDataURL('image/png')
-  const link = document.createElement('a')
-  const categorySlug = (selectedPodiumCategory.value || 'podium').toLowerCase().replace(/\s+/g, '-')
-  link.download = `archeris-podium-${categorySlug}.png`
-  link.href = dataUrl
-  link.click()
-}
-
-watch([selectedPodiumCategory, currentPodiumCategoryData], () => {
-  nextTick(() => {
-    drawPodiumCanvas()
-  })
-})
-
-function getArcherInitials(name) {
-  if (!name) return ''
-  const parts = name.trim().split(/\s+/)
-  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase()
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-}
-
-// ── Schedule & Field of Play (Separated & Filtered) ──
+// ── Schedule & Field of Play ──
 const scheduleData = computed(() => activeTournamentData.value?.schedule || [])
 const activeScheduleDayIndex = ref(0)
 const currentActiveScheduleDay = computed(() => scheduleData.value[activeScheduleDayIndex.value] || null)
@@ -1607,7 +1260,7 @@ const hasScheduleData = computed(() => scheduleData.value.length > 0)
 const fopData = computed(() => activeTournamentData.value?.field_of_play || [])
 const hasFopData = computed(() => fopData.value.length > 0)
 
-// ── Elimination Brackets (Filtered) ──
+// ── Elimination Brackets ──
 const bracketsMap = computed(() => activeTournamentData.value?.brackets || {})
 const teamBracketsMap = computed(() => activeTournamentData.value?.team_brackets || {})
 
@@ -1680,14 +1333,13 @@ function closeScorecard() {
   selectedScorecardMatch.value = null
 }
 
-// ── Entries / Athletes (Cleaned & Aggregated) ──
+// ── Entries / Athletes ──
 const rawEntries = computed(() => activeTournamentData.value?.entries || [])
 
 const allExtractedAthletes = computed(() => {
   const seen = new Set()
   const athletes = []
 
-  // 1. Collect all real athletes from qualifications & team qualifications
   const qMap = qualificationsMap.value
   const tMap = teamQualificationsMap.value
 
@@ -1715,7 +1367,6 @@ const allExtractedAthletes = computed(() => {
   collectFrom(qMap)
   collectFrom(tMap)
 
-  // 2. Also include any athletes from raw entries if not already seen
   rawEntries.value.forEach(e => {
     let name = e.name?.trim() || ''
     name = name.replace(/^[^\w\s]+/, '').trim()
@@ -1804,6 +1455,176 @@ const paginatedEntriesData = computed(() => {
   const start = (entriesCurrentPage.value - 1) * entriesPageSize.value
   return processedEntriesData.value.slice(start, start + entriesPageSize.value)
 })
+
+// ── Medal Standings & Podium ──
+const finalStandingsMap = computed(() => activeTournamentData.value?.final_standings || {})
+
+const medalTallyList = computed(() => {
+  const tally = {}
+  Object.keys(finalStandingsMap.value).forEach(cat => {
+    const list = finalStandingsMap.value[cat] || []
+    list.forEach(item => {
+      const club = item.club || 'Independen'
+      if (!tally[club]) tally[club] = { club, gold: 0, silver: 0, bronze: 0, total: 0 }
+      if (item.rank == 1) { tally[club].gold++; tally[club].total++; }
+      else if (item.rank == 2) { tally[club].silver++; tally[club].total++; }
+      else if (item.rank == 3) { tally[club].bronze++; tally[club].total++; }
+    })
+  })
+
+  if (Object.keys(tally).length === 0) {
+    const qMap = qualificationsMap.value
+    Object.keys(qMap).forEach(cat => {
+      const list = qMap[cat] || []
+      list.forEach(item => {
+        const club = item.club || 'Independen'
+        if (!tally[club]) tally[club] = { club, gold: 0, silver: 0, bronze: 0, total: 0 }
+        if (item.rank == 1) { tally[club].gold++; tally[club].total++; }
+        else if (item.rank == 2) { tally[club].silver++; tally[club].total++; }
+        else if (item.rank == 3) { tally[club].bronze++; tally[club].total++; }
+      })
+    })
+  }
+
+  return Object.values(tally)
+})
+
+const hasMedalsData = computed(() => {
+  return medalTallyList.value.length > 0 || availablePodiumCategories.value.length > 0
+})
+
+const medalSortKey = ref('total')
+const medalSortAsc = ref(false)
+
+function handleSortMedal(key) {
+  if (medalSortKey.value === key) {
+    medalSortAsc.value = !medalSortAsc.value
+  } else {
+    medalSortKey.value = key
+    medalSortAsc.value = false
+  }
+}
+
+const sortedMedalTally = computed(() => {
+  let list = [...medalTallyList.value]
+  return list.sort((a, b) => {
+    if (medalSortKey.value === 'club') {
+      const cmp = a.club.localeCompare(b.club)
+      return medalSortAsc.value ? cmp : -cmp
+    }
+
+    if (medalSortKey.value === 'gold') {
+      return medalSortAsc.value ? a.gold - b.gold : b.gold - a.gold
+    }
+    if (medalSortKey.value === 'silver') {
+      return medalSortAsc.value ? a.silver - b.silver : b.silver - a.silver
+    }
+    if (medalSortKey.value === 'bronze') {
+      return medalSortAsc.value ? a.bronze - b.bronze : b.bronze - a.bronze
+    }
+
+    if (!medalSortAsc.value) {
+      if (b.gold !== a.gold) return b.gold - a.gold
+      if (b.silver !== a.silver) return b.silver - a.silver
+      if (b.bronze !== a.bronze) return b.bronze - a.bronze
+      return b.total - a.total
+    } else {
+      if (a.gold !== b.gold) return a.gold - b.gold
+      if (a.silver !== b.silver) return a.silver - b.silver
+      if (a.bronze !== b.bronze) return a.bronze - b.bronze
+      return a.total - b.total
+    }
+  })
+})
+
+const availablePodiumCategories = computed(() => {
+  const map = Object.keys(finalStandingsMap.value).length > 0 ? finalStandingsMap.value : qualificationsMap.value
+  return Object.keys(map).filter(cat => {
+    const list = map[cat] || []
+    return list.some(r => r.rank == 1 || r.rank == 2 || r.rank == 3)
+  })
+})
+
+const selectedPodiumCategory = ref('')
+watch(availablePodiumCategories, (cats) => {
+  if (cats.length > 0 && (!selectedPodiumCategory.value || !cats.includes(selectedPodiumCategory.value))) {
+    selectedPodiumCategory.value = cats[0]
+  }
+}, { immediate: true })
+
+const currentPodiumCategoryData = computed(() => {
+  if (!selectedPodiumCategory.value) return null
+  const map = Object.keys(finalStandingsMap.value).length > 0 ? finalStandingsMap.value : qualificationsMap.value
+  const list = map[selectedPodiumCategory.value] || []
+  const gold = list.find(r => r.rank == 1) || null
+  const silver = list.find(r => r.rank == 2) || null
+  const bronze = list.find(r => r.rank == 3) || null
+
+  if (!gold && !silver && !bronze) return null
+  return {
+    category: selectedPodiumCategory.value,
+    gold,
+    silver,
+    bronze
+  }
+})
+
+// ── Celebratory Canvas Particles Engine ──
+const podiumParticleCanvas = ref(null)
+let animationFrameId = null
+
+function initPodiumCanvas() {
+  const canvas = podiumParticleCanvas.value
+  if (!canvas) return
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+
+  const dpr = window.devicePixelRatio || 1
+  const rect = canvas.getBoundingClientRect()
+  canvas.width = (rect.width || 600) * dpr
+  canvas.height = (rect.height || 350) * dpr
+  ctx.scale(dpr, dpr)
+
+  const particles = Array.from({ length: 45 }, () => ({
+    x: Math.random() * (rect.width || 600),
+    y: Math.random() * (rect.height || 350),
+    size: Math.random() * 3 + 1,
+    speedY: Math.random() * 0.6 + 0.2,
+    speedX: (Math.random() - 0.5) * 0.4,
+    color: Math.random() > 0.4 ? 'rgba(255, 184, 0, ' : 'rgba(255, 255, 255, ',
+    alpha: Math.random() * 0.7 + 0.2
+  }))
+
+  function animate() {
+    ctx.clearRect(0, 0, rect.width || 600, rect.height || 350)
+    particles.forEach(p => {
+      p.y -= p.speedY
+      p.x += p.speedX
+      if (p.y < 0) {
+        p.y = (rect.height || 350) + 5
+        p.x = Math.random() * (rect.width || 600)
+      }
+      ctx.fillStyle = `${p.color}${p.alpha})`
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+      ctx.fill()
+    })
+    animationFrameId = requestAnimationFrame(animate)
+  }
+
+  animate()
+}
+
+function changePodiumCategory(cat) {
+  selectedPodiumCategory.value = cat
+}
+
+function getArcherInitials(name) {
+  if (!name) return ''
+  const parts = name.trim().split(/\s+/)
+  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase()
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+}
 
 // Quick Metrics computations
 const computedTotalArchers = computed(() => {
