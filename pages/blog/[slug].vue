@@ -102,7 +102,7 @@
                                     <!-- Indicator for H1 / H2 -->
                                     <span v-if="item.level <= 2" class="w-2 h-2 rounded-full bg-navy mt-1.5 mr-2 shrink-0 transition-colors"></span>
                                     <!-- Sub-indicator for H3 / H4 -->
-                                    <span v-else class="w-1.5 h-1.5 rounded-full bg-sky-500 mt-1.5 mr-2 shrink-0 transition-colors"></span>
+                                    <span v-else class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 mr-2 shrink-0 transition-colors"></span>
                                     <span class="leading-snug">{{ item.text }}</span>
                                 </a>
                             </div>

@@ -3005,9 +3005,9 @@
   "auth": {
     "login": {
       "seo_title": "Login",
-      "title": "Elevate <br /> Archery",
-      "desc": "Join the number one digital archery platform to manage tournaments, athletes, and real-time scoring.",
-      "archers_joined": "Archers have joined Archeris.net",
+      "title": "Precision Platform <br /> for Archery",
+      "desc": "The official digital hub for archers, clubs, and organizers: World Archery & Ianseo standards, performance tracking, scoring records, and event certification.",
+      "archers_joined": "Archers & Organizers have joined Archeris",
       "welcome": "Welcome Back!",
       "welcome_sub": "Please enter your email and password to continue.",
       "email_label": "Email Address",
@@ -3025,7 +3025,7 @@
     "register": {
       "title": "Join the largest archery community.",
       "welcome": "Create New Account",
-      "subtitle": "Join the largest archery community.",
+      "subtitle": "Create your official account to track scores, register for tournaments, and connect with clubs.",
       "archer_tab": "Archer",
       "organization_tab": "Organizer",
       "seller_tab": "Seller",
@@ -3061,8 +3061,8 @@
       "register_with_google": "Register with Google",
       "already_have_account": "Already have an account?",
       "login_here": "Login here!",
-      "desktop_title": "Join the Digital <br /> Archery Revolution",
-      "desktop_desc": "Join the largest archery community to manage clubs, track scores, and participate in tournaments.",
+      "desktop_title": "Integrated Digital <br /> Archery Ecosystem",
+      "desktop_desc": "The official digital hub for archers, clubs, and organizers: World Archery & Ianseo scoring standards, verified event certificates, performance analytics, and seamless competition management.",
       "archer_info": "Archer Info",
       "org_info": "Organizer Info",
       "shop_info": "Shop Info",

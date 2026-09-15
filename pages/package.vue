@@ -9,6 +9,15 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-95"></div>
             </div>
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <!-- Breadcrumbs Navigation -->
+                <div class="mb-4">
+                    <Breadcrumbs 
+                        :items="[]" 
+                        :current="$t('nav.package', 'Package')" 
+                        class="!text-slate-300" 
+                    />
+                </div>
+
                 <div class="max-w-3xl">
                     <h1
                         class="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tight leading-tight mb-6">

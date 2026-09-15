@@ -112,7 +112,7 @@
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('overview_title') }}
                   </h2>
-                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">{{ t('overview_desc') }}</p>
+                  <div class="text-xs sm:text-sm text-slate-500 mt-0.5 leading-normal">{{ t('overview_desc') }}</div>
                 </div>
               </div>
 
@@ -172,92 +172,164 @@
             </section>
 
             <!-- 2. COMPETITION SCHEDULE -->
-            <section v-if="hasScheduleData" id="schedule" class="scroll-mt-24 space-y-5">
-              <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon"><Icon icon="ph:calendar-check-bold" class="size-5 text-navy" /></div>
-                <div>
-                  <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
-                    {{ t('schedule_title') }}
-                  </h2>
-                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">{{ t('schedule_desc') }}</p>
+            <section v-if="hasScheduleData" id="schedule" class="scroll-mt-24 space-y-6">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div class="flex items-center gap-3">
+                  <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon">
+                    <Icon icon="ph:calendar-check-bold" class="size-5 text-navy" />
+                  </div>
+                  <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
+                      {{ t('schedule_title') }}
+                    </h2>
+                    <div class="text-xs sm:text-sm text-slate-500 mt-0.5 leading-normal">{{ t('schedule_desc') }}</div>
+                  </div>
+                </div>
+                <div class="hidden sm:flex items-center gap-2">
+                  <span class="text-xs font-semibold text-slate-400">Total Program Events:</span>
+                  <span class="px-2.5 py-0.5 rounded-full bg-navy/5 text-navy text-xs font-bold font-sans">
+                    {{ filteredScheduleEvents.length }}
+                  </span>
                 </div>
               </div>
 
-              <!-- Day Filter Chips (Horizontal Scrolling Single Line) -->
-              <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+              <!-- Day & Date Ribbon (Horizontal Scrolling) -->
+              <div class="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-1">
                 <button
                   @click="selectedScheduleDay = 'all'"
                   :class="[
-                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
+                    'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer border',
                     selectedScheduleDay === 'all'
-                      ? 'bg-navy text-white shadow-xs font-bold'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      ? 'bg-navy text-white border-navy shadow-xs'
+                      : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                   ]"
                 >
-                  {{ t('all_days') }}
+                  <Icon icon="ph:calendar-blank-bold" class="text-sm" />
+                  <span>{{ t('all_days') }}</span>
+                  <span
+                    :class="[
+                      'px-1.5 py-0.2 rounded-md text-[10px] font-bold',
+                      selectedScheduleDay === 'all' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                    ]"
+                  >
+                    {{ (tournamentData?.schedule || []).length }}
+                  </span>
                 </button>
+
                 <button
                   v-for="day in availableScheduleDays"
                   :key="day"
                   @click="selectedScheduleDay = day"
                   :class="[
-                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
+                    'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer border',
                     selectedScheduleDay === day
-                      ? 'bg-navy text-white shadow-xs font-bold'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      ? 'bg-navy text-white border-navy shadow-xs'
+                      : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                   ]"
                 >
-                  {{ toTitleCase(day) }}
+                  <Icon icon="ph:clock-countdown-bold" class="text-sm" />
+                  <span>{{ toTitleCase(day) }}</span>
                 </button>
               </div>
 
-              <!-- Timeline List Container -->
-              <div class="border border-slate-200/80 rounded-2xl p-4 sm:p-6 bg-slate-50/40">
-                <div v-if="filteredScheduleEvents.length > 0" class="relative pl-6 sm:pl-8 space-y-6">
-                  <!-- Continuous Vertical Timeline Connector Line -->
-                  <div class="absolute left-2.5 sm:left-3.5 top-3 bottom-3 w-0.5 bg-gradient-to-b from-primary via-slate-200 to-slate-200"></div>
-
+              <!-- Program Matrix List Container -->
+              <div class="space-y-3">
+                <div v-if="filteredScheduleEvents.length > 0" class="space-y-3">
                   <div
                     v-for="(ev, idx) in filteredScheduleEvents"
                     :key="idx"
-                    class="relative flex items-start gap-4 group"
+                    class="group relative bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 hover:border-navy/30 hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-4"
                   >
-                    <!-- Absolute Timeline Node Point -->
-                    <div class="absolute -left-6 sm:-left-8 top-1.5 size-5 sm:size-6 rounded-full bg-white border-2 border-navy group-hover:border-primary flex items-center justify-center shadow-xs transition-colors z-10">
-                      <div class="size-2 rounded-full bg-primary group-hover:scale-125 transition-transform"></div>
+                    <!-- Left: Time & Phase Column -->
+                    <div class="flex items-center gap-3 sm:gap-4 shrink-0 md:w-56">
+                      <div class="size-11 rounded-xl bg-slate-100/90 text-navy flex flex-col items-center justify-center font-sans font-bold border border-slate-200/60 shrink-0">
+                        <Icon icon="ph:clock-bold" class="text-xs text-slate-500 mb-0.5" />
+                        <span class="text-xs text-navy tracking-tight leading-none">{{ ev.time || ev.time_slot || '08:00' }}</span>
+                      </div>
+                      <div>
+                        <div class="text-xs font-bold text-navy">
+                          {{ ev.day || ev.date || (selectedScheduleDay !== 'all' ? toTitleCase(selectedScheduleDay) : 'Competition Day') }}
+                        </div>
+                        <div class="text-[11px] text-slate-400 font-medium mt-0.5">
+                          {{ ev.session || 'Main Range Session' }}
+                        </div>
+                      </div>
                     </div>
 
-                    <!-- Event Card -->
-                    <div class="flex-1 p-3.5 sm:p-4 rounded-xl bg-white border border-slate-200/80 shadow-2xs group-hover:border-navy/40 transition-all">
-                      <div class="flex flex-wrap items-center justify-between gap-2 pb-1.5">
-                        <div class="flex items-center gap-2">
-                          <span class="px-2.5 py-0.5 rounded-lg bg-navy/5 text-navy font-mono text-xs font-bold">
-                            {{ ev.time || ev.time_slot || '08:00' }}
-                          </span>
-                          <span v-if="ev.day || ev.date" class="text-xs font-medium text-slate-400">
-                            {{ ev.day || ev.date }}
-                          </span>
-                        </div>
-                        <span v-if="ev.stage || ev.phase" class="px-2 py-0.5 rounded-md bg-primary/15 text-navy text-[11px] font-bold">
-                          {{ toTitleCase(ev.stage || ev.phase) }}
+                    <!-- Middle: Event Details & Division Badges -->
+                    <div class="flex-1 space-y-2 border-t md:border-t-0 md:border-l border-slate-100 pt-3 md:pt-0 md:pl-5">
+                      <div class="flex flex-wrap items-center gap-2">
+                        <h4 class="text-sm sm:text-base font-bold text-navy">
+                          {{ ev.activity || ev.event || ev.name || 'Official Match Schedule' }}
+                        </h4>
+                      </div>
+
+                      <div class="flex flex-wrap items-center gap-2 text-xs">
+                        <!-- Category / Bow Tag -->
+                        <span
+                          v-if="ev.category || ev.division"
+                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-medium"
+                        >
+                          <Icon icon="ph:bow-arrow" class="text-slate-500 text-xs" />
+                          <span>{{ toTitleCase(ev.category || ev.division) }}</span>
+                        </span>
+
+                        <!-- Targets Allocation -->
+                        <span
+                          v-if="ev.targets || ev.target_range"
+                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-navy/5 text-navy font-medium"
+                        >
+                          <Icon icon="ph:target" class="text-navy text-xs" />
+                          <span>Targets {{ ev.targets || ev.target_range }}</span>
+                        </span>
+
+                        <!-- Distance / Notes -->
+                        <span
+                          v-if="ev.distance || ev.notes"
+                          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 text-slate-600 border border-slate-200/50 text-[11px]"
+                        >
+                          <Icon icon="ph:ruler" class="text-slate-400 text-xs" />
+                          <span>{{ ev.distance || ev.notes }}</span>
                         </span>
                       </div>
+                    </div>
 
-                      <h4 class="text-sm sm:text-base font-bold text-navy mt-1">
-                        {{ ev.activity || ev.event || ev.name || 'Official Match Schedule' }}
-                      </h4>
-
-                      <div v-if="ev.category || ev.division" class="flex items-center gap-2 mt-2 text-xs text-slate-500 font-medium">
-                        <Icon icon="ph:tag-bold" class="text-slate-400 text-xs shrink-0" />
-                        <span>{{ toTitleCase(ev.category || ev.division) }}</span>
-                      </div>
+                    <!-- Right: Stage Pill Badge -->
+                    <div class="shrink-0 flex items-center justify-between md:justify-end gap-2 border-t md:border-t-0 border-slate-100 pt-2.5 md:pt-0">
+                      <span
+                        class="px-3 py-1 rounded-xl text-xs font-bold border transition-colors inline-flex items-center gap-1.5"
+                        :class="[
+                          (ev.stage || ev.phase || '').toLowerCase().includes('final')
+                            ? 'bg-amber-50 text-amber-800 border-amber-200'
+                            : (ev.stage || ev.phase || '').toLowerCase().includes('elim')
+                            ? 'bg-rose-50 text-rose-800 border-rose-200'
+                            : (ev.stage || ev.phase || '').toLowerCase().includes('qual')
+                            ? 'bg-primary/20 text-navy border-primary/30'
+                            : 'bg-slate-100 text-slate-700 border-slate-200'
+                        ]"
+                      >
+                        <span
+                          class="size-1.5 rounded-full"
+                          :class="[
+                            (ev.stage || ev.phase || '').toLowerCase().includes('final')
+                              ? 'bg-amber-500'
+                              : (ev.stage || ev.phase || '').toLowerCase().includes('elim')
+                              ? 'bg-rose-500'
+                              : (ev.stage || ev.phase || '').toLowerCase().includes('qual')
+                              ? 'bg-primary'
+                              : 'bg-slate-400'
+                          ]"
+                        ></span>
+                        <span>{{ toTitleCase(ev.stage || ev.phase || 'Competition Round') }}</span>
+                      </span>
                     </div>
                   </div>
                 </div>
 
-                <div v-else class="text-center py-10 text-slate-400 text-xs sm:text-sm">
-                  <Icon icon="ph:calendar-x" class="text-3xl mx-auto mb-2 text-slate-300" />
-                  <span>No schedule items found for this day.</span>
+                <div v-else class="text-center py-12 rounded-2xl bg-white border border-slate-200/80 text-slate-400 text-xs sm:text-sm space-y-2">
+                  <Icon icon="ph:calendar-x" class="text-4xl mx-auto text-slate-300" />
+                  <p class="font-medium text-slate-600">No schedule items found for this filter.</p>
+                  <p class="text-slate-400 text-xs">Try selecting 'All Days' to view full tournament program.</p>
                 </div>
               </div>
             </section>
@@ -270,7 +342,7 @@
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('fop_title') }}
                   </h2>
-                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">{{ t('fop_desc') }}</p>
+                  <div class="text-xs sm:text-sm text-slate-500 mt-0.5 leading-normal">{{ t('fop_desc') }}</div>
                 </div>
               </div>
 
@@ -364,7 +436,7 @@
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('athletes_title') }}
                   </h2>
-                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">{{ t('athletes_desc') }}</p>
+                  <div class="text-xs sm:text-sm text-slate-500 mt-0.5 leading-normal">{{ t('athletes_desc') }}</div>
                 </div>
               </div>
 
@@ -560,7 +632,7 @@
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('qualifications_title') }}
                   </h2>
-                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">{{ t('qualifications_desc') }}</p>
+                  <div class="text-xs sm:text-sm text-slate-500 mt-0.5 leading-normal">{{ t('qualifications_desc') }}</div>
                 </div>
               </div>
 
@@ -662,7 +734,7 @@
                     <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                       {{ t('brackets_title') }}
                     </h2>
-                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">{{ t('brackets_desc') }}</p>
+                    <div class="text-xs sm:text-sm text-slate-500 mt-0.5 leading-normal">{{ t('brackets_desc') }}</div>
                   </div>
                 </div>
 
@@ -722,7 +794,7 @@
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     {{ t('medals_title') }}
                   </h2>
-                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">{{ t('medals_desc') }}</p>
+                  <div class="text-xs sm:text-sm text-slate-500 mt-0.5 leading-normal">{{ t('medals_desc') }}</div>
                 </div>
               </div>
 
@@ -1055,13 +1127,13 @@
                   <!-- Total Archers -->
                   <div class="flex items-start justify-between gap-2 pt-2 border-t border-slate-100">
                     <span class="text-slate-400 font-medium shrink-0">{{ t('label_archers') }}</span>
-                    <span class="font-mono font-bold text-navy text-right">{{ computedTotalArchers }}</span>
+                    <span class="font-bold text-navy text-right">{{ computedTotalArchers }}</span>
                   </div>
 
                   <!-- Total Categories -->
                   <div class="flex items-start justify-between gap-2">
                     <span class="text-slate-400 font-medium shrink-0">{{ t('label_categories') }}</span>
-                    <span class="font-mono font-bold text-navy text-right">{{ categoriesList.length }}</span>
+                    <span class="font-bold text-navy text-right">{{ categoriesList.length }}</span>
                   </div>
                 </div>
               </div>
