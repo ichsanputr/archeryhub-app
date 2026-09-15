@@ -445,7 +445,7 @@
                       ]"
                     >
                       <span class="truncate">{{ club }}</span>
-                      <Icon v-if="entriesClubFilter === club'" icon="ph:check-bold" class="text-navy text-xs" />
+                      <Icon v-if="entriesClubFilter === club" icon="ph:check-bold" class="text-navy text-xs" />
                     </button>
                   </div>
                 </div>
@@ -756,7 +756,7 @@
               <!-- Public Elimination Bracket Visual Component -->
               <div class="border border-slate-200/80 rounded-2xl p-4 sm:p-6 bg-slate-50/30 overflow-x-auto">
                 <div v-if="hasCurrentBracketRounds">
-                  <PublicEliminationBracket
+                  <ExternalEliminationBracket
                     :rounds="currentArcherisBracketRounds"
                     :config="currentArcherisBracketConfig"
                   />
@@ -1270,7 +1270,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { Icon } from '@iconify/vue'
-import PublicEliminationBracket from '~/components/bracket/PublicEliminationBracket.vue'
+import ExternalEliminationBracket from './ExternalEliminationBracket.vue'
 
 // Custom click-outside directive for Vue
 const vClickOutside = {
@@ -2096,11 +2096,13 @@ const currentArcherisBracketRounds = computed(() => {
         entry_a_seed: seed1,
         set_points_a: score1,
         total_score_a: score1,
+        sets_a: m.sets1 || m.sets_a || '',
         entry_b_id: 'b',
         entry_b_name: archer2,
         entry_b_seed: seed2,
         set_points_b: score2,
         total_score_b: score2,
+        sets_b: m.sets2 || m.sets_b || '',
         winner_entry_id: winnerId,
         is_bye: (archer1 === 'BYE' || archer2 === 'BYE')
       }
