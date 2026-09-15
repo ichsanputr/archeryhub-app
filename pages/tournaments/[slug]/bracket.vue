@@ -29,27 +29,93 @@
 
       <!-- Loaded Content -->
       <template v-else>
-        <!-- Category Filter Pills Bar with Compact Back Button -->
+        <!-- ── TOURNAMENT INFO & SHARING HERO HEADER CARD ── -->
+        <div class="bg-white rounded-3xl border border-slate-200/90 p-4 sm:p-6 shadow-xs relative overflow-hidden">
+          <!-- Subtle decorative background gradient -->
+          <div class="absolute -right-20 -top-20 size-72 rounded-full bg-primary/10 blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-20 -bottom-20 size-72 rounded-full bg-navy/5 blur-3xl pointer-events-none"></div>
+
+          <div class="relative z-10 space-y-4">
+            <!-- Top Utility Bar: Navigation & Action Buttons -->
+            <div class="flex flex-wrap items-center justify-between gap-2.5 pb-2 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <NuxtLink 
+                  :to="`/tournaments/${slug}`" 
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy text-xs font-bold transition-colors cursor-pointer"
+                  title="Kembali ke Detail Turnamen"
+                >
+                  <Icon icon="ph:arrow-left-bold" class="text-sm" />
+                  <span>Detail Turnamen</span>
+                </NuxtLink>
+
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-amber-500/10 text-amber-900 border border-amber-400/30 text-[11px] font-bold">
+                  <Icon icon="ph:sword-fill" class="text-amber-600 text-xs" />
+                  <span>Bagan Eliminasi</span>
+                </div>
+              </div>
+
+              <!-- Sharing & Actions -->
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  @click="copyShareLink"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-navy hover:bg-navy-light text-white text-xs font-bold transition-all shadow-2xs cursor-pointer active:scale-95"
+                >
+                  <Icon :icon="copiedShareLink ? 'ph:check-bold' : 'ph:share-network-bold'" class="text-xs" />
+                  <span>{{ copiedShareLink ? 'Tautan Disalin!' : 'Bagikan' }}</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Tournament Main Title -->
+            <div class="space-y-1">
+              <h1 class="text-base sm:text-2xl font-black text-navy font-display tracking-tight leading-snug">
+                {{ toTitleCase(tournament?.name || 'Turnamen Panahan') }}
+              </h1>
+            </div>
+
+            <!-- Metadata Badges Row -->
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+              <!-- Location / Venue Badge -->
+              <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700 font-semibold shadow-2xs">
+                <Icon icon="ph:map-pin-fill" class="text-primary text-sm shrink-0" />
+                <span class="truncate max-w-[260px] sm:max-w-md">{{ toTitleCase(tournament?.location || tournament?.venue || 'Indonesia') }}</span>
+              </div>
+
+              <!-- Date Badge (if available) -->
+              <div v-if="formattedDateRange" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700 font-semibold shadow-2xs">
+                <Icon icon="ph:calendar-blank-fill" class="text-primary text-sm shrink-0" />
+                <span>{{ formattedDateRange }}</span>
+              </div>
+
+              <!-- Active Category Badge -->
+              <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary/20 border border-primary/40 text-xs text-navy font-black shadow-2xs">
+                <Icon icon="ph:target-bold" class="text-navy text-sm shrink-0" />
+                <span>Kategori: {{ toTitleCase(selectedCategory || availableBracketCategories[0]) }}</span>
+              </div>
+
+              <!-- Total Category Matches Badge -->
+              <div v-if="totalCategoryMatches > 0" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700 font-semibold shadow-2xs">
+                <Icon icon="ph:trophy-fill" class="text-amber-500 text-sm shrink-0" />
+                <span>{{ totalCategoryMatches }} Pertandingan</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── CATEGORY FILTER PILLS BAR ── -->
         <div class="bg-white rounded-2xl border border-slate-200 p-2.5 sm:p-3 shadow-2xs flex items-center justify-between gap-2.5 sm:gap-3 overflow-hidden">
           <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 w-full">
-            <NuxtLink 
-              :to="`/tournaments/${slug}`" 
-              class="size-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center shrink-0 transition-colors cursor-pointer"
-              title="Back to Tournament"
-            >
-              <Icon icon="ph:arrow-left-bold" class="text-sm" />
-            </NuxtLink>
-
-            <span class="text-xs font-bold text-slate-400 pl-1 shrink-0">Category:</span>
+            <span class="text-xs font-bold text-slate-400 pl-1 shrink-0">Pilih Kategori:</span>
             <button
               v-for="cat in availableBracketCategories"
               :key="cat"
-              @click="selectedCategory = cat"
+              @click="handleSelectCategory(cat)"
               :class="[
-                'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
+                'px-3.5 py-1.5 rounded-xl text-xs whitespace-nowrap shrink-0 transition-all cursor-pointer',
                 (selectedCategory || availableBracketCategories[0]) === cat
                   ? 'bg-navy text-white shadow-xs font-bold'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold'
               ]"
             >
               {{ toTitleCase(cat) }}
@@ -57,7 +123,7 @@
           </div>
         </div>
 
-        <!-- Elimination Bracket Viewer Component -->
+        <!-- ── ELIMINATION BRACKET VIEWER COMPONENT ── -->
         <div class="flex-1 bg-white rounded-3xl border border-slate-200 p-3 sm:p-6 shadow-sm overflow-hidden flex flex-col">
           <ExternalEliminationBracket
             v-if="hasCurrentBracketRounds"
@@ -69,7 +135,7 @@
           />
           <div v-else class="text-center py-24 text-slate-400 text-xs sm:text-sm my-auto">
             <Icon icon="ph:sword" class="text-3xl mx-auto mb-2 text-slate-300" />
-            <span>No bracket matches found for this category.</span>
+            <span>Tidak ada pertandingan eliminasi untuk kategori ini.</span>
           </div>
         </div>
       </template>
@@ -79,7 +145,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import ExternalEliminationBracket from '~/components/tournament/ExternalEliminationBracket.vue'
 
@@ -88,6 +154,7 @@ definePageMeta({
 })
 
 const route = useRoute()
+const router = useRouter()
 const config = useRuntimeConfig()
 const apiBase = config.public.apiBaseUrl || 'http://localhost:8001'
 const slug = route.params.slug || '25818'
@@ -126,10 +193,54 @@ watch(availableBracketCategories, (newCats) => {
   }
 }, { immediate: true })
 
+const handleSelectCategory = (cat) => {
+  selectedCategory.value = cat
+  router.replace({ query: { ...route.query, category: cat } })
+}
+
+const copiedShareLink = ref(false)
+const copyShareLink = async () => {
+  try {
+    const url = window.location.href
+    await navigator.clipboard.writeText(url)
+    copiedShareLink.value = true
+    setTimeout(() => {
+      copiedShareLink.value = false
+    }, 2000)
+  } catch (e) {
+    console.error('Failed to copy', e)
+  }
+}
+
 const toTitleCase = (str) => {
   if (!str) return ''
   return String(str).toLowerCase().replace(/(?:^|\s|\/|-)\S/g, char => char.toUpperCase())
 }
+
+const formattedDateRange = computed(() => {
+  const s = tournamentData.value?.start_date || tournament.value?.start_date
+  const e = tournamentData.value?.end_date || tournament.value?.end_date
+  if (!s) return ''
+  try {
+    const sDate = new Date(s)
+    const options = { day: 'numeric', month: 'short', year: 'numeric' }
+    if (!e || s === e) {
+      return sDate.toLocaleDateString('id-ID', options)
+    }
+    const eDate = new Date(e)
+    return `${sDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })} - ${eDate.toLocaleDateString('id-ID', options)}`
+  } catch {
+    return ''
+  }
+})
+
+const totalCategoryMatches = computed(() => {
+  let count = 0
+  Object.values(currentArcherisBracketRounds.value).forEach(mList => {
+    count += (mList || []).length
+  })
+  return count
+})
 
 useHead({
   title: computed(() => {
@@ -303,7 +414,6 @@ const currentArcherisBracketRounds = computed(() => {
   const rounds = {}
 
   if (total >= 14) {
-    // 16-archer bracket: 8 (1/8) -> 4 (QF) -> 2 (SF) -> Finals
     rounds[1] = allPreliminaryMatches.slice(0, 8)
     rounds[2] = allPreliminaryMatches.slice(8, 12)
     rounds[3] = allPreliminaryMatches.slice(12, 14)
@@ -312,7 +422,6 @@ const currentArcherisBracketRounds = computed(() => {
     if (bronzeMatch) finals.push(bronzeMatch)
     rounds[4] = finals
   } else if (total >= 8) {
-    // 1/8 with byes: last 2 are SF, 4 before SF are QF, rest are 1/8
     const sf = allPreliminaryMatches.slice(total - 2)
     const qf = allPreliminaryMatches.slice(total - 6, total - 2)
     const r16 = allPreliminaryMatches.slice(0, total - 6)
@@ -330,7 +439,6 @@ const currentArcherisBracketRounds = computed(() => {
     if (bronzeMatch) finals.push(bronzeMatch)
     rounds[rIdx] = finals
   } else if (total >= 6) {
-    // 8-archer bracket: 4 (QF) -> 2 (SF) -> Finals
     rounds[1] = allPreliminaryMatches.slice(0, 4)
     rounds[2] = allPreliminaryMatches.slice(4, 6)
     const finals = []
@@ -338,7 +446,6 @@ const currentArcherisBracketRounds = computed(() => {
     if (bronzeMatch) finals.push(bronzeMatch)
     rounds[3] = finals
   } else if (total >= 2) {
-    // 4-archer bracket: 2 (SF) -> Finals
     rounds[1] = allPreliminaryMatches.slice(0, 2)
     const finals = []
     if (total >= 3) finals.push(allPreliminaryMatches[2])
