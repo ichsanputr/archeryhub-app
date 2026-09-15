@@ -1702,6 +1702,22 @@ const medalSortAsc = ref(true)
 // TOURNAMENT OVERVIEW DESCRIPTIONS (BESPOKE NATURAL PROSE)
 // ─────────────────────────────────────────────────────────────
 const bespokeTournamentDescriptions = {
+  '28570': {
+    id: [
+      'USM National Archery Championship 2026 merupakan kejuaraan panahan tingkat nasional yang diselenggarakan oleh UKM Panahan Gendewa Geni Universitas Semarang (USM) di Semarang, Jawa Tengah. Digelar selama tiga hari pada 11 - 13 Juni 2026, kejuaraan bergengsi ini mempertemukan 38 atlet panahan berprestasi dari 20 klub, universitas, dan kontingen daerah di seluruh Indonesia.',
+      'Kejuaraan ini mempertandingkan 14 nomor kompetisi utama yang mencakup kategori Barebow Mahasiswa (Putra/Putri/Mix Team), Barebow Umum (Putra/Putri/Mix Team), serta divisi Standar Nasional kelompok umur (U13 & U15). Lapangan kompetisi didukung 32 bantalan target aktif berstandar resmi Ianseo, menghadirkan rangkaian kompetisi mulai dari babak kualifikasi penentuan seeding hingga babak eliminasi head-to-head yang menegangkan menuju perebutan medali emas.',
+      'Sebagai ajang kompetisi antar-kampus dan umum tingkat nasional, kejuaraan ini menjadi wadah strategis dalam mengasah jam terbang atlet mahasiswa, mempererat sinergi komunitas panahan nasional, serta menjaring bibit atlet panahan potensial dari berbagai daerah.'
+    ],
+    en: [
+      'The USM National Archery Championship 2026 is a premier national-level archery championship hosted by UKM Panahan Gendewa Geni at Universitas Semarang (USM) in Semarang, Central Java. Staged over three competition days from June 11 to 13, 2026, the tournament assembled 38 standout archers representing 20 participating university delegations, clubs, and regional associations across Indonesia.',
+      'The championship contested 14 key medal divisions spanning Collegiate Barebow (Men, Women, and Mixed Team), Open Barebow, and youth National Standard classes (U13 and U15). With 32 active target lanes certified under the official Ianseo scoring system, the event delivered intense action from preliminary ranking rounds to dramatic head-to-head knockout shootouts for the championship podium.',
+      'Serving as a key milestone for collegiate and open-tier archery, this championship provided valuable competitive exposure, fostering sportsmanship and identifying rising archery talents across the nation.'
+    ],
+    it: [
+      'Il Campionato Nazionale di Tiro con l\'Arco USM 2026 è una prestigiosa manifestazione nazionale ospitata dall\'associazione arcieristica Gendewa Geni presso l\'Università di Semarang (USM) a Giava Centrale. Svoltosi dall\'11 al 13 giugno 2026, l\'evento ha visto la partecipazione di 38 arcieri in rappresentanza di 20 club universitari e delegazioni regionali.',
+      'Le gare hanno coperto 14 divisioni ufficiali tra Arco Nudo Universitario, Barebow Open e Standard Nazionale Giovanile su 32 bersagli omologati Ianseo, culminando in emozionanti finali testa a testa per il titolo.'
+    ]
+  },
   '29375': {
     id: [
       'Liga Panahan Kabupaten Kendal 2026 Seri 3 merupakan sirkuit pembinaan panahan di Jawa Tengah yang mempertemukan 164 atlet dari 58 klub dan kontingen panahan daerah. Berlangsung di Kabupaten Kendal pada 31 Juli hingga 2 Agustus 2026, kejuaraan ini mempertandingkan 24 divisi lomba dari kelompok usia dini (Recurve U13, Recurve U15, Barebow U18) hingga divisi Standar Nasional dan Recurve umum.',
