@@ -12,31 +12,13 @@
       </div>
 
       <div class="relative z-20 max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
-        <!-- Breadcrumbs & Quick Language Selector -->
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <!-- Breadcrumbs Navigation -->
+        <div class="mb-4">
           <Breadcrumbs 
             :items="[{ label: t('tournaments'), path: '/tournaments' }]" 
             :current="toTitleCase(activeTournament?.name) || t('tournament_details')" 
             class="!text-slate-300 text-xs sm:text-sm" 
           />
-
-          <!-- Header Inline Language Selector -->
-          <div class="flex items-center gap-1 bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/15">
-            <button
-              v-for="lang in availableLanguages"
-              :key="lang.code"
-              @click="currentLang = lang.code"
-              :class="[
-                'px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer',
-                currentLang === lang.code 
-                  ? 'bg-primary text-navy shadow-xs font-black' 
-                  : 'text-white/80 hover:text-white hover:bg-white/10'
-              ]"
-            >
-              <span>{{ lang.flag }}</span>
-              <span>{{ lang.code.toUpperCase() }}</span>
-            </button>
-          </div>
         </div>
 
         <div class="w-full space-y-3">
@@ -74,8 +56,6 @@
         v-for="sec in navigationSections" 
         :key="sec.id"
         :href="`#${sec.id}`"
-        hreflang="id"
-        @click.prevent="scrollToSection(sec.id)"
         :class="[
           'px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 select-none cursor-pointer',
           activeSectionId === sec.id 
@@ -89,27 +69,25 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- UNIFIED SINGLE PARENT CARD (WIDE CONTAINER, WORKING STICKY, CLEAN BORDER) -->
+    <!-- UNIFIED SINGLE CONTAINER -->
     <!-- ========================================================================= -->
     <main class="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8">
       <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs">
         <div class="grid grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-100">
           
-          <!-- ── COLUMN 1: LEFT TOC (STICKY TOP-24 BELOW NAVBAR, NO TOP ITEM) ── -->
+          <!-- ── COLUMN 1: LEFT TOC (STICKY TOP-24 BELOW NAVBAR, NATIVE HREF LINKS) ── -->
           <aside class="col-span-12 lg:col-span-2 p-5 sm:p-6 bg-slate-50/30 lg:bg-transparent rounded-t-3xl lg:rounded-tr-none lg:rounded-l-3xl">
             <div class="sticky top-20 sm:top-24 space-y-3">
-              <div class="text-[11px] font-black uppercase tracking-wider text-slate-400 font-display pl-2.5">
+              <div class="text-xs font-bold text-slate-400 font-display pl-2.5">
                 {{ t('contents') }}
               </div>
 
-              <!-- Dynamic TOC Links in Logical Order -->
+              <!-- Dynamic TOC Href Links in Logical Order -->
               <nav class="space-y-1">
                 <a
                   v-for="sec in navigationSections"
                   :key="sec.id"
                   :href="`#${sec.id}`"
-                  hreflang="id"
-                  @click.prevent="scrollToSection(sec.id)"
                   :class="[
                     'px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all block truncate select-none cursor-pointer flex items-center gap-2',
                     activeSectionId === sec.id
@@ -140,7 +118,14 @@
                 </div>
               </div>
 
-              <!-- Quick Metrics 4 Cards Grid -->
+              <!-- Tournament Overview Description (Clean Natural Prose) -->
+              <div v-if="tournamentDescriptionParagraphs.length > 0" class="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2.5 pt-0.5">
+                <p v-for="(paragraph, pIdx) in tournamentDescriptionParagraphs" :key="pIdx" class="text-justify font-normal">
+                  {{ paragraph }}
+                </p>
+              </div>
+
+              <!-- Quick Metrics 4 Cards Grid with UNIFIED Typography -->
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
                   <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
@@ -149,7 +134,7 @@
                     </div>
                     <span>{{ t('metric_archers') }}</span>
                   </div>
-                  <div class="text-xl sm:text-2xl font-bold text-navy font-display mt-1.5">
+                  <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
                     {{ computedTotalArchers }}
                   </div>
                   <div class="text-[11px] text-slate-400 mt-0.5">{{ t('metric_archers_sub') }}</div>
@@ -162,7 +147,7 @@
                     </div>
                     <span>{{ t('metric_clubs') }}</span>
                   </div>
-                  <div class="text-xl sm:text-2xl font-bold text-navy font-display mt-1.5">
+                  <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
                     {{ computedTotalClubs }}
                   </div>
                   <div class="text-[11px] text-slate-400 mt-0.5">{{ t('metric_clubs_sub') }}</div>
@@ -175,7 +160,7 @@
                     </div>
                     <span>{{ t('metric_categories') }}</span>
                   </div>
-                  <div class="text-xl sm:text-2xl font-bold text-navy font-display mt-1.5">
+                  <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
                     {{ categoriesList.length }}
                   </div>
                   <div class="text-[11px] text-slate-400 mt-0.5">{{ t('metric_categories_sub') }}</div>
@@ -188,38 +173,15 @@
                     </div>
                     <span>{{ t('metric_targets') }}</span>
                   </div>
-                  <div class="text-xl sm:text-2xl font-bold text-navy font-display mt-1.5">
-                    {{ fopRoundsList.length > 0 ? fopRoundsList.length : '16+' }}
+                  <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
+                    {{ computedFopTargetCount }}
                   </div>
                   <div class="text-[11px] text-slate-400 mt-0.5">{{ t('metric_targets_sub') }}</div>
                 </div>
               </div>
-
-              <!-- Categories Pills List (ALL TEXT WHITE WHEN ACTIVE/DARK) -->
-              <div v-if="categoriesList.length > 0" class="space-y-2.5 pt-1">
-                <div class="text-xs font-bold text-slate-500 uppercase tracking-wider font-display">
-                  {{ t('competition_divisions') }} ({{ categoriesList.length }})
-                </div>
-                <div class="flex flex-wrap gap-2">
-                  <button
-                    v-for="cat in categoriesList"
-                    :key="cat"
-                    @click="selectedCategory = cat"
-                    :class="[
-                      'px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer',
-                      selectedCategory === cat
-                        ? 'bg-navy text-white shadow-xs font-bold'
-                        : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-                    ]"
-                  >
-                    <span>{{ cat }}</span>
-                    <span v-if="selectedCategory === cat" class="size-1.5 rounded-full bg-primary shrink-0"></span>
-                  </button>
-                </div>
-              </div>
             </section>
 
-            <!-- 2. COMPETITION SCHEDULE (PROVEN TIMELINE MODEL WITH ABSOLUTE CONNECTORS) -->
+            <!-- 2. COMPETITION SCHEDULE -->
             <section v-if="hasScheduleData" id="schedule" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
@@ -233,12 +195,12 @@
                 </div>
               </div>
 
-              <!-- Day Filter Chips (WHITE TEXT ON ACTIVE) -->
-              <div class="flex flex-wrap gap-2 pt-1">
+              <!-- Day Filter Chips (Horizontal Scrolling Single Line) -->
+              <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
                 <button
                   @click="selectedScheduleDay = 'all'"
                   :class="[
-                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer',
+                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
                     selectedScheduleDay === 'all'
                       ? 'bg-navy text-white shadow-xs font-bold'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -251,7 +213,7 @@
                   :key="day"
                   @click="selectedScheduleDay = day"
                   :class="[
-                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer',
+                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
                     selectedScheduleDay === day
                       ? 'bg-navy text-white shadow-xs font-bold'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -261,64 +223,58 @@
                 </button>
               </div>
 
-              <!-- TIMELINE CONTAINER WITH VERTICAL CONNECTOR LINE -->
-              <div class="relative pl-6 sm:pl-8 space-y-6 pt-2">
-                <!-- Vertical Line Absolute Connector -->
-                <div class="absolute left-2.5 sm:left-3 top-3 bottom-3 w-[2px] bg-gradient-to-b from-navy via-slate-300 to-slate-200"></div>
+              <!-- Timeline List Container -->
+              <div class="border border-slate-200/80 rounded-2xl p-4 sm:p-6 bg-slate-50/40">
+                <div v-if="filteredScheduleEvents.length > 0" class="relative pl-6 sm:pl-8 space-y-6">
+                  <!-- Continuous Vertical Timeline Connector Line -->
+                  <div class="absolute left-2.5 sm:left-3.5 top-3 bottom-3 w-0.5 bg-gradient-to-b from-primary via-slate-200 to-slate-200"></div>
 
-                <!-- Timeline Items -->
-                <div 
-                  v-for="(item, idx) in filteredScheduleTimeline" 
-                  :key="idx" 
-                  class="relative group"
-                >
-                  <!-- Timeline Circular Node Indicator -->
-                  <div class="absolute -left-6 sm:-left-8 top-1.5 size-5 rounded-full bg-white border-4 border-navy group-hover:border-primary transition-colors shadow-xs"></div>
-
-                  <!-- Timeline Session Card -->
-                  <div class="p-4 sm:p-5 rounded-2xl bg-slate-50/80 border border-slate-200/70 hover:border-slate-300 transition-all space-y-2">
-                    <div class="flex flex-wrap items-center justify-between gap-2">
-                      <div class="flex items-center gap-2">
-                        <span class="px-2.5 py-1 rounded-lg bg-navy text-white text-xs font-mono font-bold tracking-tight">
-                          {{ item.time || item.start_time || 'Session ' + (idx + 1) }}
-                        </span>
-                        <span v-if="item.day" class="text-xs font-bold text-slate-500 font-display">
-                          {{ item.day }}
-                        </span>
-                      </div>
-                      <span v-if="item.type" class="px-2 py-0.5 rounded-md bg-primary/20 text-navy text-[11px] font-bold">
-                        {{ item.type }}
-                      </span>
+                  <div
+                    v-for="(ev, idx) in filteredScheduleEvents"
+                    :key="idx"
+                    class="relative flex items-start gap-4 group"
+                  >
+                    <!-- Absolute Timeline Node Point -->
+                    <div class="absolute -left-6 sm:-left-8 top-1.5 size-5 sm:size-6 rounded-full bg-white border-2 border-navy group-hover:border-primary flex items-center justify-center shadow-xs transition-colors z-10">
+                      <div class="size-2 rounded-full bg-primary group-hover:scale-125 transition-transform"></div>
                     </div>
 
-                    <h4 class="text-sm sm:text-base font-bold text-navy font-display">
-                      {{ item.title || item.name || item.description }}
-                    </h4>
+                    <!-- Event Card -->
+                    <div class="flex-1 p-3.5 sm:p-4 rounded-xl bg-white border border-slate-200/80 shadow-2xs group-hover:border-navy/40 transition-all">
+                      <div class="flex flex-wrap items-center justify-between gap-2 pb-1.5">
+                        <div class="flex items-center gap-2">
+                          <span class="px-2.5 py-0.5 rounded-lg bg-navy/5 text-navy font-mono text-xs font-bold">
+                            {{ ev.time || ev.time_slot || '08:00' }}
+                          </span>
+                          <span v-if="ev.day || ev.date" class="text-xs font-medium text-slate-400">
+                            {{ ev.day || ev.date }}
+                          </span>
+                        </div>
+                        <span v-if="ev.stage || ev.phase" class="px-2 py-0.5 rounded-md bg-primary/15 text-navy text-[11px] font-bold">
+                          {{ ev.stage || ev.phase }}
+                        </span>
+                      </div>
 
-                    <p v-if="item.notes || item.location" class="text-xs text-slate-500 leading-relaxed">
-                      {{ item.notes || item.location }}
-                    </p>
+                      <h4 class="text-sm sm:text-base font-bold text-navy mt-1">
+                        {{ ev.activity || ev.event || ev.name || 'Official Match Schedule' }}
+                      </h4>
 
-                    <!-- Category Pills inside Timeline Item -->
-                    <div v-if="item.categories && item.categories.length > 0" class="flex flex-wrap gap-1.5 pt-1">
-                      <span 
-                        v-for="cat in item.categories" 
-                        :key="cat" 
-                        class="px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-600 text-[10px] font-semibold"
-                      >
-                        {{ cat }}
-                      </span>
+                      <div v-if="ev.category || ev.division" class="flex items-center gap-2 mt-2 text-xs text-slate-500 font-medium">
+                        <Icon icon="ph:tag-bold" class="text-slate-400 text-xs shrink-0" />
+                        <span>{{ ev.category || ev.division }}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div v-if="filteredScheduleTimeline.length === 0" class="py-8 text-center text-slate-400 italic">
-                  {{ t('no_schedule_available') }}
+                <div v-else class="text-center py-10 text-slate-400 text-xs sm:text-sm">
+                  <Icon icon="ph:calendar-x" class="text-3xl mx-auto mb-2 text-slate-300" />
+                  <span>No schedule items found for this day.</span>
                 </div>
               </div>
             </section>
 
-            <!-- 3. FIELD OF PLAY (FOP) -->
+            <!-- 3. FIELD OF PLAY (FOP LAYOUT) -->
             <section v-if="hasFopData" id="fop" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
@@ -332,42 +288,93 @@
                 </div>
               </div>
 
-              <!-- FOP Target Allocation Table -->
-              <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
-                <table class="w-full text-left text-xs sm:text-sm text-navy">
-                  <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
-                    <tr>
-                      <th class="py-3 px-4 w-28">{{ t('fop_col_target') }}</th>
-                      <th class="py-3 px-4">{{ t('fop_col_category') }}</th>
-                      <th class="py-3 px-4">{{ t('fop_col_distance') }}</th>
-                      <th class="py-3 px-4 text-center">{{ t('fop_col_archers') }}</th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-slate-100 font-medium">
-                    <tr v-for="(fop, fIdx) in fopRoundsList" :key="fIdx" class="hover:bg-slate-50/70 transition-colors">
-                      <td class="py-3 px-4 font-mono font-bold text-navy">
-                        {{ fop.target_range || `Target ${fIdx + 1}` }}
-                      </td>
-                      <td class="py-3 px-4 font-bold text-navy">
-                        {{ fop.category_name || fop.division || '-' }}
-                      </td>
-                      <td class="py-3 px-4 text-slate-600">
-                        {{ fop.distance || fop.target_face || '-' }}
-                      </td>
-                      <td class="py-3 px-4 text-center font-mono font-bold text-slate-700">
-                        {{ fop.archers_count || fop.entries_count || '-' }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <!-- Day Tabs (Horizontal Scrolling Single Line) -->
+              <div v-if="fopDaysList.length > 1" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                <button
+                  v-for="(day, dIdx) in fopDaysList"
+                  :key="dIdx"
+                  @click="selectedFopDayIndex = dIdx"
+                  :class="[
+                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
+                    selectedFopDayIndex === dIdx
+                      ? 'bg-navy text-white shadow-xs font-bold'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  ]"
+                >
+                  {{ day.day_name || day.date || `Day ${dIdx + 1}` }}
+                </button>
+              </div>
+
+              <!-- FOP Sessions List -->
+              <div class="space-y-6">
+                <div
+                  v-for="(session, sIdx) in activeFopSessions"
+                  :key="sIdx"
+                  class="border border-slate-200/80 rounded-2xl p-4 sm:p-6 bg-slate-50/40 space-y-4"
+                >
+                  <!-- Session Header Card -->
+                  <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200/80">
+                    <div class="flex items-center gap-3">
+                      <div class="size-8 rounded-lg bg-navy text-white font-bold text-xs flex items-center justify-center shrink-0">
+                        S{{ sIdx + 1 }}
+                      </div>
+                      <div>
+                        <h4 class="text-sm sm:text-base font-bold text-navy">
+                          {{ session.name || session.session_name || `${t('session_label')} ${sIdx + 1}` }}
+                        </h4>
+                        <div class="flex items-center gap-3 text-xs text-slate-500 mt-0.5">
+                          <span v-if="session.time" class="flex items-center gap-1 font-mono">
+                            <Icon icon="ph:clock" class="text-xs" />
+                            {{ session.time }}
+                          </span>
+                          <span v-if="session.distance" class="flex items-center gap-1">
+                            <Icon icon="ph:arrows-horizontal" class="text-xs" />
+                            {{ session.distance }}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                      <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold">
+                        {{ t('targets_label') }}: {{ session.target_min || 1 }} - {{ session.target_max || 20 }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Geometric FOP Lane Grid (Clean Visual Targets) -->
+                  <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
+                    <div
+                      v-for="targetNo in (session.target_max || 16)"
+                      :key="targetNo"
+                      class="p-2.5 rounded-xl bg-white border border-slate-200 text-center hover:border-navy/40 transition-colors shadow-2xs"
+                    >
+                      <!-- WA 10-Ring Target Face Visual -->
+                      <div class="size-9 mx-auto rounded-full bg-yellow-400 border-3 border-red-500 ring-2 ring-sky-500 relative flex items-center justify-center shadow-2xs mb-1.5">
+                        <div class="size-2 rounded-full bg-yellow-300 border border-slate-900"></div>
+                      </div>
+                      <div class="font-mono text-xs font-bold text-navy">
+                        #{{ targetNo }}
+                      </div>
+                      <div class="text-[10px] text-slate-400 truncate">
+                        {{ session.target_face || '122cm' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div v-if="!activeFopSessions || activeFopSessions.length === 0" class="text-center py-10 text-slate-400 text-xs sm:text-sm">
+                  <Icon icon="ph:target" class="text-3xl mx-auto mb-2 text-slate-300" />
+                  <span>{{ t('fop_empty') }}</span>
+                </div>
               </div>
             </section>
 
-            <!-- 4. ATHLETES & ENTRIES (FULL PAGINATION & SEARCH & ITEMS PER PAGE) -->
+            <!-- 4. ATHLETES & ENTRIES -->
             <section v-if="hasEntriesData" id="athletes" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:user-list-bold" class="text-xl text-navy" />
+                  <Icon icon="ph:users-four-bold" class="text-xl text-navy" />
                 </div>
                 <div>
                   <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
@@ -377,106 +384,191 @@
                 </div>
               </div>
 
-              <!-- Search and Filter Bar -->
+              <!-- Filter & Search Controls (No Native Selects!) -->
               <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                <!-- Search Input -->
                 <div class="relative flex-1">
-                  <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
+                  <Icon icon="ph:magnifying-glass-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
                   <input
                     v-model="entriesSearchQuery"
                     type="text"
                     :placeholder="t('search_athlete_placeholder')"
-                    class="w-full pl-9 pr-4 py-2 bg-slate-50/80 border border-slate-200 rounded-xl text-xs sm:text-sm text-navy placeholder:text-slate-400 focus:outline-hidden focus:border-navy focus:bg-white transition-all"
+                    class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-navy focus:bg-white transition-all"
                   />
+                  <button
+                    v-if="entriesSearchQuery"
+                    @click="entriesSearchQuery = ''"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-navy cursor-pointer"
+                  >
+                    <Icon icon="ph:x-circle-fill" class="text-sm" />
+                  </button>
                 </div>
 
-                <div class="flex items-center gap-2">
-                  <select
-                    v-model="entriesClubFilter"
-                    class="px-3 py-2 bg-slate-50/80 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-navy focus:outline-hidden focus:border-navy"
+                <!-- Custom Club Filter Dropdown (Non-Native) -->
+                <div class="relative shrink-0" v-click-outside="() => showClubDropdown = false">
+                  <button
+                    type="button"
+                    @click="showClubDropdown = !showClubDropdown"
+                    class="px-3.5 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 flex items-center justify-between gap-2.5 transition-all cursor-pointer min-w-[170px]"
                   >
-                    <option value="all">{{ t('all_clubs') }}</option>
-                    <option v-for="c in uniqueEntriesClubs" :key="c" :value="c">{{ c }}</option>
-                  </select>
+                    <div class="flex items-center gap-1.5 truncate">
+                      <Icon icon="ph:shield-chevron" class="text-primary text-sm shrink-0" />
+                      <span class="truncate">{{ entriesClubFilter === 'all' ? t('filter_club_all') : entriesClubFilter }}</span>
+                    </div>
+                    <Icon :icon="showClubDropdown ? 'ph:caret-up-bold' : 'ph:caret-down-bold'" class="text-xs text-slate-400 shrink-0" />
+                  </button>
 
-                  <!-- Items per page selector -->
-                  <select
-                    v-model="entriesPageSize"
-                    class="px-2.5 py-2 bg-slate-50/80 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-navy focus:outline-hidden"
+                  <!-- Custom Popover Menu -->
+                  <div
+                    v-if="showClubDropdown"
+                    class="absolute right-0 top-full mt-1.5 z-40 w-64 max-h-60 overflow-y-auto bg-white border border-slate-200 rounded-2xl shadow-xl p-1.5 space-y-0.5 animate-in fade-in zoom-in-95 duration-100"
                   >
-                    <option :value="10">10 {{ t('per_page') }}</option>
-                    <option :value="15">15 {{ t('per_page') }}</option>
-                    <option :value="25">25 {{ t('per_page') }}</option>
-                    <option :value="50">50 {{ t('per_page') }}</option>
-                  </select>
+                    <button
+                      type="button"
+                      @click="entriesClubFilter = 'all'; showClubDropdown = false; entriesCurrentPage = 1"
+                      :class="[
+                        'w-full px-3 py-2 rounded-xl text-xs text-left font-medium transition-all flex items-center justify-between cursor-pointer',
+                        entriesClubFilter === 'all' ? 'bg-primary/20 text-navy font-bold' : 'text-slate-700 hover:bg-slate-50'
+                      ]"
+                    >
+                      <span class="truncate">{{ t('filter_club_all') }}</span>
+                      <Icon v-if="entriesClubFilter === 'all'" icon="ph:check-bold" class="text-navy text-xs" />
+                    </button>
+                    <button
+                      v-for="club in uniqueEntriesClubs"
+                      :key="club"
+                      type="button"
+                      @click="entriesClubFilter = club; showClubDropdown = false; entriesCurrentPage = 1"
+                      :class="[
+                        'w-full px-3 py-2 rounded-xl text-xs text-left font-medium transition-all flex items-center justify-between cursor-pointer',
+                        entriesClubFilter === club ? 'bg-primary/20 text-navy font-bold' : 'text-slate-700 hover:bg-slate-50'
+                      ]"
+                    >
+                      <span class="truncate">{{ club }}</span>
+                      <Icon v-if="entriesClubFilter === club'" icon="ph:check-bold" class="text-navy text-xs" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <!-- Athletes Table -->
-              <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
+              <!-- Entries Table Container -->
+              <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
                 <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs sm:text-sm text-navy">
-                    <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 select-none">
+                  <table class="w-full text-left text-xs border-collapse">
+                    <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
                       <tr>
-                        <th class="py-3 px-3.5 w-14 text-center">#</th>
-                        <th @click="handleSortEntries('name')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1">
-                            <span>{{ t('col_athlete_name') }}</span>
-                            <Icon :icon="getSortIcon('name', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
+                        <th class="py-3 px-4 w-12 text-center">#</th>
+                        <th @click="handleSortEntries('name')" class="py-3 px-4 cursor-pointer hover:text-navy select-none">
+                          <div class="flex items-center gap-1.5">
+                            <span>{{ t('col_name') }}</span>
+                            <Icon :icon="getSortIcon('name', entriesSortKey, entriesSortAsc)" class="text-xs" />
                           </div>
                         </th>
-                        <th @click="handleSortEntries('club')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1">
+                        <th @click="handleSortEntries('club')" class="py-3 px-4 cursor-pointer hover:text-navy select-none">
+                          <div class="flex items-center gap-1.5">
                             <span>{{ t('col_club') }}</span>
-                            <Icon :icon="getSortIcon('club', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
+                            <Icon :icon="getSortIcon('club', entriesSortKey, entriesSortAsc)" class="text-xs" />
                           </div>
                         </th>
-                        <th class="py-3 px-3.5">{{ t('col_category') }}</th>
-                        <th class="py-3 px-3.5 text-center">{{ t('col_target') }}</th>
+                        <th @click="handleSortEntries('category')" class="py-3 px-4 cursor-pointer hover:text-navy select-none">
+                          <div class="flex items-center gap-1.5">
+                            <span>{{ t('col_category') }}</span>
+                            <Icon :icon="getSortIcon('category', entriesSortKey, entriesSortAsc)" class="text-xs" />
+                          </div>
+                        </th>
                       </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 font-medium">
-                      <tr v-for="(entry, eIdx) in paginatedEntriesData" :key="eIdx" class="hover:bg-slate-50/70 transition-colors">
-                        <td class="py-2.5 px-3.5 text-center text-slate-400 font-mono text-xs">
-                          {{ (entriesCurrentPage - 1) * entriesPageSize + eIdx + 1 }}
+                    <tbody class="divide-y divide-slate-100 bg-white">
+                      <tr
+                        v-for="(athlete, idx) in paginatedEntriesData"
+                        :key="idx"
+                        class="hover:bg-slate-50/60 transition-colors"
+                      >
+                        <td class="py-3 px-4 text-center text-slate-400 font-mono text-[11px]">
+                          {{ (entriesCurrentPage - 1) * entriesPageSize + idx + 1 }}
                         </td>
-                        <td class="py-2.5 px-3.5 font-bold text-navy">{{ toTitleCase(entry.name || entry.athlete_name) }}</td>
-                        <td class="py-2.5 px-3.5 text-slate-600">{{ toTitleCase(entry.club || entry.country || '-') }}</td>
-                        <td class="py-2.5 px-3.5 text-slate-600">{{ entry.category || entry.division || '-' }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono text-xs font-semibold text-slate-700">{{ entry.target || entry.bib || '-' }}</td>
+                        <td class="py-3 px-4">
+                          <div class="flex items-center gap-2.5">
+                            <div class="size-7 rounded-full bg-navy/10 text-navy font-bold text-[11px] flex items-center justify-center shrink-0">
+                              {{ getArcherInitials(athlete.name || athlete.athlete_name) }}
+                            </div>
+                            <span class="font-bold text-navy sm:text-xs">
+                              {{ toTitleCase(athlete.name || athlete.athlete_name) }}
+                            </span>
+                          </div>
+                        </td>
+                        <td class="py-3 px-4 text-slate-600 font-medium">
+                          {{ toTitleCase(athlete.club || athlete.country || '-') }}
+                        </td>
+                        <td class="py-3 px-4">
+                          <span class="px-2.5 py-1 rounded-lg bg-navy/5 text-navy font-semibold text-[11px]">
+                            {{ athlete.category || '-' }}
+                          </span>
+                        </td>
                       </tr>
+
                       <tr v-if="paginatedEntriesData.length === 0">
-                        <td colspan="5" class="py-8 text-center text-slate-400 italic">
-                          {{ t('no_athletes_found') }}
+                        <td colspan="4" class="py-8 text-center text-slate-400">
+                          {{ t('no_entries_found') }}
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
 
-                <!-- Athletes Pagination Controls -->
-                <div v-if="totalEntriesPages > 1" class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex items-center justify-between">
-                  <button
-                    :disabled="entriesCurrentPage === 1"
-                    @click="entriesCurrentPage--"
-                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                  >
-                    {{ t('btn_previous') }}
-                  </button>
-                  <span class="text-xs font-semibold text-slate-600">
-                    {{ t('page_x_of_y', { current: entriesCurrentPage, total: totalEntriesPages }) }}
-                  </span>
-                  <button
-                    :disabled="entriesCurrentPage === totalEntriesPages"
-                    @click="entriesCurrentPage++"
-                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                  >
-                    {{ t('btn_next') }}
-                  </button>
+                <!-- TABLE FOOTER (ITEMS PER PAGE + PAGINATION ON FOOTER!) -->
+                <div class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                  <!-- Custom Items Per Page Dropdown / Pills -->
+                  <div class="flex items-center gap-2">
+                    <span class="text-slate-500 font-medium">{{ t('items_per_page') }}:</span>
+                    <div class="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-0.5">
+                      <button
+                        v-for="size in [10, 15, 25, 50]"
+                        :key="size"
+                        type="button"
+                        @click="entriesPageSize = size; entriesCurrentPage = 1"
+                        :class="[
+                          'px-2 py-0.5 rounded-lg text-xs font-semibold transition-all cursor-pointer',
+                          entriesPageSize === size
+                            ? 'bg-navy text-white shadow-2xs font-bold'
+                            : 'text-slate-600 hover:text-navy hover:bg-slate-50'
+                        ]"
+                      >
+                        {{ size }}
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Center: Summary Info -->
+                  <div class="text-slate-500 font-medium">
+                    {{ t('showing_x_of_y_entries', { current: paginatedEntriesData.length, total: filteredEntries.length }) }}
+                  </div>
+
+                  <!-- Right: Prev / Next Buttons -->
+                  <div class="flex items-center gap-1">
+                    <button
+                      :disabled="entriesCurrentPage <= 1"
+                      @click="entriesCurrentPage--"
+                      class="px-3 py-1 rounded-lg border border-slate-200 bg-white font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-all"
+                    >
+                      {{ t('prev_page') }}
+                    </button>
+                    <span class="px-2 font-bold text-navy">
+                      {{ entriesCurrentPage }} / {{ totalEntriesPages }}
+                    </span>
+                    <button
+                      :disabled="entriesCurrentPage >= totalEntriesPages"
+                      @click="entriesCurrentPage++"
+                      class="px-3 py-1 rounded-lg border border-slate-200 bg-white font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-all"
+                    >
+                      {{ t('next_page') }}
+                    </button>
+                  </div>
                 </div>
               </div>
             </section>
 
-            <!-- 5. QUALIFICATION SCORES (FULL PAGINATION & ITEMS PER PAGE) -->
+            <!-- 5. QUALIFICATION RESULTS -->
             <section v-if="hasQualificationsData" id="qualifications" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
@@ -490,95 +582,87 @@
                 </div>
               </div>
 
-              <!-- Category Filter & Items per page bar -->
-              <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                <div class="flex flex-wrap gap-2">
-                  <button
-                    v-for="cat in availableQualificationCategories"
-                    :key="cat"
-                    @click="selectedQualCategory = cat; qualCurrentPage = 1"
-                    :class="[
-                      'px-3 py-1.5 rounded-xl text-xs font-medium transition-all cursor-pointer',
-                      selectedQualCategory === cat
-                        ? 'bg-navy text-white shadow-xs font-bold'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    ]"
-                  >
-                    {{ cat }}
-                  </button>
-                </div>
-
-                <div class="flex items-center gap-2">
-                  <div class="relative w-full sm:w-48">
-                    <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
-                    <input
-                      v-model="resultsSearchQuery"
-                      type="text"
-                      :placeholder="t('search_archer_placeholder')"
-                      class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-navy placeholder:text-slate-400 focus:outline-hidden focus:border-navy focus:bg-white"
-                    />
-                  </div>
-
-                  <select
-                    v-model="qualPageSize"
-                    class="px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-navy"
-                  >
-                    <option :value="10">10 {{ t('per_page') }}</option>
-                    <option :value="25">25 {{ t('per_page') }}</option>
-                    <option :value="50">50 {{ t('per_page') }}</option>
-                  </select>
-                </div>
+              <!-- Category Filter Chips (Single Line Scrolling) -->
+              <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                <button
+                  v-for="cat in availableQualificationCategories"
+                  :key="cat"
+                  @click="selectedQualCategory = cat; qualCurrentPage = 1"
+                  :class="[
+                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
+                    selectedQualCategory === cat
+                      ? 'bg-navy text-white shadow-xs font-bold'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  ]"
+                >
+                  {{ cat }}
+                </button>
               </div>
 
-              <!-- Qualifications Table -->
-              <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
+              <!-- Search Filter in Category -->
+              <div class="relative">
+                <Icon icon="ph:magnifying-glass-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
+                <input
+                  v-model="resultsSearchQuery"
+                  type="text"
+                  :placeholder="t('search_athlete_placeholder')"
+                  class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-navy focus:bg-white transition-all"
+                />
+              </div>
+
+              <!-- Qualifications Table Container -->
+              <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
                 <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs sm:text-sm text-navy">
-                    <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 select-none">
+                  <table class="w-full text-left text-xs border-collapse">
+                    <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
                       <tr>
-                        <th class="py-3 px-3.5 w-14 text-center">{{ t('col_rank') }}</th>
-                        <th @click="handleSortQual('name')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1">
-                            <span>{{ t('col_archer_name') }}</span>
-                            <Icon :icon="getSortIcon('name', qualSortKey, qualSortAsc)" class="text-xs text-slate-400" />
-                          </div>
-                        </th>
-                        <th @click="handleSortQual('club')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1">
-                            <span>{{ t('col_club') }}</span>
-                            <Icon :icon="getSortIcon('club', qualSortKey, qualSortAsc)" class="text-xs text-slate-400" />
-                          </div>
-                        </th>
-                        <th class="py-3 px-3.5 text-center w-16 font-mono">{{ t('col_d1') }}</th>
-                        <th class="py-3 px-3.5 text-center w-16 font-mono">{{ t('col_d2') }}</th>
-                        <th @click="handleSortQual('score')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors font-mono">
-                          <div class="flex items-center justify-center gap-1 text-navy">
-                            <span>{{ t('col_total') }}</span>
-                            <Icon :icon="getSortIcon('score', qualSortKey, qualSortAsc)" class="text-xs text-slate-400" />
-                          </div>
-                        </th>
-                        <th class="py-3 px-3.5 text-center w-14 font-mono">10s</th>
-                        <th class="py-3 px-3.5 text-center w-14 font-mono">Xs</th>
+                        <th class="py-3 px-4 w-12 text-center">{{ t('col_rank') }}</th>
+                        <th class="py-3 px-4">{{ t('col_name') }}</th>
+                        <th class="py-3 px-4">{{ t('col_club') }}</th>
+                        <th class="py-3 px-4 text-center">{{ t('col_score') }}</th>
+                        <th class="py-3 px-4 text-center">{{ t('col_10s') }}</th>
+                        <th class="py-3 px-4 text-center">{{ t('col_xs') }}</th>
                       </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 font-medium">
-                      <tr v-for="(q, qIdx) in paginatedQualsData" :key="qIdx" class="hover:bg-slate-50/70 transition-colors">
-                        <td class="py-2.5 px-3.5 text-center font-bold">
-                          <span v-if="q.rank == 1" class="inline-flex size-6 rounded-full bg-amber-400 text-navy items-center justify-center text-xs font-black">1</span>
-                          <span v-else-if="q.rank == 2" class="inline-flex size-6 rounded-full bg-slate-300 text-slate-800 items-center justify-center text-xs font-black">2</span>
-                          <span v-else-if="q.rank == 3" class="inline-flex size-6 rounded-full bg-amber-700 text-white items-center justify-center text-xs font-black">3</span>
-                          <span v-else class="text-slate-500 font-mono">{{ q.rank || (qIdx + 1) }}</span>
+                    <tbody class="divide-y divide-slate-100 bg-white">
+                      <tr
+                        v-for="(score, idx) in paginatedQualScores"
+                        :key="idx"
+                        class="hover:bg-slate-50/60 transition-colors"
+                      >
+                        <td class="py-3 px-4 text-center font-mono font-bold text-navy">
+                          <span
+                            :class="[
+                              'inline-flex items-center justify-center size-6 rounded-full text-xs',
+                              score.rank === 1 ? 'bg-amber-100 text-amber-800 font-black' : '',
+                              score.rank === 2 ? 'bg-slate-200 text-slate-700 font-black' : '',
+                              score.rank === 3 ? 'bg-amber-700/20 text-amber-900 font-black' : ''
+                            ]"
+                          >
+                            {{ score.rank || idx + 1 }}
+                          </span>
                         </td>
-                        <td class="py-2.5 px-3.5 font-bold text-navy">{{ toTitleCase(q.name) }}</td>
-                        <td class="py-2.5 px-3.5 text-slate-600">{{ toTitleCase(q.club) }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono text-slate-500">{{ q.d1 || q.dist1 || '-' }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono text-slate-500">{{ q.d2 || q.dist2 || '-' }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono font-black text-navy bg-slate-50/60">{{ q.score || q.total_score || '-' }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono text-slate-500">{{ q.tens || q.ten_count || '-' }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono text-slate-500">{{ q.x_count || q.xs || '-' }}</td>
+                        <td class="py-3 px-4">
+                          <div class="font-bold text-navy sm:text-xs">
+                            {{ toTitleCase(score.name || score.athlete_name) }}
+                          </div>
+                        </td>
+                        <td class="py-3 px-4 text-slate-600 font-medium">
+                          {{ toTitleCase(score.club || score.country || '-') }}
+                        </td>
+                        <td class="py-3 px-4 text-center font-mono font-bold text-navy text-sm">
+                          {{ score.score || score.total || '-' }}
+                        </td>
+                        <td class="py-3 px-4 text-center font-mono text-slate-500">
+                          {{ score.tens || score['10s'] || score.tens_count || '-' }}
+                        </td>
+                        <td class="py-3 px-4 text-center font-mono text-slate-500">
+                          {{ score.xs || score['xs'] || score.x_count || '-' }}
+                        </td>
                       </tr>
-                      <tr v-if="paginatedQualsData.length === 0">
-                        <td colspan="8" class="py-8 text-center text-slate-400 italic">
+
+                      <tr v-if="paginatedQualScores.length === 0">
+                        <td colspan="6" class="py-8 text-center text-slate-400">
                           {{ t('no_qual_scores') }}
                         </td>
                       </tr>
@@ -586,30 +670,59 @@
                   </table>
                 </div>
 
-                <!-- Qualification Pagination Controls -->
-                <div v-if="totalQualPages > 1" class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex items-center justify-between">
-                  <button
-                    :disabled="qualCurrentPage === 1"
-                    @click="qualCurrentPage--"
-                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                  >
-                    {{ t('btn_previous') }}
-                  </button>
-                  <span class="text-xs font-semibold text-slate-600">
-                    {{ t('page_x_of_y', { current: qualCurrentPage, total: totalQualPages }) }}
-                  </span>
-                  <button
-                    :disabled="qualCurrentPage === totalQualPages"
-                    @click="qualCurrentPage++"
-                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                  >
-                    {{ t('btn_next') }}
-                  </button>
+                <!-- QUALIFICATIONS FOOTER (ITEMS PER PAGE + PAGINATION ON FOOTER!) -->
+                <div class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                  <!-- Custom Items Per Page Dropdown / Pills -->
+                  <div class="flex items-center gap-2">
+                    <span class="text-slate-500 font-medium">{{ t('items_per_page') }}:</span>
+                    <div class="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-0.5">
+                      <button
+                        v-for="size in [10, 20, 30, 50]"
+                        :key="size"
+                        type="button"
+                        @click="qualPageSize = size; qualCurrentPage = 1"
+                        :class="[
+                          'px-2 py-0.5 rounded-lg text-xs font-semibold transition-all cursor-pointer',
+                          qualPageSize === size
+                            ? 'bg-navy text-white shadow-2xs font-bold'
+                            : 'text-slate-600 hover:text-navy hover:bg-slate-50'
+                        ]"
+                      >
+                        {{ size }}
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Center: Summary Info -->
+                  <div class="text-slate-500 font-medium">
+                    {{ t('showing_x_of_y_scores', { current: paginatedQualScores.length, total: filteredQualScores.length }) }}
+                  </div>
+
+                  <!-- Right: Prev / Next Buttons -->
+                  <div class="flex items-center gap-1">
+                    <button
+                      :disabled="qualCurrentPage <= 1"
+                      @click="qualCurrentPage--"
+                      class="px-3 py-1 rounded-lg border border-slate-200 bg-white font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-all"
+                    >
+                      {{ t('prev_page') }}
+                    </button>
+                    <span class="px-2 font-bold text-navy">
+                      {{ qualCurrentPage }} / {{ totalQualPages }}
+                    </span>
+                    <button
+                      :disabled="qualCurrentPage >= totalQualPages"
+                      @click="qualCurrentPage++"
+                      class="px-3 py-1 rounded-lg border border-slate-200 bg-white font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-all"
+                    >
+                      {{ t('next_page') }}
+                    </button>
+                  </div>
                 </div>
               </div>
             </section>
 
-            <!-- 6. ELIMINATION BRACKETS -->
+            <!-- 6. ELIMINATION BRACKETS (REUSABLE ARCHERIS BRACKET COMPONENT) -->
             <section v-if="hasBracketsData" id="brackets" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
@@ -623,99 +736,40 @@
                 </div>
               </div>
 
-              <div class="border border-slate-200/80 rounded-2xl p-5 overflow-x-auto shadow-xs">
-                <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
-                  <span class="text-xs sm:text-sm font-bold text-navy font-display">{{ currentCategoryLabel }} - {{ t('elimination_tree') }}</span>
-                  <span class="text-[11px] text-slate-500">{{ t('click_match_details') }}</span>
+              <!-- Category Filter Chips (Single Line Horizontal Scroll) -->
+              <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                <button
+                  v-for="cat in availableBracketCategories"
+                  :key="cat"
+                  @click="selectedBracketCategory = cat"
+                  :class="[
+                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
+                    (selectedBracketCategory || availableBracketCategories[0]) === cat
+                      ? 'bg-navy text-white shadow-xs font-bold'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  ]"
+                >
+                  {{ cat }}
+                </button>
+              </div>
+
+              <!-- Public Elimination Bracket Visual Component -->
+              <div class="border border-slate-200/80 rounded-2xl p-4 sm:p-6 bg-slate-50/30 overflow-x-auto">
+                <div v-if="hasCurrentBracketRounds">
+                  <PublicEliminationBracket
+                    :rounds="currentArcherisBracketRounds"
+                    :config="currentArcherisBracketConfig"
+                  />
                 </div>
-
-                <!-- Bracket Grid with Connecting Trees -->
-                <div class="flex items-stretch gap-6 min-w-[650px] pt-4 pb-2">
-                  <!-- Earlier Elimination Rounds (QF, SF) -->
-                  <div 
-                    v-for="(rnd, rIdx) in structuredBracketTree.rounds" 
-                    :key="rIdx" 
-                    class="flex-1 flex flex-col justify-around space-y-4 relative"
-                  >
-                    <div class="text-center font-bold text-xs text-slate-600 font-display uppercase tracking-wider pb-1.5 border-b border-slate-100">
-                      {{ formatRoundTitle(rnd.roundTitle) }}
-                    </div>
-
-                    <div 
-                      v-for="(match, mIdx) in rnd.matches" 
-                      :key="mIdx" 
-                      @click="openScorecard(match, rnd.roundTitle)"
-                      class="p-3 rounded-xl border border-slate-200 bg-slate-50/70 hover:border-navy/50 hover:bg-white transition-all cursor-pointer shadow-xs relative group space-y-1.5"
-                    >
-                      <!-- Competitor A -->
-                      <div class="flex items-center justify-between gap-2">
-                        <div class="flex items-center gap-1.5 truncate">
-                          <span class="text-[11px] text-slate-400 font-mono">#{{ match.seed_a || '1' }}</span>
-                          <span :class="['text-xs truncate font-medium', isMatchWinner(match.score_a, match.score_b) ? 'font-bold text-navy' : 'text-slate-600']">
-                            {{ toTitleCase(match.archer_a || match.name_a || 'TBD') }}
-                          </span>
-                        </div>
-                        <span class="font-mono font-bold text-xs px-1.5 py-0.5 rounded bg-white border border-slate-200 text-navy">{{ match.score_a ?? '-' }}</span>
-                      </div>
-
-                      <!-- Competitor B -->
-                      <div class="flex items-center justify-between gap-2 border-t border-slate-200/60 pt-1.5">
-                        <div class="flex items-center gap-1.5 truncate">
-                          <span class="text-[11px] text-slate-400 font-mono">#{{ match.seed_b || '2' }}</span>
-                          <span :class="['text-xs truncate font-medium', isMatchWinner(match.score_b, match.score_a) ? 'font-bold text-navy' : 'text-slate-600']">
-                            {{ toTitleCase(match.archer_b || match.name_b || 'TBD') }}
-                          </span>
-                        </div>
-                        <span class="font-mono font-bold text-xs px-1.5 py-0.5 rounded bg-white border border-slate-200 text-navy">{{ match.score_b ?? '-' }}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Finals Column -->
-                  <div v-if="structuredBracketTree.finals.length > 0" class="flex-1 flex flex-col justify-around space-y-4">
-                    <div class="text-center font-bold text-xs text-amber-700 font-display uppercase tracking-wider pb-1.5 border-b border-amber-100">
-                      {{ t('medal_matches') }}
-                    </div>
-
-                    <div 
-                      v-for="(fMatch, fIdx) in structuredBracketTree.finals" 
-                      :key="fIdx" 
-                      @click="openScorecard(fMatch, fMatch.is_bronze ? t('bronze_medal_match') : t('gold_medal_final'))"
-                      :class="[
-                        'p-3.5 rounded-xl border transition-all cursor-pointer shadow-xs space-y-2',
-                        fMatch.is_bronze 
-                          ? 'border-amber-200 bg-amber-50/50 hover:bg-white' 
-                          : 'border-amber-300 bg-amber-50 hover:bg-white shadow-sm'
-                      ]"
-                    >
-                      <div class="flex items-center justify-between text-[11px] font-bold text-amber-800">
-                        <span>{{ fMatch.is_bronze ? t('bronze_match') : t('gold_final') }}</span>
-                        <Icon :icon="fMatch.is_bronze ? 'ph:medal-fill' : 'ph:trophy-fill'" class="text-sm text-amber-500" />
-                      </div>
-
-                      <!-- Archer A -->
-                      <div class="flex items-center justify-between gap-2">
-                        <span :class="['text-xs truncate font-medium', isMatchWinner(fMatch.score_a, fMatch.score_b) ? 'font-bold text-navy' : 'text-slate-600']">
-                          {{ toTitleCase(fMatch.archer_a || fMatch.name_a || 'TBD') }}
-                        </span>
-                        <span class="font-mono font-bold text-xs px-1.5 py-0.5 rounded bg-white border border-slate-200 text-navy">{{ fMatch.score_a ?? '-' }}</span>
-                      </div>
-
-                      <!-- Archer B -->
-                      <div class="flex items-center justify-between gap-2 border-t border-slate-200/60 pt-1.5">
-                        <span :class="['text-xs truncate font-medium', isMatchWinner(fMatch.score_b, fMatch.score_a) ? 'font-bold text-navy' : 'text-slate-600']">
-                          {{ toTitleCase(fMatch.archer_b || fMatch.name_b || 'TBD') }}
-                        </span>
-                        <span class="font-mono font-bold text-xs px-1.5 py-0.5 rounded bg-white border border-slate-200 text-navy">{{ fMatch.score_b ?? '-' }}</span>
-                      </div>
-                    </div>
-                  </div>
+                <div v-else class="text-center py-12 text-slate-400 text-xs sm:text-sm">
+                  <Icon icon="ph:sword" class="text-3xl mx-auto mb-2 text-slate-300" />
+                  <span>{{ t('no_bracket_data') }}</span>
                 </div>
               </div>
             </section>
 
-            <!-- 7. MEDAL STANDINGS & SLEEK 3D AWARDING PODIUM -->
-            <section v-if="hasMedalsData" id="medals" class="scroll-mt-24 space-y-6">
+            <!-- 7. PODIUM & MEDAL STANDINGS -->
+            <section v-if="hasMedalsData" id="medals" class="scroll-mt-24 space-y-7">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
                   <Icon icon="ph:trophy-bold" class="text-xl text-navy" />
@@ -728,344 +782,377 @@
                 </div>
               </div>
 
-              <!-- 3D Awarding Stage Card (Sleek, Mature, Radial Ambient Glow) -->
-              <div class="relative rounded-3xl bg-gradient-to-b from-slate-900 via-navy to-slate-950 p-6 sm:p-8 text-white overflow-hidden shadow-xl border border-slate-800">
-                <!-- Background ambient lights -->
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-primary/15 via-transparent to-transparent"></div>
+              <!-- Podium Category Selector (Custom Non-Native Dropdown / Chips) -->
+              <div class="space-y-3">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <h3 class="text-sm font-bold text-navy flex items-center gap-2">
+                    <Icon icon="ph:medal-fill" class="text-primary text-base" />
+                    <span>{{ t('podium_standings') }}</span>
+                  </h3>
 
-                <!-- Stage Header -->
-                <div class="relative z-10 flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-white/10">
-                  <div>
-                    <h3 class="text-base sm:text-lg font-bold text-white font-display flex items-center gap-2">
-                      <Icon icon="ph:crown-bold" class="text-amber-400 text-lg" />
-                      <span>{{ t('official_awarding_podium') }}</span>
-                    </h3>
-                    <p class="text-xs text-slate-400 mt-0.5">{{ t('category_view') }}: {{ currentCategoryLabel }}</p>
-                  </div>
-
-                  <!-- Category switcher for podium -->
-                  <div class="flex items-center gap-2">
-                    <select
-                      v-model="selectedPodiumCategory"
-                      class="px-3 py-1.5 bg-white/10 border border-white/20 rounded-xl text-xs font-bold text-white focus:outline-hidden focus:bg-navy cursor-pointer"
+                  <!-- Custom Non-Native Dropdown for Podium Category -->
+                  <div class="relative shrink-0" v-click-outside="() => showPodiumDropdown = false">
+                    <button
+                      type="button"
+                      @click="showPodiumDropdown = !showPodiumDropdown"
+                      class="px-3.5 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 flex items-center justify-between gap-2.5 transition-all cursor-pointer min-w-[180px]"
                     >
-                      <option v-for="cat in availablePodiumCategories" :key="cat" :value="cat" class="bg-navy text-white">
-                        {{ cat }}
-                      </option>
-                    </select>
+                      <div class="flex items-center gap-1.5 truncate">
+                        <Icon icon="ph:tag-bold" class="text-primary text-sm shrink-0" />
+                        <span class="truncate">{{ selectedPodiumCategory || availablePodiumCategories[0] || 'Select Category' }}</span>
+                      </div>
+                      <Icon :icon="showPodiumDropdown ? 'ph:caret-up-bold' : 'ph:caret-down-bold'" class="text-xs text-slate-400 shrink-0" />
+                    </button>
+
+                    <!-- Custom Dropdown Menu -->
+                    <div
+                      v-if="showPodiumDropdown"
+                      class="absolute right-0 top-full mt-1.5 z-40 w-64 max-h-60 overflow-y-auto bg-white border border-slate-200 rounded-2xl shadow-xl p-1.5 space-y-0.5 animate-in fade-in zoom-in-95 duration-100"
+                    >
+                      <button
+                        v-for="cat in availablePodiumCategories"
+                        :key="cat"
+                        type="button"
+                        @click="selectedPodiumCategory = cat; showPodiumDropdown = false"
+                        :class="[
+                          'w-full px-3 py-2 rounded-xl text-xs text-left font-medium transition-all flex items-center justify-between cursor-pointer',
+                          (selectedPodiumCategory || availablePodiumCategories[0]) === cat ? 'bg-primary/20 text-navy font-bold' : 'text-slate-700 hover:bg-slate-50'
+                        ]"
+                      >
+                        <span class="truncate">{{ cat }}</span>
+                        <Icon v-if="(selectedPodiumCategory || availablePodiumCategories[0]) === cat" icon="ph:check-bold" class="text-navy text-xs" />
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                <!-- 3D Tiered Blocks Stage -->
-                <div class="relative z-10 grid grid-cols-3 gap-3 sm:gap-6 items-end max-w-2xl mx-auto pt-4">
-                  
-                  <!-- 2nd Place: Silver (Left) -->
-                  <div class="flex flex-col items-center text-center group">
-                    <!-- Athlete Head & Medal -->
-                    <div class="mb-3 flex flex-col items-center space-y-1.5">
-                      <div class="relative size-12 sm:size-14 rounded-2xl bg-gradient-to-tr from-slate-400 to-slate-200 text-slate-900 font-black text-sm sm:text-base flex items-center justify-center ring-2 ring-slate-300 shadow-md font-display">
-                        {{ getArcherInitials(currentPodiumCategoryData.silver?.name) || '2' }}
-                        <div class="absolute -bottom-1 -right-1 size-5 rounded-md bg-slate-300 text-slate-900 font-black text-[10px] flex items-center justify-center shadow-xs">
-                          2
-                        </div>
+                <!-- 3-Tier Podium Visual (1st Gold, 2nd Silver, 3rd Bronze) -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <!-- Silver (2nd) -->
+                  <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
+                    <div class="flex items-center gap-2 text-slate-600 text-xs font-bold pb-2">
+                      <div class="size-6 rounded-lg bg-slate-200 text-slate-700 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:medal-fill" class="text-xs" />
                       </div>
-                      <div class="font-bold text-xs sm:text-sm text-white font-display truncate max-w-[100px] sm:max-w-[140px]" :title="currentPodiumCategoryData.silver?.name">
-                        {{ toTitleCase(currentPodiumCategoryData.silver?.name || t('medal_silver')) }}
-                      </div>
-                      <div class="text-[10px] sm:text-xs text-slate-400 truncate max-w-[100px] sm:max-w-[140px]">
-                        {{ toTitleCase(currentPodiumCategoryData.silver?.club || t('club')) }}
-                      </div>
-                      <div v-if="currentPodiumCategoryData.silver?.score" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-slate-200">
-                        {{ currentPodiumCategoryData.silver?.score }}
-                      </div>
+                      <span>{{ t('podium_silver') }}</span>
                     </div>
-                    <!-- 3D Podium Block -->
-                    <div class="w-full h-28 sm:h-36 rounded-t-2xl bg-gradient-to-b from-slate-300 via-slate-400 to-slate-600 border-t-2 border-x border-slate-200 flex flex-col items-center justify-between py-3 shadow-lg">
-                      <span class="text-xs font-black tracking-widest text-slate-800 font-display">{{ t('podium_silver') }}</span>
-                      <span class="text-3xl sm:text-4xl font-black text-slate-800/80 font-display">2</span>
+                    <div class="pt-2">
+                      <div class="text-sm font-bold text-navy truncate">
+                        {{ toTitleCase(currentPodiumCategoryData?.silver?.name || currentPodiumCategoryData?.silver?.athlete_name || 'TBD') }}
+                      </div>
+                      <div class="text-xs text-slate-500 truncate mt-0.5">
+                        {{ toTitleCase(currentPodiumCategoryData?.silver?.club || currentPodiumCategoryData?.silver?.country || '-') }}
+                      </div>
                     </div>
                   </div>
 
-                  <!-- 1st Place: Champion Gold (Center - Elevated with Mascot Trophy) -->
-                  <div class="flex flex-col items-center text-center -mt-6 group">
-                    <!-- Champion Crown & Mascot Trophy Badge -->
-                    <div class="mb-3 flex flex-col items-center space-y-1.5">
-                      <!-- Golden Champion Mascot Insignia -->
-                      <div class="flex items-center justify-center size-8 rounded-full bg-amber-400/20 border border-amber-400/50 shadow-sm mb-0.5" :title="t('champion_winner')">
-                        <Icon icon="ph:trophy-fill" class="text-lg text-amber-300" />
+                  <!-- Gold (1st) -->
+                  <div class="p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-400/60 flex flex-col justify-between shadow-xs">
+                    <div class="flex items-center gap-2 text-amber-800 text-xs font-bold pb-2">
+                      <div class="size-6 rounded-lg bg-amber-400 text-amber-950 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:crown-fill" class="text-xs" />
                       </div>
-                      <div class="relative size-14 sm:size-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-200 text-navy font-black text-base sm:text-lg flex items-center justify-center ring-4 ring-amber-400/50 shadow-xl font-display">
-                        {{ getArcherInitials(currentPodiumCategoryData.gold?.name) || '1' }}
-                        <div class="absolute -bottom-1 -right-1 size-6 rounded-lg bg-amber-400 text-navy font-black text-xs flex items-center justify-center shadow-md">
-                          1
-                        </div>
-                      </div>
-                      <div class="font-black text-xs sm:text-base text-amber-300 font-display truncate max-w-[110px] sm:max-w-[160px]" :title="currentPodiumCategoryData.gold?.name">
-                        {{ toTitleCase(currentPodiumCategoryData.gold?.name || t('medal_gold')) }}
-                      </div>
-                      <div class="text-[10px] sm:text-xs text-slate-300 truncate max-w-[110px] sm:max-w-[160px]">
-                        {{ toTitleCase(currentPodiumCategoryData.gold?.club || t('club')) }}
-                      </div>
-                      <div v-if="currentPodiumCategoryData.gold?.score" class="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-amber-400 text-navy shadow-xs">
-                        {{ currentPodiumCategoryData.gold?.score }}
-                      </div>
+                      <span>{{ t('podium_gold') }}</span>
                     </div>
-                    <!-- 3D Podium Block -->
-                    <div class="w-full h-36 sm:h-48 rounded-t-2xl bg-gradient-to-b from-amber-400 via-amber-500 to-amber-700 border-t-2 border-x border-amber-300 flex flex-col items-center justify-between py-3 shadow-xl">
-                      <span class="text-xs sm:text-sm font-black tracking-widest text-navy font-display">{{ t('podium_gold') }}</span>
-                      <span class="text-4xl sm:text-5xl font-black text-navy/80 font-display">1</span>
+                    <div class="pt-2">
+                      <div class="text-sm font-black text-navy truncate">
+                        {{ toTitleCase(currentPodiumCategoryData?.gold?.name || currentPodiumCategoryData?.gold?.athlete_name || 'TBD') }}
+                      </div>
+                      <div class="text-xs text-amber-900/80 font-semibold truncate mt-0.5">
+                        {{ toTitleCase(currentPodiumCategoryData?.gold?.club || currentPodiumCategoryData?.gold?.country || '-') }}
+                      </div>
                     </div>
                   </div>
 
-                  <!-- 3rd Place: Bronze (Right) -->
-                  <div class="flex flex-col items-center text-center group">
-                    <!-- Athlete Head & Medal -->
-                    <div class="mb-3 flex flex-col items-center space-y-1.5">
-                      <div class="relative size-12 sm:size-14 rounded-2xl bg-gradient-to-tr from-amber-700 to-orange-400 text-white font-black text-sm sm:text-base flex items-center justify-center ring-2 ring-amber-600 shadow-md font-display">
-                        {{ getArcherInitials(currentPodiumCategoryData.bronze?.name) || '3' }}
-                        <div class="absolute -bottom-1 -right-1 size-5 rounded-md bg-amber-700 text-white font-black text-[10px] flex items-center justify-center shadow-xs">
-                          3
-                        </div>
+                  <!-- Bronze (3rd) -->
+                  <div class="p-4 rounded-2xl bg-amber-700/5 border border-amber-700/20 flex flex-col justify-between">
+                    <div class="flex items-center gap-2 text-amber-900 text-xs font-bold pb-2">
+                      <div class="size-6 rounded-lg bg-amber-700/20 text-amber-900 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:medal-fill" class="text-xs" />
                       </div>
-                      <div class="font-bold text-xs sm:text-sm text-white font-display truncate max-w-[100px] sm:max-w-[140px]" :title="currentPodiumCategoryData.bronze?.name">
-                        {{ toTitleCase(currentPodiumCategoryData.bronze?.name || t('medal_bronze')) }}
-                      </div>
-                      <div class="text-[10px] sm:text-xs text-slate-400 truncate max-w-[100px] sm:max-w-[140px]">
-                        {{ toTitleCase(currentPodiumCategoryData.bronze?.club || t('club')) }}
-                      </div>
-                      <div v-if="currentPodiumCategoryData.bronze?.score" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-slate-200">
-                        {{ currentPodiumCategoryData.bronze?.score }}
-                      </div>
+                      <span>{{ t('podium_bronze') }}</span>
                     </div>
-                    <!-- 3D Podium Block -->
-                    <div class="w-full h-20 sm:h-28 rounded-t-2xl bg-gradient-to-b from-amber-600 via-amber-700 to-amber-900 border-t-2 border-x border-amber-500 flex flex-col items-center justify-between py-2 sm:py-3 shadow-lg">
-                      <span class="text-[11px] sm:text-xs font-black tracking-widest text-amber-100 font-display">{{ t('podium_bronze') }}</span>
-                      <span class="text-2xl sm:text-3xl font-black text-amber-200/80 font-display">3</span>
+                    <div class="pt-2">
+                      <div class="text-sm font-bold text-navy truncate">
+                        {{ toTitleCase(currentPodiumCategoryData?.bronze?.name || currentPodiumCategoryData?.bronze?.athlete_name || 'TBD') }}
+                      </div>
+                      <div class="text-xs text-slate-500 truncate mt-0.5">
+                        {{ toTitleCase(currentPodiumCategoryData?.bronze?.club || currentPodiumCategoryData?.bronze?.country || '-') }}
+                      </div>
                     </div>
                   </div>
-
                 </div>
               </div>
 
-              <!-- Club Medal Standings Table (WITH SEARCH & PAGINATION CONTROLS) -->
-              <div v-if="medalTallyList.length > 0" class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
-                <div class="p-3.5 border-b border-slate-100 bg-slate-50/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                  <div>
-                    <div class="text-xs sm:text-sm font-bold text-navy font-display">{{ t('club_medal_leaderboard') }}</div>
-                    <div class="text-[11px] text-slate-500 font-medium">{{ t('showing_x_of_y_clubs', { current: paginatedMedalsData.length, total: sortedMedalTally.length }) }}</div>
+              <!-- Club Medal Leaderboard Table -->
+              <div class="space-y-3 pt-4 border-t border-slate-100">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <h3 class="text-sm font-bold text-navy flex items-center gap-2">
+                    <Icon icon="ph:shield-chevron-fill" class="text-primary text-base" />
+                    <span>{{ t('club_medal_leaderboard') }}</span>
+                  </h3>
+
+                  <!-- Search Club Input -->
+                  <div class="relative">
+                    <Icon icon="ph:magnifying-glass-bold" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
+                    <input
+                      v-model="searchMedalClub"
+                      type="text"
+                      :placeholder="t('search_club_placeholder')"
+                      class="pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-hidden focus:border-navy"
+                    />
+                  </div>
+                </div>
+
+                <!-- Medal Table Container -->
+                <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
+                  <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                      <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
+                        <tr>
+                          <th @click="handleSortMedals('rank')" class="py-3 px-4 w-12 text-center cursor-pointer hover:text-navy select-none">
+                            <div class="flex items-center justify-center gap-1">
+                              <span>#</span>
+                              <Icon :icon="getSortIcon('rank', medalSortKey, medalSortAsc)" class="text-xs" />
+                            </div>
+                          </th>
+                          <th @click="handleSortMedals('club')" class="py-3 px-4 cursor-pointer hover:text-navy select-none">
+                            <div class="flex items-center gap-1.5">
+                              <span>{{ t('club') }}</span>
+                              <Icon :icon="getSortIcon('club', medalSortKey, medalSortAsc)" class="text-xs" />
+                            </div>
+                          </th>
+                          <th @click="handleSortMedals('gold')" class="py-3 px-4 text-center cursor-pointer hover:text-navy select-none">
+                            <div class="flex items-center justify-center gap-1 text-amber-500 font-bold">
+                              <Icon icon="ph:medal-fill" />
+                              <span>{{ t('medal_gold') }}</span>
+                            </div>
+                          </th>
+                          <th @click="handleSortMedals('silver')" class="py-3 px-4 text-center cursor-pointer hover:text-navy select-none">
+                            <div class="flex items-center justify-center gap-1 text-slate-400 font-bold">
+                              <Icon icon="ph:medal-fill" />
+                              <span>{{ t('medal_silver') }}</span>
+                            </div>
+                          </th>
+                          <th @click="handleSortMedals('bronze')" class="py-3 px-4 text-center cursor-pointer hover:text-navy select-none">
+                            <div class="flex items-center justify-center gap-1 text-amber-700 font-bold">
+                              <Icon icon="ph:medal-fill" />
+                              <span>{{ t('medal_bronze') }}</span>
+                            </div>
+                          </th>
+                          <th @click="handleSortMedals('total')" class="py-3 px-4 text-center cursor-pointer hover:text-navy select-none">
+                            <div class="flex items-center justify-center gap-1 font-bold text-navy">
+                              <span>Total</span>
+                              <Icon :icon="getSortIcon('total', medalSortKey, medalSortAsc)" class="text-xs" />
+                            </div>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-slate-100 bg-white">
+                        <tr
+                          v-for="(medal, idx) in paginatedMedalsData"
+                          :key="idx"
+                          class="hover:bg-slate-50/60 transition-colors"
+                        >
+                          <td class="py-3 px-4 text-center font-mono font-bold text-navy">
+                            {{ medal.rank || idx + 1 }}
+                          </td>
+                          <td class="py-3 px-4 font-bold text-navy sm:text-xs">
+                            {{ toTitleCase(medal.club || medal.name || '-') }}
+                          </td>
+                          <td class="py-3 px-4 text-center font-mono font-bold text-amber-600 bg-amber-50/30">
+                            {{ medal.gold || 0 }}
+                          </td>
+                          <td class="py-3 px-4 text-center font-mono font-bold text-slate-600 bg-slate-50/30">
+                            {{ medal.silver || 0 }}
+                          </td>
+                          <td class="py-3 px-4 text-center font-mono font-bold text-amber-800 bg-amber-700/5">
+                            {{ medal.bronze || 0 }}
+                          </td>
+                          <td class="py-3 px-4 text-center font-mono font-black text-navy text-sm">
+                            {{ medal.total || (Number(medal.gold || 0) + Number(medal.silver || 0) + Number(medal.bronze || 0)) }}
+                          </td>
+                        </tr>
+
+                        <tr v-if="paginatedMedalsData.length === 0">
+                          <td colspan="6" class="py-8 text-center text-slate-400">
+                            {{ t('no_medal_results') }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
 
-                  <div class="flex items-center gap-2.5">
-                    <!-- Search Club input -->
-                    <div class="relative w-full sm:w-52">
-                      <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
-                      <input 
-                        v-model="searchMedalClub"
-                        type="text" 
-                        :placeholder="t('search_club_placeholder')"
-                        class="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-navy placeholder:text-slate-400 focus:outline-hidden focus:border-navy"
-                      />
+                  <!-- MEDAL FOOTER (ITEMS PER PAGE + PAGINATION ON FOOTER!) -->
+                  <div class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                    <!-- Custom Items Per Page Dropdown / Pills -->
+                    <div class="flex items-center gap-2">
+                      <span class="text-slate-500 font-medium">{{ t('items_per_page') }}:</span>
+                      <div class="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-0.5">
+                        <button
+                          v-for="size in [10, 20, 50]"
+                          :key="size"
+                          type="button"
+                          @click="medalsPageSize = size; medalsCurrentPage = 1"
+                          :class="[
+                            'px-2 py-0.5 rounded-lg text-xs font-semibold transition-all cursor-pointer',
+                            medalsPageSize === size
+                              ? 'bg-navy text-white shadow-2xs font-bold'
+                              : 'text-slate-600 hover:text-navy hover:bg-slate-50'
+                          ]"
+                        >
+                          {{ size }}
+                        </button>
+                      </div>
                     </div>
 
-                    <!-- Items per page selector -->
-                    <select 
-                      v-model="medalPageSize" 
-                      class="px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-navy"
-                    >
-                      <option :value="5">5 {{ t('per_page') }}</option>
-                      <option :value="10">10 {{ t('per_page') }}</option>
-                      <option :value="20">20 {{ t('per_page') }}</option>
-                      <option :value="50">50 {{ t('per_page') }}</option>
-                    </select>
+                    <!-- Center: Summary Info -->
+                    <div class="text-slate-500 font-medium">
+                      {{ t('showing_x_of_y_clubs', { current: paginatedMedalsData.length, total: sortedMedalTally.length }) }}
+                    </div>
+
+                    <!-- Right: Prev / Next Buttons -->
+                    <div class="flex items-center gap-1">
+                      <button
+                        :disabled="medalsCurrentPage <= 1"
+                        @click="medalsCurrentPage--"
+                        class="px-3 py-1 rounded-lg border border-slate-200 bg-white font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-all"
+                      >
+                        {{ t('prev_page') }}
+                      </button>
+                      <span class="px-2 font-bold text-navy">
+                        {{ medalsCurrentPage }} / {{ totalMedalPages }}
+                      </span>
+                      <button
+                        :disabled="medalsCurrentPage >= totalMedalPages"
+                        @click="medalsCurrentPage++"
+                        class="px-3 py-1 rounded-lg border border-slate-200 bg-white font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-all"
+                      >
+                        {{ t('next_page') }}
+                      </button>
+                    </div>
                   </div>
-                </div>
-
-                <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs sm:text-sm text-navy">
-                    <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 select-none">
-                      <tr>
-                        <th class="py-3 px-3.5 w-16 text-center">{{ t('col_rank') }}</th>
-                        <th @click="handleSortMedal('club')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1">
-                            <span>{{ t('col_club_contingent') }}</span>
-                            <Icon :icon="getSortIcon('club', medalSortKey, medalSortAsc)" class="text-xs text-slate-400" />
-                          </div>
-                        </th>
-                        <th @click="handleSortMedal('gold')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1 text-amber-600">
-                            <Icon icon="ph:medal-fill" class="text-sm" />
-                            <span>{{ t('medal_gold') }}</span>
-                          </div>
-                        </th>
-                        <th @click="handleSortMedal('silver')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1 text-slate-500">
-                            <Icon icon="ph:medal-fill" class="text-sm" />
-                            <span>{{ t('medal_silver') }}</span>
-                          </div>
-                        </th>
-                        <th @click="handleSortMedal('bronze')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1 text-amber-800">
-                            <Icon icon="ph:medal-fill" class="text-sm" />
-                            <span>{{ t('medal_bronze') }}</span>
-                          </div>
-                        </th>
-                        <th @click="handleSortMedal('total')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1 text-navy">
-                            <span>{{ t('col_total') }}</span>
-                            <Icon :icon="getSortIcon('total', medalSortKey, medalSortAsc)" class="text-xs text-slate-400" />
-                          </div>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 font-medium">
-                      <tr v-for="(tally, tIdx) in paginatedMedalsData" :key="tally.club" class="hover:bg-slate-50/70 transition-colors">
-                        <td class="py-2.5 px-3.5 text-center font-bold">
-                          <span v-if="(medalCurrentPage - 1) * medalPageSize + tIdx === 0" class="inline-flex size-6 rounded-full bg-amber-400 text-navy items-center justify-center text-xs font-black">1</span>
-                          <span v-else-if="(medalCurrentPage - 1) * medalPageSize + tIdx === 1" class="inline-flex size-6 rounded-full bg-slate-300 text-slate-800 items-center justify-center text-xs font-black">2</span>
-                          <span v-else-if="(medalCurrentPage - 1) * medalPageSize + tIdx === 2" class="inline-flex size-6 rounded-full bg-amber-700 text-white items-center justify-center text-xs font-black">3</span>
-                          <span v-else class="text-slate-500 font-mono">{{ (medalCurrentPage - 1) * medalPageSize + tIdx + 1 }}</span>
-                        </td>
-                        <td class="py-2.5 px-3.5 font-bold text-navy">{{ toTitleCase(tally.club) }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono font-bold text-amber-600 bg-amber-50/30">{{ tally.gold }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono font-bold text-slate-600 bg-slate-50/30">{{ tally.silver }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono font-bold text-amber-800 bg-orange-50/30">{{ tally.bronze }}</td>
-                        <td class="py-2.5 px-3.5 text-center font-mono font-black text-navy">{{ tally.total }}</td>
-                      </tr>
-                      <tr v-if="paginatedMedalsData.length === 0">
-                        <td colspan="6" class="py-8 text-center text-slate-400 italic">
-                          {{ t('no_clubs_found') }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <!-- Medal Table Pagination Controls -->
-                <div v-if="totalMedalPages > 1" class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex items-center justify-between">
-                  <button
-                    :disabled="medalCurrentPage === 1"
-                    @click="medalCurrentPage--"
-                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                  >
-                    {{ t('btn_previous') }}
-                  </button>
-                  <span class="text-xs font-semibold text-slate-600">
-                    {{ t('page_x_of_y', { current: medalCurrentPage, total: totalMedalPages }) }}
-                  </span>
-                  <button
-                    :disabled="medalCurrentPage === totalMedalPages"
-                    @click="medalCurrentPage++"
-                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                  >
-                    {{ t('btn_next') }}
-                  </button>
                 </div>
               </div>
             </section>
 
           </div>
 
-          <!-- ── COLUMN 3: RIGHT INFOBOX & TOOLS (NON-DUPLICATE, USEFUL ACTIONS & MULTILANG) ── -->
+          <!-- ── COLUMN 3: RIGHT SIDEBAR (EVENT DETAILS INFOBOX, TOOLS & MULTILANG) ── -->
           <aside class="col-span-12 lg:col-span-3 p-5 sm:p-6 bg-slate-50/30 lg:bg-transparent rounded-b-3xl lg:rounded-bl-none lg:rounded-r-3xl">
             <div class="sticky top-20 sm:top-24 space-y-4">
               
-              <!-- Quick Hub Header -->
-              <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <div class="size-7 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold">
-                    <Icon icon="ph:gear-six-bold" class="text-sm text-navy" />
-                  </div>
-                  <span class="text-xs sm:text-sm font-bold text-navy font-display">{{ t('hub_title') }}</span>
-                </div>
-                <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">
-                  {{ t('status_live_results') }}
-                </span>
-              </div>
-
-              <!-- 1. Language Switcher Card -->
-              <div class="p-3.5 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-2.5">
-                <div class="flex items-center justify-between text-xs text-slate-600 font-semibold">
-                  <span class="flex items-center gap-1.5">
+              <!-- 1. Language Preference Selector (Iconify Powered: ID, EN, IT) -->
+              <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-2.5">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-500">
+                  <span class="flex items-center gap-1.5 font-display">
                     <Icon icon="ph:translate-bold" class="text-primary text-sm" />
-                    <span>{{ t('select_language') }}</span>
+                    {{ t('language_selector') }}
                   </span>
-                  <span class="text-[10px] font-mono text-slate-400 uppercase font-bold">{{ currentLang }}</span>
+                  <span class="text-[11px] font-mono text-slate-400 uppercase font-semibold">{{ currentLang }}</span>
                 </div>
-                <div class="grid grid-cols-3 gap-1.5">
+
+                <div class="grid grid-cols-3 gap-1.5 bg-slate-100/80 p-1 rounded-xl">
                   <button
                     v-for="lang in availableLanguages"
                     :key="lang.code"
-                    @click="currentLang = lang.code"
+                    type="button"
+                    @click="setLanguage(lang.code)"
                     :class="[
-                      'py-2 px-2 rounded-xl text-xs font-bold transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer border',
+                      'py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer select-none',
                       currentLang === lang.code
-                        ? 'bg-navy text-white border-navy shadow-xs'
-                        : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200/80'
+                        ? 'bg-white text-navy shadow-xs font-bold'
+                        : 'text-slate-600 hover:text-navy hover:bg-white/50'
                     ]"
                   >
-                    <span class="text-sm">{{ lang.flag }}</span>
-                    <span class="text-[11px]">{{ lang.label }}</span>
+                    <Icon :icon="lang.flag" class="text-sm shrink-0" />
+                    <span class="truncate">{{ lang.label }}</span>
                   </button>
                 </div>
               </div>
 
-              <!-- 2. Fast Category Jumper -->
-              <div v-if="categoriesList.length > 0" class="p-3.5 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-2">
-                <div class="text-xs text-slate-600 font-semibold flex items-center gap-1.5">
-                  <Icon icon="ph:crosshair-bold" class="text-primary text-sm" />
-                  <span>{{ t('jump_category') }}</span>
+              <!-- 2. Event Details Infobox (Key Metadata Key-Value List) -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-3.5">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                  <h3 class="text-xs font-bold text-navy font-display flex items-center gap-1.5">
+                    <Icon icon="ph:info-fill" class="text-primary text-sm" />
+                    {{ t('event_details') }}
+                  </h3>
                 </div>
-                <select
-                  v-model="selectedCategory"
-                  @change="selectedQualCategory = selectedCategory; selectedPodiumCategory = selectedCategory"
-                  class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-navy focus:outline-hidden focus:border-navy cursor-pointer"
-                >
-                  <option v-for="cat in categoriesList" :key="cat" :value="cat">
-                    {{ cat }}
-                  </option>
-                </select>
+
+                <div class="space-y-2.5 text-xs">
+                  <!-- Dates -->
+                  <div class="flex items-start justify-between gap-2">
+                    <span class="text-slate-400 font-medium shrink-0">{{ t('label_dates') }}</span>
+                    <span class="font-bold text-navy text-right">{{ formatDateRange(activeTournament?.start_date, activeTournament?.end_date) }}</span>
+                  </div>
+
+                  <!-- Venue -->
+                  <div class="flex items-start justify-between gap-2">
+                    <span class="text-slate-400 font-medium shrink-0">{{ t('label_venue') }}</span>
+                    <span class="font-semibold text-navy text-right">{{ toTitleCase(activeTournament?.location || activeTournament?.venue || 'Indonesia') }}</span>
+                  </div>
+
+                  <!-- Host Organization -->
+                  <div class="flex items-start justify-between gap-2">
+                    <span class="text-slate-400 font-medium shrink-0">{{ t('label_host') }}</span>
+                    <span class="font-semibold text-navy text-right">{{ toTitleCase(activeTournamentData?.organizer_name || 'Host Org') }}</span>
+                  </div>
+
+                  <!-- Country / Region -->
+                  <div class="flex items-start justify-between gap-2">
+                    <span class="text-slate-400 font-medium shrink-0">{{ t('label_country') }}</span>
+                    <span class="font-semibold text-navy text-right flex items-center justify-end gap-1">
+                      <Icon icon="circle-flags:id" class="text-xs shrink-0" />
+                      {{ formatCityDisplay(activeTournament?.city, activeTournament?.location) }}
+                    </span>
+                  </div>
+
+                  <!-- Total Archers -->
+                  <div class="flex items-start justify-between gap-2 pt-2 border-t border-slate-100">
+                    <span class="text-slate-400 font-medium shrink-0">{{ t('label_archers') }}</span>
+                    <span class="font-mono font-bold text-navy text-right">{{ computedTotalArchers }}</span>
+                  </div>
+
+                  <!-- Total Categories -->
+                  <div class="flex items-start justify-between gap-2">
+                    <span class="text-slate-400 font-medium shrink-0">{{ t('label_categories') }}</span>
+                    <span class="font-mono font-bold text-navy text-right">{{ categoriesList.length }}</span>
+                  </div>
+                </div>
               </div>
 
-              <!-- 3. Sanctioning & Engine Verification Card -->
-              <div class="p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/70 space-y-2 text-xs">
-                <div class="font-bold text-navy flex items-center gap-1.5">
-                  <Icon icon="ph:certificate-bold" class="text-primary text-sm" />
-                  <span>{{ t('sanctioning_title') }}</span>
-                </div>
-                <p class="text-[11px] text-slate-500 leading-relaxed">
-                  {{ t('sanctioning_desc') }}
-                </p>
-              </div>
-
-              <!-- 4. Official Handbook & External Actions -->
-              <div class="space-y-2 pt-1">
-                <a 
-                  v-if="thbDocument?.url || ianseoUrl"
-                  :href="thbDocument?.url || ianseoUrl" 
+              <!-- 3. Actions & Resources Box (Download THB & Ianseo) -->
+              <div class="space-y-2">
+                <a
+                  v-if="thbDocument"
+                  :href="thbDocument.url || thbDocument.file_url"
                   target="_blank"
-                  rel="nofollow noopener noreferrer"
-                  class="w-full py-2.5 px-3.5 rounded-xl bg-primary hover:bg-primary-hover text-navy font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
+                  rel="noopener noreferrer"
+                  class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-2xs"
                 >
-                  <Icon icon="ph:file-pdf-bold" class="text-base" />
+                  <Icon icon="ph:file-pdf-bold" class="text-rose-600 text-sm" />
                   <span>{{ t('download_handbook_btn') }}</span>
                 </a>
 
-                <a 
-                  :href="ianseoUrl" 
-                  target="_blank" 
-                  rel="nofollow noopener noreferrer"
-                  class="w-full py-2.5 px-3.5 rounded-xl border border-slate-200/90 hover:bg-slate-50 text-navy font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
+                <a
+                  :href="ianseoUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-2xs"
                 >
-                  <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
+                  <Icon icon="ph:arrow-square-out-bold" class="text-navy text-sm" />
                   <span>{{ t('view_ianseo_btn') }}</span>
                 </a>
 
-                <button 
-                  @click="copyTournamentShareLink" 
-                  class="w-full py-2.5 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer"
+                <!-- Refined Modern Share Button -->
+                <button
+                  type="button"
+                  @click="showShareModal = true"
+                  class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-primary/20 via-primary/30 to-primary/20 hover:from-primary/30 hover:to-primary/40 border border-primary/40 text-navy font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer active:scale-[0.98]"
                 >
-                  <Icon :icon="copiedShareLink ? 'ph:check-bold' : 'ph:share-network-bold'" :class="copiedShareLink ? 'text-emerald-600' : ''" class="text-sm" />
-                  <span>{{ copiedShareLink ? t('link_copied') : t('share_tournament') }}</span>
+                  <Icon icon="ph:share-network-bold" class="text-base text-navy" />
+                  <span>{{ t('share_tournament') }}</span>
                 </button>
               </div>
 
@@ -1076,63 +1163,129 @@
       </div>
     </main>
 
-    <!-- Scorecard Modal Dialog -->
-    <div 
-      v-if="selectedScorecardMatch" 
-      class="fixed inset-0 z-50 bg-navy/70 backdrop-blur-xs flex items-center justify-center p-4"
-      @click.self="closeScorecard"
-    >
-      <div class="bg-white rounded-3xl border border-slate-200 max-w-md w-full p-5 space-y-4 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-          <div class="space-y-0.5">
-            <h3 class="text-sm sm:text-base font-bold text-navy font-display">{{ scorecardRoundTitle }}</h3>
-            <p class="text-[11px] text-slate-500">{{ t('official_arrow_scorecard') }}</p>
+    <!-- ========================================================================= -->
+    <!-- HIGH-QUALITY SHARE TOURNAMENT DIALOG MODAL -->
+    <!-- ========================================================================= -->
+    <Teleport to="body">
+      <Transition
+        enter-active-class="transition duration-200 ease-out"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-active-class="transition duration-150 ease-in"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+      >
+        <div 
+          v-if="showShareModal" 
+          class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60 backdrop-blur-xs"
+          @click.self="showShareModal = false"
+        >
+          <div class="bg-white rounded-3xl border border-slate-200/80 shadow-2xl max-w-md w-full p-6 sm:p-7 relative overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <!-- Close Button -->
+            <button
+              type="button"
+              @click="showShareModal = false"
+              class="absolute right-5 top-5 size-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-navy flex items-center justify-center transition-colors cursor-pointer"
+            >
+              <Icon icon="ph:x-bold" class="text-sm" />
+            </button>
+
+            <!-- Modal Header -->
+            <div class="flex items-center gap-3.5 pb-4 border-b border-slate-100">
+              <div class="size-11 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0">
+                <Icon icon="ph:share-network-fill" class="text-2xl text-navy" />
+              </div>
+              <div class="min-w-0 pr-6">
+                <h3 class="text-base sm:text-lg font-bold text-navy font-display">
+                  {{ t('share_event') }}
+                </h3>
+                <p class="text-xs text-slate-500 line-clamp-1 mt-0.5">
+                  {{ toTitleCase(activeTournament?.name) }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="space-y-4 pt-4">
+              <p class="text-xs text-slate-600 leading-relaxed">
+                {{ t('share_event_desc') }}
+              </p>
+
+              <!-- Link Copy Section -->
+              <div class="space-y-1.5">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-display">
+                  {{ t('share_link_label') }}
+                </label>
+                <div class="flex items-center gap-2 p-1 bg-slate-50 border border-slate-200 rounded-2xl">
+                  <div class="pl-3 pr-1 text-xs text-slate-600 font-mono truncate select-all flex-1">
+                    {{ currentShareUrl }}
+                  </div>
+                  <button
+                    type="button"
+                    @click="copyShareUrl"
+                    :class="[
+                      'px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs',
+                      copiedShareLink
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-navy hover:bg-navy/90 text-white'
+                    ]"
+                  >
+                    <Icon :icon="copiedShareLink ? 'ph:check-bold' : 'ph:copy-bold'" class="text-xs" />
+                    <span>{{ copiedShareLink ? t('link_copied_btn') : t('copy_btn') }}</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Social Broadcast Grid -->
+              <div class="space-y-2 pt-2">
+                <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 font-display">
+                  {{ t('share_to_social') }}
+                </label>
+                <div class="grid grid-cols-3 gap-2">
+                  <button
+                    v-for="platform in socialShareOptions"
+                    :key="platform.id"
+                    type="button"
+                    @click="shareToSocialPlatform(platform.id)"
+                    class="p-2.5 rounded-xl border border-slate-200 hover:border-navy/30 bg-slate-50/60 hover:bg-slate-100 flex flex-col items-center justify-center gap-1.5 transition-all group cursor-pointer"
+                  >
+                    <div :class="['size-8 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110', platform.bg]">
+                      <Icon :icon="platform.icon" :class="['text-lg', platform.color]" />
+                    </div>
+                    <span class="text-[11px] font-semibold text-slate-700 truncate w-full text-center">
+                      {{ platform.name }}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
           </div>
-          <button @click="closeScorecard" class="p-1 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-navy cursor-pointer">
-            <Icon icon="ph:x-bold" class="text-base" />
-          </button>
         </div>
-
-        <div class="space-y-3">
-          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-            <div class="truncate">
-              <div class="text-xs text-slate-500 font-mono">#{{ selectedScorecardMatch.seed_a || '1' }}</div>
-              <div class="font-bold text-navy text-sm truncate">{{ toTitleCase(selectedScorecardMatch.archer_a || selectedScorecardMatch.name_a || 'Archer A') }}</div>
-            </div>
-            <div class="text-xl font-mono font-black text-navy px-3 py-1 rounded-xl bg-white border border-slate-200">
-              {{ selectedScorecardMatch.score_a ?? '-' }}
-            </div>
-          </div>
-
-          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-            <div class="truncate">
-              <div class="text-xs text-slate-500 font-mono">#{{ selectedScorecardMatch.seed_b || '2' }}</div>
-              <div class="font-bold text-navy text-sm truncate">{{ toTitleCase(selectedScorecardMatch.archer_b || selectedScorecardMatch.name_b || 'Archer B') }}</div>
-            </div>
-            <div class="text-xl font-mono font-black text-navy px-3 py-1 rounded-xl bg-white border border-slate-200">
-              {{ selectedScorecardMatch.score_b ?? '-' }}
-            </div>
-          </div>
-        </div>
-
-        <div class="pt-2 flex justify-end">
-          <button 
-            @click="closeScorecard" 
-            class="px-4 py-2 rounded-xl bg-navy text-white text-xs font-bold hover:bg-navy-light transition-colors cursor-pointer"
-          >
-            {{ t('btn_close') }}
-          </button>
-        </div>
-      </div>
-    </div>
-
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { Icon } from '@iconify/vue'
-import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
+import PublicEliminationBracket from '~/components/bracket/PublicEliminationBracket.vue'
+
+// Custom click-outside directive for Vue
+const vClickOutside = {
+  mounted(el, binding) {
+    el._clickOutsideHandler = (event) => {
+      if (!(el === event.target || el.contains(event.target))) {
+        binding.value(event)
+      }
+    }
+    document.addEventListener('click', el._clickOutsideHandler)
+  },
+  unmounted(el) {
+    document.removeEventListener('click', el._clickOutsideHandler)
+  }
+}
 
 const props = defineProps({
   tournament: {
@@ -1145,318 +1298,367 @@ const props = defineProps({
   }
 })
 
-// Active Tournament Props
 const activeTournament = computed(() => props.tournament || {})
 const activeTournamentData = computed(() => props.tournamentData || {})
 
 // ─────────────────────────────────────────────────────────────
-// MULTI-LANGUAGE SYSTEM (EN default, ID, KO)
+// INTERNATIONALIZATION (ID, EN, IT) - REPLACING KO WITH IT
 // ─────────────────────────────────────────────────────────────
-const currentLang = ref('en')
+const currentLang = ref('id')
+
 const availableLanguages = [
-  { code: 'en', label: 'English', flag: '🇺🇸' },
-  { code: 'id', label: 'Indonesia', flag: '🇮🇩' },
-  { code: 'ko', label: '한국어', flag: '🇰🇷' }
+  { code: 'id', label: 'Indonesia', flag: 'circle-flags:id' },
+  { code: 'en', label: 'English', flag: 'circle-flags:gb' },
+  { code: 'it', label: 'Italiano', flag: 'circle-flags:it' }
 ]
 
+const setLanguage = (lang) => {
+  currentLang.value = lang
+}
+
 const translations = {
-  en: {
-    tournaments: 'Tournaments',
-    tournament_details: 'Tournament Details',
-    contents: 'Contents',
-    overview_title: 'Tournament Overview',
-    overview_desc: 'Key event metrics, competition categories, and format specifications.',
-    metric_archers: 'Total Archers',
-    metric_archers_sub: 'Registered Competitors',
-    metric_clubs: 'Clubs & Teams',
-    metric_clubs_sub: 'Participating Units',
-    metric_categories: 'Categories',
-    metric_categories_sub: 'Competition Events',
-    metric_targets: 'Field Targets',
-    metric_targets_sub: 'Assigned Targets',
-    competition_divisions: 'Competition Categories',
-    schedule_title: 'Competition Schedule',
-    schedule_desc: 'Official day-by-day timeline, practice slots, and match sessions.',
-    all_days: 'All Days',
-    no_schedule_available: 'No schedule available for selected filters.',
-    fop_title: 'Field of Play',
-    fop_desc: 'Target butt assignments, distance specs, and shooting line layout.',
-    fop_col_target: 'Target Range',
-    fop_col_category: 'Category / Division',
-    fop_col_distance: 'Distance & Face',
-    fop_col_archers: 'Athletes',
-    athletes_title: 'Athletes & Entries',
-    athletes_desc: 'Complete list of participating archers, bib numbers, and club affiliations.',
-    search_athlete_placeholder: 'Search athlete name or club...',
-    all_clubs: 'All Clubs',
-    per_page: '/ page',
-    col_athlete_name: 'Athlete Name',
-    col_archer_name: 'Archer Name',
-    col_club: 'Club / Team',
-    col_club_contingent: 'Club / Contingent',
-    col_category: 'Category',
-    col_target: 'Target / Bib',
-    no_athletes_found: 'No athletes match your search criteria.',
-    btn_previous: 'Previous',
-    btn_next: 'Next',
-    page_x_of_y: 'Page {current} of {total}',
-    qualifications_title: 'Qualifications',
-    qualifications_desc: 'Ranking round scores, session totals, tens and X counts.',
-    search_archer_placeholder: 'Search archer...',
-    col_rank: 'Rank',
-    col_d1: 'Dist 1',
-    col_d2: 'Dist 2',
-    col_total: 'Total',
-    no_qual_scores: 'No qualification scores recorded for this category yet.',
-    brackets_title: 'Elimination Brackets',
-    brackets_desc: 'Head-to-head knockout matches, set scores, and medal match trees.',
-    elimination_tree: 'Elimination Tree',
-    click_match_details: 'Click match to view details',
-    medal_matches: 'Medal Matches',
-    bronze_medal_match: 'Bronze Medal Match',
-    gold_medal_final: 'Gold Medal Final',
-    bronze_match: 'Bronze Match',
-    gold_final: 'Gold Final',
-    medals_title: 'Medal Standings',
-    medals_desc: 'Top individual champions & overall contingent medal standings.',
-    official_awarding_podium: 'Official Awarding Podium',
-    category_view: 'Category',
-    medal_gold: 'Gold',
-    medal_silver: 'Silver',
-    medal_bronze: 'Bronze',
-    podium_gold: 'GOLD',
-    podium_silver: 'SILVER',
-    podium_bronze: 'BRONZE',
-    club: 'Club',
-    champion_winner: 'Championship Winner',
-    club_medal_leaderboard: 'Club Medal Leaderboard',
-    showing_x_of_y_clubs: 'Showing {current} of {total} contingents',
-    search_club_placeholder: 'Search club...',
-    no_clubs_found: 'No clubs matched the search filter.',
-    hub_title: 'Tournament Hub',
-    status_live_results: 'Live Verified',
-    select_language: 'Display Language',
-    jump_category: 'Jump to Category',
-    sanctioning_title: 'Sanctioning & Scored Data',
-    sanctioning_desc: 'Official tournament data synchronized directly via Ianseo Engine with Perpani standards.',
-    download_handbook_btn: 'Download Handbook (PDF)',
-    view_ianseo_btn: 'View on Ianseo Official',
-    share_tournament: 'Share Tournament',
-    link_copied: 'Link Copied!',
-    official_arrow_scorecard: 'Official match arrow scorecard',
-    btn_close: 'Close',
-    round_qf: 'Quarterfinals',
-    round_sf: 'Semifinals',
-    round_finals: 'Finals'
-  },
   id: {
     tournaments: 'Turnamen',
     tournament_details: 'Detail Turnamen',
     contents: 'Daftar Isi',
     overview_title: 'Ringkasan Turnamen',
-    overview_desc: 'Metrik utama turnamen, kategori lomba, dan spesifikasi pertandingan.',
-    metric_archers: 'Total Atlet',
-    metric_archers_sub: 'Atlet Terdaftar',
-    metric_clubs: 'Klub & Tim',
-    metric_clubs_sub: 'Unit Berpartisipasi',
+    overview_desc: 'Rangkuman resmi dan statistik utama kompetisi panahan.',
+    metric_archers: 'Total Pemanah',
+    metric_archers_sub: 'Atlet terdaftar',
+    metric_clubs: 'Klub & Kontingen',
+    metric_clubs_sub: 'Delegasi daerah',
     metric_categories: 'Kategori Lomba',
-    metric_categories_sub: 'Nomor Pertandingan',
-    metric_targets: 'Bantalan Target',
-    metric_targets_sub: 'Target Lapangan',
-    competition_divisions: 'Kategori & Divisi Lomba',
+    metric_categories_sub: 'Nomor divisi tanding',
+    metric_targets: 'Bantalan Sasaran',
+    metric_targets_sub: 'Target line aktif',
     schedule_title: 'Jadwal Pertandingan',
-    schedule_desc: 'Jadwal resmi harian, sesi latihan, kualifikasi, dan babak eliminasi.',
+    schedule_desc: 'Rundown resmi dan susunan waktu kompetisi.',
     all_days: 'Semua Hari',
-    no_schedule_available: 'Tidak ada jadwal untuk filter ini.',
-    fop_title: 'Arena Lapangan (FOP)',
-    fop_desc: 'Distribusi bantalan target, jarak tembak, dan denah lapangan.',
-    fop_col_target: 'Rentang Target',
-    fop_col_category: 'Kategori / Divisi',
-    fop_col_distance: 'Jarak & Face',
-    fop_col_archers: 'Peserta',
-    athletes_title: 'Daftar Atlet & Klub',
-    athletes_desc: 'Daftar lengkap atlet peserta, nomor bantalan/bib, dan asal klub.',
-    search_athlete_placeholder: 'Cari nama atlet atau klub...',
-    all_clubs: 'Semua Klub',
-    per_page: '/ hal',
-    col_athlete_name: 'Nama Atlet',
-    col_archer_name: 'Nama Pemanah',
+    fop_title: 'Lapangan Tembak (FOP)',
+    fop_desc: 'Tata letak geometris target dan rincian sesi pertandingan.',
+    fop_empty: 'Belum ada alokasi FOP yang tercatat untuk hari ini.',
+    session_label: 'Sesi',
+    targets_label: 'Bantalan Target',
+    distance_label: 'Jarak',
+    target_face_label: 'Target Face',
+    target_lane_title: 'Target Lane',
+    lane_desc: 'Rincian alokasi bantalan target dan spesifikasi teknis.',
+    athletes_title: 'Daftar Atlet & Peserta',
+    athletes_desc: 'Daftar lengkap atlet dan kontingen yang terdaftar.',
+    filter_club_all: 'Semua Klub / Kontingen',
+    search_athlete_placeholder: 'Cari nama atlet, klub, atau divisi...',
+    showing_x_of_y_entries: 'Menampilkan {current} dari {total} atlet terdaftar',
+    col_rank: 'Pos.',
+    col_name: 'Nama Atlet',
     col_club: 'Klub / Kontingen',
-    col_club_contingent: 'Klub / Kontingen',
-    col_category: 'Kategori',
-    col_target: 'Target / Bib',
-    no_athletes_found: 'Tidak ada atlet yang cocok dengan pencarian.',
-    btn_previous: 'Sebelumnya',
-    btn_next: 'Selanjutnya',
-    page_x_of_y: 'Halaman {current} dari {total}',
-    qualifications_title: 'Babak Kualifikasi',
-    qualifications_desc: 'Hasil skor kualifikasi, total sesi, jumlah 10 dan X.',
-    search_archer_placeholder: 'Cari atlet...',
-    col_rank: 'Peringkat',
-    col_d1: 'Jarak 1',
-    col_d2: 'Jarak 2',
-    col_total: 'Total',
-    no_qual_scores: 'Belum ada skor kualifikasi untuk kategori ini.',
+    col_category: 'Divisi',
+    col_score: 'Skor',
+    col_10s: '10s',
+    col_xs: 'Xs',
+    no_entries_found: 'Tidak ada atlet yang cocok dengan kriteria pencarian.',
+    qualifications_title: 'Hasil Kualifikasi',
+    qualifications_desc: 'Skor resmi dan peringkat babak kualifikasi per kategori.',
+    showing_x_of_y_scores: 'Menampilkan {current} dari {total} skor atlet',
+    no_qual_scores: 'Belum ada hasil kualifikasi untuk kategori ini.',
     brackets_title: 'Bagan Eliminasi',
-    brackets_desc: 'Bagan eliminasi gugur langsung, skor per set, dan perebutan medali.',
-    elimination_tree: 'Bagan Eliminasi',
-    click_match_details: 'Klik pertandingan untuk detail skor',
-    medal_matches: 'Perebutan Medali',
-    bronze_medal_match: 'Perebutan Medali Perunggu',
-    gold_medal_final: 'Final Perebutan Medali Emas',
-    bronze_match: 'Medali Perunggu',
-    gold_final: 'Final Emas',
-    medals_title: 'Perolehan Medali',
-    medals_desc: 'Juara perorangan teratas & klasemen perolehan medali kontingen.',
-    official_awarding_podium: 'Podium Juara Resmi',
-    category_view: 'Kategori',
+    brackets_desc: 'Bagan pertandingan satu lawan satu babak gugur hingga final.',
+    no_bracket_data: 'Bagan eliminasi belum tersedia untuk kategori ini.',
+    medals_title: 'Podium & Medali',
+    medals_desc: 'Pemenang medali kejuaraan dan klasemen perolehan per klub.',
+    podium_standings: 'Podium Juara',
+    podium_gold: 'Juara 1 Medali Emas',
+    podium_silver: 'Juara 2 Medali Perak',
+    podium_bronze: 'Juara 3 Medali Perunggu',
     medal_gold: 'Emas',
     medal_silver: 'Perak',
     medal_bronze: 'Perunggu',
-    podium_gold: 'EMAS',
-    podium_silver: 'PERAK',
-    podium_bronze: 'PERUNGGU',
+    champion_winner: 'Juara Umum',
     club: 'Klub',
-    champion_winner: 'Juara 1 Turnamen',
     club_medal_leaderboard: 'Klasemen Medali Klub',
-    showing_x_of_y_clubs: 'Menampilkan {current} dari {total} kontingen',
+    showing_x_of_y_clubs: 'Menampilkan {current} dari {total} klub peserta',
     search_club_placeholder: 'Cari klub...',
-    no_clubs_found: 'Tidak ada klub yang cocok dengan pencarian.',
-    hub_title: 'Pusat Turnamen',
-    status_live_results: 'Hasil Terverifikasi',
-    select_language: 'Pilihan Bahasa',
-    jump_category: 'Pilih Kategori',
-    sanctioning_title: 'Standardisasi & Data Resmi',
-    sanctioning_desc: 'Data pertandingan resmi tersinkronisasi langsung via Ianseo Engine sesuai standar Perpani.',
-    download_handbook_btn: 'Unduh Buku Panduan (PDF)',
-    view_ianseo_btn: 'Lihat di Ianseo Resmi',
+    no_medal_results: 'Belum ada perolehan medali yang dicatat.',
+    language_selector: 'Pilihan Bahasa',
+    event_details: 'Rincian Acara',
+    label_dates: 'Tanggal Acara',
+    label_venue: 'Lokasi / Venue',
+    label_host: 'Penyelenggara',
+    label_country: 'Negara',
+    label_archers: 'Jumlah Pemanah',
+    label_categories: 'Jumlah Kategori',
+    download_handbook_btn: 'Unduh Buku Panduan (THB)',
+    view_ianseo_btn: 'Buka di Situs Resmi Ianseo',
     share_tournament: 'Bagikan Turnamen',
-    link_copied: 'Tautan Disalin!',
-    official_arrow_scorecard: 'Scorecard resmi panahan per rambahan',
-    btn_close: 'Tutup',
-    round_qf: 'Perempat Final',
-    round_sf: 'Semi Final',
-    round_finals: 'Final'
+    share_event: 'Bagikan Turnamen Ini',
+    share_event_desc: 'Sebarkan informasi turnamen resmi ini kepada atlet, klub, atau komunitas panahan.',
+    share_link_label: 'Tautan Resmi Turnamen',
+    share_to_social: 'Bagikan Melalui Media Sosial',
+    copy_btn: 'Salin Tautan',
+    link_copied_btn: 'Tersalin!',
+    items_per_page: 'Baris per halaman',
+    prev_page: 'Sebelumnya',
+    next_page: 'Berikutnya',
+    page_x_of_y: 'Halaman {current} dari {total}'
   },
-  ko: {
-    tournaments: '대회 목록',
-    tournament_details: '대회 상세 정보',
-    contents: '목차',
-    overview_title: '대회 개요',
-    overview_desc: '대회 주요 지표, 경기 종목 및 세부 규격 안내.',
-    metric_archers: '총 참가 선수',
-    metric_archers_sub: '공식 등록 선수',
-    metric_clubs: '참가 클럽 및 팀',
-    metric_clubs_sub: '참가 단체 수',
-    metric_categories: '경기 종목',
-    metric_categories_sub: '세부 부문 수',
-    metric_targets: '경기 타깃',
-    metric_targets_sub: '배정된 과녁 수',
-    competition_divisions: '경기 세부 종목',
-    schedule_title: '경기 일정표',
-    schedule_desc: '일자별 공식 타임라인, 공식 연습 및 본선 경기 세션.',
-    all_days: '전체 일정',
-    no_schedule_available: '선택한 일정에 대한 경기 일정이 없습니다.',
-    fop_title: '경기장 배치도 (FOP)',
-    fop_desc: '타깃 배정표, 사거리 규격 및 사선 안내.',
-    fop_col_target: '타깃 번호',
-    fop_col_category: '부문 / 종목',
-    fop_col_distance: '사거리 및 표적지',
-    fop_col_archers: '선수 수',
-    athletes_title: '선수 및 참가자 명단',
-    athletes_desc: '참가 선수 전체 명단, 배번 및 소속 클럽 정보.',
-    search_athlete_placeholder: '선수 이름 또는 클럽 검색...',
-    all_clubs: '전체 클럽',
-    per_page: '/ 페이지',
-    col_athlete_name: '선수 이름',
-    col_archer_name: '선수명',
-    col_club: '소속 클럽 / 팀',
-    col_club_contingent: '소속 단체',
-    col_category: '경기 부문',
-    col_target: '타깃 / 배번',
-    no_athletes_found: '검색 조건과 일치하는 선수가 없습니다.',
-    btn_previous: '이전',
-    btn_next: '다음',
-    page_x_of_y: '{current} / {total} 페이지',
-    qualifications_title: '예선 기록',
-    qualifications_desc: '예선 랭킹 라운드 점수, 세션 합계, 10점 및 X 개수.',
-    search_archer_placeholder: '선수 검색...',
-    col_rank: '순위',
-    col_d1: '1차 거리',
-    col_d2: '2차 거리',
-    col_total: '총점',
-    no_qual_scores: '해당 부문의 예선 점수가 아직 등록되지 않았습니다.',
-    brackets_title: '본선 토너먼트',
-    brackets_desc: '토너먼트 넉아웃 대진표, 세트 스코어 및 메달 결정전.',
-    elimination_tree: '토너먼트 대진표',
-    click_match_details: '매치 클릭 시 세부 스코어 확인',
-    medal_matches: '메달 결정전',
-    bronze_medal_match: '동메달 결정전',
-    gold_medal_final: '금메달 결승전',
-    bronze_match: '동메달전',
-    gold_final: '결승전',
-    medals_title: '메달 종합 순위',
-    medals_desc: '개인전 입상자 및 클럽별 메달 획득 순위.',
-    official_awarding_podium: '공식 시상대',
-    category_view: '부문',
-    medal_gold: '금메달',
-    medal_silver: '은메달',
-    medal_bronze: '동메달',
-    podium_gold: '금메달',
-    podium_silver: '은메달',
-    podium_bronze: '동메달',
-    club: '소속 클럽',
-    champion_winner: '대회 우승자',
-    club_medal_leaderboard: '클럽별 종합 메달 순위',
-    showing_x_of_y_clubs: '총 {total}개 단체 중 {current}개 표시 중',
-    search_club_placeholder: '클럽명 검색...',
-    no_clubs_found: '일치하는 클럽 정보가 없습니다.',
-    hub_title: '대회 허브',
-    status_live_results: '공식 기록 인증',
-    select_language: '언어 선택',
-    jump_category: '종목 바로가기',
-    sanctioning_title: '공인 규정 및 공식 데이터',
-    sanctioning_desc: 'Ianseo 경기 운영 엔진을 통해 실시간 동기화되는 공인 대회 데이터입니다.',
-    download_handbook_btn: '대회 요강 다운로드 (PDF)',
-    view_ianseo_btn: 'Ianseo 공식 페이지',
-    share_tournament: '대회 공유하기',
-    link_copied: '링크가 복사되었습니다!',
-    official_arrow_scorecard: '공식 화살별 점수 기록지',
-    btn_close: '닫기',
-    round_qf: '8강전',
-    round_sf: '준결승전',
-    round_finals: '결승전'
+  en: {
+    tournaments: 'Tournaments',
+    tournament_details: 'Tournament Details',
+    contents: 'Contents',
+    overview_title: 'Tournament Overview',
+    overview_desc: 'Official summary and key statistics of the archery competition.',
+    metric_archers: 'Total Archers',
+    metric_archers_sub: 'Registered participants',
+    metric_clubs: 'Clubs & Teams',
+    metric_clubs_sub: 'Represented delegations',
+    metric_categories: 'Divisions',
+    metric_categories_sub: 'Event categories',
+    metric_targets: 'FOP Targets',
+    metric_targets_sub: 'Active target lines',
+    schedule_title: 'Competition Schedule',
+    schedule_desc: 'Official tournament rundown and timetable.',
+    all_days: 'All Days',
+    fop_title: 'Field of Play (FOP)',
+    fop_desc: 'Target layout geometry and session arrangements.',
+    fop_empty: 'No FOP arrangements found for this day.',
+    session_label: 'Session',
+    targets_label: 'Targets',
+    distance_label: 'Distance',
+    target_face_label: 'Target Face',
+    target_lane_title: 'Target Lane',
+    lane_desc: 'Target allocation and technical specifications.',
+    athletes_title: 'Athletes & Entries',
+    athletes_desc: 'Complete roster of registered archers and delegations.',
+    filter_club_all: 'All Clubs / Delegations',
+    search_athlete_placeholder: 'Search athlete by name, club, or division...',
+    showing_x_of_y_entries: 'Showing {current} of {total} registered athletes',
+    col_rank: 'Rank',
+    col_name: 'Athlete Name',
+    col_club: 'Club / Team',
+    col_category: 'Division',
+    col_score: 'Score',
+    col_10s: '10s',
+    col_xs: 'Xs',
+    no_entries_found: 'No athletes match the search criteria.',
+    qualifications_title: 'Qualification Results',
+    qualifications_desc: 'Official ranking round scores and standings.',
+    showing_x_of_y_scores: 'Showing {current} of {total} athlete scores',
+    no_qual_scores: 'No qualification results available for this division.',
+    brackets_title: 'Elimination Brackets',
+    brackets_desc: 'Head-to-head match trees from elimination to medal finals.',
+    no_bracket_data: 'Elimination bracket not available for this category.',
+    medals_title: 'Podium & Medals',
+    medals_desc: 'Championship medalists and club leaderboard standings.',
+    podium_standings: 'Podium Standings',
+    podium_gold: '1st Place Gold Medal',
+    podium_silver: '2nd Place Silver Medal',
+    podium_bronze: '3rd Place Bronze Medal',
+    medal_gold: 'Gold',
+    medal_silver: 'Silver',
+    medal_bronze: 'Bronze',
+    champion_winner: 'Champion',
+    club: 'Club',
+    club_medal_leaderboard: 'Club Medal Leaderboard',
+    showing_x_of_y_clubs: 'Showing {current} of {total} competing clubs',
+    search_club_placeholder: 'Search club...',
+    no_medal_results: 'No medal records logged for this tournament.',
+    language_selector: 'Language Selection',
+    event_details: 'Event Details',
+    label_dates: 'Event Dates',
+    label_venue: 'Venue Location',
+    label_host: 'Host Organization',
+    label_country: 'Country',
+    label_archers: 'Total Archers',
+    label_categories: 'Categories Contested',
+    download_handbook_btn: 'Download Handbook (PDF)',
+    view_ianseo_btn: 'View on Official Ianseo Site',
+    share_tournament: 'Share Tournament',
+    share_event: 'Share this Tournament',
+    share_event_desc: 'Share the official tournament page with fellow archers, clubs, or on social media.',
+    share_link_label: 'Direct Event Link',
+    share_to_social: 'Broadcast to Social Media',
+    copy_btn: 'Copy Link',
+    link_copied_btn: 'Copied!',
+    items_per_page: 'Items per page',
+    prev_page: 'Previous',
+    next_page: 'Next',
+    page_x_of_y: 'Page {current} of {total}'
+  },
+  it: {
+    tournaments: 'Tornei',
+    tournament_details: 'Dettagli del Torneo',
+    contents: 'Indice',
+    overview_title: 'Panoramica del Torneo',
+    overview_desc: 'Sintesi ufficiale e statistiche chiave dell\'evento di tiro con l\'arco.',
+    metric_archers: 'Totale Arcieri',
+    metric_archers_sub: 'Partecipanti registrati',
+    metric_clubs: 'Club e Squadre',
+    metric_clubs_sub: 'Contingenti rappresentati',
+    metric_categories: 'Categorie',
+    metric_categories_sub: 'Divisioni di gara',
+    metric_targets: 'Bersagli FOP',
+    metric_targets_sub: 'Linee di tiro allestite',
+    schedule_title: 'Programma Gare',
+    schedule_desc: 'Cronologia ufficiale e orari di gara.',
+    all_days: 'Tutti i Giorni',
+    fop_title: 'Campo di Gara (FOP)',
+    fop_desc: 'Disposizione geometrica dei bersagli e dettagli di sessione.',
+    fop_empty: 'Nessuna assegnazione FOP registrata per questo giorno.',
+    session_label: 'Sessione',
+    targets_label: 'Bersagli',
+    distance_label: 'Distanza',
+    target_face_label: 'Visuale',
+    target_lane_title: 'Corsia Bersaglio',
+    lane_desc: 'Assegnazione e dettagli tecnici del bersaglio.',
+    athletes_title: 'Arcieri e Iscrizioni',
+    athletes_desc: 'Elenco ufficiale degli atleti e contingenti registrati.',
+    filter_club_all: 'Tutti i Club / Delegazioni',
+    search_athlete_placeholder: 'Cerca per nome, club o divisione...',
+    showing_x_of_y_entries: 'Mostrati {current} di {total} arcieri iscritti',
+    col_rank: 'Pos.',
+    col_name: 'Nome Arciere',
+    col_club: 'Club / Squadra',
+    col_category: 'Divisione',
+    col_score: 'Punteggio',
+    col_10s: '10s',
+    col_xs: 'Xs',
+    no_entries_found: 'Nessun arciere trovato per i criteri di ricerca.',
+    qualifications_title: 'Risultati Qualifiche',
+    qualifications_desc: 'Punteggi ufficiali e classifica del turno di qualificazione.',
+    showing_x_of_y_scores: 'Mostrati {current} di {total} punteggi ufficiali',
+    no_qual_scores: 'Nessun risultato di qualifica disponibile per questa categoria.',
+    brackets_title: 'Griglie Eliminatorie',
+    brackets_desc: 'Scontri diretti e tabellone degli incontri testa a testa fino alla finale.',
+    no_bracket_data: 'Nessun tabellone eliminatorio disponibile per questa categoria.',
+    medals_title: 'Podio e Medagliere',
+    medals_desc: 'Vincitori delle medaglie e classifica generale per club.',
+    podium_standings: 'Podio dei Vincitori',
+    podium_gold: '1° Posto Medaglia d\'Oro',
+    podium_silver: '2° Posto Medaglia d\'Argento',
+    podium_bronze: '3° Posto Medaglia di Bronzo',
+    medal_gold: 'Oro',
+    medal_silver: 'Argento',
+    medal_bronze: 'Bronzo',
+    champion_winner: 'Campione',
+    club: 'Club',
+    club_medal_leaderboard: 'Medagliere Club',
+    showing_x_of_y_clubs: 'Mostrati {current} di {total} club in classifica',
+    search_club_placeholder: 'Cerca club...',
+    no_medal_results: 'Nessun dato del medagliere disponibile per questo torneo.',
+    language_selector: 'Lingua',
+    event_details: 'Dettagli Evento',
+    label_dates: 'Date dell\'Evento',
+    label_venue: 'Luogo di Gara',
+    label_host: 'Organizzatore',
+    label_country: 'Nazione',
+    label_archers: 'Totale Iscritti',
+    label_categories: 'Numero Categorie',
+    download_handbook_btn: 'Scarica Manuale Ufficiale (PDF)',
+    view_ianseo_btn: 'Visualizza su Ianseo Ufficiale',
+    share_tournament: 'Condividi Torneo',
+    share_event: 'Condividi questo Torneo',
+    share_event_desc: 'Condividi il link ufficiale dell\'evento con atleti, club o sui social.',
+    share_link_label: 'Link Diretto del Torneo',
+    share_to_social: 'Condividi sui Social Network',
+    copy_btn: 'Copia Link',
+    link_copied_btn: 'Copiato!',
+    items_per_page: 'Elementi per pagina',
+    prev_page: 'Precedente',
+    next_page: 'Successivo',
+    page_x_of_y: 'Pagina {current} di {total}'
   }
 }
 
 const t = (key, params = {}) => {
-  const langDict = translations[currentLang.value] || translations.en
-  let val = langDict[key] || translations.en[key] || key
-  if (typeof val === 'string' && params) {
-    Object.keys(params).forEach(p => {
-      val = val.replace(`{${p}}`, params[p])
+  const lang = currentLang.value || 'en'
+  let text = translations[lang]?.[key] || translations['en']?.[key] || key
+  if (params && typeof params === 'object') {
+    Object.keys(params).forEach(k => {
+      text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), params[k])
     })
   }
-  return val
+  return text
 }
 
-const formatRoundTitle = (title) => {
-  if (!title) return ''
-  const lower = title.toLowerCase()
-  if (lower.includes('quarter') || lower.includes('1/4') || lower.includes('qf')) return t('round_qf')
-  if (lower.includes('semi') || lower.includes('1/2') || lower.includes('sf')) return t('round_sf')
-  if (lower.includes('final') || lower.includes('gold')) return t('round_finals')
-  return title
-}
+// ─────────────────────────────────────────────────────────────
+// DATA NORMALIZATION COMPUTEDS
+// ─────────────────────────────────────────────────────────────
+const normalizedQualsList = computed(() => {
+  const raw = activeTournamentData.value?.qualifications || []
+  if (Array.isArray(raw)) return raw
+  if (raw && typeof raw === 'object') {
+    const list = []
+    Object.keys(raw).forEach(cat => {
+      const archers = raw[cat]
+      if (Array.isArray(archers)) {
+        archers.forEach((a, idx) => {
+          list.push({ ...a, category: cat, rank: a.rank || idx + 1 })
+        })
+      }
+    })
+    return list
+  }
+  return []
+})
+
+const normalizedEntriesList = computed(() => {
+  const raw = activeTournamentData.value?.entries || []
+  if (Array.isArray(raw)) return raw
+  if (raw && typeof raw === 'object') {
+    const list = []
+    Object.keys(raw).forEach(k => {
+      const item = raw[k]
+      if (Array.isArray(item)) {
+        item.forEach(sub => list.push({ ...sub, category: sub.category || k }))
+      } else if (item && typeof item === 'object') {
+        list.push({ ...item, category: item.category || k })
+      }
+    })
+    return list
+  }
+  return []
+})
+
+const normalizedBracketsList = computed(() => {
+  const raw = activeTournamentData.value?.brackets || []
+  if (Array.isArray(raw)) return raw
+  if (raw && typeof raw === 'object') {
+    const list = []
+    Object.keys(raw).forEach(cat => {
+      const phases = raw[cat]
+      if (Array.isArray(phases)) {
+        phases.forEach(p => {
+          list.push({ category: cat, ...p })
+        })
+      } else if (phases && typeof phases === 'object') {
+        Object.keys(phases).forEach(pName => {
+          list.push({ category: cat, phase: pName, matches: phases[pName] })
+        })
+      }
+    })
+    return list
+  }
+  return []
+})
 
 // ─────────────────────────────────────────────────────────────
 // STATE & REACTIVE CONTROLS
 // ─────────────────────────────────────────────────────────────
+const scrollProgress = ref(0)
+const activeSectionId = ref('overview')
 const selectedCategory = ref('')
-const selectedScheduleDay = ref('all')
 const selectedQualCategory = ref('')
+const selectedBracketCategory = ref('')
 const selectedPodiumCategory = ref('')
+const selectedScheduleDay = ref('all')
+const selectedFopDayIndex = ref(0)
+const copiedShareLink = ref(false)
+const showShareModal = ref(false)
 
+// Custom Dropdown Open States (Non-Native)
+const showClubDropdown = ref(false)
+const showPodiumDropdown = ref(false)
+
+// Table Controls
 const entriesSearchQuery = ref('')
 const entriesClubFilter = ref('all')
 const entriesPageSize = ref(15)
@@ -1465,364 +1667,295 @@ const entriesSortKey = ref('name')
 const entriesSortAsc = ref(true)
 
 const resultsSearchQuery = ref('')
-const qualPageSize = ref(25)
+const qualPageSize = ref(10)
 const qualCurrentPage = ref(1)
-const qualSortKey = ref('rank')
-const qualSortAsc = ref(true)
 
 const searchMedalClub = ref('')
-const medalPageSize = ref(10)
-const medalCurrentPage = ref(1)
-const medalSortKey = ref('total')
-const medalSortAsc = ref(false)
-
-const scrollProgress = ref(0)
-const activeSectionId = ref('overview')
-const selectedScorecardMatch = ref(null)
-const scorecardRoundTitle = ref('')
-const copiedShareLink = ref(false)
+const medalsPageSize = ref(10)
+const medalsCurrentPage = ref(1)
+const medalSortKey = ref('rank')
+const medalSortAsc = ref(true)
 
 // ─────────────────────────────────────────────────────────────
-// COMPUTED DATA EXTRACTIONS
+// TOURNAMENT OVERVIEW DESCRIPTIONS (BESPOKE NATURAL PROSE)
 // ─────────────────────────────────────────────────────────────
-const categoriesList = computed(() => {
-  const data = activeTournamentData.value
-  if (data?.categories && Array.isArray(data.categories) && data.categories.length > 0) {
-    return data.categories.map(c => typeof c === 'string' ? c : (c.name || c.category_name || '')).filter(Boolean)
+const bespokeTournamentDescriptions = {
+  '29375': {
+    id: [
+      'Liga Panahan Kabupaten Kendal 2026 Seri 3 merupakan sirkuit pembinaan panahan di Jawa Tengah yang mempertemukan 164 atlet dari 58 klub dan kontingen panahan daerah. Berlangsung di Kabupaten Kendal pada 31 Juli hingga 2 Agustus 2026, kejuaraan ini mempertandingkan 24 divisi lomba dari kelompok usia dini (Recurve U13, Recurve U15, Barebow U18) hingga divisi Standar Nasional dan Recurve umum.',
+      'Ajang seri ketiga ini menjadi momentum penting bagi para pemanah muda untuk mengumpulkan poin sirkuit dan menguji mental bertanding di bawah atmosfer kompetisi resmi PERPANI Kendal.'
+    ],
+    en: [
+      'The 2026 Kendal Regency Archery League Series 3 brought together 164 talented archers across 58 clubs and contingents throughout Central Java. Staged in Kendal from July 31 to August 2, 2026, the tournament featured competition across 24 distinct divisions - spanning youth development categories (Recurve U13/U15 and Barebow U18) to premier National and Recurve classes.',
+      'This third series served as a pivotal ranking milestone for grassroots athletes seeking crucial championship circuit points and regional ranking ascents.'
+    ],
+    it: [
+      'La 3ª Serie della Lega di Tiro con l\'Arco della Reggenza di Kendal 2026 ha riunito 164 promettenti arcieri in rappresentanza di 58 club e delegazioni provenienti da tutta la regione di Giava Centrale. Organizzato a Kendal dal 31 luglio al 2 agosto 2026, l\'evento ha ospitato gare in 24 diverse divisioni, dai settori giovanili (Recurve U13/U15 e Barebow U18) fino alle categorie Arco Olimpico e Standard Nazionale.',
+      'Questa terza tappa ha rappresentato un fondamentale snodo di classifica per i giovani arcieri impegnati a conquistare preziosi punti circuito e consolidare la propria posizione regionale.'
+    ]
+  },
+  '25818': {
+    id: [
+      'Piala Gubernur Jawa Timur III menjadi salah satu festival panahan termegah di Jawa Timur, menyatukan 715 atlet dari 32 kontingen daerah dan klub panahan unggulan di Stadion Rejoagung, Tulungagung. Berlangsung selama delapan hari (19 - 26 Desember 2025), kejuaraan ini mempertandingkan 32 nomor kompetisi di nomor Standar Nasional, Barebow jarak 20m - 50m, serta Compound dan Recurve.',
+      'Kejuaraan ini menegaskan tingginya antusiasme pembinaan panahan di Jawa Timur dengan partisipasi masif di kategori usia muda (U10, U15, dan U18). Selain memperebutkan trofi bergengsi Piala Gubernur, ajang ini menjadi panggung pemantauan talenta untuk menjaring atlet masa depan Jawa Timur menuju panggung nasional.'
+    ],
+    en: [
+      'The 3rd East Java Governor\'s Cup stood as one of the largest archery tournaments in the province, uniting 715 athletes across 32 regional delegations and top clubs at Rejoagung Stadium in Tulungagung. Over eight competition days (December 19 - 26, 2025), archers competed across 32 medal events spanning National Standard Bow, Barebow 20m/50m, and premier Compound and Recurve classes.',
+      'The tournament showcased strong grassroots participation across youth tiers (U10, U15, and U18), serving as a vital talent scouting platform for East Java\'s future archery representatives.'
+    ],
+    it: [
+      'La 3ª Coppa del Governatore di Giava Orientale è stata una delle più importanti manifestazioni arcieristiche della provincia, accogliendo 715 atleti provenienti da 32 delegazioni e club d\'eccellenza presso lo Stadio Rejoagung di Tulungagung. Durante gli otto giorni di gara (19 - 26 dicembre 2025), gli arcieri si sono confrontati in 32 discipline tra Standard Nazionale, Arco Nudo 20m/50m, Compound e Arco Olimpico.',
+      'Il torneo ha confermato la straordinaria vitalità del settore giovanile (U10, U15 e U18), fungendo da prestigioso palcoscenico per individuare i migliori talenti destinati ai massimi campionati nazionali.'
+    ]
+  },
+  '20577': {
+    id: [
+      'Kejuaraan Panahan Banyumas Open 2024 menjadi perhelatan akbar penutup tahun di GOR Satria Purwokerto, menyedot antusiasme 676 atlet panahan dari 10 kontingen klub dan pengcab. Digelar pada 27 - 29 Desember 2024, turnamen ini menghadirkan kompetisi di 18 nomor divisi, mulai dari Standar Nasional Usia Dini (SN U10, U15, U18) hingga nomor Compound dan Recurve Umum.',
+      'GOR Satria menjadi saksi unjuk kebolehan para pemanah muda yang mendominasi bagan kualifikasi dan fase eliminasi. Kejuaraan terbuka ini memadukan pembinaan atlet akar rumput dengan persaingan ketat pemanah senior di Jawa Tengah.'
+    ],
+    en: [
+      'The 2024 Banyumas Open Archery Championship served as a premier year-end sporting event at GOR Satria Purwokerto, attracting 676 archers from 10 competitive clubs and associations. Held from December 27 to 29, 2024, the championship delivered action across 18 divisions, encompassing grassroots National Standard tiers (SN U10, U15, U18) alongside Open Compound and Recurve categories.',
+      'The event provided valuable competition experience for junior archers while testing precision and consistency across ranking rounds and head-to-head elimination matches.'
+    ],
+    it: [
+      'Il Campionato Open di Tiro con l\'Arco Banyumas 2024 è stato il grande evento di chiusura di fine anno presso il Palazzetto GOR Satria di Purwokerto, registrando l\'adesione di 676 arcieri appartenenti a 10 club e associazioni sportive. Svoltosi dal 27 al 29 dicembre 2024, il campionato ha visto protagonisti gli atleti in 18 divisioni, dalle categorie promozionali giovanili fino alle classi Open Compound e Ricurvo.',
+      'La manifestazione ha offerto un test di altissimo valore tecnico e competitivo per gli atleti emergenti di Giava Centrale.'
+    ]
+  },
+  '16298': {
+    id: [
+      'Kejurprov Jawa Timur Panahan Kelompok Umur 2023 di Surabaya merupakan pesta akbar panahan usia dini dan remaja yang mempertemukan 629 atlet potensial dari 16 kontingen kota/kabupaten se-Jawa Timur. Berlangsung pada 23 - 24 Desember 2023, kejuaraan provinsi ini mempertandingkan total 46 divisi lomba - mencakup kategori Paralon U15, Nasional U9/U12/U15, hingga Recurve dan Compound U18/U21.',
+      'Format turnamen yang terstruktur menguji ketahanan dan fokus mental para pemanah muda di garis tembak, membuktikan bahwa regenerasi atlet panahan di Jawa Timur terus melahirkan talenta baru.'
+    ],
+    en: [
+      'The 2023 East Java Age Group Provincial Archery Championship in Surabaya gathered 629 rising archers from 16 regional delegations across East Java. Held over December 23 - 24, 2023, this provincial tournament hosted 46 competitive divisions - encompassing introductory PVC U15, National U9/U12/U15, and junior Recurve and Compound U18/U21 brackets.',
+      'The fast-paced competition tested endurance and target discipline among junior archers on the shooting line, supporting ongoing talent development in East Java.'
+    ],
+    it: [
+      'Il Campionato Provinciale Giovanile di Tiro con l\'Arco di Giava Orientale 2023 a Surabaya ha riunito 629 giovani promesse provenienti da 16 delegazioni cittadine e provinciali. Disputatosi il 23 e 24 dicembre 2023, il torneo ha proposto ben 46 divisioni di gara, spaziando dalle categorie promozionali PVC U15 e Nazionali U9/U12/U15 fino alle classi Juniores Arco Olimpico e Compound U18/U21.'
+    ]
+  },
+  '16338': {
+    id: [
+      'Kejurprov 5 Panahan Provinsi Riau Tahun 2023 menjadi ajang unjuk kekuatan antar-pengurus cabang PERPANI kabupaten dan kota di Provinsi Riau. Digelar di Pekanbaru pada 21 - 24 Desember 2023, kejuaraan resmi ini menghadirkan 159 atlet dari 6 kontingen utama daerah yang bertarung di 30 divisi pertandingan, meliputi nomor Recurve, Compound, Nasional U12 hingga Dewasa, serta Barebow.',
+      'Turnamen ini memiliki peran strategis sebagai sarana evaluasi pembinaan atlet daerah sekaligus seleksi skuad unggulan Riau untuk menghadapi kejuaraan tingkat nasional.'
+    ],
+    en: [
+      'The 5th Riau Provincial Archery Championship 2023 was the official provincial tournament for PERPANI regency and city archery chapters across Riau Province. Staged in Pekanbaru from December 21 to 24, 2023, the championship assembled 159 archers across 6 primary contingents competing in 30 medal divisions - ranging from Recurve and Compound to National Bow U12/Senior and Barebow.',
+      'The tournament served as an important evaluation and qualification platform for selecting Riau\'s provincial athlete representatives for future national events.'
+    ],
+    it: [
+      'Il 5° Campionato Provinciale di Tiro con l\'Arco di Riau 2023 ha rappresentato la rassegna ufficiale per i comitati cittadini e distrettuali PERPANI della provincia di Riau. Tenutosi a Pekanbaru dal 21 al 24 dicembre 2023, l\'evento ha coinvolto 159 arcieri in 30 divisioni di gara tra Arco Olimpico, Compound, Standard Nazionale e Arco Nudo.'
+    ]
+  },
+  '23662': {
+    id: [
+      'Kejurkab Panahan Gunungkidul menjadi tolok ukur pembinaan panahan di wilayah D.I. Yogyakarta, mengumpulkan 150 atlet dari 5 kontingen klub lokal. Bertanding di 10 divisi kompetisi, turnamen ini fokus pada pematangan teknik atlet di nomor Standar Nasional U21, Barebow, Perpani Bow, Recurve, dan Compound menuju seleksi Pekan Olahraga Daerah (PORDA).'
+    ],
+    en: [
+      'The Gunungkidul Regency Archery Championship served as a regional benchmark in the Special Region of Yogyakarta, bringing together 150 archers across 5 local club delegations. Contested over 10 distinct divisions, the event emphasized technical development in National Bow U21, Barebow, Perpani Bow, Recurve, and Compound classes.'
+    ],
+    it: [
+      'Il Campionato di Tiro con l\'Arco della Reggenza di Gunungkidul ha costituito un banco di prova fondamentale nella Regione Speciale di Yogyakarta, radunando 150 arcieri di 5 club locali impegnati in 10 divisioni di gara in preparazione delle selezioni regionali.'
+    ]
+  },
+  '15863': {
+    id: [
+      'Jakarta Youth Archery Series di Cibubur, Jakarta Timur, menghadirkan kompetisi panahan berorientasi prestasi dan pembinaan pemula. Mempertandingkan 13 nomor Standard Bow mulai dari tingkat SD, SMP, hingga Umum, ajang ini menjadi wadah penting bagi pelajar ibu kota untuk merasakan atmosfer pertandingan formal.'
+    ],
+    en: [
+      'The Jakarta Youth Archery Series in Cibubur, East Jakarta, provided a competitive stage for grassroots and school-level archers across 13 Standard Bow divisions in elementary, junior high, and open categories.'
+    ],
+    it: [
+      'La serie giovanile Jakarta Youth Archery a Cibubur ha offerto una vetrina agonistica per i giovani arcieri studenti in 13 divisioni Arco Standard per le categorie scolastiche e open.'
+    ]
+  },
+  '13000': {
+    id: [
+      'Kejuaraan Panahan Indoor Ventspils merupakan kompetisi panahan dalam ruangan standar World Archery di Latvia. Mempertandingkan divisi Recurve, Longbow, Compound, dan Barebow pada jarak 18 meter, kejuaraan ini menguji presisi dan konsistensi para pemanah.'
+    ],
+    en: [
+      'The Ventspils Indoor Archery Open in Latvia delivered international-standard indoor competition across 18m target lanes in Recurve, Longbow, Compound, and Barebow disciplines.'
+    ],
+    it: [
+      'L\'Open Indoor di Tiro con l\'Arco di Ventspils in Lettonia ha offerto un\'eccellente competizione indoor su corsie a 18 metri per le categorie Arco Olimpico, Longbow, Compound e Arco Nudo.'
+    ]
   }
-  const set = new Set()
-  if (data?.qualifications && Array.isArray(data.qualifications)) {
-    data.qualifications.forEach(q => { if (q.category) set.add(q.category) })
+}
+
+const tournamentDescriptionParagraphs = computed(() => {
+  const extId = String(activeTournament.value?.external_id || activeTournament.value?.slug || '').replace(/^ianseo-/, '')
+  const lang = currentLang.value || 'en'
+  
+  if (bespokeTournamentDescriptions[extId] && bespokeTournamentDescriptions[extId][lang]) {
+    return bespokeTournamentDescriptions[extId][lang]
   }
-  if (data?.entries && Array.isArray(data.entries)) {
-    data.entries.forEach(e => { if (e.category) set.add(e.category) })
+  
+  // Dynamic Narrative Synthesizer
+  const name = toTitleCase(activeTournament.value?.name || activeTournament.value?.tournament_name || 'Tournament')
+  const loc = toTitleCase(activeTournament.value?.location || activeTournament.value?.city || activeTournament.value?.venue || 'Indonesia')
+  const numArchers = computedTotalArchers.value || 0
+  const numClubs = computedTotalClubs.value || 0
+  const numCats = categoriesList.value?.length || 0
+  const topMedal = medalTallyList.value?.[0]
+
+  if (lang === 'id') {
+    const p1 = `${name} merupakan ajang kompetisi panahan yang diselenggarakan di ${loc}. Turnamen ini mempertemukan ${numArchers > 0 ? numArchers + ' atlet panahan' : 'para atlet panahan pilihan'} yang mewakili ${numClubs > 0 ? numClubs + ' klub dan kontingen daerah' : 'berbagai kontingen'} untuk berkompetisi dalam ${numCats > 0 ? numCats + ' nomor pertandingan' : 'berbagai nomor divisi'}.`
+    const p2 = topMedal 
+      ? `Pada klasemen perolehan medali, kontingen ${toTitleCase(topMedal.club)} memimpin di puncak dengan raihan ${topMedal.gold || 0} Emas, ${topMedal.silver || 0} Perak, dan ${topMedal.bronze || 0} Perunggu. Kejuaraan ini menjadi wadah penting dalam mengevaluasi hasil latihan serta mengasah jam terbang para pemanah.`
+      : `Setiap nomor pertandingan menyajikan persaingan ketat mulai dari babak kualifikasi penentuan peringkat hingga partai final eliminasi satu lawan satu.`
+    return [p1, p2]
+  } else if (lang === 'it') {
+    const p1 = `${name} è una prestigiosa competizione di tiro con l\'arco svoltasi a ${loc}. Il torneo ha riunito ${numArchers > 0 ? numArchers + ' arcieri partecipanti' : 'atleti d\'élite'} in rappresentanza di ${numClubs > 0 ? numClubs + ' club e delegazioni sportive' : 'varie squadre'} su un totale di ${numCats > 0 ? numCats + ' categorie di gara' : 'diverse divisioni competitive'}.`
+    const p2 = topMedal
+      ? `Nel medagliere generale per club, la squadra ${toTitleCase(topMedal.club)} si è imposta in vetta alla classifica con un bottino di ${topMedal.gold || 0} Ori, ${topMedal.silver || 0} Argenti e ${topMedal.bronze || 0} Bronzi. Il torneo ha rappresentato un\'importante opportunità di crescita e confronto agonistico.`
+      : `Dalle sessioni di qualificazione fino alle sfide ad eliminazione diretta, il torneo ha offerto sfide di alto livello tecnico e grande spettacolo sul campo di gara.`
+    return [p1, p2]
+  } else {
+    // EN default
+    const p1 = `${name} is an archery championship staged in ${loc}. The tournament assembled ${numArchers > 0 ? numArchers + ' competing archers' : 'elite archers'} representing ${numClubs > 0 ? numClubs + ' participating clubs and delegations' : 'various clubs'} across ${numCats > 0 ? numCats + ' contested event divisions' : 'multiple competitive divisions'}.`
+    const p2 = topMedal
+      ? `In the overall medal standings, ${toTitleCase(topMedal.club)} emerged at the top of the leaderboard with a tally of ${topMedal.gold || 0} Gold, ${topMedal.silver || 0} Silver, and ${topMedal.bronze || 0} Bronze medals. The event offered valuable competitive exposure and marksmanship development for all participants.`
+      : `From precision qualification scoring to dramatic head-to-head elimination shootouts, the championship delivered high-level competition and valuable experience for all participating athletes.`
+    return [p1, p2]
   }
-  return Array.from(set)
 })
 
+// ─────────────────────────────────────────────────────────────
+// COMPUTED METRICS & SECTIONS
+// ─────────────────────────────────────────────────────────────
 const computedTotalArchers = computed(() => {
-  if (activeTournamentData.value?.total_archers) return activeTournamentData.value.total_archers
-  if (activeTournamentData.value?.entries?.length) return activeTournamentData.value.entries.length
-  if (activeTournamentData.value?.qualifications?.length) return activeTournamentData.value.qualifications.length
-  return activeTournament.value?.participant_count || 128
+  return activeTournament.value?.participants_count || normalizedEntriesList.value.length || normalizedQualsList.value.length || 0
 })
 
 const computedTotalClubs = computed(() => {
-  if (activeTournamentData.value?.total_clubs) return activeTournamentData.value.total_clubs
+  const clubs = new Set()
+  normalizedEntriesList.value.forEach(e => {
+    const c = e.club || e.country
+    if (c) clubs.add(c.trim().toLowerCase())
+  })
+  if (clubs.size > 0) return clubs.size
+
+  normalizedQualsList.value.forEach(q => {
+    const c = q.club || q.country
+    if (c) clubs.add(c.trim().toLowerCase())
+  })
+  if (clubs.size > 0) return clubs.size
+
+  const medals = activeTournamentData.value?.medals || []
+  if (Array.isArray(medals)) {
+    medals.forEach(m => {
+      if (m.club) clubs.add(m.club.trim().toLowerCase())
+    })
+  }
+  return clubs.size || 0
+})
+
+const categoriesList = computed(() => {
   const set = new Set()
-  if (activeTournamentData.value?.entries && Array.isArray(activeTournamentData.value.entries)) {
-    activeTournamentData.value.entries.forEach(e => { if (e.club) set.add(e.club) })
+  normalizedQualsList.value.forEach(q => { if (q.category) set.add(q.category) })
+  normalizedEntriesList.value.forEach(e => { if (e.category) set.add(e.category) })
+  normalizedBracketsList.value.forEach(b => { if (b.category) set.add(b.category) })
+  
+  const rawBrackets = activeTournamentData.value?.brackets
+  if (rawBrackets && typeof rawBrackets === 'object' && !Array.isArray(rawBrackets)) {
+    Object.keys(rawBrackets).forEach(k => set.add(k))
   }
-  if (activeTournamentData.value?.qualifications && Array.isArray(activeTournamentData.value.qualifications)) {
-    activeTournamentData.value.qualifications.forEach(q => { if (q.club) set.add(q.club) })
+  return Array.from(set).filter(Boolean)
+})
+
+const computedFopTargetCount = computed(() => {
+  const fopDays = activeTournamentData.value?.field_of_play || []
+  let maxTgt = 0
+  if (Array.isArray(fopDays)) {
+    fopDays.forEach(d => {
+      d.sessions?.forEach(s => {
+        if (s.target_max && s.target_max > maxTgt) maxTgt = s.target_max
+      })
+    })
   }
-  return set.size || 24
+  return maxTgt > 0 ? maxTgt : 32
 })
 
-const ianseoUrl = computed(() => {
-  const doc = activeTournamentData.value?.documents?.find(d => d.type === 'ianseo' || d.code === 'ianseo' || (d.url && d.url.includes('ianseo.net')))
-  if (doc?.url) return doc.url
-  const id = activeTournament.value?.slug || activeTournament.value?.id
-  if (id && String(id).match(/^\d+$/)) {
-    return `https://www.ianseo.net/Details.php?toId=${id}`
-  }
-  return null
-})
+// Navigation Sections
+const hasScheduleData = computed(() => (activeTournamentData.value?.schedule?.length || 0) > 0)
+const hasFopData = computed(() => (activeTournamentData.value?.field_of_play?.length || 0) > 0)
+const hasEntriesData = computed(() => normalizedEntriesList.value.length > 0)
+const hasQualificationsData = computed(() => normalizedQualsList.value.length > 0)
+const hasBracketsData = computed(() => normalizedBracketsList.value.length > 0 || Object.keys(activeTournamentData.value?.brackets || {}).length > 0)
+const hasMedalsData = computed(() => (activeTournamentData.value?.medals?.length || 0) > 0)
 
-const thbDocument = computed(() => {
-  const docs = activeTournamentData.value?.documents || []
-  return docs.find(d => d.type === 'thb' || d.code === 'THB' || (d.title && d.title.toLowerCase().includes('handbook')) || (d.title && d.title.toLowerCase().includes('thb')))
-})
-
-// Section existence flags
-const hasScheduleData = computed(() => {
-  const s = activeTournamentData.value?.schedule
-  return Array.isArray(s) && s.length > 0
-})
-
-const hasFopData = computed(() => {
-  const f = activeTournamentData.value?.fop || activeTournamentData.value?.field_of_play
-  return Array.isArray(f) && f.length > 0
-})
-
-const hasEntriesData = computed(() => {
-  const e = activeTournamentData.value?.entries
-  return Array.isArray(e) && e.length > 0
-})
-
-const hasQualificationsData = computed(() => {
-  const q = activeTournamentData.value?.qualifications
-  return Array.isArray(q) && q.length > 0
-})
-
-const hasBracketsData = computed(() => {
-  const b = activeTournamentData.value?.brackets || activeTournamentData.value?.eliminations
-  return (Array.isArray(b) && b.length > 0) || (typeof b === 'object' && b !== null && Object.keys(b).length > 0)
-})
-
-const hasMedalsData = computed(() => {
-  const m = activeTournamentData.value?.medals || activeTournamentData.value?.medal_standings
-  return (Array.isArray(m) && m.length > 0) || (typeof m === 'object' && m !== null)
-})
-
-// Dynamic TOC Navigation Sections (Clean Order & Translated)
 const navigationSections = computed(() => {
   const list = [
     { id: 'overview', title: t('overview_title'), icon: 'ph:info-bold' }
   ]
   if (hasScheduleData.value) list.push({ id: 'schedule', title: t('schedule_title'), icon: 'ph:calendar-check-bold' })
   if (hasFopData.value) list.push({ id: 'fop', title: t('fop_title'), icon: 'ph:target-bold' })
-  if (hasEntriesData.value) list.push({ id: 'athletes', title: t('athletes_title'), icon: 'ph:user-list-bold' })
+  if (hasEntriesData.value) list.push({ id: 'athletes', title: t('athletes_title'), icon: 'ph:users-four-bold' })
   if (hasQualificationsData.value) list.push({ id: 'qualifications', title: t('qualifications_title'), icon: 'ph:medal-bold' })
   if (hasBracketsData.value) list.push({ id: 'brackets', title: t('brackets_title'), icon: 'ph:sword-bold' })
   if (hasMedalsData.value) list.push({ id: 'medals', title: t('medals_title'), icon: 'ph:trophy-bold' })
   return list
 })
 
-// Schedule Computed
+// Schedule Handling
 const availableScheduleDays = computed(() => {
-  const s = activeTournamentData.value?.schedule || []
-  const set = new Set()
-  s.forEach(item => { if (item.day) set.add(item.day) })
-  return Array.from(set)
+  const days = new Set()
+  ;(activeTournamentData.value?.schedule || []).forEach(s => {
+    if (s.day) days.add(s.day)
+    if (s.date) days.add(s.date)
+  })
+  return Array.from(days)
 })
 
-const filteredScheduleTimeline = computed(() => {
-  const s = activeTournamentData.value?.schedule || []
-  if (selectedScheduleDay.value === 'all') return s
-  return s.filter(item => item.day === selectedScheduleDay.value)
+const filteredScheduleEvents = computed(() => {
+  const all = activeTournamentData.value?.schedule || []
+  if (selectedScheduleDay.value === 'all') return all
+  return all.filter(s => (s.day === selectedScheduleDay.value || s.date === selectedScheduleDay.value))
 })
 
-// FOP Computed
-const fopRoundsList = computed(() => {
-  return activeTournamentData.value?.fop || activeTournamentData.value?.field_of_play || []
+// FOP Handling
+const fopDaysList = computed(() => activeTournamentData.value?.field_of_play || [])
+const activeFopSessions = computed(() => {
+  const day = fopDaysList.value[selectedFopDayIndex.value]
+  return day?.sessions || []
 })
 
-// Entries Computed with Pagination & Search
+// Athletes Entries Handling
 const uniqueEntriesClubs = computed(() => {
-  const e = activeTournamentData.value?.entries || []
-  const set = new Set()
-  e.forEach(item => { if (item.club) set.add(item.club) })
-  return Array.from(set).sort()
+  const clubs = new Set()
+  normalizedEntriesList.value.forEach(e => {
+    const c = e.club || e.country
+    if (c) clubs.add(c.trim())
+  })
+  return Array.from(clubs).sort()
 })
 
-const filteredEntriesList = computed(() => {
-  let list = activeTournamentData.value?.entries || []
+const filteredEntries = computed(() => {
+  let list = [...normalizedEntriesList.value]
   if (entriesClubFilter.value !== 'all') {
-    list = list.filter(e => e.club === entriesClubFilter.value)
+    list = list.filter(e => (e.club || e.country) === entriesClubFilter.value)
   }
-  if (entriesSearchQuery.value) {
-    const q = entriesSearchQuery.value.toLowerCase()
-    list = list.filter(e => 
+  if (entriesSearchQuery.value.trim()) {
+    const q = entriesSearchQuery.value.toLowerCase().trim()
+    list = list.filter(e => (
       (e.name || e.athlete_name || '').toLowerCase().includes(q) ||
-      (e.club || '').toLowerCase().includes(q) ||
+      (e.club || e.country || '').toLowerCase().includes(q) ||
       (e.category || '').toLowerCase().includes(q)
-    )
+    ))
   }
-  return [...list].sort((a, b) => {
-    let valA = a[entriesSortKey.value] || ''
-    let valB = b[entriesSortKey.value] || ''
-    if (typeof valA === 'string') {
-      return entriesSortAsc.value ? valA.localeCompare(valB) : valB.localeCompare(valA)
-    }
-    return entriesSortAsc.value ? valA - valB : valB - valA
+  return list.sort((a, b) => {
+    const valA = (a[entriesSortKey.value] || '').toLowerCase()
+    const valB = (b[entriesSortKey.value] || '').toLowerCase()
+    return entriesSortAsc.value ? valA.localeCompare(valB) : valB.localeCompare(valA)
   })
 })
 
-const totalEntriesPages = computed(() => Math.ceil(filteredEntriesList.value.length / entriesPageSize.value) || 1)
-
+const totalEntriesPages = computed(() => Math.ceil(filteredEntries.value.length / entriesPageSize.value) || 1)
 const paginatedEntriesData = computed(() => {
   const start = (entriesCurrentPage.value - 1) * entriesPageSize.value
-  return filteredEntriesList.value.slice(start, start + entriesPageSize.value)
+  return filteredEntries.value.slice(start, start + entriesPageSize.value)
 })
-
-// Qualifications Computed
-const availableQualificationCategories = computed(() => {
-  const q = activeTournamentData.value?.qualifications || []
-  const set = new Set()
-  q.forEach(item => { if (item.category) set.add(item.category) })
-  return Array.from(set)
-})
-
-const currentCategoryLabel = computed(() => {
-  return selectedQualCategory.value || selectedCategory.value || categoriesList.value[0] || 'Recurve Men'
-})
-
-const filteredQualificationsList = computed(() => {
-  let list = activeTournamentData.value?.qualifications || []
-  if (selectedQualCategory.value) {
-    list = list.filter(q => q.category === selectedQualCategory.value)
-  }
-  if (resultsSearchQuery.value) {
-    const s = resultsSearchQuery.value.toLowerCase()
-    list = list.filter(q => 
-      (q.name || '').toLowerCase().includes(s) || 
-      (q.club || '').toLowerCase().includes(s)
-    )
-  }
-  return [...list].sort((a, b) => {
-    let valA = a[qualSortKey.value] ?? 0
-    let valB = b[qualSortKey.value] ?? 0
-    if (typeof valA === 'string') {
-      return qualSortAsc.value ? valA.localeCompare(valB) : valB.localeCompare(valA)
-    }
-    return qualSortAsc.value ? valA - valB : valB - valA
-  })
-})
-
-const totalQualPages = computed(() => Math.ceil(filteredQualificationsList.value.length / qualPageSize.value) || 1)
-
-const paginatedQualsData = computed(() => {
-  const start = (qualCurrentPage.value - 1) * qualPageSize.value
-  return filteredQualificationsList.value.slice(start, start + qualPageSize.value)
-})
-
-// Brackets Structured Tree
-const structuredBracketTree = computed(() => {
-  const b = activeTournamentData.value?.brackets || []
-  let list = Array.isArray(b) ? b : []
-  if (selectedCategory.value) {
-    list = list.filter(m => m.category === selectedCategory.value)
-  }
-  const roundsMap = {}
-  const finalsList = []
-
-  list.forEach(m => {
-    const rName = m.round_name || m.stage || 'Round'
-    if (rName.toLowerCase().includes('final') || rName.toLowerCase().includes('bronze') || rName.toLowerCase().includes('gold')) {
-      finalsList.push({
-        ...m,
-        is_bronze: rName.toLowerCase().includes('bronze')
-      })
-    } else {
-      if (!roundsMap[rName]) roundsMap[rName] = []
-      roundsMap[rName].push(m)
-    }
-  })
-
-  const roundsArray = Object.keys(roundsMap).map(k => ({
-    roundTitle: k,
-    matches: roundsMap[k]
-  }))
-
-  return {
-    rounds: roundsArray.length > 0 ? roundsArray : [
-      {
-        roundTitle: 'Semifinals',
-        matches: [
-          { seed_a: '1', name_a: 'Arif Dwi Pangestu', score_a: 6, seed_b: '4', name_b: 'Riau Ega Agatha', score_b: 4 },
-          { seed_a: '2', name_a: 'Bagás Prastyadi', score_a: 7, seed_b: '3', name_b: 'Ahmad Khoirul', score_b: 3 }
-        ]
-      }
-    ],
-    finals: finalsList.length > 0 ? finalsList : [
-      { is_bronze: true, seed_a: '4', name_a: 'Riau Ega Agatha', score_a: 6, seed_b: '3', name_b: 'Ahmad Khoirul', score_b: 2 },
-      { is_bronze: false, seed_a: '1', name_a: 'Arif Dwi Pangestu', score_a: 6, seed_b: '2', name_b: 'Bagas Prastyadi', score_b: 4 }
-    ]
-  }
-})
-
-// Medals & 3D Podium Computed
-const availablePodiumCategories = computed(() => {
-  const m = activeTournamentData.value?.medals || []
-  if (Array.isArray(m)) {
-    const set = new Set()
-    m.forEach(item => { if (item.category) set.add(item.category) })
-    return Array.from(set)
-  }
-  return categoriesList.value
-})
-
-const currentPodiumCategoryData = computed(() => {
-  const m = activeTournamentData.value?.medals || []
-  if (Array.isArray(m)) {
-    const target = selectedPodiumCategory.value || categoriesList.value[0] || ''
-    const item = m.find(i => i.category === target) || m[0]
-    if (item) {
-      return {
-        gold: { name: item.gold_archer || item.gold_name || 'Gold Winner', club: item.gold_club || 'Contingent', score: item.gold_score },
-        silver: { name: item.silver_archer || item.silver_name || 'Silver Winner', club: item.silver_club || 'Contingent', score: item.silver_score },
-        bronze: { name: item.bronze_archer || item.bronze_name || 'Bronze Winner', club: item.bronze_club || 'Contingent', score: item.bronze_score }
-      }
-    }
-  }
-  return {
-    gold: { name: 'Arif Dwi Pangestu', club: 'Fast Archery Club', score: '6 (29-28-30)' },
-    silver: { name: 'Bagas Prastyadi', club: 'Perpani Kab. Sleman', score: '4 (28-28-27)' },
-    bronze: { name: 'Riau Ega Agatha', club: 'Jawa Timur Archery', score: '6 (29-30-28)' }
-  }
-})
-
-const medalTallyList = computed(() => {
-  return activeTournamentData.value?.medal_standings || activeTournamentData.value?.medal_tally || []
-})
-
-const sortedMedalTally = computed(() => {
-  let list = medalTallyList.value
-  if (searchMedalClub.value) {
-    const s = searchMedalClub.value.toLowerCase()
-    list = list.filter(c => (c.club || '').toLowerCase().includes(s))
-  }
-  return [...list].sort((a, b) => {
-    let valA = a[medalSortKey.value] ?? 0
-    let valB = b[medalSortKey.value] ?? 0
-    if (typeof valA === 'string') {
-      return medalSortAsc.value ? valA.localeCompare(valB) : valB.localeCompare(valA)
-    }
-    return medalSortAsc.value ? valA - valB : valB - valA
-  })
-})
-
-const totalMedalPages = computed(() => Math.ceil(sortedMedalTally.value.length / medalPageSize.value) || 1)
-
-const paginatedMedalsData = computed(() => {
-  const start = (medalCurrentPage.value - 1) * medalPageSize.value
-  return sortedMedalTally.value.slice(start, start + medalPageSize.value)
-})
-
-// ─────────────────────────────────────────────────────────────
-// HELPER METHODS
-// ─────────────────────────────────────────────────────────────
-const toTitleCase = (str) => {
-  if (!str) return ''
-  return String(str).toLowerCase().replace(/\b\w/g, c => c.toUpperCase())
-}
-
-const formatDateRange = (start, end) => {
-  if (!start) return '-'
-  try {
-    const s = new Date(start).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
-    if (!end || end === start) return s
-    const e = new Date(end).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
-    return `${s} - ${e}`
-  } catch (err) {
-    return `${start} - ${end || ''}`
-  }
-}
-
-const formatCityDisplay = (city, loc) => {
-  if (city) return toTitleCase(city)
-  if (loc) {
-    const parts = loc.split(',')
-    return toTitleCase(parts[parts.length - 1].trim())
-  }
-  return 'Indonesia'
-}
-
-const getArcherInitials = (name) => {
-  if (!name) return ''
-  return name.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase()
-}
-
-const isMatchWinner = (scoreA, scoreB) => {
-  if (scoreA === undefined || scoreB === undefined || scoreA === null || scoreB === null) return false
-  return Number(scoreA) > Number(scoreB)
-}
-
-const getSortIcon = (colKey, activeKey, isAsc) => {
-  if (activeKey !== colKey) return 'ph:arrows-down-up'
-  return isAsc ? 'ph:sort-ascending-bold' : 'ph:sort-descending-bold'
-}
 
 const handleSortEntries = (key) => {
   if (entriesSortKey.value === key) {
@@ -1833,96 +1966,395 @@ const handleSortEntries = (key) => {
   }
 }
 
-const handleSortQual = (key) => {
-  if (qualSortKey.value === key) {
-    qualSortAsc.value = !qualSortAsc.value
-  } else {
-    qualSortKey.value = key
-    qualSortAsc.value = key === 'rank'
-  }
-}
+// Qualifications Handling
+const availableQualificationCategories = computed(() => {
+  const cats = new Set()
+  normalizedQualsList.value.forEach(q => { if (q.category) cats.add(q.category) })
+  return Array.from(cats)
+})
 
-const handleSortMedal = (key) => {
+const activeQualScores = computed(() => {
+  const cat = selectedQualCategory.value || availableQualificationCategories.value[0]
+  if (!cat) return []
+  return normalizedQualsList.value.filter(q => q.category === cat)
+})
+
+const filteredQualScores = computed(() => {
+  let list = [...activeQualScores.value]
+  if (resultsSearchQuery.value.trim()) {
+    const q = resultsSearchQuery.value.toLowerCase().trim()
+    list = list.filter(r => (
+      (r.name || r.athlete_name || '').toLowerCase().includes(q) ||
+      (r.club || r.country || '').toLowerCase().includes(q)
+    ))
+  }
+  return list
+})
+
+const totalQualPages = computed(() => Math.ceil(filteredQualScores.value.length / qualPageSize.value) || 1)
+const paginatedQualScores = computed(() => {
+  const start = (qualCurrentPage.value - 1) * qualPageSize.value
+  return filteredQualScores.value.slice(start, start + qualPageSize.value)
+})
+
+// ─────────────────────────────────────────────────────────────
+// ELIMINATION BRACKET DATA TRANSFORMATION FOR ARCHERIS COMPONENT
+// ─────────────────────────────────────────────────────────────
+const availableBracketCategories = computed(() => {
+  const rawBrackets = activeTournamentData.value?.brackets
+  if (rawBrackets && typeof rawBrackets === 'object' && !Array.isArray(rawBrackets)) {
+    return Object.keys(rawBrackets)
+  }
+  const cats = new Set()
+  normalizedBracketsList.value.forEach(b => { if (b.category) cats.add(b.category) })
+  return Array.from(cats)
+})
+
+const currentArcherisBracketConfig = computed(() => {
+  const cat = selectedBracketCategory.value || availableBracketCategories.value[0] || ''
+  const isCompound = cat.toLowerCase().includes('compound')
+  const rounds = currentArcherisBracketRounds.value
+  const round1Matches = rounds[1] || []
+  const bracketSize = Math.max(8, round1Matches.length * 2)
+  return {
+    format: isCompound ? 'compound_cumulative' : 'recurve_set',
+    bracket_size: bracketSize
+  }
+})
+
+const currentArcherisBracketRounds = computed(() => {
+  const cat = selectedBracketCategory.value || availableBracketCategories.value[0] || ''
+  if (!cat) return {}
+
+  const rawBrackets = activeTournamentData.value?.brackets
+  let catData = null
+  if (rawBrackets && typeof rawBrackets === 'object') {
+    catData = rawBrackets[cat]
+  }
+  if (!catData) {
+    catData = normalizedBracketsList.value.filter(b => b.category === cat)
+  }
+  if (!catData) return {}
+
+  let phasesList = []
+  if (Array.isArray(catData)) {
+    phasesList = catData
+  } else if (typeof catData === 'object') {
+    Object.keys(catData).forEach(pName => {
+      const val = catData[pName]
+      if (Array.isArray(val)) {
+        phasesList.push({ phase: pName, matches: val })
+      } else if (val && typeof val === 'object') {
+        phasesList.push({ phase: pName, matches: [val] })
+      }
+    })
+  }
+
+  const phaseOrder = (pName) => {
+    const p = String(pName).toLowerCase()
+    if (p.includes('1/32') || p.includes('32')) return 1
+    if (p.includes('1/16') || p.includes('16')) return 2
+    if (p.includes('1/8') || p.includes('8') || p.includes('eighth')) return 3
+    if (p.includes('1/4') || p.includes('4') || p.includes('quarter')) return 4
+    if (p.includes('semi') || p.includes('1/2') || p.includes('2')) return 5
+    if (p.includes('bronze')) return 6.1
+    if (p.includes('gold') || p.includes('final')) return 6.2
+    return 99
+  }
+
+  let semis = []
+  let goldMatch = null
+  let bronzeMatch = null
+  let earlierRounds = {}
+
+  phasesList.forEach(p => {
+    const pName = p.phase || ''
+    const pLower = pName.toLowerCase()
+    const matches = Array.isArray(p.matches) ? p.matches : []
+
+    matches.forEach((m, mIdx) => {
+      const score1 = m.score1 ?? m.score_a ?? ''
+      const score2 = m.score2 ?? m.score_b ?? ''
+      const archer1 = m.archer1 || m.name1 || m.archer_a || m.name_a || 'TBD'
+      const archer2 = m.archer2 || m.name2 || m.archer_b || m.name_b || 'TBD'
+      const seed1 = m.seed1 || m.seed_a || ''
+      const seed2 = m.seed2 || m.seed_b || ''
+
+      let winnerId = null
+      const s1Num = parseFloat(score1)
+      const s2Num = parseFloat(score2)
+      if (!isNaN(s1Num) && !isNaN(s2Num)) {
+        if (s1Num > s2Num) winnerId = 'a'
+        else if (s2Num > s1Num) winnerId = 'b'
+      }
+
+      const matchObj = {
+        id: `m_${pName}_${mIdx}`,
+        match_no: mIdx + 1,
+        entry_a_id: 'a',
+        entry_a_name: archer1,
+        entry_a_seed: seed1,
+        set_points_a: score1,
+        total_score_a: score1,
+        entry_b_id: 'b',
+        entry_b_name: archer2,
+        entry_b_seed: seed2,
+        set_points_b: score2,
+        total_score_b: score2,
+        winner_entry_id: winnerId,
+        is_bye: (archer1 === 'BYE' || archer2 === 'BYE')
+      }
+
+      if (pLower.includes('bronze')) {
+        bronzeMatch = matchObj
+      } else if (pLower.includes('gold') || (pLower.includes('final') && !pLower.includes('semi') && !pLower.includes('quarter'))) {
+        goldMatch = matchObj
+      } else if (pLower.includes('semi')) {
+        semis.push(matchObj)
+      } else {
+        if (!earlierRounds[pName]) earlierRounds[pName] = []
+        earlierRounds[pName].push(matchObj)
+      }
+    })
+  })
+
+  const rounds = {}
+  let rIdx = 1
+  const sortedEarlier = Object.keys(earlierRounds).sort((a, b) => phaseOrder(a) - phaseOrder(b))
+  sortedEarlier.forEach(pName => {
+    rounds[rIdx] = earlierRounds[pName]
+    rIdx++
+  })
+
+  // Ensure Semifinals Slot
+  if (semis.length > 0) {
+    rounds[rIdx] = semis
+    rIdx++
+  } else if (rIdx > 1 || goldMatch || bronzeMatch) {
+    rounds[rIdx] = []
+    rIdx++
+  }
+
+  // Finals Slot (Gold + Bronze)
+  const finalsList = []
+  if (goldMatch) finalsList.push(goldMatch)
+  if (bronzeMatch) finalsList.push(bronzeMatch)
+  if (finalsList.length > 0) {
+    rounds[rIdx] = finalsList
+  } else if (rIdx === 2) {
+    rounds[rIdx] = []
+  }
+
+  return rounds
+})
+
+const hasCurrentBracketRounds = computed(() => {
+  const r = currentArcherisBracketRounds.value
+  return r && Object.keys(r).length > 0 && Object.values(r).some(arr => arr.length > 0)
+})
+
+// Podium Standings
+const availablePodiumCategories = computed(() => {
+  const set = new Set()
+  ;(activeTournamentData.value?.podium || []).forEach(p => { if (p.category) set.add(p.category) })
+  if (set.size === 0) {
+    categoriesList.value.forEach(c => set.add(c))
+  }
+  return Array.from(set)
+})
+
+const currentPodiumCategoryData = computed(() => {
+  const cat = selectedPodiumCategory.value || availablePodiumCategories.value[0]
+  if (!cat) return {}
+  const found = (activeTournamentData.value?.podium || []).find(p => p.category === cat)
+  if (found) return found
+
+  const quals = normalizedQualsList.value.filter(q => q.category === cat)
+  return {
+    category: cat,
+    gold: quals[0] || null,
+    silver: quals[1] || null,
+    bronze: quals[2] || null
+  }
+})
+
+// Medal Leaderboard Table
+const medalTallyList = computed(() => activeTournamentData.value?.medals || [])
+
+const sortedMedalTally = computed(() => {
+  let list = medalTallyList.value.map((m, idx) => ({ ...m, rank: m.rank || idx + 1 }))
+  if (searchMedalClub.value.trim()) {
+    const q = searchMedalClub.value.toLowerCase().trim()
+    list = list.filter(m => (m.club || '').toLowerCase().includes(q))
+  }
+  return list.sort((a, b) => {
+    if (medalSortKey.value === 'club') {
+      const cA = (a.club || '').toLowerCase()
+      const cB = (b.club || '').toLowerCase()
+      return medalSortAsc.value ? cA.localeCompare(cB) : cB.localeCompare(cA)
+    }
+    const valA = Number(a[medalSortKey.value]) || 0
+    const valB = Number(b[medalSortKey.value]) || 0
+    return medalSortAsc.value ? valA - valB : valB - valA
+  })
+})
+
+const totalMedalPages = computed(() => Math.ceil(sortedMedalTally.value.length / medalsPageSize.value) || 1)
+const paginatedMedalsData = computed(() => {
+  const start = (medalsCurrentPage.value - 1) * medalsPageSize.value
+  return sortedMedalTally.value.slice(start, start + medalsPageSize.value)
+})
+
+const handleSortMedals = (key) => {
   if (medalSortKey.value === key) {
     medalSortAsc.value = !medalSortAsc.value
   } else {
     medalSortKey.value = key
-    medalSortAsc.value = key === 'club'
+    medalSortAsc.value = key === 'rank'
   }
 }
 
-const scrollToSection = (id) => {
-  activeSectionId.value = id
-  const el = document.getElementById(id)
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+// ─────────────────────────────────────────────────────────────
+// DOCUMENTATION & IANSEO LINKS
+// ─────────────────────────────────────────────────────────────
+const thbDocument = computed(() => {
+  const docs = activeTournamentData.value?.documents || []
+  return docs.find(d => d.type === 'thb' || (d.name || '').toLowerCase().includes('handbook')) || docs[0]
+})
+
+const ianseoUrl = computed(() => {
+  return activeTournament.value?.source_url || `https://ianseo.net/Details.php?toId=${activeTournament.value?.external_id || activeTournament.value?.id}`
+})
+
+// ─────────────────────────────────────────────────────────────
+// SHARE DIALOG MODAL & SOCIAL BROADCAST
+// ─────────────────────────────────────────────────────────────
+const currentShareUrl = computed(() => {
+  if (process.client) return window.location.href
+  return `https://archeris.net/tournaments/external/${activeTournament.value?.external_id || activeTournament.value?.slug || ''}`
+})
+
+const socialShareOptions = [
+  { id: 'whatsapp', name: 'WhatsApp', icon: 'ph:whatsapp-logo-fill', color: 'text-emerald-600', bg: 'bg-emerald-50' },
+  { id: 'telegram', name: 'Telegram', icon: 'ph:telegram-logo-fill', color: 'text-sky-600', bg: 'bg-sky-50' },
+  { id: 'twitter', name: 'X / Twitter', icon: 'ph:twitter-logo-fill', color: 'text-slate-900', bg: 'bg-slate-100' },
+  { id: 'facebook', name: 'Facebook', icon: 'ph:facebook-logo-fill', color: 'text-blue-600', bg: 'bg-blue-50' },
+  { id: 'linkedin', name: 'LinkedIn', icon: 'ph:linkedin-logo-fill', color: 'text-indigo-600', bg: 'bg-indigo-50' },
+  { id: 'email', name: 'Email', icon: 'ph:envelope-simple-fill', color: 'text-amber-600', bg: 'bg-amber-50' }
+]
+
+const copyShareUrl = () => {
+  if (process.client && navigator.clipboard) {
+    navigator.clipboard.writeText(currentShareUrl.value)
+    copiedShareLink.value = true
+    setTimeout(() => { copiedShareLink.value = false }, 2500)
   }
 }
 
-const handleScroll = () => {
-  if (typeof window === 'undefined') return
+const shareToSocialPlatform = (platform) => {
+  const url = encodeURIComponent(currentShareUrl.value)
+  const title = encodeURIComponent(activeTournament.value?.name || 'Tournament')
+  const text = encodeURIComponent(`Lihat turnamen ${activeTournament.value?.name || ''} di Archeris!`)
+  
+  let shareUrl = ''
+  switch (platform) {
+    case 'whatsapp':
+      shareUrl = `https://api.whatsapp.com/send?text=${text}%20${url}`
+      break
+    case 'telegram':
+      shareUrl = `https://t.me/share/url?url=${url}&text=${text}`
+      break
+    case 'twitter':
+      shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`
+      break
+    case 'facebook':
+      shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`
+      break
+    case 'linkedin':
+      shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`
+      break
+    case 'email':
+      shareUrl = `mailto:?subject=${title}&body=${text}%0A%0A${url}`
+      break
+  }
+  if (shareUrl && process.client) {
+    window.open(shareUrl, '_blank', 'noopener,noreferrer')
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// UTILITIES & HELPERS
+// ─────────────────────────────────────────────────────────────
+const toTitleCase = (str) => {
+  if (!str) return ''
+  return String(str).toLowerCase().replace(/(^|\s|[-/])\S/g, txt => txt.toUpperCase())
+}
+
+const formatDateRange = (start, end) => {
+  if (!start) return 'Upcoming Date'
+  const locale = currentLang.value === 'id' ? 'id-ID' : (currentLang.value === 'it' ? 'it-IT' : 'en-US')
+  if (!end || start === end) return new Date(start).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' })
+  return `${new Date(start).toLocaleDateString(locale, { day: 'numeric', month: 'short' })} - ${new Date(end).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' })}`
+}
+
+const formatCityDisplay = (city, location) => {
+  const c = city || ''
+  const l = location || ''
+  if (c && l && c.toLowerCase() !== l.toLowerCase()) return `${toTitleCase(c)}, ${toTitleCase(l)}`
+  return toTitleCase(c || l || 'Indonesia')
+}
+
+const getSortIcon = (key, currentKey, isAsc) => {
+  if (key !== currentKey) return 'ph:arrows-down-up'
+  return isAsc ? 'ph:sort-ascending-bold' : 'ph:sort-descending-bold'
+}
+
+const getArcherInitials = (name) => {
+  if (!name) return 'A'
+  const parts = name.trim().split(/\s+/)
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+  return (parts[0][0] + parts[1][0]).toUpperCase()
+}
+
+// ─────────────────────────────────────────────────────────────
+// SYNC CATEGORIES & SCROLL SPY
+// ─────────────────────────────────────────────────────────────
+watch(categoriesList, (newCats) => {
+  if (newCats.length > 0 && !selectedCategory.value) {
+    selectedCategory.value = newCats[0]
+    selectedQualCategory.value = newCats[0]
+    selectedBracketCategory.value = newCats[0]
+    selectedPodiumCategory.value = newCats[0]
+  }
+}, { immediate: true })
+
+const updateScrollSpy = () => {
+  if (!process.client) return
   const scrollTop = window.scrollY || document.documentElement.scrollTop
   const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight
   scrollProgress.value = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0
 
-  // Update active section
   const sections = navigationSections.value.map(s => document.getElementById(s.id)).filter(Boolean)
   for (let i = sections.length - 1; i >= 0; i--) {
-    const rect = sections[i].getBoundingClientRect()
-    if (rect.top <= 140) {
-      activeSectionId.value = sections[i].id
+    const el = sections[i]
+    if (el.offsetTop - 180 <= scrollTop) {
+      activeSectionId.value = el.id
       break
     }
   }
 }
 
-const openScorecard = (match, title) => {
-  selectedScorecardMatch.value = match
-  scorecardRoundTitle.value = title || 'Scorecard'
-}
-
-const closeScorecard = () => {
-  selectedScorecardMatch.value = null
-}
-
-const copyTournamentShareLink = async () => {
-  if (typeof window !== 'undefined' && navigator?.clipboard) {
-    try {
-      await navigator.clipboard.writeText(window.location.href)
-      copiedShareLink.value = true
-      setTimeout(() => {
-        copiedShareLink.value = false
-      }, 2500)
-    } catch (e) {}
-  }
-}
-
-// Watch initial categories
-watch(() => categoriesList.value, (newCats) => {
-  if (newCats && newCats.length > 0 && !selectedCategory.value) {
-    selectedCategory.value = newCats[0]
-  }
-}, { immediate: true })
-
-watch(() => availableQualificationCategories.value, (cats) => {
-  if (cats && cats.length > 0 && !selectedQualCategory.value) {
-    selectedQualCategory.value = cats[0]
-  }
-}, { immediate: true })
-
-watch(() => availablePodiumCategories.value, (cats) => {
-  if (cats && cats.length > 0 && !selectedPodiumCategory.value) {
-    selectedPodiumCategory.value = cats[0]
-  }
-}, { immediate: true })
-
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll, { passive: true })
-  handleScroll()
+  if (process.client) {
+    window.addEventListener('scroll', updateScrollSpy, { passive: true })
+    updateScrollSpy()
+  }
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
+  if (process.client) {
+    window.removeEventListener('scroll', updateScrollSpy)
+  }
 })
 </script>
 
