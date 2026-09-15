@@ -169,6 +169,42 @@ const toTitleCase = (str) => {
   return String(str).toLowerCase().replace(/(?:^|\s|\/|-)\S/g, char => char.toUpperCase())
 }
 
+useHead({
+  title: computed(() => {
+    const tourName = tournament.value?.name ? toTitleCase(tournament.value.name) : 'Tournament'
+    const catName = selectedCategory.value ? toTitleCase(selectedCategory.value) : 'Elimination'
+    return `${tourName} - ${catName} Bracket | Archeris`
+  }),
+  meta: [
+    {
+      name: 'description',
+      content: computed(() => {
+        const tourName = tournament.value?.name ? toTitleCase(tournament.value.name) : 'Tournament'
+        const catName = selectedCategory.value ? toTitleCase(selectedCategory.value) : 'Elimination'
+        return `Live elimination bracket, official scorecard, and head-to-head match results for ${catName} at ${tourName}.`
+      })
+    },
+    {
+      property: 'og:title',
+      content: computed(() => {
+        const tourName = tournament.value?.name ? toTitleCase(tournament.value.name) : 'Tournament'
+        const catName = selectedCategory.value ? toTitleCase(selectedCategory.value) : 'Elimination'
+        return `${tourName} - ${catName} Bracket | Archeris`
+      })
+    },
+    {
+      property: 'og:description',
+      content: computed(() => {
+        const tourName = tournament.value?.name ? toTitleCase(tournament.value.name) : 'Tournament'
+        const catName = selectedCategory.value ? toTitleCase(selectedCategory.value) : 'Elimination'
+        return `Live elimination bracket, official scorecard, and head-to-head match results for ${catName} at ${tourName}.`
+      })
+    },
+    { property: 'og:type', content: 'website' },
+    { name: 'twitter:card', content: 'summary_large_image' }
+  ]
+})
+
 const currentArcherisBracketConfig = computed(() => {
   const cat = selectedCategory.value || availableBracketCategories.value[0] || ''
   const isCompound = cat.toLowerCase().includes('compound')

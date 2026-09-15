@@ -102,7 +102,7 @@
                         </div>
 
                         <!-- Status Filter Dropdown -->
-                        <div class="relative shrink-0">
+                        <div class="relative shrink-0" v-click-outside="() => statusDropdownOpen = false">
                             <button
                                 @click="statusDropdownOpen = !statusDropdownOpen"
                                 class="px-3 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-navy flex items-center gap-1.5 transition-colors cursor-pointer"
@@ -140,16 +140,39 @@
                             </div>
                         </div>
 
-                        <!-- Sort By Selector -->
-                        <div class="shrink-0">
-                            <select
-                                v-model="sortBy"
-                                class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-navy focus:bg-white focus:border-navy focus:outline-hidden cursor-pointer"
+                        <!-- Sort By Selector (Custom Modern Dropdown) -->
+                        <div class="relative shrink-0" v-click-outside="() => sortDropdownOpen = false">
+                            <button
+                                type="button"
+                                @click="sortDropdownOpen = !sortDropdownOpen"
+                                class="px-3.5 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-navy flex items-center gap-2 transition-colors cursor-pointer select-none"
                             >
-                                <option v-for="opt in sortSelectOptions" :key="opt.value" :value="opt.value">
-                                    {{ opt.title }}
-                                </option>
-                            </select>
+                                <Icon icon="ph:sort-ascending-bold" class="text-slate-500 text-sm" />
+                                <span>{{ currentSortLabel }}</span>
+                                <Icon :icon="sortDropdownOpen ? 'ph:caret-up-bold' : 'ph:caret-down-bold'" class="text-[10px] text-slate-400" />
+                            </button>
+
+                            <div
+                                v-if="sortDropdownOpen"
+                                class="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-slate-200 p-1.5 z-40 space-y-0.5 animate-in fade-in zoom-in-95 duration-100"
+                            >
+                                <button
+                                    v-for="opt in sortSelectOptions"
+                                    :key="opt.value"
+                                    type="button"
+                                    @click="sortBy = opt.value; sortDropdownOpen = false"
+                                    :class="[
+                                        'w-full px-3 py-2 rounded-xl text-xs text-left font-medium transition-all flex items-center justify-between cursor-pointer select-none',
+                                        sortBy === opt.value ? 'bg-primary/20 text-navy font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                    ]"
+                                >
+                                    <div class="flex items-center gap-2 truncate">
+                                        <Icon :icon="opt.icon" class="text-slate-400 text-sm shrink-0" />
+                                        <span class="truncate">{{ opt.title }}</span>
+                                    </div>
+                                    <Icon v-if="sortBy === opt.value" icon="ph:check-bold" class="text-navy text-xs shrink-0" />
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -157,7 +180,7 @@
 
                 <!-- Bottom Row: Interactive Country Filter Chips Bar -->
                 <div v-if="countryOptions.length > 1" class="pt-2 border-t border-slate-100 flex items-center gap-2 overflow-x-auto no-scrollbar">
-                    <div class="flex items-center gap-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1">
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-slate-500 tracking-wider shrink-0 mr-1">
                         <Icon icon="ph:globe-hemisphere-west" class="text-sm text-slate-500" />
                         <span>Country:</span>
                     </div>
@@ -168,14 +191,14 @@
                             :key="c.value"
                             @click="selectedCountry = c.value"
                             :class="[
-                                'px-3 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap flex items-center gap-1.5 border cursor-pointer select-none',
+                                'px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all whitespace-nowrap flex items-center gap-1.5 border cursor-pointer select-none',
                                 selectedCountry === c.value
                                     ? 'bg-navy text-white border-navy shadow-xs font-bold ring-2 ring-navy/10'
                                     : 'bg-white text-slate-700 hover:bg-slate-50 border-slate-200/90 hover:border-slate-300'
                             ]"
                         >
-                            <span class="text-sm leading-none">{{ c.flag }}</span>
-                            <span>{{ c.label }}</span>
+                            <Icon :icon="c.flagIcon" class="text-sm shrink-0" />
+                            <span>{{ toTitleCase(c.label) }}</span>
                             <span
                                 class="px-1.5 py-0.5 rounded-full text-[10px] font-mono leading-none"
                                 :class="selectedCountry === c.value ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'"
@@ -274,9 +297,9 @@
                                         <Icon icon="ph:map-pin" class="text-slate-400 text-sm shrink-0 mt-0.5" />
                                         <span class="truncate">{{ toTitleCase(t.location) }}</span>
                                     </div>
-                                    <span v-if="t.country" class="shrink-0 inline-flex items-center gap-1 text-[11px] font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
-                                        <span>{{ getCountryFlag(t.country) }}</span>
-                                        <span>{{ t.country }}</span>
+                                    <span v-if="t.country" class="shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-xl">
+                                        <Icon :icon="getCountryFlagIcon(t.country)" class="text-sm shrink-0" />
+                                        <span>{{ toTitleCase(t.country) }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -311,9 +334,9 @@
                                     </span>
 
                                     <div class="flex items-center gap-2">
-                                        <span v-if="t.country" class="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-lg">
-                                            <span>{{ getCountryFlag(t.country) }}</span>
-                                            <span>{{ t.country }}</span>
+                                        <span v-if="t.country" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-xl">
+                                            <Icon :icon="getCountryFlagIcon(t.country)" class="text-sm shrink-0" />
+                                            <span>{{ toTitleCase(t.country) }}</span>
                                         </span>
                                         <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-medium">
                                             {{ getStatusLabel(t.status) }}
@@ -446,6 +469,69 @@ const selectedCountry = ref('all')
 const selectedStatuses = ref([])
 const sortBy = ref('newest')
 const statusDropdownOpen = ref(false)
+const sortDropdownOpen = ref(false)
+
+const toTitleCase = (str) => {
+    if (!str) return ''
+    return String(str).toLowerCase().replace(/(?:^|\s|\/|-)\S/g, char => char.toUpperCase())
+}
+
+const COUNTRY_FLAG_ICONS = {
+    'all': 'ph:globe-hemisphere-west',
+    'indonesia': 'circle-flags:id',
+    'ina': 'circle-flags:id',
+    'malaysia': 'circle-flags:my',
+    'mas': 'circle-flags:my',
+    'singapore': 'circle-flags:sg',
+    'sgp': 'circle-flags:sg',
+    'thailand': 'circle-flags:th',
+    'tha': 'circle-flags:th',
+    'philippines': 'circle-flags:ph',
+    'phi': 'circle-flags:ph',
+    'vietnam': 'circle-flags:vn',
+    'vnm': 'circle-flags:vn',
+    'france': 'circle-flags:fr',
+    'fra': 'circle-flags:fr',
+    'italy': 'circle-flags:it',
+    'ita': 'circle-flags:it',
+    'turkey': 'circle-flags:tr',
+    'tur': 'circle-flags:tr',
+    'united states': 'circle-flags:us',
+    'usa': 'circle-flags:us',
+    'spain': 'circle-flags:es',
+    'esp': 'circle-flags:es',
+    'poland': 'circle-flags:pl',
+    'pol': 'circle-flags:pl',
+    'latvia': 'circle-flags:lv',
+    'lat': 'circle-flags:lv',
+    'ecuador': 'circle-flags:ec',
+    'ecu': 'circle-flags:ec',
+    'mexico': 'circle-flags:mx',
+    'mex': 'circle-flags:mx',
+    'korea': 'circle-flags:kr',
+    'south korea': 'circle-flags:kr',
+    'kor': 'circle-flags:kr',
+    'japan': 'circle-flags:jp',
+    'jpn': 'circle-flags:jp',
+    'germany': 'circle-flags:de',
+    'ger': 'circle-flags:de',
+    'great britain': 'circle-flags:gb',
+    'united kingdom': 'circle-flags:gb',
+    'gbr': 'circle-flags:gb',
+    'uk': 'circle-flags:gb',
+    'australia': 'circle-flags:au',
+    'aus': 'circle-flags:au',
+    'china': 'circle-flags:cn',
+    'chn': 'circle-flags:cn',
+    'india': 'circle-flags:in',
+    'ind': 'circle-flags:in'
+}
+
+function getCountryFlagIcon(countryName) {
+    if (!countryName) return 'circle-flags:id'
+    const key = String(countryName).toLowerCase().trim()
+    return COUNTRY_FLAG_ICONS[key] || 'circle-flags:id'
+}
 
 // Pagination state
 const currentPage = ref(1)
@@ -626,14 +712,14 @@ const countryOptions = computed(() => {
     })
 
     const options = [
-        { label: 'All Countries', value: 'all', flag: '🌐', count: baseList.length }
+        { label: 'All Countries', value: 'all', flagIcon: 'ph:globe-hemisphere-west', count: baseList.length }
     ]
 
     Object.keys(counts).sort().forEach(country => {
         options.push({
-            label: country,
+            label: toTitleCase(country),
             value: country,
-            flag: getCountryFlag(country),
+            flagIcon: getCountryFlagIcon(country),
             count: counts[country]
         })
     })
@@ -642,10 +728,17 @@ const countryOptions = computed(() => {
 })
 
 const sortSelectOptions = computed(() => [
-    { title: 'Newest', value: 'newest' },
-    { title: 'Oldest', value: 'oldest' },
-    { title: 'Tournament Name (A-Z)', value: 'name' },
+    { title: 'Newest Date', value: 'newest', icon: 'ph:calendar-blank' },
+    { title: 'Oldest Date', value: 'oldest', icon: 'ph:clock-clockwise' },
+    { title: 'Tournament Name (A - Z)', value: 'name_asc', icon: 'ph:sort-ascending' },
+    { title: 'Tournament Name (Z - A)', value: 'name_desc', icon: 'ph:sort-descending' },
+    { title: 'Most Participants', value: 'participants', icon: 'ph:users' }
 ])
+
+const currentSortLabel = computed(() => {
+    const match = sortSelectOptions.value.find(o => o.value === sortBy.value)
+    return match ? match.title : 'Sort By'
+})
 
 const hasActiveFilters = computed(() =>
     selectedStatuses.value.length > 0 ||
@@ -674,11 +767,15 @@ const filteredTournaments = computed(() => {
         list = list.filter(t => selectedStatuses.value.includes(t.status))
     }
     if (sortBy.value === 'newest') {
-        list = [...list].sort((a, b) => new Date(b.startDate || 0) - new Date(a.startDate || 0))
+        list = [...list].sort((a, b) => new Date(b.startDate || 0).getTime() - new Date(a.startDate || 0).getTime())
     } else if (sortBy.value === 'oldest') {
-        list = [...list].sort((a, b) => new Date(a.startDate || 0) - new Date(b.startDate || 0))
-    } else if (sortBy.value === 'name') {
-        list = [...list].sort((a, b) => a.name.localeCompare(b.name))
+        list = [...list].sort((a, b) => new Date(a.startDate || 0).getTime() - new Date(b.startDate || 0).getTime())
+    } else if (sortBy.value === 'name_asc' || sortBy.value === 'name') {
+        list = [...list].sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+    } else if (sortBy.value === 'name_desc') {
+        list = [...list].sort((a, b) => (b.name || '').localeCompare(a.name || ''))
+    } else if (sortBy.value === 'participants') {
+        list = [...list].sort((a, b) => (b.participantsCount || 0) - (a.participantsCount || 0))
     }
     return list
 })
@@ -748,12 +845,7 @@ const resetFilters = () => {
     currentPage.value = 1
 }
 
-function toTitleCase(str) {
-    if (!str) return ''
-    return String(str)
-        .toLowerCase()
-        .replace(/\b([a-z])/g, (_, letter) => letter.toUpperCase())
-}
+
 
 const structuredData = computed(() => ({
     '@context': 'https://schema.org',
