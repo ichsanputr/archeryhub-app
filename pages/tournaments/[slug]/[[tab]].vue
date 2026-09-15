@@ -756,12 +756,18 @@
 </template>
 
 <script setup>
+definePageMeta({
+    layout: 'landing',
+    headerTransparent: true,
+    headerSticky: false,
+    wideContainer: true
+})
 
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, onUnmounted, watch, nextTick, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
-import { definePageMeta, useSeoMeta, useHead, useRequestURL, createError, useRuntimeConfig, useAsyncData, navigateTo } from '#imports'
+import { useSeoMeta, useHead, useRequestURL, createError, useRuntimeConfig, useAsyncData, navigateTo } from '#imports'
 import { useDateFormat } from '@vueuse/core'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import { useI18n } from 'vue-i18n'

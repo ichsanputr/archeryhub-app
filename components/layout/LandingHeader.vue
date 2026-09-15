@@ -1,6 +1,6 @@
 <template>
-    <nav class="fixed top-0 z-50 w-full transition-all duration-500" :class="navClasses">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav class="z-50 w-full transition-all duration-500" :class="[isSticky ? 'fixed top-0' : 'absolute top-0', navClasses]">
+        <div :class="isWide ? 'max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'">
             <div class="flex items-center justify-between h-14 md:h-16">
                 <!-- Logo -->
                 <div class="flex items-center gap-2.5 md:gap-3">
@@ -394,6 +394,8 @@ const route = useRoute()
 const { isLoggedIn, user, userPersona, logout } = useAuth()
 
 const isBlogRoute = computed(() => route.path.startsWith('/blog'))
+const isSticky = computed(() => route.meta.headerSticky !== false)
+const isWide = computed(() => route.meta.wideContainer === true)
 
 const mobileMenuOpen = ref(false)
 const mobileSubmenuOpen = ref(false)
@@ -423,7 +425,10 @@ onUnmounted(() => {
 })
 
 // Dynamic classes based on transparent mode and scroll state
-const showSolid = computed(() => !props.transparent || isScrolled.value)
+const showSolid = computed(() => {
+    if (!isSticky.value) return false
+    return !props.transparent || isScrolled.value
+})
 
 const navClasses = computed(() => {
     if (showSolid.value) {

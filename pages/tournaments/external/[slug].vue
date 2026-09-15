@@ -43,7 +43,9 @@ import TournamentExternalDetailView from '~/components/tournament/TournamentExte
 
 definePageMeta({
   layout: 'landing',
-  headerTransparent: true
+  headerTransparent: true,
+  headerSticky: false,
+  wideContainer: true
 })
 
 const route = useRoute()

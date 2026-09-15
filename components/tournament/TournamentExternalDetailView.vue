@@ -75,11 +75,11 @@
     <!-- ========================================================================= -->
     <main class="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8">
       <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs">
-        <div class="grid grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-100 items-start">
+        <div class="grid grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-100">
           
-          <!-- ── COLUMN 1: LEFT TOC (STICKY TOP-24, NO OVERFLOW CLIPPING) ── -->
-          <aside class="col-span-12 lg:col-span-2 p-5 sm:p-6 sticky top-24 self-start bg-slate-50/30 lg:bg-transparent rounded-t-3xl lg:rounded-tr-none lg:rounded-l-3xl">
-            <div class="space-y-3">
+          <!-- ── COLUMN 1: LEFT TOC (STICKY TOP-6) ── -->
+          <aside class="col-span-12 lg:col-span-2 p-5 sm:p-6 bg-slate-50/30 lg:bg-transparent rounded-t-3xl lg:rounded-tr-none lg:rounded-l-3xl">
+            <div class="sticky top-6 space-y-3">
               <div class="text-[11px] font-black uppercase tracking-wider text-slate-400 font-display pl-2.5">
                 Contents
               </div>
@@ -93,7 +93,7 @@
                   :class="[
                     'px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all block truncate select-none cursor-pointer',
                     activeSectionId === 'top'
-                      ? 'text-navy font-bold bg-slate-100/90'
+                      ? 'text-navy font-bold bg-primary/15 border-l-3 border-primary'
                       : 'text-slate-600 hover:text-navy hover:bg-slate-50'
                   ]"
                 >
@@ -109,7 +109,7 @@
                   :class="[
                     'px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all block truncate select-none cursor-pointer flex items-center gap-2',
                     activeSectionId === sec.id
-                      ? 'text-navy font-bold bg-slate-100/90 border-l-3 border-navy'
+                      ? 'text-navy font-bold bg-primary/15 border-l-3 border-primary'
                       : 'text-slate-600 hover:text-navy hover:bg-slate-50'
                   ]"
                 >
@@ -125,7 +125,7 @@
             <!-- 1. TOURNAMENT OVERVIEW -->
             <section id="overview" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
                   <Icon icon="ph:info-bold" class="text-xl text-navy" />
                 </div>
                 <div>
@@ -139,8 +139,10 @@
               <!-- Quick Metrics 4 Cards Grid -->
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
-                  <div class="flex items-center gap-1.5 text-slate-500 text-xs font-semibold">
-                    <Icon icon="ph:users-three" class="text-sm text-navy" />
+                  <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
+                    <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0">
+                      <Icon icon="ph:users-three" class="text-xs text-navy" />
+                    </div>
                     <span>Total Archers</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold text-navy font-display mt-1.5">
@@ -150,8 +152,10 @@
                 </div>
 
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
-                  <div class="flex items-center gap-1.5 text-slate-500 text-xs font-semibold">
-                    <Icon icon="ph:target" class="text-sm text-navy" />
+                  <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
+                    <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0">
+                      <Icon icon="ph:target" class="text-xs text-navy" />
+                    </div>
                     <span>Categories</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold text-navy font-display mt-1.5">
@@ -161,8 +165,10 @@
                 </div>
 
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
-                  <div class="flex items-center gap-1.5 text-slate-500 text-xs font-semibold">
-                    <Icon icon="ph:calendar-check" class="text-sm text-navy" />
+                  <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
+                    <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0">
+                      <Icon icon="ph:calendar-check" class="text-xs text-navy" />
+                    </div>
                     <span>Duration</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold text-navy font-display mt-1.5">
@@ -172,8 +178,10 @@
                 </div>
 
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
-                  <div class="flex items-center gap-1.5 text-slate-500 text-xs font-semibold">
-                    <Icon icon="ph:shield-check-bold" class="text-sm text-navy" />
+                  <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
+                    <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0">
+                      <Icon icon="ph:shield-check-bold" class="text-xs text-navy" />
+                    </div>
                     <span>Format</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold text-navy font-display mt-1.5">
@@ -216,7 +224,7 @@
             <!-- 2. MEDAL STANDINGS & PODIUM -->
             <section id="medals" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
                   <Icon icon="ph:trophy-bold" class="text-xl text-navy" />
                 </div>
                 <div>
@@ -412,7 +420,7 @@
             <!-- 3. COMPETITION SCHEDULE (SEPARATED) -->
             <section id="schedule" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
                   <Icon icon="ph:calendar-blank-bold" class="text-xl text-navy" />
                 </div>
                 <div>
@@ -492,7 +500,7 @@
             <!-- 4. FIELD OF PLAY (FOP) (SEPARATED) -->
             <section id="fop" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
                   <Icon icon="ph:crosshair-bold" class="text-xl text-navy" />
                 </div>
                 <div>
@@ -543,7 +551,7 @@
             <!-- 5. QUALIFICATION SCORES & STANDINGS -->
             <section id="results" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
                   <Icon icon="ph:ranking-bold" class="text-xl text-navy" />
                 </div>
                 <div>
@@ -702,7 +710,7 @@
             <!-- 6. ELIMINATION BRACKETS -->
             <section id="brackets" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
                   <Icon icon="ph:sword-bold" class="text-xl text-navy" />
                 </div>
                 <div>
@@ -814,7 +822,7 @@
             <!-- 7. ATHLETES (SIMPLIFIED WORDING) -->
             <section id="athletes" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
-                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                <div class="size-10 rounded-xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center font-bold shrink-0">
                   <Icon icon="ph:users-three-bold" class="text-xl text-navy" />
                 </div>
                 <div>
@@ -933,71 +941,73 @@
 
           </div>
 
-          <!-- ── COLUMN 3: RIGHT INFOBOX (STICKY TOP-24, NO OVERFLOW CLIPPING) ── -->
-          <aside class="col-span-12 lg:col-span-3 p-5 sm:p-6 bg-slate-50/30 lg:bg-transparent sticky top-24 self-start space-y-4 rounded-b-3xl lg:rounded-bl-none lg:rounded-r-3xl">
-            <!-- Infobox Title & Subtitle -->
-            <div class="border-b border-slate-100 pb-3 text-center space-y-1">
-              <h3 class="text-sm sm:text-base font-bold text-navy font-display leading-snug">
-                {{ toTitleCase(activeTournament?.name) }}
-              </h3>
-              <div class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
-                <Icon icon="circle-flags:id" class="text-sm" />
-                <span>{{ formatCityDisplay(activeTournament?.city, activeTournament?.location) }}</span>
-              </div>
-            </div>
-
-            <!-- Wikipedia Style Metadata Table -->
-            <div class="divide-y divide-slate-100 text-xs sm:text-sm">
-              <div class="py-2 flex items-start justify-between gap-3">
-                <span class="text-slate-500 font-medium">Dates:</span>
-                <span class="text-navy font-bold text-right">{{ formatDateRange(activeTournament?.start_date, activeTournament?.end_date) }}</span>
-              </div>
-              <div class="py-2 flex items-start justify-between gap-3">
-                <span class="text-slate-500 font-medium">Venue:</span>
-                <span class="text-navy font-bold text-right">{{ toTitleCase(activeTournament?.location || activeTournament?.venue || 'Indonesia') }}</span>
-              </div>
-              <div class="py-2 flex items-start justify-between gap-3">
-                <span class="text-slate-500 font-medium">Host:</span>
-                <span class="text-navy font-bold text-right">{{ toTitleCase(activeTournamentData?.organizer_name || 'Host Committee') }}</span>
-              </div>
-              <div class="py-2 flex items-start justify-between gap-3">
-                <span class="text-slate-500 font-medium">Country:</span>
-                <span class="text-navy font-bold flex items-center gap-1.5 text-right">
+          <!-- ── COLUMN 3: RIGHT INFOBOX (STICKY TOP-6) ── -->
+          <aside class="col-span-12 lg:col-span-3 p-5 sm:p-6 bg-slate-50/30 lg:bg-transparent rounded-b-3xl lg:rounded-bl-none lg:rounded-r-3xl">
+            <div class="sticky top-6 space-y-4">
+              <!-- Infobox Title & Subtitle -->
+              <div class="border-b border-slate-100 pb-3 text-center space-y-1">
+                <h3 class="text-sm sm:text-base font-bold text-navy font-display leading-snug">
+                  {{ toTitleCase(activeTournament?.name) }}
+                </h3>
+                <div class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
                   <Icon icon="circle-flags:id" class="text-sm" />
-                  <span>Indonesia</span>
-                </span>
+                  <span>{{ formatCityDisplay(activeTournament?.city, activeTournament?.location) }}</span>
+                </div>
               </div>
-              <div class="py-2 flex items-start justify-between gap-3">
-                <span class="text-slate-500 font-medium">Archers:</span>
-                <span class="text-navy font-bold text-right font-mono">{{ computedTotalArchers }}</span>
-              </div>
-              <div class="py-2 flex items-start justify-between gap-3">
-                <span class="text-slate-500 font-medium">Categories:</span>
-                <span class="text-navy font-bold text-right font-mono">{{ categoriesList.length }}</span>
-              </div>
-            </div>
 
-            <!-- Handbook & External Link Actions -->
-            <div class="pt-1.5 space-y-2">
-              <a 
-                :href="thbDocument?.url || ianseoUrl" 
-                target="_blank"
-                rel="nofollow noopener noreferrer"
-                class="w-full py-2.5 px-3.5 rounded-xl bg-primary hover:bg-primary-hover text-navy font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all shadow-sm cursor-pointer"
-              >
-                <Icon icon="ph:file-pdf-bold" class="text-base" />
-                <span>Download Handbook</span>
-              </a>
+              <!-- Wikipedia Style Metadata Table -->
+              <div class="divide-y divide-slate-100 text-xs sm:text-sm">
+                <div class="py-2 flex items-start justify-between gap-3">
+                  <span class="text-slate-500 font-medium">Dates:</span>
+                  <span class="text-navy font-bold text-right">{{ formatDateRange(activeTournament?.start_date, activeTournament?.end_date) }}</span>
+                </div>
+                <div class="py-2 flex items-start justify-between gap-3">
+                  <span class="text-slate-500 font-medium">Venue:</span>
+                  <span class="text-navy font-bold text-right">{{ toTitleCase(activeTournament?.location || activeTournament?.venue || 'Indonesia') }}</span>
+                </div>
+                <div class="py-2 flex items-start justify-between gap-3">
+                  <span class="text-slate-500 font-medium">Host:</span>
+                  <span class="text-navy font-bold text-right">{{ toTitleCase(activeTournamentData?.organizer_name || 'Host Committee') }}</span>
+                </div>
+                <div class="py-2 flex items-start justify-between gap-3">
+                  <span class="text-slate-500 font-medium">Country:</span>
+                  <span class="text-navy font-bold flex items-center gap-1.5 text-right">
+                    <Icon icon="circle-flags:id" class="text-sm" />
+                    <span>Indonesia</span>
+                  </span>
+                </div>
+                <div class="py-2 flex items-start justify-between gap-3">
+                  <span class="text-slate-500 font-medium">Archers:</span>
+                  <span class="text-navy font-bold text-right font-mono">{{ computedTotalArchers }}</span>
+                </div>
+                <div class="py-2 flex items-start justify-between gap-3">
+                  <span class="text-slate-500 font-medium">Categories:</span>
+                  <span class="text-navy font-bold text-right font-mono">{{ categoriesList.length }}</span>
+                </div>
+              </div>
 
-              <a 
-                :href="ianseoUrl" 
-                target="_blank" 
-                rel="nofollow noopener noreferrer"
-                class="w-full py-2.5 px-3.5 rounded-xl border border-slate-200/90 hover:bg-slate-50 text-navy font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-              >
-                <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
-                <span>View on Ianseo</span>
-              </a>
+              <!-- Handbook & External Link Actions -->
+              <div class="pt-1.5 space-y-2">
+                <a 
+                  :href="thbDocument?.url || ianseoUrl" 
+                  target="_blank"
+                  rel="nofollow noopener noreferrer"
+                  class="w-full py-2.5 px-3.5 rounded-xl bg-primary hover:bg-primary-hover text-navy font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all shadow-sm cursor-pointer"
+                >
+                  <Icon icon="ph:file-pdf-bold" class="text-base" />
+                  <span>Download Handbook</span>
+                </a>
+
+                <a 
+                  :href="ianseoUrl" 
+                  target="_blank" 
+                  rel="nofollow noopener noreferrer"
+                  class="w-full py-2.5 px-3.5 rounded-xl border border-slate-200/90 hover:bg-slate-50 text-navy font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                >
+                  <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
+                  <span>View on Ianseo</span>
+                </a>
+              </div>
             </div>
           </aside>
 

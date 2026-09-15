@@ -1,5 +1,10 @@
 <script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
+
+const route = useRoute()
+const isWide = computed(() => route.meta.wideContainer === true)
 </script>
 <template>
   <footer class="bg-navy relative overflow-hidden text-gray-200 border-t border-white/5">
@@ -8,7 +13,7 @@ import { Icon } from '@iconify/vue'
     <div class="absolute bottom-0 left-0 -ml-24 -mb-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-30 z-0">
     </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div :class="isWide ? 'max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'" class="relative z-10">
       <!-- Main Footer Content -->
       <div class="flex flex-col lg:flex-row justify-between gap-12 py-12 sm:py-16">
         <!-- Column 1: Brand & About -->
