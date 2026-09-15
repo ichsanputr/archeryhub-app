@@ -44,7 +44,7 @@ import TournamentExternalDetailView from '~/components/tournament/TournamentExte
 definePageMeta({
   layout: 'landing',
   headerTransparent: true,
-  headerSticky: false,
+  headerSticky: true,
   wideContainer: true
 })
 

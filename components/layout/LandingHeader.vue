@@ -425,10 +425,7 @@ onUnmounted(() => {
 })
 
 // Dynamic classes based on transparent mode and scroll state
-const showSolid = computed(() => {
-    if (!isSticky.value) return false
-    return !props.transparent || isScrolled.value
-})
+const showSolid = computed(() => !props.transparent || isScrolled.value)
 
 const navClasses = computed(() => {
     if (showSolid.value) {
