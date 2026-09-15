@@ -567,22 +567,6 @@
 
                 </div>
 
-                <!-- Modal Footer -->
-                <div class="p-4 sm:p-5 border-t border-slate-100 bg-slate-50/60 flex items-center justify-between">
-                  <div class="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-                    <Icon icon="ph:check-circle-bold" class="text-emerald-500 text-sm" />
-                    <span>Verified Official Result</span>
-                  </div>
-
-                  <button
-                    type="button"
-                    @click="selectedMatch = null"
-                    class="px-5 py-2.5 bg-navy hover:bg-navy-light text-white font-bold rounded-xl text-xs transition-colors cursor-pointer shadow-2xs"
-                  >
-                    Close Scorecard
-                  </button>
-                </div>
-
               </div>
             </Transition>
           </div>

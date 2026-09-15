@@ -27,7 +27,7 @@
             {{ toTitleCase(activeTournament?.name) }}
           </h1>
 
-          <!-- Meta Information Row -->
+          <!-- Meta Information Row (3 Items) -->
           <div class="flex flex-wrap items-center gap-y-2 gap-x-5 sm:gap-x-6 text-xs sm:text-sm text-slate-200 pt-1 font-medium">
             <div class="flex items-center gap-2">
               <Icon icon="ph:calendar-blank-bold" class="text-primary text-base shrink-0" />
@@ -40,10 +40,6 @@
             <div class="flex items-center gap-2">
               <Icon icon="ph:buildings-bold" class="text-primary text-base shrink-0" />
               <span>{{ toTitleCase(activeTournamentData?.organizer_name || 'Host Organization') }}</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <Icon icon="circle-flags:id" class="text-base shrink-0" />
-              <span>{{ formatCityDisplay(activeTournament?.city, activeTournament?.location) }}</span>
             </div>
           </div>
         </div>
@@ -116,8 +112,8 @@
                 </div>
               </div>
 
-              <!-- Tournament Overview Description (Clean Natural Prose) -->
-              <div v-if="tournamentDescriptionParagraphs.length > 0" class="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2.5 pt-0.5">
+              <!-- Tournament Overview Description (Clean Natural Prose - 14px mobile, 16px desktop) -->
+              <div v-if="tournamentDescriptionParagraphs.length > 0" class="text-sm sm:text-base text-slate-600 leading-relaxed space-y-3 pt-0.5">
                 <div v-for="(paragraph, pIdx) in tournamentDescriptionParagraphs" :key="pIdx" class="text-justify font-normal">
                   {{ paragraph }}
                 </div>
@@ -197,40 +193,24 @@
               <!-- Day & Date Ribbon (Horizontal Scrolling) -->
               <div class="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-1">
                 <button
-                  @click="selectedScheduleDay = 'all'"
-                  :class="[
-                    'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer border',
-                    selectedScheduleDay === 'all'
-                      ? 'bg-navy text-white border-navy shadow-xs'
-                      : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
-                  ]"
-                >
-                  <Icon icon="ph:calendar-blank-bold" class="text-sm" />
-                  <span>{{ t('all_days') }}</span>
-                  <span
-                    :class="[
-                      'px-1.5 py-0.2 rounded-md text-[10px] font-bold',
-                      selectedScheduleDay === 'all' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
-                    ]"
-                  >
-                    {{ parsedScheduleDays.length }}
-                  </span>
-                </button>
-
-                <button
                   v-for="(day, dIdx) in parsedScheduleDays"
                   :key="day.date_label"
                   @click="selectedScheduleDay = day.date_label"
                   :class="[
                     'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer border',
-                    selectedScheduleDay === day.date_label
-                      ? 'bg-navy text-white border-navy shadow-xs'
+                    (selectedScheduleDay || parsedScheduleDays[0]?.date_label) === day.date_label
+                      ? 'bg-navy text-white border-navy shadow-xs font-black'
                       : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                   ]"
                 >
-                  <Icon icon="ph:clock-countdown-bold" class="text-sm" />
+                  <Icon icon="ph:calendar-blank-bold" class="text-sm" />
                   <span>{{ day.date_label }}</span>
-                  <span class="px-1.5 py-0.2 rounded-md text-[10px] font-bold" :class="selectedScheduleDay === day.date_label ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'">
+                  <span
+                    :class="[
+                      'px-1.5 py-0.2 rounded-md text-[10px] font-bold',
+                      (selectedScheduleDay || parsedScheduleDays[0]?.date_label) === day.date_label ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                    ]"
+                  >
                     {{ day.sessions.length }}
                   </span>
                 </button>
@@ -543,23 +523,23 @@
                   <table class="w-full text-left text-xs border-collapse">
                     <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-xs">
                       <tr>
-                        <th class="py-3 px-4 w-12 text-center">#</th>
-                        <th @click="handleSortEntries('name')" class="py-3 px-4 cursor-pointer hover:text-navy select-none">
-                          <div class="flex items-center gap-1.5">
+                        <th class="py-3 px-4 w-14 min-w-[56px] text-center whitespace-nowrap">#</th>
+                        <th @click="handleSortEntries('name')" class="py-3 px-4 cursor-pointer hover:text-navy select-none min-w-[240px] sm:min-w-[280px] whitespace-nowrap">
+                          <div class="flex items-center gap-1.5 whitespace-nowrap">
                             <span>{{ t('col_name') }}</span>
-                            <Icon :icon="getSortIcon('name', entriesSortKey, entriesSortAsc)" class="text-xs" />
+                            <Icon :icon="getSortIcon('name', entriesSortKey, entriesSortAsc)" class="text-xs shrink-0" />
                           </div>
                         </th>
-                        <th @click="handleSortEntries('club')" class="py-3 px-4 cursor-pointer hover:text-navy select-none">
-                          <div class="flex items-center gap-1.5">
+                        <th @click="handleSortEntries('club')" class="py-3 px-4 cursor-pointer hover:text-navy select-none min-w-[260px] sm:min-w-[300px] whitespace-nowrap">
+                          <div class="flex items-center gap-1.5 whitespace-nowrap">
                             <span>{{ t('col_club') }}</span>
-                            <Icon :icon="getSortIcon('club', entriesSortKey, entriesSortAsc)" class="text-xs" />
+                            <Icon :icon="getSortIcon('club', entriesSortKey, entriesSortAsc)" class="text-xs shrink-0" />
                           </div>
                         </th>
-                        <th @click="handleSortEntries('category')" class="py-3 px-4 cursor-pointer hover:text-navy select-none">
-                          <div class="flex items-center gap-1.5">
+                        <th @click="handleSortEntries('category')" class="py-3 px-4 cursor-pointer hover:text-navy select-none min-w-[220px] sm:min-w-[260px] whitespace-nowrap">
+                          <div class="flex items-center gap-1.5 whitespace-nowrap">
                             <span>{{ t('col_category') }}</span>
-                            <Icon :icon="getSortIcon('category', entriesSortKey, entriesSortAsc)" class="text-xs" />
+                            <Icon :icon="getSortIcon('category', entriesSortKey, entriesSortAsc)" class="text-xs shrink-0" />
                           </div>
                         </th>
                       </tr>
@@ -570,24 +550,24 @@
                         :key="idx"
                         class="hover:bg-slate-50/60 transition-colors"
                       >
-                        <td class="py-3 px-4 text-center text-slate-400 font-mono text-[11px]">
+                        <td class="py-3 px-4 text-center text-slate-400 font-mono text-[11px] whitespace-nowrap">
                           {{ (entriesCurrentPage - 1) * entriesPageSize + idx + 1 }}
                         </td>
-                        <td class="py-3 px-4">
+                        <td class="py-3 px-4 whitespace-nowrap">
                           <div class="flex items-center gap-2.5">
                             <div class="size-7 rounded-full bg-navy/10 text-navy font-bold text-[11px] flex items-center justify-center shrink-0">
                               {{ getArcherInitials(athlete.name || athlete.athlete_name) }}
                             </div>
-                            <span class="font-bold text-navy sm:text-xs">
+                            <span class="font-bold text-navy sm:text-xs whitespace-nowrap">
                               {{ toTitleCase(athlete.name || athlete.athlete_name) }}
                             </span>
                           </div>
                         </td>
-                        <td class="py-3 px-4 text-slate-600 font-medium">
+                        <td class="py-3 px-4 text-slate-600 font-medium whitespace-nowrap">
                           {{ toTitleCase(athlete.club || athlete.country || '-') }}
                         </td>
-                        <td class="py-3 px-4">
-                          <span class="px-2.5 py-1 rounded-lg bg-navy/5 text-navy font-semibold text-[11px]">
+                        <td class="py-3 px-4 whitespace-nowrap">
+                          <span class="px-2.5 py-1 rounded-lg bg-navy/5 text-navy font-semibold text-[11px] whitespace-nowrap">
                             {{ toTitleCase(athlete.category || '-') }}
                           </span>
                         </td>
@@ -1701,7 +1681,7 @@ const selectedCategory = ref('')
 const selectedQualCategory = ref('')
 const selectedBracketCategory = ref('')
 const selectedPodiumCategory = ref('')
-const selectedScheduleDay = ref('all')
+const selectedScheduleDay = ref('')
 const selectedFopDayIndex = ref(0)
 const copiedShareLink = ref(false)
 const showShareModal = ref(false)
@@ -1732,6 +1712,20 @@ const medalSortAsc = ref(true)
 // TOURNAMENT OVERVIEW DESCRIPTIONS (BESPOKE NATURAL PROSE)
 // ─────────────────────────────────────────────────────────────
 const bespokeTournamentDescriptions = {
+  '27311': {
+    id: [
+      'RIAU OPEN ARCHERY COMPETITION 2026 merupakan kejuaraan panahan terbuka bergengsi yang diselenggarakan di Pekanbaru, Riau pada 23 - 26 April 2026. Kejuaraan ini mempertemukan 165 atlet panahan berbakat dari berbagai klub dan kontingen panahan terkemuka.',
+      'Mempertandingkan 64 nomor kompetisi lintas divisi Recurve, Compound, Barebow, dan Standar Nasional dari kelompok usia dini (U9, U12, U15, U18) hingga divisi Umum. Menggunakan sistem skoring resmi Ianseo, turnamen ini menjadi ajang tolak ukur pembinaan atlet panahan potensial di wilayah Sumatera dan nasional.'
+    ],
+    en: [
+      'The RIAU OPEN ARCHERY COMPETITION 2026 is a premier open archery championship held in Pekanbaru, Riau from April 23 to 26, 2026. The tournament assembled 165 standout archers representing prominent clubs and regional delegations.',
+      'Contested across 64 event divisions spanning Recurve, Compound, Barebow, and National Standard classes from youth development tiers (U9, U12, U15, U18) to premier Open divisions. Powered by official Ianseo scoring, the event delivered high-level marksmanship and valuable competitive experience.'
+    ],
+    it: [
+      'La RIAU OPEN ARCHERY COMPETITION 2026 è una prestigiosa manifestazione arcieristica tenutasi a Pekanbaru, Riau dal 23 al 26 aprile 2026, con la partecipazione di 165 arcieri in rappresentanza di club e delegazioni regionali.',
+      'L\'evento ha ospitato 64 divisioni di gara tra Ricurvo, Compound, Arco Nudo e Standard Nazionale per tutte le fasce d\'età, fornendo un fondamentale momento di confronto agonistico ufficiale omologato Ianseo.'
+    ]
+  },
   '28570': {
     id: [
       'USM National Archery Championship 2026 merupakan kejuaraan panahan tingkat nasional yang diselenggarakan oleh UKM Panahan Gendewa Geni Universitas Semarang (USM) di Semarang, Jawa Tengah. Digelar selama tiga hari pada 11 - 13 Juni 2026, kejuaraan bergengsi ini mempertemukan 38 atlet panahan berprestasi dari 20 klub, universitas, dan kontingen daerah di seluruh Indonesia.',
@@ -2017,11 +2011,18 @@ const totalScheduleEventsCount = computed(() => {
 })
 
 const filteredScheduleDays = computed(() => {
-  if (selectedScheduleDay.value === 'all') {
-    return parsedScheduleDays.value
-  }
-  return parsedScheduleDays.value.filter(d => d.date_label === selectedScheduleDay.value)
+  if (!parsedScheduleDays.value.length) return []
+  const activeDay = selectedScheduleDay.value || parsedScheduleDays.value[0]?.date_label
+  return parsedScheduleDays.value.filter(d => d.date_label === activeDay)
 })
+
+watch(parsedScheduleDays, (days) => {
+  if (days.length > 0) {
+    if (!selectedScheduleDay.value || !days.some(d => d.date_label === selectedScheduleDay.value)) {
+      selectedScheduleDay.value = days[0].date_label
+    }
+  }
+}, { immediate: true })
 
 // FOP Handling
 const fopDaysList = computed(() => activeTournamentData.value?.field_of_play || [])
@@ -2077,19 +2078,19 @@ const handleSortEntries = (key) => {
 
 // Qualifications Handling
 const entriesColumns = computed(() => [
-  { key: 'index', label: '#', align: 'center', width: 'w-12', sortable: false },
-  { key: 'name', label: t('col_name'), align: 'left', sortable: true },
-  { key: 'club', label: t('col_club'), align: 'left', sortable: true },
-  { key: 'category', label: t('col_category'), align: 'left', sortable: true }
+  { key: 'index', label: '#', align: 'center', width: 'w-14 min-w-[56px]', sortable: false },
+  { key: 'name', label: t('col_name'), align: 'left', width: 'min-w-[240px]', sortable: true },
+  { key: 'club', label: t('col_club'), align: 'left', width: 'min-w-[260px]', sortable: true },
+  { key: 'category', label: t('col_category'), align: 'left', width: 'min-w-[220px]', sortable: true }
 ])
 
 const qualColumns = computed(() => [
-  { key: 'rank', label: t('col_rank'), align: 'center', width: 'w-16', sortable: false },
-  { key: 'name', label: t('col_name'), align: 'left', sortable: false },
-  { key: 'club', label: t('col_club'), align: 'left', sortable: false },
-  { key: 'score', label: t('col_score'), align: 'center', sortable: false },
-  { key: 'tens', label: t('col_10s'), align: 'center', sortable: false },
-  { key: 'xs', label: t('col_xs'), align: 'center', sortable: false }
+  { key: 'rank', label: t('col_rank'), align: 'center', width: 'w-16 min-w-[64px]', sortable: false },
+  { key: 'name', label: t('col_name'), align: 'left', width: 'min-w-[240px]', sortable: false },
+  { key: 'club', label: t('col_club'), align: 'left', width: 'min-w-[260px]', sortable: false },
+  { key: 'score', label: t('col_score'), align: 'center', width: 'min-w-[100px]', sortable: false },
+  { key: 'tens', label: t('col_10s'), align: 'center', width: 'min-w-[80px]', sortable: false },
+  { key: 'xs', label: t('col_xs'), align: 'center', width: 'min-w-[80px]', sortable: false }
 ])
 
 const availableQualificationCategories = computed(() => {

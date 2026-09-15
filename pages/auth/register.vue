@@ -19,9 +19,10 @@
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display" v-html="t('auth.register.desktop_title')">
                 </h1>
-                <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
-                    {{ t('auth.register.desktop_desc') }}
-                </p>
+                <div class="text-slate-300 text-base leading-relaxed max-w-md font-body space-y-2.5">
+                    <div>{{ t('auth.register.desktop_desc_p1') }}</div>
+                    <div>{{ t('auth.register.desktop_desc_p2') }}</div>
+                </div>
                 <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
                     <div class="flex -space-x-2">
                         <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
@@ -121,26 +122,16 @@
                                     />
                                 </div>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <BaseSelect 
-                                        v-model="form.country" 
-                                        :label="t('auth.register.country_label')" 
-                                        :placeholder="t('auth.register.country_placeholder')" 
-                                        required
-                                        :items="countries" 
-                                        :error="errors.country" 
-                                        searchable
-                                        @update:model-value="handleCountryChange" 
-                                    />
-                                    
-                                    <ClubSelector
-                                        v-model="form.clubID"
-                                        v-model:newClubName="form.newClubName"
-                                        v-model:newClubAcronym="form.newClubAcronym"
-                                        :required="false"
-                                        label="Club (Optional)" 
-                                    />
-                                </div>
+                                <BaseSelect 
+                                    v-model="form.country" 
+                                    :label="t('auth.register.country_label')" 
+                                    :placeholder="t('auth.register.country_placeholder')" 
+                                    required
+                                    :items="countries" 
+                                    :error="errors.country" 
+                                    searchable
+                                    @update:model-value="handleCountryChange" 
+                                />
                             </div>
 
                             <!-- Organizer Fields -->
@@ -189,17 +180,6 @@
                                         @update:model-value="validateConfirmPassword" 
                                     />
                                 </div>
-
-                                <BaseInput 
-                                    v-model="form.whatsappNo" 
-                                    :label="t('auth.register.whatsapp_label', 'WhatsApp / Phone Number')" 
-                                    placeholder="081234567890" 
-                                    type="tel"
-                                    icon="ph:whatsapp-logo" 
-                                    required
-                                    :error="errors.whatsappNo"
-                                    @update:model-value="validate('whatsappNo', form.whatsappNo, [rules.required(), rules.minLength(8)])" 
-                                />
                             </div>
 
                             <!-- Terms & Conditions Checkbox -->
@@ -371,7 +351,6 @@ import { useFormValidation } from '~/composables/useFormValidation'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
-import ClubSelector from '~/components/common/ClubSelector.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -469,7 +448,6 @@ const isFormValid = computed(() => {
     if (!form.value.email || !form.value.email.includes('@')) return false
     if (!form.value.password || form.value.password.length < 6) return false
     if (form.value.password !== form.value.confirmPassword) return false
-    if (form.value.userType === 'organizer' && (!form.value.whatsappNo || form.value.whatsappNo.length < 8)) return false
     if (!form.value.terms) return false
     return true
 })

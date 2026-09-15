@@ -47,7 +47,7 @@
                 v-for="col in columns"
                 :key="col.key"
                 :class="[
-                  'py-3 px-4 select-none',
+                  'py-3 px-4 select-none whitespace-nowrap',
                   col.align === 'center' ? 'text-center' : (col.align === 'right' ? 'text-right' : 'text-left'),
                   col.width || '',
                   col.sortable ? 'cursor-pointer hover:text-navy transition-colors' : '',
@@ -57,7 +57,7 @@
               >
                 <div
                   :class="[
-                    'inline-flex items-center gap-1.5',
+                    'inline-flex items-center gap-1.5 whitespace-nowrap',
                     col.align === 'center' ? 'justify-center mx-auto' : (col.align === 'right' ? 'justify-end ml-auto' : 'justify-start')
                   ]"
                 >
@@ -85,7 +85,7 @@
                   v-for="col in columns"
                   :key="col.key"
                   :class="[
-                    'py-3 px-4',
+                    'py-3 px-4 whitespace-nowrap',
                     col.align === 'center' ? 'text-center' : (col.align === 'right' ? 'text-right' : 'text-left'),
                     col.cellClass || ''
                   ]"
