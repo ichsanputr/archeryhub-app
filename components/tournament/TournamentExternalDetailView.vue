@@ -11,38 +11,38 @@
         <div class="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/35 to-transparent"></div>
       </div>
 
-      <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="relative z-20 max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         <!-- Breadcrumbs -->
         <div class="mb-4">
           <Breadcrumbs 
             :items="[{ label: 'Tournaments', path: '/tournaments' }]"
             :current="toTitleCase(activeTournament?.name) || 'Tournament Details'" 
-            class="!text-slate-300 text-sm" 
+            class="!text-slate-300 text-xs sm:text-sm" 
           />
         </div>
 
         <div class="max-w-4xl space-y-3">
           <!-- Tournament Title (H1) -->
-          <h1 class="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight font-display">
+          <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight font-display">
             {{ toTitleCase(activeTournament?.name) }}
           </h1>
 
           <!-- Meta Information Row -->
-          <div class="flex flex-wrap items-center gap-y-2 gap-x-5 sm:gap-x-7 text-sm sm:text-base text-slate-200 pt-2 font-medium">
+          <div class="flex flex-wrap items-center gap-y-2 gap-x-5 sm:gap-x-6 text-xs sm:text-sm text-slate-200 pt-1 font-medium">
             <div class="flex items-center gap-2">
-              <Icon icon="ph:calendar-blank-bold" class="text-primary text-lg shrink-0" />
+              <Icon icon="ph:calendar-blank-bold" class="text-primary text-base shrink-0" />
               <span>{{ formatDateRange(activeTournament?.start_date, activeTournament?.end_date) }}</span>
             </div>
             <div class="flex items-center gap-2">
-              <Icon icon="ph:map-pin-bold" class="text-primary text-lg shrink-0" />
+              <Icon icon="ph:map-pin-bold" class="text-primary text-base shrink-0" />
               <span>{{ toTitleCase(activeTournament?.location || activeTournament?.venue || 'Indonesia') }}</span>
             </div>
             <div class="flex items-center gap-2">
-              <Icon icon="ph:buildings-bold" class="text-primary text-lg shrink-0" />
+              <Icon icon="ph:buildings-bold" class="text-primary text-base shrink-0" />
               <span>{{ toTitleCase(activeTournamentData?.organizer_name || 'Host Organization') }}</span>
             </div>
             <div class="flex items-center gap-2">
-              <Icon icon="circle-flags:id" class="text-lg shrink-0" />
+              <Icon icon="circle-flags:id" class="text-base shrink-0" />
               <span>{{ formatCityDisplay(activeTournament?.city, activeTournament?.location) }}</span>
             </div>
           </div>
@@ -52,43 +52,46 @@
 
     <!-- Mobile Quick Anchor Bar (Sticky on Small Screens) -->
     <div class="lg:hidden sticky top-0 sm:top-14 md:top-16 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-2.5 flex items-center gap-2 overflow-x-auto no-scrollbar shadow-xs">
-      <button 
+      <a 
         v-for="sec in navigationSections" 
         :key="sec.id"
-        @click="scrollToSection(sec.id)"
+        :href="`#${sec.id}`"
+        hreflang="id"
+        @click.prevent="scrollToSection(sec.id)"
         :class="[
-          'px-3.5 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-2 shrink-0 select-none cursor-pointer',
+          'px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 select-none cursor-pointer',
           activeSectionId === sec.id 
             ? 'bg-navy text-primary shadow-xs font-bold' 
             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
         ]"
       >
-        <Icon :icon="sec.icon" class="text-base" />
+        <Icon :icon="sec.icon" class="text-sm" />
         <span>{{ sec.title }}</span>
-      </button>
+      </a>
     </div>
 
     <!-- ========================================================================= -->
-    <!-- UNIFIED SINGLE PARENT BG-WHITE CARD (HOUSING ALL 3 COLUMNS AS REQUESTED)  -->
+    <!-- UNIFIED SINGLE PARENT CARD (WIDE CONTAINER, WORKING STICKY, CLEAN BORDER) -->
     <!-- ========================================================================= -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-      <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+    <main class="max-w-[1480px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8">
+      <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs">
         <div class="grid grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-100 items-start">
           
-          <!-- ── COLUMN 1: LEFT TOC (STICKY INSIDE UNIFIED CARD) ── -->
-          <aside class="col-span-12 lg:col-span-2 p-5 sm:p-6 sticky top-24 self-start bg-slate-50/20 lg:bg-transparent">
+          <!-- ── COLUMN 1: LEFT TOC (STICKY TOP-24, NO OVERFLOW CLIPPING) ── -->
+          <aside class="col-span-12 lg:col-span-2 p-5 sm:p-6 sticky top-24 self-start bg-slate-50/30 lg:bg-transparent rounded-t-3xl lg:rounded-tr-none lg:rounded-l-3xl">
             <div class="space-y-3">
-              <div class="text-xs font-black uppercase tracking-wider text-slate-400 font-display pl-3">
+              <div class="text-[11px] font-black uppercase tracking-wider text-slate-400 font-display pl-2.5">
                 Contents
               </div>
 
-              <!-- Clean Modern TOC Links -->
+              <!-- Semantic TOC Links with hreflang for SEO -->
               <nav class="space-y-1">
                 <a
                   href="#top"
+                  hreflang="id"
                   @click.prevent="scrollToTop"
                   :class="[
-                    'px-3 py-2 rounded-xl text-sm font-medium transition-all block truncate select-none cursor-pointer',
+                    'px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all block truncate select-none cursor-pointer',
                     activeSectionId === 'top'
                       ? 'text-navy font-bold bg-slate-100/90'
                       : 'text-slate-600 hover:text-navy hover:bg-slate-50'
@@ -101,9 +104,10 @@
                   v-for="sec in navigationSections"
                   :key="sec.id"
                   :href="`#${sec.id}`"
+                  hreflang="id"
                   @click.prevent="scrollToSection(sec.id)"
                   :class="[
-                    'px-3 py-2 rounded-xl text-sm font-medium transition-all block truncate select-none cursor-pointer flex items-center gap-2',
+                    'px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all block truncate select-none cursor-pointer flex items-center gap-2',
                     activeSectionId === sec.id
                       ? 'text-navy font-bold bg-slate-100/90 border-l-3 border-navy'
                       : 'text-slate-600 hover:text-navy hover:bg-slate-50'
@@ -115,85 +119,85 @@
             </div>
           </aside>
 
-          <!-- ── COLUMN 2: MIDDLE MAIN ARTICLE (CONTENT FLOW) ── -->
-          <div class="col-span-12 lg:col-span-7 p-6 sm:p-10 space-y-12 min-w-0">
+          <!-- ── COLUMN 2: MIDDLE MAIN ARTICLE (GENEROUS WIDTH & PROPORTIONS) ── -->
+          <div class="col-span-12 lg:col-span-7 p-6 sm:p-8 lg:p-10 space-y-10 min-w-0">
 
-            <!-- 1. OVERVIEW & FACTS -->
-            <section id="overview" class="scroll-mt-24 space-y-6">
-              <div class="flex items-center gap-3.5 border-b border-slate-100 pb-4">
-                <div class="size-11 rounded-2xl bg-primary/20 text-navy flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:info-bold" class="text-2xl text-navy" />
+            <!-- 1. TOURNAMENT OVERVIEW -->
+            <section id="overview" class="scroll-mt-24 space-y-5">
+              <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
+                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                  <Icon icon="ph:info-bold" class="text-xl text-navy" />
                 </div>
                 <div>
-                  <h2 class="text-2xl sm:text-3xl font-bold text-navy font-display">
-                    Tournament Overview & Facts
+                  <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
+                    Tournament Overview
                   </h2>
-                  <p class="text-sm sm:text-base text-slate-500 mt-0.5">Key event metrics, competition categories, and technical regulations.</p>
+                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Key event metrics, competition categories, and technical regulations.</p>
                 </div>
               </div>
 
               <!-- Quick Metrics 4 Cards Grid -->
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-                <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
-                  <div class="flex items-center gap-2 text-slate-500 text-xs sm:text-sm font-semibold">
-                    <Icon icon="ph:users-three" class="text-base text-navy" />
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+                  <div class="flex items-center gap-1.5 text-slate-500 text-xs font-semibold">
+                    <Icon icon="ph:users-three" class="text-sm text-navy" />
                     <span>Total Archers</span>
                   </div>
-                  <div class="text-2xl sm:text-3xl font-bold text-navy font-display mt-2">
+                  <div class="text-xl sm:text-2xl font-bold text-navy font-display mt-1.5">
                     {{ computedTotalArchers }}
                   </div>
-                  <div class="text-xs sm:text-sm text-slate-400 mt-0.5">Registered Competitors</div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">Registered Competitors</div>
                 </div>
 
-                <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
-                  <div class="flex items-center gap-2 text-slate-500 text-xs sm:text-sm font-semibold">
-                    <Icon icon="ph:target" class="text-base text-navy" />
+                <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+                  <div class="flex items-center gap-1.5 text-slate-500 text-xs font-semibold">
+                    <Icon icon="ph:target" class="text-sm text-navy" />
                     <span>Categories</span>
                   </div>
-                  <div class="text-2xl sm:text-3xl font-bold text-navy font-display mt-2">
+                  <div class="text-xl sm:text-2xl font-bold text-navy font-display mt-1.5">
                     {{ categoriesList.length }}
                   </div>
-                  <div class="text-xs sm:text-sm text-slate-400 mt-0.5">Divisions & Classes</div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">Divisions & Classes</div>
                 </div>
 
-                <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
-                  <div class="flex items-center gap-2 text-slate-500 text-xs sm:text-sm font-semibold">
-                    <Icon icon="ph:calendar-check" class="text-base text-navy" />
+                <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+                  <div class="flex items-center gap-1.5 text-slate-500 text-xs font-semibold">
+                    <Icon icon="ph:calendar-check" class="text-sm text-navy" />
                     <span>Duration</span>
                   </div>
-                  <div class="text-2xl sm:text-3xl font-bold text-navy font-display mt-2">
+                  <div class="text-xl sm:text-2xl font-bold text-navy font-display mt-1.5">
                     {{ computedEventDurationDays }} Days
                   </div>
-                  <div class="text-xs sm:text-sm text-slate-400 mt-0.5">Official Schedule</div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">Official Schedule</div>
                 </div>
 
-                <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
-                  <div class="flex items-center gap-2 text-slate-500 text-xs sm:text-sm font-semibold">
-                    <Icon icon="ph:shield-check-bold" class="text-base text-navy" />
+                <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+                  <div class="flex items-center gap-1.5 text-slate-500 text-xs font-semibold">
+                    <Icon icon="ph:shield-check-bold" class="text-sm text-navy" />
                     <span>Format</span>
                   </div>
-                  <div class="text-2xl sm:text-3xl font-bold text-navy font-display mt-2">
+                  <div class="text-xl sm:text-2xl font-bold text-navy font-display mt-1.5">
                     Target
                   </div>
-                  <div class="text-xs sm:text-sm text-slate-400 mt-0.5">Outdoor Archery</div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">Outdoor Archery</div>
                 </div>
               </div>
 
               <!-- Official Technical Handbook Banner -->
-              <div class="p-5 sm:p-6 rounded-2xl bg-navy text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
-                <div class="flex items-start gap-3.5">
-                  <div class="size-11 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                    <Icon icon="ph:file-pdf-bold" class="text-2xl text-primary" />
+              <div class="p-4 sm:p-5 rounded-2xl bg-navy text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+                <div class="flex items-start gap-3">
+                  <div class="size-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                    <Icon icon="ph:file-pdf-bold" class="text-xl text-primary" />
                   </div>
-                  <div class="space-y-1">
-                    <div class="inline-block px-2.5 py-0.5 rounded-md bg-white/15 text-primary text-xs font-bold">
+                  <div class="space-y-0.5">
+                    <div class="inline-block px-2 py-0.5 rounded bg-white/15 text-primary text-[10px] font-bold">
                       Technical Guidebook
                     </div>
-                    <h3 class="text-base sm:text-lg font-bold text-white font-display">
+                    <h3 class="text-sm sm:text-base font-bold text-white font-display">
                       Official Technical Handbook (THB)
                     </h3>
-                    <p class="text-xs sm:text-sm text-slate-300">
-                      Download complete tournament regulations, age limits, target butt assignments, and technical competition rules.
+                    <p class="text-xs text-slate-300">
+                      Download complete tournament regulations, age limits, target butt assignments, and competition rules.
                     </p>
                   </div>
                 </div>
@@ -201,52 +205,40 @@
                   :href="thbDocument?.url || ianseoUrl" 
                   target="_blank"
                   rel="nofollow noopener noreferrer"
-                  class="w-full sm:w-auto px-5 py-3 rounded-xl bg-primary hover:bg-primary-hover text-navy font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all shrink-0 cursor-pointer shadow-sm"
+                  class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-navy font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all shrink-0 cursor-pointer shadow-sm"
                 >
-                  <Icon icon="ph:download-simple-bold" class="text-lg" />
+                  <Icon icon="ph:download-simple-bold" class="text-base" />
                   <span>Download Handbook</span>
                 </a>
               </div>
             </section>
 
-            <!-- 2. MEDAL STANDINGS & CHAMPIONS (WITH OLYMPIC PODIUM & CANVAS EXPORT) -->
-            <section id="medals" class="scroll-mt-24 space-y-6">
-              <div class="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div class="flex items-center gap-3.5">
-                  <div class="size-11 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold shrink-0">
-                    <Icon icon="ph:trophy-bold" class="text-2xl text-amber-600" />
-                  </div>
-                  <div>
-                    <h2 class="text-2xl sm:text-3xl font-bold text-navy font-display">
-                      Medal Standings & Champions
-                    </h2>
-                    <p class="text-sm sm:text-base text-slate-500 mt-0.5">Club medal tally and final podium positions.</p>
-                  </div>
+            <!-- 2. MEDAL STANDINGS & PODIUM -->
+            <section id="medals" class="scroll-mt-24 space-y-5">
+              <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
+                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                  <Icon icon="ph:trophy-bold" class="text-xl text-navy" />
                 </div>
-
-                <!-- Export Podium Image Button via Canvas -->
-                <button
-                  v-if="currentPodiumCategoryData"
-                  @click="exportPodiumToImage"
-                  class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-navy hover:text-white text-navy font-bold text-xs transition-all shadow-xs cursor-pointer"
-                >
-                  <Icon icon="ph:image-bold" class="text-sm" />
-                  <span>Download Podium Banner</span>
-                </button>
+                <div>
+                  <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
+                    Medal Standings & Champions
+                  </h2>
+                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Club medal tally and final podium positions.</p>
+                </div>
               </div>
 
-              <!-- 3-Tier Olympic Podium Showcase -->
-              <div v-if="currentPodiumCategoryData" class="space-y-4">
+              <!-- Clean Olympic 3-Tier Podium UI -->
+              <div v-if="currentPodiumCategoryData" class="space-y-3.5">
                 <!-- Category Selector for Podium -->
-                <div class="flex items-center justify-between gap-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-200/60">
+                <div class="flex items-center justify-between gap-3 bg-slate-50/80 p-2.5 rounded-2xl border border-slate-200/60">
                   <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
-                    <span class="text-xs font-bold text-slate-400 shrink-0">Podium Division:</span>
+                    <span class="text-xs font-bold text-slate-400 shrink-0">Podium Class:</span>
                     <button
                       v-for="cat in availablePodiumCategories.slice(0, 6)"
                       :key="cat"
                       @click="selectedPodiumCategory = cat"
                       :class="[
-                        'px-3 py-1 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer',
+                        'px-2.5 py-1 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer',
                         selectedPodiumCategory === cat
                           ? 'bg-navy text-primary font-bold shadow-xs'
                           : 'bg-white hover:bg-slate-200 text-slate-700 border border-slate-200/80'
@@ -255,81 +247,81 @@
                       {{ toTitleCase(cat) }}
                     </button>
                   </div>
-                  <span class="text-xs text-slate-400 hidden sm:inline shrink-0 font-medium">Olympic 3-Tier Podium</span>
+                  <span class="text-xs text-slate-400 hidden sm:inline shrink-0 font-medium">Olympic Podium</span>
                 </div>
 
                 <!-- Olympic 3-Step Podium Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2 items-end">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1 items-end">
                   <!-- 2nd Place Silver (Left) -->
-                  <div class="order-2 md:order-1 bg-slate-50/90 rounded-3xl p-5 border border-slate-200 shadow-xs flex flex-col items-center text-center relative overflow-hidden">
+                  <div class="order-2 md:order-1 bg-slate-50/90 rounded-2xl p-4 border border-slate-200 shadow-xs flex flex-col items-center text-center relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-1 bg-slate-300"></div>
-                    <div class="relative size-16 mb-2.5">
-                      <div class="size-16 rounded-2xl bg-slate-200 text-slate-700 font-black text-xl flex items-center justify-center ring-2 ring-slate-300 shadow-xs">
+                    <div class="relative size-14 mb-2">
+                      <div class="size-14 rounded-2xl bg-slate-200 text-slate-700 font-black text-lg flex items-center justify-center ring-2 ring-slate-300 shadow-xs">
                         {{ getArcherInitials(currentPodiumCategoryData.silver?.name) || '2' }}
                       </div>
-                      <div class="absolute -bottom-1 -right-1 size-7 rounded-lg bg-slate-200 text-slate-800 font-black text-xs flex items-center justify-center shadow-xs">
+                      <div class="absolute -bottom-1 -right-1 size-6 rounded-lg bg-slate-200 text-slate-800 font-black text-[11px] flex items-center justify-center shadow-xs">
                         2
                       </div>
                     </div>
-                    <div class="font-bold text-sm sm:text-base text-navy truncate max-w-full">
+                    <div class="font-bold text-xs sm:text-sm text-navy truncate max-w-full">
                       {{ toTitleCase(currentPodiumCategoryData.silver?.name || 'TBD') }}
                     </div>
-                    <div class="text-xs text-slate-500 font-medium truncate max-w-full mt-0.5">
+                    <div class="text-[11px] text-slate-500 font-medium truncate max-w-full mt-0.5">
                       {{ toTitleCase(currentPodiumCategoryData.silver?.club || 'Club') }}
                     </div>
-                    <div class="mt-3 pt-3 border-t border-slate-200/80 w-full flex justify-between items-center text-xs">
-                      <span class="text-slate-400 font-bold">Silver Medalist</span>
-                      <span class="font-mono font-bold text-slate-700 text-sm">{{ currentPodiumCategoryData.silver?.score || currentPodiumCategoryData.silver?.total_score || 'Final' }}</span>
+                    <div class="mt-2.5 pt-2.5 border-t border-slate-200/80 w-full flex justify-between items-center text-xs">
+                      <span class="text-slate-400 font-semibold">Silver</span>
+                      <span class="font-mono font-bold text-slate-700 text-xs">{{ currentPodiumCategoryData.silver?.score || currentPodiumCategoryData.silver?.total_score || 'Final' }}</span>
                     </div>
                   </div>
 
                   <!-- 1st Place Champion Gold (Middle - Elevated) -->
-                  <div class="order-1 md:order-2 bg-gradient-to-b from-amber-500/10 via-amber-50/40 to-white rounded-3xl p-6 border-2 border-amber-400/60 shadow-md flex flex-col items-center text-center relative overflow-hidden -mt-0 md:-mt-3">
+                  <div class="order-1 md:order-2 bg-gradient-to-b from-amber-500/10 via-amber-50/30 to-white rounded-2xl p-5 border-2 border-amber-400/60 shadow-md flex flex-col items-center text-center relative overflow-hidden -mt-0 md:-mt-2">
                     <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-400"></div>
-                    <div class="flex items-center gap-1 text-amber-600 text-xs font-black tracking-wider mb-2">
-                      <Icon icon="ph:crown-fill" class="text-base text-amber-500" />
+                    <div class="flex items-center gap-1 text-amber-600 text-[11px] font-black tracking-wider mb-1.5">
+                      <Icon icon="ph:crown-fill" class="text-sm text-amber-500" />
                       <span>Champion #1</span>
                     </div>
-                    <div class="relative size-20 mb-3">
-                      <div class="size-20 rounded-2xl bg-amber-400 text-navy font-black text-2xl flex items-center justify-center ring-4 ring-amber-400/40 shadow-md">
+                    <div class="relative size-16 mb-2">
+                      <div class="size-16 rounded-2xl bg-amber-400 text-navy font-black text-xl flex items-center justify-center ring-3 ring-amber-400/40 shadow-md">
                         {{ getArcherInitials(currentPodiumCategoryData.gold?.name) || '1' }}
                       </div>
-                      <div class="absolute -bottom-1.5 -right-1.5 size-8 rounded-xl bg-amber-400 text-navy font-black text-sm flex items-center justify-center shadow-lg">
+                      <div class="absolute -bottom-1 -right-1 size-7 rounded-xl bg-amber-400 text-navy font-black text-xs flex items-center justify-center shadow-md">
                         1
                       </div>
                     </div>
-                    <div class="font-bold text-base sm:text-lg text-navy truncate max-w-full">
+                    <div class="font-bold text-sm sm:text-base text-navy truncate max-w-full">
                       {{ toTitleCase(currentPodiumCategoryData.gold?.name || 'Champion') }}
                     </div>
-                    <div class="text-xs sm:text-sm text-slate-500 font-medium truncate max-w-full mt-0.5">
+                    <div class="text-xs text-slate-500 font-medium truncate max-w-full mt-0.5">
                       {{ toTitleCase(currentPodiumCategoryData.gold?.club || 'Club') }}
                     </div>
-                    <div class="mt-4 pt-3 border-t border-amber-200/60 w-full flex justify-between items-center text-xs">
+                    <div class="mt-3 pt-2.5 border-t border-amber-200/60 w-full flex justify-between items-center text-xs">
                       <span class="text-amber-700 font-bold">Gold Medalist</span>
-                      <span class="font-mono font-black text-amber-600 text-base sm:text-lg">{{ currentPodiumCategoryData.gold?.score || currentPodiumCategoryData.gold?.total_score || 'Champion' }}</span>
+                      <span class="font-mono font-black text-amber-600 text-sm sm:text-base">{{ currentPodiumCategoryData.gold?.score || currentPodiumCategoryData.gold?.total_score || 'Champion' }}</span>
                     </div>
                   </div>
 
                   <!-- 3rd Place Bronze (Right) -->
-                  <div class="order-3 bg-slate-50/90 rounded-3xl p-5 border border-slate-200 shadow-xs flex flex-col items-center text-center relative overflow-hidden">
+                  <div class="order-3 bg-slate-50/90 rounded-2xl p-4 border border-slate-200 shadow-xs flex flex-col items-center text-center relative overflow-hidden">
                     <div class="absolute top-0 left-0 w-full h-1 bg-amber-700/50"></div>
-                    <div class="relative size-16 mb-2.5">
-                      <div class="size-16 rounded-2xl bg-amber-100 text-amber-900 font-black text-xl flex items-center justify-center ring-2 ring-amber-700/30 shadow-xs">
+                    <div class="relative size-14 mb-2">
+                      <div class="size-14 rounded-2xl bg-amber-100 text-amber-900 font-black text-lg flex items-center justify-center ring-2 ring-amber-700/30 shadow-xs">
                         {{ getArcherInitials(currentPodiumCategoryData.bronze?.name) || '3' }}
                       </div>
-                      <div class="absolute -bottom-1 -right-1 size-7 rounded-lg bg-amber-700 text-white font-black text-xs flex items-center justify-center shadow-xs">
+                      <div class="absolute -bottom-1 -right-1 size-6 rounded-lg bg-amber-700 text-white font-black text-[11px] flex items-center justify-center shadow-xs">
                         3
                       </div>
                     </div>
-                    <div class="font-bold text-sm sm:text-base text-navy truncate max-w-full">
+                    <div class="font-bold text-xs sm:text-sm text-navy truncate max-w-full">
                       {{ toTitleCase(currentPodiumCategoryData.bronze?.name || 'TBD') }}
                     </div>
-                    <div class="text-xs text-slate-500 font-medium truncate max-w-full mt-0.5">
+                    <div class="text-[11px] text-slate-500 font-medium truncate max-w-full mt-0.5">
                       {{ toTitleCase(currentPodiumCategoryData.bronze?.club || 'Club') }}
                     </div>
-                    <div class="mt-3 pt-3 border-t border-slate-200/80 w-full flex justify-between items-center text-xs">
-                      <span class="text-slate-400 font-bold">Bronze Medalist</span>
-                      <span class="font-mono font-bold text-amber-800 text-sm">{{ currentPodiumCategoryData.bronze?.score || currentPodiumCategoryData.bronze?.total_score || 'Final' }}</span>
+                    <div class="mt-2.5 pt-2.5 border-t border-slate-200/80 w-full flex justify-between items-center text-xs">
+                      <span class="text-slate-400 font-semibold">Bronze</span>
+                      <span class="font-mono font-bold text-amber-800 text-xs">{{ currentPodiumCategoryData.bronze?.score || currentPodiumCategoryData.bronze?.total_score || 'Final' }}</span>
                     </div>
                   </div>
                 </div>
@@ -337,53 +329,53 @@
 
               <!-- Medal Table with Interactive Sorting -->
               <div v-if="sortedMedalTally.length > 0" class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
-                <div class="p-4 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between">
+                <div class="p-3.5 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <Icon icon="ph:medal-bold" class="text-amber-500 text-lg" />
-                    <span class="text-sm sm:text-base font-bold text-navy font-display">Club / Contingent Medal Standings</span>
+                    <Icon icon="ph:medal-bold" class="text-amber-500 text-base" />
+                    <span class="text-xs sm:text-sm font-bold text-navy font-display">Club / Contingent Medal Standings</span>
                   </div>
-                  <span class="text-xs sm:text-sm text-slate-500">Click column header to sort</span>
+                  <span class="text-[11px] text-slate-500">Click header to sort</span>
                 </div>
 
                 <div class="overflow-x-auto">
-                  <table class="w-full text-left text-sm sm:text-base text-navy">
+                  <table class="w-full text-left text-xs sm:text-sm text-navy">
                     <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 select-none">
                       <tr>
-                        <th @click="handleSortMedal('rank')" class="py-3.5 px-4 w-20 text-center cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1.5">
+                        <th @click="handleSortMedal('rank')" class="py-3 px-3.5 w-16 text-center cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1">
                             <span>Rank</span>
                             <Icon :icon="getSortIcon('rank', medalSortKey, medalSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortMedal('club')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1.5">
+                        <th @click="handleSortMedal('club')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
                             <span>Club / Contingent</span>
                             <Icon :icon="getSortIcon('club', medalSortKey, medalSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortMedal('gold')" class="py-3.5 px-4 text-center w-24 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1.5 text-amber-600">
-                            <Icon icon="ph:medal-fill" class="text-base text-amber-500" />
+                        <th @click="handleSortMedal('gold')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1 text-amber-600">
+                            <Icon icon="ph:medal-fill" class="text-sm text-amber-500" />
                             <span>Gold</span>
                             <Icon :icon="getSortIcon('gold', medalSortKey, medalSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortMedal('silver')" class="py-3.5 px-4 text-center w-24 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1.5 text-slate-600">
-                            <Icon icon="ph:medal-fill" class="text-base text-slate-400" />
+                        <th @click="handleSortMedal('silver')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1 text-slate-600">
+                            <Icon icon="ph:medal-fill" class="text-sm text-slate-400" />
                             <span>Silver</span>
                             <Icon :icon="getSortIcon('silver', medalSortKey, medalSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortMedal('bronze')" class="py-3.5 px-4 text-center w-24 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1.5 text-amber-800">
-                            <Icon icon="ph:medal-fill" class="text-base text-amber-700" />
+                        <th @click="handleSortMedal('bronze')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1 text-amber-800">
+                            <Icon icon="ph:medal-fill" class="text-sm text-amber-700" />
                             <span>Bronze</span>
                             <Icon :icon="getSortIcon('bronze', medalSortKey, medalSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortMedal('total')" class="py-3.5 px-4 text-center w-24 font-bold bg-slate-100/80 cursor-pointer hover:bg-slate-200/80 transition-colors">
-                          <div class="flex items-center justify-center gap-1.5">
+                        <th @click="handleSortMedal('total')" class="py-3 px-3.5 text-center w-20 font-bold bg-slate-100/80 cursor-pointer hover:bg-slate-200/80 transition-colors">
+                          <div class="flex items-center justify-center gap-1">
                             <span>Total</span>
                             <Icon :icon="getSortIcon('total', medalSortKey, medalSortAsc)" class="text-xs text-slate-400" />
                           </div>
@@ -392,17 +384,17 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium">
                       <tr v-for="(item, idx) in sortedMedalTally.slice(0, 15)" :key="item.club" class="hover:bg-slate-50/70 transition-colors">
-                        <td class="py-3.5 px-4 text-center font-bold">
-                          <span v-if="idx === 0" class="inline-flex size-7 rounded-full bg-amber-100 text-amber-800 font-bold items-center justify-center text-sm">1</span>
-                          <span v-else-if="idx === 1" class="inline-flex size-7 rounded-full bg-slate-200 text-slate-800 font-bold items-center justify-center text-sm">2</span>
-                          <span v-else-if="idx === 2" class="inline-flex size-7 rounded-full bg-amber-200/70 text-amber-900 font-bold items-center justify-center text-sm">3</span>
+                        <td class="py-2.5 px-3.5 text-center font-bold">
+                          <span v-if="idx === 0" class="inline-flex size-6 rounded-full bg-amber-100 text-amber-800 font-bold items-center justify-center text-xs">1</span>
+                          <span v-else-if="idx === 1" class="inline-flex size-6 rounded-full bg-slate-200 text-slate-800 font-bold items-center justify-center text-xs">2</span>
+                          <span v-else-if="idx === 2" class="inline-flex size-6 rounded-full bg-amber-200/70 text-amber-900 font-bold items-center justify-center text-xs">3</span>
                           <span v-else class="text-slate-500 font-mono">{{ idx + 1 }}</span>
                         </td>
-                        <td class="py-3.5 px-4 font-bold text-navy">{{ toTitleCase(item.club) }}</td>
-                        <td class="py-3.5 px-4 text-center font-bold text-navy font-mono">{{ item.gold }}</td>
-                        <td class="py-3.5 px-4 text-center font-bold text-navy font-mono">{{ item.silver }}</td>
-                        <td class="py-3.5 px-4 text-center font-bold text-navy font-mono">{{ item.bronze }}</td>
-                        <td class="py-3.5 px-4 text-center font-bold bg-slate-50 text-navy font-mono">{{ item.total }}</td>
+                        <td class="py-2.5 px-3.5 font-bold text-navy">{{ toTitleCase(item.club) }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-bold text-navy font-mono">{{ item.gold }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-bold text-navy font-mono">{{ item.silver }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-bold text-navy font-mono">{{ item.bronze }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-bold bg-slate-50 text-navy font-mono">{{ item.total }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -410,28 +402,28 @@
               </div>
 
               <!-- Clean Empty State for Medals -->
-              <div v-else class="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200/70 space-y-2">
-                <Icon icon="ph:trophy" class="text-4xl text-slate-400 mx-auto" />
-                <div class="text-sm sm:text-base font-bold text-navy">Medal Standings Pending</div>
-                <div class="text-xs sm:text-sm text-slate-500">Official medal rankings will be tabulated following elimination and final rounds.</div>
+              <div v-else class="p-6 text-center bg-slate-50 rounded-2xl border border-slate-200/70 space-y-1.5">
+                <Icon icon="ph:trophy" class="text-3xl text-slate-400 mx-auto" />
+                <div class="text-xs sm:text-sm font-bold text-navy">Medal Standings Pending</div>
+                <div class="text-[11px] text-slate-500">Official medal rankings will be tabulated following elimination and final rounds.</div>
               </div>
             </section>
 
             <!-- 3. COMPETITION SCHEDULE (SEPARATED) -->
-            <section id="schedule" class="scroll-mt-24 space-y-6">
-              <div class="flex items-center gap-3.5 border-b border-slate-100 pb-4">
-                <div class="size-11 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:calendar-blank-bold" class="text-2xl text-sky-600" />
+            <section id="schedule" class="scroll-mt-24 space-y-5">
+              <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
+                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                  <Icon icon="ph:calendar-blank-bold" class="text-xl text-navy" />
                 </div>
                 <div>
-                  <h2 class="text-2xl sm:text-3xl font-bold text-navy font-display">
+                  <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     Competition Schedule
                   </h2>
-                  <p class="text-sm sm:text-base text-slate-500 mt-0.5">Day-by-day timetable, rounds, and session breakdowns.</p>
+                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Day-by-day timetable, rounds, and session breakdowns.</p>
                 </div>
               </div>
 
-              <div v-if="scheduleData.length > 0" class="space-y-4">
+              <div v-if="scheduleData.length > 0" class="space-y-3.5">
                 <!-- Day Selector Tabs -->
                 <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
                   <button
@@ -439,49 +431,49 @@
                     :key="dIdx"
                     @click="activeScheduleDayIndex = dIdx"
                     :class="[
-                      'px-4 py-2 rounded-xl text-sm font-bold transition-all whitespace-nowrap shrink-0 flex items-center gap-2 cursor-pointer select-none',
+                      'px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 cursor-pointer select-none',
                       activeScheduleDayIndex === dIdx
                         ? 'bg-navy text-primary shadow-xs'
                         : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
                     ]"
                   >
-                    <Icon icon="ph:calendar-check" class="text-base" />
+                    <Icon icon="ph:calendar-check" class="text-sm" />
                     <span>{{ day.date_label }}</span>
-                    <span class="text-xs opacity-80">(Day {{ dIdx + 1 }})</span>
+                    <span class="text-[10px] opacity-80">(Day {{ dIdx + 1 }})</span>
                   </button>
                 </div>
 
                 <!-- Active Day Sessions List -->
-                <div v-if="currentActiveScheduleDay" class="border border-slate-200/80 rounded-2xl p-5 sm:p-6 space-y-4">
-                  <div class="p-3.5 rounded-xl bg-navy text-white flex items-center justify-between gap-4">
-                    <div class="text-sm font-bold">{{ currentActiveScheduleDay.divisions || 'All Scheduled Categories' }}</div>
-                    <span class="text-xs px-2.5 py-0.5 rounded bg-white/10 font-mono">{{ currentActiveScheduleDay.sessions.length }} Sessions</span>
+                <div v-if="currentActiveScheduleDay" class="border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-3.5">
+                  <div class="p-3 rounded-xl bg-navy text-white flex items-center justify-between gap-3">
+                    <div class="text-xs sm:text-sm font-bold">{{ currentActiveScheduleDay.divisions || 'All Scheduled Categories' }}</div>
+                    <span class="text-[11px] px-2 py-0.5 rounded bg-white/10 font-mono">{{ currentActiveScheduleDay.sessions.length }} Sessions</span>
                   </div>
 
-                  <div class="divide-y divide-slate-100 space-y-3 pt-1">
+                  <div class="divide-y divide-slate-100 space-y-2.5 pt-1">
                     <div 
                       v-for="(session, sIdx) in currentActiveScheduleDay.sessions" 
                       :key="sIdx"
-                      class="pt-3 flex flex-col sm:flex-row sm:items-start justify-between gap-4 hover:bg-slate-50 p-3 rounded-xl transition-colors"
+                      class="pt-2.5 flex flex-col sm:flex-row sm:items-start justify-between gap-3 hover:bg-slate-50 p-2.5 rounded-xl transition-colors"
                     >
-                      <div class="flex items-start gap-3.5">
-                        <div class="w-24 shrink-0 text-right pr-3.5 border-r border-slate-200 pt-0.5">
-                          <div class="font-mono font-bold text-sm text-navy">{{ session.time_start }}</div>
-                          <div class="text-xs text-slate-400 font-mono">{{ session.time_end }}</div>
+                      <div class="flex items-start gap-3">
+                        <div class="w-20 shrink-0 text-right pr-3 border-r border-slate-200 pt-0.5">
+                          <div class="font-mono font-bold text-xs text-navy">{{ session.time_start }}</div>
+                          <div class="text-[10px] text-slate-400 font-mono">{{ session.time_end }}</div>
                         </div>
-                        <div class="space-y-1">
+                        <div class="space-y-0.5">
                           <div class="flex items-center gap-2">
-                            <span class="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
                               {{ toTitleCase(session.type || 'Session') }}
                             </span>
-                            <span v-if="session.section" class="text-xs font-medium text-slate-500">{{ session.section }}</span>
+                            <span v-if="session.section" class="text-[11px] font-medium text-slate-500">{{ session.section }}</span>
                           </div>
-                          <h4 class="text-sm sm:text-base font-bold text-navy font-display">{{ session.title }}</h4>
-                          <div v-if="session.notes" class="text-xs sm:text-sm text-slate-500 font-medium">{{ session.notes }}</div>
+                          <h4 class="text-xs sm:text-sm font-bold text-navy font-display">{{ session.title }}</h4>
+                          <div v-if="session.notes" class="text-[11px] text-slate-500 font-medium">{{ session.notes }}</div>
                         </div>
                       </div>
 
-                      <div v-if="session.duration" class="text-xs sm:text-sm font-mono text-slate-500 shrink-0 self-start sm:self-center">
+                      <div v-if="session.duration" class="text-[11px] font-mono text-slate-500 shrink-0 self-start sm:self-center">
                         {{ session.duration }} hrs
                       </div>
                     </div>
@@ -490,50 +482,50 @@
               </div>
 
               <!-- Empty State for Schedule -->
-              <div v-else class="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200/70 space-y-2">
-                <Icon icon="ph:calendar-x" class="text-4xl text-slate-400 mx-auto" />
-                <div class="text-sm sm:text-base font-bold text-navy">No Schedule Information Available</div>
-                <div class="text-xs sm:text-sm text-slate-500">Official tournament timetable will be published by the organizing committee.</div>
+              <div v-else class="p-6 text-center bg-slate-50 rounded-2xl border border-slate-200/70 space-y-1.5">
+                <Icon icon="ph:calendar-x" class="text-3xl text-slate-400 mx-auto" />
+                <div class="text-xs sm:text-sm font-bold text-navy">No Schedule Information Available</div>
+                <div class="text-[11px] text-slate-500">Official tournament timetable will be published by the organizing committee.</div>
               </div>
             </section>
 
             <!-- 4. FIELD OF PLAY (FOP) (SEPARATED) -->
-            <section id="fop" class="scroll-mt-24 space-y-6">
-              <div class="flex items-center gap-3.5 border-b border-slate-100 pb-4">
-                <div class="size-11 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:crosshair-bold" class="text-2xl text-emerald-600" />
+            <section id="fop" class="scroll-mt-24 space-y-5">
+              <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
+                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                  <Icon icon="ph:crosshair-bold" class="text-xl text-navy" />
                 </div>
                 <div>
-                  <h2 class="text-2xl sm:text-3xl font-bold text-navy font-display">
+                  <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     Field of Play (FOP)
                   </h2>
-                  <p class="text-sm sm:text-base text-slate-500 mt-0.5">Target butt numbers, shooting distance assignments, and arena layout.</p>
+                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Target butt numbers, shooting distance assignments, and arena layout.</p>
                 </div>
               </div>
 
               <!-- FOP Data Table / Card -->
               <div v-if="fopData.length > 0" class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
-                <div class="p-4 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between">
-                  <div class="text-sm sm:text-base font-bold text-navy font-display">Target Butt Allocation</div>
-                  <div class="text-xs sm:text-sm text-slate-500">{{ fopData.length }} Target Lines</div>
+                <div class="p-3.5 border-b border-slate-100 bg-slate-50/80 flex items-center justify-between">
+                  <div class="text-xs sm:text-sm font-bold text-navy font-display">Target Butt Allocation</div>
+                  <div class="text-[11px] text-slate-500">{{ fopData.length }} Target Lines</div>
                 </div>
 
                 <div class="overflow-x-auto">
-                  <table class="w-full text-left text-sm sm:text-base text-navy">
+                  <table class="w-full text-left text-xs sm:text-sm text-navy">
                     <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
                       <tr>
-                        <th class="py-3.5 px-4 w-32">Target Butts</th>
-                        <th class="py-3.5 px-4">Division & Category</th>
-                        <th class="py-3.5 px-4 text-center w-28">Distance</th>
-                        <th class="py-3.5 px-4 text-center w-28">Target Face</th>
+                        <th class="py-3 px-3.5 w-28">Target Butts</th>
+                        <th class="py-3 px-3.5">Division & Category</th>
+                        <th class="py-3 px-3.5 text-center w-24">Distance</th>
+                        <th class="py-3 px-3.5 text-center w-24">Target Face</th>
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium">
                       <tr v-for="(f, fIdx) in fopData" :key="fIdx" class="hover:bg-slate-50/70 transition-colors">
-                        <td class="py-3.5 px-4 font-mono font-bold text-navy">{{ f.target_range || f.target || '-' }}</td>
-                        <td class="py-3.5 px-4 font-bold">{{ toTitleCase(f.category || f.division || 'All Classes') }}</td>
-                        <td class="py-3.5 px-4 text-center font-mono text-slate-600">{{ f.distance || '-' }}</td>
-                        <td class="py-3.5 px-4 text-center font-mono text-slate-600">{{ f.target_face || '-' }}</td>
+                        <td class="py-2.5 px-3.5 font-mono font-bold text-navy">{{ f.target_range || f.target || '-' }}</td>
+                        <td class="py-2.5 px-3.5 font-bold">{{ toTitleCase(f.category || f.division || 'All Classes') }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-mono text-slate-600">{{ f.distance || '-' }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-mono text-slate-600">{{ f.target_face || '-' }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -541,38 +533,38 @@
               </div>
 
               <!-- Clean Empty State for FOP -->
-              <div v-else class="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200/70 space-y-2">
-                <Icon icon="ph:map-trifold" class="text-4xl text-slate-400 mx-auto" />
-                <div class="text-sm sm:text-base font-bold text-navy">Field of Play Layout TBA</div>
-                <div class="text-xs sm:text-sm text-slate-500">Target line allocations and shooting distances will follow standard World Archery regulations at {{ toTitleCase(activeTournament?.location || 'the venue') }}.</div>
+              <div v-else class="p-6 text-center bg-slate-50 rounded-2xl border border-slate-200/70 space-y-1.5">
+                <Icon icon="ph:map-trifold" class="text-3xl text-slate-400 mx-auto" />
+                <div class="text-xs sm:text-sm font-bold text-navy">Field of Play Layout TBA</div>
+                <div class="text-[11px] text-slate-500">Target line allocations and shooting distances will follow standard World Archery regulations at {{ toTitleCase(activeTournament?.location || 'the venue') }}.</div>
               </div>
             </section>
 
             <!-- 5. QUALIFICATION SCORES & STANDINGS -->
-            <section id="results" class="scroll-mt-24 space-y-6">
-              <div class="flex items-center gap-3.5 border-b border-slate-100 pb-4">
-                <div class="size-11 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:ranking-bold" class="text-2xl text-indigo-600" />
+            <section id="results" class="scroll-mt-24 space-y-5">
+              <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
+                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                  <Icon icon="ph:ranking-bold" class="text-xl text-navy" />
                 </div>
                 <div>
-                  <h2 class="text-2xl sm:text-3xl font-bold text-navy font-display">
-                    Qualification Scores & Standings
+                  <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
+                    Qualification Scores
                   </h2>
-                  <p class="text-sm sm:text-base text-slate-500 mt-0.5">Official ranking leaderboards, distance scores, and 10s/Xs arrow counts.</p>
+                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Official ranking leaderboards, distance scores, and 10s/Xs arrow counts.</p>
                 </div>
               </div>
 
               <!-- Division & Category Switcher Container -->
-              <div class="p-4 rounded-2xl bg-slate-50/90 border border-slate-200/80 space-y-3">
+              <div class="p-3.5 rounded-2xl bg-slate-50/90 border border-slate-200/80 space-y-2.5">
                 <!-- Division Tabs -->
                 <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
-                  <span class="text-xs sm:text-sm font-bold text-slate-400 shrink-0 mr-1">Division:</span>
+                  <span class="text-xs font-bold text-slate-400 shrink-0 mr-1">Division:</span>
                   <button
                     v-for="div in availableDivisions"
                     :key="div"
                     @click="selectedDivision = div"
                     :class="[
-                      'px-3.5 py-1.5 rounded-xl text-sm font-semibold transition-all whitespace-nowrap shrink-0 cursor-pointer select-none',
+                      'px-3 py-1 rounded-xl text-xs font-semibold transition-all whitespace-nowrap shrink-0 cursor-pointer select-none',
                       selectedDivision === div
                         ? 'bg-navy text-primary shadow-xs font-bold'
                         : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200/70'
@@ -584,13 +576,13 @@
 
                 <!-- Category Pills -->
                 <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-2 border-t border-slate-200/70">
-                  <span class="text-xs sm:text-sm font-bold text-slate-400 shrink-0 mr-1">Category:</span>
+                  <span class="text-xs font-bold text-slate-400 shrink-0 mr-1">Category:</span>
                   <button
                     v-for="cat in visibleCategories"
                     :key="cat.rawKey"
                     @click="selectedCategoryKey = cat.rawKey"
                     :class="[
-                      'px-3.5 py-1.5 rounded-xl text-sm font-semibold transition-all whitespace-nowrap shrink-0 cursor-pointer select-none border',
+                      'px-3 py-1 rounded-xl text-xs font-semibold transition-all whitespace-nowrap shrink-0 cursor-pointer select-none border',
                       selectedCategoryKey === cat.rawKey
                         ? 'bg-navy text-primary border-navy shadow-xs font-bold'
                         : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200/80'
@@ -603,77 +595,77 @@
 
               <!-- Qualification Table Card with Interactive Sorting -->
               <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
-                <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/80">
+                <div class="p-3.5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/80">
                   <div>
-                    <h3 class="text-sm sm:text-base font-bold text-navy font-display">
+                    <h3 class="text-xs sm:text-sm font-bold text-navy font-display">
                       {{ currentCategoryLabel }} - Leaderboard
                     </h3>
-                    <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
+                    <div class="text-[11px] text-slate-500 mt-0.5">
                       Showing {{ currentCategoryQuals.length }} registered archers
                     </div>
                   </div>
 
                   <!-- Search Input -->
-                  <div class="relative w-full sm:w-64">
-                    <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
+                  <div class="relative w-full sm:w-60">
+                    <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
                     <input 
                       v-model="resultsSearchQuery"
                       type="text" 
                       placeholder="Search archer or club..."
-                      class="w-full pl-9 pr-3.5 py-2 bg-white border border-slate-200 rounded-xl text-sm text-navy placeholder:text-slate-400 focus:outline-hidden focus:border-navy"
+                      class="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-navy placeholder:text-slate-400 focus:outline-hidden focus:border-navy"
                     />
                   </div>
                 </div>
 
                 <!-- Interactive Sortable Table -->
                 <div class="overflow-x-auto">
-                  <table class="w-full text-left text-sm sm:text-base text-navy">
+                  <table class="w-full text-left text-xs sm:text-sm text-navy">
                     <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 select-none">
                       <tr>
-                        <th @click="handleSortQual('rank')" class="py-3.5 px-4 w-20 text-center cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1.5">
+                        <th @click="handleSortQual('rank')" class="py-3 px-3.5 w-16 text-center cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1">
                             <span>Rank</span>
                             <Icon :icon="getSortIcon('rank', qualSortKey, qualSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortQual('name')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1.5">
+                        <th @click="handleSortQual('name')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
                             <span>Archer Name</span>
                             <Icon :icon="getSortIcon('name', qualSortKey, qualSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortQual('club')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1.5">
+                        <th @click="handleSortQual('club')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
                             <span>Club / Contingent</span>
                             <Icon :icon="getSortIcon('club', qualSortKey, qualSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortQual('d1')" class="py-3.5 px-4 text-center w-24 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1.5">
+                        <th @click="handleSortQual('d1')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1">
                             <span>Dist 1</span>
                             <Icon :icon="getSortIcon('d1', qualSortKey, qualSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortQual('d2')" class="py-3.5 px-4 text-center w-24 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1.5">
+                        <th @click="handleSortQual('d2')" class="py-3 px-3.5 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1">
                             <span>Dist 2</span>
                             <Icon :icon="getSortIcon('d2', qualSortKey, qualSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortQual('tens')" class="py-3.5 px-4 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1.5">
+                        <th @click="handleSortQual('tens')" class="py-3 px-3.5 text-center w-16 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1">
                             <span>10+X</span>
                             <Icon :icon="getSortIcon('tens', qualSortKey, qualSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortQual('x_count')" class="py-3.5 px-4 text-center w-20 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center justify-center gap-1.5">
+                        <th @click="handleSortQual('x_count')" class="py-3 px-3.5 text-center w-16 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center justify-center gap-1">
                             <span>X</span>
                             <Icon :icon="getSortIcon('x_count', qualSortKey, qualSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortQual('score')" class="py-3.5 px-4 text-center w-24 font-bold bg-slate-100/80 cursor-pointer hover:bg-slate-200/80 transition-colors">
-                          <div class="flex items-center justify-center gap-1.5">
+                        <th @click="handleSortQual('score')" class="py-3 px-3.5 text-center w-20 font-bold bg-slate-100/80 cursor-pointer hover:bg-slate-200/80 transition-colors">
+                          <div class="flex items-center justify-center gap-1">
                             <span>Total</span>
                             <Icon :icon="getSortIcon('score', qualSortKey, qualSortAsc)" class="text-xs text-slate-400" />
                           </div>
@@ -682,22 +674,22 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium">
                       <tr v-for="(row, rIdx) in sortedFilteredCategoryQuals" :key="rIdx" class="hover:bg-slate-50/70 transition-colors">
-                        <td class="py-3.5 px-4 text-center font-bold">
-                          <span v-if="row.rank == 1" class="inline-flex size-7 rounded-full bg-amber-100 text-amber-800 font-bold items-center justify-center text-sm">1</span>
-                          <span v-else-if="row.rank == 2" class="inline-flex size-7 rounded-full bg-slate-200 text-slate-800 font-bold items-center justify-center text-sm">2</span>
-                          <span v-else-if="row.rank == 3" class="inline-flex size-7 rounded-full bg-amber-200/70 text-amber-900 font-bold items-center justify-center text-sm">3</span>
+                        <td class="py-2.5 px-3.5 text-center font-bold">
+                          <span v-if="row.rank == 1" class="inline-flex size-6 rounded-full bg-amber-100 text-amber-800 font-bold items-center justify-center text-xs">1</span>
+                          <span v-else-if="row.rank == 2" class="inline-flex size-6 rounded-full bg-slate-200 text-slate-800 font-bold items-center justify-center text-xs">2</span>
+                          <span v-else-if="row.rank == 3" class="inline-flex size-6 rounded-full bg-amber-200/70 text-amber-900 font-bold items-center justify-center text-xs">3</span>
                           <span v-else class="text-slate-500 font-mono">{{ row.rank }}</span>
                         </td>
-                        <td class="py-3.5 px-4 font-bold text-navy">{{ toTitleCase(row.name) }}</td>
-                        <td class="py-3.5 px-4 text-slate-600">{{ toTitleCase(row.club) }}</td>
-                        <td class="py-3.5 px-4 text-center font-mono text-slate-600">{{ row.d1 || row.distance_1 || '-' }}</td>
-                        <td class="py-3.5 px-4 text-center font-mono text-slate-600">{{ row.d2 || row.distance_2 || '-' }}</td>
-                        <td class="py-3.5 px-4 text-center font-mono text-slate-600">{{ row.tens ?? '-' }}</td>
-                        <td class="py-3.5 px-4 text-center font-mono text-slate-600">{{ row.x_count ?? row.xs ?? '-' }}</td>
-                        <td class="py-3.5 px-4 text-center font-bold bg-slate-50 text-navy font-mono">{{ row.score || row.total_score || '-' }}</td>
+                        <td class="py-2.5 px-3.5 font-bold text-navy">{{ toTitleCase(row.name) }}</td>
+                        <td class="py-2.5 px-3.5 text-slate-600">{{ toTitleCase(row.club) }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-mono text-slate-600">{{ row.d1 || row.distance_1 || '-' }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-mono text-slate-600">{{ row.d2 || row.distance_2 || '-' }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-mono text-slate-600">{{ row.tens ?? '-' }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-mono text-slate-600">{{ row.x_count ?? row.xs ?? '-' }}</td>
+                        <td class="py-2.5 px-3.5 text-center font-bold bg-slate-50 text-navy font-mono">{{ row.score || row.total_score || '-' }}</td>
                       </tr>
                       <tr v-if="sortedFilteredCategoryQuals.length === 0">
-                        <td colspan="8" class="py-10 text-center text-slate-400 italic">
+                        <td colspan="8" class="py-8 text-center text-slate-400 italic">
                           No qualification scores found for this category.
                         </td>
                       </tr>
@@ -708,34 +700,34 @@
             </section>
 
             <!-- 6. ELIMINATION BRACKETS -->
-            <section id="brackets" class="scroll-mt-24 space-y-6">
-              <div class="flex items-center gap-3.5 border-b border-slate-100 pb-4">
-                <div class="size-11 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:sword-bold" class="text-2xl text-rose-600" />
+            <section id="brackets" class="scroll-mt-24 space-y-5">
+              <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
+                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                  <Icon icon="ph:sword-bold" class="text-xl text-navy" />
                 </div>
                 <div>
-                  <h2 class="text-2xl sm:text-3xl font-bold text-navy font-display">
+                  <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
                     Elimination Brackets
                   </h2>
-                  <p class="text-sm sm:text-base text-slate-500 mt-0.5">Head-to-head knockout matches, set scores, and medal match trees.</p>
+                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Head-to-head knockout matches, set scores, and medal match trees.</p>
                 </div>
               </div>
 
-              <div v-if="structuredBracketTree.rounds.length > 0 || structuredBracketTree.finals.length > 0" class="border border-slate-200/80 rounded-2xl p-6 overflow-x-auto shadow-xs">
-                <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-                  <span class="text-sm sm:text-base font-bold text-navy font-display">{{ currentCategoryLabel }} - Elimination Tree</span>
-                  <span class="text-xs sm:text-sm text-slate-500">Click any card to open scorecard</span>
+              <div v-if="structuredBracketTree.rounds.length > 0 || structuredBracketTree.finals.length > 0" class="border border-slate-200/80 rounded-2xl p-5 overflow-x-auto shadow-xs">
+                <div class="flex items-center justify-between pb-3.5 border-b border-slate-100">
+                  <span class="text-xs sm:text-sm font-bold text-navy font-display">{{ currentCategoryLabel }} - Elimination Tree</span>
+                  <span class="text-[11px] text-slate-500">Click card to open scorecard</span>
                 </div>
 
                 <!-- Bracket Grid with Connecting Trees -->
-                <div class="flex items-stretch gap-8 min-w-[700px] pt-6 pb-2">
+                <div class="flex items-stretch gap-6 min-w-[650px] pt-4 pb-2">
                   <!-- Earlier Elimination Rounds (QF, SF) -->
                   <div 
                     v-for="(rnd, rIdx) in structuredBracketTree.rounds" 
                     :key="rIdx" 
-                    class="flex-1 flex flex-col justify-around space-y-6 relative"
+                    class="flex-1 flex flex-col justify-around space-y-4 relative"
                   >
-                    <div class="text-center font-bold text-xs sm:text-sm text-slate-600 font-display uppercase tracking-wider pb-2 border-b border-slate-100">
+                    <div class="text-center font-bold text-xs text-slate-600 font-display uppercase tracking-wider pb-1.5 border-b border-slate-100">
                       {{ rnd.roundTitle }}
                     </div>
 
@@ -743,35 +735,35 @@
                       v-for="(match, mIdx) in rnd.matches" 
                       :key="mIdx"
                       @click="openScorecard(match, rnd.roundTitle)"
-                      class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:border-navy/50 hover:bg-white transition-all cursor-pointer shadow-xs relative group space-y-2"
+                      class="p-3 rounded-xl border border-slate-200 bg-slate-50/70 hover:border-navy/50 hover:bg-white transition-all cursor-pointer shadow-xs relative group space-y-1.5"
                     >
                       <!-- Competitor A -->
                       <div class="flex items-center justify-between gap-2">
-                        <div class="flex items-center gap-2 truncate">
-                          <span class="text-xs text-slate-400 font-mono">#{{ match.seed_a || '1' }}</span>
-                          <span :class="['text-xs sm:text-sm truncate font-medium', isMatchWinner(match.score_a, match.score_b) ? 'font-bold text-navy' : 'text-slate-600']">
+                        <div class="flex items-center gap-1.5 truncate">
+                          <span class="text-[11px] text-slate-400 font-mono">#{{ match.seed_a || '1' }}</span>
+                          <span :class="['text-xs truncate font-medium', isMatchWinner(match.score_a, match.score_b) ? 'font-bold text-navy' : 'text-slate-600']">
                             {{ toTitleCase(match.archer_a || match.name_a || 'TBD') }}
                           </span>
                         </div>
-                        <span class="font-mono font-bold text-xs sm:text-sm px-2 py-0.5 rounded bg-white border border-slate-200 text-navy">{{ match.score_a ?? '-' }}</span>
+                        <span class="font-mono font-bold text-xs px-1.5 py-0.5 rounded bg-white border border-slate-200 text-navy">{{ match.score_a ?? '-' }}</span>
                       </div>
 
                       <!-- Competitor B -->
-                      <div class="flex items-center justify-between gap-2 border-t border-slate-200/60 pt-2">
-                        <div class="flex items-center gap-2 truncate">
-                          <span class="text-xs text-slate-400 font-mono">#{{ match.seed_b || '2' }}</span>
-                          <span :class="['text-xs sm:text-sm truncate font-medium', isMatchWinner(match.score_b, match.score_a) ? 'font-bold text-navy' : 'text-slate-600']">
+                      <div class="flex items-center justify-between gap-2 border-t border-slate-200/60 pt-1.5">
+                        <div class="flex items-center gap-1.5 truncate">
+                          <span class="text-[11px] text-slate-400 font-mono">#{{ match.seed_b || '2' }}</span>
+                          <span :class="['text-xs truncate font-medium', isMatchWinner(match.score_b, match.score_a) ? 'font-bold text-navy' : 'text-slate-600']">
                             {{ toTitleCase(match.archer_b || match.name_b || 'TBD') }}
                           </span>
                         </div>
-                        <span class="font-mono font-bold text-xs sm:text-sm px-2 py-0.5 rounded bg-white border border-slate-200 text-navy">{{ match.score_b ?? '-' }}</span>
+                        <span class="font-mono font-bold text-xs px-1.5 py-0.5 rounded bg-white border border-slate-200 text-navy">{{ match.score_b ?? '-' }}</span>
                       </div>
                     </div>
                   </div>
 
                   <!-- Finals Column -->
-                  <div v-if="structuredBracketTree.finals.length > 0" class="flex-1 flex flex-col justify-around space-y-6">
-                    <div class="text-center font-bold text-xs sm:text-sm text-amber-700 font-display uppercase tracking-wider pb-2 border-b border-amber-100">
+                  <div v-if="structuredBracketTree.finals.length > 0" class="flex-1 flex flex-col justify-around space-y-4">
+                    <div class="text-center font-bold text-xs text-amber-700 font-display uppercase tracking-wider pb-1.5 border-b border-amber-100">
                       Medal Matches
                     </div>
 
@@ -780,31 +772,31 @@
                       :key="fIdx"
                       @click="openScorecard(fMatch, fMatch.is_bronze ? 'Bronze Medal Match' : 'Gold Medal Match')"
                       :class="[
-                        'p-4 rounded-xl border transition-all cursor-pointer shadow-xs space-y-2.5',
+                        'p-3.5 rounded-xl border transition-all cursor-pointer shadow-xs space-y-2',
                         fMatch.is_bronze 
                           ? 'border-amber-200 bg-amber-50/50 hover:bg-white' 
                           : 'border-amber-300 bg-amber-50 hover:bg-white shadow-sm'
                       ]"
                     >
-                      <div class="flex items-center justify-between text-xs font-bold text-amber-800">
+                      <div class="flex items-center justify-between text-[11px] font-bold text-amber-800">
                         <span>{{ fMatch.is_bronze ? 'Bronze Match' : 'Gold Final' }}</span>
-                        <Icon :icon="fMatch.is_bronze ? 'ph:medal-fill' : 'ph:trophy-fill'" class="text-base text-amber-500" />
+                        <Icon :icon="fMatch.is_bronze ? 'ph:medal-fill' : 'ph:trophy-fill'" class="text-sm text-amber-500" />
                       </div>
 
                       <!-- Archer A -->
                       <div class="flex items-center justify-between gap-2">
-                        <span :class="['text-xs sm:text-sm truncate font-medium', isMatchWinner(fMatch.score_a, fMatch.score_b) ? 'font-bold text-navy' : 'text-slate-600']">
+                        <span :class="['text-xs truncate font-medium', isMatchWinner(fMatch.score_a, fMatch.score_b) ? 'font-bold text-navy' : 'text-slate-600']">
                           {{ toTitleCase(fMatch.archer_a || fMatch.name_a || 'TBD') }}
                         </span>
-                        <span class="font-mono font-bold text-xs sm:text-sm px-2 py-0.5 rounded bg-white border border-slate-200 text-navy">{{ fMatch.score_a ?? '-' }}</span>
+                        <span class="font-mono font-bold text-xs px-1.5 py-0.5 rounded bg-white border border-slate-200 text-navy">{{ fMatch.score_a ?? '-' }}</span>
                       </div>
 
                       <!-- Archer B -->
-                      <div class="flex items-center justify-between gap-2 border-t border-slate-200/60 pt-2">
-                        <span :class="['text-xs sm:text-sm truncate font-medium', isMatchWinner(fMatch.score_b, fMatch.score_a) ? 'font-bold text-navy' : 'text-slate-600']">
+                      <div class="flex items-center justify-between gap-2 border-t border-slate-200/60 pt-1.5">
+                        <span :class="['text-xs truncate font-medium', isMatchWinner(fMatch.score_b, fMatch.score_a) ? 'font-bold text-navy' : 'text-slate-600']">
                           {{ toTitleCase(fMatch.archer_b || fMatch.name_b || 'TBD') }}
                         </span>
-                        <span class="font-mono font-bold text-xs sm:text-sm px-2 py-0.5 rounded bg-white border border-slate-200 text-navy">{{ fMatch.score_b ?? '-' }}</span>
+                        <span class="font-mono font-bold text-xs px-1.5 py-0.5 rounded bg-white border border-slate-200 text-navy">{{ fMatch.score_b ?? '-' }}</span>
                       </div>
                     </div>
                   </div>
@@ -812,44 +804,44 @@
               </div>
 
               <!-- Empty State for Brackets -->
-              <div v-else class="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200/70 space-y-2">
-                <Icon icon="ph:sword" class="text-4xl text-slate-400 mx-auto" />
-                <div class="text-sm sm:text-base font-bold text-navy">No Elimination Matches Scheduled</div>
-                <div class="text-xs sm:text-sm text-slate-500">Elimination brackets will be generated following qualification round completions.</div>
+              <div v-else class="p-6 text-center bg-slate-50 rounded-2xl border border-slate-200/70 space-y-1.5">
+                <Icon icon="ph:sword" class="text-3xl text-slate-400 mx-auto" />
+                <div class="text-xs sm:text-sm font-bold text-navy">No Elimination Matches Scheduled</div>
+                <div class="text-[11px] text-slate-500">Elimination brackets will be generated following qualification round completions.</div>
               </div>
             </section>
 
-            <!-- 7. ATHLETE & CLUB DIRECTORY -->
-            <section id="athletes" class="scroll-mt-24 space-y-6">
-              <div class="flex items-center gap-3.5 border-b border-slate-100 pb-4">
-                <div class="size-11 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center font-bold shrink-0">
-                  <Icon icon="ph:users-three-bold" class="text-2xl text-purple-600" />
+            <!-- 7. ATHLETES (SIMPLIFIED WORDING) -->
+            <section id="athletes" class="scroll-mt-24 space-y-5">
+              <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
+                <div class="size-10 rounded-xl bg-navy/5 text-navy border border-navy/10 flex items-center justify-center font-bold shrink-0">
+                  <Icon icon="ph:users-three-bold" class="text-xl text-navy" />
                 </div>
                 <div>
-                  <h2 class="text-2xl sm:text-3xl font-bold text-navy font-display">
-                    Athlete & Club Directory
+                  <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
+                    Athletes & Clubs
                   </h2>
-                  <p class="text-sm sm:text-base text-slate-500 mt-0.5">Complete participant roster, target assignments, and club affiliations.</p>
+                  <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Complete participant roster, target assignments, and club affiliations.</p>
                 </div>
               </div>
 
               <!-- Directory Controls -->
               <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-xs">
-                <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/80">
-                  <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-                    <div class="relative w-full sm:w-64">
-                      <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
+                <div class="p-3.5 border-b border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/80">
+                  <div class="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
+                    <div class="relative w-full sm:w-60">
+                      <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
                       <input 
                         v-model="entriesSearchQuery"
                         type="text" 
                         placeholder="Search athlete, club, bib..."
-                        class="w-full pl-9 pr-3.5 py-2 bg-white border border-slate-200 rounded-xl text-sm text-navy placeholder:text-slate-400 focus:outline-hidden focus:border-navy"
+                        class="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-navy placeholder:text-slate-400 focus:outline-hidden focus:border-navy"
                       />
                     </div>
 
                     <select 
                       v-model="entriesClubFilter"
-                      class="w-full sm:w-56 px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-sm text-navy font-medium focus:outline-hidden focus:border-navy"
+                      class="w-full sm:w-52 px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-navy font-medium focus:outline-hidden focus:border-navy"
                     >
                       <option v-for="opt in entriesClubSelectOptions" :key="opt.value" :value="opt.value">
                         {{ opt.label }}
@@ -857,42 +849,42 @@
                     </select>
                   </div>
 
-                  <div class="text-xs sm:text-sm text-slate-500 self-end sm:self-center">
+                  <div class="text-[11px] text-slate-500 self-end sm:self-center">
                     Showing {{ paginatedEntriesData.length }} of {{ processedEntriesData.length }} athletes
                   </div>
                 </div>
 
                 <!-- Sortable Athlete Table -->
                 <div class="overflow-x-auto">
-                  <table class="w-full text-left text-sm sm:text-base text-navy">
+                  <table class="w-full text-left text-xs sm:text-sm text-navy">
                     <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 select-none">
                       <tr>
-                        <th @click="handleSortEntries('target')" class="py-3.5 px-4 w-24 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1.5">
+                        <th @click="handleSortEntries('target')" class="py-3 px-3.5 w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
                             <span>Target</span>
                             <Icon :icon="getSortIcon('target', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortEntries('bib')" class="py-3.5 px-4 w-24 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1.5">
+                        <th @click="handleSortEntries('bib')" class="py-3 px-3.5 w-20 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
                             <span>Bib</span>
                             <Icon :icon="getSortIcon('bib', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortEntries('name')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1.5">
+                        <th @click="handleSortEntries('name')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
                             <span>Athlete Name</span>
                             <Icon :icon="getSortIcon('name', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortEntries('club')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1.5">
+                        <th @click="handleSortEntries('club')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
                             <span>Club / Contingent</span>
                             <Icon :icon="getSortIcon('club', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
                           </div>
                         </th>
-                        <th @click="handleSortEntries('category')" class="py-3.5 px-4 cursor-pointer hover:bg-slate-100 transition-colors">
-                          <div class="flex items-center gap-1.5">
+                        <th @click="handleSortEntries('category')" class="py-3 px-3.5 cursor-pointer hover:bg-slate-100 transition-colors">
+                          <div class="flex items-center gap-1">
                             <span>Category</span>
                             <Icon :icon="getSortIcon('category', entriesSortKey, entriesSortAsc)" class="text-xs text-slate-400" />
                           </div>
@@ -901,14 +893,14 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-medium">
                       <tr v-for="(entry, eIdx) in paginatedEntriesData" :key="eIdx" class="hover:bg-slate-50/70 transition-colors">
-                        <td class="py-3.5 px-4 font-mono font-bold text-navy">{{ entry.target || '-' }}</td>
-                        <td class="py-3.5 px-4 font-mono text-slate-500">{{ entry.bib || '-' }}</td>
-                        <td class="py-3.5 px-4 font-bold text-navy">{{ toTitleCase(entry.name) }}</td>
-                        <td class="py-3.5 px-4 text-slate-600">{{ toTitleCase(entry.club) }}</td>
-                        <td class="py-3.5 px-4 text-slate-600">{{ toTitleCase(entry.category || '-') }}</td>
+                        <td class="py-2.5 px-3.5 font-mono font-bold text-navy">{{ entry.target || '-' }}</td>
+                        <td class="py-2.5 px-3.5 font-mono text-slate-500">{{ entry.bib || '-' }}</td>
+                        <td class="py-2.5 px-3.5 font-bold text-navy">{{ toTitleCase(entry.name) }}</td>
+                        <td class="py-2.5 px-3.5 text-slate-600">{{ toTitleCase(entry.club) }}</td>
+                        <td class="py-2.5 px-3.5 text-slate-600">{{ toTitleCase(entry.category || '-') }}</td>
                       </tr>
                       <tr v-if="paginatedEntriesData.length === 0">
-                        <td colspan="5" class="py-10 text-center text-slate-400 italic">
+                        <td colspan="5" class="py-8 text-center text-slate-400 italic">
                           No athletes matched the current filter criteria.
                         </td>
                       </tr>
@@ -917,21 +909,21 @@
                 </div>
 
                 <!-- Pagination -->
-                <div v-if="totalEntriesPages > 1" class="p-4 border-t border-slate-100 bg-slate-50/70 flex items-center justify-between">
+                <div v-if="totalEntriesPages > 1" class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex items-center justify-between">
                   <button
                     :disabled="entriesCurrentPage === 1"
                     @click="entriesCurrentPage--"
-                    class="px-4 py-2 rounded-xl text-sm font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                   >
                     Previous
                   </button>
-                  <span class="text-xs sm:text-sm font-semibold text-slate-600">
+                  <span class="text-xs font-semibold text-slate-600">
                     Page {{ entriesCurrentPage }} of {{ totalEntriesPages }}
                   </span>
                   <button
                     :disabled="entriesCurrentPage === totalEntriesPages"
                     @click="entriesCurrentPage++"
-                    class="px-4 py-2 rounded-xl text-sm font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                    class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                   >
                     Next
                   </button>
@@ -941,11 +933,11 @@
 
           </div>
 
-          <!-- ── COLUMN 3: RIGHT INFOBOX (STICKY INSIDE UNIFIED CARD) ── -->
-          <aside class="col-span-12 lg:col-span-3 p-5 sm:p-6 bg-slate-50/20 lg:bg-transparent sticky top-24 self-start space-y-5">
+          <!-- ── COLUMN 3: RIGHT INFOBOX (STICKY TOP-24, NO OVERFLOW CLIPPING) ── -->
+          <aside class="col-span-12 lg:col-span-3 p-5 sm:p-6 bg-slate-50/30 lg:bg-transparent sticky top-24 self-start space-y-4 rounded-b-3xl lg:rounded-bl-none lg:rounded-r-3xl">
             <!-- Infobox Title & Subtitle -->
-            <div class="border-b border-slate-100 pb-3.5 text-center space-y-1">
-              <h3 class="text-base sm:text-lg font-bold text-navy font-display leading-snug">
+            <div class="border-b border-slate-100 pb-3 text-center space-y-1">
+              <h3 class="text-sm sm:text-base font-bold text-navy font-display leading-snug">
                 {{ toTitleCase(activeTournament?.name) }}
               </h3>
               <div class="inline-flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
@@ -956,44 +948,44 @@
 
             <!-- Wikipedia Style Metadata Table -->
             <div class="divide-y divide-slate-100 text-xs sm:text-sm">
-              <div class="py-2.5 flex items-start justify-between gap-3">
+              <div class="py-2 flex items-start justify-between gap-3">
                 <span class="text-slate-500 font-medium">Dates:</span>
                 <span class="text-navy font-bold text-right">{{ formatDateRange(activeTournament?.start_date, activeTournament?.end_date) }}</span>
               </div>
-              <div class="py-2.5 flex items-start justify-between gap-3">
+              <div class="py-2 flex items-start justify-between gap-3">
                 <span class="text-slate-500 font-medium">Venue:</span>
                 <span class="text-navy font-bold text-right">{{ toTitleCase(activeTournament?.location || activeTournament?.venue || 'Indonesia') }}</span>
               </div>
-              <div class="py-2.5 flex items-start justify-between gap-3">
+              <div class="py-2 flex items-start justify-between gap-3">
                 <span class="text-slate-500 font-medium">Host:</span>
                 <span class="text-navy font-bold text-right">{{ toTitleCase(activeTournamentData?.organizer_name || 'Host Committee') }}</span>
               </div>
-              <div class="py-2.5 flex items-start justify-between gap-3">
+              <div class="py-2 flex items-start justify-between gap-3">
                 <span class="text-slate-500 font-medium">Country:</span>
                 <span class="text-navy font-bold flex items-center gap-1.5 text-right">
-                  <Icon icon="circle-flags:id" class="text-base" />
+                  <Icon icon="circle-flags:id" class="text-sm" />
                   <span>Indonesia</span>
                 </span>
               </div>
-              <div class="py-2.5 flex items-start justify-between gap-3">
+              <div class="py-2 flex items-start justify-between gap-3">
                 <span class="text-slate-500 font-medium">Archers:</span>
                 <span class="text-navy font-bold text-right font-mono">{{ computedTotalArchers }}</span>
               </div>
-              <div class="py-2.5 flex items-start justify-between gap-3">
+              <div class="py-2 flex items-start justify-between gap-3">
                 <span class="text-slate-500 font-medium">Categories:</span>
                 <span class="text-navy font-bold text-right font-mono">{{ categoriesList.length }}</span>
               </div>
             </div>
 
             <!-- Handbook & External Link Actions -->
-            <div class="pt-2 space-y-2.5">
+            <div class="pt-1.5 space-y-2">
               <a 
                 :href="thbDocument?.url || ianseoUrl" 
                 target="_blank"
                 rel="nofollow noopener noreferrer"
-                class="w-full py-3 px-4 rounded-xl bg-primary hover:bg-primary-hover text-navy font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer"
+                class="w-full py-2.5 px-3.5 rounded-xl bg-primary hover:bg-primary-hover text-navy font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all shadow-sm cursor-pointer"
               >
-                <Icon icon="ph:file-pdf-bold" class="text-lg" />
+                <Icon icon="ph:file-pdf-bold" class="text-base" />
                 <span>Download Handbook</span>
               </a>
 
@@ -1001,9 +993,9 @@
                 :href="ianseoUrl" 
                 target="_blank" 
                 rel="nofollow noopener noreferrer"
-                class="w-full py-3 px-4 rounded-xl border border-slate-200/90 hover:bg-slate-50 text-navy font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
+                class="w-full py-2.5 px-3.5 rounded-xl border border-slate-200/90 hover:bg-slate-50 text-navy font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer"
               >
-                <Icon icon="ph:arrow-square-out-bold" class="text-base" />
+                <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
                 <span>View on Ianseo</span>
               </a>
             </div>
@@ -1019,51 +1011,51 @@
       class="fixed inset-0 z-50 bg-navy/70 backdrop-blur-xs flex items-center justify-center p-4"
       @click.self="closeScorecard"
     >
-      <div class="bg-white rounded-3xl border border-slate-200 max-w-lg w-full p-6 space-y-5 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-        <div class="flex items-center justify-between border-b border-slate-100 pb-3.5">
+      <div class="bg-white rounded-3xl border border-slate-200 max-w-md w-full p-5 space-y-4 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
           <div class="space-y-0.5">
-            <h3 class="text-base sm:text-lg font-bold text-navy font-display">{{ scorecardRoundTitle }}</h3>
-            <p class="text-xs text-slate-500">Official match arrow scorecard</p>
+            <h3 class="text-sm sm:text-base font-bold text-navy font-display">{{ scorecardRoundTitle }}</h3>
+            <p class="text-[11px] text-slate-500">Official match arrow scorecard</p>
           </div>
-          <button @click="closeScorecard" class="p-1.5 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-navy cursor-pointer">
-            <Icon icon="ph:x-bold" class="text-lg" />
+          <button @click="closeScorecard" class="p-1 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-navy cursor-pointer">
+            <Icon icon="ph:x-bold" class="text-base" />
           </button>
         </div>
 
-        <div class="space-y-4">
+        <div class="space-y-3">
           <!-- Competitor A Card -->
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1.5">
             <div class="flex items-center justify-between">
-              <span class="font-bold text-sm sm:text-base text-navy">{{ toTitleCase(selectedScorecardMatch.archer_a || selectedScorecardMatch.name_a || 'Archer A') }}</span>
-              <span class="text-base sm:text-lg font-mono font-black text-navy">{{ selectedScorecardMatch.score_a ?? '-' }}</span>
+              <span class="font-bold text-xs sm:text-sm text-navy">{{ toTitleCase(selectedScorecardMatch.archer_a || selectedScorecardMatch.name_a || 'Archer A') }}</span>
+              <span class="text-sm sm:text-base font-mono font-black text-navy">{{ selectedScorecardMatch.score_a ?? '-' }}</span>
             </div>
-            <div class="text-xs text-slate-500">{{ toTitleCase(selectedScorecardMatch.club_a || 'Club') }}</div>
-            <div v-if="selectedScorecardMatch.sets_a" class="flex gap-1.5 pt-1">
-              <span v-for="(s, idx) in selectedScorecardMatch.sets_a" :key="idx" class="px-2 py-0.5 rounded bg-white border border-slate-200 text-xs font-mono">
+            <div class="text-[11px] text-slate-500">{{ toTitleCase(selectedScorecardMatch.club_a || 'Club') }}</div>
+            <div v-if="selectedScorecardMatch.sets_a" class="flex gap-1 pt-0.5">
+              <span v-for="(s, idx) in selectedScorecardMatch.sets_a" :key="idx" class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] font-mono">
                 {{ s }}
               </span>
             </div>
           </div>
 
           <!-- Competitor B Card -->
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+          <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1.5">
             <div class="flex items-center justify-between">
-              <span class="font-bold text-sm sm:text-base text-navy">{{ toTitleCase(selectedScorecardMatch.archer_b || selectedScorecardMatch.name_b || 'Archer B') }}</span>
-              <span class="text-base sm:text-lg font-mono font-black text-navy">{{ selectedScorecardMatch.score_b ?? '-' }}</span>
+              <span class="font-bold text-xs sm:text-sm text-navy">{{ toTitleCase(selectedScorecardMatch.archer_b || selectedScorecardMatch.name_b || 'Archer B') }}</span>
+              <span class="text-sm sm:text-base font-mono font-black text-navy">{{ selectedScorecardMatch.score_b ?? '-' }}</span>
             </div>
-            <div class="text-xs text-slate-500">{{ toTitleCase(selectedScorecardMatch.club_b || 'Club') }}</div>
-            <div v-if="selectedScorecardMatch.sets_b" class="flex gap-1.5 pt-1">
-              <span v-for="(s, idx) in selectedScorecardMatch.sets_b" :key="idx" class="px-2 py-0.5 rounded bg-white border border-slate-200 text-xs font-mono">
+            <div class="text-[11px] text-slate-500">{{ toTitleCase(selectedScorecardMatch.club_b || 'Club') }}</div>
+            <div v-if="selectedScorecardMatch.sets_b" class="flex gap-1 pt-0.5">
+              <span v-for="(s, idx) in selectedScorecardMatch.sets_b" :key="idx" class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] font-mono">
                 {{ s }}
               </span>
             </div>
           </div>
         </div>
 
-        <div class="pt-2">
+        <div class="pt-1">
           <button 
             @click="closeScorecard" 
-            class="w-full py-3 rounded-xl bg-navy text-white font-bold text-sm hover:bg-navy/90 cursor-pointer transition-colors"
+            class="w-full py-2.5 rounded-xl bg-navy text-white font-bold text-xs hover:bg-navy/90 cursor-pointer transition-colors"
           >
             Close Scorecard
           </button>
@@ -1095,13 +1087,13 @@ const scrollProgress = ref(0)
 const activeSectionId = ref('overview')
 
 const navigationSections = [
-  { id: 'overview', title: 'Overview & Facts', icon: 'ph:info-bold' },
+  { id: 'overview', title: 'Tournament Overview', icon: 'ph:info-bold' },
   { id: 'medals', title: 'Medal Standings', icon: 'ph:trophy-bold' },
   { id: 'schedule', title: 'Competition Schedule', icon: 'ph:calendar-blank-bold' },
   { id: 'fop', title: 'Field of Play', icon: 'ph:crosshair-bold' },
   { id: 'results', title: 'Qualification Scores', icon: 'ph:ranking-bold' },
   { id: 'brackets', title: 'Elimination Brackets', icon: 'ph:sword-bold' },
-  { id: 'athletes', title: 'Athlete Directory', icon: 'ph:users-three-bold' }
+  { id: 'athletes', title: 'Athletes & Clubs', icon: 'ph:users-three-bold' }
 ]
 
 function updateScrollSpy() {
@@ -1381,115 +1373,6 @@ function getArcherInitials(name) {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
 
-// HTML5 Canvas Podium Generator & Image Export
-function exportPodiumToImage() {
-  if (typeof window === 'undefined' || !currentPodiumCategoryData.value) return
-  
-  const canvas = document.createElement('canvas')
-  canvas.width = 1200
-  canvas.height = 630
-  const ctx = canvas.getContext('2d')
-  if (!ctx) return
-
-  const data = currentPodiumCategoryData.value
-  const tName = activeTournament.value?.name || 'Archery Championship'
-  const catName = toTitleCase(data.category)
-
-  // 1. Background Gradient (Archeris Navy)
-  const bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
-  bgGrad.addColorStop(0, '#0A192F')
-  bgGrad.addColorStop(1, '#020C1B')
-  ctx.fillStyle = bgGrad
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-  // Accent circles
-  ctx.beginPath()
-  ctx.arc(canvas.width / 2, 80, 260, 0, Math.PI * 2)
-  ctx.fillStyle = 'rgba(217, 255, 0, 0.04)'
-  ctx.fill()
-
-  // 2. Header / Tournament Details
-  ctx.fillStyle = '#D9FF00'
-  ctx.font = 'bold 18px sans-serif'
-  ctx.textAlign = 'center'
-  ctx.fillText('ARCHERIS OFFICIAL PODIUM FINISH', canvas.width / 2, 60)
-
-  ctx.fillStyle = '#FFFFFF'
-  ctx.font = 'bold 32px sans-serif'
-  ctx.fillText(tName.substring(0, 50), canvas.width / 2, 105)
-
-  ctx.fillStyle = '#94A3B8'
-  ctx.font = 'bold 22px sans-serif'
-  ctx.fillText(catName, canvas.width / 2, 142)
-
-  // 3. Podium Blocks Helper
-  const drawPodiumBlock = (x, y, w, h, rank, name, club, score, color, label) => {
-    // Pillar
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)'
-    ctx.strokeStyle = color
-    ctx.lineWidth = 2
-    ctx.beginPath()
-    ctx.roundRect(x, y, w, h, [16, 16, 0, 0])
-    ctx.fill()
-    ctx.stroke()
-
-    // Rank Circle Badge
-    ctx.fillStyle = color
-    ctx.beginPath()
-    ctx.arc(x + w / 2, y - 40, 36, 0, Math.PI * 2)
-    ctx.fill()
-
-    ctx.fillStyle = '#0A192F'
-    ctx.font = 'bold 30px sans-serif'
-    ctx.textAlign = 'center'
-    ctx.fillText(String(rank), x + w / 2, y - 30)
-
-    // Name
-    ctx.fillStyle = '#FFFFFF'
-    ctx.font = 'bold 20px sans-serif'
-    ctx.fillText(name.substring(0, 20), x + w / 2, y + 45)
-
-    // Club
-    ctx.fillStyle = '#94A3B8'
-    ctx.font = '14px sans-serif'
-    ctx.fillText(club.substring(0, 24), x + w / 2, y + 72)
-
-    // Score / Badge
-    ctx.fillStyle = color
-    ctx.font = 'bold 16px sans-serif'
-    ctx.fillText(label, x + w / 2, y + 105)
-    if (score) {
-      ctx.fillStyle = '#FFFFFF'
-      ctx.font = 'bold 18px sans-serif'
-      ctx.fillText(`Score: ${score}`, x + w / 2, y + 130)
-    }
-  }
-
-  // 2nd Place Silver (Left)
-  const silverName = toTitleCase(data.silver?.name || 'TBD')
-  const silverClub = toTitleCase(data.silver?.club || 'Club')
-  const silverScore = data.silver?.score || data.silver?.total_score || ''
-  drawPodiumBlock(140, 320, 280, 230, 2, silverName, silverClub, silverScore, '#CBD5E1', 'SILVER MEDAL')
-
-  // 1st Place Gold Champion (Middle - Higher)
-  const goldName = toTitleCase(data.gold?.name || 'Champion')
-  const goldClub = toTitleCase(data.gold?.club || 'Club')
-  const goldScore = data.gold?.score || data.gold?.total_score || ''
-  drawPodiumBlock(460, 250, 280, 300, 1, goldName, goldClub, goldScore, '#F59E0B', 'GOLD CHAMPION')
-
-  // 3rd Place Bronze (Right)
-  const bronzeName = toTitleCase(data.bronze?.name || 'TBD')
-  const bronzeClub = toTitleCase(data.bronze?.club || 'Club')
-  const bronzeScore = data.bronze?.score || data.bronze?.total_score || ''
-  drawPodiumBlock(780, 360, 280, 190, 3, bronzeName, bronzeClub, bronzeScore, '#D97706', 'BRONZE MEDAL')
-
-  // 4. Trigger Download
-  const link = document.createElement('a')
-  link.download = `Podium_${tName.replace(/\s+/g, '_')}_${catName.replace(/\s+/g, '_')}.png`
-  link.href = canvas.toDataURL('image/png')
-  link.click()
-}
-
 // ── Schedule & Field of Play (Separated) ──
 const scheduleData = computed(() => activeTournamentData.value?.schedule || [])
 const activeScheduleDayIndex = ref(0)
@@ -1563,7 +1446,7 @@ function closeScorecard() {
   selectedScorecardMatch.value = null
 }
 
-// ── Entries / Athletes (With full extraction from qualifications) ──
+// ── Entries / Athletes (Cleaned & Aggregated) ──
 const rawEntries = computed(() => activeTournamentData.value?.entries || [])
 
 const allExtractedAthletes = computed(() => {
