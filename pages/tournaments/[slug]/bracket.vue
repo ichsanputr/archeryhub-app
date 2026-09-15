@@ -1,45 +1,7 @@
 <template>
   <div class="min-h-screen bg-slate-100 flex flex-col font-sans">
-    <!-- Top Header Bar -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xs">
-      <div class="flex items-center gap-3">
-        <NuxtLink 
-          :to="`/tournaments/${slug}`" 
-          class="size-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center transition-colors cursor-pointer"
-          title="Back to Tournament"
-        >
-          <Icon icon="ph:arrow-left-bold" class="text-base" />
-        </NuxtLink>
-
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-sm sm:text-base font-bold text-navy font-display truncate max-w-[200px] sm:max-w-md">
-              {{ toTitleCase(tournament?.name || 'Tournament Bracket') }}
-            </h1>
-            <span class="px-2 py-0.5 rounded-full bg-primary/20 text-navy text-[10px] font-bold">
-              Elimination Bracket
-            </span>
-          </div>
-          <div class="text-[11px] text-slate-500 font-medium truncate">
-            {{ toTitleCase(tournament?.location || tournament?.venue || 'Indonesia') }}
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="flex items-center gap-2">
-        <NuxtLink 
-          :to="`/tournaments/${slug}`" 
-          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors"
-        >
-          <Icon icon="ph:arrow-left" class="text-xs" />
-          <span>Full Details</span>
-        </NuxtLink>
-      </div>
-    </header>
-
     <!-- Main Content Area -->
-    <main class="flex-1 p-4 sm:p-6 flex flex-col space-y-4 max-w-[1920px] w-full mx-auto">
+    <main class="flex-1 p-3 sm:p-6 flex flex-col space-y-3 sm:space-y-4 max-w-[1920px] w-full mx-auto">
       <!-- Loading State -->
       <div v-if="isLoading" class="flex-1 flex items-center justify-center py-32">
         <div class="flex flex-col items-center gap-3">
@@ -67,9 +29,17 @@
 
       <!-- Loaded Content -->
       <template v-else>
-        <!-- Category Filter Pills Bar -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-3 shadow-2xs flex items-center justify-between gap-3 overflow-hidden">
-          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+        <!-- Category Filter Pills Bar with Compact Back Button -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-2.5 sm:p-3 shadow-2xs flex items-center justify-between gap-2.5 sm:gap-3 overflow-hidden">
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 w-full">
+            <NuxtLink 
+              :to="`/tournaments/${slug}`" 
+              class="size-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center shrink-0 transition-colors cursor-pointer"
+              title="Back to Tournament"
+            >
+              <Icon icon="ph:arrow-left-bold" class="text-sm" />
+            </NuxtLink>
+
             <span class="text-xs font-bold text-slate-400 pl-1 shrink-0">Category:</span>
             <button
               v-for="cat in availableBracketCategories"
@@ -88,7 +58,7 @@
         </div>
 
         <!-- Elimination Bracket Viewer Component -->
-        <div class="flex-1 bg-white rounded-3xl border border-slate-200 p-4 sm:p-6 shadow-sm overflow-hidden flex flex-col">
+        <div class="flex-1 bg-white rounded-3xl border border-slate-200 p-3 sm:p-6 shadow-sm overflow-hidden flex flex-col">
           <ExternalEliminationBracket
             v-if="hasCurrentBracketRounds"
             :rounds="currentArcherisBracketRounds"

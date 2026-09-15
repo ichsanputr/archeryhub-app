@@ -40,7 +40,6 @@
                   <!-- Card Micro-Header -->
                   <div class="flex items-center justify-between px-3 py-1.5 bg-slate-50/80 border-b border-slate-100 text-[11px] font-semibold text-slate-500">
                     <div class="flex items-center gap-1.5">
-                      <span class="size-1.5 rounded-full" :class="match.winner_entry_id ? 'bg-emerald-500' : 'bg-slate-300'"></span>
                       <span>Match {{ match.match_no || 1 }}</span>
                     </div>
                     <div class="flex items-center gap-1 text-[10px] text-slate-400 group-hover:text-navy transition-colors">
