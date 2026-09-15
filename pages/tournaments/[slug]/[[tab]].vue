@@ -1190,10 +1190,6 @@ onMounted(() => {
     }
 })
 
-definePageMeta({
-    layout: 'landing'
-})
-
 useHead({
     title: () => {
         if (!activeTab.value || activeTab.value === 'Ringkasan') {
