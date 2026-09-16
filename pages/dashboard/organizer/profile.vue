@@ -54,10 +54,10 @@
                 :items="countries" searchable />
 
               <!-- Registration Number / SK -->
-              <BaseInput v-model="form.registration_number" label="Nomor registrasi / SK resmi" placeholder="Contoh: SK-PERPANI-001/2024" />
+              <BaseInput v-model="form.registration_number" :label="t('organizer.profile.reg_number_label')" :placeholder="t('organizer.profile.reg_number_placeholder')" />
 
               <!-- Established Date -->
-              <BaseInput v-model="form.established_date" type="date" label="Tanggal berdiri organisasi" />
+              <BaseInput v-model="form.established_date" type="date" :label="t('organizer.profile.est_date_label')" />
             </div>
             <div>
               <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.about_label') }}</label>
@@ -77,7 +77,7 @@
               <div class="space-y-4">
                 <div>
                   <label class="block text-sm font-bold text-navy">{{ t('organizer.profile.logo_label') }}</label>
-                  <div class="text-xs text-gray-400 font-medium mt-1">{{ t('organizer.profile.logo_desc') }} (format kotak 1:1, maks 500x500px)</div>
+                  <div class="text-xs text-gray-400 font-medium mt-1">{{ t('organizer.profile.logo_desc') }} ({{ t('organizer.profile.logo_aspect_desc') }})</div>
                 </div>
                 <div class="flex flex-col items-center gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100">
                   <div
@@ -86,9 +86,9 @@
                       class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                     <div v-else class="text-center p-3">
                       <Icon icon="ph:image-square-bold" class="text-3xl text-slate-300 mx-auto mb-1" />
-                      <span class="text-[10px] font-bold text-slate-400 block">1:1 persegi</span>
+                      <span class="text-[10px] font-bold text-slate-400 block">{{ t('organizer.profile.ratio_1_1') }}</span>
                     </div>
-                    <span class="absolute bottom-1 bg-navy/80 text-primary text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-xs">Rasio 1:1</span>
+                    <span class="absolute bottom-1 bg-navy/80 text-primary text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-xs">{{ t('organizer.profile.ratio_badge') }}</span>
                   </div>
                   <div class="flex gap-2 w-full">
                     <BaseButton @click="openMediaLibrary('logo')" variant="primary" size="sm"
@@ -234,12 +234,12 @@
             <div class="flex items-center justify-between">
               <div>
                 <h3 class="text-base font-bold text-navy flex items-center gap-2">
-                  <Icon icon="ph:question-bold" class="text-primary text-xl" /> {{ t('organizer.profile.faq_section', 'Tanya jawab (FAQ)') }}
+                  <Icon icon="ph:question-bold" class="text-primary text-xl" /> {{ t('organizer.profile.faq_section') }}
                 </h3>
-                <p class="text-xs text-slate-400 font-medium mt-0.5">Daftar pertanyaan yang sering diajukan atlet atau peserta</p>
+                <p class="text-xs text-slate-400 font-medium mt-0.5">{{ t('organizer.profile.faq_desc') }}</p>
               </div>
               <BaseButton variant="primary" size="sm" @click="addFAQ" icon="ph:plus-circle-bold" class="text-xs font-bold h-9">
-                {{ t('organizer.profile.add_faq', 'Tambah pertanyaan') }}
+                {{ t('organizer.profile.add_faq') }}
               </BaseButton>
             </div>
 
@@ -255,11 +255,11 @@
                     <Icon icon="ph:trash-bold" class="text-sm" />
                   </button>
                 </div>
-                <BaseInput v-model="item.question" :label="t('organizer.profile.faq_question_label', 'Pertanyaan')"
-                  :placeholder="t('organizer.profile.faq_question_placeholder', 'Contoh: Apakah pemula boleh mendaftar?')" />
+                <BaseInput v-model="item.question" :label="t('organizer.profile.faq_question_label')"
+                  :placeholder="t('organizer.profile.faq_question_placeholder')" />
                 <div>
-                  <label class="block text-xs font-bold text-navy mb-2">{{ t('organizer.profile.faq_answer_label', 'Jawaban') }}</label>
-                  <TiptapEditor v-model="item.answer" :placeholder="t('organizer.profile.faq_answer_placeholder', 'Tuliskan jawaban yang informatif...')" minHeight="120px" />
+                  <label class="block text-xs font-bold text-navy mb-2">{{ t('organizer.profile.faq_answer_label') }}</label>
+                  <TiptapEditor v-model="item.answer" :placeholder="t('organizer.profile.faq_answer_placeholder')" minHeight="120px" />
                 </div>
               </div>
 
@@ -281,9 +281,9 @@
           <div>
             <h3 class="text-sm font-bold text-navy flex items-center gap-2">
               <Icon icon="ph:eye-bold" class="text-primary text-lg" />
-              <span>Visibilitas halaman publik</span>
+              <span>{{ t('organizer.profile.visibility_title') }}</span>
             </h3>
-            <div class="text-[11px] text-slate-400 font-medium mt-0.5">Atur bagian profil yang tampil di web publik</div>
+            <div class="text-[11px] text-slate-400 font-medium mt-0.5">{{ t('organizer.profile.visibility_subtitle') }}</div>
           </div>
 
           <div class="space-y-2.5 pt-1">
@@ -297,13 +297,13 @@
                   <Icon icon="ph:identification-card-bold" class="text-base" />
                 </div>
                 <div>
-                  <div class="text-xs font-bold text-navy leading-tight">Profil & identitas</div>
-                  <div class="text-[10px] text-slate-400 font-medium">Nama, logo, banner & deskripsi</div>
+                  <div class="text-xs font-bold text-navy leading-tight">{{ t('organizer.profile.visibility_identity_title') }}</div>
+                  <div class="text-[10px] text-slate-400 font-medium">{{ t('organizer.profile.visibility_identity_desc') }}</div>
                 </div>
               </div>
               <span class="px-2 py-0.5 rounded-full text-[10px] font-bold"
                 :class="pageSettings.sections.identity ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'">
-                {{ pageSettings.sections.identity ? 'Tampil' : 'Sembunyi' }}
+                {{ pageSettings.sections.identity ? t('organizer.profile.visible_status') : t('organizer.profile.hidden_status') }}
               </span>
             </div>
 
@@ -317,13 +317,13 @@
                   <Icon icon="ph:phone-call-bold" class="text-base" />
                 </div>
                 <div>
-                  <div class="text-xs font-bold text-navy leading-tight">Kontak & medsos</div>
-                  <div class="text-[10px] text-slate-400 font-medium">WhatsApp, alamat & link sosmed</div>
+                  <div class="text-xs font-bold text-navy leading-tight">{{ t('organizer.profile.visibility_contact_title') }}</div>
+                  <div class="text-[10px] text-slate-400 font-medium">{{ t('organizer.profile.visibility_contact_desc') }}</div>
                 </div>
               </div>
               <span class="px-2 py-0.5 rounded-full text-[10px] font-bold"
                 :class="pageSettings.sections.contact ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'">
-                {{ pageSettings.sections.contact ? 'Tampil' : 'Sembunyi' }}
+                {{ pageSettings.sections.contact ? t('organizer.profile.visible_status') : t('organizer.profile.hidden_status') }}
               </span>
             </div>
 
@@ -337,13 +337,13 @@
                   <Icon icon="ph:target-bold" class="text-base" />
                 </div>
                 <div>
-                  <div class="text-xs font-bold text-navy leading-tight">Visi & misi</div>
-                  <div class="text-[10px] text-slate-400 font-medium">Tujuan dan komitmen klub/EO</div>
+                  <div class="text-xs font-bold text-navy leading-tight">{{ t('organizer.profile.visibility_about_title') }}</div>
+                  <div class="text-[10px] text-slate-400 font-medium">{{ t('organizer.profile.visibility_about_desc') }}</div>
                 </div>
               </div>
               <span class="px-2 py-0.5 rounded-full text-[10px] font-bold"
                 :class="pageSettings.sections.about ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'">
-                {{ pageSettings.sections.about ? 'Tampil' : 'Sembunyi' }}
+                {{ pageSettings.sections.about ? t('organizer.profile.visible_status') : t('organizer.profile.hidden_status') }}
               </span>
             </div>
 
@@ -357,13 +357,13 @@
                   <Icon icon="ph:question-bold" class="text-base" />
                 </div>
                 <div>
-                  <div class="text-xs font-bold text-navy leading-tight">Tanya jawab (FAQ)</div>
-                  <div class="text-[10px] text-slate-400 font-medium">Daftar pertanyaan umum</div>
+                  <div class="text-xs font-bold text-navy leading-tight">{{ t('organizer.profile.visibility_faq_title') }}</div>
+                  <div class="text-[10px] text-slate-400 font-medium">{{ t('organizer.profile.visibility_faq_desc') }}</div>
                 </div>
               </div>
               <span class="px-2 py-0.5 rounded-full text-[10px] font-bold"
                 :class="pageSettings.sections.faq ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600'">
-                {{ pageSettings.sections.faq ? 'Tampil' : 'Sembunyi' }}
+                {{ pageSettings.sections.faq ? t('organizer.profile.visible_status') : t('organizer.profile.hidden_status') }}
               </span>
             </div>
           </div>
@@ -438,12 +438,12 @@ const toast = useToast()
 const saving = ref(false)
 const activeTab = ref('general')
 
-const tabs = [
+const tabs = computed(() => [
   { id: 'general', label: t('organizer.profile.general_tab'), icon: 'ph:identification-badge-bold' },
   { id: 'contact', label: t('organizer.profile.contact_tab'), icon: 'ph:phone-bold' },
   { id: 'about', label: t('organizer.profile.about_tab'), icon: 'ph:eye-bold' },
   { id: 'faq', label: t('organizer.profile.faq_tab'), icon: 'ph:question-bold' }
-]
+])
 
 const pageSettings = reactive({
   sections: {
@@ -579,7 +579,7 @@ const handleMediaSelect = (media) => {
     img.onload = () => {
       const ratio = img.width / img.height
       if (ratio < 0.8 || ratio > 1.2) {
-        toast.error('Logo image must be approximately square (aspect ratio between 0.8 and 1.2, ideal 1:1)')
+        toast.error(t('organizer.profile.logo_aspect_error'))
         return
       }
       form.logoUrl = media.url
@@ -595,7 +595,7 @@ const handleMediaSelect = (media) => {
     img.onload = () => {
       const ratio = img.width / img.height
       if (ratio < 1.8 || ratio > 3.2) {
-        toast.error('Banner image must be wide (aspect ratio between 1.8 and 3.2, ideal 21:9)')
+        toast.error(t('organizer.profile.banner_aspect_error'))
         return
       }
       form.bannerUrl = media.url
