@@ -88,13 +88,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const { get, post } = useApi()
 const toast = useToast()
 
 useHead({
-  title: 'Dompet Penyelenggara - Archeris Dashboard'
+  title: computed(() => `${t('org_wallet.header_title', 'Dompet Penyelenggara')} - Archeris Dashboard`)
 })
 
 const isLoading = ref(true)
@@ -127,13 +129,13 @@ async function submitWithdrawal() {
       amount: withdrawAmount.value,
       notes: withdrawNotes.value
     })
-    toast.success('Pengajuan penarikan dana berhasil dikirim')
+    toast.success(t('org_wallet.toast_withdraw_success', 'Pengajuan penarikan dana berhasil dikirim'))
     showWithdrawForm.value = false
     withdrawAmount.value = null
     withdrawNotes.value = ''
     await fetchData()
   } catch (err: any) {
-    toast.error(err?.data?.error || 'Gagal mengajukan penarikan')
+    toast.error(err?.data?.error || t('org_wallet.toast_withdraw_failed', 'Gagal mengajukan penarikan'))
   } finally { isSubmitting.value = false }
 }
 

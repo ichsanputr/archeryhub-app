@@ -133,7 +133,7 @@
               <BaseInput v-model="accountForm.full_name" :label="t('profile.full_name')" :placeholder="t('profile.full_name_placeholder')" required />
               
               <BaseInput v-model="accountForm.username" :label="t('profile.username')" placeholder="username"
-                :hint="t('profile.username_hint')" :error="isUsernameTaken ? 'Username is already taken' : ''" />
+                :hint="t('profile.username_hint')" :error="isUsernameTaken ? t('profile.username_taken', 'Username is already taken') : ''" />
 
               <BaseDatePicker v-model="accountForm.date_of_birth" :label="t('profile.dob')" />
 
@@ -191,7 +191,7 @@
 
               <BaseInput v-model="accountForm.email" label="Email" type="email" placeholder="archer@example.com" icon="ph:envelope-simple-bold" />
 
-              <BaseInput v-model="accountForm.emergency_contact_name" :label="t('profile.emergency_name')" placeholder="Nama Lengkap" icon="ph:user-bold" />
+              <BaseInput v-model="accountForm.emergency_contact_name" :label="t('profile.emergency_name')" :placeholder="t('profile.full_name_placeholder', 'Nama Lengkap')" icon="ph:user-bold" />
             </div>
           </div>
 
@@ -206,7 +206,7 @@
               <BaseSelect v-model="accountForm.country" :label="t('profile.country')" :items="countries"
                 :placeholder="t('profile.select_country', 'Select Country...')" icon="ph:globe" searchable />
 
-              <BaseInput v-model="accountForm.city" :label="t('profile.city')" placeholder="Kabupaten / Kota" icon="ph:buildings-bold" />
+              <BaseInput v-model="accountForm.city" :label="t('profile.city')" :placeholder="t('profile.city_placeholder', 'Kabupaten / Kota')" icon="ph:buildings-bold" />
 
               <div class="sm:col-span-2">
                 <BaseTextarea v-model="accountForm.address" :label="t('profile.address')" :placeholder="t('profile.address_placeholder')"

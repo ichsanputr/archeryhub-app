@@ -3,7 +3,7 @@
     <!-- Header Section -->
     <DashboardHeader
       :title="t('dashboard.reports.attendance_title')"
-      subtitle="Track Checked-in vs Registered Participants Status."
+      :subtitle="t('dashboard.reports.attendance_desc')"
       icon="ph:users-three-bold"
       :back-to="getBackLink()"
       :breadcrumbs="[
@@ -14,7 +14,7 @@
     >
       <template #actions>
         <BaseButton variant="primary" icon="ph:download-simple-bold" class="h-11 px-5 text-xs font-black" @click="handleExportExcel">
-          Ekspor Excel
+          {{ t('dashboard.reports.export_excel', 'Ekspor Excel') }}
         </BaseButton>
       </template>
     </DashboardHeader>
@@ -23,7 +23,7 @@
     <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
       <div class="flex items-center gap-2 pb-3 border-b border-gray-100">
         <Icon icon="ph:funnel-bold" class="text-primary text-lg" />
-        <h3 class="text-sm font-black text-navy-dark">Report Filters</h3>
+        <h3 class="text-sm font-black text-navy-dark">{{ t('dashboard.reports.report_filters', 'Filter Laporan') }}</h3>
       </div>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -58,17 +58,17 @@
 
     <!-- Stats summary grid -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
-      <StatCard title="Total Registered" :value="stats.total_registered || 0" icon="ph:users-three-bold" color="primary" />
-      <StatCard title="Checked In / Present" :value="stats.total_checked_in || 0" icon="ph:check-square-bold" color="success" />
-      <StatCard title="Pending Check-in" :value="stats.total_pending || 0" icon="ph:clock-bold" color="warning" />
-      <StatCard title="Check-in Rate" :value="attendanceRate + '%'" icon="ph:percent-bold" color="primary" />
+      <StatCard :title="t('dashboard.reports.total_registered', 'Total Terdaftar')" :value="stats.total_registered || 0" icon="ph:users-three-bold" color="primary" />
+      <StatCard :title="t('dashboard.reports.checked_in_present', 'Sudah Check-in / Hadir')" :value="stats.total_checked_in || 0" icon="ph:check-square-bold" color="success" />
+      <StatCard :title="t('dashboard.reports.pending_checkin', 'Belum Check-in')" :value="stats.total_pending || 0" icon="ph:clock-bold" color="warning" />
+      <StatCard :title="t('dashboard.reports.checkin_rate', 'Tingkat Kehadiran')" :value="attendanceRate + '%'" icon="ph:percent-bold" color="primary" />
     </div>
 
     <!-- Check-in Timeline Chart -->
     <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
       <h3 class="text-navy-dark font-black text-base flex items-center gap-2 mb-6">
         <Icon icon="ph:chart-line-up-bold" class="text-primary" />
-        Check-in Timeline
+        {{ t('dashboard.reports.checkin_timeline', 'Lini Masa Registrasi Ulang') }}
       </h3>
       <div v-if="trendPoints.length > 1" class="relative">
         <svg viewBox="0 0 500 150" class="w-full h-48 overflow-visible" preserveAspectRatio="none">
@@ -89,7 +89,7 @@
       </div>
       <div v-else class="h-48 flex flex-col items-center justify-center text-gray-400 space-y-2 border border-dashed border-gray-100 rounded-xl">
         <Icon icon="ph:identification-card-bold" class="text-3xl" />
-        <div class="text-xs font-bold">No Timeline Data Available. Check-in events will appear here chronologically.</div>
+        <div class="text-xs font-bold">{{ t('dashboard.reports.no_timeline_data', 'Belum ada data lini masa.') }}</div>
       </div>
     </div>
 
@@ -167,16 +167,15 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('reports.attendance', 'Attendance Report') + ' - Archeris Dashboard') })
-
-
 const { t } = useI18n()
+useHead({ title: computed(() => (t ? t('dashboard.reports.attendance_title', 'Kehadiran & Registrasi Ulang') : 'Kehadiran & Registrasi Ulang') + ' - Archeris Dashboard') })
+
 const route = useRoute()
 const api = useApi()
 
 const eventsList = ref([])
 const eventsDropdownItems = computed(() => [
-  { title: t('dashboard.reports.all_events'), value: 'all' },
+  { title: t('dashboard.reports.all_events', 'Semua Turnamen'), value: 'all' },
   ...eventsList.value.map(e => ({ title: e.name, value: e.id }))
 ])
 const stats = ref({

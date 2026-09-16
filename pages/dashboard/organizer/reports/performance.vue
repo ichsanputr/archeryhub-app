@@ -3,7 +3,7 @@
     <!-- Header Section -->
     <DashboardHeader
       :title="t('dashboard.reports.performance_title')"
-      subtitle="Review Event Fill Rates, Category Registration Statistics, and Quota Utilization."
+      :subtitle="t('dashboard.reports.performance_desc')"
       icon="ph:trend-up-bold"
       :back-to="getBackLink()"
       :breadcrumbs="[
@@ -14,7 +14,7 @@
     >
       <template #actions>
         <BaseButton variant="primary" icon="ph:download-simple-bold" class="h-11 px-5 text-xs font-black" @click="handleExportExcel">
-          Ekspor Excel
+          {{ t('dashboard.reports.export_excel', 'Ekspor Excel') }}
         </BaseButton>
       </template>
     </DashboardHeader>
@@ -23,7 +23,7 @@
     <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
       <div class="flex items-center gap-2 pb-3 border-b border-gray-100">
         <Icon icon="ph:funnel-bold" class="text-primary text-lg" />
-        <h3 class="text-sm font-black text-navy-dark">Report Filters</h3>
+        <h3 class="text-sm font-black text-navy-dark">{{ t('dashboard.reports.report_filters', 'Filter Laporan') }}</h3>
       </div>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -52,9 +52,9 @@
 
     <!-- Stats summary grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-      <StatCard title="Total Events Organized" :value="stats.events_performance?.length || 0" icon="ph:trophy-bold" color="primary" />
-      <StatCard title="Total Participants Registered" :value="stats.total_participants || 0" icon="ph:users-three-bold" color="success" />
-      <StatCard title="Average Event Fill Rate" :value="Math.round(stats.average_fill_rate || 0) + '%'" icon="ph:chart-pie-bold" color="primary" />
+      <StatCard :title="t('dashboard.reports.total_events_organized', 'Total Turnamen Digelar')" :value="stats.events_performance?.length || 0" icon="ph:trophy-bold" color="primary" />
+      <StatCard :title="t('dashboard.reports.total_participants_registered', 'Total Atlet Terdaftar')" :value="stats.total_participants || 0" icon="ph:users-three-bold" color="success" />
+      <StatCard :title="t('dashboard.reports.avg_fill_rate', 'Rata-rata Keterisian Kuota')" :value="Math.round(stats.average_fill_rate || 0) + '%'" icon="ph:chart-pie-bold" color="primary" />
     </div>
 
     <!-- Event Performance Table -->
@@ -62,7 +62,7 @@
       <div class="p-5 border-b border-gray-100 flex items-center justify-between">
         <h3 class="text-navy-dark font-black text-sm flex items-center gap-2">
           <Icon icon="ph:list-dashes-bold" class="text-primary" />
-          Organized Events Fill Rates
+          {{ t('dashboard.reports.organized_events_fill_rates', 'Tingkat Keterisian Kuota Turnamen') }}
         </h3>
       </div>
       <div class="overflow-x-auto">
@@ -130,10 +130,9 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('reports.performance', 'Performance Report') + ' - Archeris Dashboard') })
-
-
 const { t } = useI18n()
+useHead({ title: computed(() => (t ? t('dashboard.reports.performance_title', 'Performa Turnamen') : 'Performa Turnamen') + ' - Archeris Dashboard') })
+
 const route = useRoute()
 const api = useApi()
 

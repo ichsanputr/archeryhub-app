@@ -385,13 +385,13 @@ const searchQuery = ref('')
 const statusFilter = ref('all')
 const dateRange = ref({ start: '', end: '' })
 
-const statusOptions = [
-    { title: 'Semua Status', label: 'Semua Status', value: 'all' },
-    { title: 'Menunggu Pembayaran', label: 'Menunggu Pembayaran', value: 'pending' },
-    { title: 'Terbayar (Lunas)', label: 'Terbayar (Lunas)', value: 'paid' },
-    { title: 'Menunggu Verifikasi', label: 'Menunggu Verifikasi', value: 'awaiting_verification' },
-    { title: 'Dibatalkan / Kadaluarsa', label: 'Dibatalkan / Kadaluarsa', value: 'expired' },
-]
+const statusOptions = computed(() => [
+    { title: t('payments.status_all', 'Semua Status'), label: t('payments.status_all', 'Semua Status'), value: 'all' },
+    { title: t('payments.status_pending', 'Menunggu Pembayaran'), label: t('payments.status_pending', 'Menunggu Pembayaran'), value: 'pending' },
+    { title: t('payments.status_paid', 'Terbayar (Lunas)'), label: t('payments.status_paid', 'Terbayar (Lunas)'), value: 'paid' },
+    { title: t('payments.status_awaiting_verification', 'Menunggu Verifikasi'), label: t('payments.status_awaiting_verification', 'Menunggu Verifikasi'), value: 'awaiting_verification' },
+    { title: t('payments.status_expired', 'Dibatalkan / Kadaluarsa'), label: t('payments.status_expired', 'Dibatalkan / Kadaluarsa'), value: 'expired' },
+])
 
 const filteredPayments = computed(() => {
     return payments.value.filter(p => {

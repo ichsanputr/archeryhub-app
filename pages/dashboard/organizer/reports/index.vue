@@ -15,7 +15,7 @@
     <div v-if="eventName" class="flex items-center gap-3 p-4 bg-primary/10 border border-primary/20 rounded-2xl text-primary text-xs font-bold transition-all">
       <Icon icon="ph:info-bold" class="text-lg shrink-0" />
       <span>
-        Filtering Reports for Event: <span class="text-navy-dark underline">{{ eventName }}</span>. You can clear this filter inside individual reports.
+        {{ t('dashboard.reports.filter_info_event', { name: eventName }) }}
       </span>
     </div>
 
@@ -56,10 +56,8 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('reports.title', 'Reports') + ' - Archeris Dashboard') })
-
-
 const { t } = useI18n()
+useHead({ title: computed(() => (t ? t('dashboard.reports.title', 'Laporan') : 'Laporan') + ' - Archeris Dashboard') })
 const route = useRoute()
 const api = useApi()
 

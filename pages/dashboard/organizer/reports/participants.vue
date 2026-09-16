@@ -3,7 +3,7 @@
     <!-- Header Section -->
     <DashboardHeader
       :title="t('dashboard.reports.participants_title')"
-      subtitle="Analyze Registration Splits, Check-in Status, and Registration Timeline."
+      :subtitle="t('dashboard.reports.participants_desc')"
       icon="ph:user-list-bold"
       :back-to="getBackLink()"
       :breadcrumbs="[
@@ -14,7 +14,7 @@
     >
       <template #actions>
         <BaseButton variant="primary" icon="ph:download-simple-bold" class="h-11 px-5 text-xs font-black" @click="handleExportExcel">
-          Ekspor Excel
+          {{ t('dashboard.reports.export_excel', 'Ekspor Excel') }}
         </BaseButton>
       </template>
     </DashboardHeader>
@@ -23,7 +23,7 @@
     <div class="bg-white border border-primary/10 rounded-2xl p-5 space-y-4">
       <div class="flex items-center gap-2 pb-3 border-b border-gray-100">
         <Icon icon="ph:funnel-bold" class="text-primary text-lg" />
-        <h3 class="text-sm font-black text-navy">Report Filters</h3>
+        <h3 class="text-sm font-black text-navy">{{ t('dashboard.reports.report_filters', 'Filter Laporan') }}</h3>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -45,8 +45,8 @@
           :items="bowTypeItems"
           item-title="label"
           item-value="value"
-          label="Jenis Busur (Division)"
-          placeholder="Semua Jenis Busur"
+          :label="t('dashboard.reports.bow_type_label', 'Jenis Busur (Division)')"
+          :placeholder="t('dashboard.reports.all_bow_types', 'Semua Jenis Busur')"
           :searchable="false"
         />
 
@@ -56,8 +56,8 @@
           :items="genderItems"
           item-title="label"
           item-value="value"
-          label="Kategori Gender"
-          placeholder="Semua Gender"
+          :label="t('dashboard.reports.gender_category', 'Kategori Gender')"
+          :placeholder="t('dashboard.reports.all_genders', 'Semua Gender')"
           :searchable="false"
         />
 
@@ -67,8 +67,8 @@
           :items="statusItems"
           item-title="label"
           item-value="value"
-          label="Status Registrasi Ulang"
-          placeholder="Semua Status"
+          :label="t('dashboard.reports.checkin_status_label', 'Status Registrasi Ulang')"
+          :placeholder="t('dashboard.reports.all_status', 'Semua Status')"
           :searchable="false"
         />
       </div>
@@ -85,17 +85,17 @@
 
     <!-- stats -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
-      <StatCard title="Total Registrations" :value="stats.total_participants || 0" icon="ph:users-three-bold" color="primary" />
-      <StatCard title="Checked-in Archers" :value="stats.checked_in_count || 0" icon="ph:user-circle-check-bold" color="success" />
-      <StatCard title="Pending Check-in" :value="stats.pending_checkin_count || 0" icon="ph:clock-bold" color="warning" />
-      <StatCard title="Check-in Rate" :value="checkInRate + '%'" icon="ph:percent-bold" color="primary" />
+      <StatCard :title="t('dashboard.reports.total_registrations', 'Total Pendaftar')" :value="stats.total_participants || 0" icon="ph:users-three-bold" color="primary" />
+      <StatCard :title="t('dashboard.reports.checked_in_archers', 'Pemanah Hadir (Check-in)')" :value="stats.checked_in_count || 0" icon="ph:user-circle-check-bold" color="success" />
+      <StatCard :title="t('dashboard.reports.pending_checkin', 'Belum Check-in')" :value="stats.pending_checkin_count || 0" icon="ph:clock-bold" color="warning" />
+      <StatCard :title="t('dashboard.reports.checkin_rate', 'Tingkat Kehadiran')" :value="checkInRate + '%'" icon="ph:percent-bold" color="primary" />
     </div>
 
     <!-- registration trend chart -->
     <div class="bg-white border border-primary/10 rounded-2xl p-6">
       <h3 class="text-navy font-black text-base flex items-center gap-2 mb-6">
         <Icon icon="ph:chart-line-up-bold" class="text-primary" />
-        Registration Trend
+        {{ t('dashboard.reports.registration_trend', 'Tren Registrasi Peserta') }}
       </h3>
       <div v-if="trendPoints.length > 1" class="relative">
         <svg viewBox="0 0 500 150" class="w-full h-48 overflow-visible" preserveAspectRatio="none">
@@ -246,10 +246,8 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({ layout: 'dashboard' })
 
-useHead({ title: computed(() => t('reports.participants', 'Participants Report') + ' - Archeris Dashboard') })
-
-
 const { t } = useI18n()
+useHead({ title: computed(() => (t ? t('dashboard.reports.participants_title', 'Statistik Peserta') : 'Statistik Peserta') + ' - Archeris Dashboard') })
 const route = useRoute()
 const api = useApi()
 

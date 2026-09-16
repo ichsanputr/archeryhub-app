@@ -189,11 +189,11 @@
                                     <thead>
                                         <tr
                                             class="bg-gray-50/50 text-gray-500 font-black text-[10px] tracking-widest border-b border-gray-100">
-                                            <th class="px-6 py-4">{{ t('organizer.balance.mutations.table_date', 'Waktu / Tanggal') }}</th>
-                                            <th class="px-6 py-4">{{ t('organizer.balance.mutations.table_desc', 'Keterangan & Ref') }}</th>
-                                            <th class="px-6 py-4">{{ t('organizer.balance.mutations.table_type', 'Tipe') }}</th>
-                                            <th class="px-6 py-4 text-right">{{ t('organizer.balance.mutations.table_amount', 'Nominal') }}</th>
-                                            <th class="px-6 py-4 text-right">{{ t('organizer.balance.mutations.table_balance_after', 'Saldo Akhir') }}</th>
+                                            <th class="px-6 py-4">{{ t('organizer.balance.mutations.table_date') }}</th>
+                                            <th class="px-6 py-4">{{ t('organizer.balance.mutations.table_desc') }}</th>
+                                            <th class="px-6 py-4">{{ t('organizer.balance.mutations.table_type') }}</th>
+                                            <th class="px-6 py-4 text-right">{{ t('organizer.balance.mutations.table_amount') }}</th>
+                                            <th class="px-6 py-4 text-right">{{ t('organizer.balance.mutations.table_balance_after') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-100">
@@ -209,7 +209,7 @@
                                             <td class="px-6 py-4">
                                                 <span :class="m.type === 'credit' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200'"
                                                     class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider border">
-                                                    {{ m.type === 'credit' ? '+ Masuk' : '- Keluar' }}
+                                                    {{ m.type === 'credit' ? t('organizer.balance.mutations.credit_badge') : t('organizer.balance.mutations.debit_badge') }}
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 text-right font-black"
@@ -226,7 +226,7 @@
                                                     <Icon icon="ph:receipt" class="text-4xl mx-auto" />
                                                 </div>
                                                 <div class="text-gray-400 text-sm font-bold tracking-tight">
-                                                    {{ t('organizer.balance.mutations.empty', 'Belum ada mutasi saldo tercatat') }}
+                                                    {{ t('organizer.balance.mutations.empty') }}
                                                 </div>
                                             </td>
                                         </tr>

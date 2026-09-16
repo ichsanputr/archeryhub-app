@@ -237,10 +237,10 @@ async function buyQuota() {
                     <div class="flex items-baseline justify-between">
                         <div class="flex items-baseline gap-1.5">
                             <span class="text-4xl font-black text-navy">{{ quota.quota_free ?? 20 }}</span>
-                            <span class="text-xs font-bold text-slate-400">/ 20 slot tersisa</span>
+                            <span class="text-xs font-bold text-slate-400">{{ t('organizer_subscription.remaining_slots', '/ 20 slot tersisa') }}</span>
                         </div>
                         <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            {{ Math.max(0, 20 - (quota.quota_free ?? 20)) }} terpakai
+                            {{ Math.max(0, 20 - (quota.quota_free ?? 20)) }} {{ t('organizer_subscription.used_slots', 'terpakai') }}
                         </span>
                     </div>
                     <!-- Progress bar indicating remaining quota -->
@@ -250,8 +250,8 @@ async function buyQuota() {
                         </div>
                     </div>
                     <div class="flex justify-between text-[10px] text-slate-400 font-bold">
-                        <span>Awal: 20 Slot Gratis</span>
-                        <span>Sisa: {{ quota.quota_free ?? 20 }} Event</span>
+                        <span>{{ t('organizer_subscription.initial_slots', 'Awal: 20 Slot Gratis') }}</span>
+                        <span>{{ t('organizer_subscription.remaining_events', { quota: quota.quota_free ?? 20 }) }}</span>
                     </div>
                 </div>
 

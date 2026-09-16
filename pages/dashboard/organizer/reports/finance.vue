@@ -3,7 +3,7 @@
     <!-- Header Section -->
     <DashboardHeader
       :title="t('dashboard.reports.finance_title')"
-      subtitle="Monitor Payments Status, Revenue Flow, and Payment Method Summaries."
+      :subtitle="t('dashboard.reports.finance_desc')"
       icon="ph:currency-circle-dollar-bold"
       :back-to="getBackLink()"
       :breadcrumbs="[
@@ -14,7 +14,7 @@
     >
       <template #actions>
         <BaseButton variant="primary" icon="ph:download-simple-bold" class="h-11 px-5 text-xs font-black" @click="handleExportExcel">
-          Ekspor Excel
+          {{ t('dashboard.reports.export_excel', 'Ekspor Excel') }}
         </BaseButton>
       </template>
     </DashboardHeader>
@@ -23,7 +23,7 @@
     <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
       <div class="flex items-center gap-2 pb-3 border-b border-gray-100">
         <Icon icon="ph:funnel-bold" class="text-primary text-lg" />
-        <h3 class="text-sm font-black text-navy-dark">Report Filters</h3>
+        <h3 class="text-sm font-black text-navy-dark">{{ t('dashboard.reports.report_filters', 'Filter Laporan') }}</h3>
       </div>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
@@ -47,14 +47,14 @@
 
         <!-- Payment Method Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 tracking-wider">Payment Method</label>
-          <BaseSelect v-model="filters.payment_method" :items="methodOptions" placeholder="All Methods" />
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.payment_method', 'Metode Pembayaran') }}</label>
+          <BaseSelect v-model="filters.payment_method" :items="methodOptions" :placeholder="t('dashboard.reports.all_methods', 'Semua Metode')" />
         </div>
 
         <!-- Payment Status Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 tracking-wider">Payment Status</label>
-          <BaseSelect v-model="filters.status" :items="statusOptions" :placeholder="t('org_finance_report.all_status')" />
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.payment_status', 'Status Pembayaran') }}</label>
+          <BaseSelect v-model="filters.status" :items="statusOptions" :placeholder="t('dashboard.reports.all_status', 'Semua Status')" />
         </div>
       </div>
 
@@ -70,16 +70,16 @@
 
     <!-- Stats summary grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-      <StatCard :title="t('org_finance_report.total_paid_revenue')" :value="'Rp ' + formatPrice(stats.total_paid || 0)" icon="ph:wallet-bold" color="success" />
-      <StatCard title="Pending Payments" :value="'Rp ' + formatPrice(stats.total_pending || 0)" icon="ph:clock-bold" color="warning" />
-      <StatCard title="Expired/Failed Payments" :value="'Rp ' + formatPrice(stats.total_failed || 0)" icon="ph:x-circle-bold" color="primary" />
+      <StatCard :title="t('dashboard.reports.total_paid_revenue', 'Total Pendapatan (Lunas)')" :value="'Rp ' + formatPrice(stats.total_paid || 0)" icon="ph:wallet-bold" color="success" />
+      <StatCard :title="t('dashboard.reports.pending_payments', 'Pembayaran Tertunda')" :value="'Rp ' + formatPrice(stats.total_pending || 0)" icon="ph:clock-bold" color="warning" />
+      <StatCard :title="t('dashboard.reports.expired_failed_payments', 'Kadaluwarsa / Gagal')" :value="'Rp ' + formatPrice(stats.total_failed || 0)" icon="ph:x-circle-bold" color="primary" />
     </div>
 
     <!-- Revenue Trend Chart -->
     <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
       <h3 class="text-navy-dark font-black text-base flex items-center gap-2 mb-6">
         <Icon icon="ph:chart-line-up-bold" class="text-primary" />
-        Revenue Trend (Paid Payments)
+        {{ t('dashboard.reports.revenue_trend', 'Tren Pendapatan') }}
       </h3>
       <div v-if="trendPoints.length > 1" class="relative">
         <svg viewBox="0 0 500 150" class="w-full h-48 overflow-visible" preserveAspectRatio="none">
@@ -100,7 +100,7 @@
       </div>
       <div v-else class="h-48 flex flex-col items-center justify-center text-gray-400 space-y-2 border border-dashed border-gray-100 rounded-xl">
         <Icon icon="ph:coin-bold" class="text-3xl" />
-        <div class="text-xs font-bold">No Revenue Timeline Data Available for Selected Filter.</div>
+        <div class="text-xs font-bold">{{ t('dashboard.reports.no_revenue_timeline', 'Tidak ada data lini masa pendapatan untuk filter yang dipilih.') }}</div>
       </div>
     </div>
 
@@ -136,15 +136,15 @@
         <div class="space-y-4 relative z-10">
           <h3 class="text-lg font-black flex items-center gap-2">
             <Icon icon="ph:info-bold" class="text-yellow-400" />
-            Financial Overview
+            {{ t('dashboard.reports.financial_overview_title', 'Ringkasan Finansial') }}
           </h3>
           <div class="text-slate-300 text-xs font-medium leading-relaxed">
-            This dashboard aggregates payment transaction logs specifically from registered participants. To withdraw settled balance to your registered bank account, go to Balance Dashboard.
+            {{ t('dashboard.reports.financial_overview_desc', 'Dashboard ini mengagregasi log transaksi pembayaran dari pendaftaran peserta. Untuk menarik dana ke rekening bank, buka menu Saldo.') }}
           </div>
         </div>
         <NuxtLink to="/dashboard/organizer/balance" class="w-full mt-6 relative z-10">
           <BaseButton variant="primary" class="w-full h-11 text-xs font-black shadow-lg shadow-primary/20">
-            Go to Withdraw & Balance
+            {{ t('dashboard.reports.go_to_balance', 'Buka Saldo & Penarikan') }}
           </BaseButton>
         </NuxtLink>
       </div>
@@ -210,37 +210,37 @@ import { Icon } from '@iconify/vue'
 import { computed, onMounted, ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('reports.finance', 'Finance Report') + ' - Archeris Dashboard') })
-
-
 const { t } = useI18n()
+useHead({ title: computed(() => (t ? t('dashboard.reports.finance_title', 'Laporan Keuangan') : 'Laporan Keuangan') + ' - Archeris Dashboard') })
+
 const route = useRoute()
 const api = useApi()
 
 const eventsList = ref([])
 const eventsDropdownItems = computed(() => [
-  { title: t('dashboard.reports.all_events'), value: 'all' },
+  { title: t('dashboard.reports.all_events', 'Semua Turnamen'), value: 'all' },
   ...eventsList.value.map(e => ({ title: e.name, value: e.id }))
 ])
 
-const methodOptions = [
-  { title: 'All Methods', value: 'all' },
+const methodOptions = computed(() => [
+  { title: t('dashboard.reports.all_methods', 'Semua Metode'), value: 'all' },
   { title: 'Mayar (Online)', value: 'mayar' },
   { title: 'Manual Transfer', value: 'manual' }
-]
+])
 
-const statusOptions = [
-  { title: 'All Status', value: 'all' },
+const statusOptions = computed(() => [
+  { title: t('dashboard.reports.all_status', 'Semua Status'), value: 'all' },
   { title: 'Paid', value: 'paid' },
   { title: 'Pending', value: 'pending' },
   { title: 'Expired', value: 'expired' },
   { title: 'Failed', value: 'failed' }
-]
+])
 const stats = ref({
   total_paid: 0,
   total_pending: 0,
