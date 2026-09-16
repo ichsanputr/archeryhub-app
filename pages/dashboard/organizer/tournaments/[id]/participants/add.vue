@@ -394,7 +394,7 @@ import ImportParticipantsModal from '~/components/dashboard/ImportParticipantsMo
 import { ref, computed, onMounted, onBeforeUnmount, watch, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
-import { useEventContext } from '~/composables/useEventContext'
+import { useEventContext } from '~/composables/useTournamentContext'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
 import { useSubscription } from '~/composables/useSubscription'

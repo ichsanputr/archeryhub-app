@@ -107,6 +107,8 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'robots', content: 'noindex, nofollow, noarchive, nosnippet, noimageindex' },
+        { name: 'googlebot', content: 'noindex, nofollow, noarchive, nosnippet, noimageindex' },
         {
           name: 'description',
           content: 'The modern archery scoring and tournament management platform. Features real-time mobile scoring, automated target butt allocations, World Archery brackets, and live spectator leaderboards.'

@@ -489,7 +489,7 @@
                       </div>
                       <div class="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
                         <Icon icon="ph:check-circle-fill" class="text-xs" />
-                        <span>Set System (Ianseo)</span>
+                        <span>Official Set System</span>
                       </div>
                     </div>
 

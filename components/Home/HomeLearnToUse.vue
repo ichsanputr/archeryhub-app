@@ -22,9 +22,9 @@
                         {{ $t('home.learn.subtitle') }}
                     </span>
                 </h2>
-                <p class="text-slate-700 text-base sm:text-lg max-w-3xl mx-auto font-light leading-relaxed reveal-desc">
+                <div class="text-slate-700 text-base sm:text-lg max-w-3xl mx-auto font-light leading-relaxed reveal-desc">
                     {{ $t('home.learn.description') }}
-                </p>
+                </div>
             </div>
 
             <!-- Horizontal Feature Showcase Cards Container -->
@@ -38,12 +38,12 @@
                 <!-- Outer Scrolling Area with Faded Mask Edges -->
                 <div ref="scrollContainer" class="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar px-6 sm:px-16 lg:px-24 pb-12 pt-2">
                     
-                    <!-- ── 7 FEATURE CARDS ── -->
+                    <!-- ── 5 FEATURE CARDS ── -->
                     <NuxtLink
                         v-for="(feature, idx) in features"
                         :key="idx"
                         :to="localePath(feature.link)"
-                        class="w-[310px] sm:w-[500px] md:w-[600px] lg:w-[660px] shrink-0 snap-center bg-white border border-slate-100/80 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_50px_rgba(15,23,42,0.12)] hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer block"
+                        class="w-[310px] sm:w-[500px] md:w-[600px] lg:w-[680px] shrink-0 snap-center bg-white border border-slate-100/80 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_20px_50px_rgba(15,23,42,0.12)] hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer block"
                     >
                         <div class="mb-5">
                             <div class="flex items-center justify-between mb-3">
@@ -58,11 +58,11 @@
                             <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-snug font-display group-hover:text-[#63C03B] transition-colors">
                                 {{ $t(feature.titleKey) }}
                             </h3>
-                            <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed mt-2">
+                            <div class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed mt-2">
                                 {{ $t(feature.descKey) }}
-                            </p>
+                            </div>
                         </div>
-                        <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[16/10] bg-slate-50 mt-auto">
+                        <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[16/9] bg-slate-50 mt-auto">
                             <img 
                                 :src="feature.image" 
                                 :alt="$t(feature.titleKey)" 
@@ -117,49 +117,35 @@ const features = [
         titleKey: 'home.learn.f1_title',
         descKey: 'home.learn.f1_desc',
         image: '/features/feature-1.png',
-        link: '/archeris-vs-ianseo'
+        link: '/dashboard/organizer'
     },
     {
         tagKey: 'home.learn.f2_tag',
         titleKey: 'home.learn.f2_title',
         descKey: 'home.learn.f2_desc',
         image: '/features/feature-2.png',
-        link: '/tournaments'
+        link: '/dashboard/archer/tournaments'
     },
     {
         tagKey: 'home.learn.f3_tag',
         titleKey: 'home.learn.f3_title',
         descKey: 'home.learn.f3_desc',
         image: '/features/feature-3.png',
-        link: '/archers'
+        link: '/tournaments'
     },
     {
         tagKey: 'home.learn.f4_tag',
         titleKey: 'home.learn.f4_title',
         descKey: 'home.learn.f4_desc',
         image: '/features/feature-4.png',
-        link: '/package'
+        link: '/archers'
     },
     {
         tagKey: 'home.learn.f5_tag',
         titleKey: 'home.learn.f5_title',
         descKey: 'home.learn.f5_desc',
         image: '/features/feature-5.png',
-        link: '/docs'
-    },
-    {
-        tagKey: 'home.learn.f6_tag',
-        titleKey: 'home.learn.f6_title',
-        descKey: 'home.learn.f6_desc',
-        image: '/features/feature-6.png',
-        link: '/faq'
-    },
-    {
-        tagKey: 'home.learn.f7_tag',
-        titleKey: 'home.learn.f7_title',
-        descKey: 'home.learn.f7_desc',
-        image: '/features/feature-7.png',
-        link: '/about-us'
+        link: '/package'
     }
 ]
 

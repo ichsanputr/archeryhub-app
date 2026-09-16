@@ -1,45 +1,16 @@
 <template>
     <div class="min-h-screen bg-gray-50 font-body text-navy pb-16">
-        <!-- Enhanced Branded Loading State -->
-        <div v-if="showPageLoader" class="fixed inset-0 z-50 bg-navy flex items-center justify-center p-4 overflow-hidden select-none">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.15);">
+        <!-- Clean Light-Theme Loading State -->
+        <div v-if="pending" class="min-h-[60vh] flex flex-col items-center justify-center p-6 text-center">
+            <div class="size-14 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-center justify-center mb-4 text-navy">
+                <Icon icon="ph:spinner-gap-bold" class="text-2xl animate-spin text-navy" />
             </div>
-
-            <!-- Ambient Glow Elements -->
-            <div class="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-            <div class="relative z-10 w-full max-w-sm rounded-3xl border border-white/10 bg-white/5 p-8 text-center shadow-2xl backdrop-blur-xl">
-                <!-- Archery Target Pulse Graphic -->
-                <div class="relative mx-auto mb-6 flex h-24 w-24 items-center justify-center">
-                    <div class="absolute inset-0 rounded-full border border-primary/20 animate-ping opacity-25"></div>
-                    <div class="absolute inset-2 rounded-full border-2 border-primary/40 animate-pulse"></div>
-                    <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-tr from-primary to-yellow-200 text-navy shadow-lg shadow-primary/30">
-                        <Icon icon="hugeicons:archer" class="text-3xl text-navy" />
-                    </div>
-                </div>
-
-                <!-- Text Content -->
-                <div class="mb-6 space-y-2">
-                    <div class="text-[11px] font-black tracking-widest text-primary">
-                        {{ t('events.register.loading_badge', 'Portal Registrasi Resmi') }}
-                    </div>
-                    <h2 class="text-xl font-black tracking-tight text-white">
-                        {{ t('events.register.preparing_title', 'Menyiapkan Pendaftaran') }}
-                    </h2>
-                    <div class="text-xs font-medium leading-relaxed text-slate-300">
-                        {{ t('events.register.preparing_desc', 'Memuat data kategori turnamen, kuota, dan data atlet...') }}
-                    </div>
-                </div>
-
-                <!-- Animated Progress Track -->
-                <div class="relative h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                    <div class="absolute inset-0 h-full w-2/3 rounded-full bg-gradient-to-r from-primary via-yellow-200 to-primary animate-pulse mx-auto"></div>
-                </div>
-            </div>
+            <h2 class="text-lg font-black text-navy mb-1">
+                {{ t('events.register.preparing_title', 'Menyiapkan Formulir Pendaftaran') }}
+            </h2>
+            <p class="text-xs text-slate-400 font-medium max-w-sm">
+                {{ t('events.register.preparing_desc', 'Memuat data kategori dan kuota turnamen...') }}
+            </p>
         </div>
 
         <!-- Error -->
@@ -254,63 +225,42 @@
             <!-- ─────────────────────────────────────────── -->
             <!-- NOT LOGGED IN GUEST ONBOARDING VIEW         -->
             <!-- ─────────────────────────────────────────── -->
-            <main v-else-if="!isLoggedIn" class="max-w-xl mx-auto px-4 py-12 sm:py-16">
-                <div class="relative overflow-hidden rounded-3xl border border-primary/25 bg-gradient-to-b from-navy via-navy/95 to-slate-900 text-white p-8 sm:p-12 shadow-2xl text-center space-y-6">
-                    <!-- Ambient Glow -->
-                    <div class="absolute inset-0"
-                        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.12);"></div>
-                    <div class="absolute -top-20 left-1/2 -translate-x-1/2 h-44 w-44 rounded-full bg-primary/20 blur-3xl pointer-events-none"></div>
-
-                    <!-- Glowing Icon Badge -->
-                    <div class="relative z-10 size-20 rounded-3xl bg-gradient-to-br from-primary via-yellow-300 to-primary flex items-center justify-center mx-auto shadow-xl shadow-primary/25 text-navy">
-                        <Icon icon="ph:user-circle-gear-bold" class="text-4xl" />
+            <main v-else-if="!isLoggedIn" class="max-w-lg mx-auto px-4 py-12 sm:py-16">
+                <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-8 sm:p-10 text-center space-y-6">
+                    <!-- Icon Badge -->
+                    <div class="size-16 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center mx-auto text-navy">
+                        <Icon icon="ph:user-circle-gear-bold" class="text-3xl text-navy" />
                     </div>
 
                     <!-- Content -->
-                    <div class="relative z-10 space-y-3">
-                        <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white leading-tight">
+                    <div class="space-y-2">
+                        <h2 class="text-2xl font-black tracking-tight text-navy leading-tight">
                             {{ t('guest_reg.login_required_title') }}
                         </h2>
-                        <div class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
+                        <div class="text-slate-500 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
                             {{ t('guest_reg.login_required_desc') }}
                         </div>
                     </div>
 
-                    <!-- Micro Feature Tags -->
-                    <div class="relative z-10 flex items-center justify-center gap-2 flex-wrap pt-1">
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] border border-white/10 text-[11px] font-bold text-slate-200">
-                            <Icon icon="ph:target-bold" class="text-primary text-xs" />
-                            {{ t('guest_reg.tag_target') }}
-                        </span>
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] border border-white/10 text-[11px] font-bold text-slate-200">
-                            <Icon icon="ph:lightning-bold" class="text-primary text-xs" />
-                            {{ t('guest_reg.tag_scoring') }}
-                        </span>
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.08] border border-white/10 text-[11px] font-bold text-slate-200">
-                            <Icon icon="ph:certificate-bold" class="text-primary text-xs" />
-                            {{ t('guest_reg.tag_certificate') }}
-                        </span>
-                    </div>
-
                     <!-- Actions -->
-                    <div class="relative z-10 space-y-3 pt-3">
+                    <div class="space-y-3 pt-2">
                         <NuxtLink :to="loginUrl"
-                            class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-primary hover:bg-primary/90 text-navy font-black text-xs capitalize tracking-wider shadow-lg shadow-primary/25 transition-all duration-200 active:scale-98">
+                            class="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-navy hover:bg-navy/90 text-white font-black text-xs tracking-wide transition-all duration-200 active:scale-98 shadow-sm">
                             <Icon icon="ph:sign-in-bold" class="text-base" />
                             <span>{{ t('guest_reg.login_btn') }}</span>
                         </NuxtLink>
 
                         <NuxtLink :to="registerUrl"
-                            class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white/[0.07] hover:bg-white/[0.14] border border-white/15 text-white font-bold text-xs transition-all duration-200 active:scale-98">
-                            <Icon icon="ph:user-plus-bold" class="text-sm text-primary" />
+                            class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-navy font-bold text-xs transition-all duration-200 active:scale-98">
+                            <Icon icon="ph:user-plus-bold" class="text-sm text-slate-500" />
                             <span>{{ t('guest_reg.register_btn') }}</span>
                         </NuxtLink>
                     </div>
 
                     <!-- Back to Event -->
-                    <div class="relative z-10 pt-2">
+                    <div class="pt-1">
                         <NuxtLink :to="`/tournaments/${slug}`"
-                            class="text-xs text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5 font-bold">
+                            class="text-xs text-slate-400 hover:text-navy transition-colors inline-flex items-center gap-1.5 font-bold">
                             <Icon icon="ph:arrow-left-bold" class="text-xs" />
                             <span>{{ t('guest_reg.back_to_event') }}</span>
                         </NuxtLink>
@@ -1059,9 +1009,13 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
         }
 
 
-        const categoriesData = (categoriesResponse.events || categoriesResponse.categories || []).map(cat => ({
+        const rawCatList = categoriesResponse?.data || categoriesResponse?.tournaments || categoriesResponse?.categories || categoriesResponse?.events || (Array.isArray(categoriesResponse) ? categoriesResponse : [])
+        const categoriesData = rawCatList.map(cat => ({
             id: cat.id || cat.uuid,
-            name: `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`.trim(),
+            name: (cat.category_name_custom || `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`).trim(),
+            division_name: cat.division_name || cat.division || '',
+            category_name: cat.category_name || cat.category || '',
+            gender_division_name: cat.gender_division_name || '',
             event_type_name: cat.event_type_name || ''
         }))
 
@@ -1092,7 +1046,6 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 const loading = ref(false)
-const isClientPreparing = ref(true)
 const submitError = ref('')
 const registrationSuccess = ref(false)
 const manualCancelled = ref(false)

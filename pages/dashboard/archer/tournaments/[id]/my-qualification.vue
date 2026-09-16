@@ -263,7 +263,7 @@
 import { Icon } from '@iconify/vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useI18n } from 'vue-i18n'
-import { useEventContext } from '~/composables/useEventContext'
+import { useEventContext } from '~/composables/useTournamentContext'
 
 const { t } = useI18n()
 

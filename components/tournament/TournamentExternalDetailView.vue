@@ -303,36 +303,6 @@
                           </span>
                         </div>
                       </div>
-
-                      <!-- Right: Stage Pill Badge -->
-                      <div class="shrink-0 flex items-center justify-end">
-                        <span
-                          :class="[
-                            'px-3 py-1 rounded-xl text-[11px] font-bold border transition-colors inline-flex items-center gap-1.5 shadow-2xs',
-                            session.type === 'break' ? 'bg-amber-100/80 text-amber-900 border-amber-300/80' :
-                            session.type === 'finals' ? 'bg-amber-400 text-amber-950 border-amber-500 font-black' :
-                            session.type === 'elimination' ? 'bg-rose-50 text-rose-700 border-rose-200 font-bold' :
-                            session.type === 'team' ? 'bg-teal-50 text-teal-700 border-teal-200' :
-                            session.type === 'qualification' ? 'bg-primary/20 text-navy border-primary/30 font-bold' :
-                            session.type === 'practice' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' :
-                            session.type === 'ceremony' ? 'bg-amber-100 text-amber-900 border-amber-300 font-bold' :
-                            'bg-slate-100 text-slate-700 border-slate-200'
-                          ]"
-                        >
-                          <span 
-                            class="size-1.5 rounded-full"
-                            :class="[
-                              session.type === 'break' ? 'bg-amber-600' :
-                              session.type === 'finals' ? 'bg-amber-950' :
-                              session.type === 'elimination' ? 'bg-rose-500' :
-                              session.type === 'team' ? 'bg-teal-500' :
-                              session.type === 'qualification' ? 'bg-primary' :
-                              'bg-slate-400'
-                            ]"
-                          ></span>
-                          <span>{{ session.stage }}</span>
-                        </span>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -345,7 +315,7 @@
             </section>
 
             <!-- 3. FIELD OF PLAY (FOP LAYOUT) -->
-            <section v-if="hasFopData" id="fop" class="scroll-mt-24 space-y-5">
+            <section id="fop" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon"><Icon icon="ph:target-bold" class="size-5 text-navy" /></div>
                 <div>
@@ -356,86 +326,12 @@
                 </div>
               </div>
 
-              <!-- Day Tabs (Horizontal Scrolling Single Line) -->
-              <div v-if="fopDaysList.length > 1" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-                <button
-                  v-for="(day, dIdx) in fopDaysList"
-                  :key="dIdx"
-                  @click="selectedFopDayIndex = dIdx"
-                  :class="[
-                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
-                    selectedFopDayIndex === dIdx
-                      ? 'bg-navy text-white shadow-xs font-bold'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                  ]"
-                >
-                  {{ day.day_name || day.date || `Day ${dIdx + 1}` }}
-                </button>
-              </div>
-
-              <!-- FOP Sessions List -->
-              <div class="space-y-6">
-                <div
-                  v-for="(session, sIdx) in activeFopSessions"
-                  :key="sIdx"
-                  class="border border-slate-200/80 rounded-2xl p-4 sm:p-6 bg-slate-50/40 space-y-4"
-                >
-                  <!-- Session Header Card -->
-                  <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200/80">
-                    <div class="flex items-center gap-3">
-                      <div class="size-8 rounded-lg bg-navy text-white font-bold text-xs flex items-center justify-center shrink-0">
-                        S{{ sIdx + 1 }}
-                      </div>
-                      <div>
-                        <h4 class="text-sm sm:text-base font-bold text-navy">
-                          {{ session.name || session.session_name || `${t('session_label')} ${sIdx + 1}` }}
-                        </h4>
-                        <div class="flex items-center gap-3 text-xs text-slate-500 mt-0.5">
-                          <span v-if="session.time" class="flex items-center gap-1 font-mono">
-                            <Icon icon="ph:clock" class="text-xs" />
-                            {{ session.time }}
-                          </span>
-                          <span v-if="session.distance" class="flex items-center gap-1">
-                            <Icon icon="ph:arrows-horizontal" class="text-xs" />
-                            {{ session.distance }}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="flex items-center gap-2">
-                      <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold">
-                        {{ t('targets_label') }}: {{ session.target_min || 1 }} - {{ session.target_max || 20 }}
-                      </span>
-                    </div>
-                  </div>
-
-                  <!-- Geometric FOP Lane Grid (Clean Visual Targets) -->
-                  <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
-                    <div
-                      v-for="targetNo in (session.target_max || 16)"
-                      :key="targetNo"
-                      class="p-2.5 rounded-xl bg-white border border-slate-200 text-center hover:border-navy/40 transition-colors shadow-2xs"
-                    >
-                      <!-- WA 10-Ring Target Face Visual -->
-                      <div class="size-9 mx-auto rounded-full bg-yellow-400 border-3 border-red-500 ring-2 ring-sky-500 relative flex items-center justify-center shadow-2xs mb-1.5">
-                        <div class="size-2 rounded-full bg-yellow-300 border border-slate-900"></div>
-                      </div>
-                      <div class="font-mono text-xs font-bold text-navy">
-                        #{{ targetNo }}
-                      </div>
-                      <div class="text-[10px] text-slate-400 truncate">
-                        {{ session.target_face || '122cm' }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div v-if="!activeFopSessions || activeFopSessions.length === 0" class="text-center py-10 text-slate-400 text-xs sm:text-sm">
-                  <Icon icon="ph:target" class="text-3xl mx-auto mb-2 text-slate-300" />
-                  <span>{{ t('fop_empty') }}</span>
-                </div>
-              </div>
+              <!-- 2.5D Isometric Stadium Visualizer -->
+              <TournamentFieldOfPlayVisualizer
+                :tournament="activeTournament"
+                :tournament-data="activeTournamentData"
+                :fop-data="activeTournamentData?.field_of_play"
+              />
             </section>
 
             <!-- 4. ATHLETES & ENTRIES -->
@@ -567,8 +463,8 @@
                           {{ toTitleCase(athlete.club || athlete.country || '-') }}
                         </td>
                         <td class="py-3 px-4 whitespace-nowrap">
-                          <span class="px-2.5 py-1 rounded-lg bg-navy/5 text-navy font-semibold text-[11px] whitespace-nowrap">
-                            {{ toTitleCase(athlete.category || '-') }}
+                          <span class="inline-block px-2.5 py-1 rounded-lg bg-navy/5 text-navy font-semibold text-[11px] whitespace-nowrap">
+                            {{ athlete.category || '-' }}
                           </span>
                         </td>
                       </tr>
@@ -715,21 +611,21 @@
                 <!-- Custom Cell: Score -->
                 <template #cell-score="{ item }">
                   <span class="font-mono font-bold text-navy text-sm">
-                    {{ item.score || item.total || '-' }}
+                    {{ item.score ?? item.total_score ?? item.total ?? '-' }}
                   </span>
                 </template>
 
                 <!-- Custom Cell: 10s -->
                 <template #cell-tens="{ item }">
                   <span class="font-mono text-slate-500">
-                    {{ item.tens || item['10s'] || item.tens_count || '-' }}
+                    {{ item.tens ?? item['10s'] ?? item.tens_count ?? '-' }}
                   </span>
                 </template>
 
                 <!-- Custom Cell: Xs -->
                 <template #cell-xs="{ item }">
                   <span class="font-mono text-slate-500">
-                    {{ item.xs || item['xs'] || item.x_count || '-' }}
+                    {{ item.xs ?? item['xs'] ?? item.x_count ?? '-' }}
                   </span>
                 </template>
               </TournamentExternalDataTable>
@@ -1148,7 +1044,7 @@
                 </div>
               </div>
 
-              <!-- 3. Actions & Resources Box (Download THB & Ianseo) -->
+              <!-- 3. Actions & Resources Box (Download THB & Share) -->
               <div class="space-y-2">
                 <a
                   v-if="thbDocument"
@@ -1159,16 +1055,6 @@
                 >
                   <Icon icon="ph:file-pdf-bold" class="text-rose-600 text-sm" />
                   <span>{{ t('download_handbook_btn') }}</span>
-                </a>
-
-                <a
-                  :href="ianseoUrl"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-2xs"
-                >
-                  <Icon icon="ph:arrow-square-out-bold" class="text-navy text-sm" />
-                  <span>{{ t('view_ianseo_btn') }}</span>
                 </a>
 
                 <!-- Refined Modern Share Button -->
@@ -1299,6 +1185,7 @@ import { useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import ExternalEliminationBracket from './ExternalEliminationBracket.vue'
 import TournamentExternalDataTable from './TournamentExternalDataTable.vue'
+import TournamentFieldOfPlayVisualizer from './TournamentFieldOfPlayVisualizer.vue'
 
 // Custom click-outside directive for Vue
 const vClickOutside = {
@@ -1612,18 +1499,142 @@ const t = (key, params = {}) => {
 }
 
 // ─────────────────────────────────────────────────────────────
+// DIVISION & CATEGORY HUMAN-READABLE FORMATTER
+// ─────────────────────────────────────────────────────────────
+const formatDivisionCategory = (cat, division, ageClass) => {
+  if (!cat && !division && !ageClass) return '-'
+
+  const divisionMap = {
+    'b': 'Barebow',
+    'bb': 'Barebow',
+    'barebow': 'Barebow',
+    'r': 'Recurve',
+    'rc': 'Recurve',
+    'recurve': 'Recurve',
+    'c': 'Compound',
+    'co': 'Compound',
+    'compound': 'Compound',
+    'n': 'Nasional',
+    'std': 'Nasional',
+    'nasional': 'Nasional',
+    'standard': 'Nasional',
+    't': 'Tradisional',
+    'tr': 'Tradisional',
+    'trad': 'Tradisional',
+    'traditional': 'Tradisional',
+    'h': 'Horsebow',
+    'hb': 'Horsebow',
+    'horsebow': 'Horsebow',
+    'l': 'Longbow',
+    'lb': 'Longbow',
+    'longbow': 'Longbow'
+  }
+
+  const ageMap = {
+    'u9': 'Under 9',
+    'u10': 'Under 10',
+    'u12': 'Under 12',
+    'u13': 'Under 13',
+    'u15': 'Under 15',
+    'u18': 'Under 18',
+    'u21': 'Mahasiswa',
+    'mhs': 'Mahasiswa',
+    'mahasiswa': 'Mahasiswa',
+    'umum': 'Umum',
+    'open': 'Open',
+    'senior': 'Senior',
+    'master': 'Master'
+  }
+
+  const genderMap = {
+    'm': 'Men',
+    'w': 'Women',
+    'men': 'Men',
+    'women': 'Women',
+    'putra': 'Men',
+    'putri': 'Women',
+    'mix': 'Mixed Team',
+    'mixed': 'Mixed Team'
+  }
+
+  let raw = String(cat || '').trim()
+
+  // If empty raw but division or ageClass provided
+  if (!raw && division) {
+    const divName = divisionMap[String(division).toLowerCase()] || division
+    const clsName = ageClass ? (ageMap[String(ageClass).toLowerCase()] || ageClass) : ''
+    return [divName, clsName].filter(Boolean).join(' ')
+  }
+
+  // Exact single code (e.g. "B", "R", "C", "N")
+  if (divisionMap[raw.toLowerCase()]) {
+    return divisionMap[raw.toLowerCase()]
+  }
+
+  // Parse raw space-separated tokens like "B U13M", "N U10W", "R U18M", "C U15M", "B U21M", "B U21W"
+  const tokens = raw.split(/[\s_-]+/)
+  if (tokens.length >= 2 && divisionMap[tokens[0].toLowerCase()]) {
+    const divName = divisionMap[tokens[0].toLowerCase()]
+    const rest = tokens.slice(1).join(' ')
+    const ageGenderMatch = rest.match(/^(u\d+|mhs|umum)?\s*([mw]|men|women|putra|putri)?$/i)
+    if (ageGenderMatch) {
+      const [, a, g] = ageGenderMatch
+      const aName = a ? (ageMap[a.toLowerCase()] || (a.toLowerCase() === 'u21' ? 'Mahasiswa' : `Under ${a.replace(/\D/g, '')}`)) : ''
+      const gName = g ? (genderMap[g.toLowerCase()] || toTitleCase(g)) : ''
+      return [divName, aName, gName].filter(Boolean).join(' ')
+    }
+  }
+
+  // Human string expansions and title casing
+  let formatted = raw
+    .replace(/\bU-?(\d+)\s*(M|W|Men|Women|Putra|Putri)?\b/gi, (match, age, gen) => {
+      let g = ''
+      if (gen) {
+        g = gen.toUpperCase().startsWith('M') || (gen.toUpperCase().startsWith('P') && !gen.toLowerCase().includes('putri')) ? 'Men' : 'Women'
+      }
+      return `Under ${age} ${g}`.trim()
+    })
+    .replace(/\bU21\s*(M|Men|Putra)?\b/gi, 'Mahasiswa Men')
+    .replace(/\bU21\s*(W|Women|Putri)\b/gi, 'Mahasiswa Women')
+    .replace(/^B\s+/i, 'Barebow ')
+    .replace(/^R\s+/i, 'Recurve ')
+    .replace(/^C\s+/i, 'Compound ')
+    .replace(/^N\s+/i, 'Nasional ')
+    .replace(/^STD\s+/i, 'Nasional ')
+
+  return toTitleCase(formatted)
+}
+
+// ─────────────────────────────────────────────────────────────
 // DATA NORMALIZATION COMPUTEDS
 // ─────────────────────────────────────────────────────────────
 const normalizedQualsList = computed(() => {
   const raw = activeTournamentData.value?.qualifications || []
-  if (Array.isArray(raw)) return raw
+  if (Array.isArray(raw)) {
+    return raw.map((a, idx) => ({
+      ...a,
+      rank: a.rank || idx + 1,
+      score: a.total_score !== undefined ? a.total_score : (a.score !== undefined ? a.score : (a.total ?? '-')),
+      tens: a.tens !== undefined ? a.tens : (a['10s'] !== undefined ? a['10s'] : (a.tens_count ?? '-')),
+      xs: a.xs !== undefined ? a.xs : (a['xs'] !== undefined ? a['xs'] : (a.x_count ?? '-')),
+      category: formatDivisionCategory(a.category)
+    }))
+  }
   if (raw && typeof raw === 'object') {
     const list = []
     Object.keys(raw).forEach(cat => {
       const archers = raw[cat]
       if (Array.isArray(archers)) {
         archers.forEach((a, idx) => {
-          list.push({ ...a, category: cat, rank: a.rank || idx + 1 })
+          list.push({
+            ...a,
+            category: formatDivisionCategory(cat),
+            raw_category: cat,
+            rank: a.rank || idx + 1,
+            score: a.total_score !== undefined ? a.total_score : (a.score !== undefined ? a.score : (a.total ?? '-')),
+            tens: a.tens !== undefined ? a.tens : (a['10s'] !== undefined ? a['10s'] : (a.tens_count ?? '-')),
+            xs: a.xs !== undefined ? a.xs : (a['xs'] !== undefined ? a['xs'] : (a.x_count ?? '-'))
+          })
         })
       }
     })
@@ -1634,9 +1645,10 @@ const normalizedQualsList = computed(() => {
 
 const normalizedEntriesList = computed(() => {
   const raw = activeTournamentData.value?.entries || []
-  if (Array.isArray(raw)) return raw
-  if (raw && typeof raw === 'object') {
-    const list = []
+  let list = []
+  if (Array.isArray(raw)) {
+    list = [...raw]
+  } else if (raw && typeof raw === 'object') {
     Object.keys(raw).forEach(k => {
       const item = raw[k]
       if (Array.isArray(item)) {
@@ -1645,9 +1657,16 @@ const normalizedEntriesList = computed(() => {
         list.push({ ...item, category: item.category || k })
       }
     })
-    return list
   }
-  return []
+  return list.map(item => {
+    const rawCat = item.category || item.division || item.class || ''
+    const fullCat = formatDivisionCategory(rawCat, item.division, item.age_class || item.class)
+    return {
+      ...item,
+      category: fullCat,
+      raw_category: rawCat
+    }
+  })
 })
 
 const normalizedBracketsList = computed(() => {
@@ -1657,13 +1676,14 @@ const normalizedBracketsList = computed(() => {
     const list = []
     Object.keys(raw).forEach(cat => {
       const phases = raw[cat]
+      const fullCat = formatDivisionCategory(cat)
       if (Array.isArray(phases)) {
         phases.forEach(p => {
-          list.push({ category: cat, ...p })
+          list.push({ category: fullCat, raw_category: cat, ...p })
         })
       } else if (phases && typeof phases === 'object') {
         Object.keys(phases).forEach(pName => {
-          list.push({ category: cat, phase: pName, matches: phases[pName] })
+          list.push({ category: fullCat, raw_category: cat, phase: pName, matches: phases[pName] })
         })
       }
     })

@@ -269,7 +269,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
-import { useEventContext } from '~/composables/useEventContext'
+import { useEventContext } from '~/composables/useTournamentContext'
 
 definePageMeta({ layout: 'dashboard' })
 

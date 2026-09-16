@@ -4283,7 +4283,7 @@
     "custom_slot_title": "Jumlah Slot Turnamen Kustom:",
     "custom_slot_desc": "Tentukan jumlah kuota turnamen yang ingin Anda miliki",
     "slot_event_unit": "Slot Turnamen",
-    "select_tripay_method": "Pilih Metode Pembayaran Tripay:",
+    "select_tripay_method": "Pilih Metode Pembayaran Mayar:",
     "order_success_toast": "Pesanan paket kuota berhasil dibuat",
     "history_page_info": "Menampilkan {from} - {to} dari total {total} transaksi",
     "btn_prev": "Sebelumnya",
