@@ -593,114 +593,183 @@ onMounted(async () => {
             ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
             ctx.fillText('World Archery Bracket Tree', 20, 36)
 
-            const treeW = screenW - 40
+            const treeW = screenW - 36
             const treeH = 268
             const treeY = 48
-            drawRoundedRect(20, treeY, treeW, treeH, 14, '#FFFFFF', '#E2E8F0', 1.2)
+            drawRoundedRect(18, treeY, treeW, treeH, 14, '#FFFFFF', '#E2E8F0', 1.2)
 
-            // Stage Headers
+            // Column 1: Semifinals Header
             ctx.fillStyle = '#64748B'
+            ctx.font = '700 9px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Semifinals (Top 4)', 30, treeY + 18)
+
+            // Column 2: Medal Finals Header
+            ctx.fillText('Medal Finals', 176, treeY + 18)
+
+            // ── SF Match 1 ──
+            const sf1Y = treeY + 26
+            drawRoundedRect(28, sf1Y, 126, 94, 8, '#F8FAFC', '#E2E8F0', 1)
+
+            // SF 1 Pill Tag
+            drawRoundedRect(34, sf1Y + 8, 80, 16, 4, '#0F172A')
+            ctx.fillStyle = '#D9FF00'
             ctx.font = '700 8px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Quarterfinals', 32, treeY + 18)
-            ctx.fillText('Semifinals', 140, treeY + 18)
-            ctx.fillText('Gold Final', 228, treeY + 18)
+            ctx.fillText('SF 1 · Recurve Men', 38, sf1Y + 19)
 
-            // QF Matches Column (4 Match Nodes)
-            const qfMatches = [
-                { top: '1 Arif Dwi', topS: '6', bot: '8 Hendra', botS: '2', y: treeY + 28 },
-                { top: '4 Bagas P', topS: '7', bot: '5 Fajar R', botS: '3', y: treeY + 84 },
-                { top: '3 Riau Ega', topS: '6', bot: '6 Dimas A', botS: '0', y: treeY + 140 },
-                { top: '2 Dian K', topS: '6', bot: '7 Ryan M', botS: '4', y: treeY + 196 },
-            ]
+            // Archer 1 (Winner)
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 9px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('1 Arif Dwi P.', 36, sf1Y + 42)
+            drawRoundedRect(124, sf1Y + 31, 22, 16, 4, '#0F172A')
+            ctx.fillStyle = '#D9FF00'
+            ctx.textAlign = 'center'
+            ctx.font = '800 9.5px "Bricolage Grotesque", sans-serif'
+            ctx.fillText('6', 135, sf1Y + 43)
 
-            qfMatches.forEach((m) => {
-                drawRoundedRect(30, m.y, 90, 44, 6, '#F8FAFC', '#E2E8F0', 1)
-                ctx.fillStyle = '#0F172A'
-                ctx.font = '700 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(m.top, 34, m.y + 16)
-                ctx.textAlign = 'right'
-                ctx.font = '700 8.5px "Bricolage Grotesque", sans-serif'
-                ctx.fillText(m.topS, 114, m.y + 16)
+            // Archer 2
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#64748B'
+            ctx.font = '500 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('4 Diananda C.', 36, sf1Y + 62)
+            drawRoundedRect(124, sf1Y + 51, 22, 16, 4, '#E2E8F0')
+            ctx.fillStyle = '#475569'
+            ctx.textAlign = 'center'
+            ctx.font = '700 9px "Bricolage Grotesque", sans-serif'
+            ctx.fillText('4', 135, sf1Y + 63)
 
-                ctx.textAlign = 'left'
-                ctx.fillStyle = '#64748B'
-                ctx.font = '500 8px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(m.bot, 34, m.y + 34)
-                ctx.textAlign = 'right'
-                ctx.fillText(m.botS, 114, m.y + 34)
-                ctx.textAlign = 'left'
-            })
+            // Sets indicator
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#94A3B8'
+            ctx.font = '500 7.5px "NovaText", sans-serif'
+            ctx.fillText('Sets: 29 · 28 · 30 · 29 · 30', 36, sf1Y + 82)
 
-            // SF Matches Column (2 Match Nodes)
-            const sfMatches = [
-                { top: 'Arif Dwi', topS: '6', bot: 'Bagas P', botS: '2', y: treeY + 56 },
-                { top: 'Riau Ega', topS: '7', bot: 'Dian K', botS: '3', y: treeY + 168 },
-            ]
+            // ── SF Match 2 ──
+            const sf2Y = treeY + 144
+            drawRoundedRect(28, sf2Y, 126, 94, 8, '#F8FAFC', '#E2E8F0', 1)
 
-            sfMatches.forEach((m) => {
-                drawRoundedRect(136, m.y, 82, 48, 6, '#F1F5F9', '#CBD5E1', 1)
-                ctx.fillStyle = '#0F172A'
-                ctx.font = '700 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(m.top, 142, m.y + 18)
-                ctx.textAlign = 'right'
-                ctx.fillText(m.topS, 212, m.y + 18)
+            // SF 2 Pill Tag
+            drawRoundedRect(34, sf2Y + 8, 80, 16, 4, '#0F172A')
+            ctx.fillStyle = '#D9FF00'
+            ctx.font = '700 8px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('SF 2 · Recurve Men', 38, sf2Y + 19)
 
-                ctx.textAlign = 'left'
-                ctx.fillStyle = '#64748B'
-                ctx.font = '500 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(m.bot, 142, m.y + 38)
-                ctx.textAlign = 'right'
-                ctx.fillText(m.botS, 212, m.y + 38)
-                ctx.textAlign = 'left'
-            })
+            // Archer 1 (Winner)
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 9px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('2 Riau Ega A.', 36, sf2Y + 42)
+            drawRoundedRect(124, sf2Y + 31, 22, 16, 4, '#0F172A')
+            ctx.fillStyle = '#D9FF00'
+            ctx.textAlign = 'center'
+            ctx.font = '800 9.5px "Bricolage Grotesque", sans-serif'
+            ctx.fillText('6', 135, sf2Y + 43)
 
-            // Branching Connecting Lines
-            ctx.strokeStyle = '#94A3B8'
-            ctx.lineWidth = 1.2
+            // Archer 2
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#64748B'
+            ctx.font = '500 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('3 Kenzo A.', 36, sf2Y + 62)
+            drawRoundedRect(124, sf2Y + 51, 22, 16, 4, '#E2E8F0')
+            ctx.fillStyle = '#475569'
+            ctx.textAlign = 'center'
+            ctx.font = '700 9px "Bricolage Grotesque", sans-serif'
+            ctx.fillText('2', 135, sf2Y + 63)
+
+            // Sets indicator
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#94A3B8'
+            ctx.font = '500 7.5px "NovaText", sans-serif'
+            ctx.fillText('Sets: 28 · 29 · 29 · 28', 36, sf2Y + 82)
+
+            // ── Orthogonal Branching Lines ──
+            ctx.strokeStyle = '#0F172A'
+            ctx.lineWidth = 1.5
             ctx.beginPath()
-            // QF 1 & 2 to SF 1
-            ctx.moveTo(120, treeY + 50)
-            ctx.lineTo(128, treeY + 50)
-            ctx.lineTo(128, treeY + 80)
-            ctx.lineTo(136, treeY + 80)
+            // SF1 to Gold Final
+            ctx.moveTo(154, sf1Y + 47)
+            ctx.lineTo(164, sf1Y + 47)
+            ctx.lineTo(164, treeY + 77)
+            ctx.lineTo(174, treeY + 77)
 
-            ctx.moveTo(120, treeY + 106)
-            ctx.lineTo(128, treeY + 106)
-            ctx.lineTo(128, treeY + 80)
-
-            // QF 3 & 4 to SF 2
-            ctx.moveTo(120, treeY + 162)
-            ctx.lineTo(128, treeY + 162)
-            ctx.lineTo(128, treeY + 192)
-            ctx.lineTo(136, treeY + 192)
-
-            ctx.moveTo(120, treeY + 218)
-            ctx.lineTo(128, treeY + 218)
-            ctx.lineTo(128, treeY + 192)
-
-            // SF 1 & 2 to Gold Final
-            ctx.moveTo(218, treeY + 80)
-            ctx.lineTo(228, treeY + 80)
-            ctx.lineTo(228, treeY + 136)
-            ctx.lineTo(234, treeY + 136)
-
-            ctx.moveTo(218, treeY + 192)
-            ctx.lineTo(228, treeY + 192)
-            ctx.lineTo(228, treeY + 136)
+            // SF2 to Gold Final
+            ctx.moveTo(154, sf2Y + 47)
+            ctx.lineTo(164, sf2Y + 47)
+            ctx.lineTo(164, treeY + 77)
             ctx.stroke()
 
-            // Gold Medal Final Card
-            drawRoundedRect(234, treeY + 104, 86, 64, 8, isBracketAdvanced ? '#D9FF00' : '#F8FAFC', '#0F172A', 1.5)
-            ctx.textAlign = 'left'
-            ctx.fillStyle = '#0F172A'
-            ctx.font = '800 8.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Gold Medal Match', 238, treeY + 120)
+            // ── Column 2: Gold Medal Final Match ──
+            const goldY = treeY + 26
+            const isGoldActive = isBracketAdvanced
+            drawRoundedRect(174, goldY, 142, 104, 8, isGoldActive ? '#0F172A' : '#F8FAFC', isGoldActive ? '#D9FF00' : '#CBD5E1', isGoldActive ? 1.5 : 1)
 
-            ctx.font = '700 8.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Arif Dwi [6]', 238, treeY + 138)
-            ctx.fillStyle = '#334155'
-            ctx.font = '600 8px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Riau Ega [4]', 238, treeY + 154)
+            // Gold Header Pill
+            drawRoundedRect(180, goldY + 8, 86, 16, 4, isGoldActive ? '#D9FF00' : '#0F172A')
+            ctx.fillStyle = isGoldActive ? '#0F172A' : '#D9FF00'
+            ctx.font = '700 8px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Gold Medal Final', 186, goldY + 19)
+
+            // Gold Archer 1
+            ctx.fillStyle = isGoldActive ? '#FFFFFF' : '#0F172A'
+            ctx.font = '700 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('1 Arif Dwi P.', 182, goldY + 44)
+            drawRoundedRect(286, goldY + 32, 22, 16, 4, isGoldActive ? '#D9FF00' : '#0F172A')
+            ctx.fillStyle = '#0F172A'
+            ctx.textAlign = 'center'
+            ctx.font = '800 10px "Bricolage Grotesque", sans-serif'
+            ctx.fillText('6', 297, goldY + 44)
+
+            // Gold Archer 2
+            ctx.textAlign = 'left'
+            ctx.fillStyle = isGoldActive ? '#94A3B8' : '#64748B'
+            ctx.font = '600 9px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('2 Riau Ega A.', 182, goldY + 66)
+            drawRoundedRect(286, goldY + 54, 22, 16, 4, isGoldActive ? '#1E293B' : '#E2E8F0')
+            ctx.fillStyle = isGoldActive ? '#94A3B8' : '#475569'
+            ctx.textAlign = 'center'
+            ctx.font = '700 9px "Bricolage Grotesque", sans-serif'
+            ctx.fillText('4', 297, goldY + 66)
+
+            // Gold Subtitle
+            ctx.textAlign = 'left'
+            ctx.fillStyle = isGoldActive ? '#D9FF00' : '#64748B'
+            ctx.font = '600 7.5px "NovaText", sans-serif'
+            ctx.fillText(isGoldActive ? 'Gold Medal Champion: Arif Dwi' : 'Awaiting Match Advance', 182, goldY + 88)
+
+            // ── Bronze Medal Final Match ──
+            const bronzeY = treeY + 144
+            drawRoundedRect(174, bronzeY, 142, 94, 8, '#F8FAFC', '#E2E8F0', 1)
+
+            // Bronze Header Pill
+            drawRoundedRect(180, bronzeY + 8, 92, 16, 4, '#F1F5F9')
+            ctx.fillStyle = '#475569'
+            ctx.font = '700 8px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Bronze Medal Final', 186, bronzeY + 19)
+
+            // Bronze Archer 1
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 9px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('4 Diananda C.', 182, bronzeY + 42)
+            drawRoundedRect(286, bronzeY + 31, 22, 16, 4, '#0F172A')
+            ctx.fillStyle = '#D9FF00'
+            ctx.textAlign = 'center'
+            ctx.font = '800 9.5px "Bricolage Grotesque", sans-serif'
+            ctx.fillText('7', 297, bronzeY + 43)
+
+            // Bronze Archer 2
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#64748B'
+            ctx.font = '500 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('3 Kenzo A.', 182, bronzeY + 62)
+            drawRoundedRect(286, bronzeY + 51, 22, 16, 4, '#E2E8F0')
+            ctx.fillStyle = '#475569'
+            ctx.textAlign = 'center'
+            ctx.font = '700 9px "Bricolage Grotesque", sans-serif'
+            ctx.fillText('3', 297, bronzeY + 63)
+
+            // Bronze Subtitle
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#94A3B8'
+            ctx.font = '500 7.5px "NovaText", sans-serif'
+            ctx.fillText('Bronze Medal Winner: Diananda', 182, bronzeY + 82)
 
             ctx.save()
             ctx.translate(sc1BtnCX, sc1BtnCY)
@@ -711,7 +780,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isBracketAdvanced ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isBracketAdvanced ? 'Winners Advanced to Finals' : 'Advance Winners to Semifinals', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isBracketAdvanced ? 'Winners Advanced to Finals' : 'Advance Semifinals to Finals', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }
