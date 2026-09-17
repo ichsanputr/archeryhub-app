@@ -66,12 +66,19 @@ onMounted(async () => {
     if (!canvas) return
     const ctx = canvas.getContext('2d')
 
-    // ── Preload Payment Proof Receipt Image ──
+    // ── Preload Payment Proof & Hero Banner Images ──
     const receiptImage = new Image()
     receiptImage.src = '/payment-proof-sample.jpg'
     let isReceiptLoaded = false
     receiptImage.onload = () => {
         isReceiptLoaded = true
+    }
+
+    const bannerImage = new Image()
+    bannerImage.src = '/hero-homepage.jpeg'
+    let isBannerLoaded = false
+    bannerImage.onload = () => {
+        isBannerLoaded = true
     }
 
     // ── Helper: Draw Rounded Rectangle ──
@@ -497,67 +504,109 @@ onMounted(async () => {
         ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
         ctx.fillText('Publish Tournament', 20, 38)
 
-        // Event Card
+        // Event Card with Top Cover Thumbnail
         const sc1CardW = screenW - 40
-        const sc1CardY = 56
-        drawRoundedRect(20, sc1CardY, sc1CardW, 250, 16, '#FFFFFF', '#E2E8F0', 1.2)
+        const sc1CardY = 54
+        const sc1CardH = 252
+        drawRoundedRect(20, sc1CardY, sc1CardW, sc1CardH, 14, '#FFFFFF', '#E2E8F0', 1.2)
 
-        // Category Tag & Status Tag
-        drawRoundedRect(34, sc1CardY + 14, 100, 22, 6, '#F1F5F9')
-        ctx.fillStyle = '#0F172A'
-        ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-        ctx.textAlign = 'center'
-        ctx.fillText('National Series', 34 + 50, sc1CardY + 29)
-
-        // Draft / Published Badge (Using brand volt & slate)
-        ctx.textAlign = 'right'
-        if (isPublished) {
-            drawRoundedRect(screenW - 120, sc1CardY + 14, 86, 22, 6, '#D9FF00')
-            ctx.fillStyle = '#0F172A'
-            ctx.font = '700 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Published', screenW - 34 - 20, sc1CardY + 29)
+        // Top Cover Image Banner
+        const bannerH = 80
+        ctx.save()
+        ctx.beginPath()
+        if (typeof ctx.roundRect === 'function') {
+            ctx.roundRect(20, sc1CardY, sc1CardW, bannerH, [14, 14, 0, 0])
         } else {
-            drawRoundedRect(screenW - 90, sc1CardY + 14, 56, 22, 6, '#F1F5F9')
-            ctx.fillStyle = '#64748B'
-            ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Draft', screenW - 34 - 15, sc1CardY + 29)
+            ctx.rect(20, sc1CardY, sc1CardW, bannerH)
+        }
+        ctx.clip()
+
+        if (isBannerLoaded) {
+            ctx.drawImage(bannerImage, 20, sc1CardY, sc1CardW, bannerH)
+        } else {
+            ctx.fillStyle = '#1E293B'
+            ctx.fillRect(20, sc1CardY, sc1CardW, bannerH)
         }
 
-        // Event Title & Location
+        // Ambient Dark Gradient Overlay on Banner
+        const bannerGrad = ctx.createLinearGradient(20, sc1CardY, 20, sc1CardY + bannerH)
+        bannerGrad.addColorStop(0, 'rgba(15, 23, 42, 0.25)')
+        bannerGrad.addColorStop(1, 'rgba(15, 23, 42, 0.75)')
+        ctx.fillStyle = bannerGrad
+        ctx.fillRect(20, sc1CardY, sc1CardW, bannerH)
+        ctx.restore()
+
+        // Floating Badges Over Banner
+        drawRoundedRect(30, sc1CardY + 10, 88, 20, 5, 'rgba(15, 23, 42, 0.85)', 'rgba(255, 255, 255, 0.25)', 1)
+        ctx.fillStyle = '#FFFFFF'
+        ctx.font = '700 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+        ctx.textAlign = 'center'
+        ctx.fillText('National Series', 30 + 44, sc1CardY + 23)
+
+        // Draft / Published Floating Badge
+        ctx.textAlign = 'right'
+        if (isPublished) {
+            drawRoundedRect(screenW - 98, sc1CardY + 10, 68, 20, 5, '#D9FF00')
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 9px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.textAlign = 'center'
+            ctx.fillText('Published', screenW - 98 + 34, sc1CardY + 23)
+        } else {
+            drawRoundedRect(screenW - 80, sc1CardY + 10, 50, 20, 5, 'rgba(15, 23, 42, 0.85)', 'rgba(255, 255, 255, 0.25)', 1)
+            ctx.fillStyle = '#FFFFFF'
+            ctx.font = '700 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.textAlign = 'center'
+            ctx.fillText('Draft', screenW - 80 + 25, sc1CardY + 23)
+        }
+
+        // Event Title & Location (Below Banner)
         ctx.textAlign = 'left'
         ctx.fillStyle = '#0F172A'
-        ctx.font = '700 15px "Bricolage Grotesque", "NovaText", sans-serif'
-        ctx.fillText('Archeris National Open 2026', 34, sc1CardY + 64)
+        ctx.font = '700 14px "Bricolage Grotesque", "NovaText", sans-serif'
+        ctx.fillText('Archeris National Open 2026', 30, sc1CardY + 100)
 
         ctx.fillStyle = '#64748B'
-        ctx.font = '500 11px "NovaText", "Plus Jakarta Sans", sans-serif'
-        ctx.fillText('Senayan Archery Field, Jakarta', 34, sc1CardY + 80)
+        ctx.font = '500 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+        ctx.fillText('Senayan Archery Field, Jakarta', 30, sc1CardY + 114)
 
         // 2-Col Stat Bento Inside Card
-        const subStatY = sc1CardY + 98
-        const subStatW = (sc1CardW - 38) / 2
+        const subStatY = sc1CardY + 124
+        const subStatW = (sc1CardW - 30) / 2
 
-        drawRoundedRect(34, subStatY, subStatW, 64, 10, '#F8FAFC', '#E2E8F0')
+        drawRoundedRect(30, subStatY, subStatW, 52, 8, '#F8FAFC', '#E2E8F0')
         ctx.fillStyle = '#64748B'
-        ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-        ctx.fillText('Total Quota', 44, subStatY + 20)
+        ctx.font = '500 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+        ctx.fillText('Total Quota', 38, subStatY + 17)
         ctx.fillStyle = '#0F172A'
-        ctx.font = '700 15px "Bricolage Grotesque", "NovaText", sans-serif'
-        ctx.fillText('160 Archers', 44, subStatY + 44)
+        ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
+        ctx.fillText('160 Archers', 38, subStatY + 37)
 
-        drawRoundedRect(34 + subStatW + 10, subStatY, subStatW, 64, 10, '#F8FAFC', '#E2E8F0')
+        drawRoundedRect(30 + subStatW + 10, subStatY, subStatW, 52, 8, '#F8FAFC', '#E2E8F0')
         ctx.fillStyle = '#64748B'
-        ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-        ctx.fillText('Entry Fee', 44 + subStatW + 10, subStatY + 20)
+        ctx.font = '500 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+        ctx.fillText('Entry Fee', 38 + subStatW + 10, subStatY + 17)
         ctx.fillStyle = '#0F172A'
-        ctx.font = '700 15px "Bricolage Grotesque", "NovaText", sans-serif'
-        ctx.fillText('Rp 150,000', 44 + subStatW + 10, subStatY + 44)
+        ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
+        ctx.fillText('Rp 150,000', 38 + subStatW + 10, subStatY + 37)
 
-        // Info Note
-        ctx.fillStyle = '#64748B'
-        ctx.font = '500 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-        ctx.fillText(isPublished ? 'Online registration open for all clubs' : 'Tournament in draft status (not public yet)', 34, sc1CardY + 186)
-        ctx.fillText('Divisions: Recurve, Compound, Barebow', 34, sc1CardY + 204)
+        // Division Tags Row
+        const divPills = ['Recurve', 'Compound', 'Barebow']
+        let divX = 30
+        for (let di = 0; di < divPills.length; di++) {
+            const dw = 58
+            drawRoundedRect(divX, sc1CardY + 186, dw, 18, 4, '#F1F5F9')
+            ctx.textAlign = 'center'
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '600 8px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText(divPills[di], divX + dw / 2, sc1CardY + 198)
+            divX += dw + 6
+        }
+
+        // Info Note Line
+        ctx.textAlign = 'left'
+        ctx.fillStyle = isPublished ? '#0F172A' : '#64748B'
+        ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
+        ctx.fillText(isPublished ? '● Online registration open for all clubs' : '○ Draft mode (not visible to public)', 30, sc1CardY + 226)
 
         // Action CTA: Publish Tournament
         ctx.save()
