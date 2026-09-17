@@ -70,6 +70,96 @@ onMounted(async () => {
         if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = lineWidth; ctx.stroke() }
     }
 
+    // World Archery 10-ring concentric target face
+    function drawTargetFace(cx, cy, r) {
+        const rings = [
+            { r: r, color: '#FFFFFF', stroke: '#CBD5E1' },
+            { r: r * 0.8, color: '#0F172A', stroke: null },
+            { r: r * 0.6, color: '#0284C7', stroke: null },
+            { r: r * 0.4, color: '#EF4444', stroke: null },
+            { r: r * 0.2, color: '#FACC15', stroke: '#CA8A04' }
+        ]
+        rings.forEach(ring => {
+            ctx.beginPath()
+            ctx.arc(cx, cy, ring.r, 0, Math.PI * 2)
+            ctx.fillStyle = ring.color
+            ctx.fill()
+            if (ring.stroke) {
+                ctx.strokeStyle = ring.stroke
+                ctx.lineWidth = 0.8
+                ctx.stroke()
+            }
+        })
+        ctx.beginPath()
+        ctx.arc(cx, cy, r * 0.08, 0, Math.PI * 2)
+        ctx.strokeStyle = '#CA8A04'
+        ctx.lineWidth = 0.6
+        ctx.stroke()
+    }
+
+    // High fidelity QR Matrix Generator for Scoresheet Scanner
+    function drawDynamicQRCode(x, y, size, dotColor = '#0F172A') {
+        const cols = 21
+        const cellSize = size / cols
+        ctx.save()
+
+        drawRoundedRect(x, y, size, size, 8, '#FFFFFF', '#CBD5E1', 1)
+        ctx.fillStyle = dotColor
+
+        function drawFinder(fx, fy) {
+            ctx.fillRect(x + fx * cellSize, y + fy * cellSize, 7 * cellSize, 7 * cellSize)
+            ctx.fillStyle = '#FFFFFF'
+            ctx.fillRect(x + (fx + 1) * cellSize, y + (fy + 1) * cellSize, 5 * cellSize, 5 * cellSize)
+            ctx.fillStyle = dotColor
+            ctx.fillRect(x + (fx + 2) * cellSize, y + (fy + 2) * cellSize, 3 * cellSize, 3 * cellSize)
+        }
+
+        drawFinder(0, 0)
+        drawFinder(cols - 7, 0)
+        drawFinder(0, cols - 7)
+
+        const pattern = [
+            [0,0,0,0,0,0,0, 0,1,0,1,0,1, 0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0, 1,0,1,0,1,0, 0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0, 0,1,0,0,1,1, 0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0, 1,1,1,0,0,1, 0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0, 0,0,1,1,0,0, 0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0, 1,0,0,1,1,0, 0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0, 0,1,1,0,1,1, 0,0,0,0,0,0,0],
+
+            [1,0,1,1,0,1,0, 1,0,1,0,1,0, 1,0,1,0,1,0,1],
+            [0,1,0,0,1,0,1, 0,1,1,1,0,1, 0,1,0,0,1,1,0],
+            [1,1,0,1,0,1,0, 1,0,0,1,0,0, 1,0,1,1,0,1,0],
+            [0,0,1,0,1,0,1, 0,1,1,0,1,1, 0,1,0,1,0,0,1],
+            [1,0,1,1,0,1,0, 1,1,0,1,0,1, 1,1,0,0,1,1,0],
+            [0,1,0,1,1,0,1, 0,0,1,0,1,0, 0,0,1,1,0,1,1],
+            [1,1,0,0,1,0,0, 1,0,1,1,0,1, 1,0,1,0,1,0,0],
+
+            [0,0,0,0,0,0,0, 0,1,0,1,0,1, 0,1,1,0,1,0,1],
+            [0,0,0,0,0,0,0, 1,0,1,0,1,0, 1,0,0,1,0,1,0],
+            [0,0,0,0,0,0,0, 0,1,0,1,1,0, 0,1,1,0,1,1,1],
+            [0,0,0,0,0,0,0, 1,1,0,0,0,1, 1,0,1,1,0,0,1],
+            [0,0,0,0,0,0,0, 0,0,1,1,1,0, 0,1,0,1,1,0,0],
+            [0,0,0,0,0,0,0, 1,0,1,0,0,1, 1,0,1,0,0,1,1],
+            [0,0,0,0,0,0,0, 0,1,1,1,0,0, 0,1,0,1,1,0,1]
+        ]
+
+        for (let r = 0; r < cols; r++) {
+            for (let c = 0; c < cols; c++) {
+                if ((r < 7 && c < 7) || (r < 7 && c >= cols - 7) || (r >= cols - 7 && c < 7)) continue
+                if (pattern[r] && pattern[r][c] === 1) {
+                    ctx.fillRect(x + c * cellSize + 0.5, y + r * cellSize + 0.5, cellSize - 1, cellSize - 1)
+                }
+            }
+        }
+
+        const centerCX = x + size / 2
+        const centerCY = y + size / 2
+        drawRoundedRect(centerCX - 12, centerCY - 12, 24, 24, 6, '#0F172A')
+        drawTargetFace(centerCX, centerCY, 6)
+        ctx.restore()
+    }
+
     function drawMouseCursor(x, y, isPressed = false) {
         ctx.save()
         ctx.translate(x, y)
@@ -97,13 +187,14 @@ onMounted(async () => {
         ctx.restore()
     }
 
-    const CYCLE_DURATION = 17.0
+    // ── Master 25.0-Second Seamless Loop (5 Sequential Scenes x 5.0s) ──
+    const CYCLE_DURATION = 25.0
     let startTime = null
 
     function renderFrame(now) {
         if (!startTime) startTime = now
         const effectiveNow = isPaused.value ? (pausedAt - totalPausedDuration) : (now - totalPausedDuration)
-        const elapsed = ((effectiveNow - startTime) / 1000) % CYCLE_DURATION
+        const elapsed = (effectiveNow / 1000) % CYCLE_DURATION
 
         // 1. Stage Background
         ctx.fillStyle = '#ECEBE6'
@@ -124,192 +215,270 @@ onMounted(async () => {
             }
         }
 
-        // 2. Timeline States
+        // 2. Timeline States & Camera
         let sceneIndex = 0
         let camZoom = 1.00
         let camPanY = 0
 
-        let isRosterSelected = false
-        let btnRosterScale = 1.0
-        let isEndSubmitted = false
-        let btnKeypadScale = 1.0
-        let isStandingsAudited = false
-        let btnAuditedScale = 1.0
-        let isJudgeLocked = false
-        let btnLockScale = 1.0
+        let loginCodeTyped = ''
+        let isLoginAuthenticated = false
+        let btnLoginScale = 1.0
 
-        let activeKeyTap = -1 // 0: X, 1: 10, 2: 9
+        let isScanSelected = false
+        let btnScanScale = 1.0
+
+        let isQrVerified = false
+        let scanLaserY = 0
+
+        let isArcherSelected = false
+        let selectedArcherIndex = 0
+
+        let scoreSlot5Filled = false
+        let scoreSlot6Filled = false
+        let isScoreSubmitted = false
+        let btnScoreSubmitScale = 1.0
+        let activeKeypadKey = null
 
         let cursorVisible = false
         let cursorX = 0, cursorY = 0
         let cursorPressed = false
         let tapRipple = -1, tapX = 0, tapY = 0
 
-        if (elapsed < 4.2) {
+        const STEP_TIME = 5.0
+
+        // ══════════════════════════════════════════════════════════
+        // SCENE 1: SCOREKEEPER LOGIN & 5-CHAR ACCESS CODE (0.0s – 5.0s)
+        // ══════════════════════════════════════════════════════════
+        if (elapsed < STEP_TIME) {
             sceneIndex = 0
             if (elapsed < 1.4) {
                 const zt = easeInOutCubic(elapsed / 1.4)
-                camZoom = 1.00 + 0.45 * zt
+                camZoom = 1.00 + 0.44 * zt
                 camPanY = -85 * zt
             } else {
-                camZoom = 1.45
+                camZoom = 1.44
                 camPanY = -85
             }
 
-            const targetBtnY = 620
-            if (elapsed >= 1.0) {
+            // Typing animation of 5-character code: S-K-7-8-9
+            if (elapsed >= 0.6 && elapsed < 1.0) loginCodeTyped = 'S'
+            else if (elapsed >= 1.0 && elapsed < 1.4) loginCodeTyped = 'SK'
+            else if (elapsed >= 1.4 && elapsed < 1.8) loginCodeTyped = 'SK7'
+            else if (elapsed >= 1.8 && elapsed < 2.2) loginCodeTyped = 'SK78'
+            else if (elapsed >= 2.2) loginCodeTyped = 'SK789'
+
+            const btnLoginY = 820
+            if (elapsed >= 2.4) {
                 cursorVisible = true
-                if (elapsed < 2.4) {
-                    const mt = easeInOutCubic((elapsed - 1.0) / 1.4)
+                if (elapsed < 3.2) {
+                    const mt = easeInOutCubic((elapsed - 2.4) / 0.8)
                     cursorX = 540
-                    cursorY = 720 + (targetBtnY - 720) * mt
+                    cursorY = 560 + (btnLoginY - 560) * mt
                 } else {
-                    cursorX = 540; cursorY = targetBtnY
+                    cursorX = 540; cursorY = btnLoginY
                 }
 
-                if (elapsed >= 2.4) {
-                    isRosterSelected = true
-                    if (elapsed >= 2.4 && elapsed <= 2.85) {
+                if (elapsed >= 3.2) {
+                    isLoginAuthenticated = true
+                    if (elapsed >= 3.2 && elapsed <= 3.75) {
                         cursorPressed = true
-                        btnRosterScale = 0.94
-                        tapRipple = (elapsed - 2.4) / 0.45
-                        tapX = 540; tapY = targetBtnY
+                        btnLoginScale = 0.94
+                        tapRipple = (elapsed - 3.2) / 0.55
+                        tapX = 540; tapY = btnLoginY
                     }
                 }
             }
-        } else if (elapsed < 8.4) {
+        }
+        // ══════════════════════════════════════════════════════════
+        // SCENE 2: SCOREKEEPER LANDING & ACTIONS (5.0s – 10.0s)
+        // ══════════════════════════════════════════════════════════
+        else if (elapsed < STEP_TIME * 2) {
             sceneIndex = 1
-            isRosterSelected = true
-            const step2Elapsed = elapsed - 4.2
+            loginCodeTyped = 'SK789'
+            isLoginAuthenticated = true
+            const step2Elapsed = elapsed - STEP_TIME
 
-            if (step2Elapsed < 0.8) {
-                const transT = easeInOutCubic(step2Elapsed / 0.8)
-                camZoom = 1.45 + (1.35 - 1.45) * transT
-                camPanY = -85 + (-40 - (-85)) * transT
-            } else if (step2Elapsed < 2.0) {
-                camZoom = 1.35; camPanY = -40
-            } else if (step2Elapsed < 2.8) {
-                const ct = easeInOutCubic((step2Elapsed - 2.0) / 0.8)
-                camZoom = 1.35 + (1.46 - 1.35) * ct
-                camPanY = -40 + (-85 - (-40)) * ct
+            if (step2Elapsed < 1.0) {
+                const transT = easeInOutCubic(step2Elapsed / 1.0)
+                camZoom = 1.44 + (1.36 - 1.44) * transT
+                camPanY = -85 + (-45 - (-85)) * transT
+            } else if (step2Elapsed < 2.6) {
+                camZoom = 1.36; camPanY = -45
+            } else if (step2Elapsed < 3.6) {
+                const ct = easeInOutCubic((step2Elapsed - 2.6) / 1.0)
+                camZoom = 1.36 + (1.44 - 1.36) * ct
+                camPanY = -45 + (-85 - (-45)) * ct
             } else {
-                camZoom = 1.46; camPanY = -85
+                camZoom = 1.44; camPanY = -85
             }
 
-            const targetBtnY = 620
-            if (step2Elapsed >= 1.4) {
+            const scanCardY = 620
+            if (step2Elapsed >= 1.0) {
                 cursorVisible = true
-                if (step2Elapsed < 2.5) {
-                    const mt = easeInOutCubic((step2Elapsed - 1.4) / 1.1)
+                if (step2Elapsed < 2.2) {
+                    const mt = easeInOutCubic((step2Elapsed - 1.0) / 1.2)
                     cursorX = 540
-                    cursorY = 520 + (targetBtnY - 520) * mt
+                    cursorY = 460 + (scanCardY - 460) * mt
                 } else {
-                    cursorX = 540; cursorY = targetBtnY
+                    cursorX = 540; cursorY = scanCardY
                 }
 
-                if (step2Elapsed >= 2.5) {
-                    isEndSubmitted = true
-                    if (step2Elapsed >= 2.5 && step2Elapsed <= 2.95) {
+                if (step2Elapsed >= 2.2) {
+                    isScanSelected = true
+                    if (step2Elapsed >= 2.2 && step2Elapsed <= 2.75) {
                         cursorPressed = true
-                        btnKeypadScale = 0.94
-                        tapRipple = (step2Elapsed - 2.5) / 0.45
-                        tapX = 540; tapY = targetBtnY
+                        btnScanScale = 0.94
+                        tapRipple = (step2Elapsed - 2.2) / 0.55
+                        tapX = 540; tapY = scanCardY
                     }
                 }
             }
-        } else if (elapsed < 12.6) {
+        }
+        // ══════════════════════════════════════════════════════════
+        // SCENE 3: SCORESHEET QR SCANNER VIEWFINDER (10.0s – 15.0s)
+        // ══════════════════════════════════════════════════════════
+        else if (elapsed < STEP_TIME * 3) {
             sceneIndex = 2
-            isRosterSelected = true
-            isEndSubmitted = true
-            const step3Elapsed = elapsed - 8.4
+            isScanSelected = true
+            const step3Elapsed = elapsed - STEP_TIME * 2
 
-            if (step3Elapsed < 0.8) {
-                const transT = easeInOutCubic(step3Elapsed / 0.8)
-                camZoom = 1.46 + (1.35 - 1.46) * transT
-                camPanY = -85 + (-20 - (-85)) * transT
-            } else if (step3Elapsed < 1.8) {
-                camZoom = 1.35; camPanY = -20
+            if (step3Elapsed < 1.0) {
+                const transT = easeInOutCubic(step3Elapsed / 1.0)
+                camZoom = 1.44 + (1.36 - 1.44) * transT
+                camPanY = -85 + (-45 - (-85)) * transT
             } else if (step3Elapsed < 2.6) {
-                const ct = easeInOutCubic((step3Elapsed - 1.8) / 0.8)
-                camZoom = 1.35 + (1.46 - 1.35) * ct
-                camPanY = -20 + (-85 - (-20)) * ct
+                camZoom = 1.36; camPanY = -45
+            } else if (step3Elapsed < 3.6) {
+                const ct = easeInOutCubic((step3Elapsed - 2.6) / 1.0)
+                camZoom = 1.36 + (1.44 - 1.36) * ct
+                camPanY = -45 + (-85 - (-45)) * ct
             } else {
-                camZoom = 1.46; camPanY = -85
+                camZoom = 1.44; camPanY = -85
             }
 
-            const targetBtnY = 620
-            if (step3Elapsed >= 1.6) {
-                cursorVisible = true
-                if (step3Elapsed < 2.8) {
-                    const mt = easeInOutCubic((step3Elapsed - 1.6) / 1.2)
-                    cursorX = 540
-                    cursorY = 530 + (targetBtnY - 530) * mt
-                } else {
-                    cursorX = 540; cursorY = targetBtnY
-                }
+            // Laser scanner up-down sweep
+            scanLaserY = Math.sin(step3Elapsed * 3.5) * 0.5 + 0.5
 
-                if (step3Elapsed >= 2.8) {
-                    isStandingsAudited = true
-                    if (step3Elapsed >= 2.8 && step3Elapsed <= 3.25) {
-                        cursorPressed = true
-                        btnAuditedScale = 0.94
-                        tapRipple = (step3Elapsed - 2.8) / 0.45
-                        tapX = 540; tapY = targetBtnY
-                    }
-                }
+            if (step3Elapsed >= 2.2) {
+                isQrVerified = true
             }
-        } else if (elapsed < 16.0) {
-            sceneIndex = 3
-            isRosterSelected = true
-            isEndSubmitted = true
-            isStandingsAudited = true
-            const step4Elapsed = elapsed - 12.6
-
-            if (step4Elapsed < 0.8) {
-                const transT = easeInOutCubic(step4Elapsed / 0.8)
-                camZoom = 1.46 + (1.35 - 1.46) * transT
-                camPanY = -85 + (-20 - (-85)) * transT
-            } else if (step4Elapsed < 1.6) {
-                camZoom = 1.35; camPanY = -20
-            } else if (step4Elapsed < 2.3) {
-                const ct = easeInOutCubic((step4Elapsed - 1.6) / 0.7)
-                camZoom = 1.35 + (1.46 - 1.35) * ct
-                camPanY = -20 + (-85 - (-20)) * ct
-            } else {
-                camZoom = 1.46; camPanY = -85
-            }
-
-            const targetBtnY = 620
-            if (step4Elapsed >= 1.4) {
-                cursorVisible = true
-                if (step4Elapsed < 2.4) {
-                    const mt = easeInOutCubic((step4Elapsed - 1.4) / 1.0)
-                    cursorX = 540; cursorY = targetBtnY
-                } else {
-                    cursorX = 540; cursorY = targetBtnY
-                }
-
-                if (step4Elapsed >= 2.4) {
-                    isJudgeLocked = true
-                    if (step4Elapsed >= 2.4 && step4Elapsed <= 2.85) {
-                        cursorPressed = true
-                        btnLockScale = 0.94
-                        tapRipple = (step4Elapsed - 2.4) / 0.45
-                        tapX = 540; tapY = targetBtnY
-                    }
-                }
-            }
-        } else {
-            sceneIndex = 3
-            isRosterSelected = true
-            isEndSubmitted = true
-            isStandingsAudited = true
-            isJudgeLocked = true
-            const finElapsed = elapsed - 16.0
-            const finT = easeInOutCubic(finElapsed / 1.0)
-            camZoom = 1.46 - (1.46 - 1.00) * finT
-            camPanY = -85 * (1 - finT)
             cursorVisible = false
+        }
+        // ══════════════════════════════════════════════════════════
+        // SCENE 4: TARGET 04 DETAILS & ARCHER ROSTER (15.0s – 20.0s)
+        // ══════════════════════════════════════════════════════════
+        else if (elapsed < STEP_TIME * 4) {
+            sceneIndex = 3
+            isQrVerified = true
+            const step4Elapsed = elapsed - STEP_TIME * 3
+
+            if (step4Elapsed < 1.0) {
+                const transT = easeInOutCubic(step4Elapsed / 1.0)
+                camZoom = 1.44 + (1.36 - 1.44) * transT
+                camPanY = -85 + (-45 - (-85)) * transT
+            } else if (step4Elapsed < 2.6) {
+                camZoom = 1.36; camPanY = -45
+            } else if (step4Elapsed < 3.6) {
+                const ct = easeInOutCubic((step4Elapsed - 2.6) / 1.0)
+                camZoom = 1.36 + (1.44 - 1.36) * ct
+                camPanY = -45 + (-85 - (-45)) * ct
+            } else {
+                camZoom = 1.44; camPanY = -85
+            }
+
+            const archer1CardY = 540
+            if (step4Elapsed >= 0.8) {
+                cursorVisible = true
+                if (step4Elapsed < 2.0) {
+                    const mt = easeInOutCubic((step4Elapsed - 0.8) / 1.2)
+                    cursorX = 540
+                    cursorY = 400 + (archer1CardY - 400) * mt
+                } else {
+                    cursorX = 540; cursorY = archer1CardY
+                }
+
+                if (step4Elapsed >= 2.0) {
+                    isArcherSelected = true
+                    selectedArcherIndex = 0
+                    if (step4Elapsed >= 2.0 && step4Elapsed <= 2.55) {
+                        cursorPressed = true
+                        tapRipple = (step4Elapsed - 2.0) / 0.55
+                        tapX = 540; tapY = archer1CardY
+                    }
+                }
+            }
+        }
+        // ══════════════════════════════════════════════════════════
+        // SCENE 5: WA KEYPAD & REAL-TIME SCORING (20.0s – 25.0s)
+        // ══════════════════════════════════════════════════════════
+        else {
+            sceneIndex = 4
+            isArcherSelected = true
+            const step5Elapsed = elapsed - STEP_TIME * 4
+
+            if (step5Elapsed < 1.0) {
+                const transT = easeInOutCubic(step5Elapsed / 1.0)
+                camZoom = 1.44 + (1.36 - 1.44) * transT
+                camPanY = -85 + (-45 - (-85)) * transT
+            } else if (step5Elapsed < 2.8) {
+                camZoom = 1.36; camPanY = -45
+            } else if (step5Elapsed < 4.2) {
+                const ct = easeInOutCubic((step5Elapsed - 2.8) / 1.4)
+                camZoom = 1.36 + (1.44 - 1.36) * ct
+                camPanY = -45 + (-85 - (-45)) * ct
+            } else {
+                // Return to neutral overview for seamless loop
+                const finT = easeInOutCubic((step5Elapsed - 4.2) / 0.8)
+                camZoom = 1.44 - (1.44 - 1.00) * finT
+                camPanY = -85 * (1 - finT)
+            }
+
+            // Interactive keypad inputs
+            const key10X = 540, key10Y = 660
+            const key9X = 610, key9Y = 660
+            const btnSubmitY = 820
+
+            if (step5Elapsed >= 0.5 && step5Elapsed < 1.4) {
+                cursorVisible = true
+                const kt1 = easeInOutCubic((step5Elapsed - 0.5) / 0.7)
+                cursorX = 480 + (key10X - 480) * kt1
+                cursorY = 560 + (key10Y - 560) * kt1
+                if (step5Elapsed >= 1.2) {
+                    scoreSlot5Filled = true
+                    activeKeypadKey = '10'
+                    cursorPressed = true
+                }
+            } else if (step5Elapsed >= 1.4 && step5Elapsed < 2.3) {
+                cursorVisible = true
+                scoreSlot5Filled = true
+                const kt2 = easeInOutCubic((step5Elapsed - 1.4) / 0.7)
+                cursorX = key10X + (key9X - key10X) * kt2
+                cursorY = key10Y + (key9Y - key10Y) * kt2
+                if (step5Elapsed >= 2.1) {
+                    scoreSlot6Filled = true
+                    activeKeypadKey = '9'
+                    cursorPressed = true
+                }
+            } else if (step5Elapsed >= 2.3 && step5Elapsed < 4.0) {
+                cursorVisible = true
+                scoreSlot5Filled = true
+                scoreSlot6Filled = true
+                activeKeypadKey = null
+                const bt = easeInOutCubic((step5Elapsed - 2.3) / 0.8)
+                cursorX = key9X + (540 - key9X) * bt
+                cursorY = key9Y + (btnSubmitY - key9Y) * bt
+                if (step5Elapsed >= 3.1) {
+                    isScoreSubmitted = true
+                    if (step5Elapsed >= 3.1 && step5Elapsed <= 3.65) {
+                        cursorPressed = true
+                        btnScoreSubmitScale = 0.94
+                        tapRipple = (step5Elapsed - 3.1) / 0.55
+                        tapX = 540; tapY = btnSubmitY
+                    }
+                }
+            } else {
+                cursorVisible = false
+            }
         }
 
         // 3. Camera Transform
@@ -318,7 +487,7 @@ onMounted(async () => {
         ctx.scale(camZoom, camZoom)
         ctx.translate(-540, -540)
 
-        // 4. Chassis
+        // 4. Smartphone Chassis
         const phoneW = 370
         const phoneH = 760
         const phoneX = 540 - phoneW / 2
@@ -349,298 +518,611 @@ onMounted(async () => {
         ctx.fillStyle = '#F8FAFC'
         ctx.fillRect(screenX, screenY, screenW, screenH)
 
-        // Top Tactical Header
-        const headY = screenY + 48
-        drawRoundedRect(screenX + 16, headY, screenW - 32, 36, 8, '#0F172A')
+        // Top App Header
+        const appHeadY = screenY + 46
         ctx.textAlign = 'left'
-        ctx.fillStyle = '#D9FF00'
-        ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-        ctx.fillText('Target 12 | Lane 12A', screenX + 28, headY + 22)
+        ctx.fillStyle = '#64748B'
+        ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
+        ctx.fillText('Scorekeeper Official App', screenX + 20, appHeadY)
 
-        drawRoundedRect(screenX + screenW - 96, headY + 6, 68, 24, 6, '#1E293B')
-        ctx.fillStyle = '#FFFFFF'
-        ctx.textAlign = 'center'
-        ctx.font = '600 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-        ctx.fillText('End 1 / 12', screenX + screenW - 62, headY + 22)
+        let sceneHeaderTitle = 'Scorekeeper Access Code'
+        if (sceneIndex === 1) sceneHeaderTitle = 'Field Scoring'
+        else if (sceneIndex === 2) sceneHeaderTitle = 'Scoresheet Scanner'
+        else if (sceneIndex === 3) sceneHeaderTitle = 'Target 04 Scoresheet'
+        else if (sceneIndex === 4) sceneHeaderTitle = 'Target 04-A Scoring'
 
-        const contentY = headY + 46
-        const contentH = screenH - (contentY - screenY) - 20
+        ctx.fillStyle = '#0F172A'
+        ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
+        ctx.fillText(sceneHeaderTitle, screenX + 20, appHeadY + 22)
+
+        const contentY = appHeadY + 32
+        const contentH = screenH - 138
 
         ctx.save()
         ctx.beginPath()
         ctx.rect(screenX, contentY, screenW, contentH)
         ctx.clip()
 
-        const sc1BtnY = 328
-        const sc1BtnW = screenW - 40
-        const sc1BtnH = 46
-        const sc1BtnCX = 20 + sc1BtnW / 2
-        const sc1BtnCY = sc1BtnY + sc1BtnH / 2
+        const scBtnW = screenW - 36
+        const scBtnH = 46
+        const scBtnX = 18
+        const scBtnY = 502
+        const scBtnCX = scBtnX + scBtnW / 2
+        const scBtnCY = scBtnY + scBtnH / 2
 
-        // SCENE 1: TARGET 12 ROSTER
+        // ══════════════════════════════════════════════════════════
+        // RENDER SCENE 1: SCOREKEEPER LOGIN & 5-CHAR CODE GATE
+        // ══════════════════════════════════════════════════════════
         if (sceneIndex === 0) {
             ctx.save()
             ctx.translate(screenX, contentY)
-            ctx.textAlign = 'left'
-            ctx.fillStyle = '#64748B'
-            ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Scorekeeper Field App', 20, 16)
 
+            const lHeroW = screenW - 36
+            const lHeroH = 480
+            drawRoundedRect(18, 4, lHeroW, lHeroH, 14, '#FFFFFF', '#E2E8F0', 1.2)
+
+            // Top Bar Icons
+            drawRoundedRect(30, 16, 36, 36, 10, '#F8FAFC', '#E2E8F0', 1)
+            ctx.strokeStyle = '#0F172A'
+            ctx.lineWidth = 1.8
+            ctx.lineCap = 'round'
+            ctx.beginPath()
+            ctx.moveTo(50, 34)
+            ctx.lineTo(44, 34)
+            ctx.lineTo(48, 30)
+            ctx.moveTo(44, 34)
+            ctx.lineTo(48, 38)
+            ctx.stroke()
+
+            drawRoundedRect(18 + lHeroW - 74, 16, 62, 32, 8, '#F1F5F9', '#E2E8F0', 1)
             ctx.fillStyle = '#0F172A'
-            ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Target 12 Roster', 20, 38)
-
-            const rHeroW = screenW - 40
-            const lanes = [
-                { lane: '12A', name: 'Arif Dwi Pangestu', club: 'Fast Archery Club', active: true },
-                { lane: '12B', name: 'Riau Ega Agatha', club: 'Eagle Archery Club', active: false },
-                { lane: '12C', name: 'Bagas Prastyo', club: 'Focus Target Team', active: false },
-                { lane: '12D', name: 'Hendra Wijaya', club: 'Alpha Archery Team', active: false }
-            ]
-
-            lanes.forEach((l, idx) => {
-                const ly = 52 + idx * 56
-                drawRoundedRect(20, ly, rHeroW, 48, 12, '#FFFFFF', l.active ? '#0F172A' : '#E2E8F0', l.active ? 1.5 : 1)
-
-                drawRoundedRect(28, ly + 10, 34, 28, 6, l.active ? '#D9FF00' : '#F1F5F9')
-                ctx.fillStyle = '#0F172A'
-                ctx.textAlign = 'center'
-                ctx.font = '700 11.5px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(l.lane, 45, ly + 28)
-
-                ctx.textAlign = 'left'
-                ctx.fillStyle = '#0F172A'
-                ctx.font = '700 12px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(l.name, 72, ly + 21)
-
-                ctx.fillStyle = '#64748B'
-                ctx.font = '500 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(l.club, 72, ly + 36)
-
-                drawRoundedRect(20 + rHeroW - 56, ly + 14, 46, 20, 5, l.active ? '#0F172A' : '#F8FAFC')
-                ctx.fillStyle = l.active ? '#D9FF00' : '#94A3B8'
-                ctx.textAlign = 'center'
-                ctx.font = '600 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(l.active ? 'Active' : 'Pending', 20 + rHeroW - 33, ly + 27)
-            })
-
-            ctx.save()
-            ctx.translate(sc1BtnCX, sc1BtnCY)
-            ctx.scale(btnRosterScale, btnRosterScale)
-            ctx.translate(-sc1BtnCX, -sc1BtnCY)
-
-            drawRoundedRect(20, sc1BtnY, sc1BtnW, sc1BtnH, 12, '#0F172A')
             ctx.textAlign = 'center'
-            ctx.fillStyle = isRosterSelected ? '#D9FF00' : '#FFFFFF'
-            ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isRosterSelected ? 'Target 12A Selected' : 'Input Scores for End 1', sc1BtnCX, sc1BtnY + 28)
+            ctx.font = '700 10px "NovaText", sans-serif'
+            ctx.fillText('ID · EN', 18 + lHeroW - 43, 36)
+
+            // Hero Dark Icon Box with Target
+            const iconY = 64
+            drawRoundedRect(30, iconY, 48, 48, 14, '#0F172A')
+            drawTargetFace(54, iconY + 24, 12)
+
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '800 19px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Scorekeeper Access Code', 30, iconY + 76)
+
+            ctx.fillStyle = '#64748B'
+            ctx.font = '500 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Enter the 5-character personal code provided by tournament organizers to enable scoring mode.', 30, iconY + 96, lHeroW - 24)
+
+            // 5 Alphanumeric OTP Code Boxes
+            const otpY = iconY + 144
+            const otpBoxW = 46
+            const otpBoxH = 54
+            const otpGap = 8
+            const otpStartX = 30
+
+            const codeChars = loginCodeTyped.split('')
+            for (let i = 0; i < 5; i++) {
+                const ox = otpStartX + i * (otpBoxW + otpGap)
+                const char = codeChars[i] || ''
+                const isBoxActive = i === codeChars.length
+
+                drawRoundedRect(ox, otpY, otpBoxW, otpBoxH, 10, '#F8FAFC', isBoxActive ? '#0F172A' : (char ? '#059669' : '#CBD5E1'), isBoxActive || char ? 2 : 1)
+
+                if (char) {
+                    ctx.textAlign = 'center'
+                    ctx.fillStyle = '#0F172A'
+                    ctx.font = '800 22px "Bricolage Grotesque", "NovaText", sans-serif'
+                    ctx.fillText(char, ox + otpBoxW / 2, otpY + 36)
+                } else if (isBoxActive) {
+                    ctx.fillStyle = '#0F172A'
+                    ctx.fillRect(ox + otpBoxW / 2 - 1, otpY + 16, 2, 22)
+                }
+            }
+
+            // Info Notice Card
+            const noticeY = otpY + 72
+            drawRoundedRect(30, noticeY, lHeroW - 24, 60, 10, '#F8FAFC', '#E2E8F0', 1)
+            ctx.beginPath()
+            ctx.arc(46, noticeY + 30, 8, 0, Math.PI * 2)
+            ctx.fillStyle = '#64748B'
+            ctx.fill()
+            ctx.fillStyle = '#FFFFFF'
+            ctx.textAlign = 'center'
+            ctx.font = '700 10px "NovaText", sans-serif'
+            ctx.fillText('i', 46, noticeY + 34)
+
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#475569'
+            ctx.font = '500 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Valid for Official Judges and Scorekeepers assigned to National Archery Championship 2026.', 62, noticeY + 26, lHeroW - 60)
+
+            // Bottom CTA Button
+            ctx.save()
+            ctx.translate(scBtnCX, scBtnCY)
+            ctx.scale(btnLoginScale, btnLoginScale)
+            ctx.translate(-scBtnCX, -scBtnCY)
+
+            drawRoundedRect(scBtnX, scBtnY, scBtnW, scBtnH, 12, '#0F172A')
+            ctx.textAlign = 'center'
+            ctx.fillStyle = isLoginAuthenticated ? '#D9FF00' : '#FFFFFF'
+            ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText(isLoginAuthenticated ? 'Access Granted · Authenticating...' : 'Enter Scoring Mode', scBtnCX, scBtnY + 28)
             ctx.restore()
+
             ctx.restore()
         }
-        // SCENE 2: ERGONOMIC 8-KEYPAD ENTRY
+        // ══════════════════════════════════════════════════════════
+        // RENDER SCENE 2: SCOREKEEPER LANDING & ACTION DASHBOARD
+        // ══════════════════════════════════════════════════════════
         else if (sceneIndex === 1) {
             ctx.save()
             ctx.translate(screenX, contentY)
+
+            const dHeroW = screenW - 36
+            const dHeroH = 480
+            drawRoundedRect(18, 4, dHeroW, dHeroH, 14, '#FFFFFF', '#E2E8F0', 1.2)
+
+            // Top Bar: Exit button
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
-            ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Field Scoring Entry', 20, 16)
+            ctx.font = '600 10px "NovaText", sans-serif'
+            ctx.fillText('Active Session: Zone A Range', 30, 26)
+
+            drawRoundedRect(18 + dHeroW - 74, 12, 62, 26, 6, '#FEF2F2', '#FECACA', 1)
+            ctx.fillStyle = '#DC2626'
+            ctx.textAlign = 'center'
+            ctx.font = '700 9.5px "NovaText", sans-serif'
+            ctx.fillText('Exit Mode', 18 + dHeroW - 43, 29)
+
+            // Hero Profile Card (Navy)
+            const profY = 46
+            drawRoundedRect(30, profY, dHeroW - 24, 110, 14, '#0F172A')
+
+            // Avatar box (Neon Lime)
+            drawRoundedRect(44, profY + 16, 44, 44, 12, '#D9FF00')
+            ctx.fillStyle = '#0F172A'
+            ctx.textAlign = 'center'
+            ctx.font = '800 16px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('SK', 66, profY + 44)
+
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#FFFFFF'
+            ctx.font = '700 14px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Budi Santoso', 98, profY + 34)
+
+            ctx.fillStyle = '#94A3B8'
+            ctx.font = '500 10px "NovaText", sans-serif'
+            ctx.fillText('scorekeeper@archeryhub.id', 98, profY + 50)
+
+            drawRoundedRect(30 + dHeroW - 110, profY + 22, 74, 20, 10, 'rgba(217, 255, 0, 0.15)', '#D9FF00', 1)
+            ctx.fillStyle = '#D9FF00'
+            ctx.textAlign = 'center'
+            ctx.font = '700 9px "NovaText", sans-serif'
+            ctx.fillText('Scorekeeper', 30 + dHeroW - 73, profY + 35)
+
+            // Status bar inside hero
+            drawRoundedRect(44, profY + 68, dHeroW - 52, 28, 6, 'rgba(255, 255, 255, 0.08)')
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#D9FF00'
+            ctx.font = '700 9.5px "NovaText", sans-serif'
+            ctx.fillText('Ready to record qualification & matchplay scores.', 54, profY + 86)
+
+            // Section: Scoring Actions
+            const actY = profY + 126
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Scoring Actions', 30, actY)
+
+            // Primary Action: Scan Target Barcode (Neon Lime)
+            const scanBtnY = actY + 12
+            drawRoundedRect(30, scanBtnY, dHeroW - 24, 78, 14, '#D9FF00', isScanSelected ? '#0F172A' : null, isScanSelected ? 2 : 0)
+
+            drawRoundedRect(44, scanBtnY + 16, 46, 46, 12, '#0F172A')
+            ctx.strokeStyle = '#D9FF00'
+            ctx.lineWidth = 1.8
+            ctx.strokeRect(54, scanBtnY + 26, 26, 26)
+            ctx.fillStyle = '#D9FF00'
+            ctx.fillRect(60, scanBtnY + 32, 14, 14)
+
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '800 13.5px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Scan Target Barcode', 100, scanBtnY + 38)
+
+            ctx.fillStyle = '#334155'
+            ctx.font = '500 10px "NovaText", sans-serif'
+            ctx.fillText('Scan QR code on target scoresheet', 100, scanBtnY + 54)
+
+            // Secondary Action: Manual Target List
+            const manBtnY = scanBtnY + 90
+            drawRoundedRect(30, manBtnY, dHeroW - 24, 72, 14, '#F8FAFC', '#E2E8F0', 1.2)
+
+            drawRoundedRect(44, manBtnY + 14, 44, 44, 12, '#FFFFFF', '#CBD5E1', 1)
+            drawTargetFace(66, manBtnY + 36, 10)
 
             ctx.fillStyle = '#0F172A'
-            ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Target 12A · End 1', 20, 38)
+            ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Manual Target List', 100, manBtnY + 34)
 
-            const kHeroW = screenW - 40
-            drawRoundedRect(20, 52, kHeroW, 252, 14, '#FFFFFF', '#E2E8F0', 1.2)
+            ctx.fillStyle = '#64748B'
+            ctx.font = '500 10px "NovaText", sans-serif'
+            ctx.fillText('Select target lane number from list', 100, manBtnY + 50)
 
-            // Arrow slots
-            const arrowSlotsY = 64
-            drawRoundedRect(32, arrowSlotsY, kHeroW - 24, 52, 10, '#0F172A')
+            // Assigned event info box
+            const evInfoY = manBtnY + 84
+            drawRoundedRect(30, evInfoY, dHeroW - 24, 48, 8, '#F1F5F9')
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('National Archery Championship 2026', 44, evInfoY + 22)
+            ctx.fillStyle = '#64748B'
+            ctx.font = '500 9.5px "NovaText", sans-serif'
+            ctx.fillText('Session 1 (08:00 WIB) · 32 Active Target Lanes', 44, evInfoY + 38)
 
-            const arrows = [
-                { label: 'Arrow 1', val: 'X', fill: '#D9FF00' },
-                { label: 'Arrow 2', val: '10', fill: '#D9FF00' },
-                { label: 'Arrow 3', val: '9', fill: '#D9FF00' }
-            ]
-
-            arrows.forEach((a, idx) => {
-                const ax = 42 + idx * 56
-                drawRoundedRect(ax, arrowSlotsY + 10, 48, 32, 8, a.fill)
-                ctx.fillStyle = '#0F172A'
-                ctx.textAlign = 'center'
-                ctx.font = '800 13px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(a.val, ax + 24, arrowSlotsY + 31)
-            })
-
-            ctx.textAlign = 'right'
-            ctx.fillStyle = '#94A3B8'
-            ctx.font = '500 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('End Total', 20 + kHeroW - 20, arrowSlotsY + 24)
-
-            ctx.fillStyle = '#D9FF00'
-            ctx.font = '700 15px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('29 / 30', 20 + kHeroW - 20, arrowSlotsY + 44)
-
-            // 8-Keypad Grid
-            const gridY = arrowSlotsY + 62
-            const keys = [
-                { k: 'X', bg: '#FEF08A', fg: '#713F12' },
-                { k: '10', bg: '#FEF08A', fg: '#713F12' },
-                { k: '9', bg: '#FEF08A', fg: '#713F12' },
-                { k: '8', bg: '#FECACA', fg: '#7F1D1D' },
-                { k: '7', bg: '#FECACA', fg: '#7F1D1D' },
-                { k: '6', bg: '#BFDBFE', fg: '#1E3A8A' },
-                { k: '5', bg: '#BFDBFE', fg: '#1E3A8A' },
-                { k: 'M', bg: '#CBD5E1', fg: '#0F172A' }
-            ]
-
-            keys.forEach((key, idx) => {
-                const row = Math.floor(idx / 4)
-                const col = idx % 4
-                const kx = 32 + col * (kHeroW - 24) / 4
-                const ky = gridY + row * 54
-                const kw = (kHeroW - 36) / 4
-
-                drawRoundedRect(kx, ky, kw, 46, 8, key.bg, '#E2E8F0', 1)
-                ctx.fillStyle = key.fg
-                ctx.textAlign = 'center'
-                ctx.font = '800 15px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(key.k, kx + kw / 2, ky + 29)
-            })
-
-            ctx.save()
-            ctx.translate(sc1BtnCX, sc1BtnCY)
-            ctx.scale(btnKeypadScale, btnKeypadScale)
-            ctx.translate(-sc1BtnCX, -sc1BtnCY)
-
-            drawRoundedRect(20, sc1BtnY, sc1BtnW, sc1BtnH, 12, '#0F172A')
-            ctx.textAlign = 'center'
-            ctx.fillStyle = isEndSubmitted ? '#D9FF00' : '#FFFFFF'
-            ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isEndSubmitted ? 'End 1 Synced to Cloud' : 'Submit End 1 Scores', sc1BtnCX, sc1BtnY + 28)
-            ctx.restore()
             ctx.restore()
         }
-        // SCENE 3: LIVE CLOUD SYNC & MINI LEADERBOARD
+        // ══════════════════════════════════════════════════════════
+        // RENDER SCENE 3: SCORESHEET QR SCANNER VIEWFINDER
+        // ══════════════════════════════════════════════════════════
         else if (sceneIndex === 2) {
             ctx.save()
             ctx.translate(screenX, contentY)
+
+            const sHeroW = screenW - 36
+            const sHeroH = 480
+            drawRoundedRect(18, 4, sHeroW, sHeroH, 14, '#0F172A')
+
+            // Viewfinder Top Header
             ctx.textAlign = 'left'
-            ctx.fillStyle = '#64748B'
-            ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Live Cloud Engine', 20, 16)
-
-            ctx.fillStyle = '#0F172A'
-            ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Target 12 Standings', 20, 38)
-
-            const sHeroW = screenW - 40
-            drawRoundedRect(20, 52, sHeroW, 252, 14, '#FFFFFF', '#E2E8F0', 1.2)
-
-            // Cloud Status Box
-            drawRoundedRect(34, 66, sHeroW - 28, 38, 8, '#0F172A')
             ctx.fillStyle = '#D9FF00'
-            ctx.font = '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Live Sync Active', 48, 86)
-            ctx.fillStyle = '#94A3B8'
-            ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Latency: 12ms · Cloud Sync Active', 48, 98)
+            ctx.font = '700 12px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Scoresheet QR Scanner', 30, 28)
 
-            const stRows = [
-                { rank: '1', lane: '12A Arif Dwi', score: '29 pts (1X, 10, 9)', gold: true },
-                { rank: '2', lane: '12B Riau Ega', score: '28 pts (1X, 9, 9)', gold: false },
-                { rank: '3', lane: '12C Bagas P.', score: '27 pts (9, 9, 9)', gold: false },
-                { rank: '4', lane: '12D Hendra W.', score: '26 pts (9, 9, 8)', gold: false }
+            ctx.fillStyle = '#94A3B8'
+            ctx.font = '500 9.5px "NovaText", sans-serif'
+            ctx.fillText('Align target scoresheet QR inside viewfinder', 30, 44)
+
+            // Viewfinder Camera Box
+            const vBoxX = 40
+            const vBoxY = 64
+            const vBoxSize = sHeroW - 44
+            drawRoundedRect(vBoxX, vBoxY, vBoxSize, vBoxSize, 16, '#181A1D', '#334155', 1)
+
+            // Center Dynamic QR Code Graphic
+            const qrSize = 130
+            const qrX = vBoxX + vBoxSize / 2 - qrSize / 2
+            const qrY = vBoxY + vBoxSize / 2 - qrSize / 2
+            drawDynamicQRCode(qrX, qrY, qrSize, '#0F172A')
+
+            // Viewfinder Corner Brackets
+            const cornerLen = 22
+            ctx.strokeStyle = isQrVerified ? '#10B981' : '#D9FF00'
+            ctx.lineWidth = 3.5
+            ctx.lineCap = 'round'
+
+            // Top Left
+            ctx.beginPath()
+            ctx.moveTo(vBoxX + 16, vBoxY + 16 + cornerLen)
+            ctx.lineTo(vBoxX + 16, vBoxY + 16)
+            ctx.lineTo(vBoxX + 16 + cornerLen, vBoxY + 16)
+            ctx.stroke()
+
+            // Top Right
+            ctx.beginPath()
+            ctx.moveTo(vBoxX + vBoxSize - 16 - cornerLen, vBoxY + 16)
+            ctx.lineTo(vBoxX + vBoxSize - 16, vBoxY + 16)
+            ctx.lineTo(vBoxX + vBoxSize - 16, vBoxY + 16 + cornerLen)
+            ctx.stroke()
+
+            // Bottom Left
+            ctx.beginPath()
+            ctx.moveTo(vBoxX + 16, vBoxY + vBoxSize - 16 - cornerLen)
+            ctx.lineTo(vBoxX + 16, vBoxY + vBoxSize - 16)
+            ctx.lineTo(vBoxX + 16 + cornerLen, vBoxY + vBoxSize - 16)
+            ctx.stroke()
+
+            // Bottom Right
+            ctx.beginPath()
+            ctx.moveTo(vBoxX + vBoxSize - 16 - cornerLen, vBoxY + vBoxSize - 16)
+            ctx.lineTo(vBoxX + vBoxSize - 16, vBoxY + vBoxSize - 16)
+            ctx.lineTo(vBoxX + vBoxSize - 16, vBoxY + vBoxSize - 16 - cornerLen)
+            ctx.stroke()
+
+            // Animated Laser Scanning Beam
+            if (!isQrVerified) {
+                const laserY = vBoxY + 20 + scanLaserY * (vBoxSize - 40)
+                ctx.save()
+                ctx.shadowColor = '#D9FF00'
+                ctx.shadowBlur = 12
+                ctx.strokeStyle = '#D9FF00'
+                ctx.lineWidth = 2.5
+                ctx.beginPath()
+                ctx.moveTo(vBoxX + 18, laserY)
+                ctx.lineTo(vBoxX + vBoxSize - 18, laserY)
+                ctx.stroke()
+                ctx.restore()
+            }
+
+            // Verification Card Overlay
+            const resY = vBoxY + vBoxSize + 18
+            if (isQrVerified) {
+                drawRoundedRect(30, resY, sHeroW - 24, 76, 12, '#ECFDF5', '#10B981', 1.5)
+
+                ctx.beginPath()
+                ctx.arc(52, resY + 38, 14, 0, Math.PI * 2)
+                ctx.fillStyle = '#10B981'
+                ctx.fill()
+
+                ctx.strokeStyle = '#FFFFFF'
+                ctx.lineWidth = 2.2
+                ctx.lineCap = 'round'
+                ctx.beginPath()
+                ctx.moveTo(46, resY + 38)
+                ctx.lineTo(50, resY + 42)
+                ctx.lineTo(58, resY + 34)
+                ctx.stroke()
+
+                ctx.textAlign = 'left'
+                ctx.fillStyle = '#065F46'
+                ctx.font = '800 13.5px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText('Scoresheet Verified: Target 04', 74, resY + 32)
+
+                ctx.fillStyle = '#047857'
+                ctx.font = '600 10px "NovaText", sans-serif'
+                ctx.fillText('Recurve Men Open 70m · 4 Athletes Ready', 74, resY + 48)
+                ctx.fillText('Opening target scoring pad...', 74, resY + 62)
+            } else {
+                drawRoundedRect(30, resY, sHeroW - 24, 76, 12, 'rgba(255, 255, 255, 0.06)', '#334155', 1)
+                ctx.textAlign = 'center'
+                ctx.fillStyle = '#D9FF00'
+                ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText('Scanning for QR Code...', 30 + (sHeroW - 24) / 2, resY + 36)
+                ctx.fillStyle = '#94A3B8'
+                ctx.font = '500 9.5px "NovaText", sans-serif'
+                ctx.fillText('Hold camera steady over the printed scoresheet header', 30 + (sHeroW - 24) / 2, resY + 52)
+            }
+
+            ctx.restore()
+        }
+        // ══════════════════════════════════════════════════════════
+        // RENDER SCENE 4: TARGET 04 DETAILS & ARCHER ROSTER
+        // ══════════════════════════════════════════════════════════
+        else if (sceneIndex === 3) {
+            ctx.save()
+            ctx.translate(screenX, contentY)
+
+            const tHeroW = screenW - 36
+            const tHeroH = 480
+            drawRoundedRect(18, 4, tHeroW, tHeroH, 14, '#FFFFFF', '#E2E8F0', 1.2)
+
+            // Target Scoresheet Summary Box
+            drawRoundedRect(30, 14, tHeroW - 24, 76, 12, '#0F172A')
+
+            drawRoundedRect(42, 26, 52, 52, 10, '#D9FF00')
+            ctx.fillStyle = '#0F172A'
+            ctx.textAlign = 'center'
+            ctx.font = '800 20px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('04', 68, 58)
+
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#FFFFFF'
+            ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Scoresheet Target 04', 104, 38)
+
+            ctx.fillStyle = '#94A3B8'
+            ctx.font = '500 9.5px "NovaText", sans-serif'
+            ctx.fillText('Recurve Men Open 70m · 6 Ends × 6 Arrows', 104, 54)
+
+            ctx.fillStyle = '#D9FF00'
+            ctx.font = '700 9.5px "NovaText", sans-serif'
+            ctx.fillText('National Archery Championship 2026', 104, 68)
+
+            // Section: Athletes on Target
+            const athSecY = 104
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Athletes on Target 04 (3)', 30, athSecY)
+
+            const archers = [
+                {
+                    pos: '04-A',
+                    name: 'Arif Dwi Pangestu',
+                    club: 'Fast Archery Club',
+                    end: 'End 3 / 6',
+                    score: '118 pts',
+                    isAct: selectedArcherIndex === 0
+                },
+                {
+                    pos: '04-B',
+                    name: 'Diananda Choirunisa',
+                    club: 'Perpani Jatim',
+                    end: 'End 3 / 6',
+                    score: '116 pts',
+                    isAct: false
+                },
+                {
+                    pos: '04-C',
+                    name: 'Riau Ega Agatha',
+                    club: 'King Archery Club',
+                    end: 'End 3 / 6',
+                    score: '115 pts',
+                    isAct: false
+                }
             ]
 
-            stRows.forEach((r, idx) => {
-                const ry = 114 + idx * 44
-                drawRoundedRect(34, ry, sHeroW - 28, 38, 8, '#F8FAFC', '#E2E8F0', 1)
+            let ay = athSecY + 12
+            archers.forEach((a) => {
+                const ah = 68
+                const isSelected = a.isAct && isArcherSelected
+                drawRoundedRect(30, ay, tHeroW - 24, ah, 10, isSelected ? '#F8FAFC' : '#FFFFFF', isSelected ? '#0F172A' : '#E2E8F0', isSelected ? 2 : 1)
 
-                drawRoundedRect(42, ry + 7, 24, 24, 6, r.gold ? '#D9FF00' : '#F1F5F9')
-                ctx.fillStyle = '#0F172A'
+                // Pos Pill
+                drawRoundedRect(42, ay + 14, 42, 40, 8, isSelected ? '#0F172A' : '#F1F5F9')
+                ctx.fillStyle = isSelected ? '#D9FF00' : '#0F172A'
                 ctx.textAlign = 'center'
-                ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(r.rank, 54, ry + 23)
+                ctx.font = '800 12px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText(a.pos, 63, ay + 38)
 
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#0F172A'
-                ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(r.lane, 74, ry + 16)
+                ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText(a.name, 94, ay + 30)
 
                 ctx.fillStyle = '#64748B'
-                ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(r.score, 74, ry + 30)
+                ctx.font = '500 9.5px "NovaText", sans-serif'
+                ctx.fillText(a.club, 94, ay + 46)
+
+                // Score stats pill
+                drawRoundedRect(30 + tHeroW - 98, ay + 16, 64, 36, 6, '#F8FAFC', '#E2E8F0', 1)
+                ctx.textAlign = 'center'
+                ctx.fillStyle = '#059669'
+                ctx.font = '800 12px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText(a.score, 30 + tHeroW - 66, ay + 32)
+
+                ctx.fillStyle = '#64748B'
+                ctx.font = '600 8.5px "NovaText", sans-serif'
+                ctx.fillText(a.end, 30 + tHeroW - 66, ay + 46)
+
+                ay += ah + 10
             })
 
-            ctx.save()
-            ctx.translate(sc1BtnCX, sc1BtnCY)
-            ctx.scale(btnAuditedScale, btnAuditedScale)
-            ctx.translate(-sc1BtnCX, -sc1BtnCY)
-
-            drawRoundedRect(20, sc1BtnY, sc1BtnW, sc1BtnH, 12, '#0F172A')
+            // Notice: Tap athlete to score
+            const nY = ay + 4
+            drawRoundedRect(30, nY, tHeroW - 24, 42, 8, '#F8FAFC', '#E2E8F0', 1)
             ctx.textAlign = 'center'
-            ctx.fillStyle = isStandingsAudited ? '#D9FF00' : '#FFFFFF'
-            ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isStandingsAudited ? 'Standings Verified' : 'Proceed to Official Audit', sc1BtnCX, sc1BtnY + 28)
-            ctx.restore()
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Tap Archer 04-A to Open Scorepad Keypad', 30 + (tHeroW - 24) / 2, nY + 26)
+
             ctx.restore()
         }
-        // SCENE 4: ATHLETE SIGN & JUDGE LOCK
+        // ══════════════════════════════════════════════════════════
+        // RENDER SCENE 5: WA SCOREPAD KEYPAD & REAL-TIME INPUT
+        // ══════════════════════════════════════════════════════════
         else {
             ctx.save()
             ctx.translate(screenX, contentY)
+
+            const pHeroW = screenW - 36
+            const pHeroH = 480
+            drawRoundedRect(18, 4, pHeroW, pHeroH, 14, '#FFFFFF', '#E2E8F0', 1.2)
+
+            // Header Archer Pill
+            drawRoundedRect(30, 14, pHeroW - 24, 52, 10, '#0F172A')
             ctx.textAlign = 'left'
-            ctx.fillStyle = '#64748B'
-            ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Official Score Audit', 20, 16)
-
-            ctx.fillStyle = '#0F172A'
-            ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Athlete Sign & Lock', 20, 38)
-
-            const lHeroW = screenW - 40
-            drawRoundedRect(20, 52, lHeroW, 252, 14, '#FFFFFF', '#E2E8F0', 1.2)
-
-            drawRoundedRect(34, 66, lHeroW - 28, 48, 10, '#0F172A')
             ctx.fillStyle = '#D9FF00'
-            ctx.font = '700 12px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Target 12A · Arif Dwi Pangestu', 48, 86)
-            ctx.fillStyle = '#94A3B8'
-            ctx.font = '500 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Official Final Qualification Score: 684 pts', 48, 102)
+            ctx.font = '800 13px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Target 04-A: Arif Dwi Pangestu', 44, 34)
 
-            const sigY = 124
-            drawRoundedRect(34, sigY, lHeroW - 28, 76, 10, '#F8FAFC', '#E2E8F0', 1)
+            ctx.fillStyle = '#94A3B8'
+            ctx.font = '500 9px "NovaText", sans-serif'
+            ctx.fillText('Recurve Men 70m · Qualification Round · End 3 of 6', 44, 50)
+
+            // 6 Arrow Score Slots Box
+            const slotBoxY = 74
+            drawRoundedRect(30, slotBoxY, pHeroW - 24, 76, 10, '#F8FAFC', '#E2E8F0', 1)
 
             ctx.fillStyle = '#64748B'
-            ctx.font = '600 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Athlete Digital Signature', 46, sigY + 18)
+            ctx.font = '600 9.5px "NovaText", sans-serif'
+            ctx.fillText('End 3 Arrows (6):', 42, slotBoxY + 20)
 
-            ctx.strokeStyle = '#0F172A'
-            ctx.lineWidth = 2
-            ctx.beginPath()
-            ctx.moveTo(56, sigY + 54)
-            ctx.bezierCurveTo(72, sigY + 32, 88, sigY + 68, 110, sigY + 42)
-            ctx.bezierCurveTo(124, sigY + 28, 140, sigY + 58, 168, sigY + 48)
-            ctx.stroke()
+            const arrowSlots = [
+                { val: '10', color: '#FACC15', text: '#0F172A' },
+                { val: 'X',  color: '#FACC15', text: '#0F172A' },
+                { val: '9',  color: '#EF4444', text: '#FFFFFF' },
+                { val: '10', color: '#FACC15', text: '#0F172A' },
+                { val: scoreSlot5Filled ? '10' : '', color: scoreSlot5Filled ? '#FACC15' : '#FFFFFF', text: '#0F172A' },
+                { val: scoreSlot6Filled ? '9' : '',  color: scoreSlot6Filled ? '#EF4444' : '#FFFFFF', text: '#FFFFFF' }
+            ]
 
-            drawRoundedRect(34, sigY + 84, lHeroW - 28, 38, 8, isJudgeLocked ? '#0F172A' : '#F1F5F9')
-            ctx.fillStyle = isJudgeLocked ? '#D9FF00' : '#334155'
-            ctx.font = '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isJudgeLocked ? 'Sealed & Locked by Chief Judge' : 'Awaiting Chief Judge Seal', 48, sigY + 107)
+            const sWidth = 34
+            const sGap = 6
+            arrowSlots.forEach((slot, idx) => {
+                const sx = 42 + idx * (sWidth + sGap)
+                const sy = slotBoxY + 30
+                const isCurrent = (idx === 4 && !scoreSlot5Filled) || (idx === 5 && scoreSlot5Filled && !scoreSlot6Filled)
 
-            ctx.save()
-            ctx.translate(sc1BtnCX, sc1BtnCY)
-            ctx.scale(btnLockScale, btnLockScale)
-            ctx.translate(-sc1BtnCX, -sc1BtnCY)
+                drawRoundedRect(sx, sy, sWidth, 34, 8, slot.val ? slot.color : '#FFFFFF', isCurrent ? '#0F172A' : '#CBD5E1', isCurrent ? 2 : 1)
 
-            drawRoundedRect(20, sc1BtnY, sc1BtnW, sc1BtnH, 12, '#0F172A')
+                if (slot.val) {
+                    ctx.textAlign = 'center'
+                    ctx.fillStyle = slot.text
+                    ctx.font = '800 14px "Bricolage Grotesque", "NovaText", sans-serif'
+                    ctx.fillText(slot.val, sx + sWidth / 2, sy + 22)
+                } else if (isCurrent) {
+                    ctx.fillStyle = '#0F172A'
+                    ctx.fillRect(sx + sWidth / 2 - 1, sy + 8, 2, 18)
+                }
+            })
+
+            // Cumulative & End Subtotal Pill
+            const endTotal = 10 + 10 + 9 + 10 + (scoreSlot5Filled ? 10 : 0) + (scoreSlot6Filled ? 9 : 0)
+            const cumTotal = 118 + endTotal
+
+            drawRoundedRect(30 + pHeroW - 90, slotBoxY + 12, 56, 22, 6, '#0F172A')
+            ctx.fillStyle = '#D9FF00'
             ctx.textAlign = 'center'
-            ctx.fillStyle = isJudgeLocked ? '#D9FF00' : '#FFFFFF'
-            ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isJudgeLocked ? 'Scores Officially Sealed & Locked' : 'Lock & Seal Target 12 Scores', sc1BtnCX, sc1BtnY + 28)
+            ctx.font = '700 9.5px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText(`${endTotal} / 60 pts`, 30 + pHeroW - 62, slotBoxY + 26)
+
+            // World Archery Official Color Keypad Grid
+            const keypadY = slotBoxY + 84
+            const keyW = (pHeroW - 48) / 3
+            const keyH = 40
+            const keyGap = 6
+
+            const keys = [
+                { label: 'X',  fill: '#FACC15', text: '#0F172A', stroke: '#CA8A04' },
+                { label: '10', fill: '#FACC15', text: '#0F172A', stroke: '#CA8A04' },
+                { label: '9',  fill: '#EF4444', text: '#FFFFFF', stroke: null },
+                { label: '8',  fill: '#EF4444', text: '#FFFFFF', stroke: null },
+                { label: '7',  fill: '#0284C7', text: '#FFFFFF', stroke: null },
+                { label: '6',  fill: '#0284C7', text: '#FFFFFF', stroke: null },
+                { label: '5',  fill: '#1E293B', text: '#FFFFFF', stroke: null },
+                { label: '4',  fill: '#1E293B', text: '#FFFFFF', stroke: null },
+                { label: 'M',  fill: '#F1F5F9', text: '#64748B', stroke: '#CBD5E1' }
+            ]
+
+            keys.forEach((k, idx) => {
+                const col = idx % 3
+                const row = Math.floor(idx / 3)
+                const kx = 30 + col * (keyW + keyGap)
+                const ky = keypadY + row * (keyH + keyGap)
+
+                const isPressed = activeKeypadKey === k.label
+                drawRoundedRect(kx, ky, keyW, keyH, 8, k.fill, isPressed ? '#0F172A' : k.stroke, isPressed ? 2.5 : 1)
+
+                ctx.textAlign = 'center'
+                ctx.fillStyle = k.text
+                ctx.font = '800 15px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText(k.label, kx + keyW / 2, ky + 25)
+            })
+
+            // Total Score Summary Bar
+            const sumBarY = keypadY + 3 * (keyH + keyGap) + 4
+            drawRoundedRect(30, sumBarY, pHeroW - 24, 44, 8, '#0F172A')
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#94A3B8'
+            ctx.font = '500 9px "NovaText", sans-serif'
+            ctx.fillText('Cumulative Qualification Score', 44, sumBarY + 16)
+
+            ctx.fillStyle = '#D9FF00'
+            ctx.font = '800 15px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText(`${cumTotal} / 180 pts  (11 10s · 5 Xs)`, 44, sumBarY + 34)
+
+            // Bottom CTA Button
+            ctx.save()
+            ctx.translate(scBtnCX, scBtnCY)
+            ctx.scale(btnScoreSubmitScale, btnScoreSubmitScale)
+            ctx.translate(-scBtnCX, -scBtnCY)
+
+            drawRoundedRect(scBtnX, scBtnY, scBtnW, scBtnH, 12, '#0F172A')
+            ctx.textAlign = 'center'
+            ctx.fillStyle = isScoreSubmitted ? '#D9FF00' : '#FFFFFF'
+            ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText(isScoreSubmitted ? 'Score Submitted & Synced to Cloud' : 'Submit End 3 Scores', scBtnCX, scBtnY + 28)
             ctx.restore()
+
             ctx.restore()
         }
 
