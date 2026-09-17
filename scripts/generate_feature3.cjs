@@ -461,7 +461,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isRegistered ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isRegistered ? '✔ Registration Confirmed' : 'Register for Tournament', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isRegistered ? 'Registration Confirmed' : 'Register for Tournament', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
 
@@ -525,7 +525,7 @@ onMounted(async () => {
                 ctx.textAlign = 'center'
                 ctx.fillStyle = isPaid ? '#D9FF00' : '#FFFFFF'
                 ctx.font = '700 12px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(isPaid ? '✔ Payment Verified & Settled' : 'Confirm & Pay with QRIS', screenX + screenW / 2, sheetY + 285)
+                ctx.fillText(isPaid ? 'Payment Verified & Settled' : 'Confirm & Pay with QRIS', screenX + screenW / 2, sheetY + 285)
                 ctx.restore()
             }
         }
@@ -588,7 +588,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isCheckedIn ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isCheckedIn ? '✔ Venue Check-in Completed' : 'Scan Pass at Venue Gate', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isCheckedIn ? 'Venue Check-in Completed' : 'Scan Pass at Venue Gate', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }
@@ -651,7 +651,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isDownloaded ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isDownloaded ? '✔ Certificate Saved to Device' : 'Download Verified E-Certificate', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isDownloaded ? 'Certificate Saved to Device' : 'Download Verified E-Certificate', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }
@@ -664,10 +664,10 @@ onMounted(async () => {
         drawRoundedRect(screenX, bNavY, screenW, bNavH, 0, '#FFFFFF', '#E2E8F0', 1)
 
         const navItems = [
-            { name: 'Events', icon: '🎯' },
-            { name: 'My Pass', icon: '🎟' },
-            { name: 'Scores', icon: '📊' },
-            { name: 'Profile', icon: '👤' }
+            { name: 'Events' },
+            { name: 'My Pass' },
+            { name: 'Scores' },
+            { name: 'Profile' }
         ]
 
         const nItemW = screenW / 4

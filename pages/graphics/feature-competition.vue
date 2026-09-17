@@ -390,7 +390,7 @@ onMounted(async () => {
         ctx.textAlign = 'left'
         ctx.fillStyle = '#D9FF00'
         ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-        ctx.fillText('🏹 Tournament Operations Engine', screenX + 28, headY + 21)
+        ctx.fillText('Tournament Operations Engine', screenX + 28, headY + 21)
 
         drawRoundedRect(screenX + screenW - 84, headY + 6, 56, 22, 5, '#1E293B')
         ctx.fillStyle = '#FFFFFF'
@@ -499,7 +499,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isAllocated ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isAllocated ? '✔ All 40 Target Lanes Allocated' : 'Auto-Allocate Target Lanes', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isAllocated ? 'All 40 Target Lanes Allocated' : 'Auto-Allocate Target Lanes', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }
@@ -516,85 +516,49 @@ onMounted(async () => {
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Team Standings Auto-Sum', 20, 36)
+            ctx.fillText('Club Team Auto-Sum', 20, 36)
 
-            const sc2StatW = (screenW - 50) / 2
-            drawRoundedRect(20, 48, sc2StatW, 52, 10, '#FFFFFF', '#E2E8F0', 1.2)
-            ctx.fillStyle = '#64748B'
-            ctx.font = '600 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Individual 70m', 32, 66)
-            ctx.fillStyle = '#0F172A'
-            ctx.font = '700 15px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('160 Archers Synced', 32, 88)
-
-            drawRoundedRect(30 + sc2StatW, 48, sc2StatW, 52, 10, '#FFFFFF', '#E2E8F0', 1.2)
-            ctx.fillStyle = '#64748B'
-            ctx.font = '600 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Team Algorithm', 42 + sc2StatW, 66)
-            ctx.fillStyle = '#0F172A'
-            ctx.font = '700 15px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Σ Top 3 Auto-Sum', 42 + sc2StatW, 88)
-
-            // Rich Team Calculation Bento List
-            const teamsY = 108
             const teamsW = screenW - 40
-            drawRoundedRect(20, teamsY, teamsW, 208, 14, '#FFFFFF', '#E2E8F0', 1.2)
+            drawRoundedRect(20, 48, teamsW, 268, 14, '#FFFFFF', '#E2E8F0', 1.2)
 
+            // Header info box
+            drawRoundedRect(34, 62, teamsW - 28, 48, 10, '#0F172A')
+            ctx.fillStyle = '#D9FF00'
+            ctx.font = '700 11.5px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Recurve Men Team (Top 3 Aggregate)', 48, 82)
+            ctx.fillStyle = '#94A3B8'
+            ctx.font = '500 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Live Auto-Sum from Individual Scores', 48, 98)
+
+            // Teams Standings Table Rows
             const teamRows = [
-                {
-                    rank: '1',
-                    name: 'Fast Archery Club',
-                    roster: 'Arif (684) + Diananda (672) + Kenzo (624)',
-                    total: '1,980 pts',
-                    gold: true
-                },
-                {
-                    rank: '2',
-                    name: 'Eagle Archery Club',
-                    roster: 'Riau (678) + Linda (642) + Reza (625)',
-                    total: '1,945 pts',
-                    gold: false
-                },
-                {
-                    rank: '3',
-                    name: 'Focus Target Team',
-                    roster: 'Bagas (650) + Dimas (635) + Rezza (625)',
-                    total: '1,910 pts',
-                    gold: false
-                }
+                { rank: '1', name: 'Fast Archery Team', archers: 'Arif (684) + Riau (678) + Bagas (665)', total: '2,027', badge: '#D9FF00' },
+                { rank: '2', name: 'Focus Archery Club', archers: 'Dian (670) + Hendra (662) + Ilham (658)', total: '1,990', badge: '#F1F5F9' },
+                { rank: '3', name: 'X-Ten Target Club', archers: 'Fajar (664) + Dimas (655) + Ryan (648)', total: '1,967', badge: '#F1F5F9' },
             ]
 
             teamRows.forEach((r, idx) => {
-                const ry = teamsY + 10 + idx * 64
-                if (idx > 0) {
-                    ctx.strokeStyle = '#F1F5F9'
-                    ctx.beginPath()
-                    ctx.moveTo(32, ry - 5)
-                    ctx.lineTo(20 + teamsW - 12, ry - 5)
-                    ctx.stroke()
-                }
+                const ry = 118 + idx * 62
+                drawRoundedRect(34, ry, teamsW - 28, 54, 8, '#F8FAFC', '#E2E8F0', 1)
 
-                // Rank Pill
-                drawRoundedRect(30, ry + 2, 24, 24, 6, r.gold ? '#D9FF00' : '#F1F5F9')
-                ctx.fillStyle = '#0F172A'
+                drawRoundedRect(44, ry + 12, 28, 28, 6, r.badge === '#D9FF00' ? '#0F172A' : '#E2E8F0')
+                ctx.fillStyle = r.badge === '#D9FF00' ? '#D9FF00' : '#475569'
                 ctx.textAlign = 'center'
-                ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(r.rank, 42, ry + 18)
+                ctx.font = '800 13px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText(r.rank, 58, ry + 30)
 
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#0F172A'
-                ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(r.name, 62, ry + 15)
+                ctx.font = '700 12px "NovaText", "Plus Jakarta Sans", sans-serif'
+                ctx.fillText(r.name, 82, ry + 22)
 
                 ctx.fillStyle = '#64748B'
-                ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(r.roster, 62, ry + 30)
+                ctx.font = '500 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+                ctx.fillText(r.archers, 82, ry + 38)
 
-                // Total Score Badge
-                drawRoundedRect(20 + teamsW - 68, ry + 8, 56, 24, 6, '#0F172A')
-                ctx.fillStyle = '#D9FF00'
-                ctx.textAlign = 'center'
-                ctx.font = '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.textAlign = 'right'
+                ctx.fillStyle = '#0F172A'
+                ctx.font = '700 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
                 ctx.fillText(r.total, 20 + teamsW - 40, ry + 24)
             })
 
@@ -607,7 +571,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isSeeded ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isSeeded ? '✔ Brackets Seeded Automatically' : 'Generate Elimination Brackets', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isSeeded ? 'Brackets Seeded Automatically' : 'Generate Elimination Brackets', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }
@@ -620,15 +584,16 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
             ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('World Archery Elimination Tree', 20, 14)
+            ctx.fillText('Elimination Matchplay Engine', 20, 14)
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('WA Matchplay Brackets', 20, 36)
+            ctx.fillText('World Archery Bracket Tree', 20, 36)
 
             const treeW = screenW - 40
+            const treeH = 268
             const treeY = 48
-            drawRoundedRect(20, treeY, treeW, 268, 14, '#FFFFFF', '#E2E8F0', 1.2)
+            drawRoundedRect(20, treeY, treeW, treeH, 14, '#FFFFFF', '#E2E8F0', 1.2)
 
             // Stage Headers
             ctx.fillStyle = '#64748B'
@@ -639,97 +604,85 @@ onMounted(async () => {
 
             // QF Matches Column (4 Match Nodes)
             const qfMatches = [
-                { a1: '(1) Arif Dwi', s1: '6', a2: '(8) Hendra W.', s2: '2', win: 1, y: treeY + 26 },
-                { a1: '(4) Diananda', s1: '7', a2: '(5) Linda S.', s2: '3', win: 1, y: treeY + 84 },
-                { a1: '(3) Riau Ega', s1: '6', a2: '(6) Bagas P.', s2: '4', win: 1, y: treeY + 142 },
-                { a1: '(2) Kenzo A.', s1: '6', a2: '(7) Fathur R.', s2: '5', win: 1, y: treeY + 200 }
+                { top: '1 Arif Dwi', topS: '6', bot: '8 Hendra', botS: '2', y: treeY + 28 },
+                { top: '4 Bagas P', topS: '7', bot: '5 Fajar R', botS: '3', y: treeY + 84 },
+                { top: '3 Riau Ega', topS: '6', bot: '6 Dimas A', botS: '0', y: treeY + 140 },
+                { top: '2 Dian K', topS: '6', bot: '7 Ryan M', botS: '4', y: treeY + 196 },
             ]
 
             qfMatches.forEach((m) => {
-                drawRoundedRect(30, m.y, 96, 48, 6, '#F8FAFC', '#E2E8F0', 1)
-
-                // Archer 1
-                ctx.fillStyle = m.win === 1 ? '#0F172A' : '#64748B'
-                ctx.font = m.win === 1 ? '700 8.5px "Bricolage Grotesque", "NovaText", sans-serif' : '500 8px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(m.a1, 34, m.y + 16)
-                drawRoundedRect(108, m.y + 6, 14, 14, 3, m.win === 1 ? '#D9FF00' : '#E2E8F0')
+                drawRoundedRect(30, m.y, 90, 44, 6, '#F8FAFC', '#E2E8F0', 1)
                 ctx.fillStyle = '#0F172A'
-                ctx.textAlign = 'center'
-                ctx.font = '700 8px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(m.s1, 115, m.y + 16)
+                ctx.font = '700 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+                ctx.fillText(m.top, 34, m.y + 16)
+                ctx.textAlign = 'right'
+                ctx.font = '700 8.5px "Bricolage Grotesque", sans-serif'
+                ctx.fillText(m.topS, 114, m.y + 16)
 
-                // Archer 2
                 ctx.textAlign = 'left'
-                ctx.fillStyle = m.win === 2 ? '#0F172A' : '#64748B'
-                ctx.font = m.win === 2 ? '700 8.5px "Bricolage Grotesque", "NovaText", sans-serif' : '500 8px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(m.a2, 34, m.y + 36)
-                drawRoundedRect(108, m.y + 26, 14, 14, 3, m.win === 2 ? '#D9FF00' : '#E2E8F0')
-                ctx.fillStyle = '#0F172A'
-                ctx.textAlign = 'center'
-                ctx.font = '700 8px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(m.s2, 115, m.y + 36)
+                ctx.fillStyle = '#64748B'
+                ctx.font = '500 8px "NovaText", "Plus Jakarta Sans", sans-serif'
+                ctx.fillText(m.bot, 34, m.y + 34)
+                ctx.textAlign = 'right'
+                ctx.fillText(m.botS, 114, m.y + 34)
+                ctx.textAlign = 'left'
             })
 
-            // Orthogonal Bracket Connector Lines
-            ctx.strokeStyle = '#0F172A'
-            ctx.lineWidth = 1.5
-            // QF1 to SF1
+            // SF Matches Column (2 Match Nodes)
+            const sfMatches = [
+                { top: 'Arif Dwi', topS: '6', bot: 'Bagas P', botS: '2', y: treeY + 56 },
+                { top: 'Riau Ega', topS: '7', bot: 'Dian K', botS: '3', y: treeY + 168 },
+            ]
+
+            sfMatches.forEach((m) => {
+                drawRoundedRect(136, m.y, 82, 48, 6, '#F1F5F9', '#CBD5E1', 1)
+                ctx.fillStyle = '#0F172A'
+                ctx.font = '700 9px "NovaText", "Plus Jakarta Sans", sans-serif'
+                ctx.fillText(m.top, 142, m.y + 18)
+                ctx.textAlign = 'right'
+                ctx.fillText(m.topS, 212, m.y + 18)
+
+                ctx.textAlign = 'left'
+                ctx.fillStyle = '#64748B'
+                ctx.font = '500 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+                ctx.fillText(m.bot, 142, m.y + 38)
+                ctx.textAlign = 'right'
+                ctx.fillText(m.botS, 212, m.y + 38)
+                ctx.textAlign = 'left'
+            })
+
+            // Branching Connecting Lines
+            ctx.strokeStyle = '#94A3B8'
+            ctx.lineWidth = 1.2
             ctx.beginPath()
-            ctx.moveTo(126, treeY + 50)
-            ctx.lineTo(136, treeY + 50)
-            ctx.lineTo(136, treeY + 78)
-            ctx.lineTo(142, treeY + 78)
-            ctx.stroke()
+            // QF 1 & 2 to SF 1
+            ctx.moveTo(120, treeY + 50)
+            ctx.lineTo(128, treeY + 50)
+            ctx.lineTo(128, treeY + 80)
+            ctx.lineTo(136, treeY + 80)
 
-            // QF2 to SF1
-            ctx.beginPath()
-            ctx.moveTo(126, treeY + 108)
-            ctx.lineTo(136, treeY + 108)
-            ctx.lineTo(136, treeY + 78)
-            ctx.stroke()
+            ctx.moveTo(120, treeY + 106)
+            ctx.lineTo(128, treeY + 106)
+            ctx.lineTo(128, treeY + 80)
 
-            // QF3 to SF2
-            ctx.beginPath()
-            ctx.moveTo(126, treeY + 166)
-            ctx.lineTo(136, treeY + 166)
-            ctx.lineTo(136, treeY + 194)
-            ctx.lineTo(142, treeY + 194)
-            ctx.stroke()
+            // QF 3 & 4 to SF 2
+            ctx.moveTo(120, treeY + 162)
+            ctx.lineTo(128, treeY + 162)
+            ctx.lineTo(128, treeY + 192)
+            ctx.lineTo(136, treeY + 192)
 
-            // QF4 to SF2
-            ctx.beginPath()
-            ctx.moveTo(126, treeY + 224)
-            ctx.lineTo(136, treeY + 224)
-            ctx.lineTo(136, treeY + 194)
-            ctx.stroke()
+            ctx.moveTo(120, treeY + 218)
+            ctx.lineTo(128, treeY + 218)
+            ctx.lineTo(128, treeY + 192)
 
-            // SF Nodes
-            drawRoundedRect(142, treeY + 54, 76, 48, 6, isBracketAdvanced ? '#0F172A' : '#F8FAFC', '#E2E8F0', 1)
-            ctx.textAlign = 'left'
-            ctx.fillStyle = isBracketAdvanced ? '#D9FF00' : '#0F172A'
-            ctx.font = '700 8.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Arif Dwi [6]', 146, treeY + 72)
-            ctx.fillStyle = isBracketAdvanced ? '#94A3B8' : '#64748B'
-            ctx.fillText('Diananda [4]', 146, treeY + 92)
-
-            drawRoundedRect(142, treeY + 170, 76, 48, 6, isBracketAdvanced ? '#0F172A' : '#F8FAFC', '#E2E8F0', 1)
-            ctx.fillStyle = isBracketAdvanced ? '#D9FF00' : '#0F172A'
-            ctx.font = '700 8.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Riau Ega [6]', 146, treeY + 188)
-            ctx.fillStyle = isBracketAdvanced ? '#94A3B8' : '#64748B'
-            ctx.fillText('Kenzo A. [5]', 146, treeY + 208)
-
-            // SF to Final Connectors
-            ctx.beginPath()
-            ctx.moveTo(218, treeY + 78)
-            ctx.lineTo(228, treeY + 78)
+            // SF 1 & 2 to Gold Final
+            ctx.moveTo(218, treeY + 80)
+            ctx.lineTo(228, treeY + 80)
             ctx.lineTo(228, treeY + 136)
             ctx.lineTo(234, treeY + 136)
-            ctx.stroke()
 
-            ctx.beginPath()
-            ctx.moveTo(218, treeY + 194)
-            ctx.lineTo(228, treeY + 194)
+            ctx.moveTo(218, treeY + 192)
+            ctx.lineTo(228, treeY + 192)
             ctx.lineTo(228, treeY + 136)
             ctx.stroke()
 
@@ -737,8 +690,8 @@ onMounted(async () => {
             drawRoundedRect(234, treeY + 104, 86, 64, 8, isBracketAdvanced ? '#D9FF00' : '#F8FAFC', '#0F172A', 1.5)
             ctx.textAlign = 'left'
             ctx.fillStyle = '#0F172A'
-            ctx.font = '800 8px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('🥇 GOLD MATCH', 238, treeY + 120)
+            ctx.font = '800 8.5px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Gold Medal Match', 238, treeY + 120)
 
             ctx.font = '700 8.5px "Bricolage Grotesque", "NovaText", sans-serif'
             ctx.fillText('Arif Dwi [6]', 238, treeY + 138)
@@ -755,7 +708,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isBracketAdvanced ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isBracketAdvanced ? '✔ Winners Advanced to Finals' : 'Advance Winners to Semifinals', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isBracketAdvanced ? 'Winners Advanced to Finals' : 'Advance Winners to Semifinals', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }
@@ -828,7 +781,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isCertIssued ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isCertIssued ? '✔ 160 Certificates Dispatched' : 'Issue & Distribute All Certificates', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isCertIssued ? '160 Certificates Dispatched' : 'Issue & Distribute All Certificates', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }

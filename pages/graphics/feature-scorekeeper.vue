@@ -355,7 +355,7 @@ onMounted(async () => {
         ctx.textAlign = 'left'
         ctx.fillStyle = '#D9FF00'
         ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-        ctx.fillText('🎯 Target 12 | Lane 12A', screenX + 28, headY + 22)
+        ctx.fillText('Target 12 | Lane 12A', screenX + 28, headY + 22)
 
         drawRoundedRect(screenX + screenW - 96, headY + 6, 68, 24, 6, '#1E293B')
         ctx.fillStyle = '#FFFFFF'
@@ -433,7 +433,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isRosterSelected ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isRosterSelected ? '✔ Target 12A Selected' : 'Input Scores for End 1', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isRosterSelected ? 'Target 12A Selected' : 'Input Scores for End 1', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }
@@ -517,7 +517,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isEndSubmitted ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isEndSubmitted ? '✔ End 1 Synced to Cloud' : 'Submit End 1 Scores', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isEndSubmitted ? 'End 1 Synced to Cloud' : 'Submit End 1 Scores', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }
@@ -541,7 +541,7 @@ onMounted(async () => {
             drawRoundedRect(34, 66, sHeroW - 28, 38, 8, '#0F172A')
             ctx.fillStyle = '#D9FF00'
             ctx.font = '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('● LIVE SYNC ACTIVE', 48, 86)
+            ctx.fillText('Live Sync Active', 48, 86)
             ctx.fillStyle = '#94A3B8'
             ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
             ctx.fillText('Latency: 12ms · Cloud Sync Active', 48, 98)
@@ -582,7 +582,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isStandingsAudited ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isStandingsAudited ? '✔ Standings Verified' : 'Proceed to Official Audit', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isStandingsAudited ? 'Standings Verified' : 'Proceed to Official Audit', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }
@@ -628,7 +628,7 @@ onMounted(async () => {
             drawRoundedRect(34, sigY + 84, lHeroW - 28, 38, 8, isJudgeLocked ? '#0F172A' : '#F1F5F9')
             ctx.fillStyle = isJudgeLocked ? '#D9FF00' : '#334155'
             ctx.font = '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isJudgeLocked ? '🔒 Sealed & Locked by Chief Judge' : 'Awaiting Chief Judge Seal', 48, sigY + 107)
+            ctx.fillText(isJudgeLocked ? 'Sealed & Locked by Chief Judge' : 'Awaiting Chief Judge Seal', 48, sigY + 107)
 
             ctx.save()
             ctx.translate(sc1BtnCX, sc1BtnCY)
@@ -639,7 +639,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isJudgeLocked ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isJudgeLocked ? '🔒 Scores Officially Sealed & Locked' : 'Lock & Seal Target 12 Scores', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isJudgeLocked ? 'Scores Officially Sealed & Locked' : 'Lock & Seal Target 12 Scores', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }
