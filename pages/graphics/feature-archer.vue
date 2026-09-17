@@ -422,7 +422,7 @@ onMounted(async () => {
             drawRoundedRect(30, sc1CardY + 12, 70, 20, 6, '#D9FF00')
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 9.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('OPEN ENTRY', 36, sc1CardY + 26)
+            ctx.fillText('Open Entry', 36, sc1CardY + 26)
             ctx.restore()
 
             const cardTextY = sc1CardY + bannerH + 16
@@ -538,7 +538,7 @@ onMounted(async () => {
             drawRoundedRect(34, 14, pHeroW - 28, 42, 10, '#0F172A')
             ctx.fillStyle = '#D9FF00'
             ctx.font = '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('ARCHERIS ATHLETE PASS', 48, 32)
+            ctx.fillText('Archeris Athlete Pass', 48, 32)
             ctx.fillStyle = '#94A3B8'
             ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
             ctx.fillText('Verified Accreditation 2026', 48, 46)
@@ -555,7 +555,7 @@ onMounted(async () => {
             drawRoundedRect(34, pMidY + 42, pHeroW - 28, 62, 10, '#F8FAFC', '#E2E8F0', 1)
             ctx.fillStyle = '#64748B'
             ctx.font = '600 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('ASSIGNED TARGET', 48, pMidY + 62)
+            ctx.fillText('Assigned Target', 48, pMidY + 62)
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 22px "Bricolage Grotesque", "NovaText", sans-serif'
@@ -565,7 +565,7 @@ onMounted(async () => {
             ctx.fillStyle = '#0F172A'
             ctx.textAlign = 'center'
             ctx.font = '700 10px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('70 METERS', 34 + pHeroW - 67, pMidY + 70)
+            ctx.fillText('70 Meters', 34 + pHeroW - 67, pMidY + 70)
             ctx.font = '600 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
             ctx.fillText('Session 1', 34 + pHeroW - 67, pMidY + 84)
 

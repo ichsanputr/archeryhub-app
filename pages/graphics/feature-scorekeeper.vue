@@ -615,7 +615,7 @@ onMounted(async () => {
 
             ctx.fillStyle = '#64748B'
             ctx.font = '600 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('ATHLETE DIGITAL SIGNATURE', 46, sigY + 18)
+            ctx.fillText('Athlete Digital Signature', 46, sigY + 18)
 
             ctx.strokeStyle = '#0F172A'
             ctx.lineWidth = 2
@@ -628,7 +628,7 @@ onMounted(async () => {
             drawRoundedRect(34, sigY + 84, lHeroW - 28, 38, 8, isJudgeLocked ? '#0F172A' : '#F1F5F9')
             ctx.fillStyle = isJudgeLocked ? '#D9FF00' : '#334155'
             ctx.font = '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isJudgeLocked ? '🔒 SEALED & LOCKED BY CHIEF JUDGE' : 'Awaiting Chief Judge Seal', 48, sigY + 107)
+            ctx.fillText(isJudgeLocked ? '🔒 Sealed & Locked by Chief Judge' : 'Awaiting Chief Judge Seal', 48, sigY + 107)
 
             ctx.save()
             ctx.translate(sc1BtnCX, sc1BtnCY)
