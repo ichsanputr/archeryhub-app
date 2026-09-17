@@ -267,7 +267,7 @@ onMounted(async () => {
                 camPanY = -85
             }
 
-            const card1Y = 390
+            const card1Y = 419
             if (elapsed >= 0.8) {
                 cursorVisible = true
                 if (elapsed < 2.0) {
@@ -309,7 +309,7 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const btnRegisterY = 820
+            const btnRegisterY = 774
             if (step2Elapsed >= 1.2) {
                 cursorVisible = true
                 if (step2Elapsed < 2.4) {
@@ -355,8 +355,8 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const catCard1Y = 340
-            const btnPayStepY = 820
+            const catCard1Y = 350
+            const btnPayStepY = 774
 
             if (step3Elapsed >= 0.8) {
                 cursorVisible = true
@@ -414,7 +414,7 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const btnConfirmPayY = 820
+            const btnConfirmPayY = 774
             if (step4Elapsed >= 1.0) {
                 cursorVisible = true
                 if (step4Elapsed < 2.2) {
@@ -465,7 +465,7 @@ onMounted(async () => {
                 camPanY = -85 * (1 - finT)
             }
 
-            const btnSaveWalletY = 820
+            const btnSaveWalletY = 774
             if (step5Elapsed >= 1.0 && step5Elapsed < 4.0) {
                 cursorVisible = true
                 if (step5Elapsed < 2.2) {

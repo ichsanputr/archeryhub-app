@@ -267,7 +267,7 @@ onMounted(async () => {
             else if (elapsed >= 1.8 && elapsed < 2.2) loginCodeTyped = 'SK78'
             else if (elapsed >= 2.2) loginCodeTyped = 'SK789'
 
-            const btnLoginY = 820
+            const btnLoginY = 774
             if (elapsed >= 2.4) {
                 cursorVisible = true
                 if (elapsed < 3.2) {
@@ -312,13 +312,13 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const scanCardY = 620
+            const scanCardY = 472
             if (step2Elapsed >= 1.0) {
                 cursorVisible = true
                 if (step2Elapsed < 2.2) {
                     const mt = easeInOutCubic((step2Elapsed - 1.0) / 1.2)
                     cursorX = 540
-                    cursorY = 460 + (scanCardY - 460) * mt
+                    cursorY = 400 + (scanCardY - 400) * mt
                 } else {
                     cursorX = 540; cursorY = scanCardY
                 }
@@ -386,13 +386,13 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const archer1CardY = 540
+            const archer1CardY = 399
             if (step4Elapsed >= 0.8) {
                 cursorVisible = true
                 if (step4Elapsed < 2.0) {
                     const mt = easeInOutCubic((step4Elapsed - 0.8) / 1.2)
                     cursorX = 540
-                    cursorY = 400 + (archer1CardY - 400) * mt
+                    cursorY = 320 + (archer1CardY - 320) * mt
                 } else {
                     cursorX = 540; cursorY = archer1CardY
                 }
@@ -434,15 +434,15 @@ onMounted(async () => {
             }
 
             // Interactive keypad inputs
-            const key10X = 540, key10Y = 660
-            const key9X = 610, key9Y = 660
-            const btnSubmitY = 820
+            const key10X = 534, key10Y = 427
+            const key9X = 628, key9Y = 427
+            const btnSubmitY = 774
 
             if (step5Elapsed >= 0.5 && step5Elapsed < 1.4) {
                 cursorVisible = true
                 const kt1 = easeInOutCubic((step5Elapsed - 0.5) / 0.7)
-                cursorX = 480 + (key10X - 480) * kt1
-                cursorY = 560 + (key10Y - 560) * kt1
+                cursorX = 440 + (key10X - 440) * kt1
+                cursorY = 360 + (key10Y - 360) * kt1
                 if (step5Elapsed >= 1.2) {
                     scoreSlot5Filled = true
                     activeKeypadKey = '10'
