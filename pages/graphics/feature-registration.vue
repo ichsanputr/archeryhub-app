@@ -183,22 +183,22 @@ onMounted(async () => {
             tabSliderPos = 0
             screenSlideOffset = 0
 
-            // Gentle camera zoom in
-            if (elapsed < 1.0) {
-                const zt = easeOutCubic(elapsed / 1.0)
-                camZoom = 1.00 + 0.10 * zt
-                camPanY = -8 * zt
+            // Dramatic Zoom in from 1.00x to 1.45x focusing on Publish CTA
+            if (elapsed < 1.4) {
+                const zt = easeInOutCubic(elapsed / 1.4)
+                camZoom = 1.00 + 0.45 * zt
+                camPanY = -85 * zt
             } else {
-                camZoom = 1.10
-                camPanY = -8
+                camZoom = 1.45
+                camPanY = -85
             }
 
             // Target: Publish Button at (540, 620)
             const targetBtnY = 620
-            if (elapsed >= 0.8) {
+            if (elapsed >= 1.0) {
                 cursorVisible = true
-                if (elapsed < 2.2) {
-                    const mt = easeInOutCubic((elapsed - 0.8) / 1.4)
+                if (elapsed < 2.4) {
+                    const mt = easeInOutCubic((elapsed - 1.0) / 1.4)
                     cursorX = 540
                     cursorY = 720 + (targetBtnY - 720) * mt
                 } else {
@@ -206,12 +206,12 @@ onMounted(async () => {
                     cursorY = targetBtnY
                 }
 
-                if (elapsed >= 2.2) {
+                if (elapsed >= 2.4) {
                     isPublished = true
-                    if (elapsed >= 2.2 && elapsed <= 2.65) {
+                    if (elapsed >= 2.4 && elapsed <= 2.85) {
                         cursorPressed = true
                         btnPublishScale = 0.94
-                        tapRipple = (elapsed - 2.2) / 0.45
+                        tapRipple = (elapsed - 2.4) / 0.45
                         tapX = 540; tapY = targetBtnY
                     }
                 }
@@ -221,29 +221,44 @@ onMounted(async () => {
             isPublished = true
             const step2Elapsed = elapsed - 4.2
 
-            // Slide transition Screen 1 to Screen 2 (0.8s smooth duration)
+            // Slide transition Screen 1 to Screen 2
             if (step2Elapsed < 0.8) {
                 const transT = easeInOutCubic(step2Elapsed / 0.8)
                 tabSliderPos = transT
                 screenSlideOffset = transT
+                // Camera shifts from bottom CTA to top quota hero card
+                camZoom = 1.45 + (1.30 - 1.45) * transT
+                camPanY = -85 + (40 - (-85)) * transT
+            } else if (step2Elapsed < 2.0) {
+                // Focus on Quota counter rolling up
+                tabSliderPos = 1
+                screenSlideOffset = 1
+                camZoom = 1.30
+                camPanY = 40
+            } else if (step2Elapsed < 2.8) {
+                // Camera tilts down to participant 2 (Arif)
+                tabSliderPos = 1
+                screenSlideOffset = 1
+                const ct = easeInOutCubic((step2Elapsed - 2.0) / 0.8)
+                camZoom = 1.30 + (1.42 - 1.30) * ct
+                camPanY = 40 + (-35 - 40) * ct
             } else {
                 tabSliderPos = 1
                 screenSlideOffset = 1
+                camZoom = 1.42
+                camPanY = -35
             }
 
-            camZoom = 1.10
-            camPanY = -8
-
             // Quota counter smoothly rolls up
-            const qT = easeOutCubic(clamp((step2Elapsed - 0.5) / 1.8, 0, 1))
+            const qT = easeOutCubic(clamp((step2Elapsed - 0.4) / 1.6, 0, 1))
             quotaVal = Math.round(qT * 148)
 
-            // Target: Click Participant 2 (Arif Dwi Pangestu) at exact center (540, 531)
+            // Target: Participant 2 (Arif Dwi Pangestu) at exact center (540, 531)
             const targetPartY = 531
-            if (step2Elapsed >= 1.0) {
+            if (step2Elapsed >= 1.8) {
                 cursorVisible = true
-                if (step2Elapsed < 2.4) {
-                    const mt = easeInOutCubic((step2Elapsed - 1.0) / 1.4)
+                if (step2Elapsed < 3.0) {
+                    const mt = easeInOutCubic((step2Elapsed - 1.8) / 1.2)
                     cursorX = 540
                     cursorY = 620 + (targetPartY - 620) * mt
                 } else {
@@ -251,11 +266,11 @@ onMounted(async () => {
                     cursorY = targetPartY
                 }
 
-                if (step2Elapsed >= 2.4) {
+                if (step2Elapsed >= 3.0) {
                     isParticipantClicked = true
-                    if (step2Elapsed >= 2.4 && step2Elapsed <= 2.85) {
+                    if (step2Elapsed >= 3.0 && step2Elapsed <= 3.45) {
                         cursorPressed = true
-                        tapRipple = (step2Elapsed - 2.4) / 0.45
+                        tapRipple = (step2Elapsed - 3.0) / 0.45
                         tapX = 540; tapY = targetPartY
                     }
                 }
@@ -267,25 +282,38 @@ onMounted(async () => {
             isParticipantClicked = true
             const step3Elapsed = elapsed - 8.4
 
-            // Slide transition Screen 2 to Screen 3 (0.8s smooth duration)
+            // Slide transition Screen 2 to Screen 3
             if (step3Elapsed < 0.8) {
                 const transT = easeInOutCubic(step3Elapsed / 0.8)
                 tabSliderPos = 1 + transT
                 screenSlideOffset = 1 + transT
+                camZoom = 1.42 + (1.35 - 1.42) * transT
+                camPanY = -35 + (-20 - (-35)) * transT
+            } else if (step3Elapsed < 1.8) {
+                tabSliderPos = 2
+                screenSlideOffset = 2
+                camZoom = 1.35
+                camPanY = -20
+            } else if (step3Elapsed < 2.6) {
+                // Push in closer to verify button
+                tabSliderPos = 2
+                screenSlideOffset = 2
+                const ct = easeInOutCubic((step3Elapsed - 1.8) / 0.8)
+                camZoom = 1.35 + (1.46 - 1.35) * ct
+                camPanY = -20 + (-85 - (-20)) * ct
             } else {
                 tabSliderPos = 2
                 screenSlideOffset = 2
+                camZoom = 1.46
+                camPanY = -85
             }
-
-            camZoom = 1.10
-            camPanY = -8
 
             // Target: Click Verify Payment Button at (540, 620)
             const targetVerifyY = 620
-            if (step3Elapsed >= 1.0) {
+            if (step3Elapsed >= 1.6) {
                 cursorVisible = true
-                if (step3Elapsed < 2.3) {
-                    const mt = easeInOutCubic((step3Elapsed - 1.0) / 1.3)
+                if (step3Elapsed < 2.8) {
+                    const mt = easeInOutCubic((step3Elapsed - 1.6) / 1.2)
                     cursorX = 540
                     cursorY = 531 + (targetVerifyY - 531) * mt
                 } else {
@@ -293,12 +321,12 @@ onMounted(async () => {
                     cursorY = targetVerifyY
                 }
 
-                if (step3Elapsed >= 2.3) {
+                if (step3Elapsed >= 2.8) {
                     isPaymentVerified = true
-                    if (step3Elapsed >= 2.3 && step3Elapsed <= 2.75) {
+                    if (step3Elapsed >= 2.8 && step3Elapsed <= 3.25) {
                         cursorPressed = true
                         btnVerifyScale = 0.94
-                        tapRipple = (step3Elapsed - 2.3) / 0.45
+                        tapRipple = (step3Elapsed - 2.8) / 0.45
                         tapX = 540; tapY = targetVerifyY
                     }
                 }
@@ -311,25 +339,38 @@ onMounted(async () => {
             isPaymentVerified = true
             const step4Elapsed = elapsed - 12.6
 
-            // Slide transition Screen 3 to Screen 4 (0.8s smooth duration)
+            // Slide transition Screen 3 to Screen 4
             if (step4Elapsed < 0.8) {
                 const transT = easeInOutCubic(step4Elapsed / 0.8)
                 tabSliderPos = 2 + transT
                 screenSlideOffset = 2 + transT
+                camZoom = 1.46 + (1.35 - 1.46) * transT
+                camPanY = -85 + (-20 - (-85)) * transT
+            } else if (step4Elapsed < 1.6) {
+                tabSliderPos = 3
+                screenSlideOffset = 3
+                camZoom = 1.35
+                camPanY = -20
+            } else if (step4Elapsed < 2.3) {
+                // Push in to Check-in button
+                tabSliderPos = 3
+                screenSlideOffset = 3
+                const ct = easeInOutCubic((step4Elapsed - 1.6) / 0.7)
+                camZoom = 1.35 + (1.46 - 1.35) * ct
+                camPanY = -20 + (-85 - (-20)) * ct
             } else {
                 tabSliderPos = 3
                 screenSlideOffset = 3
+                camZoom = 1.46
+                camPanY = -85
             }
-
-            camZoom = 1.10
-            camPanY = -8
 
             // Target: Click Complete Check-in Button at (540, 620)
             const targetCheckinY = 620
-            if (step4Elapsed >= 0.8) {
+            if (step4Elapsed >= 1.4) {
                 cursorVisible = true
-                if (step4Elapsed < 1.9) {
-                    const mt = easeInOutCubic((step4Elapsed - 0.8) / 1.1)
+                if (step4Elapsed < 2.4) {
+                    const mt = easeInOutCubic((step4Elapsed - 1.4) / 1.0)
                     cursorX = 540
                     cursorY = targetCheckinY
                 } else {
@@ -337,12 +378,12 @@ onMounted(async () => {
                     cursorY = targetCheckinY
                 }
 
-                if (step4Elapsed >= 1.9) {
+                if (step4Elapsed >= 2.4) {
                     isCheckinDone = true
-                    if (step4Elapsed >= 1.9 && step4Elapsed <= 2.35) {
+                    if (step4Elapsed >= 2.4 && step4Elapsed <= 2.85) {
                         cursorPressed = true
                         btnCheckinScale = 0.94
-                        tapRipple = (step4Elapsed - 1.9) / 0.45
+                        tapRipple = (step4Elapsed - 2.4) / 0.45
                         tapX = 540; tapY = targetCheckinY
                     }
                 }
@@ -358,8 +399,9 @@ onMounted(async () => {
             const finElapsed = elapsed - 16.0
             const finT = easeInOutCubic(finElapsed / 1.0)
 
-            camZoom = 1.10 - 0.10 * finT
-            camPanY = -8 * (1 - finT)
+            // Grand cinematic zoom-out back to 1.00x overview
+            camZoom = 1.46 - (1.46 - 1.00) * finT
+            camPanY = -85 * (1 - finT)
             tabSliderPos = 3 * (1 - finT)
             screenSlideOffset = 3 * (1 - finT)
             cursorVisible = false
