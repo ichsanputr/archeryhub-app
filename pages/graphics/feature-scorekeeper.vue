@@ -39,8 +39,12 @@ const togglePause = () => {
     }
 }
 
-const easeOutCubic = (x) => 1 - Math.pow(1 - x, 3)
-const easeInOutCubic = (x) => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2
+const clamp01 = (x) => Math.max(0, Math.min(1, x))
+const easeOutCubic = (x) => 1 - Math.pow(1 - clamp01(x), 3)
+const easeInOutCubic = (x) => {
+    const t = clamp01(x)
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+}
 
 onMounted(async () => {
     handleResize()
@@ -324,7 +328,7 @@ onMounted(async () => {
 
     function renderFrame(now) {
         if (!startTime) startTime = now
-        const effectiveNow = isPaused.value ? (pausedAt - totalPausedDuration) : (now - totalPausedDuration)
+        const effectiveNow = window.__forcedTime != null ? window.__forcedTime : (isPaused.value ? (pausedAt - totalPausedDuration) : (now - totalPausedDuration))
         const elapsed = (effectiveNow / 1000) % CYCLE_DURATION
 
         // 1. Stage Background
@@ -363,6 +367,7 @@ onMounted(async () => {
 
         let isArcherSelected = false
         let selectedArcherIndex = 0
+        let btnArcherScale = 1.0
 
         let scoreSlot5Filled = false
         let scoreSlot6Filled = false
@@ -517,13 +522,13 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const archer1CardY = 417
+            const archer1CardY = 342
             if (step4Elapsed >= 0.8) {
                 cursorVisible = true
                 if (step4Elapsed < 2.0) {
                     const mt = easeInOutCubic((step4Elapsed - 0.8) / 1.2)
                     cursorX = 540
-                    cursorY = 280 + (archer1CardY - 280) * mt
+                    cursorY = 240 + (archer1CardY - 240) * mt
                 } else {
                     cursorX = 540; cursorY = archer1CardY
                 }
@@ -570,45 +575,51 @@ onMounted(async () => {
             const key9X = 581, key9Y = 719
             const btnSubmitX = 597, btnSubmitY = 870
 
-            if (step5Elapsed >= 0.5 && step5Elapsed < 1.4) {
+            if (step5Elapsed >= 0.4 && step5Elapsed < 1.3) {
                 cursorVisible = true
-                const kt1 = easeInOutCubic((step5Elapsed - 0.5) / 0.7)
-                cursorX = 450 + (key10X - 450) * kt1
-                cursorY = 600 + (key10Y - 600) * kt1
-                if (step5Elapsed >= 1.2) {
+                if (step5Elapsed < 1.0) {
+                    const kt1 = easeInOutCubic((step5Elapsed - 0.4) / 0.6)
+                    cursorX = 450 + (key10X - 450) * kt1
+                    cursorY = 600 + (key10Y - 600) * kt1
+                } else {
+                    cursorX = key10X; cursorY = key10Y
                     scoreSlot5Filled = true
                     activeKeypadKey = '10'
                     cursorPressed = true
-                    tapRipple = (step5Elapsed - 1.2) / 0.45
+                    tapRipple = (step5Elapsed - 1.0) / 0.4
                     tapX = key10X; tapY = key10Y
                 }
-            } else if (step5Elapsed >= 1.4 && step5Elapsed < 2.3) {
+            } else if (step5Elapsed >= 1.3 && step5Elapsed < 2.2) {
                 cursorVisible = true
                 scoreSlot5Filled = true
-                const kt2 = easeInOutCubic((step5Elapsed - 1.4) / 0.7)
-                cursorX = key10X + (key9X - key10X) * kt2
-                cursorY = key10Y + (key9Y - key10Y) * kt2
-                if (step5Elapsed >= 2.1) {
+                if (step5Elapsed < 1.8) {
+                    const kt2 = easeInOutCubic((step5Elapsed - 1.3) / 0.5)
+                    cursorX = key10X + (key9X - key10X) * kt2
+                    cursorY = key10Y + (key9Y - key10Y) * kt2
+                } else {
+                    cursorX = key9X; cursorY = key9Y
                     scoreSlot6Filled = true
                     activeKeypadKey = '9'
                     cursorPressed = true
-                    tapRipple = (step5Elapsed - 2.1) / 0.45
+                    tapRipple = (step5Elapsed - 1.8) / 0.4
                     tapX = key9X; tapY = key9Y
                 }
-            } else if (step5Elapsed >= 2.3 && step5Elapsed < 4.0) {
+            } else if (step5Elapsed >= 2.2 && step5Elapsed < 4.2) {
                 cursorVisible = true
                 scoreSlot5Filled = true
                 scoreSlot6Filled = true
                 activeKeypadKey = null
-                const bt = easeInOutCubic((step5Elapsed - 2.3) / 0.8)
-                cursorX = key9X + (btnSubmitX - key9X) * bt
-                cursorY = key9Y + (btnSubmitY - key9Y) * bt
-                if (step5Elapsed >= 3.1) {
+                if (step5Elapsed < 2.9) {
+                    const bt = easeInOutCubic((step5Elapsed - 2.2) / 0.7)
+                    cursorX = key9X + (btnSubmitX - key9X) * bt
+                    cursorY = key9Y + (btnSubmitY - key9Y) * bt
+                } else {
+                    cursorX = btnSubmitX; cursorY = btnSubmitY
                     isScoreSubmitted = true
-                    if (step5Elapsed >= 3.1 && step5Elapsed <= 3.65) {
+                    if (step5Elapsed >= 2.9 && step5Elapsed <= 3.6) {
                         cursorPressed = true
                         btnScoreSubmitScale = 0.94
-                        tapRipple = (step5Elapsed - 3.1) / 0.55
+                        tapRipple = (step5Elapsed - 2.9) / 0.55
                         tapX = btnSubmitX; tapY = btnSubmitY
                     }
                 }
@@ -1488,11 +1499,11 @@ onMounted(async () => {
         if (tapRipple > 0 && tapRipple <= 1) {
             ctx.save()
             ctx.beginPath()
-            ctx.arc(tapX, tapY, tapRipple * 40, 0, Math.PI * 2)
-            ctx.fillStyle = `rgba(217, 255, 0, ${0.5 * (1 - tapRipple)})`
+            ctx.arc(tapX, tapY, tapRipple * 22, 0, Math.PI * 2)
+            ctx.fillStyle = `rgba(15, 23, 42, ${0.15 * (1 - tapRipple)})`
             ctx.fill()
-            ctx.strokeStyle = `rgba(15, 23, 42, ${0.4 * (1 - tapRipple)})`
-            ctx.lineWidth = 2
+            ctx.strokeStyle = `rgba(15, 23, 42, ${0.35 * (1 - tapRipple)})`
+            ctx.lineWidth = 1.5
             ctx.stroke()
             ctx.restore()
         }
@@ -1518,6 +1529,10 @@ onMounted(async () => {
     }
 
     renderFrameFunc = renderFrame
+    window.__renderAtTime = (t) => {
+        window.__forcedTime = t
+        renderFrame(t)
+    }
     animationFrameId = requestAnimationFrame(renderFrame)
 
     onUnmounted(() => {

@@ -39,8 +39,12 @@ const togglePause = () => {
     }
 }
 
-const easeOutCubic = (x) => 1 - Math.pow(1 - x, 3)
-const easeInOutCubic = (x) => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2
+const clamp01 = (x) => Math.max(0, Math.min(1, x))
+const easeOutCubic = (x) => 1 - Math.pow(1 - clamp01(x), 3)
+const easeInOutCubic = (x) => {
+    const t = clamp01(x)
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+}
 
 onMounted(async () => {
     handleResize()

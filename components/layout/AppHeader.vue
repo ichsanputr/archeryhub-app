@@ -181,8 +181,6 @@ const NotificationList = defineAsyncComponent(() => import('./NotificationList.v
 const DocSearchDialog = defineAsyncComponent(() => import('./DocSearchDialog.vue'))
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
-import { useTournamentContext } from '~/composables/useTournamentContext'
-import { onClickOutside } from '@vueuse/core'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const config = useRuntimeConfig()
@@ -320,18 +318,21 @@ watch(() => route.path, () => {
 
 // Notification panel ref for click outside
 const notificationRef = ref(null)
-onClickOutside(notificationRef, () => {
-  if (showNotifications.value) {
-    showNotifications.value = false
-  }
-}, { capture: true })
 
 const handleDocumentClickOutside = (event) => {
-  if (showNotifications.value && notificationRef.value) {
-    if (!notificationRef.value.contains(event.target)) {
-      showNotifications.value = false
-    }
+  if (!showNotifications.value) return
+  const el = notificationRef.value
+  if (!el) {
+    showNotifications.value = false
+    return
   }
+  const path = event.composedPath ? event.composedPath() : []
+  if (path.length > 0) {
+    if (path.includes(el)) return
+  } else if (el.contains(event.target)) {
+    return
+  }
+  showNotifications.value = false
 }
 
 const handleKeyDown = (event) => {
@@ -356,15 +357,15 @@ onMounted(() => {
     fetchUnreadCount()
     startPolling(45000)
   }
-  window.addEventListener('click', handleDocumentClickOutside, true)
-  window.addEventListener('pointerdown', handleDocumentClickOutside, true)
+  document.addEventListener('pointerdown', handleDocumentClickOutside)
+  document.addEventListener('click', handleDocumentClickOutside)
   window.addEventListener('keydown', handleKeyDown)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
-  window.removeEventListener('click', handleDocumentClickOutside, true)
-  window.removeEventListener('pointerdown', handleDocumentClickOutside, true)
+  document.removeEventListener('pointerdown', handleDocumentClickOutside)
+  document.removeEventListener('click', handleDocumentClickOutside)
   window.removeEventListener('keydown', handleKeyDown)
   stopPolling()
 })
