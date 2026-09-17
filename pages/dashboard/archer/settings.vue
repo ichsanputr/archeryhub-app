@@ -93,22 +93,6 @@
           </div>
         </div>
 
-        <!-- Password Status -->
-        <div class="p-4 rounded-xl border-2 mb-6"
-          :class="hasPassword ? 'border-green-200 bg-green-50' : 'border-amber-200 bg-amber-50'">
-          <div class="flex items-center gap-3">
-            <Icon :icon="hasPassword ? 'ph:check-circle-fill' : 'ph:warning-circle-fill'"
-              :class="hasPassword ? 'text-green-500' : 'text-amber-500'" class="text-2xl" />
-            <div>
-              <div class="font-bold text-sm" :class="hasPassword ? 'text-green-700' : 'text-amber-700'">
-                {{ passwordStatusLabel }}
-              </div>
-              <div class="text-xs" :class="hasPassword ? 'text-green-600' : 'text-amber-600'">
-                {{ passwordStatusDescription }}
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- Change Password Form -->
         <div class="pt-8 border-t border-gray-100">
@@ -215,17 +199,7 @@ const securityForm = ref({
 
 const hasPassword = computed(() => userData.value?.has_password ?? false)
 
-const passwordStatusLabel = computed(() => {
-  return hasPassword.value
-    ? t('settings.password_set_label', 'Kata Sandi Telah Diatur')
-    : t('settings.password_not_set_label', 'Belum Ada Kata Sandi')
-})
 
-const passwordStatusDescription = computed(() => {
-  return hasPassword.value
-    ? t('settings.password_set_desc', 'Akun Anda sudah memiliki kata sandi. Anda dapat mengubahnya kapan saja.')
-    : t('settings.password_not_set_desc', 'Anda masuk menggunakan Google OAuth. Buat kata sandi baru untuk login via email dan kata sandi.')
-})
 
 onMounted(async () => {
   try {

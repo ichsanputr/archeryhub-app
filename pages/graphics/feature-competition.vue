@@ -192,8 +192,8 @@ onMounted(async () => {
                 camPanY = -85
             }
 
-            const cardTarget02Y = 616
-            const targetBtnY = 810
+            const cardTarget02Y = 551
+            const targetBtnY = 824
 
             activeTargetIndex = 0
 
@@ -253,8 +253,8 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const cardRiauEgaY = 510
-            const targetBtnY = 864
+            const cardRiauEgaY = 540
+            const targetBtnY = 824
 
             // Initial active card is 0 (Arif); after clicking Riau Ega at 1.8s, it switches to 1
             activeQualIndex = 0
@@ -316,7 +316,7 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const targetBtnY = 642
+            const targetBtnY = 824
             if (step3Elapsed >= 1.6) {
                 cursorVisible = true
                 if (step3Elapsed < 3.2) {
@@ -360,7 +360,7 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const targetBtnY = 642
+            const targetBtnY = 824
             if (step4Elapsed >= 1.6) {
                 cursorVisible = true
                 if (step4Elapsed < 3.2) {
@@ -405,8 +405,8 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const docCardY = 410
-            const targetBtnY = 864
+            const docCardY = 418
+            const targetBtnY = 824
 
             if (step5Elapsed >= 0.8) {
                 cursorVisible = true
@@ -468,7 +468,7 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const targetBtnY = 642
+            const targetBtnY = 824
             if (step6Elapsed >= 1.6) {
                 cursorVisible = true
                 if (step6Elapsed < 3.2) {
@@ -1178,7 +1178,7 @@ onMounted(async () => {
                     ctx.fillText(dc.highlight ? 'Tap to Preview & Audit Scoresheet PDF' : 'Download Printout File', 16 + docW / 2, dy + 118)
                 })
             } else {
-                // Printable WA Scoresheet Document Preview (Scorekeeper Physical Card)
+                // Printable WA Scoresheet Document Preview (Official Blank Printout Template)
                 const sheetW = docW
                 const sheetH = 524
                 const sheetY = 48
@@ -1186,141 +1186,139 @@ onMounted(async () => {
                 drawRoundedRect(16, sheetY, sheetW, sheetH, 10, '#FFFDF9', '#0F172A', 1.5)
 
                 // Sheet Header
-                drawRoundedRect(24, sheetY + 8, sheetW - 16, 46, 6, '#0F172A')
-                drawTargetFace(42, sheetY + 31, 10)
+                drawRoundedRect(24, sheetY + 8, sheetW - 16, 44, 6, '#0F172A')
+                drawTargetFace(42, sheetY + 30, 10)
 
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#D9FF00'
                 ctx.font = '700 11.5px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText('Official WA Qualification Scoresheet', 60, sheetY + 26)
+                ctx.fillText('Official WA Qualification Scoresheet', 60, sheetY + 25)
 
                 ctx.fillStyle = '#94A3B8'
                 ctx.font = '500 9px "NovaText", sans-serif'
-                ctx.fillText('Target 01-A · Recurve Men 70m · Session 1', 60, sheetY + 44)
+                ctx.fillText('Target 01-A · Recurve Men 70m · Session 1', 60, sheetY + 41)
 
                 // Archer info bar
-                drawRoundedRect(24, sheetY + 60, sheetW - 16, 36, 6, '#F8FAFC', '#E2E8F0', 0.8)
+                drawRoundedRect(24, sheetY + 58, sheetW - 16, 36, 6, '#F8FAFC', '#E2E8F0', 0.8)
                 ctx.fillStyle = '#0F172A'
-                ctx.font = '700 11.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText('Archer: Arif Dwi Pangestu', 32, sheetY + 76)
+                ctx.font = '700 11px "NovaText", "Plus Jakarta Sans", sans-serif'
+                ctx.fillText('Archer: Arif Dwi Pangestu', 32, sheetY + 74)
                 ctx.fillStyle = '#64748B'
-                ctx.font = '500 9.5px "NovaText", sans-serif'
-                ctx.fillText('Club: Fast Archery Club · ID: AH-2026-9921', 32, sheetY + 90)
+                ctx.font = '500 9px "NovaText", sans-serif'
+                ctx.fillText('Club: Fast Archery Club · ID: AH-2026-9921', 32, sheetY + 87)
 
-                // Score Table (6 Ends x 3 Arrows)
-                const tblY = sheetY + 102
-                drawRoundedRect(24, tblY, sheetW - 16, 260, 6, '#FFFFFF', '#CBD5E1', 1)
+                // Target lane tag
+                drawRoundedRect(16 + sheetW - 74, sheetY + 64, 58, 22, 4, '#0F172A')
+                ctx.fillStyle = '#D9FF00'
+                ctx.textAlign = 'center'
+                ctx.font = '800 10.5px "Bricolage Grotesque", sans-serif'
+                ctx.fillText('Lane 1A', 16 + sheetW - 45, sheetY + 79)
+
+                // Score Table (6 Ends x 3 Arrows - Blank Official Printable Grid)
+                const tblY = sheetY + 100
+                drawRoundedRect(24, tblY, sheetW - 16, 272, 6, '#FFFFFF', '#CBD5E1', 1)
 
                 // Table Header
-                drawRoundedRect(24, tblY, sheetW - 16, 24, 4, '#F1F5F9')
+                drawRoundedRect(24, tblY, sheetW - 16, 26, 4, '#F1F5F9')
                 ctx.fillStyle = '#475569'
                 ctx.font = '700 8.5px "NovaText", sans-serif'
                 ctx.textAlign = 'center'
-                ctx.fillText('End', 40, tblY + 16)
-                ctx.fillText('Arrow Scores', 110, tblY + 16)
-                ctx.fillText('Sum', 190, tblY + 16)
-                ctx.fillText('Total', 238, tblY + 16)
-                ctx.fillText('10+X', 286, tblY + 16)
+                ctx.fillText('End', 40, tblY + 17)
+                ctx.fillText('Arrow 1', 84, tblY + 17)
+                ctx.fillText('Arrow 2', 114, tblY + 17)
+                ctx.fillText('Arrow 3', 144, tblY + 17)
+                ctx.fillText('Sum', 194, tblY + 17)
+                ctx.fillText('Total', 238, tblY + 17)
+                ctx.fillText('10+X', 282, tblY + 17)
 
-                const endsData = [
-                    { end: '1', arrows: '10 · 10 · 10', sum: '30', total: '30', tens: '3' },
-                    { end: '2', arrows: '10 · X · 9', sum: '29', total: '59', tens: '2' },
-                    { end: '3', arrows: '10 · 10 · 10', sum: '30', total: '89', tens: '3' },
-                    { end: '4', arrows: 'X · 10 · 9', sum: '29', total: '118', tens: '2' },
-                    { end: '5', arrows: '10 · 10 · 10', sum: '30', total: '148', tens: '3' },
-                    { end: '6', arrows: 'X · 10 · 9', sum: '29', total: '177', tens: '2' }
-                ]
+                const blankEnds = ['1', '2', '3', '4', '5', '6']
 
-                endsData.forEach((ed, eidx) => {
-                    const rowY = tblY + 26 + eidx * 32
-                    drawRoundedRect(28, rowY, sheetW - 24, 28, 4, eidx % 2 === 0 ? '#FFFFFF' : '#F8FAFC')
+                blankEnds.forEach((endNum, eidx) => {
+                    const rowY = tblY + 28 + eidx * 33
+                    drawRoundedRect(28, rowY, sheetW - 24, 29, 4, eidx % 2 === 0 ? '#FFFFFF' : '#F8FAFC')
                     
+                    // End Number
                     ctx.fillStyle = '#0F172A'
                     ctx.textAlign = 'center'
                     ctx.font = '700 10px "NovaText", sans-serif'
-                    ctx.fillText(ed.end, 40, rowY + 18)
+                    ctx.fillText(endNum, 40, rowY + 19)
 
-                    // Hand-written look in blue/navy ink
-                    ctx.fillStyle = '#1E3A8A'
-                    ctx.font = '700 11px "Bricolage Grotesque", sans-serif'
-                    ctx.fillText(ed.arrows, 110, rowY + 18)
-                    ctx.fillText(ed.sum, 190, rowY + 18)
+                    // 3 Blank Arrow Score Boxes (Empty ready for pen entry)
+                    drawRoundedRect(72, rowY + 4, 24, 21, 4, '#FFFFFF', '#CBD5E1', 0.8)
+                    drawRoundedRect(102, rowY + 4, 24, 21, 4, '#FFFFFF', '#CBD5E1', 0.8)
+                    drawRoundedRect(132, rowY + 4, 24, 21, 4, '#FFFFFF', '#CBD5E1', 0.8)
 
-                    ctx.fillStyle = '#0F172A'
-                    ctx.font = '800 11px "Bricolage Grotesque", sans-serif'
-                    ctx.fillText(ed.total, 238, rowY + 18)
-
-                    ctx.fillStyle = '#059669'
-                    ctx.font = '700 10px "NovaText", sans-serif'
-                    ctx.fillText(ed.tens, 286, rowY + 18)
+                    // Sum, Total, 10+X Blank Boxes
+                    drawRoundedRect(182, rowY + 4, 24, 21, 4, '#FFFFFF', '#CBD5E1', 0.8)
+                    drawRoundedRect(226, rowY + 4, 24, 21, 4, '#FFFFFF', '#CBD5E1', 0.8)
+                    drawRoundedRect(270, rowY + 4, 24, 21, 4, '#FFFFFF', '#CBD5E1', 0.8)
                 })
 
-                // Total Summary Row inside Table
-                const sumRowY = tblY + 220
-                drawRoundedRect(28, sumRowY, sheetW - 24, 34, 4, '#0F172A')
+                // Total Summary Row inside Table (Blank Template)
+                const sumRowY = tblY + 228
+                drawRoundedRect(28, sumRowY, sheetW - 24, 38, 4, '#0F172A')
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#D9FF00'
-                ctx.font = '700 10.5px "Bricolage Grotesque", sans-serif'
-                ctx.fillText('Grand Total (72 Arrows):', 36, sumRowY + 21)
+                ctx.font = '700 11px "Bricolage Grotesque", sans-serif'
+                ctx.fillText('Grand Total (72 Arrows):', 36, sumRowY + 23)
 
-                ctx.textAlign = 'right'
-                ctx.fillStyle = '#D9FF00'
-                ctx.font = '800 14px "Bricolage Grotesque", sans-serif'
-                ctx.fillText('684 pts · 38 10s', 16 + sheetW - 20, sumRowY + 22)
+                // Blank Total and 10+X Score Holders
+                drawRoundedRect(16 + sheetW - 138, sumRowY + 7, 58, 24, 4, '#1E293B', '#D9FF00', 0.8)
+                ctx.fillStyle = '#94A3B8'
+                ctx.textAlign = 'center'
+                ctx.font = '600 9px "NovaText", sans-serif'
+                ctx.fillText('Score: ___', 16 + sheetW - 109, sumRowY + 22)
 
-                // Signatures & Physical Scorekeeper Verification
-                const sigBoxY = sheetY + 372
-                drawRoundedRect(24, sigBoxY, sheetW - 16, 76, 6, '#F8FAFC', '#E2E8F0', 0.8)
+                drawRoundedRect(16 + sheetW - 74, sumRowY + 7, 54, 24, 4, '#1E293B', '#D9FF00', 0.8)
+                ctx.fillStyle = '#94A3B8'
+                ctx.fillText('10+X: __', 16 + sheetW - 47, sumRowY + 22)
 
-                // Archer Signature
+                // Signatures & Physical Scorekeeper Verification (Clean & Spacious)
+                const sigBoxY = sheetY + 380
+                drawRoundedRect(24, sigBoxY, sheetW - 16, 134, 6, '#F8FAFC', '#E2E8F0', 0.8)
+
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#64748B'
-                ctx.font = '600 8.5px "NovaText", sans-serif'
-                ctx.fillText('Archer Signature:', 34, sigBoxY + 16)
+                ctx.font = '700 8.5px "NovaText", sans-serif'
+                ctx.fillText('PHYSICAL VERIFICATION & SIGN-OFF', 34, sigBoxY + 16)
 
-                ctx.strokeStyle = '#1E3A8A'
-                ctx.lineWidth = 1.4
-                ctx.beginPath()
-                ctx.moveTo(34, sigBoxY + 38)
-                ctx.bezierCurveTo(46, sigBoxY + 22, 58, sigBoxY + 48, 76, sigBoxY + 28)
-                ctx.bezierCurveTo(86, sigBoxY + 20, 96, sigBoxY + 40, 114, sigBoxY + 32)
-                ctx.stroke()
+                // Archer Signature Field
+                ctx.fillStyle = '#475569'
+                ctx.font = '600 8.5px "NovaText", sans-serif'
+                ctx.fillText('Archer Signature:', 34, sigBoxY + 34)
+
+                // Blank Signature Underline
+                drawRoundedRect(34, sigBoxY + 54, 115, 1, 0, '#94A3B8')
 
                 ctx.fillStyle = '#0F172A'
-                ctx.font = '700 9px "NovaText", sans-serif'
-                ctx.fillText('Arif Dwi Pangestu', 34, sigBoxY + 60)
+                ctx.font = '600 9px "NovaText", sans-serif'
+                ctx.fillText('Arif Dwi Pangestu', 34, sigBoxY + 68)
 
-                // Scorekeeper Signature
-                const skX = 176
-                ctx.fillStyle = '#64748B'
+                // Scorekeeper Signature Field
+                const skX = 172
+                ctx.fillStyle = '#475569'
                 ctx.font = '600 8.5px "NovaText", sans-serif'
-                ctx.fillText('Scorekeeper Signature:', skX, sigBoxY + 16)
+                ctx.fillText('Scorekeeper Signature:', skX, sigBoxY + 34)
 
-                ctx.strokeStyle = '#1E3A8A'
-                ctx.lineWidth = 1.4
-                ctx.beginPath()
-                ctx.moveTo(skX, sigBoxY + 36)
-                ctx.bezierCurveTo(skX + 14, sigBoxY + 20, skX + 26, sigBoxY + 46, skX + 44, sigBoxY + 26)
-                ctx.bezierCurveTo(skX + 54, sigBoxY + 18, skX + 66, sigBoxY + 38, skX + 80, sigBoxY + 30)
-                ctx.stroke()
+                // Blank Signature Underline
+                drawRoundedRect(skX, sigBoxY + 54, 115, 1, 0, '#94A3B8')
 
                 ctx.fillStyle = '#0F172A'
-                ctx.font = '700 9px "NovaText", sans-serif'
-                ctx.fillText('Drs. Suryanto, M.Si.', skX, sigBoxY + 60)
+                ctx.font = '600 9px "NovaText", sans-serif'
+                ctx.fillText('Official Judge / Scorekeeper', skX, sigBoxY + 68)
 
-                // Print-Ready Verification Seal
-                const stampY = sheetY + 456
-                drawRoundedRect(24, stampY, sheetW - 16, 56, 6, '#0F172A')
-                drawTargetFace(44, stampY + 28, 11)
+                // Official World Archery Standard Notice (Replaces the scorecard audit banner)
+                drawRoundedRect(32, sigBoxY + 84, sheetW - 32, 38, 4, '#FFFFFF', '#E2E8F0', 0.8)
+                drawTargetFace(46, sigBoxY + 103, 8)
 
                 ctx.textAlign = 'left'
-                ctx.fillStyle = '#D9FF00'
-                ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText('Physical Scorecard Audit & WA Compliant', 66, stampY + 24)
+                ctx.fillStyle = '#0F172A'
+                ctx.font = '700 9.5px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText('Official World Archery Scoresheet Template', 60, sigBoxY + 98)
 
-                ctx.fillStyle = '#FFFFFF'
-                ctx.font = '500 8.5px "NovaText", sans-serif'
-                ctx.fillText('Verified by Scorekeeper · Ready for Instant PDF Export', 66, stampY + 42)
+                ctx.fillStyle = '#64748B'
+                ctx.font = '500 8px "NovaText", sans-serif'
+                ctx.fillText('Physical scorecard signed & certified after end 6', 60, sigBoxY + 112)
             }
 
             // Bottom CTA Button
