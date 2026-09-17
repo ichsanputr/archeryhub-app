@@ -652,7 +652,7 @@ onMounted(async () => {
             ctx.fillStyle = '#0F172A'
             ctx.textAlign = 'center'
             ctx.font = '700 10.5px "NovaText", sans-serif'
-            ctx.fillText('ID · EN', screenX + screenW - 46, appBarY + 27)
+            ctx.fillText('EN · ID', screenX + screenW - 46, appBarY + 27)
 
             // Hero Icon Box with Lock
             const heroIconY = contentY + 16
@@ -663,13 +663,13 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 21px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Kode Akses', screenX + 20, heroIconY + 76)
-            ctx.fillText('Scorekeeper.', screenX + 20, heroIconY + 100)
+            ctx.fillText('Scorekeeper', screenX + 20, heroIconY + 76)
+            ctx.fillText('Access Code.', screenX + 20, heroIconY + 100)
 
             ctx.fillStyle = '#64748B'
             ctx.font = '500 11px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Masukkan 5 karakter kode personal (huruf & angka)', screenX + 20, heroIconY + 124)
-            ctx.fillText('yang diberikan oleh panitia untuk scoring.', screenX + 20, heroIconY + 140)
+            ctx.fillText('Enter your 5-character personal access code (letters & numbers)', screenX + 20, heroIconY + 124)
+            ctx.fillText('provided by the tournament committee for live scoring.', screenX + 20, heroIconY + 140)
 
             // 5 Alphanumeric OTP Code Boxes
             const otpY = heroIconY + 164
@@ -702,12 +702,12 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
             ctx.font = '500 11px "NovaText", sans-serif'
-            ctx.fillText('Belum punya kode?', screenX + 20, helpY)
+            ctx.fillText("Don't have an access code?", screenX + 20, helpY)
 
             ctx.textAlign = 'right'
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 11px "NovaText", sans-serif'
-            ctx.fillText('Minta ke Panitia EO', screenX + screenW - 20, helpY)
+            ctx.fillText('Contact Event Desk', screenX + screenW - 20, helpY)
 
             // Notice Card
             const noticeY = helpY + 18
@@ -716,8 +716,8 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#475569'
             ctx.font = '500 9.5px "NovaText", sans-serif'
-            ctx.fillText('Kode juri berlaku selama sesi turnamen aktif.', screenX + 54, noticeY + 24)
-            ctx.fillText('Jaga kerahasiaan lembar skor peserta lomba.', screenX + 54, noticeY + 38)
+            ctx.fillText('Judge credentials remain active throughout tournament sessions.', screenX + 54, noticeY + 24)
+            ctx.fillText('Maintain confidentiality of participant scoring sheets.', screenX + 54, noticeY + 38)
 
             // Bottom CTA Button
             const btnLoginY = screenY + screenH - 74
@@ -730,7 +730,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isLoginAuthenticated ? '#DCFB4A' : '#FFFFFF'
             ctx.font = '700 14px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isLoginAuthenticated ? 'Memverifikasi...' : 'Aktifkan Mode Scoring', 540, btnLoginY + 32)
+            ctx.fillText(isLoginAuthenticated ? 'Verifying Access...' : 'Activate Scoring Mode', 540, btnLoginY + 32)
             ctx.restore()
         }
         // ══════════════════════════════════════════════════════════
@@ -741,18 +741,18 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Penilaian Lapangan', screenX + 20, appBarY + 20)
+            ctx.fillText('Field Scoring', screenX + 20, appBarY + 20)
 
             ctx.fillStyle = '#64748B'
             ctx.font = '500 11px "NovaText", sans-serif'
-            ctx.fillText('Mode Juri Scorekeeper', screenX + 20, appBarY + 36)
+            ctx.fillText('Scorekeeper Judge Mode', screenX + 20, appBarY + 36)
 
             // Exit Button
             drawRoundedRect(screenX + screenW - 84, appBarY + 12, 64, 28, 10, '#FEE2E2', 'rgba(239, 68, 68, 0.3)', 1)
             ctx.textAlign = 'center'
             ctx.fillStyle = '#EF4444'
             ctx.font = '700 10.5px "NovaText", sans-serif'
-            ctx.fillText('Keluar', screenX + screenW - 52, appBarY + 30)
+            ctx.fillText('Sign Out', screenX + screenW - 52, appBarY + 30)
 
             // Hero Profile Card (Navy)
             const profY = contentY + 4
@@ -787,15 +787,15 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = 'rgba(255, 255, 255, 0.85)'
             ctx.font = '500 9.5px "NovaText", sans-serif'
-            ctx.fillText('Siap mencatat skor kualifikasi & eliminasi.', screenX + 60, profY + 93)
+            ctx.fillText('Ready to record qualification & elimination scores.', screenX + 60, profY + 93)
 
             // Section: Scoring Actions
             const secY = profY + 142
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 15px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Aksi Penilaian', screenX + 20, secY)
+            ctx.fillText('Scoring Actions', screenX + 20, secY)
 
-            // 1. Primary Action: Scan Barcode Bantalan (Solid Lime Card)
+            // 1. Primary Action: Scan Target QR Code (Solid Lime Card)
             const act1Y = secY + 12
             drawRoundedRect(screenX + 18, act1Y, screenW - 36, 78, 16, '#DCFB4A', isScanSelected ? '#0F172A' : null, isScanSelected ? 2 : 0)
 
@@ -805,13 +805,13 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 14px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Scan Barcode Bantalan', screenX + 88, act1Y + 36)
+            ctx.fillText('Scan Target QR Code', screenX + 88, act1Y + 36)
 
             ctx.fillStyle = '#334155'
             ctx.font = '500 10px "NovaText", sans-serif'
-            ctx.fillText('Pindai QR code pada target scoresheet', screenX + 88, act1Y + 52)
+            ctx.fillText('Scan QR code printed on target scoresheet', screenX + 88, act1Y + 52)
 
-            // 2. Secondary Action: Input Kode Manual
+            // 2. Secondary Action: Manual Code Entry
             const act2Y = act1Y + 90
             drawRoundedRect(screenX + 18, act2Y, screenW - 36, 74, 16, '#FFFFFF', '#E2E8F0', 1)
 
@@ -820,13 +820,13 @@ onMounted(async () => {
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 14px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Input Kode Manual', screenX + 88, act2Y + 34)
+            ctx.fillText('Manual Code Entry', screenX + 88, act2Y + 34)
 
             ctx.fillStyle = '#64748B'
             ctx.font = '500 10px "NovaText", sans-serif'
-            ctx.fillText('Ketik nomor bantalan atau scoresheet ID', screenX + 88, act2Y + 50)
+            ctx.fillText('Enter target lane number or scoresheet ID', screenX + 88, act2Y + 50)
 
-            // 3. Tertiary Action: Riwayat Penilaian
+            // 3. Tertiary Action: Scoring History
             const act3Y = act2Y + 86
             drawRoundedRect(screenX + 18, act3Y, screenW - 36, 74, 16, '#FFFFFF', '#E2E8F0', 1)
 
@@ -835,11 +835,11 @@ onMounted(async () => {
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 14px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Riwayat Penilaian', screenX + 88, act3Y + 34)
+            ctx.fillText('Scoring History', screenX + 88, act3Y + 34)
 
             ctx.fillStyle = '#64748B'
             ctx.font = '500 10px "NovaText", sans-serif'
-            ctx.fillText('Lihat scoresheet yang telah dicatat', screenX + 88, act3Y + 50)
+            ctx.fillText('Review and verify recorded scoresheets', screenX + 88, act3Y + 50)
         }
         // ══════════════════════════════════════════════════════════
         // SCENE 3: SCORESHEET QR SCANNER VIEWFINDER
@@ -852,11 +852,11 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#FFFFFF'
             ctx.font = '800 17px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Scan Barcode Bantalan', screenX + 68, appBarY + 22)
+            ctx.fillText('Scan Target QR Code', screenX + 68, appBarY + 22)
 
             ctx.fillStyle = '#94A3B8'
             ctx.font = '500 10.5px "NovaText", sans-serif'
-            ctx.fillText('Arahkan kamera ke QR code scoresheet', screenX + 68, appBarY + 38)
+            ctx.fillText('Point camera at target scoresheet QR code', screenX + 68, appBarY + 38)
 
             // Camera Viewfinder Box
             const vSize = 220
@@ -917,22 +917,22 @@ onMounted(async () => {
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#065F46'
                 ctx.font = '800 14px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText('Scoresheet Terverifikasi: Bantalan 04', screenX + 70, cardY + 34)
+                ctx.fillText('Scoresheet Verified: Target 04', screenX + 70, cardY + 34)
 
                 ctx.fillStyle = '#047857'
                 ctx.font = '600 10.5px "NovaText", sans-serif'
-                ctx.fillText('Recurve Men Open 70m · 3 Atlet Terdaftar', screenX + 70, cardY + 52)
-                ctx.fillText('Membuka lembar penilaian...', screenX + 70, cardY + 68)
+                ctx.fillText('Recurve Men Open 70m · 3 Registered Athletes', screenX + 70, cardY + 52)
+                ctx.fillText('Opening scoring sheet...', screenX + 70, cardY + 68)
             } else {
                 drawRoundedRect(screenX + 18, cardY, screenW - 36, 68, 14, 'rgba(255, 255, 255, 0.06)', '#334155', 1)
                 ctx.textAlign = 'center'
                 ctx.fillStyle = '#DCFB4A'
                 ctx.font = '700 12px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText('Memindai QR Code Scoresheet...', screenX + screenW / 2, cardY + 30)
+                ctx.fillText('Scanning Scoresheet QR Code...', screenX + screenW / 2, cardY + 30)
 
                 ctx.fillStyle = '#94A3B8'
                 ctx.font = '500 10px "NovaText", sans-serif'
-                ctx.fillText('Posisikan QR code dalam bingkai pemindai', screenX + screenW / 2, cardY + 48)
+                ctx.fillText('Position QR code inside scanner frame', screenX + screenW / 2, cardY + 48)
             }
         }
         // ══════════════════════════════════════════════════════════
@@ -946,7 +946,7 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 17px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Scoresheet Bantalan 04', screenX + 68, appBarY + 20)
+            ctx.fillText('Target 04 Scoresheet', screenX + 68, appBarY + 20)
 
             ctx.fillStyle = '#64748B'
             ctx.font = '500 11px "NovaText", sans-serif'
@@ -970,7 +970,7 @@ onMounted(async () => {
 
             ctx.fillStyle = '#64748B'
             ctx.font = '500 10px "NovaText", sans-serif'
-            ctx.fillText('Recurve Men Open 70m · 6 Ends × 6 Panah', screenX + 88, scCardY + 48)
+            ctx.fillText('Recurve Men Open 70m · 6 Ends × 6 Arrows', screenX + 88, scCardY + 48)
 
             // Badges row
             drawRoundedRect(screenX + 88, scCardY + 54, 42, 18, 4, '#F1F5F9')
@@ -979,20 +979,20 @@ onMounted(async () => {
             ctx.font = '700 8.5px "NovaText", sans-serif'
             ctx.fillText('70m', screenX + 109, scCardY + 66)
 
-            drawRoundedRect(screenX + 134, scCardY + 54, 82, 18, 4, '#F1F5F9')
-            ctx.fillText('6 Ends × 6 Panah', screenX + 175, scCardY + 66)
+            drawRoundedRect(screenX + 134, scCardY + 54, 94, 18, 4, '#F1F5F9')
+            ctx.fillText('6 Ends × 6 Arrows', screenX + 181, scCardY + 66)
 
             // Section Header
             const athSecY = scCardY + 106
             ctx.textAlign = 'left'
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 15px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Atlet (3)', screenX + 20, athSecY)
+            ctx.fillText('Athletes (3)', screenX + 20, athSecY)
 
             ctx.textAlign = 'right'
             ctx.fillStyle = '#64748B'
             ctx.font = '500 11px "NovaText", sans-serif'
-            ctx.fillText('Pilih atlet untuk mulai scoring', screenX + screenW - 20, athSecY)
+            ctx.fillText('Select athlete to begin scoring', screenX + screenW - 20, athSecY)
 
             const archers = [
                 { pos: '4A', name: 'Arif Dwi Pangestu', club: 'Fast Archery Club · Recurve', status: 'End 3/6 · 118 pts', score: '118 pts', isAct: true, init: 'AD' },
@@ -1045,7 +1045,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 14px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Mulai Scoring', screenX + screenW / 2 + 8, btnDockY + 32)
+            ctx.fillText('Start Scoring', screenX + screenW / 2 + 8, btnDockY + 32)
         }
         // ══════════════════════════════════════════════════════════
         // SCENE 5: WA SCOREPAD KEYPAD & REAL-TIME INPUT (ManualScoreEntryScreen)
@@ -1243,7 +1243,7 @@ onMounted(async () => {
             ctx.fillText('0', screenX + 30 + metW * 2.5, metY + 22)
             ctx.fillStyle = '#64748B'
             ctx.font = '700 8.5px "NovaText", sans-serif'
-            ctx.fillText('MELESET', screenX + 30 + metW * 2.5, metY + 36)
+            ctx.fillText('MISS', screenX + 30 + metW * 2.5, metY + 36)
 
             // Sticky Bottom Target Numpad (SkNumpad)
             const numpadY = screenY + screenH - 248
@@ -1256,19 +1256,19 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
             ctx.font = '700 11.5px "NovaText", sans-serif'
-            const panahNum = scoreSlot5Filled ? (scoreSlot6Filled ? 6 : 6) : 5
-            ctx.fillText(`End 3 · Panah ${panahNum} dari 6`, screenX + 20, numpadY + 26)
+            const arrowNum = scoreSlot5Filled ? (scoreSlot6Filled ? 6 : 6) : 5
+            ctx.fillText(`End 3 · Arrow ${arrowNum} of 6`, screenX + 20, numpadY + 26)
 
             drawRoundedRect(screenX + 160, numpadY + 14, 52, 18, 6, '#0F172A')
             ctx.fillStyle = '#DCFB4A'
             ctx.textAlign = 'center'
             ctx.font = '800 9.5px "Bricolage Grotesque", sans-serif'
-            ctx.fillText(`Slot ${panahNum}`, screenX + 186, numpadY + 26)
+            ctx.fillText(`Slot ${arrowNum}`, screenX + 186, numpadY + 26)
 
             ctx.textAlign = 'right'
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 11.5px "NovaText", sans-serif'
-            ctx.fillText('Rekap →', screenX + screenW - 20, numpadY + 26)
+            ctx.fillText('Review →', screenX + screenW - 20, numpadY + 26)
 
             // 3x4 Clean Keypad Grid
             const keyStartY = numpadY + 38
@@ -1326,7 +1326,7 @@ onMounted(async () => {
                 })
             })
 
-            // Action Buttons (Undo & Rekap End)
+            // Action Buttons (Undo & Review End)
             const actBtnY = keyStartY + 3 * (keyH + keyGap) + 4
             const undoW = (screenW - 42) * 0.35
             const nextW = (screenW - 42) * 0.65
@@ -1349,7 +1349,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 14px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(scoreSlot6Filled ? 'Rekap End 3 →' : 'Simpan End', screenX + 24 + undoW + nextW / 2, actBtnY + 28)
+            ctx.fillText(scoreSlot6Filled ? 'Review End 3 →' : 'Save End', screenX + 24 + undoW + nextW / 2, actBtnY + 28)
             ctx.restore()
         }
 
