@@ -1,6 +1,9 @@
-<template>
+const fs = require('fs');
+const path = require('path');
+
+const code = `<template>
     <div class="stage-wrapper" id="stageWrapper" @dblclick="togglePause">
-        <canvas ref="canvasRef" width="1080" height="1080" class="stage-canvas" :style="{ transform: `scale(${scale})` }"></canvas>
+        <canvas ref="canvasRef" width="1080" height="1080" class="stage-canvas" :style="{ transform: \`scale(\${scale})\` }"></canvas>
     </div>
 </template>
 
@@ -53,6 +56,11 @@ onMounted(async () => {
     const canvas = canvasRef.value
     if (!canvas) return
     const ctx = canvas.getContext('2d')
+
+    const bannerImage = new Image()
+    bannerImage.src = '/hero-homepage.jpeg'
+    let isBannerLoaded = false
+    bannerImage.onload = () => { isBannerLoaded = true }
 
     function drawRoundedRect(x, y, w, h, r = 16, fill = null, stroke = null, lineWidth = 1) {
         ctx.beginPath()
@@ -126,19 +134,19 @@ onMounted(async () => {
 
         // 2. Timeline States
         let sceneIndex = 0
+        let bottomNavActive = 0 // 0: Events, 1: Passes, 2: Scores
+        let sheetSlideProgress = 0
         let camZoom = 1.00
         let camPanY = 0
 
-        let isRosterSelected = false
-        let btnRosterScale = 1.0
-        let isEndSubmitted = false
-        let btnKeypadScale = 1.0
-        let isStandingsAudited = false
-        let btnAuditedScale = 1.0
-        let isJudgeLocked = false
-        let btnLockScale = 1.0
-
-        let activeKeyTap = -1 // 0: X, 1: 10, 2: 9
+        let isRegistered = false
+        let btnRegScale = 1.0
+        let isPaid = false
+        let btnPayScale = 1.0
+        let isCheckedIn = false
+        let btnCheckScale = 1.0
+        let isDownloaded = false
+        let btnDlScale = 1.0
 
         let cursorVisible = false
         let cursorX = 0, cursorY = 0
@@ -147,6 +155,7 @@ onMounted(async () => {
 
         if (elapsed < 4.2) {
             sceneIndex = 0
+            bottomNavActive = 0
             if (elapsed < 1.4) {
                 const zt = easeInOutCubic(elapsed / 1.4)
                 camZoom = 1.00 + 0.45 * zt
@@ -168,10 +177,10 @@ onMounted(async () => {
                 }
 
                 if (elapsed >= 2.4) {
-                    isRosterSelected = true
+                    isRegistered = true
                     if (elapsed >= 2.4 && elapsed <= 2.85) {
                         cursorPressed = true
-                        btnRosterScale = 0.94
+                        btnRegScale = 0.94
                         tapRipple = (elapsed - 2.4) / 0.45
                         tapX = 540; tapY = targetBtnY
                     }
@@ -179,8 +188,15 @@ onMounted(async () => {
             }
         } else if (elapsed < 8.4) {
             sceneIndex = 1
-            isRosterSelected = true
+            isRegistered = true
+            bottomNavActive = 0
             const step2Elapsed = elapsed - 4.2
+
+            if (step2Elapsed < 0.6) {
+                sheetSlideProgress = easeOutCubic(step2Elapsed / 0.6)
+            } else {
+                sheetSlideProgress = 1.0
+            }
 
             if (step2Elapsed < 0.8) {
                 const transT = easeInOutCubic(step2Elapsed / 0.8)
@@ -208,10 +224,10 @@ onMounted(async () => {
                 }
 
                 if (step2Elapsed >= 2.5) {
-                    isEndSubmitted = true
+                    isPaid = true
                     if (step2Elapsed >= 2.5 && step2Elapsed <= 2.95) {
                         cursorPressed = true
-                        btnKeypadScale = 0.94
+                        btnPayScale = 0.94
                         tapRipple = (step2Elapsed - 2.5) / 0.45
                         tapX = 540; tapY = targetBtnY
                     }
@@ -219,8 +235,9 @@ onMounted(async () => {
             }
         } else if (elapsed < 12.6) {
             sceneIndex = 2
-            isRosterSelected = true
-            isEndSubmitted = true
+            isRegistered = true
+            isPaid = true
+            bottomNavActive = 1 // My Passes tab
             const step3Elapsed = elapsed - 8.4
 
             if (step3Elapsed < 0.8) {
@@ -249,10 +266,10 @@ onMounted(async () => {
                 }
 
                 if (step3Elapsed >= 2.8) {
-                    isStandingsAudited = true
+                    isCheckedIn = true
                     if (step3Elapsed >= 2.8 && step3Elapsed <= 3.25) {
                         cursorPressed = true
-                        btnAuditedScale = 0.94
+                        btnCheckScale = 0.94
                         tapRipple = (step3Elapsed - 2.8) / 0.45
                         tapX = 540; tapY = targetBtnY
                     }
@@ -260,9 +277,10 @@ onMounted(async () => {
             }
         } else if (elapsed < 16.0) {
             sceneIndex = 3
-            isRosterSelected = true
-            isEndSubmitted = true
-            isStandingsAudited = true
+            isRegistered = true
+            isPaid = true
+            isCheckedIn = true
+            bottomNavActive = 2 // Scores tab
             const step4Elapsed = elapsed - 12.6
 
             if (step4Elapsed < 0.8) {
@@ -290,10 +308,10 @@ onMounted(async () => {
                 }
 
                 if (step4Elapsed >= 2.4) {
-                    isJudgeLocked = true
+                    isDownloaded = true
                     if (step4Elapsed >= 2.4 && step4Elapsed <= 2.85) {
                         cursorPressed = true
-                        btnLockScale = 0.94
+                        btnDlScale = 0.94
                         tapRipple = (step4Elapsed - 2.4) / 0.45
                         tapX = 540; tapY = targetBtnY
                     }
@@ -301,10 +319,11 @@ onMounted(async () => {
             }
         } else {
             sceneIndex = 3
-            isRosterSelected = true
-            isEndSubmitted = true
-            isStandingsAudited = true
-            isJudgeLocked = true
+            isRegistered = true
+            isPaid = true
+            isCheckedIn = true
+            isDownloaded = true
+            bottomNavActive = 0
             const finElapsed = elapsed - 16.0
             const finT = easeInOutCubic(finElapsed / 1.0)
             camZoom = 1.46 - (1.46 - 1.00) * finT
@@ -349,22 +368,19 @@ onMounted(async () => {
         ctx.fillStyle = '#F8FAFC'
         ctx.fillRect(screenX, screenY, screenW, screenH)
 
-        // Top Tactical Header
-        const headY = screenY + 48
-        drawRoundedRect(screenX + 16, headY, screenW - 32, 36, 8, '#0F172A')
+        // Top App Header
+        const appHeadY = screenY + 46
         ctx.textAlign = 'left'
-        ctx.fillStyle = '#D9FF00'
-        ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-        ctx.fillText('🎯 Target 12 | Lane 12A', screenX + 28, headY + 22)
+        ctx.fillStyle = '#64748B'
+        ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
+        ctx.fillText('Archer Mobile Experience', screenX + 20, appHeadY)
 
-        drawRoundedRect(screenX + screenW - 96, headY + 6, 68, 24, 6, '#1E293B')
-        ctx.fillStyle = '#FFFFFF'
-        ctx.textAlign = 'center'
-        ctx.font = '600 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-        ctx.fillText('End 1 / 12', screenX + screenW - 62, headY + 22)
+        ctx.fillStyle = '#0F172A'
+        ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
+        ctx.fillText(bottomNavActive === 1 ? 'Digital Athlete Pass' : (bottomNavActive === 2 ? 'Live Scorecard & Rank' : 'Discover Tournaments'), screenX + 20, appHeadY + 22)
 
-        const contentY = headY + 46
-        const contentH = screenH - (contentY - screenY) - 20
+        const contentY = appHeadY + 34
+        const contentH = screenH - 140
 
         ctx.save()
         ctx.beginPath()
@@ -377,274 +393,297 @@ onMounted(async () => {
         const sc1BtnCX = 20 + sc1BtnW / 2
         const sc1BtnCY = sc1BtnY + sc1BtnH / 2
 
-        // SCENE 1: TARGET 12 ROSTER
-        if (sceneIndex === 0) {
+        // SCENE 1 & 2 BASE: EVENT DISCOVERY
+        if (sceneIndex === 0 || sceneIndex === 1) {
             ctx.save()
             ctx.translate(screenX, contentY)
-            ctx.textAlign = 'left'
-            ctx.fillStyle = '#64748B'
-            ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Scorekeeper Field App', 20, 16)
 
+            const sc1CardW = screenW - 40
+            const sc1CardY = 0
+            const sc1CardH = 262
+            drawRoundedRect(20, sc1CardY, sc1CardW, sc1CardH, 14, '#FFFFFF', '#E2E8F0', 1.2)
+
+            const bannerH = 86
+            ctx.save()
+            ctx.beginPath()
+            if (typeof ctx.roundRect === 'function') {
+                ctx.roundRect(20, sc1CardY, sc1CardW, bannerH, [14, 14, 0, 0])
+            } else {
+                ctx.rect(20, sc1CardY, sc1CardW, bannerH)
+            }
+            ctx.clip()
+
+            if (isBannerLoaded && bannerImage.complete) {
+                ctx.drawImage(bannerImage, 20, sc1CardY, sc1CardW, bannerH)
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.42)'
+                ctx.fillRect(20, sc1CardY, sc1CardW, bannerH)
+            } else {
+                ctx.fillStyle = '#1E293B'
+                ctx.fillRect(20, sc1CardY, sc1CardW, bannerH)
+            }
+
+            drawRoundedRect(30, sc1CardY + 12, 70, 20, 6, '#D9FF00')
             ctx.fillStyle = '#0F172A'
-            ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Target 12 Roster', 20, 38)
+            ctx.font = '700 9.5px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('OPEN ENTRY', 36, sc1CardY + 26)
+            ctx.restore()
 
-            const rHeroW = screenW - 40
-            const lanes = [
-                { lane: '12A', name: 'Arif Dwi Pangestu', club: 'Fast Archery Club', active: true },
-                { lane: '12B', name: 'Riau Ega Agatha', club: 'Eagle Archery Club', active: false },
-                { lane: '12C', name: 'Bagas Prastyo', club: 'Focus Target Team', active: false },
-                { lane: '12D', name: 'Hendra Wijaya', club: 'Alpha Archery Team', active: false }
-            ]
+            const cardTextY = sc1CardY + bannerH + 16
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('National Archery 2026', 32, cardTextY)
 
-            lanes.forEach((l, idx) => {
-                const ly = 52 + idx * 56
-                drawRoundedRect(20, ly, rHeroW, 48, 12, '#FFFFFF', l.active ? '#0F172A' : '#E2E8F0', l.active ? 1.5 : 1)
+            ctx.fillStyle = '#64748B'
+            ctx.font = '500 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Senayan Stadium · 24-26 Oct', 32, cardTextY + 18)
 
-                drawRoundedRect(28, ly + 10, 34, 28, 6, l.active ? '#D9FF00' : '#F1F5F9')
-                ctx.fillStyle = '#0F172A'
-                ctx.textAlign = 'center'
-                ctx.font = '700 11.5px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(l.lane, 45, ly + 28)
+            drawRoundedRect(32, cardTextY + 30, sc1CardW - 24, 46, 10, '#F8FAFC', '#E2E8F0', 1)
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Recurve Men Open 70m', 44, cardTextY + 48)
+
+            ctx.fillStyle = '#059669'
+            ctx.font = '700 11px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Rp 350.000', 44, cardTextY + 66)
+
+            drawRoundedRect(32 + sc1CardW - 110, cardTextY + 38, 76, 22, 6, '#F1F5F9')
+            ctx.fillStyle = '#334155'
+            ctx.textAlign = 'center'
+            ctx.font = '600 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('42 Slots Left', 32 + sc1CardW - 72, cardTextY + 53)
+
+            ctx.save()
+            ctx.translate(sc1BtnCX, sc1BtnCY)
+            ctx.scale(btnRegScale, btnRegScale)
+            ctx.translate(-sc1BtnCX, -sc1BtnCY)
+
+            drawRoundedRect(20, sc1BtnY, sc1BtnW, sc1BtnH, 12, '#0F172A')
+            ctx.textAlign = 'center'
+            ctx.fillStyle = isRegistered ? '#D9FF00' : '#FFFFFF'
+            ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText(isRegistered ? '✔ Registration Confirmed' : 'Register for Tournament', sc1BtnCX, sc1BtnY + 28)
+            ctx.restore()
+            ctx.restore()
+
+            // SCENE 2 OVERLAY: SLIDE-UP BOTTOM SHEET (QRIS CHECKOUT)
+            if (sceneIndex === 1 && sheetSlideProgress > 0) {
+                const sheetY = contentY + (1 - sheetSlideProgress) * 380
+                ctx.fillStyle = \`rgba(15, 23, 42, \${0.45 * sheetSlideProgress})\`
+                ctx.fillRect(screenX, contentY, screenW, contentH)
+
+                // White Sheet
+                drawRoundedRect(screenX, sheetY + 30, screenW, 360, 24, '#FFFFFF', '#E2E8F0', 1.5)
+
+                // Handle bar
+                drawRoundedRect(screenX + screenW / 2 - 20, sheetY + 42, 40, 4, 2, '#CBD5E1')
 
                 ctx.textAlign = 'left'
-                ctx.fillStyle = '#0F172A'
-                ctx.font = '700 12px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(l.name, 72, ly + 21)
-
                 ctx.fillStyle = '#64748B'
-                ctx.font = '500 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(l.club, 72, ly + 36)
+                ctx.font = '600 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+                ctx.fillText('Instant Checkout', screenX + 24, sheetY + 66)
 
-                drawRoundedRect(20 + rHeroW - 56, ly + 14, 46, 20, 5, l.active ? '#0F172A' : '#F8FAFC')
-                ctx.fillStyle = l.active ? '#D9FF00' : '#94A3B8'
-                ctx.textAlign = 'center'
-                ctx.font = '600 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(l.active ? 'Active' : 'Pending', 20 + rHeroW - 33, ly + 27)
-            })
-
-            ctx.save()
-            ctx.translate(sc1BtnCX, sc1BtnCY)
-            ctx.scale(btnRosterScale, btnRosterScale)
-            ctx.translate(-sc1BtnCX, -sc1BtnCY)
-
-            drawRoundedRect(20, sc1BtnY, sc1BtnW, sc1BtnH, 12, '#0F172A')
-            ctx.textAlign = 'center'
-            ctx.fillStyle = isRosterSelected ? '#D9FF00' : '#FFFFFF'
-            ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isRosterSelected ? '✔ Target 12A Selected' : 'Input Scores for End 1', sc1BtnCX, sc1BtnY + 28)
-            ctx.restore()
-            ctx.restore()
-        }
-        // SCENE 2: ERGONOMIC 8-KEYPAD ENTRY
-        else if (sceneIndex === 1) {
-            ctx.save()
-            ctx.translate(screenX, contentY)
-            ctx.textAlign = 'left'
-            ctx.fillStyle = '#64748B'
-            ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Field Scoring Entry', 20, 16)
-
-            ctx.fillStyle = '#0F172A'
-            ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Target 12A · End 1', 20, 38)
-
-            const kHeroW = screenW - 40
-            drawRoundedRect(20, 52, kHeroW, 252, 14, '#FFFFFF', '#E2E8F0', 1.2)
-
-            // Arrow slots
-            const arrowSlotsY = 64
-            drawRoundedRect(32, arrowSlotsY, kHeroW - 24, 52, 10, '#0F172A')
-
-            const arrows = [
-                { label: 'Arrow 1', val: 'X', fill: '#D9FF00' },
-                { label: 'Arrow 2', val: '10', fill: '#D9FF00' },
-                { label: 'Arrow 3', val: '9', fill: '#D9FF00' }
-            ]
-
-            arrows.forEach((a, idx) => {
-                const ax = 42 + idx * 56
-                drawRoundedRect(ax, arrowSlotsY + 10, 48, 32, 8, a.fill)
                 ctx.fillStyle = '#0F172A'
-                ctx.textAlign = 'center'
-                ctx.font = '800 13px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(a.val, ax + 24, arrowSlotsY + 31)
-            })
+                ctx.font = '700 16px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText('QRIS Payment Gateway', screenX + 24, sheetY + 86)
 
-            ctx.textAlign = 'right'
-            ctx.fillStyle = '#94A3B8'
-            ctx.font = '500 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('End Total', 20 + kHeroW - 20, arrowSlotsY + 24)
+                // Amount Header
+                drawRoundedRect(screenX + 20, sheetY + 98, screenW - 40, 44, 10, '#0F172A')
+                ctx.fillStyle = '#94A3B8'
+                ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
+                ctx.fillText('Total Payment', screenX + 34, sheetY + 114)
+                ctx.fillStyle = '#D9FF00'
+                ctx.font = '700 15px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText('Rp 350.000', screenX + 34, sheetY + 132)
 
-            ctx.fillStyle = '#D9FF00'
-            ctx.font = '700 15px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('29 / 30', 20 + kHeroW - 20, arrowSlotsY + 44)
+                // QR Mini box
+                const qbY = sheetY + 150
+                drawRoundedRect(screenX + 20, qbY, screenW - 40, 100, 10, '#F8FAFC', '#E2E8F0', 1)
 
-            // 8-Keypad Grid
-            const gridY = arrowSlotsY + 62
-            const keys = [
-                { k: 'X', bg: '#FEF08A', fg: '#713F12' },
-                { k: '10', bg: '#FEF08A', fg: '#713F12' },
-                { k: '9', bg: '#FEF08A', fg: '#713F12' },
-                { k: '8', bg: '#FECACA', fg: '#7F1D1D' },
-                { k: '7', bg: '#FECACA', fg: '#7F1D1D' },
-                { k: '6', bg: '#BFDBFE', fg: '#1E3A8A' },
-                { k: '5', bg: '#BFDBFE', fg: '#1E3A8A' },
-                { k: 'M', bg: '#CBD5E1', fg: '#0F172A' }
-            ]
-
-            keys.forEach((key, idx) => {
-                const row = Math.floor(idx / 4)
-                const col = idx % 4
-                const kx = 32 + col * (kHeroW - 24) / 4
-                const ky = gridY + row * 54
-                const kw = (kHeroW - 36) / 4
-
-                drawRoundedRect(kx, ky, kw, 46, 8, key.bg, '#E2E8F0', 1)
-                ctx.fillStyle = key.fg
-                ctx.textAlign = 'center'
-                ctx.font = '800 15px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(key.k, kx + kw / 2, ky + 29)
-            })
-
-            ctx.save()
-            ctx.translate(sc1BtnCX, sc1BtnCY)
-            ctx.scale(btnKeypadScale, btnKeypadScale)
-            ctx.translate(-sc1BtnCX, -sc1BtnCY)
-
-            drawRoundedRect(20, sc1BtnY, sc1BtnW, sc1BtnH, 12, '#0F172A')
-            ctx.textAlign = 'center'
-            ctx.fillStyle = isEndSubmitted ? '#D9FF00' : '#FFFFFF'
-            ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isEndSubmitted ? '✔ End 1 Synced to Cloud' : 'Submit End 1 Scores', sc1BtnCX, sc1BtnY + 28)
-            ctx.restore()
-            ctx.restore()
-        }
-        // SCENE 3: LIVE CLOUD SYNC & MINI LEADERBOARD
-        else if (sceneIndex === 2) {
-            ctx.save()
-            ctx.translate(screenX, contentY)
-            ctx.textAlign = 'left'
-            ctx.fillStyle = '#64748B'
-            ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Live Cloud Engine', 20, 16)
-
-            ctx.fillStyle = '#0F172A'
-            ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Target 12 Standings', 20, 38)
-
-            const sHeroW = screenW - 40
-            drawRoundedRect(20, 52, sHeroW, 252, 14, '#FFFFFF', '#E2E8F0', 1.2)
-
-            // Cloud Status Box
-            drawRoundedRect(34, 66, sHeroW - 28, 38, 8, '#0F172A')
-            ctx.fillStyle = '#D9FF00'
-            ctx.font = '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('● LIVE SYNC ACTIVE', 48, 86)
-            ctx.fillStyle = '#94A3B8'
-            ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Latency: 12ms · Cloud Sync Active', 48, 98)
-
-            const stRows = [
-                { rank: '1', lane: '12A Arif Dwi', score: '29 pts (1X, 10, 9)', gold: true },
-                { rank: '2', lane: '12B Riau Ega', score: '28 pts (1X, 9, 9)', gold: false },
-                { rank: '3', lane: '12C Bagas P.', score: '27 pts (9, 9, 9)', gold: false },
-                { rank: '4', lane: '12D Hendra W.', score: '26 pts (9, 9, 8)', gold: false }
-            ]
-
-            stRows.forEach((r, idx) => {
-                const ry = 114 + idx * 44
-                drawRoundedRect(34, ry, sHeroW - 28, 38, 8, '#F8FAFC', '#E2E8F0', 1)
-
-                drawRoundedRect(42, ry + 7, 24, 24, 6, r.gold ? '#D9FF00' : '#F1F5F9')
+                drawRoundedRect(screenX + 32, qbY + 12, 54, 54, 6, '#FFFFFF', '#CBD5E1', 1)
                 ctx.fillStyle = '#0F172A'
-                ctx.textAlign = 'center'
-                ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(r.rank, 54, ry + 23)
+                ctx.fillRect(screenX + 38, qbY + 18, 12, 12)
+                ctx.fillRect(screenX + 66, qbY + 18, 12, 12)
+                ctx.fillRect(screenX + 38, qbY + 46, 12, 12)
+                ctx.fillRect(screenX + 58, qbY + 36, 10, 10)
 
-                ctx.textAlign = 'left'
                 ctx.fillStyle = '#0F172A'
                 ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(r.lane, 74, ry + 16)
+                ctx.fillText('QRIS Instant Settlement', screenX + 98, qbY + 28)
 
                 ctx.fillStyle = '#64748B'
                 ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(r.score, 74, ry + 30)
-            })
+                ctx.fillText('GOPAY · OVO · BCA · Mandiri', screenX + 98, qbY + 44)
+                ctx.fillText('Expires in 14:59', screenX + 98, qbY + 58)
+
+                // Bottom CTA Button in Sheet
+                ctx.save()
+                ctx.translate(screenX + screenW / 2, sheetY + 276)
+                ctx.scale(btnPayScale, btnPayScale)
+                ctx.translate(-(screenX + screenW / 2), -(sheetY + 276))
+
+                drawRoundedRect(screenX + 20, sheetY + 258, screenW - 40, 44, 12, '#0F172A')
+                ctx.textAlign = 'center'
+                ctx.fillStyle = isPaid ? '#D9FF00' : '#FFFFFF'
+                ctx.font = '700 12px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText(isPaid ? '✔ Payment Verified & Settled' : 'Confirm & Pay with QRIS', screenX + screenW / 2, sheetY + 285)
+                ctx.restore()
+            }
+        }
+        // SCENE 3: APPLE WALLET DIGITAL ATHLETE PASS
+        else if (sceneIndex === 2) {
+            ctx.save()
+            ctx.translate(screenX, contentY)
+
+            const pHeroW = screenW - 40
+            drawRoundedRect(20, 0, pHeroW, 262, 14, '#FFFFFF', '#E2E8F0', 1.2)
+
+            // Pass Black Header
+            drawRoundedRect(34, 14, pHeroW - 28, 42, 10, '#0F172A')
+            ctx.fillStyle = '#D9FF00'
+            ctx.font = '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('ARCHERIS ATHLETE PASS', 48, 32)
+            ctx.fillStyle = '#94A3B8'
+            ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Verified Accreditation 2026', 48, 46)
+
+            const pMidY = 66
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 14px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Arif Dwi Pangestu', 36, pMidY + 14)
+
+            ctx.fillStyle = '#64748B'
+            ctx.font = '500 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Fast Archery Club · Recurve Men', 36, pMidY + 30)
+
+            drawRoundedRect(34, pMidY + 42, pHeroW - 28, 62, 10, '#F8FAFC', '#E2E8F0', 1)
+            ctx.fillStyle = '#64748B'
+            ctx.font = '600 9px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('ASSIGNED TARGET', 48, pMidY + 62)
+
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '800 22px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Target 04A', 48, pMidY + 90)
+
+            drawRoundedRect(34 + pHeroW - 98, pMidY + 52, 62, 42, 8, '#D9FF00')
+            ctx.fillStyle = '#0F172A'
+            ctx.textAlign = 'center'
+            ctx.font = '700 10px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('70 METERS', 34 + pHeroW - 67, pMidY + 70)
+            ctx.font = '600 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Session 1', 34 + pHeroW - 67, pMidY + 84)
+
+            // Barcode lines
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#CBD5E1'
+            for (let bx = 36; bx < 20 + pHeroW - 20; bx += 6) {
+                ctx.fillRect(bx, 224, 3, 16)
+            }
 
             ctx.save()
             ctx.translate(sc1BtnCX, sc1BtnCY)
-            ctx.scale(btnAuditedScale, btnAuditedScale)
+            ctx.scale(btnCheckScale, btnCheckScale)
             ctx.translate(-sc1BtnCX, -sc1BtnCY)
 
             drawRoundedRect(20, sc1BtnY, sc1BtnW, sc1BtnH, 12, '#0F172A')
             ctx.textAlign = 'center'
-            ctx.fillStyle = isStandingsAudited ? '#D9FF00' : '#FFFFFF'
+            ctx.fillStyle = isCheckedIn ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isStandingsAudited ? '✔ Standings Verified' : 'Proceed to Official Audit', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isCheckedIn ? '✔ Venue Check-in Completed' : 'Scan Pass at Venue Gate', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }
-        // SCENE 4: ATHLETE SIGN & JUDGE LOCK
+        // SCENE 4: LIVE SCORECARD & CERTIFICATE
         else {
             ctx.save()
             ctx.translate(screenX, contentY)
-            ctx.textAlign = 'left'
-            ctx.fillStyle = '#64748B'
-            ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Official Score Audit', 20, 16)
 
-            ctx.fillStyle = '#0F172A'
-            ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Athlete Sign & Lock', 20, 38)
+            const sHeroW = screenW - 40
+            drawRoundedRect(20, 0, sHeroW, 262, 14, '#FFFFFF', '#E2E8F0', 1.2)
 
-            const lHeroW = screenW - 40
-            drawRoundedRect(20, 52, lHeroW, 252, 14, '#FFFFFF', '#E2E8F0', 1.2)
-
-            drawRoundedRect(34, 66, lHeroW - 28, 48, 10, '#0F172A')
+            drawRoundedRect(34, 14, sHeroW - 28, 52, 10, '#0F172A')
             ctx.fillStyle = '#D9FF00'
             ctx.font = '700 12px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Target 12A · Arif Dwi Pangestu', 48, 86)
-            ctx.fillStyle = '#94A3B8'
-            ctx.font = '500 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Official Final Qualification Score: 684 pts', 48, 102)
+            ctx.fillText('Rank #1 · Gold Medalist', 48, 36)
 
-            const sigY = 124
-            drawRoundedRect(34, sigY, lHeroW - 28, 76, 10, '#F8FAFC', '#E2E8F0', 1)
+            ctx.fillStyle = '#94A3B8'
+            ctx.font = '500 10px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Qualification Total: 684 / 720 pts (38 10s · 18 Xs)', 48, 54)
+
+            const endY = 78
+            ctx.fillStyle = '#64748B'
+            ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('End Progression (72 Arrows):', 36, endY)
+
+            const ends = [
+                { no: 'E1', val: '30' }, { no: 'E2', val: '29' }, { no: 'E3', val: '28' },
+                { no: 'E4', val: '30' }, { no: 'E5', val: '29' }, { no: 'E6', val: '30' }
+            ]
+
+            ends.forEach((e, idx) => {
+                const ex = 34 + idx * 42
+                drawRoundedRect(ex, endY + 10, 38, 38, 8, '#F8FAFC', '#E2E8F0', 1)
+                ctx.fillStyle = '#64748B'
+                ctx.textAlign = 'center'
+                ctx.font = '600 8.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+                ctx.fillText(e.no, ex + 19, endY + 24)
+
+                ctx.fillStyle = '#0F172A'
+                ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText(e.val, ex + 19, endY + 40)
+            })
+
+            drawRoundedRect(34, endY + 58, sHeroW - 28, 48, 10, '#F1F5F9')
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Official E-Certificate Ready', 48, endY + 78)
 
             ctx.fillStyle = '#64748B'
-            ctx.font = '600 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('ATHLETE DIGITAL SIGNATURE', 46, sigY + 18)
-
-            ctx.strokeStyle = '#0F172A'
-            ctx.lineWidth = 2
-            ctx.beginPath()
-            ctx.moveTo(56, sigY + 54)
-            ctx.bezierCurveTo(72, sigY + 32, 88, sigY + 68, 110, sigY + 42)
-            ctx.bezierCurveTo(124, sigY + 28, 140, sigY + 58, 168, sigY + 48)
-            ctx.stroke()
-
-            drawRoundedRect(34, sigY + 84, lHeroW - 28, 38, 8, isJudgeLocked ? '#0F172A' : '#F1F5F9')
-            ctx.fillStyle = isJudgeLocked ? '#D9FF00' : '#334155'
-            ctx.font = '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isJudgeLocked ? '🔒 SEALED & LOCKED BY CHIEF JUDGE' : 'Awaiting Chief Judge Seal', 48, sigY + 107)
+            ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Signed & Cryptographically Verified PDF', 48, endY + 94)
 
             ctx.save()
             ctx.translate(sc1BtnCX, sc1BtnCY)
-            ctx.scale(btnLockScale, btnLockScale)
+            ctx.scale(btnDlScale, btnDlScale)
             ctx.translate(-sc1BtnCX, -sc1BtnCY)
 
             drawRoundedRect(20, sc1BtnY, sc1BtnW, sc1BtnH, 12, '#0F172A')
             ctx.textAlign = 'center'
-            ctx.fillStyle = isJudgeLocked ? '#D9FF00' : '#FFFFFF'
+            ctx.fillStyle = isDownloaded ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 12.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isJudgeLocked ? '🔒 Scores Officially Sealed & Locked' : 'Lock & Seal Target 12 Scores', sc1BtnCX, sc1BtnY + 28)
+            ctx.fillText(isDownloaded ? '✔ Certificate Saved to Device' : 'Download Verified E-Certificate', sc1BtnCX, sc1BtnY + 28)
             ctx.restore()
             ctx.restore()
         }
 
         ctx.restore() // Content clip
+
+        // ── Authentic Bottom Navigation Bar ──
+        const bNavH = 58
+        const bNavY = screenY + screenH - bNavH
+        drawRoundedRect(screenX, bNavY, screenW, bNavH, 0, '#FFFFFF', '#E2E8F0', 1)
+
+        const navItems = [
+            { name: 'Events', icon: '🎯' },
+            { name: 'My Pass', icon: '🎟' },
+            { name: 'Scores', icon: '📊' },
+            { name: 'Profile', icon: '👤' }
+        ]
+
+        const nItemW = screenW / 4
+        navItems.forEach((n, idx) => {
+            const nx = screenX + idx * nItemW
+            const isNavActive = idx === bottomNavActive
+
+            if (isNavActive) {
+                drawRoundedRect(nx + nItemW / 2 - 16, bNavY + 6, 32, 22, 6, '#0F172A')
+            }
+
+            ctx.textAlign = 'center'
+            ctx.fillStyle = isNavActive ? '#D9FF00' : '#64748B'
+            ctx.font = isNavActive ? '700 10.5px "Bricolage Grotesque", "NovaText", sans-serif' : '500 10px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText(n.name, nx + nItemW / 2, bNavY + 38)
+        })
 
         // Status bar & dynamic island
         ctx.fillStyle = '#0F172A'
@@ -667,9 +706,9 @@ onMounted(async () => {
             ctx.save()
             ctx.beginPath()
             ctx.arc(tapX, tapY, tapRipple * 40, 0, Math.PI * 2)
-            ctx.fillStyle = `rgba(217, 255, 0, ${0.5 * (1 - tapRipple)})`
+            ctx.fillStyle = \`rgba(217, 255, 0, \${0.5 * (1 - tapRipple)})\`
             ctx.fill()
-            ctx.strokeStyle = `rgba(15, 23, 42, ${0.4 * (1 - tapRipple)})`
+            ctx.strokeStyle = \`rgba(15, 23, 42, \${0.4 * (1 - tapRipple)})\`
             ctx.lineWidth = 2
             ctx.stroke()
             ctx.restore()
@@ -728,3 +767,7 @@ onMounted(async () => {
     display: block;
 }
 </style>
+`;
+
+fs.writeFileSync(path.join(__dirname, '../pages/graphics/feature-archer.vue'), code, 'utf8');
+console.log('feature-archer.vue written successfully');

@@ -1,6 +1,9 @@
-<template>
+const fs = require('fs');
+const path = require('path');
+
+const code = `<template>
     <div class="stage-wrapper" id="stageWrapper" @dblclick="togglePause">
-        <canvas ref="canvasRef" width="1080" height="1080" class="stage-canvas" :style="{ transform: `scale(${scale})` }"></canvas>
+        <canvas ref="canvasRef" width="1080" height="1080" class="stage-canvas" :style="{ transform: \`scale(\${scale})\` }"></canvas>
     </div>
 </template>
 
@@ -667,9 +670,9 @@ onMounted(async () => {
             ctx.save()
             ctx.beginPath()
             ctx.arc(tapX, tapY, tapRipple * 40, 0, Math.PI * 2)
-            ctx.fillStyle = `rgba(217, 255, 0, ${0.5 * (1 - tapRipple)})`
+            ctx.fillStyle = \`rgba(217, 255, 0, \${0.5 * (1 - tapRipple)})\`
             ctx.fill()
-            ctx.strokeStyle = `rgba(15, 23, 42, ${0.4 * (1 - tapRipple)})`
+            ctx.strokeStyle = \`rgba(15, 23, 42, \${0.4 * (1 - tapRipple)})\`
             ctx.lineWidth = 2
             ctx.stroke()
             ctx.restore()
@@ -728,3 +731,7 @@ onMounted(async () => {
     display: block;
 }
 </style>
+`;
+
+fs.writeFileSync(path.join(__dirname, '../pages/graphics/feature-scorekeeper.vue'), code, 'utf8');
+console.log('feature-scorekeeper.vue written successfully');
