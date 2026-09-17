@@ -124,7 +124,7 @@ onMounted(async () => {
         ctx.restore()
     }
 
-    // ── Master 25.0-Second Seamless Loop (5 Steps x 5.0s, Matching Feature 01 Pacing) ──
+    // ── Master 25.0-Second Seamless Loop (5 Modules x 5.0s, Matching Feature 01 Pacing) ──
     const CYCLE_DURATION = 25.0
     let startTime = null
 
@@ -175,7 +175,7 @@ onMounted(async () => {
 
         const STEP_TIME = 5.0
 
-        // ── STEP 1: TARGET ALLOCATION (0.0s - 5.0s) ──
+        // ── MODULE 1: TARGET ALLOCATION (0.0s - 5.0s) ──
         if (elapsed < STEP_TIME) {
             phaseIndex = 0
             if (elapsed < 1.4) {
@@ -187,7 +187,7 @@ onMounted(async () => {
                 camPanY = -85
             }
 
-            const targetBtnY = 628
+            const targetBtnY = 642
             if (elapsed >= 1.6) {
                 cursorVisible = true
                 if (elapsed < 3.2) {
@@ -209,7 +209,7 @@ onMounted(async () => {
                 }
             }
         }
-        // ── STEP 2: QUALIFICATION LEADERBOARD (5.0s - 10.0s) ──
+        // ── MODULE 2: QUALIFICATION LEADERBOARD (5.0s - 10.0s) ──
         else if (elapsed < STEP_TIME * 2) {
             phaseIndex = 1
             isAllocated = true
@@ -229,7 +229,7 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const targetBtnY = 628
+            const targetBtnY = 642
             if (step2Elapsed >= 1.6) {
                 cursorVisible = true
                 if (step2Elapsed < 3.2) {
@@ -251,7 +251,7 @@ onMounted(async () => {
                 }
             }
         }
-        // ── STEP 3: CLUB TEAM AUTO-SUM (10.0s - 15.0s) ──
+        // ── MODULE 3: CLUB TEAM AUTO-SUM (10.0s - 15.0s) ──
         else if (elapsed < STEP_TIME * 3) {
             phaseIndex = 2
             isAllocated = true
@@ -272,7 +272,7 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const targetBtnY = 628
+            const targetBtnY = 642
             if (step3Elapsed >= 1.6) {
                 cursorVisible = true
                 if (step3Elapsed < 3.2) {
@@ -294,7 +294,7 @@ onMounted(async () => {
                 }
             }
         }
-        // ── STEP 4: WORLD ARCHERY BRACKETS (15.0s - 20.0s) ──
+        // ── MODULE 4: WORLD ARCHERY BRACKETS (15.0s - 20.0s) ──
         else if (elapsed < STEP_TIME * 4) {
             phaseIndex = 3
             isAllocated = true
@@ -316,7 +316,7 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const targetBtnY = 628
+            const targetBtnY = 642
             if (step4Elapsed >= 1.6) {
                 cursorVisible = true
                 if (step4Elapsed < 3.2) {
@@ -338,7 +338,7 @@ onMounted(async () => {
                 }
             }
         }
-        // ── STEP 5: E-CERTIFICATE (20.0s - 25.0s) ──
+        // ── MODULE 5: E-CERTIFICATE (20.0s - 25.0s) ──
         else {
             phaseIndex = 4
             isAllocated = true
@@ -361,7 +361,7 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const targetBtnY = 628
+            const targetBtnY = 642
             if (step5Elapsed >= 1.6) {
                 cursorVisible = true
                 if (step5Elapsed < 3.2) {
@@ -415,38 +415,25 @@ onMounted(async () => {
         ctx.fillStyle = '#F8FAFC'
         ctx.fillRect(screenX, screenY, screenW, screenH)
 
-        // Top Header
-        const headY = screenY + 44
-        drawRoundedRect(screenX + 16, headY, screenW - 32, 34, 8, '#0F172A')
-        ctx.textAlign = 'left'
-        ctx.fillStyle = '#D9FF00'
-        ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-        ctx.fillText('Tournament Operations Engine', screenX + 28, headY + 21)
-
-        drawRoundedRect(screenX + screenW - 84, headY + 6, 56, 22, 5, '#1E293B')
-        ctx.fillStyle = '#FFFFFF'
-        ctx.textAlign = 'center'
-        ctx.font = '600 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-        ctx.fillText('Step ' + (phaseIndex + 1) + '/5', screenX + screenW - 56, headY + 20)
-
-        const contentY = headY + 40
-        const contentH = screenH - (contentY - screenY) - 16
+        // Clean app content area starting right below status bar (No generic top step header)
+        const contentY = screenY + 44
+        const contentH = screenH - 56
 
         ctx.save()
         ctx.beginPath()
         ctx.rect(screenX, contentY, screenW, contentH)
         ctx.clip()
 
-        // Dock button at bottom cleanly
+        // Dock button at bottom
         const scBtnW = screenW - 32
         const scBtnH = 46
         const scBtnX = 16
-        const scBtnY = 552
+        const scBtnY = 586
         const scBtnCX = scBtnX + scBtnW / 2
         const scBtnCY = scBtnY + scBtnH / 2
 
         // ══════════════════════════════════════════════════════════
-        // STEP 1: TARGET BUTT ALLOCATION MATRIX (Dense, Crisp & Clear)
+        // MODULE 1: TARGET BUTT ALLOCATION MATRIX (Dense, Crisp & Clear)
         // ══════════════════════════════════════════════════════════
         if (phaseIndex === 0) {
             ctx.save()
@@ -460,7 +447,7 @@ onMounted(async () => {
             ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
             ctx.fillText('Target Butt Allocation Matrix', 16, 36)
 
-            // Top Category Overview Bar
+            // Category Overview Bar
             const tCardW = screenW - 32
             drawRoundedRect(16, 48, tCardW, 36, 8, '#0F172A')
             ctx.fillStyle = '#D9FF00'
@@ -495,38 +482,36 @@ onMounted(async () => {
             ]
 
             targetCards.forEach((t, idx) => {
-                const ty = 92 + idx * 192
-                drawRoundedRect(16, ty, tCardW, 184, 12, '#FFFFFF', '#E2E8F0', 1.2)
+                const ty = 94 + idx * 206
+                drawRoundedRect(16, ty, tCardW, 196, 12, '#FFFFFF', '#E2E8F0', 1.2)
 
-                // Header
-                drawRoundedRect(24, ty + 8, tCardW - 16, 28, 6, '#F8FAFC', '#E2E8F0', 0.8)
-                drawTargetFace(40, ty + 22, 10)
+                drawRoundedRect(24, ty + 8, tCardW - 16, 30, 6, '#F8FAFC', '#E2E8F0', 0.8)
+                drawTargetFace(40, ty + 23, 10)
 
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#0F172A'
                 ctx.font = '700 12px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(t.no, 58, ty + 26)
+                ctx.fillText(t.no, 58, ty + 27)
 
                 ctx.fillStyle = '#64748B'
                 ctx.font = '500 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText('· ' + t.category, 120, ty + 26)
+                ctx.fillText('· ' + t.category, 120, ty + 27)
 
-                drawRoundedRect(16 + tCardW - 84, ty + 9, 72, 22, 5, isAllocated ? '#D9FF00' : '#E2E8F0')
+                drawRoundedRect(16 + tCardW - 84, ty + 10, 72, 22, 5, isAllocated ? '#D9FF00' : '#E2E8F0')
                 ctx.fillStyle = '#0F172A'
                 ctx.textAlign = 'center'
                 ctx.font = '700 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(isAllocated ? 'Allocated' : 'Ready', 16 + tCardW - 48, ty + 23)
+                ctx.fillText(isAllocated ? 'Allocated' : 'Ready', 16 + tCardW - 48, ty + 24)
 
-                // 4 Archers Rows
                 t.archers.forEach((a, aidx) => {
-                    const ay = ty + 42 + aidx * 34
-                    drawRoundedRect(24, ay, tCardW - 16, 30, 6, '#F8FAFC', '#E2E8F0', 0.8)
+                    const ay = ty + 46 + aidx * 36
+                    drawRoundedRect(24, ay, tCardW - 16, 32, 6, '#F8FAFC', '#E2E8F0', 0.8)
 
-                    drawRoundedRect(28, ay + 4, 22, 22, 4, isAllocated ? '#0F172A' : '#CBD5E1')
+                    drawRoundedRect(28, ay + 4, 22, 24, 4, isAllocated ? '#0F172A' : '#CBD5E1')
                     ctx.fillStyle = isAllocated ? '#D9FF00' : '#475569'
                     ctx.textAlign = 'center'
                     ctx.font = '800 11px "Bricolage Grotesque", sans-serif'
-                    ctx.fillText(a.lane, 39, ay + 19)
+                    ctx.fillText(a.lane, 39, ay + 20)
 
                     ctx.textAlign = 'left'
                     ctx.fillStyle = '#0F172A'
@@ -535,25 +520,25 @@ onMounted(async () => {
 
                     ctx.fillStyle = '#64748B'
                     ctx.font = '500 9px "NovaText", sans-serif'
-                    ctx.fillText(a.club, 58, ay + 26)
+                    ctx.fillText(a.club, 58, ay + 27)
 
                     ctx.textAlign = 'right'
                     ctx.fillStyle = '#059669'
                     ctx.font = '700 9px "NovaText", sans-serif'
-                    ctx.fillText('70m Lane', 16 + tCardW - 32, ay + 19)
+                    ctx.fillText('70m Lane', 16 + tCardW - 32, ay + 20)
                 })
             })
 
             // Summary Metrics Box
-            const sBoxY = 482
-            drawRoundedRect(16, sBoxY, tCardW, 58, 10, '#0F172A')
+            const sBoxY = 512
+            drawRoundedRect(16, sBoxY, tCardW, 60, 10, '#0F172A')
             ctx.textAlign = 'left'
             ctx.fillStyle = '#D9FF00'
             ctx.font = '700 11.5px "Bricolage Grotesque", "NovaText", sans-serif'
             ctx.fillText('160 / 160 Archers Allocated', 28, sBoxY + 24)
             ctx.fillStyle = '#94A3B8'
             ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Zero lane conflicts detected across 40 target butts', 28, sBoxY + 42)
+            ctx.fillText('Zero lane conflicts detected across 40 target butts', 28, sBoxY + 44)
 
             // Bottom CTA Button
             ctx.save()
@@ -570,7 +555,7 @@ onMounted(async () => {
             ctx.restore()
         }
         // ══════════════════════════════════════════════════════════
-        // STEP 2: LIVE QUALIFICATION ENGINE & LEADERBOARD
+        // MODULE 2: LIVE QUALIFICATION ENGINE & LEADERBOARD
         // ══════════════════════════════════════════════════════════
         else if (phaseIndex === 1) {
             ctx.save()
@@ -584,7 +569,6 @@ onMounted(async () => {
             ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
             ctx.fillText('Live Qualification Leaderboard', 16, 36)
 
-            // Top Stats
             const qStatW = (screenW - 38) / 3
             const stats = [
                 { title: 'Division', val: 'Recurve Men' },
@@ -602,7 +586,6 @@ onMounted(async () => {
                 ctx.fillText(st.val, sx + 8, 82)
             })
 
-            // 3 Large Detailed Archer Cards
             const qualArchers = [
                 { rank: '1', name: 'Arif Dwi Pangestu', club: 'Fast Archery Club', ends: ['30', '29', '30', '29', '30', '29'], total: '684 pts', tens: '38 10s · 18 Xs', highlight: true },
                 { rank: '2', name: 'Riau Ega Agatha', club: 'Eagle Archery Club', ends: ['29', '30', '29', '29', '29', '29'], total: '678 pts', tens: '34 10s · 14 Xs', highlight: false },
@@ -611,8 +594,8 @@ onMounted(async () => {
 
             const qCardW = screenW - 32
             qualArchers.forEach((a, idx) => {
-                const ay = 104 + idx * 126
-                drawRoundedRect(16, ay, qCardW, 118, 10, '#FFFFFF', a.highlight ? '#0F172A' : '#E2E8F0', a.highlight ? 1.5 : 1)
+                const ay = 106 + idx * 132
+                drawRoundedRect(16, ay, qCardW, 122, 10, '#FFFFFF', a.highlight ? '#0F172A' : '#E2E8F0', a.highlight ? 1.5 : 1)
 
                 drawRoundedRect(24, ay + 10, 26, 26, 6, a.highlight ? '#D9FF00' : '#0F172A')
                 ctx.fillStyle = '#0F172A'
@@ -635,11 +618,10 @@ onMounted(async () => {
                 ctx.font = '800 14px "Bricolage Grotesque", sans-serif'
                 ctx.fillText(a.total, 16 + qCardW - 44, ay + 28)
 
-                // Ends Matrix row
                 const endBoxW = (qCardW - 28) / 6
                 a.ends.forEach((evalScore, eidx) => {
                     const ex = 22 + eidx * endBoxW
-                    const ey = ay + 44
+                    const ey = ay + 46
                     drawRoundedRect(ex, ey, endBoxW - 4, 38, 4, '#F8FAFC', '#E2E8F0', 0.8)
 
                     ctx.fillStyle = '#64748B'
@@ -654,18 +636,17 @@ onMounted(async () => {
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#64748B'
                 ctx.font = '500 9px "NovaText", sans-serif'
-                ctx.fillText('Official Tiebreaker: ' + a.tens, 24, ay + 104)
+                ctx.fillText('Official Tiebreaker: ' + a.tens, 24, ay + 108)
             })
 
-            // Summary Status Box
-            const qFootY = 488
-            drawRoundedRect(16, qFootY, qCardW, 52, 10, '#0F172A')
+            const qFootY = 512
+            drawRoundedRect(16, qFootY, qCardW, 58, 10, '#0F172A')
             ctx.fillStyle = '#D9FF00'
             ctx.font = '700 11.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Real-Time Scorekeeper Sync Active', 28, qFootY + 22)
+            ctx.fillText('Real-Time Scorekeeper Sync Active', 28, qFootY + 24)
             ctx.fillStyle = '#94A3B8'
             ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('160 scorecards audited & ready for elimination brackets', 28, qFootY + 38)
+            ctx.fillText('160 scorecards audited & ready for elimination brackets', 28, qFootY + 44)
 
             // Bottom CTA Button
             ctx.save()
@@ -682,7 +663,7 @@ onMounted(async () => {
             ctx.restore()
         }
         // ══════════════════════════════════════════════════════════
-        // STEP 3: CLUB TEAM STANDINGS & AUTO-SUM (Σ Top 3)
+        // MODULE 3: CLUB TEAM STANDINGS & AUTO-SUM (Σ Top 3)
         // ══════════════════════════════════════════════════════════
         else if (phaseIndex === 2) {
             ctx.save()
@@ -733,8 +714,8 @@ onMounted(async () => {
             ]
 
             teamRows.forEach((r, idx) => {
-                const ry = 108 + idx * 124
-                drawRoundedRect(16, ry, tHeroW, 116, 10, '#FFFFFF', r.highlight ? '#0F172A' : '#E2E8F0', r.highlight ? 1.5 : 1)
+                const ry = 110 + idx * 130
+                drawRoundedRect(16, ry, tHeroW, 120, 10, '#FFFFFF', r.highlight ? '#0F172A' : '#E2E8F0', r.highlight ? 1.5 : 1)
 
                 drawRoundedRect(24, ry + 10, 26, 26, 6, r.highlight ? '#D9FF00' : '#0F172A')
                 ctx.fillStyle = '#0F172A'
@@ -753,26 +734,25 @@ onMounted(async () => {
                 ctx.font = '800 13px "Bricolage Grotesque", sans-serif'
                 ctx.fillText(r.total, 16 + tHeroW - 44, ry + 28)
 
-                drawRoundedRect(24, ry + 44, tHeroW - 24, 36, 6, '#F8FAFC', '#E2E8F0', 0.8)
+                drawRoundedRect(24, ry + 46, tHeroW - 24, 38, 6, '#F8FAFC', '#E2E8F0', 0.8)
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#334155'
                 ctx.font = '600 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(r.archers, 32, ry + 66)
+                ctx.fillText(r.archers, 32, ry + 69)
 
                 ctx.fillStyle = '#64748B'
                 ctx.font = '500 9px "NovaText", sans-serif'
-                ctx.fillText(r.seed, 24, ry + 100)
+                ctx.fillText(r.seed, 24, ry + 104)
             })
 
-            // Summary Footer
-            const tFootY = 488
-            drawRoundedRect(16, tFootY, tHeroW, 52, 10, '#0F172A')
+            const tFootY = 512
+            drawRoundedRect(16, tFootY, tHeroW, 58, 10, '#0F172A')
             ctx.fillStyle = '#D9FF00'
             ctx.font = '700 11.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Automatic Seeding Completed', 28, tFootY + 22)
+            ctx.fillText('Automatic Seeding Completed', 28, tFootY + 24)
             ctx.fillStyle = '#94A3B8'
             ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('All clubs qualified for Individual and Team matchplay trees', 28, tFootY + 38)
+            ctx.fillText('All clubs qualified for Individual and Team matchplay trees', 28, tFootY + 44)
 
             // Bottom CTA Button
             ctx.save()
@@ -789,7 +769,7 @@ onMounted(async () => {
             ctx.restore()
         }
         // ══════════════════════════════════════════════════════════
-        // STEP 4: WORLD ARCHERY ELIMINATION MATCHPLAY
+        // MODULE 4: WORLD ARCHERY ELIMINATION MATCHPLAY
         // ══════════════════════════════════════════════════════════
         else if (phaseIndex === 3) {
             ctx.save()
@@ -804,7 +784,7 @@ onMounted(async () => {
             ctx.fillText('World Archery Bracket Tree', 16, 36)
 
             const treeW = screenW - 32
-            const treeH = 492
+            const treeH = 524
             const treeY = 48
             drawRoundedRect(16, treeY, treeW, treeH, 12, '#FFFFFF', '#E2E8F0', 1.2)
 
@@ -815,7 +795,7 @@ onMounted(async () => {
 
             // SF Match 1
             const sf1Y = treeY + 34
-            drawRoundedRect(24, sf1Y, 130, 104, 8, '#F8FAFC', '#E2E8F0', 1)
+            drawRoundedRect(24, sf1Y, 130, 108, 8, '#F8FAFC', '#E2E8F0', 1)
 
             drawRoundedRect(30, sf1Y + 8, 86, 18, 4, '#0F172A')
             ctx.fillStyle = '#D9FF00'
@@ -824,31 +804,31 @@ onMounted(async () => {
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('1 Arif Dwi P.', 32, sf1Y + 46)
-            drawRoundedRect(126, sf1Y + 34, 22, 18, 4, '#0F172A')
+            ctx.fillText('1 Arif Dwi P.', 32, sf1Y + 47)
+            drawRoundedRect(126, sf1Y + 35, 22, 18, 4, '#0F172A')
             ctx.fillStyle = '#D9FF00'
             ctx.textAlign = 'center'
             ctx.font = '800 10.5px "Bricolage Grotesque", sans-serif'
-            ctx.fillText('6', 137, sf1Y + 47)
+            ctx.fillText('6', 137, sf1Y + 48)
 
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
             ctx.font = '500 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('4 Diananda C.', 32, sf1Y + 70)
-            drawRoundedRect(126, sf1Y + 58, 22, 18, 4, '#E2E8F0')
+            ctx.fillText('4 Diananda C.', 32, sf1Y + 72)
+            drawRoundedRect(126, sf1Y + 60, 22, 18, 4, '#E2E8F0')
             ctx.fillStyle = '#475569'
             ctx.textAlign = 'center'
             ctx.font = '700 9.5px "Bricolage Grotesque", sans-serif'
-            ctx.fillText('4', 137, sf1Y + 71)
+            ctx.fillText('4', 137, sf1Y + 73)
 
             ctx.textAlign = 'left'
             ctx.fillStyle = '#94A3B8'
             ctx.font = '500 8px "NovaText", sans-serif'
-            ctx.fillText('Sets: 29 · 28 · 30 · 29 · 30', 32, sf1Y + 92)
+            ctx.fillText('Sets: 29 · 28 · 30 · 29 · 30', 32, sf1Y + 95)
 
             // SF Match 2
-            const sf2Y = treeY + 148
-            drawRoundedRect(24, sf2Y, 130, 104, 8, '#F8FAFC', '#E2E8F0', 1)
+            const sf2Y = treeY + 154
+            drawRoundedRect(24, sf2Y, 130, 108, 8, '#F8FAFC', '#E2E8F0', 1)
 
             drawRoundedRect(30, sf2Y + 8, 86, 18, 4, '#0F172A')
             ctx.fillStyle = '#D9FF00'
@@ -857,46 +837,46 @@ onMounted(async () => {
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('2 Riau Ega A.', 32, sf2Y + 46)
-            drawRoundedRect(126, sf2Y + 34, 22, 18, 4, '#0F172A')
+            ctx.fillText('2 Riau Ega A.', 32, sf2Y + 47)
+            drawRoundedRect(126, sf2Y + 35, 22, 18, 4, '#0F172A')
             ctx.fillStyle = '#D9FF00'
             ctx.textAlign = 'center'
             ctx.font = '800 10.5px "Bricolage Grotesque", sans-serif'
-            ctx.fillText('6', 137, sf2Y + 47)
+            ctx.fillText('6', 137, sf2Y + 48)
 
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
             ctx.font = '500 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('3 Kenzo A.', 32, sf2Y + 70)
-            drawRoundedRect(126, sf2Y + 58, 22, 18, 4, '#E2E8F0')
+            ctx.fillText('3 Kenzo A.', 32, sf2Y + 72)
+            drawRoundedRect(126, sf2Y + 60, 22, 18, 4, '#E2E8F0')
             ctx.fillStyle = '#475569'
             ctx.textAlign = 'center'
             ctx.font = '700 9.5px "Bricolage Grotesque", sans-serif'
-            ctx.fillText('2', 137, sf2Y + 71)
+            ctx.fillText('2', 137, sf2Y + 73)
 
             ctx.textAlign = 'left'
             ctx.fillStyle = '#94A3B8'
             ctx.font = '500 8px "NovaText", sans-serif'
-            ctx.fillText('Sets: 28 · 29 · 29 · 28', 32, sf2Y + 92)
+            ctx.fillText('Sets: 28 · 29 · 29 · 28', 32, sf2Y + 95)
 
             // Connectors
             ctx.strokeStyle = '#0F172A'
             ctx.lineWidth = 1.5
             ctx.beginPath()
-            ctx.moveTo(154, sf1Y + 52)
-            ctx.lineTo(164, sf1Y + 52)
-            ctx.lineTo(164, treeY + 86)
-            ctx.lineTo(172, treeY + 86)
+            ctx.moveTo(154, sf1Y + 54)
+            ctx.lineTo(164, sf1Y + 54)
+            ctx.lineTo(164, treeY + 90)
+            ctx.lineTo(172, treeY + 90)
 
-            ctx.moveTo(154, sf2Y + 52)
-            ctx.lineTo(164, sf2Y + 52)
-            ctx.lineTo(164, treeY + 86)
+            ctx.moveTo(154, sf2Y + 54)
+            ctx.lineTo(164, sf2Y + 54)
+            ctx.lineTo(164, treeY + 90)
             ctx.stroke()
 
             // Gold Medal Match
             const goldY = treeY + 34
             const isGoldActive = isBracketAdvanced
-            drawRoundedRect(172, goldY, 142, 114, 8, isGoldActive ? '#0F172A' : '#F8FAFC', isGoldActive ? '#D9FF00' : '#CBD5E1', isGoldActive ? 1.5 : 1)
+            drawRoundedRect(172, goldY, 142, 118, 8, isGoldActive ? '#0F172A' : '#F8FAFC', isGoldActive ? '#D9FF00' : '#CBD5E1', isGoldActive ? 1.5 : 1)
 
             drawRoundedRect(178, goldY + 8, 92, 18, 4, isGoldActive ? '#D9FF00' : '#0F172A')
             ctx.fillStyle = isGoldActive ? '#0F172A' : '#D9FF00'
@@ -905,31 +885,31 @@ onMounted(async () => {
 
             ctx.fillStyle = isGoldActive ? '#FFFFFF' : '#0F172A'
             ctx.font = '700 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('1 Arif Dwi P.', 180, goldY + 48)
-            drawRoundedRect(286, goldY + 36, 22, 18, 4, isGoldActive ? '#D9FF00' : '#0F172A')
+            ctx.fillText('1 Arif Dwi P.', 180, goldY + 50)
+            drawRoundedRect(286, goldY + 38, 22, 18, 4, isGoldActive ? '#D9FF00' : '#0F172A')
             ctx.fillStyle = '#0F172A'
             ctx.textAlign = 'center'
             ctx.font = '800 10.5px "Bricolage Grotesque", sans-serif'
-            ctx.fillText('6', 297, goldY + 49)
+            ctx.fillText('6', 297, goldY + 51)
 
             ctx.textAlign = 'left'
             ctx.fillStyle = isGoldActive ? '#94A3B8' : '#64748B'
             ctx.font = '600 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('2 Riau Ega A.', 180, goldY + 72)
-            drawRoundedRect(286, goldY + 60, 22, 18, 4, isGoldActive ? '#1E293B' : '#E2E8F0')
+            ctx.fillText('2 Riau Ega A.', 180, goldY + 75)
+            drawRoundedRect(286, goldY + 63, 22, 18, 4, isGoldActive ? '#1E293B' : '#E2E8F0')
             ctx.fillStyle = isGoldActive ? '#94A3B8' : '#475569'
             ctx.textAlign = 'center'
             ctx.font = '700 9.5px "Bricolage Grotesque", sans-serif'
-            ctx.fillText('4', 297, goldY + 73)
+            ctx.fillText('4', 297, goldY + 76)
 
             ctx.textAlign = 'left'
             ctx.fillStyle = isGoldActive ? '#D9FF00' : '#64748B'
             ctx.font = '600 8.5px "NovaText", sans-serif'
-            ctx.fillText(isGoldActive ? 'Gold Champion: Arif Dwi' : 'Awaiting Match Advance', 180, goldY + 98)
+            ctx.fillText(isGoldActive ? 'Gold Champion: Arif Dwi' : 'Awaiting Match Advance', 180, goldY + 102)
 
             // Bronze Medal Match
-            const bronzeY = treeY + 158
-            drawRoundedRect(172, bronzeY, 142, 94, 8, '#F8FAFC', '#E2E8F0', 1)
+            const bronzeY = treeY + 162
+            drawRoundedRect(172, bronzeY, 142, 100, 8, '#F8FAFC', '#E2E8F0', 1)
 
             drawRoundedRect(178, bronzeY + 8, 98, 18, 4, '#F1F5F9')
             ctx.fillStyle = '#475569'
@@ -938,36 +918,36 @@ onMounted(async () => {
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 10px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('4 Diananda C.', 180, bronzeY + 44)
-            drawRoundedRect(286, bronzeY + 32, 22, 18, 4, '#0F172A')
+            ctx.fillText('4 Diananda C.', 180, bronzeY + 47)
+            drawRoundedRect(286, bronzeY + 35, 22, 18, 4, '#0F172A')
             ctx.fillStyle = '#D9FF00'
             ctx.textAlign = 'center'
             ctx.font = '800 10.5px "Bricolage Grotesque", sans-serif'
-            ctx.fillText('7', 297, bronzeY + 45)
+            ctx.fillText('7', 297, bronzeY + 48)
 
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
             ctx.font = '500 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('3 Kenzo A.', 180, bronzeY + 66)
-            drawRoundedRect(286, bronzeY + 54, 22, 18, 4, '#E2E8F0')
+            ctx.fillText('3 Kenzo A.', 180, bronzeY + 70)
+            drawRoundedRect(286, bronzeY + 58, 22, 18, 4, '#E2E8F0')
             ctx.fillStyle = '#475569'
             ctx.textAlign = 'center'
             ctx.font = '700 9.5px "Bricolage Grotesque", sans-serif'
-            ctx.fillText('3', 297, bronzeY + 67)
+            ctx.fillText('3', 297, bronzeY + 71)
 
             ctx.textAlign = 'left'
             ctx.fillStyle = '#94A3B8'
             ctx.font = '500 8px "NovaText", sans-serif'
-            ctx.fillText('Bronze Winner: Diananda', 180, bronzeY + 86)
+            ctx.fillText('Bronze Winner: Diananda', 180, bronzeY + 91)
 
             // Schedule Box
-            const fopY = treeY + 262
-            drawRoundedRect(24, fopY, treeW - 16, 216, 10, '#0F172A')
+            const fopY = treeY + 274
+            drawRoundedRect(24, fopY, treeW - 16, 236, 10, '#0F172A')
 
-            drawRoundedRect(34, fopY + 10, treeW - 36, 26, 6, '#1E293B')
+            drawRoundedRect(34, fopY + 12, treeW - 36, 28, 6, '#1E293B')
             ctx.fillStyle = '#D9FF00'
-            ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Field of Play Match Schedule', 44, fopY + 27)
+            ctx.font = '700 11.5px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Field of Play Match Schedule', 44, fopY + 30)
 
             const schedule = [
                 { time: '14:00', match: 'Recurve Men Gold Final · Target 01', status: 'Completed' },
@@ -977,25 +957,25 @@ onMounted(async () => {
             ]
 
             schedule.forEach((sc, sidx) => {
-                const scY = fopY + 44 + sidx * 40
-                drawRoundedRect(34, scY, treeW - 36, 34, 6, '#1E293B')
+                const scY = fopY + 48 + sidx * 44
+                drawRoundedRect(34, scY, treeW - 36, 38, 6, '#1E293B')
 
-                drawRoundedRect(40, scY + 7, 36, 20, 4, '#0F172A')
+                drawRoundedRect(40, scY + 8, 38, 22, 4, '#0F172A')
                 ctx.fillStyle = '#94A3B8'
                 ctx.textAlign = 'center'
-                ctx.font = '700 8.5px "NovaText", sans-serif'
-                ctx.fillText(sc.time, 58, scY + 20)
+                ctx.font = '700 9px "NovaText", sans-serif'
+                ctx.fillText(sc.time, 59, scY + 22)
 
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#FFFFFF'
-                ctx.font = '600 9px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(sc.match, 84, scY + 20)
+                ctx.font = '600 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+                ctx.fillText(sc.match, 86, scY + 22)
 
-                drawRoundedRect(16 + treeW - 88, scY + 8, 54, 18, 4, sc.status === 'Completed' ? '#D9FF00' : '#334155')
+                drawRoundedRect(16 + treeW - 90, scY + 9, 56, 20, 4, sc.status === 'Completed' ? '#D9FF00' : '#334155')
                 ctx.fillStyle = sc.status === 'Completed' ? '#0F172A' : '#94A3B8'
                 ctx.textAlign = 'center'
-                ctx.font = '700 8px "NovaText", sans-serif'
-                ctx.fillText(sc.status, 16 + treeW - 61, scY + 20)
+                ctx.font = '700 8.5px "NovaText", sans-serif'
+                ctx.fillText(sc.status, 16 + treeW - 62, scY + 22)
             })
 
             // Bottom CTA Button
@@ -1013,7 +993,7 @@ onMounted(async () => {
             ctx.restore()
         }
         // ══════════════════════════════════════════════════════════
-        // STEP 5: PODIUM PROTOCOL & GRAPHIC E-CERTIFICATE
+        // MODULE 5: PODIUM PROTOCOL & GRAPHIC E-CERTIFICATE
         // ══════════════════════════════════════════════════════════
         else {
             ctx.save()
@@ -1028,7 +1008,7 @@ onMounted(async () => {
             ctx.fillText('Official E-Certificate & Accreditations', 16, 36)
 
             const certCardW = screenW - 32
-            const certCardH = 492
+            const certCardH = 524
             const certY = 48
 
             drawRoundedRect(16, certY, certCardW, certCardH, 12, '#FFFFFF', '#E2E8F0', 1.2)
@@ -1036,7 +1016,7 @@ onMounted(async () => {
             drawRoundedRect(28, certY + 12, certCardW - 24, certCardH - 24, 6, null, '#0F172A', 0.8)
 
             const crestCX = 16 + certCardW / 2
-            const crestCY = certY + 36
+            const crestCY = certY + 40
 
             drawRoundedRect(crestCX - 22, crestCY - 14, 44, 28, 6, '#0F172A')
             drawTargetFace(crestCX, crestCY, 9)
@@ -1054,27 +1034,27 @@ onMounted(async () => {
             ctx.font = '500 9px "NovaText", "Plus Jakarta Sans", sans-serif'
             ctx.fillText('National Archery Championship 2026', crestCX, crestCY + 60)
 
-            drawRoundedRect(36, crestCY + 72, certCardW - 40, 110, 8, '#F8FAFC', '#E2E8F0', 0.8)
+            drawRoundedRect(36, crestCY + 74, certCardW - 40, 116, 8, '#F8FAFC', '#E2E8F0', 0.8)
 
             ctx.fillStyle = '#64748B'
             ctx.font = '600 9px "NovaText", sans-serif'
-            ctx.fillText('This Official Accreditation Is Proudly Awarded To:', crestCX, crestCY + 88)
+            ctx.fillText('This Official Accreditation Is Proudly Awarded To:', crestCX, crestCY + 90)
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 17px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Arif Dwi Pangestu', crestCX, crestCY + 112)
+            ctx.fillText('Arif Dwi Pangestu', crestCX, crestCY + 116)
 
-            drawRoundedRect(crestCX - 90, crestCY + 122, 180, 24, 12, '#D9FF00', '#0F172A', 1)
+            drawRoundedRect(crestCX - 90, crestCY + 126, 180, 24, 12, '#D9FF00', '#0F172A', 1)
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 10px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('1st Place · Gold Medalist', crestCX, crestCY + 137)
+            ctx.fillText('1st Place · Gold Medalist', crestCX, crestCY + 141)
 
             ctx.fillStyle = '#475569'
             ctx.font = '600 8.5px "NovaText", sans-serif'
-            ctx.fillText('Recurve Men Individual 70m · Final Score: 684 pts', crestCX, crestCY + 168)
+            ctx.fillText('Recurve Men Individual 70m · Final Score: 684 pts', crestCX, crestCY + 172)
 
             const sealCX = 74
-            const sealCY = crestCY + 232
+            const sealCY = crestCY + 242
 
             ctx.beginPath()
             ctx.moveTo(sealCX - 8, sealCY + 10)
@@ -1105,7 +1085,7 @@ onMounted(async () => {
             drawTargetFace(sealCX, sealCY, 14)
 
             const sigX = 140
-            const sigY = crestCY + 208
+            const sigY = crestCY + 218
 
             ctx.textAlign = 'left'
             ctx.strokeStyle = '#0F172A'
@@ -1139,28 +1119,28 @@ onMounted(async () => {
             ctx.font = '500 7.5px "NovaText", sans-serif'
             ctx.fillText('Technical Delegate', sig2X, sigY + 46)
 
-            const footY = crestCY + 276
-            drawRoundedRect(36, footY, certCardW - 40, 78, 6, '#0F172A')
+            const footY = crestCY + 292
+            drawRoundedRect(36, footY, certCardW - 40, 84, 6, '#0F172A')
 
-            drawRoundedRect(44, footY + 10, 58, 58, 4, '#FFFFFF')
+            drawRoundedRect(44, footY + 12, 60, 60, 4, '#FFFFFF')
             ctx.fillStyle = '#0F172A'
-            ctx.fillRect(50, footY + 16, 14, 14)
-            ctx.fillRect(80, footY + 16, 14, 14)
-            ctx.fillRect(50, footY + 46, 14, 14)
-            ctx.fillRect(72, footY + 38, 12, 12)
+            ctx.fillRect(50, footY + 18, 14, 14)
+            ctx.fillRect(82, footY + 18, 14, 14)
+            ctx.fillRect(50, footY + 50, 14, 14)
+            ctx.fillRect(74, footY + 40, 12, 12)
 
             ctx.textAlign = 'left'
             ctx.fillStyle = '#D9FF00'
             ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Cryptographically Verified & Sealed', 112, footY + 26)
+            ctx.fillText('Cryptographically Verified & Sealed', 114, footY + 28)
 
             ctx.fillStyle = '#FFFFFF'
             ctx.font = '500 8.5px "NovaText", sans-serif'
-            ctx.fillText('Certificate ID: ARCH-2026-CERT-9921-ID', 112, footY + 40)
+            ctx.fillText('Certificate ID: ARCH-2026-CERT-9921-ID', 114, footY + 44)
 
             ctx.fillStyle = '#94A3B8'
             ctx.font = '500 8px "NovaText", sans-serif'
-            ctx.fillText('Instant PDF & WhatsApp Dispatch to 160 Participants', 112, footY + 54)
+            ctx.fillText('Instant PDF & WhatsApp Dispatch to 160 Participants', 114, footY + 58)
 
             // Bottom CTA Button
             ctx.save()
