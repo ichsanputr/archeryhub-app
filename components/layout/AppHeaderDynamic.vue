@@ -180,32 +180,32 @@
       <div v-if="mobileMenuOpen"
         class="fixed top-0 right-0 w-[300px] h-full bg-white z-50 md:hidden shadow-2xl flex flex-col">
         <!-- Drawer Header -->
-        <div class="p-6 border-b border-gray-50 flex items-center justify-between bg-white relative">
-          <NuxtLink to="/" @click="mobileMenuOpen = false" class="flex items-center gap-2.5 group">
+        <div class="px-5 py-3.5 border-b border-gray-100 flex items-center justify-between bg-white relative">
+          <NuxtLink to="/" @click="mobileMenuOpen = false" class="flex items-center gap-2 group">
             <img src="/logo.png" alt="Archeris" class="w-7 h-7 object-contain transition-transform duration-300 group-hover:scale-105" />
-            <span class="text-lg font-black tracking-tight text-navy ">Archeris</span>
+            <span class="text-base font-black tracking-tight text-navy ">Archeris</span>
           </NuxtLink>
-          <button @click="mobileMenuOpen = false" class="p-2 hover:bg-gray-100 rounded-xl transition-all scale-100">
-            <Icon icon="ph:x-bold" class="text-xl text-navy" />
+          <button @click="mobileMenuOpen = false" class="p-1.5 hover:bg-gray-100 rounded-lg transition-all scale-100 text-navy">
+            <Icon icon="ph:x-bold" class="text-lg" />
           </button>
         </div>
 
         <!-- Drawer Content -->
         <div class="flex-1 overflow-y-auto">
           <!-- User Profile section -->
-          <div v-if="isLoggedIn" class="p-6 bg-gray-50/50 border-b border-gray-100">
-            <div class="flex items-center gap-4">
+          <div v-if="isLoggedIn" class="p-4 bg-gray-50/70 border-b border-gray-100">
+            <div class="flex items-center gap-3">
               <div
-                class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-amber-400 border-2 border-white shadow-sm overflow-hidden flex items-center justify-center">
+                class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-amber-400 border border-white shadow-2xs overflow-hidden flex items-center justify-center shrink-0">
                 <img v-if="user?.avatar_url" :src="user.avatar_url" class="w-full h-full object-cover" />
-                <span v-else class="text-navy font-black text-xl text-center">{{ user?.full_name?.charAt(0) || 'U'
+                <span v-else class="text-navy font-black text-base text-center">{{ user?.full_name?.charAt(0) || 'U'
                 }}</span>
               </div>
               <div class="flex-1 min-w-0">
-                <div class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</div>
-                <div class="text-xs text-gray-400 truncate">{{ user?.email }}</div>
+                <div class="text-navy font-bold text-sm truncate leading-tight">{{ user?.full_name || 'User' }}</div>
+                <div class="text-[11px] text-gray-400 truncate leading-tight">{{ user?.email }}</div>
                 <span
-                  class="inline-block mt-2 px-2 py-0.5 bg-primary/20 text-navy text-[10px] font-black rounded tracking-wider ">
+                  class="inline-block mt-1 px-1.5 py-0.5 bg-primary/20 text-navy text-[9px] font-black rounded tracking-wider">
                   {{ user?.user_type || 'Archer' }}
                 </span>
               </div>
@@ -213,27 +213,27 @@
           </div>
 
           <!-- Navigation Links -->
-          <div class="p-4 space-y-1">
+          <div class="p-3 space-y-1 font-body">
             <NuxtLink v-for="link in [
               { to: '/', label: t('nav.home'), icon: 'ph:house-bold' },
               { to: '/docs', label: t('nav.docs'), icon: 'ph:book-open-bold' },
               { to: '/pricing', label: t('nav.pricing'), icon: 'ph:credit-card-bold' },
             ]" :key="link.to" :to="link.to" @click="mobileMenuOpen = false"
-              class="flex items-center gap-4 p-4 rounded-2xl transition-all group"
-              :class="isActive(link.to) ? 'bg-primary text-primary-text font-black' : 'text-gray-500 hover:bg-gray-50 hover:text-navy'">
-              <Icon :icon="link.icon" class="text-xl" />
-              <span class="font-black text-sm tracking-wider">{{ link.label }}</span>
+              class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all group"
+              :class="isActive(link.to) ? 'bg-primary text-navy font-bold shadow-xs' : 'text-slate-600 font-semibold hover:bg-slate-50 hover:text-navy'">
+              <Icon :icon="link.icon" class="text-lg shrink-0" />
+              <span class="text-sm font-semibold tracking-normal">{{ link.label }}</span>
             </NuxtLink>
 
             <!-- Mobile Turnamen with Accordion -->
-            <div class="relative pt-2">
+            <div class="relative pt-0.5">
               <button @click="mobileSubmenuOpen = !mobileSubmenuOpen"
-                class="w-full flex items-center justify-between p-4 rounded-2xl transition-all text-gray-500 hover:bg-gray-50 hover:text-navy">
-                <div class="flex items-center gap-4 font-black">
-                  <Icon icon="ph:target-bold" class="text-xl" />
-                  <span class="font-black text-sm tracking-wider">{{ t('nav.features') }}</span>
+                class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all text-slate-600 font-semibold hover:bg-slate-50 hover:text-navy cursor-pointer">
+                <div class="flex items-center gap-3">
+                  <Icon icon="ph:target-bold" class="text-lg shrink-0" />
+                  <span class="text-sm font-semibold tracking-normal">{{ t('nav.features') }}</span>
                 </div>
-                <Icon icon="ph:caret-down-bold" class="text-xs transition-transform duration-300"
+                <Icon icon="ph:caret-down-bold" class="text-xs transition-transform duration-300 text-slate-400"
                   :class="{ 'rotate-180': mobileSubmenuOpen }" />
               </button>
 
@@ -243,12 +243,12 @@
                 <div v-if="mobileSubmenuOpen" class="pl-12 pr-4 space-y-1 overflow-hidden">
                   <NuxtLink v-for="event in latestEvents" :key="event.id" :to="`/tournaments/${event.slug || event.id}`"
                     @click="mobileMenuOpen = false"
-                    class="flex items-center gap-3 py-3 text-gray-500 hover:text-navy text-xs font-bold transition-colors">
+                    class="flex items-center gap-2.5 py-2.5 text-slate-600 hover:text-navy text-xs font-medium transition-colors">
                     <div class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></div>
                     <span class="truncate">{{ event.name }}</span>
                   </NuxtLink>
                   <NuxtLink to="/tournaments" @click="mobileMenuOpen = false"
-                    class="flex items-center gap-3 py-3 text-navy text-xs font-black transition-colors border-t border-gray-50 mt-2">
+                    class="flex items-center gap-2.5 py-2.5 text-navy text-xs font-bold transition-colors border-t border-slate-100 mt-1">
                     <Icon icon="ph:list-bullets-bold" class="text-sm" />
                     {{ t('nav.all_events') }}
                   </NuxtLink>
@@ -259,26 +259,26 @@
         </div>
 
         <!-- Drawer Footer -->
-        <div class="p-6 border-t border-gray-50 bg-white">
-          <div v-if="isLoggedIn" class="space-y-3">
+        <div class="p-5 border-t border-slate-100 bg-white font-body">
+          <div v-if="isLoggedIn" class="space-y-2.5">
             <NuxtLink :to="dashboardUrl" @click="mobileMenuOpen = false"
-              class="flex items-center justify-center gap-2 w-full py-3.5 bg-navy text-white rounded-2xl text-sm font-black tracking-widest shadow-sm shadow-navy/20 transition-all">
+              class="flex items-center justify-center gap-2 w-full py-3 bg-navy text-white rounded-xl text-sm font-bold shadow-xs hover:bg-navy/90 transition-all">
               <Icon icon="ph:layout-bold" />
               Dashboard
             </NuxtLink>
             <button @click="handleLogout(); mobileMenuOpen = false"
-              class="flex items-center justify-center gap-2 w-full py-3.5 border-2 border-red-50 text-red-500 rounded-2xl text-sm font-black tracking-widest hover:bg-red-50 transition-all">
+              class="flex items-center justify-center gap-2 w-full py-3 border border-rose-200 text-rose-600 rounded-xl text-sm font-bold hover:bg-rose-50 transition-all cursor-pointer">
               <Icon icon="ph:sign-out-bold" />
               {{ t('nav.logout') }}
             </button>
           </div>
-          <div v-else class="grid grid-cols-2 gap-3">
+          <div v-else class="grid grid-cols-2 gap-2.5">
             <NuxtLink to="/auth/login" @click="mobileMenuOpen = false"
-              class="flex items-center justify-center py-3.5 border-2 border-gray-50 text-navy rounded-2xl text-[10px] font-black tracking-widest hover:bg-gray-50 transition-all">
+              class="flex items-center justify-center py-3 border border-slate-200 text-navy rounded-xl text-sm font-bold hover:bg-slate-50 transition-all">
               {{ t('nav.login') }}
             </NuxtLink>
             <NuxtLink to="/auth/register" @click="mobileMenuOpen = false"
-              class="flex items-center justify-center py-3.5 bg-primary text-primary-text rounded-2xl text-[10px] font-black tracking-widest shadow-lg shadow-primary/20 transition-all">
+              class="flex items-center justify-center py-3 bg-primary text-navy rounded-xl text-sm font-bold shadow-xs hover:bg-primary-hover transition-all">
               {{ t('nav.register') }}
             </NuxtLink>
           </div>
@@ -364,11 +364,28 @@ const dashboardUrl = computed(() => {
   return `/dashboard/${persona}`
 })
 
+// Lock body scroll when mobile drawer is open
+watch(mobileMenuOpen, (isOpen) => {
+  if (process.client) {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+  }
+})
+
 // Reset state on route change
 watch(() => route.path, () => {
   mobileMenuOpen.value = false
   mobileSubmenuOpen.value = false
   showMegaMenu.value = false
   showUserMenu.value = false
+})
+
+onUnmounted(() => {
+  if (process.client) {
+    document.body.style.overflow = ''
+  }
 })
 </script>

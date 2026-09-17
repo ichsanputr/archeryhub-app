@@ -7,13 +7,15 @@ import { usePricingPlans } from '~/composables/usePricingPlans'
 
 definePageMeta({ layout: 'dashboard' })
 
-const { t } = useDashboardI18n()
+const { locale, t } = useDashboardI18n()
 useHead({ title: computed(() => t('organizer_subscription.page_title', 'Paket Event & Kuota') + ' - Archeris') })
 
 const { get, post } = useApi()
 const toast = useToast()
 const router = useRouter()
 const { fetchPlans, freePlan, standardPlan, elitePlan, bundleDiscounts } = usePricingPlans()
+
+const isEn = computed(() => locale.value === 'en')
 
 const quota = ref({ quota_free: 20, quota_standard: 0, quota_elite: 0 })
 const history = ref([])
@@ -79,6 +81,15 @@ const customQtyInput = ref(10)
 const selectedPaymentMethod = ref('mayar')
 const isPurchasing = ref(false)
 
+// Set smart default payment method when locale initializes or changes
+watch(isEn, (val) => {
+    if (val && selectedPaymentMethod.value === 'mayar') {
+        selectedPaymentMethod.value = 'paypal'
+    } else if (!val && selectedPaymentMethod.value === 'paypal') {
+        selectedPaymentMethod.value = 'mayar'
+    }
+}, { immediate: true })
+
 const setPresetQty = (qty) => {
     isCustomQty.value = false
     selectedQty.value = qty
@@ -95,7 +106,7 @@ const onCustomQtyChange = () => {
 
 const formatDate = (dateStr) => {
     if (!dateStr) return '-'
-    return new Date(dateStr).toLocaleDateString('id-ID', {
+    return new Date(dateStr).toLocaleDateString(isEn.value ? 'en-US' : 'id-ID', {
         day: 'numeric', month: 'short', year: 'numeric'
     })
 }
@@ -141,18 +152,18 @@ onMounted(async () => {
     loadHistory(1)
 })
 
-const basePrice = computed(() => {
-    if (selectedTier.value === 'standard') {
-        return standardPlan.value?.promo_price_idr || 24950
+const normalPrice = computed(() => {
+    if (isEn.value) {
+        return selectedTier.value === 'standard' ? (standardPlan.value?.price_usd || 3.00) : (elitePlan.value?.price_usd || 7.00)
     }
-    return elitePlan.value?.promo_price_idr || 39950
+    return selectedTier.value === 'standard' ? (standardPlan.value?.price_idr || 49900) : (elitePlan.value?.price_idr || 79900)
 })
 
-const basePriceUSD = computed(() => {
-    if (selectedTier.value === 'standard') {
-        return standardPlan.value?.promo_price_usd || 1.50
+const basePrice = computed(() => {
+    if (isEn.value) {
+        return selectedTier.value === 'standard' ? (standardPlan.value?.promo_price_usd || 1.50) : (elitePlan.value?.promo_price_usd || 3.50)
     }
-    return elitePlan.value?.promo_price_usd || 3.50
+    return selectedTier.value === 'standard' ? (standardPlan.value?.promo_price_idr || 24999) : (elitePlan.value?.promo_price_idr || 39999)
 })
 
 const discountPct = computed(() => {
@@ -167,23 +178,44 @@ const discountPct = computed(() => {
     return maxDiscount
 })
 
-const totalIDR = computed(() => {
-    return Math.round(basePrice.value * selectedQty.value * (1 - discountPct.value / 100))
+const subtotal = computed(() => {
+    return basePrice.value * selectedQty.value
 })
 
-const totalUSD = computed(() => {
-    return (Math.ceil((totalIDR.value / 16000) * 100) / 100).toFixed(2)
+const discountAmount = computed(() => {
+    return subtotal.value * (discountPct.value / 100)
 })
+
+const totalAmount = computed(() => {
+    return subtotal.value - discountAmount.value
+})
+
+const formatPrice = (val) => {
+    const num = Number(val || 0)
+    if (isEn.value) {
+        return `$${num.toFixed(2)}`
+    }
+    return `Rp ${Math.round(num).toLocaleString('id-ID')}`
+}
+
+const formatHistoryAmount = (item) => {
+    const amount = Number(item.total_amount || item.amount || 0)
+    if (item.currency === 'USD' || item.payment_method === 'paypal') {
+        return `$${amount.toFixed(2)}`
+    }
+    return `Rp ${Math.round(amount).toLocaleString('id-ID')}`
+}
 
 async function buyQuota() {
     isPurchasing.value = true
     try {
         const plan_id = selectedTier.value === 'standard' ? 7 : 8
+        const currency = selectedPaymentMethod.value === 'paypal' || isEn.value ? 'USD' : 'IDR'
         const res = await post('/organizers/me/quota/purchase', {
             plan_id,
             quantity: selectedQty.value,
             payment_method: selectedPaymentMethod.value,
-            currency: selectedPaymentMethod.value === 'paypal' ? 'USD' : 'IDR'
+            currency
         })
         
         const trxRef = res?.purchase_id || res?.reference || res?.transaction_id || ''
@@ -262,11 +294,11 @@ async function buyQuota() {
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.free_tier_feat_2', 'Maksimal <strong>2 Kategori Lomba</strong>')"></span>
+                        <span v-html="t('organizer_subscription.free_tier_feat_2', '<strong>200 MB</strong> Media Storage')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.free_tier_feat_3', '<strong>1 Scorekeeper</strong> Digital')"></span>
+                        <span v-html="t('organizer_subscription.free_tier_feat_3', 'Akses <strong>Semua Fitur</strong>')"></span>
                     </div>
                 </div>
             </div>
@@ -296,15 +328,15 @@ async function buyQuota() {
                 <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium mt-auto">
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.std_feat_1', 'Hingga <strong>300 Peserta</strong> per event')"></span>
+                        <span v-html="t('organizer_subscription.std_feat_1', 'Hingga <strong>200 Peserta</strong> per event')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.std_feat_2', 'Kategori lomba & bantalan <strong>Tak Terbatas</strong>')"></span>
+                        <span v-html="t('organizer_subscription.std_feat_2', '<strong>3 GB</strong> Media Storage')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.std_feat_3', 'Fitur <strong>Kualifikasi & Eliminasi</strong> Lengkap')"></span>
+                        <span v-html="t('organizer_subscription.std_feat_3', 'Akses <strong>Semua Fitur</strong>')"></span>
                     </div>
                 </div>
             </div>
@@ -338,11 +370,11 @@ async function buyQuota() {
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.elite_feat_2', 'Live scoring & bagan eliminasi multi-lapangan')"></span>
+                        <span v-html="t('organizer_subscription.elite_feat_2', '<strong>10 GB</strong> Media Storage')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.elite_feat_3', 'Sertifikat digital otomatis dengan QR verifikasi')"></span>
+                        <span v-html="t('organizer_subscription.elite_feat_3', 'Akses <strong>Semua Fitur</strong>')"></span>
                     </div>
                 </div>
             </div>
@@ -378,14 +410,14 @@ async function buyQuota() {
                                 <div class="pt-3 border-t border-slate-200/60 mt-3">
                                     <div class="flex items-center gap-2 mb-0.5">
                                         <span class="text-xs text-slate-400 font-bold line-through">
-                                            Rp 49.900
+                                            {{ isEn ? '$3.00' : 'Rp 49.900' }}
                                         </span>
                                         <span class="text-[9px] font-black capitalize text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
                                             {{ t('organizer_subscription.promo_badge_50', 'Diskon Launching 50%') }}
                                         </span>
                                     </div>
                                     <div class="text-lg font-black text-navy">
-                                        Rp 24.950
+                                        {{ isEn ? '$1.50' : 'Rp 24.999' }}
                                         <span class="text-[10px] font-bold text-slate-500">{{ t('organizer_subscription.per_event', '/ event') }}</span>
                                     </div>
                                     <div class="text-[10px] text-amber-700 font-medium mt-1">
@@ -413,14 +445,14 @@ async function buyQuota() {
                                 <div class="pt-3 border-t border-slate-200/60 mt-3">
                                     <div class="flex items-center gap-2 mb-0.5">
                                         <span class="text-xs text-slate-400 font-bold line-through">
-                                            Rp 79.900
+                                            {{ isEn ? '$7.00' : 'Rp 79.900' }}
                                         </span>
                                         <span class="text-[9px] font-black capitalize text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
                                             {{ t('organizer_subscription.promo_badge_50', 'Diskon Launching 50%') }}
                                         </span>
                                     </div>
                                     <div class="text-lg font-black text-navy">
-                                        Rp 39.950
+                                        {{ isEn ? '$3.50' : 'Rp 39.999' }}
                                         <span class="text-[10px] font-bold text-slate-500">{{ t('organizer_subscription.per_event', '/ event') }}</span>
                                     </div>
                                     <div class="text-[10px] text-amber-700 font-medium mt-1">
@@ -576,12 +608,12 @@ async function buyQuota() {
 
                             <div class="flex justify-between items-center text-slate-300">
                                 <span>{{ t('organizer_subscription.summary_unit_price', 'Harga per Slot') }}</span>
-                                <span class="font-medium text-slate-200">Rp {{ basePrice.toLocaleString('id-ID') }}</span>
+                                <span class="font-medium text-slate-200">{{ formatPrice(basePrice) }}</span>
                             </div>
 
                             <div v-if="discountPct > 0" class="flex justify-between items-center text-primary font-bold">
                                 <span>{{ t('organizer_subscription.summary_discount', 'Diskon Bundle') }} ({{ discountPct }}%)</span>
-                                <span>-Rp {{ Math.round(basePrice * selectedQty * discountPct / 100).toLocaleString('id-ID') }}</span>
+                                <span>-{{ formatPrice(discountAmount) }}</span>
                             </div>
 
                             <div class="flex justify-between items-center text-slate-300">
@@ -594,10 +626,13 @@ async function buyQuota() {
                                     <span class="font-black text-white text-sm">{{ t('organizer_subscription.summary_total', 'Total Tagihan') }}</span>
                                     <div class="text-right">
                                         <div class="text-2xl font-black text-primary tabular-nums">
-                                            Rp {{ totalIDR.toLocaleString('id-ID') }}
+                                            {{ formatPrice(totalAmount) }}
                                         </div>
-                                        <div v-if="selectedPaymentMethod === 'paypal'" class="text-xs font-mono font-bold text-sky-400">
-                                            ~${{ totalUSD }} USD
+                                        <div v-if="!isEn && selectedPaymentMethod === 'paypal'" class="text-xs font-mono font-bold text-sky-400">
+                                            ~${{ (totalAmount / 16000).toFixed(2) }} USD
+                                        </div>
+                                        <div v-else-if="isEn && selectedPaymentMethod === 'mayar'" class="text-xs font-mono font-bold text-sky-400">
+                                            ~Rp {{ Math.round(totalAmount * 16000).toLocaleString('id-ID') }} IDR
                                         </div>
                                     </div>
                                 </div>
@@ -694,7 +729,7 @@ async function buyQuota() {
                                 {{ item.quantity }} {{ t('organizer_subscription.event_unit', 'Event') }}
                             </td>
                             <td class="py-3.5 px-4 sm:px-6 font-black text-navy tabular-nums whitespace-nowrap">
-                                Rp {{ (item.total_amount || item.amount || 0).toLocaleString('id-ID') }}
+                                {{ formatHistoryAmount(item) }}
                             </td>
                             <td class="py-3.5 px-4 sm:px-6 capitalize text-slate-600 font-bold">
                                 {{ item.payment_method === 'paypal' ? 'PayPal' : 'Mayar' }}

@@ -34,8 +34,8 @@
                     <Icon :icon="page.icon" class="text-base" />
                   </div>
                   <div class="flex-1 min-w-0">
-                    <div class="text-sm font-bold text-navy leading-snug" v-html="highlight(page.title)" />
-                    <div class="text-xs text-gray-400 truncate mt-0.5" v-html="highlight(page.description)" />
+                    <div class="text-sm font-bold text-navy leading-snug" v-html="highlight(getPageTitle(page))" />
+                    <div class="text-xs text-gray-400 truncate mt-0.5" v-html="highlight(getPageDesc(page))" />
                   </div>
                   <Icon icon="ph:arrow-right-bold" class="text-xs text-gray-300 shrink-0"
                     :class="i === activeIndex ? 'text-navy' : ''" />
@@ -59,8 +59,8 @@
                     :class="i === activeIndex ? 'bg-primary/10 text-primary border-primary/20' : 'hover:bg-gray-50'">
                     <Icon :icon="page.icon" class="text-base text-gray-400 shrink-0" />
                     <div class="flex-1 min-w-0">
-                      <span class="font-bold text-navy">{{ page.title }}</span>
-                      <span class="text-gray-400 ml-2 truncate hidden sm:inline">{{ page.description }}</span>
+                      <span class="font-bold text-navy">{{ getPageTitle(page) }}</span>
+                      <span class="text-gray-400 ml-2 truncate hidden sm:inline">{{ getPageDesc(page) }}</span>
                     </div>
                     <Icon icon="ph:arrow-right" class="text-xs text-gray-300 shrink-0" />
                   </NuxtLink>
@@ -108,6 +108,22 @@ const { t } = useI18n()
 
 const { user } = useAuth()
 
+const getPageTitle = (page) => {
+  if (page.titleKey) {
+    const val = t(page.titleKey)
+    if (val && val !== page.titleKey) return val
+  }
+  return page.title
+}
+
+const getPageDesc = (page) => {
+  if (page.descriptionKey) {
+    const val = t(page.descriptionKey)
+    if (val && val !== page.descriptionKey) return val
+  }
+  return page.description
+}
+
 // Build the page list based on the logged-in user's role
 const rolePages = computed(() => {
   const role = user.value?.role || user.value?.type
@@ -128,11 +144,15 @@ const results = computed(() => {
   if (!query.value.trim()) return []
   const q = query.value.toLowerCase()
   return rolePages.value
-    .filter(p =>
-      p.title.toLowerCase().includes(q) ||
-      p.description.toLowerCase().includes(q) ||
-      p.keywords.some(k => k.toLowerCase().includes(q))
-    )
+    .filter(p => {
+      const title = getPageTitle(p).toLowerCase()
+      const desc = getPageDesc(p).toLowerCase()
+      return title.includes(q) ||
+        desc.includes(q) ||
+        p.title.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.keywords.some(k => k.toLowerCase().includes(q))
+    })
     .slice(0, 8)
 })
 

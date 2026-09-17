@@ -100,13 +100,10 @@
                     </div>
                 </form>
 
-                <div class="relative mt-8 font-body">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-200"></div>
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-4 bg-white text-slate-500 font-medium font-body">{{ t('auth.login.or_login_with') }}</span>
-                    </div>
+                <div class="relative my-8 flex items-center gap-4 font-body">
+                    <div class="flex-1 border-t border-slate-200"></div>
+                    <span class="text-xs sm:text-sm text-slate-400 font-medium font-body shrink-0">{{ t('auth.login.or_login_with') }}</span>
+                    <div class="flex-1 border-t border-slate-200"></div>
                 </div>
 
                 <div class="mt-6">
@@ -119,7 +116,7 @@
                 <div class="mt-8 text-center text-sm text-slate-600 font-body">
                     {{ t('auth.login.dont_have_account') }}
                     <NuxtLink to="/auth/register"
-                        class="font-black text-navy hover:text-primary-hover hover:underline transition-all">{{ t('auth.login.register_here') }}
+                        class="font-black text-navy hover:text-primary transition-colors">{{ t('auth.login.register_here') }}
                     </NuxtLink>
                 </div>
             </div>
@@ -135,7 +132,7 @@ import { useFormValidation } from '~/composables/useFormValidation'
 import { useToast } from '~/composables/useToast'
  
 const route = useRoute()
-const { t } = useI18n()
+const { t, te } = useI18n()
 const { login, loginWithEmail, isLoggedIn, user, initializeAuth } = useAuth()
 const toast = useToast()
 
@@ -162,7 +159,19 @@ watch([isLoggedIn, user], () => {
 
 const isDev = computed(() => {
     if (process.client) {
-        return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || import.meta.dev
+        const h = window.location.hostname
+        return (
+            h === 'localhost' ||
+            h === '127.0.0.1' ||
+            h.includes('dev.archeris.net') ||
+            h.includes('dev.') ||
+            h.includes('staging') ||
+            h.endsWith('.local') ||
+            h.startsWith('192.168.') ||
+            h.startsWith('10.') ||
+            route.query.dev === 'true' ||
+            import.meta.dev
+        )
     }
     return import.meta.dev
 })
@@ -281,21 +290,41 @@ const handleEmailAuth = async () => {
             redirect = '/dashboard/archer/tournaments'
         }
         window.location.href = redirect
-    } catch (err) {
+    } catch (err: any) {
         console.error('Auth failed:', err)
-        let errorMessage = 'Invalid email or password'
+        const code = err?.data?.code || err?.response?._data?.code
+        const serverError = err?.data?.error || err?.response?._data?.error || err?.message
 
-        // Handle different error types
-        if (err.status === 401 || err.statusCode === 401) {
-            errorMessage = 'Invalid email or password. Please try again.'
+        let errorMessage = ''
+
+        if (code && te(`auth.errors.${code}`)) {
+            errorMessage = t(`auth.errors.${code}`)
+        } else if (err.status === 404 || err.statusCode === 404 || code === 'user_not_found') {
+            errorMessage = te('auth.errors.user_not_found')
+                ? t('auth.errors.user_not_found')
+                : (serverError || 'Account not found. Please check your email or register.')
+        } else if (code === 'invalid_password') {
+            errorMessage = te('auth.errors.invalid_password')
+                ? t('auth.errors.invalid_password')
+                : (serverError || 'Incorrect password. Please try again.')
+        } else if (code === 'account_inactive' || err.status === 403 || err.statusCode === 403) {
+            errorMessage = te('auth.errors.account_inactive')
+                ? t('auth.errors.account_inactive')
+                : (serverError || 'Your account is inactive or has been suspended.')
+        } else if (code === 'use_google_signin') {
+            errorMessage = te('auth.errors.use_google_signin')
+                ? t('auth.errors.use_google_signin')
+                : (serverError || 'This account was registered with Google. Please sign in with Google.')
+        } else if (serverError) {
+            errorMessage = serverError
         } else if (err.status === 500 || err.statusCode === 500) {
-            errorMessage = 'A server error occurred. Please try again later.'
-        } else if (err.data?.error) {
-            errorMessage = err.data.error
-        } else if (err.response?._data?.error) {
-            errorMessage = err.response._data.error
-        } else if (err.message) {
-            errorMessage = err.message
+            errorMessage = te('auth.errors.server_error')
+                ? t('auth.errors.server_error')
+                : 'A server error occurred. Please try again later.'
+        } else {
+            errorMessage = te('auth.errors.invalid_credentials')
+                ? t('auth.errors.invalid_credentials')
+                : 'Invalid email or password. Please try again.'
         }
 
         toast.error(errorMessage)

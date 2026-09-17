@@ -262,42 +262,56 @@ const formattedFopDays = computed(() => {
     ]
   }
 
-  const resolvedPreset = presets[tId] || presets[String(props.tournament?.slug)] || presets[String(props.tournament?.id)] || presets['27311']
-  if (resolvedPreset) {
-    return resolvedPreset
-  }
-
+  // 1. If live scraped FOP data is available, parse and format it
   if (Array.isArray(props.fopData) && props.fopData.length > 0) {
     return props.fopData.map((d, dIdx) => ({
-      label: d.day_name || d.date || `Day ${dIdx + 1}`,
-      date: d.date || '',
+      label: d.date_label || d.day_name || d.date || `Day ${dIdx + 1}`,
+      date: d.date_label || d.date || '',
       sessions: (d.sessions || []).map((s, sIdx) => ({
-        time: s.time || s.time_slot || '08:00 - 11:00',
-        title: s.name || s.session_name || `Session ${sIdx + 1}`,
-        matchType: s.type || 'Competition Round',
-        format: s.format || '5 ends of 3 arrows',
-        targetCount: s.target_max || s.target_count || 20,
+        time: s.time_slot || s.time || '08:00 - 11:00',
+        title: s.session_type || s.name || s.session_name || `Session ${sIdx + 1}`,
+        matchType: s.session_type || s.type || 'Competition Round',
+        format: s.notes || s.format || 'Official Match',
+        targetCount: s.target_max ? (s.target_max - (s.target_min || 1) + 1) : 32,
         targetFaceSpans: [
-          { start: 1, end: s.target_max || 20, label: 'Complete (1 - 10 +X) 122 cm' }
+          { start: s.target_min || 1, end: s.target_max || 32, label: s.target_face || 'Standard Target Face' }
         ],
-        blocks: [
-          {
-            targetStart: 1,
-            targetEnd: s.target_max || 20,
-            targetCount: s.target_max || 20,
-            distance: s.distance || '50m',
-            divisionCode: s.division || 'OPEN',
-            divisionName: s.division_name || 'Open Division',
-            phase: s.phase || 'Match Round',
-            targetFace: s.target_face || 'Complete 122cm',
-            themeColor: '#16a34a'
-          }
-        ]
+        blocks: (s.allocations && s.allocations.length > 0)
+          ? s.allocations.map(a => ({
+              targetStart: a.target_from,
+              targetEnd: a.target_to,
+              targetCount: a.target_to - a.target_from + 1,
+              distance: a.distance || a.dist || '',
+              divisionCode: a.category || a.cat || '',
+              divisionName: a.category || a.cat || 'Official Category',
+              phase: a.phase || '',
+              targetFace: s.target_face || '',
+              themeColor: '#16a34a'
+            }))
+          : [
+              {
+                targetStart: s.target_min || 1,
+                targetEnd: s.target_max || 32,
+                targetCount: s.target_max ? (s.target_max - (s.target_min || 1) + 1) : 32,
+                distance: s.distance || '50m',
+                divisionCode: s.division || 'OPEN',
+                divisionName: s.division_name || 'Open Division',
+                phase: s.phase || 'Match Round',
+                targetFace: s.target_face || 'Complete 122cm',
+                themeColor: '#16a34a'
+              }
+            ]
       }))
     }))
   }
 
-  return presets['27311']
+  // 2. Check for explicit tournament preset only if matched specifically
+  const resolvedPreset = presets[tId] || presets[String(props.tournament?.slug)]
+  if (resolvedPreset) {
+    return resolvedPreset
+  }
+
+  return []
 })
 
 const currentDay = computed(() => {

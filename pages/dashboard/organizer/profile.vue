@@ -43,21 +43,54 @@
               </h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.name" :label="t('organizer.profile.name_label')" :placeholder="t('organizer.profile.name_placeholder')" required />
+              <BaseInput 
+                v-model="form.name" 
+                :label="t('organizer.profile.name_label')" 
+                :placeholder="t('organizer.profile.name_placeholder')" 
+                required 
+                :error="errors.name"
+                @update:model-value="validateName"
+                @blur="validateName"
+              />
 
               <!-- Slug URL -->
-              <BaseInput v-model="form.slug" :label="t('organizer.profile.slug_label')" :placeholder="t('organizer.profile.slug_placeholder')"
-                :helper="t('organizer.profile.slug_helper')" />
+              <BaseInput 
+                v-model="form.slug" 
+                :label="t('organizer.profile.slug_label')" 
+                :placeholder="t('organizer.profile.slug_placeholder')"
+                :helper="t('organizer.profile.slug_helper')" 
+                required
+                :error="errors.slug"
+                @update:model-value="validateSlug"
+                @blur="validateSlug"
+              />
 
               <!-- Country Select -->
-              <BaseSelect v-model="form.country" :label="t('organizer.profile.country_label')" :placeholder="t('organizer.profile.country_placeholder')" required
-                :items="countries" searchable />
+              <BaseSelect 
+                v-model="form.country" 
+                :label="t('organizer.profile.country_label')" 
+                :placeholder="t('organizer.profile.country_placeholder')" 
+                required
+                :error="errors.country"
+                :items="countries" 
+                searchable 
+                @update:model-value="validateCountry"
+              />
 
               <!-- Registration Number / SK -->
-              <BaseInput v-model="form.registration_number" :label="t('organizer.profile.reg_number_label')" :placeholder="t('organizer.profile.reg_number_placeholder')" />
+              <BaseInput 
+                v-model="form.registration_number" 
+                :label="t('organizer.profile.reg_number_label')" 
+                :placeholder="t('organizer.profile.reg_number_placeholder')" 
+              />
 
-              <!-- Established Date -->
-              <BaseInput v-model="form.established_date" type="date" :label="t('organizer.profile.est_date_label')" />
+              <!-- Established Date (BaseDatePicker) -->
+              <BaseDatePicker 
+                v-model="form.established_date" 
+                :label="t('organizer.profile.est_date_label')" 
+                :placeholder="t('organizer.profile.est_date_placeholder', 'Select established date')"
+                clearable 
+              />
             </div>
             <div>
               <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.about_label') }}</label>
@@ -140,11 +173,30 @@
               <Icon icon="ph:phone-bold" class="text-primary text-xl" /> {{ t('organizer.profile.contact_section') }}
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.whatsapp_no" :label="t('organizer.profile.whatsapp_label')" :placeholder="t('organizer.profile.whatsapp_placeholder')"
-                required />
-              <BaseInput v-model="form.email" :label="t('organizer.profile.email_label')" type="email" :placeholder="t('organizer.profile.email_placeholder')"
-                disabled />
-              <BaseInput v-model="form.website" :label="t('organizer.profile.website_label')" :placeholder="t('organizer.profile.website_placeholder')" />
+              <BaseInput 
+                v-model="form.whatsapp_no" 
+                :label="t('organizer.profile.whatsapp_label')" 
+                :placeholder="t('organizer.profile.whatsapp_placeholder')"
+                required 
+                :error="errors.whatsapp_no"
+                @update:model-value="validateWhatsApp"
+                @blur="validateWhatsApp"
+              />
+              <BaseInput 
+                v-model="form.email" 
+                :label="t('organizer.profile.email_label')" 
+                type="email" 
+                :placeholder="t('organizer.profile.email_placeholder')"
+                disabled 
+              />
+              <BaseInput 
+                v-model="form.website" 
+                :label="t('organizer.profile.website_label')" 
+                :placeholder="t('organizer.profile.website_placeholder')" 
+                :error="errors.website"
+                @update:model-value="validateWebsite"
+                @blur="validateWebsite"
+              />
             </div>
             <BaseTextarea v-model="form.address" :label="t('organizer.profile.address_label')" rows="3"
               :placeholder="t('organizer.profile.address_placeholder')" />
@@ -368,23 +420,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Public Profile Link -->
-        <div
-          class="bg-gradient-to-br from-navy to-navy-light rounded-3xl p-6 text-white shadow-md shadow-navy/20 relative overflow-hidden group">
-          <Icon icon="ph:broadcast-bold"
-            class="absolute -right-4 -top-4 text-8xl text-white/5 -rotate-12 group-hover:rotate-0 transition-transform duration-700" />
-          <h3 class="font-black mb-2 flex items-center gap-2 relative z-10">
-            {{ t('organizer.profile.public_profile') }}
-            <Icon icon="ph:check-circle-fill" class="text-primary" />
-          </h3>
-          <div class="text-xs text-blue-200 mb-6 relative z-10 leading-relaxed font-medium">{{ t('organizer.profile.public_profile_desc') }}</div>
-          <NuxtLink v-if="form.slug" :to="`/organizer/${form.slug}`" target="_blank"
-            class="relative z-10 block w-full py-3.5 bg-primary text-navy font-black rounded-2xl text-center hover:bg-primary-hover hover:scale-[1.02] transition-all shadow-md active:scale-95">
-            {{ t('organizer.profile.view_public_page') }}
-          </NuxtLink>
-          <div v-else class="text-xs text-blue-300 italic relative z-10">{{ t('organizer.profile.slug_not_set') }}</div>
-        </div>
       </div>
     </div>
 
@@ -402,6 +437,7 @@ import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { useFormValidation } from '~/composables/useFormValidation'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 
 const countries = ref([
@@ -434,6 +470,36 @@ const { get, put } = useApi()
 const { user, organizerProfile } = useAuth()
 const toast = useToast()
 
+const { errors, validate, rules } = useFormValidation()
+
+const validateName = () => validate('name', form.name, [
+  rules.required(t('organizer.profile.validation.name_required', 'Organization name is required')),
+  rules.minLength(2, t('organizer.profile.validation.name_min', 'Organization name must be at least 2 characters'))
+])
+
+const validateSlug = () => validate('slug', form.slug, [
+  rules.required(t('organizer.profile.validation.slug_required', 'Slug is required')),
+  rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, t('organizer.profile.validation.slug_invalid', 'Slug must contain only lowercase letters, numbers, and hyphens'))
+])
+
+const validateCountry = () => validate('country', form.country, [
+  rules.required(t('organizer.profile.validation.country_required', 'Country is required'))
+])
+
+const validateWhatsApp = () => validate('whatsapp_no', form.whatsapp_no, [
+  rules.required(t('organizer.profile.validation.whatsapp_required', 'WhatsApp number is required')),
+  rules.pattern(/^(\+?[0-9]{8,16})$/, t('organizer.profile.validation.whatsapp_invalid', 'Please enter a valid WhatsApp phone number (8-16 digits)'))
+])
+
+const validateWebsite = () => {
+  if (!form.website || !form.website.trim()) {
+    errors.website = null
+    return true
+  }
+  return validate('website', form.website, [
+    rules.pattern(/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/, t('organizer.profile.validation.website_invalid', 'Please enter a valid website URL'))
+  ])
+}
 
 const saving = ref(false)
 const activeTab = ref('general')
@@ -689,6 +755,22 @@ const loadProfile = async () => {
 }
 
 const saveProfile = async () => {
+  const isNameValid = validateName()
+  const isSlugValid = validateSlug()
+  const isCountryValid = validateCountry()
+  const isWhatsappValid = validateWhatsApp()
+  const isWebsiteValid = validateWebsite()
+
+  if (!isNameValid || !isSlugValid || !isCountryValid || !isWhatsappValid || !isWebsiteValid) {
+    if (!isNameValid || !isSlugValid || !isCountryValid) {
+      activeTab.value = 'general'
+    } else if (!isWhatsappValid || !isWebsiteValid) {
+      activeTab.value = 'contact'
+    }
+    toast.error(t('organizer.profile.validation_failed', 'Please correct the highlighted form errors'))
+    return
+  }
+
   saving.value = true
   try {
     await put('/organizers/me', {

@@ -91,7 +91,7 @@
           <div class="font-black text-sm text-navy dark:text-white truncate max-w-full">{{ leaderboard[1]?.archer_name }}</div>
           <div class="text-[11px] text-slate-400 font-medium truncate max-w-full">{{ leaderboard[1]?.club_name || '-' }}</div>
           <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700 w-full flex justify-between items-center text-xs">
-            <span class="text-slate-400 font-bold">Total Score</span>
+            <span class="text-slate-400 font-bold">{{ t('leaderboard_page.col_score', 'Total Skor') }}</span>
             <span class="font-black text-navy dark:text-white text-base">{{ leaderboard[1]?.total_score }}</span>
           </div>
         </div>
@@ -110,7 +110,7 @@
           <div class="font-black text-base text-navy dark:text-white truncate max-w-full">{{ leaderboard[0]?.archer_name }}</div>
           <div class="text-xs text-slate-400 font-medium truncate max-w-full">{{ leaderboard[0]?.club_name || '-' }}</div>
           <div class="mt-4 pt-3 border-t border-amber-200/50 dark:border-slate-700 w-full flex justify-between items-center text-xs">
-            <span class="text-slate-400 font-bold">10s: {{ leaderboard[0]?.total_10x || 0 }} | X: {{ leaderboard[0]?.total_x || 0 }}</span>
+            <span class="text-slate-400 font-bold">{{ t('leaderboard_page.stats_summary', { tens: leaderboard[0]?.total_10x || 0, x: leaderboard[0]?.total_x || 0 }) }}</span>
             <span class="font-black text-amber-600 dark:text-amber-400 text-xl">{{ leaderboard[0]?.total_score }}</span>
           </div>
         </div>
@@ -125,7 +125,7 @@
           <div class="font-black text-sm text-navy dark:text-white truncate max-w-full">{{ leaderboard[2]?.archer_name }}</div>
           <div class="text-[11px] text-slate-400 font-medium truncate max-w-full">{{ leaderboard[2]?.club_name || '-' }}</div>
           <div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700 w-full flex justify-between items-center text-xs">
-            <span class="text-slate-400 font-bold">Total Score</span>
+            <span class="text-slate-400 font-bold">{{ t('leaderboard_page.col_score', 'Total Skor') }}</span>
             <span class="font-black text-navy dark:text-white text-base">{{ leaderboard[2]?.total_score }}</span>
           </div>
         </div>

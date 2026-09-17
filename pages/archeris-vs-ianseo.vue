@@ -62,12 +62,12 @@
                             <div>
                                 <h3 class="text-xl font-black tracking-tight text-white">Archeris.net</h3>
                                 <span class="inline-flex px-2.5 py-0.5 rounded-md bg-primary text-navy font-black text-[10px] tracking-wider mt-0.5">
-                                    Modern & Cloud-Native
+                                    {{ $t('home.comparison_page.summary_archeris_tag', 'Modern & Cloud-Native') }}
                                 </span>
                             </div>
                         </div>
                         <p class="text-xs text-slate-300 leading-relaxed font-medium relative z-10">
-                            Integrated archery tournament management: online registration, automated QRIS/card payments, and cloud-native live scoring.
+                            {{ $t('home.comparison_page.summary_archeris_desc', 'Integrated archery tournament management: online registration, automated payments, and real-time live scoring via mobile browser.') }}
                         </p>
                     </div>
 
@@ -87,12 +87,12 @@
                             <div>
                                 <h3 class="text-xl font-black tracking-tight text-slate-700">Ianseo.net</h3>
                                 <span class="inline-flex px-2.5 py-0.5 rounded-md bg-slate-200 text-slate-600 font-bold text-[10px] tracking-wider mt-0.5">
-                                    Legacy Desktop / MySQL
+                                    {{ $t('home.comparison_page.summary_ianseo_tag', 'Desktop / On-Premise') }}
                                 </span>
                             </div>
                         </div>
                         <p class="text-xs text-slate-500 leading-relaxed">
-                            Conventional desktop application for World Archery formats requiring local MySQL server setups, wired LAN cables, and manual printouts.
+                            {{ $t('home.comparison_page.summary_ianseo_desc', 'Official World Archery desktop application requiring local database server installation (MySQL) and on-field local network setup.') }}
                         </p>
                     </div>
                 </div>
@@ -181,10 +181,10 @@
                                         <Icon :icon="item.icon" class="text-lg text-navy" />
                                     </div>
                                     <div>
-                                        <h4 class="font-black text-navy text-sm leading-snug">
+                                        <h4 class="font-black text-navy text-sm sm:text-base leading-snug">
                                             {{ $t(`home.comparison.${item.nameKey}`) }}
                                         </h4>
-                                        <span class="text-[10px] font-bold text-slate-400 tracking-wider">
+                                        <span class="text-xs font-bold text-slate-400 tracking-wide">
                                             {{ item.tag }}
                                         </span>
                                     </div>
@@ -192,36 +192,36 @@
                             </div>
 
                             <!-- Archeris.net Card (4 cols) -->
-                            <div class="md:col-span-4 rounded-xl p-4 bg-primary/5 border border-primary/25 shadow-xs flex flex-col justify-between">
-                                <div class="space-y-1.5">
+                            <div class="md:col-span-4 rounded-2xl p-4 sm:p-5 bg-primary/5 border border-primary/25 shadow-xs flex flex-col justify-between">
+                                <div class="space-y-2">
                                     <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-1.5 text-navy font-black text-xs">
-                                            <Icon icon="ph:check-circle-fill" class="text-emerald-600 text-sm shrink-0" />
+                                        <div class="flex items-center gap-1.5 text-navy font-black text-xs sm:text-sm">
+                                            <Icon icon="ph:check-circle-fill" class="text-emerald-600 text-base shrink-0" />
                                             <span>Archeris.net</span>
                                         </div>
-                                        <span class="text-[9px] bg-primary text-navy font-black px-2 py-0.5 rounded-md tracking-wider shadow-2xs">
+                                        <span class="text-[10px] sm:text-xs bg-primary text-navy font-bold px-2 py-0.5 rounded-md tracking-wide shadow-2xs">
                                             {{ $t('home.comparison_page.badge_cloud_pro') }}
                                         </span>
                                     </div>
-                                    <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
                                         {{ $t(`home.comparison.${item.archerisKey}`) }}
                                     </p>
                                 </div>
                             </div>
 
                             <!-- Ianseo.net Card (4 cols) -->
-                            <div class="md:col-span-4 rounded-xl p-4 bg-slate-50 border border-slate-100 flex flex-col justify-between">
-                                <div class="space-y-1.5">
+                            <div class="md:col-span-4 rounded-2xl p-4 sm:p-5 bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
+                                <div class="space-y-2">
                                     <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-1.5 text-slate-500 font-bold text-xs">
-                                            <Icon icon="ph:minus-circle-bold" class="text-slate-400 text-sm shrink-0" />
+                                        <div class="flex items-center gap-1.5 text-slate-600 font-bold text-xs sm:text-sm">
+                                            <Icon icon="ph:minus-circle-bold" class="text-slate-400 text-base shrink-0" />
                                             <span>Ianseo.net</span>
                                         </div>
-                                        <span class="text-[9px] bg-slate-200 text-slate-600 font-bold px-2 py-0.5 rounded-md tracking-wider">
+                                        <span class="text-[10px] sm:text-xs bg-slate-200 text-slate-600 font-bold px-2 py-0.5 rounded-md tracking-wide">
                                             {{ $t('home.comparison_page.badge_legacy') }}
                                         </span>
                                     </div>
-                                    <p class="text-xs text-slate-500 leading-relaxed font-normal">
+                                    <p class="text-xs sm:text-sm text-slate-500 leading-relaxed font-normal">
                                         {{ $t(`home.comparison.${item.ianseoKey}`) }}
                                     </p>
                                 </div>
@@ -233,31 +233,6 @@
 
             </div>
 
-            <!-- CTA Banner -->
-            <section class="mt-12">
-                <div class="bg-navy text-white rounded-3xl p-8 md:p-12 text-center relative overflow-hidden border border-primary/20 shadow-xl">
-                    <div class="absolute inset-0"
-                        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.12);"></div>
-                    <h2 class="text-white text-2xl md:text-4xl font-black tracking-tight mb-4 relative z-10">
-                        {{ $t('home.comparison_page.cta_title') }}
-                    </h2>
-                    <p class="text-slate-300 text-xs sm:text-sm font-medium mb-8 relative z-10 max-w-xl mx-auto leading-relaxed">
-                        {{ $t('home.comparison_page.cta_desc') }}
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-3.5 justify-center relative z-10">
-                        <NuxtLink to="/auth/register">
-                            <BaseButton variant="primary" size="lg" icon="ph:user-plus-bold">
-                                {{ $t('home.comparison_page.cta_btn') }}
-                            </BaseButton>
-                        </NuxtLink>
-                        <NuxtLink to="/">
-                            <BaseButton variant="outline" size="lg" icon="ph:house-bold">
-                                {{ $t('home.comparison_page.back_home') }}
-                            </BaseButton>
-                        </NuxtLink>
-                    </div>
-                </div>
-            </section>
 
         </main>
     </div>
@@ -322,16 +297,16 @@ const featuresList = [
         archerisKey: 'f1_archeris',
         ianseoKey: 'f1_ianseo',
         icon: 'ph:globe-hemisphere-east-bold',
-        tag: 'Cloud vs Desktop'
+        tag: 'Web Browser'
     },
     {
         id: 2,
-        category: 'payment',
+        category: 'infra',
         nameKey: 'f2_name',
         archerisKey: 'f2_archeris',
         ianseoKey: 'f2_ianseo',
-        icon: 'ph:wallet-bold',
-        tag: 'Payment Gateway'
+        icon: 'ph:broadcast-bold',
+        tag: 'Mobile Scoring'
     },
     {
         id: 3,
@@ -339,35 +314,35 @@ const featuresList = [
         nameKey: 'f3_name',
         archerisKey: 'f3_archeris',
         ianseoKey: 'f3_ianseo',
-        icon: 'ph:coins-bold',
-        tag: 'Pricing Model'
+        icon: 'ph:user-plus-bold',
+        tag: 'Online Signups'
     },
     {
         id: 4,
-        category: 'tournament',
+        category: 'payment',
         nameKey: 'f4_name',
         archerisKey: 'f4_archeris',
         ianseoKey: 'f4_ianseo',
-        icon: 'ph:chart-line-up-bold',
-        tag: 'Live Dashboard'
+        icon: 'ph:credit-card-bold',
+        tag: 'Payments'
     },
     {
         id: 5,
-        category: 'infra',
+        category: 'tournament',
         nameKey: 'f5_name',
         archerisKey: 'f5_archeris',
         ianseoKey: 'f5_ianseo',
-        icon: 'ph:arrows-out-cardinal-bold',
-        tag: 'Simplicity'
+        icon: 'ph:target-bold',
+        tag: 'Target Lanes'
     },
     {
         id: 6,
-        category: 'output',
+        category: 'tournament',
         nameKey: 'f6_name',
         archerisKey: 'f6_archeris',
         ianseoKey: 'f6_ianseo',
-        icon: 'ph:identification-badge-bold',
-        tag: 'E-Badge & Pass'
+        icon: 'ph:tree-structure-bold',
+        tag: 'Match Brackets'
     },
     {
         id: 7,
@@ -375,71 +350,17 @@ const featuresList = [
         nameKey: 'f7_name',
         archerisKey: 'f7_archeris',
         ianseoKey: 'f7_ianseo',
-        icon: 'ph:broadcast-bold',
-        tag: 'Field Operations'
+        icon: 'ph:chart-line-up-bold',
+        tag: 'Live Scores'
     },
     {
         id: 8,
-        category: 'infra',
+        category: 'output',
         nameKey: 'f8_name',
         archerisKey: 'f8_archeris',
         ianseoKey: 'f8_ianseo',
-        icon: 'ph:device-mobile-camera-bold',
-        tag: 'Public Event Portal'
-    },
-    {
-        id: 9,
-        category: 'tournament',
-        nameKey: 'f9_name',
-        archerisKey: 'f9_archeris',
-        ianseoKey: 'f9_ianseo',
-        icon: 'ph:git-branch-bold',
-        tag: 'Divisions & Classes'
-    },
-    {
-        id: 10,
-        category: 'tournament',
-        nameKey: 'f10_name',
-        archerisKey: 'f10_archeris',
-        ianseoKey: 'f10_ianseo',
-        icon: 'ph:calculator-bold',
-        tag: 'Scorekeeper App'
-    },
-    {
-        id: 11,
-        category: 'payment',
-        nameKey: 'f11_name',
-        archerisKey: 'f11_archeris',
-        ianseoKey: 'f11_ianseo',
-        icon: 'ph:user-check-bold',
-        tag: 'Athlete Status'
-    },
-    {
-        id: 12,
-        category: 'payment',
-        nameKey: 'f12_name',
-        archerisKey: 'f12_archeris',
-        ianseoKey: 'f12_ianseo',
-        icon: 'ph:users-three-bold',
-        tag: 'Participant Sync'
-    },
-    {
-        id: 13,
-        category: 'tournament',
-        nameKey: 'f13_name',
-        archerisKey: 'f13_archeris',
-        ianseoKey: 'f13_ianseo',
-        icon: 'ph:target-bold',
-        tag: 'Target Allocation'
-    },
-    {
-        id: 14,
-        category: 'output',
-        nameKey: 'f14_name',
-        archerisKey: 'f14_archeris',
-        ianseoKey: 'f14_ianseo',
         icon: 'ph:file-pdf-bold',
-        tag: 'PDF & Scoresheets'
+        tag: 'PDFs & Certificates'
     }
 ]
 

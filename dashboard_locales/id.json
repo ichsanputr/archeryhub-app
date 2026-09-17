@@ -10,11 +10,19 @@
     "my_subscription": "Subscription Saya",
     "subtitle": "Kelola paket, pemakaian, dan riwayat tagihan Anda."
   },
+  "doc_search": {
+    "placeholder": "Cari dokumentasi & fitur...",
+    "no_results": "Tidak ditemukan hasil untuk",
+    "quick_navigation": "Navigasi Cepat",
+    "to_navigate": "navigasi",
+    "to_select": "pilih",
+    "to_close": "tutup"
+  },
   "sidebar": {
     "overview": "Overview",
     "activity": "Turnamen",
     "event": "Turnamen",
-    "my_events": "Turnamen Saya",
+    "my_events": "Event Saya",
     "my_certifications": "Sertifikat",
     "commerce": "Belanja",
     "payments": "Pembayaran",
@@ -32,7 +40,7 @@
     "organizer": "Penyelenggara",
     "scorekeeper": "Scorekeeper",
     "payment_methods": "Metode Bayar",
-    "reports": "Laporan",
+    "reports": "Laporan Keuangan",
     "finance": "Keuangan",
     "earnings": "Pendapatan",
     "balance": "Saldo",
@@ -42,7 +50,7 @@
     "event_overview": "Ringkasan Turnamen",
     "my_registration": "Pendaftaran & Tiket",
     "my_target": "Target & Jadwal",
-    "leaderboard": "Leaderboard",
+    "leaderboard": "Papan Skor",
     "registration_section": "Pendaftaran",
     "competition_section": "Kompetisi",
     "results_section": "Hasil",
@@ -51,9 +59,9 @@
     "summary": "Ringkasan",
     "event_page": "Pengaturan Turnamen",
     "participants": "Peserta",
-    "teams": "Tim",
+    "teams": "Tim & Beregu",
     "competition_categories": "Kategori",
-    "targets": "Target",
+    "targets": "Atur Bantalan",
     "qualification": "Kualifikasi",
     "elimination": "Eliminasi",
     "package": "Paket",
@@ -69,7 +77,16 @@
       "seller": "Toko / Seller",
       "scorekeeper": "Scorekeeper",
       "user": "Anggota"
-    }
+    },
+    "events": "Turnamen",
+    "home": "Beranda",
+    "dashboard": "Dashboard",
+    "notifications": "Notifikasi",
+    "wallet": "Dompet Saldo",
+    "scoring": "Scoring",
+    "schedule": "Jadwal",
+    "categories": "Kategori Lomba",
+    "packages": "Paket EO"
   },
   "archer_certificates": {
     "breadcrumb": "Sertifikat",
@@ -106,7 +123,9 @@
     "share": "Bagikan",
     "copy_link": "Salin Tautan",
     "link_copied": "Tautan sertifikat berhasil disalin!",
-    "official_badge": "Sertifikat Digital Resmi"
+    "official_badge": "Sertifikat Digital Resmi",
+    "verified_desc": "Sertifikat ini telah terdaftar resmi dalam sistem Archeris.net.",
+    "btn_overview": "Kembali ke Ringkasan Event"
   },
   "common": {
     "loading_dashboard": "Memuat dashboard...",
@@ -122,11 +141,20 @@
     "news": "Berita",
     "create": "Buat Baru",
     "detail": "Detail",
-    "edit": "Edit",
+    "edit": "Ubah",
     "back": "Kembali",
     "delete": "Hapus",
-    "close": "Close",
-    "free": "Gratis"
+    "close": "Tutup",
+    "free": "Gratis",
+    "grid_view": "Tampilan Grid",
+    "list_view": "Tampilan Daftar",
+    "copy": "Salin",
+    "save": "Simpan",
+    "confirm": "Konfirmasi",
+    "actions": "Aksi",
+    "status": "Status",
+    "search": "Cari",
+    "filter": "Filter"
   },
   "stats": {
     "total_products": "Total Produk",
@@ -206,7 +234,9 @@
     "tab_account": "Profil Akun",
     "tab_notifications": "Notifikasi",
     "theme_desc": "Tema tampilan untuk dashboard",
-    "theme_save_hint": "Tema yang dipilih akan tersimpan di preferensi tampilan dashboard Anda."
+    "theme_save_hint": "Tema yang dipilih akan tersimpan di preferensi tampilan dashboard Anda.",
+    "password_set_label": "Password telah aktif",
+    "password_not_set_label": "Belum ada password (Login via OAuth)"
   },
   "tabs": {
     "security": "Keamanan",
@@ -947,7 +977,8 @@
       "archer": "Atlet",
       "score": "Skor",
       "active": "Aktif",
-      "completed": "Selesai"
+      "completed": "Selesai",
+      "completion_scoring": "Tingkat Kelengkapan Skor"
     },
     "expired_banner": {
       "title": "Paket Turnamen Anda Telah Habis",
@@ -964,6 +995,12 @@
     },
     "scorekeepers": {
       "select_status": "Pilih Status"
+    },
+    "my_qualification": "Hasil Kualifikasi Saya",
+    "header": {
+      "search_pages": "Cari halaman",
+      "back_to_dashboard": "Kembali ke Dashboard",
+      "event_management": "Manajemen Turnamen"
     }
   },
   "cart": {
@@ -1175,10 +1212,55 @@
     "error_date_order": "Error Date Order",
     "toast_create_warning": "Toast Create Warning",
     "toast_create_success": "Toast Create Success",
-    "toast_create_failed": "Toast Create Failed"
+    "toast_create_failed": "Toast Create Failed",
+    "quota_section_title": "Pilihan Paket Kuota Event",
+    "quota_balance_label": "Saldo Kuota Anda",
+    "quota_unit": "Kuota",
+    "buy_quota_btn": "Beli / Tambah Kuota",
+    "free_badge": "Bonus Awal (20 Kuota)",
+    "free_tier_name": "Free Tier",
+    "free_tier_desc": "Event Latihan / Internal Klub",
+    "max_50_participants": "Maks. 50 Peserta",
+    "max_200_participants": "Maks. 200 Peserta",
+    "unlimited_participants": "Peserta Tanpa Batas",
+    "unlimited_categories": "Kategori Tanpa Batas",
+    "unlimited_scorekeepers": "Scorekeeper Tanpa Batas",
+    "free_storage": "100 MB Penyimpanan Media",
+    "standard_storage": "500 MB Penyimpanan Media",
+    "elite_storage": "5 GB Penyimpanan Media",
+    "quota_empty": "Kuota Habis",
+    "use_label": "Gunakan",
+    "quota_remaining_label": "Sisa",
+    "quota_use_free": "1 Kuota (Sisa: {count}/20)",
+    "quota_use_standard": "1 Kuota (Sisa: {count})",
+    "quota_use_elite": "1 Kuota (Sisa: {count})",
+    "zero_free_quota": "Sisa 0 Kuota Free",
+    "zero_quota": "Sisa 0 Kuota",
+    "select_standard_elite": "Pilih Standard/Elite",
+    "buy_quota": "Beli Kuota",
+    "standard_badge": "Event Komunitas",
+    "standard_tier_name": "Standard EO",
+    "standard_tier_desc": "Turnamen Daerah / Sirkuit",
+    "elite_badge": "Kejurnas & Open",
+    "elite_tier_name": "Elite EO",
+    "elite_tier_desc": "Turnamen Skala Nasional / Internasional"
   },
   "my_registration": {
     "toast_payment_success": "Toast Payment Success",
+    "qr_checkin_badge": "QR Registrasi Ulang",
+    "ready_to_compete": "Siap Tanding",
+    "important_reregistration_title": "Penting untuk Registrasi Ulang",
+    "important_reregistration_desc": "Tunjukkan QR Code ini kepada panitia meja registrasi saat verifikasi alat di venue untuk konfirmasi kehadiran (Check-in) dan penugasan bantalan tanding.",
+    "categories_unit": "Kategori",
+    "category_unit_single": "Kategori",
+    "send_proof_btn": "Kirim Bukti Transfer",
+    "thb_guidebook": "Buku Petunjuk Teknis",
+    "download_thb_pdf": "Unduh THB Resmi (PDF)",
+    "payment_proof_title": "Bukti Pembayaran",
+    "proof_selected": "Bukti Terpilih ✓",
+    "click_to_upload_proof": "Klik untuk Unggah Bukti Transfer",
+    "uploading": "Mengunggah...",
+    "view_payment_detail": "Lihat Detail Invoice & Pembayaran",
     "mayar_gateway_name": "Mayar Payment Gateway",
     "mayar_instant_secure": "Instan & Otomatis",
     "mayar_supported_desc": "Bayar instan via QRIS, Virtual Account bank, atau Kartu Kredit/Debit internasional (Visa, Mastercard, JCB). Terverifikasi otomatis.",
@@ -1247,7 +1329,6 @@
     "pay_now_paypal": "Bayar Sekarang via PayPal",
     "btn_pay_now_mayar": "Bayar Sekarang via Mayar",
     "btn_pay_now_paypal": "Bayar Sekarang via PayPal",
-    "view_payment_detail": "Lihat Detail Invoice & Pembayaran",
     "title": "Pendaftaran & Tiket",
     "page_title": "Detail Pendaftaran & Tiket Pertandingan",
     "my_events": "Turnamen Saya",
@@ -1273,7 +1354,6 @@
     "registered_categories": "Kategori Turnamen yang Diikuti",
     "fee": "Biaya",
     "field_pass": "Pass Registrasi Lapangan",
-    "ready_to_compete": "Siap Tanding",
     "unverified": "Belum Lunas",
     "qr_checkin_hint": "Tunjukkan kode QR ini kepada panitia meja registrasi saat verifikasi alat di venue.",
     "payment_details_title": "Informasi Pembayaran",
@@ -1361,7 +1441,9 @@
     "highlight_badge": "Sorotan Utama",
     "highlight_max_error": "Maksimal 3 prestasi dapat disorot ke dalam showcase utama.",
     "motto_label": "Motto Atlet / Kutipan Favorit",
-    "motto_placeholder": "Contoh: Fokus, bidik, lepaskan dengan penuh percaya diri."
+    "motto_placeholder": "Contoh: Fokus, bidik, lepaskan dengan penuh percaya diri.",
+    "username_taken": "Username ini sudah digunakan.",
+    "city_placeholder": "Pilih kota domisili"
   },
   "organizer": {
     "balance": {
@@ -2047,10 +2129,19 @@
     "target_label": "Posisi Target",
     "board_label": "Bantalan",
     "session_label": "Sesi",
-    "time_label": "Waktu"
+    "time_label": "Waktu",
+    "target_item": "Bantalan {num}",
+    "position_val": "Posisi {pos}",
+    "venue_label": "Venue Pertandingan",
+    "event_dates_label": "Tanggal Event",
+    "download_thb": "Unduh Petunjuk Teknis (THB)",
+    "whistle_2_desc": "Pemanah gelombang aktif maju menuju garis tembak.",
+    "whistle_1_desc": "Waktu menembak dimulai sesuai durasi babak.",
+    "whistle_3_desc": "Maju ke sasaran bersama untuk mencatat skor & cabut panah.",
+    "whistle_5_desc": "Segera turunkan busur dan amankan anak panah."
   },
   "leaderboard_page": {
-    "nav_event": "Turnamen",
+    "nav_event": "Event",
     "title": "Leaderboard Turnamen",
     "subtitle": "Peringkat kualifikasi langsung dan total skor per kategori",
     "refresh": "Segarkan",
@@ -2061,13 +2152,14 @@
     "col_archer": "Pemanah",
     "col_club": "Klub / Kontingen",
     "col_session": "Sesi",
-    "col_score": "Total Skor"
+    "col_score": "Total Skor",
+    "stats_summary": "10s: {tens} | X: {x}"
   },
   "elimination": {
     "nav_event": "Turnamen",
     "nav_title": "Bagan Eliminasi",
     "title": "Pertandingan Eliminasi Saya",
-    "subtitle": "Bagan pertandingan head-to-head dan hasil",
+    "subtitle": "Skema pertandingan gugur head-to-head dan live skor eliminasi.",
     "status_ready": "Standby",
     "status_active": "Sedang Berjalan",
     "status_champion": "Juara",
@@ -2090,7 +2182,7 @@
     "nav_event": "Turnamen",
     "nav_title": "Kartu Skor Kualifikasi",
     "title": "Kartu Skor Kualifikasi Saya",
-    "subtitle": "Rincian skor rambahan panah dan statistik lengkap",
+    "subtitle": "Perolehan skor seri kualifikasi, statistik 10s/Xs, dan peringkat atlet.",
     "archer": "Pemanah",
     "independent": "Independen",
     "rank_title": "PERINGKAT KUALIFIKASI",
@@ -2183,12 +2275,12 @@
     "faq_subtitle": "Pertanyaan yang Sering Diajukan",
     "faqs_list": [
       {
-        "question": "Bagaimana cara kerja promo gratis paket Standar EO selama 3 bulan?",
-        "answer": "Selama masa promo 3 bulan pertama, Anda dapat mendaftarkan dan menggunakan paket Standar EO secara gratis (Rp 0) tanpa dipungut biaya kuota untuk mempublikasikan turnamen panahan Anda."
+        "question": "Bagaimana cara kerja sistem kuota turnamen?",
+        "answer": "Penyelenggara dapat membeli kuota turnamen secara satuan maupun paket bundle hemat. Setiap 1 kuota turnamen digunakan untuk mempublikasikan dan mengelola 1 turnamen lengkap."
       },
       {
-        "question": "Apa yang terjadi setelah masa promo 3 bulan berakhir?",
-        "answer": "Setelah masa promo 3 bulan berakhir, turnamen yang telah Anda buat tetap aktif dan tidak akan dihapus. Untuk turnamen baru selanjutnya, Anda dapat membeli kuota Standar EO dengan tarif normal Rp 49.900 per turnamen."
+        "question": "Apa perbedaan antara Paket Standard EO dan Elite EO?",
+        "answer": "Paket Standard EO mendukung hingga 200 peserta dan 3 GB media storage per turnamen. Paket Elite EO menyediakan kuota peserta tanpa batas (unlimited) dan 10 GB media storage. Seluruh fitur skoring, sertifikat, dan operasional turnamen terbuka penuh di semua paket."
       },
       {
         "question": "Apakah kuota turnamen yang dibeli memiliki batas kedaluwarsa?",
@@ -2226,8 +2318,8 @@
     "support_standard": "Standar",
     "support_fast": "Dukungan Cepat",
     "support_priority": "Prioritas VIP",
-    "promo_badge": "Promo 3 Bulan Pertama",
-    "promo_subtext": "Gratis masa promo 3 bulan ke depan, setelahnya berlaku tarif normal Rp 49.900/turnamen.",
+    "promo_badge": "Diskon Launching 50%",
+    "promo_subtext": "Diskon launching 50% untuk semua paket.",
     "claim_standard_promo": "Klaim Promo Standar",
     "free_price": "Gratis"
   },
@@ -2249,23 +2341,27 @@
     "free_tier_badge": "Bonus Awal Registrasi",
     "free_tier_title": "Free Tier",
     "free_tier_desc": "Kuota gratis untuk turnamen klub & latihan internal",
-    "free_tier_slot": "/ 20 slot tersedia",
+    "free_tier_slot": "/ 20 slot tersisa",
+    "remaining_slots": "/ 20 slot tersisa",
+    "used_slots": "terpakai",
+    "initial_slots": "Awal: 20 Slot Gratis",
+    "remaining_events": "{quota} Turnamen Gratis Tersedia",
     "free_tier_feat_1": "Maksimal <strong>50 Peserta</strong> per turnamen",
-    "free_tier_feat_2": "Maksimal <strong>2 Kategori Lomba</strong>",
-    "free_tier_feat_3": "<strong>1 Scorekeeper</strong> Digital",
+    "free_tier_feat_2": "<strong>200 MB</strong> Media Storage",
+    "free_tier_feat_3": "Akses <strong>Semua Fitur</strong>",
     "standard_tier_badge": "Paling Populer",
     "standard_title": "Paket Standard",
     "standard_desc": "Ideal untuk kejuaraan daerah & sirkuit panahan",
     "slot_available": "slot turnamen aktif",
-    "std_feat_1": "Hingga <strong>300 Peserta</strong> per turnamen",
-    "std_feat_2": "Kategori lomba & bantalan <strong>Tak Terbatas</strong>",
-    "std_feat_3": "Fitur <strong>Kualifikasi & Eliminasi</strong> Lengkap",
+    "std_feat_1": "Hingga <strong>200 Peserta</strong> per turnamen",
+    "std_feat_2": "<strong>3 GB</strong> Media Storage",
+    "std_feat_3": "Akses <strong>Semua Fitur</strong>",
     "elite_tier_badge": "Skala Nasional",
     "elite_title": "Paket Elite",
     "elite_desc": "Untuk turnamen besar, open championship, & kejurnas",
     "elite_feat_1": "Peserta <strong>Tak Terbatas</strong>",
-    "elite_feat_2": "Live scoring & bagan eliminasi multi-lapangan",
-    "elite_feat_3": "Sertifikat digital otomatis dengan QR verifikasi",
+    "elite_feat_2": "<strong>10 GB</strong> Media Storage",
+    "elite_feat_3": "Akses <strong>Semua Fitur</strong>",
     "step_tier": "1. Pilih Jenis Paket Turnamen",
     "step_qty": "2. Jumlah Kuota Turnamen",
     "step_payment": "3. Metode Pembayaran",
@@ -2439,6 +2535,19 @@
     "no_category_data_desc": "Statistik pendaftaran kategori akan otomatis muncul setelah peserta mendaftar."
   },
   "auth": {
+    "errors": {
+      "user_not_found": "Akun tidak ditemukan. Silakan periksa kembali email Anda atau daftar akun baru.",
+      "invalid_password": "Password yang Anda masukkan salah. Silakan coba lagi.",
+      "account_inactive": "Akun Anda belum aktif atau telah dinonaktifkan. Silakan hubungi admin.",
+      "use_google_signin": "Akun ini terdaftar melalui Google. Silakan login dengan Google.",
+      "invalid_credentials": "Email atau password salah. Silakan coba lagi.",
+      "email_already_registered": "Email sudah terdaftar. Silakan langsung masuk ke akun Anda.",
+      "otp_invalid": "Kode OTP tidak valid atau salah. Silakan periksa kembali.",
+      "otp_expired": "Kode OTP sudah kedaluwarsa. Silakan minta kode baru.",
+      "otp_already_used": "Kode OTP sudah pernah digunakan. Silakan minta kode baru.",
+      "rate_limited": "Mohon tunggu 60 detik sebelum meminta kode OTP baru.",
+      "server_error": "Terjadi kesalahan pada server. Silakan coba lagi nanti."
+    },
     "login": {
       "email_placeholder": "Masukkan alamat email Anda"
     }
@@ -2515,14 +2624,6 @@
       "no_categories": "Belum ada kategori turnamen yang tersedia.",
       "independent": "Klub Independen"
     }
-  },
-  "doc_search": {
-    "placeholder": "Cari dokumentasi & fitur...",
-    "no_results": "Tidak ditemukan hasil untuk",
-    "quick_navigation": "Navigasi Cepat",
-    "to_navigate": "navigasi",
-    "to_select": "pilih",
-    "to_close": "tutup"
   },
   "package_detail": {
     "page_title": "Detail Invoice Pembayaran",
@@ -2843,6 +2944,58 @@
       "sponsor": "Sponsor",
       "club": "Klub",
       "other": "Lainnya"
+    }
+  },
+  "archers": {
+    "athlete_profile": "Profil Pemanah",
+    "not_found": "Pemanah Tidak Ditemukan",
+    "not_found_desc": "Profil pemanah yang Anda cari tidak ditemukan atau belum dibuka untuk publik.",
+    "public": {
+      "pro_archer": "Atlet Terverifikasi",
+      "events": "Turnamen",
+      "wins": "Podium",
+      "avg_rank": "Rata-rata Peringkat",
+      "athlete_biography": "Biografi",
+      "no_bio": "Belum ada catatan biografi pemanah.",
+      "performance_trend": "Tren Performa",
+      "qual_scores_last_6": "Skor Kualifikasi 6 Turnamen Terakhir",
+      "recent_competition": "Turnamen Terbaru",
+      "table_placement": "Peringkat",
+      "no_competition_history": "Belum ada riwayat turnamen tercatat.",
+      "top_highlights": "Prestasi Utama",
+      "no_highlights": "Belum ada catatan prestasi puncak.",
+      "social_channels": "Media Sosial",
+      "no_social_links": "Belum ada tautan media sosial.",
+      "athlete_specifications": "Spesifikasi Atlet",
+      "athlete_specifications_subtitle": "Setup busur resmi dan data fisik pemanah.",
+      "education_affiliation": "Afiliasi / Sekolah",
+      "gender_profile": "Divisi & Gender",
+      "years_old": "tahun",
+      "bow_division": "Divisi Busur",
+      "hand_dominance": "Tangan Dominan",
+      "height_weight": "Tinggi / Berat",
+      "resident_address": "Domisili",
+      "performance_summary": "Ringkasan Statistik Karir",
+      "podium_finishes": "Total Naik Podium",
+      "times_unit": "kali",
+      "gold_medals": "Medali Emas",
+      "wins_unit": "gelar",
+      "personal_best": "Skor Tertinggi (PB)",
+      "pts_unit": "poin",
+      "average_score": "Rata-rata Skor",
+      "equipment_locker": "Loker Perlengkapan",
+      "verified_gear": "Peralatan bertanding resmi pemanah.",
+      "no_equipment": "Belum ada rincian alat yang didaftarkan.",
+      "achievements_log": "Catatan Prestasi",
+      "achievements_desc": "Koleksi medali dan gelar juara dari seluruh event resmi.",
+      "achievements_count_unit": "Medali",
+      "tournament_history_title": "Riwayat Turnamen",
+      "tournament_history_desc": "Daftar kompetisi dan hasil kualifikasi yang pernah diikuti.",
+      "search_tournament": "Cari turnamen...",
+      "table_date": "Tanggal",
+      "table_tournament": "Turnamen",
+      "table_division": "Divisi",
+      "no_matching_tournaments": "Tidak ada turnamen yang cocok."
     }
   }
 }

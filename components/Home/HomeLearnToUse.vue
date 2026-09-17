@@ -38,7 +38,7 @@
                 <!-- Outer Scrolling Area with Faded Mask Edges -->
                 <div ref="scrollContainer" class="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar px-6 sm:px-16 lg:px-24 pb-12 pt-2">
                     
-                    <!-- ── 5 FEATURE CARDS ── -->
+                    <!-- ── 4 FEATURE CARDS ── -->
                     <NuxtLink
                         v-for="(feature, idx) in features"
                         :key="idx"
@@ -116,36 +116,29 @@ const features = [
         tagKey: 'home.learn.f1_tag',
         titleKey: 'home.learn.f1_title',
         descKey: 'home.learn.f1_desc',
-        image: '/features/feature-1.png',
+        image: 'https://placehold.co/1000x562/0f172a/63c03b?text=Tournament+Registration+%26+Payments',
         link: '/dashboard/organizer'
     },
     {
         tagKey: 'home.learn.f2_tag',
         titleKey: 'home.learn.f2_title',
         descKey: 'home.learn.f2_desc',
-        image: '/features/feature-2.png',
-        link: '/dashboard/archer/tournaments'
+        image: 'https://placehold.co/1000x562/0f172a/63c03b?text=Tournament+Management+%26+Operations',
+        link: '/dashboard/organizer'
     },
     {
         tagKey: 'home.learn.f3_tag',
         titleKey: 'home.learn.f3_title',
         descKey: 'home.learn.f3_desc',
-        image: '/features/feature-3.png',
-        link: '/tournaments'
+        image: 'https://placehold.co/1000x562/0f172a/63c03b?text=Archer+Profile+%26+Live+Standings',
+        link: '/archers'
     },
     {
         tagKey: 'home.learn.f4_tag',
         titleKey: 'home.learn.f4_title',
         descKey: 'home.learn.f4_desc',
-        image: '/features/feature-4.png',
-        link: '/archers'
-    },
-    {
-        tagKey: 'home.learn.f5_tag',
-        titleKey: 'home.learn.f5_title',
-        descKey: 'home.learn.f5_desc',
-        image: '/features/feature-5.png',
-        link: '/package'
+        image: 'https://placehold.co/1000x562/0f172a/63c03b?text=Certified+Scorekeeper+Terminal',
+        link: '/dashboard/organizer/scorekeepers'
     }
 ]
 

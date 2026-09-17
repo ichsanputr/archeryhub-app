@@ -584,7 +584,7 @@
                                 {{ $t('dashboard_event_overview.quota_modal.insufficient_title', 'Kuota Event Tidak Mencukupi') }}
                             </h3>
                             <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
-                                {{ $t('dashboard_event_overview.quota_modal.insufficient_desc', 'Anda tidak memiliki kuota event yang cukup untuk mempublikasikan turnamen ini. Klaim promo gratis 3 bulan atau beli kuota tambahan.') }}
+                                {{ $t('dashboard_event_overview.quota_modal.insufficient_desc', 'Anda tidak memiliki kuota event yang cukup untuk mempublikasikan turnamen ini. Silakan beli kuota tambahan.') }}
                             </p>
                         </div>
 

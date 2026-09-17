@@ -31,7 +31,7 @@
                         </div>
                         <div class="flex-grow">
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">{{ t('qualification.title', 'Scorecard Kualifikasi') }}</h1>
-                            <div class="text-slate-300 text-sm mt-1">Perolehan skor seri kualifikasi, statistik 10s/Xs, dan peringkat atlet.</div>
+                            <div class="text-slate-300 text-sm mt-1">{{ t('qualification.subtitle', 'Perolehan skor seri kualifikasi, statistik 10s/Xs, dan peringkat atlet.') }}</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-3 flex-shrink-0">

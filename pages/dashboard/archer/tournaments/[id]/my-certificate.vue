@@ -57,7 +57,7 @@
       <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
         <NuxtLink :to="`/dashboard/archer/tournaments/${eventId}/overview`">
           <BaseButton variant="primary" icon="ph:arrow-left-bold" class="font-bold text-xs h-11 px-6 shadow-sm shadow-primary/20">
-            {{ t('my_team.btn_overview', 'Kembali ke Ringkasan Event') }}
+            {{ t('my_certificate_page.btn_overview', 'Kembali ke Ringkasan Event') }}
           </BaseButton>
         </NuxtLink>
       </div>
@@ -130,7 +130,7 @@
             </div>
             <div>
               <div class="text-xs font-black">{{ t('my_certificate_page.status_verified', 'Terverifikasi & Autentik') }}</div>
-              <div class="text-[11px] opacity-80">Sertifikat ini telah terdaftar resmi dalam sistem Archeris.net.</div>
+              <div class="text-[11px] opacity-80">{{ t('my_certificate_page.verified_desc', 'Sertifikat ini telah terdaftar resmi dalam sistem Archeris.net.') }}</div>
             </div>
           </div>
           

@@ -31,10 +31,15 @@
 
         <!-- Filter & Search -->
         <div
-            class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+            class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end justify-between">
             <div class="flex-grow w-full">
                 <BaseInput v-model="searchQuery" icon="ph:magnifying-glass"
                     :placeholder="t('earnings.search_placeholder')" :label="t('earnings.search_label')" />
+            </div>
+            <div class="shrink-0 w-full md:w-auto">
+                <BaseButton variant="outline" icon="ph:download-simple-bold" @click="handleExportPayments" :disabled="loading" class="h-11 px-5 w-full md:w-auto">
+                    {{ t('earnings.export_button', 'Export CSV') }}
+                </BaseButton>
             </div>
         </div>
 
@@ -99,11 +104,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
 import { useDateFormat } from '@vueuse/core'
+import { useToast } from '~/composables/useToast'
+import { exportToExcel } from '~/utils/exportExcel'
 
 const route = useRoute()
 const router = useRouter()
 const api = useApi()
 const { t } = useI18n()
+const toast = useToast()
 
 definePageMeta({
     layout: 'dashboard',
@@ -134,20 +142,56 @@ const fetchDetails = async () => {
 }
 
 const totalAmount = computed(() => {
-    return payments.value.reduce((acc, curr) => acc + curr.amount, 0)
+    return payments.value.reduce((acc, curr) => acc + (curr.amount || 0), 0)
 })
 
 const filteredPayments = computed(() => {
     if (!searchQuery.value) return payments.value
     const q = searchQuery.value.toLowerCase()
     return payments.value.filter(p =>
-        p.archerName.toLowerCase().includes(q) ||
-        p.reference.toLowerCase().includes(q)
+        (p.archerName && p.archerName.toLowerCase().includes(q)) ||
+        (p.reference && p.reference.toLowerCase().includes(q)) ||
+        (p.archerEmail && p.archerEmail.toLowerCase().includes(q))
     )
 })
 
 const formatPaymentDate = (date) => {
+    if (!date) return '-'
     return useDateFormat(date, 'DD MMM YYYY, HH:mm', { locales: 'id-ID' }).value
+}
+
+const handleExportPayments = () => {
+    const list = filteredPayments.value
+    if (!list || list.length === 0) {
+        toast.info(t('earnings.no_data_export', 'No payment data available to export'))
+        return
+    }
+
+    const data = list.map((item, idx) => ({
+        no: idx + 1,
+        archerName: item.archerName || '-',
+        archerEmail: item.archerEmail || '-',
+        date: formatPaymentDate(item.createdAt),
+        method: item.method || '-',
+        reference: item.reference || '-',
+        amount: item.amount || 0
+    }))
+
+    const safeEventName = (eventName.value || 'Event').replace(/[^a-zA-Z0-9_-]/g, '_')
+    exportToExcel(
+        `Archeris_Earnings_${safeEventName}`,
+        [
+            { key: 'no', label: 'No' },
+            { key: 'archerName', label: t('earnings.table_participant', 'Participant') },
+            { key: 'archerEmail', label: 'Email' },
+            { key: 'date', label: t('earnings.table_date', 'Payment Date') },
+            { key: 'method', label: t('earnings.table_method', 'Method') },
+            { key: 'reference', label: t('earnings.table_reference', 'Reference No') },
+            { key: 'amount', label: t('earnings.table_amount', 'Amount (IDR)') }
+        ],
+        data
+    )
+    toast.success(t('earnings.export_success', 'Payment logs exported successfully'))
 }
 
 onMounted(() => {

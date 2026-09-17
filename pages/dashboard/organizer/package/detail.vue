@@ -65,6 +65,20 @@ function formatPaymentMethodName(method: string) {
   return method
 }
 
+const isTxUSD = computed(() => {
+  const cur = (tx.value?.currency || '').toUpperCase()
+  const meth = (tx.value?.payment_method || '').toLowerCase()
+  return cur === 'USD' || meth === 'paypal'
+})
+
+function formatTxAmount(val: any) {
+  const num = Number(val || 0)
+  if (isTxUSD.value) {
+    return `$${num.toFixed(2)}`
+  }
+  return `Rp ${new Intl.NumberFormat('id-ID').format(num)}`
+}
+
 function formatNumber(val: any) {
   const num = Number(val)
   if (isNaN(num)) return '0'
@@ -271,8 +285,8 @@ onUnmounted(() => {
             <div class="sm:text-right shrink-0">
               <span class="text-[10px] font-bold text-slate-400 capitalize tracking-wider block">{{ t('package_detail.total_paid', 'Total Tagihan') }}</span>
               <span class="text-xl sm:text-2xl font-black text-navy tabular-nums">
-                Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}
-                <span class="text-xs font-mono font-bold text-blue-600 block">
+                {{ formatTxAmount(tx.total_amount || tx.amount || 0) }}
+                <span v-if="!isTxUSD" class="text-xs font-mono font-bold text-blue-600 block">
                   (~${{ (Math.ceil(((tx.total_amount || tx.amount || 0) / 16000) * 100) / 100).toFixed(2) }} USD)
                 </span>
               </span>
@@ -309,7 +323,7 @@ onUnmounted(() => {
             </div>
             <div class="sm:text-right shrink-0">
               <span class="text-[10px] font-bold text-slate-400 capitalize tracking-wider block">{{ t('package_detail.total_paid', 'Total Tagihan') }}</span>
-              <span class="text-xl sm:text-2xl font-black text-navy tabular-nums">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
+              <span class="text-xl sm:text-2xl font-black text-navy tabular-nums">{{ formatTxAmount(tx.total_amount || tx.amount || 0) }}</span>
             </div>
           </div>
 
@@ -388,10 +402,10 @@ onUnmounted(() => {
                     {{ tx.quantity || 1 }} {{ t('package_detail.event_unit', 'Event') }}
                   </td>
                   <td class="py-4 px-4 text-right font-bold text-slate-600">
-                    Rp {{ formatNumber((tx.total_amount || tx.amount || 0) / (tx.quantity || 1)) }}
+                    {{ formatTxAmount((tx.total_amount || tx.amount || 0) / (tx.quantity || 1)) }}
                   </td>
                   <td class="py-4 px-4 text-right font-black text-navy text-xs sm:text-sm">
-                    Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}
+                    {{ formatTxAmount(tx.total_amount || tx.amount || 0) }}
                   </td>
                 </tr>
               </tbody>
@@ -408,17 +422,17 @@ onUnmounted(() => {
             <div class="w-full sm:w-64 space-y-2 text-xs">
               <div class="flex justify-between text-slate-500">
                 <span>{{ t('package_detail.col_subtotal', 'Subtotal') }}</span>
-                <span class="font-bold text-navy">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
+                <span class="font-bold text-navy">{{ formatTxAmount(tx.total_amount || tx.amount || 0) }}</span>
               </div>
               <div class="flex justify-between text-slate-500">
                 <span>{{ t('package_detail.admin_fee', 'Biaya Layanan Payment') }}</span>
-                <span class="font-bold text-emerald-600">{{ t('package_detail.free', 'Gratis (Rp 0)') }}</span>
+                <span class="font-bold text-emerald-600">{{ isTxUSD ? '$0.00' : t('package_detail.free', 'Gratis (Rp 0)') }}</span>
               </div>
               <div class="h-px bg-slate-100 my-1"></div>
               <div class="flex justify-between items-baseline">
                 <span class="text-xs font-black text-navy">{{ t('package_detail.total_payment', 'Total Pembayaran') }}</span>
                 <span class="text-lg sm:text-xl font-black text-navy tabular-nums">
-                  Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}
+                  {{ formatTxAmount(tx.total_amount || tx.amount || 0) }}
                 </span>
               </div>
             </div>
@@ -520,7 +534,7 @@ onUnmounted(() => {
             <th class="py-2.5 px-3">{{ t('package_detail.col_item', 'Deskripsi Layanan') }}</th>
             <th class="py-2.5 px-3 text-center w-24">{{ t('package_detail.col_qty', 'Jumlah') }}</th>
             <th class="py-2.5 px-3 text-right w-32">{{ t('package_detail.col_unit_price', 'Harga Satuan') }}</th>
-            <th class="py-2.5 px-3 text-right w-36">{{ t('package_detail.col_total_idr', 'Total (IDR)') }}</th>
+            <th class="py-2.5 px-3 text-right w-36">{{ isTxUSD ? 'Total (USD)' : t('package_detail.col_total_idr', 'Total (IDR)') }}</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-200">
@@ -531,8 +545,8 @@ onUnmounted(() => {
               <div class="text-[10px] text-slate-500 mt-0.5">{{ t('package_detail.quota_note', 'Aktivasi turnamen resmi, OBS overlay, dan scoring live') }}</div>
             </td>
             <td class="py-3.5 px-3 text-center font-semibold text-slate-800">{{ tx.quantity || 1 }} {{ t('package_detail.event_unit', 'Event') }}</td>
-            <td class="py-3.5 px-3 text-right text-slate-700 font-medium">Rp {{ formatNumber((tx.total_amount || tx.amount || 0) / (tx.quantity || 1)) }}</td>
-            <td class="py-3.5 px-3 text-right font-black text-slate-900">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</td>
+            <td class="py-3.5 px-3 text-right text-slate-700 font-medium">{{ formatTxAmount((tx.total_amount || tx.amount || 0) / (tx.quantity || 1)) }}</td>
+            <td class="py-3.5 px-3 text-right font-black text-slate-900">{{ formatTxAmount(tx.total_amount || tx.amount || 0) }}</td>
           </tr>
         </tbody>
       </table>
@@ -548,15 +562,15 @@ onUnmounted(() => {
         <div class="w-64 space-y-1.5 text-right">
           <div class="flex justify-between text-slate-600">
             <span>{{ t('package_detail.col_subtotal', 'Subtotal') }}:</span>
-            <span class="font-semibold text-slate-900">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
+            <span class="font-semibold text-slate-900">{{ formatTxAmount(tx.total_amount || tx.amount || 0) }}</span>
           </div>
           <div class="flex justify-between text-slate-600">
             <span>{{ t('package_detail.admin_fee', 'Biaya Layanan') }}:</span>
-            <span class="font-semibold text-emerald-700">{{ t('package_detail.free', 'Rp 0') }}</span>
+            <span class="font-semibold text-emerald-700">{{ isTxUSD ? '$0.00' : t('package_detail.free', 'Rp 0') }}</span>
           </div>
           <div class="border-t border-slate-300 pt-2 flex justify-between text-sm font-black text-slate-900">
             <span>{{ t('package_detail.total_payment', 'Total Tagihan') }}:</span>
-            <span class="text-base">Rp {{ formatNumber(tx.total_amount || tx.amount || 0) }}</span>
+            <span class="text-base">{{ formatTxAmount(tx.total_amount || tx.amount || 0) }}</span>
           </div>
         </div>
       </div>

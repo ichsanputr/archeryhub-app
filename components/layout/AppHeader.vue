@@ -119,11 +119,14 @@
 
       <!-- Notification Bell -->
       <div v-if="user" ref="notificationRef" class="relative">
+        <!-- Invisible Backdrop for instant, reliable click-outside on all devices -->
+        <div v-if="showNotifications" class="fixed inset-0 z-40 bg-transparent" @click.stop="showNotifications = false" />
+
         <button @click.stop="toggleNotifications" :class="[
           isScrolled || !transparent
             ? 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-navy dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10'
             : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white border border-white/20'
-        ]" class="relative flex items-center justify-center h-9 w-9 rounded-xl transition-all"
+        ]" class="relative z-50 flex items-center justify-center h-9 w-9 rounded-xl transition-all cursor-pointer"
           :title="t('notifications.title', 'Notifikasi')">
           <Icon icon="ph:bell-bold" class="text-lg" />
           <span v-if="unreadCount > 0"
@@ -138,6 +141,7 @@
           leave-active-class="transition duration-150 ease-in"
           leave-from-class="opacity-100 translate-y-0 scale-100" leave-to-class="opacity-0 translate-y-2 scale-95">
           <NotificationList v-if="showNotifications" :notifications="notifications" :unread-count="unreadCount"
+            class="z-50"
             @close="showNotifications = false" @mark-all-read="handleMarkAllRead" @mark-read="markAsRead" @delete="deleteNotification" @click="handleNotificationSelect" />
         </Transition>
       </div>

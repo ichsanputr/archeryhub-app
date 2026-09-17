@@ -12,14 +12,14 @@
                 </p>
             </div>
 
-            <!-- Feature Block 1: App -->
+            <!-- Feature Block 1: EO Registration & Payments -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center mb-20 sm:mb-28 lg:mb-32 feature-row">
                 <div class="order-2 lg:order-1 text-col">
-                    <span class="text-xs font-bold text-slate-500 mb-3 sm:mb-4 block">{{
+                    <span class="text-xs font-bold tracking-wide text-primary mb-3 sm:mb-4 block">{{
                         $t('home.features_demo.f1_tag') }}</span>
-                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight">{{
+                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight font-display">{{
                         $t('home.features_demo.f1_title') }}</h3>
-                    <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-8 sm:mb-10">
+                    <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-6 sm:mb-8">
                         {{ $t('home.features_demo.f1_desc') }}
                     </p>
 
@@ -39,39 +39,40 @@
                 <div class="order-1 lg:order-2 relative flex justify-center image-col w-full">
                     <AnimatedImageStack 
                         :images="[
-                            '/features/screenshot-1-quals.png',
-                            '/features/screenshot-2-teamquals.png',
-                            '/features/screenshot-3-entries.png'
+                            'https://placehold.co/1200x750/0f172a/63c03b?text=EO+Registration+Setup',
+                            'https://placehold.co/1200x750/1e293b/63c03b?text=Payment+Gateway+%26+Invoicing',
+                            'https://placehold.co/1200x750/0f172a/38bdf8?text=Realtime+Participant+Roster'
                         ]"
-                        alt="Mobile Archery Scoring & Qualification Standings"
+                        alt="EO Tournament Registration & Online Payments"
                     />
                 </div>
             </div>
 
-            <!-- Feature Block 2: Scheduling -->
+            <!-- Feature Block 2: EO Management, Targets & WA Brackets -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center mb-20 sm:mb-28 lg:mb-32 feature-row">
                 <div class="order-1 relative flex justify-center image-col w-full">
                     <AnimatedImageStack 
                         :images="[
-                            '/features/screenshot-5-schedule.png',
-                            '/features/screenshot-3-entries.png',
-                            '/features/screenshot-1-quals.png'
+                            'https://placehold.co/1200x750/0f172a/63c03b?text=Target+Butt+Matrix+Allocation',
+                            'https://placehold.co/1200x750/1e293b/38bdf8?text=Qualification+Round+Standings',
+                            'https://placehold.co/1200x750/0f172a/f59e0b?text=World+Archery+Brackets',
+                            'https://placehold.co/1200x750/1e293b/63c03b?text=Shoot-Off+%26+Medal+Matches'
                         ]"
-                        alt="Target Lane Assignments & Competition Schedule"
+                        alt="Target Butt Management & World Archery Elimination Brackets"
                     />
                 </div>
 
                 <div class="order-2 text-col">
-                    <span class="text-xs font-bold text-slate-500 mb-3 sm:mb-4 block">{{
+                    <span class="text-xs font-bold tracking-wide text-primary mb-3 sm:mb-4 block">{{
                         $t('home.features_demo.f2_tag') }}</span>
-                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight">{{
+                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight font-display">{{
                         $t('home.features_demo.f2_title') }}</h3>
-                    <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-8 sm:mb-10">
+                    <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-6 sm:mb-8">
                         {{ $t('home.features_demo.f2_desc') }}
                     </p>
 
                     <div class="space-y-2.5 sm:space-y-3 pt-6 border-t border-slate-100">
-                        <div v-for="key in ['f2_list_1', 'f2_list_2', 'f2_list_3']" :key="key"
+                        <div v-for="key in ['f2_list_1', 'f2_list_2', 'f2_list_3', 'f2_list_4']" :key="key"
                             class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 hover:bg-white hover:border-[#63C03B]/40 hover:shadow-md hover:shadow-slate-100 transition-all duration-200 group/item">
                             <div class="w-6 h-6 rounded-full bg-[#63C03B]/15 text-[#63C03B] flex items-center justify-center shrink-0 group-hover/item:bg-[#63C03B] group-hover/item:text-white transition-colors duration-200">
                                 <Icon icon="ph:check-bold" class="text-xs" />
@@ -84,19 +85,19 @@
                 </div>
             </div>
 
-            <!-- Feature Block 3: Payments / Brackets -->
+            <!-- Feature Block 3: Archer Mobile App & Career Stats -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center mb-20 sm:mb-28 lg:mb-32 feature-row">
                 <div class="order-2 lg:order-1 text-col">
-                    <span class="text-xs font-bold text-slate-500 mb-3 sm:mb-4 block">{{
+                    <span class="text-xs font-bold tracking-wide text-primary mb-3 sm:mb-4 block">{{
                         $t('home.features_demo.f3_tag') }}</span>
-                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight">{{
+                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight font-display">{{
                         $t('home.features_demo.f3_title') }}</h3>
-                    <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-8 sm:mb-10">
+                    <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-6 sm:mb-8">
                         {{ $t('home.features_demo.f3_desc') }}
                     </p>
 
                     <div class="space-y-2.5 sm:space-y-3 pt-6 border-t border-slate-100">
-                        <div v-for="key in ['f3_list_1', 'f3_list_2', 'f3_list_3']" :key="key"
+                        <div v-for="key in ['f3_list_1', 'f3_list_2', 'f3_list_3', 'f3_list_4']" :key="key"
                             class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 hover:bg-white hover:border-[#63C03B]/40 hover:shadow-md hover:shadow-slate-100 transition-all duration-200 group/item">
                             <div class="w-6 h-6 rounded-full bg-[#63C03B]/15 text-[#63C03B] flex items-center justify-center shrink-0 group-hover/item:bg-[#63C03B] group-hover/item:text-white transition-colors duration-200">
                                 <Icon icon="ph:check-bold" class="text-xs" />
@@ -111,39 +112,39 @@
                 <div class="order-1 lg:order-2 relative flex justify-center image-col w-full">
                     <AnimatedImageStack 
                         :images="[
-                            '/features/screenshot-4-brackets.png',
-                            '/features/screenshot-6-podium.png',
-                            '/features/screenshot-2-teamquals.png'
+                            'https://placehold.co/1200x750/0f172a/63c03b?text=Archer+Profile+%26+QR+Badge',
+                            'https://placehold.co/1200x750/1e293b/38bdf8?text=Live+Leaderboard+%26+Scorecard',
+                            'https://placehold.co/1200x750/0f172a/a855f7?text=Career+Statistics+%26+History'
                         ]"
-                        alt="Automatic Elimination Brackets & Olympic Podiums"
+                        alt="Archer Mobile App, Live Standings & Statistics"
                     />
                 </div>
             </div>
 
-            <!-- Feature Block 4: Portfolio -->
+            <!-- Feature Block 4: Certified Scorekeeper Mobile App -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center feature-row">
                 <div class="order-1 relative flex justify-center image-col w-full">
                     <AnimatedImageStack 
                         :images="[
-                            '/features/screenshot-7-tournaments.png',
-                            '/features/screenshot-8-comparison.png',
-                            '/features/screenshot-9-docs.png'
+                            'https://placehold.co/1200x750/0f172a/63c03b?text=Scorekeeper+Mobile+Input',
+                            'https://placehold.co/1200x750/1e293b/38bdf8?text=Arrow+Value+Verification',
+                            'https://placehold.co/1200x750/0f172a/f59e0b?text=Live+Sync+to+Central+Server'
                         ]"
-                        alt="Archer Profiles, Tournament Directory & Guides"
+                        alt="Scorekeeper Mobile App & Digital Touchscreen Scoring"
                     />
                 </div>
 
                 <div class="order-2 text-col">
-                    <span class="text-xs font-bold text-slate-500 mb-3 sm:mb-4 block">{{
+                    <span class="text-xs font-bold tracking-wide text-primary mb-3 sm:mb-4 block">{{
                         $t('home.features_demo.f4_tag') }}</span>
-                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight">{{
+                    <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight font-display">{{
                         $t('home.features_demo.f4_title') }}</h3>
-                    <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-8 sm:mb-10">
+                    <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-6 sm:mb-8">
                         {{ $t('home.features_demo.f4_desc') }}
                     </p>
 
                     <div class="space-y-2.5 sm:space-y-3 pt-6 border-t border-slate-100">
-                        <div v-for="key in ['f4_list_1', 'f4_list_2', 'f4_list_3']" :key="key"
+                        <div v-for="key in ['f4_list_1', 'f4_list_2', 'f4_list_3', 'f4_list_4']" :key="key"
                             class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 hover:bg-white hover:border-[#63C03B]/40 hover:shadow-md hover:shadow-slate-100 transition-all duration-200 group/item">
                             <div class="w-6 h-6 rounded-full bg-[#63C03B]/15 text-[#63C03B] flex items-center justify-center shrink-0 group-hover/item:bg-[#63C03B] group-hover/item:text-white transition-colors duration-200">
                                 <Icon icon="ph:check-bold" class="text-xs" />
@@ -185,7 +186,7 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
-                                <tr v-for="i in 7" :key="i" class="hover:bg-slate-50/70 transition-all duration-200 group">
+                                <tr v-for="i in 8" :key="i" class="hover:bg-slate-50/70 transition-all duration-200 group">
                                     <!-- Feature Name -->
                                     <td class="py-6 px-7 align-top">
                                         <div class="flex items-start gap-3">
@@ -251,6 +252,7 @@ import { Icon } from '@iconify/vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+const localePath = useLocalePath()
 const sectionRef = ref(null)
 
 onMounted(() => {

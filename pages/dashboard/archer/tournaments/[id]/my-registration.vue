@@ -380,7 +380,7 @@ onMounted(() => {
                                 <span>{{ t('my_registration.registered_categories', 'Kategori Turnamen yang Diikuti') }}</span>
                             </h3>
                             <span class="text-xs text-slate-400 font-medium">
-                                {{ participant.categories?.length || 1 }} Kategori
+                                {{ participant.categories?.length || 1 }} {{ (participant.categories?.length || 1) === 1 ? t('my_registration.category_unit_single', 'Kategori') : t('my_registration.categories_unit', 'Kategori') }}
                             </span>
                         </div>
 
@@ -413,19 +413,19 @@ onMounted(() => {
                         <div class="flex items-center justify-between text-xs pb-3 border-b border-slate-100">
                             <span class="font-bold text-navy text-[11px] flex items-center gap-1.5">
                                 <Icon icon="ph:qr-code-bold" class="text-primary text-sm" />
-                                <span>QR Registrasi Ulang</span>
+                                <span>{{ t('my_registration.qr_checkin_badge', 'QR Registrasi Ulang') }}</span>
                             </span>
                             <span v-if="isPaid(participant.payment_status)" class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 text-[10px]">
-                                ✓ Siap Tanding
+                                {{ t('my_registration.ready_to_compete', '✓ Siap Tanding') }}
                             </span>
                             <span v-else class="text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200 text-[10px]">
-                                Menunggu Pembayaran
+                                {{ t('my_registration.pending', 'Menunggu Pembayaran') }}
                             </span>
                         </div>
 
                         <div class="flex flex-col items-center justify-center p-4 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-3">
                             <img :src="`https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(participant?.qr_raw || ('ARCHERIS-CHECKIN:' + (participant?.archer_id || eventId)))}&size=200x200&color=051923`"
-                                alt="QR Registrasi Ulang" class="w-44 h-44 rounded-xl p-2.5 bg-white border border-slate-200 shadow-xs" />
+                                :alt="t('my_registration.qr_checkin_badge', 'QR Registrasi Ulang')" class="w-44 h-44 rounded-xl p-2.5 bg-white border border-slate-200 shadow-xs" />
                             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-navy text-primary text-[11px] font-black font-mono">
                                 <span>{{ participant.athlete_code || ('ARC-' + (participant.archer_id || '').substring(0, 6).toUpperCase()) }}</span>
                             </div>
@@ -434,10 +434,10 @@ onMounted(() => {
                         <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-left space-y-1">
                             <div class="text-[11px] font-black text-amber-900 flex items-center gap-1.5">
                                 <Icon icon="ph:info-bold" class="text-xs shrink-0 text-amber-700" />
-                                <span>Penting untuk Registrasi Ulang</span>
+                                <span>{{ t('my_registration.important_reregistration_title', 'Penting untuk Registrasi Ulang') }}</span>
                             </div>
                             <p class="text-[11px] text-amber-800/90 leading-relaxed font-medium">
-                                Tunjukkan QR Code ini kepada panitia meja registrasi saat verifikasi alat di venue untuk konfirmasi kehadiran (Check-in) dan penugasan bantalan tanding.
+                                {{ t('my_registration.important_reregistration_desc', 'Tunjukkan QR Code ini kepada panitia meja registrasi saat verifikasi alat di venue untuk konfirmasi kehadiran (Check-in) dan penugasan bantalan tanding.') }}
                             </p>
                         </div>
                     </div>
@@ -511,21 +511,21 @@ onMounted(() => {
                                 <input type="file" ref="proofInput" class="hidden" accept="image/*" @change="handleProofUpload" />
                                 <template v-if="uploadingProof">
                                     <Icon icon="ph:circle-notch-bold" class="text-xl text-slate-700 animate-spin mb-1" />
-                                    <span class="text-xs text-slate-500 font-medium">Mengunggah...</span>
+                                    <span class="text-xs text-slate-500 font-medium">{{ t('my_registration.uploading', 'Mengunggah...') }}</span>
                                 </template>
                                 <template v-else-if="proofFileUrl">
                                     <img :src="proofFileUrl" class="max-h-24 object-contain rounded-lg mb-1 border border-slate-200" />
-                                    <span class="text-xs text-emerald-700 font-bold">Bukti Terpilih ✓</span>
+                                    <span class="text-xs text-emerald-700 font-bold">{{ t('my_registration.proof_selected', 'Bukti Terpilih ✓') }}</span>
                                 </template>
                                 <template v-else>
                                     <Icon icon="ph:cloud-arrow-up-bold" class="text-xl text-slate-400 mb-1" />
-                                    <span class="text-xs text-slate-500 font-medium">Klik untuk Unggah Bukti Transfer</span>
+                                    <span class="text-xs text-slate-500 font-medium">{{ t('my_registration.click_to_upload_proof', 'Klik untuk Unggah Bukti Transfer') }}</span>
                                 </template>
                             </div>
 
                             <BaseButton variant="primary" block :loading="uploadingProof"
                                 class="h-10 text-xs font-bold justify-center" @click="submitManualProof">
-                                Kirim Bukti Transfer
+                                {{ t('my_registration.send_proof_btn', 'Kirim Bukti Transfer') }}
                             </BaseButton>
 
                             <span v-if="uploadError" class="text-xs text-red-500 font-semibold block text-center">{{ uploadError }}</span>
@@ -543,11 +543,11 @@ onMounted(() => {
 
                     <!-- Section 3: THB Guidebook & Event Info -->
                     <div v-if="event?.technical_guidebook_url" class="border-t border-slate-100 pt-6 text-center space-y-2">
-                        <span class="text-xs text-slate-400 font-medium block capitalize">Buku Petunjuk Teknis</span>
+                        <span class="text-xs text-slate-400 font-medium block capitalize">{{ t('my_registration.thb_guidebook', 'Buku Petunjuk Teknis') }}</span>
                         <a :href="event.technical_guidebook_url" target="_blank"
                             class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-900 text-xs font-bold transition-colors border border-slate-200">
                             <Icon icon="ph:file-pdf-bold" class="text-base text-red-500" />
-                            <span>Unduh THB Resmi (PDF)</span>
+                            <span>{{ t('my_registration.download_thb_pdf', 'Unduh THB Resmi (PDF)') }}</span>
                         </a>
                     </div>
 
@@ -578,7 +578,7 @@ onMounted(() => {
             :cancel-text="t('my_registration.cancel_dialog_back', 'Kembali')" @confirm="cancelRegistration" />
 
         <!-- Image Preview Dialog -->
-        <AppDialog v-model:show="showImageDialog" title="Bukti Pembayaran" message="" type="info" icon="ph:image-bold">
+        <AppDialog v-model:show="showImageDialog" :title="t('my_registration.payment_proof_title', 'Bukti Pembayaran')" message="" type="info" icon="ph:image-bold">
             <div class="flex justify-center p-2">
                 <img :src="selectedImage" class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-md" />
             </div>

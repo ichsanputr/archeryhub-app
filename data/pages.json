@@ -1,172 +1,220 @@
-﻿{
+{
   "archer": [
     {
       "path": "/dashboard/archer",
       "title": "Dashboard",
+      "titleKey": "doc_search.pages.archer_dashboard_title",
       "description": "Halaman utama dashboard pemanah",
+      "descriptionKey": "doc_search.pages.archer_dashboard_desc",
       "icon": "ph:squares-four",
       "keywords": ["dashboard", "beranda", "home", "ringkasan", "overview"]
     },
     {
       "path": "/dashboard/archer/tournaments",
       "title": "Turnamen Saya",
+      "titleKey": "doc_search.pages.archer_tournaments_title",
       "description": "Daftar event yang sudah kamu daftarkan atau ikuti",
+      "descriptionKey": "doc_search.pages.archer_tournaments_desc",
       "icon": "ph:trophy",
-      "keywords": ["event", "lomba", "kompetisi", "turnamen", "daftar", "terdaftar", "jadwal", "pertandingan"]
+      "keywords": ["event", "lomba", "kompetisi", "turnamen", "daftar", "terdaftar", "jadwal", "pertandingan", "my tournaments"]
     },
     {
       "path": "/dashboard/archer/payments",
       "title": "Pembayaran",
+      "titleKey": "doc_search.pages.archer_payments_title",
       "description": "Riwayat dan status pembayaran event",
+      "descriptionKey": "doc_search.pages.archer_payments_desc",
       "icon": "ph:credit-card",
-      "keywords": ["pembayaran", "bayar", "invoice", "tagihan", "payment", "lunas", "transfer", "bukti"]
+      "keywords": ["pembayaran", "bayar", "invoice", "tagihan", "payment", "lunas", "transfer", "bukti", "payments"]
     },
     {
       "path": "/dashboard/archer/cart",
       "title": "Keranjang",
+      "titleKey": "doc_search.pages.archer_cart_title",
       "description": "Keranjang belanja dan pendaftaran event yang belum diselesaikan",
+      "descriptionKey": "doc_search.pages.archer_cart_desc",
       "icon": "ph:shopping-cart",
       "keywords": ["keranjang", "cart", "belanja", "checkout", "daftar turnamen", "bayar pendaftaran"]
     },
     {
       "path": "/dashboard/archer/profile",
       "title": "Profil Pemanah",
+      "titleKey": "doc_search.pages.archer_profile_title",
       "description": "Profil dan informasi pribadi pemanah",
+      "descriptionKey": "doc_search.pages.archer_profile_desc",
       "icon": "ph:user-circle",
       "keywords": ["profil", "profile", "biodata", "identitas", "foto", "avatar", "nama", "tanggal lahir", "gender", "bow type", "busur", "klub", "kota", "sekolah", "instagram", "sosial media"]
     },
     {
       "path": "/dashboard/archer/settings",
       "title": "Pengaturan",
+      "titleKey": "doc_search.pages.archer_settings_title",
       "description": "Pengaturan akun dan preferensi",
+      "descriptionKey": "doc_search.pages.archer_settings_desc",
       "icon": "ph:gear",
       "keywords": ["pengaturan", "settings", "akun", "password", "kata sandi", "ubah password", "keamanan", "privasi"]
     },
     {
       "path": "/dashboard/archer/notifications",
       "title": "Notifikasi",
+      "titleKey": "doc_search.pages.archer_notifications_title",
       "description": "Pemberitahuan dan notifikasi terbaru",
+      "descriptionKey": "doc_search.pages.archer_notifications_desc",
       "icon": "ph:bell",
       "keywords": ["notifikasi", "notification", "pemberitahuan", "info", "pesan", "update", "kabar"]
     },
     {
       "path": "/dashboard/archer/result",
       "title": "Hasil Pertandingan",
+      "titleKey": "doc_search.pages.archer_result_title",
       "description": "Riwayat hasil dan statistik pertandingan",
+      "descriptionKey": "doc_search.pages.archer_result_desc",
       "icon": "ph:chart-line-up",
       "keywords": ["hasil", "result", "skor", "score", "statistik", "riwayat", "performa", "prestasi", "nilai", "ranking"]
     },
     {
       "path": "/dashboard/archer/saved",
       "title": "Disimpan",
+      "titleKey": "doc_search.pages.archer_saved_title",
       "description": "Event dan konten yang kamu simpan",
+      "descriptionKey": "doc_search.pages.archer_saved_desc",
       "icon": "ph:bookmark",
       "keywords": ["simpan", "saved", "favorit", "bookmark", "wishlist", "tersimpan"]
     },
     {
       "path": "/tournaments",
       "title": "Temukan Turnamen",
+      "titleKey": "doc_search.pages.tournaments_explore_title",
       "description": "Jelajahi semua event dan kompetisi panahan",
+      "descriptionKey": "doc_search.pages.tournaments_explore_desc",
       "icon": "ph:magnifying-glass",
-      "keywords": ["cari turnamen", "temukan event", "daftar turnamen", "kompetisi", "lomba", "turnamen"]
+      "keywords": ["cari turnamen", "temukan event", "daftar turnamen", "kompetisi", "lomba", "turnamen", "tournaments"]
     }
   ],
   "organization": [
     {
       "path": "/dashboard/organization",
       "title": "Dashboard",
+      "titleKey": "doc_search.pages.org_dashboard_title",
       "description": "Halaman utama dashboard organisasi",
+      "descriptionKey": "doc_search.pages.org_dashboard_desc",
       "icon": "ph:squares-four",
       "keywords": ["dashboard", "beranda", "home", "ringkasan", "overview", "statistik"]
     },
     {
       "path": "/dashboard/organization/tournaments",
       "title": "Turnamen Saya",
+      "titleKey": "doc_search.pages.org_tournaments_title",
       "description": "Kelola semua event dan kompetisi yang diselenggarakan",
+      "descriptionKey": "doc_search.pages.org_tournaments_desc",
       "icon": "ph:trophy",
-      "keywords": ["event", "lomba", "kompetisi", "turnamen", "kelola event", "manajemen event", "buat event", "daftar turnamen"]
+      "keywords": ["event", "lomba", "kompetisi", "turnamen", "kelola event", "manajemen event", "buat event", "daftar turnamen", "tournaments"]
     },
     {
       "path": "/dashboard/organization/tournaments/create",
       "title": "Buat Turnamen",
+      "titleKey": "doc_search.pages.org_create_tournament_title",
       "description": "Buat event atau kompetisi panahan baru",
+      "descriptionKey": "doc_search.pages.org_create_tournament_desc",
       "icon": "ph:plus-circle",
-      "keywords": ["buat event", "tambah event", "create event", "event baru", "kompetisi baru", "turnamen baru"]
+      "keywords": ["buat event", "tambah event", "create event", "event baru", "kompetisi baru", "turnamen baru", "create tournament"]
     },
     {
       "path": "/dashboard/organization/profile",
       "title": "Profil Organisasi",
+      "titleKey": "doc_search.pages.org_profile_title",
       "description": "Informasi dan profil organisasi",
+      "descriptionKey": "doc_search.pages.org_profile_desc",
       "icon": "icomoon-free:profile",
       "keywords": ["profil", "profile", "organisasi", "informasi", "logo", "nama", "deskripsi", "kontak", "alamat"]
     },
     {
       "path": "/dashboard/organization/scorekeepers",
       "title": "Scorekeeper",
+      "titleKey": "doc_search.pages.org_scorekeepers_title",
       "description": "Kelola akun scorekeeper untuk event",
+      "descriptionKey": "doc_search.pages.org_scorekeepers_desc",
       "icon": "ph:user-focus",
       "keywords": ["scorekeeper", "penilaian", "penilai", "tambah scorekeeper", "kelola scorekeeper", "akses scoring"]
     },
     {
       "path": "/dashboard/organization/earnings",
       "title": "Penghasilan",
+      "titleKey": "doc_search.pages.org_earnings_title",
       "description": "Rincian penghasilan dan pemasukan dari event",
+      "descriptionKey": "doc_search.pages.org_earnings_desc",
       "icon": "ph:wallet",
       "keywords": ["penghasilan", "pendapatan", "pemasukan", "earnings", "uang masuk", "pendaftaran", "keuangan"]
     },
     {
       "path": "/dashboard/organization/balance",
       "title": "Saldo",
+      "titleKey": "doc_search.pages.org_balance_title",
       "description": "Saldo dan riwayat transaksi organisasi",
+      "descriptionKey": "doc_search.pages.org_balance_desc",
       "icon": "ph:bank",
       "keywords": ["saldo", "balance", "transaksi", "withdraw", "tarik dana", "keuangan"]
     },
     {
       "path": "/dashboard/organization/bank-accounts",
       "title": "Rekening Bank",
+      "titleKey": "doc_search.pages.org_bank_accounts_title",
       "description": "Kelola rekening bank untuk pencairan dana",
+      "descriptionKey": "doc_search.pages.org_bank_accounts_desc",
       "icon": "ph:credit-card",
       "keywords": ["rekening", "bank", "akun bank", "nomor rekening", "transfer", "pencairan", "withdraw"]
     },
     {
       "path": "/dashboard/organization/subscription",
       "title": "Subscription",
+      "titleKey": "doc_search.pages.org_subscription_title",
       "description": "Kelola paket berlangganan organisasi",
+      "descriptionKey": "doc_search.pages.org_subscription_desc",
       "icon": "ph:crown",
       "keywords": ["subscription", "berlangganan", "paket", "upgrade", "aktif", "masa berlaku", "premium"]
     },
     {
       "path": "/dashboard/organization/news",
       "title": "Berita",
+      "titleKey": "doc_search.pages.org_news_title",
       "description": "Buat dan kelola berita atau pengumuman",
+      "descriptionKey": "doc_search.pages.org_news_desc",
       "icon": "ph:newspaper",
       "keywords": ["berita", "news", "artikel", "pengumuman", "konten", "publikasi", "tulisan"]
     },
     {
       "path": "/dashboard/organization/settings",
       "title": "Pengaturan",
+      "titleKey": "doc_search.pages.org_settings_title",
       "description": "Pengaturan akun organisasi",
+      "descriptionKey": "doc_search.pages.org_settings_desc",
       "icon": "ph:gear",
       "keywords": ["pengaturan", "settings", "akun", "password", "keamanan", "konfigurasi"]
     },
     {
       "path": "/dashboard/organization/teams",
       "title": "Tim",
+      "titleKey": "doc_search.pages.org_teams_title",
       "description": "Mengelola tim dan anggota organisasi",
+      "descriptionKey": "doc_search.pages.org_teams_desc",
       "icon": "ph:users-four",
       "keywords": ["tim", "team", "anggota", "member", "kelola tim", "daftar tim"]
     },
     {
       "path": "/dashboard/organization/event-categories",
       "title": "Kategori Event",
+      "titleKey": "doc_search.pages.org_categories_title",
       "description": "Kelola kategori standar untuk event",
+      "descriptionKey": "doc_search.pages.org_categories_desc",
       "icon": "ph:tag",
       "keywords": ["kategori", "divisi", "recurve", "compound", "barebow", "gender", "usia", "kelas"]
     },
     {
       "path": "/dashboard/organization/reports",
       "title": "Laporan",
+      "titleKey": "doc_search.pages.org_reports_title",
       "description": "Laporan dan analitik event serta pendapatan",
+      "descriptionKey": "doc_search.pages.org_reports_desc",
       "icon": "ph:chart-bar",
       "keywords": ["laporan", "report", "analitik", "statistik", "grafik", "data", "rekap"]
     }
@@ -175,7 +223,9 @@
     {
       "path": "/dashboard/seller",
       "title": "Dashboard",
+      "titleKey": "doc_search.pages.archer_dashboard_title",
       "description": "Halaman utama dashboard seller",
+      "descriptionKey": "doc_search.pages.archer_dashboard_desc",
       "icon": "ph:squares-four",
       "keywords": ["dashboard", "beranda", "home", "ringkasan", "overview", "penjualan"]
     },
@@ -210,7 +260,9 @@
     {
       "path": "/dashboard/seller/settings",
       "title": "Pengaturan",
+      "titleKey": "doc_search.pages.archer_settings_title",
       "description": "Pengaturan akun seller",
+      "descriptionKey": "doc_search.pages.archer_settings_desc",
       "icon": "ph:gear",
       "keywords": ["pengaturan", "settings", "akun", "password", "keamanan"]
     }
@@ -233,7 +285,9 @@
     {
       "path": "/dashboard/root/subscriptions",
       "title": "Subscription",
+      "titleKey": "doc_search.pages.org_subscription_title",
       "description": "Kelola paket subscription dan berlangganan",
+      "descriptionKey": "doc_search.pages.org_subscription_desc",
       "icon": "ph:credit-card-bold",
       "keywords": ["subscription", "berlangganan", "paket", "kelola paket", "upgrade", "manajemen subscription"]
     }
@@ -242,21 +296,27 @@
     {
       "path": "/",
       "title": "Beranda",
+      "titleKey": "doc_search.pages.common_home_title",
       "description": "Halaman utama Archeris",
+      "descriptionKey": "doc_search.pages.common_home_desc",
       "icon": "ph:house",
       "keywords": ["beranda", "home", "utama", "Archeris", "panahan"]
     },
     {
       "path": "/tournaments",
       "title": "Event",
+      "titleKey": "doc_search.pages.common_events_title",
       "description": "Temukan dan daftarkan diri di event panahan",
+      "descriptionKey": "doc_search.pages.common_events_desc",
       "icon": "ph:trophy",
-      "keywords": ["event", "lomba", "kompetisi", "turnamen", "mencari turnamen", "jadwal", "daftar turnamen"]
+      "keywords": ["event", "lomba", "kompetisi", "turnamen", "mencari turnamen", "jadwal", "daftar turnamen", "tournaments"]
     },
     {
       "path": "/news",
       "title": "Berita",
+      "titleKey": "doc_search.pages.common_news_title",
       "description": "Berita dan artikel seputar panahan",
+      "descriptionKey": "doc_search.pages.common_news_desc",
       "icon": "ph:newspaper",
       "keywords": ["berita", "news", "artikel", "informasi", "panahan", "archery"]
     }

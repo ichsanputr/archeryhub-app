@@ -93,7 +93,7 @@
                 <p class="mt-8 text-center text-sm text-slate-600 font-body">
                     Unauthorized access is strictly monitored.
                     <NuxtLink to="/"
-                        class="font-black text-navy hover:text-primary-hover hover:underline transition-all">
+                        class="font-black text-navy hover:text-primary transition-colors">
                         Exit to Public
                     </NuxtLink>
                 </p>

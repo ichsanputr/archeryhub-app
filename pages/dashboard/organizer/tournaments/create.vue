@@ -20,23 +20,23 @@
         <!-- Single Step: Event Info -->
         <div class="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4">
           <!-- Package / Quota Selector (Placed on Top) -->
-          <FormSection icon="ph:package-bold" title="Pilihan Paket Kuota Event">
-            <div class="space-y-4">
+          <FormSection icon="ph:package-bold" :title="t('event_create.quota_section_title')">
+            <div class="space-y-4 font-body">
               <!-- Quota Balance Header Bar -->
               <div class="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
                 <div class="flex flex-wrap items-center gap-3">
-                  <span class="text-xs font-black tracking-wider text-slate-500">Saldo Kuota Anda:</span>
+                  <span class="text-xs font-black tracking-wider text-slate-500">{{ t('event_create.quota_balance_label') }}:</span>
                   <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white text-navy border border-slate-200 text-xs font-bold shadow-2xs">
                     <Icon icon="ph:gift-bold" class="text-sm text-primary" />
-                    Free: {{ quotaBalance.quota_free ?? 20 }}/20 Kuota
+                    {{ t('event_create.free_tier_name') }}: {{ quotaBalance.quota_free ?? 20 }}/20 {{ t('event_create.quota_unit') }}
                   </div>
                   <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white text-navy border border-slate-200 text-xs font-bold shadow-2xs">
                     <Icon icon="ph:check-circle-bold" class="text-sm text-primary" />
-                    Standard: {{ quotaBalance.quota_standard || 0 }} Kuota
+                    {{ t('event_create.standard_tier_name') }}: {{ quotaBalance.quota_standard || 0 }} {{ t('event_create.quota_unit') }}
                   </div>
                   <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white text-navy border border-slate-200 text-xs font-bold shadow-2xs">
                     <Icon icon="ph:crown-bold" class="text-sm text-primary" />
-                    Elite: {{ quotaBalance.quota_elite || 0 }} Kuota
+                    {{ t('event_create.elite_tier_name') }}: {{ quotaBalance.quota_elite || 0 }} {{ t('event_create.quota_unit') }}
                   </div>
                 </div>
 
@@ -45,7 +45,7 @@
                   class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-navy text-white hover:bg-navy-dark text-xs font-bold transition-all shadow-sm"
                 >
                   <Icon icon="ph:plus-circle-bold" class="text-sm text-primary" />
-                  Beli / Tambah Kuota
+                  {{ t('event_create.buy_quota_btn') }}
                 </NuxtLink>
               </div>
 
@@ -63,7 +63,7 @@
                   <div>
                     <div class="flex items-center justify-between gap-2 mb-3">
                       <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black tracking-wider bg-slate-100 text-slate-700">
-                        Bonus Awal (20 Kuota)
+                        {{ t('event_create.free_badge') }}
                       </div>
                       <div
                         v-if="(quotaBalance.quota_free ?? 20) > 0"
@@ -73,41 +73,41 @@
                         <Icon v-if="form.quotaType === 'free'" icon="ph:check-bold" class="text-xs" />
                       </div>
                       <span v-else class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
-                        Kuota Habis
+                        {{ t('event_create.quota_empty') }}
                       </span>
                     </div>
 
-                    <h4 class="text-lg font-black text-navy mb-1">Free Tier</h4>
-                    <div class="text-xs text-slate-500 font-medium mb-4">Event Latihan / Internal Klub</div>
+                    <h4 class="text-lg font-black text-navy mb-1">{{ t('event_create.free_tier_name') }}</h4>
+                    <div class="text-xs text-slate-500 font-medium mb-4">{{ t('event_create.free_tier_desc') }}</div>
 
                     <div class="space-y-2.5 text-xs font-medium text-slate-600 border-t border-slate-100 pt-3">
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:users-bold" class="text-slate-400 text-sm shrink-0" />
-                        <span>Maks. <strong>50 Peserta</strong></span>
+                        <span>{{ t('event_create.max_50_participants') }}</span>
                       </div>
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:squares-four-bold" class="text-slate-400 text-sm shrink-0" />
-                        <span><strong>Kategori Tanpa Batas</strong></span>
+                        <span><strong>{{ t('event_create.unlimited_categories') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:device-tablet-speaker-bold" class="text-slate-400 text-sm shrink-0" />
-                        <span><strong>Scorekeeper Tanpa Batas</strong></span>
+                        <span><strong>{{ t('event_create.unlimited_scorekeepers') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:hard-drive-bold" class="text-slate-400 text-sm shrink-0" />
-                        <span>100 MB Penyimpanan Media</span>
+                        <span>{{ t('event_create.free_storage') }}</span>
                       </div>
                     </div>
                   </div>
 
                   <div class="mt-4 pt-3 border-t border-slate-100">
                     <div v-if="(quotaBalance.quota_free ?? 20) > 0" class="flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-400">Gunakan:</span>
-                      <span class="text-xs font-black text-navy">1 Kuota (Sisa: {{ quotaBalance.quota_free ?? 20 }}/20)</span>
+                      <span class="text-xs font-bold text-slate-400">{{ t('event_create.use_label') }}:</span>
+                      <span class="text-xs font-black text-navy">{{ t('event_create.quota_use_free', { count: quotaBalance.quota_free ?? 20 }) }}</span>
                     </div>
                     <div v-else class="flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-400">Sisa 0 Kuota Free</span>
-                      <span class="text-xs font-bold text-slate-500">Pilih Standard/Elite</span>
+                      <span class="text-xs font-bold text-slate-400">{{ t('event_create.zero_free_quota') }}</span>
+                      <span class="text-xs font-bold text-slate-500">{{ t('event_create.select_standard_elite') }}</span>
                     </div>
                   </div>
                 </div>
@@ -124,7 +124,7 @@
                   <div>
                     <div class="flex items-center justify-between gap-2 mb-3">
                       <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black tracking-wider bg-slate-100 text-slate-700">
-                        Event Komunitas
+                        {{ t('event_create.standard_badge') }}
                       </div>
                       <div
                         v-if="quotaBalance.quota_standard > 0"
@@ -134,42 +134,42 @@
                         <Icon v-if="form.quotaType === 'standard'" icon="ph:check-bold" class="text-xs" />
                       </div>
                       <span v-else class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
-                        Kuota Habis
+                        {{ t('event_create.quota_empty') }}
                       </span>
                     </div>
 
-                    <h4 class="text-lg font-black text-navy mb-1">Standard EO</h4>
-                    <div class="text-xs text-slate-500 font-medium mb-4">Turnamen Daerah / Sirkuit</div>
+                    <h4 class="text-lg font-black text-navy mb-1">{{ t('event_create.standard_tier_name') }}</h4>
+                    <div class="text-xs text-slate-500 font-medium mb-4">{{ t('event_create.standard_tier_desc') }}</div>
 
                     <div class="space-y-2.5 text-xs font-medium text-slate-600 border-t border-slate-100 pt-3">
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:users-bold" class="text-slate-400 text-sm shrink-0" />
-                        <span>Maks. <strong>200 Peserta</strong></span>
+                        <span>{{ t('event_create.max_200_participants') }}</span>
                       </div>
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:squares-four-bold" class="text-slate-400 text-sm shrink-0" />
-                        <span><strong>Kategori Tanpa Batas</strong></span>
+                        <span><strong>{{ t('event_create.unlimited_categories') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:device-tablet-speaker-bold" class="text-slate-400 text-sm shrink-0" />
-                        <span><strong>Scorekeeper Tanpa Batas</strong></span>
+                        <span><strong>{{ t('event_create.unlimited_scorekeepers') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:hard-drive-bold" class="text-slate-400 text-sm shrink-0" />
-                        <span>500 MB Penyimpanan Media</span>
+                        <span>{{ t('event_create.standard_storage') }}</span>
                       </div>
                     </div>
                   </div>
 
                   <div class="mt-4 pt-3 border-t border-slate-100">
                     <div v-if="quotaBalance.quota_standard > 0" class="flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-400">Gunakan:</span>
-                      <span class="text-xs font-black text-navy">1 Kuota (Sisa: {{ quotaBalance.quota_standard }})</span>
+                      <span class="text-xs font-bold text-slate-400">{{ t('event_create.use_label') }}:</span>
+                      <span class="text-xs font-black text-navy">{{ t('event_create.quota_use_standard', { count: quotaBalance.quota_standard }) }}</span>
                     </div>
                     <div v-else class="flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-400">Sisa 0 Kuota</span>
+                      <span class="text-xs font-bold text-slate-400">{{ t('event_create.zero_quota') }}</span>
                       <NuxtLink to="/dashboard/organizer/package" class="text-xs font-bold text-navy hover:underline flex items-center gap-0.5">
-                        Beli Kuota <Icon icon="ph:arrow-right" class="text-[10px]" />
+                        {{ t('event_create.buy_quota') }} <Icon icon="ph:arrow-right" class="text-[10px]" />
                       </NuxtLink>
                     </div>
                   </div>
@@ -187,7 +187,7 @@
                   <div>
                     <div class="flex items-center justify-between gap-2 mb-3">
                       <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black tracking-wider bg-slate-100 text-slate-700">
-                        Kejurnas & Open
+                        {{ t('event_create.elite_badge') }}
                       </div>
                       <div
                         v-if="quotaBalance.quota_elite > 0"
@@ -197,42 +197,42 @@
                         <Icon v-if="form.quotaType === 'elite'" icon="ph:check-bold" class="text-xs" />
                       </div>
                       <span v-else class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
-                        Kuota Habis
+                        {{ t('event_create.quota_empty') }}
                       </span>
                     </div>
 
-                    <h4 class="text-lg font-black text-navy mb-1">Elite EO</h4>
-                    <div class="text-xs text-slate-500 font-medium mb-4">Turnamen Skala Nasional / Internasional</div>
+                    <h4 class="text-lg font-black text-navy mb-1">{{ t('event_create.elite_tier_name') }}</h4>
+                    <div class="text-xs text-slate-500 font-medium mb-4">{{ t('event_create.elite_tier_desc') }}</div>
 
                     <div class="space-y-2.5 text-xs font-medium text-slate-600 border-t border-slate-100 pt-3">
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:users-bold" class="text-slate-400 text-sm shrink-0" />
-                        <span><strong>Peserta Tanpa Batas</strong></span>
+                        <span><strong>{{ t('event_create.unlimited_participants') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:squares-four-bold" class="text-slate-400 text-sm shrink-0" />
-                        <span><strong>Kategori Tanpa Batas</strong></span>
+                        <span><strong>{{ t('event_create.unlimited_categories') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:device-tablet-speaker-bold" class="text-slate-400 text-sm shrink-0" />
-                        <span><strong>Scorekeeper Tanpa Batas</strong></span>
+                        <span><strong>{{ t('event_create.unlimited_scorekeepers') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
                         <Icon icon="ph:hard-drive-bold" class="text-slate-400 text-sm shrink-0" />
-                        <span>5 GB Penyimpanan Media</span>
+                        <span>{{ t('event_create.elite_storage') }}</span>
                       </div>
                     </div>
                   </div>
 
                   <div class="mt-4 pt-3 border-t border-slate-100">
                     <div v-if="quotaBalance.quota_elite > 0" class="flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-400">Gunakan:</span>
-                      <span class="text-xs font-black text-navy">1 Kuota (Sisa: {{ quotaBalance.quota_elite }})</span>
+                      <span class="text-xs font-bold text-slate-400">{{ t('event_create.use_label') }}:</span>
+                      <span class="text-xs font-black text-navy">{{ t('event_create.quota_use_elite', { count: quotaBalance.quota_elite }) }}</span>
                     </div>
                     <div v-else class="flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-400">Sisa 0 Kuota</span>
+                      <span class="text-xs font-bold text-slate-400">{{ t('event_create.zero_quota') }}</span>
                       <NuxtLink to="/dashboard/organizer/package" class="text-xs font-bold text-navy hover:underline flex items-center gap-0.5">
-                        Beli Kuota <Icon icon="ph:arrow-right" class="text-[10px]" />
+                        {{ t('event_create.buy_quota') }} <Icon icon="ph:arrow-right" class="text-[10px]" />
                       </NuxtLink>
                     </div>
                   </div>

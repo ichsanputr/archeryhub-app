@@ -98,9 +98,9 @@ const props = defineProps({
     images: {
         type: Array,
         default: () => [
-            'https://picsum.photos/seed/archery1/800/600',
-            'https://picsum.photos/seed/archery2/800/600',
-            'https://picsum.photos/seed/archery3/800/600'
+            'https://placehold.co/800x600/0f172a/63c03b?text=Feature+Preview+1',
+            'https://placehold.co/800x600/1e293b/38bdf8?text=Feature+Preview+2',
+            'https://placehold.co/800x600/0f172a/f59e0b?text=Feature+Preview+3'
         ]
     },
     alt: {
@@ -111,9 +111,9 @@ const props = defineProps({
 
 const active = ref(0)
 const imageList = computed(() => (props.images && props.images.length > 0 ? props.images : [
-    'https://picsum.photos/seed/archery1/800/600',
-    'https://picsum.photos/seed/archery2/800/600',
-    'https://picsum.photos/seed/archery3/800/600'
+    'https://placehold.co/800x600/0f172a/63c03b?text=Feature+Preview+1',
+    'https://placehold.co/800x600/1e293b/38bdf8?text=Feature+Preview+2',
+    'https://placehold.co/800x600/0f172a/f59e0b?text=Feature+Preview+3'
 ]))
 
 // Subtle, controlled angles for elegant stacked deck effect

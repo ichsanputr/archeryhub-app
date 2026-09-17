@@ -69,9 +69,9 @@
 
                 <!-- Image Mockup -->
                 <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
-                    <div class="relative w-full max-w-[500px]">
-                        <img src="/archery_mobile_app_download_1778934899178.png" alt="Archeris Mobile App"
-                            class="w-full h-auto object-contain drop-shadow-lg" />
+                    <div class="relative w-full max-w-[460px] aspect-[4/5] rounded-3xl overflow-hidden border border-navy/10 shadow-2xl bg-navy/5 flex items-center justify-center">
+                        <img src="https://placehold.co/600x750/0f172a/63c03b?text=Archeris+Mobile+App+Preview" alt="Archeris Mobile App"
+                            class="w-full h-full object-cover" />
                     </div>
                 </div>
             </div>

@@ -10,6 +10,14 @@
     "my_subscription": "My Subscription",
     "subtitle": "Manage your plan, usage, and billing history."
   },
+  "doc_search": {
+    "placeholder": "Search documentation & features...",
+    "no_results": "No results found for",
+    "quick_navigation": "Quick Navigation",
+    "to_navigate": "to navigate",
+    "to_select": "to select",
+    "to_close": "to close"
+  },
   "sidebar": {
     "overview": "Overview",
     "activity": "Tournaments",
@@ -32,7 +40,7 @@
     "organizer": "Organizer",
     "scorekeeper": "Scorekeepers",
     "payment_methods": "Payment Methods",
-    "reports": "Reports",
+    "reports": "Financial Reports",
     "finance": "Finance",
     "earnings": "Earnings",
     "balance": "Balance",
@@ -51,9 +59,9 @@
     "summary": "Summary",
     "event_page": "Tournament Setting",
     "participants": "Participants",
-    "teams": "Teams",
+    "teams": "Teams & Squads",
     "competition_categories": "Categories",
-    "targets": "Targets",
+    "targets": "Target Setup",
     "qualification": "Qualification",
     "elimination": "Elimination",
     "package": "Package",
@@ -69,7 +77,16 @@
       "seller": "Seller Store",
       "scorekeeper": "Scorekeeper",
       "user": "Member"
-    }
+    },
+    "events": "Tournaments",
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "notifications": "Notifications",
+    "wallet": "Wallet",
+    "scoring": "Scoring",
+    "schedule": "Schedule",
+    "categories": "Categories",
+    "packages": "EO Packages"
   },
   "archer_certificates": {
     "breadcrumb": "Certificates",
@@ -106,7 +123,9 @@
     "share": "Share",
     "copy_link": "Copy Link",
     "link_copied": "Certificate link copied!",
-    "official_badge": "Official Digital Certificate"
+    "official_badge": "Official Digital Certificate",
+    "verified_desc": "This certificate is officially registered and verified in the Archeris.net system.",
+    "btn_overview": "Back to Tournament Overview"
   },
   "common": {
     "loading_dashboard": "Loading dashboard...",
@@ -126,7 +145,16 @@
     "back": "Back",
     "delete": "Delete",
     "close": "Close",
-    "free": "Free"
+    "free": "Free",
+    "grid_view": "Grid View",
+    "list_view": "List View",
+    "copy": "Copy",
+    "save": "Save",
+    "confirm": "Confirm",
+    "actions": "Actions",
+    "status": "Status",
+    "search": "Search",
+    "filter": "Filter"
   },
   "stats": {
     "total_products": "Total Products",
@@ -206,7 +234,9 @@
     "tab_account": "Account Profile",
     "tab_notifications": "Notifications",
     "theme_desc": "Dashboard visual appearance theme",
-    "theme_save_hint": "Selected theme will be saved to your dashboard preferences."
+    "theme_save_hint": "Selected theme will be saved to your dashboard preferences.",
+    "password_set_label": "Password is active",
+    "password_not_set_label": "No password set (OAuth login)"
   },
   "tabs": {
     "security": "Keamanan",
@@ -947,7 +977,8 @@
       "archer": "Archer",
       "score": "Score",
       "active": "Active",
-      "completed": "Completed"
+      "completed": "Completed",
+      "completion_scoring": "Scoring Completion Rate"
     },
     "expired_banner": {
       "title": "Your Tournament Package Has Expired",
@@ -964,6 +995,12 @@
     },
     "scorekeepers": {
       "select_status": "Select Status"
+    },
+    "my_qualification": "My Qualification Results",
+    "header": {
+      "search_pages": "Search pages",
+      "back_to_dashboard": "Back to Dashboard",
+      "event_management": "Tournament Management"
     }
   },
   "cart": {
@@ -1175,10 +1212,55 @@
     "error_date_order": "Error Date Order",
     "toast_create_warning": "Toast Create Warning",
     "toast_create_success": "Toast Create Success",
-    "toast_create_failed": "Toast Create Failed"
+    "toast_create_failed": "Toast Create Failed",
+    "quota_section_title": "Event Quota Package Selection",
+    "quota_balance_label": "Your Quota Balance",
+    "quota_unit": "Quota",
+    "buy_quota_btn": "Buy / Add Quota",
+    "free_badge": "Starter Bonus (20 Quota)",
+    "free_tier_name": "Free Tier",
+    "free_tier_desc": "Practice Event / Internal Club",
+    "max_50_participants": "Max. 50 Participants",
+    "max_200_participants": "Max. 200 Participants",
+    "unlimited_participants": "Unlimited Participants",
+    "unlimited_categories": "Unlimited Categories",
+    "unlimited_scorekeepers": "Unlimited Scorekeepers",
+    "free_storage": "100 MB Media Storage",
+    "standard_storage": "500 MB Media Storage",
+    "elite_storage": "5 GB Media Storage",
+    "quota_empty": "Quota Depleted",
+    "use_label": "Use",
+    "quota_remaining_label": "Remaining",
+    "quota_use_free": "1 Quota (Remaining: {count}/20)",
+    "quota_use_standard": "1 Quota (Remaining: {count})",
+    "quota_use_elite": "1 Quota (Remaining: {count})",
+    "zero_free_quota": "0 Free Quota Remaining",
+    "zero_quota": "0 Quota Remaining",
+    "select_standard_elite": "Select Standard/Elite",
+    "buy_quota": "Buy Quota",
+    "standard_badge": "Community Event",
+    "standard_tier_name": "Standard EO",
+    "standard_tier_desc": "Regional / Circuit Tournaments",
+    "elite_badge": "National & Open",
+    "elite_tier_name": "Elite EO",
+    "elite_tier_desc": "National / International Scale Tournaments"
   },
   "my_registration": {
     "toast_payment_success": "Toast Payment Success",
+    "qr_checkin_badge": "Re-Registration QR",
+    "ready_to_compete": "Ready to Compete",
+    "important_reregistration_title": "Important for Re-Registration",
+    "important_reregistration_desc": "Show this QR Code to the registration desk marshal during equipment inspection at the venue to confirm attendance (Check-in) and receive target butt assignment.",
+    "categories_unit": "Categories",
+    "category_unit_single": "Category",
+    "send_proof_btn": "Submit Transfer Proof",
+    "thb_guidebook": "Technical Handbook (THB)",
+    "download_thb_pdf": "Download Official THB (PDF)",
+    "payment_proof_title": "Payment Proof",
+    "proof_selected": "Proof Selected ✓",
+    "click_to_upload_proof": "Click to upload transfer proof",
+    "uploading": "Uploading...",
+    "view_payment_detail": "View Payment & Invoice Details",
     "mayar_gateway_name": "Mayar Payment Gateway",
     "mayar_instant_secure": "Instant & Automatic",
     "mayar_supported_desc": "Pay instantly via QRIS, Bank Virtual Accounts, or International Credit/Debit Cards (Visa, Mastercard, JCB). Automatically verified.",
@@ -1247,7 +1329,6 @@
     "pay_now_paypal": "Pay Now via PayPal",
     "btn_pay_now_mayar": "Pay Now with Mayar",
     "btn_pay_now_paypal": "Pay Now with PayPal",
-    "view_payment_detail": "View Payment & Invoice Details",
     "title": "Registration & Pass",
     "page_title": "Registration Details & Tournament Pass",
     "my_events": "My Tournaments",
@@ -1273,7 +1354,6 @@
     "registered_categories": "Enrolled Tournament Categories",
     "fee": "Fee",
     "field_pass": "Field Accreditation Pass",
-    "ready_to_compete": "Ready to Compete",
     "unverified": "Payment Pending",
     "qr_checkin_hint": "Show this QR code to the registration desk marshal during equipment inspection.",
     "payment_details_title": "Payment Details",
@@ -1325,7 +1405,9 @@
     "highlight_badge": "Top Showcase",
     "highlight_max_error": "You can highlight up to 3 achievements in the top showcase.",
     "motto_label": "Athlete Motto / Quote",
-    "motto_placeholder": "Example: Focus, aim, release with confidence."
+    "motto_placeholder": "Example: Focus, aim, release with confidence.",
+    "username_taken": "This username is already taken.",
+    "city_placeholder": "Select your city"
   },
   "organizer": {
     "balance": {
@@ -2011,27 +2093,37 @@
     "target_label": "Target Position",
     "board_label": "Board",
     "session_label": "Session",
-    "time_label": "Time"
+    "time_label": "Time",
+    "target_item": "Target {num}",
+    "position_val": "Position {pos}",
+    "venue_label": "Match Venue",
+    "event_dates_label": "Event Dates",
+    "download_thb": "Download Technical Guidebook (THB)",
+    "whistle_2_desc": "Active wave archers step up to the shooting line.",
+    "whistle_1_desc": "Timer starts (4 minutes / 3 minutes as regulated).",
+    "whistle_3_desc": "Score arrows, retrieve arrows, and return behind waiting line.",
+    "whistle_5_desc": "Immediately lower bow and secure arrows in quiver."
   },
   "leaderboard_page": {
-    "nav_event": "Tournament",
+    "nav_event": "Event",
     "title": "Tournament Leaderboard",
     "subtitle": "Live qualification rankings and total scores by category",
     "refresh": "Refresh",
     "empty_title": "No Qualification Scores Yet",
-    "empty_desc": "Qualification scores for this category have not yet been recorded by the committee.",
-    "table_title": "Complete Qualification Leaderboard",
+    "empty_desc": "Qualification scores for this category have not been entered yet or the competition is ongoing.",
+    "table_title": "Complete Qualification Rankings",
     "archers_count": "Archers",
     "col_archer": "Archer",
-    "col_club": "Club / Delegation",
+    "col_club": "Club / Contingent",
     "col_session": "Session",
-    "col_score": "Total Score"
+    "col_score": "Total Score",
+    "stats_summary": "10s: {tens} | X: {x}"
   },
   "elimination": {
     "nav_event": "Tournament",
     "nav_title": "Elimination Bracket",
     "title": "My Elimination Matches",
-    "subtitle": "Head-to-head match bracket and results",
+    "subtitle": "Head-to-head elimination bracket and live match scoring.",
     "status_ready": "Standby",
     "status_active": "In Competition",
     "status_champion": "Champion",
@@ -2043,7 +2135,7 @@
     "path_title": "Elimination Path",
     "rounds_completed": "Rounds",
     "not_reached": "No Elimination Matches Yet",
-    "not_reached_desc": "Elimination bracket has not yet been generated for this category or matches have not been scheduled.",
+    "not_reached_desc": "Elimination brackets for this category have not been generated yet or matches are not yet scheduled.",
     "win": "WIN",
     "lose": "LOSE",
     "active": "ACTIVE",
@@ -2054,7 +2146,7 @@
     "nav_event": "Tournament",
     "nav_title": "Qualification Scorecard",
     "title": "My Qualification Scorecard",
-    "subtitle": "Detailed end-by-end arrow scores and statistics",
+    "subtitle": "Qualification end scores, 10s/Xs statistics, and archer ranking.",
     "archer": "Archer",
     "independent": "Independent",
     "rank_title": "QUALIFICATION RANK",
@@ -2118,41 +2210,30 @@
     "paddle_name": "Mayar (Global / USD)",
     "paddle_desc": "International payments via Credit/Debit Cards, PayPal, Apple Pay, Google Pay.",
     "basic_features_list": [
-      "Standard Tournament Quota",
       "Up to 200 Participants / Tournament",
-      "Up to 10 Competition Categories",
-      "3 Scorekeeper Accounts",
-      "Live Qualification & Elimination Scoring",
-      "Standard Digital Certificates (Automated)",
-      "Full 6 Tournament Printouts Download",
-      "Automated Payment Gateway (Mayar QRIS & VA)"
+      "3 GB Media Storage",
+      "Access All Features"
     ],
     "free_features_list": [
-      "1 Free Tournament Quota Slot",
-      "Max 10 Participants / Tournament",
-      "1 Scorekeeper Account",
-      "Basic Digital Qualification Scoring",
-      "Basic Results & Printouts (PDF)"
+      "Up to 50 Participants / Tournament",
+      "200 MB Media Storage",
+      "Access All Features"
     ],
     "elite_features_list": [
-      "Unlimited Participants & Categories",
-      "Unlimited Scorekeeper Accounts",
-      "Custom Certificate Design Templates (16:9 & A4)",
-      "Live Embed Bracket & Leaderboard Widgets (OBS / Web)",
-      "Local & Global Payment Gateway (Mayar & Mayar USD)",
-      "Full Excel Export & Financial Statements",
-      "Priority Technical Tournament Support"
+      "Unlimited Participants",
+      "10 GB Media Storage",
+      "Access All Features"
     ],
     "faq_title": "FAQ",
     "faq_subtitle": "Frequently Asked Questions",
     "faqs_list": [
       {
-        "question": "How does the Standard EO 3-month free promo work?",
-        "answer": "During the initial 3-month promotional period, organizers can register and claim Standard EO tournament quota completely free ($0.00) with no upfront or hidden fees to publish and manage tournaments."
+        "question": "How does the tournament quota system work?",
+        "answer": "Organizers can purchase tournament quotas individually or in discounted bundles. Each quota allows you to publish and manage one complete tournament with all platform features."
       },
       {
-        "question": "What happens after the 3-month promo period ends?",
-        "answer": "All existing tournaments and past tournament data remain permanently active. For publishing new future tournaments after the promo ends, Standard EO quota is available at the normal flat rate of $3.00 per tournament."
+        "question": "What is the difference between Standard EO and Elite EO?",
+        "answer": "Standard EO supports up to 200 participants and 3 GB media storage per tournament. Elite EO offers unlimited participants and 10 GB media storage. All scoring, certificates, live leaderboards, and management features are fully unlocked on both tiers."
       },
       {
         "question": "Do purchased tournament quotas have an expiration date?",
@@ -2160,17 +2241,28 @@
       },
       {
         "question": "When is tournament quota deducted from my account balance?",
-        "answer": "Tournament quota is only deducted when you publish an tournament (changing status from Draft to Public). While setting up categories, brackets, and rules in Draft mode, no quota is consumed."
+        "answer": "Tournament quota is only deducted when you publish a tournament (changing status from Draft to Public). While setting up categories, brackets, and rules in Draft mode, no quota is consumed."
       },
       {
         "question": "Can I purchase custom numbers of tournament slots?",
-        "answer": "Yes! In your organizer dashboard, you can enter any custom number of tournament slots you require to plan out your organization's yearly calendar."
+        "answer": "Yes! In your organizer dashboard, you can enter any custom number of tournament slots you require to plan out your organization's yearly calendar with automatic volume bundle discounts."
       }
     ],
-    "comparison": {
-      "participants_limit": "Participant Limit per Tournament",
-      "categories_limit": "Competition Categories Limit",
-      "scorekeepers_limit": "Scorekeeper Accounts",
+    "features_standard": "Digital Qualification, Match Play, Printouts, Payment",
+    "features_elite": "Unlimited Everything, Live Embed, PayPal Global",
+    "features_category_scoring": "Scoring & Match Operations",
+    "features_category_outputs": "Outputs & Branding",
+    "features_category_support": "Support & Infrastructure",
+    "feature_categories": {
+      "scoring": "Scoring & Match Operations",
+      "outputs": "Outputs & Branding",
+      "support": "Support & Infrastructure",
+      "capacity": "Capacity & Limits"
+    },
+    "features_list": {
+      "participant_limit": "Participant Limit per Tournament",
+      "category_limit": "Competition Categories Limit",
+      "scorekeeper_limit": "Scorekeeper Accounts Limit",
       "digital_scoring": "Digital Qualification Scoring",
       "elimination_brackets": "Elimination Brackets & Match Play",
       "digital_certificates": "Digital Certificates for Archers",
@@ -2181,17 +2273,9 @@
       "media_storage": "Media Storage",
       "technical_support": "Customer Support"
     },
-    "unlimited": "Unlimited",
-    "cert_basic": "Standard Template",
-    "cert_custom": "Custom Template (16:9 & A4)",
-    "export_basic": "Basic Report",
-    "export_standard": "Complete (6 Types)",
-    "export_elite": "Complete (6 Types)",
-    "support_standard": "Standard",
     "support_fast": "Fast Support",
-    "support_priority": "VIP Priority",
-    "promo_badge": "First 3 Months Free Promo",
-    "promo_subtext": "Free during the 3-month promo period, standard rate of $3.00/tournament applies thereafter.",
+    "promo_badge": "Launch 50% OFF",
+    "promo_subtext": "50% launch discount applied to all packages.",
     "claim_standard_promo": "Claim Standard Promo",
     "free_price": "Free"
   },
@@ -2213,23 +2297,27 @@
     "free_tier_badge": "Initial Signup Bonus",
     "free_tier_title": "Free Tier",
     "free_tier_desc": "Free quota for club tournaments and internal practice",
-    "free_tier_slot": "/ 20 slots available",
+    "free_tier_slot": "/ 20 slots remaining",
+    "remaining_slots": "/ 20 slots remaining",
+    "used_slots": "used",
+    "initial_slots": "Initial: 20 Free Slots",
+    "remaining_events": "{quota} Free Tournaments Available",
     "free_tier_feat_1": "Maximum <strong>50 Participants</strong> per tournament",
-    "free_tier_feat_2": "Maximum <strong>2 Competition Categories</strong>",
-    "free_tier_feat_3": "<strong>1 Digital Scorekeeper</strong>",
+    "free_tier_feat_2": "<strong>200 MB</strong> Media Storage",
+    "free_tier_feat_3": "Access <strong>All Features</strong>",
     "standard_tier_badge": "Most Popular",
     "standard_title": "Standard Package",
     "standard_desc": "Ideal for regional championships and local circuits",
     "slot_available": "active tournament slots",
-    "std_feat_1": "Up to <strong>300 Participants</strong> per tournament",
-    "std_feat_2": "<strong>Unlimited</strong> Categories & Targets",
-    "std_feat_3": "Full <strong>Qualification & Elimination</strong> Suite",
+    "std_feat_1": "Up to <strong>200 Participants</strong> per tournament",
+    "std_feat_2": "<strong>3 GB</strong> Media Storage",
+    "std_feat_3": "Access <strong>All Features</strong>",
     "elite_tier_badge": "National Scale",
     "elite_title": "Elite Package",
     "elite_desc": "For major open championships & national tournaments",
     "elite_feat_1": "<strong>Unlimited</strong> Participants",
-    "elite_feat_2": "Multi-field live scoring & elimination brackets",
-    "elite_feat_3": "Automated digital certificates with QR verification",
+    "elite_feat_2": "<strong>10 GB</strong> Media Storage",
+    "elite_feat_3": "Access <strong>All Features</strong>",
     "step_tier": "1. Select Tournament Package Tier",
     "step_qty": "2. Tournament Quota Quantity",
     "step_payment": "3. Payment Method",
@@ -2403,6 +2491,19 @@
     "no_category_data_desc": "Category registration statistics will appear automatically once archers register."
   },
   "auth": {
+    "errors": {
+      "user_not_found": "Account not found. Please check your email or register a new account.",
+      "invalid_password": "The password you entered is incorrect. Please try again.",
+      "account_inactive": "Your account is inactive or has been suspended. Please contact admin.",
+      "use_google_signin": "This account was registered with Google. Please sign in with Google.",
+      "invalid_credentials": "Invalid email or password. Please try again.",
+      "email_already_registered": "This email is already registered. Please log in directly.",
+      "otp_invalid": "Verification code is invalid or incorrect. Please check again.",
+      "otp_expired": "Verification code has expired. Please request a new code.",
+      "otp_already_used": "Verification code has already been used. Please request a new code.",
+      "rate_limited": "Too many requests. Please wait a moment before trying again.",
+      "server_error": "A server error occurred. Please try again later."
+    },
     "login": {
       "email_placeholder": "Enter your email address"
     }
@@ -2479,14 +2580,6 @@
       "no_categories": "No tournament categories available.",
       "independent": "Independent Club"
     }
-  },
-  "doc_search": {
-    "placeholder": "Search documentation & features...",
-    "no_results": "No results found for",
-    "quick_navigation": "Quick Navigation",
-    "to_navigate": "to navigate",
-    "to_select": "to select",
-    "to_close": "to close"
   },
   "package_detail": {
     "page_title": "Payment Invoice Detail",
@@ -2807,6 +2900,58 @@
       "sponsor": "Sponsor",
       "club": "Club",
       "other": "Other"
+    }
+  },
+  "archers": {
+    "athlete_profile": "Athlete Profile",
+    "not_found": "Athlete Not Found",
+    "not_found_desc": "The requested archer profile could not be found or has not been made public.",
+    "public": {
+      "pro_archer": "Verified Archer",
+      "events": "Tournaments",
+      "wins": "Podiums",
+      "avg_rank": "Avg. Rank",
+      "athlete_biography": "Biography",
+      "no_bio": "No biography details provided yet.",
+      "performance_trend": "Performance Trend",
+      "qual_scores_last_6": "Last 6 Tournament Qualification Scores",
+      "recent_competition": "Recent Competitions",
+      "table_placement": "Rank",
+      "no_competition_history": "No past competition record available.",
+      "top_highlights": "Top Career Highlights",
+      "no_highlights": "No highlight achievements recorded yet.",
+      "social_channels": "Social Media",
+      "no_social_links": "No public social media links.",
+      "athlete_specifications": "Athlete Specifications",
+      "athlete_specifications_subtitle": "Official shooting setup and physical stats.",
+      "education_affiliation": "Affiliation / School",
+      "gender_profile": "Division & Gender",
+      "years_old": "years old",
+      "bow_division": "Bow Division",
+      "hand_dominance": "Dominant Hand",
+      "height_weight": "Height / Weight",
+      "resident_address": "Location",
+      "performance_summary": "Career Performance Summary",
+      "podium_finishes": "Podium Finishes",
+      "times_unit": "times",
+      "gold_medals": "Gold Medals",
+      "wins_unit": "titles",
+      "personal_best": "Personal Best",
+      "pts_unit": "pts",
+      "average_score": "Average Score",
+      "equipment_locker": "Equipment Locker",
+      "verified_gear": "Verified tournament setup & gear.",
+      "no_equipment": "No gear details listed.",
+      "achievements_log": "Achievements Log",
+      "achievements_desc": "Medals and championship honors earned across official events.",
+      "achievements_count_unit": "Medals",
+      "tournament_history_title": "Tournament History",
+      "tournament_history_desc": "Complete tournament records and qualification standings.",
+      "search_tournament": "Search tournament...",
+      "table_date": "Date",
+      "table_tournament": "Tournament",
+      "table_division": "Division",
+      "no_matching_tournaments": "No matching tournaments found."
     }
   }
 }

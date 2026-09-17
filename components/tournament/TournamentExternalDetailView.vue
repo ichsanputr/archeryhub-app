@@ -160,7 +160,7 @@
                     <span>{{ t('metric_targets') }}</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
-                    {{ computedFopTargetCount }}
+                    {{ computedFopTargetCount > 0 ? computedFopTargetCount : '-' }}
                   </div>
                   <div class="text-[11px] text-slate-400 mt-0.5">{{ t('metric_targets_sub') }}</div>
                 </div>
@@ -315,7 +315,7 @@
             </section>
 
             <!-- 3. FIELD OF PLAY (FOP LAYOUT) -->
-            <section id="fop" class="scroll-mt-24 space-y-5">
+            <section v-if="hasFopData" id="fop" class="scroll-mt-24 space-y-5">
               <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
                 <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon"><Icon icon="ph:target-bold" class="size-5 text-navy" /></div>
                 <div>
@@ -1044,17 +1044,18 @@
                 </div>
               </div>
 
-              <!-- 3. Actions & Resources Box (Download THB & Share) -->
+              <!-- 3. Actions & Resources Box (Open Ianseo & Share) -->
               <div class="space-y-2">
+                <!-- Open in Ianseo Official Site -->
                 <a
-                  v-if="thbDocument"
-                  :href="thbDocument.url || thbDocument.file_url"
+                  v-if="ianseoUrl"
+                  :href="ianseoUrl"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-2xs"
+                  class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-2xs border border-slate-200/80 hover:border-navy/20"
                 >
-                  <Icon icon="ph:file-pdf-bold" class="text-rose-600 text-sm" />
-                  <span>{{ t('download_handbook_btn') }}</span>
+                  <Icon icon="ph:arrow-square-out-bold" class="text-navy text-sm" />
+                  <span>{{ t('view_ianseo_btn') }}</span>
                 </a>
 
                 <!-- Refined Modern Share Button -->
@@ -1956,7 +1957,7 @@ const computedFopTargetCount = computed(() => {
       })
     })
   }
-  return maxTgt > 0 ? maxTgt : 32
+  return maxTgt > 0 ? maxTgt : 0
 })
 
 // Navigation Sections
@@ -2426,7 +2427,16 @@ const thbDocument = computed(() => {
 })
 
 const ianseoUrl = computed(() => {
-  return activeTournament.value?.source_url || `https://ianseo.net/Details.php?toId=${activeTournament.value?.external_id || activeTournament.value?.id}`
+  if (activeTournament.value?.source_url) return activeTournament.value.source_url
+  const rawId = String(activeTournament.value?.external_id || activeTournament.value?.id || '').replace(/^ianseo-/, '')
+  if (rawId && /^\d+$/.test(rawId)) {
+    return `https://ianseo.net/Details.php?toId=${rawId}`
+  }
+  const dataToId = activeTournamentData.value?.toId || activeTournamentData.value?.to_id || activeTournamentData.value?.id
+  if (dataToId && /^\d+$/.test(String(dataToId))) {
+    return `https://ianseo.net/Details.php?toId=${dataToId}`
+  }
+  return 'https://ianseo.net'
 })
 
 // ─────────────────────────────────────────────────────────────

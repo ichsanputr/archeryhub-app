@@ -219,6 +219,7 @@ definePageMeta({ layout: false })
 useHead({ title: computed(() => t('auth.forgot.title', 'Forgot Password') + ' - Archeris.net') })
 const toast = useToast()
 const router = useRouter()
+const apiBaseUrl = useApiBaseUrl()
 
 const getMediaUrl = (filename) => {
     if (!filename) return ''

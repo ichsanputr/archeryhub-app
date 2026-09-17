@@ -21,56 +21,61 @@
                 </div>
             </div>
 
-            <!-- Articles Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Articles Cards Grid / Mobile Horizontal Scroll -->
+            <div class="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 overflow-x-auto md:overflow-x-visible -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar snap-x snap-mandatory md:snap-none pb-6 md:pb-0">
                 <NuxtLink v-for="article in displayArticles" :key="article.slug"
                     :to="`/blog/${article.slug}`"
-                    class="bg-white rounded-[28px] border border-slate-200/80 p-6 flex flex-col justify-between shadow-xs hover:shadow-sm hover:border-slate-300 hover:-translate-y-1 transition-all duration-300 group cursor-pointer">
-                    <div>
-                        <!-- Thumbnail -->
-                        <div class="rounded-2xl overflow-hidden aspect-[16/10] bg-slate-100 mb-6 relative border border-slate-100">
-                            <img :src="article.image || '/hero-berita.jpeg'" :alt="article.title"
-                                @error="(e) => (e.target.src = '/hero-berita.jpeg')"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                                loading="lazy" />
-                            <div class="absolute top-3 left-3">
-                                <span class="bg-navy/90 backdrop-blur-md text-white text-[10px] font-black px-3 py-1 rounded-lg tracking-wider">
-                                    {{ article.category }}
-                                </span>
-                            </div>
+                    class="min-w-[280px] sm:min-w-[340px] md:min-w-0 w-[82vw] sm:w-[360px] md:w-auto snap-center shrink-0 md:shrink bg-white rounded-[28px] overflow-hidden border border-slate-200/80 flex flex-col justify-between shadow-xs hover:shadow-md hover:border-slate-300 hover:-translate-y-1 transition-all duration-300 group cursor-pointer h-full">
+                    
+                    <!-- Full-Covering Header Thumbnail (16:9 matches thumbnail image aspect ratio) -->
+                    <div class="relative w-full aspect-[16/9] bg-slate-900 overflow-hidden shrink-0">
+                        <img :src="article.image || '/hero-berita.jpeg'" :alt="article.title"
+                            @error="(e) => (e.target.src = '/hero-berita.jpeg')"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                            loading="lazy" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                        <div class="absolute top-3.5 left-3.5">
+                            <span class="bg-navy/90 backdrop-blur-md text-white text-[10px] font-black px-3 py-1 rounded-lg tracking-wider border border-white/10 shadow-xs">
+                                {{ article.category }}
+                            </span>
                         </div>
-
-                        <!-- Metadata -->
-                        <div class="flex items-center gap-2 text-slate-400 text-xs font-bold mb-3">
-                            <span>{{ article.date }}</span>
-                            <span>•</span>
-                            <span>{{ article.read_time || 6 }} min read</span>
-                        </div>
-
-                        <!-- Title -->
-                        <h3 class="text-xl font-black text-navy leading-snug font-display group-hover:text-slate-900 transition-colors line-clamp-2 mb-3">
-                            {{ article.title }}
-                        </h3>
-
-                        <!-- Excerpt -->
-                        <p class="text-slate-500 text-sm leading-relaxed line-clamp-3 mb-6 font-normal">
-                            {{ article.excerpt }}
-                        </p>
                     </div>
 
-                    <!-- Footer / Author -->
-                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
-                        <div class="flex items-center gap-2.5">
-                            <img 
-                                :src="article.author?.avatar || '/profile-author.png'" 
-                                :alt="(article.author?.name || 'Archeris Editorial Team') + ' Avatar'"
-                                class="w-6 h-6 rounded-full bg-slate-100 object-cover border border-slate-200 shrink-0" 
-                            />
-                            <span class="text-xs font-bold text-navy">{{ article.author?.name || 'Archeris Editorial Team' }}</span>
+                    <!-- Card Body -->
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <!-- Metadata -->
+                            <div class="flex items-center gap-2 text-slate-400 text-xs font-bold mb-2.5">
+                                <span>{{ article.date }}</span>
+                                <span>•</span>
+                                <span>{{ article.read_time || 6 }} min read</span>
+                            </div>
+
+                            <!-- Title -->
+                            <h3 class="text-lg sm:text-xl font-black text-navy leading-snug font-display group-hover:text-slate-900 transition-colors line-clamp-2 mb-2.5">
+                                {{ article.title }}
+                            </h3>
+
+                            <!-- Excerpt -->
+                            <p class="text-slate-500 text-sm leading-relaxed line-clamp-3 mb-6 font-normal">
+                                {{ article.excerpt }}
+                            </p>
                         </div>
-                        <span class="text-slate-950 font-black text-xs inline-flex items-center gap-1 group-hover:text-black group-hover:translate-x-1 transition-all">
-                            Read article <Icon icon="ph:arrow-right-bold" />
-                        </span>
+
+                        <!-- Footer / Author -->
+                        <div class="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
+                            <div class="flex items-center gap-2.5">
+                                <img 
+                                    :src="article.author?.avatar || '/profile-author.png'" 
+                                    :alt="(article.author?.name || 'Archeris Editorial Team') + ' Avatar'"
+                                    class="w-6 h-6 rounded-full bg-slate-100 object-cover border border-slate-200 shrink-0" 
+                                />
+                                <span class="text-xs font-bold text-navy">{{ article.author?.name || 'Archeris Editorial Team' }}</span>
+                            </div>
+                            <span class="text-slate-950 font-black text-xs inline-flex items-center gap-1 group-hover:text-black group-hover:translate-x-1 transition-all">
+                                Read article <Icon icon="ph:arrow-right-bold" />
+                            </span>
+                        </div>
                     </div>
                 </NuxtLink>
             </div>

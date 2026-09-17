@@ -181,24 +181,24 @@
                         </div>
 
                         <!-- Author Profile Card -->
-                        <div class="p-6 bg-white rounded-3xl border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-                            <div class="flex items-center gap-4">
-                                <div class="relative">
+                        <div class="p-5 sm:p-6 bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div class="flex items-start sm:items-center gap-3.5 sm:gap-4">
+                                <div class="relative shrink-0">
                                     <img src="/profile-author.png" :alt="(article.author?.name || 'Archeris Editorial Team') + ' Official Avatar'"
-                                        class="w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 shadow-2xs p-1 object-cover" />
-                                    <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-navy rounded-full flex items-center justify-center text-primary text-[10px] border-2 border-white shadow-2xs">
+                                        class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-slate-100 border border-slate-200 shadow-2xs p-0.5 sm:p-1 object-cover" />
+                                    <div class="absolute -bottom-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-navy rounded-full flex items-center justify-center text-primary text-[9px] sm:text-[10px] border-2 border-white shadow-2xs">
                                         <Icon icon="ph:seal-check-fill" />
                                     </div>
                                 </div>
-                                <div class="space-y-0.5">
+                                <div class="space-y-0.5 min-w-0">
                                     <div class="flex items-center gap-2">
                                         <span class="text-navy font-bold text-sm sm:text-base">{{ article.author?.name || 'Archeris Editorial Team' }}</span>
                                     </div>
                                     <div class="text-slate-500 text-xs">{{ article.author?.role || 'Certified Archery Coaches & Technical Specialists' }}</div>
-                                    <p class="text-slate-400 text-[11px] pt-1 leading-normal">Dedicated to delivering clear, authoritative, and practical archery education and tournament insight.</p>
+                                    <p class="text-slate-400 text-[11px] pt-0.5 leading-normal">Dedicated to delivering clear, authoritative, and practical archery education and tournament insight.</p>
                                 </div>
                             </div>
-                            <NuxtLink to="/about-us" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-navy rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors shrink-0">
+                            <NuxtLink to="/about-us" class="w-full sm:w-auto px-4 py-2 bg-slate-100 hover:bg-slate-200 text-navy rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shrink-0">
                                 <span>About Team</span>
                                 <Icon icon="ph:arrow-right" />
                             </NuxtLink>
@@ -426,7 +426,7 @@
         <!-- ── MORE RELATED ARTICLES SECTION (HORIZONTAL SCROLLABLE CAROUSEL) ── -->
         <section class="bg-white py-14 border-t border-slate-200/80">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
                     <div>
                         <h2 class="text-xl sm:text-2xl font-bold text-navy tracking-tight font-display">
                             Related Archery Articles
@@ -435,7 +435,7 @@
                     </div>
                     
                     <!-- Carousel Controls & View All Link -->
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
                         <div class="flex items-center gap-1.5">
                             <button @click="scrollRelated('left')" title="Scroll Left"
                                 class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center transition-colors cursor-pointer">
@@ -447,7 +447,7 @@
                             </button>
                         </div>
                         <NuxtLink to="/blog"
-                            class="text-navy hover:text-primary-hover transition-colors font-bold text-xs flex items-center gap-1">
+                            class="text-navy hover:text-primary-hover transition-colors font-bold text-xs flex items-center gap-1 whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-slate-100 sm:bg-transparent">
                             <span>View All</span>
                             <Icon icon="ph:arrow-right" />
                         </NuxtLink>

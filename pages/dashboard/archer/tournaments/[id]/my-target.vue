@@ -123,7 +123,7 @@
                     {{ (target.target_name || '1').replace(/^Target\s*/i, '') }}{{ (target.target_board || 'A').toUpperCase() }}
                   </div>
                   <div class="mt-1 inline-flex items-center px-2.5 py-0.5 rounded-lg bg-primary text-navy font-bold text-[11px] shadow-2xs">
-                    {{ target.target_name ? `Bantalan ${target.target_name.replace(/^Target\s*/i, '')}` : 'Bantalan 01' }}
+                    {{ target.target_name ? t('my_target.target_item', { num: target.target_name.replace(/^Target\s*/i, '') }) : t('my_target.target_item', { num: '01' }) }}
                   </div>
                 </div>
               </div>
@@ -142,7 +142,7 @@
                 <div class="bg-slate-50 dark:bg-slate-700/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-600/50">
                   <div class="text-slate-400 font-bold mb-1">{{ t('my_target.board_label', 'Posisi Pemanah') }}</div>
                   <div class="font-black text-navy dark:text-white text-base flex items-center gap-1.5 font-mono">
-                    <span>Posisi {{ (target.target_board || 'A').toUpperCase() }}</span>
+                    <span>{{ t('my_target.position_val', { pos: (target.target_board || 'A').toUpperCase() }) }}</span>
                   </div>
                 </div>
 
@@ -180,7 +180,7 @@
               </div>
               <div>
                 <div class="font-bold text-white">{{ t('my_target.whistle_2', '2 Peluit: Menuju garis tembak') }}</div>
-                <div class="text-[11px] text-slate-300">{{ t("my_target.whistle_2_desc") }}</div>
+                <div class="text-[11px] text-slate-300">{{ t("my_target.whistle_2_desc", "Pemanah gelombang aktif maju menuju garis tembak.") }}</div>
               </div>
             </div>
 
@@ -190,7 +190,7 @@
               </div>
               <div>
                 <div class="font-bold text-white">{{ t('my_target.whistle_1', '1 Peluit: Mulai menembak') }}</div>
-                <div class="text-[11px] text-slate-300">{{ t("my_target.whistle_1_desc") }}</div>
+                <div class="text-[11px] text-slate-300">{{ t("my_target.whistle_1_desc", "Waktu menembak dimulai sesuai durasi babak.") }}</div>
               </div>
             </div>
 
@@ -200,7 +200,7 @@
               </div>
               <div>
                 <div class="font-bold text-white">{{ t('my_target.whistle_3', '3 Peluit: Mengambil anak panah & scoring') }}</div>
-                <div class="text-[11px] text-slate-300">Maju ke sasaran bersama untuk mencatat skor & cabut panah.</div>
+                <div class="text-[11px] text-slate-300">{{ t('my_target.whistle_3_desc', 'Maju ke sasaran bersama untuk mencatat skor & cabut panah.') }}</div>
               </div>
             </div>
 
@@ -210,7 +210,7 @@
               </div>
               <div>
                 <div class="font-bold text-rose-300">{{ t('my_target.whistle_5', '5+ Peluit: STOP DARURAT') }}</div>
-                <div class="text-[11px] text-slate-300">Segera turunkan busur dan amankan anak panah.</div>
+                <div class="text-[11px] text-slate-300">{{ t('my_target.whistle_5_desc', 'Segera turunkan busur dan amankan anak panah.') }}</div>
               </div>
             </div>
           </div>
@@ -225,13 +225,13 @@
 
           <div class="space-y-3.5 text-xs">
             <div>
-              <span class="text-slate-400 font-bold block mb-0.5">Venue Pertandingan</span>
+              <span class="text-slate-400 font-bold block mb-0.5">{{ t('my_target.venue_label', 'Venue Pertandingan') }}</span>
               <span class="font-black text-navy dark:text-white leading-relaxed block">{{ event?.venue || '-' }}</span>
               <span class="text-slate-500 block mt-0.5">{{ event?.location || '' }}</span>
             </div>
 
             <div>
-              <span class="text-slate-400 font-bold block mb-0.5">Tanggal Event</span>
+              <span class="text-slate-400 font-bold block mb-0.5">{{ t('my_target.event_dates_label', 'Tanggal Event') }}</span>
               <span class="font-bold text-navy dark:text-white">{{ formatDateRange(event?.start_date, event?.end_date) }}</span>
             </div>
 
@@ -239,7 +239,7 @@
               <a :href="event.technical_guidebook_url" target="_blank"
                 class="w-full inline-flex items-center justify-center gap-2 py-2.5 bg-slate-100 hover:bg-slate-200 text-navy font-bold text-xs rounded-xl transition-colors">
                 <Icon icon="ph:file-pdf-bold" class="text-base text-red-500" />
-                <span>Unduh Petunjuk Teknis (THB)</span>
+                <span>{{ t('my_target.download_thb', 'Unduh Petunjuk Teknis (THB)') }}</span>
               </a>
             </div>
           </div>

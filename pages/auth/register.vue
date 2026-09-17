@@ -187,9 +187,9 @@
                                 <BaseCheckbox v-model="form.terms" required :error="errors.terms"
                                     @update:model-value="validate('terms', form.terms, [rules.required(t('auth.register.terms_required_error'))])">
                                     {{ t('auth.register.agree_to') }}
-                                    <NuxtLink class="font-bold underline text-navy hover:text-primary-hover" to="/terms" target="_blank">
+                                    <NuxtLink class="font-bold text-navy hover:text-primary transition-colors" to="/terms" target="_blank">
                                         {{ t('auth.register.terms_conditions') }}</NuxtLink> {{ t('auth.register.and') }}
-                                    <NuxtLink class="font-bold underline text-navy hover:text-primary-hover" to="/privacy" target="_blank">
+                                    <NuxtLink class="font-bold text-navy hover:text-primary transition-colors" to="/privacy" target="_blank">
                                         {{ t('auth.register.privacy_policy') }}</NuxtLink>
                                 </BaseCheckbox>
                             </div>
@@ -209,13 +209,10 @@
                             </div>
 
                             <!-- Divider: Or Register With -->
-                            <div class="relative my-4 font-body">
-                                <div class="absolute inset-0 flex items-center">
-                                    <div class="w-full border-t border-gray-200"></div>
-                                </div>
-                                <div class="relative flex justify-center text-xs">
-                                    <span class="px-4 bg-white text-slate-400 font-medium">{{ t('auth.login.or_login_with') }}</span>
-                                </div>
+                            <div class="relative my-6 flex items-center gap-3 font-body">
+                                <div class="flex-1 border-t border-slate-200"></div>
+                                <span class="text-xs text-slate-400 font-medium shrink-0">{{ t('auth.login.or_login_with') }}</span>
+                                <div class="flex-1 border-t border-slate-200"></div>
                             </div>
 
                             <!-- Google OAuth Button (1-Click Direct to Dashboard) -->
@@ -312,7 +309,7 @@
                     </div>
 
                     <!-- Resend Countdown & Actions -->
-                    <div class="text-center space-y-3 pt-2 text-xs">
+                    <div class="text-center space-y-2 pt-2 text-xs font-body">
                         <div v-if="resendCountdown > 0" class="text-slate-400 font-medium">
                             {{ t('auth.register.resend_in', 'Resend code in') }} 
                             <span class="font-mono font-bold text-navy">00:{{ resendCountdown < 10 ? '0' + resendCountdown : resendCountdown }}</span>
@@ -322,18 +319,20 @@
                             type="button"
                             @click="resendOtpCode"
                             :disabled="isResendingOtp"
-                            class="text-xs font-bold text-navy hover:text-primary-hover underline cursor-pointer transition-colors"
+                            class="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-navy hover:text-primary cursor-pointer transition-colors"
                         >
-                            {{ isResendingOtp ? t('auth.register.resending', 'Sending code...') : t('auth.register.resend_code', 'Resend Verification Code') }}
+                            <Icon icon="ph:arrow-clockwise-bold" :class="{ 'animate-spin': isResendingOtp }" />
+                            <span>{{ isResendingOtp ? t('auth.register.resending', 'Sending code...') : t('auth.register.resend_code', 'Resend Verification Code') }}</span>
                         </button>
 
                         <div>
                             <button 
                                 type="button" 
                                 @click="currentStep = 'form'" 
-                                class="text-slate-400 hover:text-slate-600 underline cursor-pointer"
+                                class="inline-flex items-center gap-1 text-xs font-semibold text-slate-400 hover:text-slate-600 cursor-pointer transition-colors"
                             >
-                                {{ t('auth.register.wrong_email', 'Wrong email address? Change email') }}
+                                <Icon icon="ph:arrow-left" />
+                                <span>{{ t('auth.register.wrong_email', 'Wrong email address? Change email') }}</span>
                             </button>
                         </div>
                     </div>
@@ -356,7 +355,7 @@ const route = useRoute()
 const router = useRouter()
 const toast = useToast()
 const cities = ref([])
-const { t } = useI18n()
+const { t, te } = useI18n()
 
 useHead({
     title: computed(() => t('auth.register.welcome') + ' - Archeris.net')
@@ -490,7 +489,7 @@ const handleEmailRegister = async () => {
         }
 
         const res = await registerWithEmail(payload)
-        toast.success(res?.message || 'Kode verifikasi telah dikirimkan ke email Anda')
+        toast.success(res?.message || 'Verification code has been sent to your email')
         currentStep.value = 'otp'
         startResendTimer()
         nextTick(() => {
@@ -499,7 +498,17 @@ const handleEmailRegister = async () => {
         })
     } catch (err) {
         console.error('Registration failed:', err)
-        const msg = err?.data?.error || err?.response?._data?.error || err?.message || 'Gagal mendaftar. Silakan coba lagi.'
+        const code = err?.data?.code || err?.response?._data?.code
+        const serverError = err?.data?.error || err?.response?._data?.error || err?.message
+        let msg = serverError || 'Registration failed. Please try again.'
+
+        if (code && te(`auth.errors.${code}`)) {
+            msg = t(`auth.errors.${code}`)
+        } else if (code === 'email_already_registered' || err.status === 409 || err.statusCode === 409) {
+            msg = te('auth.errors.email_already_registered')
+                ? t('auth.errors.email_already_registered')
+                : (serverError || 'Email is already registered. Please log in directly.')
+        }
         toast.error(msg)
     } finally {
         isSubmitting.value = false
@@ -587,13 +596,19 @@ const submitOtpVerification = async () => {
 
     try {
         const res = await verifyRegisterOTP(form.value.email, code)
-        toast.success(res?.message || 'Verifikasi berhasil! Selamat datang di Archeris.')
+        toast.success(res?.message || 'Verification successful! Welcome to Archeris.')
         if (import.meta.client) {
             window.location.href = res?.redirect_url || '/dashboard'
         }
     } catch (err) {
         console.error('OTP Verification failed:', err)
-        const msg = err?.data?.error || err?.response?._data?.error || err?.message || 'Kode OTP tidak valid atau kedaluwarsa'
+        const errCode = err?.data?.code || err?.response?._data?.code
+        const serverError = err?.data?.error || err?.response?._data?.error || err?.message
+        let msg = serverError || 'Verification code is invalid or has expired'
+
+        if (errCode && te(`auth.errors.${errCode}`)) {
+            msg = t(`auth.errors.${errCode}`)
+        }
         otpError.value = msg
         toast.error(msg)
     } finally {
@@ -609,11 +624,17 @@ const resendOtpCode = async () => {
 
     try {
         const res = await resendRegisterOTP(form.value.email)
-        toast.success(res?.message || 'Kode OTP baru telah dikirimkan ke email Anda')
+        toast.success(res?.message || 'A new verification code has been sent to your email')
         startResendTimer()
     } catch (err) {
         console.error('Resend OTP failed:', err)
-        const msg = err?.data?.error || err?.response?._data?.error || err?.message || 'Gagal mengirim ulang kode OTP'
+        const errCode = err?.data?.code || err?.response?._data?.code
+        const serverError = err?.data?.error || err?.response?._data?.error || err?.message
+        let msg = serverError || 'Failed to resend verification code'
+
+        if (errCode && te(`auth.errors.${errCode}`)) {
+            msg = t(`auth.errors.${errCode}`)
+        }
         toast.error(msg)
     } finally {
         isResendingOtp.value = false
@@ -640,7 +661,7 @@ const handleGoogleRegister = async () => {
         await login(form.value.userType, metadata)
     } catch (err) {
         console.error('Google register failed:', err)
-        toast.error('Gagal menghubungkan ke Google. Silakan coba lagi.')
+        toast.error('Failed to connect with Google. Please try again.')
         isGoogleLoading.value = false
     }
 }

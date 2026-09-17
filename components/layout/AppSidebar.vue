@@ -187,24 +187,24 @@ const displayName = computed(() => {
 
 
 
-const eventId = computed(() => route.params.id)
+const eventId = computed(() => route.params.id || route.params.slug)
 
 const isOnEventSubPage = computed(() => {
   const path = route.path
   // Check if it's an event page under any role
-  const isEventPath = path.includes('/tournaments/') && path.includes('/dashboard/')
+  const isEventPath = (path.includes('/tournaments/') || path.includes('/events/')) && path.includes('/dashboard/')
   if (!isEventPath) return false
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organizer|root|events)\/events\/([^/]+)\/(.+)/) ||
-    path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organizer|root|events)\/(?:tournaments|events)\/([^/]+)\/(.+)/) ||
+    path.match(/\/dashboard\/(?:tournaments|events)\/([^/]+)\/(.+)/)
   return !!eventPathMatch
 })
 
 const isEventManagePage = computed(() => {
   const path = route.path
-  const isEventPath = path.includes('/tournaments/') && path.includes('/dashboard/')
+  const isEventPath = (path.includes('/tournaments/') || path.includes('/events/')) && path.includes('/dashboard/')
   if (!isEventPath) return false
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organizer|root|events)\/events\/([^/]+)\/(.+)/) ||
-    path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organizer|root|events)\/(?:tournaments|events)\/([^/]+)\/(.+)/) ||
+    path.match(/\/dashboard\/(?:tournaments|events)\/([^/]+)\/(.+)/)
   const [, , subPath] = eventPathMatch || []
   if (!subPath) return false
   const excludedPaths = ['edit', 'checkout', 'register', 'register-edit', 'results', 'setup', 'timeline', 'venue']
@@ -248,19 +248,20 @@ const eventLinks = computed(() => {
     { label: t('sidebar.elimination', 'Eliminasi'), icon: 'mdi:bracket', path: `${prefix}/tournaments/${eventId.value}/elimination` },
     { label: t('sidebar.printout', 'Printout'), icon: 'ph:printer-bold', path: `${prefix}/tournaments/${eventId.value}/printout` },
     { label: t('sidebar.certificates', 'Sertifikat'), icon: 'ph:certificate-bold', path: `${prefix}/tournaments/${eventId.value}/certificate` },
+    { label: t('sidebar.media_storage', 'Media & Penyimpanan'), icon: 'ph:hard-drive-bold', path: `${prefix}/tournaments/${eventId.value}/media` },
   )
 
   return links
 })
 
 const isArcher = computed(() => {
-  const role = user.value?.role || user.value?.type || 'archer'
+  const role = userPersona.value || user.value?.role || user.value?.type || user.value?.user_type || 'archer'
   return role === 'archer'
 })
 
 const canManageEvents = computed(() => {
-  const role = user.value?.role || user.value?.type || 'archer'
-  return ['admin', 'organizer'].includes(role)
+  const role = userPersona.value || user.value?.role || user.value?.type || user.value?.user_type || 'archer'
+  return ['admin', 'organizer', 'club'].includes(role)
 })
 
 const userRoleLabel = computed(() => {

@@ -63,16 +63,13 @@ const defaultPricingData: UnifiedPricingResponse = {
       promo_price_usd: 0,
       discount_pct: 0,
       is_popular: false,
-      max_participants: 10,
-      max_categories: 2,
-      max_scorekeepers: 1,
+      max_participants: 50,
+      max_categories: null,
+      max_scorekeepers: null,
       highlight_features: [
-        '1 Free Tournament Quota',
-        'Up to 10 Participants / Tournament',
-        'Up to 2 Competition Categories',
-        '1 Mobile Scorekeeper Account',
-        'Basic Qualification Leaderboard',
-        'Basic Results & Printouts (PDF)'
+        'Up to 50 Participants / Tournament',
+        '200 MB Media Storage',
+        'Access All Features'
       ],
       cta_text: 'Get Started Free',
       cta_link: '/auth/register'
@@ -85,23 +82,18 @@ const defaultPricingData: UnifiedPricingResponse = {
       description: 'Complete tournament scoring solution for clubs, regional circuits, and open tournaments.',
       period: '/tournament',
       price_idr: 49900,
-      promo_price_idr: 24950,
+      promo_price_idr: 24999,
       price_usd: 3.00,
       promo_price_usd: 1.50,
       discount_pct: 50,
       is_popular: true,
       max_participants: 200,
-      max_categories: 10,
-      max_scorekeepers: 3,
+      max_categories: null,
+      max_scorekeepers: null,
       highlight_features: [
-        'Standard Tournament Quota',
         'Up to 200 Participants / Tournament',
-        'Up to 10 Competition Categories',
-        '3 Scorekeeper Accounts',
-        'Live Qualification & Elimination Scoring',
-        'Standard Digital Certificates (Automated)',
-        'Full 6 Tournament Printouts Download',
-        'Automated Payment Gateway (Mayar QRIS & VA)'
+        '3 GB Media Storage',
+        'Access All Features'
       ],
       cta_text: 'Claim Standard Promo',
       cta_link: '/package'
@@ -114,7 +106,7 @@ const defaultPricingData: UnifiedPricingResponse = {
       description: 'Unlimited capabilities for professional championships, multi-field live streaming, and national tournaments.',
       period: '/tournament',
       price_idr: 79900,
-      promo_price_idr: 39950,
+      promo_price_idr: 39999,
       price_usd: 7.00,
       promo_price_usd: 3.50,
       discount_pct: 50,
@@ -123,13 +115,9 @@ const defaultPricingData: UnifiedPricingResponse = {
       max_categories: null,
       max_scorekeepers: null,
       highlight_features: [
-        'Unlimited Participants & Categories',
-        'Unlimited Scorekeeper Accounts',
-        'Custom Certificate Design Templates (16:9 & A4)',
-        'Live Embed Bracket & Leaderboard Widgets (OBS / Web)',
-        'Local & Global Payment Gateway (Mayar & PayPal)',
-        'Full Excel Export & Financial Statements',
-        'Priority Technical Tournament Support'
+        'Unlimited Participants',
+        '10 GB Media Storage',
+        'Access All Features'
       ],
       cta_text: 'Choose Elite',
       cta_link: '/package'
@@ -138,87 +126,80 @@ const defaultPricingData: UnifiedPricingResponse = {
   comparison_matrix: [
     {
       category: 'Capacity & Limits',
-      feature: 'Participant Limit per Tournament',
-      free: '10 Participants',
-      standard: '200 Participants',
+      feature: 'Participant limit per tournament',
+      free: '50 Archers',
+      standard: '200 Archers',
       elite: 'Unlimited'
     },
     {
       category: 'Capacity & Limits',
-      feature: 'Competition Categories Limit',
-      free: '2 Categories',
-      standard: '10 Categories',
+      feature: 'Media storage',
+      free: '200 MB',
+      standard: '3 GB',
+      elite: '10 GB'
+    },
+    {
+      category: 'Capacity & Limits',
+      feature: 'Competition categories',
+      free: 'Unlimited',
+      standard: 'Unlimited',
       elite: 'Unlimited'
     },
     {
       category: 'Capacity & Limits',
-      feature: 'Scorekeeper Accounts',
-      free: '1 Scorekeeper',
-      standard: '3 Scorekeepers',
+      feature: 'Scorekeeper accounts',
+      free: 'Unlimited',
+      standard: 'Unlimited',
       elite: 'Unlimited'
     },
     {
-      category: 'Scoring & Match Operations',
-      feature: 'Digital Qualification Scoring',
+      category: 'Capacity & Limits',
+      feature: 'Access period',
+      free: 'Lifetime',
+      standard: 'Lifetime',
+      elite: 'Lifetime'
+    },
+    {
+      category: 'Tournament Setup',
+      feature: 'Tournament setup (Categories, fees, lane setup & schedule)',
       free: true,
       standard: true,
       elite: true
     },
     {
-      category: 'Scoring & Match Operations',
-      feature: 'Elimination Brackets & Match Play',
-      free: false,
+      category: 'Registration',
+      feature: 'Participant registration (Online, manual entry & payment modes)',
+      free: true,
       standard: true,
       elite: true
     },
     {
-      category: 'Scoring & Match Operations',
-      feature: 'Live Widget Embed (OBS / Web)',
-      free: false,
-      standard: false,
+      category: 'Scoring & Match Play',
+      feature: 'Scoring & match play (Live qualification, brackets & scorekeeper)',
+      free: true,
+      standard: true,
       elite: true
     },
     {
-      category: 'Outputs & Branding',
-      feature: 'Digital Certificates for Archers',
-      free: false,
-      standard: 'Standard Template',
-      elite: 'Custom Template (16:9 & A4)'
+      category: 'Printouts & Certificates',
+      feature: 'Printouts & certificates (8 official PDF formats with QR code)',
+      free: true,
+      standard: true,
+      elite: true
     },
     {
-      category: 'Outputs & Branding',
-      feature: 'Scoresheets & Bracket Printouts',
-      free: 'Basic Report',
-      standard: 'Complete (6 Types)',
-      elite: 'Complete (6 Types)'
+      category: 'Data Export',
+      feature: 'Data export (Participants, payments & stats in Excel & CSV)',
+      free: true,
+      standard: true,
+      elite: true
     },
     {
-      category: 'Outputs & Branding',
-      feature: 'Data Export & Complete Excel',
-      free: 'PDF',
-      standard: 'PDF & CSV',
-      elite: 'PDF, CSV & Excel'
-    },
-    {
-      category: 'Support & Infrastructure',
-      feature: 'Automated Payment Gateway',
-      free: false,
-      standard: 'Mayar (QRIS, VA)',
-      elite: 'Mayar & PayPal (Global)'
-    },
-    {
-      category: 'Support & Infrastructure',
-      feature: 'Media Storage',
-      free: '250 MB',
-      standard: '1 GB',
-      elite: '5 GB'
-    },
-    {
-      category: 'Support & Infrastructure',
-      feature: 'Technical Customer Support',
-      free: 'Standard',
-      standard: 'Fast Support',
-      elite: 'VIP Priority'
+      category: 'Support',
+      feature: 'Customer support',
+      free: '24/7 Support',
+      standard: '24/7 Support',
+      elite: '24/7 Support'
     }
   ],
   bundle_discounts: [
@@ -229,12 +210,12 @@ const defaultPricingData: UnifiedPricingResponse = {
   ],
   faqs: [
     {
-      question: 'How does the Standard EO 3-month free promo work?',
-      answer: 'During the initial 3-month promotional period, organizers can register and claim Standard EO tournament quota completely free ($0.00 / Rp 0) with no upfront or hidden fees to publish and manage tournaments.'
+      question: 'How does the tournament quota system work?',
+      answer: 'Organizers can purchase tournament quotas individually or in discounted bundles. Each quota allows you to publish and manage one complete tournament with all platform features.'
     },
     {
-      question: 'What happens after the 3-month promo period ends?',
-      answer: 'All existing tournaments and past tournament data remain permanently active. For publishing new future tournaments after the promo ends, Standard EO quota is available at the normal rate ($3.00 / Rp 49.900 per tournament, or Rp 24.950 with 50% discount).'
+      question: 'What is the difference between Standard EO and Elite EO?',
+      answer: 'Standard EO supports up to 200 participants and 3 GB media storage per tournament. Elite EO offers unlimited participants and 10 GB media storage. All scoring, certificates, live leaderboards, and management features are fully unlocked on both tiers.'
     },
     {
       question: 'Do purchased tournament quotas have an expiration date?',

@@ -58,7 +58,7 @@
                 <div v-if="status === 'trial'"
                     class="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl flex items-center gap-2">
                     <Icon icon="ph:clock-countdown-fill" class="text-primary text-lg" />
-                    <span class="text-xs font-black text-white tracking-widest">{{ t('subscription.status.trial_active', 'Trial 3 Bulan Aktif') }}</span>
+                    <span class="text-xs font-black text-white tracking-widest">{{ t('subscription.status.trial_active', 'Kuota Gratis Aktif') }}</span>
                 </div>
                 <div v-else-if="status === 'active'"
                     class="px-4 py-2 bg-green-500/20 backdrop-blur-md border border-green-400/30 rounded-xl flex items-center gap-2">

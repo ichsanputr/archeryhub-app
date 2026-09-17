@@ -45,16 +45,18 @@
                 </div>
 
                 <!-- Right: Features List -->
-                <div class="lg:col-span-1 flex flex-col gap-8 md:gap-10 order-2">
-                    <div class="space-y-6">
+                <div class="lg:col-span-1 flex flex-col gap-6 md:gap-8 order-2">
+                    <div class="space-y-4 sm:space-y-5">
                         <span
-                            class="inline-block py-1 px-3 bg-primary text-navy text-[10px] font-black  tracking-[0.2em] rounded-md">Precision Ecosystem</span>
+                            class="inline-block py-1 px-3 bg-primary text-navy text-[10px] font-black tracking-[0.2em] rounded-md uppercase">
+                            {{ $t('home.features_ecosystem.badge') }}
+                        </span>
                         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-navy leading-[1.1] font-display">
-                            Engineered for <span
-                                class="text-transparent bg-clip-text bg-gradient-to-r from-navy to-navy/40">Scoring Precision.</span>
+                            {{ $t('home.features_ecosystem.title') }} <span
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-navy to-navy/40">{{ $t('home.features_ecosystem.title_highlight') }}</span>
                         </h2>
                         <div class="text-sm sm:text-base lg:text-lg text-text-sub leading-relaxed max-w-md">
-                            Complete digital infrastructure for archers, organizers, and certified scorekeepers.
+                            {{ $t('home.features_ecosystem.description') }}
                         </div>
                     </div>
 
@@ -79,7 +81,7 @@
                                     <h3 class="text-xl font-black text-white mb-2 font-display">
                                         {{ featureItems[activeFeature].title }}
                                     </h3>
-                                    <div class="text-white/80  text-xs leading-relaxed line-clamp-3">
+                                    <div class="text-white/80 text-xs leading-relaxed line-clamp-3">
                                         {{ featureItems[activeFeature].longDescription }}
                                     </div>
                                 </div>
@@ -87,27 +89,27 @@
                         </div>
                     </div>
 
-                    <!-- Interactive Feature Cards (Scrollable) -->
+                    <!-- Interactive Feature Cards (4 Ecosystem Pillars) -->
                     <div class="relative">
                         <div
-                            class="flex flex-col gap-3 max-h-[350px] px-3 sm:max-h-[400px] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar">
-                            <div v-for="(feature, idx) in featureItems" :key="feature.title"
+                            class="flex flex-col gap-3 max-h-[460px] px-1 sm:max-h-[520px] overflow-y-auto pr-2 sm:pr-3 custom-scrollbar">
+                            <div v-for="(feature, idx) in featureItems" :key="idx"
                                 @click="setFeature(idx)"
-                                class="group relative overflow-hidden flex items-center p-4 py-5 sm:p-6 sm:py-8 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer"
+                                class="group relative overflow-hidden flex items-center p-4 py-4 sm:p-5 sm:py-5 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer"
                                 :class="activeFeature === idx ? 'bg-navy border-navy ring-1 sm:ring-2 ring-primary ring-offset-2 shadow-sm scale-[1.01]' : 'bg-white border-gray-100 hover:border-primary/50 hover:shadow-sm'">
                                 <div v-if="activeFeature === idx" class="progress-bar" :style="{ width: progress + '%' }">
                                 </div>
-                                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center mr-3 sm:mr-5 transition-colors duration-300 flex-shrink-0"
+                                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center mr-3 sm:mr-4 transition-colors duration-300 flex-shrink-0"
                                     :class="activeFeature === idx ? 'bg-primary text-navy' : 'bg-gray-50 text-navy group-hover:bg-primary'">
                                     <Icon :icon="feature.icon" class="text-xl sm:text-2xl" />
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <h4 class="text-sm sm:text-lg font-bold transition-colors duration-300 truncate"
+                                    <h4 class="text-sm sm:text-base lg:text-lg font-bold transition-colors duration-300 truncate"
                                         :class="activeFeature === idx ? 'text-white' : 'text-navy'">
                                         {{ feature.title }}
                                     </h4>
                                     <div v-if="activeFeature === idx"
-                                        class="text-white/60 text-[10px] sm:text-xs mt-0.5 animate-fade-in line-clamp-1">
+                                        class="text-white/70 text-[11px] sm:text-xs mt-0.5 animate-fade-in line-clamp-1 font-light">
                                         {{ feature.description }}
                                     </div>
                                 </div>
@@ -118,7 +120,7 @@
                         </div>
                         <!-- Bottom Fade Overlay -->
                         <div
-                            class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white/80 to-transparent pointer-events-none">
+                            class="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-white/80 to-transparent pointer-events-none">
                         </div>
                     </div>
                 </div>
@@ -129,13 +131,47 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const activeFeature = ref(0)
 const isMobile = ref(false)
 const progress = ref(0)
 let timer = null
+
+const featureItems = computed(() => [
+    {
+        title: t('home.features_ecosystem.f1_title'),
+        icon: 'ph:ticket-bold',
+        description: t('home.features_ecosystem.f1_desc'),
+        longDescription: t('home.features_ecosystem.f1_long'),
+        image: '/features/feature_registration.png'
+    },
+    {
+        title: t('home.features_ecosystem.f2_title'),
+        icon: 'ph:tree-structure-bold',
+        description: t('home.features_ecosystem.f2_desc'),
+        longDescription: t('home.features_ecosystem.f2_long'),
+        image: '/features/feature-target-management.png'
+    },
+    {
+        title: t('home.features_ecosystem.f3_title'),
+        icon: 'ph:device-mobile-bold',
+        description: t('home.features_ecosystem.f3_desc'),
+        longDescription: t('home.features_ecosystem.f3_long'),
+        image: '/features/feature_profile.png'
+    },
+    {
+        title: t('home.features_ecosystem.f4_title'),
+        icon: 'ph:crosshair-simple-bold',
+        description: t('home.features_ecosystem.f4_desc'),
+        longDescription: t('home.features_ecosystem.f4_long'),
+        image: '/features/feature_scoring.png'
+    }
+])
 
 const startTimer = () => {
     if (timer) clearInterval(timer)
@@ -149,7 +185,7 @@ const startTimer = () => {
 }
 
 const nextFeature = () => {
-    activeFeature.value = (activeFeature.value + 1) % featureItems.length
+    activeFeature.value = (activeFeature.value + 1) % featureItems.value.length
     progress.value = 0
 }
 
@@ -190,51 +226,6 @@ onUnmounted(() => {
     window.removeEventListener('resize', checkMobile)
     if (timer) clearInterval(timer)
 })
-
-const featureItems = [
-    {
-        title: 'Seamless Event Registration',
-        icon: 'ph:user-plus-bold',
-        description: 'One-click tournament entry for archers.',
-        longDescription: 'No repetitive data entry. Archer profile classifications, bow categories, and club details are saved securely for fast registration.',
-        image: '/features/feature_registration.png'
-    },
-    {
-        title: 'Real-Time Mobile Scoring',
-        icon: 'ic:outline-scoreboard',
-        description: 'Instant arrow values directly at target butts.',
-        longDescription: 'Say goodbye to paper scorecards. Scorekeepers and archers log arrow values with automatic set point calculations and official validation.',
-        image: '/features/feature_scoring.png'
-    },
-    {
-        title: 'Live Spectator Leaderboard',
-        icon: 'ph:chart-bar-horizontal-bold',
-        description: 'Follow qualification ranks and elimination trees.',
-        longDescription: 'Watch real-time Olympic round match play, qualification leaderboards, and instant ranking progression on phones or external LED displays.',
-        image: '/features/feature_leaderboard.png'
-    },
-    {
-        title: 'Instant Official Result Booklets',
-        icon: 'ph:article-bold',
-        description: 'Generate standard World Archery result PDFs.',
-        longDescription: 'Automated compiling generates complete scoresheets, elimination brackets, and official tournament result booklets in seconds.',
-        image: '/features/feature_report.png'
-    },
-    {
-        title: 'Integrated Payment Gateway',
-        icon: 'ph:credit-card-bold',
-        description: 'Instant and secure payment verification.',
-        longDescription: 'Collect tournament entry fees effortlessly via integrated QRIS, Virtual Accounts, and international payment channels.',
-        image: '/features/feature_payment.png'
-    },
-    {
-        title: 'Verified Archer Profiles',
-        icon: 'ph:user-circle-gear-bold',
-        description: 'Career scoring records and digital certificates.',
-        longDescription: 'Store all official tournament scores, arrow averages, and QR-verified achievement certificates in a permanent digital profile.',
-        image: '/features/feature_profile.png'
-    }
-]
 </script>
 
 <style scoped>

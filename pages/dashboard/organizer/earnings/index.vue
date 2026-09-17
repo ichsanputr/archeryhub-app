@@ -17,7 +17,7 @@
             <div class="p-6 border-b border-gray-100 flex items-center justify-between">
                 <h3 class="font-black text-navy tracking-widest text-sm">{{ t('earnings.table_header_event') }}</h3>
                 <div class="flex gap-2">
-                    <BaseButton variant="outline" size="xs" icon="ph:download-simple-bold" @click="handleExportExcel">{{ t('earnings.export_button', 'Ekspor Excel') }}</BaseButton>
+                    <BaseButton variant="outline" size="xs" icon="ph:download-simple-bold" @click="handleExportExcel" :disabled="loading">{{ t('earnings.export_button', 'Export CSV') }}</BaseButton>
                 </div>
             </div>
             <div class="overflow-x-auto">
@@ -98,10 +98,13 @@ import { useApi } from '~/composables/useApi'
 import { useRouter } from 'vue-router'
 import { useDateFormat } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
+import { useToast } from '~/composables/useToast'
+import { exportToExcel } from '~/utils/exportExcel'
 
 const api = useApi()
 const router = useRouter()
 const { t } = useI18n()
+const toast = useToast()
 
 definePageMeta({
     layout: 'dashboard'
@@ -128,7 +131,7 @@ const fetchEarnings = async () => {
 }
 
 const totalEarningsAmount = computed(() => {
-    return earningsHistoryData.value.reduce((acc, curr) => acc + curr.amount, 0)
+    return earningsHistoryData.value.reduce((acc, curr) => acc + (curr.amount || 0), 0)
 })
 
 const earningsHistory = computed(() => earningsHistoryData.value.filter(item => (item.amount || 0) > 0))
@@ -144,12 +147,12 @@ const monthlyEarnings = computed(() => {
             const d = new Date(item.date)
             return d.getMonth() === currentMonth && d.getFullYear() === currentYear
         })
-        .reduce((acc, curr) => acc + curr.amount, 0)
+        .reduce((acc, curr) => acc + (curr.amount || 0), 0)
 })
 
 const mostActiveEvent = computed(() => {
     if (!earningsHistoryData.value.length) return null
-    return [...earningsHistoryData.value].sort((a, b) => b.participants - a.participants)[0]
+    return [...earningsHistoryData.value].sort((a, b) => (b.participants || 0) - (a.participants || 0))[0]
 })
 
 const formatItemDate = (date) => {
@@ -157,10 +160,13 @@ const formatItemDate = (date) => {
     return useDateFormat(date, 'DD MMM YYYY', { locales: 'id-ID' }).value
 }
 
-import { exportToExcel } from '~/utils/exportExcel'
-
 const handleExportExcel = () => {
-    const data = earningsHistoryData.value.map((item, idx) => ({
+    const list = earningsHistoryData.value
+    if (!list || list.length === 0) {
+        toast.info(t('earnings.no_data_export', 'No revenue data available to export'))
+        return
+    }
+    const data = list.map((item, idx) => ({
         no: idx + 1,
         eventName: item.eventName || '-',
         category: item.category || '-',
@@ -169,17 +175,18 @@ const handleExportExcel = () => {
         amount: item.amount || 0
     }))
     exportToExcel(
-        'Rekap_Pendapatan_Turnamen_Archeris',
+        'Archeris_Organizer_Earnings',
         [
             { key: 'no', label: 'No' },
-            { key: 'eventName', label: 'Nama Event' },
-            { key: 'category', label: 'Tipe / Kategori' },
-            { key: 'date', label: 'Tanggal Selesai' },
-            { key: 'participants', label: 'Jumlah Peserta' },
-            { key: 'amount', label: 'Total Pendapatan (IDR)' }
+            { key: 'eventName', label: t('earnings.table_header_event', 'Event Name') },
+            { key: 'category', label: t('earnings.table_header_category', 'Category / Type') },
+            { key: 'date', label: t('earnings.table_header_date', 'End Date') },
+            { key: 'participants', label: t('earnings.table_header_participants', 'Participants') },
+            { key: 'amount', label: t('earnings.table_header_earnings', 'Total Earnings (IDR)') }
         ],
         data
     )
+    toast.success(t('earnings.export_success', 'Revenue data exported successfully'))
 }
 
 onMounted(() => {

@@ -258,7 +258,7 @@
                 <NuxtLink v-for="t in displayedTournaments"
                     :key="t.slug || t.id"
                     :to="`/tournaments/${t.slug || t.id}`"
-                    class="group bg-white rounded-3xl shadow-xs border border-slate-200/90 overflow-hidden hover:border-slate-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-full">
+                    class="group bg-white rounded-3xl shadow-xs border border-slate-200/90 overflow-hidden hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 ease-out flex flex-col justify-between h-full">
 
                     <!-- CARD TYPE 1: PLATFORM TOURNAMENT (WITH THUMBNAIL) -->
                     <template v-if="!t.isExternal">
@@ -288,7 +288,7 @@
                         <!-- Card Body -->
                         <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
                             <div>
-                                <h3 class="text-base sm:text-lg font-bold text-navy leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-2 font-display">
+                                <h3 class="text-base sm:text-lg font-bold text-navy leading-snug mb-2 line-clamp-2 font-display">
                                     {{ toTitleCase(t.name) }}
                                 </h3>
 
@@ -314,9 +314,9 @@
                                     <span class="text-xs text-slate-600 font-medium truncate">{{ toTitleCase(t.organizer) }}</span>
                                 </div>
 
-                                <div class="shrink-0 flex items-center gap-1 text-xs font-bold text-navy group-hover:text-primary transition-colors">
+                                <div class="shrink-0 flex items-center gap-1 text-xs font-bold text-navy">
                                     <span>Details</span>
-                                    <Icon icon="ph:arrow-right" />
+                                    <Icon icon="ph:arrow-right" class="transition-transform group-hover:translate-x-0.5" />
                                 </div>
                             </div>
                         </div>
@@ -326,38 +326,36 @@
                     <template v-else>
                         <div class="p-6 flex-1 flex flex-col justify-between space-y-5">
                             <div class="space-y-3.5">
-                                <!-- Top Badges -->
+                                <!-- Top Header: Verified Badge -->
                                 <div class="flex items-center justify-between gap-2">
                                     <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-sky-50 text-sky-700 border border-sky-100 rounded-lg text-xs font-bold">
                                         <Icon icon="ph:seal-check-fill" class="text-sky-600 text-xs" />
                                         <span>Ianseo Verified</span>
                                     </span>
-
-                                    <div class="flex items-center gap-2">
-                                        <span v-if="t.country" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-xl">
-                                            <Icon :icon="getCountryFlagIcon(t.country)" class="text-sm shrink-0" />
-                                            <span>{{ toTitleCase(t.country) }}</span>
-                                        </span>
-                                        <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-medium">
-                                            {{ getStatusLabel(t.status) }}
-                                        </span>
-                                    </div>
                                 </div>
 
                                 <!-- Tournament Title -->
-                                <h3 class="text-base sm:text-lg font-bold text-navy leading-snug group-hover:text-primary transition-colors line-clamp-2 font-display">
+                                <h3 class="text-base sm:text-lg font-bold text-navy leading-snug line-clamp-2 font-display">
                                     {{ toTitleCase(t.name) }}
                                 </h3>
 
-                                <!-- Date & Location -->
-                                <div class="space-y-1.5 text-xs text-slate-600">
-                                    <div class="flex items-center gap-2">
+                                <!-- Date, Location, Country & Status (2 cols x 2 rows) -->
+                                <div class="grid grid-cols-2 gap-x-4 gap-y-2.5 text-xs text-slate-600 pt-1">
+                                    <div class="flex items-center gap-2 min-w-0">
                                         <Icon icon="ph:calendar-blank" class="text-slate-400 text-sm shrink-0" />
-                                        <span>{{ t.date }}</span>
+                                        <span class="truncate">{{ t.date }}</span>
                                     </div>
-                                    <div class="flex items-center gap-2">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <Icon :icon="getCountryFlagIcon(t.country)" class="text-sm shrink-0" />
+                                        <span class="truncate">{{ toTitleCase(t.country || 'Indonesia') }}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 min-w-0">
                                         <Icon icon="ph:map-pin" class="text-slate-400 text-sm shrink-0" />
-                                        <span class="truncate">{{ toTitleCase(t.location) }}</span>
+                                        <span class="truncate" :title="toTitleCase(t.location)">{{ toTitleCase(t.location) }}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <Icon icon="ph:clock-clockwise" class="text-slate-400 text-sm shrink-0" />
+                                        <span class="font-medium text-slate-700 truncate">{{ getStatusLabel(t.status) }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -366,14 +364,14 @@
                             <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-2 min-w-0">
                                     <div class="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center text-navy shrink-0 font-bold text-[10px]">
-                                        {{ t.organizer ? t.organizer.charAt(0).toUpperCase() : 'P' }}
+                                        {{ t.organizer ? t.organizer.charAt(0).toUpperCase() : 'H' }}
                                     </div>
                                     <span class="text-xs text-slate-600 font-medium truncate">{{ toTitleCase(t.organizer) }}</span>
                                 </div>
 
-                                <div class="shrink-0 flex items-center gap-1 text-xs font-bold text-navy group-hover:text-primary transition-colors">
+                                <div class="shrink-0 flex items-center gap-1 text-xs font-bold text-navy">
                                     <span>Details</span>
-                                    <Icon icon="ph:arrow-right" />
+                                    <Icon icon="ph:arrow-right" class="transition-transform group-hover:translate-x-0.5" />
                                 </div>
                             </div>
                         </div>
@@ -643,7 +641,12 @@ function transformEventData(event, isExternal = false) {
     }
 
     const slug = event.slug || event.uuid || event.id
-    const country = event.country || (isExternal ? 'Indonesia' : 'Indonesia')
+    let country = (event.country || '').trim()
+    const lowerCountry = country.toLowerCase()
+    const invalidKeywords = ['lapangan', 'kabupaten', 'kota', 'kecamatan', 'desa', 'gor', 'hub', 'stadion', 'bekasi', 'bogor', 'jakarta', 'batam', 'palembang', 'semarang', 'pekanbaru', 'unknown', 'tiban']
+    if (!country || invalidKeywords.some(k => lowerCountry.includes(k))) {
+        country = 'Indonesia'
+    }
 
     return {
         id: event.uuid || event.id,
