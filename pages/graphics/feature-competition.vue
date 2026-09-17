@@ -271,6 +271,7 @@ onMounted(async () => {
                     }
                 }
             }
+        }
         // ── MODULE 3: CLUB TEAM AUTO-SUM (10.0s - 15.0s) ──
         else if (elapsed < STEP_TIME * 3) {
             phaseIndex = 2
