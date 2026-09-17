@@ -62,8 +62,20 @@
                                 {{ $t(feature.descKey) }}
                             </div>
                         </div>
-                        <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[16/9] bg-slate-50 mt-auto">
+                        <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-square sm:aspect-[4/3] bg-[#ECEBE6] mt-auto">
+                            <video 
+                                v-if="feature.video"
+                                autoplay 
+                                loop 
+                                muted 
+                                playsinline 
+                                :poster="feature.poster"
+                                class="w-full h-full object-cover"
+                            >
+                                <source :src="feature.video" type="video/mp4" />
+                            </video>
                             <img 
+                                v-else
                                 :src="feature.image" 
                                 :alt="$t(feature.titleKey)" 
                                 class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out" 
@@ -116,21 +128,24 @@ const features = [
         tagKey: 'home.learn.f1_tag',
         titleKey: 'home.learn.f1_title',
         descKey: 'home.learn.f1_desc',
-        image: 'https://placehold.co/1000x562/0f172a/63c03b?text=Tournament+Registration+%26+Payments',
+        video: '/features/feature_registration.mp4',
+        poster: '/features/feature_registration.png',
         link: '/dashboard/organizer'
     },
     {
         tagKey: 'home.learn.f2_tag',
         titleKey: 'home.learn.f2_title',
         descKey: 'home.learn.f2_desc',
-        image: 'https://placehold.co/1000x562/0f172a/63c03b?text=Tournament+Management+%26+Operations',
+        video: '/features/feature_competition.mp4',
+        poster: '/features/feature_competition.png',
         link: '/dashboard/organizer'
     },
     {
         tagKey: 'home.learn.f3_tag',
         titleKey: 'home.learn.f3_title',
         descKey: 'home.learn.f3_desc',
-        image: 'https://placehold.co/1000x562/0f172a/63c03b?text=Archer+Profile+%26+Live+Standings',
+        video: '/features/feature_archer.mp4',
+        poster: '/features/feature_archer.png',
         link: '/archers'
     },
     {
