@@ -638,7 +638,7 @@ onMounted(async () => {
         ctx.clip()
 
         // Background color of the active Flutter screen
-        ctx.fillStyle = (sceneIndex === 2) ? '#0B1120' : '#F8FAFC'
+        ctx.fillStyle = '#F8FAFC'
         ctx.fillRect(screenX, screenY, screenW, screenH)
 
         // Standard Flutter AppBar Area
@@ -850,94 +850,163 @@ onMounted(async () => {
         // SCENE 3: SCORESHEET QR SCANNER VIEWFINDER
         // ══════════════════════════════════════════════════════════
         else if (sceneIndex === 2) {
-            // Viewfinder App Bar
-            drawRoundedRect(screenX + 18, appBarY + 4, 38, 38, 12, 'rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.2)', 1)
+            // Viewfinder App Bar (Light Theme)
+            drawRoundedRect(screenX + 18, appBarY + 4, 38, 38, 12, '#FFFFFF', '#E2E8F0', 1)
             drawIconBack(screenX + 37, appBarY + 23)
 
             ctx.textAlign = 'left'
-            ctx.fillStyle = '#FFFFFF'
+            ctx.fillStyle = '#0F172A'
             ctx.font = '800 17px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Scan Target QR Code', screenX + 68, appBarY + 22)
+            ctx.fillText('Scan Target QR Code', screenX + 68, appBarY + 20)
 
-            ctx.fillStyle = '#94A3B8'
+            ctx.fillStyle = '#64748B'
             ctx.font = '500 10.5px "NovaText", sans-serif'
-            ctx.fillText('Point camera at target scoresheet QR code', screenX + 68, appBarY + 38)
+            ctx.fillText('Point camera at target scoresheet QR code', screenX + 68, appBarY + 36)
 
-            // Camera Viewfinder Box
-            const vSize = 220
-            const vX = screenX + (screenW - vSize) / 2
-            const vY = contentY + 24
-            drawRoundedRect(vX, vY, vSize, vSize, 18, '#181A1D', '#334155', 1)
+            // Guidance status pill
+            const guideY = contentY + 2
+            const guideW = 164
+            const guideH = 26
+            const guideX = screenX + (screenW - guideW) / 2
+            drawRoundedRect(guideX, guideY, guideW, guideH, 13, isQrVerified ? '#ECFDF5' : '#F1F5F9', isQrVerified ? '#A7F3D0' : '#E2E8F0', 1)
+            
+            if (isQrVerified) {
+                drawIconCheckCircle(guideX + 16, guideY + 13, 6, '#10B981')
+                ctx.textAlign = 'left'
+                ctx.fillStyle = '#065F46'
+                ctx.font = '700 10px "NovaText", sans-serif'
+                ctx.fillText('Target 04 QR Identified', guideX + 28, guideY + 17)
+            } else {
+                ctx.beginPath()
+                ctx.arc(guideX + 16, guideY + 13, 3.5, 0, Math.PI * 2)
+                ctx.fillStyle = '#10B981'
+                ctx.fill()
+                ctx.textAlign = 'left'
+                ctx.fillStyle = '#334155'
+                ctx.font = '700 10px "NovaText", sans-serif'
+                ctx.fillText('Align scoresheet in frame', guideX + 26, guideY + 17)
+            }
+
+            // Central Camera Viewfinder Card
+            const vCardW = 270
+            const vCardH = 240
+            const vCardX = screenX + (screenW - vCardW) / 2
+            const vCardY = guideY + 36
+
+            // White Viewfinder Container
+            drawRoundedRect(vCardX, vCardY, vCardW, vCardH, 20, '#FFFFFF', '#E2E8F0', 1.2)
+
+            // Inner Soft Preview Backdrop
+            const innerMargin = 12
+            const innerW = vCardW - innerMargin * 2
+            const innerH = vCardH - innerMargin * 2
+            drawRoundedRect(vCardX + innerMargin, vCardY + innerMargin, innerW, innerH, 16, '#F8FAFC', '#E2E8F0', 0.8)
 
             // Center Dynamic QR Code Graphic
-            const qrSize = 140
-            const qrX = vX + (vSize - qrSize) / 2
-            const qrY = vY + (vSize - qrSize) / 2
+            const qrSize = 136
+            const qrX = vCardX + (vCardW - qrSize) / 2
+            const qrY = vCardY + (vCardH - qrSize) / 2
             drawDynamicQRCode(qrX, qrY, qrSize, '#0F172A')
 
             // Viewfinder Corner Brackets
+            const bracketPad = 10
+            const bX = qrX - bracketPad
+            const bY = qrY - bracketPad
+            const bW = qrSize + bracketPad * 2
+            const bH = qrSize + bracketPad * 2
             const cornerLen = 22
-            ctx.strokeStyle = isQrVerified ? '#10B981' : '#DCFB4A'
+
+            ctx.strokeStyle = isQrVerified ? '#10B981' : '#0F172A'
             ctx.lineWidth = 3.5
             ctx.lineCap = 'round'
 
             // Top Left
             ctx.beginPath()
-            ctx.moveTo(vX + 12, vY + 12 + cornerLen); ctx.lineTo(vX + 12, vY + 12); ctx.lineTo(vX + 12 + cornerLen, vY + 12)
+            ctx.moveTo(bX, bY + cornerLen); ctx.lineTo(bX, bY); ctx.lineTo(bX + cornerLen, bY)
             ctx.stroke()
             // Top Right
             ctx.beginPath()
-            ctx.moveTo(vX + vSize - 12 - cornerLen, vY + 12); ctx.lineTo(vX + vSize - 12, vY + 12); ctx.lineTo(vX + vSize - 12, vY + 12 + cornerLen)
+            ctx.moveTo(bX + bW - cornerLen, bY); ctx.lineTo(bX + bW, bY); ctx.lineTo(bX + bW, bY + cornerLen)
             ctx.stroke()
             // Bottom Left
             ctx.beginPath()
-            ctx.moveTo(vX + 12, vY + vSize - 12 - cornerLen); ctx.lineTo(vX + 12, vY + vSize - 12); ctx.lineTo(vX + 12 + cornerLen, vY + vSize - 12)
+            ctx.moveTo(bX, bY + bH - cornerLen); ctx.lineTo(bX, bY + bH); ctx.lineTo(bX + cornerLen, bY + bH)
             ctx.stroke()
             // Bottom Right
             ctx.beginPath()
-            ctx.moveTo(vX + vSize - 12 - cornerLen, vY + vSize - 12); ctx.lineTo(vX + vSize - 12, vY + vSize - 12); ctx.lineTo(vX + vSize - 12, vY + vSize - 12 - cornerLen)
+            ctx.moveTo(bX + bW - cornerLen, bY + bH); ctx.lineTo(bX + bW, bY + bH); ctx.lineTo(bX + bW, bY + bH - cornerLen)
             ctx.stroke()
 
-            // Animated Laser Scanning Beam
+            // Animated Laser Scanning Beam (Emerald Glow)
             if (!isQrVerified) {
-                const laserY = vY + 16 + scanLaserY * (vSize - 32)
+                const laserY = qrY + scanLaserY * qrSize
                 ctx.save()
-                ctx.shadowColor = '#DCFB4A'
-                ctx.shadowBlur = 12
-                ctx.strokeStyle = '#DCFB4A'
+                ctx.shadowColor = 'rgba(16, 185, 129, 0.75)'
+                ctx.shadowBlur = 10
+                ctx.strokeStyle = '#10B981'
                 ctx.lineWidth = 2.5
                 ctx.beginPath()
-                ctx.moveTo(vX + 14, laserY)
-                ctx.lineTo(vX + vSize - 14, laserY)
+                ctx.moveTo(bX + 4, laserY)
+                ctx.lineTo(bX + bW - 4, laserY)
                 ctx.stroke()
                 ctx.restore()
             }
 
-            // Bottom Status Card
-            const cardY = vY + vSize + 32
+            // Quick Action Controls Row (Flashlight & Manual Entry)
+            const actionY = vCardY + vCardH + 14
+            const btnActionW = (screenW - 44) / 2
+
+            // Flashlight button
+            drawRoundedRect(screenX + 18, actionY, btnActionW, 36, 12, '#FFFFFF', '#E2E8F0', 1)
+            ctx.textAlign = 'center'
+            ctx.fillStyle = '#334155'
+            ctx.font = '700 10.5px "NovaText", sans-serif'
+            ctx.fillText('💡 Torch Off', screenX + 18 + btnActionW / 2, actionY + 22)
+
+            // Manual Code button
+            drawRoundedRect(screenX + 18 + btnActionW + 8, actionY, btnActionW, 36, 12, '#FFFFFF', '#E2E8F0', 1)
+            ctx.textAlign = 'center'
+            ctx.fillStyle = '#334155'
+            ctx.font = '700 10.5px "NovaText", sans-serif'
+            ctx.fillText('⌨️ Manual Code', screenX + 18 + btnActionW + 8 + btnActionW / 2, actionY + 22)
+
+            // Bottom Status / Verification Card
+            const statusCardY = actionY + 48
             if (isQrVerified) {
-                drawRoundedRect(screenX + 18, cardY, screenW - 36, 84, 16, '#ECFDF5', '#10B981', 1.5)
-                drawIconCheckCircle(screenX + 44, cardY + 42, 14, '#10B981')
+                drawRoundedRect(screenX + 18, statusCardY, screenW - 36, 84, 16, '#ECFDF5', '#10B981', 1.5)
+                drawIconCheckCircle(screenX + 42, statusCardY + 36, 14, '#10B981')
 
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#065F46'
-                ctx.font = '800 14px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText('Scoresheet Verified: Target 04', screenX + 70, cardY + 34)
+                ctx.font = '800 13.5px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText('Scoresheet Verified: Target 04', screenX + 68, statusCardY + 28)
 
                 ctx.fillStyle = '#047857'
-                ctx.font = '600 10.5px "NovaText", sans-serif'
-                ctx.fillText('Recurve Men Open 70m · 3 Registered Athletes', screenX + 70, cardY + 52)
-                ctx.fillText('Opening scoring sheet...', screenX + 70, cardY + 68)
-            } else {
-                drawRoundedRect(screenX + 18, cardY, screenW - 36, 68, 14, 'rgba(255, 255, 255, 0.06)', '#334155', 1)
-                ctx.textAlign = 'center'
-                ctx.fillStyle = '#DCFB4A'
-                ctx.font = '700 12px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText('Scanning Scoresheet QR Code...', screenX + screenW / 2, cardY + 30)
+                ctx.font = '600 10px "NovaText", sans-serif'
+                ctx.fillText('Recurve Men Open 70m · 3 Registered Athletes', screenX + 68, statusCardY + 44)
 
-                ctx.fillStyle = '#94A3B8'
+                // Animated progress load bar
+                ctx.fillStyle = '#059669'
+                ctx.font = '700 9.5px "NovaText", sans-serif'
+                ctx.fillText('Opening target roster...', screenX + 68, statusCardY + 60)
+
+                drawRoundedRect(screenX + 68, statusCardY + 66, screenW - 104, 4, 2, '#D1FAE5')
+                drawRoundedRect(screenX + 68, statusCardY + 66, (screenW - 104) * 0.85, 4, 2, '#10B981')
+            } else {
+                drawRoundedRect(screenX + 18, statusCardY, screenW - 36, 74, 16, '#FFFFFF', '#E2E8F0', 1)
+                
+                // Pulsing Scan Radar Icon
+                drawRoundedRect(screenX + 30, statusCardY + 16, 42, 42, 12, '#F1F5F9')
+                drawIconScanner(screenX + 51, statusCardY + 37, '#0F172A')
+
+                ctx.textAlign = 'left'
+                ctx.fillStyle = '#0F172A'
+                ctx.font = '800 13px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText('Scanning Scoresheet...', screenX + 82, statusCardY + 32)
+
+                ctx.fillStyle = '#64748B'
                 ctx.font = '500 10px "NovaText", sans-serif'
-                ctx.fillText('Position QR code inside scanner frame', screenX + screenW / 2, cardY + 48)
+                ctx.fillText('Hold camera 20–30 cm from printout', screenX + 82, statusCardY + 48)
             }
         }
         // ══════════════════════════════════════════════════════════
