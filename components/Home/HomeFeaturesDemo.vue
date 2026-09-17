@@ -37,29 +37,36 @@
                 </div>
 
                 <div class="order-1 lg:order-2 relative flex justify-center image-col w-full">
-                    <AnimatedImageStack 
-                        :images="[
-                            'https://placehold.co/1200x750/0f172a/63c03b?text=EO+Registration+Setup',
-                            'https://placehold.co/1200x750/1e293b/63c03b?text=Payment+Gateway+%26+Invoicing',
-                            'https://placehold.co/1200x750/0f172a/38bdf8?text=Realtime+Participant+Roster'
-                        ]"
-                        alt="EO Tournament Registration & Online Payments"
-                    />
+                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-[#ECEBE6]">
+                        <video 
+                            autoplay 
+                            loop 
+                            muted 
+                            playsinline 
+                            poster="/features/feature_registration.png"
+                            class="w-full h-full object-cover"
+                        >
+                            <source src="/features/feature_registration.mp4" type="video/mp4" />
+                        </video>
+                    </div>
                 </div>
             </div>
 
             <!-- Feature Block 2: EO Management, Targets & WA Brackets -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center mb-20 sm:mb-28 lg:mb-32 feature-row">
                 <div class="order-1 relative flex justify-center image-col w-full">
-                    <AnimatedImageStack 
-                        :images="[
-                            'https://placehold.co/1200x750/0f172a/63c03b?text=Target+Butt+Matrix+Allocation',
-                            'https://placehold.co/1200x750/1e293b/38bdf8?text=Qualification+Round+Standings',
-                            'https://placehold.co/1200x750/0f172a/f59e0b?text=World+Archery+Brackets',
-                            'https://placehold.co/1200x750/1e293b/63c03b?text=Shoot-Off+%26+Medal+Matches'
-                        ]"
-                        alt="Target Butt Management & World Archery Elimination Brackets"
-                    />
+                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-[#ECEBE6]">
+                        <video 
+                            autoplay 
+                            loop 
+                            muted 
+                            playsinline 
+                            poster="/features/feature_competition.png"
+                            class="w-full h-full object-cover"
+                        >
+                            <source src="/features/feature_competition.mp4" type="video/mp4" />
+                        </video>
+                    </div>
                 </div>
 
                 <div class="order-2 text-col">
@@ -110,28 +117,32 @@
                 </div>
 
                 <div class="order-1 lg:order-2 relative flex justify-center image-col w-full">
-                    <AnimatedImageStack 
-                        :images="[
-                            'https://placehold.co/1200x750/0f172a/63c03b?text=Archer+Profile+%26+QR+Badge',
-                            'https://placehold.co/1200x750/1e293b/38bdf8?text=Live+Leaderboard+%26+Scorecard',
-                            'https://placehold.co/1200x750/0f172a/a855f7?text=Career+Statistics+%26+History'
-                        ]"
-                        alt="Archer Mobile App, Live Standings & Statistics"
-                    />
+                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-[#ECEBE6] flex items-center justify-center">
+                        <AnimatedImageStack 
+                            :images="[
+                                'https://placehold.co/1200x750/0f172a/63c03b?text=Archer+Profile+%26+QR+Badge',
+                                'https://placehold.co/1200x750/1e293b/38bdf8?text=Live+Leaderboard+%26+Scorecard',
+                                'https://placehold.co/1200x750/0f172a/a855f7?text=Career+Statistics+%26+History'
+                            ]"
+                            alt="Archer Mobile App, Live Standings & Statistics"
+                        />
+                    </div>
                 </div>
             </div>
 
             <!-- Feature Block 4: Certified Scorekeeper Mobile App -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center feature-row">
                 <div class="order-1 relative flex justify-center image-col w-full">
-                    <AnimatedImageStack 
-                        :images="[
-                            'https://placehold.co/1200x750/0f172a/63c03b?text=Scorekeeper+Mobile+Input',
-                            'https://placehold.co/1200x750/1e293b/38bdf8?text=Arrow+Value+Verification',
-                            'https://placehold.co/1200x750/0f172a/f59e0b?text=Live+Sync+to+Central+Server'
-                        ]"
-                        alt="Scorekeeper Mobile App & Digital Touchscreen Scoring"
-                    />
+                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-[#ECEBE6] flex items-center justify-center">
+                        <AnimatedImageStack 
+                            :images="[
+                                'https://placehold.co/1200x750/0f172a/63c03b?text=Scorekeeper+Mobile+Input',
+                                'https://placehold.co/1200x750/1e293b/38bdf8?text=Arrow+Value+Verification',
+                                'https://placehold.co/1200x750/0f172a/f59e0b?text=Live+Sync+to+Central+Server'
+                            ]"
+                            alt="Scorekeeper Mobile App & Digital Touchscreen Scoring"
+                        />
+                    </div>
                 </div>
 
                 <div class="order-2 text-col">
