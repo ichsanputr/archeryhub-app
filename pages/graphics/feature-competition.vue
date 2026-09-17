@@ -233,8 +233,8 @@ onMounted(async () => {
             const cardDianandaY = 512
             const targetBtnY = 642
 
-            // Initial active card is 0 (Arif); after clicking Diananda at 1.8s, it becomes 2
-            let activeQualIndex = 0
+            // Initial active card is 0 (Arif); after clicking Diananda at 1.8s, it switches to 2
+            activeQualIndex = 0
 
             if (step2Elapsed >= 0.8) {
                 cursorVisible = true
