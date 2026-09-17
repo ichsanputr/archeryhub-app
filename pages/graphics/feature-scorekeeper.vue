@@ -156,6 +156,20 @@ onMounted(async () => {
         ctx.fillRect(cx - 5, cy + 2, 10, 2)
     }
 
+    function drawIconFlashlight(cx, cy, color = '#334155') {
+        ctx.strokeStyle = color
+        ctx.lineWidth = 1.6
+        ctx.lineCap = 'round'
+        ctx.strokeRect(cx - 3.5, cy - 2, 7, 9)
+        ctx.beginPath()
+        ctx.moveTo(cx - 5.5, cy - 7)
+        ctx.lineTo(cx + 5.5, cy - 7)
+        ctx.lineTo(cx + 3.5, cy - 2)
+        ctx.lineTo(cx - 3.5, cy - 2)
+        ctx.closePath()
+        ctx.stroke()
+    }
+
     function drawIconHistory(cx, cy, color = '#0F172A') {
         ctx.strokeStyle = color
         ctx.lineWidth = 1.8
@@ -956,19 +970,23 @@ onMounted(async () => {
             const actionY = vCardY + vCardH + 14
             const btnActionW = (screenW - 44) / 2
 
-            // Flashlight button
-            drawRoundedRect(screenX + 18, actionY, btnActionW, 36, 12, '#FFFFFF', '#E2E8F0', 1)
-            ctx.textAlign = 'center'
+            // Flashlight button (Vector icon + text)
+            const btn1X = screenX + 18
+            drawRoundedRect(btn1X, actionY, btnActionW, 36, 12, '#FFFFFF', '#E2E8F0', 1)
+            drawIconFlashlight(btn1X + 28, actionY + 18, '#334155')
+            ctx.textAlign = 'left'
             ctx.fillStyle = '#334155'
             ctx.font = '700 10.5px "NovaText", sans-serif'
-            ctx.fillText('💡 Torch Off', screenX + 18 + btnActionW / 2, actionY + 22)
+            ctx.fillText('Torch Off', btn1X + 42, actionY + 22)
 
-            // Manual Code button
-            drawRoundedRect(screenX + 18 + btnActionW + 8, actionY, btnActionW, 36, 12, '#FFFFFF', '#E2E8F0', 1)
-            ctx.textAlign = 'center'
+            // Manual Code button (Vector icon + text)
+            const btn2X = screenX + 18 + btnActionW + 8
+            drawRoundedRect(btn2X, actionY, btnActionW, 36, 12, '#FFFFFF', '#E2E8F0', 1)
+            drawIconKeyboard(btn2X + 28, actionY + 18, '#334155')
+            ctx.textAlign = 'left'
             ctx.fillStyle = '#334155'
             ctx.font = '700 10.5px "NovaText", sans-serif'
-            ctx.fillText('⌨️ Manual Code', screenX + 18 + btnActionW + 8 + btnActionW / 2, actionY + 22)
+            ctx.fillText('Manual Code', btn2X + 44, actionY + 22)
 
             // Bottom Status / Verification Card
             const statusCardY = actionY + 48
