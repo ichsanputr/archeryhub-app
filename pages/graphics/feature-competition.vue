@@ -167,6 +167,7 @@ onMounted(async () => {
         let btnBracketScale = 1.0
         let isCertIssued = false
         let btnCertScale = 1.0
+        let activeTargetIndex = 0
         let activeQualIndex = 0
 
         let cursorVisible = false
@@ -188,24 +189,43 @@ onMounted(async () => {
                 camPanY = -85
             }
 
-            const targetBtnY = 642
-            if (elapsed >= 1.6) {
-                cursorVisible = true
-                if (elapsed < 3.2) {
-                    const mt = easeInOutCubic((elapsed - 1.6) / 1.6)
-                    cursorX = 540
-                    cursorY = 720 + (targetBtnY - 720) * mt
-                } else {
-                    cursorX = 540; cursorY = targetBtnY
-                }
+            const cardTarget02Y = 616
+            const targetBtnY = 810
 
-                if (elapsed >= 3.2) {
-                    isAllocated = true
-                    if (elapsed >= 3.2 && elapsed <= 3.75) {
-                        cursorPressed = true
-                        btnAllocScale = 0.94
-                        tapRipple = (elapsed - 3.2) / 0.55
-                        tapX = 540; tapY = targetBtnY
+            activeTargetIndex = 0
+
+            if (elapsed >= 0.8) {
+                cursorVisible = true
+                if (elapsed < 1.8) {
+                    // Move cursor to Target 02 card
+                    const mt = easeInOutCubic((elapsed - 0.8) / 1.0)
+                    cursorX = 540
+                    cursorY = 320 + (cardTarget02Y - 320) * mt
+                } else if (elapsed < 2.3) {
+                    // Tap on Target 02 card
+                    cursorX = 540; cursorY = cardTarget02Y
+                    cursorPressed = true
+                    tapRipple = (elapsed - 1.8) / 0.5
+                    tapX = 540; tapY = cardTarget02Y
+                    activeTargetIndex = 1
+                } else if (elapsed < 3.3) {
+                    // Move cursor down to Auto-Allocate button
+                    activeTargetIndex = 1
+                    const bt = easeInOutCubic((elapsed - 2.3) / 1.0)
+                    cursorX = 540
+                    cursorY = cardTarget02Y + (targetBtnY - cardTarget02Y) * bt
+                } else {
+                    // Dock at Auto-Allocate button
+                    activeTargetIndex = 1
+                    cursorX = 540; cursorY = targetBtnY
+                    if (elapsed >= 3.3) {
+                        isAllocated = true
+                        if (elapsed >= 3.3 && elapsed <= 3.85) {
+                            cursorPressed = true
+                            btnAllocScale = 0.94
+                            tapRipple = (elapsed - 3.3) / 0.55
+                            tapX = 540; tapY = targetBtnY
+                        }
                     }
                 }
             }
@@ -493,11 +513,13 @@ onMounted(async () => {
             ]
 
             targetCards.forEach((t, idx) => {
+                const isTargetActive = (idx === activeTargetIndex)
+                const isTargetAlloc = isAllocated || isTargetActive
                 const ty = 52 + idx * 260
-                drawRoundedRect(16, ty, tCardW, 250, 12, '#FFFFFF', '#E2E8F0', 1.2)
+                drawRoundedRect(16, ty, tCardW, 250, 12, '#FFFFFF', isTargetActive ? '#0F172A' : '#E2E8F0', isTargetActive ? 1.8 : 1.0)
 
                 // Target Card Header
-                drawRoundedRect(24, ty + 8, tCardW - 16, 32, 6, '#F8FAFC', '#E2E8F0', 0.8)
+                drawRoundedRect(24, ty + 8, tCardW - 16, 32, 6, isTargetActive ? '#F8FAFC' : '#FFFFFF', '#E2E8F0', 0.8)
                 drawTargetFace(40, ty + 24, 10)
 
                 ctx.textAlign = 'left'
@@ -509,19 +531,20 @@ onMounted(async () => {
                 ctx.font = '500 10px "NovaText", "Plus Jakarta Sans", sans-serif'
                 ctx.fillText('· ' + t.category, 122, ty + 28)
 
-                drawRoundedRect(16 + tCardW - 84, ty + 10, 72, 22, 5, isAllocated ? '#D9FF00' : '#E2E8F0')
-                ctx.fillStyle = '#0F172A'
+                // Status pill
+                drawRoundedRect(16 + tCardW - 84, ty + 10, 72, 22, 5, isTargetActive ? '#D9FF00' : (isTargetAlloc ? '#0F172A' : '#F1F5F9'))
+                ctx.fillStyle = isTargetActive ? '#0F172A' : (isTargetAlloc ? '#D9FF00' : '#64748B')
                 ctx.textAlign = 'center'
                 ctx.font = '700 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(isAllocated ? 'Allocated' : 'Ready', 16 + tCardW - 48, ty + 24)
+                ctx.fillText(isTargetAlloc ? 'Allocated' : 'Ready', 16 + tCardW - 48, ty + 24)
 
                 // 4 Lane Rows
                 t.archers.forEach((a, aidx) => {
                     const ay = ty + 46 + aidx * 49
-                    drawRoundedRect(24, ay, tCardW - 16, 44, 8, '#F8FAFC', '#E2E8F0', 0.8)
+                    drawRoundedRect(24, ay, tCardW - 16, 44, 8, isTargetActive ? '#F8FAFC' : '#FFFFFF', isTargetActive ? '#CBD5E1' : '#E2E8F0', 0.8)
 
-                    drawRoundedRect(28, ay + 6, 26, 32, 5, isAllocated ? '#0F172A' : '#CBD5E1')
-                    ctx.fillStyle = isAllocated ? '#D9FF00' : '#475569'
+                    drawRoundedRect(28, ay + 6, 26, 32, 5, isTargetActive ? '#0F172A' : (isTargetAlloc ? '#1E293B' : '#F1F5F9'))
+                    ctx.fillStyle = isTargetActive ? '#D9FF00' : (isTargetAlloc ? '#94A3B8' : '#475569')
                     ctx.textAlign = 'center'
                     ctx.font = '800 13px "Bricolage Grotesque", sans-serif'
                     ctx.fillText(a.lane, 41, ay + 26)
@@ -536,7 +559,7 @@ onMounted(async () => {
                     ctx.fillText(a.club, 62, ay + 34)
 
                     ctx.textAlign = 'right'
-                    ctx.fillStyle = '#059669'
+                    ctx.fillStyle = isTargetActive ? '#059669' : '#64748B'
                     ctx.font = '700 9.5px "NovaText", sans-serif'
                     ctx.fillText('70m Lane', 16 + tCardW - 28, ay + 26)
                 })
