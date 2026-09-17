@@ -167,6 +167,7 @@ onMounted(async () => {
         let btnBracketScale = 1.0
         let isCertIssued = false
         let btnCertScale = 1.0
+        let activeQualIndex = 0
 
         let cursorVisible = false
         let cursorX = 0, cursorY = 0
@@ -229,28 +230,47 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
+            const cardDianandaY = 512
             const targetBtnY = 642
-            if (step2Elapsed >= 1.6) {
-                cursorVisible = true
-                if (step2Elapsed < 3.2) {
-                    const mt = easeInOutCubic((step2Elapsed - 1.6) / 1.6)
-                    cursorX = 540
-                    cursorY = 520 + (targetBtnY - 520) * mt
-                } else {
-                    cursorX = 540; cursorY = targetBtnY
-                }
 
-                if (step2Elapsed >= 3.2) {
-                    isQualLocked = true
-                    if (step2Elapsed >= 3.2 && step2Elapsed <= 3.75) {
-                        cursorPressed = true
-                        btnQualScale = 0.94
-                        tapRipple = (step2Elapsed - 3.2) / 0.55
-                        tapX = 540; tapY = targetBtnY
+            // Initial active card is 0 (Arif); after clicking Diananda at 1.8s, it becomes 2
+            let activeQualIndex = 0
+
+            if (step2Elapsed >= 0.8) {
+                cursorVisible = true
+                if (step2Elapsed < 1.8) {
+                    // Move cursor to Diananda Choirunisa's card
+                    const mt = easeInOutCubic((step2Elapsed - 0.8) / 1.0)
+                    cursorX = 540
+                    cursorY = 280 + (cardDianandaY - 280) * mt
+                } else if (step2Elapsed < 2.3) {
+                    // Tap on Diananda's card
+                    cursorX = 540; cursorY = cardDianandaY
+                    cursorPressed = true
+                    tapRipple = (step2Elapsed - 1.8) / 0.5
+                    tapX = 540; tapY = cardDianandaY
+                    activeQualIndex = 2
+                } else if (step2Elapsed < 3.3) {
+                    // Move cursor down to Lock button
+                    activeQualIndex = 2
+                    const bt = easeInOutCubic((step2Elapsed - 2.3) / 1.0)
+                    cursorX = 540
+                    cursorY = cardDianandaY + (targetBtnY - cardDianandaY) * bt
+                } else {
+                    // Dock at Lock button
+                    activeQualIndex = 2
+                    cursorX = 540; cursorY = targetBtnY
+                    if (step2Elapsed >= 3.3) {
+                        isQualLocked = true
+                        if (step2Elapsed >= 3.3 && step2Elapsed <= 3.85) {
+                            cursorPressed = true
+                            btnQualScale = 0.94
+                            tapRipple = (step2Elapsed - 3.3) / 0.55
+                            tapX = 540; tapY = targetBtnY
+                        }
                     }
                 }
             }
-        }
         // ── MODULE 3: CLUB TEAM AUTO-SUM (10.0s - 15.0s) ──
         else if (elapsed < STEP_TIME * 3) {
             phaseIndex = 2
@@ -568,18 +588,20 @@ onMounted(async () => {
             })
 
             const qualArchers = [
-                { rank: '1', name: 'Arif Dwi Pangestu', club: 'Fast Archery Club', ends: ['30', '29', '30', '29', '30', '29'], total: '684 pts', tens: '38 10s · 18 Xs', highlight: true },
-                { rank: '2', name: 'Riau Ega Agatha', club: 'Eagle Archery Club', ends: ['29', '30', '29', '29', '29', '29'], total: '678 pts', tens: '34 10s · 14 Xs', highlight: false },
-                { rank: '3', name: 'Diananda Choirunisa', club: 'Focus Archery Club', ends: ['29', '28', '30', '29', '29', '29'], total: '672 pts', tens: '31 10s · 12 Xs', highlight: false }
+                { rank: '1', name: 'Arif Dwi Pangestu', club: 'Fast Archery Club', ends: ['30', '29', '30', '29', '30', '29'], total: '684 pts', tens: '38 10s · 18 Xs' },
+                { rank: '2', name: 'Riau Ega Agatha', club: 'Eagle Archery Club', ends: ['29', '30', '29', '29', '29', '29'], total: '678 pts', tens: '34 10s · 14 Xs' },
+                { rank: '3', name: 'Diananda Choirunisa', club: 'Focus Archery Club', ends: ['29', '28', '30', '29', '29', '29'], total: '672 pts', tens: '31 10s · 12 Xs' }
             ]
 
             const qCardW = screenW - 32
             qualArchers.forEach((a, idx) => {
+                const isActive = (idx === activeQualIndex)
                 const ay = 104 + idx * 156
-                drawRoundedRect(16, ay, qCardW, 146, 10, '#FFFFFF', a.highlight ? '#0F172A' : '#E2E8F0', a.highlight ? 1.5 : 1)
+                drawRoundedRect(16, ay, qCardW, 146, 10, '#FFFFFF', isActive ? '#0F172A' : '#E2E8F0', isActive ? 1.8 : 1)
 
-                drawRoundedRect(24, ay + 10, 28, 28, 6, a.highlight ? '#D9FF00' : '#0F172A')
-                ctx.fillStyle = '#0F172A'
+                // Rank Badge
+                drawRoundedRect(24, ay + 10, 28, 28, 6, isActive ? '#D9FF00' : '#F1F5F9')
+                ctx.fillStyle = isActive ? '#0F172A' : '#475569'
                 ctx.textAlign = 'center'
                 ctx.font = '800 13px "Bricolage Grotesque", sans-serif'
                 ctx.fillText(a.rank, 38, ay + 28)
@@ -593,8 +615,9 @@ onMounted(async () => {
                 ctx.font = '500 9.5px "NovaText", sans-serif'
                 ctx.fillText(a.club, 60, ay + 34)
 
-                drawRoundedRect(16 + qCardW - 78, ay + 8, 68, 30, 6, a.highlight ? '#0F172A' : '#F1F5F9')
-                ctx.fillStyle = a.highlight ? '#D9FF00' : '#0F172A'
+                // Total Score Pill
+                drawRoundedRect(16 + qCardW - 78, ay + 8, 68, 30, 6, isActive ? '#0F172A' : '#F1F5F9')
+                ctx.fillStyle = isActive ? '#D9FF00' : '#0F172A'
                 ctx.textAlign = 'center'
                 ctx.font = '800 14px "Bricolage Grotesque", sans-serif'
                 ctx.fillText(a.total, 16 + qCardW - 44, ay + 28)
@@ -603,7 +626,7 @@ onMounted(async () => {
                 a.ends.forEach((evalScore, eidx) => {
                     const ex = 22 + eidx * endBoxW
                     const ey = ay + 48
-                    drawRoundedRect(ex, ey, endBoxW - 4, 46, 5, '#F8FAFC', '#E2E8F0', 0.8)
+                    drawRoundedRect(ex, ey, endBoxW - 4, 46, 5, isActive ? '#FFFFFF' : '#F8FAFC', isActive ? '#CBD5E1' : '#E2E8F0', 0.8)
 
                     ctx.fillStyle = '#64748B'
                     ctx.font = '600 8.5px "NovaText", sans-serif'
@@ -615,8 +638,8 @@ onMounted(async () => {
                 })
 
                 ctx.textAlign = 'left'
-                ctx.fillStyle = '#64748B'
-                ctx.font = '500 9.5px "NovaText", sans-serif'
+                ctx.fillStyle = isActive ? '#0F172A' : '#64748B'
+                ctx.font = isActive ? '600 9.5px "NovaText", sans-serif' : '500 9.5px "NovaText", sans-serif'
                 ctx.fillText('Official Tiebreaker: ' + a.tens, 24, ay + 128)
             })
 
@@ -681,8 +704,8 @@ onMounted(async () => {
                 const ry = 52 + idx * 174
                 drawRoundedRect(16, ry, tHeroW, 164, 10, '#FFFFFF', r.highlight ? '#0F172A' : '#E2E8F0', r.highlight ? 1.5 : 1)
 
-                drawRoundedRect(24, ry + 12, 28, 28, 6, r.highlight ? '#D9FF00' : '#0F172A')
-                ctx.fillStyle = '#0F172A'
+                drawRoundedRect(24, ry + 12, 28, 28, 6, r.highlight ? '#D9FF00' : '#F1F5F9')
+                ctx.fillStyle = r.highlight ? '#0F172A' : '#475569'
                 ctx.textAlign = 'center'
                 ctx.font = '800 13px "Bricolage Grotesque", sans-serif'
                 ctx.fillText(r.rank, 38, ry + 30)
