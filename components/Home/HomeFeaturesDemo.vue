@@ -23,10 +23,8 @@
 
                     <div class="space-y-2.5 sm:space-y-3 pt-6 border-t border-slate-100">
                         <div v-for="key in ['f1_list_1', 'f1_list_2', 'f1_list_3', 'f1_list_4']" :key="key"
-                            class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 hover:bg-white hover:border-[#63C03B]/40 hover:shadow-md hover:shadow-slate-100 transition-all duration-200 group/item">
-                            <div class="w-6 h-6 rounded-full bg-[#63C03B]/15 text-[#63C03B] flex items-center justify-center shrink-0 group-hover/item:bg-[#63C03B] group-hover/item:text-white transition-colors duration-200">
-                                <Icon icon="ph:check-bold" class="text-xs" />
-                            </div>
+                            class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+                            <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-xl sm:text-2xl shrink-0" />
                             <span class="text-navy font-bold text-xs sm:text-sm lg:text-base leading-snug">
                                 {{ $t(`home.features_demo.${key}`) }}
                             </span>
@@ -35,7 +33,7 @@
                 </div>
 
                 <div class="order-1 lg:order-2 relative flex justify-center image-col w-full">
-                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-[#ECEBE6]">
+                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-[0_24px_50px_-12px_rgba(15,23,42,0.12),0_4px_12px_rgba(15,23,42,0.04)] border border-slate-200/80 bg-[#ECEBE6]">
                         <video 
                             autoplay 
                             loop 
@@ -44,8 +42,10 @@
                             poster="/features/feature_registration.png"
                             class="w-full h-full object-cover"
                         >
-                            <source src="/features/feature_registration.mp4" type="video/mp4" />
+                            <source src="/registration.mp4" type="video/mp4" />
                         </video>
+                        <!-- Inner gray border overlay -->
+                        <div class="pointer-events-none absolute inset-0 rounded-3xl border border-gray-300/90 z-10"></div>
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
             <!-- Feature Block 2: EO Management, Targets & WA Brackets -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center mb-20 sm:mb-28 lg:mb-32 feature-row">
                 <div class="order-1 relative flex justify-center image-col w-full">
-                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-[#ECEBE6]">
+                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-[0_24px_50px_-12px_rgba(15,23,42,0.12),0_4px_12px_rgba(15,23,42,0.04)] border border-slate-200/80 bg-[#ECEBE6]">
                         <video 
                             autoplay 
                             loop 
@@ -62,8 +62,10 @@
                             poster="/features/feature_competition.png"
                             class="w-full h-full object-cover"
                         >
-                            <source src="/features/feature_competition.mp4" type="video/mp4" />
+                            <source src="/competition.mp4" type="video/mp4" />
                         </video>
+                        <!-- Inner gray border overlay -->
+                        <div class="pointer-events-none absolute inset-0 rounded-3xl border border-gray-300/90 z-10"></div>
                     </div>
                 </div>
 
@@ -76,10 +78,8 @@
 
                     <div class="space-y-2.5 sm:space-y-3 pt-6 border-t border-slate-100">
                         <div v-for="key in ['f2_list_1', 'f2_list_2', 'f2_list_3', 'f2_list_4']" :key="key"
-                            class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 hover:bg-white hover:border-[#63C03B]/40 hover:shadow-md hover:shadow-slate-100 transition-all duration-200 group/item">
-                            <div class="w-6 h-6 rounded-full bg-[#63C03B]/15 text-[#63C03B] flex items-center justify-center shrink-0 group-hover/item:bg-[#63C03B] group-hover/item:text-white transition-colors duration-200">
-                                <Icon icon="ph:check-bold" class="text-xs" />
-                            </div>
+                            class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+                            <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-xl sm:text-2xl shrink-0" />
                             <span class="text-navy font-bold text-xs sm:text-sm lg:text-base leading-snug">
                                 {{ $t(`home.features_demo.${key}`) }}
                             </span>
@@ -99,10 +99,8 @@
 
                     <div class="space-y-2.5 sm:space-y-3 pt-6 border-t border-slate-100">
                         <div v-for="key in ['f3_list_1', 'f3_list_2', 'f3_list_3', 'f3_list_4']" :key="key"
-                            class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 hover:bg-white hover:border-[#63C03B]/40 hover:shadow-md hover:shadow-slate-100 transition-all duration-200 group/item">
-                            <div class="w-6 h-6 rounded-full bg-[#63C03B]/15 text-[#63C03B] flex items-center justify-center shrink-0 group-hover/item:bg-[#63C03B] group-hover/item:text-white transition-colors duration-200">
-                                <Icon icon="ph:check-bold" class="text-xs" />
-                            </div>
+                            class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+                            <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-xl sm:text-2xl shrink-0" />
                             <span class="text-navy font-bold text-xs sm:text-sm lg:text-base leading-snug">
                                 {{ $t(`home.features_demo.${key}`) }}
                             </span>
@@ -111,15 +109,19 @@
                 </div>
 
                 <div class="order-1 lg:order-2 relative flex justify-center image-col w-full">
-                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-[#ECEBE6] flex items-center justify-center">
-                        <AnimatedImageStack 
-                            :images="[
-                                'https://placehold.co/1200x750/0f172a/63c03b?text=Archer+Profile+%26+QR+Badge',
-                                'https://placehold.co/1200x750/1e293b/38bdf8?text=Live+Leaderboard+%26+Scorecard',
-                                'https://placehold.co/1200x750/0f172a/a855f7?text=Career+Statistics+%26+History'
-                            ]"
-                            alt="Archer Mobile App, Live Standings & Statistics"
-                        />
+                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-[0_24px_50px_-12px_rgba(15,23,42,0.12),0_4px_12px_rgba(15,23,42,0.04)] border border-slate-200/80 bg-[#ECEBE6]">
+                        <video 
+                            autoplay 
+                            loop 
+                            muted 
+                            playsinline 
+                            poster="/features/feature_archer.png"
+                            class="w-full h-full object-cover"
+                        >
+                            <source src="/archer.mp4" type="video/mp4" />
+                        </video>
+                        <!-- Inner gray border overlay -->
+                        <div class="pointer-events-none absolute inset-0 rounded-3xl border border-gray-300/90 z-10"></div>
                     </div>
                 </div>
             </div>
@@ -127,15 +129,19 @@
             <!-- Feature Block 4: Certified Scorekeeper Mobile App -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center feature-row">
                 <div class="order-1 relative flex justify-center image-col w-full">
-                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-[#ECEBE6] flex items-center justify-center">
-                        <AnimatedImageStack 
-                            :images="[
-                                'https://placehold.co/1200x750/0f172a/63c03b?text=Scorekeeper+Mobile+Input',
-                                'https://placehold.co/1200x750/1e293b/38bdf8?text=Arrow+Value+Verification',
-                                'https://placehold.co/1200x750/0f172a/f59e0b?text=Live+Sync+to+Central+Server'
-                            ]"
-                            alt="Scorekeeper Mobile App & Digital Touchscreen Scoring"
-                        />
+                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-[0_24px_50px_-12px_rgba(15,23,42,0.12),0_4px_12px_rgba(15,23,42,0.04)] border border-slate-200/80 bg-[#ECEBE6]">
+                        <video 
+                            autoplay 
+                            loop 
+                            muted 
+                            playsinline 
+                            poster="/features/feature_scorekeeper.png"
+                            class="w-full h-full object-cover"
+                        >
+                            <source src="/scorekeeper.mp4" type="video/mp4" />
+                        </video>
+                        <!-- Inner gray border overlay -->
+                        <div class="pointer-events-none absolute inset-0 rounded-3xl border border-gray-300/90 z-10"></div>
                     </div>
                 </div>
 
@@ -148,10 +154,8 @@
 
                     <div class="space-y-2.5 sm:space-y-3 pt-6 border-t border-slate-100">
                         <div v-for="key in ['f4_list_1', 'f4_list_2', 'f4_list_3', 'f4_list_4']" :key="key"
-                            class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60 hover:bg-white hover:border-[#63C03B]/40 hover:shadow-md hover:shadow-slate-100 transition-all duration-200 group/item">
-                            <div class="w-6 h-6 rounded-full bg-[#63C03B]/15 text-[#63C03B] flex items-center justify-center shrink-0 group-hover/item:bg-[#63C03B] group-hover/item:text-white transition-colors duration-200">
-                                <Icon icon="ph:check-bold" class="text-xs" />
-                            </div>
+                            class="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
+                            <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-xl sm:text-2xl shrink-0" />
                             <span class="text-navy font-bold text-xs sm:text-sm lg:text-base leading-snug">
                                 {{ $t(`home.features_demo.${key}`) }}
                             </span>

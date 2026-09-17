@@ -67,7 +67,7 @@
                             </div>
                         </div>
                         <p class="text-xs text-slate-300 leading-relaxed font-medium relative z-10">
-                            {{ $t('home.comparison_page.summary_archeris_desc', 'Integrated archery tournament management: online registration, automated payments, and real-time live scoring via mobile browser.') }}
+                            {{ $t('home.comparison_page.summary_archeris_desc', 'Integrated archery tournament management: online registration, automated payments, and digital archery scoring via mobile browser.') }}
                         </p>
                     </div>
 

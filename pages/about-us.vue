@@ -98,7 +98,7 @@
             <ul class="text-xs sm:text-sm text-slate-700 space-y-2 leading-relaxed font-normal">
               <li class="flex items-start gap-2">
                 <Icon icon="ph:check-circle-fill" class="text-emerald-600 text-sm shrink-0 mt-0.5" />
-                <span>Accurate, real-time live scoring and digital scorecards.</span>
+                <span>Accurate digital archery scoring and mobile scorecards.</span>
               </li>
               <li class="flex items-start gap-2">
                 <Icon icon="ph:check-circle-fill" class="text-emerald-600 text-sm shrink-0 mt-0.5" />

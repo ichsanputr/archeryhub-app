@@ -492,7 +492,7 @@ const structuredData = computed(() => ({
     '@context': 'https://schema.org',
     '@type': 'Blog',
     'name': 'Archeris Archery Scoring & Tournament Blog',
-    'description': 'In-depth guides on archery scoring rules, tournament management, World Archery brackets, and live scoring platform setup.',
+    'description': 'In-depth guides on archery scoring rules, tournament management, World Archery brackets, and digital archery scoring system setup.',
     'url': 'https://archeris.net/blog',
     'publisher': {
         '@type': 'Organization',
@@ -519,9 +519,9 @@ useHead({
 
 useSeoMeta({
     title: 'Archery Scoring Guides & Tournament Articles - Archeris',
-    description: 'Learn archery scoring rules, World Archery match play rules, target ring calculations, and live scoring technology with guides from Archeris.',
+    description: 'Learn archery scoring rules, World Archery match play rules, target ring calculations, and digital scoring technology with guides from Archeris.',
     ogTitle: 'Archery Scoring Guides & Tournament Articles - Archeris',
-    ogDescription: 'Learn archery scoring rules, World Archery match play rules, target ring calculations, and live scoring technology with guides from Archeris.',
+    ogDescription: 'Learn archery scoring rules, World Archery match play rules, target ring calculations, and digital scoring technology with guides from Archeris.',
     ogType: 'website',
     ogUrl: 'https://archeris.net/blog',
     twitterCard: 'summary_large_image'

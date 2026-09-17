@@ -522,7 +522,7 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const archer1CardY = 342
+            const archer1CardY = 417
             if (step4Elapsed >= 0.8) {
                 cursorVisible = true
                 if (step4Elapsed < 2.0) {
@@ -699,7 +699,7 @@ onMounted(async () => {
             ctx.fillStyle = '#64748B'
             ctx.font = '500 11px "NovaText", "Plus Jakarta Sans", sans-serif'
             ctx.fillText('Enter your 5-character personal access code (letters & numbers)', screenX + 20, heroIconY + 124)
-            ctx.fillText('provided by the tournament committee for live scoring.', screenX + 20, heroIconY + 140)
+            ctx.fillText('provided by the tournament committee for archery scoring.', screenX + 20, heroIconY + 140)
 
             // 5 Alphanumeric OTP Code Boxes
             const otpY = heroIconY + 164
@@ -1012,7 +1012,7 @@ onMounted(async () => {
 
                 ctx.fillStyle = '#047857'
                 ctx.font = '600 10px "NovaText", sans-serif'
-                ctx.fillText('Recurve Men Open 70m · 3 Registered Athletes', screenX + 68, statusCardY + 44)
+                ctx.fillText('Recurve Men Open 70m · 3 Registered Archers', screenX + 68, statusCardY + 44)
 
                 // Animated progress load bar
                 ctx.fillStyle = '#059669'
@@ -1099,7 +1099,7 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 14.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Athletes (3)', screenX + 20, athSecY)
+            ctx.fillText('Archers (3)', screenX + 20, athSecY)
 
             ctx.textAlign = 'right'
             ctx.fillStyle = '#64748B'
@@ -1139,25 +1139,25 @@ onMounted(async () => {
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#0F172A'
                 ctx.font = '800 13px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(a.name, screenX + 82, ay + 26)
+                ctx.fillText(a.name, screenX + 80, ay + 26)
 
                 ctx.fillStyle = '#64748B'
                 ctx.font = '500 9.5px "NovaText", sans-serif'
-                ctx.fillText(a.club, screenX + 82, ay + 44)
+                ctx.fillText(a.club, screenX + 80, ay + 44)
 
-                // Right Status Badge
-                const stW = 68
+                // Right Status Badge (Symmetric 10px right padding matching left badge)
+                const stW = 60
                 const stH = 34
-                const stX = screenX + screenW - 88
+                const stX = screenX + screenW - 28 - stW
                 const stY = ay + (ah - stH) / 2
 
                 drawRoundedRect(stX, stY, stW, stH, 8, '#FEF3C7', 'rgba(245, 158, 11, 0.35)', 1)
                 ctx.textAlign = 'center'
                 ctx.fillStyle = '#B45309'
-                ctx.font = '800 11.5px "Bricolage Grotesque", sans-serif'
+                ctx.font = '800 11px "Bricolage Grotesque", sans-serif'
                 ctx.fillText(a.score, stX + stW / 2, stY + 14)
                 ctx.font = '600 8.5px "NovaText", sans-serif'
-                ctx.fillText('End 3 / 6', stX + stW / 2, stY + 27)
+                ctx.fillText('End 3 / 6', stX + stW / 2, stY + 26)
 
                 ay += ah + 12
             })
@@ -1493,7 +1493,6 @@ onMounted(async () => {
         ctx.fillRect(screenX + screenW - 34, screenY + 20, 10, 6)
 
         drawRoundedRect(540 - 55, screenY + screenH - 12, 110, 4, 2, '#CBD5E1')
-        ctx.restore() // Glass clip
 
         // Ripple & Cursor
         if (tapRipple > 0 && tapRipple <= 1) {
@@ -1550,7 +1549,7 @@ onMounted(async () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ECEBE6;
+    background: #0B0F19;
     overflow: hidden;
     user-select: none;
     font-family: 'NovaText', 'Plus Jakarta Sans', sans-serif;
@@ -1560,8 +1559,11 @@ onMounted(async () => {
     width: 1080px;
     height: 1080px;
     transform-origin: center center;
-    box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
     background: #ECEBE6;
     display: block;
+    border-left: 3px solid #0F172A;
+    border-right: 3px solid #0F172A;
+    box-sizing: border-box;
 }
 </style>

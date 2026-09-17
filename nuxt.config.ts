@@ -103,7 +103,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en'
       },
-      title: 'Archeris - Modern Archery Scoring & Tournament Management Platform',
+      title: 'Archeris - The Best Archery Scoring System',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -111,22 +111,22 @@ export default defineNuxtConfig({
         { name: 'googlebot', content: 'noindex, nofollow, noarchive, nosnippet, noimageindex' },
         {
           name: 'description',
-          content: 'The modern archery scoring and tournament management platform. Features real-time mobile scoring, automated target butt allocations, World Archery brackets, and live spectator leaderboards.'
+          content: 'Archeris is the complete archery scoring system and competition management platform built for organizers and archers worldwide. It provides a simple and modern way to run tournaments, track standings, and handle archery scoring from any device.'
         },
         {
           name: 'keywords',
-          content: 'archery scoring, archery scoring app, live archery scoring, archery scoring platform, digital scorekeeper, archery tournament bracket, target butt allocation, ianseo alternative, archery club management'
+          content: 'archery scoring, archery scoring system, digital archery scoring, archery scorekeeper, archery tournament management, target butt allocation, ianseo alternative'
         },
         // Open Graph / Facebook / WhatsApp
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'Archeris' },
-        { property: 'og:title', content: 'Archeris - Modern Archery Scoring & Tournament Management Platform' },
-        { property: 'og:description', content: 'The modern archery scoring and tournament management platform. Real-time digital scorekeeper, live spectator leaderboards, automated target allocations, and brackets.' },
+        { property: 'og:title', content: 'Archeris - The Best Archery Scoring System' },
+        { property: 'og:description', content: 'Archeris is the complete archery scoring system and competition management platform built for organizers and archers worldwide. It provides a simple and modern way to run tournaments, track standings, and handle archery scoring from any device.' },
         { property: 'og:image', content: 'https://archeris.net/og-default.jpg' },
         // Twitter Card
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: 'Archeris - Modern Archery Scoring & Tournament Management Platform' },
-        { name: 'twitter:description', content: 'The modern archery scoring and tournament management platform. Real-time digital scorekeeper, live spectator leaderboards, automated target allocations, and brackets.' },
+        { name: 'twitter:title', content: 'Archeris - The Best Archery Scoring System' },
+        { name: 'twitter:description', content: 'Archeris is the complete archery scoring system and competition management platform built for organizers and archers worldwide. It provides a simple and modern way to run tournaments, track standings, and handle archery scoring from any device.' },
         { name: 'twitter:image', content: 'https://archeris.net/og-default.jpg' },
       ],
       link: [

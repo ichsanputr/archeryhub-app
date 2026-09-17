@@ -408,7 +408,7 @@
                         <div class="space-y-1.5">
                             <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-white/10 rounded-full text-primary text-[10px] font-semibold">
                                 <Icon icon="ph:trophy" />
-                                <span>Live Scoring</span>
+                                <span>Archery Scoring</span>
                             </div>
                             <h4 class="text-sm font-bold text-white">Elevate Your Tournament</h4>
                             <p class="text-xs text-slate-300 leading-relaxed font-normal">Manage archer qualifications, elimination brackets, and scorekeeping effortlessly.</p>

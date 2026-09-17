@@ -141,89 +141,89 @@
   },
   "home": {
     "meta_title": "Archeris - The Best Archery Scoring System",
-    "meta_desc": "Archeris is the best archery scoring system for tournaments, archers, and certified scorekeepers. Precision arrow value tracking, real-time qualification leaderboards, World Archery brackets.",
+    "meta_desc": "Archeris is the complete archery scoring system and competition management platform built for organizers and archers worldwide. It provides a simple and modern way to run tournaments, track standings, and handle archery scoring from any device.",
     "hero": {
-      "title_part1": "The modern archery scoring system",
-      "title_part2": "running directly from your phone.",
-      "description": "The precision digital archery scoring system built for real-time arrow value recording, target butt scorekeeping, and instant qualification leaderboards without paper scorecards.",
+      "title_part1": "The Modern Archery Scoring System",
+      "title_part2": "Running Directly from Your Phone.",
+      "description": "Archeris is the complete archery scoring system and competition management platform built for organizers and archers worldwide. It provides a simple and modern way to run tournaments, track standings, and handle archery scoring from any device.",
       "cta_primary": "Get Started",
       "cta_secondary": "Browse Tournaments"
     },
     "features_ecosystem": {
-      "badge": "Precision Ecosystem",
-      "title": "Engineered for",
-      "title_highlight": "Scoring Precision.",
-      "description": "Complete digital infrastructure for archers, tournament organizers, and certified scorekeepers.",
-      "f1_title": "Seamless Tournament Registration",
-      "f1_desc": "Instant entry forms, automated quota tracking, and multi-channel payment gateway.",
-      "f1_long": "Empower organizers to publish events effortlessly to thousands of archers. Featuring automated slot management, multi-channel payment integration (QRIS, VA), and real-time QR e-ticket issuance.",
-      "f2_title": "Comprehensive Tournament Management",
-      "f2_desc": "Target butt allocation, team assembly, World Archery brackets, and digital certificates.",
-      "f2_long": "Manage full competition workflows from a single command hub: automatic target butt assignments, team composition, World Archery compliant qualification & elimination brackets, real-time podium calculations, and automated official result booklets (PDF).",
-      "f3_title": "Archer Mobile App & Performance Hub",
-      "f3_desc": "1-tap tournament entry, live score tracking, and personal career scoring analytics.",
-      "f3_long": "Dedicated mobile app for archers: discover and register for tournaments instantly, follow real-time live leaderboards, store digital entry badges, and analyze historical accuracy metrics (10s, Xs, and arrow distribution) across competitions.",
-      "f4_title": "Certified Scorekeeper Mobile Scoring",
-      "f4_desc": "Scan target QR codes, tap rapid target face scoring, and sync instantly to live boards.",
-      "f4_long": "Built for field referees and certified scorekeepers: fast referee login, QR code butt scanning for athlete verification, paperless touch scoring with official target face colors (X-10-M), and sub-second live score broadcasting to event leaderboards."
+      "badge": "Archery Scoring System",
+      "title": "Built for",
+      "title_highlight": "Archery Scoring.",
+      "description": "Complete archery scoring and tournament management platform for organizers and archers.",
+      "f1_title": "Online Tournament Registration",
+      "f1_desc": "Simple entry forms, quota tracking, and online payment methods.",
+      "f1_long": "Publish archery tournaments easily to archers everywhere. Manage participant slots, collect online payments, and issue digital event tickets automatically.",
+      "f2_title": "Tournament Management & Brackets",
+      "f2_desc": "Target lane assignments, team divisions, elimination brackets, and certificates.",
+      "f2_long": "Manage your competition in one simple dashboard: target lane allocations, team divisions, World Archery brackets, rankings, and downloadable PDF result books.",
+      "f3_title": "Archer Experience & Scores",
+      "f3_desc": "Easy event entry, match schedules, and complete score history.",
+      "f3_long": "A clean mobile experience for archers: register for tournaments quickly, check match schedules, view standings, and track scoring progress.",
+      "f4_title": "Mobile Archery Scoring",
+      "f4_desc": "Enter arrow scores on your phone with instant scoreboard updates.",
+      "f4_long": "Designed for fast scoring on the shooting line: quick scorekeeper login, intuitive number pad (X, 10, 9 to M), and instant updates to the tournament leaderboard."
     },
     "learn": {
-      "title": "The Complete Digital Infrastructure for",
-      "subtitle": "Real-Time Archery Scoring",
-      "description": "Integrated cloud solutions for tournament registration, end-to-end competition operations, archer mobile experience, and paperless on-field scorekeeping.",
-      "f1_tag": "EO Registration",
-      "f1_title": "Seamless Tournament Registration & Publishing",
-      "f1_desc": "Empower organizers to publish events effortlessly, manage attendee quotas, collect instant payments via QRIS/VA, and issue verified digital badges.",
-      "f2_tag": "EO Management",
-      "f2_title": "Target Allocation, WA Brackets & Certificates",
-      "f2_desc": "Manage automatic target butt assignments, team composition, World Archery compliant elimination brackets, live podiums, and official PDF booklets.",
-      "f3_tag": "Archer Mobile",
-      "f3_title": "Dedicated Archer Mobile App & Live Standings",
-      "f3_desc": "Athlete mobile app for 1-tap event entry, live qualification & match tracking, e-ticket passes, and personal career shooting precision analytics.",
-      "f4_tag": "Scorekeeper Mobile",
-      "f4_title": "Rapid Field Scoring & Referee Verification",
-      "f4_desc": "Built for certified scorekeepers: scan target QR codes, enter arrow values on ergonomic color-coded dials, and sync instant scores to live boards."
+      "title": "The Complete Platform for",
+      "subtitle": "Digital Archery Scoring",
+      "description": "An all-in-one platform for tournament registration, target assignments, elimination brackets, and mobile scoring.",
+      "f1_tag": "Online Signups",
+      "f1_title": "Easy Tournament Registration & Payments",
+      "f1_desc": "Create and publish tournaments in minutes, manage participant limits, accept online payments, and issue digital tickets.",
+      "f2_tag": "Tournament Setup",
+      "f2_title": "Target Lanes, Brackets & Certificates",
+      "f2_desc": "Assign target numbers (1A-1D), generate World Archery elimination brackets, and download official PDF result books.",
+      "f3_tag": "Archer Experience",
+      "f3_title": "Archer Profiles & Tournament Results",
+      "f3_desc": "Archers can sign up in seconds, view match schedules, and check tournament standings directly on their phones.",
+      "f4_tag": "Mobile Scoring",
+      "f4_title": "Simple Paperless Field Scoring",
+      "f4_desc": "Scorekeepers record arrow scores with a clear number pad (X, 10, 9 to M) that updates the scoreboard immediately."
     },
     "features_demo": {
       "title1": "Built for Tournament Organizers.",
-      "title2": "Simple, Real-Time Live Scoring.",
-      "description": "Run archery competitions without paper scorecards. From athlete registration, target butt allocation, elimination brackets, to real-time mobile scorekeeping.",
+      "title2": "Simple, Accurate Archery Scoring.",
+      "description": "Run archery competitions without paper scorecards. From athlete registration and target lane assignments to elimination brackets and mobile scoring.",
       "f1_tag": "Online Signups",
       "f1_title": "Fast Tournament Setup & Online Payments",
       "f1_desc": "Launch your tournament in minutes with category quota limits, custom registration forms, and automatic online payments (QRIS, cards, and bank transfers).",
       "f1_cta": "Explore Registration",
       "f2_tag": "Targets & Brackets",
       "f2_title": "Target Lane Assignments & Match Brackets",
-      "f2_desc": "Manage target butt numbers (1A–1D), automatic team groupings, elimination brackets, and printable PDF documents in one simple place.",
+      "f2_desc": "Manage target numbers (1A–1D), automatic team groupings, elimination brackets, and printable PDF documents in one simple place.",
       "f2_cta": "Explore Brackets",
       "f3_tag": "Archer Experience",
-      "f3_title": "Simple Athlete Profiles & Live Leaderboards",
-      "f3_desc": "Archers sign up in 1 tap with saved profiles, check live scores from their phones, and track their competition history.",
+      "f3_title": "Archer Profiles & Tournament Leaderboards",
+      "f3_desc": "Archers sign up in 1 tap with saved profiles, check tournament scores from their phones, and track their competition history.",
       "f3_cta": "Explore Archer Features",
       "f4_tag": "Mobile Scoring",
-      "f4_title": "Fast Paperless Field Scoring & Live Sync",
-      "f4_desc": "Scorekeepers enter arrow scores directly on their phones using a simple target keypad (X, 10, 9.. M), with scores syncing instantly to the leaderboard.",
+      "f4_title": "Paperless Field Scoring & Leaderboards",
+      "f4_desc": "Scorekeepers enter arrow scores directly on their phones using a simple target keypad (X, 10, 9 to M), with scores syncing instantly to the leaderboard.",
       "f4_cta": "Explore Scoring",
-      "f1_list_1": "Custom registration forms per division & age category",
-      "f1_list_2": "Instant payments via QRIS, Virtual Accounts & cards",
-      "f1_list_3": "Automatic athlete quota limits & financial tracking",
-      "f1_list_4": "Verified e-tickets & digital QR attendance passes",
-      "f2_list_1": "Automatic target butt lane assignments (1A–1D)",
+      "f1_list_1": "Custom registration forms for each division and category",
+      "f1_list_2": "Instant online payments via QRIS, Virtual Accounts & cards",
+      "f1_list_3": "Automatic participant quotas and payment tracking",
+      "f1_list_4": "Digital event tickets with check-in confirmation",
+      "f2_list_1": "Automatic target lane assignments (1A–1D)",
       "f2_list_2": "Standard qualification rankings & elimination brackets",
-      "f2_list_3": "Automated team grouping & qualification seeding",
-      "f2_list_4": "Ready-to-print official PDF result booklets & certificates",
-      "f3_list_1": "1-tap event entry using saved archer profiles",
-      "f3_list_2": "Digital entry badges & QR check-in passes",
-      "f3_list_3": "Real-time tournament leaderboards & score progression",
-      "f3_list_4": "Career scoring history, arrow averages & personal bests",
-      "f4_list_1": "Simple color-coded target face keypad (X-10-M)",
-      "f4_list_2": "QR target butt scanning for quick athlete check",
-      "f4_list_3": "Automatic set points, total points & shoot-off logic",
-      "f4_list_4": "Instant score updates on public live leaderboards"
+      "f2_list_3": "Individual and team match bracket generation",
+      "f2_list_4": "Official PDF result booklets & printable certificates",
+      "f3_list_1": "Quick event registration with saved archer profiles",
+      "f3_list_2": "Digital entry passes and match schedules",
+      "f3_list_3": "Tournament leaderboards and round progression",
+      "f3_list_4": "Personal scoring history and past tournament results",
+      "f4_list_1": "Clear target scoring keypad (X, 10, 9 to M)",
+      "f4_list_2": "Quick athlete search and lane verification",
+      "f4_list_3": "Automatic total score and tie-breaker calculation",
+      "f4_list_4": "Instant updates to the public tournament leaderboard"
     },
     "blog": {
-      "title1": "Archery News & Tournament Guides",
-      "title2": "Tips, Rules & Community Stories",
+      "title1": "Articles & Tournament Guides",
+      "title2": "Rules, Guides & Archery Scoring Tips",
       "view_all": "View All Articles"
     },
     "pricing": {
@@ -259,71 +259,71 @@
         "free": [
           "1 Tournament Tournament Quota",
           "Up to 64 Participants",
-          "Mobile Scorekeeper & Live Leaderboard",
-          "Basic Target Butt Allocation (1A, 1B)",
+          "Mobile Scorekeeper & Public Leaderboard",
+          "Basic Target Allocation (1A, 1B)",
           "Standard Elimination Brackets"
         ],
         "standard": [
           "Unlimited Tournaments (Per-Tournament Quota)",
           "Up to 256 Participants per Tournament",
           "Integrated Online Registrations & Payments",
-          "Automated Target Butt Allocator",
+          "Automated Target Allocator",
           "World Archery Olympic Round Brackets",
           "Custom Certificate Generator",
           "Email & WhatsApp Notifications"
         ],
         "elite": [
           "Unlimited Tournaments & Participants",
-          "Custom Club & Sponsor Branding",
+          "Custom Organizer & Sponsor Branding",
           "Multi-Range & Multi-Distance Flights",
           "Advanced World Archery & Custom Brackets",
-          "Real-Time LED Range Display Mode",
+          "LED Range Display Mode",
           "Dedicated Priority Support & Setup Assistance"
         ]
       }
     },
     "mobile": {
-      "title1": "Real-Time Archery Scoring,",
-      "title2": "Right at the Shooting Line.",
-      "description": "Empower tournament judges and archers with fast, real-time arrow logging on mobile. Download the official Archeris app for Android or access directly via web."
+      "title1": "Archery Scoring,",
+      "title2": "Right on Your Phone.",
+      "description": "Empower archers and scorekeepers with our dedicated archery scoring system on mobile. Record arrow-by-arrow ends at the shooting line, verify scores offline, and follow live tournament leaderboards instantly from any smartphone or tablet."
     },
     "testimonials": {
       "count": "2,500+",
-      "trust_desc": "Archery Clubs & Tournament Organizers Trust {brand}",
+      "trust_desc": "Archers & Tournament Organizers Trust {brand}",
       "stars": "Stars",
       "reviews": "Reviews",
       "items": [
         {
-          "quote": "Paper scorecard tallying used to delay our finals by nearly an hour. With Archeris, live brackets and qualification standings update immediately after every end.",
+          "quote": "Setting up our tournament and managing registrations was effortless. Everything worked smoothly from start to finish.",
           "name": "Coach Budi Santoso",
-          "org": "Jakarta Archery Club"
+          "org": "Tournament Director"
         },
         {
-          "quote": "Managing 250+ archers across Recurve and Compound divisions was seamless. The automated target butt allocations saved our scoring team hours of manual sorting.",
+          "quote": "The mobile scoring is fast and simple to use on the shooting line. No more paper scorecards or calculation errors.",
           "name": "Sarah Jenkins",
-          "org": "National Archery Championship"
+          "org": "Event Organizer"
         },
         {
-          "quote": "The World Archery Olympic round set points calculation is 100% accurate. Archers and parents loved watching the real-time public leaderboard on their phones.",
+          "quote": "Managing target assignments and match brackets saved our team hours of work. Highly recommended for any archery event.",
           "name": "Marcus Vance",
-          "org": "Precision Archery Academy"
+          "org": "Archery Coach"
         },
         {
-          "quote": "Setting up online registrations with instant payment confirmation made running our annual open tournament completely stress-free.",
+          "quote": "Our archers loved checking their scores and match brackets directly from their phones throughout the competition.",
           "name": "Rania Nabilla",
-          "org": "Centrum Archery Open"
+          "org": "Club Coordinator"
         },
         {
-          "quote": "Archeris makes score recording on the target line intuitive for youth and masters archers alike. The mobile scorekeeper is game-changing.",
+          "quote": "An intuitive scoring system that anyone can learn in minutes. It made running our annual tournament a breeze.",
           "name": "Jessica Lim",
-          "org": "Golden Arrow Club"
+          "org": "Scorekeeper Lead"
         }
       ]
     },
     "comparison": {
       "title": "Why Choose Archeris.net?",
       "subtitle": "How we compare with traditional software like Ianseo",
-      "description": "Archeris is built to make archery tournament management and live scoring simple, fast, and accessible from any browser.",
+      "description": "Archeris is an archery scoring system built to make archery tournament management and scoring simple, fast, and accessible from any browser.",
       "col_feature": "Feature",
       "col_archeris": "Archeris.net",
       "col_ianseo": "Ianseo.net",
@@ -334,7 +334,7 @@
       "f2_archeris": "Easy mobile scoring. Scorekeepers log in with a simple event PIN using phone internet or Wi-Fi.",
       "f2_ianseo": "Requires a local Wi-Fi router on the field to connect phones to the host computer's local IP address.",
       "f3_name": "Archer Registration",
-      "f3_archeris": "Online self-registration. Archers and clubs sign up directly on your tournament page with live slot counters.",
+      "f3_archeris": "Online self-registration. Archers sign up directly on your tournament page with slot counters.",
       "f3_ianseo": "Manual entry. Organizers collect participant lists via outside forms or emails, then import them via Excel.",
       "f4_name": "Payments & Invoicing",
       "f4_archeris": "Automatic payment checkout (QRIS, Virtual Accounts, cards) plus manual bank receipt uploads.",
@@ -345,8 +345,8 @@
       "f6_name": "Elimination Brackets",
       "f6_archeris": "Automatic bracket generation for individual, team, and mixed matches with instant shoot-off handling.",
       "f6_ianseo": "Supports full World Archery match formats set up directly inside the desktop database.",
-      "f7_name": "Live Leaderboard",
-      "f7_archeris": "Real-time live scores and bracket progress that archers and parents can view on their phones anywhere.",
+      "f7_name": "Tournament Leaderboard",
+      "f7_archeris": "Digital scores and bracket progress that archers and parents can view on their phones anywhere.",
       "f7_ianseo": "Results must be uploaded manually to ianseo.net or displayed on venue TVs via extra local modules.",
       "f8_name": "Printouts & Certificates",
       "f8_archeris": "8 ready-to-print PDFs (brackets, scoresheets, start lists) plus verified digital QR certificates.",
@@ -357,19 +357,19 @@
     },
     "comparison_page": {
       "hero_title": "Why Switch from Ianseo to Archeris.net?",
-      "hero_subtitle": "Simple, real-time tournament management right in your browser.",
+      "hero_subtitle": "Simple tournament management and archery scoring right in your browser.",
       "hero_desc": "See how Archeris makes running archery tournaments easier, faster, and paper-free.",
       "section_features_title": "Feature Comparison",
       "section_features_desc": "See how Archeris and Ianseo compare side by side.",
       "cta_title": "Ready to Run Your Next Tournament?",
-      "cta_desc": "Create your organizer account in minutes and start managing registrations, brackets, and live scores easily.",
+      "cta_desc": "Create your organizer account in minutes and start managing registrations, brackets, and digital archery scoring easily.",
       "cta_btn": "Get Started Now",
       "back_home": "Back to Home",
       "hero_badge": "Comparison",
       "blog_badge": "Overview",
       "blog_title": "Why Switch from Ianseo to Archeris.net?",
       "blog_p1": "Ianseo has long been a popular choice for World Archery tournaments. It runs on your computer and handles standard competition scoring. However, setting it up usually means installing databases, running local servers, and connecting laptops with cables or local Wi-Fi.",
-      "blog_p2": "Archeris makes tournament management simple and web-based. Everything from participant registration, entry fees, target assignments, to live scoring runs directly in your browser or phone—with no server setup or networking needed.",
+      "blog_p2": "Archeris makes tournament management simple and web-based. Everything from participant registration, entry fees, target assignments, to archery scoring runs directly in your browser or phone—with no server setup or networking needed.",
       "cat_all": "All Features",
       "cat_infra": "Platform & Setup",
       "cat_payment": "Registration & Payments",
@@ -378,7 +378,7 @@
       "badge_cloud_pro": "Online Cloud",
       "badge_legacy": "Desktop App",
       "summary_archeris_tag": "Modern & Online",
-      "summary_archeris_desc": "All-in-one tournament tool: online signups, instant payments, and live mobile scoring in any browser.",
+      "summary_archeris_desc": "All-in-one tournament tool: online signups, instant payments, and digital archery scoring in any browser.",
       "summary_ianseo_tag": "Desktop Software",
       "summary_ianseo_desc": "Traditional tournament software that requires local computer installation and a local Wi-Fi router on the field."
     },
@@ -1038,7 +1038,7 @@
   "events_page": {
     "badge": "Archery Tournaments & Competitions",
     "title": "Find Upcoming Archery Tournaments",
-    "description": "Explore upcoming archery championships, club opens, and national tournaments with real-time live scoring and bracket updates.",
+    "description": "Explore upcoming archery championships and tournaments with digital archery scoring and bracket updates.",
     "register_event": "Register Tournament",
     "search_title": "Search Tournaments",
     "search_placeholder": "Search tournament name or location...",
@@ -1046,7 +1046,7 @@
     "reset_button": "Reset Filters",
     "status": "Tournament Status",
     "status_upcoming": "Upcoming",
-    "status_ongoing": "Live Ongoing",
+    "status_ongoing": "Ongoing",
     "status_completed": "Completed",
     "city": "City",
     "all_cities": "All Cities",
@@ -3843,7 +3843,7 @@
     }
   },
   "footer": {
-    "about_desc": "The modern archery tournament management and live scoring platform. Empowering tournament organizers, clubs, judges, and archers worldwide with cloud-native scoring, automated target butt allocations, and World Archery brackets.",
+    "about_desc": "Archeris is the complete archery scoring system and competition management platform built for organizers and archers worldwide. It provides a simple and modern way to run tournaments, track standings, and handle archery scoring from any device.",
     "nav_title": "Navigation",
     "comp_title": "Company",
     "supp_title": "Support",
@@ -5307,7 +5307,7 @@
     "login_required_title": "Athlete Login Required",
     "login_required_desc": "Please log in to your athlete account to choose competition categories, assign your target lane, and complete your tournament registration.",
     "tag_target": "Target Lane",
-    "tag_scoring": "Live Scoring",
+    "tag_scoring": "Archery Scoring",
     "tag_certificate": "E-Certificate",
     "back_to_event": "Back to Tournament Details"
   },
@@ -5380,7 +5380,7 @@
     "col_qty": "Qty",
     "col_unit_price": "Unit Price",
     "col_subtotal": "Subtotal",
-    "quota_activation_note": "Official tournament activation, OBS overlay, and live scoring",
+    "quota_activation_note": "Official tournament activation, scorekeeper access, and archery scoring",
     "event_unit": "Event",
     "payment_info": "Payment Information",
     "method_label": "Method",
@@ -5600,36 +5600,26 @@
     }
   },
   "faq_page": {
-    "badge": "Support Center",
+    "badge": "Help & Support",
     "title_main": "Frequently",
     "title_highlight": "Asked Questions",
-    "description": "Find quick answers to common questions about registration, organizers, and the Archeris.net scoring system.",
-    "need_help_title": "Still Need Help?",
-    "need_help_desc": "Our support team is ready to assist you with technical issues or any other questions.",
-    "contact_us": "Contact Us",
-    "documentation": "Documentation",
-    "items": [
-      {
-        "question": "How do I register an organizer on Archeris.net?",
-        "answer": "You can register your organizer via the registration page by choosing the \"Organizer\" account type. Once your email is verified, you can complete your organizer profile and start managing tournaments."
-      },
-      {
-        "question": "Can the scoring system be used for offline tournaments?",
-        "answer": "Absolutely! Archeris.net is designed to simplify offline tournament scoring digitally. Scores can be entered directly by referees or participants through the application."
-      },
-      {
-        "question": "How does the tournament registration payment process work?",
-        "answer": "We support various automated payment methods such as Bank Transfer, E-Wallet, and QRIS. Registration status is updated automatically upon successful payment."
-      },
-      {
-        "question": "Is athlete data kept secure?",
-        "answer": "We implement strict data security standards and end-to-end encryption to ensure all athletes' personal information is stored securely."
-      },
-      {
-        "question": "How do I request technical assistance?",
-        "answer": "If you encounter any technical issues, please contact our support team through the Contact page or send an email to support{'@'}archeris.net."
-      }
-    ]
+    "description": "Everything you need to know about the Archeris archery scoring system, tournament management, athlete registration, and pricing.",
+    "search_placeholder": "Search questions, archery scoring, rules, or features...",
+    "category_all": "All Questions",
+    "category_general": "General",
+    "category_scoring": "Archery Scoring",
+    "category_organizers": "Organizers",
+    "category_archers": "Archers & Clubs",
+    "category_pricing": "Pricing & Quotas",
+    "no_results_title": "No questions matched your search",
+    "no_results_desc": "Try searching with different keywords or browse through the category tabs above.",
+    "clear_search": "Clear Search",
+    "showing_results": "Showing {count} questions",
+    "need_help_title": "Still have questions?",
+    "need_help_desc": "Can't find the answer you're looking for? Our support team is here to help you get your archery tournament up and running.",
+    "contact_us": "Contact Support",
+    "documentation": "Browse Docs",
+    "register_now": "Create Free Account"
   },
   "csv_import": {
     "import_title": "Bulk Participant Import via CSV",
@@ -5652,8 +5642,8 @@
     "parse_failed": "Failed to parse CSV file"
   },
   "leaderboard_page": {
-    "title": "Live Qualification Leaderboard",
-    "subtitle": "Real-time arrow totals, X/10 ring counts, and ranking standings.",
+    "title": "Qualification Leaderboard",
+    "subtitle": "Arrow totals, X/10 ring counts, and ranking standings.",
     "category": "Category",
     "rank": "Rank",
     "archer": "Archer",
@@ -5662,7 +5652,7 @@
     "tens": "10s",
     "xs": "Xs",
     "stage": "Stage",
-    "live_indicator": "LIVE SCORING",
+    "live_indicator": "SCOREBOARD",
     "auto_refresh": "Auto-refreshing every 10s",
     "nav_event": "Event",
     "empty_title": "No Qualification Scores Yet",

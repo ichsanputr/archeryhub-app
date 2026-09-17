@@ -133,7 +133,12 @@ onMounted(async () => {
     let startTime = null
 
     function renderFrame(now) {
-        if (!startTime) startTime = now
+        if (typeof window !== 'undefined' && window.__forcedTime !== undefined) {
+            now = window.__forcedTime
+            startTime = 0
+            totalPausedDuration = 0
+        }
+        if (startTime === null) startTime = now
         const effectiveNow = isPaused.value ? (pausedAt - totalPausedDuration) : (now - totalPausedDuration)
         const elapsed = ((effectiveNow - startTime) / 1000) % CYCLE_DURATION
 
@@ -552,11 +557,11 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
             ctx.font = '600 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Target Butt Allocation', 16, 14)
+            ctx.fillText('Target Assignment', 16, 14)
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Target & Lane Allocation', 16, 36)
+            ctx.fillText('Target & Lane Setup', 16, 36)
 
             const tCardW = screenW - 32
             const targetCards = [
@@ -606,7 +611,7 @@ onMounted(async () => {
                 ctx.fillStyle = isTargetAlloc ? (isTargetActive ? '#0F172A' : '#D9FF00') : '#64748B'
                 ctx.textAlign = 'center'
                 ctx.font = '700 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(isTargetAlloc ? 'Allocated' : 'Unassigned', 16 + tCardW - 50, ty + 24)
+                ctx.fillText(isTargetAlloc ? 'Assigned' : 'Unassigned', 16 + tCardW - 50, ty + 24)
 
                 // 4 Lane Rows
                 t.archers.forEach((a, aidx) => {
@@ -640,7 +645,7 @@ onMounted(async () => {
 
                         ctx.fillStyle = '#CBD5E1'
                         ctx.font = '500 9.5px "NovaText", sans-serif'
-                        ctx.fillText('Tap or auto-allocate from pool', 64, ay + 34)
+                        ctx.fillText('Tap or auto-assign from roster', 64, ay + 34)
 
                         ctx.textAlign = 'right'
                         ctx.fillStyle = '#94A3B8'
@@ -660,7 +665,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isAllocated ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isAllocated ? 'All 40 Target Lanes Allocated' : 'Auto-Allocate Target Lanes', scBtnCX, scBtnY + 28)
+            ctx.fillText(isAllocated ? 'All 40 Target Lanes Assigned' : 'Auto-Assign Target Lanes', scBtnCX, scBtnY + 28)
             ctx.restore()
             ctx.restore()
         }
@@ -682,7 +687,7 @@ onMounted(async () => {
             const qStatW = (screenW - 38) / 3
             const stats = [
                 { title: 'Division', val: 'Recurve Men' },
-                { title: 'Archers Live', val: '160 Synced' },
+                { title: 'Live Archers', val: '160 Active' },
                 { title: 'Avg Score', val: '9.32 / arrow' }
             ]
             stats.forEach((st, idx) => {
@@ -775,11 +780,11 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
             ctx.font = '600 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Club Team Aggregate Engine', 16, 14)
+            ctx.fillText('Club Team Standings', 16, 14)
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Club Team Auto-Sum Standings', 16, 36)
+            ctx.fillText('Club Team Scores', 16, 36)
 
             const tHeroW = screenW - 32
             const teamRows = [
@@ -826,7 +831,7 @@ onMounted(async () => {
 
                 ctx.fillStyle = '#64748B'
                 ctx.font = '500 9.5px "NovaText", sans-serif'
-                ctx.fillText('Top 3 Qualification Aggregate', 60, ry + 37)
+                ctx.fillText('Top 3 Archers Total', 60, ry + 37)
 
                 drawRoundedRect(16 + tHeroW - 84, ry + 10, 74, 30, 6, r.highlight ? '#0F172A' : '#F1F5F9')
                 ctx.fillStyle = r.highlight ? '#D9FF00' : '#0F172A'
@@ -839,7 +844,7 @@ onMounted(async () => {
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#64748B'
                 ctx.font = '600 8.5px "NovaText", sans-serif'
-                ctx.fillText('Top 3 Scorers Calculation:', 32, ry + 66)
+                ctx.fillText('Top 3 Archers Scores:', 32, ry + 66)
 
                 ctx.fillStyle = '#1E293B'
                 ctx.font = '700 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
@@ -867,7 +872,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isSeeded ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isSeeded ? 'Brackets Seeded Automatically' : 'Generate Team & Individual Brackets', scBtnCX, scBtnY + 28)
+            ctx.fillText(isSeeded ? 'Elimination Brackets Ready' : 'Create Elimination Brackets', scBtnCX, scBtnY + 28)
             ctx.restore()
             ctx.restore()
         }
@@ -880,11 +885,11 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
             ctx.font = '600 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Elimination Matchplay Engine', 16, 14)
+            ctx.fillText('Matchplay Brackets', 16, 14)
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('World Archery Bracket Tree', 16, 36)
+            ctx.fillText('Elimination Brackets', 16, 36)
 
             const treeW = screenW - 32
             const treeH = 524
@@ -1008,7 +1013,7 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = isGoldActive ? '#D9FF00' : '#64748B'
             ctx.font = '600 8.5px "NovaText", sans-serif'
-            ctx.fillText(isGoldActive ? 'Gold Champion: Arif Dwi' : 'Awaiting Match Advance', 180, goldY + 102)
+            ctx.fillText(isGoldActive ? 'Gold Champion: Arif Dwi' : 'Awaiting Next Match', 180, goldY + 102)
 
             // Bronze Medal Match
             const bronzeY = treeY + 162
@@ -1050,7 +1055,7 @@ onMounted(async () => {
             drawRoundedRect(34, fopY + 12, treeW - 36, 28, 6, '#1E293B')
             ctx.fillStyle = '#D9FF00'
             ctx.font = '700 11.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Field of Play Match Schedule', 44, fopY + 30)
+            ctx.fillText('Match Schedule', 44, fopY + 30)
 
             const schedule = [
                 { time: '14:00', match: 'Recurve Men Gold Final · Target 01', status: 'Completed' },
@@ -1091,12 +1096,12 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isBracketAdvanced ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isBracketAdvanced ? 'Winners Advanced to Finals' : 'Advance Semifinals to Finals', scBtnCX, scBtnY + 28)
+            ctx.fillText(isBracketAdvanced ? 'Finals Matchplay Ready' : 'Advance to Finals', scBtnCX, scBtnY + 28)
             ctx.restore()
             ctx.restore()
         }
         // ══════════════════════════════════════════════════════════
-        // MODULE 5: OFFICIAL PRINTOUTS & SCORESHEET SUITE
+        // MODULE 5: OFFICIAL PRINTOUTS & SCORESHEETS
         // ══════════════════════════════════════════════════════════
         else if (phaseIndex === 4) {
             ctx.save()
@@ -1104,11 +1109,11 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
             ctx.font = '600 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Official Tournament Printout Suite', 16, 14)
+            ctx.fillText('Printable Forms & Sheets', 16, 14)
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Document Center & Scoresheets', 16, 36)
+            ctx.fillText('Scoresheets & Printouts', 16, 36)
 
             const docW = screenW - 32
 
@@ -1133,7 +1138,7 @@ onMounted(async () => {
                 const docs = [
                     {
                         title: 'WA Qualification Scoresheet',
-                        desc: 'Official A4 scorecard for manual scorekeeper audit & signature verification',
+                        desc: 'Official A4 scoresheet for scoring and signatures',
                         badge: 'Print-Ready PDF',
                         highlight: true
                     },
@@ -1179,7 +1184,7 @@ onMounted(async () => {
                     ctx.fillStyle = dc.highlight ? '#D9FF00' : '#0F172A'
                     ctx.textAlign = 'center'
                     ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-                    ctx.fillText(dc.highlight ? 'Tap to Preview & Audit Scoresheet PDF' : 'Download Printout File', 16 + docW / 2, dy + 118)
+                    ctx.fillText(dc.highlight ? 'Preview Printable Scoresheet' : 'Download PDF', 16 + docW / 2, dy + 118)
                 })
             } else {
                 // Printable WA Scoresheet Document Preview (Official Blank Printout Template)
@@ -1277,14 +1282,14 @@ onMounted(async () => {
                 ctx.fillStyle = '#94A3B8'
                 ctx.fillText('10+X: __', 16 + sheetW - 47, sumRowY + 22)
 
-                // Signatures & Physical Scorekeeper Verification (Clean & Spacious)
+                // Signatures & Scorekeeper Verification (Clean & Spacious)
                 const sigBoxY = sheetY + 380
                 drawRoundedRect(24, sigBoxY, sheetW - 16, 134, 6, '#F8FAFC', '#E2E8F0', 0.8)
 
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#64748B'
                 ctx.font = '700 8.5px "NovaText", sans-serif'
-                ctx.fillText('PHYSICAL VERIFICATION & SIGN-OFF', 34, sigBoxY + 16)
+                ctx.fillText('SIGNATURES & VERIFICATION', 34, sigBoxY + 16)
 
                 // Archer Signature Field
                 ctx.fillStyle = '#475569'
@@ -1322,7 +1327,7 @@ onMounted(async () => {
 
                 ctx.fillStyle = '#64748B'
                 ctx.font = '500 8px "NovaText", sans-serif'
-                ctx.fillText('Physical scorecard signed & certified after end 6', 60, sigBoxY + 112)
+                ctx.fillText('Official scoresheet signed after end 6', 60, sigBoxY + 112)
             }
 
             // Bottom CTA Button
@@ -1335,12 +1340,12 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isScoresheetPrinted ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isScoresheetPrinted ? '160 Scoresheets Exported to PDF' : 'Print & Export 160 Scoresheets', scBtnCX, scBtnY + 28)
+            ctx.fillText(isScoresheetPrinted ? '160 Scoresheets Downloaded' : 'Download All Scoresheets (PDF)', scBtnCX, scBtnY + 28)
             ctx.restore()
             ctx.restore()
         }
         // ══════════════════════════════════════════════════════════
-        // MODULE 6: PODIUM PROTOCOL & GRAPHIC E-CERTIFICATE (Authentic Signatures & Title Case)
+        // MODULE 6: AWARDS & WINNER CERTIFICATES
         // ══════════════════════════════════════════════════════════
         else {
             ctx.save()
@@ -1348,11 +1353,11 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
             ctx.font = '600 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Podium Protocol & Verified Accreditations', 16, 14)
+            ctx.fillText('Awards & Certificates', 16, 14)
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Official E-Certificate & Accreditations', 16, 36)
+            ctx.fillText('Winner Certificates', 16, 36)
 
             const certCardW = screenW - 32
             const certCardH = 524
@@ -1385,7 +1390,7 @@ onMounted(async () => {
 
             ctx.fillStyle = '#64748B'
             ctx.font = '600 9px "NovaText", sans-serif'
-            ctx.fillText('This Official Accreditation Is Proudly Awarded To:', crestCX, crestCY + 90)
+            ctx.fillText('This Certificate is Awarded to:', crestCX, crestCY + 90)
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 17px "Bricolage Grotesque", "NovaText", sans-serif'
@@ -1519,7 +1524,7 @@ onMounted(async () => {
             ctx.font = '500 7.5px "NovaText", sans-serif'
             ctx.fillText('Technical Delegate', sig2X, sig2Y + 54)
 
-            // Security QR & Dispatch Footer
+            // Certificate Verification QR & Sending Notice
             const footY = crestCY + 300
             drawRoundedRect(36, footY, certCardW - 40, 80, 6, '#0F172A')
 
@@ -1533,7 +1538,7 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#D9FF00'
             ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Cryptographically Verified & Sealed', 114, footY + 26)
+            ctx.fillText('Official Verified Certificate', 114, footY + 26)
 
             ctx.fillStyle = '#FFFFFF'
             ctx.font = '500 8.5px "NovaText", sans-serif'
@@ -1541,7 +1546,7 @@ onMounted(async () => {
 
             ctx.fillStyle = '#94A3B8'
             ctx.font = '500 8px "NovaText", sans-serif'
-            ctx.fillText('Instant PDF & WhatsApp Dispatch to 160 Participants', 114, footY + 56)
+            ctx.fillText('Send via WhatsApp & Email to all 160 participants', 114, footY + 56)
 
             // Bottom CTA Button
             ctx.save()
@@ -1553,7 +1558,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isCertIssued ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isCertIssued ? '160 Certificates Dispatched' : 'Issue & Distribute All 160 Certificates', scBtnCX, scBtnY + 28)
+            ctx.fillText(isCertIssued ? '160 Certificates Sent' : 'Send All 160 Certificates', scBtnCX, scBtnY + 28)
             ctx.restore()
             ctx.restore()
         }
@@ -1599,6 +1604,12 @@ onMounted(async () => {
     }
 
     renderFrameFunc = renderFrame
+    if (typeof window !== 'undefined') {
+        window.__renderAtTime = (t) => {
+            window.__forcedTime = t
+            renderFrame(t)
+        }
+    }
     animationFrameId = requestAnimationFrame(renderFrame)
 })
 
@@ -1618,7 +1629,7 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ECEBE6;
+    background: #0B0F19;
     overflow: hidden;
     user-select: none;
     font-family: 'NovaText', 'Plus Jakarta Sans', sans-serif;
@@ -1628,8 +1639,11 @@ onUnmounted(() => {
     width: 1080px;
     height: 1080px;
     transform-origin: center center;
-    box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
     background: #ECEBE6;
     display: block;
+    border-left: 3px solid #0F172A;
+    border-right: 3px solid #0F172A;
+    box-sizing: border-box;
 }
 </style>

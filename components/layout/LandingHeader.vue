@@ -24,7 +24,7 @@
                     <!-- Turnamen with Mega Menu -->
                     <div class="relative h-full flex items-center" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
                         <button
-                            class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 px-1 h-full border-b-2 border-transparent hover:border-primary"
+                            class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 px-1 h-full border-b-2 border-transparent"
                             :class="[navLinkClasses, { '!border-primary font-bold': isActive('/tournaments') }]">
                             <span>{{ $t('nav.features') }}</span>
                             <Icon icon="ph:caret-down" class="text-xs transition-transform"
@@ -104,7 +104,7 @@
 
                                         <!-- Footer CTA -->
                                         <div class="pt-2 border-t border-gray-100 flex items-center justify-between px-1">
-                                            <span class="text-[10px] text-slate-400 font-medium">Live scoring & brackets</span>
+                                            <span class="text-[10px] text-slate-400 font-medium">Archery scoring & brackets</span>
                                             <NuxtLink to="/tournaments" class="text-xs font-bold text-navy hover:text-primary-hover transition-colors flex items-center gap-1">
                                                 <span>All Tournaments</span>
                                                 <Icon icon="ph:arrow-right-bold" class="text-xs" />
@@ -160,15 +160,15 @@
                     </div>
 
                     <NuxtLink to="/docs"
-                        class="font-semibold text-sm transition-all duration-300 hover:text-primary px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary"
+                        class="font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent"
                         :class="[navLinkClasses, { '!border-primary font-bold': isActive('/docs') }]">
                         {{ $t('nav.docs') }}</NuxtLink>
                     <NuxtLink to="/blog"
-                        class="font-semibold text-sm transition-all duration-300 hover:text-primary px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary"
+                        class="font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent"
                         :class="[navLinkClasses, { '!border-primary font-bold': isActive('/blog') }]">
                         {{ $t('nav.blog') }}</NuxtLink>
                     <NuxtLink to="/package"
-                        class="font-semibold text-sm transition-all duration-300 hover:text-primary px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary"
+                        class="font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent"
                         :class="[navLinkClasses, { '!border-primary font-bold': isActive('/package') }]">
                         {{ $t('nav.pricing') }}
                     </NuxtLink>
@@ -464,7 +464,9 @@ const logoTextClasses = computed(() => {
 })
 
 const navLinkClasses = computed(() => {
-    return showSolid.value ? 'text-gray-600 hover:text-navy' : 'text-white/80'
+    return showSolid.value 
+        ? 'text-slate-600 hover:text-navy hover:border-navy' 
+        : 'text-white/80 hover:text-primary hover:border-primary'
 })
 
 const authButtonClasses = computed(() => {

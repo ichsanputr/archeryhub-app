@@ -1050,7 +1050,7 @@ onMounted(async () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ECEBE6;
+    background: #0B0F19;
     overflow: hidden;
     user-select: none;
     font-family: 'NovaText', 'Plus Jakarta Sans', sans-serif;
@@ -1060,9 +1060,12 @@ onMounted(async () => {
     width: 1080px;
     height: 1080px;
     transform-origin: center center;
-    box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
     background: #ECEBE6;
     display: block;
+    border-left: 3px solid #0F172A;
+    border-right: 3px solid #0F172A;
+    box-sizing: border-box;
 }
 </style>
 

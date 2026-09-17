@@ -156,7 +156,7 @@ const normalPrice = computed(() => {
     if (isEn.value) {
         return selectedTier.value === 'standard' ? (standardPlan.value?.price_usd || 3.00) : (elitePlan.value?.price_usd || 7.00)
     }
-    return selectedTier.value === 'standard' ? (standardPlan.value?.price_idr || 49900) : (elitePlan.value?.price_idr || 79900)
+    return selectedTier.value === 'standard' ? (standardPlan.value?.price_idr || 49999) : (elitePlan.value?.price_idr || 79999)
 })
 
 const basePrice = computed(() => {

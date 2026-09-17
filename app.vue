@@ -75,6 +75,7 @@ const showSupportChat = computed(() =>
   !isDashboard.value && 
   !isMatchPage.value && 
   !isAuthPage.value && 
+  !route.path.startsWith('/graphics/') &&
   !route.path.startsWith('/embed/')
 )
 

@@ -82,7 +82,7 @@
                                         <CurrencyPreviewPopover
                                             :price-usd="standardPlan.price_usd || 3.00"
                                             :promo-price-usd="standardPlan.promo_price_usd || 1.50"
-                                            :price-idr="standardPlan.price_idr || 49900"
+                                            :price-idr="standardPlan.price_idr || 49999"
                                             :promo-price-idr="standardPlan.promo_price_idr || 24999"
                                             :dark-theme="true"
                                         />
@@ -231,7 +231,7 @@
                                         <CurrencyPreviewPopover
                                             :price-usd="elitePlan.price_usd || 7.00"
                                             :promo-price-usd="elitePlan.promo_price_usd || 3.50"
-                                            :price-idr="elitePlan.price_idr || 79900"
+                                            :price-idr="elitePlan.price_idr || 79999"
                                             :promo-price-idr="elitePlan.promo_price_idr || 39999"
                                             :dark-theme="true"
                                         />

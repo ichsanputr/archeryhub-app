@@ -108,69 +108,69 @@
     "docs": "Dokumentasi"
   },
   "home": {
-    "meta_title": "Archeris - The Best Archery Scoring System",
-    "meta_desc": "Archeris adalah the best archery scoring system untuk turnamen, pemanah, dan wasit skor resmi. Rekam nilai anak panah real-time, scorekeeping bantalan target, kualifikasi, dan bagan eliminasi World Archery.",
+    "meta_title": "Archeris - Sistem Skoring Panahan Modern",
+    "meta_desc": "Archeris adalah sistem skoring panahan modern untuk turnamen dan pemanah. Rekam nilai panah, scorekeeping bantalan target, kualifikasi, dan bagan eliminasi World Archery.",
     "hero": {
-      "title_part1": "The modern archery scoring system",
-      "title_part2": "running directly from your phone.",
-      "description": "Sistem skoring panahan digital presisi untuk pencatatan nilai anak panah real-time, scorekeeping bantalan target, dan papan peringkat kualifikasi langsung tanpa kartu skor kertas.",
+      "title_part1": "The Modern Archery Scoring System",
+      "title_part2": "Running Directly from Your Phone.",
+      "description": "Sistem skoring panahan lengkap untuk mengelola pendaftaran turnamen, pembagian bantalan target, bagan eliminasi, dan pencatatan skor praktis lewat HP.",
       "cta_primary": "Mulai Sekarang",
-      "cta_secondary": "Jelajahi Skor Turnamen"
+      "cta_secondary": "Jelajahi Turnamen"
     },
     "features_ecosystem": {
-      "badge": "Precision Ecosystem",
+      "badge": "Archery Scoring System",
       "title": "Dirancang untuk",
-      "title_highlight": "Presisi Skoring.",
-      "description": "Infrastruktur digital lengkap untuk penyelenggara turnamen, atlet panahan, dan wasit scorekeeper resmi.",
-      "f1_title": "Publikasi & Pendaftaran Turnamen",
-      "f1_desc": "Formulir registrasi instan, manajemen kuota atlet, dan pembayaran online otomatis.",
-      "f1_long": "Mudahkan panitia mempublikasikan event ke ribuan atlet. Dilengkapi formulir pendaftaran fleksibel, integrasi pembayaran instan (QRIS & Virtual Account), validasi kuota otomatis, serta penerbitan e-tiket dengan verifikasi QR code.",
-      "f2_title": "Manajemen Turnamen & Bracket Otomatis",
-      "f2_desc": "Alokasi bantalan target, pembentukan tim, bagan eliminasi standar WA, hingga sertifikat digital.",
-      "f2_long": "Kendalikan seluruh jalannya kompetisi dalam satu dashboard: alokasi target bantalan otomatis, pembentukan tim/beregu, penentuan bagan eliminasi & bracket sesuai standar World Archery, kalkulasi juara real-time, hingga generate sertifikat digital dan buku hasil resmi (PDF).",
-      "f3_title": "Mobile App Atlet & Analisis Performa",
-      "f3_desc": "Pendaftaran 1-klik, pantau live leaderboard turnamen, dan rekam riwayat statistik skor karir.",
-      "f3_long": "Aplikasi mobile khusus atlet panahan: cari dan daftar turnamen dalam hitungan detik, pantau posisi klasemen & skor live saat bertanding, simpan tiket digital, serta analisis statistik akurasi anak panah (persentase 10s, Xs, dan target face distribution) sepanjang karir.",
-      "f4_title": "Mobile App Wasit & Input Skor Digital",
-      "f4_desc": "Scan QR bantalan, input nilai panah interaktif tanpa kertas, tersinkronisasi instan ke leaderboard.",
-      "f4_long": "Dirancang khusus untuk efisiensi wasit dan scorekeeper lapangan: login cepat dengan peran juri, scan barcode/QR bantalan untuk verifikasi atlet, input nilai panah interaktif dengan keyboard target face warna (X-10-M) tanpa kertas, dan sinkronisasi skor real-time ke layar utama."
+      "title_highlight": "Skoring Panahan.",
+      "description": "Platform skoring panahan dan manajemen turnamen lengkap untuk penyelenggara dan atlet.",
+      "f1_title": "Pendaftaran Turnamen Online",
+      "f1_desc": "Formulir registrasi praktis, manajemen kuota, dan pembayaran online otomatis.",
+      "f1_long": "Publikasikan turnamen panahan dengan mudah ke para atlet. Kelola kuota peserta, terima pembayaran online, dan terbitkan tiket digital otomatis.",
+      "f2_title": "Pengaturan Turnamen & Bagan",
+      "f2_desc": "Pembagian nomor target, nomor regu, bagan eliminasi, dan sertifikat.",
+      "f2_long": "Kelola turnamen dalam satu dashboard: alokasi target otomatis, divisi regu, bagan eliminasi World Archery, klasemen, dan dokumen PDF buku hasil.",
+      "f3_title": "Pengalaman Atlet & Skor",
+      "f3_desc": "Pendaftaran cepat, jadwal tanding, dan riwayat skor lengkap.",
+      "f3_long": "Aplikasi praktis untuk atlet panahan: daftar turnamen dengan cepat, pantau jadwal tanding, lihat klasemen, dan rekam perkembangan skor.",
+      "f4_title": "Skoring Panahan Mobile",
+      "f4_desc": "Input nilai anak panah lewat HP dengan pembaruan instan ke papan skor.",
+      "f4_long": "Dirancang untuk pencatatan skor cepat di garis tembak: login scorekeeper yang praktis, tombol angka mudah (X, 10, 9 hingga M), dan pembaruan instan ke papan turnamen."
     },
     "learn": {
-      "title": "Infrastruktur Digital Lengkap untuk",
-      "subtitle": "Skoring Panahan Real-Time",
-      "description": "Solusi terintegrasi untuk pendaftaran turnamen, manajemen operasional & bagan eliminasi, mobile app atlet, serta aplikasi skoring digital bagi wasit.",
-      "f1_tag": "Pendaftaran EO",
-      "f1_title": "Publikasi & Pendaftaran Turnamen Praktis",
-      "f1_desc": "Mudahkan panitia mempublikasikan event ke ribuan atlet, formulir fleksibel, validasi kuota otomatis, dan multi-payment gateway (QRIS & VA) instan.",
-      "f2_tag": "Manajemen EO",
-      "f2_title": "Alokasi Bantalan, Bagan Eliminasi & Sertifikat",
-      "f2_desc": "Atur bantalan target otomatis, pembentukan tim, bagan kualifikasi & eliminasi standar World Archery, kalkulasi juara live, hingga terbit sertifikat digital.",
-      "f3_tag": "Mobile App Atlet",
-      "f3_title": "Aplikasi Mobile Atlet & Live Leaderboard",
-      "f3_desc": "Aplikasi mobile khusus atlet panahan: daftar turnamen 1-klik, pantau live leaderboard saat bertanding, simpan e-tiket, dan rekam statistik skor karir.",
-      "f4_tag": "Scorekeeper Mobile",
-      "f4_title": "Input Skor Lapangan & Verifikasi Wasit",
-      "f4_desc": "Aplikasi khusus wasit: scan QR bantalan, input nilai panah interaktif tanpa kartu skor kertas, dan sinkronisasi skor detik itu juga ke leaderboard publik."
+      "title": "Platform Terlengkap untuk",
+      "subtitle": "Skoring Panahan Digital",
+      "description": "Sistem skoring panahan lengkap untuk pendaftaran turnamen, pembagian target, bagan eliminasi, dan mobile scorekeeping.",
+      "f1_tag": "Pendaftaran Online",
+      "f1_title": "Buka Pendaftaran & Pembayaran Mudah",
+      "f1_desc": "Publikasikan turnamen dalam hitungan menit, atur kuota peserta, terima pembayaran online, dan terbitkan tiket digital.",
+      "f2_tag": "Pengaturan Turnamen",
+      "f2_title": "Bantalan Target, Bagan & Sertifikat",
+      "f2_desc": "Bagi nomor target (1A-1D), buat bagan eliminasi World Archery otomatis, dan unduh buku hasil resmi PDF.",
+      "f3_tag": "Pengalaman Atlet",
+      "f3_title": "Profil Atlet & Hasil Pertandingan",
+      "f3_desc": "Pemanah dapat mendaftar cepat, melihat jadwal tanding, dan memantau peringkat langsung dari smartphone.",
+      "f4_tag": "Skoring Lapangan",
+      "f4_title": "Skoring Cepat Tanpa Kertas",
+      "f4_desc": "Scorekeeper mencatat nilai anak panah dengan tombol angka praktis (X, 10, 9 hingga M) yang langsung memperbarui papan skor turnamen."
     },
     "features_demo": {
       "title1": "Dibuat untuk Penyelenggara Turnamen.",
-      "title2": "Skoring Live yang Mudah & Akurat.",
-      "description": "Kelola kompetisi panahan tanpa lembar skor kertas. Mulai dari pendaftaran atlet, alokasi bantalan, eliminasi bracket, hingga mobile scorekeeper real-time.",
+      "title2": "Skoring Panahan yang Mudah & Akurat.",
+      "description": "Kelola kompetisi panahan tanpa lembar skor kertas. Mulai dari pendaftaran atlet, pembagian target, eliminasi bracket, hingga mobile scorekeeping.",
       "f1_tag": "Pendaftaran Online",
       "f1_title": "Buka Turnamen Cepat & Pembayaran Online",
       "f1_desc": "Buka pendaftaran turnamen dalam hitungan menit lengkap dengan batas kuota kategori, form registrasi, dan pembayaran otomatis (QRIS, kartu, & transfer bank).",
       "f1_cta": "Pelajari Pendaftaran",
       "f2_tag": "Bantalan & Bagan",
-      "f2_title": "Pembagian Bantalan Target & Bagan Eliminasi",
+      "f2_title": "Pembagian Nomor Target & Bagan Eliminasi",
       "f2_desc": "Kelola nomor bantalan target (1A–1D), pasangan tim otomatis, bagan eliminasi, dan cetak dokumen PDF resmi dengan mudah.",
       "f2_cta": "Pelajari Bagan",
       "f3_tag": "Pengalaman Pemanah",
-      "f3_title": "Profil Atlet Praktis & Live Leaderboard",
-      "f3_desc": "Atlet daftar dalam 1 klik dengan profil tersimpan, pantau skor live langsung dari HP, dan lihat riwayat turnamen.",
+      "f3_title": "Profil Atlet Praktis & Papan Klasemen",
+      "f3_desc": "Atlet daftar dalam 1 klik dengan profil tersimpan, pantau skor turnamen langsung dari HP, dan lihat riwayat turnamen.",
       "f3_cta": "Pelajari Fitur Atlet",
       "f4_tag": "Skoring Mobile",
-      "f4_title": "Skoring Cepat Tanpa Kertas & Sinkronisasi Live",
-      "f4_desc": "Scorekeeper input skor panahan langsung lewat HP dengan tombol target yang mudah (X, 10, 9.. M) dan skor langsung muncul di klasemen publik.",
+      "f4_title": "Skoring Cepat Tanpa Kertas & Papan Klasemen",
+      "f4_desc": "Scorekeeper input skor panahan langsung lewat HP dengan tombol target yang mudah (X, 10, 9 hingga M) dan skor langsung muncul di klasemen publik.",
       "f4_cta": "Pelajari Skoring",
       "f1_list_1": "Formulir pendaftaran per divisi & kategori usia",
       "f1_list_2": "Pembayaran instan via QRIS, Virtual Account & kartu",
@@ -182,16 +182,16 @@
       "f2_list_4": "Buku hasil resmi (PDF) & e-sertifikat siap unduh",
       "f3_list_1": "Daftar turnamen 1-klik dengan profil atlet tersimpan",
       "f3_list_2": "E-Tiket digital & QR check-in saat di lapangan",
-      "f3_list_3": "Pantau klasemen & live score langsung dari HP",
+      "f3_list_3": "Pantau klasemen turnamen & skor langsung dari HP",
       "f3_list_4": "Riwayat skor turnamen & rekor skor pribadi",
       "f4_list_1": "Tombol input warna target yang simpel (X-10-M)",
-      "f4_list_2": "Scan QR bantalan untuk cek nomor atlet dengan cepat",
-      "f4_list_3": "Hitung otomatis set point, total skor & shoot-off",
-      "f4_list_4": "Skor langsung ter-update di live leaderboard publik"
+      "f4_list_2": "Pencarian atlet cepat & verifikasi nomor target",
+      "f4_list_3": "Hitung otomatis total skor & shoot-off",
+      "f4_list_4": "Skor langsung ter-update di papan klasemen turnamen"
     },
     "blog": {
-      "title1": "Berita Panahan & Panduan Turnamen",
-      "title2": "Tips, Aturan & Cerita Komunitas",
+      "title1": "Artikel & Panduan Turnamen",
+      "title2": "Aturan, Panduan & Tips Skoring Panahan",
       "view_all": "Lihat Semua Artikel"
     },
     "pricing": {
@@ -228,67 +228,67 @@
           "Akses ke fitur inti platform",
           "Buat 1 turnamen hingga 50 peserta",
           "Penyimpanan media 1 gb (shared)",
-          "Pendaftaran & live results dasar"
+          "Pendaftaran & papan skor dasar"
         ],
         "standard": [
           "Maksimum 50 peserta / turnamen",
           "Manajemen pendaftaran online",
-          "Sistem digital scoring",
-          "Live results (publik)",
+          "Sistem skoring digital panahan",
+          "Papan klasemen publik",
           "Penyimpanan media 1 gb"
         ],
         "elite": [
           "Semua fitur standar organizer",
           "Maksimum peserta tidak terbatas",
-          "Manajemen match finals",
+          "Manajemen babak eliminasi & final",
           "Integrasi pembayaran otomatis",
-          "Analitik & laporan lanjutan",
+          "Analitik & laporan turnamen",
           "Penyimpanan media 5 gb"
         ]
       }
     },
     "mobile": {
-      "title1": "Skoring Panahan Real-Time,",
+      "title1": "Skoring Panahan Digital,",
       "title2": "Langsung dari Garis Tembak.",
-      "description": "Beri kemudahan juri dan pemanah mencatat nilai anak panah secara instan. Unduh aplikasi Archeris untuk Android atau buka langsung lewat web browser."
+      "description": "Catat nilai anak panah dengan cepat dari smartphone. Sistem skoring panahan modern untuk panitia turnamen, scorekeeper, dan pemanah."
     },
     "testimonials": {
-      "count": "2.800+",
-      "trust_desc": "penyelenggara olahraga mempercayai {brand}",
+      "count": "2.500+",
+      "trust_desc": "Pemanah & Penyelenggara Turnamen Mempercayai {brand}",
       "stars": "bintang",
       "reviews": "ulasan",
       "items": [
         {
-          "quote": "Program sepak bola remaja kami berkembang dari 23 menjadi 124 pemain dalam satu musim berkat platform ini.",
-          "name": "Coach Farhan",
-          "org": "Shabbona Park Saints"
+          "quote": "Menyiapkan turnamen dan mengelola pendaftaran peserta jadi sangat mudah. Semuanya berjalan lancar dari awal hingga selesai.",
+          "name": "Coach Budi Santoso",
+          "org": "Ketua Panitia"
         },
         {
-          "quote": "Perangkat lunak yang mudah digunakan, harga terjangkau, dan layanan pelanggan kelas satu membuat Archeris wajib digunakan oleh penyelenggara olahraga.",
-          "name": "Rania Nabilla",
-          "org": "Thunder Soccer Club"
+          "quote": "Skoring lewat HP sangat cepat dan mudah dipakai di garis tembak. Tidak perlu lagi kartu skor kertas dan rekap manual.",
+          "name": "Sarah Jenkins",
+          "org": "Penyelenggara Turnamen"
         },
         {
-          "quote": "Archeris sangat mudah digunakan dan mereka membantu kami di setiap langkah untuk melakukan persiapan dengan sangat cepat.",
-          "name": "Budi Santoso",
-          "org": "Shadyside Youth Sports"
-        },
-        {
-          "quote": "Pendaftaran musim semi mendekat dengan cepat dan transisi ke Archeris berjalan sangat lancar.",
-          "name": "Jessica Lim",
-          "org": "Hueytown Youth Baseball"
-        },
-        {
-          "quote": "Tahun lalu saya baru pertama kali menggunakan situs ini sebagai admin, dan dukungan yang mereka berikan sangat luar biasa.",
+          "quote": "Pengaturan nomor target dan bagan eliminasi menghemat banyak waktu tim kami. Sangat direkomendasikan untuk turnamen panahan.",
           "name": "Marcus Vance",
-          "org": "Columbia Wrestling Club"
+          "org": "Pelatih Panahan"
+        },
+        {
+          "quote": "Para atlet dan penonton sangat terbantu karena bisa melihat pergerakan skor dan bagan tanding langsung dari HP.",
+          "name": "Rania Nabilla",
+          "org": "Koordinator Klub"
+        },
+        {
+          "quote": "Sistem skoring yang intuitif dan mudah dipelajari dalam hitungan menit. Membantu pelaksanaan turnamen tahunan kami.",
+          "name": "Jessica Lim",
+          "org": "Koordinator Skoring"
         }
       ]
     },
     "comparison": {
       "title": "Mengapa Memilih Archeris.net?",
       "subtitle": "Perbandingan kami dengan software konvensional seperti Ianseo",
-      "description": "Archeris dibuat agar pengelolaan turnamen dan skoring panahan jadi lebih simpel, cepat, dan mudah diakses dari browser apa pun.",
+      "description": "Archeris adalah sistem skoring panahan yang dibuat agar pengelolaan turnamen dan skoring jadi lebih simpel, cepat, dan mudah diakses dari browser apa pun.",
       "col_feature": "Fitur",
       "col_archeris": "Archeris.net",
       "col_ianseo": "Ianseo.net",
@@ -299,7 +299,7 @@
       "f2_archeris": "Skoring mobile praktis. Scorekeeper cukup login dengan PIN turnamen lewat paket data atau Wi-Fi.",
       "f2_ianseo": "Memerlukan router Wi-Fi lokal di lapangan agar HP skoring bisa terhubung ke IP komputer utama.",
       "f3_name": "Pendaftaran Pemanah",
-      "f3_archeris": "Pendaftaran mandiri online. Atlet dan klub daftar langsung di halaman turnamen dengan info kuota live.",
+      "f3_archeris": "Pendaftaran mandiri online. Atlet mendaftar langsung di halaman turnamen dengan info kuota kuota otomatis.",
       "f3_ianseo": "Input manual. Panitia mengumpulkan data peserta lewat form luar atau email, lalu impor via Excel.",
       "f4_name": "Pembayaran & Tagihan",
       "f4_archeris": "Pembayaran otomatis (QRIS, Virtual Account, kartu) serta opsi upload bukti transfer bank.",
@@ -310,8 +310,8 @@
       "f6_name": "Bagan Eliminasi",
       "f6_archeris": "Bagan otomatis untuk tanding individu, beregu, dan mixed team lengkap dengan sistem shoot-off.",
       "f6_ianseo": "Mendukung format pertandingan World Archery yang diatur langsung di database software desktop.",
-      "f7_name": "Live Leaderboard",
-      "f7_archeris": "Skor live real-time dan pergerakan bagan yang bisa dipantau atlet dan orang tua langsung dari HP.",
+      "f7_name": "Papan Klasemen Turnamen",
+      "f7_archeris": "Skor digital dan bagan eliminasi yang bisa dipantau atlet dan penonton langsung dari HP.",
       "f7_ianseo": "Hasil harus diunggah manual ke ianseo.net atau ditampilkan ke layar TV venue lewat modul tambahan.",
       "f8_name": "Cetak Dokumen & Sertifikat",
       "f8_archeris": "8 dokumen PDF siap cetak (bagan, scoresheet, start list) plus e-sertifikat digital ber-QR verifikasi.",
@@ -322,19 +322,19 @@
     },
     "comparison_page": {
       "hero_title": "Mengapa Beralih dari Ianseo ke Archeris.net?",
-      "hero_subtitle": "Manajemen turnamen panahan simpel dan serba online langsung dari browser Anda.",
+      "hero_subtitle": "Manajemen turnamen dan skoring panahan simpel serba online di browser Anda.",
       "hero_desc": "Lihat bagaimana Archeris membuat pengelolaan turnamen panahan jadi jauh lebih mudah, cepat, dan hemat kertas.",
       "section_features_title": "Perbandingan Fitur",
       "section_features_desc": "Lihat perbandingan langsung antara Archeris dan Ianseo.",
       "cta_title": "Siap Menjalankan Turnamen Anda Berikutnya?",
-      "cta_desc": "Buat akun panitia dalam beberapa menit dan mulai kelola pendaftaran, bagan, serta live score dengan mudah.",
+      "cta_desc": "Buat akun panitia dalam beberapa menit dan mulai kelola pendaftaran, bagan, serta skoring panahan dengan mudah.",
       "cta_btn": "Mulai Sekarang",
       "back_home": "Kembali ke Beranda",
       "hero_badge": "Perbandingan",
       "blog_badge": "Ringkasan",
       "blog_title": "Mengapa Beralih dari Ianseo ke Archeris.net?",
       "blog_p1": "Ianseo sudah lama digunakan untuk kejuaraan panahan standar World Archery. Software ini berjalan di komputer desktop. Namun, pengaturannya biasanya membutuhkan instalasi server, database lokal, serta pengaturan jaringan Wi-Fi khusus di lapangan.",
-      "blog_p2": "Archeris dibuat agar pengelolaan turnamen jadi lebih simpel dan serba online. Mulai dari pendaftaran atlet, pembayaran, pembagian bantalan target, hingga input skor langsung—semuanya berjalan praktis di browser HP atau laptop tanpa perlu setup server sama sekali.",
+      "blog_p2": "Archeris dibuat agar pengelolaan turnamen jadi lebih simpel dan serba online. Mulai dari pendaftaran atlet, pembayaran, pembagian bantalan target, hingga skoring panahan—semuanya berjalan praktis di browser HP atau laptop tanpa perlu setup server sama sekali.",
       "cat_all": "Semua Fitur",
       "cat_infra": "Platform & Setup",
       "cat_payment": "Pendaftaran & Pembayaran",
@@ -343,7 +343,7 @@
       "badge_cloud_pro": "Online Cloud",
       "badge_legacy": "Aplikasi Desktop",
       "summary_archeris_tag": "Modern & Online",
-      "summary_archeris_desc": "Semua jadi satu: pendaftaran online, pembayaran otomatis, dan live score di HP lewat browser apa pun.",
+      "summary_archeris_desc": "Semua jadi satu: pendaftaran online, pembayaran otomatis, dan skoring panahan digital di HP lewat browser apa pun.",
       "summary_ianseo_tag": "Software Desktop",
       "summary_ianseo_desc": "Software turnamen konvensional yang memerlukan instalasi di laptop dan router Wi-Fi lokal di lapangan."
     },
@@ -3667,7 +3667,7 @@
     "filter": "Filter"
   },
   "footer": {
-    "about_desc": "Platform infrastruktur digital terintegrasi untuk skoring real-time dan pengelolaan turnamen panahan profesional yang lebih efisien. Archeris hadir untuk menghubungkan dan memberdayakan seluruh penggemar panahan secara global, dari atlet pemula hingga penyelenggara turnamen profesional.",
+    "about_desc": "Platform manajemen turnamen dan sistem skoring panahan modern yang praktis dan efisien. Archeris hadir untuk memudahkan penyelenggara turnamen dan pemanah di seluruh dunia dengan alokasi target otomatis, kualifikasi, dan bagan eliminasi World Archery.",
     "nav_title": "Navigasi",
     "comp_title": "Perusahaan",
     "supp_title": "Bantuan",
@@ -5142,11 +5142,11 @@
   "guest_reg": {
     "badge": "PORTAL PENDAFTARAN ATLET",
     "title": "Daftarkan Diri & Ambil Posisi Target Anda",
-    "subtitle": "Untuk menjamin live scoring elektronik resmi, verifikasi identitas pemanah, dan penerbitan sertifikat digital, pendaftaran wajib menggunakan akun pemanah Archeris.",
+    "subtitle": "Untuk skoring elektronik resmi, verifikasi identitas pemanah, dan penerbitan sertifikat digital, pendaftaran wajib menggunakan akun pemanah Archeris.",
     "benefit1_title": "Bantalan & No. Punggung",
     "benefit1_desc": "Alokasi bantalan target dan nomor punggung digital resmi langsung terbit.",
-    "benefit2_title": "Skor Elektronik Real-Time",
-    "benefit2_desc": "Skor kualifikasi dan eliminasi langsung terhubung ke papan peringkat live.",
+    "benefit2_title": "Skoring Elektronik",
+    "benefit2_desc": "Skor kualifikasi dan eliminasi langsung terhubung ke papan peringkat turnamen.",
     "benefit3_title": "Prestasi Terverifikasi",
     "benefit3_desc": "Riwayat pertandingan dan e-sertifikat tersimpan permanen di profil Anda.",
     "login_btn": "Masuk untuk Mendaftar",
@@ -5169,7 +5169,7 @@
     "login_required_title": "Login Diperlukan untuk Mendaftar",
     "login_required_desc": "Silakan masuk ke akun pemanah Anda untuk memilih kategori lomba, mendapatkan nomor target, dan menyelesaikan pendaftaran turnamen ini.",
     "tag_target": "Bantalan Target",
-    "tag_scoring": "Live Scoring",
+    "tag_scoring": "Skoring Panahan",
     "tag_certificate": "E-Sertifikat",
     "back_to_event": "Kembali ke Detail Turnamen"
   },
@@ -5580,8 +5580,8 @@
     "parse_failed": "Gagal mengurai file CSV"
   },
   "leaderboard_page": {
-    "title": "Papan Peringkat Kualifikasi (Live)",
-    "subtitle": "Pantau skor panah, total X/10, dan peringkat kualifikasi secara real-time.",
+    "title": "Papan Peringkat Kualifikasi",
+    "subtitle": "Pantau skor panah, total X/10, dan peringkat kualifikasi turnamen.",
     "category": "Kategori",
     "rank": "Peringkat",
     "archer": "Pemanah",
@@ -5590,7 +5590,7 @@
     "tens": "10s",
     "xs": "Xs",
     "stage": "Sesi",
-    "live_indicator": "LIVE SCORING",
+    "live_indicator": "PAPAN SKOR",
     "auto_refresh": "Pembaruan otomatis tiap 10 detik",
     "nav_event": "Event",
     "empty_title": "Belum Ada Skor Kualifikasi",

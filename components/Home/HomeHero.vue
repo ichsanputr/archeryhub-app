@@ -15,18 +15,18 @@
                             <span class="hero-word inline-block transform-gpu text-white">The</span>
                         </span>
                         <span class="inline-block overflow-hidden mr-2 sm:mr-2.5 py-0.5">
-                            <span class="hero-word inline-block transform-gpu text-white">modern</span>
+                            <span class="hero-word inline-block transform-gpu text-white">Modern</span>
                         </span>
                     </span>
                     <span class="relative inline-block my-0.5">
                         <span class="inline-block overflow-hidden mr-1.5 sm:mr-2 py-0.5">
-                            <span class="hero-word inline-block transform-gpu text-primary font-black drop-shadow-[0_2px_14px_rgba(183,251,35,0.4)]">archery</span>
+                            <span class="hero-word inline-block transform-gpu text-primary font-black drop-shadow-[0_2px_14px_rgba(183,251,35,0.4)]">Archery</span>
                         </span>
                         <span class="inline-block overflow-hidden mr-1.5 sm:mr-2 py-0.5">
-                            <span class="hero-word inline-block transform-gpu text-primary font-black drop-shadow-[0_2px_14px_rgba(183,251,35,0.4)]">scoring</span>
+                            <span class="hero-word inline-block transform-gpu text-primary font-black drop-shadow-[0_2px_14px_rgba(183,251,35,0.4)]">Scoring</span>
                         </span>
                         <span class="inline-block overflow-hidden mr-2 sm:mr-2.5 py-0.5">
-                            <span class="hero-word inline-block transform-gpu text-primary font-black drop-shadow-[0_2px_14px_rgba(183,251,35,0.4)]">system</span>
+                            <span class="hero-word inline-block transform-gpu text-primary font-black drop-shadow-[0_2px_14px_rgba(183,251,35,0.4)]">System</span>
                         </span>
                         <!-- Custom Curved Vector Underline -->
                         <svg class="absolute -bottom-1.5 sm:-bottom-2.5 left-0 w-full h-2.5 sm:h-3.5 text-primary pointer-events-none drop-shadow-[0_2px_8px_rgba(183,251,35,0.5)]" viewBox="0 0 320 20" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -34,7 +34,7 @@
                         </svg>
                     </span>
                     <span class="inline">
-                        <span class="inline-block overflow-hidden mr-2 sm:mr-2.5 py-0.5" v-for="(word, i) in ($t('home.hero.title_part2') || 'running directly from your phone.').split(' ')" :key="'p2-' + i">
+                        <span class="inline-block overflow-hidden mr-2 sm:mr-2.5 py-0.5" v-for="(word, i) in ($t('home.hero.title_part2') || 'Running Directly from Your Phone.').split(' ')" :key="'p2-' + i">
                             <span class="hero-word inline-block transform-gpu text-slate-100">{{ word }}</span>
                         </span>
                     </span>

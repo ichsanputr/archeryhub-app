@@ -92,15 +92,15 @@ useHead({
 
 useSeoMeta({
     title: () => t('home.meta_title', 'Archeris - The Best Archery Scoring System'),
-    description: () => t('home.meta_desc', 'The modern archery scoring system running directly from your phone. Real-time arrow value tracking, target butt scorekeeping, qualification leaderboards, World Archery brackets.'),
+    description: () => t('home.meta_desc', 'Archeris is the complete archery scoring system and competition management platform built for organizers and archers worldwide. It provides a simple and modern way to run tournaments, track standings, and handle archery scoring from any device.'),
     ogTitle: () => t('home.meta_title', 'Archeris - The Best Archery Scoring System'),
-    ogDescription: () => t('home.meta_desc', 'The modern archery scoring system running directly from your phone. Real-time arrow value tracking, target butt scorekeeping, qualification leaderboards, World Archery brackets.'),
+    ogDescription: () => t('home.meta_desc', 'Archeris is the complete archery scoring system and competition management platform built for organizers and archers worldwide. It provides a simple and modern way to run tournaments, track standings, and handle archery scoring from any device.'),
     ogType: 'website',
     ogUrl: 'https://archeris.net',
     ogImage: 'https://archeris.net/og-default.jpg',
     twitterCard: 'summary_large_image',
     twitterTitle: () => t('home.meta_title', 'Archeris - The Best Archery Scoring System'),
-    twitterDescription: () => t('home.meta_desc', 'The modern archery scoring system running directly from your phone. Real-time arrow value tracking, target butt scorekeeping, qualification leaderboards, World Archery brackets.')
+    twitterDescription: () => t('home.meta_desc', 'Archeris is the complete archery scoring system and competition management platform built for organizers and archers worldwide. It provides a simple and modern way to run tournaments, track standings, and handle archery scoring from any device.')
 })
 </script>
 

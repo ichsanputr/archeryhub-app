@@ -1364,7 +1364,7 @@ useHead({
                 '@context': 'https://schema.org',
                 '@type': 'SportsEvent',
                 'name': tournament.value.name || 'Archery Tournament',
-                'description': tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 200) : 'Archery tournament with live scoring',
+                'description': tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 200) : 'Archery tournament with digital scoring and brackets',
                 'image': [tournament.value.banner_url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop'],
                 'location': {
                     '@type': 'Place',

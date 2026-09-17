@@ -67,11 +67,16 @@
                     </div>
                 </div>
 
-                <!-- Image Mockup -->
-                <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
-                    <div class="relative w-full max-w-[460px] aspect-[4/5] rounded-3xl overflow-hidden border border-navy/10 shadow-2xl bg-navy/5 flex items-center justify-center">
-                        <img src="https://placehold.co/600x750/0f172a/63c03b?text=Archeris+Mobile+App+Preview" alt="Archeris Mobile App"
-                            class="w-full h-full object-cover" />
+                <!-- 1:1 High-Res Mobile Showcase Composition Image -->
+                <div class="order-1 lg:order-2 flex justify-center lg:justify-end w-full">
+                    <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-[0_12px_32px_-8px_rgba(15,23,42,0.12),0_4px_12px_-2px_rgba(15,23,42,0.04)] border border-slate-200/80 bg-[#ECEBE6]">
+                        <img 
+                            src="/mobile/mobile_showcase.png" 
+                            alt="Archeris Mobile App - Real-Time Scoring & Event Discovery" 
+                            class="w-full h-full object-cover" 
+                        />
+                        <!-- Inner gray border overlay -->
+                        <div class="pointer-events-none absolute inset-0 rounded-3xl border border-gray-300/90 z-10"></div>
                     </div>
                 </div>
             </div>

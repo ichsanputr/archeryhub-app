@@ -853,8 +853,8 @@ const resetFilters = () => {
 const structuredData = computed(() => ({
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    'name': 'Archery Tournaments & Live Scoring Leaderboards',
-    'description': 'Browse upcoming archery tournaments and live scoring results on Archeris.',
+    'name': 'Archery Tournaments & Scoring Leaderboards',
+    'description': 'Browse upcoming archery tournaments, digital scoring leaderboards, and elimination brackets on Archeris.',
     'itemListElement': filteredTournaments.value.slice(0, 10).map((t, idx) => ({
         '@type': 'ListItem',
         'position': idx + 1,
@@ -873,7 +873,7 @@ const structuredData = computed(() => ({
 }))
 
 useHead({
-    title: 'Archery Tournaments - Official Live Scoring | Archeris',
+    title: 'Archery Tournaments - Digital Archery Scoring | Archeris',
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ],
@@ -886,10 +886,10 @@ useHead({
 })
 
 useSeoMeta({
-    title: 'Archery Tournaments - Official Live Scoring | Archeris',
-    description: 'Discover upcoming archery tournaments, national championships, and live scoring archives. Real-time qualification leaderboards and elimination match brackets.',
-    ogTitle: 'Archery Tournaments - Official Live Scoring | Archeris',
-    ogDescription: 'Discover upcoming archery tournaments, national championships, and live scoring archives. Real-time qualification leaderboards and elimination match brackets.',
+    title: 'Archery Tournaments - Digital Archery Scoring | Archeris',
+    description: 'Discover upcoming archery tournaments, national championships, and results. Qualification leaderboards and elimination match brackets.',
+    ogTitle: 'Archery Tournaments - Digital Archery Scoring | Archeris',
+    ogDescription: 'Discover upcoming archery tournaments, national championships, and results. Qualification leaderboards and elimination match brackets.',
     ogType: 'website',
     twitterCard: 'summary_large_image'
 })
