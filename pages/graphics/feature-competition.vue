@@ -540,7 +540,7 @@ onMounted(async () => {
         const scBtnCY = scBtnY + scBtnH / 2
 
         // ══════════════════════════════════════════════════════════
-        // MODULE 1: TARGET BUTT ALLOCATION MATRIX (No Banners, Full Height Cards)
+        // MODULE 1: TARGET & LANE ALLOCATION
         // ══════════════════════════════════════════════════════════
         if (phaseIndex === 0) {
             ctx.save()
@@ -548,11 +548,11 @@ onMounted(async () => {
             ctx.textAlign = 'left'
             ctx.fillStyle = '#64748B'
             ctx.font = '600 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-            ctx.fillText('Target & Lane Assignment', 16, 14)
+            ctx.fillText('Target Butt Allocation', 16, 14)
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Target Butt Allocation Matrix', 16, 36)
+            ctx.fillText('Target & Lane Allocation', 16, 36)
 
             const tCardW = screenW - 32
             const targetCards = [
@@ -560,27 +560,27 @@ onMounted(async () => {
                     no: 'Target 01',
                     category: 'Recurve Men 70m',
                     archers: [
-                        { lane: 'A', name: 'Arif Dwi Pangestu', club: 'Fast Archery Club' },
-                        { lane: 'B', name: 'Riau Ega Agatha', club: 'Eagle Archery Club' },
-                        { lane: 'C', name: 'Hendra Wijaya', club: 'Alpha Archery Team' },
-                        { lane: 'D', name: 'Bagas Prastyo', club: 'Focus Target Team' }
+                        { lane: '1A', name: 'Arif Dwi Pangestu', club: 'Fast Archery Club' },
+                        { lane: '1B', name: 'Riau Ega Agatha', club: 'Eagle Archery Club' },
+                        { lane: '1C', name: 'Hendra Wijaya', club: 'Alpha Archery Team' },
+                        { lane: '1D', name: 'Bagas Prastyo', club: 'Focus Target Team' }
                     ]
                 },
                 {
                     no: 'Target 02',
                     category: 'Recurve Men 70m',
                     archers: [
-                        { lane: 'A', name: 'Diananda Choirunisa', club: 'Focus Archery Club' },
-                        { lane: 'B', name: 'Linda Sartika', club: 'Eagle Archery Club' },
-                        { lane: 'C', name: 'Kenzo Adhitama', club: 'Alpha Archery Team' },
-                        { lane: 'D', name: 'Fajar Rahman', club: 'X-Ten Target Club' }
+                        { lane: '2A', name: 'Diananda Choirunisa', club: 'Focus Archery Club' },
+                        { lane: '2B', name: 'Linda Sartika', club: 'Eagle Archery Club' },
+                        { lane: '2C', name: 'Kenzo Adhitama', club: 'Alpha Archery Team' },
+                        { lane: '2D', name: 'Fajar Rahman', club: 'X-Ten Target Club' }
                     ]
                 }
             ]
 
             targetCards.forEach((t, idx) => {
                 const isTargetActive = (idx === activeTargetIndex)
-                const isTargetAlloc = isAllocated || isTargetActive
+                const isTargetAlloc = isAllocated
                 const ty = 52 + idx * 260
                 drawRoundedRect(16, ty, tCardW, 250, 12, '#FFFFFF', isTargetActive ? '#0F172A' : '#E2E8F0', isTargetActive ? 1.8 : 1.0)
 
@@ -598,36 +598,51 @@ onMounted(async () => {
                 ctx.fillText('· ' + t.category, 122, ty + 28)
 
                 // Status pill
-                drawRoundedRect(16 + tCardW - 84, ty + 10, 72, 22, 5, isTargetActive ? '#D9FF00' : (isTargetAlloc ? '#0F172A' : '#F1F5F9'))
-                ctx.fillStyle = isTargetActive ? '#0F172A' : (isTargetAlloc ? '#D9FF00' : '#64748B')
+                drawRoundedRect(16 + tCardW - 88, ty + 10, 76, 22, 5, isTargetAlloc ? (isTargetActive ? '#D9FF00' : '#0F172A') : '#F1F5F9')
+                ctx.fillStyle = isTargetAlloc ? (isTargetActive ? '#0F172A' : '#D9FF00') : '#64748B'
                 ctx.textAlign = 'center'
                 ctx.font = '700 9.5px "NovaText", "Plus Jakarta Sans", sans-serif'
-                ctx.fillText(isTargetAlloc ? 'Allocated' : 'Ready', 16 + tCardW - 48, ty + 24)
+                ctx.fillText(isTargetAlloc ? 'Allocated' : 'Unassigned', 16 + tCardW - 50, ty + 24)
 
                 // 4 Lane Rows
                 t.archers.forEach((a, aidx) => {
                     const ay = ty + 46 + aidx * 49
                     drawRoundedRect(24, ay, tCardW - 16, 44, 8, isTargetActive ? '#F8FAFC' : '#FFFFFF', isTargetActive ? '#CBD5E1' : '#E2E8F0', 0.8)
 
-                    drawRoundedRect(28, ay + 6, 26, 32, 5, isTargetActive ? '#0F172A' : (isTargetAlloc ? '#1E293B' : '#F1F5F9'))
-                    ctx.fillStyle = isTargetActive ? '#D9FF00' : (isTargetAlloc ? '#94A3B8' : '#475569')
+                    drawRoundedRect(28, ay + 6, 28, 32, 5, isTargetAlloc ? (isTargetActive ? '#0F172A' : '#1E293B') : '#F1F5F9')
+                    ctx.fillStyle = isTargetAlloc ? (isTargetActive ? '#D9FF00' : '#94A3B8') : '#94A3B8'
                     ctx.textAlign = 'center'
-                    ctx.font = '800 13px "Bricolage Grotesque", sans-serif'
-                    ctx.fillText(a.lane, 41, ay + 26)
+                    ctx.font = '800 12px "Bricolage Grotesque", sans-serif'
+                    ctx.fillText(a.lane, 42, ay + 26)
 
                     ctx.textAlign = 'left'
-                    ctx.fillStyle = '#0F172A'
-                    ctx.font = '700 12px "NovaText", "Plus Jakarta Sans", sans-serif'
-                    ctx.fillText(a.name, 62, ay + 19)
+                    if (isTargetAlloc) {
+                        ctx.fillStyle = '#0F172A'
+                        ctx.font = '700 12px "NovaText", "Plus Jakarta Sans", sans-serif'
+                        ctx.fillText(a.name, 64, ay + 19)
 
-                    ctx.fillStyle = '#64748B'
-                    ctx.font = '500 9.5px "NovaText", sans-serif'
-                    ctx.fillText(a.club, 62, ay + 34)
+                        ctx.fillStyle = '#64748B'
+                        ctx.font = '500 9.5px "NovaText", sans-serif'
+                        ctx.fillText(a.club, 64, ay + 34)
 
-                    ctx.textAlign = 'right'
-                    ctx.fillStyle = isTargetActive ? '#059669' : '#64748B'
-                    ctx.font = '700 9.5px "NovaText", sans-serif'
-                    ctx.fillText('70m Lane', 16 + tCardW - 28, ay + 26)
+                        ctx.textAlign = 'right'
+                        ctx.fillStyle = isTargetActive ? '#059669' : '#64748B'
+                        ctx.font = '700 9.5px "NovaText", sans-serif'
+                        ctx.fillText('70m Lane', 16 + tCardW - 28, ay + 26)
+                    } else {
+                        ctx.fillStyle = '#94A3B8'
+                        ctx.font = '600 12px "NovaText", "Plus Jakarta Sans", sans-serif'
+                        ctx.fillText('Unassigned Lane', 64, ay + 19)
+
+                        ctx.fillStyle = '#CBD5E1'
+                        ctx.font = '500 9.5px "NovaText", sans-serif'
+                        ctx.fillText('Tap or auto-allocate from pool', 64, ay + 34)
+
+                        ctx.textAlign = 'right'
+                        ctx.fillStyle = '#94A3B8'
+                        ctx.font = '600 9.5px "NovaText", sans-serif'
+                        ctx.fillText('Pending', 16 + tCardW - 28, ay + 26)
+                    }
                 })
             })
 
@@ -646,7 +661,7 @@ onMounted(async () => {
             ctx.restore()
         }
         // ══════════════════════════════════════════════════════════
-        // MODULE 2: LIVE QUALIFICATION ENGINE & LEADERBOARD
+        // MODULE 2: LIVE QUALIFICATION SCORES
         // ══════════════════════════════════════════════════════════
         else if (phaseIndex === 1) {
             ctx.save()
@@ -658,7 +673,7 @@ onMounted(async () => {
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('Live Qualification Leaderboard', 16, 36)
+            ctx.fillText('Live Qualification Scores', 16, 36)
 
             const qStatW = (screenW - 38) / 3
             const stats = [
@@ -743,7 +758,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isQualLocked ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isQualLocked ? 'Qualification Leaderboard Certified' : 'Lock Qualification Scores', scBtnCX, scBtnY + 28)
+            ctx.fillText(isQualLocked ? 'Qualification Scores Saved' : 'Save Qualification Scores', scBtnCX, scBtnY + 28)
             ctx.restore()
             ctx.restore()
         }

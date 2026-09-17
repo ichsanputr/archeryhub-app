@@ -661,7 +661,7 @@ onMounted(async () => {
             ctx.textAlign = 'center'
             ctx.fillStyle = isQualLocked ? '#D9FF00' : '#FFFFFF'
             ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText(isQualLocked ? 'Qualification Leaderboard Certified' : 'Lock Qualification Scores', scBtnCX, scBtnY + 28)
+            ctx.fillText(isQualLocked ? 'Qualification Scores Saved' : 'Save Qualification Scores', scBtnCX, scBtnY + 28)
             ctx.restore()
             ctx.restore()
         }
