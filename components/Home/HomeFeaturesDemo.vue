@@ -15,8 +15,6 @@
             <!-- Feature Block 1: EO Registration & Payments -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center mb-20 sm:mb-28 lg:mb-32 feature-row">
                 <div class="order-2 lg:order-1 text-col">
-                    <span class="text-xs font-bold tracking-wide text-primary mb-3 sm:mb-4 block">{{
-                        $t('home.features_demo.f1_tag') }}</span>
                     <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight font-display">{{
                         $t('home.features_demo.f1_title') }}</h3>
                     <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-6 sm:mb-8">
@@ -70,8 +68,6 @@
                 </div>
 
                 <div class="order-2 text-col">
-                    <span class="text-xs font-bold tracking-wide text-primary mb-3 sm:mb-4 block">{{
-                        $t('home.features_demo.f2_tag') }}</span>
                     <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight font-display">{{
                         $t('home.features_demo.f2_title') }}</h3>
                     <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-6 sm:mb-8">
@@ -95,8 +91,6 @@
             <!-- Feature Block 3: Archer Mobile App & Career Stats -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-14 lg:gap-20 items-center mb-20 sm:mb-28 lg:mb-32 feature-row">
                 <div class="order-2 lg:order-1 text-col">
-                    <span class="text-xs font-bold tracking-wide text-primary mb-3 sm:mb-4 block">{{
-                        $t('home.features_demo.f3_tag') }}</span>
                     <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight font-display">{{
                         $t('home.features_demo.f3_title') }}</h3>
                     <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-6 sm:mb-8">
@@ -146,8 +140,6 @@
                 </div>
 
                 <div class="order-2 text-col">
-                    <span class="text-xs font-bold tracking-wide text-primary mb-3 sm:mb-4 block">{{
-                        $t('home.features_demo.f4_tag') }}</span>
                     <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy mb-4 sm:mb-6 leading-tight tracking-tight font-display">{{
                         $t('home.features_demo.f4_title') }}</h3>
                     <p class="text-text-secondary text-sm sm:text-base lg:text-lg font-light leading-relaxed mb-6 sm:mb-8">
