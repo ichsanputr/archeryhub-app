@@ -103,7 +103,7 @@ onMounted(async () => {
         ctx.save()
         ctx.translate(x, y)
         if (isPressed) {
-            ctx.scale(0.90, 0.90)
+            ctx.scale(0.92, 0.92)
         }
         ctx.shadowColor = 'rgba(15, 23, 42, 0.28)'
         ctx.shadowBlur = 10
@@ -122,7 +122,8 @@ onMounted(async () => {
         ctx.fillStyle = '#0F172A'
         ctx.fill()
         ctx.strokeStyle = '#FFFFFF'
-        ctx.lineWidth = 1.75
+        ctx.lineWidth = 1.8
+        ctx.lineJoin = 'round'
         ctx.stroke()
         ctx.restore()
     }
@@ -132,7 +133,7 @@ onMounted(async () => {
         if (progress <= 0 || progress >= 1) return
         ctx.save()
         ctx.beginPath()
-        ctx.arc(x, y, progress * 32, 0, Math.PI * 2)
+        ctx.arc(x, y, progress * 34, 0, Math.PI * 2)
         ctx.fillStyle = `rgba(217, 255, 0, ${0.45 * (1 - progress)})`
         ctx.fill()
         ctx.strokeStyle = `rgba(15, 23, 42, ${0.4 * (1 - progress)})`
@@ -141,99 +142,209 @@ onMounted(async () => {
         ctx.restore()
     }
 
-    // ── Animation Loop ──
-    const TOTAL_DURATION = 16.5 // seconds
+    // ── Master 17.5-Second Loop (Calm Pacing & HD Crisp Typography) ──
+    const TOTAL_DURATION = 17.5
     let startTime = null
 
-    // Geometry constants
-    const CANVAS_SIZE = 1080
-    const PHONE_W = 390
-    const PHONE_H = 800
-    const PHONE_R = 48
-    const PHONE_X = (CANVAS_SIZE - PHONE_W) / 2 // 345
-    const PHONE_Y = (CANVAS_SIZE - PHONE_H) / 2 // 140
+    // Exact Phone Geometry matching Feature 01
+    const PHONE_W = 370
+    const PHONE_H = 750
+    const PHONE_R = 44
+    const PHONE_X = (1080 - PHONE_W) / 2 // 355
+    const PHONE_Y = (1080 - PHONE_H) / 2 // 165
 
     renderFrameFunc = (timestamp) => {
         if (!startTime) startTime = timestamp
-        const effectiveTime = isPaused.value ? pausedAt : timestamp
-        const elapsed = ((effectiveTime - startTime - totalPausedDuration) / 1000) % TOTAL_DURATION
+        const effectiveTime = isPaused.value ? (pausedAt - totalPausedDuration) : (timestamp - totalPausedDuration)
+        const elapsed = ((effectiveTime - startTime) / 1000) % TOTAL_DURATION
         const loopT = elapsed
-
-        // Dynamic Camera Zoom System
-        let camScale = 1.0
-        let camOffsetX = 0
-        let camOffsetY = 0
-
-        // Camera scripting based on scenes:
-        // Scene 1 (0.0s - 4.0s): Register Now button (Zoom 1.42x at 1.8s - 3.6s)
-        if (loopT >= 1.6 && loopT < 3.8) {
-            const zProgress = loopT < 3.2 ? clamp((loopT - 1.6) / 0.8, 0, 1) : 1 - clamp((loopT - 3.2) / 0.6, 0, 1)
-            const easeZ = easeInOutCubic(zProgress)
-            camScale = 1.0 + easeZ * 0.42
-            camOffsetX = easeZ * -10
-            camOffsetY = easeZ * -175
-        }
-        // Scene 2 (4.0s - 8.0s): QRIS Checkout (Zoom 1.45x at 5.6s - 7.6s)
-        else if (loopT >= 5.4 && loopT < 7.8) {
-            const zProgress = loopT < 7.2 ? clamp((loopT - 5.4) / 0.8, 0, 1) : 1 - clamp((loopT - 7.2) / 0.6, 0, 1)
-            const easeZ = easeInOutCubic(zProgress)
-            camScale = 1.0 + easeZ * 0.45
-            camOffsetX = easeZ * 0
-            camOffsetY = easeZ * -150
-        }
-        // Scene 3 (8.0s - 12.2s): Digital Pass & QR (Zoom 1.38x at 9.6s - 11.8s)
-        else if (loopT >= 9.4 && loopT < 12.0) {
-            const zProgress = loopT < 11.4 ? clamp((loopT - 9.4) / 0.8, 0, 1) : 1 - clamp((loopT - 11.4) / 0.6, 0, 1)
-            const easeZ = easeInOutCubic(zProgress)
-            camScale = 1.0 + easeZ * 0.38
-            camOffsetX = easeZ * 0
-            camOffsetY = easeZ * -110
-        }
-        // Scene 4 (12.2s - 16.5s): Download E-Cert (Zoom 1.44x at 13.6s - 15.6s)
-        else if (loopT >= 13.4 && loopT < 15.8) {
-            const zProgress = loopT < 15.2 ? clamp((loopT - 13.4) / 0.8, 0, 1) : 1 - clamp((loopT - 15.2) / 0.6, 0, 1)
-            const easeZ = easeInOutCubic(zProgress)
-            camScale = 1.0 + easeZ * 0.44
-            camOffsetX = easeZ * -5
-            camOffsetY = easeZ * -170
-        }
-
-        // Apply camera zoom transform around canvas center
-        ctx.save()
-        ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
 
         // 1. Stage Background
         ctx.fillStyle = '#ECEBE6'
-        ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
+        ctx.fillRect(0, 0, 1080, 1080)
 
-        // Subtle Stage Dot Grid
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.04)'
-        const dotGap = 28
-        for (let gx = 14; gx < CANVAS_SIZE; gx += dotGap) {
-            for (let gy = 14; gy < CANVAS_SIZE; gy += dotGap) {
+        const bgGlow = ctx.createRadialGradient(540, 540, 60, 540, 540, 500)
+        bgGlow.addColorStop(0, 'rgba(255, 255, 255, 0.5)')
+        bgGlow.addColorStop(1, 'rgba(236, 235, 230, 0)')
+        ctx.fillStyle = bgGlow
+        ctx.fillRect(0, 0, 1080, 1080)
+
+        ctx.fillStyle = 'rgba(148, 163, 184, 0.22)'
+        for (let gx = 36; gx < 1080; gx += 36) {
+            for (let gy = 36; gy < 1080; gy += 36) {
                 ctx.beginPath()
-                ctx.arc(gx, gy, 1.2, 0, Math.PI * 2)
+                ctx.arc(gx, gy, 0.85, 0, Math.PI * 2)
                 ctx.fill()
             }
         }
 
-        // 2. Camera Transform
-        ctx.translate(CANVAS_SIZE / 2 + camOffsetX, CANVAS_SIZE / 2 + camOffsetY)
-        ctx.scale(camScale, camScale)
-        ctx.translate(-CANVAS_SIZE / 2, -CANVAS_SIZE / 2)
+        // 2. Timeline States & Camera Zoom
+        let camZoom = 1.00
+        let camPanY = 0
+        let sceneIndex = 0
+        let isRegistered = false
+        let isPaid = false
+        let isDownloaded = false
 
-        // 3. Stage Shadows for Mobile Phone Chassis
+        let cursorVisible = false
+        let cursorX = 540, cursorY = 700
+        let cursorPressed = false
+        let tapRipple = -1, tapX = 0, tapY = 0
+
+        // Scene 1: Event Discovery & Category Selection (0.0s - 4.4s)
+        if (loopT < 4.4) {
+            sceneIndex = 0
+            if (loopT < 1.4) {
+                const zt = easeInOutCubic(loopT / 1.4)
+                camZoom = 1.00 + 0.38 * zt
+                camPanY = -70 * zt
+            } else {
+                camZoom = 1.38
+                camPanY = -70
+            }
+
+            const targetBtnY = 645
+            if (loopT >= 1.2) {
+                cursorVisible = true
+                if (loopT < 2.4) {
+                    const mt = easeInOutCubic((loopT - 1.2) / 1.2)
+                    cursorX = 540
+                    cursorY = 730 + (targetBtnY - 730) * mt
+                } else {
+                    cursorX = 540
+                    cursorY = targetBtnY
+                }
+
+                if (loopT >= 2.4) {
+                    isRegistered = true
+                    if (loopT >= 2.4 && loopT <= 2.9) {
+                        cursorPressed = true
+                        tapRipple = (loopT - 2.4) / 0.5
+                        tapX = 540; tapY = targetBtnY
+                    }
+                }
+            }
+        }
+        // Scene 2: Instant QRIS Payment (4.4s - 8.8s)
+        else if (loopT < 8.8) {
+            sceneIndex = 1
+            isRegistered = true
+            const t2 = loopT - 4.4
+
+            if (t2 < 1.2) {
+                const zt = easeInOutCubic(t2 / 1.2)
+                camZoom = 1.38 + (1.40 - 1.38) * zt
+                camPanY = -70 + (-60 - (-70)) * zt
+            } else {
+                camZoom = 1.40
+                camPanY = -60
+            }
+
+            const targetBtnY = 645
+            if (t2 >= 0.8) {
+                cursorVisible = true
+                if (t2 < 2.2) {
+                    const mt = easeInOutCubic((t2 - 0.8) / 1.4)
+                    cursorX = 540
+                    cursorY = 720 + (targetBtnY - 720) * mt
+                } else {
+                    cursorX = 540
+                    cursorY = targetBtnY
+                }
+
+                if (t2 >= 2.2) {
+                    isPaid = true
+                    if (t2 >= 2.2 && t2 <= 2.7) {
+                        cursorPressed = true
+                        tapRipple = (t2 - 2.2) / 0.5
+                        tapX = 540; tapY = targetBtnY
+                    }
+                }
+            }
+        }
+        // Scene 3: Digital Ticket & Archer Pass (8.8s - 13.2s)
+        else if (loopT < 13.2) {
+            sceneIndex = 2
+            isRegistered = true
+            isPaid = true
+            const t3 = loopT - 8.8
+
+            if (t3 < 1.2) {
+                const zt = easeInOutCubic(t3 / 1.2)
+                camZoom = 1.40 + (1.34 - 1.40) * zt
+                camPanY = -60 + (-40 - (-60)) * zt
+            } else {
+                camZoom = 1.34
+                camPanY = -40
+            }
+
+            // Gentle inspection hover over ticket QR
+            if (t3 >= 0.8) {
+                cursorVisible = true
+                cursorX = 540 + Math.sin(t3 * 1.5) * 10
+                cursorY = 520 + Math.cos(t3 * 1.5) * 8
+            }
+        }
+        // Scene 4: Live Scorecard & Verified E-Certificate (13.2s - 17.5s)
+        else {
+            sceneIndex = 3
+            isRegistered = true
+            isPaid = true
+            const t4 = loopT - 13.2
+
+            if (t4 < 1.2) {
+                const zt = easeInOutCubic(t4 / 1.2)
+                camZoom = 1.34 + (1.38 - 1.34) * zt
+                camPanY = -40 + (-65 - (-40)) * zt
+            } else if (t4 > 3.2) {
+                const ot = easeInOutCubic((t4 - 3.2) / 1.1)
+                camZoom = 1.38 + (1.00 - 1.38) * ot
+                camPanY = -65 * (1 - ot)
+            } else {
+                camZoom = 1.38
+                camPanY = -65
+            }
+
+            const targetBtnY = 645
+            if (t4 >= 0.6) {
+                cursorVisible = true
+                if (t4 < 1.8) {
+                    const mt = easeInOutCubic((t4 - 0.6) / 1.2)
+                    cursorX = 540
+                    cursorY = 720 + (targetBtnY - 720) * mt
+                } else {
+                    cursorX = 540
+                    cursorY = targetBtnY
+                }
+
+                if (t4 >= 1.8) {
+                    isDownloaded = true
+                    if (t4 >= 1.8 && t4 <= 2.3) {
+                        cursorPressed = true
+                        tapRipple = (t4 - 1.8) / 0.5
+                        tapX = 540; tapY = targetBtnY
+                    }
+                }
+            }
+        }
+
+        // 3. Apply Camera Zoom Transform
         ctx.save()
-        ctx.shadowColor = 'rgba(15, 23, 42, 0.22)'
+        ctx.translate(540, 540 + camPanY)
+        ctx.scale(camZoom, camZoom)
+        ctx.translate(-540, -540)
+
+        // 4. Phone Shadow & Chassis
+        ctx.save()
+        ctx.shadowColor = 'rgba(15, 23, 42, 0.26)'
         ctx.shadowBlur = 48
         ctx.shadowOffsetY = 24
         drawRoundedRect(PHONE_X, PHONE_Y, PHONE_W, PHONE_H, PHONE_R, '#181A1D')
         ctx.restore()
 
-        // 4. Phone Outer Bezel & Metal Frame
         drawRoundedRect(PHONE_X, PHONE_Y, PHONE_W, PHONE_H, PHONE_R, '#181A1D', '#334155', 2.5)
 
-        // Inner Screen Canvas (Clip region)
+        // Screen Clip Region
         const SCREEN_INSET = 10
         const SCREEN_X = PHONE_X + SCREEN_INSET
         const SCREEN_Y = PHONE_Y + SCREEN_INSET
@@ -250,222 +361,173 @@ onMounted(async () => {
         }
         ctx.clip()
 
-        // Screen Background
+        // Canvas Background
         ctx.fillStyle = '#F8FAFC'
         ctx.fillRect(SCREEN_X, SCREEN_Y, SCREEN_W, SCREEN_H)
 
-        // ── TOP APP BAR & STATUS BAR ──
         // Status Bar
         ctx.fillStyle = '#0F172A'
         ctx.font = '600 13px Inter, -apple-system, sans-serif'
         ctx.fillText('9:41', SCREEN_X + 24, SCREEN_Y + 28)
 
-        // Status Icons (Signal & Battery)
         ctx.fillStyle = '#0F172A'
         ctx.fillRect(SCREEN_X + SCREEN_W - 48, SCREEN_Y + 18, 18, 9)
         drawRoundedRect(SCREEN_X + SCREEN_W - 50, SCREEN_Y + 16, 22, 13, 3, null, '#0F172A', 1.5)
         ctx.fillRect(SCREEN_X + SCREEN_W - 27, SCREEN_Y + 20, 2, 5)
 
-        // Dynamic Island / Notch
         drawRoundedRect(SCREEN_X + (SCREEN_W - 108) / 2, SCREEN_Y + 11, 108, 24, 12, '#000000')
 
-        // ── PERSISTENT APP HEADER (Archer Portal & Verified Badge) ──
-        const APP_HEADER_Y = SCREEN_Y + 48
-        
-        ctx.fillStyle = '#64748B'
-        ctx.font = '600 10.5px Inter, sans-serif'
-        ctx.fillText('ARCHER MOBILE APP', SCREEN_X + 20, APP_HEADER_Y + 12)
-
-        ctx.fillStyle = '#0F172A'
-        ctx.font = '700 17px Space Grotesk, Inter, sans-serif'
-        ctx.fillText('Arif Dwi Pangestu', SCREEN_X + 20, APP_HEADER_Y + 32)
-
-        // Archer Verified Pill on Top Right
-        const statusBadgeW = 98
-        const statusBadgeX = SCREEN_X + SCREEN_W - statusBadgeW - 20
-        drawRoundedRect(statusBadgeX, APP_HEADER_Y + 14, statusBadgeW, 22, 11, '#0F172A')
-        
-        ctx.beginPath()
-        ctx.arc(statusBadgeX + 11, APP_HEADER_Y + 25, 3.5, 0, Math.PI * 2)
-        ctx.fillStyle = '#D9FF00'
-        ctx.fill()
-
-        ctx.fillStyle = '#FFFFFF'
-        ctx.font = '600 10px Inter, sans-serif'
-        ctx.fillText('Verified Archer', statusBadgeX + 21, APP_HEADER_Y + 28)
-
-        // Divider
-        ctx.fillStyle = '#E2E8F0'
-        ctx.fillRect(SCREEN_X + 20, APP_HEADER_Y + 44, SCREEN_W - 40, 1)
-
-        // ── SCENE MANAGER & SCREEN RENDERING ──
-        const CONTENT_Y = APP_HEADER_Y + 56
-        const CONTENT_W = SCREEN_W - 40
-        const CONTENT_X = SCREEN_X + 20
-
-        // Determine active scene
-        let sceneIndex = 0
-        if (loopT < 4.0) {
-            sceneIndex = 0
-        } else if (loopT < 8.0) {
-            sceneIndex = 1
-        } else if (loopT < 12.2) {
-            sceneIndex = 2
-        } else {
-            sceneIndex = 3
-        }
+        // ── Direct Content Space (NO PERSISTENT TOP APP HEADER) ──
+        const CONTENT_X = SCREEN_X + 16
+        const CONTENT_Y = SCREEN_Y + 52
+        const CONTENT_W = SCREEN_W - 32
 
         // ========================================================
-        // SCENE 1: EVENT DISCOVERY & CATEGORY SELECTION (0.0s - 4.0s)
+        // SCENE 1: DISCOVER TOURNAMENTS (0.0s - 4.4s)
         // ========================================================
         if (sceneIndex === 0) {
             ctx.fillStyle = '#64748B'
             ctx.font = '600 11px Inter, sans-serif'
-            ctx.fillText('01 · EVENT REGISTRATION', CONTENT_X, CONTENT_Y + 10)
+            ctx.fillText('Archer Event Discovery', CONTENT_X, CONTENT_Y + 14)
 
             ctx.fillStyle = '#0F172A'
-            ctx.font = '700 18px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('Discover Tournaments', CONTENT_X, CONTENT_Y + 32)
+            ctx.font = '800 20px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('Discover Tournaments', CONTENT_X, CONTENT_Y + 38)
 
             // Tournament Banner Card
-            const eventCardY = CONTENT_Y + 44
-            drawRoundedRect(CONTENT_X, eventCardY, CONTENT_W, 230, 16, '#FFFFFF', '#E2E8F0', 1.5)
+            const eventCardY = CONTENT_Y + 52
+            drawRoundedRect(CONTENT_X, eventCardY, CONTENT_W, 236, 16, '#FFFFFF', '#E2E8F0', 1.5)
 
-            // Banner Image
             if (isBannerLoaded) {
                 ctx.save()
-                drawRoundedRect(CONTENT_X, eventCardY, CONTENT_W, 90, 16)
+                drawRoundedRect(CONTENT_X, eventCardY, CONTENT_W, 94, 16)
                 ctx.clip()
-                ctx.drawImage(bannerImage, CONTENT_X, eventCardY, CONTENT_W, 90)
+                ctx.drawImage(bannerImage, CONTENT_X, eventCardY, CONTENT_W, 94)
                 ctx.restore()
             } else {
-                drawRoundedRect(CONTENT_X, eventCardY, CONTENT_W, 90, 16, '#0F172A')
+                drawRoundedRect(CONTENT_X, eventCardY, CONTENT_W, 94, 16, '#0F172A')
             }
 
             // Floating Badges on Banner
-            drawRoundedRect(CONTENT_X + 12, eventCardY + 12, 96, 22, 11, 'rgba(15, 23, 42, 0.85)')
+            drawRoundedRect(CONTENT_X + 12, eventCardY + 12, 100, 24, 12, 'rgba(15, 23, 42, 0.85)')
             ctx.fillStyle = '#FFFFFF'
-            ctx.font = '600 9.5px Inter, sans-serif'
-            ctx.fillText('National Series', CONTENT_X + 20, eventCardY + 26.5)
+            ctx.font = '600 10px Inter, sans-serif'
+            ctx.fillText('National Series', CONTENT_X + 20, eventCardY + 28)
 
-            drawRoundedRect(CONTENT_X + CONTENT_W - 88, eventCardY + 12, 76, 22, 11, '#D9FF00')
+            drawRoundedRect(CONTENT_X + CONTENT_W - 88, eventCardY + 12, 76, 24, 12, '#D9FF00')
             ctx.fillStyle = '#0F172A'
-            ctx.font = '700 9.5px Inter, sans-serif'
-            ctx.fillText('Open Entry', CONTENT_X + CONTENT_W - 77, eventCardY + 26.5)
+            ctx.font = '700 10px Inter, sans-serif'
+            ctx.fillText('Open Entry', CONTENT_X + CONTENT_W - 77, eventCardY + 28)
 
-            // Tournament Content
+            // Tournament Info
             ctx.fillStyle = '#0F172A'
-            ctx.font = '700 14px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('Archeris National Open 2026', CONTENT_X + 14, eventCardY + 116)
+            ctx.font = '700 15px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('Archeris National Open 2026', CONTENT_X + 16, eventCardY + 122)
+
+            ctx.fillStyle = '#64748B'
+            ctx.font = '500 11px Inter, sans-serif'
+            ctx.fillText('Senayan Archery Field, Jakarta · 24-26 Oct', CONTENT_X + 16, eventCardY + 140)
+
+            // 2-Column Bento Stat Cards
+            const statCardW = (CONTENT_W - 36) / 2
+            drawRoundedRect(CONTENT_X + 12, eventCardY + 154, statCardW, 44, 8, '#F8FAFC', '#E2E8F0', 1)
+            ctx.fillStyle = '#64748B'
+            ctx.font = '500 9.5px Inter, sans-serif'
+            ctx.fillText('Quota Remaining', CONTENT_X + 20, eventCardY + 170)
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 12.5px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('18 / 160 Slots Left', CONTENT_X + 20, eventCardY + 187)
+
+            drawRoundedRect(CONTENT_X + 24 + statCardW, eventCardY + 154, statCardW, 44, 8, '#F8FAFC', '#E2E8F0', 1)
+            ctx.fillStyle = '#64748B'
+            ctx.font = '500 9.5px Inter, sans-serif'
+            ctx.fillText('Registration Fee', CONTENT_X + 32 + statCardW, eventCardY + 170)
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 12.5px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('Rp 150,000', CONTENT_X + 32 + statCardW, eventCardY + 187)
+
+            // Division Selection Box
+            const divBoxY = eventCardY + 248
+            drawRoundedRect(CONTENT_X, divBoxY, CONTENT_W, 94, 16, '#FFFFFF', '#E2E8F0', 1.5)
+
+            ctx.fillStyle = '#64748B'
+            ctx.font = '600 10.5px Inter, sans-serif'
+            ctx.fillText('Selected Division Category', CONTENT_X + 16, divBoxY + 22)
+
+            drawRoundedRect(CONTENT_X + 14, divBoxY + 32, CONTENT_W - 28, 48, 10, 'rgba(217, 255, 0, 0.28)', '#0F172A', 1.5)
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 13px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('Recurve Men Open 70m', CONTENT_X + 26, divBoxY + 54)
 
             ctx.fillStyle = '#64748B'
             ctx.font = '500 10.5px Inter, sans-serif'
-            ctx.fillText('Senayan Archery Field, Jakarta · 24-26 Oct', CONTENT_X + 14, eventCardY + 134)
-
-            // Bento Stat Pills
-            const statCardW = (CONTENT_W - 36) / 2
-            drawRoundedRect(CONTENT_X + 12, eventCardY + 148, statCardW, 40, 8, '#F8FAFC', '#E2E8F0', 1)
-            ctx.fillStyle = '#64748B'
-            ctx.font = '500 9px Inter, sans-serif'
-            ctx.fillText('Quota Remaining', CONTENT_X + 20, eventCardY + 163)
-            ctx.fillStyle = '#0F172A'
-            ctx.font = '700 12px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('18 / 160 Slots Left', CONTENT_X + 20, eventCardY + 178)
-
-            drawRoundedRect(CONTENT_X + 24 + statCardW, eventCardY + 148, statCardW, 40, 8, '#F8FAFC', '#E2E8F0', 1)
-            ctx.fillStyle = '#64748B'
-            ctx.font = '500 9px Inter, sans-serif'
-            ctx.fillText('Registration Fee', CONTENT_X + 32 + statCardW, eventCardY + 163)
-            ctx.fillStyle = '#0F172A'
-            ctx.font = '700 12px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('Rp 150,000', CONTENT_X + 32 + statCardW, eventCardY + 178)
-
-            // Division Selection Box
-            const divBoxY = eventCardY + 242
-            drawRoundedRect(CONTENT_X, divBoxY, CONTENT_W, 90, 14, '#FFFFFF', '#E2E8F0', 1.5)
-
-            ctx.fillStyle = '#64748B'
-            ctx.font = '600 10px Inter, sans-serif'
-            ctx.fillText('SELECTED CATEGORY', CONTENT_X + 14, divBoxY + 20)
-
-            // Selected Division Pill
-            drawRoundedRect(CONTENT_X + 12, divBoxY + 28, CONTENT_W - 24, 46, 10, 'rgba(217, 255, 0, 0.25)', '#0F172A', 1.5)
-            ctx.fillStyle = '#0F172A'
-            ctx.font = '700 12.5px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('Recurve Men Open 70m', CONTENT_X + 24, divBoxY + 48)
-
-            ctx.fillStyle = '#64748B'
-            ctx.font = '500 10px Inter, sans-serif'
-            ctx.fillText('Fast Archery Club Affiliation', CONTENT_X + 24, divBoxY + 63)
+            ctx.fillText('Fast Archery Club Affiliation', CONTENT_X + 26, divBoxY + 70)
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '700 12px Inter, sans-serif'
-            ctx.fillText('✓ Selected', CONTENT_X + CONTENT_W - 90, divBoxY + 54)
+            ctx.fillText('✓ Selected', CONTENT_X + CONTENT_W - 94, divBoxY + 60)
 
             // Bottom CTA: Register Now
-            const btnY = divBoxY + 104
-            drawRoundedRect(CONTENT_X, btnY, CONTENT_W, 50, 16, '#0F172A')
+            const btnY = divBoxY + 108
+            drawRoundedRect(CONTENT_X, btnY, CONTENT_W, 52, 16, '#0F172A')
             ctx.fillStyle = '#D9FF00'
-            ctx.font = '700 13.5px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('Register for Tournament', CONTENT_X + 80, btnY + 31)
+            ctx.font = '700 14px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('Register for Tournament', CONTENT_X + 80, btnY + 32)
         }
 
         // ========================================================
-        // SCENE 2: INSTANT QRIS PAYMENT CHECKOUT (4.0s - 8.0s)
+        // SCENE 2: INSTANT QRIS PAYMENT CHECKOUT (4.4s - 8.8s)
         // ========================================================
         else if (sceneIndex === 1) {
             ctx.fillStyle = '#64748B'
             ctx.font = '600 11px Inter, sans-serif'
-            ctx.fillText('02 · INSTANT CHECKOUT', CONTENT_X, CONTENT_Y + 10)
+            ctx.fillText('Instant Online Checkout', CONTENT_X, CONTENT_Y + 14)
 
             ctx.fillStyle = '#0F172A'
-            ctx.font = '700 18px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('Payment Confirmation', CONTENT_X, CONTENT_Y + 32)
+            ctx.font = '800 20px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('Payment Confirmation', CONTENT_X, CONTENT_Y + 38)
 
             // Order Summary Card
-            const orderCardY = CONTENT_Y + 44
-            drawRoundedRect(CONTENT_X, orderCardY, CONTENT_W, 110, 14, '#FFFFFF', '#E2E8F0', 1.5)
+            const orderCardY = CONTENT_Y + 52
+            drawRoundedRect(CONTENT_X, orderCardY, CONTENT_W, 114, 16, '#FFFFFF', '#E2E8F0', 1.5)
 
             ctx.fillStyle = '#0F172A'
-            ctx.font = '700 13px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('Archeris National Open 2026', CONTENT_X + 14, orderCardY + 24)
-
-            ctx.fillStyle = '#64748B'
-            ctx.font = '500 10.5px Inter, sans-serif'
-            ctx.fillText('1x Recurve Men Open 70m Entry', CONTENT_X + 14, orderCardY + 42)
-
-            ctx.fillStyle = '#F1F5F9'
-            ctx.fillRect(CONTENT_X + 14, orderCardY + 54, CONTENT_W - 28, 1)
+            ctx.font = '700 14px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('Archeris National Open 2026', CONTENT_X + 16, orderCardY + 26)
 
             ctx.fillStyle = '#64748B'
             ctx.font = '500 11px Inter, sans-serif'
-            ctx.fillText('Total Payment:', CONTENT_X + 14, orderCardY + 84)
+            ctx.fillText('1x Recurve Men Open 70m Entry', CONTENT_X + 16, orderCardY + 44)
+
+            ctx.fillStyle = '#F1F5F9'
+            ctx.fillRect(CONTENT_X + 16, orderCardY + 58, CONTENT_W - 32, 1)
+
+            ctx.fillStyle = '#64748B'
+            ctx.font = '500 11.5px Inter, sans-serif'
+            ctx.fillText('Total Payment:', CONTENT_X + 16, orderCardY + 88)
 
             ctx.fillStyle = '#0F172A'
-            ctx.font = '800 17px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('Rp 150,000', CONTENT_X + CONTENT_W - 108, orderCardY + 86)
+            ctx.font = '800 18px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('Rp 150,000', CONTENT_X + CONTENT_W - 114, orderCardY + 90)
 
             // QRIS Payment Method Card
-            const isPaid = loopT >= 6.4
-            const qrisCardY = orderCardY + 122
-            drawRoundedRect(CONTENT_X, qrisCardY, CONTENT_W, 200, 14, '#FFFFFF', '#E2E8F0', 1.5)
+            const qrisCardY = orderCardY + 128
+            drawRoundedRect(CONTENT_X, qrisCardY, CONTENT_W, 204, 16, '#FFFFFF', '#E2E8F0', 1.5)
 
-            // QRIS Header
-            drawRoundedRect(CONTENT_X + 14, qrisCardY + 14, 60, 24, 6, '#0F172A')
+            drawRoundedRect(CONTENT_X + 16, qrisCardY + 16, 64, 24, 6, '#0F172A')
             ctx.fillStyle = '#D9FF00'
-            ctx.font = '800 10.5px Inter, sans-serif'
-            ctx.fillText('QRIS', CONTENT_X + 28, qrisCardY + 30)
+            ctx.font = '800 11px Inter, sans-serif'
+            ctx.fillText('QRIS', CONTENT_X + 30, qrisCardY + 32)
 
             ctx.fillStyle = '#0F172A'
-            ctx.font = '700 12.5px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('Instant QRIS Payment', CONTENT_X + 82, qrisCardY + 30)
+            ctx.font = '700 13px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('Instant QRIS Payment', CONTENT_X + 88, qrisCardY + 32)
 
-            // Mock QR Code Box
+            // Mock QR Box
             const qrBoxY = qrisCardY + 48
             const qrX = CONTENT_X + (CONTENT_W - 90) / 2
             drawRoundedRect(qrX, qrBoxY, 90, 90, 8, '#F8FAFC', '#E2E8F0', 1)
 
-            // QR Squares
             ctx.fillStyle = '#0F172A'
             ctx.fillRect(qrX + 10, qrBoxY + 10, 24, 24)
             ctx.fillRect(qrX + 56, qrBoxY + 10, 24, 24)
@@ -477,63 +539,58 @@ onMounted(async () => {
             ctx.fillStyle = '#0F172A'
             ctx.fillRect(qrX + 40, qrBoxY + 40, 12, 12)
 
-            // QR Status Text
             if (isPaid) {
-                drawRoundedRect(CONTENT_X + 14, qrisCardY + 152, CONTENT_W - 28, 34, 8, 'rgba(217, 255, 0, 0.25)', '#0F172A', 1)
+                drawRoundedRect(CONTENT_X + 14, qrisCardY + 152, CONTENT_W - 28, 36, 8, 'rgba(217, 255, 0, 0.28)', '#0F172A', 1)
                 ctx.fillStyle = '#0F172A'
-                ctx.font = '700 11.5px Inter, sans-serif'
-                ctx.fillText('✓ Payment Confirmed Instantly', CONTENT_X + 66, qrisCardY + 173)
+                ctx.font = '700 12px Inter, sans-serif'
+                ctx.fillText('✓ Payment Confirmed Instantly', CONTENT_X + 64, qrisCardY + 175)
             } else {
                 ctx.fillStyle = '#64748B'
-                ctx.font = '500 10.5px Inter, sans-serif'
-                ctx.fillText('Scan with any Bank or E-Wallet App', CONTENT_X + 70, qrisCardY + 172)
+                ctx.font = '500 11px Inter, sans-serif'
+                ctx.fillText('Scan with any Bank or E-Wallet App', CONTENT_X + 68, qrisCardY + 174)
             }
 
-            // Bottom CTA: Pay Now / Success
-            const payBtnY = qrisCardY + 214
-            drawRoundedRect(CONTENT_X, payBtnY, CONTENT_W, 50, 16, '#0F172A')
-            
+            // Bottom CTA: Pay Now
+            const btnY = qrisCardY + 218
+            drawRoundedRect(CONTENT_X, btnY, CONTENT_W, 52, 16, '#0F172A')
+            ctx.fillStyle = '#D9FF00'
+            ctx.font = '700 14px Space Grotesk, Inter, sans-serif'
             if (isPaid) {
-                ctx.fillStyle = '#D9FF00'
-                ctx.font = '700 13.5px Space Grotesk, Inter, sans-serif'
-                ctx.fillText('Payment Successful · Pass Ready', CONTENT_X + 52, payBtnY + 31)
+                ctx.fillText('Payment Successful · Pass Ready', CONTENT_X + 52, btnY + 32)
             } else {
-                ctx.fillStyle = '#D9FF00'
-                ctx.font = '700 13.5px Space Grotesk, Inter, sans-serif'
-                ctx.fillText('Confirm Instant Payment', CONTENT_X + 80, payBtnY + 31)
+                ctx.fillText('Confirm Instant Payment', CONTENT_X + 80, btnY + 32)
             }
         }
 
         // ========================================================
-        // SCENE 3: DIGITAL TICKET & ARCHER PASS (8.0s - 12.2s)
+        // SCENE 3: DIGITAL TICKET & ARCHER PASS (8.8s - 13.2s)
         // ========================================================
         else if (sceneIndex === 2) {
             ctx.fillStyle = '#64748B'
             ctx.font = '600 11px Inter, sans-serif'
-            ctx.fillText('03 · DIGITAL EVENT PASS', CONTENT_X, CONTENT_Y + 10)
+            ctx.fillText('Digital Accreditation', CONTENT_X, CONTENT_Y + 14)
 
             ctx.fillStyle = '#0F172A'
-            ctx.font = '700 18px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('My Tournament Pass', CONTENT_X, CONTENT_Y + 32)
+            ctx.font = '800 20px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('My Tournament Pass', CONTENT_X, CONTENT_Y + 38)
 
-            // Official Ticket Pass Bento Card
-            const passCardY = CONTENT_Y + 44
-            drawRoundedRect(CONTENT_X, passCardY, CONTENT_W, 360, 16, '#FFFFFF', '#E2E8F0', 1.5)
+            // Pass Card
+            const passCardY = CONTENT_Y + 52
+            drawRoundedRect(CONTENT_X, passCardY, CONTENT_W, 368, 16, '#FFFFFF', '#E2E8F0', 1.5)
 
-            // Top Header of Pass
+            // Header of Pass
             drawRoundedRect(CONTENT_X, passCardY, CONTENT_W, 64, 16, '#0F172A')
-            // Bottom flat edge for header
             ctx.fillRect(CONTENT_X, passCardY + 30, CONTENT_W, 34)
 
             ctx.fillStyle = '#D9FF00'
-            ctx.font = '700 10px Inter, sans-serif'
-            ctx.fillText('OFFICIAL ATHLETE PASS', CONTENT_X + 16, passCardY + 24)
+            ctx.font = '700 10.5px Inter, sans-serif'
+            ctx.fillText('Official Athlete Pass', CONTENT_X + 16, passCardY + 24)
 
             ctx.fillStyle = '#FFFFFF'
             ctx.font = '700 15px Space Grotesk, Inter, sans-serif'
             ctx.fillText('Archeris National Open 2026', CONTENT_X + 16, passCardY + 48)
 
-            // Athlete Details Section
+            // Athlete Info
             ctx.fillStyle = '#64748B'
             ctx.font = '500 10px Inter, sans-serif'
             ctx.fillText('Archer Name', CONTENT_X + 16, passCardY + 86)
@@ -543,28 +600,27 @@ onMounted(async () => {
 
             ctx.fillStyle = '#64748B'
             ctx.font = '500 10px Inter, sans-serif'
-            ctx.fillText('Category & Club', CONTENT_X + 16, passCardY + 126)
+            ctx.fillText('Category & Club', CONTENT_X + 16, passCardY + 128)
             ctx.fillStyle = '#0F172A'
-            ctx.font = '600 12px Inter, sans-serif'
-            ctx.fillText('Recurve Men Open 70m · Fast Archery', CONTENT_X + 16, passCardY + 144)
+            ctx.font = '600 12.5px Inter, sans-serif'
+            ctx.fillText('Recurve Men Open 70m · Fast Archery', CONTENT_X + 16, passCardY + 146)
 
-            // Highlight Target Allocation Badge
-            drawRoundedRect(CONTENT_X + 14, passCardY + 160, CONTENT_W - 28, 54, 10, 'rgba(217, 255, 0, 0.25)', '#0F172A', 1.5)
+            // Assigned Target Lane
+            drawRoundedRect(CONTENT_X + 14, passCardY + 164, CONTENT_W - 28, 56, 10, 'rgba(217, 255, 0, 0.28)', '#0F172A', 1.5)
             ctx.fillStyle = '#64748B'
             ctx.font = '600 9.5px Inter, sans-serif'
-            ctx.fillText('ASSIGNED TARGET LANE', CONTENT_X + 24, passCardY + 180)
+            ctx.fillText('Assigned Target Lane', CONTENT_X + 24, passCardY + 184)
 
             ctx.fillStyle = '#0F172A'
             ctx.font = '800 16px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('Target 04A · Morning Wave', CONTENT_X + 24, passCardY + 202)
+            ctx.fillText('Target 04A · Morning Wave', CONTENT_X + 24, passCardY + 206)
 
-            // Check-in QR Code Box
-            const checkInBoxY = passCardY + 226
-            drawRoundedRect(CONTENT_X + 14, checkInBoxY, CONTENT_W - 28, 76, 8, '#F8FAFC', '#E2E8F0', 1)
+            // QR Box
+            const checkInBoxY = passCardY + 232
+            drawRoundedRect(CONTENT_X + 14, checkInBoxY, CONTENT_W - 28, 78, 8, '#F8FAFC', '#E2E8F0', 1)
 
-            // QR
             const tQrX = CONTENT_X + 24
-            const tQrY = checkInBoxY + 10
+            const tQrY = checkInBoxY + 11
             drawRoundedRect(tQrX, tQrY, 56, 56, 4, '#0F172A')
             ctx.fillStyle = '#FFFFFF'
             ctx.fillRect(tQrX + 6, tQrY + 6, 16, 16)
@@ -576,108 +632,101 @@ onMounted(async () => {
             ctx.fillRect(tQrX + 10, tQrY + 38, 8, 8)
 
             ctx.fillStyle = '#0F172A'
-            ctx.font = '700 11px Inter, sans-serif'
+            ctx.font = '700 11.5px Inter, sans-serif'
             ctx.fillText('Gate Check-in QR', tQrX + 68, tQrY + 22)
 
             ctx.fillStyle = '#64748B'
-            ctx.font = '500 9.5px Inter, sans-serif'
+            ctx.font = '500 10px Inter, sans-serif'
             ctx.fillText('Pass ID: ARC-88401', tQrX + 68, tQrY + 38)
-            ctx.fillText('Valid for Field Entry', tQrX + 68, tQrY + 52)
+            ctx.fillText('Valid for Official Field Entry', tQrX + 68, tQrY + 52)
 
             // Status Pill
-            drawRoundedRect(CONTENT_X + 14, passCardY + 314, CONTENT_W - 28, 34, 8, '#0F172A')
+            drawRoundedRect(CONTENT_X + 14, passCardY + 322, CONTENT_W - 28, 34, 8, '#0F172A')
             ctx.fillStyle = '#D9FF00'
-            ctx.font = '700 12px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('✓ Ready for Official Check-in', CONTENT_X + 80, passCardY + 335)
+            ctx.font = '700 12.5px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('✓ Ready for Official Check-in', CONTENT_X + 78, passCardY + 344)
         }
 
         // ========================================================
-        // SCENE 4: LIVE SCORECARD & E-CERTIFICATE (12.2s - 16.5s)
+        // SCENE 4: LIVE SCORECARD & E-CERTIFICATE (13.2s - 17.5s)
         // ========================================================
         else {
             ctx.fillStyle = '#64748B'
             ctx.font = '600 11px Inter, sans-serif'
-            ctx.fillText('04 · SCORECARD & AWARDS', CONTENT_X, CONTENT_Y + 10)
+            ctx.fillText('Performance & Awards', CONTENT_X, CONTENT_Y + 14)
 
             ctx.fillStyle = '#0F172A'
-            ctx.font = '700 18px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('My Score & Certificate', CONTENT_X, CONTENT_Y + 32)
+            ctx.font = '800 20px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('My Score & Certificate', CONTENT_X, CONTENT_Y + 38)
 
             // Performance Card
-            const scoreCardY = CONTENT_Y + 44
-            drawRoundedRect(CONTENT_X, scoreCardY, CONTENT_W, 148, 14, '#FFFFFF', '#E2E8F0', 1.5)
+            const scoreCardY = CONTENT_Y + 52
+            drawRoundedRect(CONTENT_X, scoreCardY, CONTENT_W, 154, 16, '#FFFFFF', '#E2E8F0', 1.5)
 
-            // Gold Medal Ribbon Header
-            drawRoundedRect(CONTENT_X + 12, scoreCardY + 12, CONTENT_W - 24, 40, 8, '#0F172A')
+            drawRoundedRect(CONTENT_X + 14, scoreCardY + 14, CONTENT_W - 28, 38, 8, '#0F172A')
             ctx.fillStyle = '#D9FF00'
-            ctx.font = '700 10.5px Inter, sans-serif'
-            ctx.fillText('1ST PLACE · GOLD MEDAL CHAMPION', CONTENT_X + 22, scoreCardY + 36)
+            ctx.font = '700 11px Inter, sans-serif'
+            ctx.fillText('1st Place · Gold Medal Champion', CONTENT_X + 24, scoreCardY + 38)
 
             ctx.fillStyle = '#0F172A'
-            ctx.font = '800 24px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('682', CONTENT_X + 16, scoreCardY + 92)
+            ctx.font = '800 26px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('682', CONTENT_X + 18, scoreCardY + 98)
 
             ctx.fillStyle = '#64748B'
             ctx.font = '500 11px Inter, sans-serif'
-            ctx.fillText('Total Qualification Score (72 Arrows)', CONTENT_X + 70, scoreCardY + 82)
-            ctx.fillText('Accuracy: 38X · 42 Tens · Rank #1', CONTENT_X + 70, scoreCardY + 98)
+            ctx.fillText('Total Qualification Score (72 Arrows)', CONTENT_X + 76, scoreCardY + 88)
+            ctx.fillText('Accuracy: 38X · 42 Tens · Rank #1', CONTENT_X + 76, scoreCardY + 104)
 
-            // Elimination Record
-            drawRoundedRect(CONTENT_X + 12, scoreCardY + 108, CONTENT_W - 24, 28, 6, '#F8FAFC', '#E2E8F0', 1)
+            drawRoundedRect(CONTENT_X + 14, scoreCardY + 114, CONTENT_W - 28, 28, 6, '#F8FAFC', '#E2E8F0', 1)
             ctx.fillStyle = '#0F172A'
             ctx.font = '600 10.5px Inter, sans-serif'
-            ctx.fillText('Gold Medal Matchplay: Won 6 - 3 against Riau Ega', CONTENT_X + 20, scoreCardY + 126)
+            ctx.fillText('Gold Medal Matchplay: Won 6 - 3 against Riau Ega', CONTENT_X + 22, scoreCardY + 132)
 
             // E-Certificate Download Card
-            const isDownloaded = loopT >= 14.8
-            const certBoxY = scoreCardY + 162
-            drawRoundedRect(CONTENT_X, certBoxY, CONTENT_W, 140, 14, '#0F172A', '#D9FF00', 1.5)
+            const certBoxY = scoreCardY + 168
+            drawRoundedRect(CONTENT_X, certBoxY, CONTENT_W, 144, 16, '#0F172A', '#D9FF00', 1.5)
 
             ctx.fillStyle = '#D9FF00'
-            ctx.font = '700 9.5px Inter, sans-serif'
-            ctx.fillText('OFFICIAL DIGITAL E-CERTIFICATE', CONTENT_X + 16, certBoxY + 24)
+            ctx.font = '700 10px Inter, sans-serif'
+            ctx.fillText('Official Digital E-Certificate', CONTENT_X + 18, certBoxY + 26)
 
             ctx.fillStyle = '#FFFFFF'
-            ctx.font = '700 15px Space Grotesk, Inter, sans-serif'
-            ctx.fillText('Certificate of Excellence', CONTENT_X + 16, certBoxY + 48)
+            ctx.font = '700 16px Space Grotesk, Inter, sans-serif'
+            ctx.fillText('Certificate of Excellence', CONTENT_X + 18, certBoxY + 50)
 
             ctx.fillStyle = '#94A3B8'
-            ctx.font = '500 10px Inter, sans-serif'
-            ctx.fillText('Issued by Archeris National Open · QR Verified', CONTENT_X + 16, certBoxY + 68)
+            ctx.font = '500 10.5px Inter, sans-serif'
+            ctx.fillText('Issued by Archeris National Open · QR Verified', CONTENT_X + 18, certBoxY + 70)
 
-            // Status Pill
             if (isDownloaded) {
-                drawRoundedRect(CONTENT_X + 14, certBoxY + 86, CONTENT_W - 28, 38, 8, '#D9FF00')
+                drawRoundedRect(CONTENT_X + 16, certBoxY + 88, CONTENT_W - 32, 40, 8, '#D9FF00')
                 ctx.fillStyle = '#0F172A'
-                ctx.font = '700 11.5px Inter, sans-serif'
-                ctx.fillText('✓ Certificate Saved to Phone & Apple Wallet', CONTENT_X + 26, certBoxY + 110)
+                ctx.font = '700 12px Inter, sans-serif'
+                ctx.fillText('✓ Certificate Saved to Phone & Apple Wallet', CONTENT_X + 24, certBoxY + 113)
             } else {
-                drawRoundedRect(CONTENT_X + 14, certBoxY + 86, CONTENT_W - 28, 38, 8, '#1E293B', '#334155', 1)
+                drawRoundedRect(CONTENT_X + 16, certBoxY + 88, CONTENT_W - 32, 40, 8, '#1E293B', '#334155', 1)
                 ctx.fillStyle = '#D9FF00'
                 ctx.font = '700 11.5px Inter, sans-serif'
-                ctx.fillText('Download Official PDF & Wallet Pass', CONTENT_X + 46, certBoxY + 110)
+                ctx.fillText('Download Official PDF & Wallet Pass', CONTENT_X + 44, certBoxY + 113)
             }
 
-            // Bottom Action Button
-            const certBtnY = certBoxY + 154
-            drawRoundedRect(CONTENT_X, certBtnY, CONTENT_W, 50, 16, '#0F172A')
-            
+            // Bottom CTA: Download Cert
+            const btnY = certBoxY + 158
+            drawRoundedRect(CONTENT_X, btnY, CONTENT_W, 52, 16, '#0F172A')
+            ctx.fillStyle = '#D9FF00'
+            ctx.font = '700 14px Space Grotesk, Inter, sans-serif'
             if (isDownloaded) {
-                ctx.fillStyle = '#D9FF00'
-                ctx.font = '700 13.5px Space Grotesk, Inter, sans-serif'
-                ctx.fillText('Certificate Saved Successfully', CONTENT_X + 70, certBtnY + 31)
+                ctx.fillText('Certificate Saved Successfully', CONTENT_X + 66, btnY + 32)
             } else {
-                ctx.fillStyle = '#D9FF00'
-                ctx.font = '700 13.5px Space Grotesk, Inter, sans-serif'
-                ctx.fillText('Download E-Certificate', CONTENT_X + 90, certBtnY + 31)
+                ctx.fillText('Download E-Certificate', CONTENT_X + 90, btnY + 32)
             }
         }
 
         // ── FLOATING BOTTOM DOCK ──
-        const DOCK_Y = SCREEN_Y + SCREEN_H - 64
+        const DOCK_Y = SCREEN_Y + SCREEN_H - 58
         const DOCK_W = SCREEN_W - 32
         const DOCK_X = SCREEN_X + 16
-        drawRoundedRect(DOCK_X, DOCK_Y, DOCK_W, 48, 24, '#0F172A', '#334155', 1)
+        drawRoundedRect(DOCK_X, DOCK_Y, DOCK_W, 44, 22, '#0F172A', '#334155', 1)
 
         const dockItems = [
             { label: 'Events', active: sceneIndex === 0 },
@@ -689,119 +738,31 @@ onMounted(async () => {
         dockItems.forEach((item, dIdx) => {
             const iX = DOCK_X + 8 + dIdx * dockItemW
             if (item.active) {
-                drawRoundedRect(iX, DOCK_Y + 6, dockItemW, 36, 18, '#D9FF00')
+                drawRoundedRect(iX, DOCK_Y + 5, dockItemW, 34, 17, '#D9FF00')
                 ctx.fillStyle = '#0F172A'
-                ctx.font = '700 10.5px Space Grotesk, Inter, sans-serif'
-                ctx.fillText(item.label, iX + (dockItemW - ctx.measureText(item.label).width) / 2, DOCK_Y + 28)
+                ctx.font = '700 11px Space Grotesk, Inter, sans-serif'
+                ctx.fillText(item.label, iX + (dockItemW - ctx.measureText(item.label).width) / 2, DOCK_Y + 26)
             } else {
                 ctx.fillStyle = '#94A3B8'
-                ctx.font = '500 10px Inter, sans-serif'
-                ctx.fillText(item.label, iX + (dockItemW - ctx.measureText(item.label).width) / 2, DOCK_Y + 28)
+                ctx.font = '500 10.5px Inter, sans-serif'
+                ctx.fillText(item.label, iX + (dockItemW - ctx.measureText(item.label).width) / 2, DOCK_Y + 26)
             }
         })
 
-        // Home Indicator Bar
-        drawRoundedRect(SCREEN_X + (SCREEN_W - 120) / 2, SCREEN_Y + SCREEN_H - 10, 120, 4, 2, '#0F172A')
+        // Home Indicator
+        drawRoundedRect(SCREEN_X + (SCREEN_W - 120) / 2, SCREEN_Y + SCREEN_H - 8, 120, 4, 2, '#0F172A')
 
         ctx.restore() // Restore screen clip
 
-        // ── 5. MOUSE CURSOR TRAJECTORY & ACTIONS ──
-        let mouseX = 800
-        let mouseY = 800
-        let isPressed = false
-        let rippleProgress = 0
-
-        // Scene 1: Click "Register for Tournament"
-        if (loopT < 4.0) {
-            const targetX = PHONE_X + 195
-            const targetY = CONTENT_Y + 400
-            if (loopT < 1.0) {
-                const p = easeOutCubic(loopT / 1.0)
-                mouseX = 780 - p * (780 - targetX)
-                mouseY = 600 - p * (600 - targetY)
-            } else if (loopT < 2.4) {
-                mouseX = targetX
-                mouseY = targetY
-            } else if (loopT < 2.8) {
-                mouseX = targetX
-                mouseY = targetY
-                isPressed = true
-                rippleProgress = (loopT - 2.4) / 0.4
-            } else {
-                const p = easeInOutCubic((loopT - 2.8) / 1.2)
-                mouseX = targetX + p * 30
-                mouseY = targetY + p * 40
-            }
+        // 5. Draw Ripple & Mouse Cursor
+        if (tapRipple > 0 && tapRipple <= 1) {
+            drawRipple(tapX, tapY, tapRipple)
         }
-        // Scene 2: Click "Confirm Instant Payment"
-        else if (loopT < 8.0) {
-            const targetX = PHONE_X + 195
-            const targetY = CONTENT_Y + 410
-            const tInScene = loopT - 4.0
-            if (tInScene < 1.4) {
-                const p = easeOutCubic(tInScene / 1.4)
-                mouseX = (PHONE_X + 225) - p * 30
-                mouseY = (CONTENT_Y + 450) - p * 40
-            } else if (tInScene < 2.4) {
-                mouseX = targetX
-                mouseY = targetY
-            } else if (tInScene < 2.8) {
-                mouseX = targetX
-                mouseY = targetY
-                isPressed = true
-                rippleProgress = (tInScene - 2.4) / 0.4
-            } else {
-                const p = easeInOutCubic((tInScene - 2.8) / 1.2)
-                mouseX = targetX - p * 20
-                mouseY = targetY + p * 30
-            }
-        }
-        // Scene 3: Idle hover over pass QR
-        else if (loopT < 12.2) {
-            const targetX = PHONE_X + 195
-            const targetY = CONTENT_Y + 280
-            const tInScene = loopT - 8.0
-            if (tInScene < 1.2) {
-                const p = easeOutCubic(tInScene / 1.2)
-                mouseX = (PHONE_X + 175) + p * 20
-                mouseY = (CONTENT_Y + 380) - p * 100
-            } else {
-                mouseX = targetX + Math.sin(tInScene * 1.5) * 8
-                mouseY = targetY + Math.cos(tInScene * 1.5) * 6
-            }
-        }
-        // Scene 4: Click "Download E-Certificate"
-        else {
-            const targetX = PHONE_X + 195
-            const targetY = CONTENT_Y + 385
-            const tInScene = loopT - 12.2
-            if (tInScene < 1.2) {
-                const p = easeOutCubic(tInScene / 1.2)
-                mouseX = (PHONE_X + 200) - p * 5
-                mouseY = (CONTENT_Y + 300) + p * 85
-            } else if (tInScene < 2.4) {
-                mouseX = targetX
-                mouseY = targetY
-            } else if (tInScene < 2.8) {
-                mouseX = targetX
-                mouseY = targetY
-                isPressed = true
-                rippleProgress = (tInScene - 2.4) / 0.4
-            } else {
-                const p = easeInOutCubic((tInScene - 2.8) / 1.5)
-                mouseX = targetX + p * 50
-                mouseY = targetY + p * 80
-            }
+        if (cursorVisible) {
+            drawMouseCursor(cursorX, cursorY, cursorPressed)
         }
 
-        // Draw Ripple & Cursor
-        if (rippleProgress > 0 && rippleProgress <= 1) {
-            drawRipple(mouseX, mouseY, rippleProgress)
-        }
-        drawMouseCursor(mouseX, mouseY, isPressed)
-
-        // Restore Camera Transform
-        ctx.restore()
+        ctx.restore() // Restore Camera Transform
 
         if (!isPaused.value) {
             animationFrameId = requestAnimationFrame(renderFrameFunc)

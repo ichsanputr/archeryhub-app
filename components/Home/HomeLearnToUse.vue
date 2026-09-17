@@ -152,7 +152,8 @@ const features = [
         tagKey: 'home.learn.f4_tag',
         titleKey: 'home.learn.f4_title',
         descKey: 'home.learn.f4_desc',
-        image: 'https://placehold.co/1000x562/0f172a/63c03b?text=Certified+Scorekeeper+Terminal',
+        video: '/features/feature_scorekeeper.mp4',
+        poster: '/features/feature_scorekeeper.png',
         link: '/dashboard/organizer/scorekeepers'
     }
 ]
