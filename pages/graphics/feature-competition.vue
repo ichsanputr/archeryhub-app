@@ -250,35 +250,35 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const cardDianandaY = 512
-            const targetBtnY = 642
+            const cardRiauEgaY = 510
+            const targetBtnY = 864
 
-            // Initial active card is 0 (Arif); after clicking Diananda at 1.8s, it switches to 2
+            // Initial active card is 0 (Arif); after clicking Riau Ega at 1.8s, it switches to 1
             activeQualIndex = 0
 
             if (step2Elapsed >= 0.8) {
                 cursorVisible = true
                 if (step2Elapsed < 1.8) {
-                    // Move cursor to Diananda Choirunisa's card
+                    // Move cursor directly to Riau Ega Agatha's card (Rank 2)
                     const mt = easeInOutCubic((step2Elapsed - 0.8) / 1.0)
                     cursorX = 540
-                    cursorY = 280 + (cardDianandaY - 280) * mt
+                    cursorY = 280 + (cardRiauEgaY - 280) * mt
                 } else if (step2Elapsed < 2.3) {
-                    // Tap on Diananda's card
-                    cursorX = 540; cursorY = cardDianandaY
+                    // Tap on Riau Ega Agatha's card
+                    cursorX = 540; cursorY = cardRiauEgaY
                     cursorPressed = true
                     tapRipple = (step2Elapsed - 1.8) / 0.5
-                    tapX = 540; tapY = cardDianandaY
-                    activeQualIndex = 2
+                    tapX = 540; tapY = cardRiauEgaY
+                    activeQualIndex = 1
                 } else if (step2Elapsed < 3.3) {
                     // Move cursor down to Lock button
-                    activeQualIndex = 2
+                    activeQualIndex = 1
                     const bt = easeInOutCubic((step2Elapsed - 2.3) / 1.0)
                     cursorX = 540
-                    cursorY = cardDianandaY + (targetBtnY - cardDianandaY) * bt
+                    cursorY = cardRiauEgaY + (targetBtnY - cardRiauEgaY) * bt
                 } else {
                     // Dock at Lock button
-                    activeQualIndex = 2
+                    activeQualIndex = 1
                     cursorX = 540; cursorY = targetBtnY
                     if (step2Elapsed >= 3.3) {
                         isQualLocked = true
