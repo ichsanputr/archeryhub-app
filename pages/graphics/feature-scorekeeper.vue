@@ -384,13 +384,13 @@ onMounted(async () => {
             else if (elapsed >= 1.7 && elapsed < 2.1) loginCodeTyped = 'SK78'
             else if (elapsed >= 2.1) loginCodeTyped = 'SK789'
 
-            const btnLoginY = 825
+            const btnLoginY = 861
             if (elapsed >= 2.3) {
                 cursorVisible = true
                 if (elapsed < 3.2) {
                     const mt = easeInOutCubic((elapsed - 2.3) / 0.9)
                     cursorX = 540
-                    cursorY = 620 + (btnLoginY - 620) * mt
+                    cursorY = 560 + (btnLoginY - 560) * mt
                 } else {
                     cursorX = 540; cursorY = btnLoginY
                 }
@@ -429,13 +429,13 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const scanCardY = 530
+            const scanCardY = 466
             if (step2Elapsed >= 0.8) {
                 cursorVisible = true
                 if (step2Elapsed < 2.0) {
                     const mt = easeInOutCubic((step2Elapsed - 0.8) / 1.2)
                     cursorX = 540
-                    cursorY = 400 + (scanCardY - 400) * mt
+                    cursorY = 280 + (scanCardY - 280) * mt
                 } else {
                     cursorX = 540; cursorY = scanCardY
                 }
@@ -503,13 +503,13 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const archer1CardY = 421
+            const archer1CardY = 417
             if (step4Elapsed >= 0.8) {
                 cursorVisible = true
                 if (step4Elapsed < 2.0) {
                     const mt = easeInOutCubic((step4Elapsed - 0.8) / 1.2)
                     cursorX = 540
-                    cursorY = 320 + (archer1CardY - 320) * mt
+                    cursorY = 280 + (archer1CardY - 280) * mt
                 } else {
                     cursorX = 540; cursorY = archer1CardY
                 }
@@ -551,20 +551,22 @@ onMounted(async () => {
                 camPanY = -85 * (1 - finT)
             }
 
-            // Interactive keypad inputs (Keypad Row 1: X, 10, 9, 8)
-            const key10X = 458, key10Y = 735
-            const key9X = 538, key9Y = 735
-            const btnSubmitY = 862
+            // Interactive keypad inputs (Keypad Row 0: X, 10, 9, 8)
+            const key10X = 500, key10Y = 719
+            const key9X = 581, key9Y = 719
+            const btnSubmitX = 597, btnSubmitY = 870
 
             if (step5Elapsed >= 0.5 && step5Elapsed < 1.4) {
                 cursorVisible = true
                 const kt1 = easeInOutCubic((step5Elapsed - 0.5) / 0.7)
-                cursorX = 420 + (key10X - 420) * kt1
-                cursorY = 660 + (key10Y - 660) * kt1
+                cursorX = 450 + (key10X - 450) * kt1
+                cursorY = 600 + (key10Y - 600) * kt1
                 if (step5Elapsed >= 1.2) {
                     scoreSlot5Filled = true
                     activeKeypadKey = '10'
                     cursorPressed = true
+                    tapRipple = (step5Elapsed - 1.2) / 0.45
+                    tapX = key10X; tapY = key10Y
                 }
             } else if (step5Elapsed >= 1.4 && step5Elapsed < 2.3) {
                 cursorVisible = true
@@ -576,6 +578,8 @@ onMounted(async () => {
                     scoreSlot6Filled = true
                     activeKeypadKey = '9'
                     cursorPressed = true
+                    tapRipple = (step5Elapsed - 2.1) / 0.45
+                    tapX = key9X; tapY = key9Y
                 }
             } else if (step5Elapsed >= 2.3 && step5Elapsed < 4.0) {
                 cursorVisible = true
@@ -583,7 +587,7 @@ onMounted(async () => {
                 scoreSlot6Filled = true
                 activeKeypadKey = null
                 const bt = easeInOutCubic((step5Elapsed - 2.3) / 0.8)
-                cursorX = key9X + (600 - key9X) * bt
+                cursorX = key9X + (btnSubmitX - key9X) * bt
                 cursorY = key9Y + (btnSubmitY - key9Y) * bt
                 if (step5Elapsed >= 3.1) {
                     isScoreSubmitted = true
@@ -591,7 +595,7 @@ onMounted(async () => {
                         cursorPressed = true
                         btnScoreSubmitScale = 0.94
                         tapRipple = (step5Elapsed - 3.1) / 0.55
-                        tapX = 600; tapY = btnSubmitY
+                        tapX = btnSubmitX; tapY = btnSubmitY
                     }
                 }
             } else {
