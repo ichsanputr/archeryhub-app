@@ -124,8 +124,8 @@ onMounted(async () => {
         ctx.restore()
     }
 
-    // ── Master 25.0-Second Seamless Loop (5 Modules x 5.0s, Matching Feature 01 Pacing) ──
-    const CYCLE_DURATION = 25.0
+    // ── Master 30.0-Second Seamless Loop (6 Modules x 5.0s, Matching Feature 01 Pacing) ──
+    const CYCLE_DURATION = 30.0
     let startTime = null
 
     function renderFrame(now) {
@@ -165,6 +165,9 @@ onMounted(async () => {
         let btnSeedScale = 1.0
         let isBracketAdvanced = false
         let btnBracketScale = 1.0
+        let isScoresheetOpen = false
+        let isScoresheetPrinted = false
+        let btnScoresheetScale = 1.0
         let isCertIssued = false
         let btnCertScale = 1.0
         let activeTargetIndex = 0
@@ -379,8 +382,8 @@ onMounted(async () => {
                 }
             }
         }
-        // ── MODULE 5: E-CERTIFICATE (20.0s - 25.0s) ──
-        else {
+        // ── MODULE 5: OFFICIAL PRINTOUTS & SCORESHEET SUITE (20.0s - 25.0s) ──
+        else if (elapsed < STEP_TIME * 5) {
             phaseIndex = 4
             isAllocated = true
             isQualLocked = true
@@ -390,12 +393,75 @@ onMounted(async () => {
 
             if (step5Elapsed < 1.0) {
                 const transT = easeInOutCubic(step5Elapsed / 1.0)
-                camZoom = 1.44 + (1.32 - 1.44) * transT
-                camPanY = -85 + (-35 - (-85)) * transT
+                camZoom = 1.44 + (1.35 - 1.44) * transT
+                camPanY = -85 + (-40 - (-85)) * transT
             } else if (step5Elapsed < 2.6) {
-                camZoom = 1.32; camPanY = -35
+                camZoom = 1.35; camPanY = -40
             } else if (step5Elapsed < 3.6) {
                 const ct = easeInOutCubic((step5Elapsed - 2.6) / 1.0)
+                camZoom = 1.35 + (1.44 - 1.35) * ct
+                camPanY = -40 + (-85 - (-40)) * ct
+            } else {
+                camZoom = 1.44; camPanY = -85
+            }
+
+            const docCardY = 410
+            const targetBtnY = 864
+
+            if (step5Elapsed >= 0.8) {
+                cursorVisible = true
+                if (step5Elapsed < 1.8) {
+                    // Move cursor to Qualification Scoresheet Card
+                    const mt = easeInOutCubic((step5Elapsed - 0.8) / 1.0)
+                    cursorX = 540
+                    cursorY = 260 + (docCardY - 260) * mt
+                } else if (step5Elapsed < 2.3) {
+                    // Tap to open Printable Scoresheet PDF
+                    cursorX = 540; cursorY = docCardY
+                    cursorPressed = true
+                    tapRipple = (step5Elapsed - 1.8) / 0.5
+                    tapX = 540; tapY = docCardY
+                    isScoresheetOpen = true
+                } else if (step5Elapsed < 3.3) {
+                    // Move cursor down to Print PDF button
+                    isScoresheetOpen = true
+                    const bt = easeInOutCubic((step5Elapsed - 2.3) / 1.0)
+                    cursorX = 540
+                    cursorY = docCardY + (targetBtnY - docCardY) * bt
+                } else {
+                    // Dock at Print PDF button
+                    isScoresheetOpen = true
+                    cursorX = 540; cursorY = targetBtnY
+                    if (step5Elapsed >= 3.3) {
+                        isScoresheetPrinted = true
+                        if (step5Elapsed >= 3.3 && step5Elapsed <= 3.85) {
+                            cursorPressed = true
+                            btnScoresheetScale = 0.94
+                            tapRipple = (step5Elapsed - 3.3) / 0.55
+                            tapX = 540; tapY = targetBtnY
+                        }
+                    }
+                }
+            }
+        }
+        // ── MODULE 6: OFFICIAL E-CERTIFICATE (25.0s - 30.0s) ──
+        else {
+            phaseIndex = 5
+            isAllocated = true
+            isQualLocked = true
+            isSeeded = true
+            isBracketAdvanced = true
+            isScoresheetPrinted = true
+            const step6Elapsed = elapsed - STEP_TIME * 5
+
+            if (step6Elapsed < 1.0) {
+                const transT = easeInOutCubic(step6Elapsed / 1.0)
+                camZoom = 1.44 + (1.32 - 1.44) * transT
+                camPanY = -85 + (-35 - (-85)) * transT
+            } else if (step6Elapsed < 2.6) {
+                camZoom = 1.32; camPanY = -35
+            } else if (step6Elapsed < 3.6) {
+                const ct = easeInOutCubic((step6Elapsed - 2.6) / 1.0)
                 camZoom = 1.32 + (1.44 - 1.32) * ct
                 camPanY = -35 + (-85 - (-35)) * ct
             } else {
@@ -403,22 +469,22 @@ onMounted(async () => {
             }
 
             const targetBtnY = 642
-            if (step5Elapsed >= 1.6) {
+            if (step6Elapsed >= 1.6) {
                 cursorVisible = true
-                if (step5Elapsed < 3.2) {
-                    const mt = easeInOutCubic((step5Elapsed - 1.6) / 1.6)
+                if (step6Elapsed < 3.2) {
+                    const mt = easeInOutCubic((step6Elapsed - 1.6) / 1.6)
                     cursorX = 540
                     cursorY = 520 + (targetBtnY - 520) * mt
                 } else {
                     cursorX = 540; cursorY = targetBtnY
                 }
 
-                if (step5Elapsed >= 3.2) {
+                if (step6Elapsed >= 3.2) {
                     isCertIssued = true
-                    if (step5Elapsed >= 3.2 && step5Elapsed <= 3.75) {
+                    if (step6Elapsed >= 3.2 && step6Elapsed <= 3.75) {
                         cursorPressed = true
                         btnCertScale = 0.94
-                        tapRipple = (step5Elapsed - 3.2) / 0.55
+                        tapRipple = (step6Elapsed - 3.2) / 0.55
                         tapX = 540; tapY = targetBtnY
                     }
                 }
@@ -1011,7 +1077,253 @@ onMounted(async () => {
             ctx.restore()
         }
         // ══════════════════════════════════════════════════════════
-        // MODULE 5: PODIUM PROTOCOL & GRAPHIC E-CERTIFICATE (Authentic Signatures & Title Case)
+        // MODULE 5: OFFICIAL PRINTOUTS & SCORESHEET SUITE
+        // ══════════════════════════════════════════════════════════
+        else if (phaseIndex === 4) {
+            ctx.save()
+            ctx.translate(screenX, contentY)
+            ctx.textAlign = 'left'
+            ctx.fillStyle = '#64748B'
+            ctx.font = '600 10.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+            ctx.fillText('Official Tournament Printout Suite', 16, 14)
+
+            ctx.fillStyle = '#0F172A'
+            ctx.font = '700 18px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('Document Center & Scoresheets', 16, 36)
+
+            const docW = screenW - 32
+
+            if (!isScoresheetOpen) {
+                // Category Tabs Bar
+                const docTabs = [
+                    { name: 'All Documents (8)', active: true },
+                    { name: 'Scoresheets', active: false },
+                    { name: 'Start Lists', active: false }
+                ]
+                const tabW = (docW - 8) / 3
+                docTabs.forEach((tb, tidx) => {
+                    const tbx = 16 + tidx * (tabW + 4)
+                    drawRoundedRect(tbx, 48, tabW, 32, 6, tb.active ? '#0F172A' : '#FFFFFF', tb.active ? null : '#E2E8F0', 1)
+                    ctx.fillStyle = tb.active ? '#D9FF00' : '#64748B'
+                    ctx.textAlign = 'center'
+                    ctx.font = '700 9px "NovaText", sans-serif'
+                    ctx.fillText(tb.name, tbx + tabW / 2, 68)
+                })
+
+                // 3 Document Cards
+                const docs = [
+                    {
+                        title: 'WA Qualification Scoresheet',
+                        desc: 'Official A4 scorecard for manual scorekeeper audit & signature verification',
+                        badge: 'Print-Ready PDF',
+                        highlight: true
+                    },
+                    {
+                        title: 'Target Butt Start List & Labels',
+                        desc: 'Archer lane assignments 1A-1D and bow stand adhesive stickers',
+                        badge: 'Ready to Print',
+                        highlight: false
+                    },
+                    {
+                        title: 'Elimination Bracket Poster',
+                        desc: 'A3/A4 venue tree chart for notice board matchplay announcements',
+                        badge: 'Ready to Print',
+                        highlight: false
+                    }
+                ]
+
+                docs.forEach((dc, didx) => {
+                    const dy = 90 + didx * 160
+                    drawRoundedRect(16, dy, docW, 148, 10, '#FFFFFF', dc.highlight ? '#0F172A' : '#E2E8F0', dc.highlight ? 1.8 : 1)
+
+                    drawRoundedRect(24, dy + 10, 32, 32, 8, dc.highlight ? '#0F172A' : '#F1F5F9')
+                    drawTargetFace(40, dy + 26, 9)
+
+                    ctx.textAlign = 'left'
+                    ctx.fillStyle = '#0F172A'
+                    ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
+                    ctx.fillText(dc.title, 64, dy + 24)
+
+                    drawRoundedRect(16 + docW - 84, dy + 10, 74, 22, 5, dc.highlight ? '#D9FF00' : '#F1F5F9')
+                    ctx.fillStyle = '#0F172A'
+                    ctx.textAlign = 'center'
+                    ctx.font = '700 8.5px "NovaText", sans-serif'
+                    ctx.fillText(dc.badge, 16 + docW - 47, dy + 24)
+
+                    ctx.textAlign = 'left'
+                    ctx.fillStyle = '#64748B'
+                    ctx.font = '500 9.5px "NovaText", sans-serif'
+                    ctx.fillText(dc.desc, 24, dy + 62)
+
+                    // Action buttons inside card
+                    drawRoundedRect(24, dy + 92, docW - 16, 42, 6, dc.highlight ? '#0F172A' : '#F8FAFC', dc.highlight ? null : '#E2E8F0', 1)
+                    ctx.fillStyle = dc.highlight ? '#D9FF00' : '#0F172A'
+                    ctx.textAlign = 'center'
+                    ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
+                    ctx.fillText(dc.highlight ? 'Tap to Preview & Audit Scoresheet PDF' : 'Download Printout File', 16 + docW / 2, dy + 118)
+                })
+            } else {
+                // Printable WA Scoresheet Document Preview (Scorekeeper Physical Card)
+                const sheetW = docW
+                const sheetH = 524
+                const sheetY = 48
+
+                drawRoundedRect(16, sheetY, sheetW, sheetH, 10, '#FFFDF9', '#0F172A', 1.5)
+
+                // Sheet Header
+                drawRoundedRect(24, sheetY + 8, sheetW - 16, 46, 6, '#0F172A')
+                drawTargetFace(42, sheetY + 31, 10)
+
+                ctx.textAlign = 'left'
+                ctx.fillStyle = '#D9FF00'
+                ctx.font = '700 11.5px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText('Official WA Qualification Scoresheet', 60, sheetY + 26)
+
+                ctx.fillStyle = '#94A3B8'
+                ctx.font = '500 9px "NovaText", sans-serif'
+                ctx.fillText('Target 01-A · Recurve Men 70m · Session 1', 60, sheetY + 44)
+
+                // Archer info bar
+                drawRoundedRect(24, sheetY + 60, sheetW - 16, 36, 6, '#F8FAFC', '#E2E8F0', 0.8)
+                ctx.fillStyle = '#0F172A'
+                ctx.font = '700 11.5px "NovaText", "Plus Jakarta Sans", sans-serif'
+                ctx.fillText('Archer: Arif Dwi Pangestu', 32, sheetY + 76)
+                ctx.fillStyle = '#64748B'
+                ctx.font = '500 9.5px "NovaText", sans-serif'
+                ctx.fillText('Club: Fast Archery Club · ID: AH-2026-9921', 32, sheetY + 90)
+
+                // Score Table (6 Ends x 3 Arrows)
+                const tblY = sheetY + 102
+                drawRoundedRect(24, tblY, sheetW - 16, 260, 6, '#FFFFFF', '#CBD5E1', 1)
+
+                // Table Header
+                drawRoundedRect(24, tblY, sheetW - 16, 24, 4, '#F1F5F9')
+                ctx.fillStyle = '#475569'
+                ctx.font = '700 8.5px "NovaText", sans-serif'
+                ctx.textAlign = 'center'
+                ctx.fillText('End', 40, tblY + 16)
+                ctx.fillText('Arrow Scores', 110, tblY + 16)
+                ctx.fillText('Sum', 190, tblY + 16)
+                ctx.fillText('Total', 238, tblY + 16)
+                ctx.fillText('10+X', 286, tblY + 16)
+
+                const endsData = [
+                    { end: '1', arrows: '10 · 10 · 10', sum: '30', total: '30', tens: '3' },
+                    { end: '2', arrows: '10 · X · 9', sum: '29', total: '59', tens: '2' },
+                    { end: '3', arrows: '10 · 10 · 10', sum: '30', total: '89', tens: '3' },
+                    { end: '4', arrows: 'X · 10 · 9', sum: '29', total: '118', tens: '2' },
+                    { end: '5', arrows: '10 · 10 · 10', sum: '30', total: '148', tens: '3' },
+                    { end: '6', arrows: 'X · 10 · 9', sum: '29', total: '177', tens: '2' }
+                ]
+
+                endsData.forEach((ed, eidx) => {
+                    const rowY = tblY + 26 + eidx * 32
+                    drawRoundedRect(28, rowY, sheetW - 24, 28, 4, eidx % 2 === 0 ? '#FFFFFF' : '#F8FAFC')
+                    
+                    ctx.fillStyle = '#0F172A'
+                    ctx.textAlign = 'center'
+                    ctx.font = '700 10px "NovaText", sans-serif'
+                    ctx.fillText(ed.end, 40, rowY + 18)
+
+                    // Hand-written look in blue/navy ink
+                    ctx.fillStyle = '#1E3A8A'
+                    ctx.font = '700 11px "Bricolage Grotesque", sans-serif'
+                    ctx.fillText(ed.arrows, 110, rowY + 18)
+                    ctx.fillText(ed.sum, 190, rowY + 18)
+
+                    ctx.fillStyle = '#0F172A'
+                    ctx.font = '800 11px "Bricolage Grotesque", sans-serif'
+                    ctx.fillText(ed.total, 238, rowY + 18)
+
+                    ctx.fillStyle = '#059669'
+                    ctx.font = '700 10px "NovaText", sans-serif'
+                    ctx.fillText(ed.tens, 286, rowY + 18)
+                })
+
+                // Total Summary Row inside Table
+                const sumRowY = tblY + 220
+                drawRoundedRect(28, sumRowY, sheetW - 24, 34, 4, '#0F172A')
+                ctx.textAlign = 'left'
+                ctx.fillStyle = '#D9FF00'
+                ctx.font = '700 10.5px "Bricolage Grotesque", sans-serif'
+                ctx.fillText('Grand Total (72 Arrows):', 36, sumRowY + 21)
+
+                ctx.textAlign = 'right'
+                ctx.fillStyle = '#D9FF00'
+                ctx.font = '800 14px "Bricolage Grotesque", sans-serif'
+                ctx.fillText('684 pts · 38 10s', 16 + sheetW - 20, sumRowY + 22)
+
+                // Signatures & Physical Scorekeeper Verification
+                const sigBoxY = sheetY + 372
+                drawRoundedRect(24, sigBoxY, sheetW - 16, 76, 6, '#F8FAFC', '#E2E8F0', 0.8)
+
+                // Archer Signature
+                ctx.textAlign = 'left'
+                ctx.fillStyle = '#64748B'
+                ctx.font = '600 8.5px "NovaText", sans-serif'
+                ctx.fillText('Archer Signature:', 34, sigBoxY + 16)
+
+                ctx.strokeStyle = '#1E3A8A'
+                ctx.lineWidth = 1.4
+                ctx.beginPath()
+                ctx.moveTo(34, sigBoxY + 38)
+                ctx.bezierCurveTo(46, sigBoxY + 22, 58, sigBoxY + 48, 76, sigBoxY + 28)
+                ctx.bezierCurveTo(86, sigBoxY + 20, 96, sigBoxY + 40, 114, sigBoxY + 32)
+                ctx.stroke()
+
+                ctx.fillStyle = '#0F172A'
+                ctx.font = '700 9px "NovaText", sans-serif'
+                ctx.fillText('Arif Dwi Pangestu', 34, sigBoxY + 60)
+
+                // Scorekeeper Signature
+                const skX = 176
+                ctx.fillStyle = '#64748B'
+                ctx.font = '600 8.5px "NovaText", sans-serif'
+                ctx.fillText('Scorekeeper Signature:', skX, sigBoxY + 16)
+
+                ctx.strokeStyle = '#1E3A8A'
+                ctx.lineWidth = 1.4
+                ctx.beginPath()
+                ctx.moveTo(skX, sigBoxY + 36)
+                ctx.bezierCurveTo(skX + 14, sigBoxY + 20, skX + 26, sigBoxY + 46, skX + 44, sigBoxY + 26)
+                ctx.bezierCurveTo(skX + 54, sigBoxY + 18, skX + 66, sigBoxY + 38, skX + 80, sigBoxY + 30)
+                ctx.stroke()
+
+                ctx.fillStyle = '#0F172A'
+                ctx.font = '700 9px "NovaText", sans-serif'
+                ctx.fillText('Drs. Suryanto, M.Si.', skX, sigBoxY + 60)
+
+                // Print-Ready Verification Seal
+                const stampY = sheetY + 456
+                drawRoundedRect(24, stampY, sheetW - 16, 56, 6, '#0F172A')
+                drawTargetFace(44, stampY + 28, 11)
+
+                ctx.textAlign = 'left'
+                ctx.fillStyle = '#D9FF00'
+                ctx.font = '700 11px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText('Physical Scorecard Audit & WA Compliant', 66, stampY + 24)
+
+                ctx.fillStyle = '#FFFFFF'
+                ctx.font = '500 8.5px "NovaText", sans-serif'
+                ctx.fillText('Verified by Scorekeeper · Ready for Instant PDF Export', 66, stampY + 42)
+            }
+
+            // Bottom CTA Button
+            ctx.save()
+            ctx.translate(scBtnCX, scBtnCY)
+            ctx.scale(btnScoresheetScale, btnScoresheetScale)
+            ctx.translate(-scBtnCX, -scBtnCY)
+
+            drawRoundedRect(scBtnX, scBtnY, scBtnW, scBtnH, 12, '#0F172A')
+            ctx.textAlign = 'center'
+            ctx.fillStyle = isScoresheetPrinted ? '#D9FF00' : '#FFFFFF'
+            ctx.font = '700 13px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText(isScoresheetPrinted ? '160 Scoresheets Exported to PDF' : 'Print & Export 160 Scoresheets', scBtnCX, scBtnY + 28)
+            ctx.restore()
+            ctx.restore()
+        }
+        // ══════════════════════════════════════════════════════════
+        // MODULE 6: PODIUM PROTOCOL & GRAPHIC E-CERTIFICATE (Authentic Signatures & Title Case)
         // ══════════════════════════════════════════════════════════
         else {
             ctx.save()
