@@ -119,8 +119,11 @@
 
       <!-- Notification Bell -->
       <div v-if="user" ref="notificationRef" class="relative">
-        <!-- Invisible Backdrop for instant, reliable click-outside on all devices -->
-        <div v-if="showNotifications" class="fixed inset-0 z-40 bg-transparent" @click.stop="showNotifications = false" />
+        <!-- Fullscreen Backdrop for click-outside -->
+        <Teleport to="body">
+          <div v-if="showNotifications" class="fixed inset-0 z-40 bg-transparent"
+            @click="showNotifications = false" @pointerdown="showNotifications = false" />
+        </Teleport>
 
         <button @click.stop="toggleNotifications" :class="[
           isScrolled || !transparent

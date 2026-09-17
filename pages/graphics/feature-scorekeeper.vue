@@ -503,13 +503,13 @@ onMounted(async () => {
                 camZoom = 1.44; camPanY = -85
             }
 
-            const archer1CardY = 475
+            const archer1CardY = 421
             if (step4Elapsed >= 0.8) {
                 cursorVisible = true
                 if (step4Elapsed < 2.0) {
                     const mt = easeInOutCubic((step4Elapsed - 0.8) / 1.2)
                     cursorX = 540
-                    cursorY = 360 + (archer1CardY - 360) * mt
+                    cursorY = 320 + (archer1CardY - 320) * mt
                 } else {
                     cursorX = 540; cursorY = archer1CardY
                 }
@@ -519,6 +519,7 @@ onMounted(async () => {
                     selectedArcherIndex = 0
                     if (step4Elapsed >= 2.0 && step4Elapsed <= 2.55) {
                         cursorPressed = true
+                        btnArcherScale = 0.94
                         tapRipple = (step4Elapsed - 2.0) / 0.55
                         tapX = 540; tapY = archer1CardY
                     }
@@ -936,6 +937,7 @@ onMounted(async () => {
             }
         }
         // ══════════════════════════════════════════════════════════
+        // ══════════════════════════════════════════════════════════
         // SCENE 4: TARGET 04 DETAILS & ARCHER ROSTER (ListScoreScreen)
         // ══════════════════════════════════════════════════════════
         else if (sceneIndex === 3) {
@@ -953,46 +955,54 @@ onMounted(async () => {
             ctx.fillText('National Archery Championship 2026', screenX + 68, appBarY + 36)
 
             // Scoresheet Card (SkScoresheetCard)
-            const scCardY = contentY + 2
-            drawRoundedRect(screenX + 18, scCardY, screenW - 36, 88, 16, '#FFFFFF', '#E2E8F0', 1)
+            const scCardY = contentY + 4
+            const scCardH = 80
+            drawRoundedRect(screenX + 18, scCardY, screenW - 36, scCardH, 16, '#FFFFFF', '#E2E8F0', 1)
 
             // Left Target Pill Box (Navy)
-            drawRoundedRect(screenX + 30, scCardY + 16, 46, 56, 12, '#0F172A')
+            drawRoundedRect(screenX + 28, scCardY + 14, 46, 52, 12, '#0F172A')
             ctx.textAlign = 'center'
             ctx.fillStyle = '#DCFB4A'
             ctx.font = '800 20px "Bricolage Grotesque", sans-serif'
-            ctx.fillText('04', screenX + 53, scCardY + 50)
+            ctx.fillText('04', screenX + 51, scCardY + 46)
 
             ctx.textAlign = 'left'
             ctx.fillStyle = '#0F172A'
-            ctx.font = '800 13.5px "Bricolage Grotesque", "NovaText", sans-serif'
-            ctx.fillText('National Archery Championship 2026', screenX + 88, scCardY + 32)
+            ctx.font = '800 13px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.fillText('National Archery Championship 2026', screenX + 84, scCardY + 27)
 
             ctx.fillStyle = '#64748B'
-            ctx.font = '500 10px "NovaText", sans-serif'
-            ctx.fillText('Recurve Men Open 70m · 6 Ends × 6 Arrows', screenX + 88, scCardY + 48)
+            ctx.font = '500 9.5px "NovaText", sans-serif'
+            ctx.fillText('Recurve Men Open · Session 1', screenX + 84, scCardY + 42)
 
             // Badges row
-            drawRoundedRect(screenX + 88, scCardY + 54, 42, 18, 4, '#F1F5F9')
-            ctx.fillStyle = '#475569'
+            const b1X = screenX + 84
+            const b1W = 42
+            drawRoundedRect(b1X, scCardY + 49, b1W, 20, 5, '#F1F5F9')
             ctx.textAlign = 'center'
+            ctx.fillStyle = '#334155'
             ctx.font = '700 8.5px "NovaText", sans-serif'
-            ctx.fillText('70m', screenX + 109, scCardY + 66)
+            ctx.fillText('70m', b1X + b1W / 2, scCardY + 62)
 
-            drawRoundedRect(screenX + 134, scCardY + 54, 94, 18, 4, '#F1F5F9')
-            ctx.fillText('6 Ends × 6 Arrows', screenX + 181, scCardY + 66)
+            const b2X = b1X + b1W + 6
+            const b2W = 108
+            drawRoundedRect(b2X, scCardY + 49, b2W, 20, 5, '#F1F5F9')
+            ctx.textAlign = 'center'
+            ctx.fillStyle = '#334155'
+            ctx.font = '700 8.5px "NovaText", sans-serif'
+            ctx.fillText('6 Ends × 6 Arrows', b2X + b2W / 2, scCardY + 62)
 
             // Section Header
-            const athSecY = scCardY + 106
+            const athSecY = scCardY + 98
             ctx.textAlign = 'left'
             ctx.fillStyle = '#0F172A'
-            ctx.font = '800 15px "Bricolage Grotesque", "NovaText", sans-serif'
+            ctx.font = '800 14.5px "Bricolage Grotesque", "NovaText", sans-serif'
             ctx.fillText('Athletes (3)', screenX + 20, athSecY)
 
             ctx.textAlign = 'right'
             ctx.fillStyle = '#64748B'
-            ctx.font = '500 11px "NovaText", sans-serif'
-            ctx.fillText('Select athlete to begin scoring', screenX + screenW - 20, athSecY)
+            ctx.font = '500 10.5px "NovaText", sans-serif'
+            ctx.fillText('Select to score', screenX + screenW - 20, athSecY)
 
             const archers = [
                 { pos: '4A', name: 'Arif Dwi Pangestu', club: 'Fast Archery Club · Recurve', status: 'End 3/6 · 118 pts', score: '118 pts', isAct: true, init: 'AD' },
@@ -1000,42 +1010,54 @@ onMounted(async () => {
                 { pos: '4C', name: 'Riau Ega Agatha', club: 'Eagle Archery Club · Recurve', status: 'End 3/6 · 115 pts', score: '115 pts', isAct: false, init: 'RE' }
             ]
 
-            let ay = athSecY + 10
+            let ay = athSecY + 14
             archers.forEach((a, idx) => {
-                const ah = 68
+                const ah = 64
                 const isSelected = a.isAct && isArcherSelected
                 drawRoundedRect(screenX + 18, ay, screenW - 36, ah, 16, '#FFFFFF', isSelected ? '#0F172A' : '#E2E8F0', isSelected ? 2 : 1)
 
-                // Target Position Pill
-                drawRoundedRect(screenX + 28, ay + 14, 38, 40, 10, isSelected ? '#0F172A' : '#0F172A')
-                ctx.fillStyle = '#DCFB4A'
+                // Unified Athlete Target & Avatar Badge (44x44 Navy Box with Lime Target Position)
+                const badgeX = screenX + 28
+                const badgeY = ay + 10
+                const badgeW = 44
+                const badgeH = 44
+
+                drawRoundedRect(badgeX, badgeY, badgeW, badgeH, 12, '#0F172A', isSelected ? '#DCFB4A' : '#334155', isSelected ? 1.8 : 1)
+
                 ctx.textAlign = 'center'
-                ctx.font = '800 12.5px "Bricolage Grotesque", sans-serif'
-                ctx.fillText(a.pos, screenX + 47, ay + 38)
+                ctx.fillStyle = '#DCFB4A'
+                ctx.font = '800 14px "Bricolage Grotesque", sans-serif'
+                ctx.fillText(a.pos, badgeX + badgeW / 2, badgeY + 23)
 
-                // Profile Avatar Circle
-                drawAthleteAvatar(screenX + 88, ay + 34, 18, a.init, isSelected)
+                ctx.fillStyle = '#94A3B8'
+                ctx.font = '700 8.5px "NovaText", sans-serif'
+                ctx.fillText(a.init, badgeX + badgeW / 2, badgeY + 36)
 
-                // Info
+                // Info: Athlete Name & Club with Spacious Layout
                 ctx.textAlign = 'left'
                 ctx.fillStyle = '#0F172A'
-                ctx.font = '700 13.5px "Bricolage Grotesque", "NovaText", sans-serif'
-                ctx.fillText(a.name, screenX + 114, ay + 30)
+                ctx.font = '800 13px "Bricolage Grotesque", "NovaText", sans-serif'
+                ctx.fillText(a.name, screenX + 82, ay + 26)
 
                 ctx.fillStyle = '#64748B'
-                ctx.font = '500 10px "NovaText", sans-serif'
-                ctx.fillText(a.club, screenX + 114, ay + 46)
+                ctx.font = '500 9.5px "NovaText", sans-serif'
+                ctx.fillText(a.club, screenX + 82, ay + 44)
 
                 // Right Status Badge
-                drawRoundedRect(screenX + screenW - 100, ay + 18, 72, 32, 10, '#FEF3C7', 'rgba(245, 158, 11, 0.3)', 1)
+                const stW = 68
+                const stH = 34
+                const stX = screenX + screenW - 88
+                const stY = ay + (ah - stH) / 2
+
+                drawRoundedRect(stX, stY, stW, stH, 8, '#FEF3C7', 'rgba(245, 158, 11, 0.35)', 1)
                 ctx.textAlign = 'center'
                 ctx.fillStyle = '#B45309'
                 ctx.font = '800 11.5px "Bricolage Grotesque", sans-serif'
-                ctx.fillText(a.score, screenX + screenW - 64, ay + 34)
+                ctx.fillText(a.score, stX + stW / 2, stY + 14)
                 ctx.font = '600 8.5px "NovaText", sans-serif'
-                ctx.fillText('End 3 / 6', screenX + screenW - 64, ay + 45)
+                ctx.fillText('End 3 / 6', stX + stW / 2, stY + 27)
 
-                ay += ah + 10
+                ay += ah + 12
             })
 
             // Docked Bottom Action Button
