@@ -1364,7 +1364,7 @@ useSeoMeta({
 useHead({
     title: computed(() => `${tournament.value.name || 'Archery Tournament'} - Archeris.net`),
     link: [
-        { rel: 'canonical', href: `https://archeris.net/events/${slug}` }
+        { rel: 'canonical', href: `https://archeris.net/tournaments/${slug}` }
     ],
     script: [
         {
@@ -1373,8 +1373,13 @@ useHead({
                 '@context': 'https://schema.org',
                 '@type': 'SportsEvent',
                 'name': tournament.value.name || 'Archery Tournament',
+                'url': `https://archeris.net/tournaments/${slug}`,
                 'description': tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 200) : 'Archery tournament with digital scoring and brackets',
-                'image': [tournament.value.banner_url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop'],
+                'image': [tournament.value.banner_url || tournament.value.logo_url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop'],
+                'startDate': tournament.value.start_date || tournament.value.created_at || new Date().toISOString(),
+                'endDate': tournament.value.end_date || tournament.value.start_date || new Date().toISOString(),
+                'eventStatus': 'https://schema.org/EventScheduled',
+                'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
                 'location': {
                     '@type': 'Place',
                     'name': tournament.value.location || 'Archery Range',
@@ -1388,6 +1393,13 @@ useHead({
                     '@type': 'Organization',
                     'name': tournament.value.organizer || 'Tournament Organizer',
                     'url': 'https://archeris.net'
+                },
+                'offers': {
+                    '@type': 'Offer',
+                    'url': `https://archeris.net/tournaments/${slug}`,
+                    'price': '0',
+                    'priceCurrency': 'IDR',
+                    'availability': 'https://schema.org/InStock'
                 }
             }))
         }

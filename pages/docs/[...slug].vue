@@ -32,26 +32,56 @@
                 <div :class="isMobileMenuOpen ? 'block' : 'hidden lg:block'"
                     class="bg-gray-50 lg:bg-transparent -mx-4 px-4 py-4 lg:p-0 lg:mx-0 border-y border-gray-100 lg:border-0 rounded-none lg:rounded-none">
 
-                    <!-- Nav sections -->
-                    <div v-for="cat in sidebarVisibleCategories" :key="cat.id" class="mb-4">
-                        <div class="flex items-center gap-2 px-2 py-1.5 mb-1">
-                            <Icon :icon="cat.icon" class="text-sm text-gray-400" />
-                            <span class="text-[10px] font-black tracking-widest text-gray-400">{{ cat.label }}</span>
+                    <!-- Search filter in sidebar -->
+                    <div class="relative mb-3">
+                        <Icon icon="ph:magnifying-glass-bold" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                        <input v-model="sidebarSearch" type="text" placeholder="Filter articles..."
+                            class="w-full pl-9 pr-3 py-2 bg-white border border-gray-200 rounded-xl text-xs text-navy placeholder-gray-400 focus:outline-none focus:border-primary transition-all shadow-2xs" />
+                    </div>
+
+                    <!-- If categories exist -->
+                    <template v-if="hasCategories">
+                        <div v-for="cat in sidebarVisibleCategories" :key="cat.id" class="mb-4">
+                            <div class="flex items-center gap-2 px-2 py-1.5 mb-1">
+                                <Icon :icon="cat.icon" class="text-sm text-gray-400" />
+                                <span class="text-[10px] font-black tracking-widest text-gray-400">{{ cat.label }}</span>
+                            </div>
+                            <div class="space-y-0.5">
+                                <NuxtLink v-for="doc in filteredSidebarDocs(cat.id)" :key="doc.slug"
+                                    :to="`/docs/${doc.slug}`"
+                                    class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all relative group"
+                                    :class="currentSlug === doc.slug
+                                        ? 'bg-primary/20 border border-primary/40 text-navy font-black shadow-2xs'
+                                        : 'text-gray-600 hover:bg-gray-100 hover:text-navy font-medium'">
+                                    <div v-if="currentSlug === doc.slug"
+                                        class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-primary rounded-r-full">
+                                    </div>
+                                    <span class="leading-snug" :class="currentSlug !== doc.slug ? 'pl-2' : ''">{{ doc.title }}</span>
+                                </NuxtLink>
+                            </div>
                         </div>
-                        <div class="space-y-0.5">
-                            <NuxtLink v-for="doc in filteredSidebarDocs(cat.id)" :key="doc.slug"
+                    </template>
+
+                    <!-- Flat list (when uncategorized) -->
+                    <template v-else>
+                        <div class="flex items-center justify-between px-2 py-1.5 mb-2">
+                            <span class="text-[10px] font-black tracking-widest text-gray-400 uppercase">All Guides ({{ allFilteredSidebarDocs.length }})</span>
+                        </div>
+                        <div class="space-y-1">
+                            <NuxtLink v-for="doc in allFilteredSidebarDocs" :key="doc.slug"
                                 :to="`/docs/${doc.slug}`"
-                                class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all relative group"
+                                class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm transition-all relative group"
                                 :class="currentSlug === doc.slug
                                     ? 'bg-primary/20 border border-primary/40 text-navy font-black shadow-2xs'
-                                    : 'text-gray-600 hover:bg-gray-100 hover:text-navy font-medium'">
+                                    : 'text-gray-600 hover:bg-white hover:text-navy font-medium border border-transparent hover:border-gray-100'">
                                 <div v-if="currentSlug === doc.slug"
                                     class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-primary rounded-r-full">
                                 </div>
-                                <span class="leading-snug" :class="currentSlug !== doc.slug ? 'pl-2' : ''">{{ doc.title }}</span>
+                                <Icon :icon="doc.icon || 'ph:file-text-bold'" class="text-sm shrink-0" :class="currentSlug === doc.slug ? 'text-navy' : 'text-gray-400'" />
+                                <span class="leading-snug truncate" :class="currentSlug !== doc.slug ? 'pl-0.5' : ''">{{ doc.title }}</span>
                             </NuxtLink>
                         </div>
-                    </div>
+                    </template>
                 </div>
             </aside>
 
@@ -94,6 +124,14 @@
                                     <Icon icon="ph:check-circle-bold" class="text-emerald-400 text-xs" />
                                     <span>Verified Guide</span>
                                 </div>
+                                <template v-if="isLocalhost">
+                                    <span class="text-white/20">•</span>
+                                    <button @click="openDeleteModal"
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 hover:text-white border border-rose-500/40 text-xs font-bold transition-all shadow-sm cursor-pointer">
+                                        <Icon icon="ph:trash-bold" class="text-xs text-rose-400" />
+                                        <span>Delete Doc <span class="text-[9px] uppercase px-1 py-0.5 bg-rose-500/40 rounded text-rose-200">Dev</span></span>
+                                    </button>
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -198,6 +236,39 @@
                 </div>
             </aside>
         </div>
+
+        <!-- Localhost Delete Confirmation Modal -->
+        <Teleport to="body">
+            <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/80 backdrop-blur-sm animate-in fade-in duration-150">
+                <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-100 relative">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 mb-4">
+                        <Icon icon="ph:warning-bold" class="text-2xl" />
+                    </div>
+
+                    <h3 class="text-lg font-black text-navy mb-2">Delete Documentation Article?</h3>
+                    <p class="text-xs text-gray-600 mb-4 leading-relaxed">
+                        Are you sure you want to permanently delete <strong class="text-navy font-bold">"{{ currentDoc?.title || currentSlug }}"</strong> (<code class="bg-gray-100 text-rose-600 px-1 py-0.5 rounded text-[11px] font-mono">{{ currentSlug }}.json</code>)?
+                    </p>
+                    <div class="p-3 bg-rose-50/70 border border-rose-100 rounded-xl text-[11px] text-rose-700 mb-6 flex items-start gap-2">
+                        <Icon icon="ph:info-bold" class="text-sm shrink-0 mt-0.5" />
+                        <span>This will permanently remove the JSON file from <code class="font-mono font-bold">data/docs</code> on your disk. This action cannot be undone.</span>
+                    </div>
+
+                    <div class="flex items-center justify-end gap-3">
+                        <button type="button" @click="closeDeleteModal" :disabled="isDeleting"
+                            class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 text-xs font-bold transition-all cursor-pointer">
+                            Cancel
+                        </button>
+                        <button type="button" @click="confirmDeleteDoc" :disabled="isDeleting"
+                            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-md hover:shadow-rose-600/20 disabled:opacity-50 cursor-pointer">
+                            <Icon v-if="isDeleting" icon="ph:spinner-gap-bold" class="animate-spin text-sm" />
+                            <Icon v-else icon="ph:trash-bold" class="text-sm" />
+                            <span>{{ isDeleting ? 'Deleting...' : 'Yes, Delete Doc' }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </Teleport>
     </div>
 </template>
 
@@ -215,6 +286,7 @@ definePageMeta({
 
 const { t, locale } = useI18n()
 const apiBaseUrl = useApiBaseUrl()
+const toast = useToast()
 
 const route = useRoute()
 const router = useRouter()
@@ -223,6 +295,43 @@ const currentSlug = computed(() => {
     if (Array.isArray(raw)) return raw.join('/')
     return raw ? String(raw) : ''
 })
+
+const showDeleteModal = ref(false)
+const isDeleting = ref(false)
+
+const isLocalhost = computed(() => {
+    if (!import.meta.client) return false
+    const hostname = window.location.hostname
+    return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1' || import.meta.dev
+})
+
+const openDeleteModal = () => {
+    showDeleteModal.value = true
+}
+
+const closeDeleteModal = () => {
+    if (!isDeleting.value) {
+        showDeleteModal.value = false
+    }
+}
+
+const confirmDeleteDoc = async () => {
+    if (!currentSlug.value) return
+    isDeleting.value = true
+    try {
+        await $fetch(`${apiBaseUrl}/docs/${currentSlug.value}`, {
+            method: 'DELETE'
+        })
+        toast.success(`Documentation article "${currentDoc.value?.title || currentSlug.value}" successfully deleted`)
+        showDeleteModal.value = false
+        router.push('/docs')
+    } catch (err) {
+        console.error('Failed to delete doc:', err)
+        toast.error(err?.data?.error || err?.message || 'Failed to delete documentation article')
+    } finally {
+        isDeleting.value = false
+    }
+}
 const sidebarSearch = ref('')
 const isMobileMenuOpen = ref(false)
 
@@ -236,8 +345,10 @@ watch(currentSlug, () => {
 
 const categories = [
     { id: 'accounts', label: 'User Accounts', icon: 'ph:users-three-bold' },
+    { id: 'marketplace', label: 'Marketplace & Store', icon: 'ph:storefront-bold' },
     { id: 'subscriptions', label: 'Subscriptions', icon: 'ph:credit-card-bold' },
     { id: 'tournaments', label: 'Tournament Setup', icon: 'ph:trophy-bold' },
+    { id: 'rules', label: 'Rules & Target Standards', icon: 'ph:book-open-bold' },
     { id: 'categories', label: 'Competition Categories', icon: 'ph:circles-three-bold' },
     { id: 'participants', label: 'Participant Management', icon: 'ph:user-plus-bold' },
     { id: 'targets', label: 'Target Allocation', icon: 'ph:target-bold' },
@@ -245,6 +356,7 @@ const categories = [
     { id: 'qualification', label: 'Qualification Rounds', icon: 'ph:chart-line-up-bold' },
     { id: 'teams', label: 'Team Management', icon: 'ph:users-four-bold' },
     { id: 'elimination', label: 'Elimination Brackets', icon: 'ph:tree-structure-bold' },
+    { id: 'finance', label: 'Finance & Payments', icon: 'ph:coins-bold' },
     { id: 'certificates', label: 'Certificates', icon: 'ph:certificate-bold' },
     { id: 'reports', label: 'Reports', icon: 'ph:file-pdf-bold' },
     { id: 'archers', label: 'Archer Guides', icon: 'ph:user-bold' },
@@ -268,14 +380,31 @@ const { data: docsList } = await useAsyncData(
 
 const docs = computed(() => docsList.value || [])
 
-// Canonicalize legacy non-nested URLs
+const hasCategories = computed(() => {
+    return docs.value.some(d => d.category && d.category.trim() !== '')
+})
+
+const allFilteredSidebarDocs = computed(() => {
+    return docs.value.filter(d => {
+        if (!sidebarSearch.value) return true
+        const q = sidebarSearch.value.toLowerCase()
+        return (d.title && d.title.toLowerCase().includes(q)) ||
+               (d.excerpt && d.excerpt.toLowerCase().includes(q)) ||
+               (d.slug && d.slug.toLowerCase().includes(q))
+    })
+})
+
+// Canonicalize legacy non-nested URLs or category-prefixed URLs
 watch([docs, currentSlug], () => {
     const slug = currentSlug.value
-    if (!slug || slug.includes('/')) return
+    if (!slug) return
 
-    const match = docs.value.find(d => typeof d.slug === 'string' && d.slug.endsWith('/' + slug))
-    if (match?.slug) {
-        router.replace(`/docs/${match.slug}`)
+    if (slug.includes('/')) {
+        const base = slug.split('/').pop()
+        const match = docs.value.find(d => d.slug === base || d.slug === slug)
+        if (match?.slug && match.slug !== slug) {
+            router.replace(`/docs/${match.slug}`)
+        }
     }
 }, { immediate: true })
 
@@ -392,18 +521,20 @@ const structuredData = computed(() => {
     ]
 })
 
-useHead(computed(() => ({
+const requestUrl = useRequestURL()
+
+useHead(() => ({
     title: currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
     link: [
-        { rel: 'canonical', href: useRequestURL().href }
+        { rel: 'canonical', href: requestUrl.href }
     ],
     script: [
         {
             type: 'application/ld+json',
-            children: computed(() => structuredData.value ? JSON.stringify(structuredData.value) : '')
+            children: structuredData.value ? JSON.stringify(structuredData.value) : ''
         }
     ]
-})))
+}))
 
 useSeoMeta({
     title: () => currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',

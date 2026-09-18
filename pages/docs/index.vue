@@ -36,8 +36,8 @@
             </div>
         </section>
 
-        <!-- Category Tabs -->
-        <div class="sticky top-16 z-30 bg-white border-b border-gray-100 shadow-sm">
+        <!-- Category Tabs (only when categories exist) -->
+        <div v-if="hasCategories" class="sticky top-16 z-30 bg-white border-b border-gray-100 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-3">
                     <button v-for="cat in categories" :key="cat.id" @click="activeCategory = cat.id"
@@ -54,27 +54,72 @@
 
         <!-- Content -->
         <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div v-for="cat in filteredCategories" :key="cat.id" class="mb-12">
-                <div class="flex items-center gap-3 mb-5">
-                    <div class="w-9 h-9 rounded-xl bg-primary/15 border border-primary/30 flex items-center justify-center text-navy shrink-0">
-                        <Icon :icon="cat.icon" class="text-lg text-navy" />
+            <!-- If categories exist in data -->
+            <template v-if="hasCategories">
+                <div v-for="cat in filteredCategories" :key="cat.id" class="mb-12">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-9 h-9 rounded-xl bg-primary/15 border border-primary/30 flex items-center justify-center text-navy shrink-0">
+                            <Icon :icon="cat.icon" class="text-lg text-navy" />
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-black text-navy">{{ cat.label }}</h2>
+                            <p class="text-gray-400 text-xs">{{ cat.description }}</p>
+                        </div>
                     </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <NuxtLink v-for="doc in filteredDocsByCat(cat.id)" :key="doc.slug" :to="`/docs/${doc.slug}`"
+                            class="group bg-white border border-gray-200/60 rounded-3xl p-6 hover:border-primary transition-all duration-300 flex flex-col justify-between relative overflow-hidden h-full">
+                            <div class="absolute -top-12 -right-12 w-24 h-24 bg-primary/10 group-hover:bg-primary/20 blur-xl rounded-full transition-all duration-300"></div>
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-11 h-11 rounded-2xl bg-gray-50 group-hover:bg-primary border border-gray-100 group-hover:border-primary flex items-center justify-center text-navy transition-all duration-300 shrink-0">
+                                    <Icon :icon="doc.icon || 'ph:file-text-bold'" class="text-xl text-navy" />
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h3
+                                        class="font-black text-navy text-base mb-2 leading-snug group-hover:text-navy transition-colors">
+                                        {{ doc.title }}</h3>
+                                    <div class="text-gray-500 text-xs leading-relaxed line-clamp-2 font-medium">{{ doc.excerpt }}</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center mt-5 pt-4 border-t border-gray-100">
+                                <span class="text-xs text-gray-400 font-semibold flex items-center gap-1.5">
+                                    <Icon icon="ph:clock-bold" class="text-sm" /> {{ doc.readTime }}
+                                </span>
+                                <span
+                                    class="ml-auto flex items-center gap-1 text-xs font-black text-navy opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                    {{ $t('docs.read') || 'Read Guide' }}
+                                    <Icon icon="ph:arrow-right-bold" class="text-xs" />
+                                </span>
+                            </div>
+                        </NuxtLink>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Flat list (when no categories are set) -->
+            <template v-else>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                     <div>
-                        <h2 class="text-lg font-black text-navy">{{ cat.label }}</h2>
-                        <p class="text-gray-400 text-xs">{{ cat.description }}</p>
+                        <h2 class="text-xl sm:text-2xl font-black text-navy tracking-tight font-display">All Documentation Guides</h2>
+                        <p class="text-gray-500 text-xs sm:text-sm mt-1">Explore complete architectural references, tournament rules, and step-by-step platform operations.</p>
+                    </div>
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white border border-gray-200 text-xs font-bold text-navy shadow-xs self-start sm:self-auto">
+                        <Icon icon="ph:files-bold" class="text-primary text-sm" />
+                        <span>{{ allFilteredDocs.length }} Articles Available</span>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <NuxtLink v-for="doc in filteredDocs(cat.id)" :key="doc.slug" :to="`/docs/${doc.slug}`"
-                        class="group bg-white border border-gray-200/60 rounded-3xl p-6 hover:border-primary transition-all duration-300 flex flex-col justify-between relative overflow-hidden h-full">
-                        <!-- Subtle Glow Effect -->
-                        <div class="absolute -top-12 -right-12 w-24 h-24 bg-primary/10 group-hover:bg-primary/20 blur-xl rounded-full transition-all duration-300"></div>
+                    <NuxtLink v-for="doc in allFilteredDocs" :key="doc.slug" :to="`/docs/${doc.slug}`"
+                        class="group bg-white border border-gray-200/70 hover:border-primary rounded-3xl p-6 hover:shadow-md transition-all duration-300 flex flex-col justify-between relative overflow-hidden h-full">
+                        <div class="absolute -top-12 -right-12 w-24 h-24 bg-primary/10 group-hover:bg-primary/25 blur-xl rounded-full transition-all duration-300"></div>
 
                         <div class="flex items-start gap-4">
                             <div
                                 class="w-11 h-11 rounded-2xl bg-gray-50 group-hover:bg-primary border border-gray-100 group-hover:border-primary flex items-center justify-center text-navy transition-all duration-300 shrink-0">
-                                <Icon :icon="doc.icon" class="text-xl text-navy" />
+                                <Icon :icon="doc.icon || 'ph:file-text-bold'" class="text-xl text-navy" />
                             </div>
                             <div class="flex-1 min-w-0">
                                 <h3
@@ -89,23 +134,19 @@
                             </span>
                             <span
                                 class="ml-auto flex items-center gap-1 text-xs font-black text-navy opacity-0 group-hover:opacity-100 transition-all duration-300">
-                                {{ $t('docs.read') }}
+                                {{ $t('docs.read') || 'Read Guide' }}
                                 <Icon icon="ph:arrow-right-bold" class="text-xs" />
                             </span>
                         </div>
                     </NuxtLink>
                 </div>
+            </template>
 
-                <!-- Empty per category -->
-                <div v-if="filteredDocs(cat.id).length === 0" class="text-center py-8 text-gray-300 text-sm">
-                    {{ $t('docs.no_matching_articles') }}
-                </div>
-            </div>
-
-            <!-- Global empty state -->
-            <div v-if="filteredCategories.length === 0" class="text-center py-24">
+            <!-- Empty state -->
+            <div v-if="allFilteredDocs.length === 0" class="text-center py-24 bg-white rounded-3xl border border-gray-100 p-8">
                 <Icon icon="ph:file-search-bold" class="text-5xl text-gray-300 mb-4" />
-                <p class="text-gray-400 font-medium">{{ $t('docs.no_docs_found') }}</p>
+                <p class="text-gray-500 font-bold text-sm">{{ $t('docs.no_docs_found') || 'No documentation found' }}</p>
+                <p class="text-gray-400 text-xs mt-1">Try adjusting your search query.</p>
             </div>
         </section>
     </div>
@@ -136,22 +177,10 @@ const { data: docsList } = await useAsyncData(
 
 const docs = computed(() => (docsList.value as any[]) || [])
 
-useHead({
-    title: computed(() => 'Documentation & Organizer Guides - Archeris.net')
-})
-
-useSeoMeta({
-    title: () => 'Documentation & Organizer Guides - Archeris.net',
-    description: () => t('docs.description', 'Comprehensive guides on the Archeris platform, bow divisions, tournament rules, scoring, and event management.'),
-    ogTitle: () => 'Documentation & Organizer Guides - Archeris.net',
-    ogDescription: () => t('docs.description', 'Comprehensive guides on the Archeris platform, bow divisions, tournament rules, scoring, and event management.')
-})
-
 const route = useRoute()
 const router = useRouter()
 
 const openSearch = () => {
-    // Trigger the Ctrl+K event so the global DocSearchDialog opens
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }))
 }
 
@@ -187,40 +216,50 @@ watch(() => route.query.cat, (newCat) => {
     activeCategory.value = (newCat as string) || 'all'
 })
 
+const hasCategories = computed(() => {
+    return docs.value.some((d: any) => d.category && d.category.trim() !== '')
+})
+
+const allFilteredDocs = computed(() => {
+    return docs.value.filter((d: any) => {
+        if (!searchQuery.value) return true
+        const q = searchQuery.value.toLowerCase()
+        return (d.title && d.title.toLowerCase().includes(q)) ||
+               (d.excerpt && d.excerpt.toLowerCase().includes(q)) ||
+               (d.slug && d.slug.toLowerCase().includes(q))
+    })
+})
+
+const filteredDocsByCat = (categoryId: string) => {
+    return allFilteredDocs.value.filter((d: any) => d.category === categoryId)
+}
+
 const categories = [
     { id: 'all', label: 'All Guides', icon: 'ph:squares-four-bold', description: 'Browse all official documentation articles' },
-    { id: 'accounts', label: 'User Accounts', icon: 'ph:users-three-bold', description: 'Account roles, profile settings, and organization branding' },
-    { id: 'subscriptions', label: 'Subscriptions', icon: 'ph:credit-card-bold', description: 'Plan tiers, tournament quotas, and renewal rules' },
-    { id: 'tournaments', label: 'Tournament Setup', icon: 'ph:trophy-bold', description: 'Event creation wizard, schedules, and public publishing' },
-    { id: 'categories', label: 'Competition Categories', icon: 'ph:circles-three-bold', description: 'Bow divisions, age classes, distances, and quotas' },
-    { id: 'participants', label: 'Participant Management', icon: 'ph:user-plus-bold', description: 'Registration monitoring, payments, and manual entries' },
-    { id: 'targets', label: 'Target Allocation', icon: 'ph:target-bold', description: 'Lane positions, auto-assign algorithm, and target sheets' },
-    { id: 'scorekeeper', label: 'Scorekeeper Operations', icon: 'ph:device-mobile-bold', description: 'Mobile portal login, keypad scoring, and offline mode' },
-    { id: 'qualification', label: 'Qualification Rounds', icon: 'ph:chart-line-up-bold', description: 'Session parameters, live scoring, and tie-breakers' },
-    { id: 'teams', label: 'Team Management', icon: 'ph:users-four-bold', description: 'Club groupings, auto-sync from scores, and substitutions' },
-    { id: 'elimination', label: 'Elimination Brackets', icon: 'ph:tree-structure-bold', description: 'Match play brackets, Set System, and big-screen displays' },
-    { id: 'certificates', label: 'Certificates', icon: 'ph:certificate-bold', description: 'Template uploads, linking participants, and QR verification' },
-    { id: 'reports', label: 'Reports', icon: 'ph:file-pdf-bold', description: 'Official Result Book PDF and printable physical score sheets' },
-    { id: 'archers', label: 'Archer Guides', icon: 'ph:user-bold', description: 'Athlete registration, checking targets, and match tracking' },
+    { id: 'accounts', label: 'User Accounts', icon: 'ph:users-three-bold', description: 'Account types, permissions, and profile setups' },
+    { id: 'marketplace', label: 'Marketplace & Store', icon: 'ph:storefront-bold', description: 'Merchant storefronts, product catalogs, and order fulfillment' },
+    { id: 'subscriptions', label: 'Subscriptions', icon: 'ph:credit-card-bold', description: 'Organizer packages, feature quotas, and billing' },
+    { id: 'tournaments', label: 'Tournament Setup', icon: 'ph:trophy-bold', description: 'Event wizards, schedules, venue setup, and embed widgets' },
+    { id: 'rules', label: 'Rules & Target Standards', icon: 'ph:book-open-bold', description: 'World Archery scoring systems, tiebreaks, and target faces' },
+    { id: 'categories', label: 'Competition Categories', icon: 'ph:circles-three-bold', description: 'Age divisions, bow types, and category limits' },
+    { id: 'participants', label: 'Participant Management', icon: 'ph:user-plus-bold', description: 'Registrations, manual entries, and roster monitoring' },
+    { id: 'targets', label: 'Target Allocation', icon: 'ph:target-bold', description: 'Target butt layout, lane assignment, and allocation sheets' },
+    { id: 'scorekeeper', label: 'Scorekeeper Operations', icon: 'ph:device-mobile-bold', description: 'Mobile short-code login, score inputs, and corrections' },
+    { id: 'qualification', label: 'Qualification Rounds', icon: 'ph:chart-line-up-bold', description: 'Sessions, cumulative scoring, and live leaderboards' },
+    { id: 'teams', label: 'Team Management', icon: 'ph:users-four-bold', description: 'Team rosters, auto-syncing, and substitutions' },
+    { id: 'elimination', label: 'Elimination Brackets', icon: 'ph:tree-structure-bold', description: 'Brackets, seedings, byes, set system, and shoot-offs' },
+    { id: 'finance', label: 'Finance & Payments', icon: 'ph:coins-bold', description: 'QRIS, Virtual Accounts, payment verification, and withdrawals' },
+    { id: 'certificates', label: 'Certificates', icon: 'ph:certificate-bold', description: 'Templates, participant assignment, and QR verification' },
+    { id: 'reports', label: 'Reports', icon: 'ph:file-pdf-bold', description: 'Score sheets and official tournament result books' },
+    { id: 'archers', label: 'Archer Guides', icon: 'ph:user-bold', description: 'Registration, e-tickets, live tracking, and results' }
 ]
 
 const filteredCategories = computed(() => {
-    const cats = activeCategory.value === 'all'
-        ? categories.filter(c => c.id !== 'all')
-        : categories.filter(c => c.id === activeCategory.value)
-    if (searchQuery.value === '') return cats
-    return cats.filter(cat => filteredDocs(cat.id).length > 0)
+    if (activeCategory.value !== 'all') {
+        return categories.filter(c => c.id === activeCategory.value)
+    }
+    return categories.filter(c => c.id !== 'all' && filteredDocsByCat(c.id).length > 0)
 })
-
-const filteredDocs = (categoryId: string) => {
-    return docs.value.filter((d: any) => {
-        const matchCat = d.category === categoryId
-        const matchSearch = searchQuery.value === '' ||
-            d.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-            d.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase())
-        return matchCat && matchSearch
-    })
-}
 
 const heroImages = [
     '/hero-event-detail.jpeg',
@@ -269,18 +308,20 @@ const structuredData = computed(() => [
     }
 ])
 
-useHead({
-    title: 'Archery Scoring Documentation & Guides - Archeris',
+const requestUrl = useRequestURL()
+
+useHead(() => ({
+    title: 'Documentation & Organizer Guides - Archeris.net',
     link: [
-        { rel: 'canonical', href: useRequestURL().href }
+        { rel: 'canonical', href: requestUrl.href }
     ],
     script: [
         {
             type: 'application/ld+json',
-            children: computed(() => JSON.stringify(structuredData.value))
+            children: structuredData.value ? JSON.stringify(structuredData.value) : ''
         }
     ]
-})
+}))
 
 useSeoMeta({
     title: 'Archery Scoring Documentation & Guides - Archeris',

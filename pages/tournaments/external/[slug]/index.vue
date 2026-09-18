@@ -71,4 +71,93 @@ onUnmounted(() => {
 const tournament = computed(() => responseData.value?.tournament || null)
 const tournamentData = computed(() => responseData.value?.data || null)
 const errorMessage = computed(() => error.value ? (error.value.message || 'Failed to load tournament data') : '')
+
+const tournamentTitle = computed(() => {
+  const name = tournament.value?.name || tournamentData.value?.tournament_name || 'Archery Tournament'
+  return `${name} - Archeris`
+})
+
+const tournamentDescription = computed(() => {
+  const rawDesc = tournament.value?.description || tournamentData.value?.description || ''
+  if (rawDesc) {
+    return rawDesc.replace(/<[^>]*>?/gm, '').substring(0, 160)
+  }
+  const name = tournament.value?.name || tournamentData.value?.tournament_name || 'Archery Tournament'
+  const loc = tournament.value?.location || tournamentData.value?.location || 'Indonesia'
+  return `View official schedule, field of play, athlete participants, qualification scores, and live elimination brackets for ${name} in ${loc} on Archeris.`
+})
+
+const tournamentImage = computed(() => {
+  return tournament.value?.banner_url || tournament.value?.logo_url || 'https://archeris.net/hero-event.jpeg'
+})
+
+const canonicalUrl = computed(() => `https://archeris.net/tournaments/external/${slug}`)
+
+useSeoMeta({
+  title: () => tournamentTitle.value,
+  ogTitle: () => tournamentTitle.value,
+  description: () => tournamentDescription.value,
+  ogDescription: () => tournamentDescription.value,
+  ogImage: () => tournamentImage.value,
+  ogType: 'website',
+  ogUrl: () => canonicalUrl.value,
+  twitterCard: 'summary_large_image',
+  twitterTitle: () => tournamentTitle.value,
+  twitterDescription: () => tournamentDescription.value,
+  twitterImage: () => tournamentImage.value,
+})
+
+useHead({
+  title: tournamentTitle,
+  link: [
+    { rel: 'canonical', href: canonicalUrl.value }
+  ],
+  script: [
+    {
+      type: 'application/ld+json',
+      children: computed(() => {
+        if (!tournament.value && !tournamentData.value) return ''
+        const name = tournament.value?.name || tournamentData.value?.tournament_name || 'Archery Tournament'
+        const startDate = tournament.value?.start_date || tournamentData.value?.start_date || new Date().toISOString()
+        const endDate = tournament.value?.end_date || tournamentData.value?.end_date || startDate
+        const locationName = tournament.value?.location || tournamentData.value?.location || 'Archery Range'
+        const organizerName = tournamentData.value?.organizer_name || tournament.value?.organizer || 'Archeris'
+
+        return JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'SportsEvent',
+          'name': name,
+          'url': canonicalUrl.value,
+          'description': tournamentDescription.value,
+          'image': [tournamentImage.value],
+          'startDate': startDate,
+          'endDate': endDate,
+          'eventStatus': 'https://schema.org/EventScheduled',
+          'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
+          'location': {
+            '@type': 'Place',
+            'name': locationName,
+            'address': {
+              '@type': 'PostalAddress',
+              'addressLocality': locationName,
+              'addressCountry': 'ID'
+            }
+          },
+          'organizer': {
+            '@type': 'Organization',
+            'name': organizerName,
+            'url': 'https://archeris.net'
+          },
+          'offers': {
+            '@type': 'Offer',
+            'url': canonicalUrl.value,
+            'price': '0',
+            'priceCurrency': 'IDR',
+            'availability': 'https://schema.org/InStock'
+          }
+        })
+      })
+    }
+  ]
+})
 </script>

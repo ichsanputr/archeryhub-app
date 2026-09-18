@@ -107,8 +107,8 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'robots', content: 'noindex, nofollow, noarchive, nosnippet, noimageindex' },
-        { name: 'googlebot', content: 'noindex, nofollow, noarchive, nosnippet, noimageindex' },
+        { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
+        { name: 'googlebot', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' },
         {
           name: 'description',
           content: 'Archeris is the complete archery scoring system and competition management platform built for organizers and archers worldwide. It provides a simple and modern way to run tournaments, track standings, and handle archery scoring from any device.'
@@ -131,6 +131,8 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'alternate', hreflang: 'en', href: 'https://archeris.net' },
+        { rel: 'alternate', hreflang: 'x-default', href: 'https://archeris.net' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap' }
       ],
       script: [
@@ -172,6 +174,15 @@ export default defineNuxtConfig({
     debug: true,
     devProxy: {
       host: 'localhost',
+    },
+    routeRules: {
+      '/pricing': { redirect: { to: '/package', statusCode: 301 } },
+      '/events': { redirect: { to: '/tournaments', statusCode: 301 } },
+      '/events/**': { redirect: { to: '/tournaments/**', statusCode: 301 } },
+      '/dashboard/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow, noarchive' } },
+      '/auth/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow, noarchive' } },
+      '/dev/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow, noarchive' } },
+      '/test/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow, noarchive' } },
     }
   },
   // Ensure proper client-side error handling
