@@ -83,7 +83,7 @@
                         <tr v-else v-for="item in earningsHistory" :key="item.id"
                             class="hover:bg-gray-50 transition-colors group">
                             <td class="px-6 py-4">
-                                <div class="font-bold text-navy group-hover:text-primary transition-colors">{{
+                                <div class="font-bold text-navy group-hover:underline transition-colors">{{
                                     item.eventName
                                     }}</div>
                                 <div class="text-[10px] text-gray-400 font-medium">{{ item.category }}</div>
@@ -102,7 +102,7 @@
                             <td class="px-6 py-4 text-center">
                                 <NuxtLink :to="`/dashboard/organizer/earnings/${item.id}`">
                                     <button
-                                        class="p-2 hover:bg-primary/10 rounded-lg text-gray-400 hover:text-primary transition-colors">
+                                        class="p-2 hover:bg-slate-100 rounded-lg text-slate-500 hover:text-navy transition-colors">
                                         <Icon icon="ph:eye-bold" class="text-lg" />
                                     </button>
                                 </NuxtLink>

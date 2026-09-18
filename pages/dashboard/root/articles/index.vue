@@ -37,49 +37,6 @@
             </div>
         </div>
 
-        <!-- Metric Stat Cards -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="size-12 rounded-xl bg-primary/10 text-navy flex items-center justify-center shrink-0">
-                    <Icon icon="ph:article-bold" class="text-2xl text-navy" />
-                </div>
-                <div>
-                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{{ t('root.articles.stats_total', 'Total Articles') }}</div>
-                    <div class="text-2xl font-black text-navy tabular-nums">{{ stats.total || 0 }}</div>
-                </div>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="size-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center shrink-0">
-                    <Icon icon="ph:check-circle-bold" class="text-2xl text-green-600" />
-                </div>
-                <div>
-                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{{ t('root.articles.stats_published', 'Published') }}</div>
-                    <div class="text-2xl font-black text-navy tabular-nums">{{ stats.published || 0 }}</div>
-                </div>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="size-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                    <Icon icon="ph:file-dashed-bold" class="text-2xl text-amber-600" />
-                </div>
-                <div>
-                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{{ t('root.articles.stats_draft', 'Drafts') }}</div>
-                    <div class="text-2xl font-black text-navy tabular-nums">{{ stats.draft || 0 }}</div>
-                </div>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="size-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                    <Icon icon="ph:eye-bold" class="text-2xl text-blue-600" />
-                </div>
-                <div>
-                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">{{ t('root.articles.stats_views', 'Total Reads') }}</div>
-                    <div class="text-2xl font-black text-navy tabular-nums">{{ (stats.total_views || 0).toLocaleString('id-ID') }}</div>
-                </div>
-            </div>
-        </div>
-
         <!-- Filters & Search Bar -->
         <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
             <div class="flex-grow w-full">
@@ -180,7 +137,7 @@
                             </td>
                         </tr>
                         <tr v-else v-for="item in articles" :key="item.uuid"
-                            class="hover:bg-primary/5 transition-colors group">
+                            class="hover:bg-slate-50/70 transition-colors group">
                             <!-- Article Info -->
                             <td class="px-6 py-4">
                                 <div class="flex items-start gap-4">
@@ -189,7 +146,7 @@
                                     </div>
                                     <div class="space-y-1 min-w-0">
                                         <NuxtLink :to="`/dashboard/root/articles/${item.uuid}`"
-                                            class="font-bold text-sm text-navy group-hover:text-primary transition-colors line-clamp-1 block">
+                                            class="font-bold text-sm text-navy hover:underline transition-colors line-clamp-1 block">
                                             {{ item.title }}
                                         </NuxtLink>
                                         <div class="flex items-center gap-2 text-[10px] text-gray-400 font-medium">
@@ -210,10 +167,10 @@
 
                             <!-- Status -->
                             <td class="px-6 py-4 text-center">
-                                <button @click="toggleStatus(item)" :title="`Click to toggle status`"
-                                    class="px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest border transition-transform hover:scale-105"
+                                <button @click="toggleStatus(item)" :title="`Klik untuk ubah status`"
+                                    class="px-2.5 py-1 rounded-full text-xs font-bold border transition-transform hover:scale-105"
                                     :class="getStatusBadgeClass(item.status)">
-                                    {{ item.status ? item.status.toUpperCase() : 'PUBLISHED' }}
+                                    {{ getStatusLabel(item.status) }}
                                 </button>
                             </td>
 
@@ -239,7 +196,7 @@
 
                                     <!-- Edit Article -->
                                     <NuxtLink :to="`/dashboard/root/articles/${item.uuid}`"
-                                        class="p-2 text-navy hover:text-primary hover:bg-primary/10 rounded-xl transition-all"
+                                        class="p-2 text-navy hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all"
                                         :title="t('root.articles.edit_tooltip', 'Edit Artikel')">
                                         <Icon icon="ph:pencil-simple-bold" class="text-base" />
                                     </NuxtLink>
@@ -326,14 +283,9 @@ const stats = ref({
 
 const categoryOptions = [
     { label: 'Semua Kategori', value: 'All' },
-    { label: 'Archery Equipment', value: 'Archery Equipment' },
-    { label: 'Bow Types', value: 'Bow Types' },
-    { label: 'Physics & Sizing', value: 'Physics & Sizing' },
-    { label: 'Rules & Tournaments', value: 'Rules & Tournaments' },
-    { label: 'Technique & Training', value: 'Technique & Training' },
-    { label: 'Maintenance & Gear Care', value: 'Maintenance & Gear Care' },
-    { label: 'Mental & Physical Prep', value: 'Mental & Physical Prep' },
-    { label: 'Buying & Setup Guide', value: 'Buying & Setup Guide' },
+    { label: 'Gear & Equipment', value: 'Gear & Equipment' },
+    { label: 'Rules & Scoring', value: 'Rules & Scoring' },
+    { label: 'Guides & Technique', value: 'Guides & Technique' },
 ]
 
 const statusOptions = [
@@ -434,6 +386,19 @@ const executeDelete = async () => {
         toast.error(err.data?.error || 'Gagal menghapus artikel')
     } finally {
         deleteModal.value.loading = false
+    }
+}
+
+const getStatusLabel = (status) => {
+    switch (status) {
+        case 'published':
+            return t('root.articles.status_published', 'Terbit')
+        case 'draft':
+            return t('root.articles.status_draft', 'Draf')
+        case 'archived':
+            return t('root.articles.status_archived', 'Arsip')
+        default:
+            return t('root.articles.status_published', 'Terbit')
     }
 }
 

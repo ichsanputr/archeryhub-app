@@ -72,7 +72,7 @@
                                 {{ t('root.articles.form_slug', 'URL Slug') }}
                             </label>
                             <button type="button" @click="isManualSlug = !isManualSlug"
-                                class="text-[11px] font-bold text-primary hover:underline flex items-center gap-1">
+                                class="text-xs font-bold text-navy hover:text-slate-600 hover:underline flex items-center gap-1">
                                 <Icon :icon="isManualSlug ? 'ph:magic-wand-bold' : 'ph:pencil-simple-bold'" />
                                 <span>{{ isManualSlug ? t('root.articles.form_slug_auto', 'Otomatis dari judul') : 'Ubah manual' }}</span>
                             </button>
@@ -197,8 +197,8 @@
             <div class="lg:col-span-4 space-y-6">
                 <!-- Publication Status Card -->
                 <div class="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-xs space-y-4">
-                    <h3 class="text-xs font-black text-navy uppercase tracking-wider flex items-center gap-2">
-                        <Icon icon="ph:paper-plane-tilt-bold" class="text-primary text-base" />
+                    <h3 class="text-xs font-black text-navy tracking-wider flex items-center gap-2">
+                        <Icon icon="ph:paper-plane-tilt-bold" class="text-navy text-base" />
                         <span>{{ t('root.articles.form_status', 'Status Publikasi') }}</span>
                     </h3>
 
@@ -224,8 +224,8 @@
 
                 <!-- Category Card -->
                 <div class="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-xs space-y-4">
-                    <h3 class="text-xs font-black text-navy uppercase tracking-wider flex items-center gap-2">
-                        <Icon icon="ph:tag-bold" class="text-primary text-base" />
+                    <h3 class="text-xs font-black text-navy tracking-wider flex items-center gap-2">
+                        <Icon icon="ph:tag-bold" class="text-navy text-base" />
                         <span>{{ t('root.articles.form_category', 'Kategori Artikel') }}</span>
                     </h3>
 
@@ -241,8 +241,8 @@
 
                 <!-- Cover Image Card -->
                 <div class="bg-white p-6 rounded-3xl border border-gray-200/80 shadow-xs space-y-4">
-                    <h3 class="text-xs font-black text-navy uppercase tracking-wider flex items-center gap-2">
-                        <Icon icon="ph:image-bold" class="text-primary text-base" />
+                    <h3 class="text-xs font-black text-navy tracking-wider flex items-center gap-2">
+                        <Icon icon="ph:image-bold" class="text-navy text-base" />
                         <span>{{ t('root.articles.form_cover_image', 'Cover Banner Artikel') }}</span>
                     </h3>
 
@@ -346,7 +346,7 @@ const form = ref({
     slug: '',
     excerpt: '',
     content: '',
-    category: 'Archery Equipment',
+    category: 'Gear & Equipment',
     image_url: '',
     author_name: 'Archeris Editorial',
     author_role: 'Archery Specialist & Coach',
@@ -364,15 +364,9 @@ const statusOptions = [
 ]
 
 const categoryListOptions = [
-    { label: 'Archery Equipment', value: 'Archery Equipment' },
-    { label: 'Bow Types', value: 'Bow Types' },
-    { label: 'Physics & Sizing', value: 'Physics & Sizing' },
-    { label: 'Rules & Tournaments', value: 'Rules & Tournaments' },
-    { label: 'Technique & Training', value: 'Technique & Training' },
-    { label: 'Maintenance & Gear Care', value: 'Maintenance & Gear Care' },
-    { label: 'Mental & Physical Prep', value: 'Mental & Physical Prep' },
-    { label: 'Buying & Setup Guide', value: 'Buying & Setup Guide' },
-    { label: '+ Tambah Kategori Lain', value: 'custom' },
+    { label: 'Gear & Equipment', value: 'Gear & Equipment' },
+    { label: 'Rules & Scoring', value: 'Rules & Scoring' },
+    { label: 'Guides & Technique', value: 'Guides & Technique' },
 ]
 
 const onTitleInput = () => {

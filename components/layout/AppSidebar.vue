@@ -327,9 +327,11 @@ const navSections = computed(() => {
     ]
   }
 
-  // Root admin — clean minimal nav (only Articles for now)
+  // Root admin / Business owner nav
   if (role === 'root') {
     return [
+      { type: 'label', label: t('sidebar.overview', 'Overview') },
+      { label: t('sidebar.overview', 'Overview'), icon: 'ph:squares-four-bold', path: '/dashboard/root' },
       { type: 'label', label: t('sidebar.management', 'Management') },
       { label: t('sidebar.articles', 'Articles'), icon: 'ph:newspaper-bold', path: '/dashboard/root/articles' },
     ]

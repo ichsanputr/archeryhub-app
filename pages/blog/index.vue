@@ -348,8 +348,6 @@ const formatDate = (dateStr) => {
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
-const categories = ['All', 'Shooting Basics', 'Archery Equipment', 'Rules & Scoring', 'Tournaments']
-
 const { data: dbArticles } = await useAsyncData('blog-index-articles', async () => {
     try {
         const res = await get('/blog/articles')
@@ -389,6 +387,29 @@ const allArticles = computed(() => {
             avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=ArcherisAdmin'
         }
     }))
+})
+
+// Dynamically display ONLY categories that have published articles
+const categories = computed(() => {
+    const list = ['All']
+    if (!allArticles.value) return list
+    const presentCategories = new Set()
+    for (const a of allArticles.value) {
+        if (a.category && a.category.trim()) {
+            presentCategories.add(a.category.trim())
+        }
+    }
+    const canonicalOrder = ['Gear & Equipment', 'Rules & Scoring', 'Guides & Technique']
+    for (const cat of canonicalOrder) {
+        if (presentCategories.has(cat)) {
+            list.push(cat)
+            presentCategories.delete(cat)
+        }
+    }
+    for (const cat of presentCategories) {
+        list.push(cat)
+    }
+    return list
 })
 
 const featuredArticle = computed(() => allArticles.value[0])

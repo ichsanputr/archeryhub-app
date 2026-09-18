@@ -375,6 +375,7 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { Icon } from '@iconify/vue'
 import { articles } from '~/data/articles'
 
 definePageMeta({

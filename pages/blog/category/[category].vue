@@ -327,6 +327,9 @@ const categoryInfo = computed(() => {
     return getCategoryInfo(currentCategoryParam.value)
 })
 
+const categoryName = computed(() => categoryInfo.value?.name || currentCategoryParam.value)
+const categorySlug = computed(() => categoryInfo.value?.slug || currentCategoryParam.value)
+
 const allCategories = ref(CATEGORY_DEFINITIONS)
 const articlesList = ref([])
 const loading = ref(true)

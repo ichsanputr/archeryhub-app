@@ -545,7 +545,7 @@ const { data: dbArticle } = await useAsyncData(
                 }
             }
         } catch (e) {
-            // Fallback to static if API fails
+            // Log warning if API fetch fails
             console.warn('[blog-slug] API fetch failed for slug:', slug.value, e)
         }
         return null
@@ -554,12 +554,22 @@ const { data: dbArticle } = await useAsyncData(
 )
 
 const article = computed(() => {
-    const raw = dbArticle.value || staticArticles.find(a => a.slug === slug.value) || staticArticles[0]
-    return {
+    const raw = dbArticle.value || staticArticles.find(a => a.slug === slug.value)
+    return raw ? {
         ...raw,
         image: resolveArticleImage(raw.image, raw.slug)
-    }
+    } : null
 })
+
+// Trigger official Nuxt 404 page if article doesn't exist
+if (!article.value) {
+    throw createError({
+        statusCode: 404,
+        statusMessage: 'Article Not Found',
+        message: `The archery article "${slug.value}" does not exist or has been moved.`,
+        fatal: true
+    })
+}
 
 const categorySlug = computed(() => categoryToSlug(article.value?.category))
 

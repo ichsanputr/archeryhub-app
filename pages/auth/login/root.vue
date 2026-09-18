@@ -147,7 +147,7 @@ const handleLogin = async () => {
         })
 
         // Standard redirect for root
-        window.location.href = '/dashboard/root/articles'
+        window.location.href = '/dashboard/root'
     } catch (err) {
         error.value = err.data?.error || 'Authentication sequence failed'
     } finally {

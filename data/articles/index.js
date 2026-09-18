@@ -4,7 +4,7 @@ export const articles = [
     "slug": "understanding-bow-types-recurve-compound-barebow",
     "title": "Understanding Bow Types: Differences Between Recurve, Compound, and Barebow",
     "excerpt": "Choosing your first bow? Explore the key differences, pros, and cons between Olympic Recurve, modern Compound, and traditional Barebow archery in plain English.",
-    "category": "Archery Equipment",
+    "category": "Gear & Equipment",
     "date": "2026-09-10",
     "image": "/images/blog/thumbnails/understanding-bow-types-recurve-compound-barebow.png",
     "author": {
@@ -26,7 +26,7 @@ export const articles = [
     "slug": "anatomy-of-a-bow-and-arrow-essential-parts-guide",
     "title": "The Anatomy of a Bow and Arrow: Essential Parts Every Beginner Should Know",
     "excerpt": "From risers and flexible limbs to nocks and fletchings, get familiar with the essential components of modern archery equipment in plain, accessible English.",
-    "category": "Archery Equipment",
+    "category": "Gear & Equipment",
     "date": "2026-08-28",
     "image": "/images/blog/thumbnails/anatomy-of-a-bow-and-arrow-essential-parts-guide.png",
     "author": {
@@ -47,7 +47,7 @@ export const articles = [
     "slug": "how-to-shoot-a-bow-beginners-guide-to-archery-form",
     "title": "How to Shoot a Bow: Step-by-Step Archery Form and Stance Guide",
     "excerpt": "Master the 7 foundational steps of proper archery form, from stance and grip to draw, anchor, and smooth follow-through.",
-    "category": "Archery Basics",
+    "category": "Guides & Technique",
     "date": "2026-08-15",
     "image": "/images/blog/thumbnails/how-to-shoot-a-bow-beginners-guide-to-archery-form.png",
     "author": {
@@ -68,7 +68,7 @@ export const articles = [
     "slug": "how-archery-scoring-works-target-rings-and-rules",
     "title": "How Archery Scoring Works: Target Rings, Arrow Values, and Line Cuts",
     "excerpt": "Understand official World Archery target faces, colored ring values from 10 to 1, the inner 10 X-ring, and line-cutter rules.",
-    "category": "Tournament Scoring",
+    "category": "Rules & Scoring",
     "date": "2026-08-01",
     "image": "/images/blog/thumbnails/how-archery-scoring-works-target-rings-and-rules.png",
     "author": {
@@ -89,7 +89,7 @@ export const articles = [
     "slug": "evolution-of-traditional-and-modern-archery",
     "title": "The Evolution of Traditional and Modern Archery: Materials, Bows, and Disciplines",
     "excerpt": "Trace the fascinating journey of archery from ancient yew longbows and horsebows to aerospace-grade carbon fiber Olympic rigs.",
-    "category": "Archery History",
+    "category": "Gear & Equipment",
     "date": "2026-07-18",
     "image": "/images/blog/thumbnails/evolution-of-traditional-and-modern-archery.png",
     "author": {
@@ -110,7 +110,7 @@ export const articles = [
     "slug": "how-archery-tournaments-work-introduction-to-rounds-and-matches",
     "title": "How Archery Tournaments Work: Qualification Rounds and Match Play Explained",
     "excerpt": "A complete beginner walkthrough on tournament flow, from morning equipment inspections and 72-arrow qualification to head-to-head matches.",
-    "category": "Tournament Scoring",
+    "category": "Rules & Scoring",
     "date": "2026-07-04",
     "image": "/images/blog/thumbnails/how-archery-tournaments-work-introduction-to-rounds-and-matches.png",
     "author": {
@@ -131,7 +131,7 @@ export const articles = [
     "slug": "key-distances-and-rules-indoor-vs-outdoor-archery",
     "title": "Indoor vs. Outdoor Archery: Key Distances, Target Sizes, and Environmental Factors",
     "excerpt": "Learn how shooting indoors at 18 meters differs from competing outdoors at 50m and 70m with wind, lighting, and changing target sizes.",
-    "category": "Tournament Scoring",
+    "category": "Rules & Scoring",
     "date": "2026-06-20",
     "image": "/images/blog/thumbnails/key-distances-and-rules-indoor-vs-outdoor-archery.png",
     "author": {
@@ -152,7 +152,7 @@ export const articles = [
     "slug": "understanding-world-archery-elimination-brackets-and-shoot-off-scoring",
     "title": "World Archery Elimination Brackets: The Set System and Sudden-Death Shoot-Offs",
     "excerpt": "Explore how head-to-head match brackets operate, how Set Points work in Recurve and Barebow, and the thrilling rules of one-arrow shoot-offs.",
-    "category": "Tournament Scoring",
+    "category": "Rules & Scoring",
     "date": "2026-06-05",
     "image": "/images/blog/thumbnails/understanding-world-archery-elimination-brackets-and-shoot-off-scoring.png",
     "author": {

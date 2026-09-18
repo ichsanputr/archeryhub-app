@@ -2,44 +2,34 @@
 
 export const CATEGORY_DEFINITIONS = [
   {
-    slug: 'scoring-rules-and-guides',
-    aliases: ['scoring-rules-guides', 'scoring-rules', 'scoring'],
-    name: 'Scoring Rules & Guides',
-    shortName: 'Scoring Rules',
-    description: 'Master target ring values, line-cut judgments, arrow score calculation, and World Archery scoring rulebooks.',
-    icon: 'ph:target-bold',
+    slug: 'gear-and-equipment',
+    aliases: ['gear-equipment', 'gear', 'equipment', 'archery-equipment', 'bow-types', 'physics-sizing'],
+    name: 'Gear & Equipment',
+    shortName: 'Gear & Equipment',
+    description: 'In-depth breakdowns of bow types, arrows, spine mechanics, cams & let-off, sizing, and gear selection.',
+    icon: 'ph:bow-bold',
     badgeClass: 'bg-amber-50 text-amber-700 border-amber-200/80',
     heroGradient: 'from-amber-600/30 to-amber-900/10'
   },
   {
-    slug: 'technology-and-innovation',
-    aliases: ['technology-innovation', 'technology', 'tech'],
-    name: 'Technology & Innovation',
-    shortName: 'Technology',
-    description: 'Explore cloud scorekeeping, real-time leaderboard synchronization, digital archery tournament management, and electronic targets.',
-    icon: 'ph:cpu-bold',
+    slug: 'rules-and-scoring',
+    aliases: ['rules-scoring', 'rules', 'scoring', 'rules-tournaments', 'tournaments'],
+    name: 'Rules & Scoring',
+    shortName: 'Rules & Scoring',
+    description: 'Target scoring, Olympic set system formats, elimination brackets, indoor vs outdoor rules, and tournament procedures.',
+    icon: 'ph:target-bold',
     badgeClass: 'bg-sky-50 text-sky-700 border-sky-200/80',
     heroGradient: 'from-sky-600/30 to-sky-900/10'
   },
   {
-    slug: 'tournament-strategy',
-    aliases: ['strategy', 'tournaments'],
-    name: 'Tournament Strategy',
-    shortName: 'Tournament Strategy',
-    description: 'Tactics for qualification rounds, elimination match play, set system pacing, mental game, and single-arrow shoot-offs.',
-    icon: 'ph:trophy-bold',
+    slug: 'guides-and-technique',
+    aliases: ['guides-technique', 'guides', 'technique', 'training', 'shooting-basics'],
+    name: 'Guides & Technique',
+    shortName: 'Guides & Technique',
+    description: 'Step-by-step shooting guides, form mechanics, anchor points, release execution, and mental performance.',
+    icon: 'ph:crosshair-bold',
     badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200/80',
     heroGradient: 'from-emerald-600/30 to-emerald-900/10'
-  },
-  {
-    slug: 'club-management',
-    aliases: ['management', 'clubs'],
-    name: 'Club Management',
-    shortName: 'Club Management',
-    description: 'Best practices for archery clubs, practice session tracking, athlete handicap calculation, and member engagement.',
-    icon: 'ph:users-three-bold',
-    badgeClass: 'bg-indigo-50 text-indigo-700 border-indigo-200/80',
-    heroGradient: 'from-indigo-600/30 to-indigo-900/10'
   }
 ]
 
