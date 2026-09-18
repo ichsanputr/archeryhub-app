@@ -532,21 +532,26 @@ function resolveArticleImage(image, slug) {
 
 const slug = computed(() => route.params.slug)
 
-const { data: dbArticle } = await useAsyncData(`blog-article-${slug.value}`, async () => {
-    try {
-        const res = await get(`/blog/articles/${slug.value}`)
-        if (res?.data) {
-            return {
-                ...res.data,
-                date: res.data.published_at || '2026-09-14',
-                image: resolveArticleImage(res.data.image || res.data.image_url, slug.value)
+const { data: dbArticle } = await useAsyncData(
+    () => `blog-article-${slug.value}`,
+    async () => {
+        try {
+            const res = await get(`/blog/articles/${slug.value}`)
+            if (res?.data) {
+                return {
+                    ...res.data,
+                    date: res.data.published_at || '2026-09-14',
+                    image: resolveArticleImage(res.data.image || res.data.image_url, slug.value)
+                }
             }
+        } catch (e) {
+            // Fallback to static if API fails
+            console.warn('[blog-slug] API fetch failed for slug:', slug.value, e)
         }
-    } catch {
-        // Fallback to static
-    }
-    return null
-}, { lazy: true })
+        return null
+    },
+    { watch: [slug] }
+)
 
 const article = computed(() => {
     const raw = dbArticle.value || staticArticles.find(a => a.slug === slug.value) || staticArticles[0]

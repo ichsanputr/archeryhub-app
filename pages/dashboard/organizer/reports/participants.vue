@@ -116,7 +116,7 @@
       </div>
       <div v-else class="h-48 flex flex-col items-center justify-center text-gray-400 space-y-2 border border-dashed border-gray-100 rounded-xl">
         <Icon icon="ph:trend-up-bold" class="text-3xl" />
-        <div class="text-xs font-bold">No Timeline Trend Data Available for Selected Filter.</div>
+        <div class="text-xs font-bold">{{ t('dashboard.reports.no_timeline_trend', 'Tidak ada data tren untuk filter yang dipilih.') }}</div>
       </div>
     </div>
 
@@ -125,7 +125,7 @@
       <div class="bg-white border border-primary/10 rounded-2xl p-6 space-y-4">
         <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:crosshair-bold" class="text-primary" />
-          Bow Types Split
+          {{ t('dashboard.reports.bow_types_split', 'Distribusi Divisi Busur') }}
         </h3>
         <div class="space-y-3">
           <div v-for="item in stats.bow_type_split" :key="item.name" class="space-y-1">
@@ -137,14 +137,14 @@
               <div class="bg-primary h-full rounded-full" :style="{ width: getPercent(item.count) + '%' }"></div>
             </div>
           </div>
-          <div v-if="!stats.bow_type_split?.length" class="text-center py-6 text-xs text-gray-400">No Split Data.</div>
+          <div v-if="!stats.bow_type_split?.length" class="text-center py-6 text-xs text-gray-400">{{ t('dashboard.reports.no_split_data', 'Belum ada data distribusi.') }}</div>
         </div>
       </div>
 
       <div class="bg-white border border-primary/10 rounded-2xl p-6 space-y-4">
         <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:gender-intersex-bold" class="text-primary" />
-          Gender Split
+          {{ t('dashboard.reports.gender_split', 'Distribusi Gender') }}
         </h3>
         <div class="space-y-3">
           <div v-for="item in stats.gender_split" :key="item.name" class="space-y-1">
@@ -156,14 +156,14 @@
               <div class="bg-primary h-full rounded-full" :style="{ width: getPercent(item.count) + '%' }"></div>
             </div>
           </div>
-          <div v-if="!stats.gender_split?.length" class="text-center py-6 text-xs text-gray-400">No Split Data.</div>
+          <div v-if="!stats.gender_split?.length" class="text-center py-6 text-xs text-gray-400">{{ t('dashboard.reports.no_split_data', 'Belum ada data distribusi.') }}</div>
         </div>
       </div>
 
       <div class="bg-white border border-primary/10 rounded-2xl p-6 space-y-4">
         <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:globe-bold" class="text-primary" />
-          Registration Sources
+          {{ t('dashboard.reports.registration_sources', 'Sumber Pendaftaran') }}
         </h3>
         <div class="space-y-3">
           <div v-for="item in stats.registration_source_split" :key="item.name" class="space-y-1">
@@ -175,7 +175,7 @@
               <div class="bg-primary h-full rounded-full" :style="{ width: getPercent(item.count) + '%' }"></div>
             </div>
           </div>
-          <div v-if="!stats.registration_source_split?.length" class="text-center py-6 text-xs text-gray-400">No Split Data.</div>
+          <div v-if="!stats.registration_source_split?.length" class="text-center py-6 text-xs text-gray-400">{{ t('dashboard.reports.no_split_data', 'Belum ada data distribusi.') }}</div>
         </div>
       </div>
     </div>
@@ -185,19 +185,19 @@
       <div class="p-5 border-b border-gray-100">
         <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:list-dashes-bold" class="text-primary" />
-          Recent Registered Participants
+          {{ t('dashboard.reports.recent_registered_participants', 'Peserta Terbaru Terdaftar') }}
         </h3>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs">
           <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
             <tr>
-              <th class="px-6 py-4">Archer</th>
-              <th class="px-6 py-4">Event</th>
-              <th class="px-6 py-4">Category / Bow</th>
-              <th class="px-6 py-4">Reg Date</th>
-              <th class="px-6 py-4">Payment</th>
-              <th class="px-6 py-4">Check-in</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.archer', 'Pemanah') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.event', 'Turnamen') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.category_bow', 'Kategori / Busur') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.reg_date', 'Tgl Registrasi') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.payment', 'Pembayaran') }}</th>
+              <th class="px-6 py-4">{{ t('dashboard.reports.checkin', 'Daftar Ulang') }}</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 font-medium">
@@ -223,12 +223,12 @@
               <td class="px-6 py-4">
                 <span :class="p.last_reregistration_at ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-slate-50 text-slate-400 border-slate-200'"
                   class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider capitalize">
-                  {{ p.last_reregistration_at ? 'Checked In' : 'Pending' }}
+                  {{ p.last_reregistration_at ? t('dashboard.reports.checked_in', 'Sudah Check-in') : t('dashboard.reports.pending', 'Menunggu') }}
                 </span>
               </td>
             </tr>
             <tr v-if="!stats.recent_participants?.length">
-              <td colspan="6" class="text-center py-10 text-gray-400 font-bold">No Participants Found Matching Selected Filters.</td>
+              <td colspan="6" class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_participants_found', 'Tidak ada peserta yang cocok dengan filter yang dipilih.') }}</td>
             </tr>
           </tbody>
         </table>
@@ -273,33 +273,31 @@ const filters = reactive({
 })
 
 const eventSelectItems = computed(() => [
-  { id: 'all', name: t('dashboard.reports.all_events', 'Semua Event') },
+  { id: 'all', name: t('dashboard.reports.all_events', 'Semua Turnamen') },
   ...eventsList.value
 ])
 
-const bowTypeItems = [
-  { value: 'all', label: 'Semua Jenis Busur' },
+const bowTypeItems = computed(() => [
+  { value: 'all', label: t('dashboard.reports.all_bow_types', 'Semua Divisi Busur') },
   { value: 'Recurve', label: 'Recurve' },
   { value: 'Compound', label: 'Compound' },
   { value: 'Barebow', label: 'Barebow' },
   { value: 'Traditional', label: 'Traditional' },
   { value: 'Standard', label: 'Standard Bow' },
-]
+])
 
-const genderItems = [
-  { value: 'all', label: 'Semua Gender' },
-  { value: 'Pria', label: 'Putra / Pria' },
-  { value: 'Wanita', label: 'Putri / Wanita' },
-  { value: 'Male', label: 'Male' },
-  { value: 'Female', label: 'Female' },
-  { value: 'Campuran', label: 'Mix / Campuran' },
-]
+const genderItems = computed(() => [
+  { value: 'all', label: t('dashboard.reports.all_genders', 'Semua Gender') },
+  { value: 'men', label: t('dashboard.reports.gender_male', 'Putra / Pria') },
+  { value: 'women', label: t('dashboard.reports.gender_female', 'Putri / Wanita') },
+  { value: 'mixed', label: t('dashboard.reports.gender_mixed', 'Mix / Campuran') },
+])
 
-const statusItems = [
-  { value: 'all', label: 'Semua Status' },
-  { value: 'checked_in', label: 'Sudah Registrasi Ulang (Checked In)' },
-  { value: 'pending', label: 'Belum Registrasi Ulang (Pending)' },
-]
+const statusItems = computed(() => [
+  { value: 'all', label: t('dashboard.reports.all_status', 'Semua Status') },
+  { value: 'checked_in', label: t('dashboard.reports.status_checked_in', 'Sudah Registrasi Ulang (Checked In)') },
+  { value: 'pending', label: t('dashboard.reports.status_pending', 'Belum Registrasi Ulang (Pending)') },
+])
 
 onMounted(() => { fetchReportData() })
 

@@ -8,14 +8,14 @@
     <!-- trigger -->
     <div ref="triggerEl" class="relative group" @click="toggleCalendar">
       <div class="absolute left-4 top-1/2 -translate-y-1/2 z-10 pointer-events-none transition-colors"
-        :class="isOpen ? 'text-primary' : 'text-gray-400'">
+        :class="isOpen ? 'text-navy' : 'text-gray-400'">
         <Icon icon="ph:calendar-blank" class="text-[18px]" />
       </div>
 
       <div class="w-full h-11 pl-11 pr-10 rounded-xl border border-gray-200 bg-gray-50/50 text-sm font-medium transition-all
         flex items-center cursor-pointer hover:border-black/40 select-none whitespace-nowrap overflow-hidden"
         :class="[
-          isOpen ? 'border-primary bg-white ring-4 ring-primary/10' : '',
+          isOpen ? 'border-navy bg-white ring-4 ring-navy/10' : '',
           error ? 'border-red-500 ring-4 ring-red-100' : '',
           disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '',
         ]">
@@ -28,7 +28,7 @@
             <span class="font-black text-navy text-xs whitespace-nowrap truncate">{{ fmtShort(rangeEnd) }}</span>
           </span>
           <span v-else-if="rangeStart" class="flex items-center gap-2 whitespace-nowrap truncate">
-            <span class="font-black text-primary text-xs whitespace-nowrap truncate">{{ fmtShort(rangeStart) }}</span>
+            <span class="font-black text-navy text-xs whitespace-nowrap truncate">{{ fmtShort(rangeStart) }}</span>
             <span class="text-gray-300 font-bold">→</span>
             <span class="text-gray-400 text-xs whitespace-nowrap truncate">{{ placeholder || 'End date' }}</span>
           </span>
@@ -36,7 +36,7 @@
         </template>
 
         <!-- single display -->
-        <span v-else :class="displaySingle ? 'text-navy' : 'text-gray-400'" class="whitespace-nowrap truncate w-full">
+        <span v-else :class="displaySingle ? 'text-navy font-bold' : 'text-gray-400'" class="whitespace-nowrap truncate w-full">
           {{ displaySingle || placeholder || 'Select date' }}
         </span>
       </div>
@@ -50,7 +50,7 @@
 
       <!-- caret -->
       <div class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none transition-transform duration-300"
-        :class="isOpen ? 'rotate-180 text-primary' : ''">
+        :class="isOpen ? 'rotate-180 text-navy' : ''">
         <Icon icon="ph:caret-down" class="text-sm" />
       </div>
     </div>
@@ -65,13 +65,13 @@
       :leave-to-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'">
 
       <div v-if="isOpen"
-        class="absolute z-[9999] bg-white border border-gray-100 rounded-2xl overflow-hidden select-none"
+        class="absolute z-[9999] bg-white border border-gray-200 rounded-2xl overflow-hidden select-none"
         :class="[
           isFlippedTop ? 'bottom-full mb-2 origin-bottom' : 'top-full mt-2 origin-top',
           isAlignedRight ? 'right-0' : 'left-0',
           range ? 'flex-nowrap' : ''
         ]"
-        :style="range ? 'width:560px; box-shadow:0 20px 60px -10px rgba(15,23,42,0.15)' : 'width:288px; box-shadow:0 20px 60px -10px rgba(15,23,42,0.15)'">
+        :style="range ? 'width:560px; box-shadow:0 20px 60px -10px rgba(15,23,42,0.18)' : 'width:288px; box-shadow:0 20px 60px -10px rgba(15,23,42,0.18)'">
 
         <!-- range: two panels side by side -->
         <div v-if="range" class="flex">
@@ -108,26 +108,26 @@
           <div v-if="showYearMonth" class="p-1">
             <div class="flex items-center justify-between mb-2">
               <button type="button" @click.stop="yearPage--"
-                class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-primary/10 hover:text-primary transition-all">
+                class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-navy transition-all">
                 <Icon icon="ph:caret-left" class="text-xs" />
               </button>
               <span class="text-xs font-black text-navy">{{ yearPageStart }} – {{ yearPageStart + 11 }}</span>
               <button type="button" @click.stop="yearPage++"
-                class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-primary/10 hover:text-primary transition-all">
+                class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-navy transition-all">
                 <Icon icon="ph:caret-right" class="text-xs" />
               </button>
             </div>
             <div class="grid grid-cols-4 gap-1 mb-3">
               <button v-for="yr in yearPageYears" :key="yr" type="button" @click.stop="selectYear(yr)"
                 class="py-1.5 rounded-lg text-xs font-bold transition-all"
-                :class="yr === viewYear ? 'bg-primary text-navy font-black' : 'text-gray-600 hover:bg-primary/10'">
+                :class="yr === viewYear ? 'bg-navy text-white font-black shadow-sm' : 'text-gray-600 hover:bg-gray-100 hover:text-navy'">
                 {{ yr }}
               </button>
             </div>
             <div class="grid grid-cols-4 gap-1">
               <button v-for="(mn, idx) in MONTH_NAMES" :key="mn" type="button" @click.stop="selectMonth(idx)"
                 class="py-1.5 rounded-lg text-xs font-bold transition-all"
-                :class="idx === viewMonth ? 'bg-primary text-navy font-black' : 'text-gray-600 hover:bg-primary/10'">
+                :class="idx === viewMonth ? 'bg-navy text-white font-black shadow-sm' : 'text-gray-600 hover:bg-gray-100 hover:text-navy'">
                 {{ mn.slice(0, 3) }}
               </button>
             </div>
@@ -148,37 +148,37 @@
         </div>
 
         <!-- footer -->
-        <div class="px-4 py-2.5 border-t border-gray-50 flex items-center justify-between">
+        <div class="px-4 py-2.5 border-t border-gray-100 flex items-center justify-between bg-gray-50/50">
           <div class="flex items-center gap-3 flex-wrap">
             <button type="button" @click.stop="selectToday"
-              class="text-xs font-black text-primary hover:underline">
+              class="text-xs font-black text-navy hover:underline">
               Today
             </button>
             <template v-if="range">
               <button type="button" @click.stop="setPreset(7)"
-                class="text-xs font-bold text-gray-400 hover:text-primary transition-colors">
+                class="text-xs font-bold text-gray-500 hover:text-navy transition-colors">
                 Last 7d
               </button>
               <button type="button" @click.stop="setPreset(30)"
-                class="text-xs font-bold text-gray-400 hover:text-primary transition-colors">
+                class="text-xs font-bold text-gray-500 hover:text-navy transition-colors">
                 Last 30d
               </button>
               <button type="button" @click.stop="setThisMonth"
-                class="text-xs font-bold text-gray-400 hover:text-primary transition-colors">
+                class="text-xs font-bold text-gray-500 hover:text-navy transition-colors">
                 This month
               </button>
             </template>
           </div>
           <button v-if="hasValue" type="button" @click.stop="clearDate"
-            class="text-xs font-bold text-gray-400 hover:text-red-400 transition-colors flex items-center gap-1">
+            class="text-xs font-bold text-gray-400 hover:text-red-500 transition-colors flex items-center gap-1">
             <Icon icon="ph:x" class="text-xs" /> Clear
           </button>
         </div>
 
         <!-- range: picking-end hint -->
         <div v-if="range && pickingEnd"
-          class="px-4 pb-3 -mt-1 text-[10px] font-bold text-primary flex items-center gap-1.5">
-          <Icon icon="ph:arrow-right" class="text-xs" />
+          class="px-4 pb-3 -mt-1 text-[10px] font-bold text-navy flex items-center gap-1.5">
+          <Icon icon="ph:arrow-right" class="text-xs text-navy" />
           Now click an end date
         </div>
       </div>
@@ -213,21 +213,21 @@ const CalMonthNav = defineComponent({
       h('button', {
         type: 'button',
         onClick: (e) => { e.stopPropagation(); emit('prev') },
-        class: 'w-8 h-8 rounded-xl flex items-center justify-center text-gray-400 hover:bg-primary/10 hover:text-primary transition-all'
+        class: 'w-8 h-8 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-navy transition-all'
       }, [h(Icon, { icon: 'ph:caret-left', class: 'text-sm' })]),
 
       props.showToggle
         ? h('button', {
             type: 'button',
             onClick: (e) => { e.stopPropagation(); emit('toggle') },
-            class: 'text-sm font-black text-navy hover:text-primary transition-colors px-2'
+            class: 'text-sm font-black text-navy hover:text-navy-light transition-colors px-2'
           }, `${MONTH_NAMES[props.month]} ${props.year}`)
         : h('span', { class: 'text-sm font-black text-navy' }, `${MONTH_NAMES[props.month]} ${props.year}`),
 
       h('button', {
         type: 'button',
         onClick: (e) => { e.stopPropagation(); emit('next') },
-        class: 'w-8 h-8 rounded-xl flex items-center justify-center text-gray-400 hover:bg-primary/10 hover:text-primary transition-all'
+        class: 'w-8 h-8 rounded-xl flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-navy transition-all'
       }, [h(Icon, { icon: 'ph:caret-right', class: 'text-sm' })])
     ])
   }
@@ -284,15 +284,15 @@ const CalGrid = defineComponent({
 
           const cls = [
             'aspect-square flex items-center justify-center text-xs font-bold transition-all',
-            cell.isSelectedSingle ? 'rounded-full bg-primary text-navy font-black scale-105' : '',
-            cell.isRangeStart ? 'rounded-l-full bg-primary text-navy font-black' : '',
-            cell.isRangeEnd ? 'rounded-r-full bg-primary text-navy font-black' : '',
-            cell.isRangeSingle ? 'rounded-full bg-primary text-navy font-black' : '',
-            cell.inRange ? 'bg-primary/15 text-navy rounded-none' : '',
+            cell.isSelectedSingle ? 'rounded-full bg-navy text-white font-black scale-105 shadow-sm' : '',
+            cell.isRangeStart ? 'rounded-l-full bg-navy text-white font-black' : '',
+            cell.isRangeEnd ? 'rounded-r-full bg-navy text-white font-black' : '',
+            cell.isRangeSingle ? 'rounded-full bg-navy text-white font-black' : '',
+            cell.inRange ? 'bg-navy/10 text-navy font-bold rounded-none' : '',
             !cell.isSelectedSingle && !cell.isRangeStart && !cell.isRangeEnd && !cell.inRange && !cell.isRangeSingle
-              ? 'rounded-full hover:bg-primary/10 hover:text-navy text-gray-700' : '',
+              ? 'rounded-full hover:bg-gray-100 hover:text-navy text-gray-700' : '',
             cell.isToday && !cell.isSelectedSingle && !cell.isRangeStart && !cell.isRangeEnd && !cell.inRange && !cell.isRangeSingle
-              ? 'ring-1 ring-primary/40 text-primary' : '',
+              ? 'ring-1 ring-navy/40 text-navy font-black bg-gray-50' : '',
           ].filter(Boolean).join(' ')
 
           return h('button', {

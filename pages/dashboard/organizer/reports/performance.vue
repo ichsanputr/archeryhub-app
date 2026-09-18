@@ -95,7 +95,7 @@
               <td class="px-6 py-4 text-gray-500 font-semibold font-mono">{{ formatDateRange(e.start_date, e.end_date) }}</td>
               <td class="px-6 py-4 text-gray-500 font-bold text-center">{{ e.total_categories }}</td>
               <td class="px-6 py-4 text-navy-dark font-bold font-mono">
-                {{ e.total_participants }} / {{ e.total_capacity > 0 ? e.total_capacity : 'Unlimited' }}
+                {{ e.total_participants }} / {{ e.total_capacity > 0 ? e.total_capacity : t('dashboard.reports.unlimited', 'Tanpa Batas') }}
               </td>
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
@@ -111,7 +111,7 @@
               </td>
             </tr>
             <tr v-if="!stats.events_performance?.length">
-              <td colspan="6" class="text-center py-10 text-gray-400 font-bold">No Events Performance Data Found Matching Filters.</td>
+              <td colspan="6" class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_events_performance', 'Tidak ada data performa turnamen untuk filter yang dipilih.') }}</td>
             </tr>
           </tbody>
         </table>

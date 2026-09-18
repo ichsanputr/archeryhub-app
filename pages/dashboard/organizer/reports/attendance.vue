@@ -99,7 +99,7 @@
       <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
         <h3 class="text-navy-dark font-black text-sm flex items-center gap-2">
           <Icon icon="ph:tag-bold" class="text-primary" />
-          Attendance by Division
+          {{ t('dashboard.reports.attendance_by_division', 'Kehadiran per Divisi') }}
         </h3>
         <div class="space-y-4 max-h-96 overflow-y-auto no-scrollbar pr-1">
           <div v-for="item in stats.categories_breakdown" :key="item.bow_type + item.age_group + item.gender" class="space-y-1">
@@ -115,7 +115,7 @@
               <div class="bg-emerald-500 h-full rounded-full" :style="{ width: getRate(item.checked_in, item.registered) + '%' }"></div>
             </div>
           </div>
-          <div v-if="!stats.categories_breakdown?.length" class="text-center py-6 text-xs text-gray-400">No Split Data.</div>
+          <div v-if="!stats.categories_breakdown?.length" class="text-center py-6 text-xs text-gray-400">{{ t('dashboard.reports.no_split_data', 'Belum ada data distribusi.') }}</div>
         </div>
       </div>
 
@@ -124,7 +124,7 @@
         <div class="p-5 border-b border-gray-100">
           <h3 class="text-navy-dark font-black text-sm flex items-center gap-2">
             <Icon icon="ph:check-circle-bold" class="text-primary" />
-            Recent Check-in Logs
+            {{ t('dashboard.reports.recent_checkin_logs', 'Log Registrasi Ulang Terbaru') }}
           </h3>
         </div>
         <div class="overflow-x-auto overflow-y-auto max-h-96 no-scrollbar">
@@ -146,7 +146,7 @@
                 <td class="px-5 py-3 text-navy-dark font-mono font-semibold">{{ formatDateTime(c.last_reregistration_at) }}</td>
               </tr>
               <tr v-if="!stats.recent_checkins?.length">
-                <td colspan="3" class="text-center py-10 text-gray-400 font-bold">No Recent Check-ins Recorded.</td>
+                <td colspan="3" class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_checkins_recorded', 'Belum ada catatan registrasi ulang terbaru.') }}</td>
               </tr>
             </tbody>
           </table>

@@ -110,7 +110,7 @@
       <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4 lg:col-span-2">
         <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:credit-card-bold" class="text-primary" />
-          {{ t('organizer_reports.finance.payment_methods_split', 'Payment Methods Split') }}
+          {{ t('dashboard.reports.payment_methods_split', 'Distribusi Metode Pembayaran') }}
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div v-for="item in stats.payment_method_split" :key="item.name" class="p-4 bg-gray-50 rounded-xl space-y-2 border border-gray-100">
@@ -122,9 +122,9 @@
             <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
               <div class="bg-emerald-500 h-full rounded-full" :style="{ width: getPercent(item.amount) + '%' }"></div>
             </div>
-            <div class="text-[10px] text-gray-400 font-bold text-right">{{ getPercent(item.amount) }}% of Total</div>
+            <div class="text-[10px] text-gray-400 font-bold text-right">{{ getPercent(item.amount) }}{{ t('dashboard.reports.of_total', '% dari Total') }}</div>
           </div>
-          <div v-if="!stats.payment_method_split?.length" class="text-center col-span-2 py-6 text-xs text-gray-400 font-medium">No Payment Methods Split Data.</div>
+          <div v-if="!stats.payment_method_split?.length" class="text-center col-span-2 py-6 text-xs text-gray-400 font-medium">{{ t('dashboard.reports.no_payment_split_data', 'Belum ada data distribusi metode pembayaran.') }}</div>
         </div>
       </div>
 
@@ -155,7 +155,7 @@
       <div class="p-5 border-b border-gray-100 flex items-center justify-between">
         <h3 class="text-navy-dark font-black text-sm flex items-center gap-2">
           <Icon icon="ph:list-dashes-bold" class="text-primary" />
-          Recent Transaction History
+          {{ t('dashboard.reports.recent_transaction_history', 'Riwayat Transaksi Terbaru') }}
         </h3>
       </div>
       <div class="overflow-x-auto">
@@ -196,7 +196,7 @@
               <td class="px-6 py-4 text-gray-400 font-semibold font-mono">{{ formatDate(t.created_at) }}</td>
             </tr>
             <tr v-if="!stats.recent_transactions?.length">
-              <td colspan="8" class="text-center py-10 text-gray-400 font-bold">No Transactions Found Matching Selected Filters.</td>
+              <td colspan="8" class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_transactions_found', 'Tidak ada transaksi yang cocok dengan filter yang dipilih.') }}</td>
             </tr>
           </tbody>
         </table>
@@ -236,10 +236,10 @@ const methodOptions = computed(() => [
 
 const statusOptions = computed(() => [
   { title: t('dashboard.reports.all_status', 'Semua Status'), value: 'all' },
-  { title: 'Paid', value: 'paid' },
-  { title: 'Pending', value: 'pending' },
-  { title: 'Expired', value: 'expired' },
-  { title: 'Failed', value: 'failed' }
+  { title: t('dashboard.reports.status_paid', 'Lunas (Paid)'), value: 'paid' },
+  { title: t('dashboard.reports.status_pending', 'Menunggu (Pending)'), value: 'pending' },
+  { title: t('dashboard.reports.status_expired', 'Kadaluwarsa (Expired)'), value: 'expired' },
+  { title: t('dashboard.reports.status_failed', 'Gagal (Failed)'), value: 'failed' }
 ])
 const stats = ref({
   total_paid: 0,
