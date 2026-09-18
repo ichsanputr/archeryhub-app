@@ -192,16 +192,52 @@
         <table class="w-full text-left text-xs">
           <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
             <tr>
-              <th class="px-6 py-4">{{ t('dashboard.reports.archer', 'Pemanah') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.event', 'Turnamen') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.category_bow', 'Kategori / Busur') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.reg_date', 'Tgl Registrasi') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.payment', 'Pembayaran') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.checkin', 'Daftar Ulang') }}</th>
+              <th @click="toggleSort('name')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.archer', 'Pemanah') }}</span>
+                  <Icon v-if="sortBy === 'name'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('event')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.event', 'Turnamen') }}</span>
+                  <Icon v-if="sortBy === 'event'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('category')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.category_bow', 'Kategori / Busur') }}</span>
+                  <Icon v-if="sortBy === 'category'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('reg_date')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.reg_date', 'Tgl Registrasi') }}</span>
+                  <Icon v-if="sortBy === 'reg_date'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('payment')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.payment', 'Pembayaran') }}</span>
+                  <Icon v-if="sortBy === 'payment'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('checkin')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.checkin', 'Daftar Ulang') }}</span>
+                  <Icon v-if="sortBy === 'checkin'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 font-medium">
-            <tr v-for="p in stats.recent_participants" :key="p.id" class="hover:bg-gray-50 transition-colors">
+            <tr v-for="p in sortedRecentParticipants" :key="p.id" class="hover:bg-gray-50 transition-colors">
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                   <img :src="useImageOrDefault(p.avatar_url, p.archer_name)" :alt="p.archer_name" class="size-8 rounded-full object-cover border border-gray-100 bg-gray-50 shrink-0" />
@@ -227,7 +263,7 @@
                 </span>
               </td>
             </tr>
-            <tr v-if="!stats.recent_participants?.length">
+            <tr v-if="!sortedRecentParticipants.length">
               <td colspan="6" class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_participants_found', 'Tidak ada peserta yang cocok dengan filter yang dipilih.') }}</td>
             </tr>
           </tbody>
@@ -251,6 +287,18 @@ useHead({ title: computed(() => (t ? t('dashboard.reports.participants_title', '
 const route = useRoute()
 const api = useApi()
 
+const sortBy = ref('reg_date')
+const sortOrder = ref('desc')
+
+const toggleSort = (column) => {
+  if (sortBy.value === column) {
+    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    sortBy.value = column
+    sortOrder.value = 'asc'
+  }
+}
+
 const eventsList = ref([])
 const stats = ref({
   total_participants: 0,
@@ -263,6 +311,38 @@ const stats = ref({
   registration_trend: [],
   recent_participants: [],
   events_list: []
+})
+
+const sortedRecentParticipants = computed(() => {
+  const list = stats.value?.recent_participants || []
+  const dir = sortOrder.value === 'asc' ? 1 : -1
+  return [...list].sort((a, b) => {
+    if (sortBy.value === 'name') {
+      return dir * (a.archer_name || '').localeCompare(b.archer_name || '', undefined, { numeric: true, sensitivity: 'base' })
+    }
+    if (sortBy.value === 'event') {
+      return dir * (a.event_name || '').localeCompare(b.event_name || '', undefined, { numeric: true, sensitivity: 'base' })
+    }
+    if (sortBy.value === 'category') {
+      const catA = `${a.bow_type || ''} ${a.age_group || ''} ${a.gender || ''}`
+      const catB = `${b.bow_type || ''} ${b.age_group || ''} ${b.gender || ''}`
+      return dir * catA.localeCompare(catB, undefined, { numeric: true, sensitivity: 'base' })
+    }
+    if (sortBy.value === 'reg_date') {
+      const tA = new Date(a.registration_date || 0).getTime()
+      const tB = new Date(b.registration_date || 0).getTime()
+      return dir * (tA - tB)
+    }
+    if (sortBy.value === 'payment') {
+      return dir * (a.payment_status || '').localeCompare(b.payment_status || '')
+    }
+    if (sortBy.value === 'checkin') {
+      const aC = a.last_reregistration_at ? 1 : 0
+      const bC = b.last_reregistration_at ? 1 : 0
+      return dir * (aC - bC)
+    }
+    return 0
+  })
 })
 
 const filters = reactive({

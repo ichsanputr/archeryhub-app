@@ -69,16 +69,52 @@
         <table class="w-full text-left text-xs">
           <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
             <tr>
-              <th class="px-6 py-4">{{ t('dashboard.reports.event_name') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.status') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.event_dates') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.categories_count') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.registrants_capacity') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.quota_fill_rate') }}</th>
+              <th @click="toggleSort('name')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.event_name') }}</span>
+                  <Icon v-if="sortBy === 'name'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('status')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.status') }}</span>
+                  <Icon v-if="sortBy === 'status'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('date')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.event_dates') }}</span>
+                  <Icon v-if="sortBy === 'date'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('categories')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none text-center">
+                <div class="flex items-center justify-center gap-1.5">
+                  <span>{{ t('dashboard.reports.categories_count') }}</span>
+                  <Icon v-if="sortBy === 'categories'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('participants')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.registrants_capacity') }}</span>
+                  <Icon v-if="sortBy === 'participants'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('fill_rate')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.quota_fill_rate') }}</span>
+                  <Icon v-if="sortBy === 'fill_rate'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 font-medium">
-            <tr v-for="e in stats.events_performance" :key="e.id" class="hover:bg-gray-50 transition-colors">
+            <tr v-for="e in sortedEventsPerformance" :key="e.id" class="hover:bg-gray-50 transition-colors">
               <td class="px-6 py-4 text-navy-dark font-bold truncate max-w-xs capitalize">{{ e.name.toLowerCase() }}</td>
               <td class="px-6 py-4">
                 <span 
@@ -110,7 +146,7 @@
                 </div>
               </td>
             </tr>
-            <tr v-if="!stats.events_performance?.length">
+            <tr v-if="!sortedEventsPerformance.length">
               <td colspan="6" class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_events_performance', 'Tidak ada data performa turnamen untuk filter yang dipilih.') }}</td>
             </tr>
           </tbody>
@@ -122,7 +158,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { onMounted, ref, reactive } from 'vue'
+import { computed, onMounted, ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 
@@ -136,12 +172,52 @@ useHead({ title: computed(() => (t ? t('dashboard.reports.performance_title', 'P
 const route = useRoute()
 const api = useApi()
 
+const sortBy = ref('fill_rate')
+const sortOrder = ref('desc')
+
+const toggleSort = (column) => {
+  if (sortBy.value === column) {
+    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    sortBy.value = column
+    sortOrder.value = 'asc'
+  }
+}
+
 const stats = ref({
   status_summary: [],
   events_performance: [],
   average_fill_rate: 0,
   total_capacity: 0,
   total_participants: 0
+})
+
+const sortedEventsPerformance = computed(() => {
+  const list = stats.value?.events_performance || []
+  const dir = sortOrder.value === 'asc' ? 1 : -1
+  return [...list].sort((a, b) => {
+    if (sortBy.value === 'name') {
+      return dir * (a.name || '').localeCompare(b.name || '', undefined, { numeric: true, sensitivity: 'base' })
+    }
+    if (sortBy.value === 'status') {
+      return dir * (a.status || '').localeCompare(b.status || '')
+    }
+    if (sortBy.value === 'date') {
+      const tA = new Date(a.start_date || 0).getTime()
+      const tB = new Date(b.start_date || 0).getTime()
+      return dir * (tA - tB)
+    }
+    if (sortBy.value === 'categories') {
+      return dir * ((a.total_categories || 0) - (b.total_categories || 0))
+    }
+    if (sortBy.value === 'participants') {
+      return dir * ((a.total_participants || 0) - (b.total_participants || 0))
+    }
+    if (sortBy.value === 'fill_rate') {
+      return dir * ((a.fill_rate || 0) - (b.fill_rate || 0))
+    }
+    return 0
+  })
 })
 
 const filters = reactive({

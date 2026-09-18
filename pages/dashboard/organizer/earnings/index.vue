@@ -25,10 +25,34 @@
                     <thead>
                         <tr
                             class="bg-gray-50/50 text-gray-500 font-bold text-[10px] tracking-widest border-b border-gray-100">
-                            <th class="px-6 py-4">{{ t('earnings.table_header_event') }}</th>
-                            <th class="px-6 py-4">{{ t('earnings.table_header_date') }}</th>
-                            <th class="px-6 py-4">{{ t('earnings.table_header_participants') }}</th>
-                            <th class="px-6 py-4 text-right">{{ t('earnings.table_header_earnings') }}</th>
+                            <th @click="toggleSort('eventName')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('earnings.table_header_event') }}</span>
+                                    <Icon v-if="sortBy === 'eventName'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('date')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('earnings.table_header_date') }}</span>
+                                    <Icon v-if="sortBy === 'date'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('participants')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('earnings.table_header_participants') }}</span>
+                                    <Icon v-if="sortBy === 'participants'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('amount')" class="px-6 py-4 text-right cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center justify-end gap-1.5">
+                                    <span>{{ t('earnings.table_header_earnings') }}</span>
+                                    <Icon v-if="sortBy === 'amount'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
                             <th class="px-6 py-4 text-center">{{ t('earnings.table_header_actions') }}</th>
                         </tr>
                     </thead>
@@ -116,6 +140,17 @@ useHead({
 
 const earningsHistoryData = ref([])
 const loading = ref(true)
+const sortBy = ref('date')
+const sortOrder = ref('desc')
+
+const toggleSort = (column) => {
+    if (sortBy.value === column) {
+        sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+    } else {
+        sortBy.value = column
+        sortOrder.value = 'asc'
+    }
+}
 
 const fetchEarnings = async () => {
     try {
@@ -134,7 +169,27 @@ const totalEarningsAmount = computed(() => {
     return earningsHistoryData.value.reduce((acc, curr) => acc + (curr.amount || 0), 0)
 })
 
-const earningsHistory = computed(() => earningsHistoryData.value.filter(item => (item.amount || 0) > 0))
+const earningsHistory = computed(() => {
+    const list = earningsHistoryData.value.filter(item => (item.amount || 0) > 0)
+    const dir = sortOrder.value === 'asc' ? 1 : -1
+    return [...list].sort((a, b) => {
+        if (sortBy.value === 'eventName') {
+            return dir * (a.eventName || '').localeCompare(b.eventName || '', undefined, { numeric: true, sensitivity: 'base' })
+        }
+        if (sortBy.value === 'date') {
+            const tA = new Date(a.date || 0).getTime()
+            const tB = new Date(b.date || 0).getTime()
+            return dir * (tA - tB)
+        }
+        if (sortBy.value === 'participants') {
+            return dir * ((a.participants || 0) - (b.participants || 0))
+        }
+        if (sortBy.value === 'amount') {
+            return dir * ((a.amount || 0) - (b.amount || 0))
+        }
+        return 0
+    })
+})
 
 const monthlyEarnings = computed(() => {
     // Basic logic: filter by current month

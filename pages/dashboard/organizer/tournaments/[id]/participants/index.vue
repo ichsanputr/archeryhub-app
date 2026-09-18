@@ -72,13 +72,37 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="bg-gray-50/50 border-b border-gray-100">
-                        <tr class="text-[10px] font-black text-gray-400  tracking-widest capitalize">
+                        <tr class="text-[10px] font-black text-gray-400 tracking-widest capitalize">
                             <th class="px-6 py-4">{{ t('dashboard.participants_list.table.no') }}</th>
-                            <th class="px-6 py-4">{{ t('dashboard.participants_list.table.name_email') }}</th>
-                            <th class="px-6 py-4">{{ t('dashboard.participants_list.table.club_city') }}</th>
+                            <th @click="toggleSort('name')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('dashboard.participants_list.table.name_email') }}</span>
+                                    <Icon v-if="sortBy === 'name'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('club')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('dashboard.participants_list.table.club_city') }}</span>
+                                    <Icon v-if="sortBy === 'club'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
                             <th v-if="hasActiveCategoryFilter" class="px-6 py-4 min-w-[240px]">{{ t('dashboard.participants_list.table.category') }}</th>
-                            <th class="px-6 py-4 min-w-[160px]">{{ t('dashboard.participants_list.table.payment_status') }}</th>
-                            <th class="px-6 py-4 min-w-[180px]">{{ t('dashboard.participants_list.reregistration') }}</th>
+                            <th @click="toggleSort('status')" class="px-6 py-4 min-w-[160px] cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('dashboard.participants_list.table.payment_status') }}</span>
+                                    <Icon v-if="sortBy === 'status'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('reregistration')" class="px-6 py-4 min-w-[180px] cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('dashboard.participants_list.reregistration') }}</span>
+                                    <Icon v-if="sortBy === 'reregistration'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
                             <th class="px-6 py-4 text-right">{{ t('dashboard.participants_list.table.action') }}</th>
                         </tr>
                     </thead>
@@ -295,6 +319,21 @@ const page = ref(1)
 const limit = ref(10)
 const totalPages = computed(() => Math.ceil(total.value / limit.value))
 
+// Table sorting state
+const sortBy = ref('name')
+const sortOrder = ref('asc')
+
+const toggleSort = (field) => {
+    if (sortBy.value === field) {
+        sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+    } else {
+        sortBy.value = field
+        sortOrder.value = 'asc'
+    }
+    page.value = 1
+    fetchParticipants()
+}
+
 const searchQuery = ref('')
 const activeDiv = ref('Semua')
 const filterDivs = ['Semua', 'Recurve', 'Compound', 'Barebow']
@@ -328,6 +367,8 @@ const resetFilters = () => {
     searchQuery.value = ''
     statusFilter.value = 'Semua'
     categoryFilter.value = []
+    sortBy.value = 'name'
+    sortOrder.value = 'asc'
     page.value = 1
     fetchParticipants()
 }
@@ -394,7 +435,7 @@ const fetchParticipants = async () => {
     isLoading.value = true
     try {
         const offset = (page.value - 1) * limit.value
-        let url = `/tournaments/${id}/participants?limit=${limit.value}&offset=${offset}&group_by=archer&search=${searchQuery.value}`
+        let url = `/tournaments/${id}/participants?limit=${limit.value}&offset=${offset}&group_by=archer&search=${searchQuery.value}&sort_by=${sortBy.value}&order=${sortOrder.value}`
         if (statusFilter.value !== 'Semua') {
             url += `&payment_status=${statusFilter.value}`
         }

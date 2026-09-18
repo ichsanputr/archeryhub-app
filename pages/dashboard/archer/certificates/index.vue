@@ -53,11 +53,11 @@
             {{ t('archer_certificates.issued_at') }} <span class="font-bold text-navy">{{ formatDate(cert.issue_date || cert.created_at) }}</span>
           </div>
           <div class="flex items-center gap-2">
-            <a v-if="cert.pdf_url" :href="cert.pdf_url" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-navy font-bold text-xs rounded-xl transition-colors">
+            <a v-if="cert.pdf_url" :href="getImageUrl(cert.pdf_url)" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-navy font-bold text-xs rounded-xl transition-colors">
               <Icon icon="ph:eye-bold" class="text-sm" />
               <span>{{ t('archer_certificates.view_btn') }}</span>
             </a>
-            <a v-if="cert.pdf_url" :href="`${cert.pdf_url}?download=true`" class="inline-flex items-center gap-1.5 px-4 py-2 bg-navy hover:bg-navy/90 text-white font-bold text-xs rounded-xl transition-colors shadow-2xs">
+            <a v-if="cert.pdf_url" :href="`${getImageUrl(cert.pdf_url)}?download=true`" class="inline-flex items-center gap-1.5 px-4 py-2 bg-navy hover:bg-navy/90 text-white font-bold text-xs rounded-xl transition-colors shadow-2xs">
               <Icon icon="ph:download-simple-bold" class="text-primary text-sm" />
               <span>{{ t('archer_certificates.download_pdf') }}</span>
             </a>
@@ -73,6 +73,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
+import { getImageUrl } from '~/composables/useImageHelper'
 
 const { t, locale } = useI18n()
 

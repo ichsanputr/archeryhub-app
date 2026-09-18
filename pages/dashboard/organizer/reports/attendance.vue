@@ -131,13 +131,31 @@
           <table class="w-full text-left text-xs min-w-[500px] sm:min-w-0">
             <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100 sticky top-0">
               <tr>
-                <th class="px-5 py-3">{{ t('dashboard.reports.archer') }}</th>
-                <th class="px-5 py-3">{{ t('dashboard.reports.event') }}</th>
-                <th class="px-5 py-3">{{ t('dashboard.reports.checkin_time') }}</th>
+                <th @click="toggleSort('archer')" class="px-5 py-3 cursor-pointer hover:text-navy transition-colors select-none">
+                  <div class="flex items-center gap-1.5">
+                    <span>{{ t('dashboard.reports.archer') }}</span>
+                    <Icon v-if="sortBy === 'archer'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                  </div>
+                </th>
+                <th @click="toggleSort('event')" class="px-5 py-3 cursor-pointer hover:text-navy transition-colors select-none">
+                  <div class="flex items-center gap-1.5">
+                    <span>{{ t('dashboard.reports.event') }}</span>
+                    <Icon v-if="sortBy === 'event'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                  </div>
+                </th>
+                <th @click="toggleSort('checkin_time')" class="px-5 py-3 cursor-pointer hover:text-navy transition-colors select-none">
+                  <div class="flex items-center gap-1.5">
+                    <span>{{ t('dashboard.reports.checkin_time') }}</span>
+                    <Icon v-if="sortBy === 'checkin_time'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 font-medium">
-              <tr v-for="c in stats.recent_checkins" :key="c.id" class="hover:bg-gray-50 transition-colors">
+              <tr v-for="c in sortedRecentCheckins" :key="c.id" class="hover:bg-gray-50 transition-colors">
                 <td class="px-5 py-3 flex items-center gap-3">
                   <img :src="useImageOrDefault(c.avatar_url, c.archer_name)" :alt="c.archer_name" class="size-7 rounded-full object-cover border border-gray-100 bg-gray-50 shrink-0" />
                   <span class="text-navy-dark font-bold capitalize">{{ c.archer_name.toLowerCase() }}</span>
@@ -145,7 +163,7 @@
                 <td class="px-5 py-3 text-gray-500 font-semibold truncate max-w-[120px] capitalize">{{ c.event_name.toLowerCase() }}</td>
                 <td class="px-5 py-3 text-navy-dark font-mono font-semibold">{{ formatDateTime(c.last_reregistration_at) }}</td>
               </tr>
-              <tr v-if="!stats.recent_checkins?.length">
+              <tr v-if="!sortedRecentCheckins.length">
                 <td colspan="3" class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_checkins_recorded', 'Belum ada catatan registrasi ulang terbaru.') }}</td>
               </tr>
             </tbody>
@@ -173,6 +191,18 @@ useHead({ title: computed(() => (t ? t('dashboard.reports.attendance_title', 'Ke
 const route = useRoute()
 const api = useApi()
 
+const sortBy = ref('checkin_time')
+const sortOrder = ref('desc')
+
+const toggleSort = (column) => {
+  if (sortBy.value === column) {
+    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    sortBy.value = column
+    sortOrder.value = 'asc'
+  }
+}
+
 const eventsList = ref([])
 const eventsDropdownItems = computed(() => [
   { title: t('dashboard.reports.all_events', 'Semua Turnamen'), value: 'all' },
@@ -186,6 +216,25 @@ const stats = ref({
   checkin_trend: [],
   recent_checkins: [],
   events_list: []
+})
+
+const sortedRecentCheckins = computed(() => {
+  const list = stats.value?.recent_checkins || []
+  const dir = sortOrder.value === 'asc' ? 1 : -1
+  return [...list].sort((a, b) => {
+    if (sortBy.value === 'archer') {
+      return dir * (a.archer_name || '').localeCompare(b.archer_name || '', undefined, { numeric: true, sensitivity: 'base' })
+    }
+    if (sortBy.value === 'event') {
+      return dir * (a.event_name || '').localeCompare(b.event_name || '', undefined, { numeric: true, sensitivity: 'base' })
+    }
+    if (sortBy.value === 'checkin_time') {
+      const tA = new Date(a.last_reregistration_at || 0).getTime()
+      const tB = new Date(b.last_reregistration_at || 0).getTime()
+      return dir * (tA - tB)
+    }
+    return 0
+  })
 })
 
 const filters = reactive({

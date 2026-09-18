@@ -114,7 +114,7 @@
         <!-- Clear All Button -->
         <button
           v-if="certificatesList.length > 0"
-          @click="handleClearAll"
+          @click="promptClearAll"
           :disabled="isClearing"
           type="button"
           class="h-10 px-3.5 rounded-xl bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-600 border border-slate-200 font-bold text-xs flex items-center gap-1.5 transition-colors shrink-0"
@@ -152,10 +152,34 @@
           <thead>
             <tr class="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-bold text-slate-500 tracking-wider">
               <th class="py-4 px-5 w-14 text-center">#</th>
-              <th class="py-4 px-5">{{ t('org_certificate.th_archer', 'Nama Pemanah & Klub') }}</th>
-              <th class="py-4 px-5">{{ t('org_certificate.th_category', 'Kategori Lomba') }}</th>
-              <th class="py-4 px-5">{{ t('org_certificate.th_cert_no', 'Nomor Sertifikat') }}</th>
-              <th class="py-4 px-5">{{ t('org_certificate.th_status', 'Status Sertifikat') }}</th>
+              <th @click="toggleSort('name')" class="py-4 px-5 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('org_certificate.th_archer', 'Nama Pemanah & Klub') }}</span>
+                  <Icon v-if="sortBy === 'name'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('category')" class="py-4 px-5 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('org_certificate.th_category', 'Kategori Lomba') }}</span>
+                  <Icon v-if="sortBy === 'category'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('cert_no')" class="py-4 px-5 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('org_certificate.th_cert_no', 'Nomor Sertifikat') }}</span>
+                  <Icon v-if="sortBy === 'cert_no'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('status')" class="py-4 px-5 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('org_certificate.th_status', 'Status Sertifikat') }}</span>
+                  <Icon v-if="sortBy === 'status'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
               <th class="py-4 px-5 text-right">{{ t('org_certificate.th_action', 'Aksi') }}</th>
             </tr>
           </thead>
@@ -233,7 +257,7 @@
                     </button>
 
                     <a
-                      :href="row.cert.pdf_url"
+                      :href="getImageUrl(row.cert.pdf_url)"
                       target="_blank"
                       download
                       class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-navy transition-colors"
@@ -242,7 +266,7 @@
                     </a>
 
                     <button
-                      @click="handleDeleteCert(row.cert.uuid || row.cert.id)"
+                      @click="promptDeleteCert(row.cert.uuid || row.cert.id, row.full_name)"
                       type="button"
                       class="p-2 rounded-lg bg-slate-100 hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors"
                       :title="t('org_certificate.btn_delete', 'Hapus Sertifikat')">
@@ -480,11 +504,17 @@
             </button>
           </div>
 
-          <div class="flex-grow bg-slate-100 p-4 min-h-[500px]">
+          <div class="flex-grow bg-slate-100 p-4 min-h-[500px] flex items-center justify-center">
             <iframe
+              v-if="isPdf(activePreviewUrl)"
               :src="activePreviewUrl"
               class="w-full h-full min-h-[500px] rounded-2xl bg-white shadow-sm border border-slate-200"
               title="PDF Certificate Preview"></iframe>
+            <img
+              v-else
+              :src="activePreviewUrl"
+              :alt="previewModalTitle"
+              class="max-h-[75vh] max-w-full object-contain rounded-2xl shadow-sm border border-slate-200" />
           </div>
 
           <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end gap-3 shrink-0">
@@ -506,6 +536,16 @@
       </div>
     </Transition>
 
+    <!-- Delete Confirmation Modal (Standard AppDialog) -->
+    <AppDialog
+      v-model:show="deleteModal.show"
+      :title="deleteModal.title"
+      :message="deleteModal.message"
+      :confirm-text="deleteModal.confirmText"
+      type="danger"
+      @confirm="executeDelete"
+    />
+
     <!-- Hidden Input for Single Participant Upload -->
     <input
       type="file"
@@ -518,11 +558,13 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRoute } from '#app'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
+import { getImageUrl } from '~/composables/useImageHelper'
+import AppDialog from '~/components/common/AppDialog.vue'
 
 definePageMeta({
   layout: 'dashboard'
@@ -551,6 +593,19 @@ const searchQuery = ref('')
 const selectedCategory = ref('')
 const activeStatusTab = ref('all') // 'all' | 'issued' | 'pending'
 
+// Table Sorting
+const sortBy = ref('name') // 'name' | 'category' | 'cert_no' | 'status'
+const sortOrder = ref('asc') // 'asc' | 'desc'
+
+const toggleSort = (column) => {
+  if (sortBy.value === column) {
+    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    sortBy.value = column
+    sortOrder.value = 'asc'
+  }
+}
+
 const showUploadModal = ref(false)
 const uploadResult = ref(null)
 const manualAssignments = ref({})
@@ -561,6 +616,22 @@ const selectedParticipantForUpload = ref(null)
 const showPreviewModal = ref(false)
 const activePreviewUrl = ref('')
 const previewModalTitle = ref('')
+
+const isPdf = (url) => {
+  if (!url) return false
+  const clean = url.split('?')[0].toLowerCase()
+  return clean.endsWith('.pdf') || clean.includes('/pdf') || clean.includes('format=pdf') || clean.includes('.pdf')
+}
+
+// Delete Dialog State
+const deleteModal = reactive({
+  show: false,
+  type: 'single', // 'single' | 'all'
+  targetId: null,
+  title: '',
+  message: '',
+  confirmText: ''
+})
 
 const getInitials = (name) => {
   if (!name) return 'A'
@@ -660,6 +731,32 @@ const filteredParticipantsList = computed(() => {
     )
   }
 
+  // Sorting
+  const dir = sortOrder.value === 'asc' ? 1 : -1
+  list = [...list].sort((a, b) => {
+    if (sortBy.value === 'name') {
+      const nameA = a.full_name || ''
+      const nameB = b.full_name || ''
+      return dir * nameA.localeCompare(nameB, undefined, { numeric: true, sensitivity: 'base' })
+    }
+    if (sortBy.value === 'category') {
+      const catA = a.category_name || ''
+      const catB = b.category_name || ''
+      return dir * catA.localeCompare(catB, undefined, { numeric: true, sensitivity: 'base' })
+    }
+    if (sortBy.value === 'cert_no') {
+      const aNo = a.cert?.certificate_no || ''
+      const bNo = b.cert?.certificate_no || ''
+      return dir * aNo.localeCompare(bNo, undefined, { numeric: true, sensitivity: 'base' })
+    }
+    if (sortBy.value === 'status') {
+      const aStat = a.cert ? 1 : 0
+      const bStat = b.cert ? 1 : 0
+      return dir * (aStat - bStat)
+    }
+    return 0
+  })
+
   return list
 })
 
@@ -667,7 +764,7 @@ const filteredParticipantsList = computed(() => {
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
 
-watch([searchQuery, selectedCategory, activeStatusTab], () => {
+watch([searchQuery, selectedCategory, activeStatusTab, sortBy, sortOrder], () => {
   currentPage.value = 1
 })
 
@@ -731,7 +828,6 @@ const openSingleUpload = (participant) => {
 const handleSingleFileInputChange = async (event) => {
   const files = event.target.files
   if (!files || files.length === 0 || !selectedParticipantForUpload.value) return
-
   const p = selectedParticipantForUpload.value
   const partId = p.uuid || p.id
 
@@ -780,35 +876,53 @@ const handleManualAssign = async (filename, pdfUrl) => {
   }
 }
 
-const handleDeleteCert = async (certId) => {
-  if (!confirm(t('org_certificate.confirm_delete_single', 'Yakin ingin menghapus sertifikat ini?'))) return
-  try {
-    await del(`/tournaments/${eventId}/certificates/${certId}`)
-    toast.success(t('org_certificate.msg_cert_deleted', 'Sertifikat berhasil dihapus'))
-    await fetchData()
-  } catch (error) {
-    console.error('Failed to delete certificate:', error)
-    toast.error('Gagal menghapus sertifikat')
-  }
+const promptDeleteCert = (certId, name = '') => {
+  deleteModal.type = 'single'
+  deleteModal.targetId = certId
+  deleteModal.title = t('org_certificate.modal_delete_title', 'Hapus Sertifikat')
+  deleteModal.message = name
+    ? `Apakah Anda yakin ingin menghapus berkas sertifikat untuk ${name}?`
+    : t('org_certificate.confirm_delete_single', 'Yakin ingin menghapus sertifikat ini?')
+  deleteModal.confirmText = t('common.delete', 'Hapus')
+  deleteModal.show = true
 }
 
-const handleClearAll = async () => {
-  if (!confirm(t('org_certificate.confirm_clear_all', 'Peringatan: Yakin ingin menghapus seluruh sertifikat yang telah diterbitkan untuk event ini?'))) return
-  isClearing.value = true
-  try {
-    await del(`/tournaments/${eventId}/certificates/clear-all`)
-    toast.success(t('org_certificate.msg_certs_cleared', 'Seluruh sertifikat event berhasil dibersihkan'))
-    await fetchData()
-  } catch (error) {
-    console.error('Failed to clear certificates:', error)
-    toast.error('Gagal membersihkan sertifikat')
-  } finally {
-    isClearing.value = false
+const promptClearAll = () => {
+  deleteModal.type = 'all'
+  deleteModal.targetId = null
+  deleteModal.title = t('org_certificate.modal_clear_all_title', 'Hapus Seluruh Sertifikat')
+  deleteModal.message = t('org_certificate.confirm_clear_all', 'Peringatan: Yakin ingin menghapus seluruh sertifikat yang telah diterbitkan untuk event ini?')
+  deleteModal.confirmText = t('org_certificate.btn_clear_all', 'Hapus Semua')
+  deleteModal.show = true
+}
+
+const executeDelete = async () => {
+  if (deleteModal.type === 'single') {
+    try {
+      await del(`/tournaments/${eventId}/certificates/${deleteModal.targetId}`)
+      toast.success(t('org_certificate.msg_cert_deleted', 'Sertifikat berhasil dihapus'))
+      await fetchData()
+    } catch (error) {
+      console.error('Failed to delete certificate:', error)
+      toast.error('Gagal menghapus sertifikat')
+    }
+  } else if (deleteModal.type === 'all') {
+    isClearing.value = true
+    try {
+      await del(`/tournaments/${eventId}/certificates/clear-all`)
+      toast.success(t('org_certificate.msg_certs_cleared', 'Seluruh sertifikat event berhasil dibersihkan'))
+      await fetchData()
+    } catch (error) {
+      console.error('Failed to clear certificates:', error)
+      toast.error('Gagal membersihkan sertifikat')
+    } finally {
+      isClearing.value = false
+    }
   }
 }
 
 const openPdfPreview = (url, title = '') => {
-  activePreviewUrl.value = url
+  activePreviewUrl.value = getImageUrl(url)
   previewModalTitle.value = title || 'Preview'
   showPreviewModal.value = true
 }

@@ -149,13 +149,13 @@
             <span>{{ t('my_certificate_page.share', 'Bagikan') }}</span>
           </button>
 
-          <a v-if="certificate.pdf_url" :href="certificate.pdf_url" target="_blank"
+          <a v-if="certificate.pdf_url" :href="getImageUrl(certificate.pdf_url)" target="_blank"
             class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-navy hover:bg-navy-light text-white font-bold text-xs rounded-xl transition-colors shadow-sm">
             <Icon icon="ph:eye-bold" class="text-base" />
             <span>{{ t('my_certificate_page.preview', 'Pratinjau PDF') }}</span>
           </a>
 
-          <a v-if="certificate.pdf_url" :href="`${certificate.pdf_url}?download=true`" download
+          <a v-if="certificate.pdf_url" :href="`${getImageUrl(certificate.pdf_url)}?download=true`" download
             class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-primary text-navy font-black text-xs rounded-xl hover:bg-primary-hover transition-colors shadow-md shadow-primary/20">
             <Icon icon="ph:download-simple-bold" class="text-base" />
             <span>{{ t('my_certificate_page.download_pdf', 'Unduh PDF') }}</span>
@@ -173,6 +173,7 @@ import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useDashboardI18n } from '~/composables/useDashboardI18n'
 import { useToast } from '~/composables/useToast'
+import { getImageUrl } from '~/composables/useImageHelper'
 
 definePageMeta({ layout: 'dashboard' })
 

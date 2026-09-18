@@ -50,11 +50,41 @@
                     <thead>
                         <tr
                             class="bg-gray-50/50 text-gray-500 font-bold text-[10px] tracking-widest border-b border-gray-100">
-                            <th class="px-6 py-4">{{ t('earnings.table_participant') }}</th>
-                            <th class="px-6 py-4">{{ t('earnings.table_date') }}</th>
-                            <th class="px-6 py-4">{{ t('earnings.table_method') }}</th>
-                            <th class="px-6 py-4">{{ t('earnings.table_reference') }}</th>
-                            <th class="px-6 py-4 text-right">{{ t('earnings.table_amount') }}</th>
+                            <th @click="toggleSort('participant')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('earnings.table_participant') }}</span>
+                                    <Icon v-if="sortBy === 'participant'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('date')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('earnings.table_date') }}</span>
+                                    <Icon v-if="sortBy === 'date'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('method')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('earnings.table_method') }}</span>
+                                    <Icon v-if="sortBy === 'method'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('reference')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center gap-1.5">
+                                    <span>{{ t('earnings.table_reference') }}</span>
+                                    <Icon v-if="sortBy === 'reference'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('amount')" class="px-6 py-4 text-right cursor-pointer hover:text-navy transition-colors select-none">
+                                <div class="flex items-center justify-end gap-1.5">
+                                    <span>{{ t('earnings.table_amount') }}</span>
+                                    <Icon v-if="sortBy === 'amount'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                                </div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -128,6 +158,18 @@ const payments = ref([])
 const loading = ref(true)
 const searchQuery = ref('')
 
+const sortBy = ref('date')
+const sortOrder = ref('desc')
+
+const toggleSort = (column) => {
+    if (sortBy.value === column) {
+        sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+    } else {
+        sortBy.value = column
+        sortOrder.value = 'asc'
+    }
+}
+
 const fetchDetails = async () => {
     try {
         loading.value = true
@@ -146,13 +188,38 @@ const totalAmount = computed(() => {
 })
 
 const filteredPayments = computed(() => {
-    if (!searchQuery.value) return payments.value
-    const q = searchQuery.value.toLowerCase()
-    return payments.value.filter(p =>
-        (p.archerName && p.archerName.toLowerCase().includes(q)) ||
-        (p.reference && p.reference.toLowerCase().includes(q)) ||
-        (p.archerEmail && p.archerEmail.toLowerCase().includes(q))
-    )
+    let list = payments.value || []
+    if (searchQuery.value) {
+        const q = searchQuery.value.toLowerCase()
+        list = list.filter(p =>
+            (p.archerName && p.archerName.toLowerCase().includes(q)) ||
+            (p.reference && p.reference.toLowerCase().includes(q)) ||
+            (p.archerEmail && p.archerEmail.toLowerCase().includes(q)) ||
+            (p.method && p.method.toLowerCase().includes(q))
+        )
+    }
+
+    const dir = sortOrder.value === 'asc' ? 1 : -1
+    return [...list].sort((a, b) => {
+        if (sortBy.value === 'participant') {
+            return dir * (a.archerName || '').localeCompare(b.archerName || '', undefined, { numeric: true, sensitivity: 'base' })
+        }
+        if (sortBy.value === 'date') {
+            const tA = new Date(a.createdAt || 0).getTime()
+            const tB = new Date(b.createdAt || 0).getTime()
+            return dir * (tA - tB)
+        }
+        if (sortBy.value === 'method') {
+            return dir * (a.method || '').localeCompare(b.method || '')
+        }
+        if (sortBy.value === 'reference') {
+            return dir * (a.reference || '').localeCompare(b.reference || '')
+        }
+        if (sortBy.value === 'amount') {
+            return dir * ((a.amount || 0) - (b.amount || 0))
+        }
+        return 0
+    })
 })
 
 const formatPaymentDate = (date) => {

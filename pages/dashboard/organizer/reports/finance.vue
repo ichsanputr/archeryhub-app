@@ -162,18 +162,66 @@
         <table class="w-full text-left text-xs">
           <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
             <tr>
-              <th class="px-6 py-4">{{ t('dashboard.reports.reference') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.user') }}</th>
-              <th class="px-6 py-4">{{ t('my_registration.sender_name') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.event') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.amount') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.method') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.status') }}</th>
-              <th class="px-6 py-4">{{ t('dashboard.reports.date') }}</th>
+              <th @click="toggleSort('reference')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.reference') }}</span>
+                  <Icon v-if="sortBy === 'reference'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('user')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.user') }}</span>
+                  <Icon v-if="sortBy === 'user'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('sender')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('my_registration.sender_name') }}</span>
+                  <Icon v-if="sortBy === 'sender'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('event')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.event') }}</span>
+                  <Icon v-if="sortBy === 'event'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('amount')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.amount') }}</span>
+                  <Icon v-if="sortBy === 'amount'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('method')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.method') }}</span>
+                  <Icon v-if="sortBy === 'method'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('status')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.status') }}</span>
+                  <Icon v-if="sortBy === 'status'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
+              <th @click="toggleSort('date')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
+                <div class="flex items-center gap-1.5">
+                  <span>{{ t('dashboard.reports.date') }}</span>
+                  <Icon v-if="sortBy === 'date'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100 font-medium">
-            <tr v-for="t in stats.recent_transactions" :key="t.id" class="hover:bg-gray-50 transition-colors">
+            <tr v-for="t in sortedRecentTransactions" :key="t.id" class="hover:bg-gray-50 transition-colors">
               <td class="px-6 py-4 text-navy-dark font-bold font-mono">{{ t.reference }}</td>
               <td class="px-6 py-4 text-gray-700 font-bold capitalize">{{ t.user_name ? t.user_name.toLowerCase() : '-' }}</td>
               <td class="px-6 py-4 text-gray-700 font-medium capitalize">{{ t.sender_name || '-' }}</td>
@@ -195,7 +243,7 @@
               </td>
               <td class="px-6 py-4 text-gray-400 font-semibold font-mono">{{ formatDate(t.created_at) }}</td>
             </tr>
-            <tr v-if="!stats.recent_transactions?.length">
+            <tr v-if="!sortedRecentTransactions.length">
               <td colspan="8" class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_transactions_found', 'Tidak ada transaksi yang cocok dengan filter yang dipilih.') }}</td>
             </tr>
           </tbody>
@@ -222,25 +270,19 @@ useHead({ title: computed(() => (t ? t('dashboard.reports.finance_title', 'Lapor
 const route = useRoute()
 const api = useApi()
 
+const sortBy = ref('date')
+const sortOrder = ref('desc')
+
+const toggleSort = (column) => {
+  if (sortBy.value === column) {
+    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+  } else {
+    sortBy.value = column
+    sortOrder.value = 'asc'
+  }
+}
+
 const eventsList = ref([])
-const eventsDropdownItems = computed(() => [
-  { title: t('dashboard.reports.all_events', 'Semua Turnamen'), value: 'all' },
-  ...eventsList.value.map(e => ({ title: e.name, value: e.id }))
-])
-
-const methodOptions = computed(() => [
-  { title: t('dashboard.reports.all_methods', 'Semua Metode'), value: 'all' },
-  { title: 'Mayar (Online)', value: 'mayar' },
-  { title: 'Manual Transfer', value: 'manual' }
-])
-
-const statusOptions = computed(() => [
-  { title: t('dashboard.reports.all_status', 'Semua Status'), value: 'all' },
-  { title: t('dashboard.reports.status_paid', 'Lunas (Paid)'), value: 'paid' },
-  { title: t('dashboard.reports.status_pending', 'Menunggu (Pending)'), value: 'pending' },
-  { title: t('dashboard.reports.status_expired', 'Kadaluwarsa (Expired)'), value: 'expired' },
-  { title: t('dashboard.reports.status_failed', 'Gagal (Failed)'), value: 'failed' }
-])
 const stats = ref({
   total_paid: 0,
   total_pending: 0,
@@ -249,6 +291,40 @@ const stats = ref({
   revenue_trend: [],
   recent_transactions: [],
   events_list: []
+})
+
+const sortedRecentTransactions = computed(() => {
+  const list = stats.value?.recent_transactions || []
+  const dir = sortOrder.value === 'asc' ? 1 : -1
+  return [...list].sort((a, b) => {
+    if (sortBy.value === 'reference') {
+      return dir * (a.reference || '').localeCompare(b.reference || '')
+    }
+    if (sortBy.value === 'user') {
+      return dir * (a.user_name || '').localeCompare(b.user_name || '', undefined, { numeric: true, sensitivity: 'base' })
+    }
+    if (sortBy.value === 'sender') {
+      return dir * (a.sender_name || '').localeCompare(b.sender_name || '', undefined, { numeric: true, sensitivity: 'base' })
+    }
+    if (sortBy.value === 'event') {
+      return dir * (a.event_name || '').localeCompare(b.event_name || '', undefined, { numeric: true, sensitivity: 'base' })
+    }
+    if (sortBy.value === 'amount') {
+      return dir * ((a.amount || 0) - (b.amount || 0))
+    }
+    if (sortBy.value === 'method') {
+      return dir * (a.payment_method || '').localeCompare(b.payment_method || '')
+    }
+    if (sortBy.value === 'status') {
+      return dir * (a.status || '').localeCompare(b.status || '')
+    }
+    if (sortBy.value === 'date') {
+      const tA = new Date(a.created_at || 0).getTime()
+      const tB = new Date(b.created_at || 0).getTime()
+      return dir * (tA - tB)
+    }
+    return 0
+  })
 })
 
 const filters = reactive({
