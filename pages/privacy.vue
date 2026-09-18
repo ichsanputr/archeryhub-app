@@ -32,85 +32,77 @@
         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
         <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed space-y-6">
           <p>
-            this privacy policy explains how archeris ("we", "us", or "our") collects, uses, discloses, and safeguards your information when you visit our website and use our platform services, including our web applications, mobile features, and api endpoints.
+            This Privacy Policy explains how Archeris ("we", "us", or "our") collects, uses, and protects your information when you use our platform, including our website, mobile scoring apps, and tournament services.
           </p>
           <p>
-            please read this policy carefully. if you do not agree with the terms of this privacy policy, please do not access or use the platform.
+            We respect your privacy and are committed to keeping your personal data and tournament scores secure.
           </p>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Collection of Your Information</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Information We Collect</h3>
           <p>
-            we collect information about you in several ways when you interact with our platform. this data is necessary to provide real-time score keeping, tournament brackets, athlete profiles, and e-commerce vendor capabilities.
+            We collect only the information needed to provide reliable archery scoring, athlete profiles, and tournament management:
           </p>
           
-          <h4 class="font-bold text-navy dark:text-white text-base mt-4">a. Personal and Profile Data</h4>
+          <h4 class="font-bold text-navy dark:text-white text-base mt-4">a. Account and Profile Information</h4>
           <p>
-            we collect personally identifiable information you provide when registering, creating profiles, or organizing events:
+            When you register an account, we collect:
           </p>
           <ul class="list-disc pl-6 space-y-2 marker:text-primary">
-            <li><strong>Athlete Profiles:</strong> full name, email, phone number, gender, date of birth, bio, location/city, preferred bow types, and list of achievements.</li>
-            <li><strong>Organizer Profiles:</strong> organizer name, profile city, official address, logo/avatar urls, and contact details.</li>
-            <li><strong>Vendor Profiles:</strong> store name, store slug, business description, and catalog items.</li>
+            <li><strong>Archers:</strong> Full name, email address, phone number, gender, date of birth, club affiliation, and bow category.</li>
+            <li><strong>Organizers:</strong> Organization name, city, official address, logo, and contact details.</li>
+            <li><strong>Scorekeepers:</strong> Name and login credentials assigned by the tournament organizer.</li>
           </ul>
 
-          <h4 class="font-bold text-navy dark:text-white text-base mt-4">b. Tournament and Scorekeeping Data</h4>
+          <h4 class="font-bold text-navy dark:text-white text-base mt-4">b. Tournament and Scoring Data</h4>
           <p>
-            when organizing or participating in archery tournaments, we process:
+            During archery events, we record:
           </p>
           <ul class="list-disc pl-6 space-y-2 marker:text-primary">
-            <li>tournament entries, category classifications, and team assignments.</li>
-            <li>target assignments, session definitions, qualification lists, and elimination brackets.</li>
-            <li>arrow scores, ends totals, set points, running score logs, and scorekeeper timestamps.</li>
+            <li>Tournament entries, category divisions, and target assignments.</li>
+            <li>Arrow-by-arrow scores, end totals, set points, shoot-off results, and timestamps.</li>
+            <li>Qualification rankings, elimination brackets, and match progression.</li>
           </ul>
 
-          <h4 class="font-bold text-navy dark:text-white text-base mt-4">c. Transaction and Financial Data</h4>
+          <h4 class="font-bold text-navy dark:text-white text-base mt-4">c. Payment Information</h4>
           <p>
-            we process transactional data related to subscriptions, entry fees, and store sales:
+            Payments for event registrations and subscriptions are processed directly through secure third-party payment gateways (such as Mayar). We do not store complete credit card or banking credentials on our servers.
           </p>
-          <ul class="list-disc pl-6 space-y-2 marker:text-primary">
-            <li>billing information, billing details, invoices, and transaction histories processed through mayar (for subscriptions, quota, and tournament invoices).</li>
-            <li>bank account details, holder names, account numbers, and withdrawal transaction logs for payout distributions.</li>
-          </ul>
 
-          <h4 class="font-bold text-navy dark:text-white text-base mt-4">d. Technical and Derivative Data</h4>
+          <h4 class="font-bold text-navy dark:text-white text-base mt-4">d. Device and Log Data</h4>
           <p>
-            information our servers collect automatically:
+            To keep scoring stable and troubleshoot connection issues during live events, we automatically collect basic technical data such as browser type, operating system, IP address, and connection status.
           </p>
-          <ul class="list-disc pl-6 space-y-2 marker:text-primary">
-            <li>ip address, browser type, operating system, access times, page views, and diagnostic logs.</li>
-            <li>device specifications for scorekeeping clients to maintain live connection stability.</li>
-          </ul>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Use of Your Information</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. How We Use Your Information</h3>
           <p>
-            we use your information to operate a secure, transparent, and accurate platform for all users:
+            We use your data strictly to operate and improve the platform:
           </p>
           <ol class="list-decimal pl-6 space-y-2 marker:text-navy marker:font-bold">
-            <li><strong>account management:</strong> creating, configuring, and verifying athlete, organizer, and scorekeeper accounts.</li>
-            <li><strong>tournament execution:</strong> managing registrations, target boards, qualifications, and live elimination brackets.</li>
-            <li><strong>public scoreboards:</strong> compiling and publishing tournament results, rankings, and athlete achievements (which are public by design).</li>
-            <li><strong>payment and payouts:</strong> processing tournament invoices, subscription plans, matching transaction payments, and executing organizer payouts.</li>
-            <li><strong>communications:</strong> sending transaction receipts, notification alerts, and updates regarding tournament schedule changes.</li>
+            <li><strong>Account Management:</strong> Creating and verifying archer, organizer, and scorekeeper accounts.</li>
+            <li><strong>Tournament Scoring:</strong> Managing live target boards, qualification leaderboards, and elimination brackets.</li>
+            <li><strong>Public Results:</strong> Displaying official rankings, tournament results, and certificates (which are public by design).</li>
+            <li><strong>Payments:</strong> Processing tournament invoices, ticket registrations, and organizer payouts.</li>
+            <li><strong>Notifications:</strong> Sending important schedule updates, match alerts, and transaction receipts.</li>
           </ol>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Sharing and Disclosure of Information</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Sharing of Information</h3>
           <p>
-            we do not sell your personal data. we share information only under the following conditions:
+            We do not sell or rent your personal information. We share data only in the following limited circumstances:
           </p>
           <ul class="list-disc pl-6 space-y-2 marker:text-primary">
-            <li><strong>public tournament results:</strong> score log history, division placements, categories, and athlete names are shared publicly on leaderboards.</li>
-            <li><strong>payment gateways:</strong> payment info is sent directly to mayar.id for secure processing.</li>
-            <li><strong>legal obligations:</strong> if required to comply with regulatory audits, court subpoenas, or protection of platform integrity.</li>
+            <li><strong>Public Leaderboards:</strong> Archer names, club affiliations, categories, and match scores are published on public event pages.</li>
+            <li><strong>Payment Gateways:</strong> Necessary transaction data is shared securely with our payment partners to complete purchases.</li>
+            <li><strong>Legal Requirements:</strong> If required by law, regulation, or court order to protect platform integrity and user safety.</li>
           </ul>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Data Retention and Security</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Data Security</h3>
           <p>
-            we employ administrative, technical, and physical security measures to protect your personal and scoring data. scoring logs are backed up frequently to guarantee data integrity during active tournaments. account and profile data is stored as long as your account remains active.
+            We use standard industry encryption and secure cloud servers to safeguard your data. Scoring logs are regularly backed up to prevent data loss during live tournaments.
           </p>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">5. Your Choices and Rights</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">5. Your Rights and Choices</h3>
           <p>
-            you can review, modify, or terminate your profile details through your settings dashboard. you may also request data deletion by contacting us. please note that public tournament logs and archives cannot be deleted if doing so would alter the official records of previously completed events.
+            You can update your personal profile information anytime through your account settings. You may also request account deletion by contacting us. Please note that completed tournament match scores cannot be altered or deleted, as they form the permanent official record of the competition.
           </p>
         </div>
       </div>

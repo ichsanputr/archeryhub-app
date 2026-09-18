@@ -1,89 +1,58 @@
 import { ref, computed, watch } from 'vue'
+import enMessages from '../dashboard_locales/en.json'
+import idMessages from '../dashboard_locales/id.json'
 
 const LS_KEY_LOCALE = 'dashboard_locale'
-const localeLoaders = import.meta.glob('../dashboard_locales/*.json')
+
+const localeMap: Record<string, any> = {
+  en: enMessages,
+  id: idMessages,
+}
+
+// Global shared reactive state
+const globalLocale = ref<string>('en')
+let isInitialized = false
 
 export function useDashboardI18n(defaultLocale = 'en') {
-  const locale = ref<string>(defaultLocale)
-  const messages = ref<Record<string, any> | null>(null)
+  if (!isInitialized) {
+    if (process.client) {
+      try {
+        const saved = localStorage.getItem(LS_KEY_LOCALE)
+        if (saved && (saved === 'en' || saved === 'id')) {
+          globalLocale.value = saved
+        }
+      } catch (e) {}
+    }
+    isInitialized = true
+  }
 
-  // Try to read the app's global i18n locale (SSR + client). If found,
-  // prefer it. Only fall back to `localStorage` when global i18n isn't available.
-  let globalLocaleFound = false
+  // Sync with global nuxt app i18n if available
   try {
-    // Prefer composable `useNuxtApp()` when available in Nuxt runtime.
     const maybeUseNuxt = (globalThis as any).useNuxtApp || (typeof useNuxtApp === 'function' ? useNuxtApp : undefined)
     const nuxt = maybeUseNuxt ? (maybeUseNuxt as any)() : undefined
-    const globalI18n = nuxt && (nuxt.$i18n || nuxt.app?.$i18n || nuxt.$i18n)
+    const globalI18n = nuxt && (nuxt.$i18n || nuxt.app?.$i18n)
     if (globalI18n) {
-      if (typeof globalI18n.locale === 'string') {
-        locale.value = globalI18n.locale
-        globalLocaleFound = true
-      } else if (globalI18n.locale && typeof globalI18n.locale.value === 'string') {
-        locale.value = globalI18n.locale.value
-        globalLocaleFound = true
+      const currentNuxtLocale = typeof globalI18n.locale === 'string'
+        ? globalI18n.locale
+        : (globalI18n.locale?.value || globalI18n.locale)
+      if (currentNuxtLocale && (currentNuxtLocale === 'en' || currentNuxtLocale === 'id')) {
+        globalLocale.value = currentNuxtLocale
       }
-    }
-  } catch (e) {
-    // ignore safe failure
-  }
-
-  // Only use localStorage as a fallback when global i18n isn't present
-  if (!globalLocaleFound && process.client) {
-    try {
-      const saved = localStorage.getItem(LS_KEY_LOCALE)
-      if (saved) locale.value = saved
-    } catch (e) {
-      // ignore localStorage errors
-    }
-  }
-
-  // If we did detect a global locale on the client, persist it to dashboard localStorage.
-  if (process.client && globalLocaleFound) {
-    try {
-      localStorage.setItem(LS_KEY_LOCALE, locale.value)
-    } catch (e) {
-      // ignore
-    }
-  }
-
-  // Watch for runtime changes to global i18n locale and update dashboard locale accordingly
-  try {
-    if (process.client) {
-      const nuxt = typeof useNuxtApp === 'function' ? (useNuxtApp() as any) : (globalThis as any).useNuxtApp && (globalThis as any).useNuxtApp()
-      const globalI18n = nuxt && (nuxt.$i18n || nuxt.app?.$i18n)
-      if (globalI18n && globalI18n.locale && typeof globalI18n.locale === 'object' && 'value' in globalI18n.locale) {
+      if (process.client && globalI18n.locale && typeof globalI18n.locale === 'object' && 'value' in globalI18n.locale) {
         watch(() => (globalI18n.locale as any).value, (v: string) => {
-          if (v && v !== locale.value) {
+          if (v && (v === 'en' || v === 'id') && v !== globalLocale.value) {
             setLocale(v)
           }
         })
       }
     }
-  } catch (e) {
-    // ignore
-  }
-
-  async function loadMessages(loc = locale.value) {
-    try {
-      const loader = localeLoaders[`../dashboard_locales/${loc}.json`]
-      if (!loader) {
-        messages.value = {}
-        return
-      }
-      const mod = await loader() as any
-      messages.value = (mod && (mod.default || mod)) || {}
-    } catch (e) {
-      messages.value = {}
-    }
-  }
+  } catch (e) {}
 
   function setLocale(loc: string) {
-    locale.value = loc
+    globalLocale.value = loc
     if (process.client) {
       try { localStorage.setItem(LS_KEY_LOCALE, loc) } catch {}
     }
-    void loadMessages(loc)
   }
 
   function t(path: string, paramsOrDefault?: any, fallback = ''): string {
@@ -96,12 +65,14 @@ export function useDashboardI18n(defaultLocale = 'en') {
       defaultVal = paramsOrDefault
     }
 
-    let result = defaultVal
-    if (messages.value) {
+    const currentMsg = localeMap[globalLocale.value] || localeMap.en || {}
+    let result: any = undefined
+
+    if (currentMsg) {
       const parts = path.split('.')
-      let cur: any = messages.value
+      let cur: any = currentMsg
       for (const p of parts) {
-        if (cur && p in cur) cur = cur[p]
+        if (cur && typeof cur === 'object' && p in cur) cur = cur[p]
         else {
           cur = null
           break
@@ -110,6 +81,26 @@ export function useDashboardI18n(defaultLocale = 'en') {
       if (typeof cur === 'string') {
         result = cur
       }
+    }
+
+    // If missing in current locale, try English fallback before defaultVal
+    if (result === undefined && globalLocale.value !== 'en' && localeMap.en) {
+      const parts = path.split('.')
+      let cur: any = localeMap.en
+      for (const p of parts) {
+        if (cur && typeof cur === 'object' && p in cur) cur = cur[p]
+        else {
+          cur = null
+          break
+        }
+      }
+      if (typeof cur === 'string') {
+        result = cur
+      }
+    }
+
+    if (result === undefined) {
+      result = defaultVal
     }
 
     if (params && typeof result === 'string') {
@@ -121,14 +112,11 @@ export function useDashboardI18n(defaultLocale = 'en') {
     return result
   }
 
-  // initial load (server and client) using the resolved locale
-  void loadMessages(locale.value)
-
   return {
-    locale: computed(() => locale.value),
+    locale: computed(() => globalLocale.value),
     setLocale,
     t,
-    loadMessages,
+    loadMessages: async () => {},
   }
 }
 

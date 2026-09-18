@@ -24,7 +24,7 @@
 
                     <div class="max-w-3xl space-y-4">
                         <!-- Category Badge Pill -->
-                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-white/10 text-primary border border-white/15 backdrop-blur-md">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-white/10 text-primary border border-white/15 backdrop-blur-md">
                             <Icon :icon="categoryInfo?.icon || 'ph:folder-bold'" class="text-sm" />
                             <span>Category Archive</span>
                             <span class="w-1 h-1 rounded-full bg-primary/60"></span>
@@ -38,7 +38,7 @@
 
                         <!-- Category Description -->
                         <p class="text-slate-300 text-sm sm:text-base font-normal leading-relaxed max-w-2xl">
-                            {{ categoryInfo?.description || 'Explore tutorials, rules, and technical scoring guides in this category.' }}
+                            {{ categoryInfo?.description || 'Clear guides, rules, and tutorials for this category.' }}
                         </p>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                         <div class="flex items-center gap-2 shrink-0">
                             <NuxtLink 
                                 to="/blog" 
-                                class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-600 hover:text-navy hover:bg-slate-100 flex items-center gap-1.5"
+                                class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-navy hover:bg-slate-100 flex items-center gap-1.5"
                             >
                                 <Icon icon="ph:squares-four-bold" class="text-sm" />
                                 <span>All Articles</span>
@@ -63,7 +63,7 @@
                                 :key="cat.slug"
                                 :to="`/blog/category/${cat.slug}`"
                                 :class="[
-                                    'px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0',
+                                    'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shrink-0',
                                     isCurrentCategory(cat.slug)
                                         ? 'bg-navy text-primary shadow-xs'
                                         : 'text-slate-600 hover:text-navy hover:bg-slate-100'
@@ -75,7 +75,7 @@
                         </div>
 
                         <!-- Category Article Count -->
-                        <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-400 shrink-0">
+                        <div class="hidden sm:flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-400 shrink-0">
                             <Icon icon="ph:article" class="text-base text-slate-400" />
                             <span>Showing {{ paginatedArticles.length }} of {{ filteredArticles.length }}</span>
                         </div>
@@ -118,7 +118,7 @@
                                     />
                                     <!-- Category Pill -->
                                     <div class="absolute top-3.5 left-3.5">
-                                        <span class="bg-navy/90 backdrop-blur-xs text-primary text-[11px] font-bold px-3 py-1 rounded-xl shadow-xs border border-white/10">
+                                        <span class="bg-navy/90 backdrop-blur-xs text-primary text-[11px] sm:text-xs font-bold px-3 py-1 rounded-xl shadow-xs border border-white/10">
                                             {{ article.category }}
                                         </span>
                                     </div>
@@ -127,7 +127,7 @@
                                 <!-- Content Body -->
                                 <div class="p-5 sm:p-6 space-y-3">
                                     <!-- Meta Row: Date & Reading Time -->
-                                    <div class="flex items-center gap-3 text-xs font-medium text-slate-500">
+                                    <div class="flex items-center gap-3 text-xs sm:text-sm font-medium text-slate-500">
                                         <div class="flex items-center gap-1.5">
                                             <Icon icon="ph:calendar-blank" class="text-slate-400 text-sm" />
                                             <span>{{ formatDate(article.published_at || article.date) }}</span>
@@ -156,7 +156,7 @@
                                         <span 
                                             v-for="tag in article.tags.slice(0, 3)" 
                                             :key="tag"
-                                            class="text-[10px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md"
+                                            class="text-[11px] sm:text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-md"
                                         >
                                             #{{ tag }}
                                         </span>
@@ -173,10 +173,10 @@
                                         class="w-8 h-8 rounded-full border border-slate-200 bg-slate-50 p-0.5 object-cover shrink-0" 
                                     />
                                     <div class="min-w-0">
-                                        <div class="text-xs font-bold text-navy truncate">
+                                        <div class="text-xs sm:text-sm font-bold text-navy truncate">
                                             {{ article.author_name || 'Archeris Editorial' }}
                                         </div>
-                                        <div class="text-[10px] text-slate-400 truncate">
+                                        <div class="text-[11px] sm:text-xs text-slate-400 truncate">
                                             {{ article.author_role || 'Archery Coach' }}
                                         </div>
                                     </div>
@@ -184,10 +184,10 @@
 
                                 <NuxtLink 
                                     :to="`/blog/${article.slug}`"
-                                    class="text-navy text-xs font-bold flex items-center gap-1 transition-colors shrink-0 ml-2"
+                                    class="text-navy text-xs sm:text-sm font-bold flex items-center gap-1 transition-colors shrink-0 ml-2"
                                 >
                                     <span>Read</span>
-                                    <Icon icon="ph:arrow-right-bold" class="text-xs group-hover:translate-x-0.5 transition-transform" />
+                                    <Icon icon="ph:arrow-right-bold" class="text-xs sm:text-sm group-hover:translate-x-0.5 transition-transform" />
                                 </NuxtLink>
                             </div>
                         </article>
@@ -198,7 +198,7 @@
                         <button 
                             @click="goToPage(currentPage - 1)" 
                             :disabled="currentPage === 1"
-                            class="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-white hover:border-slate-300 disabled:opacity-40 disabled:pointer-events-none transition-all"
+                            class="p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-white hover:border-slate-300 disabled:opacity-40 disabled:pointer-events-none transition-all"
                             aria-label="Previous Page"
                         >
                             <Icon icon="ph:caret-left-bold" class="text-sm" />
@@ -210,7 +210,7 @@
                                 :key="page"
                                 @click="goToPage(page)"
                                 :class="[
-                                    'w-9 h-9 rounded-xl text-xs font-bold transition-all',
+                                    'w-9 h-9 rounded-xl text-xs sm:text-sm font-bold transition-all',
                                     currentPage === page 
                                         ? 'bg-navy text-primary shadow-xs font-black' 
                                         : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300'
@@ -223,7 +223,7 @@
                         <button 
                             @click="goToPage(currentPage + 1)" 
                             :disabled="currentPage === totalPages"
-                            class="p-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-white hover:border-slate-300 disabled:opacity-40 disabled:pointer-events-none transition-all"
+                            class="p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-white hover:border-slate-300 disabled:opacity-40 disabled:pointer-events-none transition-all"
                             aria-label="Next Page"
                         >
                             <Icon icon="ph:caret-right-bold" class="text-sm" />
@@ -245,9 +245,9 @@
                     <div class="pt-2">
                         <NuxtLink 
                             to="/blog"
-                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-navy text-white hover:bg-navy-light text-xs font-bold rounded-xl shadow-xs transition-colors"
+                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-navy text-white hover:bg-navy-light text-xs sm:text-sm font-bold rounded-xl shadow-xs transition-colors"
                         >
-                            <Icon icon="ph:arrow-left-bold" class="text-xs" />
+                            <Icon icon="ph:arrow-left-bold" class="text-xs sm:text-sm" />
                             <span>Browse All Blog Articles</span>
                         </NuxtLink>
                     </div>
@@ -260,17 +260,17 @@
                     <div class="absolute inset-0 bg-radial from-primary/10 via-transparent to-transparent pointer-events-none"></div>
                     
                     <div class="relative z-10 max-w-2xl mx-auto text-center space-y-6">
-                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-white/10 text-primary border border-white/15">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-white/10 text-primary border border-white/15">
                             <Icon icon="ph:envelope-simple-open-bold" class="text-sm" />
                             <span>Archeris Scoring Newsletter</span>
                         </div>
 
                         <div class="space-y-2">
                             <h2 class="text-2xl sm:text-3xl md:text-4xl font-black font-display tracking-tight text-white">
-                                Stay Sharp on Archery Rules & Scoring Tech
+                                Stay Updated on Archery Insights
                             </h2>
                             <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                                Join archery coaches, judges, and athletes receiving our monthly digest on tournament strategy and software updates.
+                                Join archers, coaches, and organizers receiving practical archery guides and tournament updates.
                             </p>
                         </div>
 
@@ -282,20 +282,20 @@
                                     type="email" 
                                     placeholder="Enter your email address..." 
                                     required
-                                    class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-slate-400 focus:outline-none focus:border-primary focus:bg-white/15 transition-all"
+                                    class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-primary focus:bg-white/15 transition-all"
                                 />
                             </div>
                             <button 
                                 type="submit"
                                 :disabled="subscribing"
-                                class="w-full sm:w-auto px-6 py-3 bg-primary hover:bg-primary-hover text-navy font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-md shadow-primary/20 shrink-0 cursor-pointer disabled:opacity-60 flex items-center justify-center gap-2"
+                                class="w-full sm:w-auto px-6 py-3 bg-primary hover:bg-primary-hover text-navy font-black text-xs sm:text-sm uppercase tracking-wider rounded-xl transition-all shadow-md shadow-primary/20 shrink-0 cursor-pointer disabled:opacity-60 flex items-center justify-center gap-2"
                             >
                                 <Icon v-if="subscribing" icon="ph:spinner" class="animate-spin text-sm" />
                                 <span>{{ subscribing ? 'Subscribing...' : 'Subscribe' }}</span>
                             </button>
                         </form>
 
-                        <p v-if="subscribeMessage" :class="subscribeSuccess ? 'text-emerald-400' : 'text-rose-400'" class="text-xs font-semibold">
+                        <p v-if="subscribeMessage" :class="subscribeSuccess ? 'text-emerald-400' : 'text-rose-400'" class="text-xs sm:text-sm font-semibold">
                             {{ subscribeMessage }}
                         </p>
                     </div>
@@ -473,12 +473,12 @@ watch(() => route.params.category, () => {
 
 // SEO & Structured Data (JSON-LD)
 const pageTitle = computed(() => {
-    const catName = categoryInfo.value?.name || 'Archery Scoring'
-    return `${catName} Articles & Guides | Archeris Blog`
+    const catName = categoryInfo.value?.name || 'Archery'
+    return `${catName} Articles | Archeris Blog`
 })
 
 const pageDescription = computed(() => {
-    return categoryInfo.value?.description || 'Read in-depth archery scoring rules, tournament management, and software tutorials.'
+    return categoryInfo.value?.description || 'Read simple archery guides, equipment advice, scoring rules, and tournament tips.'
 })
 
 const canonicalUrl = computed(() => {

@@ -409,7 +409,7 @@ const { isSubscriptionActive } = useSubscription()
 const showPremiumModal = ref(false)
 
 useHead({
-  title: computed(() => `${t('event_elimination.title')} - Dashboard`)
+  title: computed(() => `${t('event_elimination.title', 'Babak Eliminasi')} - Archeris Dashboard`)
 })
 
 import { getCategoryIcon, getCategoryColorClass } from '~/utils/logoArcheryCategory'

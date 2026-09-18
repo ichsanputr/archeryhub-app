@@ -31,30 +31,30 @@
       <div
         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
         <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed space-y-6">
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Accuracy of Scores and Rankings</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Scoring and Ranking Accuracy</h3>
           <p>
-            archeris provides digital scoring logs, qualification tables, and elimination bracket maps. all scores are entered directly by the event organizers, appointed scorekeepers, or athletes. we do not physically audit tournament targets or verify arrow entries on site.
+            Archeris provides tools for live mobile scoring, qualification tables, and elimination brackets. All scores, arrow points, and rankings are recorded directly by event organizers, appointed scorekeepers, or archers.
           </p>
           <p>
-            therefore, we make no warranties regarding the absolute correctness, validity, or authenticity of any scores, statistics, or rankings published on the site. organizers are solely responsible for ensuring scorekeeping integrity.
+            While Archeris provides reliable software, tournament organizers are responsible for verifying on-field arrow values and resolving scoring disputes in accordance with official competition rules.
           </p>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Match Operations and Service Uptime</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Match Operations and Internet Reliability</h3>
           <p>
-            while we strive to maintain high availability and real-time synchronization during active tournaments, we do not guarantee uninterrupted access to the platform. internet connectivity issues at target lines, browser malfunctions, or server latency may impact scoring.
+            We strive to maintain continuous availability and real-time syncing during events. However, outdoor archery venues may experience cellular or Wi-Fi interruptions.
           </p>
           <p>
-            organizers are strongly advised to maintain paper fallback scorecards at each target board. archeris will not be held liable for match delays, scoring disputes, or tournament scheduling conflicts caused by platform downtime.
+            Tournament organizers are advised to follow standard practice and keep paper backup scorecards at target lines during critical matches. Archeris is not liable for match delays caused by third-party network or hardware failures.
           </p>
 
           <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Payment Processing</h3>
           <p>
-            all checkout payments, registrations, and invoices are handled by third-party processor (mayar.id). we do not store full payment credential details. any transaction failures, merchant account freezes, or payout delays are subject to the terms of the payment processor.
+            All payment transactions, entry fee checkouts, and organizer payouts are handled by certified third-party payment gateways (such as Mayar). Any payment processor outages, banking settlement delays, or charge disputes are subject to the terms of the payment provider.
           </p>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Consent</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Agreement</h3>
           <p>
-            by registering and using the platform, you acknowledge and agree that you access all tournament data and scoring tools at your own risk.
+            By using Archeris, you acknowledge that you understand and agree to these terms.
           </p>
         </div>
       </div>

@@ -176,26 +176,59 @@ const isDev = computed(() => {
     return import.meta.dev
 })
 
-const selectedDemoAccount = ref('')
-const demoAccountOptions = [
-    { title: 'Archer (stewie4king@gmail.com / 12345)', value: 'archer' },
-    { title: 'Archer (ichsanfadhil67@gmail.com / 123456)', value: 'archer_ichsan' },
-    { title: 'Organizer / EO (ngekode24@gmail.com / 123456)', value: 'organizer' },
-]
+interface DevAccount {
+    role: string
+    email: string
+    name: string
+    username: string
+    password: string
+    avatar_url: string
+}
 
-const selectDemoUser = (role: string) => {
-    if (!role) return
-    const credentials: Record<string, { email: string, password: string }> = {
-        archer: { email: 'stewie4king@gmail.com', password: '12345' },
-        archer_ichsan: { email: 'ichsanfadhil67@gmail.com', password: '123456' },
-        organizer: { email: 'ngekode24@gmail.com', password: '123456' },
+const selectedDemoAccount = ref('')
+const dynamicDemoAccounts = ref<DevAccount[]>([])
+
+const demoAccountOptions = computed(() => {
+    if (dynamicDemoAccounts.value.length > 0) {
+        return dynamicDemoAccounts.value.map(acc => ({
+            title: `${acc.role === 'organizer' ? '🏢 Organizer' : '🎯 Archer'}: ${acc.name || acc.username || acc.email} (${acc.email})`,
+            value: acc.email,
+        }))
     }
-    const creds = credentials[role]
-    if (creds) {
-        form.value.email = creds.email
-        form.value.password = creds.password
-        validate('email', form.value.email, [rules.required(), rules.email()])
-        validate('password', form.value.password, [rules.required()])
+    return [
+        { title: 'Archer (archer@gmail.com / 123456)', value: 'archer@gmail.com' },
+        { title: 'Organizer (ichsanfadhil67@gmail.com / 123456)', value: 'ichsanfadhil67@gmail.com' },
+    ]
+})
+
+const selectDemoUser = (emailOrKey: string) => {
+    if (!emailOrKey) return
+    const matched = dynamicDemoAccounts.value.find(a => a.email === emailOrKey || a.role === emailOrKey)
+    if (matched) {
+        form.value.email = matched.email
+        form.value.password = matched.password || '123456'
+    } else {
+        form.value.email = emailOrKey
+        form.value.password = '123456'
+    }
+    validate('email', form.value.email, [rules.required(), rules.email()])
+    validate('password', form.value.password, [rules.required()])
+}
+
+const fetchDevAccounts = async () => {
+    if (!isDev.value) return
+    try {
+        const res = await $fetch<{ accounts?: DevAccount[] }>(`${apiBaseUrl}/auth/dev-accounts`).catch(() => null)
+        if (res && res.accounts && res.accounts.length > 0) {
+            dynamicDemoAccounts.value = res.accounts
+            if (!form.value.email && res.accounts.length > 0) {
+                const first = res.accounts[0]
+                selectedDemoAccount.value = first.email
+                selectDemoUser(first.email)
+            }
+        }
+    } catch (e) {
+        console.warn('Failed to load dynamic dev accounts:', e)
     }
 }
 
@@ -267,6 +300,9 @@ onMounted(async () => {
 
     await initializeAuth()
     checkAndRedirect()
+    if (isDev.value) {
+        await fetchDevAccounts()
+    }
 })
 
 const handleEmailAuth = async () => {

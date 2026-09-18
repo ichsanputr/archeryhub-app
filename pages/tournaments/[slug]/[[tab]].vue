@@ -49,7 +49,7 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar -mb-px">
                         <NuxtLink v-for="tab in tabs" :key="tab" :to="getTabLink(tab)" replace
-                            class="px-4 md:px-6 py-3 md:py-4 font-semibold text-sm md:text-base transition-colors whitespace-nowrap border-b-2"
+                            class="px-4 md:px-6 py-3 md:py-4 font-semibold text-sm md:text-base transition-colors whitespace-nowrap border-b-2 capitalize"
                             :class="activeTab === tab ? 'text-navy border-primary bg-primary/5' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
                             {{ t('event_detail.tabs.' + tab, tab) }}
                         </NuxtLink>
@@ -60,11 +60,11 @@
             <!-- Main Content -->
             <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 md:py-8">
                 <div
-                    :class="activeTab === 'Hasil' ? 'grid grid-cols-1' : 'grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12'">
+                    :class="activeTab === 'results' ? 'grid grid-cols-1' : 'grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12'">
                     <!-- Left Column -->
-                    <div :class="activeTab === 'Hasil' ? 'space-y-10' : 'lg:col-span-2 space-y-10'" :key="activeTab">
+                    <div :class="activeTab === 'results' ? 'space-y-10' : 'lg:col-span-2 space-y-10'" :key="activeTab">
                         <TournamentTabsSkeleton v-if="isTabLoading" :tab="activeTab" />
-                        <div v-else-if="activeTab === 'Ringkasan'"
+                        <div v-else-if="activeTab === 'overview'"
                             class="bg-white rounded-3xl p-6 sm:p-8 md:p-10 shadow-sm border border-gray-100 space-y-10 md:space-y-12">
                             <!-- About Section -->
                             <section>
@@ -87,9 +87,7 @@
                                     <div v-if="tournament.technical_guidebook_url"
                                         class="bg-blue-50 p-4 rounded-xl border border-blue-100 mt-4">
                                         <h4 class="font-bold text-navy !mt-0 mb-2">{{ t('event_detail.technical_handbook') }}</h4>
-                                        <div class="text-sm text-gray-600 mb-3">Unduh buku panduan teknis lengkap yang
-                                            berisi
-                                            peraturan, regulasi, dan jadwal detail.</div>
+                                        <div class="text-sm text-gray-600 mb-3">{{ t('event_detail.technical_handbook_desc') }}</div>
                                         <a :href="tournament.technical_guidebook_url" target="_blank"
                                             class="text-navy font-bold text-sm hover:underline inline-flex items-center gap-1">
                                             {{ t('event_detail.download_pdf') }}
@@ -405,7 +403,7 @@
                                             </div>
                                             {{ t('event_detail.faq') }}
                                         </h2>
-                                        <div class="text-sm text-gray-400 font-medium">Informasi penting seputar event ini</div>
+                                        <div class="text-sm text-gray-400 font-medium">{{ t('event_detail.faq_desc') }}</div>
                                     </div>
                                 </div>
 
@@ -440,18 +438,18 @@
                             </section>
                         </div>
 
-                        <TournamentScheduleTab v-else-if="activeTab === 'Jadwal Lomba'" :event-id="slug"
+                        <TournamentScheduleTab v-else-if="activeTab === 'schedule'" :event-id="slug"
                             :schedules="schedulesData" />
-                        <TournamentAthletesTab v-else-if="activeTab === 'Peserta'" :participants="participantsData" />
-                        <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug"
+                        <TournamentAthletesTab v-else-if="activeTab === 'athletes'" :participants="participantsData" />
+                        <TournamentResultsTab v-else-if="activeTab === 'results'" :event-id="slug"
                             :results-type="tournament.page_settings?.results_type" :results="tournament.results || []"
                             :categories="categoriesList" :participants="participantsData" />
-                        <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
+                        <TournamentVenueTab v-else-if="activeTab === 'venue'" :venue="tournament.venue"
                             :address="tournament.address" :gmaps-link="tournament.gmaps_link"
                             :accessibility="tournament.location_accessibility" />
 
                         <!-- Galeri Tab -->
-                        <div v-else-if="activeTab === 'Galeri'" class="space-y-8">
+                        <div v-else-if="activeTab === 'gallery'" class="space-y-8">
                             <section
                                 class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100 overflow-hidden relative">
                                 <div class="absolute -right-16 -top-16 w-48 h-48 bg-primary/5 rounded-full blur-3xl">
@@ -496,7 +494,7 @@
                                 <div v-if="galleryImages.length > 0" class="relative z-10">
                                     <h3 v-if="tournament.thumbnail || (tournament.image && tournament.image !== '/hero-event-detail.jpeg')"
                                         class="text-sm font-black text-gray-400 tracking-widest mb-4 pt-6 border-t border-gray-100">
-                                        Dokumentasi</h3>
+                                        {{ t('event_detail.documentation') }}</h3>
                                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                                         <div v-for="(img, idx) in galleryImages" :key="idx"
                                             class="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-sm border border-gray-100 hover:shadow-md transition-all"
@@ -528,8 +526,8 @@
                         </div>
                     </div>
 
-                    <!-- Right Sidebar - Hidden on Hasil tab -->
-                    <aside v-if="activeTab !== 'Hasil'" class="space-y-8">
+                    <!-- Right Sidebar - Hidden on Results tab -->
+                    <aside v-if="activeTab !== 'results'" class="space-y-8">
                         <!-- Registration Card -->
                         <div class="bg-white rounded-2xl p-6 shadow-sm border-t-4 border-primary relative">
                             <h3 class="text-lg font-bold text-navy mb-4">
@@ -611,7 +609,7 @@
                                         {{ t('event_detail.registration_not_started') }}
                                     </div>
                                     <div class="text-[10px] text-center text-gray-400 font-bold mt-2">
-                                        Dibuka pada {{ useDateFormat(registrationStatus.startTime, 'DD MMM YYYY, HH:mm', { locales: 'id-ID' }).value }}
+                                        {{ t('event_detail.opens_on') }} {{ useDateFormat(registrationStatus.startTime, 'DD MMM YYYY, HH:mm', { locales: 'id-ID' }).value }}
                                     </div>
                                 </template>
                                 <template v-else-if="registrationStatus.status === 'closed'">
@@ -654,7 +652,7 @@
                                         {{ tournament.organizer }}
                                     </NuxtLink>
                                     <h4 v-else class="font-bold text-navy text-sm">{{ tournament.organizer }}</h4>
-                                    <div class="text-xs text-gray-500">Penyelenggara Terverifikasi <Icon
+                                    <div class="text-xs text-gray-500">{{ t('event_detail.verified_organizer') }} <Icon
                                             icon="ph:seal-check-fill" class="text-[14px] inline align-middle text-blue-500" />
                                     </div>
                                 </div>
@@ -675,7 +673,7 @@
                                 <NuxtLink v-if="tournament.organizer_slug"
                                     :to="`/organizer/${tournament.organizer_slug}`"
                                     class="flex-1 py-2.5 bg-navy hover:bg-navy-light border border-navy rounded-xl text-xs font-bold text-white transition-all text-center flex items-center justify-center">
-                                    Lihat Profil
+                                    {{ t('event_detail.view_profile') }}
                                 </NuxtLink>
                             </div>
                         </div>
@@ -701,7 +699,7 @@
                         <!-- Share Section -->
                         <div
                             class="flex flex-col items-center gap-3 justify-center bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                            <span class="text-xs font-black text-gray-400 tracking-[0.2em] capitalize">Bagikan Event Ini</span>
+                            <span class="text-xs font-bold text-gray-400">{{ t('event_detail.share_event') }}</span>
                             <div class="grid grid-cols-4 gap-2 w-full">
                                 <button @click="shareTo('whatsapp')"
                                     class="w-full h-10 rounded-xl bg-green-50/50 border border-green-100/50 flex items-center justify-center text-[#25D366] hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-all duration-300 shadow-2xs active:scale-95"
@@ -725,7 +723,7 @@
                                 </button>
                             </div>
                             <div v-if="copySuccess" class="text-[10px] font-bold text-green-600 transition-all animate-fade-in">
-                                Link berhasil disalin!
+                                {{ t('event_detail.link_copied') }}
                             </div>
                         </div>
                     </aside>
@@ -819,38 +817,49 @@ const fallbackTournament = {
 }
 
 const tabs = computed(() => {
-    if (!tournament.value || !tournament.value.page_settings) return ['Ringkasan']
-    return ['Ringkasan', 'Jadwal Lomba', 'Peserta', 'Hasil', 'Lokasi', 'Galeri']
+    if (!tournament.value || !tournament.value.page_settings) return ['overview']
+    return ['overview', 'schedule', 'athletes', 'results', 'venue', 'gallery']
 })
+
+const tabToSlug = {
+    'overview': 'overview',
+    'schedule': 'schedule',
+    'athletes': 'athletes',
+    'results': 'results',
+    'venue': 'venue',
+    'gallery': 'gallery'
+}
+
+const slugToTab = {
+    '': 'overview',
+    'overview': 'overview',
+    'ringkasan': 'overview',
+    'schedule': 'schedule',
+    'jadwal': 'schedule',
+    'jadwal-lomba': 'schedule',
+    'athletes': 'athletes',
+    'peserta': 'athletes',
+    'participants': 'athletes',
+    'results': 'results',
+    'hasil': 'results',
+    'venue': 'venue',
+    'lokasi': 'venue',
+    'location': 'venue',
+    'gallery': 'gallery',
+    'galeri': 'gallery',
+    'faq': 'overview'
+}
+
 const activeTab = computed(() => {
-    const q = route.query.tab || ''
-    return slugToTab[q] || 'Ringkasan'
+    const q = (route.query.tab || '').toLowerCase()
+    return slugToTab[q] || 'overview'
 })
 const isTabLoading = ref(false)
 
 const getTabLink = (tabName) => {
     const slug_tab = tabToSlug[tabName]
-    if (!slug_tab) return `/tournaments/${slug}`
+    if (!slug_tab || slug_tab === 'overview') return `/tournaments/${slug}`
     return `/tournaments/${slug}?tab=${slug_tab}`
-}
-
-const tabToSlug = {
-    'Ringkasan': '',
-    'Jadwal Lomba': 'jadwal-lomba',
-    'Peserta': 'peserta',
-    'Hasil': 'hasil',
-    'Lokasi': 'lokasi',
-    'Galeri': 'galeri'
-}
-
-const slugToTab = {
-    '': 'Ringkasan',
-    'jadwal-lomba': 'Jadwal Lomba',
-    'peserta': 'Peserta',
-    'hasil': 'Hasil',
-    'lokasi': 'Lokasi',
-    'galeri': 'Galeri',
-    'faq': 'Ringkasan'
 }
 
 // Keeping this for compatibility or if we need a fast way to switch without full reload (though NuxtLink handles it)

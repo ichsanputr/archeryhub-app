@@ -188,23 +188,33 @@ watch(() => route.query.cat, (newCat) => {
 })
 
 const categories = [
-    { id: 'all', label: 'All Guides', icon: 'ph:squares-four-bold', description: '' },
-    { id: 'platform', label: 'Platform & Dashboard', icon: 'ph:monitor-bold', description: 'Platform overview, user accounts, roles, and settings' },
+    { id: 'all', label: 'All Guides', icon: 'ph:squares-four-bold', description: 'Browse all official documentation articles' },
+    { id: 'accounts', label: 'User Accounts', icon: 'ph:users-three-bold', description: 'Account roles, profile settings, and organization branding' },
+    { id: 'subscriptions', label: 'Subscriptions', icon: 'ph:credit-card-bold', description: 'Plan tiers, tournament quotas, and renewal rules' },
+    { id: 'tournaments', label: 'Tournament Setup', icon: 'ph:trophy-bold', description: 'Event creation wizard, schedules, and public publishing' },
+    { id: 'categories', label: 'Competition Categories', icon: 'ph:circles-three-bold', description: 'Bow divisions, age classes, distances, and quotas' },
+    { id: 'participants', label: 'Participant Management', icon: 'ph:user-plus-bold', description: 'Registration monitoring, payments, and manual entries' },
+    { id: 'targets', label: 'Target Allocation', icon: 'ph:target-bold', description: 'Lane positions, auto-assign algorithm, and target sheets' },
+    { id: 'scorekeeper', label: 'Scorekeeper Operations', icon: 'ph:device-mobile-bold', description: 'Mobile portal login, keypad scoring, and offline mode' },
+    { id: 'qualification', label: 'Qualification Rounds', icon: 'ph:chart-line-up-bold', description: 'Session parameters, live scoring, and tie-breakers' },
+    { id: 'teams', label: 'Team Management', icon: 'ph:users-four-bold', description: 'Club groupings, auto-sync from scores, and substitutions' },
+    { id: 'elimination', label: 'Elimination Brackets', icon: 'ph:tree-structure-bold', description: 'Match play brackets, Set System, and big-screen displays' },
+    { id: 'certificates', label: 'Certificates', icon: 'ph:certificate-bold', description: 'Template uploads, linking participants, and QR verification' },
+    { id: 'reports', label: 'Reports', icon: 'ph:file-pdf-bold', description: 'Official Result Book PDF and printable physical score sheets' },
+    { id: 'archers', label: 'Archer Guides', icon: 'ph:user-bold', description: 'Athlete registration, checking targets, and match tracking' },
 ]
 
 const filteredCategories = computed(() => {
     const cats = activeCategory.value === 'all'
         ? categories.filter(c => c.id !== 'all')
-        : categories.filter(c => c.id === activeCategory.value || (activeCategory.value === 'dashboard' && c.id === 'platform'))
+        : categories.filter(c => c.id === activeCategory.value)
     if (searchQuery.value === '') return cats
     return cats.filter(cat => filteredDocs(cat.id).length > 0)
 })
 
 const filteredDocs = (categoryId: string) => {
     return docs.value.filter((d: any) => {
-        const matchCat = d.category === categoryId ||
-            (categoryId === 'platform' && (d.category === 'platform' || d.category === 'dashboard')) ||
-            (categoryId === 'dashboard' && (d.category === 'platform' || d.category === 'dashboard'))
+        const matchCat = d.category === categoryId
         const matchSearch = searchQuery.value === '' ||
             d.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
             d.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase())

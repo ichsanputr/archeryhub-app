@@ -32,44 +32,44 @@
         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
         <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed space-y-6">
           <p>
-            welcome to archeris. these terms and conditions govern your use of the archeris website (the "service"), including all features for tournament organizers, athletes, and scorekeepers.
+            Welcome to Archeris. These Terms and Conditions govern your use of the Archeris platform, including all features for tournament organizers, archers, and scorekeepers.
           </p>
           <p>
-            by registering an account, organizing a tournament, or submitting scores on the site, you agree to be bound by these terms. if you do not agree with any part of these terms, you are prohibited from using the service.
+            By creating an account, registering for an event, or submitting scores, you agree to these terms.
           </p>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Account Types and Responsibilities</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. User Roles and Responsibilities</h3>
           <p>
-            we offer distinct account types with specific capabilities and operational guidelines:
+            We support three primary user roles with specific guidelines:
           </p>
           <ul class="list-disc pl-6 space-y-2 marker:text-primary">
-            <li><strong>athletes:</strong> responsible for providing accurate profile information (name, gender, age category, bow type) and maintaining sportsmanship.</li>
-            <li><strong>organizers:</strong> responsible for configuring tournament details, setting up target assignments, defining qualification/elimination rules, and resolving participant disputes.</li>
-            <li><strong>scorekeepers:</strong> appointed by organizers to record arrow points. scorekeepers must enter points honestly and conform to tournament rules.</li>
+            <li><strong>Archers:</strong> Responsible for providing accurate personal information (name, gender, age category, bow type) and practicing good sportsmanship.</li>
+            <li><strong>Organizers:</strong> Responsible for setting up event details, target assignments, category rules, and resolving participant inquiries fairly.</li>
+            <li><strong>Scorekeepers:</strong> Appointed by organizers to record arrow scores honestly and in line with tournament rules.</li>
           </ul>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Subscriptions and Financial Transactions</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Subscriptions and Payments</h3>
           <p>
-            organizers require an active subscription to access specific limits (e.g. creating unlimited tournaments, adding scorekeepers, and exporting registration sheets):
+            Organizers may choose subscription plans or event packages to unlock additional capabilities (e.g. unlimited events, custom score sheets, and multi-day brackets):
           </p>
           <ul class="list-disc pl-6 space-y-2 marker:text-primary">
-            <li><strong>plans & billing:</strong> subscriptions and quotas are processed securely via mayar. billing cycles recur monthly, annually, or per-event quota packages.</li>
-            <li><strong>expired subscriptions:</strong> if a subscription expires, organizers can still log in, view existing tournament lists, detail pages, and browse sidebar routes. however, form actions to add, edit, or delete event details, categories, targets, or withdraw balances will be locked until the subscription is renewed.</li>
-            <li><strong>invoice processing:</strong> entry fee collections from athletes are processed using mayar instant invoices. payouts to organizers are disbursed after deducting administrative commissions.</li>
+            <li><strong>Plans & Invoicing:</strong> Subscriptions and quota packages are billed securely through our payment partner (Mayar).</li>
+            <li><strong>Subscription Expiry:</strong> When a subscription ends, organizers can still log in, review past events, and view all records. However, creating or publishing new tournaments requires an active plan.</li>
+            <li><strong>Entry Fee Collection:</strong> Registration fees collected from archers are processed securely, with payouts disbursed to organizers after standard processing fees.</li>
           </ul>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Scoring Integrity and Tournament Results</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Scoring Integrity and Fair Play</h3>
           <p>
-            all tournament scores (qualification sets, match eliminations, and bracket outcomes) entered into the service are considered official record logs:
+            All arrow scores, qualification totals, and elimination bracket results entered into Archeris form the official event record:
           </p>
           <ol class="list-decimal pl-6 space-y-2 marker:text-navy marker:font-bold">
-            <li>organizers must ensure that categories, gender divisions, and age groupings comply with national or international archery standards.</li>
-            <li>any attempt to falsify score logs, double-entry points, or manipulate brackets will result in the immediate suspension of the offending accounts and nullification of the event results.</li>
+            <li>Organizers must ensure competition categories and target distances comply with standard archery rules.</li>
+            <li>Any intentional score tampering, falsification, or bracket manipulation will lead to immediate account suspension and cancellation of event results.</li>
           </ol>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Termination and Limitations</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Account Termination</h3>
           <p>
-            we reserve the right to suspend or terminate your account at any time, without prior notice, if you violate these terms, act fraudulently, or engage in behavior that compromises the security and accuracy of active tournaments.
+            We reserve the right to suspend or terminate accounts that violate these terms, attempt fraud, or disrupt scoring operations.
           </p>
         </div>
       </div>

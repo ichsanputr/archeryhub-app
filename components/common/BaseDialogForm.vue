@@ -4,7 +4,7 @@
             enter-to-class="opacity-100" leave-active-class="transition duration-150 ease-in"
             leave-from-class="opacity-100" leave-to-class="opacity-0">
             <div v-if="modelValue"
-                class="fixed inset-0 z-50 flex items-center justify-center bg-navy/60 backdrop-blur-sm p-4"
+                class="fixed inset-0 z-[200] flex items-center justify-center bg-navy/60 backdrop-blur-sm p-4"
                 @click.self="handleClose">
                 <Transition enter-active-class="transition duration-200 ease-out"
                     enter-from-class="opacity-0 scale-95 translate-y-4"

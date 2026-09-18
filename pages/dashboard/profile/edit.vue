@@ -198,7 +198,7 @@ const { t } = useDashboardI18n()
 const toast = useToast()
 
 useHead({
-    title: computed(() => t('profile.edit.head_title'), 'Edit Profil - Archeris Dashboard')
+    title: computed(() => `${t('profile.edit.head_title', 'Edit Profil')} - Archeris Dashboard`)
 })
 
 const profileData = ref({

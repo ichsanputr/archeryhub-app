@@ -103,19 +103,52 @@
           </div>
         </div>
 
-        <!-- ── CATEGORY FILTER PILLS BAR ── -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-2.5 sm:p-3 shadow-2xs flex items-center justify-between gap-2.5 sm:gap-3 overflow-hidden">
+        <!-- ── 2-ROW CATEGORY FILTER CONTAINER ── -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-3 sm:p-4 shadow-2xs space-y-2.5">
+          <!-- Row 1: Competition Type Pills (Individu / Beregu / Mix Team) -->
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 border-b border-slate-100">
+            <div class="flex items-center gap-1.5 text-xs font-bold text-slate-400 shrink-0 pr-1">
+              <Icon icon="ph:funnel-bold" class="text-sm text-slate-400" />
+              <span>Tipe Lomba:</span>
+            </div>
+            <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+              <button
+                v-for="t in availableTypes"
+                :key="t.id"
+                @click="handleSelectType(t.id)"
+                :class="[
+                  'inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer',
+                  selectedType === t.id
+                    ? 'bg-navy text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                ]"
+              >
+                <Icon :icon="t.icon" class="text-xs" />
+                <span>{{ t.label }}</span>
+                <span 
+                  :class="[
+                    'px-1.5 py-0.5 rounded-md text-[10px] font-bold',
+                    selectedType === t.id ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600'
+                  ]"
+                >
+                  {{ t.count }}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Row 2: Category Filter Pills for the Selected Type -->
           <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 w-full">
-            <span class="text-xs font-bold text-slate-400 pl-1 shrink-0">Pilih Kategori:</span>
+            <span class="text-xs font-bold text-slate-400 pl-1 shrink-0">Kategori:</span>
             <button
-              v-for="cat in availableBracketCategories"
+              v-for="cat in filteredBracketCategories"
               :key="cat"
               @click="handleSelectCategory(cat)"
               :class="[
-                'px-3.5 py-1.5 rounded-xl text-xs whitespace-nowrap shrink-0 transition-all cursor-pointer',
-                (selectedCategory || availableBracketCategories[0]) === cat
-                  ? 'bg-navy text-white shadow-xs font-bold'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 font-semibold'
+                'px-3 py-1.5 rounded-xl text-xs whitespace-nowrap shrink-0 transition-all cursor-pointer',
+                (selectedCategory || filteredBracketCategories[0]) === cat
+                  ? 'bg-amber-500 text-white shadow-xs font-bold'
+                  : 'bg-slate-50 border border-slate-200/80 text-slate-700 hover:bg-slate-100 font-semibold'
               ]"
             >
               {{ toTitleCase(cat) }}
@@ -130,7 +163,7 @@
             :rounds="currentArcherisBracketRounds"
             :config="currentArcherisBracketConfig"
             :tournament-slug="slug"
-            :category-name="selectedCategory || availableBracketCategories[0]"
+            :category-name="selectedCategory || filteredBracketCategories[0] || availableBracketCategories[0]"
             :is-full-page="true"
           />
           <div v-else class="text-center py-24 text-slate-400 text-xs sm:text-sm my-auto">
@@ -179,7 +212,55 @@ const availableBracketCategories = computed(() => {
   return Object.keys(tournamentData.value.brackets)
 })
 
+const selectedType = ref('individual')
 const selectedCategory = ref('')
+
+const getCategoryType = (cat) => {
+  const cl = String(cat || '').toLowerCase()
+  if (cl.includes('mixed') || cl.includes('mix team') || cl.includes('campuran')) {
+    return 'mix_team'
+  }
+  if (cl.includes('team') || cl.includes('beregu')) {
+    return 'team'
+  }
+  return 'individual'
+}
+
+const availableTypes = computed(() => {
+  const cats = availableBracketCategories.value || []
+  const hasInd = cats.some(c => getCategoryType(c) === 'individual')
+  const hasTeam = cats.some(c => getCategoryType(c) === 'team')
+  const hasMix = cats.some(c => getCategoryType(c) === 'mix_team')
+
+  const list = []
+  if (hasInd) {
+    const count = cats.filter(c => getCategoryType(c) === 'individual').length
+    list.push({ id: 'individual', label: 'Individu', icon: 'ph:user-bold', count })
+  }
+  if (hasTeam) {
+    const count = cats.filter(c => getCategoryType(c) === 'team').length
+    list.push({ id: 'team', label: 'Beregu (Team)', icon: 'ph:users-three-bold', count })
+  }
+  if (hasMix) {
+    const count = cats.filter(c => getCategoryType(c) === 'mix_team').length
+    list.push({ id: 'mix_team', label: 'Mix Team', icon: 'ph:users-duotone', count })
+  }
+  return list
+})
+
+const filteredBracketCategories = computed(() => {
+  const cats = availableBracketCategories.value || []
+  if (!selectedType.value || selectedType.value === 'all') return cats
+  return cats.filter(c => getCategoryType(c) === selectedType.value)
+})
+
+const handleSelectType = (typeId) => {
+  selectedType.value = typeId
+  const catsForType = availableBracketCategories.value.filter(c => getCategoryType(c) === typeId)
+  if (catsForType.length > 0 && !catsForType.includes(selectedCategory.value)) {
+    handleSelectCategory(catsForType[0])
+  }
+}
 
 watch(availableBracketCategories, (newCats) => {
   if (newCats.length > 0) {
@@ -187,14 +268,19 @@ watch(availableBracketCategories, (newCats) => {
     const matched = newCats.find(c => c.toLowerCase() === qCat)
     if (matched) {
       selectedCategory.value = matched
+      selectedType.value = getCategoryType(matched)
     } else if (!selectedCategory.value || !newCats.includes(selectedCategory.value)) {
-      selectedCategory.value = newCats[0]
+      const firstType = availableTypes.value[0]?.id || 'individual'
+      selectedType.value = firstType
+      const catsForType = newCats.filter(c => getCategoryType(c) === firstType)
+      selectedCategory.value = catsForType[0] || newCats[0]
     }
   }
 }, { immediate: true })
 
 const handleSelectCategory = (cat) => {
   selectedCategory.value = cat
+  selectedType.value = getCategoryType(cat)
   router.replace({ query: { ...route.query, category: cat } })
 }
 
@@ -313,6 +399,22 @@ const currentArcherisBracketRounds = computed(() => {
     })
   }
 
+  const isScheduleStr = (str) => {
+    return /T#\s*\d+/i.test(String(str || ''))
+  }
+
+  const cleanEntryName = (val) => {
+    const s = String(val || '').trim()
+    if (!s || s.toLowerCase() === 'tbd' || isScheduleStr(s)) return 'TBD'
+    return s
+  }
+
+  const cleanEntryScore = (val) => {
+    const s = String(val || '').trim()
+    if (!s || isScheduleStr(s) || s.toLowerCase() === 'bye') return ''
+    return s
+  }
+
   const parseMatchItem = (m, idx, phaseLabel) => {
     const a1 = String(m.archer1 || m.name1 || m.archer_a || m.name_a || '').trim()
     const s1 = String(m.score1 || m.score_a || '').trim()
@@ -324,32 +426,28 @@ const currentArcherisBracketRounds = computed(() => {
     const seed2 = String(m.seed2 || m.seed_b || '').trim()
     const sets2 = String(m.sets2 || m.sets_b || '').trim()
 
-    let nameA = 'TBD'
+    let nameA = cleanEntryName(a1)
     let realSeedA = seed1
-    let scoreA = s1
+    let scoreA = cleanEntryScore(s1)
 
-    if (/[a-zA-Z]/.test(a1)) {
-      nameA = a1
-      scoreA = s1
-    } else if (/[a-zA-Z]/.test(s1)) {
-      nameA = s1
+    if (nameA === 'TBD' && !isScheduleStr(s1) && /[a-zA-Z]/.test(s1) && !s1.toLowerCase().includes('bye')) {
+      nameA = cleanEntryName(s1)
+      scoreA = ''
       realSeedA = /^\d+$/.test(a1) ? a1 : seed1
     }
 
-    let nameB = 'TBD'
+    let nameB = cleanEntryName(a2)
     let realSeedB = seed2
-    let scoreB = s2
+    let scoreB = cleanEntryScore(s2)
 
-    if (/[a-zA-Z]/.test(a2)) {
-      nameB = a2
-      scoreB = s2
-    } else if (/[a-zA-Z]/.test(s2)) {
-      nameB = s2
+    if (nameB === 'TBD' && !isScheduleStr(s2) && /[a-zA-Z]/.test(s2) && !s2.toLowerCase().includes('bye')) {
+      nameB = cleanEntryName(s2)
+      scoreB = ''
       realSeedB = /^\d+$/.test(a2) ? a2 : seed2
     }
 
-    const arrA = sets1.split(/\s+/).map(Number).filter(n => !isNaN(n))
-    const arrB = sets2.split(/\s+/).map(Number).filter(n => !isNaN(n))
+    const arrA = sets1 && sets1.trim() ? sets1.trim().split(/\s+/).map(Number).filter(n => !isNaN(n)) : []
+    const arrB = sets2 && sets2.trim() ? sets2.trim().split(/\s+/).map(Number).filter(n => !isNaN(n)) : []
 
     if (!/^\d+$/.test(scoreA) && arrA.length > 0 && arrB.length > 0) {
       let pA = 0
@@ -366,9 +464,13 @@ const currentArcherisBracketRounds = computed(() => {
     let winnerId = null
     const nA = parseFloat(scoreA)
     const nB = parseFloat(scoreB)
-    if (!isNaN(nA) && !isNaN(nB)) {
+    if (!isNaN(nA) && !isNaN(nB) && scoreA !== '' && scoreB !== '') {
       if (nA > nB) winnerId = 'a'
       else if (nB > nA) winnerId = 'b'
+    } else if (nameA !== 'TBD' && (nameB.toUpperCase() === 'BYE' || a2.toUpperCase() === 'BYE')) {
+      winnerId = 'a'
+    } else if (nameB !== 'TBD' && (nameA.toUpperCase() === 'BYE' || a1.toUpperCase() === 'BYE')) {
+      winnerId = 'b'
     }
 
     return {
@@ -388,7 +490,7 @@ const currentArcherisBracketRounds = computed(() => {
       total_score_b: scoreB,
       sets_b: sets2,
       winner_entry_id: winnerId,
-      is_bye: (nameA.toUpperCase() === 'BYE' || nameB.toUpperCase() === 'BYE')
+      is_bye: (nameA.toUpperCase() === 'BYE' || nameB.toUpperCase() === 'BYE' || a1.toUpperCase() === 'BYE' || a2.toUpperCase() === 'BYE')
     }
   }
 

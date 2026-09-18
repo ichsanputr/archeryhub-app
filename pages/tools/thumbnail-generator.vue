@@ -434,31 +434,65 @@ const calculateReadTime = (article) => {
 }
 
 const getInitialData = () => {
-  const found = articleList.value.find(a => a.slug === initialSlug)
-  if (found) {
-    const bg = getCategoryBg(found.category, found.slug)
+  // 1. If query parameters explicitly provide title, use them directly
+  if (route.query.title) {
     return {
-      title: found.title,
-      excerpt: found.excerpt,
-      category: found.category,
-      readTime: calculateReadTime(found),
-      date: found.date || 'Sep 2026',
-      authorName: found.author?.name || 'Archeris Editorial Team',
-      authorAvatar: found.author?.avatar || '',
-      backgroundImage: route.query.bg || bg,
+      title: String(route.query.title),
+      excerpt: String(route.query.excerpt || ''),
+      category: String(route.query.category || 'Archery Guide'),
+      readTime: String(route.query.readTime || '6 min read'),
+      date: String(route.query.date || 'Sep 2026'),
+      authorName: String(route.query.author || 'Archeris Editorial Team'),
+      authorAvatar: '',
+      backgroundImage: String(route.query.bg || '/hero-berita.jpeg'),
+      theme: 'navy-depth'
+    }
+  }
+
+  // 2. If query explicitly provides slug, look up article
+  if (route.query.slug) {
+    const found = articleList.value.find(a => a.slug === route.query.slug)
+    if (found) {
+      const bg = getCategoryBg(found.category, found.slug)
+      return {
+        title: found.title,
+        excerpt: found.excerpt,
+        category: found.category,
+        readTime: calculateReadTime(found),
+        date: found.date || 'Sep 2026',
+        authorName: found.author?.name || 'Archeris Editorial Team',
+        authorAvatar: found.author?.avatar || '',
+        backgroundImage: route.query.bg || bg,
+        theme: 'navy-depth'
+      }
+    }
+  }
+
+  // 3. Fallback to first article in list if available
+  const fallbackArticle = articleList.value[0]
+  if (fallbackArticle) {
+    return {
+      title: fallbackArticle.title,
+      excerpt: fallbackArticle.excerpt,
+      category: fallbackArticle.category,
+      readTime: calculateReadTime(fallbackArticle),
+      date: fallbackArticle.date || 'Sep 2026',
+      authorName: fallbackArticle.author?.name || 'Archeris Editorial Team',
+      authorAvatar: fallbackArticle.author?.avatar || '',
+      backgroundImage: getCategoryBg(fallbackArticle.category, fallbackArticle.slug),
       theme: 'navy-depth'
     }
   }
 
   return {
-    title: route.query.title || 'How to Shoot a Bow: A Beginner\'s Guide to Archery Form',
-    excerpt: route.query.excerpt || 'Mastering archery starts with a repeatable, relaxed shot process.',
-    category: route.query.category || 'Shooting Basics',
-    readTime: route.query.readTime || '7 min read',
+    title: 'Understanding Bow Types: Differences Between Recurve, Compound, and Barebow',
+    excerpt: 'Explore the key differences, pros, and cons between Olympic Recurve, modern Compound, and traditional Barebow.',
+    category: 'Archery Equipment',
+    readTime: '6 min read',
     date: 'Sep 2026',
-    authorName: route.query.author || 'Archeris Editorial Team',
+    authorName: 'Archeris Editorial Team',
     authorAvatar: '',
-    backgroundImage: route.query.bg || '/hero-archer.jpeg',
+    backgroundImage: '/hero-club-detail-default.jpeg',
     theme: 'navy-depth'
   }
 }

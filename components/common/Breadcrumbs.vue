@@ -1,12 +1,12 @@
 <template>
     <nav class="flex items-center whitespace-nowrap overflow-x-auto no-scrollbar py-1" aria-label="Breadcrumb">
-        <ol class="flex items-center gap-2 text-xs md:text-sm font-semibold">
+        <ol class="flex items-center gap-2 text-xs sm:text-sm font-semibold">
             <li class="flex items-center gap-2">
                 <NuxtLink to="/" class="text-gray-400 hover:text-primary transition-colors flex items-center gap-1">
                     <Icon icon="ph:house-bold" class="text-lg" />
                     <span class="hidden md:inline">{{ t('nav.home') }}</span>
                 </NuxtLink>
-                <Icon icon="ph:caret-right-bold" class="text-[10px] text-gray-300 flex-shrink-0" />
+                <Icon icon="ph:caret-right-bold" class="text-[10px] sm:text-xs text-gray-300 flex-shrink-0" />
             </li>
 
             <li v-for="(item, index) in items" :key="item.path || item.label || index" class="flex items-center gap-2">
@@ -20,7 +20,7 @@
                 </span>
 
                 <Icon v-if="index < items.length - 1 || current" icon="ph:caret-right-bold"
-                    class="text-[10px] text-gray-300 flex-shrink-0" />
+                    class="text-[10px] sm:text-xs text-gray-300 flex-shrink-0" />
             </li>
 
             <li v-if="current" class="flex items-center">

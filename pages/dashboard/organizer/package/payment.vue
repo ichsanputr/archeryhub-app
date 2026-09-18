@@ -137,7 +137,7 @@ const handlePayment = async () => {
 }
 
 useHead({
-    title: computed(() => t('subscription_payment_page.page_title'))
+    title: computed(() => t('subscription_payment_page.title', 'Pembayaran Langganan') + ' - Archeris Dashboard')
 })
 </script>
 

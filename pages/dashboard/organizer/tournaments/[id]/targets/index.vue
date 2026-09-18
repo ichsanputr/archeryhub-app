@@ -446,7 +446,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => `${t('event_targets.title')} - Dashboard`)
+  title: computed(() => `${t('event_targets.title', 'Target Bantalan')} - Archeris Dashboard`)
 })
 
 const breadcrumbItems = computed(() => [

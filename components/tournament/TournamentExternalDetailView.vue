@@ -419,7 +419,12 @@
                   <table class="w-full text-left text-xs border-collapse">
                     <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-xs">
                       <tr>
-                        <th class="py-3 px-4 w-14 min-w-[56px] text-center whitespace-nowrap">#</th>
+                        <th @click="handleSortEntries('index')" class="py-3 px-4 w-14 min-w-[56px] text-center whitespace-nowrap cursor-pointer hover:text-navy select-none">
+                          <div class="flex items-center justify-center gap-1">
+                            <span>#</span>
+                            <Icon :icon="getSortIcon('index', entriesSortKey, entriesSortAsc)" class="text-xs" />
+                          </div>
+                        </th>
                         <th @click="handleSortEntries('name')" class="py-3 px-4 cursor-pointer hover:text-navy select-none min-w-[240px] sm:min-w-[280px] whitespace-nowrap">
                           <div class="flex items-center gap-1.5 whitespace-nowrap">
                             <span>{{ t('col_name') }}</span>
@@ -553,6 +558,9 @@
                 :show-search="true"
                 v-model:modelValueSearch="resultsSearchQuery"
                 :search-placeholder="t('search_athlete_placeholder')"
+                :sort-key="qualSortKey"
+                :sort-asc="qualSortAsc"
+                @sort="handleSortQual"
                 @update:currentPage="qualCurrentPage = $event"
                 @update:pageSize="qualPageSize = $event"
                 :empty-text="t('no_qual_scores')"
@@ -1722,6 +1730,8 @@ const entriesSortAsc = ref(true)
 const resultsSearchQuery = ref('')
 const qualPageSize = ref(10)
 const qualCurrentPage = ref(1)
+const qualSortKey = ref('rank')
+const qualSortAsc = ref(true)
 
 const searchMedalClub = ref('')
 const medalsPageSize = ref(10)
@@ -2076,8 +2086,9 @@ const filteredEntries = computed(() => {
     ))
   }
   return list.sort((a, b) => {
-    const valA = (a[entriesSortKey.value] || '').toLowerCase()
-    const valB = (b[entriesSortKey.value] || '').toLowerCase()
+    if (entriesSortKey.value === 'index') return 0
+    const valA = (a[entriesSortKey.value] || a.athlete_name || a.club || a.category || '').toString().toLowerCase()
+    const valB = (b[entriesSortKey.value] || b.athlete_name || b.club || b.category || '').toString().toLowerCase()
     return entriesSortAsc.value ? valA.localeCompare(valB) : valB.localeCompare(valA)
   })
 })
@@ -2099,20 +2110,25 @@ const handleSortEntries = (key) => {
 
 // Qualifications Handling
 const entriesColumns = computed(() => [
-  { key: 'index', label: '#', align: 'center', width: 'w-14 min-w-[56px]', sortable: false },
+  { key: 'index', label: '#', align: 'center', width: 'w-14 min-w-[56px]', sortable: true },
   { key: 'name', label: t('col_name'), align: 'left', width: 'min-w-[240px]', sortable: true },
   { key: 'club', label: t('col_club'), align: 'left', width: 'min-w-[260px]', sortable: true },
   { key: 'category', label: t('col_category'), align: 'left', width: 'min-w-[220px]', sortable: true }
 ])
 
 const qualColumns = computed(() => [
-  { key: 'rank', label: t('col_rank'), align: 'center', width: 'w-16 min-w-[64px]', sortable: false },
-  { key: 'name', label: t('col_name'), align: 'left', width: 'min-w-[240px]', sortable: false },
-  { key: 'club', label: t('col_club'), align: 'left', width: 'min-w-[260px]', sortable: false },
-  { key: 'score', label: t('col_score'), align: 'center', width: 'min-w-[100px]', sortable: false },
-  { key: 'tens', label: t('col_10s'), align: 'center', width: 'min-w-[80px]', sortable: false },
-  { key: 'xs', label: t('col_xs'), align: 'center', width: 'min-w-[80px]', sortable: false }
+  { key: 'rank', label: t('col_rank'), align: 'center', width: 'w-16 min-w-[64px]', sortable: true },
+  { key: 'name', label: t('col_name'), align: 'left', width: 'min-w-[240px]', sortable: true },
+  { key: 'club', label: t('col_club'), align: 'left', width: 'min-w-[260px]', sortable: true },
+  { key: 'score', label: t('col_score'), align: 'center', width: 'min-w-[100px]', sortable: true },
+  { key: 'tens', label: t('col_10s'), align: 'center', width: 'min-w-[80px]', sortable: true },
+  { key: 'xs', label: t('col_xs'), align: 'center', width: 'min-w-[80px]', sortable: true }
 ])
+
+const handleSortQual = ({ key, asc }) => {
+  qualSortKey.value = key
+  qualSortAsc.value = asc
+}
 
 const availableQualificationCategories = computed(() => {
   const cats = new Set()
@@ -2135,7 +2151,17 @@ const filteredQualScores = computed(() => {
       (r.club || r.country || '').toLowerCase().includes(q)
     ))
   }
-  return list
+  return list.sort((a, b) => {
+    const k = qualSortKey.value
+    if (k === 'rank' || k === 'score' || k === 'tens' || k === 'xs') {
+      const numA = Number(a[k] ?? 0)
+      const numB = Number(b[k] ?? 0)
+      return qualSortAsc.value ? numA - numB : numB - numA
+    }
+    const strA = (a[k] || a.name || a.athlete_name || a.club || '').toString().toLowerCase()
+    const strB = (b[k] || b.name || b.athlete_name || b.club || '').toString().toLowerCase()
+    return qualSortAsc.value ? strA.localeCompare(strB) : strB.localeCompare(strA)
+  })
 })
 
 const totalQualPages = computed(() => Math.ceil(filteredQualScores.value.length / qualPageSize.value) || 1)
@@ -2386,7 +2412,14 @@ const currentPodiumCategoryData = computed(() => {
 const medalTallyList = computed(() => activeTournamentData.value?.medals || [])
 
 const sortedMedalTally = computed(() => {
-  let list = medalTallyList.value.map((m, idx) => ({ ...m, rank: m.rank || idx + 1 }))
+  let list = medalTallyList.value.map((m, idx) => ({
+    ...m,
+    rank: Number(m.rank) || idx + 1,
+    gold: Number(m.gold || 0),
+    silver: Number(m.silver || 0),
+    bronze: Number(m.bronze || 0),
+    total: m.total !== undefined ? Number(m.total) : (Number(m.gold || 0) + Number(m.silver || 0) + Number(m.bronze || 0))
+  }))
   if (searchMedalClub.value.trim()) {
     const q = searchMedalClub.value.toLowerCase().trim()
     list = list.filter(m => (m.club || '').toLowerCase().includes(q))

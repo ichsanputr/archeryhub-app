@@ -2,55 +2,55 @@
   <div class="flex flex-col gap-6 pb-16 font-body text-navy antialiased">
     <!-- Header -->
     <DashboardHeader
-      :title="t('event_printout.elimination.title', 'Bagan Eliminasi')"
-      :subtitle="t('event_printout.elimination.page_desc', 'Cetak bagan eliminasi per kategori untuk informasi peserta dan penonton.')"
-      icon="ph:arrow-left-bold"
+      :title="t('event_printout.elimination.title', 'Elimination Bracket')"
+      :subtitle="t('event_printout.elimination.page_desc', 'Print tournament brackets per category for athletes and spectators.')"
+      icon="ph:tree-structure-bold"
       :back-to="`/dashboard/organizer/tournaments/${eventId}/printout`"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
         { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-        { label: t('event_printout.breadcrumb_printout', 'Cetak Dokumen'), to: `/dashboard/organizer/tournaments/${eventId}/printout` },
-        { label: t('event_printout.elimination.title', 'Bagan Eliminasi') }
+        { label: t('event_printout.breadcrumb_printout', 'Printouts'), to: `/dashboard/organizer/tournaments/${eventId}/printout` },
+        { label: t('event_printout.elimination.title', 'Elimination Bracket') }
       ]"
     >
       <template #actions v-if="bracket && bracket.rounds?.length > 0">
-        <BaseButton variant="primary" icon="ph:printer-bold" class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest" @click="printBracket">
-          {{ t('event_printout.elimination.btn_print_bracket', 'Cetak Bagan') }}
+        <BaseButton variant="primary" icon="ph:printer-bold" class="h-10 sm:h-11 px-6 shadow-sm w-full sm:w-auto text-xs sm:text-sm font-black tracking-wider" @click="printBracket">
+          {{ t('event_printout.elimination.btn_print_bracket', 'Print Bracket') }}
         </BaseButton>
       </template>
     </DashboardHeader>
 
     <!-- Filter Controls Card -->
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
+    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-        <div class="space-y-1.5">
-          <label class="text-xs font-bold text-gray-500">{{ t('event_printout.elimination.filter_category_label', 'Pilih Kategori') }} *</label>
-          <select v-model="selectedCategory" class="w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-navy focus:outline-none focus:border-primary">
-            <option :value="null" disabled>{{ t('event_printout.elimination.select_category_placeholder', 'Pilih Kategori Lomba...') }}</option>
-            <option v-for="c in categories" :key="c.id" :value="c.id">
-              {{ c.division_name }} {{ c.category_name }} {{ c.gender_division_name }}
-            </option>
-          </select>
+        <div>
+          <BaseSelect
+            v-model="selectedCategory"
+            :items="categoryOptions"
+            :label="t('event_printout.elimination.filter_category_label', 'Select Category') + ' *'"
+            required
+            :placeholder="t('event_printout.elimination.select_category_placeholder', 'Select Category...')"
+          />
+        </div>
+
+        <div>
+          <BaseSelect
+            v-model="printOrientation"
+            :items="orientationOptions"
+            :label="t('event_printout.elimination.orientation_label', 'Print Orientation')"
+          />
         </div>
 
         <div class="space-y-1.5">
-          <label class="text-xs font-bold text-gray-500">{{ t('event_printout.elimination.orientation_label', 'Orientasi Cetak') }}</label>
-          <select v-model="printOrientation" class="w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-navy focus:outline-none focus:border-primary">
-            <option value="landscape">{{ t('event_printout.elimination.orientation_landscape', 'Landscape (Disarankan)') }}</option>
-            <option value="portrait">{{ t('event_printout.elimination.orientation_portrait', 'Portrait') }}</option>
-          </select>
-        </div>
-
-        <div class="space-y-1.5">
-          <label class="text-xs font-bold text-gray-500">{{ t('event_printout.elimination.display_label', 'Elemen Tampilan') }}</label>
+          <label class="text-xs font-bold text-gray-500">{{ t('event_printout.elimination.display_label', 'Display Elements') }}</label>
           <div class="flex gap-4 items-center h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl">
             <label class="flex items-center gap-2 text-xs font-bold text-navy cursor-pointer">
-              <input type="checkbox" v-model="showSeeding" class="rounded text-primary" />
-              <span>{{ t('event_printout.elimination.show_seeding', 'Nomor Seeding') }}</span>
+              <input type="checkbox" v-model="showSeeding" class="rounded text-navy" />
+              <span>{{ t('event_printout.elimination.show_seeding', 'Seeding Number') }}</span>
             </label>
             <label class="flex items-center gap-2 text-xs font-bold text-navy cursor-pointer">
-              <input type="checkbox" v-model="showScore" class="rounded text-primary" />
-              <span>{{ t('event_printout.elimination.show_score', 'Skor Match') }}</span>
+              <input type="checkbox" v-model="showScore" class="rounded text-navy" />
+              <span>{{ t('event_printout.elimination.show_score', 'Match Score') }}</span>
             </label>
           </div>
         </div>
@@ -66,20 +66,20 @@
     <div v-else-if="!selectedCategory"
       class="bg-white rounded-2xl border border-gray-100 p-12 flex flex-col items-center gap-3 text-center">
       <Icon icon="mdi:bracket" class="text-5xl text-gray-300" />
-      <div class="font-black text-navy text-base">{{ t('event_printout.elimination.select_category_first', 'Silakan Pilih Kategori Terlebih Dahulu') }}</div>
-      <div class="text-gray-400 text-xs max-w-sm">{{ t('event_printout.elimination.select_category_desc', 'Pilih kategori untuk memuat dan melihat pohon eliminasi.') }}</div>
+      <div class="font-black text-navy text-base">{{ t('event_printout.elimination.select_category_first', 'Please Select a Category First') }}</div>
+      <div class="text-gray-400 text-xs max-w-sm">{{ t('event_printout.elimination.select_category_desc', 'Select a category to load and view the elimination bracket tree.') }}</div>
     </div>
 
     <!-- No Bracket Data -->
     <div v-else-if="!bracket || bracket.rounds?.length === 0"
       class="bg-white rounded-2xl border border-gray-100 p-12 flex flex-col items-center gap-3 text-center">
       <Icon icon="mdi:bracket" class="text-5xl text-gray-300" />
-      <div class="font-black text-navy text-base">{{ t('event_printout.elimination.bracket_not_available', 'Bagan Eliminasi Belum Dibuat') }}</div>
-      <div class="text-gray-400 text-xs max-w-sm">{{ t('event_printout.elimination.bracket_not_available_desc', 'Generate bracket eliminasi terlebih dahulu pada halaman Eliminasi.') }}</div>
+      <div class="font-black text-navy text-base">{{ t('event_printout.elimination.bracket_not_available', 'Elimination Bracket Not Generated') }}</div>
+      <div class="text-gray-400 text-xs max-w-sm">{{ t('event_printout.elimination.bracket_not_available_desc', 'Generate elimination brackets first on the Elimination page.') }}</div>
       <div class="mt-4">
         <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/elimination`">
           <BaseButton variant="primary" size="sm" icon="ph:arrow-right-bold" class="font-bold">
-            {{ t('event_printout.elimination.btn_open_elimination', 'Buka Menu Eliminasi') }}
+            {{ t('event_printout.elimination.btn_open_elimination', 'Open Elimination Menu') }}
           </BaseButton>
         </NuxtLink>
       </div>
@@ -169,8 +169,20 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('event_printout.elimination.page_title', 'Bagan Eliminasi - Cetak Dokumen'))
+  title: computed(() => t('event_printout.elimination.title', 'Bagan Eliminasi') + ' - Archeris Dashboard')
 })
+
+const categoryOptions = computed(() => {
+  return categories.value.map(c => ({
+    value: c.id,
+    title: `${c.division_name || ''} ${c.category_name || ''} ${c.gender_division_name || ''}`.trim()
+  }))
+})
+
+const orientationOptions = computed(() => [
+  { value: 'landscape', title: t('event_printout.elimination.orientation_landscape', 'Landscape (Recommended)') },
+  { value: 'portrait', title: t('event_printout.elimination.orientation_portrait', 'Portrait') }
+])
 
 const selectedCategoryName = computed(() => {
   const found = categories.value.find(c => c.id === selectedCategory.value)

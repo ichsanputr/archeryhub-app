@@ -586,72 +586,6 @@
                     </div>
                 </section>
             </div>
-
-            <!-- Jadwal Tab -->
-            <section v-if="activeTab === 'jadwal'"
-                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-visible">
-                <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 rounded-t-2xl flex items-center justify-between">
-                    <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
-                        <Icon icon="ph:calendar-bold" class="text-primary text-lg sm:text-xl" />
-                        {{ $t('dashboard_events_page.schedule.title') }}
-                    </h2>
-                    <BaseButton variant="outline" size="xs" @click="addScheduleField">
-                        <Icon icon="ph:plus-bold" class="mr-1" /> {{ $t('dashboard_events_page.schedule.add') }}
-                    </BaseButton>
-                </div>
-                <div class="p-4 sm:p-6 space-y-4">
-                    <div v-if="form.schedules.length === 0"
-                        class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                        <div class="text-sm text-gray-400">{{ $t('dashboard_events_page.schedule.empty') }}</div>
-                    </div>
-                    <div v-else class="space-y-4">
-                        <div v-for="(session, index) in form.schedules" :key="index"
-                            class="bg-gray-50 p-3 sm:p-4 rounded-xl border border-gray-100 relative group">
-                            <button @click="removeScheduleField(index)"
-                                class="absolute top-3 right-3 text-gray-400 hover:text-red-500">
-                                <Icon icon="ph:trash" />
-                            </button>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                                <div class="lg:col-span-2 space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.session_title') }}</label>
-                                    <input v-model="session.title" type="text" placeholder="Contoh: Kualifikasi Recurve"
-                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
-                                </div>
-                                <div class="space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.day_order') }}</label>
-                                    <input v-model.number="session.day_order" type="number"
-                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
-                                </div>
-                                <div class="space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.start_time') }}</label>
-                                    <div class="flex flex-col gap-1">
-                                        <BaseDatePicker :model-value="getSchedDate(session, 'start_time')" @update:model-value="val => setSchedDate(session, 'start_time', val)" />
-                                        <BaseTimePicker :model-value="getSchedTime(session, 'start_time')" @update:model-value="val => setSchedTime(session, 'start_time', val)" placeholder="08:00" />
-                                    </div>
-                                </div>
-                                <div class="space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.end_time') }}</label>
-                                    <div class="flex flex-col gap-1">
-                                        <BaseDatePicker :model-value="getSchedDate(session, 'end_time')" @update:model-value="val => setSchedDate(session, 'end_time', val)" />
-                                        <BaseTimePicker :model-value="getSchedTime(session, 'end_time')" @update:model-value="val => setSchedTime(session, 'end_time', val)" placeholder="17:00" />
-                                    </div>
-                                </div>
-                                <div class="space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.location') }}</label>
-                                    <input v-model="session.location" type="text"
-                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
-                                </div>
-                                <div class="lg:col-span-3 space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 ">{{ $t('dashboard_events_page.schedule.description_optional') }}</label>
-                                    <textarea v-model="session.description" rows="2"
-                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm resize-none"
-                                        placeholder="Deskripsi sesi..."></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
 
         <!-- Hasil Tab -->
@@ -884,7 +818,7 @@ definePageMeta({
 })
 
 useHead({
-    title: () => `${t('dashboard_events_page.title')} - Dashboard`
+    title: () => `${t('dashboard_events_page.title', 'Halaman Turnamen')} - Archeris Dashboard`
 })
 
 const route = useRoute()
@@ -903,7 +837,6 @@ const tabs = [
     { id: 'pendaftaran', name: 'Pendaftaran', icon: 'ph:ticket' },
     { id: 'lokasi', name: 'Lokasi', icon: 'ph:map-pin' },
     { id: 'media', name: 'Media', icon: 'ph:image' },
-    { id: 'jadwal', name: 'Jadwal', icon: 'ph:calendar-bold' },
     { id: 'hasil', name: 'Hasil', icon: 'iconoir:leaderboard' },
     { id: 'faq', name: 'FAQ', icon: 'ph:question' }
 ]

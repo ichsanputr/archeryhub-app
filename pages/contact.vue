@@ -19,7 +19,7 @@
             Contact <span class="text-primary">Us</span>
           </h1>
           <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-2xl">
-            Have questions about the platform? Whether you are an athlete, a club manager, or an event organizer, we are here to help you hit your target.
+            Have questions or need help with your tournament? We are here to help.
           </p>
         </div>
       </div>

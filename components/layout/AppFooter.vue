@@ -87,7 +87,7 @@ const isWide = computed(() => {
 
           <!-- Column 3: Company -->
           <div class="flex flex-col gap-5">
-            <h4 class="text-xs font-black  tracking-widest text-white border-b border-white/10 pb-2">
+            <h4 class="text-sm font-black tracking-widest text-white border-b border-white/10 pb-2">
               {{ $t('footer.comp_title') }}
             </h4>
             <div class="flex flex-col gap-3">
@@ -116,7 +116,7 @@ const isWide = computed(() => {
 
           <!-- Column 4: Support -->
           <div class="flex flex-col gap-5">
-            <h4 class="text-sm font-black  tracking-widest text-white border-b border-white/10 pb-2">
+            <h4 class="text-sm font-black tracking-widest text-white border-b border-white/10 pb-2">
               {{ $t('footer.supp_title') }}
             </h4>
             <div class="flex flex-col gap-3">
@@ -135,7 +135,7 @@ const isWide = computed(() => {
 
       <!-- Bottom Bar -->
       <div class="pt-4 pb-2 border-t border-white/5">
-        <p class="text-gray-500 font-medium text-center">
+        <p class="text-gray-400 text-xs sm:text-sm font-medium text-center">
           &copy; {{ new Date().getFullYear() }} archeris.net. {{ $t('footer.rights') }}
         </p>
       </div>

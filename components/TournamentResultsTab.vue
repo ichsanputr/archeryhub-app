@@ -113,17 +113,42 @@
             <template v-else>
                 <!-- Category Selector -->
                 <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-                    <h2 class="text-base font-bold text-navy mb-4">{{ t('event_results.select_category', 'Pilih Kategori Lomba') }}</h2>
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                        <h2 class="text-base font-bold text-navy">{{ t('event_results.select_category', 'Pilih Kategori Lomba') }}</h2>
 
-                    <div v-if="categories.length === 0" class="text-center py-8 text-gray-400">
+                        <!-- Event Type Selector Row (Individual / Team / Mixed) -->
+                        <div v-if="eventTypeOptions.length > 1" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+                            <button
+                                v-for="opt in eventTypeOptions"
+                                :key="opt.value"
+                                type="button"
+                                @click="selectedEventType = opt.value"
+                                class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5"
+                                :class="selectedEventType === opt.value
+                                    ? 'bg-navy text-primary shadow-sm'
+                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-navy'"
+                            >
+                                <Icon :icon="opt.icon" class="text-sm" />
+                                <span>{{ opt.label }}</span>
+                                <span
+                                    class="text-[10px] px-1.5 py-0.5 rounded-full font-medium"
+                                    :class="selectedEventType === opt.value ? 'bg-primary/20 text-primary' : 'bg-gray-200 text-gray-700'"
+                                >
+                                    {{ opt.count }}
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div v-if="filteredCategories.length === 0" class="text-center py-8 text-gray-400">
                         <div class="flex flex-col items-center">
                             <Icon icon="ph:folder-notch-open" class="text-4xl mb-2" />
                             <p>{{ t('event_results.category_not_found', 'Kategori tidak ditemukan') }}</p>
                         </div>
                     </div>
 
-                    <div v-if="categories.length > 0" class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-                        <button v-for="category in categories" :key="category.uuid"
+                    <div v-if="filteredCategories.length > 0" class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                        <button v-for="category in filteredCategories" :key="category.uuid"
                             @click="selectCategory(category.uuid)" :class="[
                                 'flex-shrink-0 w-72 p-5 rounded-xl border-2 transition-all text-left group hover:shadow-md relative',
                                 selectedCategory === category.uuid
@@ -231,35 +256,59 @@
                             <!-- Detailed Scores Table -->
                             <div class="overflow-x-auto">
                                 <table class="w-full">
-                                    <thead class="bg-gray-50 border-b-2 border-gray-200">
+                                    <thead class="bg-gray-50 border-b-2 border-gray-200 select-none">
                                         <tr>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
-                                                class="px-4 py-3 text-left text-xs font-black text-gray-500 tracking-wider sticky left-0 bg-gray-50 z-10 border-r border-gray-200">
-                                                {{ t('event_results.rank', 'Rank') }}
+                                                @click="handleSort('rank')"
+                                                class="px-4 py-3 text-left text-xs font-black text-gray-500 tracking-wider sticky left-0 bg-gray-50 z-10 border-r border-gray-200 cursor-pointer hover:text-navy transition-colors">
+                                                <div class="flex items-center gap-1">
+                                                    <span>{{ t('event_results.rank', 'Rank') }}</span>
+                                                    <Icon :icon="getSortIcon('rank')" class="text-xs shrink-0" :class="sortKey === 'rank' ? 'text-navy font-bold' : 'text-gray-400'" />
+                                                </div>
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
-                                                class="px-4 py-3 text-left text-xs font-black text-gray-500 tracking-wider min-w-[200px]">
-                                                {{ t('event_results.archer', 'Atlet') }}
+                                                @click="handleSort('archer')"
+                                                class="px-4 py-3 text-left text-xs font-black text-gray-500 tracking-wider min-w-[200px] cursor-pointer hover:text-navy transition-colors">
+                                                <div class="flex items-center gap-1.5">
+                                                    <span>{{ t('event_results.archer', 'Atlet') }}</span>
+                                                    <Icon :icon="getSortIcon('archer')" class="text-xs shrink-0" :class="sortKey === 'archer' ? 'text-navy font-bold' : 'text-gray-400'" />
+                                                </div>
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
-                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider">
-                                                {{ t('event_results.club', 'Klub') }}
+                                                @click="handleSort('club')"
+                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider cursor-pointer hover:text-navy transition-colors">
+                                                <div class="flex items-center justify-center gap-1.5">
+                                                    <span>{{ t('event_results.club', 'Klub') }}</span>
+                                                    <Icon :icon="getSortIcon('club')" class="text-xs shrink-0" :class="sortKey === 'club' ? 'text-navy font-bold' : 'text-gray-400'" />
+                                                </div>
                                             </th>
                                             <th v-if="selectedSession !== 'total'" :colspan="displayTotalEnds"
                                                 class="px-4 py-2 text-center text-xs font-black text-gray-500 tracking-wider border-b border-gray-300">
                                                 {{ t('event_results.score_per_end', 'Skor Per End') }}
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
-                                                class="px-4 py-3 text-center text-xs font-black text-navy tracking-wider bg-navy/5 border-l-2 border-navy/20">
-                                                {{ t('event_results.total', 'Total') }}
+                                                @click="handleSort('total')"
+                                                class="px-4 py-3 text-center text-xs font-black text-navy tracking-wider bg-navy/5 border-l-2 border-navy/20 cursor-pointer hover:bg-navy/10 transition-colors">
+                                                <div class="flex items-center justify-center gap-1">
+                                                    <span>{{ t('event_results.total', 'Total') }}</span>
+                                                    <Icon :icon="getSortIcon('total')" class="text-xs shrink-0" :class="sortKey === 'total' ? 'text-navy font-bold' : 'text-gray-400'" />
+                                                </div>
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
-                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider">
-                                                10+X
+                                                @click="handleSort('10x')"
+                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider cursor-pointer hover:text-navy transition-colors">
+                                                <div class="flex items-center justify-center gap-1">
+                                                    <span>10+X</span>
+                                                    <Icon :icon="getSortIcon('10x')" class="text-xs shrink-0" :class="sortKey === '10x' ? 'text-navy font-bold' : 'text-gray-400'" />
+                                                </div>
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
-                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider">
-                                                X
+                                                @click="handleSort('x')"
+                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider cursor-pointer hover:text-navy transition-colors">
+                                                <div class="flex items-center justify-center gap-1">
+                                                    <span>X</span>
+                                                    <Icon :icon="getSortIcon('x')" class="text-xs shrink-0" :class="sortKey === 'x' ? 'text-navy font-bold' : 'text-gray-400'" />
+                                                </div>
                                             </th>
                                         </tr>
                                         <tr v-if="selectedSession !== 'total'">
@@ -366,10 +415,72 @@ const qualificationLoading = ref(false)
 const eliminationLoading = ref(false)
 const categories = ref([])
 const selectedCategory = ref(null)
+const selectedEventType = ref('all')
 const qualificationData = ref({})
 const eliminationData = ref({})
 const totalEnds = ref(12)
 const downloadingIndex = ref(null)
+
+const eventTypeOptions = computed(() => {
+    const list = categories.value || []
+    const counts = {
+        all: list.length,
+        individual: 0,
+        team: 0,
+        mixed: 0
+    }
+
+    list.forEach(c => {
+        const type = (c.event_type_name || '').toLowerCase()
+        if (type.includes('mix') || type.includes('campuran')) {
+            counts.mixed++
+        } else if (type.includes('team') || type.includes('beregu')) {
+            counts.team++
+        } else {
+            counts.individual++
+        }
+    })
+
+    const options = [
+        { value: 'all', label: t('event_results.type_all', 'Semua Kategori'), count: counts.all, icon: 'ph:squares-four-bold' }
+    ]
+
+    if (counts.individual > 0) {
+        options.push({ value: 'individual', label: t('event_results.type_individual', 'Individu (Single)'), count: counts.individual, icon: 'ph:user-bold' })
+    }
+    if (counts.team > 0) {
+        options.push({ value: 'team', label: t('event_results.type_team', 'Beregu (Team)'), count: counts.team, icon: 'ph:users-three-bold' })
+    }
+    if (counts.mixed > 0) {
+        options.push({ value: 'mixed', label: t('event_results.type_mixed', 'Beregu Campuran (Mixed)'), count: counts.mixed, icon: 'ph:gender-intersex-bold' })
+    }
+
+    return options
+})
+
+const filteredCategories = computed(() => {
+    if (selectedEventType.value === 'all') return categories.value
+    return (categories.value || []).filter(c => {
+        const type = (c.event_type_name || '').toLowerCase()
+        if (selectedEventType.value === 'mixed') {
+            return type.includes('mix') || type.includes('campuran')
+        }
+        if (selectedEventType.value === 'team') {
+            return (type.includes('team') || type.includes('beregu')) && !type.includes('mix') && !type.includes('campuran')
+        }
+        if (selectedEventType.value === 'individual') {
+            return !type.includes('team') && !type.includes('beregu') && !type.includes('mix') && !type.includes('campuran')
+        }
+        return true
+    })
+})
+
+watch(selectedEventType, () => {
+    const list = filteredCategories.value
+    if (list.length > 0 && !list.some(c => c.uuid === selectedCategory.value)) {
+        selectCategory(list[0].uuid)
+    }
+})
 
 const currentCategoryName = computed(() => {
     const cat = categories.value.find(c => c.uuid === selectedCategory.value)
@@ -404,6 +515,23 @@ const availableSessions = computed(() => {
     return Array.from(sessionCodes).sort()
 })
 
+const sortKey = ref('rank')
+const sortAsc = ref(true)
+
+const getSortIcon = (key) => {
+    if (sortKey.value !== key) return 'ph:arrows-down-up'
+    return sortAsc.value ? 'ph:arrow-up-bold' : 'ph:arrow-down-bold'
+}
+
+const handleSort = (key) => {
+    if (sortKey.value === key) {
+        sortAsc.value = !sortAsc.value
+    } else {
+        sortKey.value = key
+        sortAsc.value = key === 'rank' ? true : false
+    }
+}
+
 const filteredQualResults = computed(() => {
     if (!selectedCategory.value) return []
     const results = currentQualResults.value.map(entry => {
@@ -435,7 +563,40 @@ const filteredQualResults = computed(() => {
         }
     })
 
-    return results
+    return results.sort((a, b) => {
+        const k = sortKey.value
+        if (k === 'rank') {
+            const rA = Number(a.rank) || 0
+            const rB = Number(b.rank) || 0
+            return sortAsc.value ? rA - rB : rB - rA
+        }
+        if (k === 'total') {
+            const tA = Number(a.displayTotal) || 0
+            const tB = Number(b.displayTotal) || 0
+            return sortAsc.value ? tA - tB : tB - tA
+        }
+        if (k === '10x') {
+            const xA = Number(a.display10X) || 0
+            const xB = Number(b.display10X) || 0
+            return sortAsc.value ? xA - xB : xB - xA
+        }
+        if (k === 'x') {
+            const xA = Number(a.displayX) || 0
+            const xB = Number(b.displayX) || 0
+            return sortAsc.value ? xA - xB : xB - xA
+        }
+        if (k === 'archer') {
+            const aA = (a.archer_name || a.full_name || a.name || '').toLowerCase()
+            const aB = (b.archer_name || b.full_name || b.name || '').toLowerCase()
+            return sortAsc.value ? aA.localeCompare(aB) : aB.localeCompare(aA)
+        }
+        if (k === 'club') {
+            const cA = (a.club_name || a.club || '').toLowerCase()
+            const cB = (b.club_name || b.club || '').toLowerCase()
+            return sortAsc.value ? cA.localeCompare(cB) : cB.localeCompare(cA)
+        }
+        return 0
+    })
 })
 
 const displayTotalEnds = computed(() => {

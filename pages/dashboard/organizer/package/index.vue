@@ -8,7 +8,7 @@ import { usePricingPlans } from '~/composables/usePricingPlans'
 definePageMeta({ layout: 'dashboard' })
 
 const { locale, t } = useDashboardI18n()
-useHead({ title: computed(() => t('organizer_subscription.page_title', 'Paket Event & Kuota') + ' - Archeris') })
+useHead({ title: computed(() => t('organizer_subscription.page_title', 'Paket Event & Kuota') + ' - Archeris Dashboard') })
 
 const { get, post } = useApi()
 const toast = useToast()

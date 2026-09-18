@@ -235,13 +235,25 @@ watch(currentSlug, () => {
 })
 
 const categories = [
-    { id: 'platform', label: 'Platform & Dashboard', icon: 'ph:monitor-bold' },
+    { id: 'accounts', label: 'User Accounts', icon: 'ph:users-three-bold' },
+    { id: 'subscriptions', label: 'Subscriptions', icon: 'ph:credit-card-bold' },
+    { id: 'tournaments', label: 'Tournament Setup', icon: 'ph:trophy-bold' },
+    { id: 'categories', label: 'Competition Categories', icon: 'ph:circles-three-bold' },
+    { id: 'participants', label: 'Participant Management', icon: 'ph:user-plus-bold' },
+    { id: 'targets', label: 'Target Allocation', icon: 'ph:target-bold' },
+    { id: 'scorekeeper', label: 'Scorekeeper Operations', icon: 'ph:device-mobile-bold' },
+    { id: 'qualification', label: 'Qualification Rounds', icon: 'ph:chart-line-up-bold' },
+    { id: 'teams', label: 'Team Management', icon: 'ph:users-four-bold' },
+    { id: 'elimination', label: 'Elimination Brackets', icon: 'ph:tree-structure-bold' },
+    { id: 'certificates', label: 'Certificates', icon: 'ph:certificate-bold' },
+    { id: 'reports', label: 'Reports', icon: 'ph:file-pdf-bold' },
+    { id: 'archers', label: 'Archer Guides', icon: 'ph:user-bold' },
 ]
 
 const sidebarCategories = categories
 
 const getCategoryLabel = (id) => {
-    const cat = categories.find(c => c.id === id || (id === 'dashboard' && c.id === 'platform') || (id === 'platform' && c.id === 'platform'))
+    const cat = categories.find(c => c.id === id)
     return cat ? cat.label : (id ? id.charAt(0).toUpperCase() + id.slice(1) : '')
 }
 
@@ -256,23 +268,10 @@ const { data: docsList } = await useAsyncData(
 
 const docs = computed(() => docsList.value || [])
 
-// Canonicalize legacy non-nested URLs like /docs/archer-profile -> /docs/archer/archer-profile
+// Canonicalize legacy non-nested URLs
 watch([docs, currentSlug], () => {
     const slug = currentSlug.value
     if (!slug || slug.includes('/')) return
-
-    // Explicit legacy slug aliases
-    const legacyAliases = {
-        'user-roles': 'account-types',
-    }
-    const alias = legacyAliases[slug]
-    if (alias) {
-        const matchAlias = docs.value.find(d => typeof d.slug === 'string' && d.slug.endsWith('/' + alias))
-        if (matchAlias?.slug) {
-            router.replace(`/docs/${matchAlias.slug}`)
-            return
-        }
-    }
 
     const match = docs.value.find(d => typeof d.slug === 'string' && d.slug.endsWith('/' + slug))
     if (match?.slug) {
@@ -298,9 +297,7 @@ const nextDoc = computed(() => currentIndex.value >= 0 && currentIndex.value < d
 
 const filteredSidebarDocs = (categoryId) => {
     return docs.value.filter(d => {
-        const matchCat = d.category === categoryId ||
-            (categoryId === 'platform' && (d.category === 'platform' || d.category === 'dashboard')) ||
-            (categoryId === 'dashboard' && (d.category === 'platform' || d.category === 'dashboard'))
+        const matchCat = d.category === categoryId
         const matchSearch = sidebarSearch.value === '' ||
             d.title.toLowerCase().includes(sidebarSearch.value.toLowerCase())
         return matchCat && matchSearch

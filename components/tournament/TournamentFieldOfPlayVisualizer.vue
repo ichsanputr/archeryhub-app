@@ -1,53 +1,76 @@
 <template>
   <div class="space-y-4 font-body">
     <!-- Top Bar: Session & Day Controls + Action Toolbar (Light Theme) -->
-    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-3">
-      <div class="flex flex-wrap items-center gap-3 text-xs">
-        <!-- Day Selector (if multiple days) -->
-        <div v-if="formattedFopDays.length > 1" class="flex items-center gap-2">
-          <span class="text-slate-500 font-semibold">Hari:</span>
-          <div class="flex items-center gap-1 bg-slate-100 p-0.5 rounded-xl">
-            <button
-              v-for="(day, dIdx) in formattedFopDays"
-              :key="dIdx"
-              @click="selectedDayIdx = dIdx"
+    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-2xs space-y-3">
+      <!-- Day Selector (if multiple days) -->
+      <div v-if="formattedFopDays.length > 1" class="space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-slate-500 font-bold flex items-center gap-1.5">
+            <Icon icon="ph:calendar-dots-bold" class="text-primary text-sm" />
+            Pilih Hari Pertandingan:
+          </span>
+          <span class="text-slate-400 font-medium text-[11px]">
+            {{ formattedFopDays.length }} Hari Terjadwal
+          </span>
+        </div>
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 pt-0.5">
+          <button
+            v-for="(day, dIdx) in formattedFopDays"
+            :key="dIdx"
+            @click="selectedDayIdx = dIdx"
+            :class="[
+              'px-3.5 py-2 rounded-xl font-bold text-xs whitespace-nowrap shrink-0 transition-all cursor-pointer flex items-center gap-2 border select-none',
+              selectedDayIdx === dIdx
+                ? 'bg-navy text-white border-navy shadow-xs font-black'
+                : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-100'
+            ]"
+          >
+            <Icon icon="ph:calendar-blank-bold" class="text-xs" :class="selectedDayIdx === dIdx ? 'text-primary' : 'text-slate-400'" />
+            <span>{{ day.label }}</span>
+            <span
               :class="[
-                'px-2.5 py-1 rounded-lg font-bold text-xs transition-all cursor-pointer select-none',
-                selectedDayIdx === dIdx ? 'bg-navy text-white shadow-xs' : 'text-slate-600 hover:text-navy hover:bg-slate-200/60'
+                'px-1.5 py-0.5 rounded-md text-[10px] font-bold',
+                selectedDayIdx === dIdx ? 'bg-white/20 text-white' : 'bg-slate-200/70 text-slate-600'
               ]"
             >
-              {{ day.label }}
-            </button>
-          </div>
+              {{ day.sessions.length }} Sesi
+            </span>
+          </button>
         </div>
+      </div>
 
+      <!-- Session Selector & Quick Actions -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3" :class="formattedFopDays.length > 1 ? 'pt-2.5 border-t border-slate-100' : ''">
         <!-- Session Selector Dropdown -->
-        <div class="flex items-center gap-2">
-          <span class="text-slate-500 font-semibold">Sesi:</span>
-          <div class="relative">
+        <div class="flex items-center gap-2.5 flex-1 min-w-0">
+          <span class="text-slate-500 font-bold text-xs shrink-0 flex items-center gap-1">
+            <Icon icon="ph:clock-bold" class="text-slate-400" />
+            Sesi:
+          </span>
+          <div class="relative flex-1 max-w-lg">
             <select
               v-model.number="selectedSessionIdx"
-              class="bg-slate-50 hover:bg-slate-100 border border-slate-200 text-navy font-bold rounded-xl px-3 py-1.5 focus:outline-none focus:border-navy text-xs cursor-pointer pr-8 appearance-none transition-all shadow-2xs"
+              class="w-full bg-slate-50 hover:bg-slate-100 border border-slate-200 text-navy font-bold rounded-xl px-3.5 py-2 focus:outline-none focus:border-navy text-xs cursor-pointer pr-9 appearance-none transition-all shadow-2xs truncate"
             >
               <option v-for="(session, sIdx) in currentDaySessions" :key="sIdx" :value="sIdx">
                 {{ session.time }} — {{ session.title }} ({{ session.targetCount }} Targets)
               </option>
             </select>
-            <Icon icon="ph:caret-down-bold" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs" />
+            <Icon icon="ph:caret-down-bold" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs" />
           </div>
         </div>
-      </div>
 
-      <!-- Quick Canvas Actions -->
-      <div class="flex items-center gap-1.5 self-end md:self-auto">
-        <button
-          @click="resetCamera"
-          class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
-          title="Reset Zoom & Pan"
-        >
-          <Icon icon="ph:arrows-counter-clockwise-bold" class="text-xs text-slate-500" />
-          <span>Reset View</span>
-        </button>
+        <!-- Quick Canvas Actions -->
+        <div class="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+          <button
+            @click="resetCamera"
+            class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+            title="Reset Zoom & Pan"
+          >
+            <Icon icon="ph:arrows-counter-clockwise-bold" class="text-xs text-slate-500" />
+            <span>Reset View</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -262,14 +285,26 @@ const formattedFopDays = computed(() => {
     ]
   }
 
-  // 1. If live scraped FOP data is available, parse and format it
+  // 1. If live scraped FOP data is available, parse, group by unique date, and format it
   if (Array.isArray(props.fopData) && props.fopData.length > 0) {
-    return props.fopData.map((d, dIdx) => ({
-      label: d.date_label || d.day_name || d.date || `Day ${dIdx + 1}`,
-      date: d.date_label || d.date || '',
-      sessions: (d.sessions || []).map((s, sIdx) => ({
+    const daysMap = new Map()
+
+    for (let dIdx = 0; dIdx < props.fopData.length; dIdx++) {
+      const d = props.fopData[dIdx]
+      const rawLabel = (d.date_label || d.day_name || d.date || `Hari ${dIdx + 1}`).trim()
+
+      if (!daysMap.has(rawLabel)) {
+        daysMap.set(rawLabel, {
+          label: rawLabel,
+          date: d.date_label || d.date || '',
+          sessions: []
+        })
+      }
+
+      const dayObj = daysMap.get(rawLabel)
+      const mappedSessions = (d.sessions || []).map((s, sIdx) => ({
         time: s.time_slot || s.time || '08:00 - 11:00',
-        title: s.session_type || s.name || s.session_name || `Session ${sIdx + 1}`,
+        title: s.session_type || s.name || s.session_name || (s.notes ? `${s.notes}` : `Session ${dayObj.sessions.length + sIdx + 1}`),
         matchType: s.session_type || s.type || 'Competition Round',
         format: s.notes || s.format || 'Official Match',
         targetCount: s.target_max ? (s.target_max - (s.target_min || 1) + 1) : 32,
@@ -302,7 +337,11 @@ const formattedFopDays = computed(() => {
               }
             ]
       }))
-    }))
+
+      dayObj.sessions.push(...mappedSessions)
+    }
+
+    return Array.from(daysMap.values())
   }
 
   // 2. Check for explicit tournament preset only if matched specifically
@@ -312,6 +351,10 @@ const formattedFopDays = computed(() => {
   }
 
   return []
+})
+
+watch(selectedDayIdx, () => {
+  selectedSessionIdx.value = 0
 })
 
 const currentDay = computed(() => {

@@ -11,7 +11,7 @@ definePageMeta({
 })
 
 const { t } = useDashboardI18n()
-useHead({ title: computed(() => t('package_detail.page_title', 'Detail Invoice Pembayaran') + ' - Archeris') })
+useHead({ title: computed(() => t('package_detail.page_title', 'Detail Invoice Pembayaran') + ' - Archeris Dashboard') })
 
 const route = useRoute()
 const payment = usePayment()

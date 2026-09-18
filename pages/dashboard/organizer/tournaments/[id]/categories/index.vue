@@ -300,7 +300,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => `${t('event_categories.title')} - Dashboard`)
+    title: computed(() => `${t('event_categories.title', 'Kategori Pertandingan')} - Archeris Dashboard`)
 })
 
 const route = useRoute()

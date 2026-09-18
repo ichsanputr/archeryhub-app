@@ -69,12 +69,37 @@
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
             <thead>
-              <tr class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-bold capitalize tracking-wider">
-                <th class="p-4 w-20 text-center">Bantalan</th>
-                <th class="p-4 w-16 text-center">Posisi</th>
-                <th class="p-4">Nama Pemanah</th>
-                <th class="p-4">Klub / Kontingen</th>
-                <th class="p-4">Kategori</th>
+              <tr class="bg-slate-50 border-b border-slate-200/80 text-slate-500 font-bold capitalize tracking-wider select-none">
+                <th @click="handleSort('target_name')" class="p-4 w-24 text-center cursor-pointer hover:text-navy transition-colors">
+                  <div class="flex items-center justify-center gap-1">
+                    <span>Bantalan</span>
+                    <Icon :icon="getSortIcon('target_name')" class="text-xs shrink-0" :class="sortKey === 'target_name' ? 'text-navy font-bold' : 'text-slate-400'" />
+                  </div>
+                </th>
+                <th @click="handleSort('target_board')" class="p-4 w-20 text-center cursor-pointer hover:text-navy transition-colors">
+                  <div class="flex items-center justify-center gap-1">
+                    <span>Posisi</span>
+                    <Icon :icon="getSortIcon('target_board')" class="text-xs shrink-0" :class="sortKey === 'target_board' ? 'text-navy font-bold' : 'text-slate-400'" />
+                  </div>
+                </th>
+                <th @click="handleSort('archer_name')" class="p-4 cursor-pointer hover:text-navy transition-colors min-w-[200px]">
+                  <div class="flex items-center gap-1.5">
+                    <span>Nama Pemanah</span>
+                    <Icon :icon="getSortIcon('archer_name')" class="text-xs shrink-0" :class="sortKey === 'archer_name' ? 'text-navy font-bold' : 'text-slate-400'" />
+                  </div>
+                </th>
+                <th @click="handleSort('club_name')" class="p-4 cursor-pointer hover:text-navy transition-colors min-w-[200px]">
+                  <div class="flex items-center gap-1.5">
+                    <span>Klub / Kontingen</span>
+                    <Icon :icon="getSortIcon('club_name')" class="text-xs shrink-0" :class="sortKey === 'club_name' ? 'text-navy font-bold' : 'text-slate-400'" />
+                  </div>
+                </th>
+                <th @click="handleSort('category_name')" class="p-4 cursor-pointer hover:text-navy transition-colors min-w-[180px]">
+                  <div class="flex items-center gap-1.5">
+                    <span>Kategori</span>
+                    <Icon :icon="getSortIcon('category_name')" class="text-xs shrink-0" :class="sortKey === 'category_name' ? 'text-navy font-bold' : 'text-slate-400'" />
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
@@ -116,6 +141,8 @@ const event = ref<any>(null)
 const targets = ref<any[]>([])
 const search = ref('')
 const selectedCategory = ref('')
+const sortKey = ref('target_name')
+const sortAsc = ref(true)
 
 const categories = computed(() => {
   const map: Record<string, number> = {}
@@ -126,8 +153,22 @@ const categories = computed(() => {
   return Object.entries(map).map(([name, count]) => ({ name, count }))
 })
 
+const getSortIcon = (key: string) => {
+  if (sortKey.value !== key) return 'ph:arrows-down-up'
+  return sortAsc.value ? 'ph:arrow-up-bold' : 'ph:arrow-down-bold'
+}
+
+const handleSort = (key: string) => {
+  if (sortKey.value === key) {
+    sortAsc.value = !sortAsc.value
+  } else {
+    sortKey.value = key
+    sortAsc.value = true
+  }
+}
+
 const filteredTargets = computed(() => {
-  let list = targets.value
+  let list = [...targets.value]
 
   if (selectedCategory.value) {
     list = list.filter(t => (t.category_name || 'Lainnya') === selectedCategory.value)
@@ -143,7 +184,18 @@ const filteredTargets = computed(() => {
     )
   }
 
-  return list
+  return list.sort((a, b) => {
+    const k = sortKey.value
+    if (k === 'target_name') {
+      const numA = parseInt(String(a.target_name || '0').replace(/\D/g, '')) || 0
+      const numB = parseInt(String(b.target_name || '0').replace(/\D/g, '')) || 0
+      if (numA !== numB) return sortAsc.value ? numA - numB : numB - numA
+      return sortAsc.value ? String(a.target_name || '').localeCompare(String(b.target_name || '')) : String(b.target_name || '').localeCompare(String(a.target_name || ''))
+    }
+    const valA = (a[k] || a.archer_name || a.full_name || a.club_name || a.category_name || '').toString().toLowerCase()
+    const valB = (b[k] || b.archer_name || b.full_name || b.club_name || b.category_name || '').toString().toLowerCase()
+    return sortAsc.value ? valA.localeCompare(valB) : valB.localeCompare(valA)
+  })
 })
 
 async function fetchData() {

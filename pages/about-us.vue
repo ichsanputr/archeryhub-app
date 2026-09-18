@@ -19,12 +19,12 @@
           About Archeris
         </h1>
         <p class="text-slate-300 text-sm sm:text-base font-normal max-w-xl mx-auto leading-relaxed">
-          Building a modern, accurate, and accessible digital archery ecosystem for athletes, coaches, clubs, and tournament organizers.
+          Making archery scoring and tournament management simple for everyone.
         </p>
       </div>
     </section>
 
-    <!-- Main Editorial Content Area (Semi-Article Format) -->
+    <!-- Main Editorial Content Area -->
     <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
       <article class="bg-white rounded-3xl p-6 sm:p-12 border border-slate-200/90 shadow-xs space-y-10">
 
@@ -32,31 +32,31 @@
         <section class="space-y-4">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">
             <Icon icon="ph:compass-bold" class="text-primary text-sm" />
-            <span>Our Origin</span>
+            <span>Our Story</span>
           </div>
 
           <h2 class="text-xl sm:text-2xl font-bold text-navy font-display tracking-tight">
-            From Paper Scorecards to the Shooting Line
+            Why We Built Archeris
           </h2>
 
           <p class="text-slate-700 text-sm sm:text-base leading-relaxed">
-            For anyone who has ever competed in or organized an archery tournament, the scene is all too familiar: stacks of paper scorecards, long queues at the tabulation desk, and hours of waiting for elimination bracket calculations. Athletes and spectators often wait for hours just to discover official qualifying ranks or next-round match assignments.
+            Anyone who has competed in or organized an archery tournament knows the frustration: stacks of paper scorecards, long lines at the scoring desk, and hours of waiting for elimination brackets. Archers and spectators often spend half their day just waiting to see who shoots next.
           </p>
 
           <p class="text-slate-700 text-sm sm:text-base leading-relaxed">
-            Archeris was born directly out of this range experience. We recognized the gap between the rapidly growing enthusiasm for competitive archery and outdated, error-prone manual tabulation methods. We believe sports technology should simplify tournament operations and make matches transparent, instant, and engaging for everyone involved.
+            We built Archeris to solve this problem. We replaced slow, manual paper tabulation with a fast, modern mobile scoring platform. Our goal is simple: make scoring instant, accurate, and transparent for everyone on the shooting line.
           </p>
         </section>
 
         <!-- Quote Box -->
         <blockquote class="p-6 bg-slate-50 border-l-4 border-navy rounded-r-2xl space-y-2">
           <p class="text-slate-800 font-medium italic text-sm sm:text-base leading-relaxed">
-            "Archery is a discipline of focus and precision. The infrastructure supporting it must be equally precise—every arrow recorded accurately, transparently, and accessible in real time."
+            "Archery requires total focus. Managing a tournament should be just as clean and simple."
           </p>
-          <footer class="text-xs font-bold text-slate-500">— Archeris Founding Team</footer>
+          <footer class="text-xs font-bold text-slate-500">— The Archeris Team</footer>
         </blockquote>
 
-        <!-- Initial Purpose -->
+        <!-- Mission -->
         <section class="space-y-4">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">
             <Icon icon="ph:target-bold" class="text-primary text-sm" />
@@ -64,19 +64,19 @@
           </div>
 
           <h2 class="text-xl sm:text-2xl font-bold text-navy font-display tracking-tight">
-            Making Digital Scoring Accessible Everywhere
+            Digital Scoring on Any Device
           </h2>
 
           <p class="text-slate-700 text-sm sm:text-base leading-relaxed">
-            Our purpose from day one has been clear: deliver an archery competition platform that operates seamlessly from any smartphone without requiring complex on-site server setups or expensive proprietary scoring terminals.
+            From day one, our goal has been clear: help organizers run tournaments directly from a smartphone or tablet, without expensive hardware or complicated setups.
           </p>
 
           <p class="text-slate-700 text-sm sm:text-base leading-relaxed">
-            We developed automated ranking round tabulation, standard World Archery compliant elimination match brackets, and official Ianseo tournament synchronization so that grassroots clubs and national federations alike can run world-class competitions efficiently.
+            Whether you run a weekend club practice or a multi-day championship, Archeris handles qualification rounds, elimination match brackets, and live leaderboards automatically.
           </p>
         </section>
 
-        <!-- Vision & Mission -->
+        <!-- Vision & What We Deliver -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
           <!-- Vision -->
           <div class="p-6 rounded-2xl bg-navy text-white space-y-3 shadow-xs">
@@ -85,11 +85,11 @@
             </div>
             <h3 class="text-base font-bold text-white">Our Vision</h3>
             <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-              To be the leading digital archery platform uniting archers, coaches, clubs, and tournaments with trusted, standardized competition data across the globe.
+              To make archery events easy to run, enjoyable to follow, and accessible to clubs everywhere.
             </p>
           </div>
 
-          <!-- Mission -->
+          <!-- What We Deliver -->
           <div class="p-6 rounded-2xl bg-slate-100 text-navy space-y-3 border border-slate-200/80">
             <div class="w-9 h-9 rounded-xl bg-navy text-primary flex items-center justify-center text-lg">
               <Icon icon="ph:rocket-launch-bold" />
@@ -98,49 +98,49 @@
             <ul class="text-xs sm:text-sm text-slate-700 space-y-2 leading-relaxed font-normal">
               <li class="flex items-start gap-2">
                 <Icon icon="ph:check-circle-fill" class="text-emerald-600 text-sm shrink-0 mt-0.5" />
-                <span>Accurate digital archery scoring and mobile scorecards.</span>
+                <span>Live mobile scoring with instant leaderboards.</span>
               </li>
               <li class="flex items-start gap-2">
                 <Icon icon="ph:check-circle-fill" class="text-emerald-600 text-sm shrink-0 mt-0.5" />
-                <span>Automated bracket progression and verified digital certificates.</span>
+                <span>Automatic elimination brackets and certificates.</span>
               </li>
               <li class="flex items-start gap-2">
                 <Icon icon="ph:check-circle-fill" class="text-emerald-600 text-sm shrink-0 mt-0.5" />
-                <span>High-quality archery guides and educational resources.</span>
+                <span>Clear archery articles and learning resources.</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <!-- Principles in Practice (Smooth Narrative Paragraphs) -->
+        <!-- Principles in Practice -->
         <section class="space-y-4 pt-2">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">
             <Icon icon="ph:heart-bold" class="text-primary text-sm" />
-            <span>Our Principles</span>
+            <span>Our Values</span>
           </div>
 
           <h2 class="text-xl sm:text-2xl font-bold text-navy font-display tracking-tight">
-            How We Build and Operate
+            How We Work
           </h2>
 
           <p class="text-slate-700 text-sm sm:text-base leading-relaxed">
-            Behind every feature we engineer is an uncompromising commitment to scoring integrity and data accuracy. In archery, millimeters decide championships; our system ensures every arrow score, shoot-off tie-break, and qualification total is completely transparent, auditable, and instantly verifiable.
+            <strong>Accuracy First:</strong> In archery, every millimeter matters. Our system ensures every arrow score, tie-break, and qualification total is recorded accurately and clearly.
           </p>
 
           <p class="text-slate-700 text-sm sm:text-base leading-relaxed">
-            Accessibility drives our design philosophy. By creating clean, responsive interfaces that perform reliably under open-field sunlight and varied network conditions, we empower volunteer scorekeepers, certified judges, and archers to focus entirely on the competition rather than technical hurdles.
+            <strong>Easy to Use:</strong> We design tools that work seamlessly under open-field sunlight and spotty connections. Volunteers, judges, and archers can start scoring without complex training.
           </p>
 
           <p class="text-slate-700 text-sm sm:text-base leading-relaxed">
-            We grow alongside the archery community. We continuously collaborate with club managers, tournament directors, and national judges to incorporate practical on-the-ground feedback into every release, ensuring our platform evolves to meet the genuine needs of the sport.
+            <strong>Built with the Community:</strong> We listen closely to club managers, coaches, and archers to improve Archeris with every single event.
           </p>
         </section>
 
         <!-- Call to Action Footer -->
         <section class="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="space-y-1 text-center sm:text-left">
-            <h4 class="text-sm font-bold text-navy">Have questions or interested in partnering?</h4>
-            <p class="text-xs text-slate-500">Our team is ready to support your tournament, club, or organization.</p>
+            <h4 class="text-sm font-bold text-navy">Have questions or want to partner with us?</h4>
+            <p class="text-xs text-slate-500">We are always happy to support your club, tournament, or organization.</p>
           </div>
 
           <div class="flex items-center gap-3">
@@ -148,7 +148,7 @@
               Explore Tournaments
             </NuxtLink>
             <NuxtLink to="/blog" class="px-4 py-2 rounded-xl bg-navy hover:bg-slate-800 text-white text-xs font-bold transition-colors cursor-pointer">
-              Read Guides
+              Read Articles
             </NuxtLink>
           </div>
         </section>

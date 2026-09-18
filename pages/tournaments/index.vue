@@ -11,7 +11,7 @@
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <!-- Breadcrumb -->
                 <div class="mb-4">
-                    <Breadcrumbs :items="[{ label: 'Home', path: '/' }]" current="Tournaments" class="!text-slate-300" />
+                    <Breadcrumbs :items="[]" current="Tournaments" class="!text-slate-300" />
                 </div>
 
                 <div class="max-w-3xl space-y-4">

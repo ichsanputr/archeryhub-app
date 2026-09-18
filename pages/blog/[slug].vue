@@ -30,7 +30,7 @@
                     </h1>
 
                     <!-- Meta Row -->
-                    <div class="flex flex-wrap items-center gap-4 text-xs text-slate-300 pt-1 font-medium">
+                    <div class="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-slate-300 pt-1 font-medium">
                         <div class="flex items-center gap-1.5">
                             <Icon icon="ph:calendar-blank" class="text-primary text-sm shrink-0" />
                             <span>{{ formatDate(article.date) }}</span>
@@ -72,21 +72,21 @@
                             <!-- Header & Collapse Toggle -->
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <div class="w-7 h-7 rounded-lg bg-navy text-primary flex items-center justify-center text-xs shadow-2xs">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-navy text-primary flex items-center justify-center text-xs sm:text-sm shadow-2xs">
                                         <Icon icon="ph:list-bullets-bold" />
                                     </div>
                                     <h3 class="text-xs sm:text-sm font-bold text-navy tracking-tight">Table of Contents</h3>
                                 </div>
                                 
                                 <button @click="isTocOpen = !isTocOpen" type="button"
-                                    class="text-xs font-semibold text-slate-500 hover:text-navy flex items-center gap-1 transition-colors px-2 py-1 rounded-lg hover:bg-slate-200/60 cursor-pointer">
+                                    class="text-xs sm:text-sm font-semibold text-slate-500 hover:text-navy flex items-center gap-1 transition-colors px-2.5 py-1 rounded-lg hover:bg-slate-200/60 cursor-pointer">
                                     <span>{{ isTocOpen ? 'Hide' : 'Show' }}</span>
-                                    <Icon :icon="isTocOpen ? 'ph:caret-up-bold' : 'ph:caret-down-bold'" class="text-xs" />
+                                    <Icon :icon="isTocOpen ? 'ph:caret-up-bold' : 'ph:caret-down-bold'" class="text-xs sm:text-sm" />
                                 </button>
                             </div>
 
                             <!-- Hierarchical Headings Tree (Borderless) -->
-                            <div v-show="isTocOpen" class="pt-2 border-t border-slate-200/70 space-y-1 text-xs">
+                            <div v-show="isTocOpen" class="pt-2 border-t border-slate-200/70 space-y-1 text-xs sm:text-sm">
                                 <a v-for="item in headings" :key="item.id"
                                     :href="`#${item.id}`"
                                     @click.prevent="scrollToHeading(item.id)"
@@ -95,8 +95,8 @@
                                         item.level === 1 || item.level === 2 
                                             ? 'font-bold text-navy hover:text-slate-900 text-xs sm:text-sm' 
                                             : item.level === 3 
-                                                ? 'pl-6 font-semibold text-slate-600 hover:text-navy' 
-                                                : 'pl-10 font-normal text-slate-500 hover:text-navy',
+                                                ? 'pl-6 font-semibold text-slate-600 hover:text-navy text-xs sm:text-sm' 
+                                                : 'pl-10 font-normal text-slate-500 hover:text-navy text-xs sm:text-sm',
                                         activeHeadingId === item.id ? 'text-navy font-black bg-slate-200/70' : ''
                                     ]">
                                     <!-- Indicator for H1 / H2 -->
@@ -126,13 +126,13 @@
 
                         <!-- Article Multiple Tags (Clickable Pills) -->
                         <div v-if="normalizedTags && normalizedTags.length > 0" class="pt-6 border-t border-slate-100 flex flex-wrap items-center gap-2">
-                            <span class="text-xs font-bold text-slate-400 mr-1 flex items-center gap-1">
+                            <span class="text-xs sm:text-sm font-bold text-slate-400 mr-1 flex items-center gap-1">
                                 <Icon icon="ph:hash-bold" />
                                 Tags:
                             </span>
                             <NuxtLink v-for="tag in normalizedTags" :key="tag"
                                 :to="`/blog?tag=${encodeURIComponent(tag)}`"
-                                class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors flex items-center gap-1">
+                                class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-semibold rounded-xl transition-colors flex items-center gap-1">
                                 <span>#{{ tag }}</span>
                             </NuxtLink>
                         </div>
@@ -141,7 +141,7 @@
                         <div class="py-4 px-5 bg-slate-50/80 rounded-2xl border border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-3">
                             <div class="flex items-center gap-2">
                                 <Icon icon="ph:share-network-bold" class="text-base text-navy" />
-                                <span class="text-xs font-bold text-navy">Share this article:</span>
+                                <span class="text-xs sm:text-sm font-bold text-navy">Share this article:</span>
                             </div>
 
                             <!-- Sleek Colored Brand Social Buttons -->
@@ -186,19 +186,19 @@
                                 <div class="relative shrink-0">
                                     <img src="/profile-author.png" :alt="(article.author?.name || 'Archeris Editorial Team') + ' Official Avatar'"
                                         class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-slate-100 border border-slate-200 shadow-2xs p-0.5 sm:p-1 object-cover" />
-                                    <div class="absolute -bottom-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-navy rounded-full flex items-center justify-center text-primary text-[9px] sm:text-[10px] border-2 border-white shadow-2xs">
+                                    <div class="absolute -bottom-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-navy rounded-full flex items-center justify-center text-primary text-[10px] sm:text-xs border-2 border-white shadow-2xs">
                                         <Icon icon="ph:seal-check-fill" />
                                     </div>
                                 </div>
                                 <div class="space-y-0.5 min-w-0">
                                     <div class="flex items-center gap-2">
-                                        <span class="text-navy font-bold text-sm sm:text-base">{{ article.author?.name || 'Archeris Editorial Team' }}</span>
+                                        <span class="text-navy font-bold text-base sm:text-lg">{{ article.author?.name || 'Archeris Editorial Team' }}</span>
                                     </div>
-                                    <div class="text-slate-500 text-xs">{{ article.author?.role || 'Certified Archery Coaches & Technical Specialists' }}</div>
-                                    <p class="text-slate-400 text-[11px] pt-0.5 leading-normal">Dedicated to delivering clear, authoritative, and practical archery education and tournament insight.</p>
+                                    <div class="text-slate-500 text-xs sm:text-sm">{{ article.author?.role || 'Certified Archery Coaches & Technical Specialists' }}</div>
+                                    <p class="text-slate-500 text-xs sm:text-sm pt-0.5 leading-relaxed">Dedicated to delivering clear, authoritative, and practical archery education and tournament insight.</p>
                                 </div>
                             </div>
-                            <NuxtLink to="/about-us" class="w-full sm:w-auto px-4 py-2 bg-slate-100 hover:bg-slate-200 text-navy rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shrink-0">
+                            <NuxtLink to="/about-us" class="w-full sm:w-auto px-4 py-2 bg-slate-100 hover:bg-slate-200 text-navy rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-colors shrink-0">
                                 <span>About Team</span>
                                 <Icon icon="ph:arrow-right" />
                             </NuxtLink>
@@ -213,7 +213,7 @@
                             <div class="space-y-1">
                                 <h3 class="text-xl sm:text-2xl font-black text-navy font-display tracking-tight flex items-center gap-2.5">
                                     <span>Community Discussion</span>
-                                    <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-semibold border border-slate-200/80">
+                                    <span class="text-xs sm:text-sm px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-semibold border border-slate-200/80">
                                         {{ totalComments }} {{ totalComments === 1 ? 'Comment' : 'Comments' }}
                                     </span>
                                 </h3>
@@ -227,45 +227,45 @@
                         <div class="bg-slate-50/90 rounded-2xl p-5 sm:p-7 border border-slate-200/90 shadow-2xs space-y-4">
                             <div class="flex items-center justify-between">
                                 <h4 class="font-bold text-navy text-sm sm:text-base flex items-center gap-2">
-                                    <div class="w-6 h-6 rounded-lg bg-navy text-primary flex items-center justify-center text-xs">
+                                    <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-navy text-primary flex items-center justify-center text-xs sm:text-sm">
                                         <Icon icon="ph:chat-teardrop-dots-bold" />
                                     </div>
                                     <span>Join the Conversation</span>
                                 </h4>
-                                <span class="text-[11px] text-slate-400">Be respectful and constructive</span>
+                                <span class="text-xs sm:text-sm text-slate-400">Be respectful and constructive</span>
                             </div>
 
                             <form @submit.prevent="submitRootComment" class="space-y-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                                     <div class="relative">
-                                        <Icon icon="ph:user" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
+                                        <Icon icon="ph:user" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs sm:text-sm" />
                                         <input v-model="commentForm.author_name" type="text" placeholder="Your Full Name *"
-                                            class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-navy placeholder:text-slate-400 focus:border-navy focus:outline-hidden transition-colors shadow-2xs"
+                                            class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-navy placeholder:text-slate-400 focus:border-navy focus:outline-hidden transition-colors shadow-2xs"
                                             required />
                                     </div>
                                     <div class="relative">
-                                        <Icon icon="ph:envelope-simple" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
+                                        <Icon icon="ph:envelope-simple" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs sm:text-sm" />
                                         <input v-model="commentForm.author_email" type="email" placeholder="Your Email Address *"
-                                            class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-xs text-navy placeholder:text-slate-400 focus:border-navy focus:outline-hidden transition-colors shadow-2xs"
+                                            class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-navy placeholder:text-slate-400 focus:border-navy focus:outline-hidden transition-colors shadow-2xs"
                                             required />
                                     </div>
                                 </div>
                                 <div class="relative">
                                     <textarea v-model="commentForm.content" rows="3"
                                         placeholder="Ask a technical question, share your personal experience with this technique, or discuss tuning tips..."
-                                        class="w-full bg-white border border-slate-200 rounded-xl p-3.5 text-xs text-navy placeholder:text-slate-400 focus:border-navy focus:outline-hidden transition-colors resize-none shadow-2xs leading-relaxed"
+                                        class="w-full bg-white border border-slate-200 rounded-xl p-3.5 text-xs sm:text-sm text-navy placeholder:text-slate-400 focus:border-navy focus:outline-hidden transition-colors resize-none shadow-2xs leading-relaxed"
                                         required></textarea>
                                 </div>
                                 <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
-                                    <span class="text-[11px] text-slate-400 flex items-center gap-1">
-                                        <Icon icon="ph:lock-key" class="text-xs" />
+                                    <span class="text-xs sm:text-sm text-slate-400 flex items-center gap-1.5">
+                                        <Icon icon="ph:lock-key" class="text-xs sm:text-sm" />
                                         <span>Your email address remains private and is never published.</span>
                                     </span>
                                     <button :disabled="submittingComment"
-                                        class="px-6 py-2.5 bg-navy hover:bg-slate-800 disabled:opacity-50 text-white text-xs font-bold rounded-xl transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow cursor-pointer">
+                                        class="px-6 py-2.5 bg-navy hover:bg-slate-800 disabled:opacity-50 text-white text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow cursor-pointer">
                                         <span v-if="submittingComment">Publishing...</span>
                                         <span v-else>Post Comment</span>
-                                        <Icon v-if="!submittingComment" icon="ph:paper-plane-right-bold" class="text-primary text-xs" />
+                                        <Icon v-if="!submittingComment" icon="ph:paper-plane-right-bold" class="text-primary text-xs sm:text-sm" />
                                     </button>
                                 </div>
                             </form>
@@ -279,55 +279,55 @@
                                     <div class="flex items-center gap-3">
                                         <img :src="`https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(comm.author_name || comm.user_name || 'Archer')}`"
                                             :alt="comm.author_name || 'Archer'"
-                                            class="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 p-0.5 object-cover" />
+                                            class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-100 border border-slate-200 p-0.5 object-cover" />
                                         <div>
                                             <div class="flex items-center gap-2">
                                                 <span class="font-bold text-xs sm:text-sm text-navy">{{ comm.author_name || comm.user_name || 'Archer' }}</span>
-                                                <span v-if="comm.user_type === 'archer'" class="px-2 py-0.5 bg-sky-50 text-sky-700 text-[10px] font-bold rounded-md border border-sky-100">Archer</span>
-                                                <span v-else-if="comm.user_type === 'organizer'" class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded-md border border-emerald-100">Organizer</span>
-                                                <span v-else-if="comm.user_type === 'coach'" class="px-2 py-0.5 bg-amber-50 text-amber-700 text-[10px] font-bold rounded-md border border-amber-100">Coach</span>
+                                                <span v-if="comm.user_type === 'archer'" class="px-2 py-0.5 bg-sky-50 text-sky-700 text-[10px] sm:text-xs font-bold rounded-md border border-sky-100">Archer</span>
+                                                <span v-else-if="comm.user_type === 'organizer'" class="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] sm:text-xs font-bold rounded-md border border-emerald-100">Organizer</span>
+                                                <span v-else-if="comm.user_type === 'coach'" class="px-2 py-0.5 bg-amber-50 text-amber-700 text-[10px] sm:text-xs font-bold rounded-md border border-amber-100">Coach</span>
                                             </div>
-                                            <div class="text-[10px] text-slate-400">{{ formatDate(comm.created_at) }}</div>
+                                            <div class="text-[10px] sm:text-xs text-slate-400">{{ formatDate(comm.created_at) }}</div>
                                         </div>
                                     </div>
 
                                     <!-- Reply Action Button -->
                                     <button @click="toggleReplyForm(comm.id)"
-                                        class="px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-navy text-xs font-semibold flex items-center gap-1.5 border border-slate-200 transition-colors cursor-pointer">
-                                        <Icon icon="ph:arrow-bend-down-left-bold" class="text-xs text-primary" />
+                                        class="px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-navy text-xs sm:text-sm font-semibold flex items-center gap-1.5 border border-slate-200 transition-colors cursor-pointer">
+                                        <Icon icon="ph:arrow-bend-down-left-bold" class="text-xs sm:text-sm text-primary" />
                                         <span>{{ replyingToId === comm.id ? 'Cancel' : 'Reply' }}</span>
                                     </button>
                                 </div>
 
                                 <!-- Comment Content -->
-                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed pl-12">{{ comm.content }}</p>
+                                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed pl-12 sm:pl-13">{{ comm.content }}</p>
 
                                 <!-- Nested Reply Form (when toggled for this comment) -->
-                                <div v-if="replyingToId === comm.id" class="ml-12 p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
-                                    <div class="text-xs font-bold text-navy flex items-center gap-1.5">
+                                <div v-if="replyingToId === comm.id" class="ml-12 sm:ml-13 p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
+                                    <div class="text-xs sm:text-sm font-bold text-navy flex items-center gap-1.5">
                                         <Icon icon="ph:arrow-bend-down-left" class="text-primary" />
                                         <span>Reply to {{ comm.author_name || comm.user_name || 'Archer' }}</span>
                                     </div>
                                     <form @submit.prevent="submitReply(comm)" class="space-y-3">
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                             <input v-model="replyForm.author_name" type="text" placeholder="Your Name *"
-                                                class="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-navy placeholder:text-slate-400 focus:border-navy focus:outline-hidden"
+                                                class="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs sm:text-sm text-navy placeholder:text-slate-400 focus:border-navy focus:outline-hidden"
                                                 required />
                                             <input v-model="replyForm.author_email" type="email" placeholder="Your Email *"
-                                                class="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-navy placeholder:text-slate-400 focus:border-navy focus:outline-hidden"
+                                                class="w-full bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-xs sm:text-sm text-navy placeholder:text-slate-400 focus:border-navy focus:outline-hidden"
                                                 required />
                                         </div>
                                         <textarea v-model="replyForm.content" rows="2"
                                             placeholder="Write your constructive reply..."
-                                            class="w-full bg-white border border-slate-200 rounded-lg p-2.5 text-xs text-navy placeholder:text-slate-400 focus:border-navy focus:outline-hidden resize-none"
+                                            class="w-full bg-white border border-slate-200 rounded-lg p-2.5 text-xs sm:text-sm text-navy placeholder:text-slate-400 focus:border-navy focus:outline-hidden resize-none"
                                             required></textarea>
                                         <div class="flex justify-end gap-2">
                                             <button type="button" @click="replyingToId = null"
-                                                class="px-3 py-1.5 text-xs font-semibold text-slate-500 hover:text-navy cursor-pointer">
+                                                class="px-3 py-1.5 text-xs sm:text-sm font-semibold text-slate-500 hover:text-navy cursor-pointer">
                                                 Cancel
                                             </button>
                                             <button type="submit" :disabled="submittingReply"
-                                                class="px-4 py-1.5 bg-navy hover:bg-slate-800 disabled:opacity-50 text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 cursor-pointer">
+                                                class="px-4 py-1.5 bg-navy hover:bg-slate-800 disabled:opacity-50 text-white text-xs sm:text-sm font-bold rounded-lg transition-colors flex items-center gap-1 cursor-pointer">
                                                 <span v-if="submittingReply">Sending...</span>
                                                 <span v-else>Post Reply</span>
                                             </button>
@@ -336,33 +336,33 @@
                                 </div>
 
                                 <!-- Threaded Replies List -->
-                                <div v-if="comm.replies && comm.replies.length > 0" class="ml-12 pl-4 border-l-2 border-slate-200/80 space-y-3 pt-2">
+                                <div v-if="comm.replies && comm.replies.length > 0" class="ml-12 sm:ml-13 pl-4 border-l-2 border-slate-200/80 space-y-3 pt-2">
                                     <div v-for="reply in comm.replies" :key="reply.id" class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200/70 space-y-2">
                                         <div class="flex items-center gap-2.5">
                                             <img :src="`https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(reply.author_name || reply.user_name || 'Archer')}`"
                                                 :alt="reply.author_name || 'Archer'"
-                                                class="w-7 h-7 rounded-lg bg-white border border-slate-200 p-0.5 object-cover" />
+                                                class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white border border-slate-200 p-0.5 object-cover" />
                                             <div>
                                                 <div class="flex items-center gap-2">
-                                                    <span class="font-bold text-xs text-navy">{{ reply.author_name || reply.user_name || 'Archer' }}</span>
-                                                    <span v-if="reply.user_type === 'archer'" class="px-1.5 py-0.2 bg-sky-50 text-sky-700 text-[9px] font-bold rounded border border-sky-100">Archer</span>
-                                                    <span v-else-if="reply.user_type === 'organizer'" class="px-1.5 py-0.2 bg-emerald-50 text-emerald-700 text-[9px] font-bold rounded border border-emerald-100">Organizer</span>
+                                                    <span class="font-bold text-xs sm:text-sm text-navy">{{ reply.author_name || reply.user_name || 'Archer' }}</span>
+                                                    <span v-if="reply.user_type === 'archer'" class="px-1.5 py-0.2 bg-sky-50 text-sky-700 text-[10px] sm:text-xs font-bold rounded border border-sky-100">Archer</span>
+                                                    <span v-else-if="reply.user_type === 'organizer'" class="px-1.5 py-0.2 bg-emerald-50 text-emerald-700 text-[10px] sm:text-xs font-bold rounded border border-emerald-100">Organizer</span>
                                                 </div>
-                                                <div class="text-[9px] text-slate-400">{{ formatDate(reply.created_at) }}</div>
+                                                <div class="text-[10px] sm:text-xs text-slate-400">{{ formatDate(reply.created_at) }}</div>
                                             </div>
                                         </div>
-                                        <p class="text-xs text-slate-700 leading-relaxed pl-9">{{ reply.content }}</p>
+                                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed pl-9 sm:pl-10">{{ reply.content }}</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div v-else class="text-center py-10 text-slate-400 text-xs bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 space-y-2.5">
+                        <div v-else class="text-center py-10 text-slate-400 text-xs sm:text-sm bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 space-y-2.5">
                             <div class="w-10 h-10 rounded-2xl bg-white border border-slate-200 flex items-center justify-center mx-auto text-slate-400 shadow-2xs">
                                 <Icon icon="ph:chats-teardrop" class="text-xl" />
                             </div>
                             <div>
-                                <p class="font-semibold text-navy text-sm">No comments yet</p>
-                                <p class="text-slate-400 text-xs mt-0.5">Be the first to share your thoughts, form questions, or scoring tips!</p>
+                                <p class="font-semibold text-navy text-sm sm:text-base">No comments yet</p>
+                                <p class="text-slate-400 text-xs sm:text-sm mt-0.5">Be the first to share your thoughts, form questions, or scoring tips!</p>
                             </div>
                         </div>
                     </section>
@@ -374,11 +374,11 @@
                     <!-- Popular Articles Widget (Clean & Consistent) -->
                     <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-xs space-y-5">
                         <div class="flex items-center justify-between border-b border-slate-100 pb-3.5">
-                            <h3 class="text-navy font-bold text-xs sm:text-sm flex items-center gap-2">
+                            <h3 class="text-navy font-bold text-sm sm:text-base flex items-center gap-2">
                                 <Icon icon="ph:fire" class="text-navy text-base" />
                                 <span>Popular Articles</span>
                             </h3>
-                            <NuxtLink to="/blog" class="text-[11px] font-semibold text-slate-500 hover:text-navy transition-colors">
+                            <NuxtLink to="/blog" class="text-xs sm:text-sm font-semibold text-slate-500 hover:text-navy transition-colors">
                                 View All
                             </NuxtLink>
                         </div>
@@ -386,18 +386,18 @@
                         <div class="space-y-4">
                             <NuxtLink v-for="item in popularArticles" :key="item.slug" :to="`/blog/${item.slug}`"
                                 class="group flex items-center gap-3.5 p-2 rounded-2xl hover:bg-slate-50 transition-colors">
-                                <div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-slate-900 border border-slate-200">
+                                <div class="w-16 h-16 sm:w-18 sm:h-18 rounded-xl overflow-hidden shrink-0 bg-slate-900 border border-slate-200">
                                     <img :src="item.image" :alt="item.title"
                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 </div>
                                 <div class="flex-1 min-w-0 space-y-1">
-                                    <span class="inline-block px-2 py-0.5 bg-slate-100 text-slate-600 text-[10px] font-semibold rounded-md">
+                                    <span class="inline-block px-2.5 py-0.5 bg-slate-100 text-slate-600 text-[11px] sm:text-xs font-semibold rounded-md">
                                         {{ item.category }}
                                     </span>
-                                    <h4 class="text-xs font-bold text-navy leading-snug line-clamp-2">
+                                    <h4 class="text-xs sm:text-sm font-bold text-navy leading-snug line-clamp-2">
                                         {{ item.title }}
                                     </h4>
-                                    <div class="text-[10px] text-slate-400 font-medium">{{ formatDate(item.date) }}</div>
+                                    <div class="text-[11px] sm:text-xs text-slate-400 font-medium">{{ formatDate(item.date) }}</div>
                                 </div>
                             </NuxtLink>
                         </div>
@@ -406,15 +406,15 @@
                     <!-- Sidebar Newsletter / CTA Widget -->
                     <div class="bg-navy rounded-3xl p-6 text-white border border-slate-800 shadow-xs space-y-4">
                         <div class="space-y-1.5">
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-white/10 rounded-full text-primary text-[10px] font-semibold">
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-white/10 rounded-full text-primary text-[11px] sm:text-xs font-semibold">
                                 <Icon icon="ph:trophy" />
                                 <span>Archery Scoring</span>
                             </div>
-                            <h4 class="text-sm font-bold text-white">Elevate Your Tournament</h4>
-                            <p class="text-xs text-slate-300 leading-relaxed font-normal">Manage archer qualifications, elimination brackets, and scorekeeping effortlessly.</p>
+                            <h4 class="text-sm sm:text-base font-bold text-white">Elevate Your Tournament</h4>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">Manage archer qualifications, elimination brackets, and scorekeeping effortlessly.</p>
                         </div>
                         <NuxtLink to="/tournaments"
-                            class="inline-block w-full text-center bg-primary hover:bg-primary-hover text-navy py-2.5 rounded-xl text-xs font-bold transition-colors">
+                            class="inline-block w-full text-center bg-primary hover:bg-primary-hover text-navy py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-bold transition-colors">
                             Explore Tournaments
                         </NuxtLink>
                     </div>
@@ -431,23 +431,23 @@
                         <h2 class="text-xl sm:text-2xl font-bold text-navy tracking-tight font-display">
                             Related Archery Articles
                         </h2>
-                        <p class="text-slate-500 text-xs mt-0.5">Explore more guides and scorekeeping strategies</p>
+                        <p class="text-slate-500 text-xs sm:text-sm mt-0.5">Explore more guides and scorekeeping strategies</p>
                     </div>
                     
                     <!-- Carousel Controls & View All Link -->
                     <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0">
                         <div class="flex items-center gap-1.5">
                             <button @click="scrollRelated('left')" title="Scroll Left"
-                                class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center transition-colors cursor-pointer">
+                                class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center transition-colors cursor-pointer">
                                 <Icon icon="ph:caret-left-bold" class="text-sm" />
                             </button>
                             <button @click="scrollRelated('right')" title="Scroll Right"
-                                class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center transition-colors cursor-pointer">
+                                class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy flex items-center justify-center transition-colors cursor-pointer">
                                 <Icon icon="ph:caret-right-bold" class="text-sm" />
                             </button>
                         </div>
                         <NuxtLink to="/blog"
-                            class="text-navy hover:text-primary-hover transition-colors font-bold text-xs flex items-center gap-1 whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-slate-100 sm:bg-transparent">
+                            class="text-navy hover:text-primary-hover transition-colors font-bold text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap px-2.5 py-1.5 rounded-lg bg-slate-100 sm:bg-transparent">
                             <span>View All</span>
                             <Icon icon="ph:arrow-right" />
                         </NuxtLink>
@@ -468,7 +468,7 @@
                             
                             <!-- Category Badge (Single Category) -->
                             <div class="absolute top-3 left-3">
-                                <span class="bg-navy text-primary text-[11px] font-bold px-2.5 py-1 rounded-xl shadow-xs border border-white/10">
+                                <span class="bg-navy text-primary text-[11px] sm:text-xs font-bold px-2.5 py-1 rounded-xl shadow-xs border border-white/10">
                                     {{ item.category }}
                                 </span>
                             </div>
@@ -476,10 +476,10 @@
 
                         <!-- Card Body -->
                         <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
-                            <h4 class="text-sm font-bold text-navy line-clamp-2 leading-snug font-display">
+                            <h4 class="text-sm sm:text-base font-bold text-navy line-clamp-2 leading-snug font-display">
                                 {{ item.title }}
                             </h4>
-                            <div class="flex items-center justify-between text-xs text-slate-400 font-medium pt-2.5 border-t border-slate-100">
+                            <div class="flex items-center justify-between text-xs sm:text-sm text-slate-400 font-medium pt-2.5 border-t border-slate-100">
                                 <span>{{ formatDate(item.date) }}</span>
                                 <span class="text-navy font-bold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                                     Read <Icon icon="ph:arrow-right" />
@@ -520,22 +520,14 @@ const activeHeadingId = ref('')
 const isLinkCopied = ref(false)
 let headingObserver = null
 
-const articleImageMap = {
-    'how-to-shoot-a-bow-beginners-guide-to-archery-form': '/images/blog/thumbnails/how-to-shoot-a-bow-beginners-guide-to-archery-form.png',
-    'understanding-bow-types-recurve-compound-barebow': '/images/blog/thumbnails/understanding-bow-types-recurve-compound-barebow.png',
-    'how-archery-scoring-works-target-rings-and-rules': '/images/blog/thumbnails/how-archery-scoring-works-target-rings-and-rules.png',
-    'anatomy-of-a-bow-and-arrow-essential-parts-guide': '/images/blog/thumbnails/anatomy-of-a-bow-and-arrow-essential-parts-guide.png',
-    'how-archery-tournaments-work-introduction-to-rounds-and-matches': '/images/blog/thumbnails/how-archery-tournaments-work-introduction-to-rounds-and-matches.png'
-}
-
 function resolveArticleImage(image, slug) {
-    if (slug && articleImageMap[slug]) {
-        return articleImageMap[slug]
-    }
     if (image && !image.includes('unsplash.com')) {
         return image
     }
-    return '/images/blog/thumbnails/how-to-shoot-a-bow-beginners-guide-to-archery-form.png'
+    if (slug) {
+        return `/images/blog/thumbnails/${slug}.png`
+    }
+    return '/images/blog/thumbnails/understanding-bow-types-recurve-compound-barebow.png'
 }
 
 const slug = computed(() => route.params.slug)
@@ -604,8 +596,8 @@ const processedContent = computed(() => {
     })
 
     // Wrap tables in responsive container if not already wrapped
-    processed = processed.replace(/(<table[\s\S]*?<\/table>)/gi, (match) => {
-        return `<div class="article-table-wrapper overflow-x-auto my-6 rounded-2xl border border-slate-200/90 shadow-2xs bg-white">${match}</div>`
+    processed = processed.replace(/(?:<div[^>]*article-table-wrapper[^>]*>)?\s*(<table[\s\S]*?<\/table>)\s*(?:<\/div>)?/gi, (match, tableContent) => {
+        return `<div class="article-table-wrapper overflow-x-auto my-5 rounded-2xl border border-slate-200/90 shadow-2xs bg-white">${tableContent}</div>`
     })
 
     return processed
@@ -649,14 +641,36 @@ const readTime = computed(() => {
 })
 
 const popularArticles = computed(() => {
-    return staticArticles.filter(a => a.slug !== slug.value).slice(0, 3).map(a => ({
-        ...a,
-        image: resolveArticleImage(a.image, a.slug)
-    }))
+    return staticArticles
+        .filter(a => a.slug !== slug.value)
+        .slice(0, 4)
+        .map(a => ({
+            ...a,
+            image: resolveArticleImage(a.image, a.slug)
+        }))
 })
 
 const moreArticles = computed(() => {
-    return staticArticles.filter(a => a.slug !== slug.value).map(a => ({
+    const list = staticArticles
+    const currentIndex = list.findIndex(a => a.slug === slug.value)
+
+    if (currentIndex === -1) {
+        return list.slice(0, 6).map(a => ({
+            ...a,
+            image: resolveArticleImage(a.image, a.slug)
+        }))
+    }
+
+    const n = list.length
+    const count = Math.min(6, n - 1)
+    const result = []
+
+    for (let offset = 1; offset <= count; offset++) {
+        const nextIndex = (currentIndex + offset) % n
+        result.push(list[nextIndex])
+    }
+
+    return result.map(a => ({
         ...a,
         image: resolveArticleImage(a.image, a.slug)
     }))
@@ -979,33 +993,44 @@ useSeoMeta({
 /* ── Responsive & Consistent Table Styling ── */
 :deep(.article-table-wrapper) {
     width: 100%;
-    margin-top: 1.75rem;
-    margin-bottom: 1.75rem;
+    margin-top: 1.25rem !important;
+    margin-bottom: 1.5rem !important;
+    overflow-x: auto;
+    border-radius: 1rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+    background-color: #ffffff;
 }
 
 :deep(.article-prose table) {
     width: 100%;
-    min-width: 600px;
+    min-width: 580px;
     border-collapse: collapse;
-    margin: 0;
+    margin: 0 !important;
     text-align: left;
     font-size: 0.875rem;
     line-height: 1.5;
 }
 
 :deep(.article-prose thead) {
-    background-color: #f8fafc;
-    border-bottom: 2px solid #e2e8f0;
+    background-color: #f1f5f9;
+    border-bottom: 1px solid #cbd5e1;
+}
+
+:deep(.article-prose thead tr) {
+    background-color: #f1f5f9;
 }
 
 :deep(.article-prose thead th) {
     color: #0f172a;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 0.8125rem;
-    padding: 0.875rem 1rem;
+    padding: 0.75rem 1rem;
     text-align: left;
     white-space: nowrap;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 1px solid #cbd5e1;
+    background-color: #f1f5f9;
+    letter-spacing: 0.025em;
 }
 
 :deep(.article-prose tbody tr) {
@@ -1013,19 +1038,25 @@ useSeoMeta({
     transition: background-color 0.15s ease;
 }
 
-:deep(.article-prose tbody tr:hover) {
+:deep(.article-prose tbody tr:nth-child(even)) {
     background-color: #f8fafc;
 }
 
+:deep(.article-prose tbody tr:hover) {
+    background-color: #f1f5f9;
+}
+
 :deep(.article-prose tbody td) {
-    padding: 0.875rem 1rem;
+    padding: 0.75rem 1rem;
     color: #334155;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     vertical-align: middle;
+    line-height: 1.4;
 }
 
 :deep(.article-prose tbody td:first-child) {
     font-weight: 700;
     color: #0f172a;
+    white-space: nowrap;
 }
 </style>

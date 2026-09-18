@@ -2,15 +2,15 @@
   <div class="flex flex-col gap-6 pb-16 font-body text-navy antialiased">
     <!-- Header -->
     <DashboardHeader
-      :title="t('event_printout.participants.title', 'Daftar Peserta')"
-      :subtitle="t('event_printout.participants.page_desc', 'Dokumen rekap atlet untuk registrasi ulang dan administrasi lomba.')"
-      icon="ph:arrow-left-bold"
+      :title="t('event_printout.participants.title', 'Participant Lists')"
+      :subtitle="t('event_printout.participants.page_desc', 'Athlete roster documents for check-in and tournament administration.')"
+      icon="ph:users-three-bold"
       :back-to="`/dashboard/organizer/tournaments/${eventId}/printout`"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
         { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-        { label: t('event_printout.breadcrumb_printout', 'Cetak Dokumen'), to: `/dashboard/organizer/tournaments/${eventId}/printout` },
-        { label: t('event_printout.participants.title', 'Daftar Peserta') }
+        { label: t('event_printout.breadcrumb_printout', 'Printouts'), to: `/dashboard/organizer/tournaments/${eventId}/printout` },
+        { label: t('event_printout.participants.title', 'Participant Lists') }
       ]"
     />
 
@@ -18,52 +18,52 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch max-w-6xl">
       
       <!-- Option 1: By Alphabet -->
-      <div class="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 shadow-xs flex flex-col justify-between hover:border-primary transition-all group">
+      <div class="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-all group">
         <div>
-          <div class="size-14 bg-primary text-btn-text rounded-2xl flex items-center justify-center mb-5 shadow-sm group-hover:scale-105 transition-all">
-            <Icon icon="ph:text-a-underline-bold" class="text-2xl" />
+          <div class="size-14 bg-slate-100 border border-slate-200 text-navy rounded-2xl flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 transition-all">
+            <Icon icon="ph:text-a-underline-bold" class="text-2xl text-navy" />
           </div>
-          <h2 class="text-base font-black text-navy group-hover:text-primary transition-colors mb-2">{{ t('event_printout.participants.by_alphabet', 'Berdasarkan Abjad') }}</h2>
-          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_alphabet_desc', 'Daftar seluruh atlet yang terdaftar diurutkan sesuai abjad nama (A-Z) dilengkapi kategori dan nomor bantalan.') }}</div>
+          <h2 class="text-base font-black text-navy transition-colors mb-2">{{ t('event_printout.participants.by_alphabet', 'Alphabetical Order') }}</h2>
+          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_alphabet_desc', 'List of all registered athletes ordered alphabetically (A-Z) with category and target assignments.') }}</div>
         </div>
 
         <div class="pt-4 border-t border-slate-100">
           <BaseButton @click="printList('alphabetical')" variant="primary" size="lg" icon="ph:file-pdf-bold" class="w-full font-black text-sm">
-            {{ t('event_printout.print_pdf', 'Cetak PDF') }}
+            {{ t('event_printout.download_pdf', 'Download PDF') }}
           </BaseButton>
         </div>
       </div>
 
       <!-- Option 2: By Club -->
-      <div class="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 shadow-xs flex flex-col justify-between hover:border-primary transition-all group">
+      <div class="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-all group">
         <div>
-          <div class="size-14 bg-primary text-btn-text rounded-2xl flex items-center justify-center mb-5 shadow-sm group-hover:scale-105 transition-all">
-            <Icon icon="ph:shield-bold" class="text-2xl" />
+          <div class="size-14 bg-slate-100 border border-slate-200 text-navy rounded-2xl flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 transition-all">
+            <Icon icon="ph:shield-bold" class="text-2xl text-navy" />
           </div>
-          <h2 class="text-base font-black text-navy group-hover:text-primary transition-colors mb-2">{{ t('event_printout.participants.by_club', 'Berdasarkan Klub / Kontingen') }}</h2>
-          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_club_desc', 'Daftar atlet dikelompokkan berdasarkan nama klub atau kontingen daerah masing-masing.') }}</div>
+          <h2 class="text-base font-black text-navy transition-colors mb-2">{{ t('event_printout.participants.by_club', 'By Club / Contingent') }}</h2>
+          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_club_desc', 'List of athletes grouped by their respective club or regional contingent.') }}</div>
         </div>
 
         <div class="pt-4 border-t border-slate-100">
           <BaseButton @click="printList('by-club')" variant="primary" size="lg" icon="ph:file-pdf-bold" class="w-full font-black text-sm">
-            {{ t('event_printout.print_pdf', 'Cetak PDF') }}
+            {{ t('event_printout.download_pdf', 'Download PDF') }}
           </BaseButton>
         </div>
       </div>
 
       <!-- Option 3: By Category / Event -->
-      <div class="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 shadow-xs flex flex-col justify-between hover:border-primary transition-all group">
+      <div class="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 shadow-xs flex flex-col justify-between hover:border-slate-300 transition-all group">
         <div>
-          <div class="size-14 bg-primary text-btn-text rounded-2xl flex items-center justify-center mb-5 shadow-sm group-hover:scale-105 transition-all">
-            <Icon icon="ph:squares-four-bold" class="text-2xl" />
+          <div class="size-14 bg-slate-100 border border-slate-200 text-navy rounded-2xl flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 transition-all">
+            <Icon icon="ph:squares-four-bold" class="text-2xl text-navy" />
           </div>
-          <h2 class="text-base font-black text-navy group-hover:text-primary transition-colors mb-2">{{ t('event_printout.participants.by_category', 'Berdasarkan Kategori Lomba') }}</h2>
-          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_category_desc', 'Daftar peserta dikelompokkan per kelas & divisi lomba sesuai bagan pertandingan.') }}</div>
+          <h2 class="text-base font-black text-navy transition-colors mb-2">{{ t('event_printout.participants.by_category', 'By Competition Category') }}</h2>
+          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_category_desc', 'Athlete list grouped by competition age class and bow division.') }}</div>
         </div>
 
         <div class="pt-4 border-t border-slate-100">
           <BaseButton @click="printList('by-category')" variant="primary" size="lg" icon="ph:file-pdf-bold" class="w-full font-black text-sm">
-            {{ t('event_printout.print_pdf', 'Cetak PDF') }}
+            {{ t('event_printout.download_pdf', 'Download PDF') }}
           </BaseButton>
         </div>
       </div>
@@ -88,7 +88,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('event_printout.participants.page_title', 'Daftar Peserta - Cetak Dokumen'))
+  title: computed(() => t('event_printout.participants.title', 'Daftar Peserta') + ' - Archeris Dashboard')
 })
 
 const printList = (type) => {
