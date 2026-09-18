@@ -327,11 +327,11 @@ const navSections = computed(() => {
     ]
   }
 
-  // Root admin — clean minimal nav
+  // Root admin — clean minimal nav (only Articles for now)
   if (role === 'root') {
     return [
-      { type: 'label', label: t('sidebar.organizer', 'Organizer') },
-      { label: t('sidebar.organizer', 'Organizer'), icon: 'ph:users-four-bold', path: '/dashboard/root' },
+      { type: 'label', label: t('sidebar.management', 'Management') },
+      { label: t('sidebar.articles', 'Articles'), icon: 'ph:newspaper-bold', path: '/dashboard/root/articles' },
     ]
   }
 
