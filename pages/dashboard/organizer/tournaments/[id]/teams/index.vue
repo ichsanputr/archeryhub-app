@@ -186,75 +186,71 @@
         </div>
 
         <!-- Team Modal (Manual) -->
-        <BaseDialogForm v-model="showTeamModal" @close="showTeamModal = false">
+        <BaseDialogForm v-model="showTeamModal" size="lg" @close="showTeamModal = false">
             <template #header>
                 <div class="flex items-center gap-3">
-                    <div class="size-10 bg-navy/5 rounded-xl flex items-center justify-center text-navy shrink-0">
-                        <Icon :icon="isEditing ? 'ph:pencil-circle-bold' : 'ph:users-three-bold'" class="text-xl text-navy" />
+                    <div class="size-10 bg-navy rounded-xl flex items-center justify-center text-primary shrink-0 shadow-sm">
+                        <Icon :icon="isEditing ? 'ph:pencil-simple-bold' : 'ph:users-three-bold'" class="text-xl" />
                     </div>
-                    <div class="flex flex-col -space-y-1">
-                        <h2 class="text-xl font-black text-navy tracking-tighter">{{ isEditing ? t('event_teams.edit_team_detail') : t('event_teams.add_team_manual') }}</h2>
-                        <div class="text-[10px] font-bold text-gray-400 tracking-widest">{{ teamForm.team_name || t('event_teams.new_team') }}</div>
+                    <div>
+                        <h2 class="text-lg font-black text-navy leading-tight">{{ isEditing ? t('event_teams.edit_team_detail') : t('event_teams.add_team_manual') }}</h2>
+                        <div class="text-[11px] font-medium text-gray-400">{{ teamForm.team_name || t('event_teams.new_team') }}</div>
                     </div>
                 </div>
             </template>
-            <div class="space-y-8">
+            <div class="space-y-6">
                 <!-- Section 1: Identitas Tim -->
-                <div class="space-y-4">
-                    <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
-                        <Icon icon="ph:identification-card-bold" class="text-primary text-lg" />
+                <div class="space-y-3">
+                    <h3 class="text-xs font-black text-navy flex items-center gap-2">
+                        <Icon icon="ph:identification-card-bold" class="text-navy text-base" />
                         {{ t('event_teams.identity_and_category') }}
                     </h3>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50/50 p-6 rounded-3xl border border-gray-100">
-                        <div class="md:col-span-2">
-                             <BaseInput v-model="teamForm.team_name" :label="t('event_teams.team_name')" :placeholder="t('event_teams.team_name_placeholder')"
-                                required icon="ph:users-four" />
-                        </div>
-                    </div>
+                    <div class="bg-gray-50/80 p-5 rounded-2xl border border-gray-100 space-y-4">
+                        <BaseInput v-model="teamForm.team_name" :label="t('event_teams.team_name')" :placeholder="t('event_teams.team_name_placeholder')"
+                            required icon="ph:users-four" />
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Editing: lock category and club as read-only -->
-                        <template v-if="isEditing">
-                            <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-500 tracking-widest">{{ t('event_teams.category_label') }}</label>
-                                <div
-                                    class="h-10 px-3 flex items-center rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-navy">
-                                    <Icon icon="ph:lock-simple" class="text-gray-400 mr-2 shrink-0" />
-                                    {{getCategoryName(categories.find(c => c.id === teamForm.category_id)) ||
-                                        teamForm.category_id}}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Editing: lock category and club as read-only -->
+                            <template v-if="isEditing">
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-gray-500">{{ t('event_teams.category_label') }}</label>
+                                    <div
+                                        class="h-11 px-3.5 flex items-center rounded-xl bg-white border border-gray-200 text-sm font-bold text-navy shadow-sm">
+                                        <Icon icon="ph:lock-simple" class="text-gray-400 mr-2 shrink-0" />
+                                        {{getCategoryName(categories.find(c => c.id === teamForm.category_id)) || teamForm.category_id}}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="space-y-1.5">
-                                <label
-                                    class="block text-xs font-bold text-gray-500 tracking-widest">{{ t('event_teams.club') }}</label>
-                                <div
-                                    class="h-10 px-3 flex items-center rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-navy">
-                                    <Icon icon="ph:lock-simple" class="text-gray-400 mr-2 shrink-0" />
-                                    {{ teamForm.club_name || '—' }}
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-gray-500">{{ t('event_teams.club') }}</label>
+                                    <div
+                                        class="h-11 px-3.5 flex items-center rounded-xl bg-white border border-gray-200 text-sm font-bold text-navy shadow-sm">
+                                        <Icon icon="ph:lock-simple" class="text-gray-400 mr-2 shrink-0" />
+                                        {{ teamForm.club_name || '—' }}
+                                    </div>
                                 </div>
-                            </div>
-                        </template>
-                        <!-- Adding: show dropdowns -->
-                        <template v-else>
-                            <BaseSelect v-model="teamForm.category_id" :items="mappedCategories" :label="t('event_teams.category_label')"
-                                :placeholder="t('event_teams.select_category_placeholder')" @update:modelValue="onModalCategoryChange" searchable />
-                            <BaseSelect v-model="teamForm.club_name" :items="mappedClubs" :label="t('event_teams.club')"
-                                :placeholder="t('event_teams.select_club_placeholder')" :disabled="!teamForm.category_id || loadingParticipants"
-                                @update:modelValue="onModalClubChange" searchable />
-                        </template>
+                            </template>
+                            <!-- Adding: show dropdowns -->
+                            <template v-else>
+                                <BaseSelect v-model="teamForm.category_id" :items="mappedCategories" :label="t('event_teams.category_label')"
+                                    :placeholder="t('event_teams.select_category_placeholder')" @update:modelValue="onModalCategoryChange" searchable />
+                                <BaseSelect v-model="teamForm.club_name" :items="mappedClubs" :label="t('event_teams.club')"
+                                    :placeholder="t('event_teams.select_club_placeholder')" :disabled="!teamForm.category_id || loadingParticipants"
+                                    @update:modelValue="onModalClubChange" searchable />
+                            </template>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Section 2: Pemilihan Anggota -->
-                <div class="space-y-4 pt-4 border-t border-gray-100" v-if="teamForm.club_name || isEditing">
+                <div class="space-y-3 pt-3 border-t border-gray-100" v-if="teamForm.club_name || isEditing">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
-                            <Icon icon="ph:users-four-bold" class="text-primary text-lg" />
+                        <h3 class="text-xs font-black text-navy flex items-center gap-2">
+                            <Icon icon="ph:users-four-bold" class="text-navy text-base" />
                             {{ t('event_teams.select_members', { current: teamForm.member_ids.length, max: maxMembers }) }}
                         </h3>
                         <span v-if="teamForm.member_ids.length === maxMembers"
-                            class="text-[10px] bg-amber-100 text-amber-600 px-2 py-0.5 rounded-full font-black tracking-widest animate-pulse">
+                            class="text-[10px] bg-amber-100 text-amber-700 px-2.5 py-0.5 rounded-full font-black">
                             {{ t('event_teams.slot_full') }}
                         </span>
                     </div>
@@ -265,12 +261,12 @@
                     </div>
 
                     <div v-else-if="!teamForm.club_name"
-                        class="py-12 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200">
-                        <div class="size-16 rounded-full bg-white flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100">
-                            <Icon icon="ph:buildings" class="text-3xl text-gray-300" />
+                        class="py-10 text-center bg-gray-50/80 rounded-2xl border border-dashed border-gray-200">
+                        <div class="size-12 rounded-full bg-white flex items-center justify-center mx-auto mb-3 shadow-xs border border-gray-100 text-navy">
+                            <Icon icon="ph:buildings" class="text-2xl text-gray-400" />
                         </div>
-                        <div class="text-sm font-bold text-gray-500">{{ t('event_teams.please_select_club') }}</div>
-                        <div class="text-xs text-gray-400 mt-1">{{ t('event_teams.same_club_rule') }}</div>
+                        <div class="text-xs font-bold text-gray-600">{{ t('event_teams.please_select_club') }}</div>
+                        <div class="text-[11px] text-gray-400 mt-0.5">{{ t('event_teams.same_club_rule') }}</div>
                     </div>
 
                     <div v-else-if="filteredParticipants.length > 0"
@@ -279,7 +275,7 @@
                             <label
                                 class="group relative flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer overflow-hidden"
                                 :class="teamForm.member_ids.includes(participant.id)
-                                    ? 'border-primary bg-primary/5 shadow-sm'
+                                    ? 'border-navy bg-navy/5 shadow-sm'
                                     : 'border-gray-50 bg-gray-50/50 hover:border-gray-200'">
 
                                 <input type="checkbox" v-model="teamForm.member_ids" :value="participant.id"
@@ -288,7 +284,7 @@
 
                                 <!-- Profile Image / Avatar -->
                                 <div
-                                    class="size-12 rounded-xl bg-gray-200 overflow-hidden shrink-0 border border-gray-100 group-hover:border-primary/30 transition-colors shadow-sm">
+                                    class="size-12 rounded-xl bg-gray-200 overflow-hidden shrink-0 border border-gray-100 group-hover:border-navy/30 transition-colors shadow-sm">
                                     <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
                                         class="w-full h-full object-cover" :alt="participant.full_name" />
                                 </div>
@@ -298,17 +294,17 @@
                                         <div class="text-[13px] font-black text-navy truncate group-hover:text-primary transition-colors flex-1">
                                             {{ participant.full_name }}
                                         </div>
-                                        <span class="text-[10px] font-black text-primary bg-primary/10 px-1.5 py-0.5 rounded shrink-0">#{{ index + 1 }}</span>
+                                        <span class="text-[10px] font-black text-navy bg-navy/10 px-1.5 py-0.5 rounded shrink-0">#{{ index + 1 }}</span>
                                     </div>
                                     <div class="flex flex-wrap items-center gap-2 mt-1">
                                         <!-- Category Label (Debug) -->
-                                        <div class="px-1.5 py-0.5 rounded-md text-[9px] font-black tracking-tighter bg-navy/5 text-navy/60">
+                                        <div class="px-1.5 py-0.5 rounded-md text-[9px] font-black tracking-tighter bg-navy/5 text-navy/70">
                                             {{ participant.division_name }} {{ participant.category_name }}
                                         </div>
                                         <!-- Score Chip -->
                                         <div
-                                            class="flex items-center gap-1 px-1.5 py-0.5 bg-white border border-gray-100 rounded-md shadow-sm">
-                                            <Icon icon="ph:crosshair-bold" class="text-primary text-[10px]" />
+                                            class="flex items-center gap-1 px-1.5 py-0.5 bg-white border border-gray-200 rounded-md shadow-xs">
+                                            <Icon icon="ph:crosshair-bold" class="text-navy text-[10px]" />
                                             <span class="text-[10px] font-black text-navy leading-none">
                                                 {{ participant.total_score || 0 }}
                                             </span>
@@ -316,8 +312,8 @@
                                         <!-- Gender Badge -->
                                         <div class="px-1.5 py-0.5 rounded-md text-[9px] font-black tracking-tighter leading-none"
                                             :class="participant.gender_division_name?.toLowerCase().includes('putra') || participant.gender_division_name?.toLowerCase().includes('men')
-                                                ? 'bg-blue-50 text-blue-500'
-                                                : 'bg-pink-50 text-pink-500'">
+                                                ? 'bg-blue-50 text-blue-600'
+                                                : 'bg-pink-50 text-pink-600'">
                                             {{ participant.gender_division_name || 'N/A' }}
                                         </div>
                                     </div>
@@ -326,9 +322,9 @@
                                 <!-- Selection Status indicator -->
                                 <div class="size-6 rounded-lg border-2 flex items-center justify-center transition-all shrink-0"
                                     :class="teamForm.member_ids.includes(participant.id)
-                                        ? 'bg-primary border-primary text-navy'
-                                        : 'bg-white border-gray-100 text-transparent'">
-                                    <Icon icon="ph:check-bold" class="text-sm" />
+                                        ? 'bg-navy border-navy text-primary'
+                                        : 'bg-white border-gray-200 text-transparent'">
+                                    <Icon icon="ph:check-bold" class="text-xs" />
                                 </div>
                             </label>
                         </template>
@@ -349,11 +345,12 @@
         </div>
 
             <template #action>
-                <div class="flex justify-end gap-3 pt-2">
-                    <BaseButton variant="white" @click="showTeamModal = false" class="px-8">{{ t('event_teams.cancel') }}</BaseButton>
+                <div class="flex items-center justify-end gap-2.5 pt-1">
+                    <BaseButton variant="white" @click="showTeamModal = false" class="px-5 font-bold text-sm">{{ t('event_teams.cancel') }}</BaseButton>
                     <BaseButton variant="primary" :loading="isSaving" @click="handleSaveTeam"
-                        class="px-8 shadow-lg shadow-primary/20"
+                        class="px-6 font-bold text-sm shadow-md shadow-primary/20 flex items-center gap-2"
                         :disabled="teamForm.member_ids.length < minMembers || !teamForm.team_name">
+                        <Icon :icon="isEditing ? 'ph:check-bold' : 'ph:plus-bold'" class="text-base" />
                         {{ isEditing ? t('event_teams.save_changes') : t('event_teams.create_team') }}
                     </BaseButton>
                 </div>
@@ -361,32 +358,52 @@
         </BaseDialogForm>
 
         <!-- Delete Team Confirmation Dialog -->
-        <BaseDialogForm v-model="showDeleteConfirm" @close="showDeleteConfirm = false">
+        <BaseDialogForm v-model="showDeleteConfirm" size="sm" @close="showDeleteConfirm = false">
             <template #header>
                 <div class="flex items-center gap-3">
-                    <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
-                        <Icon icon="ph:trash-bold" class="text-xl text-red-600" />
+                    <div class="size-10 bg-red-600 rounded-xl flex items-center justify-center text-white shrink-0 shadow-sm">
+                        <Icon icon="ph:trash-bold" class="text-xl" />
                     </div>
-                    <h2 class="text-xl font-black text-navy">{{ t('event_teams.delete_team_confirm') }}</h2>
+                    <div>
+                        <h2 class="text-lg font-black text-navy leading-tight">{{ t('event_teams.delete_team_confirm') }}</h2>
+                        <div class="text-[11px] font-medium text-gray-400">{{ t('event_teams.delete_confirm_title') }}</div>
+                    </div>
                 </div>
             </template>
-            <div class="space-y-6">
-                <div class="flex flex-col items-center text-center space-y-4">
-                    <div class="size-20 rounded-full bg-red-50 flex items-center justify-center text-red-500">
-                        <Icon icon="ph:trash-bold" class="text-5xl" />
-                    </div>
-                    <div class="space-y-2">
-                        <h3 class="text-lg font-black text-navy tracking-widest">{{ t('event_teams.delete_confirm_title') }}</h3>
-                        <div class="text-sm text-gray-500 max-w-sm" v-html="t('event_teams.delete_warning', { name: teamToDelete?.team_name })"></div>
+
+            <div class="space-y-4">
+                <!-- Team Preview Card -->
+                <div class="bg-gray-50/80 rounded-2xl border border-gray-100 p-4 space-y-2">
+                    <div class="flex items-center gap-3">
+                        <div class="size-9 rounded-xl bg-navy text-primary flex items-center justify-center shrink-0 shadow-xs">
+                            <Icon icon="ph:users-four-bold" class="text-base" />
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="text-sm font-black text-navy truncate">{{ teamToDelete?.team_name || 'Tim Beregu' }}</div>
+                            <div class="text-xs text-gray-500 truncate flex items-center gap-1.5 mt-0.5">
+                                <span>{{ teamToDelete?.club_name || t('event_teams.club') }}</span>
+                                <span>•</span>
+                                <span>{{ teamToDelete?.members?.length || 0 }} {{ t('event_teams.total_participants_sync', { count: teamToDelete?.members?.length || 0 }).split(' ')[1] || 'anggota' }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Warning Callout -->
+                <div class="flex items-start gap-3 bg-red-50/60 border border-red-100 rounded-2xl p-3.5 text-xs text-red-700 leading-relaxed">
+                    <Icon icon="ph:warning-circle-fill" class="text-red-500 text-base shrink-0 mt-0.5" />
+                    <div v-html="t('event_teams.delete_warning', { name: teamToDelete?.team_name })"></div>
+                </div>
             </div>
+
             <template #action>
-                <div class="flex justify-end gap-3 pt-2">
-                    <BaseButton variant="white" @click="showDeleteConfirm = false" class="px-8 font-bold">{{ t('event_teams.cancel') }}
+                <div class="flex items-center justify-end gap-2.5 pt-1">
+                    <BaseButton variant="white" @click="showDeleteConfirm = false" class="px-5 font-bold text-sm">
+                        {{ t('event_teams.cancel') }}
                     </BaseButton>
                     <BaseButton variant="primary" :loading="isDeleting" @click="executeDeleteTeam"
-                        class="px-8 bg-red-500 hover:bg-red-600 border-red-500 shadow-lg shadow-red-200 font-bold">
+                        class="px-5 bg-red-600 hover:bg-red-700 border-red-600 text-white shadow-md shadow-red-200 font-bold text-sm flex items-center gap-2">
+                        <Icon icon="ph:trash-bold" class="text-base" />
                         {{ t('event_teams.yes_delete') }}
                     </BaseButton>
                 </div>
@@ -394,36 +411,77 @@
         </BaseDialogForm>
 
         <!-- Sync Confirmation Dialog -->
-        <BaseDialogForm v-model="showSyncConfirm" @close="showSyncConfirm = false">
+        <BaseDialogForm v-model="showSyncConfirm" size="md" @close="showSyncConfirm = false">
             <template #header>
                 <div class="flex items-center gap-3">
-                    <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
-                        <Icon icon="ph:arrows-clockwise-bold" class="text-xl text-red-600" />
+                    <div class="size-10 bg-navy rounded-xl flex items-center justify-center text-primary shrink-0 shadow-sm">
+                        <Icon icon="ph:arrows-clockwise-bold" class="text-xl" />
                     </div>
-                    <h2 class="text-xl font-black text-navy">{{ t('event_teams.sync_teams_confirm') }}</h2>
+                    <div>
+                        <h2 class="text-lg font-black text-navy leading-tight">{{ t('event_teams.sync_teams_confirm') }}</h2>
+                        <div class="text-[11px] font-medium text-gray-400">{{ t('event_teams.auto_sync') }}</div>
+                    </div>
                 </div>
             </template>
-            <div class="space-y-6">
-                <div class="flex flex-col items-center text-center space-y-4">
-                    <div
-                        class="size-20 rounded-full bg-red-50 flex items-center justify-center text-red-500 animate-pulse">
-                        <Icon icon="ph:warning-circle-bold" class="text-5xl" />
-                    </div>
-                    <div class="space-y-2">
-                        <h3 class="text-lg font-black text-navy tracking-widest">{{ t('event_teams.destructive_action') }}</h3>
-                        <div class="text-sm text-gray-500 max-w-sm">
-                            {{ t('event_teams.sync_warning') }}
+
+            <div class="space-y-4">
+                <!-- Target Category Card -->
+                <div class="bg-gradient-to-br from-navy/5 via-navy/[0.02] to-transparent rounded-2xl border border-navy/10 p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-white border border-gray-200/60 flex items-center justify-center shrink-0 shadow-sm">
+                            <img :src="getCategoryIcon(selectedCategory?.gender_division_name, selectedCategory?.event_type_name)"
+                                class="size-6 object-contain" :alt="getCategoryName(selectedCategory)" />
                         </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="text-[11px] font-bold text-gray-400">{{ t('event_teams.category_label') }}</div>
+                            <div class="text-sm font-black text-navy truncate">{{ getCategoryName(selectedCategory) }}</div>
+                        </div>
+                        <div class="px-2.5 py-1 rounded-lg bg-navy/10 text-navy text-xs font-black shrink-0">
+                            {{ maxMembers }} Pemanah / Tim
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How it works description -->
+                <div class="bg-gray-50/80 rounded-2xl border border-gray-100 p-4 space-y-2.5">
+                    <div class="text-xs font-bold text-navy flex items-center gap-1.5">
+                        <Icon icon="ph:sparkle-fill" class="text-amber-500 text-sm" />
+                        Cara Kerja Auto-Sync Tim
+                    </div>
+                    <ul class="text-xs text-gray-600 space-y-2 pl-1">
+                        <li class="flex items-start gap-2">
+                            <span class="size-4 rounded-full bg-navy/10 text-navy font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span>
+                            <span>Mengelompokkan atlet terverifikasi dari klub yang sama.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="size-4 rounded-full bg-navy/10 text-navy font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span>
+                            <span>Memilih <strong>{{ maxMembers }} atlet teratas</strong> dengan total skor kualifikasi tertinggi.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="size-4 rounded-full bg-navy/10 text-navy font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span>
+                            <span>Menyusun tim beregu resmi secara otomatis per klub.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Warning Notice -->
+                <div class="flex items-start gap-3 bg-amber-50/80 border border-amber-200/70 rounded-2xl p-3.5 text-xs text-amber-900 leading-relaxed">
+                    <Icon icon="ph:warning-circle-fill" class="text-amber-500 text-base shrink-0 mt-0.5" />
+                    <div>
+                        <span class="font-bold block mb-0.5">{{ t('event_teams.destructive_action') }}</span>
+                        <span>{{ t('event_teams.sync_warning') }}</span>
                     </div>
                 </div>
             </div>
 
             <template #action>
-                <div class="flex justify-end gap-3 pt-2">
-                    <BaseButton variant="white" @click="showSyncConfirm = false" class="px-8 font-bold">{{ t('event_teams.cancel') }}
+                <div class="flex items-center justify-end gap-2.5 pt-1">
+                    <BaseButton variant="white" @click="showSyncConfirm = false" class="px-5 font-bold text-sm">
+                        {{ t('event_teams.cancel') }}
                     </BaseButton>
                     <BaseButton variant="primary" :loading="isSyncing" @click="executeSyncTeams"
-                        class="px-8 bg-red-500 hover:bg-red-600 border-red-500 shadow-lg shadow-red-200 font-bold">
+                        class="px-6 font-bold text-sm shadow-md shadow-primary/20 flex items-center gap-2">
+                        <Icon icon="ph:arrows-clockwise-bold" class="text-base" />
                         {{ t('event_teams.yes_sync') }}
                     </BaseButton>
                 </div>
@@ -691,7 +749,16 @@ const handleSyncTeams = () => {
 const formatSyncDetailsMessage = (details = {}) => {
     if (!details || typeof details !== 'object') return ''
 
-    if (details.reason) {
+    let mainReason = details.reason || ''
+    if (details.reason_code === 'no_eligible_groups') {
+        mainReason = t('event_teams.no_eligible_groups_reason', { count: details.team_size || 3 })
+    } else if (details.reason_code === 'no_mixed_pairs') {
+        mainReason = t('event_teams.no_mixed_pairs_reason')
+    } else if (details.reason_code === 'missing_individual_categories') {
+        mainReason = t('event_teams.missing_individual_categories_reason')
+    }
+
+    if (mainReason) {
         const extras = []
 
         if (typeof details.total_participants === 'number') {
@@ -715,8 +782,8 @@ const formatSyncDetailsMessage = (details = {}) => {
         }
 
         return extras.length > 0
-            ? `${details.reason} (${extras.join(', ')})`
-            : details.reason
+            ? `${mainReason} (${extras.join(', ')})`
+            : mainReason
     }
 
     return ''

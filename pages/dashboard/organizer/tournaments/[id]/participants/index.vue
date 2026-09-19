@@ -14,6 +14,7 @@
       <template #actions>
         <div class="flex gap-3 flex-shrink-0">
           <BaseButton variant="white" icon="ph:download" class="h-10 sm:h-11 px-5 border-white/20 text-xs sm:text-sm font-bold"
+            :loading="isExporting"
             @click="canExportData ? exportCSV() : (showPremiumModal = true)"
             :class="{ 'opacity-50 grayscale cursor-not-allowed': !canExportData }">
             <span class="hidden sm:inline">{{ t('dashboard.participants_list.export_csv') }}</span>
@@ -374,10 +375,38 @@ const resetFilters = () => {
 }
 
 const searchTimeout = ref(null)
+const isExporting = ref(false)
 
-const exportCSV = () => {
-    const url = `${apiBaseUrl}/events/${eventId.value}/participants/export`
-    window.open(url, '_blank')
+const exportCSV = async () => {
+    try {
+        isExporting.value = true
+        const url = `${apiBaseUrl}/events/${eventId.value}/participants/export`
+        const res = await fetch(url, {
+            credentials: 'include'
+        })
+        if (!res.ok) throw new Error('Failed to export CSV')
+        const blob = await res.blob()
+        const downloadUrl = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.style.display = 'none'
+        a.href = downloadUrl
+        a.download = `participants-${eventId.value}.csv`
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        window.URL.revokeObjectURL(downloadUrl)
+    } catch (err) {
+        console.error('Failed to export CSV via fetch, falling back to anchor download:', err)
+        const a = document.createElement('a')
+        a.style.display = 'none'
+        a.href = `${apiBaseUrl}/events/${eventId.value}/participants/export`
+        a.download = `participants-${eventId.value}.csv`
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+    } finally {
+        isExporting.value = false
+    }
 }
 
 const handleFilterStatus = () => {

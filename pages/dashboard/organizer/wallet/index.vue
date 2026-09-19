@@ -28,10 +28,7 @@
 
         <form v-else @submit.prevent="submitWithdrawal" class="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-700">
           <h4 class="font-black text-navy dark:text-white text-sm">{{ t("org_wallet.withdrawal_form_title") }}</h4>
-          <div>
-            <label class="text-xs font-bold text-slate-500 mb-1 block">{{ t("org_wallet.withdraw_amount_label") }}</label>
-            <input v-model.number="withdrawAmount" type="number" min="50000" :max="wallet?.balance || 0" :placeholder="t('org_wallet.min_amount_placeholder')" class="w-full px-4 py-2.5 text-sm font-bold bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none" required />
-          </div>
+            <BaseCurrencyInput v-model="withdrawAmount" prefix="Rp" :placeholder="t('org_wallet.min_amount_placeholder')" required />
           <div>
             <label class="text-xs font-bold text-slate-500 mb-1 block">{{ t("org_wallet.destination_bank_notes") }}</label>
             <input v-model="withdrawNotes" type="text" :placeholder="t('org_wallet.bank_notes_placeholder')" class="w-full px-4 py-2.5 text-xs bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none" required />

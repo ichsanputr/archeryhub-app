@@ -446,8 +446,9 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import PublicCardSkeleton from '~/components/common/PublicCardSkeleton.vue'
@@ -459,13 +460,16 @@ definePageMeta({
 })
 
 const api = useApi()
+const route = useRoute()
+const router = useRouter()
 
-// Filters state - Default to ianseo
-const searchQuery = ref('')
-const selectedSourceType = ref('ianseo') // 'all' | 'platform' | 'ianseo'
-const selectedCountry = ref('all')
-const selectedStatuses = ref([])
-const sortBy = ref('newest')
+// Initialize filter state from URL query
+const initialType = (route.query.type || 'ianseo').toString().toLowerCase()
+const selectedSourceType = ref(['all', 'platform', 'ianseo'].includes(initialType) ? initialType : 'ianseo')
+const searchQuery = ref((route.query.q || route.query.search || '').toString())
+const selectedCountry = ref((route.query.country || 'all').toString())
+const selectedStatuses = ref(route.query.status ? route.query.status.toString().split(',').filter(Boolean) : [])
+const sortBy = ref((route.query.sort || 'newest').toString())
 const statusDropdownOpen = ref(false)
 const sortDropdownOpen = ref(false)
 
@@ -532,8 +536,11 @@ function getCountryFlagIcon(countryName) {
 }
 
 // Pagination state
-const currentPage = ref(1)
-const itemsPerPage = ref(9)
+const initialPage = parseInt(route.query.page, 10)
+const currentPage = ref(Number.isInteger(initialPage) && initialPage > 0 ? initialPage : 1)
+
+const initialLimit = parseInt(route.query.limit || route.query.per_page, 10)
+const itemsPerPage = ref([6, 9, 12, 24].includes(initialLimit) ? initialLimit : 9)
 
 const availableStatuses = [
     { label: 'Upcoming', value: 'upcoming' },
@@ -834,9 +841,107 @@ const goToPage = (page) => {
     }
 }
 
-// Reset page on filter changes
+const updateUrlQuery = () => {
+    const query = {}
+
+    // Type query param
+    if (selectedSourceType.value) {
+        query.type = selectedSourceType.value
+    }
+
+    // Page query param
+    if (currentPage.value > 1) {
+        query.page = String(currentPage.value)
+    }
+
+    // Items per page
+    if (itemsPerPage.value !== 9) {
+        query.limit = String(itemsPerPage.value)
+    }
+
+    // Search query
+    if (searchQuery.value && searchQuery.value.trim()) {
+        query.q = searchQuery.value.trim()
+    }
+
+    // Country
+    if (selectedCountry.value && selectedCountry.value !== 'all') {
+        query.country = selectedCountry.value
+    }
+
+    // Statuses
+    if (selectedStatuses.value && selectedStatuses.value.length > 0) {
+        query.status = selectedStatuses.value.join(',')
+    }
+
+    // Sort
+    if (sortBy.value && sortBy.value !== 'newest') {
+        query.sort = sortBy.value
+    }
+
+    // Compare with current route query to avoid redundant router replacement
+    const currentQ = route.query
+    const keys1 = Object.keys(query)
+    const keys2 = Object.keys(currentQ)
+    const isSame = keys1.length === keys2.length && keys1.every(k => String(query[k]) === String(currentQ[k]))
+
+    if (!isSame) {
+        router.replace({ query })
+    }
+}
+
+// Watch filters to reset page and sync URL
 watch([searchQuery, selectedSourceType, selectedCountry, selectedStatuses, sortBy, itemsPerPage], () => {
     currentPage.value = 1
+    updateUrlQuery()
+})
+
+// Watch page directly to sync URL
+watch(currentPage, () => {
+    updateUrlQuery()
+})
+
+// Listen to browser back/forward or external route query updates
+watch(() => route.query, (newQ) => {
+    const newType = (newQ.type || 'ianseo').toString().toLowerCase()
+    if (['all', 'platform', 'ianseo'].includes(newType) && selectedSourceType.value !== newType) {
+        selectedSourceType.value = newType
+    }
+
+    const newPage = parseInt(newQ.page, 10)
+    const targetPage = Number.isInteger(newPage) && newPage > 0 ? newPage : 1
+    if (currentPage.value !== targetPage) {
+        currentPage.value = targetPage
+    }
+
+    const newLimit = parseInt(newQ.limit || newQ.per_page, 10)
+    if ([6, 9, 12, 24].includes(newLimit) && itemsPerPage.value !== newLimit) {
+        itemsPerPage.value = newLimit
+    }
+
+    const newQSearch = (newQ.q || newQ.search || '').toString().trim()
+    if (searchQuery.value !== newQSearch) {
+        searchQuery.value = newQSearch
+    }
+
+    const newCountry = (newQ.country || 'all').toString().trim()
+    if (selectedCountry.value !== newCountry) {
+        selectedCountry.value = newCountry
+    }
+
+    const newStatuses = newQ.status ? newQ.status.toString().split(',').filter(Boolean) : []
+    if (JSON.stringify(selectedStatuses.value) !== JSON.stringify(newStatuses)) {
+        selectedStatuses.value = newStatuses
+    }
+
+    const newSort = (newQ.sort || 'newest').toString()
+    if (sortBy.value !== newSort) {
+        sortBy.value = newSort
+    }
+}, { deep: true })
+
+onMounted(() => {
+    updateUrlQuery()
 })
 
 const resetFilters = () => {
@@ -846,6 +951,7 @@ const resetFilters = () => {
     selectedSourceType.value = 'all'
     sortBy.value = 'newest'
     currentPage.value = 1
+    updateUrlQuery()
 }
 
 

@@ -75,6 +75,7 @@
 <script setup>
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
+import { extractGmapsEmbedUrl, getDirectGmapsUrl } from '~/utils/maps'
 
 const { t } = useI18n()
 
@@ -96,39 +97,11 @@ const isLocationEmpty = computed(() => {
 // Google Maps embed URL
 const gmapsEmbedUrl = computed(() => {
     if (props.gmapsEmbed) return props.gmapsEmbed
-    if (!props.gmapsLink) {
-        if (props.venue || props.address) {
-            const query = [props.venue, props.address].filter(Boolean).join(', ')
-            return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`
-        }
-        return null
-    }
-
-    try {
-        const link = props.gmapsLink
-        if (link.includes('google.com/maps/embed')) return link
-
-        const coordsMatch = link.match(/[?&]q=([^&]+)/)
-        if (coordsMatch) {
-            const query = decodeURIComponent(coordsMatch[1])
-            return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`
-        }
-
-        const searchQuery = props.venue || props.address || link
-        return `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&output=embed`
-    } catch (e) {
-        const searchQuery = props.venue || props.address || props.gmapsLink
-        return `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&output=embed`
-    }
+    return extractGmapsEmbedUrl(props.gmapsLink, [props.venue, props.address].filter(Boolean).join(', '))
 })
 
 const directGmapsUrl = computed(() => {
-    if (props.gmapsLink) return props.gmapsLink
-    if (props.venue || props.address) {
-        const query = [props.venue, props.address].filter(Boolean).join(', ')
-        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
-    }
-    return null
+    return getDirectGmapsUrl(props.gmapsLink, props.venue, props.address)
 })
 
 const getAccessibilityIcon = (option) => {

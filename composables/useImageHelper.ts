@@ -33,6 +33,14 @@ export const useRandomImage = (): string => {
 }
 
 /**
+ * Generate a Dicebear avatar URL based on the name/seed
+ */
+export const generateDicebearAvatar = (name: string, style: string = 'avataaars'): string => {
+  const seed = encodeURIComponent(name.trim() || 'Archer')
+  return `https://api.dicebear.com/9.x/${style}/svg?seed=${seed}`
+}
+
+/**
  * Generate a clean, offline SVG avatar data URI with initials in Archeris brand colors
  */
 export const generateInitialsAvatar = (name: string): string => {
@@ -49,9 +57,9 @@ export const generateInitialsAvatar = (name: string): string => {
 }
 
 /**
- * Get the provided image URL or a local avatar if null/empty
+ * Get the provided image URL or a Dicebear avatar if null/empty
  * @param url - The image URL to check
- * @param name - Optional name to generate an initials avatar
+ * @param name - Optional name to generate a custom Dicebear avatar
  */
 export const useImageOrDefault = (
   url: string | null | undefined,
@@ -61,13 +69,13 @@ export const useImageOrDefault = (
     return getImageUrl(url)
   }
 
-  // If name provided, generate offline brand initials avatar
+  // If name provided, generate rich Dicebear avatar
   if (name?.trim()) {
-    return generateInitialsAvatar(name)
+    return generateDicebearAvatar(name)
   }
 
   // Fallback to default avatar if no name
-  return '/avatar-default.svg'
+  return 'https://api.dicebear.com/9.x/avataaars/svg?seed=Archer'
 }
 
 /**
@@ -75,8 +83,7 @@ export const useImageOrDefault = (
  */
 export const getImageUrl = (url: string | null | undefined): string => {
   if (!url) return ''
-  const config = useRuntimeConfig()
-  const apiBase = (config.public?.apiBase as string) || 'http://localhost:8001'
+  const apiBase = useApiBaseUrl()
 
   // If URL has localhost/127.0.0.1 from local database seed, rewrite to current environment's apiBase
   if (url.includes('localhost:') || url.includes('127.0.0.1:')) {

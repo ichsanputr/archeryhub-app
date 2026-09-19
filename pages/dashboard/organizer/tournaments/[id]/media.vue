@@ -524,7 +524,7 @@ async function loadMediaStorage() {
         }
 
         if (mediaRes.status === 'fulfilled' && mediaRes.value) {
-            mediaData.value = mediaRes.value
+            mediaData.value = mediaRes.value.data || mediaRes.value
         }
     } catch (err) {
         console.error('Failed to load tournament media storage', err)

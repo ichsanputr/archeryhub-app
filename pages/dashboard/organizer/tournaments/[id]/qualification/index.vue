@@ -53,7 +53,7 @@
 
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div v-for="session in qualificationSessions" :key="session.uuid" @click="goToSession(session)"
-            class="rounded-3xl border border-slate-200/90 hover:border-primary transition-colors duration-200 bg-white flex flex-col justify-between overflow-hidden relative group cursor-pointer text-left">
+            class="rounded-3xl border border-slate-200/90 hover:border-primary/80 hover:shadow-xl hover:shadow-navy/5 transition-all duration-300 bg-white flex flex-col justify-between overflow-hidden relative group cursor-pointer text-left">
 
             <!-- Themed Signature Navy Card Header -->
             <div class="relative overflow-hidden p-5 bg-gradient-to-r from-navy via-navy to-navy/95 text-white border-b border-primary/20">
@@ -63,15 +63,26 @@
               <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
 
               <div class="relative z-10 flex items-start justify-between gap-3">
-                <div class="min-w-0 flex-1">
+                <div class="min-w-0 flex-1 space-y-2">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="text-[10px] font-extrabold font-mono text-primary bg-primary/15 border border-primary/30 px-2 py-0.5 rounded-md">
+                      {{ session.session_code }}
+                    </span>
+                    <span v-if="session.is_locked"
+                      class="inline-flex items-center gap-1 text-[10px] font-bold text-rose-300 bg-rose-500/20 border border-rose-500/40 px-2 py-0.5 rounded-md">
+                      <Icon icon="ph:lock-fill" class="text-xs" />
+                      {{ t('event_qualification.session_locked', 'Terkunci') }}
+                    </span>
+                    <span v-else
+                      class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-300 bg-emerald-500/20 border border-emerald-500/40 px-2 py-0.5 rounded-md">
+                      <Icon icon="ph:lock-open-bold" class="text-xs" />
+                      {{ t('event_qualification.session_unlocked', 'Terbuka') }}
+                    </span>
+                  </div>
+
                   <h3 class="font-black text-white text-base sm:text-lg leading-tight group-hover:text-primary transition-colors truncate">
                     {{ session.name }}
                   </h3>
-                  <div class="flex items-center gap-1.5 mt-1.5">
-                    <span class="text-[10px] font-bold font-mono text-primary bg-primary/15 border border-primary/30 px-2.5 py-0.5 rounded-lg">
-                      {{ session.session_code }}
-                    </span>
-                  </div>
                 </div>
 
                 <!-- Action Edit Button in Header -->
@@ -84,53 +95,99 @@
               </div>
             </div>
 
-            <!-- Card Body: Date, Time & Format Details -->
-            <div class="p-5 sm:p-6 bg-slate-50/70 flex-1 space-y-3.5">
-              <!-- Schedule Box -->
-              <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 space-y-2.5">
-                <div class="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <div class="size-6 rounded-lg bg-navy text-primary flex items-center justify-center shrink-0">
-                    <Icon icon="ph:calendar-blank-bold" class="text-xs" />
-                  </div>
-                  <span class="truncate">{{ session.session_date ? formatDate(session.session_date) : t('event_qualification.not_set') }}</span>
+            <!-- Card Body: Categories, Schedule, Metrics -->
+            <div class="p-5 sm:p-6 bg-slate-50/70 flex-1 space-y-4">
+              
+              <!-- Assigned Categories Preview -->
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between text-[11px] font-extrabold text-slate-500">
+                  <span class="flex items-center gap-1.5">
+                    <Icon icon="ph:folders-bold" class="text-slate-400 text-xs" />
+                    {{ t('event_qualification.assigned_categories', 'Kategori Ditugaskan') }}
+                  </span>
+                  <span class="text-[10px] font-mono font-bold bg-slate-200/80 text-slate-600 px-1.5 py-0.2 rounded-md">
+                    {{ getSessionCategories(session).length }}
+                  </span>
                 </div>
 
-                <div class="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <div class="size-6 rounded-lg bg-navy text-primary flex items-center justify-center shrink-0">
-                    <Icon icon="ph:clock-bold" class="text-xs" />
+                <div v-if="getSessionCategories(session).length > 0" class="flex flex-wrap gap-1.5">
+                  <div v-for="cat in getSessionCategories(session).slice(0, 2)" :key="cat.id"
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-200/90 text-[11px] font-bold text-navy shadow-2xs">
+                    <img
+                      :src="'/' + getCategoryIcon(`${cat.division_name} ${cat.event_type_name} ${cat.gender_division_name}`)"
+                      :alt="cat.division_name"
+                      class="size-3.5 object-contain shrink-0" />
+                    <span class="truncate max-w-[140px]">{{ getCategoryName(cat) }}</span>
                   </div>
-                  <span v-if="session.start_time || session.end_time" class="truncate font-mono">
-                    {{ formatTime(session.start_time) }} - {{ formatTime(session.end_time) }}
+                  <span v-if="getSessionCategories(session).length > 2"
+                    class="inline-flex items-center px-2 py-1 rounded-lg bg-slate-200/70 border border-slate-300 text-[10px] font-extrabold text-slate-600">
+                    +{{ getSessionCategories(session).length - 2 }}
                   </span>
-                  <span v-else class="text-xs font-medium text-slate-400 italic">{{ t('event_qualification.time_not_set') }}</span>
+                </div>
+                <div v-else class="px-3 py-2 rounded-xl bg-white border border-dashed border-slate-200 text-[11px] text-slate-400 italic">
+                  {{ t('event_qualification.no_categories_assigned', 'Belum ada kategori ditautkan') }}
                 </div>
               </div>
 
-              <!-- Format Rule Metrics (2-column pill grid) -->
-              <div class="grid grid-cols-2 gap-2.5">
-                <div class="flex items-center gap-2 px-3 py-2.5 bg-white rounded-xl border border-slate-200/80">
-                  <Icon icon="ph:arrow-clockwise-bold" class="text-primary text-base shrink-0" />
-                  <span class="text-xs font-black text-navy truncate">{{ session.total_ends }} {{ t('event_qualification.ends') }}</span>
+              <!-- Schedule Box -->
+              <div v-if="session.session_date || session.start_time || session.end_time" class="bg-white rounded-2xl p-3 border border-slate-200/90 space-y-1.5 shadow-2xs">
+                <div v-if="session.session_date" class="flex items-center gap-2 text-xs font-bold text-slate-700">
+                  <Icon icon="ph:calendar-blank-bold" class="text-primary text-sm shrink-0" />
+                  <span class="truncate">{{ formatDate(session.session_date) }}</span>
                 </div>
-                <div class="flex items-center gap-2 px-3 py-2.5 bg-white rounded-xl border border-slate-200/80">
-                  <Icon icon="ph:crosshair-bold" class="text-primary text-base shrink-0" />
-                  <span class="text-xs font-black text-navy truncate">{{ session.arrows_per_end }} {{ t('event_qualification.arrows') }}</span>
+
+                <div v-if="session.start_time || session.end_time" class="flex items-center gap-2 text-xs font-bold text-slate-700">
+                  <Icon icon="ph:clock-bold" class="text-primary text-sm shrink-0" />
+                  <span class="truncate font-mono">
+                    {{ formatTime(session.start_time) }} - {{ formatTime(session.end_time) }}
+                  </span>
+                </div>
+              </div>
+              <div v-else class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/80 border border-dashed border-slate-200 text-xs text-slate-400 font-medium">
+                <Icon icon="ph:calendar-blank-bold" class="text-slate-400 text-sm shrink-0" />
+                <span class="text-[11px]">{{ t('event_qualification.schedule_not_set', 'Jadwal belum ditentukan') }}</span>
+              </div>
+
+              <!-- Format Rule Metrics (3-column pill grid) -->
+              <div class="grid grid-cols-3 gap-2">
+                <div class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs text-center">
+                  <div class="flex items-center gap-1 text-[10px] font-bold text-slate-500">
+                    <Icon icon="ph:arrow-clockwise-bold" class="text-primary text-xs" />
+                    <span>{{ t('event_qualification.ends', 'Ends') }}</span>
+                  </div>
+                  <span class="text-sm font-black text-navy font-mono mt-0.5">{{ session.total_ends }}</span>
+                </div>
+
+                <div class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs text-center">
+                  <div class="flex items-center gap-1 text-[10px] font-bold text-slate-500">
+                    <Icon icon="ph:crosshair-bold" class="text-primary text-xs" />
+                    <span>{{ t('event_qualification.arrows_short', 'Panah/End') }}</span>
+                  </div>
+                  <span class="text-sm font-black text-navy font-mono mt-0.5">{{ session.arrows_per_end }}</span>
+                </div>
+
+                <div class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs text-center">
+                  <div class="flex items-center gap-1 text-[10px] font-bold text-slate-500">
+                    <Icon icon="ph:target-bold" class="text-primary text-xs" />
+                    <span>{{ t('event_qualification.total_arrows', 'Total Panah') }}</span>
+                  </div>
+                  <span class="text-sm font-black text-navy font-mono mt-0.5">{{ (session.total_ends || 0) * (session.arrows_per_end || 0) }}</span>
                 </div>
               </div>
             </div>
 
             <!-- Card Footer -->
-            <div class="flex items-center justify-between px-5 sm:px-6 py-3.5 bg-white border-t border-slate-200/80 mt-auto">
+            <div class="flex items-center justify-between px-5 sm:px-6 py-3.5 bg-white border-t border-slate-200/90 mt-auto">
               <div class="flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-xl">
                 <Icon icon="ph:users-three-bold" class="text-navy text-sm shrink-0" />
                 <span class="text-xs font-black text-navy">
-                  <span>{{ session.participant_count || 0 }}</span> {{ t('event_qualification.archers') }}
+                  <span class="font-mono">{{ session.participant_count || 0 }}</span> {{ t('event_qualification.archers', 'Pemanah') }}
                 </span>
               </div>
               <div
-                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-navy text-primary group-hover:bg-primary group-hover:text-navy text-xs font-black transition-all active:scale-95">
-                <span>{{ t('event_qualification.manage') }}</span>
-                <Icon icon="ph:arrow-right-bold" class="text-xs" />
+                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-navy text-primary group-hover:bg-primary group-hover:text-navy text-xs font-black transition-all active:scale-95 shadow-2xs">
+                <span>{{ t('event_qualification.manage', 'Kelola Sesi') }}</span>
+                <Icon icon="ph:arrow-right-bold" class="text-xs group-hover:translate-x-0.5 transition-transform" />
               </div>
             </div>
           </div>
@@ -146,14 +203,9 @@
               <Icon icon="ph:trophy-bold" class="text-xl" />
             </div>
             <div>
-              <div class="flex items-center gap-2">
                 <h2 class="text-base sm:text-lg font-black text-navy leading-tight">
-                  {{ t('event_qualification.qualification_results') }}
+                  {{ t('event_qualification.qualification_results', 'Hasil Kualifikasi') }}
                 </h2>
-                <span class="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md font-mono">
-                  {{ categories.length }} {{ t('event_categories.title', 'Kategori') }}
-                </span>
-              </div>
               <div class="text-xs text-slate-500 font-medium mt-0.5">
                 {{ t('event_qualification.choose_category', 'Pilih kategori event untuk melihat rekapitulasi nilai dan peringkat kualifikasi.') }}
               </div>
@@ -395,47 +447,23 @@
           <!-- Modal Body (Sectioned Cards) -->
           <div class="p-6 space-y-5 max-h-[75vh] overflow-y-auto custom-scrollbar">
             
-            <!-- Section 1: Schedule & Session Info -->
+            <!-- Section 1: Session Info -->
             <div class="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-4">
               <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
-                <Icon icon="ph:calendar-check-bold" class="text-slate-600 text-base" />
-                <span>{{ t('event_qualification.session_info', 'Informasi & Jadwal Sesi') }}</span>
+                <Icon icon="ph:identification-card-bold" class="text-slate-600 text-base" />
+                <span>{{ t('event_qualification.session_info', 'Informasi Sesi') }}</span>
               </div>
 
-              <div class="space-y-3.5">
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                    {{ t('event_qualification.session_title_label', 'Nama Sesi') }} <span class="text-red-500">*</span>
-                  </label>
-                  <div class="relative">
-                    <Icon icon="ph:text-t-bold"
-                      class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none" />
-                    <input v-model="newSessionName" type="text"
-                      :placeholder="t('event_qualification.session_title_placeholder', 'Contoh: Sesi 1 - Divisi Recurve & Compound')"
-                      class="w-full h-11 pl-10 pr-4 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-slate-800 transition-all shadow-xs" />
-                  </div>
-                </div>
-
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                    {{ t('event_qualification.session_date_label', 'Tanggal Sesi') }}
-                  </label>
-                  <BaseDatePicker v-model="newSessionDate" :placeholder="t('event_qualification.select_date') || 'Pilih tanggal'" />
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                      {{ t('event_qualification.start_time_label', 'Waktu Mulai') }}
-                    </label>
-                    <BaseTimePicker v-model="newSessionStart" placeholder="08:00" />
-                  </div>
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                      {{ t('event_qualification.end_time_label', 'Waktu Selesai') }}
-                    </label>
-                    <BaseTimePicker v-model="newSessionEnd" placeholder="12:00" />
-                  </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                  {{ t('event_qualification.session_title_label', 'Nama Sesi') }} <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <Icon icon="ph:text-t-bold"
+                    class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none" />
+                  <input v-model="newSessionName" type="text"
+                    :placeholder="t('event_qualification.session_title_placeholder', 'Contoh: Sesi 1 - Divisi Recurve & Compound')"
+                    class="w-full h-11 pl-10 pr-4 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-slate-800 transition-all shadow-xs" />
                 </div>
               </div>
             </div>
@@ -569,7 +597,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
-import { useApi } from '~/composables/useApi'
+import { useApi, getApiErrorMessage } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
 import { useSubscription } from '~/composables/useSubscription'
@@ -608,9 +636,6 @@ const editingSessionId = ref(null)
 
 // New/Edit Session Form
 const newSessionName = ref('')
-const newSessionDate = ref(new Date().toISOString().split('T')[0])
-const newSessionStart = ref('08:00')
-const newSessionEnd = ref('12:00')
 const newSessionEnds = ref(6)
 const newSessionArrows = ref(3)
 const selectedSessionCategoryIds = ref([])
@@ -699,9 +724,6 @@ useHead({
 const openCreateModal = () => {
   editingSessionId.value = null
   newSessionName.value = ''
-  newSessionDate.value = new Date().toISOString().split('T')[0]
-  newSessionStart.value = '08:00'
-  newSessionEnd.value = '12:00'
   newSessionEnds.value = 6
   newSessionArrows.value = 3
   selectedSessionCategoryIds.value = []
@@ -712,23 +734,16 @@ const openCreateModal = () => {
 const editSession = (session) => {
   editingSessionId.value = session.uuid
   newSessionName.value = session.name
-  newSessionDate.value = session.session_date ? session.session_date.split('T')[0] : new Date().toISOString().split('T')[0]
-
-  // Extract time parts
-  if (session.start_time) {
-    const time = session.start_time.includes('T') ? session.start_time.split('T')[1] : (session.start_time.includes(' ') ? session.start_time.split(' ')[1] : session.start_time)
-    newSessionStart.value = time.substring(0, 5)
-  }
-  if (session.end_time) {
-    const time = session.end_time.includes('T') ? session.end_time.split('T')[1] : (session.end_time.includes(' ') ? session.end_time.split(' ')[1] : session.end_time)
-    newSessionEnd.value = time.substring(0, 5)
-  }
-
   newSessionEnds.value = session.total_ends
   newSessionArrows.value = session.arrows_per_end
   selectedSessionCategoryIds.value = session.category_ids || []
   sessionCategorySearch.value = ''
   showSessionDialog.value = true
+}
+
+const getSessionCategories = (session) => {
+  if (!session?.category_ids || !Array.isArray(session.category_ids)) return []
+  return categories.value.filter(c => session.category_ids.includes(c.id || c.uuid))
 }
 
 const goToSession = (session) => {
@@ -767,9 +782,6 @@ const saveSession = async () => {
     creatingSession.value = true
     const payload = {
       name: newSessionName.value,
-      session_date: newSessionDate.value,
-      start_time: newSessionStart.value,
-      end_time: newSessionEnd.value,
       total_ends: newSessionEnds.value || 12,
       arrows_per_end: newSessionArrows.value || 6,
       category_ids: selectedSessionCategoryIds.value
@@ -787,7 +799,7 @@ const saveSession = async () => {
     await fetchQualificationSessions()
   } catch (error) {
     console.error('Failed to save session:', error)
-    toast.error(t('event_qualification.toast_session_save_failed'))
+    toast.error(getApiErrorMessage(error, t('event_qualification.toast_session_save_failed')))
   } finally {
     creatingSession.value = false
   }

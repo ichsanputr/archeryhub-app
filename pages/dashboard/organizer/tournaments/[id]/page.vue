@@ -226,50 +226,50 @@
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <!-- Individual -->
                                 <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                                    <div class="flex items-center gap-2 mb-3">
-                                        <div class="size-8 rounded-lg bg-navy/10 flex items-center justify-center">
-                                            <Icon icon="ph:user-bold" class="text-navy text-sm" />
+                                    <div class="flex items-center gap-2.5 mb-3">
+                                        <div class="size-9 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5 shrink-0">
+                                            <img src="/category-icon/men-single-recurve.svg" alt="Individual" class="w-full h-full object-contain" />
                                         </div>
                                         <label class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.individual') }}</label>
                                     </div>
-                                    <div class="relative">
-                                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
-                                        <input v-model.number="form.fee_per_type.individual" type="number" min="0"
-                                            placeholder="0"
-                                            class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                                    </div>
+                                    <BaseCurrencyInput
+                                        v-model="form.fee_per_type.individual"
+                                        prefix="Rp"
+                                        placeholder="0"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
                                     <div class="text-[10px] text-gray-400">{{ $t('dashboard_events_page.registration.individual_desc') }}</div>
                                 </div>
                                 <!-- Team -->
                                 <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                                    <div class="flex items-center gap-2 mb-3">
-                                        <div class="size-8 rounded-lg bg-navy/10 flex items-center justify-center">
-                                            <Icon icon="ph:users-bold" class="text-navy text-sm" />
+                                    <div class="flex items-center gap-2.5 mb-3">
+                                        <div class="size-9 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5 shrink-0">
+                                            <img src="/category-icon/men-team.svg" alt="Team" class="w-full h-full object-contain" />
                                         </div>
                                         <label class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.team') }}</label>
                                     </div>
-                                    <div class="relative">
-                                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
-                                        <input v-model.number="form.fee_per_type.team" type="number" min="0"
-                                            placeholder="0"
-                                            class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                                    </div>
+                                    <BaseCurrencyInput
+                                        v-model="form.fee_per_type.team"
+                                        prefix="Rp"
+                                        placeholder="0"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
                                     <div class="text-[10px] text-gray-400">{{ $t('dashboard_events_page.registration.team_desc') }}</div>
                                 </div>
                                 <!-- Mixed Team -->
                                 <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                                    <div class="flex items-center gap-2 mb-3">
-                                        <div class="size-8 rounded-lg bg-navy/10 flex items-center justify-center">
-                                            <Icon icon="ph:users-three-bold" class="text-navy text-sm" />
+                                    <div class="flex items-center gap-2.5 mb-3">
+                                        <div class="size-9 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5 shrink-0">
+                                            <img src="/category-icon/mix-team.svg" alt="Mixed Team" class="w-full h-full object-contain" />
                                         </div>
                                         <label class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.mixed_team') }}</label>
                                     </div>
-                                    <div class="relative">
-                                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
-                                        <input v-model.number="form.fee_per_type.mixed_team" type="number" min="0"
-                                            placeholder="0"
-                                            class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                                    </div>
+                                    <BaseCurrencyInput
+                                        v-model="form.fee_per_type.mixed_team"
+                                        prefix="Rp"
+                                        placeholder="0"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
                                     <div class="text-[10px] text-gray-400">{{ $t('dashboard_events_page.registration.mixed_team_desc') }}</div>
                                 </div>
                             </div>
@@ -288,40 +288,64 @@
                                 </BaseButton>
                             </div>
 
-                            <div v-else class="space-y-2">
-                                <div v-for="cat in eventCategories" :key="cat.id"
-                                    class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 hover:border-primary/20 transition-all">
-                                    <!-- Category Icon -->
-                                    <div class="h-10 w-10 rounded-xl border border-gray-100 bg-white flex items-center justify-center shadow-sm shrink-0 overflow-hidden p-1.5">
-                                        <img :src="'/' + getCategoryIcon(`${cat.division_name} ${cat.event_type_name} ${cat.gender_division_name}`)"
-                                            :alt="cat.division_name"
-                                            class="w-full h-full object-contain" />
+                            <div v-else class="space-y-3">
+                                <div class="flex items-center justify-between pb-1">
+                                    <div class="text-xs font-bold text-gray-500 flex items-center gap-1.5">
+                                        <Icon icon="ph:stack-bold" class="text-primary text-sm" />
+                                        <span>{{ eventCategories.length }} Kategori Dikonfigurasi</span>
                                     </div>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="text-sm font-bold text-navy truncate">
-                                            {{ cat.category_name }} – {{ cat.event_type_name }} – {{ cat.gender_division_name }}
+                                    <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/categories`"
+                                        class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-navy text-white text-xs font-bold hover:bg-navy/90 hover:shadow-xs transition-all">
+                                        <Icon icon="ph:plus-bold" class="text-primary text-xs" />
+                                        <span>{{ $t('dashboard_events_page.registration.add_category') || 'Tambah Kategori' }}</span>
+                                    </NuxtLink>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <div v-for="cat in eventCategories" :key="cat.id"
+                                        class="flex items-center gap-3.5 p-3.5 bg-gray-50/80 rounded-2xl border border-gray-100 hover:border-primary/30 hover:bg-white transition-all">
+                                        <!-- Category Icon -->
+                                        <div class="size-11 rounded-xl border border-gray-100 bg-white flex items-center justify-center shadow-xs shrink-0 overflow-hidden p-2">
+                                            <img :src="'/' + getCategoryIcon(`${cat.division_name || ''} ${cat.category_name || ''} ${cat.event_type_name || ''} ${cat.gender_division_name || ''}`)"
+                                                :alt="cat.division_name || cat.category_name"
+                                                class="w-full h-full object-contain" />
                                         </div>
-                                        <div class="text-[10px] text-gray-400">{{ cat.division_name }}</div>
-                                    </div>
-                                    <div class="relative shrink-0 w-36">
-                                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
-                                        <input
-                                            :value="form.fee_per_category[cat.id] ?? 0"
-                                            @input="form.fee_per_category[cat.id] = Number($event.target.value)"
-                                            type="number" min="0" placeholder="0"
-                                            class="w-full pl-9 pr-3 py-2 rounded-lg border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-sm font-bold text-navy truncate">
+                                                {{ [cat.category_name, cat.event_type_name, cat.gender_division_name].filter(s => s && s.trim() && s !== '-').join(' – ') }}
+                                            </div>
+                                            <div class="text-[11px] text-gray-400 font-medium">{{ cat.division_name }}</div>
+                                        </div>
+                                        <BaseCurrencyInput
+                                            v-model="form.fee_per_category[cat.id]"
+                                            prefix="Rp"
+                                            placeholder="0"
+                                            wrapper-class="w-36 shrink-0"
+                                            input-class="pr-3 py-2 rounded-lg border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                        />
                                     </div>
                                 </div>
+
+                                <!-- Quick Add Category Button Footer -->
+                                <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/categories`"
+                                    class="flex items-center justify-center gap-2 p-3 rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary hover:bg-primary/5 text-gray-600 hover:text-navy text-xs font-bold transition-all group">
+                                    <div class="size-6 rounded-lg bg-gray-100 group-hover:bg-primary flex items-center justify-center transition-colors">
+                                        <Icon icon="ph:plus-bold" class="text-navy text-xs" />
+                                    </div>
+                                    <span>{{ $t('dashboard_events_page.registration.add_category') || 'Tambah Kategori Baru' }}</span>
+                                </NuxtLink>
                             </div>
 
                             <!-- Default fallback fee -->
                             <div class="pt-4 border-t border-gray-100 space-y-2">
                                 <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.registration.default_fee_label') }}</label>
-                                <div class="relative max-w-xs">
-                                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
-                                    <input v-model.number="form.entry_fee" type="number" min="0" placeholder="0"
-                                        class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                                </div>
+                                <BaseCurrencyInput
+                                    v-model="form.entry_fee"
+                                    prefix="Rp"
+                                    placeholder="0"
+                                    wrapper-class="max-w-xs"
+                                    input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                />
                                 <div class="text-[10px] text-gray-400">{{ $t('dashboard_events_page.registration.default_fee_desc') }}</div>
                             </div>
                         </div>
@@ -342,16 +366,9 @@
                         </div>
 
                         <!-- Preview of configured bank accounts -->
-                        <div class="mt-4 border-t border-gray-100 pt-4">
+                        <div v-if="orgBankAccounts.length > 0" class="mt-4 border-t border-gray-100 pt-4">
                             <h4 class="text-xs font-black text-gray-400 tracking-wider mb-3 text-left ">{{ $t('dashboard_events_page.manual_payment.list_title') }}</h4>
-                            <div v-if="orgBankAccounts.length === 0" class="text-xs text-amber-600 bg-amber-50 border border-amber-100 p-4 rounded-2xl text-left flex items-start gap-2.5">
-                                <Icon icon="ph:warning-circle-bold" class="text-lg shrink-0 mt-0.5" />
-                                <div>
-                                    <span class="font-bold">{{ $t('dashboard_events_page.manual_payment.warning') }}</span> {{ $t('dashboard_events_page.manual_payment.no_accounts_warning') }}
-                                    <NuxtLink to="/dashboard/organizer/payment-methods" class="font-bold underline text-primary hover:text-navy block mt-1">{{ $t('dashboard_events_page.manual_payment.configure_link') }}</NuxtLink>
-                                </div>
-                            </div>
-                            <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div v-for="bank in orgBankAccounts" :key="bank.uuid || bank.id"
                                     @click="togglePaymentMethod(bank.uuid || bank.id)"
                                     :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'border-primary/40 bg-primary/5' : 'border-gray-100 bg-gray-50/50 opacity-60'"
@@ -393,11 +410,14 @@
                                     <Icon icon="ph:currency-circle-dollar-bold" class="text-primary text-base" />
                                     {{ $t('dashboard_events_page.prizes.total_prize_label') }}
                                 </label>
-                                <div class="relative">
-                                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-bold">Rp</span>
-                                    <input v-model.number="form.total_prize" type="number" min="0" placeholder="0"
-                                        class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-bold" />
-                                </div>
+                                <BaseCurrencyInput
+                                    v-model="form.total_prize"
+                                    prefix="Rp"
+                                    placeholder="0"
+                                    prefix-class="text-sm"
+                                    prefix-padding-class="pl-10"
+                                    input-class="pr-4 py-3 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                />
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
@@ -421,24 +441,42 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-gray-600">{{ $t('dashboard_events_page.prizes.first_place') }}</label>
-                                    <input v-model="form.prizes.first" type="text" :placeholder="$t('dashboard_events_page.prizes.placeholder_prize')"
-                                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
+                                    <BaseCurrencyInput
+                                        v-model="form.prizes.first"
+                                        prefix="Rp"
+                                        :placeholder="$t('dashboard_events_page.prizes.placeholder_prize', 'Rp 15.000.000')"
+                                        prefix-class="text-xs font-bold"
+                                        prefix-padding-class="pl-9"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
                                     <textarea v-model="form.prizes.first_caption" rows="2"
                                         :placeholder="$t('dashboard_events_page.prizes.placeholder_caption')"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs resize-none"></textarea>
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-gray-600">{{ $t('dashboard_events_page.prizes.second_place') }}</label>
-                                    <input v-model="form.prizes.second" type="text" :placeholder="$t('dashboard_events_page.prizes.placeholder_prize')"
-                                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
+                                    <BaseCurrencyInput
+                                        v-model="form.prizes.second"
+                                        prefix="Rp"
+                                        :placeholder="$t('dashboard_events_page.prizes.placeholder_prize', 'Rp 10.000.000')"
+                                        prefix-class="text-xs font-bold"
+                                        prefix-padding-class="pl-9"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
                                     <textarea v-model="form.prizes.second_caption" rows="2"
                                         :placeholder="$t('dashboard_events_page.prizes.placeholder_caption')"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs resize-none"></textarea>
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-gray-600">{{ $t('dashboard_events_page.prizes.third_place') }}</label>
-                                    <input v-model="form.prizes.third" type="text" :placeholder="$t('dashboard_events_page.prizes.placeholder_prize')"
-                                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
+                                    <BaseCurrencyInput
+                                        v-model="form.prizes.third"
+                                        prefix="Rp"
+                                        :placeholder="$t('dashboard_events_page.prizes.placeholder_prize', 'Rp 7.500.000')"
+                                        prefix-class="text-xs font-bold"
+                                        prefix-padding-class="pl-9"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
                                     <textarea v-model="form.prizes.third_caption" rows="2"
                                         :placeholder="$t('dashboard_events_page.prizes.placeholder_caption')"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs resize-none"></textarea>
@@ -478,17 +516,34 @@
                             :placeholder="$t('dashboard_events_page.location.address_placeholder') || 'Tuliskan alamat lengkap lokasi event...'"></textarea>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
-                            {{ $t('dashboard_events_page.location.gmaps_label') }}
-                            <span class="text-red-500">*</span>
-                        </label>
-                        <input v-model="form.gmaps_link" type="url" required
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
-                            placeholder="https://maps.app.goo.gl/pxDpbaZ1GTtXHTD28" />
-                        <div v-if="gmapsEmbedUrl"
-                             class="mt-4 rounded-xl overflow-hidden border border-gray-200 aspect-video">
-                            <iframe width="100%" height="100%" style="border:0" loading="lazy"
+                        <div class="flex items-center justify-between">
+                            <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                <Icon icon="ph:map-pin" class="text-primary text-base" />
+                                {{ $t('dashboard_events_page.location.gmaps_label') }}
+                            </label>
+                            <span class="text-[11px] text-gray-400 font-medium hidden sm:inline">
+                                {{ $t('dashboard_events_page.location.gmaps_hint') }}
+                            </span>
+                        </div>
+                        <textarea v-model="form.gmaps_link" rows="3"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all font-mono text-xs text-gray-700 bg-white"
+                            :placeholder="$t('dashboard_events_page.location.gmaps_placeholder')"></textarea>
+                        <div class="text-[11px] text-gray-500 font-medium flex items-center gap-1.5 pl-1">
+                            <Icon icon="ph:info-bold" class="text-blue-500 text-xs shrink-0" />
+                            <span>{{ $t('dashboard_events_page.location.gmaps_hint') }}</span>
+                        </div>
+
+                        <!-- Gmaps Preview -->
+                        <div v-if="gmapsEmbedUrl" class="mt-3 space-y-2">
+                            <div class="flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg w-fit">
+                                <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-sm" />
+                                <span>{{ $t('dashboard_events_page.location.gmaps_detected') }}</span>
+                            </div>
+                            <div class="rounded-xl overflow-hidden border border-gray-200 aspect-video shadow-inner">
+                                <iframe width="100%" height="100%" style="border:0" loading="lazy"
+                                    allowfullscreen referrerpolicy="no-referrer-when-downgrade"
                                     :src="gmapsEmbedUrl"></iframe>
+                            </div>
                         </div>
                     </div>
                     <div class="space-y-3">
@@ -798,11 +853,13 @@ import { Icon } from '@iconify/vue'
 import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
+import BaseCurrencyInput from '~/components/common/BaseCurrencyInput.vue'
 import { useApi } from '~/composables/useApi'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 import { useI18n } from 'vue-i18n'
+import { extractGmapsEmbedUrl } from '~/utils/maps'
 
 const { isSubscriptionActive } = useSubscription()
 const showPremiumModal = ref(false)
@@ -1046,6 +1103,7 @@ const handleGuidebookUpload = async (event) => {
         const formData = new FormData()
         formData.append('file', file)
         formData.append('caption', `Guidebook ${form.value.name}`)
+        formData.append('tournament_id', route.params.id || form.value.uuid || '')
 
         const response = await post('/media/upload', formData, {
             headers: {
@@ -1102,6 +1160,7 @@ const uploadResultFiles = async (files) => {
             const formData = new FormData()
             formData.append('file', file)
             formData.append('caption', `Result - ${form.value.name}`)
+            formData.append('tournament_id', route.params.id || form.value.uuid || '')
 
             const response = await post('/media/upload', formData, {
                 headers: {
@@ -1191,31 +1250,7 @@ const formatFromDatetimeLocal = (datetimeLocal) => {
 
 // Google Maps embed URL
 const gmapsEmbedUrl = computed(() => {
-    if (!form.value.gmaps_link) return null
-
-    try {
-        const url = new URL(form.value.gmaps_link)
-
-        // Extract coordinates from URL if available
-        const coordsMatch = form.value.gmaps_link.match(/[?&]q=([^&]+)/)
-        if (coordsMatch) {
-            const query = decodeURIComponent(coordsMatch[1])
-            return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`
-        }
-
-        // For maps.app.goo.gl or goo.gl links, try to extract place name
-        if (url.hostname.includes('maps.app') || url.hostname === 'goo.gl' || url.hostname.includes('google.com')) {
-            // Use venue name if available, otherwise use the full link
-            const searchQuery = form.value.venue || form.value.gmaps_link
-            return `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&output=embed`
-        }
-    } catch (e) {
-        // If URL parsing fails, use venue name or link as search query
-        const searchQuery = form.value.venue || form.value.gmaps_link
-        return `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&output=embed`
-    }
-
-    return null
+    return extractGmapsEmbedUrl(form.value.gmaps_link, form.value.venue || form.value.address)
 })
 
 
@@ -1464,14 +1499,12 @@ const saveEventPage = async () => {
         }
 
         // Save event images separately
-        if (form.value.event_images.length > 0) {
-            try {
-                await put(`/tournaments/${eventId}/images`, {
-                    images: form.value.event_images.filter(img => img.url)
-                })
-            } catch (err) {
-                console.error('Failed to save event images:', err)
-            }
+        try {
+            await put(`/tournaments/${eventId}/images`, {
+                images: (form.value.event_images || []).filter(img => img.url)
+            })
+        } catch (err) {
+            console.error('Failed to save event images:', err)
         }
 
         // Show success notification

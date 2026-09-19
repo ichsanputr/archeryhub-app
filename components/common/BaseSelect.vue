@@ -112,12 +112,12 @@
 
           <!-- multiple: select-all / clear strip -->
           <div v-if="multiple && filteredItems.length > 0"
-            class="px-4 py-2 border-b border-gray-50 flex items-center justify-between">
+            class="px-4 py-2 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
             <button type="button" @click.stop="selectAll"
-              class="text-xs font-black text-primary hover:underline transition-colors">
-              {{ allSelected ? 'Deselect all' : 'Select all' }}
+              class="text-xs font-black text-navy hover:text-slate-600 hover:underline transition-colors">
+              {{ allSelected ? (t('common.deselect_all', 'Deselect all')) : (t('common.select_all', 'Select all')) }}
             </button>
-            <span class="text-[10px] font-bold text-gray-400">
+            <span class="text-[10px] font-bold text-gray-500 font-mono">
               {{ selectedValues.length }} / {{ allItems.length }}
             </span>
           </div>

@@ -160,11 +160,13 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
+import { useToast } from '~/composables/useToast'
 
 const route = useRoute()
 const config = useRuntimeConfig()
 const { get } = useApi()
 const { t } = useI18n()
+const toast = useToast()
 
 const eventId = route.params.id
 const eventName = ref('')
@@ -191,8 +193,9 @@ const fetchEventData = async () => {
   }
 }
 
+const apiBaseUrl = useApiBaseUrl()
 const getApiBase = () => {
-  return config.public.apiBase || 'http://localhost:8001'
+  return apiBaseUrl
 }
 
 const eventSlug = computed(() => {
@@ -233,6 +236,7 @@ const downloadPdfFile = async (path, defaultFilename = 'document.pdf', key = pat
     window.URL.revokeObjectURL(blobUrl)
   } catch (err) {
     console.error('Failed to download PDF:', err)
+    toast.error(t('event_printout.err_download_failed', 'Gagal mengunduh berkas PDF. Pastikan koneksi ke server API aktif.'))
   } finally {
     downloadingKeys.value[key] = false
   }

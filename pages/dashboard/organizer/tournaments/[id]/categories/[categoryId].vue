@@ -14,8 +14,9 @@
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                     <div class="flex items-start gap-4">
                         <div
-                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-                            <Icon icon="ph:users" class="text-white text-2xl" />
+                            class="h-14 w-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg shrink-0 p-2 overflow-hidden">
+                            <img v-if="categoryName" :src="'/' + getCategoryIcon(categoryName)" :alt="categoryName" class="w-full h-full object-contain invert" />
+                            <Icon v-else icon="ph:users" class="text-white text-2xl" />
                         </div>
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-1">
@@ -115,6 +116,7 @@ import { Icon } from '@iconify/vue'
 import { useApi } from '~/composables/useApi'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useI18n } from 'vue-i18n'
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 
 const route = useRoute()
 const eventId = route.params.id

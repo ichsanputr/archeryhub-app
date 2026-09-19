@@ -338,7 +338,7 @@
 </template>
 
 <script setup>
-import { useApi } from '~/composables/useApi'
+import { useApi, getApiErrorMessage } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
 import { useSubscription } from '~/composables/useSubscription'
@@ -565,7 +565,7 @@ const fetchBracket = async (silent = false) => {
         fetchTeamMembers()
     } catch (error) {
         console.error('Failed to fetch bracket:', error)
-        toast.error(t('event_elimination.toast_bracket_load_failed'))
+        toast.error(getApiErrorMessage(error, t('event_elimination.toast_bracket_load_failed')))
     } finally {
         if (!silent) isLoading.value = false
     }
@@ -602,9 +602,9 @@ const generateBracket = async () => {
     } catch (error) {
         console.error('Failed to generate bracket:', error)
         const data = error?.data || error?.response?.data
-        let msg = data?.error || t('event_elimination.toast_bracket_generate_failed')
+        let msg = getApiErrorMessage(error, t('event_elimination.toast_bracket_generate_failed'))
         if (data?.participant_count != null && data?.required != null) {
-            msg = `${data.error} (${t('event_elimination.available')} ${data.participant_count}, ${t('event_elimination.required_count')} ${data.required})`
+            msg = `${msg} (${t('event_elimination.available')} ${data.participant_count}, ${t('event_elimination.required_count')} ${data.required})`
         }
         toast.error(msg)
     }
@@ -1040,7 +1040,7 @@ const saveAndNext = async () => {
             if (currentEnd.value < (bracket.value?.ends_per_match || 5)) currentEnd.value++
         }
     } catch (e) {
-        toast.error(t('event_elimination.toast_save_score_failed'))
+        toast.error(getApiErrorMessage(e, t('event_elimination.toast_save_score_failed')))
     } finally {
         isSaving.value = false
     }
@@ -1075,7 +1075,7 @@ const resetMatch = async () => {
         }
     } catch (error) {
         console.error('Failed to reset match:', error)
-        toast.error(t('event_elimination.toast_reset_match_failed'))
+        toast.error(getApiErrorMessage(error, t('event_elimination.toast_reset_match_failed')))
     } finally {
         isResetting.value = false
     }
@@ -1095,7 +1095,7 @@ const finishByeMatch = async (match) => {
         toast.success(t('event_elimination.toast_match_finished'))
         await fetchBracket()
     } catch (e) {
-        toast.error(t('event_elimination.toast_finish_match_failed'))
+        toast.error(getApiErrorMessage(e, t('event_elimination.toast_finish_match_failed')))
     } finally {
         isEndingMatch.value = false
     }
@@ -1141,7 +1141,7 @@ const confirmEndMatch = async () => {
 
     } catch (e) {
         console.error('Failed to end match:', e)
-        toast.error(t('event_elimination.toast_end_match_failed'))
+        toast.error(getApiErrorMessage(e, t('event_elimination.toast_end_match_failed')))
     } finally {
         isEndingMatch.value = false
     }
@@ -1163,7 +1163,7 @@ const updateTarget = async (match) => {
         })
         toast.success(t('event_elimination.toast_target_updated'))
     } catch (e) {
-        toast.error(t('event_elimination.toast_update_target_failed'))
+        toast.error(getApiErrorMessage(e, t('event_elimination.toast_update_target_failed')))
     }
 }
 
@@ -1179,7 +1179,7 @@ const autoAssignTargets = async () => {
         toast.success(t('event_elimination.toast_auto_assign_success'))
         await fetchBracket(true)
     } catch (e) {
-        toast.error(e?.data?.error || t('event_elimination.toast_auto_assign_failed'))
+        toast.error(getApiErrorMessage(e, t('event_elimination.toast_auto_assign_failed')))
     } finally {
         isAutoAssigning.value = false
     }
@@ -1223,7 +1223,7 @@ const finishMatchAction = async (match) => {
         await fetchBracket()
         selectedScoringMatch.value = null
     } catch (e) {
-        toast.error(t('event_elimination.toast_finish_match_failed'))
+        toast.error(getApiErrorMessage(e, t('event_elimination.toast_finish_match_failed')))
     }
 }
 

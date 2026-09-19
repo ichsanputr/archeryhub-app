@@ -279,21 +279,16 @@ const handleSubmit = async () => {
                 </div>
 
                 <!-- Right Sidebar Column: All-in-One White Card -->
-                <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-6">
-                    <!-- Section 1: Internal Notes -->
-                    <div class="space-y-4">
-                        <div class="border-b border-slate-100 pb-3">
-                            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                                <Icon icon="ph:note-pencil-bold" class="text-slate-500 text-base" />
-                                <span>{{ t('participant.edit.additional_notes', 'Catatan Internal') }}</span>
-                            </h3>
-                        </div>
-
-                        <BaseInput v-model="form.notes" :label="t('participant.edit.additional_notes_label', 'Catatan Panitia')" placeholder="Catatan internal panitia..." type="textarea" rows="4" />
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 space-y-4">
+                    <div class="border-b border-slate-100 pb-3">
+                        <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                            <Icon icon="ph:floppy-disk-bold" class="text-slate-500 text-base" />
+                            <span>{{ t('participant.edit.form_actions', 'Aksi Formulir') }}</span>
+                        </h3>
                     </div>
 
-                    <!-- Section 2: Form Actions -->
-                    <div class="border-t border-slate-100 pt-6 space-y-3">
+                    <!-- Form Actions -->
+                    <div class="space-y-3">
                         <BaseButton type="submit" variant="primary" icon="ph:floppy-disk-bold"
                             class="w-full h-10 justify-center text-xs font-black shadow-md shadow-primary/20"
                             :loading="isSubmitting">

@@ -260,8 +260,7 @@ const handlePrint = async () => {
   if (!form.value.session || isProcessing.value) return
 
   isProcessing.value = true
-
-  const apiBase = config.public.apiBase || 'http://localhost:8001'
+  const apiBase = useApiBaseUrl()
   const params = new URLSearchParams()
 
   params.append('blank', form.value.blankScoresheet ? '1' : '0')

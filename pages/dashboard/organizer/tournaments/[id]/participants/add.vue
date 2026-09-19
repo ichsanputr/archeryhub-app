@@ -30,7 +30,7 @@
                         </div>
                     </div>
 
-                    <BaseButton :to="`/dashboard/organizer/tournaments/${route.params.id}/participants`" variant="white" icon="ph:arrow-left-bold" class="h-11 px-5 text-xs font-bold shrink-0 shadow-md">
+                    <BaseButton :to="`/dashboard/organizer/tournaments/${route.params.id}/participants`" variant="white" icon="ph:arrow-left-bold" class="h-11 px-5 text-xs sm:text-sm font-bold shrink-0 shadow-md">
                         {{ t('dashboard_events_participants_add.back_to_list', 'Kembali ke Daftar Peserta') }}
                     </BaseButton>
                 </div>
@@ -45,10 +45,10 @@
                 </div>
                 <div>
                     <h3 class="font-black text-base text-navy">{{ t("dashboard_events_participants_add.subscription_expired_title") }}</h3>
-                    <div class="text-xs text-slate-600 font-medium mt-0.5">{{ t("dashboard_events_participants_add.subscription_expired_desc") }}</div>
+                    <div class="text-xs sm:text-sm text-slate-600 font-medium mt-0.5">{{ t("dashboard_events_participants_add.subscription_expired_desc") }}</div>
                 </div>
             </div>
-            <BaseButton to="/dashboard/organizer/package" variant="primary" icon="ph:sparkle-bold" class="shrink-0 h-10 px-5 text-xs font-black tracking-widest">
+            <BaseButton to="/dashboard/organizer/package" variant="primary" icon="ph:sparkle-bold" class="shrink-0 h-10 px-5 text-xs sm:text-sm font-black tracking-widest">
                 {{ t("dashboard_events_participants_add.upgrade_plan_btn") }}
             </BaseButton>
         </div>
@@ -108,7 +108,7 @@
                                                 </div>
                                             </div>
                                             <div
-                                                class="h-10 w-10 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xs overflow-hidden border border-gray-200 group-hover:border-navy transition-colors shrink-0">
+                                                class="h-10 w-10 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xs sm:text-sm overflow-hidden border border-gray-200 group-hover:border-navy transition-colors shrink-0">
                                                 <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                                                     class="w-full h-full object-cover" />
                                             </div>
@@ -116,9 +116,9 @@
                                                 <div :class="isArcherSelected(archer) ? 'text-navy font-black' : 'text-navy font-bold'"
                                                     class="text-sm truncate">
                                                     {{ archer.full_name }}</div>
-                                                <div class="text-xs text-gray-500 truncate">{{ archer.email ||
+                                                <div class="text-xs sm:text-sm text-gray-500 truncate">{{ archer.email ||
                                                     archer.phone || '-' }}</div>
-                                                <div class="flex items-center gap-2 text-xs text-gray-400 mt-1">
+                                                <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-400 mt-1">
                                                     <span>{{ archer.club_name || 'Individual' }}</span>
                                                     <span v-if="archer.city"
                                                         class="w-1 h-1 rounded-full bg-gray-300"></span>
@@ -131,13 +131,13 @@
                                 <!-- Empty Result State -->
                                 <div v-else-if="!isSearchingArchers" class="p-8 text-center space-y-2">
                                     <Icon icon="ph:user-minus" class="text-3xl text-gray-300 mx-auto" />
-                                    <div v-if="archers.length > 0" class="text-xs font-bold text-gray-500">
+                                    <div v-if="archers.length > 0" class="text-xs sm:text-sm font-bold text-gray-500">
                                         {{ t('dashboard_events_participants_add.all_already_registered', 'Semua pemanah yang ditemukan sudah terdaftar dalam event ini.') }}
                                     </div>
-                                    <div v-else class="text-xs font-bold text-gray-500">
+                                    <div v-else class="text-xs sm:text-sm font-bold text-gray-500">
                                         {{ t('dashboard_events_participants_add.not_found', 'Pemanah tidak ditemukan') }}
                                     </div>
-                                    <div class="text-[11px] text-gray-400 max-w-xs mx-auto">
+                                    <div class="text-xs sm:text-sm text-gray-400 max-w-sm mx-auto">
                                         {{ archers.length > 0 ? t('dashboard_events_participants_add.all_already_registered_desc', 'Gunakan tab "Buat Profil Pemanah Baru" jika ingin mendaftarkan atlet baru.') : t('dashboard_events_participants_add.not_found_desc', 'Coba gunakan kata kunci pencarian lain.') }}
                                     </div>
                                 </div>
@@ -161,14 +161,14 @@
                                     </div>
                                     <div>
                                         <div class="text-sm font-bold tracking-tight">{{ t('dashboard_events_participants_add.csv_banner_title', 'Punya banyak data peserta?') }}</div>
-                                        <div class="text-xs text-slate-300">{{ t('dashboard_events_participants_add.csv_banner_desc', 'Impor sekaligus menggunakan file CSV') }}</div>
+                                        <div class="text-xs sm:text-sm text-slate-300">{{ t('dashboard_events_participants_add.csv_banner_desc', 'Impor sekaligus menggunakan file CSV') }}</div>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap gap-2 shrink-0">
-                                    <BaseButton @click="downloadCsvTemplate" variant="white" icon="ph:download-simple-bold" size="sm" class="font-bold text-xs shadow-md">
+                                    <BaseButton @click="downloadCsvTemplate" variant="white" icon="ph:download-simple-bold" size="sm" class="font-bold text-xs sm:text-sm shadow-md">
                                         {{ t('dashboard_events_participants_add.btn_download_template', 'Unduh Template CSV') }}
                                     </BaseButton>
-                                    <BaseButton @click="showImportModal = true" variant="primary" icon="ph:upload-simple-bold" size="sm" class="font-bold text-xs shadow-md">
+                                    <BaseButton @click="showImportModal = true" variant="primary" icon="ph:upload-simple-bold" size="sm" class="font-bold text-xs sm:text-sm shadow-md">
                                         {{ t('dashboard_events_participants_add.btn_import_csv', 'Import CSV Peserta') }}
                                     </BaseButton>
                                 </div>
@@ -190,9 +190,9 @@
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <div class="text-sm font-bold text-navy mb-0.5">{{ t('dashboard_events_participants_add.profile_photo') }}</div>
-                                    <div class="text-xs text-gray-400 mb-2 font-medium">PNG, JPG atau WEBP (Maks. 2MB)</div>
+                                    <div class="text-xs sm:text-sm text-gray-400 mb-2 font-medium">{{ t('dashboard_events_participants_add.photo_hint', 'PNG, JPG atau WEBP (Maks. 2MB)') }}</div>
                                     <div class="flex gap-2">
-                                        <BaseButton @click="showMediaLibrary = true" variant="white" size="sm" icon="ph:cloud-arrow-up-bold" class="h-8 px-3 text-xs font-bold shadow-sm">
+                                        <BaseButton @click="showMediaLibrary = true" variant="white" size="sm" icon="ph:cloud-arrow-up-bold" class="h-8 px-3 text-xs sm:text-sm font-bold shadow-sm">
                                             {{ newArcherForm.avatar_url ? t('dashboard_events_participants_add.change_photo') : t('dashboard_events_participants_add.upload_photo') }}
                                         </BaseButton>
                                         <BaseButton v-if="newArcherForm.avatar_url" @click="newArcherForm.avatar_url = ''" variant="white" size="sm" icon="ph:trash-bold" class="h-8 w-8 p-0 text-red-500 bg-red-50 border-red-100 hover:bg-red-100" />
@@ -213,8 +213,8 @@
                                     <BaseInput v-model="newArcherForm.password" :label="t('dashboard_events_participants_add.password')" type="text"
                                         :placeholder="t('dashboard_events_participants_add.password_placeholder')" required />
                                     <button type="button" @click="generateRandomPassword"
-                                        class="absolute right-2 top-8 text-xs font-bold text-slate-600 hover:text-navy bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1">
-                                        <Icon icon="ph:arrows-clockwise-bold" class="text-xs text-slate-500" />
+                                        class="absolute right-2 top-8 text-xs sm:text-sm font-bold text-slate-600 hover:text-navy bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1">
+                                        <Icon icon="ph:arrows-clockwise-bold" class="text-xs sm:text-sm text-slate-500" />
                                         <span>{{ t('dashboard_events_participants_add.generate_password', 'Acak Password') }}</span>
                                     </button>
                                 </div>
@@ -224,10 +224,10 @@
                             </div>
                             
                             <div class="flex items-center justify-between pt-2">
-                                <div class="text-xs text-gray-400">
+                                <div class="text-xs sm:text-sm text-gray-400">
                                     {{ t('dashboard_events_participants_add.required_fields_hint') }}
                                 </div>
-                                <BaseButton type="button" @click="addNewArcherToList" variant="primary" icon="ph:user-plus-bold" size="sm" class="font-bold shadow-md">
+                                <BaseButton type="button" @click="addNewArcherToList" variant="primary" icon="ph:user-plus-bold" size="sm" class="font-bold text-xs sm:text-sm shadow-md">
                                     {{ t('dashboard_events_participants_add.add_to_list', 'Tambah ke Daftar Peserta') }}
                                 </BaseButton>
                             </div>
@@ -243,8 +243,8 @@
                                     <div class="text-sm font-black text-navy">{{ t('dashboard_events_participants_add.selected_title', { count: selectedArchers.length }) }}</div>
                                 </div>
                                 <BaseButton v-if="selectedArchers.length > 0" @click="selectedArchers = []" variant="white" size="xs"
-                                    class="text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border-red-200/80 font-bold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1">
-                                    <Icon icon="ph:trash-bold" class="text-xs" />
+                                    class="text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border-red-200/80 font-bold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 text-xs sm:text-sm">
+                                    <Icon icon="ph:trash-bold" class="text-xs sm:text-sm" />
                                     <span>{{ t('dashboard_events_participants_add.clear_all', 'Hapus Semua') }}</span>
                                 </BaseButton>
                             </div>
@@ -255,13 +255,13 @@
                                     class="bg-white border border-slate-200 rounded-2xl p-4 flex items-center justify-between gap-4 shadow-2xs hover:border-slate-300 transition-all group">
                                     <div class="flex items-center gap-3.5 min-w-0 flex-1">
                                         <!-- Index Number Pill -->
-                                        <div class="size-7 rounded-lg bg-slate-100 text-slate-500 font-mono font-black text-xs flex items-center justify-center shrink-0">
+                                        <div class="size-7 rounded-lg bg-slate-100 text-slate-500 font-mono font-black text-xs sm:text-sm flex items-center justify-center shrink-0">
                                             #{{ index + 1 }}
                                         </div>
 
                                         <!-- Avatar -->
                                         <div
-                                            class="size-11 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xs overflow-hidden border border-gray-200 shrink-0 shadow-2xs">
+                                            class="size-11 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xs sm:text-sm overflow-hidden border border-gray-200 shrink-0 shadow-2xs">
                                             <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                                                 class="w-full h-full object-cover" />
                                         </div>
@@ -269,28 +269,28 @@
                                         <!-- Archer Information -->
                                         <div class="flex-1 min-w-0 space-y-1">
                                             <div class="flex flex-wrap items-center gap-2">
-                                                <span class="font-black text-navy text-sm truncate">{{ archer.full_name }}</span>
-                                                <span v-if="archer.is_new_profile" class="px-2 py-0.5 bg-amber-50 border border-amber-200 text-amber-700 text-[10px] font-extrabold rounded-md">
+                                                <span class="font-black text-navy text-sm sm:text-base truncate">{{ archer.full_name }}</span>
+                                                <span v-if="archer.is_new_profile" class="px-2 py-0.5 bg-amber-50 border border-amber-200 text-amber-700 text-[10px] sm:text-xs font-extrabold rounded-md">
                                                     {{ t('dashboard_events_participants_add.create_new_short', 'Baru') }}
                                                 </span>
-                                                <span v-else class="px-2 py-0.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-extrabold rounded-md">
+                                                <span v-else class="px-2 py-0.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] sm:text-xs font-extrabold rounded-md">
                                                     {{ t('dashboard_events_participants_add.registered_badge', 'Terdaftar') }}
                                                 </span>
                                             </div>
 
-                                            <div class="flex flex-wrap items-center gap-2.5 text-xs text-slate-500">
+                                            <div class="flex flex-wrap items-center gap-2.5 text-xs sm:text-sm text-slate-500">
                                                 <!-- Club Badge -->
-                                                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-700 font-bold text-[11px] border border-slate-200/60">
-                                                    <Icon icon="ph:shield-chevron-bold" class="text-slate-500 text-xs" />
+                                                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-slate-100 text-slate-700 font-bold text-[11px] sm:text-xs border border-slate-200/60">
+                                                    <Icon icon="ph:shield-chevron-bold" class="text-slate-500 text-xs sm:text-sm" />
                                                     <span class="truncate max-w-[200px]">{{ getArcherClubName(archer) }}</span>
                                                 </div>
 
                                                 <!-- Contact Info -->
-                                                <span v-if="archer.email" class="inline-flex items-center gap-1 text-[11px] text-slate-400 font-medium truncate max-w-[220px]">
+                                                <span v-if="archer.email" class="inline-flex items-center gap-1 text-[11px] sm:text-xs text-slate-400 font-medium truncate max-w-[220px]">
                                                     <Icon icon="ph:envelope-simple-bold" />
                                                     <span class="truncate">{{ archer.email }}</span>
                                                 </span>
-                                                <span v-if="archer.phone" class="inline-flex items-center gap-1 text-[11px] text-slate-400 font-medium">
+                                                <span v-if="archer.phone" class="inline-flex items-center gap-1 text-[11px] sm:text-xs text-slate-400 font-medium">
                                                     <Icon icon="ph:phone-bold" />
                                                     <span>{{ archer.phone }}</span>
                                                 </span>
@@ -301,7 +301,7 @@
                                     <!-- Delete Single Archer Button -->
                                     <button type="button" @click="removeArcher(index)"
                                         class="size-9 rounded-xl bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-600 border border-slate-200 hover:border-red-200 flex items-center justify-center transition-colors shrink-0"
-                                        title="Hapus dari daftar">
+                                        :title="t('dashboard_events_participants_add.remove_from_list', 'Hapus dari daftar')">
                                         <Icon icon="ph:trash-bold" class="text-sm" />
                                     </button>
                                 </div>
@@ -312,8 +312,8 @@
                                 <div class="size-12 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-2 text-slate-400">
                                     <Icon icon="ph:users-thin" class="text-3xl" />
                                 </div>
-                                <div class="text-sm font-black text-navy">{{ t('dashboard_events_participants_add.empty_list_title', 'Belum ada pemanah yang ditambahkan') }}</div>
-                                <div class="text-xs text-slate-400 max-w-sm mx-auto mt-1">{{ t('dashboard_events_participants_add.empty_list_desc', 'Pilih pemanah terdaftar atau buat profil baru dan klik Tambah ke Daftar Peserta untuk mendaftarkan peserta.') }}</div>
+                                <div class="text-sm sm:text-base font-black text-navy">{{ t('dashboard_events_participants_add.empty_list_title', 'Belum ada pemanah yang ditambahkan') }}</div>
+                                <div class="text-xs sm:text-sm text-slate-400 max-w-sm sm:max-w-md mx-auto mt-1">{{ t('dashboard_events_participants_add.empty_list_desc', 'Pilih pemanah terdaftar atau buat profil baru dan klik Tambah ke Daftar Peserta untuk mendaftarkan peserta.') }}</div>
                             </div>
                         </div>
                     </div>
@@ -346,13 +346,13 @@
                                         }}</span>
                                 </div>
                                 <div v-if="form.category_ids.includes(category.id || category.uuid)"
-                                    class="px-2 py-1 bg-navy text-white text-[10px] font-black tracking-widest rounded-md">
+                                    class="px-2 py-1 bg-navy text-white text-[10px] sm:text-xs font-black tracking-widest rounded-md">
                                     {{ t('dashboard_events_participants_add.selected') }}
                                 </div>
                             </div>
                         </div>
-                        <div class=" text-xs text-gray-500 font-medium px-1 flex items-center gap-2">
-                            <Icon icon="ph:info-bold" class="text-navy" />
+                        <div class=" text-xs sm:text-sm text-gray-500 font-medium px-1 flex items-center gap-2">
+                            <Icon icon="ph:info-bold" class="text-navy shrink-0" />
                             {{ t('dashboard_events_participants_add.category_schedule_hint') }}
                         </div>
                         <div v-if="categories.length === 0" class="p-4 bg-amber-50 border border-amber-100 rounded-xl">
@@ -487,9 +487,9 @@ const bowOptions = computed(() => [
 ])
 
 const paymentStatusOptions = computed(() => [
-    { title: 'Paid', value: 'paid' },
-    { title: 'Pending', value: 'pending' },
-    { title: 'Unpaid', value: 'unpaid' }
+    { title: t('dashboard_events_participants_add.payment_status_paid', 'Paid'), value: 'paid' },
+    { title: t('dashboard_events_participants_add.payment_status_pending', 'Pending'), value: 'pending' },
+    { title: t('dashboard_events_participants_add.payment_status_unpaid', 'Unpaid'), value: 'unpaid' }
 ])
 
 const sourceOptions = computed(() => [
@@ -548,7 +548,7 @@ const fetchExistingParticipants = async () => {
 
 const getCategoryName = (cat) => {
     if (!cat) return ''
-    return `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || cat.age_category || cat.class_category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`.trim().replace(/\s+/g, ' ') || 'Kategori'
+    return `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || cat.age_category || cat.class_category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`.trim().replace(/\s+/g, ' ') || t('dashboard_events_participants_add.competition_category', 'Kategori')
 }
 
 const toggleCategory = (categoryId) => {
@@ -565,7 +565,7 @@ const selectedCategories = computed(() => {
 
 const clubOptions = computed(() => {
     return [
-        { title: 'Pilih Klub', value: '' },
+        { title: t('dashboard_events_participants_add.select_club_placeholder', 'Pilih Klub'), value: '' },
         ...clubs.value.map(club => ({
             title: club.name,
             value: club.uuid
@@ -742,7 +742,7 @@ const handleCsvParsed = (parsedArchers) => {
     }
 
     if (duplicateCount > 0) {
-        toast.info(`${addedCount} pemanah ditambahkan, ${duplicateCount} peserta diabaikan karena email sudah ada di daftar.`)
+        toast.info(t('dashboard_events_participants_add.toasts.csv_duplicate_notice', { added: addedCount, duplicates: duplicateCount }))
     }
 }
 
@@ -755,7 +755,7 @@ const addNewArcherToList = () => {
     )
 
     if (isDuplicate) {
-        toast.error(`Pemanah dengan email "${newArcherForm.email}" sudah ada dalam daftar terpilih!`)
+        toast.error(t('dashboard_events_participants_add.toasts.archer_already_in_list', { email: newArcherForm.email }))
         return
     }
 
@@ -890,7 +890,7 @@ const submit = async () => {
             const msg = skipped > 0
                 ? t('dashboard_events_participants_add.toasts.batch_success_with_skipped', { count, skipped })
                 : t('dashboard_events_participants_add.toasts.batch_success', { count })
-            toast.success(msg || `${count} peserta berhasil didaftarkan!`)
+            toast.success(msg)
         }
 
         router.push(`/dashboard/organizer/tournaments/${route.params.id}/participants`)

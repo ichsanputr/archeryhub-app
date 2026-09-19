@@ -13,7 +13,8 @@
                     leave-from-class="opacity-100 scale-100 translate-y-0"
                     leave-to-class="opacity-0 scale-95 translate-y-4">
                     <div v-if="modelValue"
-                        class="bg-white rounded-3xl shadow-2xl border border-gray-100 w-full max-w-2xl mx-auto relative flex flex-col overflow-hidden"
+                        class="bg-white rounded-3xl shadow-2xl border border-gray-100 w-full mx-auto relative flex flex-col overflow-hidden"
+                        :class="[maxWidthClass]"
                         style="max-height: 90vh;">
                         <!-- Header -->
                         <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100 flex-shrink-0 bg-white">
@@ -45,6 +46,7 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -57,6 +59,26 @@ const props = defineProps({
     header: {
         type: String,
         default: ''
+    },
+    maxWidth: {
+        type: String,
+        default: ''
+    },
+    size: {
+        type: String,
+        default: 'lg'
+    }
+})
+
+const maxWidthClass = computed(() => {
+    if (props.maxWidth) return props.maxWidth
+    switch (props.size) {
+        case 'sm': return 'max-w-md'
+        case 'md': return 'max-w-lg'
+        case 'lg': return 'max-w-2xl'
+        case 'xl': return 'max-w-4xl'
+        case '2xl': return 'max-w-5xl'
+        default: return 'max-w-2xl'
     }
 })
 

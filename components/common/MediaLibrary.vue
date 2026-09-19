@@ -292,7 +292,7 @@ const loadMediaLibrary = async () => {
     isLoadingLibrary.value = true
     try {
         const response = await get('/media')
-        mediaFiles.value = response?.files || []
+        mediaFiles.value = response?.data || response?.files || (Array.isArray(response) ? response : [])
     } catch (error) {
         console.error('Failed to load media library:', error)
     } finally {

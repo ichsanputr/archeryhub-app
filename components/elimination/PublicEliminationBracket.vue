@@ -104,10 +104,10 @@ const getRoundName = (roundNo) => {
     const size = props.bracket?.bracket_size || 8
     const totalRoundsForSize = Math.log2(size)
     const roundFromEnd = totalRoundsForSize - roundNo + 1
-    if (roundFromEnd === 1) return 'Final'
-    if (roundFromEnd === 2) return 'Semifinal'
-    if (roundFromEnd === 3) return 'Quarterfinal'
-    return `Round of ${Math.pow(2, roundFromEnd)}`
+    if (roundFromEnd === 1) return t('event_elimination.final', 'Final')
+    if (roundFromEnd === 2) return t('event_elimination.semifinal', 'Semifinal')
+    if (roundFromEnd === 3) return t('event_elimination.quarterfinal', 'Quarterfinal')
+    return t('event_elimination.round_of_n', { n: Math.pow(2, roundFromEnd) }, `Round of ${Math.pow(2, roundFromEnd)}`)
 }
 
 const getSideTotalHeight = computed(() => {

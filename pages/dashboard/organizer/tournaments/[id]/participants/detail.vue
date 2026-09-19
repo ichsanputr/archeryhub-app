@@ -145,6 +145,59 @@ const formatDate = (d) => {
         year: 'numeric'
     })
 }
+
+const displayRegistrationSource = computed(() => {
+    if (!participant.value) return '-'
+    const src = (participant.value.registration_source || '').toLowerCase()
+    if (src === 'invited') {
+        return t('participant.detail.source_invited', 'Undangan Langsung EO')
+    }
+    if (src === 'admin_created' || src === 'organizer_added') {
+        return t('participant.detail.source_organizer_added', 'Ditambahkan Penyelenggara')
+    }
+    if (src === 'self_register') {
+        return t('participant.detail.source_self_register', 'Mandiri (Website)')
+    }
+    return src ? src.replace(/_/g, ' ') : t('participant.detail.source_self_register', 'Mandiri (Website)')
+})
+
+const displayPaymentMethod = computed(() => {
+    if (!participant.value) return '-'
+    const p = participant.value
+    const source = (p.registration_source || '').toLowerCase()
+    const method = (p.transaction?.payment_method || p.payment_method || '').toLowerCase()
+    const channel = (p.transaction?.payment_channel || '').toLowerCase()
+
+    if (source === 'invited') {
+        return t('participant.detail.source_invited', 'Undangan Langsung EO')
+    }
+    if (source === 'admin_created' || source === 'organizer_added') {
+        if (method === 'cash') return t('participant.detail.method_cash', 'Tunai (Cash)')
+        if (method === 'transfer' || method === 'manual_transfer' || proofUrl.value) return t('participant.detail.manual_transfer', 'Transfer Manual')
+        return t('participant.detail.source_organizer_added', 'Ditambahkan Penyelenggara')
+    }
+
+    if (method === 'mayar') {
+        return channel ? `Online Gateway (Mayar - ${channel.toUpperCase()})` : 'Online Gateway (Mayar)'
+    }
+    if (method === 'midtrans') {
+        return channel ? `Online Gateway (Midtrans - ${channel.toUpperCase()})` : 'Online Gateway (Midtrans)'
+    }
+    if (method === 'qris') {
+        return 'QRIS Online'
+    }
+    if (method === 'manual_transfer' || method === 'bank_transfer' || method === 'manual' || proofUrl.value) {
+        return t('participant.detail.manual_transfer', 'Transfer Manual')
+    }
+    if (method === 'cash') {
+        return t('participant.detail.method_cash', 'Tunai (Cash)')
+    }
+    if (method) {
+        return method.toUpperCase()
+    }
+
+    return t('participant.detail.online_gateway', 'Online Gateway')
+})
 </script>
 
 <template>
@@ -319,8 +372,8 @@ const formatDate = (d) => {
                             </div>
                             <div class="flex items-center justify-between py-1 border-t border-slate-50">
                                 <span class="text-slate-500 font-medium">{{ t('participant.detail.payment_method_label', 'Metode Pembayaran') }}</span>
-                                <span class="font-bold text-slate-800 capitalize">
-                                    {{ participant.transaction?.payment_method || participant.payment_method || t('participant.detail.online_gateway', 'Online Gateway') }}
+                                <span class="font-bold text-slate-800">
+                                    {{ displayPaymentMethod }}
                                 </span>
                             </div>
                         </div>
@@ -367,6 +420,12 @@ const formatDate = (d) => {
                         </h3>
 
                         <div class="divide-y divide-slate-100 text-xs">
+                            <div class="py-3 flex items-center justify-between">
+                                <span class="text-slate-500 font-medium">{{ t('participant.detail.registration_source_label', 'Sumber Pendaftaran') }}</span>
+                                <span class="font-bold text-slate-700">
+                                    {{ displayRegistrationSource }}
+                                </span>
+                            </div>
                             <div class="py-3 flex items-center justify-between">
                                 <span class="text-slate-500 font-medium">{{ t('participant.detail.checkin_label', 'Daftar Ulang (Check-in)') }}</span>
                                 <span class="font-bold" :class="participant.last_reregistration_at ? 'text-emerald-600' : 'text-slate-600'">

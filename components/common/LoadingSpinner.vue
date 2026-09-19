@@ -38,6 +38,7 @@ const colorClass = computed(() => {
     if (props.color === 'white') return 'text-white'
     if (props.color === 'navy') return 'text-navy'
     if (props.color === 'gray') return 'text-gray-400'
+    if (props.color === 'current') return 'text-current'
     return 'text-primary'
 })
 

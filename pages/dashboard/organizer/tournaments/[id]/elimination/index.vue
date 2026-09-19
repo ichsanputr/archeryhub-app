@@ -55,7 +55,7 @@
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <NuxtLink v-for="bracket in brackets" :key="bracket.id"
           :to="route.path.includes('/organizer/') ? `/dashboard/organizer/tournaments/${eventId}/elimination/${bracket.id}` : `/dashboard/archer/tournaments/${eventId}/elimination/${bracket.id}`"
-          class="rounded-3xl border border-slate-200/90 hover:border-navy transition-all duration-200 bg-white flex flex-col justify-between overflow-hidden relative group text-left shadow-xs">
+          class="rounded-3xl border border-slate-200/90 hover:border-navy transition-all duration-300 bg-white flex flex-col justify-between overflow-hidden relative group text-left shadow-xs hover:shadow-md">
 
           <!-- Themed Signature Navy Card Header -->
           <div class="relative overflow-hidden p-5 bg-gradient-to-r from-navy via-navy to-navy/95 text-white border-b border-primary/20">
@@ -69,8 +69,8 @@
                 <h3 class="font-black text-white text-base sm:text-lg leading-tight truncate">
                   {{ getBracketName(bracket) }}
                 </h3>
-                <div class="flex items-center gap-1.5 mt-1.5">
-                  <span class="text-[10px] font-bold font-mono text-slate-300 bg-white/10 px-2.5 py-0.5 rounded-lg">
+                <div class="flex items-center gap-1.5 mt-2">
+                  <span class="text-[10px] font-bold font-mono text-slate-300 bg-white/10 px-2.5 py-0.5 rounded-lg border border-white/10">
                     ID: {{ bracket.id }}
                   </span>
                 </div>
@@ -90,48 +90,81 @@
 
           <!-- Card Body: Format Tags & Match Metric Details -->
           <div class="p-5 sm:p-6 bg-slate-50/70 flex-1 space-y-3.5">
-            <!-- Format & Type Chips -->
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white text-navy border border-slate-200 text-xs font-bold">
-                <Icon icon="ph:crosshair-bold" class="text-xs text-slate-500" />
-                <span>{{ getFormatLabel(bracket.format) }}</span>
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white text-slate-700 border border-slate-200 text-xs font-bold">
-                <Icon icon="ph:list-bullets-bold" class="text-xs text-slate-500" />
-                <span>{{ getBracketTypeLabel(bracket.bracket_type) }}</span>
-              </span>
-            </div>
-
-            <!-- Bracket Metrics Box -->
-            <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 space-y-2.5">
-              <div class="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                <div class="size-6 rounded-lg bg-slate-100 text-navy flex items-center justify-center shrink-0">
-                  <Icon icon="ph:users-three-bold" class="text-xs" />
-                </div>
-                <span>{{ bracket.bracket_size }} {{ bracket.bracket_type === 'individual' ? (t('event_detail.archers') || 'Pemanah') : (t('event_detail.teams') || 'Tim') }}</span>
+            <!-- Assigned Category / Type Tag -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-[11px] font-extrabold text-slate-500">
+                <span class="flex items-center gap-1.5">
+                  <Icon icon="ph:folders-bold" class="text-slate-400 text-xs" />
+                  <span>{{ t('event_elimination.competition_category', 'Kategori Lomba') }}</span>
+                </span>
+                <span class="text-[10px] font-mono font-bold bg-slate-200/80 text-slate-600 px-1.5 py-0.5 rounded-md">
+                  {{ getBracketTypeLabel(bracket.bracket_type) }}
+                </span>
               </div>
 
-              <!-- 2-column Rules Metric -->
-              <div class="grid grid-cols-2 gap-2">
-                <div class="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl border border-slate-100">
-                  <Icon icon="ph:stack-bold" class="text-slate-400 text-sm shrink-0" />
-                  <span class="text-xs font-black text-navy truncate">{{ bracket.ends_per_match }} End/Match</span>
+              <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200/90 text-xs font-black text-navy shadow-2xs w-full">
+                <img
+                  v-if="getCategoryForBracket(bracket)"
+                  :src="'/' + getCategoryIcon(`${getCategoryForBracket(bracket)?.division_name} ${getCategoryForBracket(bracket)?.event_type_name} ${getCategoryForBracket(bracket)?.gender_division_name}`)"
+                  :alt="getCategoryForBracket(bracket)?.division_name"
+                  class="size-4 object-contain shrink-0" />
+                <Icon v-else icon="ph:trophy-bold" class="text-navy text-sm shrink-0" />
+                <span class="truncate">{{ getBracketName(bracket) }}</span>
+              </div>
+            </div>
+
+            <!-- Scoring Format & Bracket Type Pills -->
+            <div class="flex items-center gap-2">
+              <div class="flex-1 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white text-navy border border-slate-200/90 text-xs font-bold shadow-2xs">
+                <Icon icon="ph:crosshair-bold" class="text-navy text-xs shrink-0" />
+                <span class="truncate">{{ getFormatLabel(bracket.format) }}</span>
+              </div>
+              <div class="flex-1 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white text-slate-700 border border-slate-200/90 text-xs font-bold shadow-2xs">
+                <Icon icon="ph:list-bullets-bold" class="text-slate-500 text-xs shrink-0" />
+                <span class="truncate">{{ getBracketTypeLabel(bracket.bracket_type) }}</span>
+              </div>
+            </div>
+
+            <!-- Format Rule Metrics (3-column pill grid matching qualification card) -->
+            <div class="grid grid-cols-3 gap-2">
+              <div class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs text-center">
+                <div class="flex items-center gap-1 text-[10px] font-bold text-slate-500">
+                  <Icon icon="ph:users-three-bold" class="text-navy text-xs" />
+                  <span>Slot</span>
                 </div>
-                <div class="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl border border-slate-100">
-                  <Icon icon="ph:target-bold" class="text-slate-400 text-sm shrink-0" />
-                  <span class="text-xs font-black text-navy truncate">{{ bracket.arrows_per_end }} Panah/End</span>
+                <span class="text-sm font-black text-navy font-mono mt-0.5">{{ bracket.bracket_size }}</span>
+              </div>
+
+              <div class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs text-center">
+                <div class="flex items-center gap-1 text-[10px] font-bold text-slate-500">
+                  <Icon icon="ph:arrow-clockwise-bold" class="text-navy text-xs" />
+                  <span>End/Match</span>
                 </div>
+                <span class="text-sm font-black text-navy font-mono mt-0.5">{{ bracket.ends_per_match }}</span>
+              </div>
+
+              <div class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs text-center">
+                <div class="flex items-center gap-1 text-[10px] font-bold text-slate-500">
+                  <Icon icon="ph:target-bold" class="text-navy text-xs" />
+                  <span>Panah/End</span>
+                </div>
+                <span class="text-sm font-black text-navy font-mono mt-0.5">{{ bracket.arrows_per_end }}</span>
               </div>
             </div>
           </div>
 
           <!-- Card Footer -->
-          <div class="flex items-center justify-between px-5 sm:px-6 py-3.5 bg-white border-t border-slate-200/80 mt-auto">
-            <span class="text-xs font-mono text-slate-400">{{ formatDate(bracket.created_at) }}</span>
+          <div class="flex items-center justify-between px-5 sm:px-6 py-3.5 bg-white border-t border-slate-200/90 mt-auto">
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-xl">
+              <Icon icon="ph:calendar-blank-bold" class="text-slate-600 text-sm shrink-0" />
+              <span class="text-xs font-bold text-slate-700 font-mono">
+                {{ formatDate(bracket.created_at) }}
+              </span>
+            </div>
             <div
-              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-navy text-white group-hover:bg-primary group-hover:text-navy text-xs font-bold transition-all active:scale-95">
-              <span>{{ t('event_elimination.manage', 'Kelola') }}</span>
-              <Icon icon="ph:arrow-right-bold" class="text-xs" />
+              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-navy text-primary group-hover:bg-primary group-hover:text-navy text-xs font-black transition-all active:scale-95 shadow-2xs">
+              <span>{{ t('event_elimination.manage', 'Kelola Bagan') }}</span>
+              <Icon icon="ph:arrow-right-bold" class="text-xs group-hover:translate-x-0.5 transition-transform" />
             </div>
           </div>
         </NuxtLink>
@@ -336,38 +369,6 @@
               </div>
             </div>
 
-            <!-- Section 3: Timing / Schedule -->
-            <div class="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-4">
-              <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
-                <Icon icon="ph:calendar-check-bold" class="text-slate-600 text-base" />
-                <span>{{ t('event_elimination.schedule', 'Jadwal Pertandingan') }}</span>
-              </div>
-
-              <div class="space-y-3.5">
-                <!-- Start Time -->
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                    {{ t('event_elimination.start_elimination', 'Waktu Mulai Eliminasi') }}
-                  </label>
-                  <div class="grid grid-cols-2 gap-3">
-                    <BaseDatePicker v-model="newBracket.startDate" :placeholder="t('event_elimination.start_date', 'Tanggal Mulai')" />
-                    <BaseTimePicker v-model="newBracket.startTime" placeholder="08:00" />
-                  </div>
-                </div>
-
-                <!-- End Time -->
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                    {{ t('event_elimination.end_elimination', 'Waktu Selesai Eliminasi') }}
-                  </label>
-                  <div class="grid grid-cols-2 gap-3">
-                    <BaseDatePicker v-model="newBracket.endDate" :placeholder="t('event_elimination.end_date', 'Tanggal Selesai')" />
-                    <BaseTimePicker v-model="newBracket.endTime" placeholder="17:00" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
 
           <!-- Modal Footer (Matching Create Session footer) -->
@@ -394,6 +395,7 @@
 import { Icon } from '@iconify/vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 import BaseInput from '~/components/common/BaseInput.vue'
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
@@ -544,19 +546,8 @@ const fetchCategories = async () => {
   }
 }
 
-function parseBracketDatetime(isoOrNull, defaultTime = defaultStartTime) {
-  if (!isoOrNull) return { date: defaultStartDate(), time: defaultTime }
-  const d = new Date(isoOrNull)
-  if (isNaN(d.getTime())) return { date: defaultStartDate(), time: defaultTime }
-  const date = d.toISOString().slice(0, 10)
-  const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
-  return { date, time }
-}
-
 const openEditBracket = (bracket) => {
   editBracketId.value = bracket.id || bracket.uuid
-  const start = parseBracketDatetime(bracket.start_time, defaultStartTime)
-  const end = parseBracketDatetime(bracket.end_time, defaultEndTime)
   bracketSizeInfo.value = { participant_count: 0, bracket_size: bracket.bracket_size, byes: 0 }
   newBracket.value = {
     categoryId: bracket.category_id,
@@ -564,11 +555,7 @@ const openEditBracket = (bracket) => {
     format: bracket.format,
     bracketSize: bracket.bracket_size,
     endsPerMatch: bracket.ends_per_match,
-    arrowsPerEnd: bracket.arrows_per_end,
-    startDate: start.date,
-    startTime: start.time,
-    endDate: end.date,
-    endTime: end.time
+    arrowsPerEnd: bracket.arrows_per_end
   }
   showCreateDialog.value = true
 }
@@ -591,10 +578,6 @@ const updateBracket = async () => {
       ends_per_match: newBracket.value.endsPerMatch,
       arrows_per_end: newBracket.value.arrowsPerEnd
     }
-    const startDt = toDatetimeISO(newBracket.value.startDate, newBracket.value.startTime)
-    const endDt = toDatetimeISO(newBracket.value.endDate, newBracket.value.endTime)
-    if (startDt) payload.start_time = startDt
-    if (endDt) payload.end_time = endDt
     const response = await put(`/tournaments/${eventId.value}/elimination/brackets/${editBracketId.value}`, payload)
 
     toast.success(t('event_elimination.toast_bracket_updated'))
@@ -620,17 +603,8 @@ const resetForm = () => {
     format: 'recurve_set',
     bracketSize: 0,
     endsPerMatch: 5,
-    arrowsPerEnd: 3,
-    startDate: defaultStartDate(),
-    startTime: defaultStartTime,
-    endDate: defaultStartDate(),
-    endTime: defaultEndTime
+    arrowsPerEnd: 3
   }
-}
-
-function toDatetimeISO(dateStr, timeStr) {
-  if (!dateStr || !timeStr) return null
-  return `${dateStr}T${timeStr}:00`
 }
 
 const createBracket = async () => {
@@ -653,10 +627,6 @@ const createBracket = async () => {
       ends_per_match: newBracket.value.endsPerMatch,
       arrows_per_end: newBracket.value.arrowsPerEnd
     }
-    const startDt = toDatetimeISO(newBracket.value.startDate, newBracket.value.startTime)
-    const endDt = toDatetimeISO(newBracket.value.endDate, newBracket.value.endTime)
-    if (startDt) payload.start_time = startDt
-    if (endDt) payload.end_time = endDt
     const response = await post(`/tournaments/${eventId.value}/elimination/brackets`, payload)
 
     if (response?.bracket?.id || response?.id) {
@@ -765,6 +735,7 @@ const filteredCategoriesWithoutBracket = computed(() => {
 
 
 const openCreateForCategory = (category) => {
+  resetForm()
   newBracket.value.categoryId = category.id
   // Auto-set the bracket type
   const eventType = (category.event_type_name || '').toLowerCase()
@@ -786,6 +757,11 @@ const getBracketName = (bracket) => {
   // Fallback to matching with categories
   const category = categories.value.find(c => c.id === bracket.category_id)
   return getCategoryName(category) || `Bracket ${bracket.id}`
+}
+
+const getCategoryForBracket = (bracket) => {
+  if (!bracket) return null
+  return categories.value.find(c => c.id === bracket.category_id) || null
 }
 
 const getCategoryName = (category) => {

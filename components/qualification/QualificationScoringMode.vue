@@ -1,6 +1,18 @@
 <template>
     <div class="space-y-6">
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
+        
+        <!-- Session Lock / Unlock Confirmation Dialog -->
+        <AppDialog
+            v-model:show="showLockConfirmDialog"
+            :title="isSessionLocked ? t('event_qualification.unlock_session_title', 'Buka Kunci Sesi Penilaian?') : t('event_qualification.lock_session_title', 'Kunci Sesi Penilaian?')"
+            :message="isSessionLocked ? t('event_qualification.unlock_session_desc', 'Sesi penilaian akan dibuka kembali. Scorekeeper dan panitia dapat menginput atau mengubah skor kualifikasi.') : t('event_qualification.lock_session_desc', 'Setelah dikunci, input dan perubahan skor pada sesi ini tidak dapat dilakukan hingga kunci dibuka kembali.')"
+            :confirmText="isSessionLocked ? t('event_qualification.confirm_unlock_btn', 'Buka Kunci') : t('event_qualification.confirm_lock_btn', 'Kunci Sesi')"
+            :cancelText="t('common.cancel', 'Batal')"
+            :icon="isSessionLocked ? 'ph:lock-open-bold' : 'ph:lock-bold'"
+            :type="isSessionLocked ? 'primary' : 'danger'"
+            @confirm="executeToggleSessionLock"
+        />
 
         <!-- Top Target Board Quick Switcher & Stats Bar -->
         <div v-if="selectedCategory && targetAssignments.length > 0"
@@ -40,18 +52,35 @@
                         </button>
                     </div>
 
-                    <!-- Lock / Unlock Session Button -->
-                    <button type="button" @click="isSubscriptionActive ? toggleSessionLock() : (showPremiumModal = true)"
-                        :class="[
-                            'h-10 px-3.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer shadow-2xs border shrink-0',
-                            isSessionLocked
-                                ? 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100'
-                                : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
-                        ]"
-                        :title="isSessionLocked ? 'Buka Kunci Sesi Penilaian' : 'Kunci Sesi Penilaian'">
-                        <Icon :icon="isSessionLocked ? 'ph:lock-bold' : 'ph:lock-open-bold'" class="text-sm" />
-                        <span>{{ isSessionLocked ? 'Terkunci' : 'Kunci Sesi' }}</span>
-                    </button>
+                    <!-- Lock / Unlock Session Switcher -->
+                    <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 shrink-0 select-none shadow-2xs">
+                        <div class="flex items-center gap-1.5">
+                            <Icon :icon="isSessionLocked ? 'ph:lock-key-fill' : 'ph:lock-key-open-bold'"
+                                :class="isSessionLocked ? 'text-rose-600' : 'text-slate-500'"
+                                class="text-sm transition-colors" />
+                            <span class="text-xs font-bold"
+                                :class="isSessionLocked ? 'text-rose-700 font-black' : 'text-slate-600'">
+                                {{ isSessionLocked ? t('event_qualification.session_locked', 'Terkunci') : t('event_qualification.session_unlocked', 'Terbuka') }}
+                            </span>
+                        </div>
+
+                        <!-- Switch Toggle Button -->
+                        <button type="button" role="switch" :aria-checked="isSessionLocked"
+                            @click="isSubscriptionActive ? promptToggleLock() : (showPremiumModal = true)"
+                            :class="[
+                                'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none',
+                                isSessionLocked ? 'bg-rose-600' : 'bg-slate-300 hover:bg-slate-400'
+                            ]"
+                            :title="isSessionLocked ? t('event_qualification.unlock_session_title', 'Buka Kunci Sesi Penilaian?') : t('event_qualification.lock_session_title', 'Kunci Sesi Penilaian?')">
+                            <span
+                                :class="[
+                                    'pointer-events-none inline-block size-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out flex items-center justify-center text-[10px]',
+                                    isSessionLocked ? 'translate-x-5 text-rose-600' : 'translate-x-0 text-slate-400'
+                                ]">
+                                <Icon :icon="isSessionLocked ? 'ph:lock-fill' : 'ph:lock-open-bold'" />
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -227,8 +256,8 @@
                                             ]">
                                             
                                             <!-- Arrow Value Display -->
-                                            <span>
-                                                {{ assignment.currentEndScores?.[i] !== undefined ? assignment.currentEndScores[i] : '' }}
+                                            <span v-if="assignment.currentEndScores?.[i] !== undefined && assignment.currentEndScores?.[i] !== null && assignment.currentEndScores?.[i] !== ''">
+                                                {{ assignment.currentEndScores[i] }}
                                             </span>
 
                                             <!-- Active Editing Cursor Indicator -->
@@ -236,7 +265,7 @@
                                                 class="absolute -top-1 -right-1 size-2.5 bg-amber-500 rounded-full border border-white shadow-xs"></div>
 
                                             <!-- Empty Dot -->
-                                            <div v-if="assignment.currentEndScores?.[i] === undefined && !(currentScoringAssignment?.uuid === assignment.uuid && selectedArrowIndex === i)"
+                                            <div v-if="(assignment.currentEndScores?.[i] === undefined || assignment.currentEndScores?.[i] === null || assignment.currentEndScores?.[i] === '') && !(currentScoringAssignment?.uuid === assignment.uuid && selectedArrowIndex === i)"
                                                 class="size-1.5 rounded-full bg-slate-300"></div>
                                         </div>
 
@@ -337,7 +366,7 @@
                     <!-- Keypad Body -->
                     <div class="p-4 sm:p-5 space-y-4">
                         <!-- Score Matrix Keys Grid -->
-                        <div class="grid grid-cols-3 gap-2.5">
+                        <div class="grid grid-cols-4 gap-2">
                             <button v-for="val in ['X', 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'M']" :key="val"
                                 type="button"
                                 @click="isSubscriptionActive ? addScore(val) : (showPremiumModal = true)"
@@ -392,7 +421,7 @@
                 </div>
 
                 <!-- Mobile Keypad Grid -->
-                <div class="grid grid-cols-6 gap-1.5">
+                <div class="grid grid-cols-4 gap-2">
                     <button v-for="val in ['X', 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'M']" :key="val"
                         type="button"
                         @click="isSubscriptionActive ? addScore(val) : (showPremiumModal = true)"
@@ -421,17 +450,48 @@
             </div>
         </Transition>
 
-        <!-- Empty Global State -->
-        <div v-if="!(selectedCategory && targetAssignments.length > 0)"
+        <!-- Empty State: No Category Selected -->
+        <div v-if="!selectedCategory"
             class="bg-white rounded-3xl border-2 border-dashed border-slate-200 p-16 text-center flex flex-col items-center justify-center space-y-4 shadow-2xs">
             <div class="size-16 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
-                <Icon icon="ph:target-bold" class="text-3xl" />
+                <Icon icon="ph:cursor-click-bold" class="text-3xl" />
             </div>
             <div>
                 <h3 class="text-base font-black text-navy">{{ t('event_qualification.category_not_selected', 'Kategori Belum Dipilih') }}</h3>
                 <p class="text-xs text-slate-500 font-medium max-w-sm mx-auto mt-1">
                     {{ t('event_qualification.choose_category_to_manage', 'Silakan pilih salah satu kategori di atas untuk mulai mengelola sesi.') }}
                 </p>
+            </div>
+        </div>
+
+        <!-- Empty State: Category Selected but No Target Assignments yet -->
+        <div v-else-if="targetAssignments.length === 0"
+            class="bg-white rounded-3xl border-2 border-dashed border-slate-200 p-12 sm:p-16 text-center flex flex-col items-center justify-center space-y-5 shadow-2xs">
+            <div class="relative">
+                <div class="size-18 rounded-3xl bg-navy text-primary flex items-center justify-center shadow-lg shadow-navy/15">
+                    <Icon icon="ph:target-bold" class="text-4xl" />
+                </div>
+                <div class="absolute -bottom-1 -right-1 size-6 rounded-xl bg-amber-400 text-navy flex items-center justify-center border-2 border-white shadow-xs">
+                    <Icon icon="ph:warning-bold" class="text-xs" />
+                </div>
+            </div>
+
+            <div class="max-w-md space-y-2">
+                <h3 class="text-lg font-black text-navy leading-tight">
+                    {{ t('event_qualification.no_assignments_title', 'Belum Ada Penempatan Target') }}
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
+                    {{ t('event_qualification.no_assignments_desc', 'Pemanah pada kategori ini belum ditempatkan ke nomor bantalan target kualifikasi. Silakan atur penempatan target terlebih dahulu sebelum memulai input nilai.') }}
+                </p>
+            </div>
+
+            <div class="pt-1">
+                <button type="button" @click="emit('switch-tab', 'target')"
+                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-navy hover:bg-primary text-primary hover:text-navy text-xs font-black transition-all shadow-md shadow-navy/10 active:scale-95 cursor-pointer">
+                    <Icon icon="ph:target-bold" class="text-base" />
+                    <span>{{ t('event_qualification.switch_to_target_assignment', 'Atur Penempatan Target') }}</span>
+                    <Icon icon="ph:arrow-right-bold" class="text-xs" />
+                </button>
             </div>
         </div>
     </div>
@@ -442,10 +502,11 @@ import { Icon } from '@iconify/vue'
 import { ref, watch, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { useImageOrDefault } from '~/composables/useImageHelper'
-import { useApi } from '~/composables/useApi'
+import { useApi, getApiErrorMessage } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+import AppDialog from '~/components/common/AppDialog.vue'
 
 const { isSubscriptionActive } = useSubscription()
 const { t } = useI18n()
@@ -457,22 +518,36 @@ const props = defineProps({
     targetAssignments: { type: Array, default: () => [] }
 })
 
-const emit = defineEmits(['updated'])
+const emit = defineEmits(['updated', 'switch-tab'])
 
 const { post } = useApi()
 const toast = useToast()
 const route = useRoute()
 
 const saving = ref(false)
-const currentScoringAssignment = ref(null)
+const localAssignments = ref([])
+const currentScoringArcherUuid = ref(null)
+const currentScoringAssignment = computed(() => {
+    if (!localAssignments.value.length) return null
+    if (currentScoringArcherUuid.value) {
+        const found = localAssignments.value.find(a => a.uuid === currentScoringArcherUuid.value)
+        if (found) return found
+    }
+    return localAssignments.value[0] || null
+})
 const selectedArrowIndex = ref(0)
 const showMobileInputBoard = ref(false)
 const searchArcherQuery = ref('')
 const selectedTargetFilter = ref(null)
 
 const isSessionLocked = computed(() => Boolean(props.sessionData?.is_locked))
+const showLockConfirmDialog = ref(false)
 
-const toggleSessionLock = async () => {
+const promptToggleLock = () => {
+    showLockConfirmDialog.value = true
+}
+
+const executeToggleSessionLock = async () => {
     try {
         const sessionId = props.sessionData?.uuid || props.sessionData?.id
         const eventId = route.params.id
@@ -480,25 +555,38 @@ const toggleSessionLock = async () => {
         if (res) {
             props.sessionData.is_locked = res.is_locked
             if (res.is_locked) {
-                toast.success('Sesi penilaian berhasil dikunci')
+                toast.success(t('event_qualification.session_locked_success', 'Sesi penilaian berhasil dikunci'))
             } else {
-                toast.success('Kunci sesi penilaian berhasil dibuka')
+                toast.success(t('event_qualification.session_unlocked_success', 'Kunci sesi penilaian berhasil dibuka'))
             }
             emit('updated')
         }
     } catch (err) {
-        toast.error('Gagal mengubah status kunci sesi')
+        toast.error(getApiErrorMessage(err, t('event_qualification.session_lock_failed', 'Gagal mengubah status kunci sesi')))
+    }
+}
+
+// Ensures currentEndScores array always has length exactly equal to arrows_per_end
+const ensureEndScoresArray = (assignment) => {
+    if (!assignment) return
+    const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
+    if (!assignment.currentEndScores || !Array.isArray(assignment.currentEndScores)) {
+        assignment.currentEndScores = Array.from({ length: arrowsPerEnd }, () => undefined)
+    } else if (assignment.currentEndScores.length < arrowsPerEnd) {
+        const newArr = [...assignment.currentEndScores]
+        while (newArr.length < arrowsPerEnd) {
+            newArr.push(undefined)
+        }
+        assignment.currentEndScores = newArr
     }
 }
 
 const initEndScores = (assignment) => {
     if (!assignment) return
+    ensureEndScoresArray(assignment)
     const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
-    if (!assignment.currentEndScores || assignment.currentEndScores.length === 0) {
-        assignment.currentEndScores = Array(arrowsPerEnd).fill(undefined)
-    }
-    const emptyIdx = assignment.currentEndScores.findIndex(v => v === undefined || v === null)
-    selectedArrowIndex.value = emptyIdx === -1 ? arrowsPerEnd - 1 : emptyIdx
+    const emptyIdx = assignment.currentEndScores.findIndex(v => v === undefined || v === null || v === '')
+    selectedArrowIndex.value = emptyIdx === -1 ? 0 : emptyIdx
 }
 
 const syncCurrentEndScores = () => {
@@ -507,43 +595,64 @@ const syncCurrentEndScores = () => {
     const currentEndNum = assignment.currentEnd || 1
     if (!assignment.allEndScores) assignment.allEndScores = {}
     if (assignment.currentEndScores) {
-        assignment.allEndScores[currentEndNum] = [...assignment.currentEndScores]
+        assignment.allEndScores = {
+            ...assignment.allEndScores,
+            [currentEndNum]: [...assignment.currentEndScores]
+        }
     }
 }
 
 watch(() => props.targetAssignments, (newVal) => {
     if (newVal?.length > 0) {
-        const sorted = [...newVal].sort((a, b) => {
+        const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
+        const mapped = newVal.map(a => {
+            const curEnd = a.currentEnd || 1
+            const allScores = a.allEndScores ? JSON.parse(JSON.stringify(a.allEndScores)) : {}
+            let curScores = a.currentEndScores
+            if (!Array.isArray(curScores) || curScores.length === 0) {
+                curScores = allScores[curEnd] ? [...allScores[curEnd]] : Array.from({ length: arrowsPerEnd }, () => undefined)
+            } else if (curScores.length < arrowsPerEnd) {
+                curScores = Array.from({ length: arrowsPerEnd }, (_, i) => curScores[i] !== undefined ? curScores[i] : undefined)
+            } else {
+                curScores = [...curScores]
+            }
+            return {
+                ...a,
+                currentEnd: curEnd,
+                currentEndScores: curScores,
+                allEndScores: allScores
+            }
+        })
+
+        const sorted = mapped.sort((a, b) => {
             const numA = parseInt((a.target_name || '').match(/\d+/)?.[0] || 0)
             const numB = parseInt((b.target_name || '').match(/\d+/)?.[0] || 0)
             if (numA !== numB) return numA - numB
             return (a.target_name || '').localeCompare(b.target_name || '')
         })
 
-        const route = useRoute()
-        const targetArcherId = route.query.archer
-        const targetArcher = newVal.find(a => a.uuid === targetArcherId || a.participant_id === targetArcherId)
+        localAssignments.value = sorted
 
-        if (targetArcher) {
-            currentScoringAssignment.value = targetArcher
-            initEndScores(targetArcher)
-        } else {
-            const exists = newVal.find(a => a.uuid === currentScoringAssignment.value?.uuid)
-            if (!exists) {
-                currentScoringAssignment.value = sorted[0]
-                if (sorted[0]) initEndScores(sorted[0])
-            } else {
-                currentScoringAssignment.value = exists
+        const targetArcherId = route.query.archer
+        if (targetArcherId && localAssignments.value.some(a => a.uuid === targetArcherId || a.participant_id === targetArcherId)) {
+            const found = localAssignments.value.find(a => a.uuid === targetArcherId || a.participant_id === targetArcherId)
+            currentScoringArcherUuid.value = found.uuid
+            initEndScores(found)
+        } else if (!currentScoringArcherUuid.value || !localAssignments.value.some(a => a.uuid === currentScoringArcherUuid.value)) {
+            if (localAssignments.value.length > 0) {
+                currentScoringArcherUuid.value = localAssignments.value[0].uuid
+                initEndScores(localAssignments.value[0])
             }
         }
     } else {
-        currentScoringAssignment.value = null
+        localAssignments.value = []
+        currentScoringArcherUuid.value = null
     }
 }, { immediate: true, deep: true })
 
 const availableTargetNumbers = computed(() => {
     const nums = new Set()
-    props.targetAssignments.forEach(a => {
+    localAssignments.value.forEach(a => {
         const match = (a.target_name || '').match(/\d+/)
         if (match) nums.add(parseInt(match[0]))
     })
@@ -551,7 +660,7 @@ const availableTargetNumbers = computed(() => {
 })
 
 const getTargetArcherCount = (targetNumber) => {
-    return props.targetAssignments.filter(a => {
+    return localAssignments.value.filter(a => {
         const match = (a.target_name || '').match(/\d+/)
         return match && parseInt(match[0]) === targetNumber
     }).length
@@ -559,7 +668,7 @@ const getTargetArcherCount = (targetNumber) => {
 
 const groupedAssignments = computed(() => {
     const groups = {}
-    props.targetAssignments.forEach(a => {
+    localAssignments.value.forEach(a => {
         const match = (a.target_name || '').match(/\d+/)
         const num = match ? parseInt(match[0]) : 0
         if (!groups[num]) {
@@ -603,19 +712,14 @@ const filteredGroupedAssignments = computed(() => {
 })
 
 const selectArcherForScoring = (assignment) => {
-    currentScoringAssignment.value = assignment
+    currentScoringArcherUuid.value = assignment.uuid
     initEndScores(assignment)
     showMobileInputBoard.value = true
 }
 
 const selectArrowBox = (assignment, index) => {
-    if (currentScoringAssignment.value?.uuid !== assignment.uuid) {
-        currentScoringAssignment.value = assignment
-        if (!assignment.currentEndScores) {
-            const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
-            assignment.currentEndScores = Array(arrowsPerEnd).fill(undefined)
-        }
-    }
+    currentScoringArcherUuid.value = assignment.uuid
+    ensureEndScoresArray(assignment)
     selectedArrowIndex.value = index
     showMobileInputBoard.value = true
 }
@@ -626,45 +730,56 @@ const closeMobileInputBoard = () => {
 
 const addScore = (score) => {
     if (isSessionLocked.value) {
-        toast.warning('Sesi penilaian terkunci. Tidak dapat mengubah nilai.')
+        toast.warning(t('event_qualification.session_is_locked_warning', 'Sesi penilaian terkunci. Tidak dapat mengubah nilai.'))
         return
     }
-    if (!currentScoringAssignment.value) return
+    const assignment = currentScoringAssignment.value
+    if (!assignment) return
+    ensureEndScoresArray(assignment)
     const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
 
-    if (!currentScoringAssignment.value.currentEndScores) {
-        currentScoringAssignment.value.currentEndScores = Array(arrowsPerEnd).fill(undefined)
+    let idx = selectedArrowIndex.value
+    if (idx < 0 || idx >= arrowsPerEnd) {
+        idx = 0
     }
 
-    const scores = currentScoringAssignment.value.currentEndScores
-    scores.splice(selectedArrowIndex.value, 1, score)
+    // Direct reactive array reassignment to guarantee instant Vue 3 DOM reactivity
+    const newEndScores = [...(assignment.currentEndScores || [])]
+    newEndScores[idx] = score
+    assignment.currentEndScores = newEndScores
+
     syncCurrentEndScores()
 
-    if (selectedArrowIndex.value < arrowsPerEnd - 1) {
-        selectedArrowIndex.value++
+    if (idx < arrowsPerEnd - 1) {
+        selectedArrowIndex.value = idx + 1
     }
 }
 
 const deleteLastScore = () => {
     if (isSessionLocked.value) {
-        toast.warning('Sesi penilaian terkunci. Tidak dapat mengubah nilai.')
+        toast.warning(t('event_qualification.session_is_locked_warning', 'Sesi penilaian terkunci. Tidak dapat mengubah nilai.'))
         return
     }
-    if (!currentScoringAssignment.value) return
-    const scores = currentScoringAssignment.value.currentEndScores
+    const assignment = currentScoringAssignment.value
+    if (!assignment) return
+    ensureEndScoresArray(assignment)
+    const scores = assignment.currentEndScores
     if (!scores) return
 
+    const newEndScores = [...scores]
+
     // 1. If currently selected slot has a value, clear it
-    if (scores[selectedArrowIndex.value] !== undefined && scores[selectedArrowIndex.value] !== null) {
-        scores.splice(selectedArrowIndex.value, 1, undefined)
+    if (newEndScores[selectedArrowIndex.value] !== undefined && newEndScores[selectedArrowIndex.value] !== null && newEndScores[selectedArrowIndex.value] !== '') {
+        newEndScores[selectedArrowIndex.value] = undefined
+        assignment.currentEndScores = newEndScores
         syncCurrentEndScores()
         return
     }
 
     // 2. If currently selected slot is empty, find the nearest previous filled slot
     let targetIdx = -1
-    for (let i = selectedArrowIndex.value; i >= 0; i--) {
-        if (scores[i] !== undefined && scores[i] !== null) {
+    for (let i = selectedArrowIndex.value - 1; i >= 0; i--) {
+        if (newEndScores[i] !== undefined && newEndScores[i] !== null && newEndScores[i] !== '') {
             targetIdx = i
             break
         }
@@ -672,8 +787,8 @@ const deleteLastScore = () => {
 
     // 3. If no filled slot before current cursor, find the last filled slot in the end
     if (targetIdx === -1) {
-        for (let i = scores.length - 1; i >= 0; i--) {
-            if (scores[i] !== undefined && scores[i] !== null) {
+        for (let i = newEndScores.length - 1; i >= 0; i--) {
+            if (newEndScores[i] !== undefined && newEndScores[i] !== null && newEndScores[i] !== '') {
                 targetIdx = i
                 break
             }
@@ -681,7 +796,8 @@ const deleteLastScore = () => {
     }
 
     if (targetIdx !== -1) {
-        scores.splice(targetIdx, 1, undefined)
+        newEndScores[targetIdx] = undefined
+        assignment.currentEndScores = newEndScores
         selectedArrowIndex.value = targetIdx
         syncCurrentEndScores()
     } else if (selectedArrowIndex.value > 0) {
@@ -795,12 +911,12 @@ const goToEnd = (endNumber) => {
     currentScoringAssignment.value.currentEnd = endNumber
     const saved = currentScoringAssignment.value.allEndScores[endNumber]
     const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
-    if (saved && saved.length > 0) {
-        currentScoringAssignment.value.currentEndScores = [...saved]
+    if (saved && Array.isArray(saved) && saved.length > 0) {
+        currentScoringAssignment.value.currentEndScores = Array.from({ length: arrowsPerEnd }, (_, i) => saved[i] !== undefined ? saved[i] : undefined)
     } else {
-        currentScoringAssignment.value.currentEndScores = Array(arrowsPerEnd).fill(undefined)
+        currentScoringAssignment.value.currentEndScores = Array.from({ length: arrowsPerEnd }, () => undefined)
     }
-    selectedArrowIndex.value = 0
+    initEndScores(currentScoringAssignment.value)
 }
 
 const goPrevEnd = () => {
@@ -820,7 +936,7 @@ const goNextEnd = () => {
 
 const saveEndAndNext = async () => {
     if (isSessionLocked.value) {
-        toast.warning('Sesi penilaian terkunci. Tidak dapat mengubah nilai.')
+        toast.warning(t('event_qualification.session_is_locked_warning', 'Sesi penilaian terkunci. Tidak dapat mengubah nilai.'))
         return
     }
     if (!currentScoringAssignment.value) return
@@ -857,10 +973,10 @@ const saveEndAndNext = async () => {
             if (currentEndNum < (props.sessionData?.total_ends || 0)) {
                 goToEnd(currentEndNum + 1)
             } else {
-                const currentIndex = props.targetAssignments.findIndex(a => a.uuid === assignment.uuid)
-                if (currentIndex < props.targetAssignments.length - 1) {
-                    const nextArcher = props.targetAssignments[currentIndex + 1]
-                    currentScoringAssignment.value = nextArcher
+                const currentIndex = localAssignments.value.findIndex(a => a.uuid === assignment.uuid)
+                if (currentIndex < localAssignments.value.length - 1) {
+                    const nextArcher = localAssignments.value[currentIndex + 1]
+                    currentScoringArcherUuid.value = nextArcher.uuid
                     initEndScores(nextArcher)
                     toast.info(t('event_qualification.toast_moved_to_archer', { name: nextArcher.archer_name }))
                     transitionToastShown = true
@@ -878,7 +994,7 @@ const saveEndAndNext = async () => {
         emit('updated')
     } catch (error) {
         console.error('Failed to save score:', error)
-        toast.error(t('event_qualification.toast_score_save_failed'))
+        toast.error(getApiErrorMessage(error, t('event_qualification.toast_score_save_failed')))
     } finally {
         saving.value = false
     }

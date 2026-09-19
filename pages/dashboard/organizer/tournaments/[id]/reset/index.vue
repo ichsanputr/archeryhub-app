@@ -275,7 +275,7 @@
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useApi } from '~/composables/useApi'
+import { useApi, getApiErrorMessage } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { definePageMeta, useHead } from '#imports'
 import { useSubscription } from '~/composables/useSubscription'
@@ -395,7 +395,7 @@ const requestVerificationCode = async () => {
     toast.success('Verification code sent to your email')
   } catch (error) {
     console.error('Failed to request reset OTP code:', error)
-    toast.error(error?.data?.error || 'Failed to send verification code')
+    toast.error(getApiErrorMessage(error, 'Failed to send verification code'))
   } finally {
     sendingOtp.value = false
   }
@@ -431,7 +431,7 @@ const handleReset = async () => {
     closeConfirmDialog()
   } catch (error) {
     console.error('Failed to reset event data:', error)
-    toast.error(error?.data?.error || 'Failed to reset event data')
+    toast.error(getApiErrorMessage(error, 'Failed to reset event data'))
   } finally {
     isSubmitting.value = false
   }

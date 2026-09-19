@@ -7,7 +7,7 @@
 
         <div class="relative group">
             <div v-if="icon"
-                class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors z-10">
+                class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-navy transition-colors z-10">
                 <Icon :icon="icon.includes(':') ? icon : `ph:${icon}`" class="text-[20px]" />
             </div>
 

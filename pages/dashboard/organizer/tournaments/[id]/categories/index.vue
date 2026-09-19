@@ -69,7 +69,7 @@
                             <!-- Category Icon -->
                             <div
                                 class="h-12 w-12 rounded-xl border border-gray-100 bg-gray-50 flex items-center justify-center shadow-sm shrink-0 transition-all group-hover:bg-navy p-2 overflow-hidden">
-                                <img :src="'/' + getCategoryIcon(`${category.division_name} ${category.event_type_name} ${category.gender_division_name}`)"
+                                <img :src="'/' + getCategoryIcon(`${category.division_name || ''} ${category.category_name || ''} ${category.event_type_name || ''} ${category.gender_division_name || ''}`)"
                                     :alt="category.division_name"
                                     class="w-full h-full object-contain group-hover:invert transition-all" />
                             </div>
@@ -77,9 +77,7 @@
                             <div class="min-w-0 flex-1">
                                 <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
                                     <h3 class="text-base sm:text-lg font-bold text-navy break-words min-w-0">
-                                        {{ category.division_name }} – {{ category.category_name }} – {{
-                                            category.event_type_name }}
-                                        – {{ category.gender_division_name }}
+                                        {{ [category.division_name, category.category_name, category.event_type_name, category.gender_division_name].filter(s => s && s.trim() && s !== '-').join(' – ') }}
                                     </h3>
                                     <span
                                         :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"

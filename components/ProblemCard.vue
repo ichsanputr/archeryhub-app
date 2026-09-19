@@ -33,7 +33,7 @@ const toggleSaveProblem = async (slug) => {
     throw new Error('User not authenticated')
   }
 
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000'
+  const apiBaseUrl = useApiBaseUrl()
   const isCurrentlySaved = props.saved
 
   if (isCurrentlySaved) {

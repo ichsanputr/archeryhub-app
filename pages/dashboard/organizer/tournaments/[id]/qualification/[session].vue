@@ -17,54 +17,60 @@
       </div>
 
       <!-- Header Content -->
-      <div class="relative p-5 sm:p-8 z-10">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div class="flex items-center sm:items-start gap-4 flex-1 min-w-0">
-            <BaseButton variant="white" size="sm" icon="ph:arrow-left-bold"
-              class="!bg-white/10 !text-white hover:!bg-primary hover:!text-btn-text backdrop-blur-sm !border-white/20"
-              @click="navigateTo(`/dashboard/organizer/tournaments/${eventId}/qualification`)" />
-            <div class="min-w-0">
+      <div class="relative p-4 sm:p-8 z-10">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-6">
+          <div class="flex flex-col gap-3 flex-1 min-w-0">
+            <!-- Top Row: Back Button & Title -->
+            <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+              <button type="button"
+                @click="navigateTo(`/dashboard/organizer/tournaments/${eventId}/qualification`)"
+                class="size-10 sm:size-12 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md hover:bg-primary hover:text-navy text-white transition-all shrink-0 cursor-pointer active:scale-95"
+                :title="t('event_qualification.back', 'Kembali')">
+                <Icon icon="ph:arrow-left-bold" class="text-lg sm:text-xl" />
+              </button>
+
               <div v-if="isLoading && !sessionData"
-                class="h-8 w-48 sm:h-10 sm:w-64 bg-white/10 rounded-lg animate-pulse mb-2"></div>
-              <h1 v-else class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
+                class="h-8 w-48 sm:h-10 sm:w-64 bg-white/10 rounded-lg animate-pulse"></div>
+              <h1 v-else class="text-lg sm:text-2xl lg:text-3xl font-black leading-tight tracking-tight text-white truncate flex-1 min-w-0">
                 {{ sessionData?.name || t('event_qualification.qualification_session') }}
               </h1>
+            </div>
 
-              <div v-if="isLoading && !sessionData" class="flex gap-4">
-                <div class="h-5 w-20 bg-white/5 rounded animate-pulse"></div>
-                <div class="h-5 w-24 bg-white/5 rounded animate-pulse"></div>
+            <!-- Chips Meta Info -->
+            <div v-if="isLoading && !sessionData" class="flex gap-4 sm:pl-16">
+              <div class="h-5 w-20 bg-white/5 rounded animate-pulse"></div>
+              <div class="h-5 w-24 bg-white/5 rounded animate-pulse"></div>
+            </div>
+            <div v-else
+              class="flex flex-wrap items-center gap-1.5 sm:gap-2.5 text-xs text-slate-300 font-bold">
+              <!-- Session Code Chip -->
+              <div class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-[11px] sm:text-xs font-bold backdrop-blur-xs font-mono">
+                <Icon icon="ph:hash-bold" class="text-xs text-primary" />
+                <span>{{ sessionData?.session_code }}</span>
               </div>
-              <div v-else
-                class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-slate-300 font-bold">
-                <!-- Session Code Chip -->
-                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-xs font-bold backdrop-blur-xs font-mono">
-                  <Icon icon="ph:hash-bold" class="text-xs text-primary" />
-                  <span>{{ sessionData?.session_code }}</span>
-                </div>
 
-                <!-- Total Ends Chip -->
-                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-xs font-bold backdrop-blur-xs">
-                  <Icon icon="ph:arrow-clockwise-bold" class="text-xs text-primary" />
-                  <span>{{ sessionData?.total_ends || 0 }} {{ t('event_qualification.ends') }}</span>
-                </div>
+              <!-- Total Ends Chip -->
+              <div class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-[11px] sm:text-xs font-bold backdrop-blur-xs">
+                <Icon icon="ph:arrow-clockwise-bold" class="text-xs text-primary" />
+                <span>{{ sessionData?.total_ends || 0 }} {{ t('event_qualification.ends') }}</span>
+              </div>
 
-                <!-- Arrows per End Chip -->
-                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-xs font-bold backdrop-blur-xs">
-                  <Icon icon="ph:crosshair-bold" class="text-xs text-primary" />
-                  <span>{{ sessionData?.arrows_per_end || 0 }} {{ t('event_qualification.arrows').toLowerCase() }}/{{ t('event_qualification.ends').toLowerCase().replace(/s$/, '') }}</span>
-                </div>
+              <!-- Arrows per End Chip -->
+              <div class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-[11px] sm:text-xs font-bold backdrop-blur-xs">
+                <Icon icon="ph:crosshair-bold" class="text-xs text-primary" />
+                <span>{{ sessionData?.arrows_per_end || 0 }} {{ t('event_qualification.arrows').toLowerCase() }}/{{ t('event_qualification.ends').toLowerCase().replace(/s$/, '') }}</span>
               </div>
             </div>
           </div>
 
-          <!-- Print Scoresheet Button (Standardized B&W) -->
-          <div v-if="sessionData" class="flex-shrink-0">
+          <!-- Action Buttons (Print Scoresheet) -->
+          <div v-if="sessionData" class="flex items-center gap-2.5 sm:gap-3 shrink-0 pt-3 lg:pt-0 border-t border-white/10 lg:border-t-0 w-full sm:w-auto">
             <button type="button" :disabled="isDownloadingScoresheet"
-              class="flex items-center gap-2.5 px-5 py-2.5 bg-white/10 text-white hover:bg-primary hover:text-btn-text border border-white/20 rounded-xl backdrop-blur-sm transition-all text-sm font-black disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+              class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 bg-white/10 text-white hover:bg-primary hover:text-navy border border-white/20 rounded-xl transition-all text-xs sm:text-sm font-black disabled:opacity-50 disabled:cursor-not-allowed shadow-sm active:scale-95 cursor-pointer"
               @click="downloadScoresheet">
               <Icon :icon="isDownloadingScoresheet ? 'ph:spinner' : 'ph:printer-bold'"
-                :class="['text-xl', isDownloadingScoresheet ? 'animate-spin' : '']" />
-              <span>{{ isDownloadingScoresheet ? t('event_qualification.processing') : t('event_qualification.print_scoresheet') }}</span>
+                :class="['text-base sm:text-lg', isDownloadingScoresheet ? 'animate-spin' : '']" />
+              <span class="truncate">{{ isDownloadingScoresheet ? t('event_qualification.processing') : t('event_qualification.print_scoresheet') }}</span>
             </button>
           </div>
         </div>
@@ -123,7 +129,7 @@
             </div>
             <div class="flex-1 min-w-0">
               <div
-                class="font-extrabold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2">
+                class="font-extrabold text-navy leading-tight mb-1.5 line-clamp-2">
                 {{ getCategoryName(category) }}</div>
             </div>
           </div>
@@ -152,7 +158,8 @@
       <!-- Mode: Input Scoring -->
       <div v-else-if="activeTab === 'input' && selectedCategory">
         <QualificationScoringMode :sessionData="sessionData" :selectedCategory="selectedCategory"
-          :targetAssignments="targetAssignments" @updated="fetchTargetAssignments(selectedCategory)" />
+          :targetAssignments="targetAssignments" @updated="fetchTargetAssignments(selectedCategory)"
+          @switch-tab="(tab) => activeTab = tab" />
       </div>
 
       <!-- Empty State -->
@@ -430,7 +437,7 @@ const fetchTargetAssignments = async (categoryId, preLoadedAssignments = null) =
         club_name: clubName,
         avatar_url: avatarUrl,
         currentEnd,
-        currentEndScores: allEndScores[currentEnd] ? [...allEndScores[currentEnd]] : [],
+        currentEndScores: allEndScores[currentEnd] ? [...allEndScores[currentEnd]] : Array.from({ length: sessionData.value?.arrows_per_end || 6 }, () => undefined),
         allEndScores
       }
     })
@@ -445,14 +452,17 @@ const selectCategory = async (categoryId) => {
   try {
     await fetchArchersForCategory(categoryId)
 
-    // Fetch assignments once for both uses
-    const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`, {
-      params: { category_id: categoryId }
-    })
-    const assignments = response?.assignments || []
+    // Fetch all session assignments so target layout & locked state across all categories are accurate
+    const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`)
+    const allAssignments = response?.assignments || response.data?.assignments || []
+    allSessionAssignments.value = allAssignments
 
-    await loadExistingAssignments(categoryId, assignments)
-    await fetchTargetAssignments(categoryId, assignments)
+    const categoryAssignments = allAssignments.filter(a =>
+      allParticipants.value.find(p => p.id === a.participant_id)?.category_id === categoryId
+    )
+
+    await loadExistingAssignments(categoryId, categoryAssignments)
+    await fetchTargetAssignments(categoryId, categoryAssignments)
     await fetchBoardCodes()
   } catch (error) {
     console.error("Error selecting category:", error)
@@ -463,15 +473,17 @@ const selectCategory = async (categoryId) => {
 
 const handleAssignmentsSaved = async () => {
   if (selectedCategory.value) {
-    // Fetch assignments once and update both views
     try {
-      const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`, {
-        params: { category_id: selectedCategory.value }
-      })
-      const assignments = response?.assignments || []
+      const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`)
+      const allAssignments = response?.assignments || response.data?.assignments || []
+      allSessionAssignments.value = allAssignments
 
-      await loadExistingAssignments(selectedCategory.value, assignments)
-      await fetchTargetAssignments(selectedCategory.value, assignments)
+      const categoryAssignments = allAssignments.filter(a =>
+        allParticipants.value.find(p => p.id === a.participant_id)?.category_id === selectedCategory.value
+      )
+
+      await loadExistingAssignments(selectedCategory.value, categoryAssignments)
+      await fetchTargetAssignments(selectedCategory.value, categoryAssignments)
       await fetchBoardCodes()
     } catch (error) {
       console.error("Error reloading assignments:", error)

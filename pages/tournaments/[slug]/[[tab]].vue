@@ -215,7 +215,7 @@
                                             Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}
                                             <span class="text-sm text-gray-400 font-semibold">{{ t('event_detail.per_category') }}</span>
                                         </div>
-                                        <div class="text-xs text-gray-500">{{ fee.description }}</div>
+                                        <div class="text-xs sm:text-sm text-gray-500">{{ fee.description }}</div>
                                     </div>
                                 </div>
 
@@ -279,7 +279,7 @@
                                 <!-- Integrated Payment Methods inside Fee Section -->
                                 <div v-if="tournament.payment_methods && tournament.payment_methods.length > 0"
                                     class="pt-8 mt-8 border-t border-gray-100">
-                                    <h3 class="text-xs font-black text-gray-400 tracking-[0.2em] mb-5">{{ t('event_detail.payment_methods') }}</h3>
+                                    <h3 class="text-xs sm:text-sm font-black text-gray-400 tracking-[0.2em] mb-5">{{ t('event_detail.payment_methods') }}</h3>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                         <div v-for="(method, idx) in tournament.payment_methods" :key="idx"
                                             class="p-4 rounded-2xl bg-gray-50/70 border border-gray-100 flex items-center gap-4">
@@ -290,9 +290,9 @@
                                                 <Icon v-else :icon="getPaymentIcon(method)" class="text-xl md:text-2xl text-navy" />
                                             </div>
                                             <div class="min-w-0">
-                                                <div class="text-[10px] font-black text-gray-400 tracking-wider mb-0.5">{{ method.bank_name }}</div>
+                                                <div class="text-[10px] sm:text-xs font-black text-gray-400 tracking-wider mb-0.5">{{ method.bank_name }}</div>
                                                 <div class="text-sm font-black text-navy truncate">{{ method.account_number }}</div>
-                                                <div class="text-[10px] font-bold text-gray-500 truncate mt-0.5 italic">a.n {{ method.account_name }}</div>
+                                                <div class="text-[10px] sm:text-xs font-bold text-gray-500 truncate mt-0.5 italic">a.n {{ method.account_name }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -308,9 +308,9 @@
                                 <div
                                     class="lg:w-1/2 bg-primary relative flex flex-col justify-center items-center px-8 md:px-12 py-16 target-texture">
                                     <div class="relative z-10 text-center">
-                                        <span class="text-navy/40 font-black tracking-[0.3em] text-xs mb-4 block">{{ t('event_detail.total_prize') }}</span>
-                                        <h2 class="text-navy text-4xl md:text-5xl font-black leading-none mb-4">Rp {{
-                                            (tournament.total_prize || 0).toLocaleString('id-ID') }}</h2>
+                                        <span class="text-navy/40 font-black tracking-[0.3em] text-xs sm:text-sm mb-4 block">{{ t('event_detail.total_prize') }}</span>
+                                        <div class="text-navy text-4xl md:text-5xl font-black leading-none mb-4">Rp {{
+                                            (tournament.total_prize || 0).toLocaleString('id-ID') }}</div>
                                         <div class="h-2 w-40 bg-navy mx-auto mb-6"></div>
                                         <div class="text-navy font-bold text-base tracking-widest">{{ t('event_detail.fight_for_best_podium') }}
                                         </div>
@@ -322,18 +322,18 @@
                                         style="background-image: radial-gradient(circle, rgba(255,255,255,0.25) 1px, transparent 1px); background-size: 30px 30px;">
                                     </div>
                                     <div class="relative z-10 w-full">
-                                        <h3 class="text-white text-lg sm:text-2xl mb-10 flex items-center gap-3">
+                                        <h2 class="text-white text-lg sm:text-2xl mb-10 flex items-center gap-3">
                                             <Icon icon="ph:trophy-bold" class="text-primary text-2xl md:text-3xl" />
                                             {{ t('event_detail.prize_details') }}
-                                        </h3>
+                                        </h2>
                                         <div class="space-y-10">
                                             <div>
                                                 <div class="flex justify-between items-end mb-3">
                                                     <div>
                                                         <span
-                                                            class="text-primary font-black text-xs tracking-widest ">{{ t('event_detail.main_champion') }}</span>
-                                                        <h4 class="text-white text-lg sm:text-xl font-black">{{ t('event_detail.champion_1') }}
-                                                        </h4>
+                                                            class="text-primary font-black text-xs sm:text-sm tracking-widest ">{{ t('event_detail.main_champion') }}</span>
+                                                        <h3 class="text-white text-lg sm:text-xl font-black">{{ t('event_detail.champion_1') }}
+                                                        </h3>
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
                                                         displayValue(tournament.prizes?.first) }}
@@ -343,16 +343,16 @@
                                                     <div class="h-full bg-primary w-full"></div>
                                                 </div>
                                                 <div v-if="tournament.prizes?.first_caption"
-                                                    class="text-white/60 text-xs mt-2">{{
+                                                    class="text-white/60 text-xs sm:text-sm mt-2">{{
                                                         tournament.prizes.first_caption }}</div>
                                             </div>
                                             <div>
                                                 <div class="flex justify-between items-end mb-3">
                                                     <div>
                                                         <span
-                                                            class="text-white/40 font-black text-xs tracking-widest ">{{ t('event_detail.second_place') }}</span>
-                                                        <h4 class="text-white text-lg sm:text-xl font-black">{{ t('event_detail.champion_2') }}
-                                                        </h4>
+                                                            class="text-white/40 font-black text-xs sm:text-sm tracking-widest ">{{ t('event_detail.second_place') }}</span>
+                                                        <h3 class="text-white text-lg sm:text-xl font-black">{{ t('event_detail.champion_2') }}
+                                                        </h3>
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
                                                         displayValue(tournament.prizes?.second)
@@ -362,16 +362,16 @@
                                                     <div class="h-full bg-white/60 w-1/2"></div>
                                                 </div>
                                                 <div v-if="tournament.prizes?.second_caption"
-                                                    class="text-white/60 text-xs mt-2">{{
+                                                    class="text-white/60 text-xs sm:text-sm mt-2">{{
                                                         tournament.prizes.second_caption }}</div>
                                             </div>
                                             <div>
                                                 <div class="flex justify-between items-end mb-3">
                                                     <div>
                                                         <span
-                                                            class="text-white/40 font-black text-xs tracking-widest ">{{ t('event_detail.third_place') }}</span>
-                                                        <h4 class="text-white text-lg sm:text-xl font-black">{{ t('event_detail.champion_3') }}
-                                                        </h4>
+                                                            class="text-white/40 font-black text-xs sm:text-sm tracking-widest ">{{ t('event_detail.third_place') }}</span>
+                                                        <h3 class="text-white text-lg sm:text-xl font-black">{{ t('event_detail.champion_3') }}
+                                                        </h3>
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
                                                         displayValue(tournament.prizes?.third) }}
@@ -381,7 +381,7 @@
                                                     <div class="h-full bg-white/30 w-1/4"></div>
                                                 </div>
                                                 <div v-if="tournament.prizes?.third_caption"
-                                                    class="text-white/60 text-xs mt-2">{{
+                                                    class="text-white/60 text-xs sm:text-sm mt-2">{{
                                                         tournament.prizes.third_caption }}</div>
                                             </div>
                                         </div>
@@ -442,7 +442,9 @@
                             :schedules="schedulesData" />
                         <TournamentAthletesTab v-else-if="activeTab === 'athletes'" :participants="participantsData" />
                         <TournamentResultsTab v-else-if="activeTab === 'results'" :event-id="slug"
-                            :results-type="tournament.page_settings?.results_type" :results="tournament.results || []"
+                            :results-type="tournament.page_settings?.results_type"
+                            :manual-results="tournament.results || []"
+                            :results="tournament.results || []"
                             :categories="categoriesList" :participants="participantsData" />
                         <TournamentVenueTab v-else-if="activeTab === 'venue'" :venue="tournament.venue"
                             :address="tournament.address" :gmaps-link="tournament.gmaps_link"
@@ -541,28 +543,28 @@
                                     <span class="block text-xl sm:text-2xl font-bold text-navy">{{
                                         String(countdown.days).padStart(2,
                                             '0') }}</span>
-                                    <span class="text-xs text-gray-500 ">{{ t('common.days') }}</span>
+                                    <span class="text-xs sm:text-sm text-gray-500 ">{{ t('common.days') }}</span>
                                 </div>
                                 <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                     :class="{ 'opacity-50': countdown.isClosed }">
                                     <span class="block text-xl sm:text-2xl font-bold text-navy">{{
                                         String(countdown.hours).padStart(2,
                                             '0') }}</span>
-                                    <span class="text-xs text-gray-500 ">{{ t('common.hours') }}</span>
+                                    <span class="text-xs sm:text-sm text-gray-500 ">{{ t('common.hours') }}</span>
                                 </div>
                                 <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                     :class="{ 'opacity-50': countdown.isClosed }">
                                     <span class="block text-xl sm:text-2xl font-bold text-navy">{{
                                         String(countdown.minutes).padStart(2, '0') }}</span>
-                                    <span class="text-xs text-gray-500 ">{{ t('common.minutes') }}</span>
+                                    <span class="text-xs sm:text-sm text-gray-500 ">{{ t('common.minutes') }}</span>
                                 </div>
                             </div>
                             <!-- New Per-Category Quota Section -->
                             <!-- New Per-Category Quota Section (Always Scrollable) -->
                             <div class="mb-6">
                                 <div class="flex items-center justify-between mb-3 px-1">
-                                    <span class="text-[10px] font-black tracking-widest text-gray-400">{{ t('event_detail.slot_availability') }}</span>
-                                    <span class="text-xs font-bold text-navy bg-gray-100 px-2.5 py-0.5 rounded-full">
+                                    <span class="text-[10px] sm:text-xs font-black tracking-widest text-gray-400">{{ t('event_detail.slot_availability') }}</span>
+                                    <span class="text-xs sm:text-sm font-bold text-navy bg-gray-100 px-2.5 py-0.5 rounded-full">
                                         {{ tournament.participant_count || 0 }} {{ t('event_detail.registered') }}</span>
                                 </div>
 
@@ -572,16 +574,16 @@
                                         class="space-y-1.5 bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
                                         <div class="flex justify-between items-start gap-4">
                                             <span
-                                                class="text-[10px] font-black text-navy leading-tight line-clamp-2  tracking-tight">
+                                                class="text-xs sm:text-sm font-black text-navy leading-tight line-clamp-2  tracking-tight">
                                                 {{ formatCategoryLabel(cat) }}
                                             </span>
                                             <div class="text-right shrink-0">
-                                                <div class="text-[10px] font-black text-navy">
+                                                <div class="text-xs sm:text-sm font-black text-navy">
                                                     {{ cat.participant_count }} / {{ cat.max_participants > 0 ?
                                                         cat.max_participants : t('common.unlimited') }}
                                                 </div>
-                                                <div class="text-[9px] text-gray-400 font-bold  tracking-tighter">
-                                                    Peserta</div>
+                                                <div class="text-[10px] sm:text-xs text-gray-400 font-bold  tracking-tighter">
+                                                    {{ t('event_detail.participants', 'Peserta') }}</div>
                                             </div>
                                         </div>
 
@@ -597,7 +599,7 @@
                                     </div>
                                 </div>
                                 <div v-else
-                                    class="text-xs text-gray-400 italic text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                    class="text-xs sm:text-sm text-gray-400 italic text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                                     {{ t('event_detail.quota_info_unavailable') }}
                                 </div>
                             </div>
@@ -608,7 +610,7 @@
                                         class="w-full py-4 bg-gray-100 text-gray-400 font-bold rounded-xl text-center cursor-not-allowed border border-gray-200">
                                         {{ t('event_detail.registration_not_started') }}
                                     </div>
-                                    <div class="text-[10px] text-center text-gray-400 font-bold mt-2">
+                                    <div class="text-xs sm:text-sm text-center text-gray-400 font-bold mt-2">
                                         {{ t('event_detail.opens_on') }} {{ useDateFormat(registrationStatus.startTime, 'DD MMM YYYY, HH:mm', { locales: 'id-ID' }).value }}
                                     </div>
                                 </template>
@@ -652,7 +654,7 @@
                                         {{ tournament.organizer }}
                                     </NuxtLink>
                                     <h4 v-else class="font-bold text-navy text-sm">{{ tournament.organizer }}</h4>
-                                    <div class="text-xs text-gray-500">{{ t('event_detail.verified_organizer') }} <Icon
+                                    <div class="text-xs sm:text-sm text-gray-500">{{ t('event_detail.verified_organizer') }} <Icon
                                             icon="ph:seal-check-fill" class="text-[14px] inline align-middle text-blue-500" />
                                     </div>
                                 </div>
@@ -660,19 +662,19 @@
                             <div class="flex gap-2">
                                 <a v-if="tournament.whatsapp_number"
                                     :href="`https://wa.me/${tournament.whatsapp_number}`" target="_blank"
-                                    class="flex-1 py-2.5 bg-green-500 hover:bg-green-600 border border-green-500 rounded-xl text-xs font-bold text-white transition-all flex items-center justify-center gap-2 shadow-sm shadow-green-200">
+                                    class="flex-1 py-2.5 bg-green-500 hover:bg-green-600 border border-green-500 rounded-xl text-xs sm:text-sm font-bold text-white transition-all flex items-center justify-center gap-2 shadow-sm shadow-green-200">
                                     <Icon icon="ph:whatsapp-logo-bold" class="text-lg" />
                                     WhatsApp
                                 </a>
                                 <button v-else
-                                    class="flex-1 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-gray-400 cursor-not-allowed flex items-center justify-center gap-2">
+                                    class="flex-1 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm font-bold text-gray-400 cursor-not-allowed flex items-center justify-center gap-2">
                                     <Icon icon="ph:whatsapp-logo" class="text-lg" />
                                     WhatsApp
                                 </button>
 
                                 <NuxtLink v-if="tournament.organizer_slug"
                                     :to="`/organizer/${tournament.organizer_slug}`"
-                                    class="flex-1 py-2.5 bg-navy hover:bg-navy-light border border-navy rounded-xl text-xs font-bold text-white transition-all text-center flex items-center justify-center">
+                                    class="flex-1 py-2.5 bg-navy hover:bg-navy-light border border-navy rounded-xl text-xs sm:text-sm font-bold text-white transition-all text-center flex items-center justify-center">
                                     {{ t('event_detail.view_profile') }}
                                 </NuxtLink>
                             </div>
@@ -692,14 +694,14 @@
                             </div>
                             <div class="p-4">
                                 <h3 class="font-bold text-navy text-sm leading-snug line-clamp-2 mb-1">{{ displayValue(tournament.venue) }}</h3>
-                                <div class="text-xs text-gray-500 line-clamp-2 leading-relaxed">{{ displayValue(tournament.address) }}</div>
+                                <div class="text-xs sm:text-sm text-gray-500 line-clamp-2 leading-relaxed">{{ displayValue(tournament.address) }}</div>
                             </div>
                         </div>
 
                         <!-- Share Section -->
                         <div
                             class="flex flex-col items-center gap-3 justify-center bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                            <span class="text-xs font-bold text-gray-400">{{ t('event_detail.share_event') }}</span>
+                            <span class="text-xs sm:text-sm font-bold text-gray-400">{{ t('event_detail.share_event') }}</span>
                             <div class="grid grid-cols-4 gap-2 w-full">
                                 <button @click="shareTo('whatsapp')"
                                     class="w-full h-10 rounded-xl bg-green-50/50 border border-green-100/50 flex items-center justify-center text-[#25D366] hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-all duration-300 shadow-2xs active:scale-95"
@@ -1207,32 +1209,6 @@ onMounted(() => {
     }
 })
 
-useHead({
-    title: () => {
-        if (!activeTab.value || activeTab.value === 'Ringkasan') {
-            return `${tournament.value.name} - Archeris.net`
-        }
-        return `${activeTab.value} ${tournament.value.name} - Archeris.net`
-    },
-    link: [
-        { rel: 'canonical', href: useRequestURL().href }
-    ]
-})
-
-useSeoMeta({
-    description: () => tournament.value.description,
-    ogTitle: () => activeTab.value && activeTab.value !== 'Ringkasan'
-        ? `${activeTab.value} ${tournament.value.name}`
-        : tournament.value.name,
-    ogDescription: () => tournament.value.description,
-    ogImage: () => tournament.value.image,
-    twitterCard: 'summary_large_image',
-    twitterTitle: () => activeTab.value && activeTab.value !== 'Ringkasan'
-        ? `${activeTab.value} ${tournament.value.name}`
-        : tournament.value.name,
-    twitterDescription: () => tournament.value.description,
-    twitterImage: () => tournament.value.image
-})
 
 const copySuccess = ref(false)
 const publicEventUrl = computed(() => {
@@ -1347,61 +1323,137 @@ const isAlreadyRegistered = computed(() => {
     )
 })
 
-// Dynamic SEO & Open Graph Meta Tags for Social Sharing & Google Rich Snippets
-useSeoMeta({
-    title: () => `${tournament.value.name || 'Archery Tournament'} - Archeris.net`,
-    ogTitle: () => `${tournament.value.name || 'Archery Tournament'} - Archeris.net`,
-    description: () => tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Join ${tournament.value.name || 'archery tournament'} in ${tournament.value.location || 'Indonesia'}. Get schedule details, live qualification & elimination brackets, and registration.`,
-    ogDescription: () => tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Join ${tournament.value.name || 'archery tournament'} in ${tournament.value.location || 'Indonesia'}. Get schedule details, live qualification & elimination brackets, and registration.`,
-    ogImage: () => tournament.value.banner_url || tournament.value.logo_url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop',
-    twitterCard: 'summary_large_image',
-    twitterTitle: () => `${tournament.value.name || 'Archery Tournament'} - Archeris.net`,
-    twitterDescription: () => tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : `Join ${tournament.value.name || 'archery tournament'} in ${tournament.value.location || 'Indonesia'}.`,
-    twitterImage: () => tournament.value.banner_url || tournament.value.logo_url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop',
+// Active Tournament Metadata (unified for internal & external tournaments)
+const activeMetaTournament = computed(() => {
+    if (eventData.value?.isExternal) {
+        const ext = eventData.value.externalTournament || {}
+        const extData = eventData.value.externalData || {}
+        const loc = ext.location || ext.venue || ext.city || 'Indonesia'
+        const rawDesc = ext.description ? ext.description.replace(/<[^>]*>?/gm, '').trim() : ''
+        return {
+            name: ext.name || 'Archery Tournament',
+            description: rawDesc ? rawDesc.substring(0, 160) : `Official results, qualification scores, and elimination match brackets for ${ext.name || 'Archery Tournament'} in ${loc}. Hosted on Archeris.`,
+            location: loc,
+            venue: ext.venue || ext.location || 'Archery Venue',
+            city: ext.city || 'Indonesia',
+            country: ext.country || 'ID',
+            start_date: ext.start_date || ext.created_at || new Date().toISOString(),
+            end_date: ext.end_date || ext.start_date || new Date().toISOString(),
+            status: ext.status || 'completed',
+            image: ext.banner_url || ext.logo_url || 'https://archeris.net/og-default.jpg',
+            organizer: extData.organizer_name || ext.organizer || 'Tournament Host / Ianseo',
+            isExternal: true
+        }
+    }
+
+    const t = tournament.value || {}
+    const loc = t.location || t.venue || t.city || 'Indonesia'
+    const rawDesc = t.description ? t.description.replace(/<[^>]*>?/gm, '').trim() : ''
+    return {
+        name: t.name || 'Archery Tournament',
+        description: rawDesc ? rawDesc.substring(0, 160) : `Join ${t.name || 'archery tournament'} in ${loc}. Get schedule details, live qualification & elimination brackets, and digital scoring on Archeris.`,
+        location: loc,
+        venue: t.venue || t.location || 'Archery Venue',
+        city: t.city || 'Indonesia',
+        country: 'ID',
+        start_date: t.start_date || t.created_at || new Date().toISOString(),
+        end_date: t.end_date || t.start_date || new Date().toISOString(),
+        status: t.status || 'upcoming',
+        image: t.banner_url || t.logo_url || t.image || 'https://archeris.net/og-default.jpg',
+        organizer: t.organizer || 'Tournament Organizer',
+        isExternal: false
+    }
 })
 
-// Canonical Link & SportsEvent JSON-LD Structured Data for Google Rich Snippets
+// Dynamic SEO & Open Graph Meta Tags for Social Sharing & Google Rich Snippets
+useSeoMeta({
+    title: () => `${activeMetaTournament.value.name} - Archeris.net`,
+    ogTitle: () => `${activeMetaTournament.value.name} - Archeris.net`,
+    description: () => activeMetaTournament.value.description,
+    ogDescription: () => activeMetaTournament.value.description,
+    ogImage: () => activeMetaTournament.value.image,
+    ogUrl: () => `https://archeris.net/tournaments/${slug}`,
+    ogType: 'website',
+    twitterCard: 'summary_large_image',
+    twitterTitle: () => `${activeMetaTournament.value.name} - Archeris.net`,
+    twitterDescription: () => activeMetaTournament.value.description,
+    twitterImage: () => activeMetaTournament.value.image,
+})
+
+// Structured Data (SportsEvent & BreadcrumbList)
+const eventStructuredData = computed(() => {
+    const meta = activeMetaTournament.value
+    let eventStatus = 'https://schema.org/EventScheduled'
+    if (meta.status === 'completed') eventStatus = 'https://schema.org/EventCompleted'
+    else if (meta.status === 'canceled') eventStatus = 'https://schema.org/EventCancelled'
+    else if (meta.status === 'postponed') eventStatus = 'https://schema.org/EventPostponed'
+
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'SportsEvent',
+        'name': meta.name,
+        'url': `https://archeris.net/tournaments/${slug}`,
+        'description': meta.description,
+        'image': [meta.image],
+        'startDate': meta.start_date,
+        'endDate': meta.end_date,
+        'eventStatus': eventStatus,
+        'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
+        'location': {
+            '@type': 'Place',
+            'name': meta.venue || meta.location,
+            'address': {
+                '@type': 'PostalAddress',
+                'addressLocality': meta.location,
+                'addressCountry': meta.country || 'ID'
+            }
+        },
+        'organizer': {
+            '@type': 'Organization',
+            'name': meta.organizer,
+            'url': 'https://archeris.net'
+        }
+    }
+})
+
+const breadcrumbStructuredData = computed(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+        {
+            '@type': 'ListItem',
+            'position': 1,
+            'name': 'Home',
+            'item': 'https://archeris.net/'
+        },
+        {
+            '@type': 'ListItem',
+            'position': 2,
+            'name': 'Tournaments',
+            'item': 'https://archeris.net/tournaments'
+        },
+        {
+            '@type': 'ListItem',
+            'position': 3,
+            'name': activeMetaTournament.value.name,
+            'item': `https://archeris.net/tournaments/${slug}`
+        }
+    ]
+}))
+
 useHead({
-    title: computed(() => `${tournament.value.name || 'Archery Tournament'} - Archeris.net`),
+    title: computed(() => `${activeMetaTournament.value.name} - Archeris.net`),
     link: [
         { rel: 'canonical', href: `https://archeris.net/tournaments/${slug}` }
     ],
     script: [
         {
             type: 'application/ld+json',
-            children: computed(() => JSON.stringify({
-                '@context': 'https://schema.org',
-                '@type': 'SportsEvent',
-                'name': tournament.value.name || 'Archery Tournament',
-                'url': `https://archeris.net/tournaments/${slug}`,
-                'description': tournament.value.description ? tournament.value.description.replace(/<[^>]*>?/gm, '').substring(0, 200) : 'Archery tournament with digital scoring and brackets',
-                'image': [tournament.value.banner_url || tournament.value.logo_url || 'https://images.unsplash.com/photo-1511886929837-354d827aae26?w=1200&auto=format&fit=crop'],
-                'startDate': tournament.value.start_date || tournament.value.created_at || new Date().toISOString(),
-                'endDate': tournament.value.end_date || tournament.value.start_date || new Date().toISOString(),
-                'eventStatus': 'https://schema.org/EventScheduled',
-                'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
-                'location': {
-                    '@type': 'Place',
-                    'name': tournament.value.location || 'Archery Range',
-                    'address': {
-                        '@type': 'PostalAddress',
-                        'addressLocality': tournament.value.location || 'Indonesia',
-                        'addressCountry': 'ID'
-                    }
-                },
-                'organizer': {
-                    '@type': 'Organization',
-                    'name': tournament.value.organizer || 'Tournament Organizer',
-                    'url': 'https://archeris.net'
-                },
-                'offers': {
-                    '@type': 'Offer',
-                    'url': `https://archeris.net/tournaments/${slug}`,
-                    'price': '0',
-                    'priceCurrency': 'IDR',
-                    'availability': 'https://schema.org/InStock'
-                }
-            }))
+            children: computed(() => JSON.stringify(eventStructuredData.value))
+        },
+        {
+            type: 'application/ld+json',
+            children: computed(() => JSON.stringify(breadcrumbStructuredData.value))
         }
     ]
 })

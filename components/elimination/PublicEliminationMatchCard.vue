@@ -16,7 +16,7 @@
             <div class="flex items-center gap-1.5 shrink-0">
                 <span v-if="match.winner_entry_id" class="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-700 text-[8px] font-black tracking-wider flex items-center gap-1">
                     <span class="size-1 rounded-full bg-emerald-500"></span>
-                    <span>Done</span>
+                    <span>{{ t('event_elimination.done', 'Done') }}</span>
                 </span>
                 <span v-else class="text-[9px] font-black text-slate-400 tracking-wider">M{{ match.match_no }}</span>
             </div>
@@ -28,7 +28,7 @@
                 :class="{ 'is-winner': isWinner(side), 'is-loser': isLoser(side) }">
                 <div class="avatar-wrapper relative">
                     <img :src="getAvatarUrl(getName(side))" :alt="getName(side) || 'Archer'" @error="(e) => e.target.src = 'https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8'" class="avatar-img" />
-                    <div v-if="isWinner(side)" class="winner-indicator" title="Winner">
+                    <div v-if="isWinner(side)" class="winner-indicator" :title="t('event_elimination.winner', 'Winner')">
                         <Icon icon="ph:crown-simple-fill" />
                     </div>
                     <div v-if="showSeed && getSeed(side)" class="avatar-seed-badge">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="archer-info">
                     <span class="archer-name">
-                        {{ getName(side) || (match.is_bye ? 'BYE' : 'TBD') }}
+                        {{ getName(side) || (match.is_bye ? t('event_elimination.bye', 'BYE') : t('event_elimination.tbd', 'TBD')) }}
                     </span>
                 </div>
                 <div class="score-display">

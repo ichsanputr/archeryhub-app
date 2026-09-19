@@ -72,9 +72,10 @@ useHead({
   title: computed(() => t('event_printout.statistics.title', 'Statistik Turnamen') + ' - Archeris Dashboard')
 })
 
+const apiBaseUrl = useApiBaseUrl()
+
 const printStat = (type) => {
-  const baseUrl = config.public.apiBase || 'http://localhost:8001'
-  const url = `${baseUrl}/events/${eventId}/participants/statistics-${type}?autoprint=1`
+  const url = `${apiBaseUrl}/events/${eventId}/participants/statistics-${type}?autoprint=1`
   window.open(url, '_blank')
 }
 </script>

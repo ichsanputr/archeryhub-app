@@ -4,8 +4,9 @@
         class="inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         :class="[sizeClass, variantClass, (fullWidth || block) ? 'w-full' : '']" @click="$emit('click', $event)">
         <template v-if="loading">
-            <LoadingSpinner size="sm" />
+            <LoadingSpinner size="sm" :color="spinnerColor" />
             <span v-if="loadingText" class="ml-1">{{ loadingText }}</span>
+            <slot v-else />
         </template>
         <template v-else>
             <Icon v-if="icon" :icon="formatIcon(icon)" :class="iconSizeClass" />
@@ -19,8 +20,9 @@
         class="inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         :class="[sizeClass, variantClass, (fullWidth || block) ? 'w-full' : '']" @click="$emit('click', $event)">
         <template v-if="loading">
-            <LoadingSpinner size="sm" />
+            <LoadingSpinner size="sm" :color="spinnerColor" />
             <span v-if="loadingText" class="ml-1">{{ loadingText }}</span>
+            <slot v-else />
         </template>
         <template v-else>
             <Icon v-if="icon" :icon="formatIcon(icon)" :class="iconSizeClass" />
@@ -122,5 +124,11 @@ const iconSizeClass = computed(() => {
         xl: 'text-3xl !text-[30px] min-w-[30px] min-h-[30px]'
     }
     return sizes[props.size] || sizes.md
+})
+
+const spinnerColor = computed(() => {
+    if (['navy', 'secondary', 'danger'].includes(props.variant)) return 'white'
+    if (['primary', 'gold'].includes(props.variant)) return 'navy'
+    return 'current'
 })
 </script>

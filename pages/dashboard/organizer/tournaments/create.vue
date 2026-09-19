@@ -264,19 +264,49 @@
               <BaseSelect v-model="form.type" :label="t('event_create.field_location_type')" :items="disciplineItems" required :error="errors.type"
                 @blur="validate('type', form.type, [rules.required()])" />
 
-              <div class="md:col-span-2">
-                <BaseInput v-model="form.gmapsLink" :label="t('event_create.field_gmaps')" :placeholder="t('event_create.field_gmaps_placeholder')"
-                  icon="ph:map-pin" @blur="validateGmapsLink" />
+              <div class="md:col-span-2 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="text-navy text-sm font-bold ml-1 flex items-center gap-1.5">
+                    <Icon icon="ph:map-pin" class="text-primary text-base" />
+                    {{ t('event_create.field_gmaps') }}
+                  </label>
+                  <span class="text-[11px] text-gray-400 font-medium hidden sm:inline">
+                    {{ t('event_create.gmaps_hint') }}
+                  </span>
+                </div>
+                <textarea
+                  v-model="form.gmapsLink"
+                  rows="3"
+                  class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all font-mono text-xs text-gray-700 bg-white"
+                  :placeholder="t('event_create.field_gmaps_placeholder')"
+                  @input="validateGmapsLink"
+                ></textarea>
+                <div class="text-[11px] text-gray-500 font-medium flex items-center gap-1.5 pl-1">
+                  <Icon icon="ph:info-bold" class="text-blue-500 text-xs shrink-0" />
+                  <span>{{ t('event_create.gmaps_hint') }}</span>
+                </div>
 
                 <!-- Gmaps Preview -->
-                <div v-if="gmapsEmbedUrl"
-                  class="mt-2 rounded-xl overflow-hidden border border-gray-200 aspect-video w-full bg-gray-50">
-                  <iframe width="100%" height="100%" style="border:0" loading="lazy" allowfullscreen
-                    referrerpolicy="no-referrer-when-downgrade" :src="gmapsEmbedUrl">
-                  </iframe>
+                <div v-if="gmapsEmbedUrl" class="mt-3 space-y-2">
+                  <div class="flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg w-fit">
+                    <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-sm" />
+                    <span>{{ t('event_create.gmaps_detected') }}</span>
+                  </div>
+                  <div class="rounded-xl overflow-hidden border border-gray-200 aspect-video w-full bg-gray-50 shadow-inner">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      style="border:0"
+                      loading="lazy"
+                      allowfullscreen
+                      referrerpolicy="no-referrer-when-downgrade"
+                      :src="gmapsEmbedUrl"
+                    ></iframe>
+                  </div>
                 </div>
-                <div v-else-if="form.gmapsLink && !isValidGmaps" class="text-red-500 text-xs font-bold mt-1">
-                  {{ t('event_create.gmaps_invalid') }}
+                <div v-else-if="form.gmapsLink && !isValidGmaps" class="text-amber-600 text-xs font-medium mt-1 flex items-center gap-1">
+                  <Icon icon="ph:warning-circle-bold" class="text-sm shrink-0" />
+                  <span>{{ t('event_create.gmaps_invalid') }}</span>
                 </div>
               </div>
             </div>
@@ -357,6 +387,7 @@ import { useFormValidation } from '~/composables/useFormValidation'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
 import { useSubscription } from '~/composables/useSubscription'
+import { extractGmapsEmbedUrl } from '~/utils/maps'
 
 definePageMeta({
   layout: 'dashboard'
@@ -503,26 +534,16 @@ onMounted(async () => {
 const isValidGmaps = ref(true)
 
 const gmapsEmbedUrl = computed(() => {
-  if (!form.gmapsLink || !isValidGmaps.value) return null
-
-  try {
-    const url = new URL(form.gmapsLink)
-    if (url.hostname.includes('google.com') || url.hostname === 'goo.gl') {
-      return `https://maps.google.com/maps?q=${encodeURIComponent(form.gmapsLink)}&output=embed`
-    }
-  } catch (e) {
-    return null
-  }
-  return null
+  return extractGmapsEmbedUrl(form.gmapsLink, form.venue)
 })
 
 const validateGmapsLink = () => {
-  if (!form.gmapsLink) {
+  if (!form.gmapsLink || !form.gmapsLink.trim()) {
     isValidGmaps.value = true
     return
   }
-  const regex = /^(https?:\/\/)?(www\.)?(google\.com\/maps|goo\.gl\/maps)\/.+$/
-  isValidGmaps.value = regex.test(form.gmapsLink)
+  const embed = extractGmapsEmbedUrl(form.gmapsLink)
+  isValidGmaps.value = !!embed
 }
 
 const validateStep = () => {

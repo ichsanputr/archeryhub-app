@@ -43,7 +43,6 @@
     "vue-eslint-parser": "^10.2.0"
   },
   "dependencies": {
-    "@guolao/vue-monaco-editor": "^1.5.5",
     "@iconify/vue": "^5.0.0",
     "@img-comparison-slider/vue": "^8.0.0",
     "@nuxt/content": "^3.6.3",

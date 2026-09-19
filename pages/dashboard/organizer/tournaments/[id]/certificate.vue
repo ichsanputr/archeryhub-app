@@ -27,7 +27,7 @@
       <!-- Total Peserta -->
       <StatCard
         :title="t('org_certificate.stats_total', 'Total Peserta')"
-        :value="participants.length"
+        :value="Array.isArray(participants) ? participants.length : 0"
         icon="ph:users"
         color="primary"
         :description="t('org_certificate.stats_total_desc', 'Total atlet terdaftar resmi')"
@@ -78,11 +78,11 @@
           :key="tab.value"
           @click="activeStatusTab = tab.value"
           type="button"
-          class="px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2"
+          class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex items-center gap-2"
           :class="activeStatusTab === tab.value ? 'bg-white text-navy shadow-xs' : 'text-slate-500 hover:text-navy'">
           <span>{{ tab.label }}</span>
           <span
-            class="text-[10px] font-mono px-1.5 py-0.5 rounded-md"
+            class="text-[10px] sm:text-xs font-mono px-1.5 py-0.5 rounded-md"
             :class="activeStatusTab === tab.value ? 'bg-navy text-white' : 'bg-slate-200 text-slate-600'">
             {{ tab.count }}
           </span>
@@ -98,17 +98,17 @@
             v-model="searchQuery"
             type="text"
             :placeholder="t('org_certificate.search_placeholder', 'Cari Nama Atlet, Kode, Nomor...')"
-            class="w-full h-10 pl-9 pr-4 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-navy placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:border-primary focus:bg-white transition-all" />
+            class="w-full h-10 pl-9 pr-4 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-navy placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:border-primary focus:bg-white transition-all" />
         </div>
 
         <!-- Category Select -->
-        <div class="w-full sm:w-56 shrink-0">
-          <select
+        <div class="w-full sm:w-64 shrink-0">
+          <BaseSelect
             v-model="selectedCategory"
-            class="w-full h-10 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-navy focus:outline-none focus:border-primary">
-            <option value="">{{ t('org_certificate.all_categories', 'Semua Kategori') }}</option>
-            <option v-for="cat in uniqueCategories" :key="cat" :value="cat">{{ cat }}</option>
-          </select>
+            :items="categoryFilterOptions"
+            :placeholder="t('org_certificate.all_categories', 'Semua Kategori')"
+            clearable
+          />
         </div>
 
         <!-- Clear All Button -->
@@ -117,7 +117,7 @@
           @click="promptClearAll"
           :disabled="isClearing"
           type="button"
-          class="h-10 px-3.5 rounded-xl bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-600 border border-slate-200 font-bold text-xs flex items-center gap-1.5 transition-colors shrink-0"
+          class="h-10 px-3.5 rounded-xl bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-600 border border-slate-200 font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-colors shrink-0"
           :title="t('org_certificate.btn_clear_all', 'Hapus Semua')">
           <Icon icon="ph:trash-bold" />
           <span class="hidden sm:inline">{{ t('org_certificate.btn_clear_all', 'Hapus Semua') }}</span>
@@ -130,7 +130,7 @@
       <!-- Loading State -->
       <div v-if="isLoading" class="py-20 text-center space-y-3">
         <Icon icon="ph:spinner-gap-bold" class="text-3xl text-primary animate-spin mx-auto" />
-        <p class="text-xs text-slate-400 font-bold">{{ t('common.loading', 'Memuat Data Sertifikat...') }}</p>
+        <p class="text-xs sm:text-sm text-slate-400 font-bold">{{ t('common.loading', 'Memuat Data Sertifikat...') }}</p>
       </div>
 
       <!-- Empty State -->
@@ -139,8 +139,8 @@
           <Icon icon="ph:certificate-bold" class="text-2xl text-navy" />
         </div>
         <div class="space-y-1">
-          <h4 class="text-sm font-black text-navy">{{ t('org_certificate.empty_certs_title', 'Tidak Ada Data Sertifikat') }}</h4>
-          <p class="text-xs text-slate-400 max-w-sm mx-auto">
+          <h4 class="text-sm sm:text-base font-black text-navy">{{ t('org_certificate.empty_certs_title', 'Tidak Ada Data Sertifikat') }}</h4>
+          <p class="text-xs sm:text-sm text-slate-400 max-w-sm mx-auto">
             {{ searchQuery || selectedCategory ? t('org_certificate.empty_filtered_desc', 'Coba ubah kata kunci pencarian atau filter kategori Anda.') : t('org_certificate.empty_initial_desc', 'Belum ada peserta yang terdaftar pada event ini.') }}
           </p>
         </div>
@@ -148,9 +148,9 @@
 
       <!-- Main Roster Table -->
       <div v-else class="overflow-x-auto">
-        <table class="w-full text-left text-xs border-collapse">
+        <table class="w-full text-left text-xs sm:text-sm border-collapse">
           <thead>
-            <tr class="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-bold text-slate-500 tracking-wider">
+            <tr class="bg-slate-50/80 border-b border-slate-200/80 text-xs sm:text-sm font-bold text-slate-500 tracking-wider">
               <th class="py-4 px-5 w-14 text-center">#</th>
               <th @click="toggleSort('name')" class="py-4 px-5 cursor-pointer hover:text-navy transition-colors select-none">
                 <div class="flex items-center gap-1.5">
@@ -189,7 +189,7 @@
               :key="row.id || row.uuid"
               class="hover:bg-slate-50/70 transition-colors group">
               <!-- Index Number -->
-              <td class="py-4 px-5 font-mono font-bold text-slate-400 text-center text-[11px]">
+              <td class="py-4 px-5 font-mono font-bold text-slate-400 text-center text-xs sm:text-sm">
                 {{ (currentPage - 1) * itemsPerPage + idx + 1 }}
               </td>
 
@@ -205,8 +205,8 @@
                     <span v-else>{{ getInitials(row.full_name) }}</span>
                   </div>
                   <div class="min-w-0">
-                    <div class="font-black text-navy text-xs truncate">{{ row.full_name || '-' }}</div>
-                    <div class="text-[11px] text-slate-400 font-medium truncate flex items-center gap-1.5 mt-0.5">
+                    <div class="font-black text-navy text-xs sm:text-sm truncate">{{ row.full_name || '-' }}</div>
+                    <div class="text-[11px] sm:text-xs text-slate-400 font-medium truncate flex items-center gap-1.5 mt-0.5">
                       <span v-if="row.athlete_code" class="font-mono text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">
                         {{ row.athlete_code }}
                       </span>
@@ -218,27 +218,27 @@
 
               <!-- Category -->
               <td class="py-4 px-5">
-                <span class="inline-block px-2.5 py-1 bg-slate-100 text-slate-700 font-bold rounded-lg text-[10px] border border-slate-200">
+                <span class="inline-block px-2.5 py-1 bg-slate-100 text-slate-700 font-bold rounded-lg text-[10px] sm:text-xs border border-slate-200">
                   {{ row.category_name || '-' }}
                 </span>
               </td>
 
               <!-- Certificate Number -->
               <td class="py-4 px-5">
-                <span v-if="row.cert?.certificate_no" class="font-mono text-[11px] font-bold text-navy bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-md">
+                <span v-if="row.cert?.certificate_no" class="font-mono text-xs sm:text-sm font-bold text-navy bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-md">
                   {{ row.cert.certificate_no }}
                 </span>
-                <span v-else class="text-slate-300 font-mono text-[11px]">-</span>
+                <span v-else class="text-slate-300 font-mono text-xs sm:text-sm">-</span>
               </td>
 
               <!-- Certificate Status -->
               <td class="py-4 px-5">
-                <div v-if="row.cert" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-navy text-white shadow-xs">
-                  <Icon icon="ph:check-bold" class="text-xs text-white" />
+                <div v-if="row.cert" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs sm:text-sm font-bold bg-navy text-white shadow-xs">
+                  <Icon icon="ph:check-bold" class="text-xs sm:text-sm text-white" />
                   <span>{{ t('org_certificate.status_issued', 'Terbit') }}</span>
                 </div>
-                <div v-else class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-500 border border-slate-200">
-                  <Icon icon="ph:clock-bold" class="text-xs" />
+                <div v-else class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs sm:text-sm font-bold bg-slate-100 text-slate-500 border border-slate-200">
+                  <Icon icon="ph:clock-bold" class="text-xs sm:text-sm" />
                   <span>{{ t('org_certificate.status_pending', 'Belum Terbit') }}</span>
                 </div>
               </td>
@@ -266,7 +266,7 @@
                     </a>
 
                     <button
-                      @click="promptDeleteCert(row.cert.uuid || row.cert.id, row.full_name)"
+                      @click="promptDeleteCert(row.cert?.uuid || row.cert?.registration_id || row.cert?.participant_id || row.uuid || row.id, row.full_name)"
                       type="button"
                       class="p-2 rounded-lg bg-slate-100 hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors"
                       :title="t('org_certificate.btn_delete', 'Hapus Sertifikat')">
@@ -279,7 +279,7 @@
                     <button
                       @click="openSingleUpload(row)"
                       type="button"
-                      class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-navy hover:text-white text-slate-700 font-bold text-xs rounded-xl border border-slate-200 transition-all active:scale-95">
+                      class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-navy hover:text-white text-slate-700 font-bold text-xs sm:text-sm rounded-xl border border-slate-200 transition-all active:scale-95">
                       <Icon icon="ph:upload-simple-bold" />
                       <span>{{ t('org_certificate.btn_upload_single', 'Unggah PDF') }}</span>
                     </button>
@@ -444,7 +444,7 @@
                         v-model="manualAssignments[unm.filename]"
                         class="h-8 px-2 bg-slate-50 border border-slate-200 rounded-lg text-[11px] font-bold text-navy focus:outline-none focus:border-primary w-44">
                         <option value="">{{ t('org_certificate.select_archer', 'Pilih Atlet...') }}</option>
-                        <option v-for="p in participants" :key="p.uuid || p.id" :value="p.uuid || p.id">
+                        <option v-for="p in (Array.isArray(participants) ? participants : [])" :key="p.uuid || p.id" :value="p.uuid || p.id">
                           {{ p.full_name }} ({{ p.athlete_code || p.id || '-' }})
                         </option>
                       </select>
@@ -565,6 +565,7 @@ import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
 import { getImageUrl } from '~/composables/useImageHelper'
 import AppDialog from '~/components/common/AppDialog.vue'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 
 definePageMeta({
   layout: 'dashboard'
@@ -582,7 +583,7 @@ useHead({
 
 const participants = ref([])
 const certificatesList = ref([])
-const isLoading = ref(false)
+const isLoading = ref(true)
 const isUploading = ref(false)
 const isClearing = ref(false)
 const isDragging = ref(false)
@@ -640,6 +641,7 @@ const getInitials = (name) => {
 }
 
 const eligibleParticipantsCount = computed(() => {
+  if (!Array.isArray(participants.value)) return 0
   return participants.value.filter(p => {
     const s = (p.payment_status || '').toLowerCase()
     return s === 'paid' || s === 'lunas'
@@ -649,14 +651,26 @@ const eligibleParticipantsCount = computed(() => {
 const completionRate = computed(() => {
   const eligible = eligibleParticipantsCount.value
   if (eligible === 0) return 0
-  return Math.min(100, Math.round((certificatesList.value.length / eligible) * 100))
+  const certCount = Array.isArray(certificatesList.value) ? certificatesList.value.length : 0
+  return Math.min(100, Math.round((certCount / eligible) * 100))
 })
 
 const uniqueCategories = computed(() => {
+  if (!Array.isArray(participants.value)) return []
   const cats = participants.value
     .map(p => p.category_name)
     .filter(Boolean)
   return [...new Set(cats)]
+})
+
+const categoryFilterOptions = computed(() => {
+  const options = [
+    { title: t('org_certificate.all_categories', 'Semua Kategori'), value: '' }
+  ]
+  uniqueCategories.value.forEach(cat => {
+    options.push({ title: cat, value: cat })
+  })
+  return options
 })
 
 // Build enriched participants list with matched certificate
@@ -666,7 +680,8 @@ const enrichedParticipantsList = computed(() => {
   const certMapByAthleteCode = new Map()
   const certMapByName = new Map()
 
-  for (const cert of certificatesList.value) {
+  const certList = Array.isArray(certificatesList.value) ? certificatesList.value : []
+  for (const cert of certList) {
     const partId = cert.participant_id || cert.registration_id
     if (partId) certMapByPartId.set(String(partId), cert)
     if (cert.archer_id) certMapByArcherId.set(String(cert.archer_id), cert)
@@ -674,7 +689,8 @@ const enrichedParticipantsList = computed(() => {
     if (cert.archer_name) certMapByName.set(String(cert.archer_name).toLowerCase().trim(), cert)
   }
 
-  return participants.value.map(p => {
+  const partList = Array.isArray(participants.value) ? participants.value : []
+  return partList.map(p => {
     const partId = String(p.uuid || p.id || '')
     const archerId = String(p.archer_id || '')
     const code = String(p.athlete_code || p.back_number || '').toLowerCase().trim()
@@ -806,14 +822,14 @@ const uploadFiles = async (fileList) => {
     if (res.matched_count > 0 && res.unmatched_count === 0) {
       toast.success(t('org_certificate.msg_zip_success', { count: res.matched_count || 0 }))
     } else if (res.unmatched_count > 0) {
-      toast.info(`Berhasil mencocokkan ${res.matched_count || 0} berkas. ${res.unmatched_count} berkas perlu dihubungkan manual.`)
+      toast.info(t('org_certificate.msg_partial_match', { matched: res.matched_count || 0, unmatched: res.unmatched_count }))
     } else {
-      toast.info(`Tidak ada nama berkas yang otomatis cocok. Silakan hubungkan manual di bawah.`)
+      toast.info(t('org_certificate.msg_no_auto_match', 'Tidak ada nama berkas yang otomatis cocok. Silakan hubungkan manual di bawah.'))
     }
     await fetchData()
   } catch (error) {
     console.error('Failed to upload certificates:', error)
-    toast.error(error?.data?.error || error?.response?.data?.error || 'Gagal memproses berkas sertifikat')
+    toast.error(error?.data?.error || error?.response?.data?.error || t('org_certificate.err_process_zip', 'Gagal memproses berkas sertifikat'))
   } finally {
     isUploading.value = false
     if (fileInputRef.value) fileInputRef.value.value = ''
@@ -841,7 +857,7 @@ const handleSingleFileInputChange = async (event) => {
     await fetchData()
   } catch (error) {
     console.error('Failed to upload participant certificate:', error)
-    toast.error(error?.data?.error || error?.response?.data?.error || 'Gagal mengunggah sertifikat peserta')
+    toast.error(error?.data?.error || error?.response?.data?.error || t('org_certificate.err_upload_single', 'Gagal mengunggah sertifikat peserta'))
   } finally {
     isUploading.value = false
     selectedParticipantForUpload.value = null
@@ -870,18 +886,22 @@ const handleManualAssign = async (filename, pdfUrl) => {
     await fetchData()
   } catch (error) {
     console.error('Failed to assign certificate:', error)
-    toast.error(error?.data?.error || error?.response?.data?.error || 'Gagal menghubungkan sertifikat')
+    toast.error(error?.data?.error || error?.response?.data?.error || t('org_certificate.err_assign', 'Gagal menghubungkan sertifikat'))
   } finally {
     isAssigning.value[filename] = false
   }
 }
 
 const promptDeleteCert = (certId, name = '') => {
+  if (!certId) {
+    toast.error('ID Sertifikat tidak valid')
+    return
+  }
   deleteModal.type = 'single'
   deleteModal.targetId = certId
   deleteModal.title = t('org_certificate.modal_delete_title', 'Hapus Sertifikat')
   deleteModal.message = name
-    ? `Apakah Anda yakin ingin menghapus berkas sertifikat untuk ${name}?`
+    ? t('org_certificate.confirm_delete_named', { name })
     : t('org_certificate.confirm_delete_single', 'Yakin ingin menghapus sertifikat ini?')
   deleteModal.confirmText = t('common.delete', 'Hapus')
   deleteModal.show = true
@@ -904,7 +924,7 @@ const executeDelete = async () => {
       await fetchData()
     } catch (error) {
       console.error('Failed to delete certificate:', error)
-      toast.error('Gagal menghapus sertifikat')
+      toast.error(t('org_certificate.err_delete', 'Gagal menghapus sertifikat'))
     }
   } else if (deleteModal.type === 'all') {
     isClearing.value = true
@@ -914,7 +934,7 @@ const executeDelete = async () => {
       await fetchData()
     } catch (error) {
       console.error('Failed to clear certificates:', error)
-      toast.error('Gagal membersihkan sertifikat')
+      toast.error(t('org_certificate.err_clear_all', 'Gagal membersihkan sertifikat'))
     } finally {
       isClearing.value = false
     }
@@ -935,13 +955,39 @@ const fetchData = async () => {
   isLoading.value = true
   try {
     const [certsRes, partsRes] = await Promise.all([
-      get(`/tournaments/${eventId}/certificates`),
-      get(`/tournaments/${eventId}/participants?limit=1000`)
+      get(`/tournaments/${eventId}/certificates`).catch(err => {
+        console.error('Failed to fetch certificates:', err)
+        return []
+      }),
+      get(`/tournaments/${eventId}/participants?limit=1000`).catch(err => {
+        console.error('Failed to fetch participants:', err)
+        return []
+      })
     ])
-    certificatesList.value = certsRes?.data || certsRes || []
-    participants.value = partsRes?.participants || partsRes?.data || partsRes || []
+
+    if (Array.isArray(certsRes)) {
+      certificatesList.value = certsRes
+    } else if (Array.isArray(certsRes?.data)) {
+      certificatesList.value = certsRes.data
+    } else if (Array.isArray(certsRes?.certificates)) {
+      certificatesList.value = certsRes.certificates
+    } else {
+      certificatesList.value = []
+    }
+
+    if (Array.isArray(partsRes?.participants)) {
+      participants.value = partsRes.participants
+    } else if (Array.isArray(partsRes?.data)) {
+      participants.value = partsRes.data
+    } else if (Array.isArray(partsRes)) {
+      participants.value = partsRes
+    } else {
+      participants.value = []
+    }
   } catch (err) {
     console.error('Failed to fetch certificates data:', err)
+    certificatesList.value = []
+    participants.value = []
   } finally {
     isLoading.value = false
   }

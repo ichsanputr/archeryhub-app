@@ -90,6 +90,7 @@ export default defineNuxtConfig({
     apiBaseUrl: process.env.NUXT_API_BASE_URL || process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:8001',
     public: {
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:8001',
+      apiBase: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:8001',
       siteUrl: 'https://archeris.net',
       siteName: 'Archeris',
       paddleClientToken: process.env.NUXT_PUBLIC_PADDLE_CLIENT_TOKEN || 'test_e8c89b33a59fa8730ad3d1000bb',
@@ -105,10 +106,8 @@ export default defineNuxtConfig({
       },
       title: 'Archeris - The Best Archery Scoring System',
       meta: [
-        { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'robots', content: 'noindex, nofollow' },
-        { name: 'googlebot', content: 'noindex, nofollow' },
+        { name: 'robots', content: process.env.NUXT_PUBLIC_ROBOTS || 'index, follow' },
+        { name: 'googlebot', content: process.env.NUXT_PUBLIC_ROBOTS || 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' },
         {
           name: 'description',
           content: 'Archeris is the complete archery scoring system and competition management platform built for organizers and archers worldwide. It provides a simple and modern way to run tournaments, track standings, and handle archery scoring from any device.'
@@ -170,7 +169,7 @@ export default defineNuxtConfig({
   },
   watch: ["data"],
   nitro: {
-    minify: true,
+    minify: false,
     debug: true,
     devProxy: {
       host: 'localhost',

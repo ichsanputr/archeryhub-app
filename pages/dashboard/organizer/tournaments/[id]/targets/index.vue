@@ -359,6 +359,8 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { useSubscription } from '~/composables/useSubscription'
+import { useApi, getApiErrorMessage } from '~/composables/useApi'
+import { useToast } from '~/composables/useToast'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 const { t } = useI18n()
@@ -469,11 +471,13 @@ const fetchTargets = async () => {
       params: {
         page: page.value,
         limit: limit.value,
-        order_by: 'created_at',
-        order_dir: 'desc'
+        order_by: 'board_number',
+        order_dir: 'asc'
       }
     })
-    targets.value = response?.targets || []
+    const fetched = response?.targets || []
+    // Ensure numerical ascending order (1, 2, 3...)
+    targets.value = fetched.sort((a, b) => (Number(a.target_number) || 0) - (Number(b.target_number) || 0))
     total.value = response?.total || 0
   } catch (error) {
     console.error('Failed to fetch targets:', error)
@@ -582,7 +586,7 @@ const submitForm = async () => {
     await fetchTargets()
   } catch (error) {
     console.error('Failed to save target:', error)
-    toast.error(error?.data?.error || t('event_targets.toast_save_failed'))
+    toast.error(getApiErrorMessage(error, t('event_targets.toast_save_failed')))
   } finally {
     submitting.value = false
   }
@@ -617,7 +621,7 @@ const deleteTarget = async () => {
     await fetchTargets()
   } catch (error) {
     console.error('Failed to delete target:', error)
-    toast.error(error?.data?.error || t('event_targets.toast_delete_failed'))
+    toast.error(getApiErrorMessage(error, t('event_targets.toast_delete_failed')))
   } finally {
     submitting.value = false
   }

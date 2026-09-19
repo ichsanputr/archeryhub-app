@@ -198,8 +198,7 @@ const fetchClientSchedules = async () => {
     if (!props.eventId) return
     isLoading.value = true
     try {
-        const config = useRuntimeConfig()
-        const apiBaseUrl = config.public?.apiBaseUrl || 'http://localhost:8080/api/v1'
+        const apiBaseUrl = useApiBaseUrl()
         const res = await $fetch(`${apiBaseUrl}/tournaments/${props.eventId}/schedule/timeline`).catch(() => null)
         if (res && res.days && res.days.length > 0) {
             const allItems = []

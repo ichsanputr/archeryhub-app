@@ -63,9 +63,9 @@ export const useApi = () => {
         }
       }
 
-      // If still unauthorized or 403 Forbidden on protected API endpoints
-      if ((status === 401 || status === 403) && !url.includes('/auth/login') && !url.includes('/auth/register') && !url.includes('/auth/refresh')) {
-        console.warn(`[useApi] Session expired or unauthorized (status ${status}) on ${url}. Cleaning auth state...`)
+      // If still unauthorized (401) on protected API endpoints after refresh failed
+      if (status === 401 && !url.includes('/auth/login') && !url.includes('/auth/register') && !url.includes('/auth/refresh')) {
+        console.warn(`[useApi] Session expired (status 401) on ${url}. Cleaning auth state...`)
         if (import.meta.client) {
           // Clear cookies across all possible domain scopes and paths
           const cookiesToClear = ['auth_token', 'refresh_token', 'session', 'token']
@@ -138,6 +138,23 @@ export const useApi = () => {
     put,
     patch,
     upload,
+    del,
     delete: del
   }
+}
+
+export const getApiErrorMessage = (error: any, fallback = 'Operation failed'): string => {
+  if (!error) return fallback
+  if (typeof error === 'string') return error
+  return (
+    error?.data?.error ||
+    error?.response?._data?.error ||
+    error?.response?.data?.error ||
+    error?.data?.message ||
+    error?.response?._data?.message ||
+    error?.response?.data?.message ||
+    error?.error ||
+    error?.message ||
+    fallback
+  )
 }

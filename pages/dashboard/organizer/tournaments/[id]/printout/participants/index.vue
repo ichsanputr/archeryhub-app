@@ -91,9 +91,10 @@ useHead({
   title: computed(() => t('event_printout.participants.title', 'Daftar Peserta') + ' - Archeris Dashboard')
 })
 
+const apiBaseUrl = useApiBaseUrl()
+
 const printList = (type) => {
-  const baseUrl = config.public.apiBase || 'http://localhost:8001'
-  const url = `${baseUrl}/events/${eventId}/participants/printout?type=${type}&autoprint=1`
+  const url = `${apiBaseUrl}/events/${eventId}/participants/printout?type=${type}&autoprint=1`
   window.open(url, '_blank')
 }
 </script>

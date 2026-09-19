@@ -24,9 +24,9 @@
         <template v-else>
             <!-- Manual Results (Files) -->
             <template v-if="resultsType === 'manual'">
-                <div v-if="manualResults.length > 0" class="space-y-6">
+                <div v-if="effectiveManualResults.length > 0" class="space-y-6">
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
-                        <div v-for="(file, index) in manualResults" :key="file.id || file.url || index"
+                        <div v-for="(file, index) in effectiveManualResults" :key="file.id || file.url || index"
                             class="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all duration-500 flex flex-col h-full">
 
                             <!-- Preview Area -->
@@ -57,8 +57,8 @@
                                         class="w-full h-full flex flex-col items-center justify-center p-8 bg-white transition-all duration-500">
                                         <Icon :icon="getFileIcon(file.url)"
                                             class="text-6xl text-gray-200 group-hover:text-navy/20 transition-all duration-500" />
-                                        <span class="mt-4 text-[10px] font-bold tracking-widest text-gray-400">
-                                            {{ getFileExt(file.url) }} Document
+                                        <span class="mt-4 text-xs sm:text-sm font-bold tracking-widest text-gray-400">
+                                            {{ t('event_results.document_ext', { ext: getFileExt(file.url).toUpperCase() }) }}
                                         </span>
                                     </div>
                                 </template>
@@ -67,7 +67,7 @@
                                 <div
                                     class="absolute inset-0 bg-navy/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[1px]">
                                     <a :href="file.url" target="_blank"
-                                        class="px-6 py-2 bg-white rounded-full text-navy text-xs font-bold shadow-sm border border-gray-100 hover:bg-navy hover:text-white transition-all">
+                                        class="px-6 py-2 bg-white rounded-full text-navy text-xs sm:text-sm font-bold shadow-sm border border-gray-100 hover:bg-navy hover:text-white transition-all">
                                         {{ t('event_results.view_file', 'Lihat Berkas') }}
                                     </a>
                                 </div>
@@ -75,17 +75,17 @@
 
                             <!-- Info Area & Actions -->
                             <div class="p-5 flex flex-col gap-4">
-                                <h4 class="font-bold text-navy text-sm line-clamp-2" :title="file.title || file.name">
+                                <h4 class="font-bold text-navy text-sm sm:text-base line-clamp-2" :title="file.title || file.name">
                                     {{ file.title || file.name || t('event_results.result_doc', 'Dokumen Hasil') }}
                                 </h4>
                                 <div class="flex gap-3">
                                     <a :href="file.url" target="_blank"
-                                        class="flex-1 py-3 bg-gray-50 hover:bg-navy hover:text-white text-navy font-black text-xs rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 border border-transparent">
+                                        class="flex-1 py-3 bg-gray-50 hover:bg-navy hover:text-white text-navy font-black text-xs sm:text-sm rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 border border-transparent">
                                         <Icon icon="ph:eye-bold" class="text-sm" />
                                         {{ t('common.view', 'Lihat') }}
                                     </a>
                                     <BaseButton variant="primary" size="sm"
-                                        class="flex-1 !rounded-2xl !py-4 font-black text-xs h-auto"
+                                        class="flex-1 !rounded-2xl !py-4 font-black text-xs sm:text-sm h-auto"
                                         :loading="downloadingIndex === index" @click="handleDownload(file, index)">
                                         <Icon v-if="downloadingIndex !== index" icon="ph:download-simple-bold"
                                             class="text-sm mr-2" />
@@ -103,7 +103,7 @@
                         <Icon icon="ph:file-dashed" class="text-5xl text-gray-300" />
                     </div>
                     <h3 class="text-xl font-black text-navy mb-3">{{ t('event_results.no_manual_results_title', 'Belum Ada Dokumen Hasil') }}</h3>
-                    <p class="text-gray-500 leading-relaxed text-sm">
+                    <p class="text-gray-500 leading-relaxed text-sm sm:text-base">
                         {{ t('event_results.no_manual_results_desc', 'Dokumen hasil lomba belum diunggah oleh penyelenggara.') }}
                     </p>
                 </div>
@@ -114,7 +114,7 @@
                 <!-- Category Selector -->
                 <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                        <h2 class="text-base font-bold text-navy">{{ t('event_results.select_category', 'Pilih Kategori Lomba') }}</h2>
+                        <h2 class="text-base sm:text-lg font-bold text-navy">{{ t('event_results.select_category', 'Pilih Kategori Lomba') }}</h2>
 
                         <!-- Event Type Selector Row (Individual / Team / Mixed) -->
                         <div v-if="eventTypeOptions.length > 1" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
@@ -123,15 +123,15 @@
                                 :key="opt.value"
                                 type="button"
                                 @click="selectedEventType = opt.value"
-                                class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5"
+                                class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1.5"
                                 :class="selectedEventType === opt.value
                                     ? 'bg-navy text-primary shadow-sm'
                                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-navy'"
                             >
-                                <Icon :icon="opt.icon" class="text-sm" />
+                                <Icon :icon="opt.icon" class="text-sm sm:text-base" />
                                 <span>{{ opt.label }}</span>
                                 <span
-                                    class="text-[10px] px-1.5 py-0.5 rounded-full font-medium"
+                                    class="text-xs px-2 py-0.5 rounded-full font-medium"
                                     :class="selectedEventType === opt.value ? 'bg-primary/20 text-primary' : 'bg-gray-200 text-gray-700'"
                                 >
                                     {{ opt.count }}
@@ -168,7 +168,7 @@
                                     <p
                                         class="font-bold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2">
                                         {{ category.category_name }}</p>
-                                    <div class="flex items-center gap-2 text-xs text-gray-500">
+                                    <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-500">
                                         <Icon icon="ph:users-three" class="text-base" />
                                         <span class="font-semibold">{{ t('event_results.archers_count', { count: category.participant_count || 0 }) }}</span>
                                     </div>
@@ -221,7 +221,7 @@
                             class="p-12 text-center">
                             <div class="flex flex-col items-center">
                                 <Icon icon="ph:clipboard-text" class="text-6xl text-gray-300 mb-4" />
-                                <p class="text-gray-500 font-medium">{{ t('event_results.qualification_not_available', 'Hasil kualifikasi belum tersedia') }}</p>
+                                <p class="text-gray-500 font-medium text-sm sm:text-base">{{ t('event_results.qualification_not_available', 'Hasil kualifikasi belum tersedia') }}</p>
                             </div>
                         </div>
 
@@ -237,11 +237,11 @@
                                 <!-- Session Selector -->
                                 <div class="flex items-center gap-3">
                                     <span
-                                        class="text-[10px] font-black text-white/60 tracking-widest hidden sm:block">
+                                        class="text-xs sm:text-sm font-black text-white/70 tracking-wider hidden sm:block">
                                         {{ t('event_results.filter_session', 'Filter Sesi:') }}
                                     </span>
                                     <select v-model="selectedSession"
-                                        class="bg-white/10 border border-white/20 text-white text-xs font-bold px-4 py-2 rounded-xl outline-none focus:border-primary transition-all">
+                                        class="bg-white/10 border border-white/20 text-white text-xs sm:text-sm font-bold px-4 py-2 rounded-xl outline-none focus:border-primary transition-all">
                                         <option v-if="availableSessions.length > 1" value="total" class="text-navy">
                                             {{ t('event_results.all_sessions', 'Hasil Akhir (Semua Sesi)') }}
                                         </option>
@@ -260,60 +260,60 @@
                                         <tr>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                                 @click="handleSort('rank')"
-                                                class="px-4 py-3 text-left text-xs font-black text-gray-500 tracking-wider sticky left-0 bg-gray-50 z-10 border-r border-gray-200 cursor-pointer hover:text-navy transition-colors">
+                                                class="px-4 py-3 text-left text-xs sm:text-sm font-black text-gray-500 tracking-wider sticky left-0 bg-gray-50 z-10 border-r border-gray-200 cursor-pointer hover:text-navy transition-colors">
                                                 <div class="flex items-center gap-1">
                                                     <span>{{ t('event_results.rank', 'Rank') }}</span>
-                                                    <Icon :icon="getSortIcon('rank')" class="text-xs shrink-0" :class="sortKey === 'rank' ? 'text-navy font-bold' : 'text-gray-400'" />
+                                                    <Icon :icon="getSortIcon('rank')" class="text-xs sm:text-sm shrink-0" :class="sortKey === 'rank' ? 'text-navy font-bold' : 'text-gray-400'" />
                                                 </div>
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                                 @click="handleSort('archer')"
-                                                class="px-4 py-3 text-left text-xs font-black text-gray-500 tracking-wider min-w-[200px] cursor-pointer hover:text-navy transition-colors">
+                                                class="px-4 py-3 text-left text-xs sm:text-sm font-black text-gray-500 tracking-wider min-w-[200px] cursor-pointer hover:text-navy transition-colors">
                                                 <div class="flex items-center gap-1.5">
                                                     <span>{{ t('event_results.archer', 'Atlet') }}</span>
-                                                    <Icon :icon="getSortIcon('archer')" class="text-xs shrink-0" :class="sortKey === 'archer' ? 'text-navy font-bold' : 'text-gray-400'" />
+                                                    <Icon :icon="getSortIcon('archer')" class="text-xs sm:text-sm shrink-0" :class="sortKey === 'archer' ? 'text-navy font-bold' : 'text-gray-400'" />
                                                 </div>
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                                 @click="handleSort('club')"
-                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider cursor-pointer hover:text-navy transition-colors">
+                                                class="px-4 py-3 text-center text-xs sm:text-sm font-black text-gray-500 tracking-wider cursor-pointer hover:text-navy transition-colors">
                                                 <div class="flex items-center justify-center gap-1.5">
                                                     <span>{{ t('event_results.club', 'Klub') }}</span>
-                                                    <Icon :icon="getSortIcon('club')" class="text-xs shrink-0" :class="sortKey === 'club' ? 'text-navy font-bold' : 'text-gray-400'" />
+                                                    <Icon :icon="getSortIcon('club')" class="text-xs sm:text-sm shrink-0" :class="sortKey === 'club' ? 'text-navy font-bold' : 'text-gray-400'" />
                                                 </div>
                                             </th>
                                             <th v-if="selectedSession !== 'total'" :colspan="displayTotalEnds"
-                                                class="px-4 py-2 text-center text-xs font-black text-gray-500 tracking-wider border-b border-gray-300">
+                                                class="px-4 py-2 text-center text-xs sm:text-sm font-black text-gray-500 tracking-wider border-b border-gray-300">
                                                 {{ t('event_results.score_per_end', 'Skor Per End') }}
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                                 @click="handleSort('total')"
-                                                class="px-4 py-3 text-center text-xs font-black text-navy tracking-wider bg-navy/5 border-l-2 border-navy/20 cursor-pointer hover:bg-navy/10 transition-colors">
+                                                class="px-4 py-3 text-center text-xs sm:text-sm font-black text-navy tracking-wider bg-navy/5 border-l-2 border-navy/20 cursor-pointer hover:bg-navy/10 transition-colors">
                                                 <div class="flex items-center justify-center gap-1">
                                                     <span>{{ t('event_results.total', 'Total') }}</span>
-                                                    <Icon :icon="getSortIcon('total')" class="text-xs shrink-0" :class="sortKey === 'total' ? 'text-navy font-bold' : 'text-gray-400'" />
+                                                    <Icon :icon="getSortIcon('total')" class="text-xs sm:text-sm shrink-0" :class="sortKey === 'total' ? 'text-navy font-bold' : 'text-gray-400'" />
                                                 </div>
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                                 @click="handleSort('10x')"
-                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider cursor-pointer hover:text-navy transition-colors">
+                                                class="px-4 py-3 text-center text-xs sm:text-sm font-black text-gray-500 tracking-wider cursor-pointer hover:text-navy transition-colors">
                                                 <div class="flex items-center justify-center gap-1">
                                                     <span>10+X</span>
-                                                    <Icon :icon="getSortIcon('10x')" class="text-xs shrink-0" :class="sortKey === '10x' ? 'text-navy font-bold' : 'text-gray-400'" />
+                                                    <Icon :icon="getSortIcon('10x')" class="text-xs sm:text-sm shrink-0" :class="sortKey === '10x' ? 'text-navy font-bold' : 'text-gray-400'" />
                                                 </div>
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                                 @click="handleSort('x')"
-                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider cursor-pointer hover:text-navy transition-colors">
+                                                class="px-4 py-3 text-center text-xs sm:text-sm font-black text-gray-500 tracking-wider cursor-pointer hover:text-navy transition-colors">
                                                 <div class="flex items-center justify-center gap-1">
                                                     <span>X</span>
-                                                    <Icon :icon="getSortIcon('x')" class="text-xs shrink-0" :class="sortKey === 'x' ? 'text-navy font-bold' : 'text-gray-400'" />
+                                                    <Icon :icon="getSortIcon('x')" class="text-xs sm:text-sm shrink-0" :class="sortKey === 'x' ? 'text-navy font-bold' : 'text-gray-400'" />
                                                 </div>
                                             </th>
                                         </tr>
                                         <tr v-if="selectedSession !== 'total'">
                                             <th v-for="i in displayTotalEnds" :key="i"
-                                                class="px-2 py-2 text-center text-xs font-bold text-gray-400 border-x border-gray-200">
+                                                class="px-2 py-2 text-center text-xs sm:text-sm font-bold text-gray-400 border-x border-gray-200">
                                                 {{ i }}
                                             </th>
                                         </tr>
@@ -325,10 +325,10 @@
                                                     class="px-4 py-4 whitespace-nowrap sticky text-center left-0 bg-white z-10 border-r border-gray-100">
                                                     <div class="flex items-center justify-center gap-2">
                                                         <div v-if="result.rank <= 3" class="text-2xl">
-                                                            {{ result.rank === 1 ? '🥇' : result.rank === 2 ? '🥈' :
+                                                             {{ result.rank === 1 ? '🥇' : result.rank === 2 ? '🥈' :
                                                                 '🥉' }}
                                                         </div>
-                                                        <div v-else class="text-sm font-black text-navy text-center">{{
+                                                        <div v-else class="text-sm sm:text-base font-black text-navy text-center">{{
                                                             result.rank }}</div>
                                                     </div>
                                                 </td>
@@ -337,21 +337,21 @@
                                                         <img :src="result.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${result.archer_name}`"
                                                             :alt="result.archer_name || 'Archer'"
                                                             @error="(e) => e.target.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(result.archer_name || 'A') + '&background=f1f5f9&color=94a3b8'"
-                                                            class="size-8 rounded-full border-2 border-gray-200 object-cover" />
-                                                        <span class="text-sm font-bold text-navy whitespace-nowrap">{{
+                                                            class="size-9 rounded-full border-2 border-gray-200 object-cover shrink-0" />
+                                                        <span class="text-sm sm:text-base font-bold text-navy whitespace-nowrap">{{
                                                             result.archer_name }}</span>
                                                     </div>
                                                 </td>
                                                 <td class="px-4 py-4 text-center">
                                                     <div
-                                                        class="text-[10px] md:text-sm text-gray-600 line-clamp-2 leading-tight">
+                                                        class="text-xs sm:text-sm text-gray-600 line-clamp-2 leading-tight">
                                                         {{ result.club_name || '-' }}
                                                     </div>
                                                 </td>
                                                 <template v-if="selectedSession !== 'total'">
                                                     <td v-for="i in displayTotalEnds"
                                                         :key="i"
-                                                        class="px-2 py-4 text-center text-sm font-bold border-x border-gray-100"
+                                                        class="px-2 py-4 text-center text-sm sm:text-base font-bold border-x border-gray-100"
                                                         :class="getEndScoreClass(result.displayScores[i - 1])">
                                                         {{ result.displayScores && result.displayScores[i - 1] !== undefined
                                                             ?
@@ -362,10 +362,10 @@
                                                     <span class="text-base sm:text-lg font-black text-navy">{{
                                                         result.displayTotal }}</span>
                                                 </td>
-                                                <td class="px-4 py-4 text-center text-sm font-bold text-gray-600">
+                                                <td class="px-4 py-4 text-center text-sm sm:text-base font-bold text-gray-600">
                                                     {{ result.display10X }}
                                                 </td>
-                                                <td class="px-4 py-4 text-center text-sm font-bold text-gray-600">
+                                                <td class="px-4 py-4 text-center text-sm sm:text-base font-bold text-gray-600">
                                                     {{ result.displayX }}
                                                 </td>
                                             </tr>
@@ -406,7 +406,17 @@ const props = defineProps({
     manualResults: {
         type: Array,
         default: () => []
+    },
+    results: {
+        type: Array,
+        default: () => []
     }
+})
+
+const effectiveManualResults = computed(() => {
+    if (props.manualResults && props.manualResults.length > 0) return props.manualResults
+    if (props.results && props.results.length > 0) return props.results
+    return []
 })
 
 const { get } = useApi()

@@ -12,7 +12,7 @@
             </div>
             <div>
               <h3 class="text-lg font-black tracking-tight">{{ t('csv_import.import_title', 'Import Peserta via CSV') }}</h3>
-              <div class="text-xs text-slate-300">{{ t('csv_import.import_subtitle', 'Unggah file CSV untuk mendaftarkan peserta secara massal') }}</div>
+              <div class="text-xs sm:text-sm text-slate-300">{{ t('csv_import.import_subtitle', 'Unggah file CSV untuk mendaftarkan peserta secara massal') }}</div>
             </div>
           </div>
           <button @click="closeModal" class="size-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-300 hover:text-white transition-colors">
@@ -26,12 +26,12 @@
           <div class="p-4 bg-blue-50/50 border border-blue-100 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="flex items-center gap-3">
               <Icon icon="ph:info-bold" class="text-2xl text-primary shrink-0" />
-              <div class="text-xs text-navy font-medium">
+              <div class="text-xs sm:text-sm text-navy font-medium">
                 <div class="font-bold">{{ t('csv_import.official_format_title', 'Format CSV Resmi') }}</div>
                 <div class="text-gray-500">{{ t('csv_import.official_format_desc', 'Gunakan template resmi agar kolom dan data terpetakan dengan benar') }}</div>
               </div>
             </div>
-            <BaseButton @click="downloadTemplate" variant="white" size="sm" icon="ph:download-simple-bold" class="shrink-0 text-xs font-bold shadow-sm">
+            <BaseButton @click="downloadTemplate" variant="white" size="sm" icon="ph:download-simple-bold" class="shrink-0 text-xs sm:text-sm font-bold shadow-sm">
               {{ t('csv_import.download_template', 'Unduh Template CSV') }}
             </BaseButton>
           </div>
@@ -50,20 +50,20 @@
               <div class="size-14 rounded-2xl bg-blue-100 flex items-center justify-center text-primary">
                 <Icon icon="ph:file-text-bold" class="text-3xl" />
               </div>
-              <div class="font-bold text-navy text-sm">{{ selectedFile.name }}</div>
-              <div class="text-xs text-gray-400 font-mono">{{ formatFileSize(selectedFile.size) }}</div>
+              <div class="font-bold text-navy text-sm sm:text-base">{{ selectedFile.name }}</div>
+              <div class="text-xs sm:text-sm text-gray-400 font-mono">{{ formatFileSize(selectedFile.size) }}</div>
             </div>
             <div v-else class="flex flex-col items-center gap-2">
               <div class="size-14 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400 group-hover:text-primary transition-colors">
                 <Icon icon="ph:cloud-arrow-up-bold" class="text-3xl" />
               </div>
-              <div class="text-sm font-bold text-navy">{{ t('csv_import.select_file', 'Klik atau Tarik File CSV ke Sini') }}</div>
-              <div class="text-xs text-gray-400">{{ t('csv_import.support_hint', 'Mendukung format file .csv (UTF-8)') }}</div>
+              <div class="text-sm sm:text-base font-bold text-navy">{{ t('csv_import.select_file', 'Klik atau Tarik File CSV ke Sini') }}</div>
+              <div class="text-xs sm:text-sm text-gray-400">{{ t('csv_import.support_hint', 'Mendukung format file .csv (UTF-8)') }}</div>
             </div>
           </div>
 
           <!-- Errors List Summary if any -->
-          <div v-if="importResult && importResult.errors && importResult.errors.length > 0" class="p-4 bg-red-50 border border-red-100 rounded-2xl space-y-2 max-h-36 overflow-y-auto text-xs text-red-700">
+          <div v-if="importResult && importResult.errors && importResult.errors.length > 0" class="p-4 bg-red-50 border border-red-100 rounded-2xl space-y-2 max-h-36 overflow-y-auto text-xs sm:text-sm text-red-700">
             <div class="font-bold flex items-center gap-2">
               <Icon icon="ph:warning-circle-bold" class="text-base" /> {{ t('csv_import.errors_title', 'Catatan Baris Terlewati / Error:') }}
             </div>

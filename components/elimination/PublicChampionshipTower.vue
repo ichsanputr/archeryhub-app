@@ -3,11 +3,11 @@
         <!-- Consolidated Header for Semi and Final -->
         <div class="round-header !flex-row !gap-4 !items-end !mb-12">
             <div class="flex flex-col items-center">
-                <span class="text-[10px] font-black tracking-[0.25em] text-slate-400 capitalize">Semifinal</span>
+                <span class="text-[10px] font-black tracking-[0.25em] text-slate-400 capitalize">{{ t('event_elimination.semifinal', 'Semifinal') }}</span>
             </div>
             <div class="h-8 w-px bg-slate-200 mb-1"></div>
             <div class="flex flex-col items-center">
-                <span class="text-[10px] font-black tracking-[0.25em] text-slate-400 capitalize">Finals</span>
+                <span class="text-[10px] font-black tracking-[0.25em] text-slate-400 capitalize">{{ t('event_elimination.finals', 'Finals') }}</span>
             </div>
         </div>
 
@@ -19,7 +19,7 @@
                         <div
                             class="flex items-center gap-2 px-4 py-1.5 rounded-xl bg-amber-500/15 border border-amber-400/40 shadow-sm relative overflow-hidden group/title">
                             <Icon icon="ph:crown-simple-fill" class="text-amber-600 text-sm" />
-                            <span class="text-[11px] font-black text-amber-950 tracking-[0.25em]">Grand Final</span>
+                            <span class="text-[11px] font-black text-amber-950 tracking-[0.25em]">{{ t('event_elimination.grand_final', 'Grand Final') }}</span>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                     <div
                         class="flex items-center gap-1.5 px-3.5 py-1 rounded-lg bg-white border border-slate-200 shadow-sm">
                         <Icon icon="ph:shield-bold" class="text-amber-600 text-xs" />
-                        <span class="text-[9px] font-black text-slate-600 tracking-[0.15em]">Bronze Match</span>
+                        <span class="text-[9px] font-black text-slate-600 tracking-[0.15em]">{{ t('event_elimination.bronze_match', 'Bronze Match') }}</span>
                     </div>
                     <div class="h-px flex-1 bg-slate-200"></div>
                 </div>
@@ -78,7 +78,10 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 import PublicEliminationMatchCard from './PublicEliminationMatchCard.vue'
+
+const { t } = useI18n()
 
 const props = defineProps({
     totalRounds: { type: Number, required: true },

@@ -576,7 +576,7 @@
 
                     <!-- Target Face Color Keypad Matrix (World Archery Rings) -->
                     <div class="p-4 sm:p-5 space-y-3">
-                        <div class="grid grid-cols-3 gap-2">
+                        <div class="grid grid-cols-4 gap-2">
                             <button v-for="val in ['X', '10', '9', '8', '7', '6', '5', '4', '3', '2', '1', 'M']" :key="val"
                                 type="button"
                                 @click="!isMatchFinished && $emit('add-score', val)"
