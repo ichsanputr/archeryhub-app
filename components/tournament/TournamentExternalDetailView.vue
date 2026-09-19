@@ -248,7 +248,9 @@
                           ? 'bg-amber-50/40 border-dashed border-amber-200' 
                           : (session.type === 'finals' 
                               ? 'bg-gradient-to-r from-amber-50/40 via-white to-white border-amber-300 shadow-2xs hover:shadow-sm' 
-                              : 'bg-white border-slate-200/90 shadow-2xs hover:border-navy/30 hover:shadow-xs')
+                              : (session.type === 'ceremony'
+                                  ? 'bg-gradient-to-r from-amber-50/60 via-amber-50/20 to-white border-amber-200 shadow-2xs'
+                                  : 'bg-white border-slate-200/90 shadow-2xs hover:border-navy/30 hover:shadow-xs'))
                       ]"
                     >
                       <!-- Left: Time & Icon Box -->
@@ -258,12 +260,13 @@
                           :class="[
                             'size-11 rounded-xl flex items-center justify-center font-bold border shrink-0 text-base shadow-2xs',
                             session.type === 'break' ? 'bg-amber-100 text-amber-800 border-amber-300/80' :
-                            session.type === 'finals' ? 'bg-amber-500 text-amber-950 border-amber-400' :
+                            session.type === 'finals' ? 'bg-amber-500 text-slate-900 border-amber-400' :
                             session.type === 'elimination' ? 'bg-rose-50 text-rose-600 border-rose-200' :
                             session.type === 'team' ? 'bg-teal-50 text-teal-700 border-teal-200' :
                             session.type === 'qualification' ? 'bg-primary/20 text-navy border-primary/30' :
                             session.type === 'practice' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
                             session.type === 'ceremony' ? 'bg-amber-100 text-amber-900 border-amber-300' :
+                            session.type === 'meeting' ? 'bg-sky-50 text-sky-700 border-sky-200' :
                             'bg-slate-100 text-slate-600 border-slate-200'
                           ]"
                         >
@@ -274,6 +277,7 @@
                           <Icon v-else-if="session.type === 'qualification'" icon="ph:target-bold" />
                           <Icon v-else-if="session.type === 'practice'" icon="ph:crosshair-bold" />
                           <Icon v-else-if="session.type === 'ceremony'" icon="ph:trophy-bold" />
+                          <Icon v-else-if="session.type === 'meeting'" icon="ph:clipboard-text-bold" />
                           <Icon v-else icon="ph:clock-bold" />
                         </div>
 
@@ -281,18 +285,40 @@
                         <div>
                           <div class="flex items-center gap-1.5 font-bold text-navy text-xs sm:text-sm">
                             <span>{{ session.time_start }}</span>
-                            <span class="text-slate-400">-</span>
-                            <span>{{ session.time_end }}</span>
+                            <template v-if="session.time_end && session.time_end !== 'Selesai'">
+                              <span class="text-slate-400">-</span>
+                              <span>{{ session.time_end }}</span>
+                            </template>
+                            <span v-else-if="session.time_end === 'Selesai'" class="text-[10px] px-1.5 py-0.2 rounded bg-slate-100 text-slate-500 font-semibold">
+                              Selesai
+                            </span>
                           </div>
-                          <div class="text-[11px] font-medium text-slate-500 mt-0.5 flex items-center gap-1">
+                          <div v-if="session.duration && session.duration !== 'Selesai'" class="text-[11px] font-medium text-slate-500 mt-0.5 flex items-center gap-1">
                             <Icon icon="ph:timer" class="text-xs" />
                             <span>{{ session.duration }}</span>
                           </div>
                         </div>
                       </div>
 
-                      <!-- Middle: Title & Notes -->
+                      <!-- Middle: Title, Stage Badge & Notes -->
                       <div class="flex-1 space-y-1.5 border-t sm:border-t-0 sm:border-l border-slate-100 pt-2 sm:pt-0 sm:pl-4">
+                        <div class="flex flex-wrap items-center gap-2">
+                          <span 
+                            v-if="session.stage" 
+                            :class="[
+                              'inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase',
+                              session.type === 'finals' ? 'bg-amber-100 text-amber-900 border border-amber-200' :
+                              session.type === 'elimination' ? 'bg-rose-100 text-rose-800 border border-rose-200' :
+                              session.type === 'qualification' ? 'bg-primary/20 text-navy border border-primary/30' :
+                              session.type === 'ceremony' ? 'bg-amber-100 text-amber-900 border border-amber-200' :
+                              session.type === 'break' ? 'bg-amber-50 text-amber-800 border border-amber-200' :
+                              session.type === 'meeting' ? 'bg-sky-50 text-sky-800 border border-sky-200' :
+                              'bg-slate-100 text-slate-700 border border-slate-200'
+                            ]"
+                          >
+                            {{ session.stage }}
+                          </span>
+                        </div>
                         <div class="font-bold text-xs sm:text-sm text-navy leading-snug">
                           {{ session.title }}
                         </div>
@@ -604,8 +630,13 @@
 
                 <!-- Custom Cell: Name -->
                 <template #cell-name="{ item }">
-                  <div class="font-bold text-navy sm:text-xs">
-                    {{ toTitleCase(item.name || item.athlete_name) }}
+                  <div class="flex items-center gap-2">
+                    <span v-if="item.target" class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-semibold shrink-0">
+                      {{ item.target }}
+                    </span>
+                    <span class="font-bold text-navy sm:text-xs">
+                      {{ toTitleCase(item.name || item.athlete_name) }}
+                    </span>
                   </div>
                 </template>
 
@@ -613,6 +644,20 @@
                 <template #cell-club="{ item }">
                   <span class="text-slate-600 font-medium">
                     {{ toTitleCase(item.club || item.country || '-') }}
+                  </span>
+                </template>
+
+                <!-- Custom Cell: Distance 1 -->
+                <template #cell-distance_1="{ item }">
+                  <span class="font-mono text-slate-600 text-xs">
+                    {{ item.distance_1 || '-' }}
+                  </span>
+                </template>
+
+                <!-- Custom Cell: Distance 2 -->
+                <template #cell-distance_2="{ item }">
+                  <span class="font-mono text-slate-600 text-xs">
+                    {{ item.distance_2 || '-' }}
                   </span>
                 </template>
 
@@ -641,29 +686,44 @@
 
             <!-- 6. ELIMINATION BRACKETS (REUSABLE ARCHERIS BRACKET COMPONENT) -->
             <section v-if="hasBracketsData" id="brackets" class="scroll-mt-24 space-y-5">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3.5">
-                <div class="flex items-center gap-3">
-                  <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon"><Icon icon="ph:sword-bold" class="size-5 text-navy" /></div>
-                  <div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
-                      {{ t('brackets_title') }}
-                    </h2>
-                    <div class="text-xs sm:text-sm text-slate-500 mt-0.5 leading-normal">{{ t('brackets_desc') }}</div>
-                  </div>
+              <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
+                <div class="size-10 rounded-2xl bg-primary/20 text-navy border border-primary/30 flex items-center justify-center shrink-0 section-badge-icon"><Icon icon="ph:sword-bold" class="size-5 text-navy" /></div>
+                <div>
+                  <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">
+                    {{ t('brackets_title') }}
+                  </h2>
+                  <div class="text-xs sm:text-sm text-slate-500 mt-0.5 leading-normal">{{ t('brackets_desc') }}</div>
                 </div>
+              </div>
 
-                <!-- Open New Tab Actions -->
-                <div class="flex items-center gap-2 self-start sm:self-auto">
-                  <NuxtLink
-                    :to="`/tournaments/${tournamentId}/bracket?category=${encodeURIComponent(selectedBracketCategory || availableBracketCategories[0] || '')}`"
-                    target="_blank"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
-                    title="Open Fullscreen Bracket in New Tab"
+              <!-- Match Type Filter Chips (Single, Team, Mix) -->
+              <div v-if="availableBracketTypes.length > 1" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 border-b border-slate-100">
+                <button
+                  v-for="bType in availableBracketTypes"
+                  :key="bType"
+                  type="button"
+                  @click="selectedBracketType = bType; selectedBracketCategory = ''"
+                  :class="[
+                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer shrink-0',
+                    (selectedBracketType || 'single') === bType
+                      ? 'bg-navy text-white shadow-xs font-bold'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                  ]"
+                >
+                  <Icon 
+                    :icon="bType === 'single' ? 'ph:user-bold' : (bType === 'team' ? 'ph:users-three-bold' : 'ph:users-bold')" 
+                    class="text-xs" 
+                  />
+                  <span>{{ bType === 'single' ? t('bracket_type_single') : (bType === 'team' ? t('bracket_type_team') : t('bracket_type_mix')) }}</span>
+                  <span 
+                    :class="[
+                      'text-[10px] px-1.5 py-0.2 rounded-full font-bold',
+                      (selectedBracketType || 'single') === bType ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600'
+                    ]"
                   >
-                    <Icon icon="ph:arrow-square-out-bold" class="text-xs text-navy" />
-                    <span>Open in New Tab</span>
-                  </NuxtLink>
-                </div>
+                    {{ allBracketCategories.filter(c => getCategoryBracketType(c) === bType).length }}
+                  </span>
+                </button>
               </div>
 
               <!-- Category Filter Chips (Single Line Horizontal Scroll) -->
@@ -1290,6 +1350,9 @@ const translations = {
     no_qual_scores: 'Belum ada hasil kualifikasi untuk kategori ini.',
     brackets_title: 'Bagan Eliminasi',
     brackets_desc: 'Bagan pertandingan satu lawan satu babak gugur hingga final.',
+    bracket_type_single: 'Individu',
+    bracket_type_team: 'Beregu',
+    bracket_type_mix: 'Mix Team',
     no_bracket_data: 'Bagan eliminasi belum tersedia untuk kategori ini.',
     medals_title: 'Podium & Medali',
     medals_desc: 'Pemenang medali kejuaraan dan klasemen perolehan per klub.',
@@ -1373,6 +1436,9 @@ const translations = {
     no_qual_scores: 'No qualification results available for this division.',
     brackets_title: 'Elimination Brackets',
     brackets_desc: 'Head-to-head match trees from elimination to medal finals.',
+    bracket_type_single: 'Individual',
+    bracket_type_team: 'Team',
+    bracket_type_mix: 'Mixed Team',
     no_bracket_data: 'Elimination bracket not available for this category.',
     medals_title: 'Podium & Medals',
     medals_desc: 'Championship medalists and club leaderboard standings.',
@@ -1456,6 +1522,9 @@ const translations = {
     no_qual_scores: 'Nessun risultato di qualifica disponibile per questa categoria.',
     brackets_title: 'Griglie Eliminatorie',
     brackets_desc: 'Scontri diretti e tabellone degli incontri testa a testa fino alla finale.',
+    bracket_type_single: 'Individuale',
+    bracket_type_team: 'Squadre',
+    bracket_type_mix: 'Squadre Miste',
     no_bracket_data: 'Nessun tabellone eliminatorio disponibile per questa categoria.',
     medals_title: 'Podio e Medagliere',
     medals_desc: 'Vincitori delle medaglie e classifica generale per club.',
@@ -1626,7 +1695,7 @@ const normalizedQualsList = computed(() => {
       score: a.total_score !== undefined ? a.total_score : (a.score !== undefined ? a.score : (a.total ?? '-')),
       tens: a.tens !== undefined ? a.tens : (a['10s'] !== undefined ? a['10s'] : (a.tens_count ?? '-')),
       xs: a.xs !== undefined ? a.xs : (a['xs'] !== undefined ? a['xs'] : (a.x_count ?? '-')),
-      category: formatDivisionCategory(a.category)
+      category: a.category || ''
     }))
   }
   if (raw && typeof raw === 'object') {
@@ -1637,7 +1706,7 @@ const normalizedQualsList = computed(() => {
         archers.forEach((a, idx) => {
           list.push({
             ...a,
-            category: formatDivisionCategory(cat),
+            category: cat,
             raw_category: cat,
             rank: a.rank || idx + 1,
             score: a.total_score !== undefined ? a.total_score : (a.score !== undefined ? a.score : (a.total ?? '-')),
@@ -1708,6 +1777,7 @@ const scrollProgress = ref(0)
 const activeSectionId = ref('overview')
 const selectedCategory = ref('')
 const selectedQualCategory = ref('')
+const selectedBracketType = ref('single')
 const selectedBracketCategory = ref('')
 const selectedPodiumCategory = ref('')
 const selectedScheduleDay = ref('')
@@ -1743,6 +1813,23 @@ const medalSortAsc = ref(true)
 // TOURNAMENT OVERVIEW DESCRIPTIONS (BESPOKE NATURAL PROSE)
 // ─────────────────────────────────────────────────────────────
 const bespokeTournamentDescriptions = {
+  '29965': {
+    id: [
+      'IPB Archery Open 2026 merupakan kejuaraan panahan terbuka tingkat nasional yang diselenggarakan oleh UKM Panahan IPB di Kabupaten Bogor, Jawa Barat pada 11 - 13 September 2026. Kejuaraan bergengsi ini mempertemukan 210 atlet panahan dari 25 lebih klub, universitas, sekolah, dan kontingen panahan terkemuka, seperti Fortius UNJ, UKM Panahan UGM, Universitas Padjadjaran (UNPAD), Universitas Siliwangi, Diponegoro Archery Club, Power UKM ITI, FAST Kodamar, SMP IT Al Binaa, Groovy Archery Academy, Puslatcab Kota Tangerang, serta tuan rumah UKM Panahan IPB.',
+      'Kejuaraan ini mempertandingkan 50 nomor kompetisi komprehensif yang memadukan persaingan atlet mahasiswa dengan pembinaan usia dini dan divisi prestasi umum. Kategori perguruan tinggi mencakup divisi Barebow Mahasiswa dan Recurve Mahasiswa (Putra, Putri, Beregu, dan Mix Team). Sementara itu, jalur pembinaan akar rumput menghadirkan persaingan ketat di divisi Standar Nasional SD 1-3 (10m), SD 4-6 (10m), SMP (15m), hingga SMA/Umum (20m), dilengkapi kategori Compound Umum, Recurve Umum, dan Barebow Open.',
+      'Didukung sistem administrasi dan skoring resmi Ianseo, turnamen ini menyajikan rangkaian pertandingan presisi tinggi mulai dari babak kualifikasi penentuan seeding hingga babak eliminasi head-to-head yang kompetitif, menjadikannya tolok ukur penting dalam pembinaan panahan kampus dan generasi muda di Indonesia.'
+    ],
+    en: [
+      'The IPB Archery Open 2026 is a premier national-level open archery championship hosted by UKM Panahan IPB (IPB University Archery Club) in Bogor Regency, West Java from September 11 to 13, 2026. Staged over three competition days, the championship assembled 210 standout archers representing over 25 prominent collegiate teams, archery academies, schools, and regional delegations—including Fortius UNJ, UKM Panahan UGM, Universitas Padjadjaran (UNPAD), Universitas Siliwangi, Diponegoro Archery Club, Power UKM ITI, FAST Kodamar, SMP IT Al Binaa, Groovy Archery Academy, Puslatcab Kota Tangerang, and host IPB University.',
+      'The championship contested 50 comprehensive medal divisions designed to bridge collegiate competition with grassroots youth development and open divisions. The university bracket spotlighted intense rivalries across Collegiate Barebow and Collegiate Recurve (Men, Women, Team, and Mixed Team). Concurrently, youth development pathways featured high-energy competition across National Standard Bow tiers for Elementary Grades 1-3 (10m), Grades 4-6 (10m), Junior High (15m), and Senior High/Open classes (20m), alongside premier Open Barebow, Compound, and Recurve categories.',
+      'Powered by the official Ianseo scoring and tournament management system, the event delivered precise qualification ranking rounds followed by thrilling head-to-head individual and team knockout shootouts, establishing a vital benchmark for university and youth archery development across Indonesia.'
+    ],
+    it: [
+      'L\'IPB Archery Open 2026 è un prestigioso campionato nazionale aperto di tiro con l\'arco organizzato dall\'associazione arcieristica universitaria UKM Panahan IPB nella Reggenza di Bogor, Giava Occidentale, dall\'11 al 13 settembre 2026. L\'evento ha riunito 210 arcieri in rappresentanza di oltre 25 delegazioni universitarie, accademie, club e comitati sportivi regionali—tra cui Fortius UNJ, UKM Panahan UGM, Universitas Padjadjaran (UNPAD), Universitas Siliwangi, Diponegoro Archery Club, Power UKM ITI, FAST Kodamar, SMP IT Al Binaa, Groovy Archery Academy, Puslatcab Kota Tangerang e l\'università ospitante IPB.',
+      'La manifestazione ha ospitato 50 divisioni di gara ufficiali strutturate per integrare il circuito universitario con il vivaio giovanile e le classi assolute open. Il settore universitario ha visto protagonisti gli atleti nelle categorie Arco Nudo e Ricurvo Universitario (Maschile, Femminile, Squadre e Squadre Miste). Il vivaio giovanile ha gareggiato nelle classi Standard Nazionale per Scuole Elementari (10m), Medie (15m) e Superiori/Open (20m), affiancate dalle divisioni d\'eccellenza Compound, Ricurvo e Arco Nudo Open.',
+      'Gestito con il sistema di cronometraggio omologato Ianseo, il torneo ha offerto sessioni di qualificazione di alto livello e combattute sfide a eliminazione diretta, confermandosi un punto di riferimento per l\'arcieria universitaria e giovanile indonesiana.'
+    ]
+  },
   '27311': {
     id: [
       'RIAU OPEN ARCHERY COMPETITION 2026 merupakan kejuaraan panahan terbuka bergengsi yang diselenggarakan di Pekanbaru, Riau pada 23 - 26 April 2026. Kejuaraan ini mempertemukan 165 atlet panahan berbakat dari berbagai klub dan kontingen panahan terkemuka.',
@@ -1862,26 +1949,17 @@ const bespokeTournamentDescriptions = {
     it: [
       'La serie giovanile Jakarta Youth Archery a Cibubur ha offerto una vetrina agonistica per i giovani arcieri studenti in 13 divisioni Arco Standard per le categorie scolastiche e open.'
     ]
-  },
-  '13000': {
-    id: [
-      'Kejuaraan Panahan Indoor Ventspils merupakan kompetisi panahan dalam ruangan standar World Archery di Latvia. Mempertandingkan divisi Recurve, Longbow, Compound, dan Barebow pada jarak 18 meter, kejuaraan ini menguji presisi dan konsistensi para pemanah.'
-    ],
-    en: [
-      'The Ventspils Indoor Archery Open in Latvia delivered international-standard indoor competition across 18m target lanes in Recurve, Longbow, Compound, and Barebow disciplines.'
-    ],
-    it: [
-      'L\'Open Indoor di Tiro con l\'Arco di Ventspils in Lettonia ha offerto un\'eccellente competizione indoor su corsie a 18 metri per le categorie Arco Olimpico, Longbow, Compound e Arco Nudo.'
-    ]
   }
 }
 
 const tournamentDescriptionParagraphs = computed(() => {
-  const extId = String(activeTournament.value?.external_id || activeTournament.value?.slug || '').replace(/^ianseo-/, '')
+  const extId = String(activeTournament.value?.external_id || '').replace(/^ianseo-/, '')
+  const slug = String(activeTournament.value?.slug || '')
   const lang = currentLang.value || 'en'
   
-  if (bespokeTournamentDescriptions[extId] && bespokeTournamentDescriptions[extId][lang]) {
-    return bespokeTournamentDescriptions[extId][lang]
+  const foundDesc = bespokeTournamentDescriptions[extId] || (slug ? bespokeTournamentDescriptions[slug] : null)
+  if (foundDesc && foundDesc[lang]) {
+    return foundDesc[lang]
   }
   
   // Dynamic Narrative Synthesizer
@@ -2001,13 +2079,26 @@ const parsedScheduleDays = computed(() => {
       day_index: idx + 1,
       date_label: d.date_label || `Hari ${idx + 1}`,
       divisions: d.divisions || '',
-      sessions: Array.isArray(d.sessions) ? d.sessions : []
+      sessions: Array.isArray(d.sessions) ? d.sessions.map(s => {
+        let tStart = s.time_start || s.time || '08:00'
+        let tEnd = s.time_end || ''
+        if (tStart.includes(' - ')) {
+          const parts = tStart.split(' - ')
+          tStart = parts[0].trim()
+          tEnd = parts[1].trim()
+        }
+        return {
+          ...s,
+          time_start: tStart,
+          time_end: tEnd
+        }
+      }) : []
     }))
   }
   
   const map = {}
   raw.forEach(item => {
-    const key = item.date || item.day || 'Day 1'
+    const key = item.date || item.day || item.event_date || 'Day 1'
     if (!map[key]) {
       map[key] = {
         day_index: Object.keys(map).length + 1,
@@ -2016,14 +2107,44 @@ const parsedScheduleDays = computed(() => {
         sessions: []
       }
     }
+
+    let tStart = item.time_start || item.time || item.time_range || item.time_slot || '08:00'
+    let tEnd = item.time_end || ''
+    if (tStart.includes(' - ')) {
+      const parts = tStart.split(' - ')
+      tStart = parts[0].trim()
+      tEnd = parts[1].trim()
+    }
+
+    let sType = item.type
+    const stg = (item.stage || item.phase || '').toLowerCase()
+    const ttl = (item.activity || item.title || item.event || item.name || '').toLowerCase()
+    if (!sType) {
+      if (stg.includes('upacara') || stg.includes('upp') || stg.includes('award') || ttl.includes('upp') || ttl.includes('upacara')) {
+        sType = 'ceremony'
+      } else if (stg.includes('registrasi') || stg.includes('meeting') || ttl.includes('registrasi') || ttl.includes('technical')) {
+        sType = 'meeting'
+      } else if (stg.includes('persiapan') || stg.includes('istirahat') || stg.includes('break') || ttl.includes('persiapan') || ttl.includes('ishoma') || ttl.includes('istirahat')) {
+        sType = 'break'
+      } else if (stg.includes('final') || ttl.includes('final') || ttl.includes('bronze') || ttl.includes('gold')) {
+        sType = 'finals'
+      } else if (stg.includes('eliminasi') || stg.includes('semifinal') || stg.includes('gugur') || ttl.includes('perempat') || ttl.includes('semifinal') || ttl.includes('1/4') || ttl.includes('1/2')) {
+        sType = 'elimination'
+      } else if (stg.includes('kualifikasi') || ttl.includes('kualifikasi')) {
+        sType = 'qualification'
+      } else {
+        sType = 'competition'
+      }
+    }
+
     map[key].sessions.push({
-      time_start: item.time || item.time_slot || '08:00',
-      time_end: item.time_end || '',
-      duration: item.duration || '',
-      title: item.activity || item.event || item.name || 'Official Match Schedule',
+      time_start: tStart,
+      time_end: tEnd,
+      duration: item.duration || (tEnd && tEnd !== 'Selesai' ? `${tStart} - ${tEnd}` : ''),
+      title: item.activity || item.title || item.event || item.name || 'Official Match Schedule',
       notes: item.notes || item.distance || '',
-      type: item.type || (item.stage?.toLowerCase().includes('final') ? 'finals' : (item.stage?.toLowerCase().includes('elim') ? 'elimination' : (item.stage?.toLowerCase().includes('qual') ? 'qualification' : 'competition'))),
-      stage: item.stage || item.phase || 'Babak Kompetisi'
+      type: sType,
+      stage: item.stage || item.phase || (sType === 'finals' ? 'Perebutan Medali' : sType === 'elimination' ? 'Babak Eliminasi' : sType === 'qualification' ? 'Babak Kualifikasi' : (sType === 'break' ? 'Persiapan Lapangan' : (sType === 'ceremony' ? 'Upacara Penghargaan (UPP)' : 'Babak Pertandingan')))
     })
   })
   return Object.values(map)
@@ -2116,14 +2237,33 @@ const entriesColumns = computed(() => [
   { key: 'category', label: t('col_category'), align: 'left', width: 'min-w-[220px]', sortable: true }
 ])
 
-const qualColumns = computed(() => [
-  { key: 'rank', label: t('col_rank'), align: 'center', width: 'w-16 min-w-[64px]', sortable: true },
-  { key: 'name', label: t('col_name'), align: 'left', width: 'min-w-[240px]', sortable: true },
-  { key: 'club', label: t('col_club'), align: 'left', width: 'min-w-[260px]', sortable: true },
-  { key: 'score', label: t('col_score'), align: 'center', width: 'min-w-[100px]', sortable: true },
-  { key: 'tens', label: t('col_10s'), align: 'center', width: 'min-w-[80px]', sortable: true },
-  { key: 'xs', label: t('col_xs'), align: 'center', width: 'min-w-[80px]', sortable: true }
-])
+const hasDistance1 = computed(() => {
+  return activeQualScores.value.some(q => q.distance_1 && String(q.distance_1).trim() !== '')
+})
+
+const hasDistance2 = computed(() => {
+  return activeQualScores.value.some(q => q.distance_2 && String(q.distance_2).trim() !== '')
+})
+
+const qualColumns = computed(() => {
+  const cols = [
+    { key: 'rank', label: t('col_rank'), align: 'center', width: 'w-16 min-w-[64px]', sortable: true },
+    { key: 'name', label: t('col_name'), align: 'left', width: 'min-w-[240px]', sortable: true },
+    { key: 'club', label: t('col_club'), align: 'left', width: 'min-w-[260px]', sortable: true }
+  ]
+  if (hasDistance1.value) {
+    cols.push({ key: 'distance_1', label: 'Dist. 1', align: 'center', width: 'min-w-[85px]', sortable: false })
+  }
+  if (hasDistance2.value) {
+    cols.push({ key: 'distance_2', label: 'Dist. 2', align: 'center', width: 'min-w-[85px]', sortable: false })
+  }
+  cols.push(
+    { key: 'score', label: t('col_score'), align: 'center', width: 'min-w-[100px]', sortable: true },
+    { key: 'tens', label: t('col_10s'), align: 'center', width: 'min-w-[80px]', sortable: true },
+    { key: 'xs', label: t('col_xs'), align: 'center', width: 'min-w-[80px]', sortable: true }
+  )
+  return cols
+})
 
 const handleSortQual = ({ key, asc }) => {
   qualSortKey.value = key
@@ -2173,7 +2313,7 @@ const paginatedQualScores = computed(() => {
 // ─────────────────────────────────────────────────────────────
 // ELIMINATION BRACKET DATA TRANSFORMATION FOR ARCHERIS COMPONENT
 // ─────────────────────────────────────────────────────────────
-const availableBracketCategories = computed(() => {
+const allBracketCategories = computed(() => {
   const rawBrackets = activeTournamentData.value?.brackets
   if (rawBrackets && typeof rawBrackets === 'object' && !Array.isArray(rawBrackets)) {
     return Object.keys(rawBrackets)
@@ -2181,6 +2321,34 @@ const availableBracketCategories = computed(() => {
   const cats = new Set()
   normalizedBracketsList.value.forEach(b => { if (b.category) cats.add(b.category) })
   return Array.from(cats)
+})
+
+const getCategoryBracketType = (cat) => {
+  const c = String(cat || '').toLowerCase()
+  if (c.includes('mix') || c.includes('campuran') || c.includes('mixed') || /\b(xb|cx|rx|xnu|xbs)\b/.test(c)) {
+    return 'mix'
+  }
+  if (c.includes('team') || c.includes('beregu') || c.includes('regu')) {
+    return 'team'
+  }
+  return 'single'
+}
+
+const availableBracketTypes = computed(() => {
+  const types = new Set()
+  allBracketCategories.value.forEach(cat => {
+    types.add(getCategoryBracketType(cat))
+  })
+  const order = ['single', 'team', 'mix']
+  return order.filter(t => types.has(t))
+})
+
+const availableBracketCategories = computed(() => {
+  const all = allBracketCategories.value
+  const activeType = selectedBracketType.value || 'single'
+  const filtered = all.filter(cat => getCategoryBracketType(cat) === activeType)
+  if (filtered.length > 0) return filtered
+  return all
 })
 
 const currentArcherisBracketConfig = computed(() => {
@@ -2212,28 +2380,37 @@ const currentArcherisBracketRounds = computed(() => {
   let phasesList = []
   if (Array.isArray(catData)) {
     phasesList = catData
-  } else if (typeof catData === 'object') {
-    Object.keys(catData).forEach(pName => {
-      const val = catData[pName]
-      if (Array.isArray(val)) {
-        phasesList.push({ phase: pName, matches: val })
-      } else if (val && typeof val === 'object') {
-        phasesList.push({ phase: pName, matches: [val] })
-      }
-    })
+  } else if (typeof catData === 'object' && catData !== null) {
+    if (Array.isArray(catData.phases)) {
+      phasesList = catData.phases
+    } else {
+      Object.keys(catData).forEach(pName => {
+        const val = catData[pName]
+        if (Array.isArray(val)) {
+          phasesList.push({ phase: pName, matches: val })
+        } else if (val && typeof val === 'object') {
+          phasesList.push({ phase: pName, matches: [val] })
+        }
+      })
+    }
   }
 
   // Parse all matches using smart Ianseo column detection
   const parseMatchItem = (m, idx, phaseLabel) => {
-    const a1 = String(m.archer1 || m.name1 || m.archer_a || m.name_a || '').trim()
-    const s1 = String(m.score1 || m.score_a || '').trim()
-    const seed1 = String(m.seed1 || m.seed_a || '').trim()
-    const sets1 = String(m.sets1 || m.sets_a || '').trim()
+    const a1Obj = m.athlete_1 || m.athlete1 || {}
+    const a2Obj = m.athlete_2 || m.athlete2 || {}
 
-    const a2 = String(m.archer2 || m.name2 || m.archer_b || m.name_b || '').trim()
-    const s2 = String(m.score2 || m.score_b || '').trim()
-    const seed2 = String(m.seed2 || m.seed_b || '').trim()
-    const sets2 = String(m.sets2 || m.sets_b || '').trim()
+    const a1 = String(m.archer1 || m.name1 || m.archer_a || m.name_a || a1Obj.name || m.athlete1_name || '').trim()
+    const s1 = String(m.score1 !== undefined ? m.score1 : (m.score_a !== undefined ? m.score_a : (a1Obj.score !== undefined ? a1Obj.score : (m.athlete1_score || '')))).trim()
+    const seed1 = String(m.seed1 || m.seed_a || a1Obj.seed || m.athlete1_seed || '').trim()
+    const club1 = String(m.club1 || m.club_a || a1Obj.club || a1Obj.club_name || m.athlete1_club || '').trim()
+    const sets1 = String(m.sets1 || m.sets_a || (Array.isArray(a1Obj.set_scores) ? a1Obj.set_scores.join(' ') : (a1Obj.set_scores || m.athlete1_sets || ''))).trim()
+
+    const a2 = String(m.archer2 || m.name2 || m.archer_b || m.name_b || a2Obj.name || m.athlete2_name || '').trim()
+    const s2 = String(m.score2 !== undefined ? m.score2 : (m.score_b !== undefined ? m.score_b : (a2Obj.score !== undefined ? a2Obj.score : (m.athlete2_score || '')))).trim()
+    const seed2 = String(m.seed2 || m.seed_b || a2Obj.seed || m.athlete2_seed || '').trim()
+    const club2 = String(m.club2 || m.club_b || a2Obj.club || a2Obj.club_name || m.athlete2_club || '').trim()
+    const sets2 = String(m.sets2 || m.sets_b || (Array.isArray(a2Obj.set_scores) ? a2Obj.set_scores.join(' ') : (a2Obj.set_scores || m.athlete2_sets || ''))).trim()
 
     let nameA = 'TBD'
     let realSeedA = seed1
@@ -2278,9 +2455,10 @@ const currentArcherisBracketRounds = computed(() => {
     let winnerId = null
     const nA = parseFloat(scoreA)
     const nB = parseFloat(scoreB)
-    if (!isNaN(nA) && !isNaN(nB)) {
-      if (nA > nB) winnerId = 'a'
-      else if (nB > nA) winnerId = 'b'
+    if (a1Obj.is_winner || m.athlete1_is_winner || scoreA.toLowerCase() === 'bye' || (!isNaN(nA) && !isNaN(nB) && nA > nB)) {
+      winnerId = 'a'
+    } else if (a2Obj.is_winner || m.athlete2_is_winner || scoreB.toLowerCase() === 'bye' || (!isNaN(nA) && !isNaN(nB) && nB > nA)) {
+      winnerId = 'b'
     }
 
     return {
@@ -2289,12 +2467,14 @@ const currentArcherisBracketRounds = computed(() => {
       phase: phaseLabel,
       entry_a_id: 'a',
       entry_a_name: toTitleCase(nameA),
+      entry_a_club: club1,
       entry_a_seed: realSeedA,
       set_points_a: scoreA,
       total_score_a: scoreA,
       sets_a: sets1,
       entry_b_id: 'b',
       entry_b_name: toTitleCase(nameB),
+      entry_b_club: club2,
       entry_b_seed: realSeedB,
       set_points_b: scoreB,
       total_score_b: scoreB,
