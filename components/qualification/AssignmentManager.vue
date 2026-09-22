@@ -19,13 +19,13 @@
         <!-- Assignments List -->
         <div v-if="loading" class="text-center py-12">
             <Icon icon="ph:spinner-bold" class="text-3xl text-primary animate-spin inline-block" />
-            <p class="text-sm text-gray-500 mt-3">{{ t('common.loading', 'Memuat data...') }}</p>
+            <div class="text-sm text-gray-500 mt-3">{{ t('common.loading', 'Memuat data...') }}</div>
         </div>
 
         <div v-else-if="assignments.length === 0" class="text-center py-12">
             <Icon icon="ph:users-three" class="text-4xl text-gray-300 mx-auto mb-2" />
-            <p class="text-gray-500 font-medium">{{ t('event_qualification.empty_target_assignment', 'Belum ada peserta yang diatur ke target') }}</p>
-            <p class="text-sm text-gray-400 mt-1">{{ t('event_qualification.use_auto_assign', 'Gunakan fitur atur otomatis di atas') }}</p>
+            <div class="text-gray-500 font-medium">{{ t('event_qualification.empty_target_assignment', 'Belum ada peserta yang diatur ke target') }}</div>
+            <div class="text-sm text-gray-400 mt-1">{{ t('event_qualification.use_auto_assign', 'Gunakan fitur atur otomatis di atas') }}</div>
         </div>
 
         <div v-else class="space-y-6">
@@ -43,8 +43,8 @@
                                     {{ assignment.target_name ? assignment.target_name.slice(-1) : '?' }}
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-navy">{{ assignment.archer_name }}</p>
-                                    <p class="text-xs text-gray-500">{{ assignment.club_name || 'Individual' }}</p>
+                                    <div class="font-semibold text-navy">{{ assignment.archer_name }}</div>
+                                    <div class="text-xs text-gray-500">{{ assignment.club_name || 'Individual' }}</div>
                                 </div>
                             </div>
                             <button @click="removeAssignment(assignment.uuid)"

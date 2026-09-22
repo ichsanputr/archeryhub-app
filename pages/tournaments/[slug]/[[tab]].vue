@@ -38,6 +38,10 @@
                                     <Icon icon="ph:map-pin" class="text-primary" />
                                     <span>{{ displayValue(tournament.location) }}</span>
                                 </div>
+                                <div v-if="tournamentCountry" class="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full text-white backdrop-blur-xs text-sm font-semibold">
+                                    <Icon :icon="tournamentCountry.icon" class="text-lg shrink-0" />
+                                    <span>{{ tournamentCountry.name }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -71,8 +75,8 @@
                                 <h2
                                     class="font-black text-navy text-lg sm:text-2xl mb-6 flex items-center gap-2 md:gap-3">
                                     <div
-                                        class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
-                                        <Icon icon="ph:info-bold" class="text-base md:text-xl text-navy" />
+                                        class="size-10 md:size-12 rounded-xl md:rounded-2xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs">
+                                        <Icon icon="ph:info-bold" class="text-lg md:text-xl" />
                                     </div>
                                     {{ t('event_detail.about_event') }}
                                 </h2>
@@ -107,9 +111,9 @@
                                         <h2
                                             class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
                                             <div
-                                                class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
+                                                class="size-10 md:size-12 rounded-xl md:rounded-2xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs">
                                                 <Icon icon="ph:squares-four-bold"
-                                                    class="text-base md:text-xl text-navy" />
+                                                    class="text-lg md:text-xl" />
                                             </div>
                                             {{ $t('event_detail.competition_categories') }}
                                         </h2>
@@ -147,9 +151,9 @@
                                             <!-- Card Header -->
                                             <div class="flex items-center gap-4 mb-6">
                                                 <div
-                                                    class="w-10 h-10 md:w-12 md:h-12 bg-navy rounded-2xl flex items-center justify-center p-1.5 shadow-sm shadow-navy/20 overflow-hidden shrink-0">
+                                                    class="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-2xl flex items-center justify-center p-2 shadow-2xs overflow-hidden shrink-0">
                                                     <img :src="'/' + division.icon" :alt="division.name"
-                                                        class="w-full h-full object-contain invert" />
+                                                        class="w-full h-full object-contain" />
                                                 </div>
                                                 <div>
                                                     <h3 class="font-black text-navy text-lg md:text-xl">{{ division.name
@@ -184,8 +188,8 @@
                                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 relative z-10">
                                     <div>
                                         <h2 class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
-                                            <div class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
-                                                <Icon icon="ph:wallet-bold" class="text-base md:text-xl text-navy" />
+                                            <div class="size-10 md:size-12 rounded-xl md:rounded-2xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs">
+                                                <Icon icon="ph:wallet-bold" class="text-lg md:text-xl" />
                                             </div>
                                             {{ t('event_detail.registration_fee') }}
                                         </h2>
@@ -203,7 +207,7 @@
                                     <div v-for="fee in formattedFees" :key="fee.name"
                                         class="bg-gray-50/70 border border-gray-100 p-6 rounded-[2rem] hover:border-primary hover:shadow-md transition-all relative">
                                         <div class="flex items-center gap-3 mb-4">
-                                            <div class="size-10 rounded-xl bg-navy/5 flex items-center justify-center shrink-0">
+                                            <div class="size-10 rounded-xl bg-primary/10 text-navy flex items-center justify-center shrink-0">
                                                 <Icon :icon="fee.iconName || 'ph:user-bold'" class="text-navy text-xl" />
                                             </div>
                                             <div>
@@ -212,7 +216,7 @@
                                             </div>
                                         </div>
                                         <div class="text-2xl sm:text-3xl font-black text-navy mb-2 tracking-tight">
-                                            Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}
+                                            {{ formatMoney(fee.amount, tournament.currency) }}
                                             <span class="text-sm text-gray-400 font-semibold">{{ t('event_detail.per_category') }}</span>
                                         </div>
                                         <div class="text-xs sm:text-sm text-gray-500">{{ fee.description }}</div>
@@ -234,7 +238,7 @@
                                             <div class="text-[10px] text-gray-400">{{ fee.typeLabel }}</div>
                                         </div>
                                         <div class="text-right shrink-0">
-                                            <div class="text-base font-black text-navy tabular-nums">Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}</div>
+                                            <div class="text-base font-black text-navy tabular-nums">{{ formatMoney(fee.amount, tournament.currency) }}</div>
                                             <div class="text-[10px] text-gray-400">{{ t('event_detail.per_participant') }}</div>
                                         </div>
                                     </div>
@@ -248,7 +252,7 @@
                                             <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2">{{ fee.typeLabel }}</div>
                                             <h3 class="text-lg font-black text-navy mb-4">{{ fee.name }}</h3>
                                             <div class="text-2xl sm:text-3xl font-black text-navy mb-4 tracking-tight">
-                                                Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}
+                                                {{ formatMoney(fee.amount, tournament.currency) }}
                                                 <span class="text-sm text-gray-400 font-semibold">{{ t('event_detail.per_participant') }}</span>
                                             </div>
                                             <div v-if="fee.description" class="text-sm text-gray-500">{{ fee.description }}</div>
@@ -259,7 +263,7 @@
                                             <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2">{{ t('event_detail.flat_fee') }}</div>
                                             <h3 class="text-lg font-black text-navy mb-4">{{ t('event_detail.all_categories') }}</h3>
                                             <div class="text-2xl sm:text-3xl font-black text-navy mb-4 tracking-tight">
-                                                Rp {{ (tournament.entry_fee || 0).toLocaleString('id-ID') }}
+                                                {{ formatMoney(tournament.entry_fee, tournament.currency) }}
                                                 <span class="text-sm text-gray-400 font-semibold">{{ t('event_detail.per_participant') }}</span>
                                             </div>
                                             <ul class="space-y-2 text-sm text-gray-600">
@@ -309,8 +313,7 @@
                                     class="lg:w-1/2 bg-primary relative flex flex-col justify-center items-center px-8 md:px-12 py-16 target-texture">
                                     <div class="relative z-10 text-center">
                                         <span class="text-navy/40 font-black tracking-[0.3em] text-xs sm:text-sm mb-4 block">{{ t('event_detail.total_prize') }}</span>
-                                        <div class="text-navy text-4xl md:text-5xl font-black leading-none mb-4">Rp {{
-                                            (tournament.total_prize || 0).toLocaleString('id-ID') }}</div>
+                                        <div class="text-navy text-4xl md:text-5xl font-black leading-none mb-4">{{ formatMoney(tournament.total_prize || 0, tournament.currency) }}</div>
                                         <div class="h-2 w-40 bg-navy mx-auto mb-6"></div>
                                         <div class="text-navy font-bold text-base tracking-widest">{{ t('event_detail.fight_for_best_podium') }}
                                         </div>
@@ -336,7 +339,7 @@
                                                         </h3>
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
-                                                        displayValue(tournament.prizes?.first) }}
+                                                        formatPrizeDisplay(tournament.prizes?.first) }}
                                                     </div>
                                                 </div>
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
@@ -355,7 +358,7 @@
                                                         </h3>
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
-                                                        displayValue(tournament.prizes?.second)
+                                                        formatPrizeDisplay(tournament.prizes?.second)
                                                         }}</div>
                                                 </div>
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
@@ -374,7 +377,7 @@
                                                         </h3>
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
-                                                        displayValue(tournament.prizes?.third) }}
+                                                        formatPrizeDisplay(tournament.prizes?.third) }}
                                                     </div>
                                                 </div>
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
@@ -398,8 +401,8 @@
                                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 relative z-10">
                                     <div>
                                         <h2 class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
-                                            <div class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
-                                                <Icon icon="ph:question-bold" class="text-base md:text-xl text-navy" />
+                                            <div class="size-10 md:size-12 rounded-xl md:rounded-2xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs">
+                                                <Icon icon="ph:question-bold" class="text-lg md:text-xl" />
                                             </div>
                                             {{ t('event_detail.faq') }}
                                         </h2>
@@ -458,8 +461,8 @@
                                 </div>
                                 <div class="flex items-center gap-3 mb-8 relative z-10">
                                     <div
-                                        class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
-                                        <Icon icon="ph:images-bold" class="text-base md:text-xl text-navy" />
+                                        class="size-10 md:size-12 rounded-xl md:rounded-2xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs">
+                                        <Icon icon="ph:images-bold" class="text-lg md:text-xl" />
                                     </div>
                                     <div>
                                         <h2 class="font-black text-navy text-lg md:text-2xl">{{ t('event_detail.event_gallery') }}</h2>
@@ -543,20 +546,20 @@
                                     <span class="block text-xl sm:text-2xl font-bold text-navy">{{
                                         String(countdown.days).padStart(2,
                                             '0') }}</span>
-                                    <span class="text-xs sm:text-sm text-gray-500 ">{{ t('common.days') }}</span>
+                                    <span class="text-xs sm:text-sm text-gray-500 ">{{ t('common.days', 'Days') }}</span>
                                 </div>
                                 <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                     :class="{ 'opacity-50': countdown.isClosed }">
                                     <span class="block text-xl sm:text-2xl font-bold text-navy">{{
                                         String(countdown.hours).padStart(2,
                                             '0') }}</span>
-                                    <span class="text-xs sm:text-sm text-gray-500 ">{{ t('common.hours') }}</span>
+                                    <span class="text-xs sm:text-sm text-gray-500 ">{{ t('common.hours', 'Hours') }}</span>
                                 </div>
                                 <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                     :class="{ 'opacity-50': countdown.isClosed }">
                                     <span class="block text-xl sm:text-2xl font-bold text-navy">{{
                                         String(countdown.minutes).padStart(2, '0') }}</span>
-                                    <span class="text-xs sm:text-sm text-gray-500 ">{{ t('common.minutes') }}</span>
+                                    <span class="text-xs sm:text-sm text-gray-500 ">{{ t('common.minutes', 'Minutes') }}</span>
                                 </div>
                             </div>
                             <!-- New Per-Category Quota Section -->
@@ -770,6 +773,7 @@ import { useSeoMeta, useHead, useRequestURL, createError, useRuntimeConfig, useA
 import { useDateFormat } from '@vueuse/core'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import { useI18n } from 'vue-i18n'
+import { formatMoney, SUPPORTED_COUNTRIES } from '~/composables/useCurrency'
 import TournamentExternalDetailView from '~/components/tournament/TournamentExternalDetailView.vue'
 
 
@@ -914,6 +918,7 @@ const transformEventData = (data, paymentMethodsData = null) => {
     }
 
     return {
+        visibility: data.visibility || pg.visibility || 'external',
         name: data.name || data.title || '',
         date: (() => {
             if (!data.start_date) return data.date || '-'
@@ -955,6 +960,8 @@ const transformEventData = (data, paymentMethodsData = null) => {
         payment_methods: paymentMethodsList,
         location_accessibility: pg.location_accessibility || [],
         entry_fee: data.entry_fee || 0,
+        currency: pg.currency || data.currency || 'IDR',
+        country_code: pg.country_code || data.country_code || 'ID',
         fee_mode: pg.fee_mode || 'per_type',
         fee_per_type: pg.fee_per_type || { individual: data.entry_fee || 0, team: 0, mixed_team: 0 },
         fee_per_category: pg.fee_per_category || {}
@@ -1051,7 +1058,7 @@ const getPaymentIcon = (method) => {
 }
 
 // SSR: Fetch event data with useAsyncData
-const { data: eventData, error: eventError, pending: isPageLoading } = useAsyncData(
+const { data: eventData, error: eventError, pending: isPageLoading } = await useAsyncData(
     `event-${slug}`,
     async () => {
         try {
@@ -1077,10 +1084,109 @@ const { data: eventData, error: eventError, pending: isPageLoading } = useAsyncD
             try {
                 const extRes = await $fetch(`${apiBaseUrl}/tournaments/external/${slug}`)
                 if (extRes && (extRes.tournament || extRes.data)) {
+                    const raw = extRes.data || {}
+                    
+                    // Optimize entries
+                    const entries = Array.isArray(raw.entries) ? raw.entries.map(e => ({
+                        name: e.name || e.athlete_name,
+                        target: e.target || e.target_no,
+                        bib: e.bib,
+                        club: e.club || e.club_name || e.code,
+                        code: e.code || e.club_code,
+                        category: e.category || e.division,
+                        score: e.score || e.total_score,
+                        rank: e.rank
+                    })) : []
+
+                    // Optimize qualifications
+                    const qualifications = {}
+                    if (raw.qualifications && typeof raw.qualifications === 'object') {
+                        for (const [cat, list] of Object.entries(raw.qualifications)) {
+                            if (Array.isArray(list)) {
+                                qualifications[cat] = list.map(q => ({
+                                    rank: q.rank,
+                                    target: q.target || q.target_no,
+                                    bib: q.bib,
+                                    name: q.name || q.athlete_name,
+                                    club: q.club || q.club_name || q.code,
+                                    d1: q.d1 ?? q.distance_1 ?? 0,
+                                    d2: q.d2 ?? q.distance_2 ?? 0,
+                                    d3: q.d3 ?? q.distance_3 ?? 0,
+                                    d4: q.d4 ?? q.distance_4 ?? 0,
+                                    total: q.total ?? q.score ?? 0,
+                                    tens: q.tens ?? q['10s'] ?? 0,
+                                    xs: q.xs ?? q['Xs'] ?? 0
+                                }))
+                            }
+                        }
+                    }
+
+                    // Optimize team qualifications
+                    const team_qualifications = {}
+                    if (raw.team_qualifications && typeof raw.team_qualifications === 'object') {
+                        for (const [cat, list] of Object.entries(raw.team_qualifications)) {
+                            if (Array.isArray(list)) {
+                                team_qualifications[cat] = list.map(t => ({
+                                    rank: t.rank,
+                                    name: t.name || t.team_name,
+                                    club: t.club || t.club_name || t.code,
+                                    total: t.total ?? t.score ?? 0,
+                                    tens: t.tens ?? t['10s'] ?? 0,
+                                    xs: t.xs ?? t['Xs'] ?? 0,
+                                    members: Array.isArray(t.members) ? t.members.map(m => typeof m === 'object' ? (m.name || m.athlete_name) : m) : []
+                                }))
+                            }
+                        }
+                    }
+
+                    // Optimize brackets
+                    const brackets = {}
+                    if (raw.brackets && typeof raw.brackets === 'object') {
+                        for (const [cat, bracketObj] of Object.entries(raw.brackets)) {
+                            if (bracketObj && typeof bracketObj === 'object') {
+                                const phases = Array.isArray(bracketObj.phases) ? bracketObj.phases.map(p => ({
+                                    name: p.name || p.phase_name,
+                                    matches: Array.isArray(p.matches) ? p.matches.map(m => ({
+                                        match_no: m.match_no || m.id,
+                                        target: m.target,
+                                        athlete_1: m.athlete_1 ? {
+                                            name: m.athlete_1.name,
+                                            club: m.athlete_1.club,
+                                            score: m.athlete_1.score,
+                                            seed: m.athlete_1.seed,
+                                            is_winner: m.athlete_1.is_winner
+                                        } : null,
+                                        athlete_2: m.athlete_2 ? {
+                                            name: m.athlete_2.name,
+                                            club: m.athlete_2.club,
+                                            score: m.athlete_2.score,
+                                            seed: m.athlete_2.seed,
+                                            is_winner: m.athlete_2.is_winner
+                                        } : null
+                                    })) : []
+                                })) : []
+                                brackets[cat] = { phases }
+                            }
+                        }
+                    }
+
+                    const cleanData = {
+                        ...raw,
+                        entries,
+                        qualifications,
+                        team_qualifications,
+                        brackets
+                    }
+
+                    const isExt = true
+                    try {
+                        useState('isExternalTournamentPage').value = isExt
+                    } catch {}
+
                     return {
                         isExternal: true,
                         externalTournament: extRes.tournament,
-                        externalData: extRes.data,
+                        externalData: cleanData,
                         event: { data: { name: extRes.tournament?.name || '' } }
                     }
                 }
@@ -1091,10 +1197,15 @@ const { data: eventData, error: eventError, pending: isPageLoading } = useAsyncD
     { lazy: false, server: true }
 )
 
-const isExternalTournamentState = useState('isExternalTournamentPage', () => /^\d+$/.test(String(slug || '')))
-watchEffect(() => {
-    isExternalTournamentState.value = eventData.value?.isExternal === true || /^\d+$/.test(String(slug || ''))
+const isExternalTournamentState = useState('isExternalTournamentPage', () => eventData.value?.isExternal === true)
+isExternalTournamentState.value = eventData.value?.isExternal === true
+
+onMounted(() => {
+    if (eventData.value?.isExternal) {
+        isExternalTournamentState.value = true
+    }
 })
+
 onUnmounted(() => {
     isExternalTournamentState.value = false
 })
@@ -1106,6 +1217,21 @@ const tournament = computed(() => {
     }
     return fallbackTournament
 })
+
+const tournamentCountry = computed(() => {
+    const code = tournament.value?.country_code
+    if (!code) return null
+    return SUPPORTED_COUNTRIES.find(c => c.code === code) || null
+})
+
+const formatPrizeDisplay = (prizeVal) => {
+    if (!prizeVal || prizeVal === '-') return '-'
+    const num = Number(String(prizeVal).replace(/[^0-9.-]/g, ''))
+    if (!isNaN(num) && num > 0) {
+        return formatMoney(num, tournament.value?.currency || 'IDR')
+    }
+    return prizeVal
+}
 
 const divisionsData = computed(() => {
     if (eventData.value?.categories?.events) {
@@ -1125,25 +1251,14 @@ const openLightbox = (url) => {
     lightboxUrl.value = url
 }
 
-// Throw 404 if event not found (only after loading is complete)
-watchEffect(() => {
-    if (!isPageLoading.value) {
-        if (eventError.value || !eventData.value) {
-            throw createError({
-                statusCode: 404,
-                statusMessage: 'Event not found',
-                fatal: true
-            })
-        }
-        if (!eventData.value.isExternal && (!eventData.value?.event || !tournament.value.name)) {
-            throw createError({
-                statusCode: 404,
-                statusMessage: 'Event not found',
-                fatal: true
-            })
-        }
-    }
-})
+// Throw 404 if event not found
+if (!eventData.value) {
+    throw createError({
+        statusCode: 404,
+        statusMessage: 'Event not found',
+        fatal: true
+    })
+}
 
 const formattedFees = computed(() => {
     const t = tournament.value
@@ -1361,6 +1476,7 @@ const activeMetaTournament = computed(() => {
         status: t.status || 'upcoming',
         image: t.banner_url || t.logo_url || t.image || 'https://archeris.net/og-default.jpg',
         organizer: t.organizer || 'Tournament Organizer',
+        visibility: t.visibility || 'external',
         isExternal: false
     }
 })
@@ -1446,6 +1562,18 @@ useHead({
     link: [
         { rel: 'canonical', href: `https://archeris.net/tournaments/${slug}` }
     ],
+    meta: computed(() => {
+        if (activeMetaTournament.value.visibility === 'internal') {
+            return [
+                { name: 'robots', content: 'noindex, nofollow' },
+                { name: 'googlebot', content: 'noindex, nofollow' }
+            ]
+        }
+        return [
+            { name: 'robots', content: 'index, follow' },
+            { name: 'googlebot', content: 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' }
+        ]
+    }),
     script: [
         {
             type: 'application/ld+json',

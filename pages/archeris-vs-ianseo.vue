@@ -27,7 +27,7 @@
         <!-- ── HERO SECTION ── -->
         <div class="bg-navy pt-36 pb-16 md:pt-48 md:pb-24 relative overflow-hidden text-white">
             <div class="absolute inset-0 z-0">
-                <img src="/hero-homepage.jpeg" class="w-full h-full object-cover" />
+                <img src="/hero-homepage.jpeg" alt="Archeris vs Ianseo Comparison" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/60"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90"></div>
             </div>

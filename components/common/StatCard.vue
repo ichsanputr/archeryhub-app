@@ -12,12 +12,12 @@
     <!-- Main Content Header -->
     <div class="flex justify-between items-start relative z-10 w-full">
       <div class="min-w-0 flex-1 pr-2">
-        <p class="text-xs font-bold text-slate-500 truncate mb-1">
+        <div class="text-xs font-bold text-slate-500 truncate mb-1">
           {{ title }}
-        </p>
-        <p class="text-2xl sm:text-3xl font-black text-navy tracking-tight tabular-nums truncate leading-none">
+        </div>
+        <div class="text-2xl sm:text-3xl font-black text-navy tracking-tight tabular-nums truncate leading-none">
           {{ value }}
-        </p>
+        </div>
       </div>
       <!-- Top-right Icon Badge -->
       <div
@@ -30,10 +30,10 @@
     <!-- Optional Footer / Details -->
     <div v-if="$slots.footer || description" class="mt-auto pt-3 border-t border-slate-50 relative z-10 w-full">
       <slot name="footer">
-        <p class="text-slate-400 text-[10px] font-bold flex items-center gap-1">
+        <div class="text-slate-400 text-[10px] font-bold flex items-center gap-1">
           <Icon v-if="descriptionIcon" :icon="descriptionIcon" class="text-[12px]" />
           {{ description }}
-        </p>
+        </div>
       </slot>
     </div>
   </div>

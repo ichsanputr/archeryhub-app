@@ -2,13 +2,13 @@
     <div class="flex flex-col gap-6 pb-12">
         <!-- Header -->
         <DashboardHeader
-            :title="t('event_teams.title', 'Tim & Beregu')"
-            :subtitle="t('event_teams.subtitle', 'Kelola tim resmi, anggota beregu, dan sinkronisasi otomatis per kategori.')"
+            :title="t('event_teams.title')"
+            :subtitle="t('event_teams.subtitle')"
             icon="ph:users-three"
             :breadcrumbs="[
                 { label: 'Dashboard', to: '/dashboard/organizer' },
-                { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-                { label: t('event_teams.title', 'Tim & Beregu') }
+                { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+                { label: t('event_teams.title') }
             ]"
         >
             <template #actions>
@@ -18,13 +18,13 @@
                         :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
                         @click="isSubscriptionActive ? handleSyncTeams() : (showPremiumModal = true)"
                         :loading="isSyncing">
-                        {{ t('event_teams.auto_sync', 'Sinkron Tim') }}
+                        {{ t('event_teams.auto_sync') }}
                     </BaseButton>
                     <BaseButton variant="primary" icon="ph:plus-bold"
                         class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
                         :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
                         @click="isSubscriptionActive ? openAddTeamModal() : (showPremiumModal = true)">
-                        {{ t('event_teams.add_manual', 'Tambah Tim') }}
+                        {{ t('event_teams.add_manual') }}
                     </BaseButton>
                 </div>
             </template>
@@ -33,7 +33,12 @@
 
         <!-- Category Selection -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <h2 class="text-base font-black text-navy mb-4">{{ t('event_teams.select_category') }}</h2>
+            <div class="flex items-center gap-3 mb-4">
+                <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                    <Icon icon="ph:folders-bold" class="text-xl" />
+                </div>
+                <h2 class="text-base font-black text-navy">{{ t('event_teams.select_category') }}</h2>
+            </div>
 
             <div v-if="loadingCategories" class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                 <div v-for="i in 4" :key="i"
@@ -64,10 +69,11 @@
                         :class="selectedCategory?.id === category.id ? 'bg-primary' : 'bg-transparent'"></div>
                     <div class="flex items-start gap-3 pl-2">
                         <div
-                            class="size-12 bg-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden p-2 group-hover:bg-primary transition-colors">
-                            <img :src="'/' + getCategoryIcon(`${category.division_name} ${category.event_type_name} ${category.gender_division_name}`)"
-                                :alt="category.division_name"
-                                class="w-full h-full object-contain invert group-hover:invert-0 transition-all" />
+                            class="size-12 bg-primary/10 border border-primary/20 rounded-xl flex items-center justify-center flex-shrink-0 shadow-2xs overflow-hidden p-2">
+                            <img :src="'/' + (getCategoryIcon(`${category?.division_name || ''} ${category?.event_type_name || ''} ${category?.gender_division_name || ''}`) || 'category-icon/men-team.svg')"
+                                :alt="category?.division_name || 'Category'"
+                                class="w-full h-full object-contain"
+                                @error="(e) => { e.target.onerror = null; e.target.src = '/category-icon/men-team.svg' }" />
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="font-bold text-navy group-hover:text-primary transition-colors leading-tight mb-1 line-clamp-2">
@@ -81,7 +87,7 @@
                                         <span>{{ t('event_teams.team_count_badge', { count: category.team_count }) }}</span>
                                     </div>
                                     <div v-else class="text-[10px] font-medium text-gray-400">
-                                        Belum ada tim
+                                        {{ t('event_teams.no_teams_badge') }}
                                     </div>
                                 </div>
                             </div>
@@ -95,9 +101,14 @@
         <div class="space-y-6">
             <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-                    <div>
-                        <h2 class="text-lg font-black text-navy leading-tight">{{ t('event_teams.official_team_list') }}</h2>
-                        <div class="text-sm text-gray-500 mt-1">{{ t('event_teams.team_list_desc') }}</div>
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                            <Icon icon="ph:users-three-bold" class="text-xl" />
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-black text-navy leading-tight">{{ t('event_teams.official_team_list') }}</h2>
+                            <div class="text-sm text-gray-500 mt-1">{{ t('event_teams.team_list_desc') }}</div>
+                        </div>
                     </div>
                 </div>
 
@@ -165,13 +176,18 @@
                         </div>
 
                         <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                            <div class="flex gap-2">
+                            <div class="flex items-center gap-1.5">
+                                <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/teams/${team.id}`"
+                                    class="p-2 text-gray-400 hover:text-primary transition-colors rounded-lg hover:bg-navy/5"
+                                    :title="t('org_team_detail.team_detail')">
+                                    <Icon icon="ph:eye-bold" class="text-lg" />
+                                </NuxtLink>
                                 <button @click="isSubscriptionActive ? openEditTeamModal(team) : (showPremiumModal = true)"
-                                    class="p-2 text-gray-400 hover:text-navy transition-colors">
+                                    class="p-2 text-gray-400 hover:text-navy transition-colors rounded-lg hover:bg-gray-100">
                                     <Icon icon="ph:pencil-simple" class="text-lg" />
                                 </button>
                                 <button @click="isSubscriptionActive ? (teamToDelete = team, showDeleteConfirm = true) : (showPremiumModal = true)"
-                                    class="p-2 text-gray-400 hover:text-red-500 transition-colors">
+                                    class="p-2 text-gray-400 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50">
                                     <Icon icon="ph:trash" class="text-lg" />
                                 </button>
                             </div>
@@ -238,6 +254,13 @@
                                     :placeholder="t('event_teams.select_club_placeholder')" :disabled="!teamForm.category_id || loadingParticipants"
                                     @update:modelValue="onModalClubChange" searchable />
                             </template>
+                        </div>
+
+                        <!-- Mixed Team Notice -->
+                        <div v-if="modalCategoryInfo?.event_type_name?.toLowerCase().includes('mixed')"
+                            class="flex items-center gap-2 p-3 bg-blue-50/80 border border-blue-200/60 rounded-xl text-xs text-blue-800 font-medium">
+                            <Icon icon="ph:info-bold" class="text-blue-600 text-base shrink-0" />
+                            <span>{{ t('event_teams.mixed_team_notice') }}</span>
                         </div>
                     </div>
                 </div>
@@ -334,7 +357,7 @@
                         class="py-12 text-center bg-gray-50/50 rounded-2xl border border-dashed border-gray-100">
                         <div
                             class="size-16 rounded-full bg-white flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100">
-                            <Icon icon="ph:user-search" class="text-3xl text-gray-300" />
+                            <Icon icon="ph:user-focus-bold" class="text-3xl text-slate-400" />
                         </div>
                         <div class="text-sm font-bold text-gray-500">{{ t('event_teams.archers_not_found') }}</div>
                         <div class="text-xs text-gray-400 mt-1 max-w-[200px] mx-auto">
@@ -379,11 +402,11 @@
                             <Icon icon="ph:users-four-bold" class="text-base" />
                         </div>
                         <div class="min-w-0 flex-1">
-                            <div class="text-sm font-black text-navy truncate">{{ teamToDelete?.team_name || 'Tim Beregu' }}</div>
+                            <div class="text-sm font-black text-navy truncate">{{ teamToDelete?.team_name || t('event_teams.title') }}</div>
                             <div class="text-xs text-gray-500 truncate flex items-center gap-1.5 mt-0.5">
                                 <span>{{ teamToDelete?.club_name || t('event_teams.club') }}</span>
                                 <span>•</span>
-                                <span>{{ teamToDelete?.members?.length || 0 }} {{ t('event_teams.total_participants_sync', { count: teamToDelete?.members?.length || 0 }).split(' ')[1] || 'anggota' }}</span>
+                                <span>{{ t('event_teams.members_count', { count: teamToDelete?.members?.length || 0 }) }}</span>
                             </div>
                         </div>
                     </div>
@@ -429,15 +452,17 @@
                 <div class="bg-gradient-to-br from-navy/5 via-navy/[0.02] to-transparent rounded-2xl border border-navy/10 p-4">
                     <div class="flex items-center gap-3">
                         <div class="size-10 rounded-xl bg-white border border-gray-200/60 flex items-center justify-center shrink-0 shadow-sm">
-                            <img :src="getCategoryIcon(selectedCategory?.gender_division_name, selectedCategory?.event_type_name)"
-                                class="size-6 object-contain" :alt="getCategoryName(selectedCategory)" />
+                            <img :src="'/' + (getCategoryIcon(`${selectedCategory?.division_name || ''} ${selectedCategory?.gender_division_name || ''} ${selectedCategory?.event_type_name || ''}`) || 'category-icon/men-team.svg')"
+                                class="size-6 object-contain"
+                                :alt="getCategoryName(selectedCategory)"
+                                @error="(e) => { e.target.onerror = null; e.target.src = '/category-icon/men-team.svg' }" />
                         </div>
                         <div class="min-w-0 flex-1">
                             <div class="text-[11px] font-bold text-gray-400">{{ t('event_teams.category_label') }}</div>
                             <div class="text-sm font-black text-navy truncate">{{ getCategoryName(selectedCategory) }}</div>
                         </div>
                         <div class="px-2.5 py-1 rounded-lg bg-navy/10 text-navy text-xs font-black shrink-0">
-                            {{ maxMembers }} Pemanah / Tim
+                            {{ t('event_teams.archers_per_team', { count: maxMembers }) }}
                         </div>
                     </div>
                 </div>
@@ -446,20 +471,20 @@
                 <div class="bg-gray-50/80 rounded-2xl border border-gray-100 p-4 space-y-2.5">
                     <div class="text-xs font-bold text-navy flex items-center gap-1.5">
                         <Icon icon="ph:sparkle-fill" class="text-amber-500 text-sm" />
-                        Cara Kerja Auto-Sync Tim
+                        {{ t('event_teams.how_sync_works') }}
                     </div>
                     <ul class="text-xs text-gray-600 space-y-2 pl-1">
                         <li class="flex items-start gap-2">
                             <span class="size-4 rounded-full bg-navy/10 text-navy font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span>
-                            <span>Mengelompokkan atlet terverifikasi dari klub yang sama.</span>
+                            <span>{{ t('event_teams.sync_step_1') }}</span>
                         </li>
                         <li class="flex items-start gap-2">
                             <span class="size-4 rounded-full bg-navy/10 text-navy font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span>
-                            <span>Memilih <strong>{{ maxMembers }} atlet teratas</strong> dengan total skor kualifikasi tertinggi.</span>
+                            <span v-html="t('event_teams.sync_step_2', { count: maxMembers })"></span>
                         </li>
                         <li class="flex items-start gap-2">
                             <span class="size-4 rounded-full bg-navy/10 text-navy font-black text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span>
-                            <span>Menyusun tim beregu resmi secara otomatis per klub.</span>
+                            <span>{{ t('event_teams.sync_step_3') }}</span>
                         </li>
                     </ul>
                 </div>
@@ -495,6 +520,7 @@ import { ref, computed, onMounted, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
+import DashboardHeader from '~/components/dashboard/DashboardHeader.vue'
 import AppDialog from '~/components/common/AppDialog.vue'
 import BaseButton from '~/components/common/BaseButton.vue'
 import BaseInput from '~/components/common/BaseInput.vue'
@@ -507,7 +533,7 @@ import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 const route = useRoute()
-const eventId = route.params.id
+const eventId = computed(() => (route.params.id || '').toString())
 const { get, post, put, delete: del } = useApi()
 const toast = useToast()
 const { t } = useI18n()
@@ -518,10 +544,6 @@ definePageMeta({
     layout: 'dashboard'
 })
 
-useHead({
-    title: computed(() => `${eventName.value && eventName.value !== 'Loading...' ? eventName.value + ' - ' : ''}${t('event_teams.title', 'Tim Beregu')} - Archeris Dashboard`)
-})
-
 // State Management
 const eventName = ref('Loading...')
 const categories = ref([])
@@ -529,6 +551,10 @@ const selectedCategory = ref(null)
 const officialTeams = ref([])
 const participants = ref([])
 const globalClubs = ref([])
+
+useHead({
+    title: () => `${eventName.value && eventName.value !== 'Loading...' ? eventName.value + ' - ' : ''}${t('event_teams.title')} - Archeris Dashboard`
+})
 
 // Loading States
 const loadingCategories = ref(false)
@@ -556,14 +582,14 @@ const teamForm = reactive({
 
 // Max members per team based on category type
 const modalCategoryInfo = computed(() => {
-    if (!teamForm.category_id) return null
+    if (!teamForm.category_id || !Array.isArray(categories.value)) return null
     return categories.value.find(c => c.id === teamForm.category_id)
 })
 
 // Computed Properties
 const maxMembers = computed(() => {
     if (!modalCategoryInfo.value) return 3
-    const type = modalCategoryInfo.value.event_type_name?.toLowerCase() || ''
+    const type = String(modalCategoryInfo.value.event_type_name || '').toLowerCase()
     if (type.includes('mixed')) return 2
     return 3
 })
@@ -571,10 +597,11 @@ const maxMembers = computed(() => {
 const minMembers = computed(() => maxMembers.value)
 
 const mappedCategories = computed(() => {
+    if (!Array.isArray(categories.value)) return []
     return categories.value.map(cat => ({
         title: getCategoryName(cat),
         value: cat.id,
-        description: cat.event_type_name
+        description: cat.event_type_name || ''
     }))
 })
 
@@ -583,21 +610,25 @@ const mappedClubs = computed(() => {
     const clubCounts = {}
     let hasIndependen = false
 
-    participants.value.forEach(p => {
-        const name = p.club_name?.trim()
-        if (!name || name?.toLowerCase() === 'independen') {
-            hasIndependen = true
-        } else {
-            clubCounts[name] = (clubCounts[name] || 0) + 1
-        }
-    })
+    if (Array.isArray(participants.value)) {
+        participants.value.forEach(p => {
+            const name = typeof p?.club_name === 'string' ? p.club_name.trim() : ''
+            if (!name || name.toLowerCase() === 'independen') {
+                hasIndependen = true
+            } else {
+                clubCounts[name] = (clubCounts[name] || 0) + 1
+            }
+        })
+    }
 
     // 2. Map global clubs and add the count if they have participants
-    const clubs = globalClubs.value.map(club => {
-        const count = clubCounts[club.name] || 0
+    const rawClubs = Array.isArray(globalClubs.value) ? globalClubs.value : []
+    const clubs = rawClubs.map(club => {
+        const clubName = typeof club === 'object' && club !== null ? (club.name || '') : String(club || '')
+        const count = clubCounts[clubName] || 0
         return {
-            title: club.name + (count > 0 ? ` (${count})` : ''),
-            value: club.name,
+            title: clubName + (count > 0 ? ` (${count})` : ''),
+            value: clubName,
             icon: 'ph:buildings',
             description: count > 0 ? t('event_teams.archers_available', { count }) : t('event_teams.no_archers_available')
         }
@@ -608,7 +639,7 @@ const mappedClubs = computed(() => {
         const countA = clubCounts[a.value] || 0
         const countB = clubCounts[b.value] || 0
         if (countA !== countB) return countB - countA
-        return a.title.localeCompare(b.title)
+        return (a.title || '').localeCompare(b.title || '')
     })
 
     // 4. Add Independen if participants exist
@@ -624,22 +655,20 @@ const mappedClubs = computed(() => {
     return clubs
 })
 
-// Removed clubList as we now use globalClubs for selection
-
 const filteredParticipants = computed(() => {
     if (!teamForm.club_name) return []
 
-    const selectedClub = teamForm.club_name.trim().toLowerCase()
-    let list = [...participants.value]
+    const selectedClub = String(teamForm.club_name || '').trim().toLowerCase()
+    let list = Array.isArray(participants.value) ? [...participants.value] : []
 
     // Use a more robust filter that matches the mappedClubs logic
     list = list.filter(p => {
-        const pClub = p.club_name?.trim() || 'Independen'
+        const pClub = (p?.club_name || 'Independen').toString().trim()
         return pClub.toLowerCase() === selectedClub
     })
 
     // Sort by score descending
-    return list.sort((a, b) => (b.total_score || 0) - (a.total_score || 0))
+    return list.sort((a, b) => (Number(b?.total_score) || 0) - (Number(a?.total_score) || 0))
 })
 
 const onModalCategoryChange = async () => {
@@ -659,7 +688,7 @@ const onModalClubChange = () => {
 // Methods
 const fetchEventName = async () => {
     try {
-        const response = await get(`/tournaments/${eventId}`)
+        const response = await get(`/tournaments/${eventId.value}`)
         eventName.value = response?.event?.name || response?.name || 'Event'
     } catch (error) {
         console.error('Failed to fetch event:', error)
@@ -669,15 +698,15 @@ const fetchEventName = async () => {
 const fetchCategories = async () => {
     loadingCategories.value = true
     try {
-        const response = await get(`/tournaments/${eventId}/categories`)
+        const response = await get(`/tournaments/${eventId.value}/categories`)
         const data = response?.events || response?.categories || []
         // Filter out individual categories for Team management
-        const teamCategories = data.filter(cat =>
-            cat.event_type_name?.toLowerCase() !== 'individual'
+        const teamCategories = (Array.isArray(data) ? data : []).filter(cat =>
+            String(cat?.event_type_name || '').toLowerCase() !== 'individual'
         )
 
         // Sort by participant_count descending
-        teamCategories.sort((a, b) => (b.participant_count || 0) - (a.participant_count || 0))
+        teamCategories.sort((a, b) => (Number(b?.participant_count) || 0) - (Number(a?.participant_count) || 0))
 
         categories.value = teamCategories
 
@@ -694,15 +723,17 @@ const fetchCategories = async () => {
 }
 
 const selectCategory = async (category) => {
+    if (!category) return
     selectedCategory.value = category
     await fetchTeams(category.id)
     await fetchParticipants(category.id)
 }
 
 const fetchTeams = async (categoryId) => {
+    if (!categoryId) return
     loadingTeams.value = true
     try {
-        const response = await get(`/teams/event/${eventId}`, {
+        const response = await get(`/teams/event/${eventId.value}`, {
             params: { category_id: categoryId }
         })
         officialTeams.value = response?.teams || []
@@ -715,12 +746,13 @@ const fetchTeams = async (categoryId) => {
 }
 
 const fetchParticipants = async (categoryId) => {
+    if (!categoryId) return
     loadingParticipants.value = true
     try {
-        const response = await get(`/tournaments/${eventId}/participants`, {
+        const response = await get(`/tournaments/${eventId.value}/participants`, {
             params: {
                 category_id: categoryId,
-                payment_status: 'Terbayar',
+                payment_status: 'paid',
                 limit: 2000 // Get all
             }
         })
@@ -790,9 +822,10 @@ const formatSyncDetailsMessage = (details = {}) => {
 }
 
 const executeSyncTeams = async () => {
+    if (!selectedCategory.value?.id) return
     isSyncing.value = true
     try {
-        const response = await post(`/teams/event/${eventId}/sync`, {
+        const response = await post(`/teams/event/${eventId.value}/sync`, {
             category_id: selectedCategory.value.id
         })
 
@@ -835,12 +868,13 @@ const openAddTeamModal = async () => {
 }
 
 const openEditTeamModal = (team) => {
+    if (!team) return
     isEditing.value = true
     currentTeamId.value = team.id
-    teamForm.team_name = team.team_name
+    teamForm.team_name = team.team_name || ''
     teamForm.category_id = team.category_id || selectedCategory.value?.id || ''
     if (team.members && team.members.length > 0) {
-        teamForm.club_name = team.members[0].club_name
+        teamForm.club_name = team.members[0].club_name || ''
     }
     teamForm.member_ids = team.members?.map(m => m.participant_id) ?? []
     // participants already loaded by selectCategory — no need to re-fetch
@@ -857,6 +891,24 @@ const handleSaveTeam = async () => {
         return
     }
 
+    // Mixed team gender validation
+    const isMixed = modalCategoryInfo.value?.event_type_name?.toLowerCase().includes('mixed')
+    if (isMixed) {
+        const selectedArchers = participants.value.filter(p => teamForm.member_ids.includes(p.id))
+        const hasMale = selectedArchers.some(p => {
+            const g = (p.gender_division_name || p.gender || '').toLowerCase()
+            return g.includes('putra') || g.includes('men') || g.includes('male')
+        })
+        const hasFemale = selectedArchers.some(p => {
+            const g = (p.gender_division_name || p.gender || '').toLowerCase()
+            return g.includes('putri') || g.includes('women') || g.includes('female')
+        })
+        if (!hasMale || !hasFemale) {
+            toast.error(t('event_teams.toast_mixed_gender_required'))
+            return
+        }
+    }
+
     isSaving.value = true
     try {
         const payload = {
@@ -869,39 +921,45 @@ const handleSaveTeam = async () => {
             await put(`/teams/${currentTeamId.value}`, payload)
             toast.success(t('event_teams.toast_team_updated'))
         } else {
-            await post(`/teams/event/${eventId}`, payload)
+            await post(`/teams/event/${eventId.value}`, payload)
             toast.success(t('event_teams.toast_team_created'))
         }
 
         showTeamModal.value = false
-        await fetchTeams(selectedCategory.value.id)
+        if (selectedCategory.value?.id) {
+            await fetchTeams(selectedCategory.value.id)
+        }
     } catch (error) {
         console.error('Failed to save team:', error)
-        toast.error(t('event_teams.toast_team_save_failed'))
+        const errMsg = error?.data?.error || error?.response?.data?.error || error?.message || t('event_teams.toast_team_save_failed')
+        toast.error(errMsg)
     } finally {
         isSaving.value = false
     }
 }
 
 const executeDeleteTeam = async () => {
-    if (!teamToDelete.value) return
+    if (!teamToDelete.value?.id) return
     isDeleting.value = true
     try {
         await del(`/teams/${teamToDelete.value.id}`)
         toast.success(t('event_teams.toast_team_deleted'))
         showDeleteConfirm.value = false
         teamToDelete.value = null
-        await fetchTeams(selectedCategory.value.id)
+        if (selectedCategory.value?.id) {
+            await fetchTeams(selectedCategory.value.id)
+        }
     } catch (error) {
         console.error('Failed to delete team:', error)
-        toast.error(t('event_teams.toast_team_delete_failed'))
+        const errMsg = error?.data?.error || error?.response?.data?.error || error?.message || t('event_teams.toast_team_delete_failed')
+        toast.error(errMsg)
     } finally {
         isDeleting.value = false
     }
 }
 
 const getCategoryName = (category) => {
-    if (!category) return ''
+    if (!category || typeof category !== 'object') return ''
     const parts = [
         category.division_name,
         category.category_name,
@@ -914,10 +972,12 @@ const getCategoryName = (category) => {
     const seen = new Set()
 
     parts.forEach(part => {
-        part.split(' ').forEach(word => {
-            const lowerWord = word.toLowerCase()
-            if (!seen.has(lowerWord)) {
-                words.push(word)
+        const text = typeof part === 'object' && part !== null ? (part.String || '') : String(part || '')
+        if (!text) return
+        text.split(' ').forEach(word => {
+            const lowerWord = word.trim().toLowerCase()
+            if (lowerWord && !seen.has(lowerWord)) {
+                words.push(word.trim())
                 seen.add(lowerWord)
             }
         })

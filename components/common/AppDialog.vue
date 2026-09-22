@@ -41,8 +41,8 @@
                                     <div>
                                         <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">{{ title }}
                                         </h3>
-                                        <p class="text-text-secondary text-sm font-medium leading-relaxed">{{ message
-                                        }}</p>
+                                        <div class="text-text-secondary text-sm font-medium leading-relaxed">{{ message
+                                        }}</div>
                                     </div>
                                 </div>
 

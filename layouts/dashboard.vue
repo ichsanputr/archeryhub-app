@@ -65,7 +65,27 @@
 
             <!-- Page Content -->
             <main class="flex-grow overflow-y-auto p-4 md:p-6 lg:p-8 no-scrollbar bg-[#F8FAFC]">
-                <slot />
+                <NuxtErrorBoundary>
+                    <slot />
+                    <template #error="{ error, clearError }">
+                        <div class="flex flex-col items-center justify-center min-h-[350px] p-8 text-center bg-white rounded-3xl border border-slate-200/80 shadow-xs max-w-lg mx-auto my-8 space-y-4">
+                            <div class="size-16 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-3xl">
+                                <Icon icon="ph:warning-circle-bold" />
+                            </div>
+                            <div class="space-y-1">
+                                <h3 class="text-base sm:text-lg font-black text-navy">{{ t('common.error_occurred') }}</h3>
+                                <div class="text-xs text-slate-500 max-w-md">
+                                    {{ error?.message || t('common.error_desc') }}
+                                </div>
+                            </div>
+                            <button type="button" @click="clearError"
+                                class="px-5 py-2.5 rounded-xl bg-navy text-primary font-black text-xs hover:bg-slate-900 transition-all flex items-center gap-2 shadow-xs active:scale-95 cursor-pointer">
+                                <Icon icon="ph:arrow-clockwise-bold" class="text-sm" />
+                                <span>{{ t('common.retry') }}</span>
+                            </button>
+                        </div>
+                    </template>
+                </NuxtErrorBoundary>
             </main>
         </div>
 
@@ -76,7 +96,7 @@
             @confirm="handleConfirmedLogout" />
 
         <BaseToast />
-        <BaseTour />
+        <!-- <BaseTour /> (temporarily disabled) -->
     </div>
 
 </template>

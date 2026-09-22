@@ -51,7 +51,7 @@
                 class="size-32 rounded-[2.5rem] bg-slate-50 shadow-inner flex items-center justify-center mx-auto mb-8 border border-slate-100">
                 <Icon icon="ph:brackets-curly-bold" class="text-6xl text-slate-200" />
             </div>
-            <h2 class="text-3xl font-black text-navy tracking-tight">{{ t('event_results.bracket_not_generated', 'Bagan Eliminasi Belum Dibuat') }}</h2>
+            <h2 class="text-3xl font-black text-navy tracking-tight">{{ t('event_results.bracket_not_generated') }}</h2>
         </div>
     </div>
 </template>
@@ -104,9 +104,9 @@ const getRoundName = (roundNo) => {
     const size = props.bracket?.bracket_size || 8
     const totalRoundsForSize = Math.log2(size)
     const roundFromEnd = totalRoundsForSize - roundNo + 1
-    if (roundFromEnd === 1) return t('event_elimination.final', 'Final')
-    if (roundFromEnd === 2) return t('event_elimination.semifinal', 'Semifinal')
-    if (roundFromEnd === 3) return t('event_elimination.quarterfinal', 'Quarterfinal')
+    if (roundFromEnd === 1) return t('event_elimination.final')
+    if (roundFromEnd === 2) return t('event_elimination.semifinal')
+    if (roundFromEnd === 3) return t('event_elimination.quarterfinal')
     return t('event_elimination.round_of_n', { n: Math.pow(2, roundFromEnd) }, `Round of ${Math.pow(2, roundFromEnd)}`)
 }
 

@@ -5,20 +5,20 @@
                 class="size-8 bg-navy border border-navy rounded-lg flex items-center justify-center text-btn-inverse shadow-sm">
                 <Icon icon="ph:scales-bold" class="text-lg" />
             </div>
-            <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.comparison.title', 'Perbandingan Detail') }}</h2>
+            <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.comparison.title') }}</h2>
         </div>
 
         <div class="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden overflow-x-auto">
             <table class="w-full text-left min-w-[600px]">
                 <thead>
                     <tr class="bg-slate-50/50 border-b border-gray-100">
-                        <th class="px-8 py-5 text-[10px] font-black text-gray-400 tracking-[0.2em]">{{ t('subscription.comparison.feature_header', 'Fitur Utama') }}</th>
+                        <th class="px-8 py-5 text-[10px] font-black text-gray-400 tracking-[0.2em]">{{ t('subscription.comparison.feature_header') }}</th>
                         <th
                             class="px-8 py-5 text-center text-xs font-black text-navy tracking-widest border-l border-gray-50">
-                            {{ t('subscription.comparison.standard_header', 'Standar') }}</th>
+                            {{ t('subscription.comparison.standard_header') }}</th>
                         <th
                             class="px-8 py-5 text-center text-xs font-black text-primary tracking-widest border-l border-gray-50 bg-primary/5">
-                            {{ t('subscription.comparison.elite_header', 'Elite') }}</th>
+                            {{ t('subscription.comparison.elite_header') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
@@ -48,7 +48,7 @@
                 </tbody>
             </table>
             <div class="p-4 bg-slate-50/50 text-center border-t border-gray-50">
-                    <div class="text-[10px] text-gray-400 font-bold tracking-[0.2em]">{{ t('subscription.comparison.downgrade_note', '* Downgrade akan berlaku setelah periode tagihan berjalan berakhir.') }}</div>
+                    <div class="text-[10px] text-gray-400 font-bold tracking-[0.2em]">{{ t('subscription.comparison.downgrade_note') }}</div>
             </div>
         </div>
     </div>

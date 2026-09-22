@@ -36,7 +36,8 @@
               <div class="absolute -top-16 left-6">
                 <img :src="useImageOrDefault(profile.avatar_url, profile.name || profile.username)"
                   :alt="profile.name || profile.username"
-                  class="w-32 h-32 rounded-full border-4 border-white shadow-lg" />
+                  @error="(e) => e.target.src = generateDicebearAvatar(profile.name || profile.username)"
+                  class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover" />
               </div>
 
               <!-- User Info -->

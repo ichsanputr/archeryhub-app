@@ -15,7 +15,7 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => t('events.list.title', 'Turnamen Saya') + ' - Archeris Dashboard')
+  title: computed(() => t('events.list.title') + ' - Archeris Dashboard')
 })
 
 const { user } = useAuth()

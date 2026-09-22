@@ -3,7 +3,7 @@
     <!-- Hero Section -->
     <div class="bg-navy pt-32 pb-20 relative overflow-hidden">
       <div class="absolute inset-0 z-0">
-        <img src="/hero-homepage.jpeg" class="w-full h-full object-cover" />
+        <img src="/hero-homepage.jpeg" alt="Archeris Terms of Service" class="w-full h-full object-cover" />
         <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90"></div>
       </div>

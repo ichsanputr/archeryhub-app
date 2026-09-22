@@ -498,7 +498,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { articles as staticArticles } from '~/data/articles/index'
 import { Icon } from '@iconify/vue'
 import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
@@ -522,12 +521,12 @@ let headingObserver = null
 
 function resolveArticleImage(image, slug) {
     if (image && !image.includes('unsplash.com')) {
-        return image
+        return image.replace(/\.png$/, '.webp')
     }
     if (slug) {
-        return `/images/blog/thumbnails/${slug}.png`
+        return `/images/blog/thumbnails/${slug}.webp`
     }
-    return '/images/blog/thumbnails/understanding-bow-types-recurve-compound-barebow.png'
+    return '/images/blog/thumbnails/understanding-bow-types-recurve-compound-barebow.webp'
 }
 
 const slug = computed(() => route.params.slug)
@@ -540,7 +539,7 @@ const { data: dbArticle } = await useAsyncData(
             if (res?.data) {
                 return {
                     ...res.data,
-                    date: res.data.published_at || '2026-09-14',
+                    date: res.data.published_at || res.data.created_at || '2026-09-14',
                     image: resolveArticleImage(res.data.image || res.data.image_url, slug.value)
                 }
             }
@@ -553,15 +552,9 @@ const { data: dbArticle } = await useAsyncData(
     { watch: [slug] }
 )
 
-const article = computed(() => {
-    const raw = dbArticle.value || staticArticles.find(a => a.slug === slug.value)
-    return raw ? {
-        ...raw,
-        image: resolveArticleImage(raw.image, raw.slug)
-    } : null
-})
+const article = computed(() => dbArticle.value)
 
-// Trigger official Nuxt 404 page if article doesn't exist
+// Trigger official Nuxt 404 page if article doesn't exist in DB
 if (!article.value) {
     throw createError({
         statusCode: 404,
@@ -655,40 +648,47 @@ const readTime = computed(() => {
     return article.value?.read_time || 5
 })
 
+const { data: dbArticlesList } = await useAsyncData(
+    'blog-slug-recommendations',
+    async () => {
+        try {
+            const res = await get('/blog/articles')
+            if (res?.data && Array.isArray(res.data)) {
+                return res.data.map(a => ({
+                    ...a,
+                    date: a.published_at || a.created_at || '2026-09-14',
+                    image: resolveArticleImage(a.image || a.image_url, a.slug),
+                    author: {
+                        name: a.author_name || 'Archeris Editorial',
+                        role: a.author_role || 'Editorial Team & Archery Specialists',
+                        avatar: a.author_avatar || '/profile-author.png'
+                    }
+                }))
+            }
+        } catch (e) {
+            console.warn('[blog-slug] Failed to fetch articles list:', e)
+        }
+        return []
+    }
+)
+
 const popularArticles = computed(() => {
-    return staticArticles
+    const list = dbArticlesList.value || []
+    return list
         .filter(a => a.slug !== slug.value)
         .slice(0, 4)
-        .map(a => ({
-            ...a,
-            image: resolveArticleImage(a.image, a.slug)
-        }))
 })
 
 const moreArticles = computed(() => {
-    const list = staticArticles
+    const list = dbArticlesList.value || []
     const currentIndex = list.findIndex(a => a.slug === slug.value)
 
     if (currentIndex === -1) {
-        return list.slice(0, 6).map(a => ({
-            ...a,
-            image: resolveArticleImage(a.image, a.slug)
-        }))
+        return list.filter(a => a.slug !== slug.value).slice(0, 6)
     }
 
-    const n = list.length
-    const count = Math.min(6, n - 1)
-    const result = []
-
-    for (let offset = 1; offset <= count; offset++) {
-        const nextIndex = (currentIndex + offset) % n
-        result.push(list[nextIndex])
-    }
-
-    return result.map(a => ({
-        ...a,
-        image: resolveArticleImage(a.image, a.slug)
-    }))
+    const otherList = list.filter(a => a.slug !== slug.value)
+    return otherList.slice(0, 6)
 })
 
 const scrollRelated = (direction) => {
@@ -885,6 +885,12 @@ onUnmounted(() => {
     }
 })
 
+const absoluteArticleImage = computed(() => {
+    const img = article.value?.image
+    if (!img) return 'https://archeris.net/logo.png'
+    return img.startsWith('http') ? img : `https://archeris.net${img.startsWith('/') ? '' : '/'}${img}`
+})
+
 const structuredData = computed(() => {
     if (!article.value?.title) return null
     return {
@@ -892,7 +898,7 @@ const structuredData = computed(() => {
         '@type': 'Article',
         'headline': article.value.title,
         'description': article.value.excerpt || 'Archery scoring guides and tournament articles.',
-        'image': [article.value.image || 'https://archeris.net/logo.png'],
+        'image': [absoluteArticleImage.value],
         'datePublished': article.value.published_at || '2025-01-01',
         'author': {
             '@type': 'Person',
@@ -969,14 +975,14 @@ useSeoMeta({
     description: () => article.value?.excerpt || 'Read the latest archery scoring guides and tournament articles on Archeris.',
     ogTitle: () => (article.value?.title || 'Archery Guide') + ' - Archeris Blog',
     ogDescription: () => article.value?.excerpt || 'Read the latest archery scoring guides and tournament articles on Archeris.',
-    ogImage: () => article.value?.image || 'https://archeris.net/logo.png',
+    ogImage: () => absoluteArticleImage.value,
     ogType: 'article',
     ogUrl: () => `https://archeris.net/blog/${slug.value}`,
     ogSiteName: 'Archeris',
     twitterCard: 'summary_large_image',
     twitterTitle: () => (article.value?.title || 'Archery Guide') + ' - Archeris Blog',
     twitterDescription: () => article.value?.excerpt || 'Read the latest archery scoring guides and tournament articles on Archeris.',
-    twitterImage: () => article.value?.image || 'https://archeris.net/logo.png',
+    twitterImage: () => absoluteArticleImage.value,
     twitterSite: '@archeris_app',
     twitterCreator: '@archeris_app'
 })

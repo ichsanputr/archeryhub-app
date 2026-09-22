@@ -87,6 +87,7 @@
                                 loop 
                                 muted 
                                 playsinline 
+                                preload="none"
                                 :poster="feature.poster"
                                 class="w-full h-full object-cover"
                             >
@@ -155,7 +156,7 @@ const features = [
         titleKey: 'home.learn.f1_title',
         descKey: 'home.learn.f1_desc',
         video: '/registration.mp4',
-        poster: '/features/feature_registration.png',
+        poster: '/features/feature_registration.webp',
         link: '/dashboard/organizer'
     },
     {
@@ -163,7 +164,7 @@ const features = [
         titleKey: 'home.learn.f2_title',
         descKey: 'home.learn.f2_desc',
         video: '/competition.mp4',
-        poster: '/features/feature_competition.png',
+        poster: '/features/feature_competition.webp',
         link: '/dashboard/organizer'
     },
     {
@@ -171,7 +172,7 @@ const features = [
         titleKey: 'home.learn.f3_title',
         descKey: 'home.learn.f3_desc',
         video: '/archer.mp4',
-        poster: '/features/feature_archer.png',
+        poster: '/features/feature_archer.webp',
         link: '/archers'
     },
     {
@@ -179,7 +180,7 @@ const features = [
         titleKey: 'home.learn.f4_title',
         descKey: 'home.learn.f4_desc',
         video: '/scorekeeper.mp4',
-        poster: '/features/feature_scorekeeper.png',
+        poster: '/features/feature_scorekeeper.webp',
         link: '/dashboard/organizer/scorekeepers'
     }
 ]

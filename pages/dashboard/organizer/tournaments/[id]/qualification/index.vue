@@ -2,13 +2,13 @@
   <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
     <DashboardHeader
-      :title="t('event_qualification.title', 'Manajemen Kualifikasi')"
+      :title="t('event_qualification.title')"
       :subtitle="t('event_qualification.manage_desc', { event: eventName || 'Event' })"
       icon="ph:crosshair"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-        { label: t('event_qualification.title', 'Kualifikasi') }
+        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('event_qualification.title') }
       ]"
     >
       <template #actions>
@@ -18,7 +18,7 @@
           class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
           :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
           @click="isSubscriptionActive ? openCreateModal() : (showPremiumModal = true)">
-          {{ t('event_qualification.add_session', 'Tambah Sesi') }}
+          {{ t('event_qualification.add_session') }}
         </BaseButton>
       </template>
     </DashboardHeader>
@@ -29,7 +29,12 @@
       <!-- Sessions List (event-level) -->
       <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-base font-bold text-navy">{{ t('event_qualification.session_list') }}</h2>
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+              <Icon icon="ph:calendar-bold" class="text-xl" />
+            </div>
+            <h2 class="text-base font-bold text-navy">{{ t('event_qualification.session_list') }}</h2>
+          </div>
         </div>
 
         <div v-if="loadingSessions" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -71,12 +76,12 @@
                     <span v-if="session.is_locked"
                       class="inline-flex items-center gap-1 text-[10px] font-bold text-rose-300 bg-rose-500/20 border border-rose-500/40 px-2 py-0.5 rounded-md">
                       <Icon icon="ph:lock-fill" class="text-xs" />
-                      {{ t('event_qualification.session_locked', 'Terkunci') }}
+                      {{ t('event_qualification.session_locked') }}
                     </span>
                     <span v-else
                       class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-300 bg-emerald-500/20 border border-emerald-500/40 px-2 py-0.5 rounded-md">
                       <Icon icon="ph:lock-open-bold" class="text-xs" />
-                      {{ t('event_qualification.session_unlocked', 'Terbuka') }}
+                      {{ t('event_qualification.session_unlocked') }}
                     </span>
                   </div>
 
@@ -89,7 +94,7 @@
                 <button type="button"
                   @click.stop="isSubscriptionActive ? editSession(session) : (showPremiumModal = true)"
                   class="size-8 rounded-xl bg-white/10 hover:bg-primary hover:text-navy text-white/80 border border-white/15 transition-all flex items-center justify-center active:scale-95 shrink-0"
-                  :title="t('event_qualification.edit_session', 'Edit Sesi')">
+                  :title="t('event_qualification.edit_session')">
                   <Icon icon="ph:pencil-simple-bold" class="text-sm" />
                 </button>
               </div>
@@ -103,7 +108,7 @@
                 <div class="flex items-center justify-between text-[11px] font-extrabold text-slate-500">
                   <span class="flex items-center gap-1.5">
                     <Icon icon="ph:folders-bold" class="text-slate-400 text-xs" />
-                    {{ t('event_qualification.assigned_categories', 'Kategori Ditugaskan') }}
+                    {{ t('event_qualification.assigned_categories') }}
                   </span>
                   <span class="text-[10px] font-mono font-bold bg-slate-200/80 text-slate-600 px-1.5 py-0.2 rounded-md">
                     {{ getSessionCategories(session).length }}
@@ -125,7 +130,7 @@
                   </span>
                 </div>
                 <div v-else class="px-3 py-2 rounded-xl bg-white border border-dashed border-slate-200 text-[11px] text-slate-400 italic">
-                  {{ t('event_qualification.no_categories_assigned', 'Belum ada kategori ditautkan') }}
+                  {{ t('event_qualification.no_categories_assigned') }}
                 </div>
               </div>
 
@@ -145,7 +150,7 @@
               </div>
               <div v-else class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/80 border border-dashed border-slate-200 text-xs text-slate-400 font-medium">
                 <Icon icon="ph:calendar-blank-bold" class="text-slate-400 text-sm shrink-0" />
-                <span class="text-[11px]">{{ t('event_qualification.schedule_not_set', 'Jadwal belum ditentukan') }}</span>
+                <span class="text-[11px]">{{ t('event_qualification.schedule_not_set') }}</span>
               </div>
 
               <!-- Format Rule Metrics (3-column pill grid) -->
@@ -153,7 +158,7 @@
                 <div class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs text-center">
                   <div class="flex items-center gap-1 text-[10px] font-bold text-slate-500">
                     <Icon icon="ph:arrow-clockwise-bold" class="text-primary text-xs" />
-                    <span>{{ t('event_qualification.ends', 'Ends') }}</span>
+                    <span>{{ t('event_qualification.ends') }}</span>
                   </div>
                   <span class="text-sm font-black text-navy font-mono mt-0.5">{{ session.total_ends }}</span>
                 </div>
@@ -161,7 +166,7 @@
                 <div class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs text-center">
                   <div class="flex items-center gap-1 text-[10px] font-bold text-slate-500">
                     <Icon icon="ph:crosshair-bold" class="text-primary text-xs" />
-                    <span>{{ t('event_qualification.arrows_short', 'Panah/End') }}</span>
+                    <span>{{ t('event_qualification.arrows_short') }}</span>
                   </div>
                   <span class="text-sm font-black text-navy font-mono mt-0.5">{{ session.arrows_per_end }}</span>
                 </div>
@@ -169,7 +174,7 @@
                 <div class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs text-center">
                   <div class="flex items-center gap-1 text-[10px] font-bold text-slate-500">
                     <Icon icon="ph:target-bold" class="text-primary text-xs" />
-                    <span>{{ t('event_qualification.total_arrows', 'Total Panah') }}</span>
+                    <span>{{ t('event_qualification.total_arrows') }}</span>
                   </div>
                   <span class="text-sm font-black text-navy font-mono mt-0.5">{{ (session.total_ends || 0) * (session.arrows_per_end || 0) }}</span>
                 </div>
@@ -181,12 +186,12 @@
               <div class="flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-xl">
                 <Icon icon="ph:users-three-bold" class="text-navy text-sm shrink-0" />
                 <span class="text-xs font-black text-navy">
-                  <span class="font-mono">{{ session.participant_count || 0 }}</span> {{ t('event_qualification.archers', 'Pemanah') }}
+                  <span class="font-mono">{{ session.participant_count || 0 }}</span> {{ t('event_qualification.archers') }}
                 </span>
               </div>
               <div
-                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-navy text-primary group-hover:bg-primary group-hover:text-navy text-xs font-black transition-all active:scale-95 shadow-2xs">
-                <span>{{ t('event_qualification.manage', 'Kelola Sesi') }}</span>
+                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-btn-text group-hover:bg-primary-dark text-xs font-black transition-all active:scale-95 shadow-2xs">
+                <span>{{ t('event_qualification.manage') }}</span>
                 <Icon icon="ph:arrow-right-bold" class="text-xs group-hover:translate-x-0.5 transition-transform" />
               </div>
             </div>
@@ -199,15 +204,15 @@
         <!-- Section Header Bar (Input Scoring Style) -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
           <div class="flex items-center gap-3">
-            <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center font-black shrink-0">
+            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center font-bold shrink-0 shadow-2xs">
               <Icon icon="ph:trophy-bold" class="text-xl" />
             </div>
             <div>
                 <h2 class="text-base sm:text-lg font-black text-navy leading-tight">
-                  {{ t('event_qualification.qualification_results', 'Hasil Kualifikasi') }}
+                  {{ t('event_qualification.qualification_results') }}
                 </h2>
               <div class="text-xs text-slate-500 font-medium mt-0.5">
-                {{ t('event_qualification.choose_category', 'Pilih kategori event untuk melihat rekapitulasi nilai dan peringkat kualifikasi.') }}
+                {{ t('event_qualification.choose_category') }}
               </div>
             </div>
           </div>
@@ -215,7 +220,7 @@
             <BaseSelect
               v-model="selectedCategory"
               :items="mappedCategoriesForFilter"
-              :placeholder="t('event_qualification.choose_category', 'Pilih Kategori Event')"
+              :placeholder="t('event_qualification.choose_category')"
               searchable
               @update:modelValue="(val) => selectCategory(val)"
             />
@@ -247,12 +252,11 @@
               ]">
               <!-- Division Icon -->
               <div class="size-6 rounded-lg flex items-center justify-center p-1 shrink-0 overflow-hidden"
-                :class="selectedCategory === category.id ? 'bg-white/15' : 'bg-navy/5'">
+                :class="selectedCategory === category.id ? 'bg-white/20' : 'bg-navy/5'">
                 <img
                   :src="'/' + getCategoryIcon(`${category.division_name} ${category.event_type_name} ${category.gender_division_name}`)"
                   :alt="category.division_name"
-                  class="w-full h-full object-contain"
-                  :class="selectedCategory === category.id ? 'brightness-0 invert' : ''" />
+                  class="w-full h-full object-contain" />
               </div>
 
               <!-- Category Name -->
@@ -397,7 +401,7 @@
           <div v-else-if="selectedCategory"
             class="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
             <Icon icon="ph:users-three" class="text-5xl text-gray-300 mx-auto mb-4" />
-            <div class="text-gray-500">{{ t('event_qualification.no_scores_in_category', 'Belum ada data skor kualifikasi pada kategori ini.') }}</div>
+            <div class="text-gray-500">{{ t('event_qualification.no_scores_in_category') }}</div>
           </div>
 
           <div v-else class="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
@@ -433,7 +437,7 @@
                   {{ modalTitle }}
                 </h3>
                 <div class="text-xs text-slate-300 truncate mt-0.5">
-                  {{ t('event_qualification.configure_schedule_desc', 'Atur jadwal dan ketentuan scoring sesi kualifikasi.') }}
+                  {{ t('event_qualification.configure_schedule_desc') }}
                 </div>
               </div>
             </div>
@@ -451,18 +455,18 @@
             <div class="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-4">
               <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
                 <Icon icon="ph:identification-card-bold" class="text-slate-600 text-base" />
-                <span>{{ t('event_qualification.session_info', 'Informasi Sesi') }}</span>
+                <span>{{ t('event_qualification.session_info') }}</span>
               </div>
 
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                  {{ t('event_qualification.session_title_label', 'Nama Sesi') }} <span class="text-red-500">*</span>
+                  {{ t('event_qualification.session_title_label') }} <span class="text-red-500">*</span>
                 </label>
                 <div class="relative">
                   <Icon icon="ph:text-t-bold"
                     class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none" />
                   <input v-model="newSessionName" type="text"
-                    :placeholder="t('event_qualification.session_title_placeholder', 'Contoh: Sesi 1 - Divisi Recurve & Compound')"
+                    :placeholder="t('event_qualification.session_title_placeholder')"
                     class="w-full h-11 pl-10 pr-4 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-slate-800 transition-all shadow-xs" />
                 </div>
               </div>
@@ -473,10 +477,10 @@
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
                   <Icon icon="ph:target-bold" class="text-slate-600 text-base" />
-                  <span>{{ t('event_qualification.scoring_rules', 'Format Seri & Panah (Scoring)') }}</span>
+                  <span>{{ t('event_qualification.scoring_rules') }}</span>
                 </div>
                 <div class="px-2.5 py-1 bg-primary/15 text-navy font-bold text-[11px] rounded-lg border border-primary/30">
-                  Total: {{ (newSessionEnds || 0) * (newSessionArrows || 0) }} {{ t('event_qualification.arrows', 'Panah') }}
+                  Total: {{ (newSessionEnds || 0) * (newSessionArrows || 0) }} {{ t('event_qualification.arrows') }}
                 </div>
               </div>
 
@@ -484,7 +488,7 @@
                 <!-- Stepper 1: Ends -->
                 <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                   <label class="text-[11px] font-bold text-slate-500 block mb-2 text-center truncate">
-                    {{ t('event_qualification.number_of_ends', 'Jumlah Seri (Ends)') }}
+                    {{ t('event_qualification.number_of_ends') }}
                   </label>
                   <div class="flex items-center justify-between gap-2">
                     <button type="button" @click="newSessionEnds = Math.max(1, newSessionEnds - 1)"
@@ -502,7 +506,7 @@
                 <!-- Stepper 2: Arrows Per End -->
                 <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
                   <label class="text-[11px] font-bold text-slate-500 block mb-2 text-center truncate">
-                    {{ t('event_qualification.arrows_per_end', 'Panah per Seri') }}
+                    {{ t('event_qualification.arrows_per_end') }}
                   </label>
                   <div class="flex items-center justify-between gap-2">
                     <button type="button" @click="newSessionArrows = Math.max(1, newSessionArrows - 1)"
@@ -524,10 +528,10 @@
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
                   <Icon icon="ph:trophy-bold" class="text-slate-600 text-base" />
-                  <span>{{ t('event_qualification.event_category_label', 'Kategori Turnamen') }} <span class="text-red-500">*</span></span>
+                  <span>{{ t('event_qualification.event_category_label') }} <span class="text-red-500">*</span></span>
                 </div>
                 <span class="text-[11px] font-semibold text-slate-500">
-                  {{ selectedSessionCategoryIds.length }} {{ t('participant.edit.categories_selected', 'Dipilih') }}
+                  {{ selectedSessionCategoryIds.length }} {{ t('participant.edit.categories_selected') }}
                 </span>
               </div>
 
@@ -536,7 +540,7 @@
                 <Icon icon="ph:magnifying-glass"
                   class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none" />
                 <input v-model="sessionCategorySearch" type="text"
-                  :placeholder="t('event_qualification.search_category', 'Cari kategori lomba...')"
+                  :placeholder="t('event_qualification.search_category')"
                   class="w-full h-9 pl-9 pr-3 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-slate-800 transition-all" />
               </div>
 
@@ -557,16 +561,16 @@
                   <div class="flex-1 min-w-0 flex items-center justify-between gap-2">
                     <span class="text-xs font-bold truncate">{{ getCategoryName(category) }}</span>
                     <span v-if="category.participant_count" class="text-[10px] text-slate-400 shrink-0 font-medium">
-                      {{ category.participant_count }} {{ t('event_qualification.archers', 'peserta').toLowerCase() }}
+                      {{ category.participant_count }} {{ t('event_qualification.archers').toLowerCase() }}
                     </span>
                   </div>
                 </div>
 
                 <div v-if="categories.length === 0" class="text-center py-6 text-xs text-slate-400 italic">
-                  {{ t('event_qualification.loading_categories', 'Memuat daftar kategori lomba...') }}
+                  {{ t('event_qualification.loading_categories') }}
                 </div>
                 <div v-else-if="filteredSessionCategories.length === 0" class="text-center py-6 text-xs text-slate-400 italic">
-                  {{ t('event_qualification.no_categories_match', 'Tidak ada kategori yang cocok dengan pencarian.') }}
+                  {{ t('event_qualification.no_categories_match') }}
                 </div>
               </div>
             </div>
@@ -577,7 +581,7 @@
           <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3 rounded-b-3xl">
             <BaseButton variant="white" class="h-10 px-5 text-xs font-bold border-slate-200"
               @click="showSessionDialog = false">
-              {{ t('event_qualification.cancel', 'Batal') }}
+              {{ t('event_qualification.cancel') }}
             </BaseButton>
             <BaseButton :disabled="creatingSession || !newSessionName || selectedSessionCategoryIds.length === 0"
               :loading="creatingSession" variant="primary" icon="ph:check-circle-bold"

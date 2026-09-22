@@ -11,13 +11,13 @@
                     class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">Events
                 </NuxtLink>
                 <Icon icon="ph:caret-right-bold" class="text-gray-300 text-sm" />
-                <span class="text-navy text-sm font-bold">Pembayaran</span>
+                <span class="text-navy text-sm font-bold">{{ t("org_checkout.breadcrumb") }}</span>
             </nav>
 
             <div class="flex flex-col gap-3">
                 <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">{{ t("org_checkout.title") }}</h1>
                 <div class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">
-                    Selesaikan pembayaran untuk mengaktifkan event Anda dan mulai menerima pendaftaran peserta.
+                    {{ t("org_checkout.subtitle") }}
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
                 <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
                     <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
                         <Icon icon="ph:credit-card-bold" class="text-primary text-xl" />
-                        Pilih Metode Pembayaran
+                        {{ t("org_checkout.choose_payment_method") }}
                     </h2>
 
                     <!-- Loading State -->
@@ -91,7 +91,7 @@
                 <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm sticky top-6">
                     <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
                         <Icon icon="ph:receipt-bold" class="text-primary text-xl" />
-                        Ringkasan Pembayaran
+                        {{ t("org_checkout.order_summary") }}
                     </h2>
 
                     <div class="space-y-4 mb-6">
@@ -157,7 +157,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => t('payment.title', 'Payment') + ' - Archeris Dashboard')
+    title: computed(() => t('payment.title') + ' - Archeris Dashboard')
 })
 
 const { t } = useI18n()
@@ -215,12 +215,12 @@ const createPayment = async () => {
             if (result.checkout_url) {
                 window.open(result.checkout_url, '_blank')
                 if (result.reference) {
-                    navigateTo(`/payment/status/${result.reference}`)
+                    navigateTo(`/dashboard/archer/payments/${result.reference}`)
                 } else {
                     showInstructionsDialog.value = true
                 }
             } else if (result.reference) {
-                navigateTo(`/payment/status/${result.reference}`)
+                navigateTo(`/dashboard/archer/payments/${result.reference}`)
             } else {
                 showInstructionsDialog.value = true
             }

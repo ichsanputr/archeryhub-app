@@ -1,6 +1,6 @@
 <template>
     <div class="space-y-5">
-        <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.plans.title', 'Pilihan Paket') }} {{ packageTitle }}</h2>
+        <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.plans.title') }} {{ packageTitle }}</h2>
         <div
             class="flex flex-col lg:flex-row overflow-hidden rounded-[32px] border border-gray-100 shadow-sm bg-white min-h-[500px]">
             <!-- Banner Highlight (Paket Elite) -->
@@ -8,9 +8,9 @@
                 class="lg:w-4/12 bg-navy relative flex flex-col justify-center items-center px-8 py-16 text-center overflow-hidden text-white">
                 <div class="relative z-10">
                     <span class="text-primary/60 font-black tracking-[0.3em] text-[10px] mb-4 block">
-                        {{ t('subscription.plans.recommended_for', 'Direkomendasikan untuk') }} {{ recommendationBadge }}
+                        {{ t('subscription.plans.recommended_for') }} {{ recommendationBadge }}
                     </span>
-                    <h3 class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">{{ t('subscription.plans.elite_title', 'Paket Elite') }}</h3>
+                    <h3 class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">{{ t('subscription.plans.elite_title') }}</h3>
                     <div class="h-1.5 w-24 bg-primary mx-auto mb-8 rounded-full"></div>
                     <div class="text-slate-400 text-sm font-medium max-w-[220px] mx-auto leading-relaxed">
                         {{ eliteDescription }}
@@ -19,11 +19,11 @@
                     <div class="mt-12 space-y-4">
                         <div class="flex items-center gap-3 justify-center text-primary/80">
                             <Icon icon="ph:crown-fill" class="text-xl" />
-                            <span class="text-xs font-black tracking-widest text-white/80">{{ t('subscription.plans.premium_features', 'Fitur Premium') }}</span>
+                            <span class="text-xs font-black tracking-widest text-white/80">{{ t('subscription.plans.premium_features') }}</span>
                         </div>
                         <div class="flex items-center gap-3 justify-center text-primary/80">
                             <Icon icon="ph:shield-star-fill" class="text-xl" />
-                            <span class="text-xs font-black tracking-widest text-white/80">{{ t('subscription.plans.priority_support', 'Support Prioritas') }}</span>
+                            <span class="text-xs font-black tracking-widest text-white/80">{{ t('subscription.plans.priority_support') }}</span>
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
 
                         <div v-if="plan.isCurrent"
                             class="absolute -top-3 left-6 bg-navy text-btn-inverse text-[10px] font-black px-4 py-1.5 rounded-full capitalize tracking-widest shadow-sm">
-                            {{ t('subscription.status.active', 'Aktif') }}
+                            {{ t('subscription.status.active') }}
                         </div>
 
                         <div class="mb-6">
@@ -70,11 +70,11 @@
                         <button v-if="plan.isCurrent"
                             class="w-full py-4 text-[10px] font-black bg-slate-100 text-slate-400 rounded-2xl cursor-not-allowed tracking-widest border border-slate-200"
                             disabled>
-                            {{ t('subscription.plans.current_package', 'Paket Aktif') }}
+                            {{ t('subscription.plans.current_package') }}
                         </button>
                         <button v-else @click="$emit('select', plan)"
                             class="w-full py-4 text-[10px] font-black bg-navy text-white rounded-2xl hover:bg-primary hover:text-btn-text transition-all tracking-widest shadow-sm active:scale-95">
-                            {{ plan.isUpgrade ? t('subscription.plans.upgrade_now', 'Upgrade Sekarang') : t('subscription.plans.choose_package', 'Pilih Paket') }}
+                            {{ plan.isUpgrade ? t('subscription.plans.upgrade_now') : t('subscription.plans.choose_package') }}
                         </button>
                     </div>
                 </div>

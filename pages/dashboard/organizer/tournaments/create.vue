@@ -25,26 +25,26 @@
               <!-- Quota Balance Header Bar -->
               <div class="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
                 <div class="flex flex-wrap items-center gap-3">
-                  <span class="text-xs font-black tracking-wider text-slate-500">{{ t('event_create.quota_balance_label') }}:</span>
-                  <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white text-navy border border-slate-200 text-xs font-bold shadow-2xs">
-                    <Icon icon="ph:gift-bold" class="text-sm text-primary" />
+                  <span class="text-xs sm:text-sm font-black tracking-wider text-slate-500">{{ t('event_create.quota_balance_label') }}:</span>
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white text-navy border border-slate-200 text-xs sm:text-sm font-bold shadow-2xs">
+                    <Icon icon="ph:gift-bold" class="text-base text-navy" />
                     {{ t('event_create.free_tier_name') }}: {{ quotaBalance.quota_free ?? 20 }}/20 {{ t('event_create.quota_unit') }}
                   </div>
-                  <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white text-navy border border-slate-200 text-xs font-bold shadow-2xs">
-                    <Icon icon="ph:check-circle-bold" class="text-sm text-primary" />
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white text-navy border border-slate-200 text-xs sm:text-sm font-bold shadow-2xs">
+                    <Icon icon="ph:check-circle-bold" class="text-base text-navy" />
                     {{ t('event_create.standard_tier_name') }}: {{ quotaBalance.quota_standard || 0 }} {{ t('event_create.quota_unit') }}
                   </div>
-                  <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white text-navy border border-slate-200 text-xs font-bold shadow-2xs">
-                    <Icon icon="ph:crown-bold" class="text-sm text-primary" />
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white text-navy border border-slate-200 text-xs sm:text-sm font-bold shadow-2xs">
+                    <Icon icon="ph:crown-bold" class="text-base text-navy" />
                     {{ t('event_create.elite_tier_name') }}: {{ quotaBalance.quota_elite || 0 }} {{ t('event_create.quota_unit') }}
                   </div>
                 </div>
 
                 <NuxtLink
                   to="/dashboard/organizer/package"
-                  class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-navy text-white hover:bg-navy-dark text-xs font-bold transition-all shadow-sm"
+                  class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-navy text-white hover:bg-navy-dark text-xs sm:text-sm font-bold transition-all shadow-sm"
                 >
-                  <Icon icon="ph:plus-circle-bold" class="text-sm text-primary" />
+                  <Icon icon="ph:plus-circle-bold" class="text-base text-primary" />
                   {{ t('event_create.buy_quota_btn') }}
                 </NuxtLink>
               </div>
@@ -62,39 +62,39 @@
                 >
                   <div>
                     <div class="flex items-center justify-between gap-2 mb-3">
-                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black tracking-wider bg-slate-100 text-slate-700">
+                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-black tracking-wider bg-slate-100 text-slate-700">
                         {{ t('event_create.free_badge') }}
                       </div>
                       <div
                         v-if="(quotaBalance.quota_free ?? 20) > 0"
-                        class="size-5 rounded-full border-2 flex items-center justify-center transition-colors"
-                        :class="form.quotaType === 'free' ? 'border-navy bg-navy text-primary' : 'border-slate-300 group-hover:border-slate-400'"
+                        class="size-5 rounded-full border-2 flex items-center justify-center transition-colors font-black"
+                        :class="form.quotaType === 'free' ? 'border-primary bg-primary text-btn-text' : 'border-slate-300 group-hover:border-slate-400'"
                       >
                         <Icon v-if="form.quotaType === 'free'" icon="ph:check-bold" class="text-xs" />
                       </div>
-                      <span v-else class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+                      <span v-else class="text-xs font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
                         {{ t('event_create.quota_empty') }}
                       </span>
                     </div>
 
                     <h4 class="text-lg font-black text-navy mb-1">{{ t('event_create.free_tier_name') }}</h4>
-                    <div class="text-xs text-slate-500 font-medium mb-4">{{ t('event_create.free_tier_desc') }}</div>
+                    <div class="text-xs sm:text-sm text-slate-500 font-medium mb-4">{{ t('event_create.free_tier_desc') }}</div>
 
-                    <div class="space-y-2.5 text-xs font-medium text-slate-600 border-t border-slate-100 pt-3">
+                    <div class="space-y-2.5 text-xs sm:text-sm font-medium text-slate-600 border-t border-slate-100 pt-3">
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:users-bold" class="text-slate-400 text-sm shrink-0" />
+                        <Icon icon="ph:users-bold" class="text-slate-400 text-base shrink-0" />
                         <span>{{ t('event_create.max_50_participants') }}</span>
                       </div>
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:squares-four-bold" class="text-slate-400 text-sm shrink-0" />
+                        <Icon icon="ph:squares-four-bold" class="text-slate-400 text-base shrink-0" />
                         <span><strong>{{ t('event_create.unlimited_categories') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:device-tablet-speaker-bold" class="text-slate-400 text-sm shrink-0" />
+                        <Icon icon="ph:device-tablet-speaker-bold" class="text-slate-400 text-base shrink-0" />
                         <span><strong>{{ t('event_create.unlimited_scorekeepers') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:hard-drive-bold" class="text-slate-400 text-sm shrink-0" />
+                        <Icon icon="ph:hard-drive-bold" class="text-slate-400 text-base shrink-0" />
                         <span>{{ t('event_create.free_storage') }}</span>
                       </div>
                     </div>
@@ -102,12 +102,12 @@
 
                   <div class="mt-4 pt-3 border-t border-slate-100">
                     <div v-if="(quotaBalance.quota_free ?? 20) > 0" class="flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-400">{{ t('event_create.use_label') }}:</span>
-                      <span class="text-xs font-black text-navy">{{ t('event_create.quota_use_free', { count: quotaBalance.quota_free ?? 20 }) }}</span>
+                      <span class="text-xs sm:text-sm font-bold text-slate-400">{{ t('event_create.use_label') }}:</span>
+                      <span class="text-xs sm:text-sm font-black text-navy">{{ t('event_create.quota_use_free', { count: quotaBalance.quota_free ?? 20 }) }}</span>
                     </div>
                     <div v-else class="flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-400">{{ t('event_create.zero_free_quota') }}</span>
-                      <span class="text-xs font-bold text-slate-500">{{ t('event_create.select_standard_elite') }}</span>
+                      <span class="text-xs sm:text-sm font-bold text-slate-400">{{ t('event_create.zero_free_quota') }}</span>
+                      <span class="text-xs sm:text-sm font-bold text-slate-500">{{ t('event_create.select_standard_elite') }}</span>
                     </div>
                   </div>
                 </div>
@@ -123,39 +123,39 @@
                 >
                   <div>
                     <div class="flex items-center justify-between gap-2 mb-3">
-                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black tracking-wider bg-slate-100 text-slate-700">
+                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-black tracking-wider bg-slate-100 text-slate-700">
                         {{ t('event_create.standard_badge') }}
                       </div>
                       <div
                         v-if="quotaBalance.quota_standard > 0"
-                        class="size-5 rounded-full border-2 flex items-center justify-center transition-colors"
-                        :class="form.quotaType === 'standard' ? 'border-navy bg-navy text-primary' : 'border-slate-300 group-hover:border-slate-400'"
+                        class="size-5 rounded-full border-2 flex items-center justify-center transition-colors font-black"
+                        :class="form.quotaType === 'standard' ? 'border-primary bg-primary text-btn-text' : 'border-slate-300 group-hover:border-slate-400'"
                       >
                         <Icon v-if="form.quotaType === 'standard'" icon="ph:check-bold" class="text-xs" />
                       </div>
-                      <span v-else class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+                      <span v-else class="text-xs font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
                         {{ t('event_create.quota_empty') }}
                       </span>
                     </div>
 
                     <h4 class="text-lg font-black text-navy mb-1">{{ t('event_create.standard_tier_name') }}</h4>
-                    <div class="text-xs text-slate-500 font-medium mb-4">{{ t('event_create.standard_tier_desc') }}</div>
+                    <div class="text-xs sm:text-sm text-slate-500 font-medium mb-4">{{ t('event_create.standard_tier_desc') }}</div>
 
-                    <div class="space-y-2.5 text-xs font-medium text-slate-600 border-t border-slate-100 pt-3">
+                    <div class="space-y-2.5 text-xs sm:text-sm font-medium text-slate-600 border-t border-slate-100 pt-3">
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:users-bold" class="text-slate-400 text-sm shrink-0" />
+                        <Icon icon="ph:users-bold" class="text-slate-400 text-base shrink-0" />
                         <span>{{ t('event_create.max_200_participants') }}</span>
                       </div>
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:squares-four-bold" class="text-slate-400 text-sm shrink-0" />
+                        <Icon icon="ph:squares-four-bold" class="text-slate-400 text-base shrink-0" />
                         <span><strong>{{ t('event_create.unlimited_categories') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:device-tablet-speaker-bold" class="text-slate-400 text-sm shrink-0" />
+                        <Icon icon="ph:device-tablet-speaker-bold" class="text-slate-400 text-base shrink-0" />
                         <span><strong>{{ t('event_create.unlimited_scorekeepers') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:hard-drive-bold" class="text-slate-400 text-sm shrink-0" />
+                        <Icon icon="ph:hard-drive-bold" class="text-slate-400 text-base shrink-0" />
                         <span>{{ t('event_create.standard_storage') }}</span>
                       </div>
                     </div>
@@ -163,13 +163,13 @@
 
                   <div class="mt-4 pt-3 border-t border-slate-100">
                     <div v-if="quotaBalance.quota_standard > 0" class="flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-400">{{ t('event_create.use_label') }}:</span>
-                      <span class="text-xs font-black text-navy">{{ t('event_create.quota_use_standard', { count: quotaBalance.quota_standard }) }}</span>
+                      <span class="text-xs sm:text-sm font-bold text-slate-400">{{ t('event_create.use_label') }}:</span>
+                      <span class="text-xs sm:text-sm font-black text-navy">{{ t('event_create.quota_use_standard', { count: quotaBalance.quota_standard }) }}</span>
                     </div>
                     <div v-else class="flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-400">{{ t('event_create.zero_quota') }}</span>
-                      <NuxtLink to="/dashboard/organizer/package" class="text-xs font-bold text-navy hover:underline flex items-center gap-0.5">
-                        {{ t('event_create.buy_quota') }} <Icon icon="ph:arrow-right" class="text-[10px]" />
+                      <span class="text-xs sm:text-sm font-bold text-slate-400">{{ t('event_create.zero_quota') }}</span>
+                      <NuxtLink to="/dashboard/organizer/package" class="text-xs sm:text-sm font-bold text-navy hover:underline flex items-center gap-0.5">
+                        {{ t('event_create.buy_quota') }} <Icon icon="ph:arrow-right" class="text-xs" />
                       </NuxtLink>
                     </div>
                   </div>
@@ -186,39 +186,39 @@
                 >
                   <div>
                     <div class="flex items-center justify-between gap-2 mb-3">
-                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-black tracking-wider bg-slate-100 text-slate-700">
+                      <div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-black tracking-wider bg-slate-100 text-slate-700">
                         {{ t('event_create.elite_badge') }}
                       </div>
                       <div
                         v-if="quotaBalance.quota_elite > 0"
-                        class="size-5 rounded-full border-2 flex items-center justify-center transition-colors"
-                        :class="form.quotaType === 'elite' ? 'border-navy bg-navy text-primary' : 'border-slate-300 group-hover:border-slate-400'"
+                        class="size-5 rounded-full border-2 flex items-center justify-center transition-colors font-black"
+                        :class="form.quotaType === 'elite' ? 'border-primary bg-primary text-btn-text' : 'border-slate-300 group-hover:border-slate-400'"
                       >
                         <Icon v-if="form.quotaType === 'elite'" icon="ph:check-bold" class="text-xs" />
                       </div>
-                      <span v-else class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
+                      <span v-else class="text-xs font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">
                         {{ t('event_create.quota_empty') }}
                       </span>
                     </div>
 
                     <h4 class="text-lg font-black text-navy mb-1">{{ t('event_create.elite_tier_name') }}</h4>
-                    <div class="text-xs text-slate-500 font-medium mb-4">{{ t('event_create.elite_tier_desc') }}</div>
+                    <div class="text-xs sm:text-sm text-slate-500 font-medium mb-4">{{ t('event_create.elite_tier_desc') }}</div>
 
-                    <div class="space-y-2.5 text-xs font-medium text-slate-600 border-t border-slate-100 pt-3">
+                    <div class="space-y-2.5 text-xs sm:text-sm font-medium text-slate-600 border-t border-slate-100 pt-3">
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:users-bold" class="text-slate-400 text-sm shrink-0" />
+                        <Icon icon="ph:users-bold" class="text-slate-400 text-base shrink-0" />
                         <span><strong>{{ t('event_create.unlimited_participants') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:squares-four-bold" class="text-slate-400 text-sm shrink-0" />
+                        <Icon icon="ph:squares-four-bold" class="text-slate-400 text-base shrink-0" />
                         <span><strong>{{ t('event_create.unlimited_categories') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:device-tablet-speaker-bold" class="text-slate-400 text-sm shrink-0" />
+                        <Icon icon="ph:device-tablet-speaker-bold" class="text-slate-400 text-base shrink-0" />
                         <span><strong>{{ t('event_create.unlimited_scorekeepers') }}</strong></span>
                       </div>
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:hard-drive-bold" class="text-slate-400 text-sm shrink-0" />
+                        <Icon icon="ph:hard-drive-bold" class="text-slate-400 text-base shrink-0" />
                         <span>{{ t('event_create.elite_storage') }}</span>
                       </div>
                     </div>
@@ -226,13 +226,13 @@
 
                   <div class="mt-4 pt-3 border-t border-slate-100">
                     <div v-if="quotaBalance.quota_elite > 0" class="flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-400">{{ t('event_create.use_label') }}:</span>
-                      <span class="text-xs font-black text-navy">{{ t('event_create.quota_use_elite', { count: quotaBalance.quota_elite }) }}</span>
+                      <span class="text-xs sm:text-sm font-bold text-slate-400">{{ t('event_create.use_label') }}:</span>
+                      <span class="text-xs sm:text-sm font-black text-navy">{{ t('event_create.quota_use_elite', { count: quotaBalance.quota_elite }) }}</span>
                     </div>
                     <div v-else class="flex items-center justify-between">
-                      <span class="text-xs font-bold text-slate-400">{{ t('event_create.zero_quota') }}</span>
-                      <NuxtLink to="/dashboard/organizer/package" class="text-xs font-bold text-navy hover:underline flex items-center gap-0.5">
-                        {{ t('event_create.buy_quota') }} <Icon icon="ph:arrow-right" class="text-[10px]" />
+                      <span class="text-xs sm:text-sm font-bold text-slate-400">{{ t('event_create.zero_quota') }}</span>
+                      <NuxtLink to="/dashboard/organizer/package" class="text-xs sm:text-sm font-bold text-navy hover:underline flex items-center gap-0.5">
+                        {{ t('event_create.buy_quota') }} <Icon icon="ph:arrow-right" class="text-xs" />
                       </NuxtLink>
                     </div>
                   </div>
@@ -260,7 +260,10 @@
               <BaseInput v-model="form.venue" :label="t('event_create.field_venue')" :placeholder="t('event_create.field_venue_placeholder')"
                 icon="la:place-of-worship" />
               <BaseSelect v-model="form.country" :label="t('event_create.field_country')" :items="countryItems" required :error="errors.country"
+                @update:model-value="onCountryChange"
                 @blur="validate('country', form.country, [rules.required()])" />
+              <BaseSelect v-model="form.currency" :label="t('event_create.field_currency')" :items="currencyItems" required :error="errors.currency"
+                @blur="validate('currency', form.currency, [rules.required()])" />
               <BaseSelect v-model="form.type" :label="t('event_create.field_location_type')" :items="disciplineItems" required :error="errors.type"
                 @blur="validate('type', form.type, [rules.required()])" />
 
@@ -319,7 +322,7 @@
                   {{ t('event_create.field_start_date') }} <span class="text-red-500">*</span>
                 </label>
                 <div class="grid grid-cols-2 gap-2">
-                  <BaseDatePicker v-model="startDateDate" :placeholder="t('event_create.field_start_date')" :error="errors.startDate" />
+                  <BaseDatePicker v-model="startDateDate" :max-date="endDateDate" :placeholder="t('event_create.field_start_date')" :error="errors.startDate" />
                   <BaseTimePicker v-model="startDateTime" placeholder="08:00" />
                 </div>
               </div>
@@ -328,7 +331,7 @@
                   {{ t('event_create.field_end_date') }} <span class="text-red-500">*</span>
                 </label>
                 <div class="grid grid-cols-2 gap-2">
-                  <BaseDatePicker v-model="endDateDate" :placeholder="t('event_create.field_end_date')" :error="errors.endDate" />
+                  <BaseDatePicker v-model="endDateDate" :min-date="startDateDate" :placeholder="t('event_create.field_end_date')" :error="errors.endDate" />
                   <BaseTimePicker v-model="endDateTime" placeholder="17:00" />
                 </div>
               </div>
@@ -337,7 +340,7 @@
                   {{ t('event_create.field_registration_deadline') }}
                 </label>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  <BaseDatePicker v-model="regDate" :placeholder="t('event_create.field_registration_deadline')" />
+                  <BaseDatePicker v-model="regDate" :max-date="endDateDate || startDateDate" :placeholder="t('event_create.field_registration_deadline')" />
                   <BaseTimePicker v-model="regTime" placeholder="23:59" />
                 </div>
               </div>
@@ -354,11 +357,73 @@
           </FormSection>
 
           <FormSection icon="ph:gear" :title="t('event_create.section_settings')">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <BaseSelect v-model="form.status" :label="t('event_create.field_initial_status')" :items="[
-                { title: t('event_create.status_draft'), value: 'draft' },
-                { title: t('event_create.status_published'), value: 'published' }
-              ]" />
+            <div class="space-y-6">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <BaseSelect v-model="form.status" :label="t('event_create.field_initial_status')" :items="[
+                  { title: t('event_create.status_draft'), value: 'draft' },
+                  { title: t('event_create.status_published'), value: 'published' }
+                ]" />
+              </div>
+
+              <!-- Tournament Visibility (External vs Internal) -->
+              <div v-if="form.status === 'published'" class="space-y-3 pt-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div>
+                  <label class="text-sm font-bold text-navy flex items-center gap-2">
+                    <Icon icon="ph:eye-bold" class="text-primary text-base" />
+                    <span>{{ t('event_create.visibility_title') }}</span>
+                  </label>
+                  <span class="text-xs text-gray-500 font-medium">{{ t('event_create.visibility_subtitle') }}</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <!-- External (Default) -->
+                  <div
+                    @click="form.visibility = 'external'"
+                    class="p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-start gap-3.5 select-none"
+                    :class="form.visibility === 'external' ? 'border-primary bg-primary/5 shadow-xs' : 'border-gray-200 bg-white hover:border-gray-300'"
+                  >
+                    <div
+                      class="size-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors"
+                      :class="form.visibility === 'external' ? 'border-primary bg-primary text-btn-text' : 'border-gray-300'"
+                    >
+                      <Icon v-if="form.visibility === 'external'" icon="ph:check-bold" class="text-xs" />
+                    </div>
+                    <div class="space-y-1">
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:globe-hemisphere-west-bold" class="text-base text-navy" />
+                        <span class="text-sm font-black text-navy">{{ t('event_create.visibility_external_title') }}</span>
+                        <span class="px-2 py-0.5 bg-primary/20 text-navy text-[10px] font-black rounded-md">Default</span>
+                      </div>
+                      <span class="text-xs text-gray-500 font-medium leading-relaxed block">
+                        {{ t('event_create.visibility_external_desc') }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Internal -->
+                  <div
+                    @click="form.visibility = 'internal'"
+                    class="p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-start gap-3.5 select-none"
+                    :class="form.visibility === 'internal' ? 'border-primary bg-primary/5 shadow-xs' : 'border-gray-200 bg-white hover:border-gray-300'"
+                  >
+                    <div
+                      class="size-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors"
+                      :class="form.visibility === 'internal' ? 'border-primary bg-primary text-btn-text' : 'border-gray-300'"
+                    >
+                      <Icon v-if="form.visibility === 'internal'" icon="ph:check-bold" class="text-xs" />
+                    </div>
+                    <div class="space-y-1">
+                      <div class="flex items-center gap-2">
+                        <Icon icon="ph:lock-key-bold" class="text-base text-navy" />
+                        <span class="text-sm font-black text-navy">{{ t('event_create.visibility_internal_title') }}</span>
+                      </div>
+                      <span class="text-xs text-gray-500 font-medium leading-relaxed block">
+                        {{ t('event_create.visibility_internal_desc') }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </FormSection>
         </div>
@@ -388,12 +453,14 @@ import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
 import { useSubscription } from '~/composables/useSubscription'
 import { extractGmapsEmbedUrl } from '~/utils/maps'
+import useCurrency from '~/composables/useCurrency'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
 const { t } = useI18n()
+const { currencies: supportedCurrencies, countries: supportedCountryList } = useCurrency()
 
 useHead({
   title: computed(() => `${t('event_create.page_title')} - Archeris Dashboard`)
@@ -413,6 +480,7 @@ const form = reactive({
   slug: '',
   venue: '',
   country: 'Indonesia',
+  currency: 'IDR',
   gmapsLink: '',
   startDate: '',
   endDate: '',
@@ -420,7 +488,8 @@ const form = reactive({
   type: '', // Discipline
   registrationDeadline: '',
   status: 'draft',
-  quotaType: 'free'
+  quotaType: 'free',
+  visibility: 'external'
 })
 
 const quotaBalance = ref({
@@ -485,15 +554,24 @@ const disciplineItems = computed(() => {
     .map((d) => ({ title: d.name, value: d.name }))
 })
 
-const countries = [
-  'Indonesia', 'Malaysia', 'Singapore', 'Thailand', 'Philippines', 
-  'Vietnam', 'Myanmar', 'Cambodia', 'Laos', 'Brunei',
-  'Australia', 'New Zealand', 'Japan', 'South Korea', 'China',
-  'India', 'United States', 'United Kingdom', 'Germany', 'France',
-  'Other'
-].sort()
+const countryItems = computed(() => supportedCountryList.map(c => ({
+  title: c.name,
+  value: c.name,
+  icon: c.icon
+})))
 
-const countryItems = computed(() => countries.map(country => ({ title: country, value: country })))
+const currencyItems = computed(() => supportedCurrencies.map(c => ({
+  title: `${c.code} (${c.symbol}) – ${c.name}`,
+  value: c.code,
+  icon: c.icon
+})))
+
+const onCountryChange = (countryName) => {
+  const found = supportedCountryList.find(c => c.name.toLowerCase() === (countryName || '').toLowerCase())
+  if (found && found.defaultCurrency) {
+    form.currency = found.defaultCurrency
+  }
+}
 
 onMounted(async () => {
   if (!isSubscriptionActive.value) {
@@ -514,7 +592,7 @@ onMounted(async () => {
         quota_free: resQuota.quota_free ?? 20,
         quota_standard: resQuota.quota_standard || 0,
         quota_elite: resQuota.quota_elite || 0,
-        total_quota: resQuota.total_quota ?? 20
+        total_quota: resQuota.total_quota || 20
       }
       if ((quotaBalance.value.quota_free ?? 20) > 0) {
         form.quotaType = 'free'
@@ -553,7 +631,8 @@ const validateStep = () => {
     startDate: [rules.required()],
     endDate: [rules.required()],
     type: [rules.required()],
-    country: [rules.required()]
+    country: [rules.required()],
+    currency: [rules.required()]
   })
 
   // Additional validation: end date must be after start date
@@ -585,6 +664,7 @@ const handleSubmit = async () => {
       slug: form.slug,
       venue: form.venue,
       country: form.country,
+      currency: form.currency || 'IDR',
       gmaps_link: form.gmapsLink,
       start_date: formatToISO(form.startDate),
       end_date: formatToISO(form.endDate),
@@ -592,7 +672,13 @@ const handleSubmit = async () => {
       status: form.status,
       registration_deadline: formatToISO(form.registrationDeadline),
       location_type: form.type,
-      quota_type: form.quotaType
+      quota_type: form.quotaType,
+      visibility: form.visibility || 'external',
+      page_settings: JSON.stringify({
+        country: form.country,
+        currency: form.currency || 'IDR',
+        visibility: form.visibility || 'external'
+      })
     }
 
     const result = await post('/tournaments', payload)

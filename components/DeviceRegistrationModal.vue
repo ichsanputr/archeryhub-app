@@ -54,19 +54,19 @@
           </div>
 
           <div class="space-y-2 mb-8">
-            <p class="text-white font-bold text-lg">Scan this code on the scoring app</p>
-            <p class="text-brand-gold text-sm max-w-xs mx-auto">This code will link this device to <span
-                class="text-white">{{ form.device_name || 'this scoring station' }}</span></p>
+            <div class="text-white font-bold text-lg">Scan this code on the scoring app</div>
+            <div class="text-brand-gold text-sm max-w-xs mx-auto">This code will link this device to <span
+                class="text-white">{{ form.device_name || 'this scoring station' }}</span></div>
           </div>
 
           <div class="grid grid-cols-2 gap-4 w-full px-8">
             <div class="bg-surface-highlight p-3 rounded-lg border border-white/5">
-              <p class="text-[10px]  text-brand-gold font-bold mb-1">Device Code</p>
-              <p class="text-white font-mono font-bold tracking-widest text-lg">{{ registeredDevice.device_code }}</p>
+              <div class="text-[10px]  text-brand-gold font-bold mb-1">Device Code</div>
+              <div class="text-white font-mono font-bold tracking-widest text-lg">{{ registeredDevice.device_code }}</div>
             </div>
             <div class="bg-surface-highlight p-3 rounded-lg border border-white/5">
-              <p class="text-[10px]  text-brand-gold font-bold mb-1">PIN</p>
-              <p class="text-primary font-mono font-bold tracking-widest text-lg">{{ registeredDevice.pin }}</p>
+              <div class="text-[10px]  text-brand-gold font-bold mb-1">PIN</div>
+              <div class="text-primary font-mono font-bold tracking-widest text-lg">{{ registeredDevice.pin }}</div>
             </div>
           </div>
 

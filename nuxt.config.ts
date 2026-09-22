@@ -1,51 +1,3 @@
-import fs from 'fs'
-import path from 'path'
-
-function getDashboardPages(dir: string, base: string = 'dashboard'): Record<string, boolean> {
-  const pages: Record<string, boolean> = {}
-  if (!fs.existsSync(dir)) return pages
-
-  const items = fs.readdirSync(dir)
-  for (const item of items) {
-    const fullPath = path.join(dir, item)
-    const stat = fs.statSync(fullPath)
-    if (stat.isDirectory()) {
-      Object.assign(pages, getDashboardPages(fullPath, `${base}/${item}`))
-    } else if (item.endsWith('.vue')) {
-      const cleanItem = item.replace(/\.vue$/, '')
-      const key = `${base}/${cleanItem}`.replace(/\\/g, '/')
-      pages[key] = false
-      if (cleanItem === 'index') {
-        const indexKey = base.replace(/\\/g, '/')
-        pages[indexKey] = false
-      }
-    }
-  }
-  return pages
-}
-
-const dashboardPages = getDashboardPages(path.resolve(__dirname, 'pages/dashboard'))
-
-function makeNonLocalizedPages(pages: Record<string, boolean>, locales: string[] = ['en', 'id']) {
-  const out: Record<string, Record<string, string>> = {}
-  for (const key of Object.keys(pages)) {
-    // ensure we produce a normalized path starting with '/'
-    // examples: 'dashboard/index' -> '/dashboard', 'dashboard/foo' -> '/dashboard/foo'
-    let routePath = '/' + key.replace(/index$/, '').replace(/^\/+/, '')
-    routePath = routePath.replace(/\/$/, '')
-    if (routePath === '') routePath = '/'
-
-    const mapping: Record<string, string> = {}
-    for (const loc of locales) {
-      mapping[loc] = routePath
-    }
-    out[key] = mapping
-  }
-  return out
-}
-
-const dashboardI18nPages = makeNonLocalizedPages(dashboardPages)
-
 export default defineNuxtConfig({
   ssr: true,
   devServer: {
@@ -58,18 +10,41 @@ export default defineNuxtConfig({
   i18n: {
     baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://archeris.net',
     locales: [
-      { code: 'en', iso: 'en-US', file: 'en.json', name: 'English', language: 'en-US' },
-      { code: 'id', iso: 'id-ID', file: 'id.json', name: 'Bahasa Indonesia', language: 'id-ID' }
+      {
+        code: 'en',
+        iso: 'en-US',
+        name: 'English',
+        language: 'en-US',
+        files: [
+          'en/common.json',
+          'en/auth.json',
+          'en/dashboard.json',
+          'en/tournaments.json',
+          'en/archers.json',
+          'en/commerce.json'
+        ]
+      },
+      {
+        code: 'id',
+        iso: 'id-ID',
+        name: 'Bahasa Indonesia',
+        language: 'id-ID',
+        files: [
+          'id/common.json',
+          'id/auth.json',
+          'id/dashboard.json',
+          'id/tournaments.json',
+          'id/archers.json',
+          'id/commerce.json'
+        ]
+      }
     ],
-    lazy: true,
+    lazy: false,
     langDir: 'locales',
     defaultLocale: 'en',
     fallbackLocale: 'en',
     strategy: 'no_prefix',
     detectBrowserLanguage: false,
-    customRoutes: 'config',
-    // keep dashboard routes identical across locales (no prefix change)
-    pages: dashboardI18nPages,
     compilation: {
       strictMessage: false
     }
@@ -130,8 +105,7 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'alternate', hreflang: 'en', href: 'https://archeris.net' },
-        { rel: 'alternate', hreflang: 'x-default', href: 'https://archeris.net' },
+        { rel: 'alternate', type: 'application/rss+xml', title: 'Archeris RSS Feed', href: 'https://archeris.net/rss.xml' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap' }
       ],
       script: [
@@ -175,13 +149,19 @@ export default defineNuxtConfig({
       host: 'localhost',
     },
     routeRules: {
+      '/feed.xml': { redirect: { to: '/rss.xml', statusCode: 301 } },
       '/pricing': { redirect: { to: '/package', statusCode: 301 } },
       '/events': { redirect: { to: '/tournaments', statusCode: 301 } },
       '/events/**': { redirect: { to: '/tournaments/**', statusCode: 301 } },
-      '/dashboard/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow, noarchive' } },
-      '/auth/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow, noarchive' } },
-      '/dev/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow, noarchive' } },
-      '/test/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow, noarchive' } },
+      // Static media caching for Google PageSpeed / Lighthouse
+      '/**/*.webp': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+      '/**/*.png': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+      '/**/*.jpg': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+      '/**/*.jpeg': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+      '/**/*.svg': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+      '/**/*.mp4': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+      '/**/*.ttf': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+      '/**/*.woff2': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     }
   },
   // Ensure proper client-side error handling

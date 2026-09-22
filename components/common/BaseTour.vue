@@ -44,7 +44,7 @@
           </button>
         </div>
         <h4 class="text-sm font-black text-white leading-snug tracking-tight">{{ currentStep?.title }}</h4>
-        <p class="text-xs text-slate-300 leading-relaxed font-medium mt-1">{{ currentStep?.description }}</p>
+        <div class="text-xs text-slate-300 leading-relaxed font-medium mt-1">{{ currentStep?.description }}</div>
       </div>
 
       <div class="flex items-center justify-between pt-3 border-t border-white/10">

@@ -10,9 +10,9 @@
             <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="space-y-4">
                     <div class="flex items-center gap-2 text-[10px] sm:text-xs font-black tracking-widest text-primary/80">
-                        <span class="text-white">{{ t('root.index.root_terminal', 'Root Terminal') }}</span>
+                        <span class="text-white">{{ t('root.index.root_terminal') }}</span>
                         <Icon icon="ph:caret-right-bold" class="text-[8px] opacity-50" />
-                        <span class="text-primary">{{ t('root.articles.title', 'Articles Management') }}</span>
+                        <span class="text-primary">{{ t('root.articles.title') }}</span>
                     </div>
                     <div class="flex items-center gap-4">
                         <div
@@ -20,9 +20,9 @@
                             <Icon icon="ph:newspaper-bold" class="text-primary text-2xl sm:text-3xl" />
                         </div>
                         <div>
-                            <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ t('root.articles.title', 'Articles Management') }}</h1>
+                            <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ t('root.articles.title') }}</h1>
                             <div class="text-slate-300 text-[10px] sm:text-sm font-medium mt-1">
-                                {{ t('root.articles.subtitle', 'Manage blog publications, archery guides, and news articles') }}
+                                {{ t('root.articles.subtitle') }}
                             </div>
                         </div>
                     </div>
@@ -30,210 +30,132 @@
                 <div class="flex items-center gap-3">
                     <NuxtLink to="/dashboard/root/articles/create">
                         <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-lg shadow-primary/20">
-                            {{ t('root.articles.create_button', 'Create New Article') }}
+                            {{ t('root.articles.create_button') }}
                         </BaseButton>
                     </NuxtLink>
                 </div>
             </div>
         </div>
 
-        <!-- Filters & Search Bar -->
-        <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
-            <div class="flex-grow w-full">
-                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">{{ t('root.articles.search_label', 'Search') }}</label>
-                <div class="relative">
-                    <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input v-model="searchQuery" @keyup.enter="handleSearch" type="text"
-                        :placeholder="t('root.articles.search_placeholder', 'Search title, excerpt, or slug...')"
-                        class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/30 outline-none transition-all" />
+        <!-- Unified DashboardDataTable (Category B: Inline Filters) -->
+        <DashboardDataTable
+            :items="articles"
+            :columns="tableColumns"
+            :loading="loading"
+            :searchable="true"
+            :search-placeholder="t('root.articles.search_placeholder')"
+            count-icon="ph:newspaper-bold"
+            :count-unit="t('root.articles.title')"
+            :show-reset-button="true"
+            :empty-title="t('root.articles.no_articles')"
+            :empty-description="t('root.articles.no_articles_desc')"
+            empty-icon="ph:newspaper-clipping-bold"
+            :items-per-page="itemsPerPage"
+            :initial-sort-by="sortBy"
+            :initial-sort-order="sortOrder"
+            @search="searchQuery = $event; handleSearch()"
+            @sort="toggleSort($event.sortBy)"
+            @reset-filters="resetFilters"
+        >
+            <!-- Inline Filters: Category & Status Selects -->
+            <template #inline-filters>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <div class="w-40 sm:w-48">
+                        <BaseSelect v-model="categoryFilter" :options="categoryOptions" class="w-full text-xs" />
+                    </div>
+                    <div class="w-36 sm:w-44">
+                        <BaseSelect v-model="statusFilter" :options="statusOptions" class="w-full text-xs" />
+                    </div>
                 </div>
-            </div>
+            </template>
 
-            <div class="w-full md:w-56">
-                <BaseSelect v-model="categoryFilter" :options="categoryOptions" :label="t('root.articles.category_label', 'Category')" class="w-full" />
-            </div>
+            <!-- Article Title & Slug Column Slot -->
+            <template #item-title="{ item }">
+                <div class="flex items-start gap-3.5 py-1">
+                    <div class="h-12 w-16 sm:h-14 sm:w-20 rounded-xl overflow-hidden bg-slate-100 border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs">
+                        <img :src="item.image || '/hero-berita.jpeg'" :alt="item.title" class="size-full object-cover" />
+                    </div>
+                    <div class="space-y-0.5 min-w-0">
+                        <NuxtLink :to="`/dashboard/root/articles/${item.uuid}`"
+                            class="font-bold text-xs sm:text-sm text-navy hover:text-primary transition-colors line-clamp-1 block">
+                            {{ item.title }}
+                        </NuxtLink>
+                        <div class="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
+                            <span class="truncate max-w-[180px]">/blog/{{ item.slug }}</span>
+                            <span>•</span>
+                            <span>{{ item.read_time || 5 }} min</span>
+                        </div>
+                    </div>
+                </div>
+            </template>
 
-            <div class="w-full md:w-48">
-                <BaseSelect v-model="statusFilter" :options="statusOptions" :label="t('root.articles.status_label', 'Publication Status')" class="w-full" />
-            </div>
+            <!-- Category Column Slot -->
+            <template #item-category="{ item }">
+                <span class="px-2.5 py-1 rounded-lg bg-navy/5 text-navy text-xs font-bold whitespace-nowrap">
+                    {{ item.category }}
+                </span>
+            </template>
 
-            <button @click="resetFilters"
-                class="h-11 px-5 font-bold text-xs text-navy bg-white border border-gray-200 hover:bg-gray-50 rounded-xl transition-all shrink-0">
-                {{ t('root.index.reset', 'Reset') }}
-            </button>
-        </div>
+            <!-- Status Column Slot -->
+            <template #item-status="{ item }">
+                <div class="flex justify-center">
+                    <button @click="toggleStatus(item)" :title="`Klik untuk ubah status`"
+                        class="px-2.5 py-1 rounded-full text-[11px] font-black border transition-transform hover:scale-105 cursor-pointer tracking-wider"
+                        :class="getStatusBadgeClass(item.status)">
+                        {{ getStatusLabel(item.status) }}
+                    </button>
+                </div>
+            </template>
 
-        <!-- Articles Table -->
-        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse min-w-[900px]">
-                    <thead>
-                        <tr class="bg-gray-50/50 text-gray-500 font-bold text-[10px] tracking-widest border-b border-gray-100">
-                            <th @click="toggleSort('title')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('root.articles.table_article', 'Article') }}</span>
-                                    <Icon v-if="sortBy === 'title'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                                </div>
-                            </th>
-                            <th @click="toggleSort('category')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('root.articles.table_category', 'Category') }}</span>
-                                    <Icon v-if="sortBy === 'category'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                                </div>
-                            </th>
-                            <th @click="toggleSort('status')" class="px-6 py-4 text-center cursor-pointer hover:text-navy transition-colors select-none">
-                                <div class="flex items-center justify-center gap-1.5">
-                                    <span>{{ t('root.articles.table_status', 'Status') }}</span>
-                                    <Icon v-if="sortBy === 'status'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                                </div>
-                            </th>
-                            <th @click="toggleSort('views')" class="px-6 py-4 text-center cursor-pointer hover:text-navy transition-colors select-none">
-                                <div class="flex items-center justify-center gap-1.5">
-                                    <span>{{ t('root.articles.table_views', 'Reads') }}</span>
-                                    <Icon v-if="sortBy === 'views'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                                </div>
-                            </th>
-                            <th @click="toggleSort('published_at')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('root.articles.table_published_at', 'Published Date') }}</span>
-                                    <Icon v-if="sortBy === 'published_at'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                                </div>
-                            </th>
-                            <th class="px-6 py-4 text-right">{{ t('root.articles.table_actions', 'Actions') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr v-if="loading">
-                            <td colspan="6" class="px-6 py-20 text-center">
-                                <div class="flex flex-col items-center justify-center gap-3">
-                                    <div class="h-10 w-10 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
-                                    <div class="text-xs text-gray-400 font-medium">{{ t('common.loading', 'Memuat data artikel...') }}</div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr v-else-if="!loading && articles.length === 0">
-                            <td colspan="6" class="px-6 py-20 text-center">
-                                <div class="flex flex-col items-center gap-3 max-w-sm mx-auto">
-                                    <div class="size-16 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-300">
-                                        <Icon icon="ph:newspaper-clipping-bold" class="text-4xl text-gray-300" />
-                                    </div>
-                                    <div class="space-y-1">
-                                        <div class="text-base font-bold text-navy">{{ t('root.articles.no_articles', 'Belum ada artikel ditemukan') }}</div>
-                                        <div class="text-xs text-gray-500 font-medium leading-relaxed">
-                                            {{ t('root.articles.no_articles_desc', 'Mulai buat artikel edukasi atau panduan baru untuk komunitas panahan.') }}
-                                        </div>
-                                    </div>
-                                    <NuxtLink to="/dashboard/root/articles/create" class="mt-2">
-                                        <BaseButton variant="primary" size="sm" icon="ph:plus-bold">
-                                            {{ t('root.articles.create_button', 'Buat Artikel Baru') }}
-                                        </BaseButton>
-                                    </NuxtLink>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr v-else v-for="item in articles" :key="item.uuid"
-                            class="hover:bg-slate-50/70 transition-colors group">
-                            <!-- Article Info -->
-                            <td class="px-6 py-4">
-                                <div class="flex items-start gap-4">
-                                    <div class="h-12 w-16 sm:h-14 sm:w-20 rounded-xl overflow-hidden bg-gray-100 border border-gray-200/60 flex items-center justify-center shrink-0">
-                                        <img :src="item.image || '/hero-berita.jpeg'" :alt="item.title" class="w-full h-full object-cover">
-                                    </div>
-                                    <div class="space-y-1 min-w-0">
-                                        <NuxtLink :to="`/dashboard/root/articles/${item.uuid}`"
-                                            class="font-bold text-sm text-navy hover:underline transition-colors line-clamp-1 block">
-                                            {{ item.title }}
-                                        </NuxtLink>
-                                        <div class="flex items-center gap-2 text-[10px] text-gray-400 font-medium">
-                                            <span class="truncate max-w-[200px]">/blog/{{ item.slug }}</span>
-                                            <span>•</span>
-                                            <span>{{ item.read_time || 5 }} min</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
+            <!-- Views Column Slot -->
+            <template #item-views="{ item }">
+                <div class="text-center text-xs font-bold text-navy tabular-nums">
+                    {{ (item.views || 0).toLocaleString('id-ID') }}
+                </div>
+            </template>
 
-                            <!-- Category -->
-                            <td class="px-6 py-4">
-                                <span class="px-2.5 py-1 rounded-lg bg-navy/5 text-navy text-xs font-bold whitespace-nowrap">
-                                    {{ item.category }}
-                                </span>
-                            </td>
+            <!-- Published At Column Slot -->
+            <template #item-published_at="{ item }">
+                <span class="text-xs font-medium text-slate-500 whitespace-nowrap">
+                    {{ formatDate(item.published_at || item.created_at) }}
+                </span>
+            </template>
 
-                            <!-- Status -->
-                            <td class="px-6 py-4 text-center">
-                                <button @click="toggleStatus(item)" :title="`Klik untuk ubah status`"
-                                    class="px-2.5 py-1 rounded-full text-xs font-bold border transition-transform hover:scale-105"
-                                    :class="getStatusBadgeClass(item.status)">
-                                    {{ getStatusLabel(item.status) }}
-                                </button>
-                            </td>
+            <!-- Actions Column Slot -->
+            <template #actions="{ item }">
+                <div class="flex items-center justify-end gap-1">
+                    <!-- Preview on Blog -->
+                    <NuxtLink :to="`/blog/${item.slug}`" target="_blank"
+                        class="p-1.5 text-slate-400 hover:text-navy hover:bg-slate-100 rounded-lg transition-all"
+                        :title="t('root.articles.preview_tooltip')">
+                        <Icon icon="ph:arrow-square-out-bold" class="text-base" />
+                    </NuxtLink>
 
-                            <!-- Reads / Views -->
-                            <td class="px-6 py-4 text-center text-xs font-bold text-navy tabular-nums">
-                                {{ (item.views || 0).toLocaleString('id-ID') }}
-                            </td>
+                    <!-- Edit Article -->
+                    <NuxtLink :to="`/dashboard/root/articles/${item.uuid}`"
+                        class="p-1.5 text-navy hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-all"
+                        :title="t('root.articles.edit_tooltip')">
+                        <Icon icon="ph:pencil-simple-bold" class="text-base" />
+                    </NuxtLink>
 
-                            <!-- Published At -->
-                            <td class="px-6 py-4 text-xs font-medium text-gray-500 whitespace-nowrap">
-                                {{ formatDate(item.published_at || item.created_at) }}
-                            </td>
-
-                            <!-- Actions -->
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex items-center justify-end gap-1.5">
-                                    <!-- Preview on Blog -->
-                                    <NuxtLink :to="`/blog/${item.slug}`" target="_blank"
-                                        class="p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-xl transition-all"
-                                        :title="t('root.articles.preview_tooltip', 'Lihat di Blog')">
-                                        <Icon icon="ph:arrow-square-out-bold" class="text-base" />
-                                    </NuxtLink>
-
-                                    <!-- Edit Article -->
-                                    <NuxtLink :to="`/dashboard/root/articles/${item.uuid}`"
-                                        class="p-2 text-navy hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all"
-                                        :title="t('root.articles.edit_tooltip', 'Edit Artikel')">
-                                        <Icon icon="ph:pencil-simple-bold" class="text-base" />
-                                    </NuxtLink>
-
-                                    <!-- Delete Article -->
-                                    <button @click="openDeleteDialog(item)"
-                                        class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
-                                        :title="t('root.articles.delete_tooltip', 'Hapus Artikel')">
-                                        <Icon icon="ph:trash-bold" class="text-base" />
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <div v-if="articles.length > 0" class="px-6 py-4 bg-gray-50/50 border-t border-gray-100">
-                <BasePagination
-                    v-model:currentPage="currentPage"
-                    :totalItems="totalArticles"
-                    :itemsPerPage="itemsPerPage"
-                    :showPageSize="false"
-                    noMargin
-                />
-            </div>
-        </div>
+                    <!-- Delete Article -->
+                    <button @click="openDeleteDialog(item)"
+                        class="p-1.5 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all cursor-pointer"
+                        :title="t('root.articles.delete_tooltip')">
+                        <Icon icon="ph:trash-bold" class="text-base" />
+                    </button>
+                </div>
+            </template>
+        </DashboardDataTable>
 
         <!-- Standard AppDialog for Delete Confirmation -->
         <AppDialog
             v-model:show="deleteModal.show"
             type="danger"
-            :title="t('root.articles.delete_confirm_title', 'Hapus Artikel?')"
+            :title="t('root.articles.delete_confirm_title')"
             :message="t('root.articles.delete_confirm_desc', { title: deleteModal.item?.title || '' })"
-            :confirm-text="t('root.articles.delete_confirm_button', 'Ya, Hapus Artikel')"
-            :cancel-text="t('common.cancel', 'Batal')"
+            :confirm-text="t('root.articles.delete_confirm_button')"
+            :cancel-text="t('common.cancel')"
             :loading="deleteModal.loading"
             @confirm="executeDelete"
         />
@@ -241,25 +163,32 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
-import { ref, onMounted, watch } from 'vue'
-import { useApi } from '~/composables/useApi'
-import { useToast } from '~/composables/useToast'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Icon } from '@iconify/vue'
 import { useDateFormat } from '@vueuse/core'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
 
 definePageMeta({
     layout: 'dashboard',
     middleware: ['auth']
 })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const api = useApi()
 const toast = useToast()
 
 useHead({
-    title: computed(() => `${t('root.articles.title', 'Articles Management')} - Archeris Root`)
+    title: computed(() => `${t('root.articles.title')} - Archeris Root`)
 })
+
+const tableColumns = computed(() => [
+    { key: 'title', label: t('root.articles.table_article'), sortable: true, sortKey: 'title', class: 'min-w-[260px]' },
+    { key: 'category', label: t('root.articles.table_category'), sortable: true, sortKey: 'category', class: 'min-w-[150px]' },
+    { key: 'status', label: t('root.articles.table_status'), sortable: true, sortKey: 'status', align: 'center', class: 'min-w-[130px]' },
+    { key: 'views', label: t('root.articles.table_views'), sortable: true, sortKey: 'views', align: 'center', class: 'min-w-[110px]' },
+    { key: 'published_at', label: t('root.articles.table_published_at'), sortable: true, sortKey: 'published_at', class: 'min-w-[140px]' }
+])
 
 const articles = ref([])
 const totalArticles = ref(0)
@@ -356,7 +285,7 @@ const toggleStatus = async (item) => {
     try {
         await api.patch(`/root/dashboard/articles/${item.uuid}/status`, { status: nextStatus })
         item.status = nextStatus
-        toast.success(t('root.articles.status_update_success', 'Status artikel berhasil diubah'))
+        toast.success(t('root.articles.status_update_success'))
         // refresh stats
         fetchArticles()
     } catch (err) {
@@ -378,7 +307,7 @@ const executeDelete = async () => {
     try {
         deleteModal.value.loading = true
         await api.delete(`/root/dashboard/articles/${deleteModal.value.item.uuid}`)
-        toast.success(t('root.articles.delete_success', 'Artikel berhasil dihapus'))
+        toast.success(t('root.articles.delete_success'))
         deleteModal.value.show = false
         fetchArticles()
     } catch (err) {
@@ -392,13 +321,13 @@ const executeDelete = async () => {
 const getStatusLabel = (status) => {
     switch (status) {
         case 'published':
-            return t('root.articles.status_published', 'Terbit')
+            return t('root.articles.status_published')
         case 'draft':
-            return t('root.articles.status_draft', 'Draf')
+            return t('root.articles.status_draft')
         case 'archived':
-            return t('root.articles.status_archived', 'Arsip')
+            return t('root.articles.status_archived')
         default:
-            return t('root.articles.status_published', 'Terbit')
+            return t('root.articles.status_published')
     }
 }
 

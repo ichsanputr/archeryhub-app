@@ -28,8 +28,8 @@
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div class="space-y-2">
                         <div class="flex items-center gap-3">
-                            <div class="size-10 sm:size-12 rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
-                                <Icon icon="ph:map-pin-fill" class="text-xl sm:text-2xl text-primary" />
+                            <div class="size-10 sm:size-12 rounded-xl sm:rounded-2xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs">
+                                <Icon icon="ph:map-pin-fill" class="text-xl sm:text-2xl" />
                             </div>
                             <div>
                                 <span class="text-[10px] font-black text-gray-400 tracking-widest block">{{ t('event_venue.venue_title', 'Lokasi & Tempat Pertandingan') }}</span>
@@ -42,15 +42,6 @@
                         <p v-if="address" class="text-sm sm:text-base text-gray-600 leading-relaxed pl-0 md:pl-15">
                             {{ address }}
                         </p>
-                    </div>
-
-                    <!-- Direct Google Maps Action -->
-                    <div v-if="directGmapsUrl" class="shrink-0 pl-0 md:pl-0">
-                        <a :href="directGmapsUrl" target="_blank" rel="noopener noreferrer"
-                            class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-navy text-white text-xs sm:text-sm font-bold hover:bg-navy/90 hover:shadow-md transition-all">
-                            <Icon icon="ph:arrow-square-out-bold" class="text-base text-primary" />
-                            <span>{{ t('event_venue.open_gmaps', 'Buka di Google Maps') }}</span>
-                        </a>
                     </div>
                 </div>
 
@@ -75,7 +66,7 @@
 <script setup>
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
-import { extractGmapsEmbedUrl, getDirectGmapsUrl } from '~/utils/maps'
+import { extractGmapsEmbedUrl } from '~/utils/maps'
 
 const { t } = useI18n()
 
@@ -98,10 +89,6 @@ const isLocationEmpty = computed(() => {
 const gmapsEmbedUrl = computed(() => {
     if (props.gmapsEmbed) return props.gmapsEmbed
     return extractGmapsEmbedUrl(props.gmapsLink, [props.venue, props.address].filter(Boolean).join(', '))
-})
-
-const directGmapsUrl = computed(() => {
-    return getDirectGmapsUrl(props.gmapsLink, props.venue, props.address)
 })
 
 const getAccessibilityIcon = (option) => {

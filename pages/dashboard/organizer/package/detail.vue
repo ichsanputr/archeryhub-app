@@ -4,14 +4,14 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from '#app'
 import { usePayment } from '~/composables/usePayment'
 import { useAuth } from '~/composables/useAuth'
-import useDashboardI18n from '~/composables/useDashboardI18n'
+import { useI18n } from 'vue-i18n'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
-const { t } = useDashboardI18n()
-useHead({ title: computed(() => t('package_detail.page_title', 'Detail Invoice Pembayaran') + ' - Archeris Dashboard') })
+const { t, locale } = useI18n()
+useHead({ title: computed(() => t('package_detail.page_title') + ' - Archeris Dashboard') })
 
 const route = useRoute()
 const payment = usePayment()
@@ -43,25 +43,25 @@ const statusBadgeClasses = computed(() => {
 })
 
 function formatStatus(status: string) {
-  if (!status) return t('package_detail.status_pending', 'Menunggu Pembayaran')
+  if (!status) return t('package_detail.status_pending')
   const s = status.toLowerCase()
-  if (s === 'paid') return t('package_detail.status_paid', 'Lunas')
-  if (s === 'pending') return t('package_detail.status_pending', 'Menunggu Pembayaran')
-  if (s === 'expired') return t('package_detail.status_expired', 'Kadaluwarsa')
-  if (s === 'failed') return t('package_detail.status_failed', 'Gagal')
+  if (s === 'paid') return t('package_detail.status_paid')
+  if (s === 'pending') return t('package_detail.status_pending')
+  if (s === 'expired') return t('package_detail.status_expired')
+  if (s === 'failed') return t('package_detail.status_failed')
   return status
 }
 
 function formatPaymentMethodName(method: string) {
-  if (!method) return t('package_detail.method_mayar', 'Mayar (QRIS, VA, E-Wallet)')
+  if (!method) return t('package_detail.method_mayar')
   const m = method.toUpperCase()
-  if (m === 'MAYAR') return t('package_detail.method_mayar', 'Mayar (QRIS, VA, E-Wallet)')
-  if (m === 'QRIS') return t('package_detail.method_qris_full', 'QRIS (Semua E-Wallet)')
-  if (m === 'MYBCAVA' || m === 'BCAVA' || m === 'BCA') return t('package_detail.method_bca_va', 'BCA Virtual Account')
-  if (m === 'BRIVA' || m === 'BRI') return t('package_detail.method_bri_va', 'BRI Virtual Account')
-  if (m === 'MANDIRIVA' || m === 'MANDIRI') return t('package_detail.method_mandiri_va', 'Mandiri Virtual Account')
-  if (m === 'BNIVA' || m === 'BNI') return t('package_detail.method_bni_va', 'BNI Virtual Account')
-  if (m === 'PERMATAVA' || m === 'PERMATA') return t('package_detail.method_permata_va', 'Permata Virtual Account')
+  if (m === 'MAYAR') return t('package_detail.method_mayar')
+  if (m === 'QRIS') return t('package_detail.method_qris_full')
+  if (m === 'MYBCAVA' || m === 'BCAVA' || m === 'BCA') return t('package_detail.method_bca_va')
+  if (m === 'BRIVA' || m === 'BRI') return t('package_detail.method_bri_va')
+  if (m === 'MANDIRIVA' || m === 'MANDIRI') return t('package_detail.method_mandiri_va')
+  if (m === 'BNIVA' || m === 'BNI') return t('package_detail.method_bni_va')
+  if (m === 'PERMATAVA' || m === 'PERMATA') return t('package_detail.method_permata_va')
   return method
 }
 
@@ -129,7 +129,7 @@ const activeGroupSteps = computed(() => {
 
 async function loadDetails() {
   if (!reference.value) {
-    errorMsg.value = t('package_detail.id_missing', 'ID Transaksi tidak ditemukan.')
+    errorMsg.value = t('package_detail.id_missing')
     isLoading.value = false
     return
   }
@@ -140,10 +140,10 @@ async function loadDetails() {
     if (res) {
       tx.value = res
     } else {
-      errorMsg.value = t('package_detail.tx_not_found', 'Transaksi dengan referensi tersebut tidak ditemukan.')
+      errorMsg.value = t('package_detail.tx_not_found')
     }
   } catch (err: any) {
-    errorMsg.value = err?.data?.error || t('package_detail.load_failed', 'Gagal memuat status pembayaran.')
+    errorMsg.value = err?.data?.error || t('package_detail.load_failed')
   } finally {
     isLoading.value = false
   }
@@ -186,11 +186,11 @@ onUnmounted(() => {
     <!-- ── 1. Standard Dashboard Header (Hidden on Print) ── -->
     <DashboardHeader
       class="print:hidden"
-      :title="t('package_detail.page_title', 'Detail Invoice Pembayaran')"
-      :subtitle="`${t('package_detail.invoice_number', 'Nomor Invoice')}: ${tx.reference || reference}`"
+      :title="t('package_detail.page_title')"
+      :subtitle="`${t('package_detail.invoice_number')}: ${tx.reference || reference}`"
       icon="ph:receipt-bold"
       :breadcrumbs="[
-        { label: t('package_detail.breadcrumb_package', 'Paket & Kuota'), to: '/dashboard/organizer/package' },
+        { label: t('package_detail.breadcrumb_package'), to: '/dashboard/organizer/package' },
         { label: `Invoice #${tx.reference || reference}` }
       ]"
     >
@@ -200,7 +200,7 @@ onUnmounted(() => {
           @click="printInvoice"
           class="h-10 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer">
           <Icon icon="ph:printer-bold" class="text-sm" />
-          <span>{{ t('package_detail.btn_print', 'Cetak Invoice') }}</span>
+          <span>{{ t('package_detail.btn_print') }}</span>
         </button>
 
 
@@ -210,7 +210,7 @@ onUnmounted(() => {
     <!-- ── 2. Loading State ── -->
     <div v-if="isLoading" class="w-full bg-white rounded-3xl border border-gray-100 p-16 text-center shadow-xs print:hidden">
       <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-3 mx-auto" />
-      <div class="text-slate-600 font-bold text-sm">{{ t('package_detail.loading', 'Memuat Rincian Transaksi...') }}</div>
+      <div class="text-slate-600 font-bold text-sm">{{ t('package_detail.loading') }}</div>
     </div>
 
     <!-- ── 3. Error State ── -->
@@ -218,10 +218,10 @@ onUnmounted(() => {
       <div class="size-14 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center mx-auto border border-rose-100">
         <Icon icon="ph:warning-circle-bold" class="text-3xl" />
       </div>
-      <h2 class="text-base font-black text-navy">{{ t('package_detail.not_found_title', 'Transaksi Tidak Ditemukan') }}</h2>
+      <h2 class="text-base font-black text-navy">{{ t('package_detail.not_found_title') }}</h2>
       <div class="text-slate-500 text-xs font-medium max-w-md mx-auto">{{ errorMsg }}</div>
       <NuxtLink to="/dashboard/organizer/package" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-navy text-white text-xs font-bold">
-        {{ t('package_detail.btn_back_to_packages', 'Kembali ke Manajemen Paket') }}
+        {{ t('package_detail.btn_back_to_packages') }}
       </NuxtLink>
     </div>
 
@@ -238,13 +238,13 @@ onUnmounted(() => {
           <div class="space-y-1">
             <div class="flex items-center gap-2">
               <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black capitalize tracking-wider bg-emerald-100 text-emerald-800">
-                {{ t('package_detail.paid_badge', 'Lunas / Terverifikasi') }}
+                {{ t('package_detail.paid_badge') }}
               </span>
               <span class="text-xs text-slate-400 font-semibold">{{ formatDate(tx.purchased_at || tx.created_at) }}</span>
             </div>
-            <div class="text-base sm:text-lg font-black text-navy">{{ t('package_detail.paid_title', 'Pembayaran Berhasil & Terverifikasi') }}</div>
+            <div class="text-base sm:text-lg font-black text-navy">{{ t('package_detail.paid_title') }}</div>
             <div class="text-xs text-slate-500 font-medium">
-              {{ t('package_detail.paid_desc', 'Kuota turnamen panahan Anda telah aktif secara instan dan dapat langsung digunakan untuk membuka event baru.') }}
+              {{ t('package_detail.paid_desc') }}
             </div>
           </div>
         </div>
@@ -259,13 +259,13 @@ onUnmounted(() => {
               <Icon icon="ph:clock-bold" class="text-xl" />
             </div>
             <div>
-              <div class="text-xs font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.status_label', 'Status Pembayaran') }}</div>
-              <div class="text-base font-black text-navy">{{ t('package_detail.awaiting_payment', 'Menunggu Pembayaran Online') }}</div>
+              <div class="text-xs font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.status_label') }}</div>
+              <div class="text-base font-black text-navy">{{ t('package_detail.awaiting_payment') }}</div>
             </div>
           </div>
           <div v-if="tx.expiry_date" class="px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200/70 text-amber-900 text-xs font-bold flex items-center gap-1.5 w-fit">
             <Icon icon="ph:hourglass-medium-bold" class="text-sm text-amber-600" />
-            <span>{{ t('package_detail.pay_before', 'Bayar Sebelum') }}: {{ formatExpiry(tx.expiry_date) }}</span>
+            <span>{{ t('package_detail.pay_before') }}: {{ formatExpiry(tx.expiry_date) }}</span>
           </div>
         </div>
 
@@ -276,14 +276,14 @@ onUnmounted(() => {
             <div class="space-y-1">
               <div class="text-sm sm:text-base font-black text-navy flex items-center gap-2">
                 <Icon icon="logos:paypal" class="text-xl" />
-                <span>{{ t('package_detail.pay_via_paypal_title', 'Selesaikan Pembayaran via PayPal') }}</span>
+                <span>{{ t('package_detail.pay_via_paypal_title') }}</span>
               </div>
               <div class="text-xs text-slate-600 font-medium leading-relaxed max-w-lg">
-                {{ t('package_detail.pay_via_paypal_desc', 'Bayar secara aman menggunakan Saldo PayPal atau Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX, Discover). Transaksi diproses dalam mata uang USD.') }}
+                {{ t('package_detail.pay_via_paypal_desc') }}
               </div>
             </div>
             <div class="sm:text-right shrink-0">
-              <span class="text-[10px] font-bold text-slate-400 capitalize tracking-wider block">{{ t('package_detail.total_paid', 'Total Tagihan') }}</span>
+              <span class="text-[10px] font-bold text-slate-400 capitalize tracking-wider block">{{ t('package_detail.total_paid') }}</span>
               <span class="text-xl sm:text-2xl font-black text-navy tabular-nums">
                 {{ formatTxAmount(tx.total_amount || tx.amount || 0) }}
                 <span v-if="!isTxUSD" class="text-xs font-mono font-bold text-blue-600 block">
@@ -296,11 +296,11 @@ onUnmounted(() => {
           <a v-if="tx.checkout_url" :href="tx.checkout_url" target="_blank" rel="noopener noreferrer"
             class="w-full py-4 px-6 bg-[#0070ba] hover:bg-[#005ea6] text-white rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md transition-all cursor-pointer">
             <Icon icon="logos:paypal" class="text-xl" />
-            <span>{{ t('package_detail.btn_pay_now_paypal', 'Bayar Sekarang di PayPal') }}</span>
+            <span>{{ t('package_detail.btn_pay_now_paypal') }}</span>
           </a>
 
           <div class="pt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-600 font-semibold">
-            <span class="text-slate-400">{{ t('package_detail.available_methods_label', 'Metode Tersedia:') }}</span>
+            <span class="text-slate-400">{{ t('package_detail.available_methods_label') }}</span>
             <span class="px-2.5 py-0.5 rounded-lg bg-white border border-blue-200/80 font-bold text-slate-800 shadow-2xs">Saldo PayPal</span>
             <span class="px-2.5 py-0.5 rounded-lg bg-white border border-blue-200/80 font-bold text-slate-800 shadow-2xs">Visa</span>
             <span class="px-2.5 py-0.5 rounded-lg bg-white border border-blue-200/80 font-bold text-slate-800 shadow-2xs">Mastercard</span>
@@ -315,14 +315,14 @@ onUnmounted(() => {
             <div class="space-y-1">
               <div class="text-sm sm:text-base font-black text-navy flex items-center gap-2">
                 <Icon icon="ph:shield-check-fill" class="text-primary text-lg" />
-                <span>{{ t('package_detail.pay_via_mayar_title', 'Selesaikan Pembayaran via Mayar') }}</span>
+                <span>{{ t('package_detail.pay_via_mayar_title') }}</span>
               </div>
               <div class="text-xs text-slate-600 font-medium leading-relaxed max-w-lg">
-                {{ t('package_detail.pay_via_mayar_desc', 'Bayar secara aman menggunakan QRIS (BCA, Mandiri, BRI, BNI, GoPay, OVO, DANA, ShopeePay) atau Virtual Account resmi.') }}
+                {{ t('package_detail.pay_via_mayar_desc') }}
               </div>
             </div>
             <div class="sm:text-right shrink-0">
-              <span class="text-[10px] font-bold text-slate-400 capitalize tracking-wider block">{{ t('package_detail.total_paid', 'Total Tagihan') }}</span>
+              <span class="text-[10px] font-bold text-slate-400 capitalize tracking-wider block">{{ t('package_detail.total_paid') }}</span>
               <span class="text-xl sm:text-2xl font-black text-navy tabular-nums">{{ formatTxAmount(tx.total_amount || tx.amount || 0) }}</span>
             </div>
           </div>
@@ -331,13 +331,13 @@ onUnmounted(() => {
           <a v-if="tx.checkout_url" :href="tx.checkout_url" target="_blank" rel="noopener noreferrer"
             class="w-full py-4 px-6 bg-primary hover:bg-primary-hover text-navy rounded-xl font-black text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md shadow-primary/20 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer">
             <Icon icon="ph:arrow-square-out-bold" class="text-xl" />
-            <span>{{ t('package_detail.btn_pay_now', 'Bayar Sekarang di Mayar') }}</span>
+            <span>{{ t('package_detail.btn_pay_now') }}</span>
           </a>
 
           <!-- Supported Payment Methods -->
           <div class="pt-2 flex flex-wrap items-center gap-2 text-[11px] text-slate-600 font-semibold">
-            <span class="text-slate-400">{{ t('package_detail.available_methods', 'Metode Tersedia') }}:</span>
-            <span class="px-2.5 py-0.5 rounded-lg bg-white border border-amber-200/80 font-bold text-slate-800 shadow-2xs">{{ t('package_detail.method_qris', 'QRIS (Semua E-Wallet)') }}</span>
+            <span class="text-slate-400">{{ t('package_detail.available_methods') }}:</span>
+            <span class="px-2.5 py-0.5 rounded-lg bg-white border border-amber-200/80 font-bold text-slate-800 shadow-2xs">{{ t('package_detail.method_qris') }}</span>
             <span class="px-2.5 py-0.5 rounded-lg bg-white border border-amber-200/80 font-bold text-slate-800 shadow-2xs">BCA VA</span>
             <span class="px-2.5 py-0.5 rounded-lg bg-white border border-amber-200/80 font-bold text-slate-800 shadow-2xs">Mandiri VA</span>
             <span class="px-2.5 py-0.5 rounded-lg bg-white border border-amber-200/80 font-bold text-slate-800 shadow-2xs">BRI VA</span>
@@ -353,19 +353,19 @@ onUnmounted(() => {
         <!-- Invoice Metadata Header -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pb-6 border-b border-gray-100 text-xs">
           <div class="space-y-1">
-            <span class="text-slate-400 font-bold block">{{ t('package_detail.invoice_number', 'Nomor Invoice') }}</span>
+            <span class="text-slate-400 font-bold block">{{ t('package_detail.invoice_number') }}</span>
             <span class="font-mono font-black text-navy truncate block select-all">{{ tx.reference || reference }}</span>
           </div>
           <div class="space-y-1">
-            <span class="text-slate-400 font-bold block">{{ t('package_detail.purchase_time', 'Waktu Pembelian') }}</span>
+            <span class="text-slate-400 font-bold block">{{ t('package_detail.purchase_time') }}</span>
             <span class="font-bold text-navy block">{{ formatDate(tx.purchased_at || tx.created_at) }}</span>
           </div>
           <div class="space-y-1">
-            <span class="text-slate-400 font-bold block">{{ t('package_detail.method_label', 'Metode') }}</span>
+            <span class="text-slate-400 font-bold block">{{ t('package_detail.method_label') }}</span>
             <span class="font-bold text-navy block capitalize">{{ formatPaymentMethodName(tx.payment_method) }}</span>
           </div>
           <div class="space-y-1">
-            <span class="text-slate-400 font-bold block">{{ t('package_detail.status', 'Status') }}</span>
+            <span class="text-slate-400 font-bold block">{{ t('package_detail.status') }}</span>
             <span :class="statusBadgeClasses" class="px-2.5 py-0.5 rounded-lg text-[10px] font-black capitalize border shadow-2xs inline-block">
               {{ formatStatus(tx.status || tx.payment_status) }}
             </span>
@@ -377,7 +377,7 @@ onUnmounted(() => {
           <div class="flex items-center justify-between">
             <h3 class="text-sm font-black text-navy flex items-center gap-2">
               <Icon icon="ph:list-dashes-bold" class="text-primary text-base" />
-              <span>{{ t('package_detail.item_details', 'Rincian Layanan & Kuota') }}</span>
+              <span>{{ t('package_detail.item_details') }}</span>
             </h3>
             <span class="text-xs font-bold text-slate-400">{{ t('package_detail.item_count', { count: 1 }) }}</span>
           </div>
@@ -386,20 +386,20 @@ onUnmounted(() => {
             <table class="w-full text-left text-xs min-w-[480px]">
               <thead class="bg-slate-50 text-slate-500 font-bold border-b border-gray-100">
                 <tr>
-                  <th class="py-3 px-4">{{ t('package_detail.col_item', 'Deskripsi Layanan') }}</th>
-                  <th class="py-3 px-4 text-center">{{ t('package_detail.col_qty', 'Jumlah') }}</th>
-                  <th class="py-3 px-4 text-right">{{ t('package_detail.col_unit_price', 'Harga Satuan') }}</th>
-                  <th class="py-3 px-4 text-right">{{ t('package_detail.col_subtotal', 'Subtotal') }}</th>
+                  <th class="py-3 px-4">{{ t('package_detail.col_item') }}</th>
+                  <th class="py-3 px-4 text-center">{{ t('package_detail.col_qty') }}</th>
+                  <th class="py-3 px-4 text-right">{{ t('package_detail.col_unit_price') }}</th>
+                  <th class="py-3 px-4 text-right">{{ t('package_detail.col_subtotal') }}</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100 font-medium">
                 <tr>
                   <td class="py-4 px-4">
                     <div class="font-black text-navy text-xs sm:text-sm">{{ tx.plan_name || 'Paket Kuota Event' }}</div>
-                    <div class="text-[11px] text-slate-400 mt-0.5">{{ t('package_detail.quota_note', 'Aktivasi turnamen resmi panahan, OBS scoring overlay, dan live streaming ranking') }}</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">{{ t('package_detail.quota_note') }}</div>
                   </td>
                   <td class="py-4 px-4 text-center font-black text-navy">
-                    {{ tx.quantity || 1 }} {{ t('package_detail.event_unit', 'Event') }}
+                    {{ tx.quantity || 1 }} {{ t('package_detail.event_unit') }}
                   </td>
                   <td class="py-4 px-4 text-right font-bold text-slate-600">
                     {{ formatTxAmount((tx.total_amount || tx.amount || 0) / (tx.quantity || 1)) }}
@@ -415,22 +415,22 @@ onUnmounted(() => {
           <!-- Total Calculation Breakdown -->
           <div class="pt-3 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
             <div class="text-xs text-slate-400 space-y-1">
-              <div>{{ t('package_detail.official_receipt_note', 'Kuitansi resmi diterbitkan oleh Archeris.net') }}</div>
-              <div class="text-[11px] text-slate-400">{{ t('package_detail.tax_note', 'Pajak sudah termasuk dalam total pembayaran (PPN 0%)') }}</div>
+              <div>{{ t('package_detail.official_receipt_note') }}</div>
+              <div class="text-[11px] text-slate-400">{{ t('package_detail.tax_note') }}</div>
             </div>
 
             <div class="w-full sm:w-64 space-y-2 text-xs">
               <div class="flex justify-between text-slate-500">
-                <span>{{ t('package_detail.col_subtotal', 'Subtotal') }}</span>
+                <span>{{ t('package_detail.col_subtotal') }}</span>
                 <span class="font-bold text-navy">{{ formatTxAmount(tx.total_amount || tx.amount || 0) }}</span>
               </div>
               <div class="flex justify-between text-slate-500">
-                <span>{{ t('package_detail.admin_fee', 'Biaya Layanan Payment') }}</span>
-                <span class="font-bold text-emerald-600">{{ isTxUSD ? '$0.00' : t('package_detail.free', 'Gratis (Rp 0)') }}</span>
+                <span>{{ t('package_detail.admin_fee') }}</span>
+                <span class="font-bold text-emerald-600">{{ isTxUSD ? '$0.00' : t('package_detail.free') }}</span>
               </div>
               <div class="h-px bg-slate-100 my-1"></div>
               <div class="flex justify-between items-baseline">
-                <span class="text-xs font-black text-navy">{{ t('package_detail.total_payment', 'Total Pembayaran') }}</span>
+                <span class="text-xs font-black text-navy">{{ t('package_detail.total_payment') }}</span>
                 <span class="text-lg sm:text-xl font-black text-navy tabular-nums">
                   {{ formatTxAmount(tx.total_amount || tx.amount || 0) }}
                 </span>
@@ -443,7 +443,7 @@ onUnmounted(() => {
         <div v-if="isPending && instructionGroups.length > 0" class="border-t border-gray-100 pt-6 space-y-4">
           <h4 class="text-sm font-black text-navy flex items-center gap-2">
             <Icon icon="ph:info-bold" class="text-primary text-base" />
-            <span>{{ t('package_detail.instructions_title', 'Petunjuk Cara Pembayaran') }}</span>
+            <span>{{ t('package_detail.instructions_title') }}</span>
           </h4>
 
           <div class="flex flex-wrap gap-2">
@@ -467,7 +467,7 @@ onUnmounted(() => {
         <div class="border-t border-gray-100 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="flex items-center gap-2 text-xs text-slate-400">
             <Icon icon="ph:shield-check-bold" class="text-emerald-500 text-base" />
-            <span>{{ t('package_detail.security_title', 'Jaminan Pembayaran Aman') }} (Mayar SSL 256-bit)</span>
+            <span>{{ t('package_detail.security_title') }} (Mayar SSL 256-bit)</span>
           </div>
 
           <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
@@ -475,7 +475,7 @@ onUnmounted(() => {
 
             <NuxtLink to="/dashboard/organizer/package"
               class="px-4 py-2.5 rounded-xl bg-navy hover:bg-navy-dark text-white text-xs font-bold transition-all flex items-center gap-1.5 w-full sm:w-auto justify-center shadow-xs">
-              <span>{{ t('package_detail.btn_back', 'Kembali ke Paket') }}</span>
+              <span>{{ t('package_detail.btn_back') }}</span>
             </NuxtLink>
           </div>
         </div>
@@ -491,19 +491,19 @@ onUnmounted(() => {
       <div class="flex justify-between items-start border-b-2 border-slate-900 pb-5 mb-6">
         <div>
           <div class="text-2xl font-black text-slate-900 tracking-tight">Archeris.net</div>
-          <div class="text-xs text-slate-700 font-bold mt-1">{{ t('package_detail.company_name', 'PT. Archeris Teknologi Indonesia') }}</div>
-          <div class="text-[11px] text-slate-500">{{ t('package_detail.platform_subtitle', 'Platform Manajemen Turnamen Panahan Digital') }}</div>
-          <div class="text-[11px] text-slate-400">{{ t('package_detail.location_info', 'Jakarta, Indonesia | info@archeris.net') }}</div>
+          <div class="text-xs text-slate-700 font-bold mt-1">{{ t('package_detail.company_name') }}</div>
+          <div class="text-[11px] text-slate-500">{{ t('package_detail.platform_subtitle') }}</div>
+          <div class="text-[11px] text-slate-400">{{ t('package_detail.location_info') }}</div>
         </div>
 
         <div class="text-right">
-          <div class="text-2xl font-black tracking-widest text-slate-900">{{ t('package_detail.invoice_label', 'INVOICE') }}</div>
-          <div class="font-mono text-xs font-bold text-slate-700 mt-1">{{ t('package_detail.invoice_no_prefix', 'No:') }} {{ tx.reference || reference }}</div>
-          <div class="text-xs text-slate-500 mt-0.5">{{ t('package_detail.date_label', 'Tanggal') }}: {{ formatDate(tx.purchased_at || tx.created_at) }}</div>
+          <div class="text-2xl font-black tracking-widest text-slate-900">{{ t('package_detail.invoice_label') }}</div>
+          <div class="font-mono text-xs font-bold text-slate-700 mt-1">{{ t('package_detail.invoice_no_prefix') }} {{ tx.reference || reference }}</div>
+          <div class="text-xs text-slate-500 mt-0.5">{{ t('package_detail.date_label') }}: {{ formatDate(tx.purchased_at || tx.created_at) }}</div>
           <div class="mt-2">
             <span class="inline-block px-3 py-1 rounded-md text-[11px] font-black border"
               :class="isPaid ? 'bg-emerald-50 text-emerald-900 border-emerald-300' : 'bg-amber-50 text-amber-900 border-amber-300'">
-              {{ isPaid ? t('package_detail.status_paid', 'Lunas / Paid') : t('package_detail.status_pending', 'Menunggu Pembayaran / Unpaid') }}
+              {{ isPaid ? t('package_detail.status_paid') : t('package_detail.status_pending') }}
             </span>
           </div>
         </div>
@@ -512,17 +512,17 @@ onUnmounted(() => {
       <!-- Bill-To / Publisher Information -->
       <div class="grid grid-cols-2 gap-8 mb-6 text-xs">
         <div class="space-y-1">
-          <div class="text-[10px] font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.issued_by', 'Diterbitkan Oleh:') }}</div>
-          <div class="font-black text-slate-900">{{ t('package_detail.billing_dept', 'Archeris.net Billing Department') }}</div>
-          <div class="text-slate-600">{{ t('package_detail.company_name', 'PT. Archeris Teknologi Indonesia') }}</div>
+          <div class="text-[10px] font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.issued_by') }}</div>
+          <div class="font-black text-slate-900">{{ t('package_detail.billing_dept') }}</div>
+          <div class="text-slate-600">{{ t('package_detail.company_name') }}</div>
           <div class="text-slate-400">https://archeris.net</div>
         </div>
 
         <div class="space-y-1">
-          <div class="text-[10px] font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.billed_to', 'Ditagihkan Kepada:') }}</div>
-          <div class="font-black text-slate-900">{{ organizerProfile?.name || tx.organizer_name || t('package_detail.default_organizer', 'Penyelenggara Event') }}</div>
+          <div class="text-[10px] font-bold text-slate-400 capitalize tracking-wider">{{ t('package_detail.billed_to') }}</div>
+          <div class="font-black text-slate-900">{{ organizerProfile?.name || tx.organizer_name || t('package_detail.default_organizer') }}</div>
           <div class="text-slate-600">{{ organizerProfile?.email || tx.organizer_email || '-' }}</div>
-          <div class="text-slate-400">{{ t('package_detail.official_organizer_role', 'Penyelenggara Resmi Archeris.net') }}</div>
+          <div class="text-slate-400">{{ t('package_detail.official_organizer_role') }}</div>
         </div>
       </div>
 
@@ -530,11 +530,11 @@ onUnmounted(() => {
       <table class="w-full text-left text-xs mb-6 border-collapse">
         <thead>
           <tr class="border-y border-slate-300 text-slate-700 font-black bg-slate-50">
-            <th class="py-2.5 px-3 w-10">{{ t('package_detail.col_no', 'No') }}</th>
-            <th class="py-2.5 px-3">{{ t('package_detail.col_item', 'Deskripsi Layanan') }}</th>
-            <th class="py-2.5 px-3 text-center w-24">{{ t('package_detail.col_qty', 'Jumlah') }}</th>
-            <th class="py-2.5 px-3 text-right w-32">{{ t('package_detail.col_unit_price', 'Harga Satuan') }}</th>
-            <th class="py-2.5 px-3 text-right w-36">{{ isTxUSD ? 'Total (USD)' : t('package_detail.col_total_idr', 'Total (IDR)') }}</th>
+            <th class="py-2.5 px-3 w-10">{{ t('package_detail.col_no') }}</th>
+            <th class="py-2.5 px-3">{{ t('package_detail.col_item') }}</th>
+            <th class="py-2.5 px-3 text-center w-24">{{ t('package_detail.col_qty') }}</th>
+            <th class="py-2.5 px-3 text-right w-32">{{ t('package_detail.col_unit_price') }}</th>
+            <th class="py-2.5 px-3 text-right w-36">{{ isTxUSD ? 'Total (USD)' : t('package_detail.col_total_idr') }}</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-200">
@@ -542,9 +542,9 @@ onUnmounted(() => {
             <td class="py-3.5 px-3 text-slate-400 font-medium">1</td>
             <td class="py-3.5 px-3">
               <div class="font-bold text-slate-900">{{ tx.plan_name || 'Paket Kuota Event' }}</div>
-              <div class="text-[10px] text-slate-500 mt-0.5">{{ t('package_detail.quota_note', 'Aktivasi turnamen resmi, OBS overlay, dan scoring live') }}</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">{{ t('package_detail.quota_note') }}</div>
             </td>
-            <td class="py-3.5 px-3 text-center font-semibold text-slate-800">{{ tx.quantity || 1 }} {{ t('package_detail.event_unit', 'Event') }}</td>
+            <td class="py-3.5 px-3 text-center font-semibold text-slate-800">{{ tx.quantity || 1 }} {{ t('package_detail.event_unit') }}</td>
             <td class="py-3.5 px-3 text-right text-slate-700 font-medium">{{ formatTxAmount((tx.total_amount || tx.amount || 0) / (tx.quantity || 1)) }}</td>
             <td class="py-3.5 px-3 text-right font-black text-slate-900">{{ formatTxAmount(tx.total_amount || tx.amount || 0) }}</td>
           </tr>
@@ -554,22 +554,22 @@ onUnmounted(() => {
       <!-- Totals & Payment Summary -->
       <div class="flex justify-between items-start border-t border-slate-300 pt-4 mb-6 text-xs">
         <div class="space-y-1 text-slate-600 max-w-xs">
-          <div class="font-black text-slate-900">{{ t('package_detail.payment_info_title', 'Informasi Pembayaran:') }}</div>
-          <div>{{ t('package_detail.method_label', 'Metode') }}: {{ formatPaymentMethodName(tx.payment_method) }}</div>
-          <div>{{ t('package_detail.status', 'Status') }}: {{ isPaid ? t('package_detail.status_paid', 'Lunas (Terverifikasi Sistem)') : t('package_detail.status_pending', 'Menunggu Pembayaran') }}</div>
+          <div class="font-black text-slate-900">{{ t('package_detail.payment_info_title') }}</div>
+          <div>{{ t('package_detail.method_label') }}: {{ formatPaymentMethodName(tx.payment_method) }}</div>
+          <div>{{ t('package_detail.status') }}: {{ isPaid ? t('package_detail.status_paid') : t('package_detail.status_pending') }}</div>
         </div>
 
         <div class="w-64 space-y-1.5 text-right">
           <div class="flex justify-between text-slate-600">
-            <span>{{ t('package_detail.col_subtotal', 'Subtotal') }}:</span>
+            <span>{{ t('package_detail.col_subtotal') }}:</span>
             <span class="font-semibold text-slate-900">{{ formatTxAmount(tx.total_amount || tx.amount || 0) }}</span>
           </div>
           <div class="flex justify-between text-slate-600">
-            <span>{{ t('package_detail.admin_fee', 'Biaya Layanan') }}:</span>
-            <span class="font-semibold text-emerald-700">{{ isTxUSD ? '$0.00' : t('package_detail.free', 'Rp 0') }}</span>
+            <span>{{ t('package_detail.admin_fee') }}:</span>
+            <span class="font-semibold text-emerald-700">{{ isTxUSD ? '$0.00' : t('package_detail.free') }}</span>
           </div>
           <div class="border-t border-slate-300 pt-2 flex justify-between text-sm font-black text-slate-900">
-            <span>{{ t('package_detail.total_payment', 'Total Tagihan') }}:</span>
+            <span>{{ t('package_detail.total_payment') }}:</span>
             <span class="text-base">{{ formatTxAmount(tx.total_amount || tx.amount || 0) }}</span>
           </div>
         </div>
@@ -578,28 +578,28 @@ onUnmounted(() => {
       <!-- Professional Authorization & Terms Footer in Print Mode -->
       <div class="grid grid-cols-2 gap-8 border-t border-slate-200 pt-6 mb-6 text-xs">
         <div class="space-y-1 text-slate-500">
-          <div class="font-bold text-slate-800">{{ t('package_detail.terms_title', 'Ketentuan & Syarat:') }}</div>
-          <div class="text-[10px] leading-relaxed text-slate-600">{{ t('package_detail.terms_desc', '1. Kuitansi ini sah dan diterbitkan secara elektronik oleh sistem Archeris.') }}</div>
-          <div class="text-[10px] leading-relaxed text-slate-600">{{ t('package_detail.terms_desc_2', '2. Kuota turnamen yang telah aktif siap digunakan untuk membuka event baru.') }}</div>
+          <div class="font-bold text-slate-800">{{ t('package_detail.terms_title') }}</div>
+          <div class="text-[10px] leading-relaxed text-slate-600">{{ t('package_detail.terms_desc') }}</div>
+          <div class="text-[10px] leading-relaxed text-slate-600">{{ t('package_detail.terms_desc_2') }}</div>
         </div>
 
         <div class="text-right space-y-1.5 flex flex-col items-end">
-          <div class="text-[10px] text-slate-400 font-semibold">{{ t('package_detail.authorized_by', 'Otorisasi Resmi Digital:') }}</div>
+          <div class="text-[10px] text-slate-400 font-semibold">{{ t('package_detail.authorized_by') }}</div>
           <div class="px-4 py-2 border-2 border-emerald-500/40 rounded-xl bg-emerald-50 text-emerald-800 flex items-center gap-2 text-xs font-black tracking-wider">
             <Icon icon="ph:seal-check-bold" class="text-lg text-emerald-600" />
-            <span>{{ t('package_detail.verified_stamp', 'VERIFIED DIGITAL SEAL') }}</span>
+            <span>{{ t('package_detail.verified_stamp') }}</span>
           </div>
-          <div class="text-[11px] font-bold text-slate-800">{{ t('package_detail.company_name', 'PT. Archeris Teknologi Indonesia') }}</div>
+          <div class="text-[11px] font-bold text-slate-800">{{ t('package_detail.company_name') }}</div>
         </div>
       </div>
 
       <!-- Bottom Minimal PDF / Print Footer -->
       <div class="border-t border-slate-200 pt-3 flex justify-between items-center text-[10px] text-slate-400">
         <div>
-          {{ t('package_detail.official_receipt_note', 'Faktur ini merupakan bukti pembayaran elektronik resmi yang sah dari Archeris.net.') }}
+          {{ t('package_detail.official_receipt_note') }}
         </div>
         <div class="font-bold text-slate-600">
-          {{ t('package_detail.digital_receipt_footer', 'Archeris.net Digital Receipt') }}
+          {{ t('package_detail.digital_receipt_footer') }}
         </div>
       </div>
 

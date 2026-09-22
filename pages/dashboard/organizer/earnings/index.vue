@@ -1,5 +1,5 @@
 <template>
-    <div class="space-y-8">
+    <div class="space-y-6 md:space-y-8 pb-16 font-body text-navy antialiased">
         <!-- Header Section -->
         <DashboardHeader
             :title="t('earnings.title')"
@@ -9,109 +9,105 @@
                 { label: 'Dashboard', to: '/dashboard/organizer' },
                 { label: t('earnings.title') }
             ]"
-        />
+        >
+            <template #actions>
+                <BaseButton variant="white" icon="ph:download-simple-bold" @click="handleExportExcel" :disabled="loading || earningsHistoryData.length === 0" class="h-10 sm:h-11 px-5 text-xs sm:text-sm font-bold">
+                    {{ t('earnings.export_button') }}
+                </BaseButton>
+            </template>
+        </DashboardHeader>
 
-
-        <!-- Earnings Table -->
-        <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
-            <div class="p-6 border-b border-gray-100 flex items-center justify-between">
-                <h3 class="font-black text-navy tracking-widest text-sm">{{ t('earnings.table_header_event') }}</h3>
-                <div class="flex gap-2">
-                    <BaseButton variant="outline" size="xs" icon="ph:download-simple-bold" @click="handleExportExcel" :disabled="loading">{{ t('earnings.export_button', 'Export CSV') }}</BaseButton>
-                </div>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr
-                            class="bg-gray-50/50 text-gray-500 font-bold text-[10px] tracking-widest border-b border-gray-100">
-                            <th @click="toggleSort('eventName')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('earnings.table_header_event') }}</span>
-                                    <Icon v-if="sortBy === 'eventName'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                                </div>
-                            </th>
-                            <th @click="toggleSort('date')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('earnings.table_header_date') }}</span>
-                                    <Icon v-if="sortBy === 'date'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                                </div>
-                            </th>
-                            <th @click="toggleSort('participants')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('earnings.table_header_participants') }}</span>
-                                    <Icon v-if="sortBy === 'participants'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                                </div>
-                            </th>
-                            <th @click="toggleSort('amount')" class="px-6 py-4 text-right cursor-pointer hover:text-navy transition-colors select-none">
-                                <div class="flex items-center justify-end gap-1.5">
-                                    <span>{{ t('earnings.table_header_earnings') }}</span>
-                                    <Icon v-if="sortBy === 'amount'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                                </div>
-                            </th>
-                            <th class="px-6 py-4 text-center">{{ t('earnings.table_header_actions') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr v-if="loading">
-                            <td colspan="5" class="px-6 py-20 text-center">
-                                <div class="flex flex-col items-center justify-center gap-3">
-                                    <div class="h-10 w-10 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
-                                    <div class="text-xs text-gray-400 font-medium">{{ t('earnings.loading', 'Memuat data pendapatan...') }}</div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr v-else-if="!loading && earningsHistory.length === 0">
-                            <td colspan="5" class="px-6 py-20 text-center">
-                                <div class="flex flex-col items-center justify-center gap-3 max-w-sm mx-auto">
-                                    <div class="size-16 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-300">
-                                        <Icon icon="ph:receipt-x" class="text-4xl text-gray-300" />
-                                    </div>
-                                    <div class="space-y-1">
-                                        <div class="text-base font-bold text-navy">{{ t('earnings.empty_title', 'Belum Ada Pendapatan') }}</div>
-                                        <div class="text-xs text-gray-500 font-medium leading-relaxed">
-                                            {{ t('earnings.empty_desc', 'Riwayat pendapatan dan penjualan tiket dari event yang Anda selenggarakan akan ditampilkan di sini.') }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr v-else v-for="item in earningsHistory" :key="item.id"
-                            class="hover:bg-gray-50 transition-colors group">
-                            <td class="px-6 py-4">
-                                <div class="font-bold text-navy group-hover:underline transition-colors">{{
-                                    item.eventName
-                                    }}</div>
-                                <div class="text-[10px] text-gray-400 font-medium">{{ item.category }}</div>
-                            </td>
-                            <td class="px-6 py-4 text-sm text-gray-600 font-medium">
-                                {{ formatItemDate(item.date) }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 bg-navy/5 text-navy text-[10px] font-black rounded-lg">{{
-                                    item.participants
-                                    }} {{ t('earnings.participants_label') }}</span>
-                            </td>
-                            <td class="px-6 py-4 text-right font-bold text-navy">
-                                Rp {{ item.amount.toLocaleString('id-ID') }}
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                <NuxtLink :to="`/dashboard/organizer/earnings/${item.id}`">
-                                    <button
-                                        class="p-2 hover:bg-slate-100 rounded-lg text-slate-500 hover:text-navy transition-colors">
-                                        <Icon icon="ph:eye-bold" class="text-lg" />
-                                    </button>
-                                </NuxtLink>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <!-- KPI Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            <StatCard
+                :title="t('earnings.stats_total')"
+                :value="'Rp ' + (totalEarningsAmount || 0).toLocaleString('id-ID')"
+                icon="ph:wallet-bold"
+                color="primary"
+                :description="t('earnings.stats_total_desc')"
+                description-icon="ph:coins-bold"
+            />
+            <StatCard
+                :title="t('earnings.stats_monthly')"
+                :value="'Rp ' + (monthlyEarnings || 0).toLocaleString('id-ID')"
+                icon="ph:trend-up-bold"
+                color="primary"
+                :description="t('earnings.stats_monthly_desc')"
+                description-icon="ph:calendar-check-bold"
+            />
+            <StatCard
+                :title="t('earnings.stats_archers')"
+                :value="totalParticipantsCount"
+                icon="ph:users-three-bold"
+                color="primary"
+                :description="t('earnings.stats_archers_desc')"
+                description-icon="ph:user-circle-check-bold"
+            />
+            <StatCard
+                :title="t('earnings.stats_completed_events')"
+                :value="earningsHistoryData.length"
+                icon="ph:trophy-bold"
+                color="primary"
+                :description="t('earnings.stats_completed_desc')"
+                description-icon="ph:check-circle-bold"
+            />
         </div>
+
+        <!-- Unified DashboardDataTable -->
+        <DashboardDataTable
+            :items="earningsHistoryData"
+            :columns="tableColumns"
+            :loading="loading"
+            :searchable="true"
+            :search-placeholder="t('earnings.search_placeholder') || 'Cari event turnamen...'"
+            count-icon="ph:receipt-bold"
+            :count-unit="t('earnings.events_unit')"
+            :empty-title="t('earnings.empty_title')"
+            :empty-description="t('earnings.empty_desc')"
+            empty-icon="ph:receipt-x"
+        >
+            <!-- Event Column Slot -->
+            <template #item-event="{ item }">
+                <div class="space-y-0.5">
+                    <div class="font-bold text-xs sm:text-sm text-navy hover:text-primary transition-colors leading-tight">
+                        {{ item.eventName }}
+                    </div>
+                    <div class="text-xs text-slate-400 font-medium">{{ item.category }}</div>
+                </div>
+            </template>
+
+            <!-- Date Column Slot -->
+            <template #item-date="{ item }">
+                <span class="text-xs sm:text-sm text-slate-600 font-medium whitespace-nowrap">
+                    {{ formatItemDate(item.date) }}
+                </span>
+            </template>
+
+            <!-- Participants Column Slot -->
+            <template #item-participants="{ item }">
+                <div class="flex justify-center">
+                    <span class="px-2.5 py-1 bg-navy/5 text-navy text-xs font-black rounded-lg border border-navy/10 whitespace-nowrap">
+                        {{ item.participants }} {{ t('earnings.participants_label') }}
+                    </span>
+                </div>
+            </template>
+
+            <!-- Amount Column Slot -->
+            <template #item-amount="{ item }">
+                <div class="text-right font-black text-navy text-xs sm:text-sm tabular-nums">
+                    Rp {{ (item.amount || 0).toLocaleString('id-ID') }}
+                </div>
+            </template>
+
+            <!-- Actions Column Slot -->
+            <template #actions="{ item }">
+                <div class="flex justify-center">
+                    <NuxtLink :to="`/dashboard/organizer/earnings/${item.slug || item.id}`" class="p-2 hover:bg-slate-100 rounded-xl text-slate-500 hover:text-navy transition-colors inline-flex items-center justify-center" :title="t('earnings.view_details')">
+                        <Icon icon="ph:eye-bold" class="text-lg" />
+                    </NuxtLink>
+                </div>
+            </template>
+        </DashboardDataTable>
     </div>
 </template>
 
@@ -120,44 +116,41 @@ import { Icon } from '@iconify/vue'
 import { ref, onMounted, computed } from 'vue'
 import { useApi } from '~/composables/useApi'
 import { useRouter } from 'vue-router'
-import { useDateFormat } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { useToast } from '~/composables/useToast'
 import { exportToExcel } from '~/utils/exportExcel'
+import StatCard from '~/components/common/StatCard.vue'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
 
 const api = useApi()
 const router = useRouter()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const toast = useToast()
 
 definePageMeta({
     layout: 'dashboard'
 })
 
-useHead({
-    title: computed(() => t('earnings.title') + ' - Archeris Dashboard')
-})
+useHead(() => ({
+    title: t('earnings.title') + ' - Archeris Dashboard'
+}))
 
 const earningsHistoryData = ref([])
 const loading = ref(true)
-const sortBy = ref('date')
-const sortOrder = ref('desc')
 
-const toggleSort = (column) => {
-    if (sortBy.value === column) {
-        sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
-    } else {
-        sortBy.value = column
-        sortOrder.value = 'asc'
-    }
-}
+const tableColumns = computed(() => [
+    { key: 'event', label: t('earnings.table_header_event'), sortable: true, sortKey: 'eventName', class: 'min-w-[240px]' },
+    { key: 'date', label: t('earnings.table_header_date'), sortable: true, sortKey: 'date', class: 'min-w-[150px]' },
+    { key: 'participants', label: t('earnings.table_header_participants'), sortable: true, sortKey: 'participants', align: 'center', class: 'min-w-[140px]' },
+    { key: 'amount', label: t('earnings.table_header_earnings'), sortable: true, sortKey: 'amount', align: 'right', class: 'min-w-[150px]' }
+])
 
 const fetchEarnings = async () => {
     try {
         loading.value = true
-        // Get earnings summary for this org
         const res = await api.get('/organizers/earnings')
-        earningsHistoryData.value = res?.data || res || []
+        const raw = res?.data || res || []
+        earningsHistoryData.value = Array.isArray(raw) ? raw.filter(item => (item.amount || 0) > 0) : []
     } catch (error) {
         console.error('Failed to fetch earnings:', error)
     } finally {
@@ -169,79 +162,62 @@ const totalEarningsAmount = computed(() => {
     return earningsHistoryData.value.reduce((acc, curr) => acc + (curr.amount || 0), 0)
 })
 
-const earningsHistory = computed(() => {
-    const list = earningsHistoryData.value.filter(item => (item.amount || 0) > 0)
-    const dir = sortOrder.value === 'asc' ? 1 : -1
-    return [...list].sort((a, b) => {
-        if (sortBy.value === 'eventName') {
-            return dir * (a.eventName || '').localeCompare(b.eventName || '', undefined, { numeric: true, sensitivity: 'base' })
-        }
-        if (sortBy.value === 'date') {
-            const tA = new Date(a.date || 0).getTime()
-            const tB = new Date(b.date || 0).getTime()
-            return dir * (tA - tB)
-        }
-        if (sortBy.value === 'participants') {
-            return dir * ((a.participants || 0) - (b.participants || 0))
-        }
-        if (sortBy.value === 'amount') {
-            return dir * ((a.amount || 0) - (b.amount || 0))
-        }
-        return 0
-    })
+const totalParticipantsCount = computed(() => {
+    return earningsHistoryData.value.reduce((acc, curr) => acc + (curr.participants || 0), 0)
 })
 
 const monthlyEarnings = computed(() => {
-    // Basic logic: filter by current month
-    const now = new Date()
-    const currentMonth = now.getMonth()
-    const currentYear = now.getFullYear()
-
+    const currentMonth = new Date().getMonth()
+    const currentYear = new Date().getFullYear()
     return earningsHistoryData.value
         .filter(item => {
-            const d = new Date(item.date)
-            return d.getMonth() === currentMonth && d.getFullYear() === currentYear
+            const itemDate = new Date(item.date)
+            return itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear
         })
         .reduce((acc, curr) => acc + (curr.amount || 0), 0)
 })
 
-const mostActiveEvent = computed(() => {
-    if (!earningsHistoryData.value.length) return null
-    return [...earningsHistoryData.value].sort((a, b) => (b.participants || 0) - (a.participants || 0))[0]
-})
-
-const formatItemDate = (date) => {
-    if (!date) return '-'
-    return useDateFormat(date, 'DD MMM YYYY', { locales: 'id-ID' }).value
+const formatItemDate = (dateString) => {
+    if (!dateString) return '-'
+    const isId = (locale.value || 'id') === 'id'
+    const loc = isId ? 'id-ID' : 'en-US'
+    return new Date(dateString).toLocaleDateString(loc, { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
-const handleExportExcel = () => {
-    const list = earningsHistoryData.value
-    if (!list || list.length === 0) {
-        toast.info(t('earnings.no_data_export', 'No revenue data available to export'))
+const handleExportExcel = async () => {
+    if (earningsHistoryData.value.length === 0) {
+        toast.info(t('earnings.export_empty_info'))
         return
     }
-    const data = list.map((item, idx) => ({
-        no: idx + 1,
-        eventName: item.eventName || '-',
-        category: item.category || '-',
-        date: formatItemDate(item.date),
-        participants: item.participants || 0,
-        amount: item.amount || 0
-    }))
-    exportToExcel(
-        'Archeris_Organizer_Earnings',
-        [
-            { key: 'no', label: 'No' },
-            { key: 'eventName', label: t('earnings.table_header_event', 'Event Name') },
-            { key: 'category', label: t('earnings.table_header_category', 'Category / Type') },
-            { key: 'date', label: t('earnings.table_header_date', 'End Date') },
-            { key: 'participants', label: t('earnings.table_header_participants', 'Participants') },
-            { key: 'amount', label: t('earnings.table_header_earnings', 'Total Earnings (IDR)') }
-        ],
-        data
-    )
-    toast.success(t('earnings.export_success', 'Revenue data exported successfully'))
+
+    try {
+        const columns = [
+            { header: t('earnings.export_col_event'), key: 'eventName', width: 35 },
+            { header: t('earnings.export_col_category'), key: 'category', width: 25 },
+            { header: t('earnings.export_col_date'), key: 'dateFormatted', width: 20 },
+            { header: t('earnings.export_col_participants'), key: 'participants', width: 15 },
+            { header: t('earnings.export_col_earnings'), key: 'amountFormatted', width: 25 }
+        ]
+
+        const dataToExport = earningsHistoryData.value.map(item => ({
+            eventName: item.eventName,
+            category: item.category,
+            dateFormatted: formatItemDate(item.date),
+            participants: item.participants,
+            amountFormatted: `Rp ${(item.amount || 0).toLocaleString('id-ID')}`
+        }))
+
+        await exportToExcel(
+            dataToExport,
+            columns,
+            `Ringkasan_Pendapatan_Turnamen_${new Date().toISOString().split('T')[0]}`,
+            'Pendapatan'
+        )
+        toast.success(t('earnings.export_success'))
+    } catch (error) {
+        console.error('Failed to export earnings to excel:', error)
+        toast.error(t('earnings.export_error'))
+    }
 }
 
 onMounted(() => {

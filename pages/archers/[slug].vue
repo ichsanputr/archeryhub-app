@@ -549,6 +549,10 @@ onMounted(() => {
 const searchQuery = ref('')
 
 useHead({
+    meta: [
+        { name: 'robots', content: 'noindex, nofollow' },
+        { name: 'googlebot', content: 'noindex, nofollow' }
+    ],
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ]

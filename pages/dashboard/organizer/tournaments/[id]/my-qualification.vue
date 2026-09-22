@@ -7,14 +7,14 @@
                     <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}`" class="hover:text-primary transition-colors">Tournament
                     </NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
-                    <span class="text-slate-600 dark:text-slate-300">Hasil Kualifikasi</span>
+                    <span class="text-slate-600 dark:text-slate-300">{{ t('qualification.my_results') }}</span>
                 </nav>
                 <div class="flex items-center gap-4">
                     <button @click="handleBack"
                         class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-primary/50 transition-all text-navy dark:text-white">
                         <Icon icon="ph:arrow-left-bold" />
                     </button>
-                    <h2 class="text-3xl font-black text-navy dark:text-white tracking-tight">Hasil Kualifikasi</h2>
+                    <h2 class="text-3xl font-black text-navy dark:text-white tracking-tight">{{ t('qualification.my_results') }}</h2>
                 </div>
             </div>
             <div class="flex gap-3">
@@ -59,8 +59,7 @@
 
                     <!-- Qual Rank Badge -->
                     <div class="flex flex-col items-center md:items-end justify-center">
-                        <div class="text-[10px] font-black text-slate-400 tracking-widest mb-1">Peringkat
-                            Kualifikasi</div>
+                        <div class="text-[10px] font-black text-slate-400 tracking-widest mb-1">{{ t('qualification.qual_rank') }}</div>
                         <div class="flex items-baseline gap-1">
                             <span class="text-4xl font-black text-primary tracking-tighter">{{ qualRank || '-' }}</span>
                             <span class="text-sm font-bold text-primary">{{ getOrdinal(qualRank) }}</span>
@@ -80,7 +79,7 @@
                             <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
                                 <Icon icon="ph:chart-line-up-bold" class="text-lg" />
                             </div>
-                            Jejak Kualifikasi
+                            {{ t('qualification.journey') }}
                         </h4>
                         <div
                             class="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-xl text-[10px] font-black tracking-widest border border-slate-200 dark:border-slate-700 shadow-inner">
@@ -156,9 +155,9 @@
 </template>
 
 <script setup>
-const { t } = useI18n()
 import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
+const { t, locale } = useI18n()
 const { get } = useApi()
 const route = useRoute()
 const router = useRouter()
@@ -168,7 +167,7 @@ definePageMeta({
     layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('qualification.my_results', 'My Qualification Results') + ' - Archeris Dashboard') })
+useHead({ title: computed(() => t('qualification.my_results') + ' - Archeris Dashboard') })
 
 
 const isLoading = ref(true)

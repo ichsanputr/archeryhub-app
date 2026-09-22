@@ -8,10 +8,10 @@
 
         <!-- Decorative vector watermarks -->
         <div class="absolute bottom-0 right-0 w-[180px] sm:w-[280px] md:w-[350px] opacity-15 pointer-events-none transform translate-y-8 translate-x-8 z-0">
-            <img src="/vector-pricing-1.png" alt="Pricing Vector Right" class="w-full h-auto object-contain select-none pointer-events-none" />
+            <img src="/vector-pricing-1.webp" alt="Pricing Vector Right" loading="lazy" decoding="async" width="350" height="350" class="w-full h-auto object-contain select-none pointer-events-none" />
         </div>
         <div class="absolute bottom-0 left-0 w-[180px] sm:w-[280px] md:w-[350px] opacity-15 pointer-events-none transform translate-y-8 -translate-x-8 z-0">
-            <img src="/vector-pricing-2.png" alt="Pricing Vector Left" class="w-full h-auto object-contain select-none pointer-events-none" />
+            <img src="/vector-pricing-2.webp" alt="Pricing Vector Left" loading="lazy" decoding="async" width="350" height="350" class="w-full h-auto object-contain select-none pointer-events-none" />
         </div>
 
         <div class="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">

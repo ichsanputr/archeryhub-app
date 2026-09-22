@@ -7,78 +7,96 @@
       icon="ph:gear-six-bold"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('settings.title', 'Pengaturan') }
+        { label: t('settings.title') }
       ]"
     />
 
     <!-- Settings Nav Tabs -->
-    <div class="flex gap-1 bg-slate-100 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm">
+    <div class="flex gap-1.5 bg-slate-100 p-1.5 rounded-2xl overflow-x-auto no-scrollbar shadow-xs">
       <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-        :class="activeTab === tab.value ? 'bg-white shadow-sm text-navy font-black' : 'text-slate-500 hover:text-navy hover:bg-white/50 font-bold'"
-        class="flex items-center justify-center gap-2 flex-1 min-w-[120px] sm:min-w-[140px] px-4 py-2.5 rounded-xl text-xs sm:text-sm whitespace-nowrap shrink-0 transition-all">
-        <Icon :icon="tab.icon" class="text-base shrink-0" />
+        type="button"
+        :class="activeTab === tab.value ? 'bg-white shadow-xs text-navy font-black' : 'text-slate-600 hover:text-navy hover:bg-white/50 font-bold'"
+        class="flex items-center justify-center gap-2 flex-1 min-w-[140px] px-5 py-3 rounded-xl text-sm whitespace-nowrap shrink-0 transition-all cursor-pointer">
+        <Icon :icon="tab.icon" class="text-lg shrink-0" />
         <span class="whitespace-nowrap">{{ tab.label }}</span>
       </button>
     </div>
 
     <!-- Keamanan Tab Content -->
     <div v-if="activeTab === 'security'"
-      class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
+      class="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-xs space-y-8">
 
-      <div>
-        <h3 class="text-xl font-bold text-navy mb-2">{{ t('settings.security_title') }}</h3>
-        <div class="text-gray-500 text-sm mb-6">{{ t('settings.security_subtitle') }}</div>
+      <div class="flex items-start justify-between gap-4 pb-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs">
+            <Icon icon="ph:shield-check-bold" class="text-xl" />
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-navy leading-snug">
+              {{ t('settings.security_title') }}
+            </h3>
+            <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
+              {{ t('settings.security_subtitle') }}
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="space-y-8">
         <!-- Email Change Section -->
-        <div class="mb-8">
-          <h4 class="text-sm font-black text-navy tracking-widest mb-4 flex items-center gap-2">
-            <Icon icon="ph:envelope-simple-open-bold" class="text-primary" />
-            {{ t('settings.change_email') }}
-          </h4>
+        <div>
+          <div class="flex items-center gap-2.5 mb-4">
+            <div class="size-8 rounded-lg bg-primary/10 text-navy flex items-center justify-center shrink-0">
+              <Icon icon="ph:envelope-simple-open-bold" class="text-base text-navy" />
+            </div>
+            <h4 class="text-sm font-black text-navy tracking-wide">
+              {{ t('settings.change_email') }}
+            </h4>
+          </div>
 
           <div class="space-y-4 max-w-xl">
             <div>
-              <label class="label-xs">{{ t('settings.current_email') }}</label>
+              <label class="block text-xs font-bold text-navy tracking-wider mb-1.5">{{ t('settings.current_email') }}</label>
               <div
-                class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-400 font-medium">
-                <Icon icon="ph:envelope-bold" />
+                class="flex items-center gap-2 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 font-medium text-xs font-mono">
+                <Icon icon="ph:envelope-bold" class="text-slate-400" />
                 {{ userData?.email }}
               </div>
             </div>
 
             <div v-if="!otpSent">
-              <label class="label-xs">{{ t('settings.new_email') }}</label>
+              <label class="block text-xs font-bold text-navy tracking-wider mb-1.5">{{ t('settings.new_email') }}</label>
               <div class="flex gap-2">
                 <div class="relative flex-1">
-                  <Icon icon="ph:at-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <Icon icon="ph:at-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input v-model="emailForm.new_email" type="email" :placeholder="t('settings.new_email_placeholder')"
-                    class="w-full pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-primary transition-all" />
+                    class="w-full pl-11 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:border-primary transition-all" />
                 </div>
                 <BaseButton variant="primary" size="md" @click="requestOTP" :loading="isRequestingOTP"
                   :disabled="!emailForm.new_email">
                   {{ t('settings.send_otp') }}
                 </BaseButton>
               </div>
-              <div class="text-[10px] text-gray-400 mt-2">
+              <div class="text-[10px] text-slate-400 mt-2">
                 {{ t('settings.email_hint') }}
               </div>
             </div>
 
             <div v-else class="space-y-4 pt-2 animate-in fade-in slide-in-from-top-2">
               <div class="p-3 bg-primary/10 border border-primary/20 rounded-xl flex items-center gap-3">
-                <Icon icon="ph:info-bold" class="text-primary" />
-                <div class="text-xs text-primary-dark font-medium">
+                <Icon icon="ph:info-bold" class="text-navy shrink-0" />
+                <div class="text-xs text-navy font-medium">
                   {{ t('settings.otp_sent_to', { email: emailForm.new_email }) }}
                 </div>
               </div>
 
               <div>
-                <label class="label-xs">{{ t('settings.verification_code') }}</label>
+                <label class="block text-xs font-bold text-navy tracking-wider mb-1.5">{{ t('settings.verification_code') }}</label>
                 <div class="flex gap-2">
                   <div class="relative flex-1">
-                    <Icon icon="ph:key-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <Icon icon="ph:key-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input v-model="emailForm.otp" type="text" maxlength="6" placeholder="000000"
-                      class="w-full pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-black tracking-[0.5em] focus:outline-none focus:border-primary transition-all" />
+                      class="w-full pl-11 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-black tracking-[0.5em] focus:outline-none focus:border-primary transition-all text-navy" />
                   </div>
                   <BaseButton variant="gold" size="md" @click="verifyEmailChange" :loading="isVerifyingOTP"
                     :disabled="emailForm.otp.length < 6">
@@ -88,20 +106,23 @@
               </div>
 
               <button @click="otpSent = false"
-                class="text-xs font-bold text-gray-400 hover:text-navy transition-colors">
+                class="text-xs font-bold text-slate-400 hover:text-navy transition-colors cursor-pointer">
                 {{ t('settings.use_different_email') }}
               </button>
             </div>
           </div>
         </div>
 
-
         <!-- Change Password Form -->
-        <div class="pt-8 border-t border-gray-100">
-          <h4 class="text-sm font-black text-navy tracking-widest mb-6 flex items-center gap-2">
-            <Icon icon="ph:lock-key-bold" class="text-primary" />
-            {{ hasPassword ? t('settings.change_password') : t('settings.set_password') }}
-          </h4>
+        <div class="pt-8 border-t border-slate-100">
+          <div class="flex items-center gap-2.5 mb-6">
+            <div class="size-8 rounded-lg bg-primary/10 text-navy flex items-center justify-center shrink-0">
+              <Icon icon="ph:lock-key-bold" class="text-base text-navy" />
+            </div>
+            <h4 class="text-sm font-black text-navy tracking-wide">
+              {{ hasPassword ? t('settings.change_password') : t('settings.set_password') }}
+            </h4>
+          </div>
 
           <div class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
@@ -111,8 +132,8 @@
                 placeholder="••••••••" required />
             </div>
 
-            <div class="pt-4 border-t border-gray-50">
-              <BaseButton variant="primary" size="md" icon="ph:lock-key" @click="changePassword"
+            <div class="pt-4 border-t border-slate-100">
+              <BaseButton variant="primary" size="md" icon="ph:lock-key-bold" @click="changePassword"
                 :loading="isChangingPassword" :disabled="!securityForm.new_password">
                 {{ hasPassword ? t('settings.change_password') : t('settings.set_password') }}
               </BaseButton>
@@ -123,33 +144,53 @@
     </div>
 
     <!-- TAB: Tema -->
-    <div v-show="activeTab === 'theme'" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
-      <h3 class="text-xl font-black text-navy mb-2 flex items-center justify-between">
-        {{ t('settings.theme_title') }}
-        <Icon v-if="isSyncing" icon="ph:circle-notch" class="animate-spin text-primary" />
-      </h3>
-      <div class="text-gray-500 text-sm mb-6">{{ t('settings.theme_subtitle') }}</div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div v-for="(theme, key) in themes" :key="key" role="button"
-          class="relative overflow-hidden rounded-2xl border-2 transition-all group" :class="currentTheme === key
-            ? 'border-primary bg-primary/5 ring-4 ring-primary/10'
-            : 'border-gray-100 hover:border-gray-300 bg-white'" @click="currentTheme = key">
-          <!-- Theme Preview Header -->
-          <div class="h-24 w-full flex" :style="{ backgroundColor: theme.sidebarBg }">
-            <div class="w-1/4 h-full border-r border-white/10 flex flex-col gap-2 p-3">
-              <div class="w-full h-2 rounded bg-white/20"></div>
-              <div class="w-2/3 h-2 rounded bg-white/10"></div>
+    <div v-show="activeTab === 'theme'" class="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-xs space-y-6">
+      <div class="flex items-start justify-between gap-4 pb-4 border-b border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs">
+            <Icon icon="ph:palette-bold" class="text-xl" />
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-navy leading-snug flex items-center gap-2">
+              {{ t('settings.theme_title') }}
+              <Icon v-if="isSyncing" icon="ph:circle-notch" class="animate-spin text-navy text-sm" />
+            </h3>
+            <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
+              {{ t('settings.theme_subtitle') }}
             </div>
-            <div class="w-3/4 h-full flex flex-col">
-              <div class="h-1/3 w-full bg-white flex items-center px-3">
-                <div class="w-12 h-2 rounded bg-gray-100"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+        <div v-for="(theme, key) in themes" :key="key" role="button"
+          class="relative overflow-hidden rounded-2xl border-2 transition-all group cursor-pointer" :class="currentTheme === key
+            ? 'border-primary bg-primary/5 ring-4 ring-primary/10 shadow-md'
+            : 'border-slate-200 hover:border-slate-300 bg-white hover:shadow-xs'" @click="currentTheme = key">
+          <!-- Theme Preview Header -->
+          <div class="h-28 w-full flex relative overflow-hidden" :style="{ backgroundColor: theme.sidebarBg }">
+            <!-- Simulated Motif Pattern -->
+            <div class="absolute inset-0 pointer-events-none"
+              :style="{ backgroundImage: theme.motif, opacity: theme.motifOpacity || '0.2' }"></div>
+
+            <div class="w-1/4 h-full border-r border-white/10 flex flex-col gap-2 p-3 relative z-10 bg-black/10">
+              <div class="w-full h-2 rounded bg-white/30"></div>
+              <div class="w-2/3 h-1.5 rounded bg-white/15"></div>
+              <div class="w-4/5 h-1.5 rounded bg-white/15"></div>
+              <div class="w-1/2 h-1.5 rounded bg-white/15"></div>
+            </div>
+            <div class="w-3/4 h-full flex flex-col relative z-10">
+              <div class="h-7 w-full bg-white/95 backdrop-blur-xs flex items-center justify-between px-3 border-b border-gray-100">
+                <div class="w-12 h-1.5 rounded bg-gray-200"></div>
+                <div class="size-2.5 rounded-full" :style="{ backgroundColor: theme.primary }"></div>
               </div>
-              <div class="flex-1 p-3">
+              <div class="flex-1 p-3 flex items-center justify-center">
                 <div
-                  class="h-full w-full rounded-lg border-2 border-dashed border-gray-200 flex items-center justify-center"
+                  class="h-full w-full rounded-xl border-2 border-dashed flex items-center justify-center transition-transform group-hover:scale-105"
+                  :class="currentTheme === key ? 'border-primary bg-white/90 shadow-xs' : 'border-white/20 bg-white/40'"
                   :style="{ color: theme.primary }">
                   <Icon icon="ph:check-circle-fill" v-if="currentTheme === key" class="text-2xl" />
+                  <Icon icon="ph:palette-bold" v-else class="text-xl text-white/60" />
                 </div>
               </div>
             </div>
@@ -164,23 +205,23 @@
                 <div class="size-3 rounded-full" :style="{ backgroundColor: theme.sidebarBg }"></div>
               </div>
             </div>
-            <div class="text-xs text-gray-400 capitalize">
-              {{ t('settings.theme_desc', 'Tema tampilan untuk dashboard') }}
+            <div class="text-xs text-slate-400 capitalize">
+              {{ t('settings.theme_desc') }}
             </div>
           </div>
 
           <!-- Selection Indicator -->
           <div v-if="currentTheme === key"
-            class="absolute top-2 right-2 flex items-center justify-center bg-white rounded-full p-1 shadow-lg">
-            <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
+            class="absolute top-2.5 right-2.5 flex items-center justify-center bg-white rounded-full p-1 shadow-md z-20">
+            <Icon icon="ph:check-circle-fill" class="text-primary text-lg" />
           </div>
         </div>
       </div>
 
       <!-- Save Button (Optional depending on tab) -->
-      <div v-if="activeTab === 'theme'" class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
+      <div v-if="activeTab === 'theme'" class="flex justify-end gap-3 mt-10 pt-6 border-t border-slate-100">
         <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral">
-          {{ t('settings.save_changes', 'Simpan Perubahan') }}
+          {{ t('settings.save_changes') }}
         </BaseButton>
       </div>
     </div>
@@ -206,7 +247,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => `${t('settings.title', 'Settings')} - Archeris Dashboard`)
+  title: computed(() => `${t('settings.title')} - Archeris Dashboard`)
 })
 const { login, user, organizerProfile } = useAuth()
 const { get, put } = useApi()

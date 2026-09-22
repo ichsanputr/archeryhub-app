@@ -16,6 +16,6 @@ definePageMeta({
 const { t } = useI18n()
 
 useHead({
-    title: computed(() => `${t('root.articles.create_title', 'Create New Article')} - Archeris Root`)
+    title: computed(() => `${t('root.articles.create_title')} - Archeris Root`)
 })
 </script>

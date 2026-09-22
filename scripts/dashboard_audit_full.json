@@ -1,0 +1,1019 @@
+[
+  {
+    "path": "pages/dashboard/index.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/archer/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/archer/profile.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 2,
+    "hardcoded_samples": [
+      "lihat",
+      "simpan"
+    ],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/archer/settings.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 13,
+    "id_fallback_samples": [
+      "Pengaturan",
+      "Kelola keamanan akun dan preferensi tema tampilan dashboard Anda.",
+      "Pengaturan",
+      "Keamanan Akun",
+      "Kelola alamat email dan kata sandi untuk melindungi akses akun Anda."
+    ]
+  },
+  {
+    "path": "pages/dashboard/archer/archers/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 4,
+    "id_fallback_samples": [
+      "Daftar Akun Pemanah",
+      "Kelola dan pantau seluruh data akun pemanah yang terdaftar di sistem.",
+      "Pemanah",
+      "Cari nama, email, klub, atau ID..."
+    ]
+  },
+  {
+    "path": "pages/dashboard/archer/certificates/index.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 2,
+    "id_fallback_samples": [
+      "Daftar sertifikat resmi keikutsertaan & prestasi kompetisi panahan Anda.",
+      "Cari nama turnamen, kategori, no. sertifikat..."
+    ]
+  },
+  {
+    "path": "pages/dashboard/archer/notifications/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/archer/payments/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 2,
+    "id_fallback_samples": [
+      "Pantau seluruh transaksi biaya pendaftaran turnamen, subscription, dan riwayat faktur Anda.",
+      "Jelajahi Turnamen"
+    ]
+  },
+  {
+    "path": "pages/dashboard/archer/payments/[reference].vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 8,
+    "id_fallback_samples": [
+      "Kembali ke Riwayat Pembayaran",
+      "Nama Turnamen / Item",
+      "Kategori Turnamen",
+      "Waktu Transaksi",
+      "Lihat"
+    ]
+  },
+  {
+    "path": "pages/dashboard/archer/result/[slug].vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/archer/tournaments/create.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/archer/tournaments/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/archer/tournaments/[id]/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/archer/tournaments/[id]/leaderboard.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 12,
+    "id_fallback_samples": [
+      "Cari nama pemanah, klub, atau kontingen...",
+      "Hapus",
+      "Peserta",
+      "Hapus filter ini",
+      "Hapus Semua"
+    ]
+  },
+  {
+    "path": "pages/dashboard/archer/tournaments/[id]/my-elimination.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 7,
+    "id_fallback_samples": [
+      "Bagan Eliminasi",
+      "Bagan Eliminasi",
+      "Skema pertandingan gugur head-to-head dan live skor eliminasi.",
+      "Perjalanan Eliminasi",
+      "Belum Ada Pertandingan Eliminasi"
+    ]
+  },
+  {
+    "path": "pages/dashboard/archer/tournaments/[id]/my-qualification.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 7,
+    "id_fallback_samples": [
+      "Ringkasan Event",
+      "Scorecard Kualifikasi",
+      "Scorecard Kualifikasi",
+      "Perolehan skor seri kualifikasi, statistik 10s/Xs, dan peringkat atlet.",
+      "Klub Independen"
+    ]
+  },
+  {
+    "path": "pages/dashboard/archer/tournaments/[id]/my-registration.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 3,
+    "id_fallback_samples": [
+      "Kelola informasi pendaftaran, penugasan target bantalan, dan pass tiket resmi Anda.",
+      "Ringkasan Event",
+      "Klub Independen"
+    ]
+  },
+  {
+    "path": "pages/dashboard/archer/tournaments/[id]/my-target.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 9,
+    "id_fallback_samples": [
+      "Turnamen Saya",
+      "Ringkasan Event",
+      "Target & Jadwal",
+      "Target & Jadwal Penembakan",
+      "Informasi nomor bantalan, posisi target, dan waktu sesi pertandingan Anda."
+    ]
+  },
+  {
+    "path": "pages/dashboard/archer/tournaments/[id]/my-team.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/archer/tournaments/[id]/overview.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 1,
+    "hardcoded_samples": [
+      "turnamen"
+    ],
+    "id_fallback_count": 16,
+    "id_fallback_samples": [
+      "Ringkasan Event",
+      "Klub Independen",
+      "Kategori Turnamen",
+      "Target & Jadwal Penembakan",
+      "Informasi nomor bantalan, posisi target, dan waktu sesi kualifikasi Anda."
+    ]
+  },
+  {
+    "path": "pages/dashboard/club/notifications/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/balance.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 6,
+    "id_fallback_samples": [
+      "Verifikasi Keamanan",
+      "Masukkan kata sandi akun Anda untuk mengakses informasi saldo dan keuangan.",
+      "Masukkan kata sandi Anda",
+      "Saldo & Rekening",
+      "Kelola pendapatan, saldo dompet, rekening bank, dan penarikan dana."
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/bank-accounts.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/index.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/payment-methods.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/profile.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/scorekeepers.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/settings.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 2,
+    "id_fallback_samples": [
+      "Pengaturan",
+      "Simpan Perubahan"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/subscription.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/earnings/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 3,
+    "id_fallback_samples": [
+      "Pendapatan Event",
+      "Pantau rekapitulasi penerimaan dana, tiket pendaftaran, dan laporan transaksi turnamen.",
+      "Pendapatan Event"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/earnings/[id].vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 2,
+    "id_fallback_samples": [
+      "Daftar Transaksi Peserta",
+      "Rincian transaksi pembayaran peserta yang terdaftar pada turnamen ini."
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/notifications/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/package/detail.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/package/index.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 17,
+    "id_fallback_samples": [
+      "Kelola kuota event, beli paket tambahan, dan pantau riwayat transaksi.",
+      "Kuota gratis untuk event klub & latihan internal",
+      "Maksimal <strong>50 Peserta</strong> per event",
+      "Akses <strong>Semua Fitur</strong>",
+      "Hingga <strong>200 Peserta</strong> per event"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/package/payment.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 1,
+    "id_fallback_samples": [
+      "Kembali ke Subscription"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/package/success.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/reports/attendance.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 1,
+    "id_fallback_samples": [
+      "Laporan"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/reports/finance.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 1,
+    "id_fallback_samples": [
+      "Laporan"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/reports/index.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 4,
+    "id_fallback_samples": [
+      "Laporan & Analitik",
+      "Wawasan komprehensif tentang peserta, kehadiran registrasi ulang, keuangan, dan performa event.",
+      "Laporan",
+      "Total Pendapatan"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/reports/participants.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 1,
+    "id_fallback_samples": [
+      "Laporan"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/reports/performance.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 1,
+    "id_fallback_samples": [
+      "Laporan"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/teams/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/create.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 8,
+    "hardcoded_samples": [
+      "turnamen",
+      "daftar"
+    ],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/certificate.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 2,
+    "id_fallback_samples": [
+      "Unggah dan Kelola Distribusi Sertifikat Digital Resmi Peserta.",
+      "Unggah Massal (Bulk Upload)"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/checkout.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 2,
+    "hardcoded_samples": [
+      "ringkasan",
+      "peserta"
+    ],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/media.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/my-elimination.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 5,
+    "hardcoded_samples": [
+      "eliminasi"
+    ],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/my-qualification.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 4,
+    "hardcoded_samples": [
+      "kualifikasi"
+    ],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/my-registration.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 2,
+    "hardcoded_samples": [
+      "kategori",
+      "bantalan"
+    ],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/overview.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 3,
+    "id_fallback_samples": [
+      "Ringkasan Event",
+      "Ringkasan Event",
+      "Ringkasan Event"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/page.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 3,
+    "id_fallback_samples": [
+      "Pengaturan Halaman Event",
+      "Atur konten, jadwal, lokasi, galeri, dan tampilan publik halaman event Anda.",
+      "Simpan Perubahan"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/revenue.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 3,
+    "id_fallback_samples": [
+      "Pendapatan Event",
+      "Ringkasan penerimaan pendaftaran, potongan biaya platform, dan pendapatan bersih event.",
+      "Pendapatan Event"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/categories/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 4,
+    "id_fallback_samples": [
+      "Kategori & Divisi Lomba",
+      "Atur kategori lomba, jarak bantalan, kelompok usia, dan kuota pemanah.",
+      "Kategori & Divisi",
+      "Tambah Kategori"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/categories/[categoryId].vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 9,
+    "id_fallback_samples": [
+      "Kembali ke Kategori",
+      "Peserta Kategori",
+      "Daftar seluruh pemanah yang terdaftar pada kategori event ini.",
+      "Daftar Peserta Terdaftar",
+      "{count} Pemanah"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/elimination/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 3,
+    "id_fallback_samples": [
+      "Bagan & Babak Eliminasi",
+      "Bagan Eliminasi",
+      "Buat Bagan Eliminasi"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/elimination/[bracketId]/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 2,
+    "hardcoded_samples": [
+      "eliminasi",
+      "gagal"
+    ],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/elimination/[bracketId]/[round].vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 1,
+    "hardcoded_samples": [
+      "eliminasi"
+    ],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/participants/add.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 3,
+    "id_fallback_samples": [
+      "Tambah Peserta Event",
+      "Daftarkan pemanah terdaftar atau buat profil pemanah baru langsung ke event ini",
+      "Kembali ke Daftar Peserta"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/participants/detail.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 7,
+    "id_fallback_samples": [
+      "Daftar Peserta",
+      "Detail Peserta",
+      "Detail Peserta",
+      "Informasi lengkap pendaftaran, profil atlet, dan status pembayaran peserta.",
+      "Daftar Peserta"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/participants/edit.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 5,
+    "id_fallback_samples": [
+      "Daftar Peserta",
+      "Edit Data Peserta",
+      "Edit Data Peserta",
+      "Ubah kategori lomba dan status pembayaran peserta.",
+      "Memuat data peserta..."
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/participants/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 3,
+    "id_fallback_samples": [
+      "Daftar Peserta",
+      "Kelola data atlet terdaftar, status pembayaran, dan verifikasi berkas.",
+      "Daftar Peserta"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/participants/[participantId]/edit.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/participants/[participantId]/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/payments/index.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/printout/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/printout/statistics.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/printout/elimination/index.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/printout/participants/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/printout/qualification/index.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/qualification/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 3,
+    "id_fallback_samples": [
+      "Manajemen Kualifikasi",
+      "Kualifikasi",
+      "Tambah Sesi"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/qualification/results.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/qualification/[session].vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 1,
+    "id_fallback_samples": [
+      "Kembali"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/reset/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/schedule/index.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/targets/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 2,
+    "id_fallback_samples": [
+      "Bantalan Target",
+      "Bantalan Target"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/targets/map.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/teams/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/organizer/tournaments/[id]/teams/[teamId].vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 4,
+    "id_fallback_samples": [
+      "Kategori Beregu",
+      "Klub",
+      "Ringkasan Tim",
+      "Peringkat Kualifikasi Beregu"
+    ]
+  },
+  {
+    "path": "pages/dashboard/organizer/wallet/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/profile/edit.vue",
+    "uses_dashboard_i18n": true,
+    "uses_vue_i18n": false,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/profile/[id].vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/profile/[username].vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/root/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 4,
+    "id_fallback_samples": [
+      "Ringkasan Bisnis",
+      "Ringkasan performa platform, pengguna, turnamen, dan transaksi",
+      "Ringkasan Bisnis",
+      "Kelola Semua Artikel"
+    ]
+  },
+  {
+    "path": "pages/dashboard/root/archers/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 14,
+    "id_fallback_samples": [
+      "Manajemen Akun Pemanah",
+      "Kelola Akun Pemanah",
+      "Pantau semua akun pemanah yang terdaftar di sistem, verifikasi profil, atau hapus akun.",
+      "Memuat data pemanah...",
+      "Pemanah Tidak Ditemukan"
+    ]
+  },
+  {
+    "path": "pages/dashboard/root/articles/create.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/root/articles/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 6,
+    "id_fallback_samples": [
+      "Belum ada artikel ditemukan",
+      "Lihat di Blog",
+      "Hapus Artikel",
+      "Hapus Artikel?",
+      "Ya, Hapus Artikel"
+    ]
+  },
+  {
+    "path": "pages/dashboard/root/articles/[id].vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 0,
+    "hardcoded_samples": [],
+    "id_fallback_count": 0,
+    "id_fallback_samples": []
+  },
+  {
+    "path": "pages/dashboard/root/tournaments/index.vue",
+    "uses_dashboard_i18n": false,
+    "uses_vue_i18n": true,
+    "hardcoded_id_count": 2,
+    "hardcoded_samples": [
+      "kategori",
+      "turnamen"
+    ],
+    "id_fallback_count": 21,
+    "id_fallback_samples": [
+      "Manajemen Turnamen Internal",
+      "Kelola Turnamen Internal",
+      "Pantau semua turnamen internal buatan Event Organizer dan kelola alokasi kredit kuota",
+      "Total Turnamen Internal",
+      "Pemanah terdaftar di semua turnamen"
+    ]
+  }
+]

@@ -2,15 +2,15 @@
   <div class="flex flex-col gap-6 pb-16 font-body text-navy antialiased">
     <!-- Header -->
     <DashboardHeader
-      :title="t('event_printout.participants.title', 'Participant Lists')"
-      :subtitle="t('event_printout.participants.page_desc', 'Athlete roster documents for check-in and tournament administration.')"
+      :title="t('event_printout.participants.title')"
+      :subtitle="t('event_printout.participants.page_desc')"
       icon="ph:users-three-bold"
       :back-to="`/dashboard/organizer/tournaments/${eventId}/printout`"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-        { label: t('event_printout.breadcrumb_printout', 'Printouts'), to: `/dashboard/organizer/tournaments/${eventId}/printout` },
-        { label: t('event_printout.participants.title', 'Participant Lists') }
+        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('event_printout.breadcrumb_printout'), to: `/dashboard/organizer/tournaments/${eventId}/printout` },
+        { label: t('event_printout.participants.title') }
       ]"
     />
 
@@ -23,13 +23,13 @@
           <div class="size-14 bg-slate-100 border border-slate-200 text-navy rounded-2xl flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 transition-all">
             <Icon icon="ph:text-a-underline-bold" class="text-2xl text-navy" />
           </div>
-          <h2 class="text-base font-black text-navy transition-colors mb-2">{{ t('event_printout.participants.by_alphabet', 'Alphabetical Order') }}</h2>
-          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_alphabet_desc', 'List of all registered athletes ordered alphabetically (A-Z) with category and target assignments.') }}</div>
+          <h2 class="text-base font-black text-navy transition-colors mb-2">{{ t('event_printout.participants.by_alphabet') }}</h2>
+          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_alphabet_desc') }}</div>
         </div>
 
         <div class="pt-4 border-t border-slate-100">
           <BaseButton @click="printList('alphabetical')" variant="primary" size="lg" icon="ph:file-pdf-bold" class="w-full font-black text-sm">
-            {{ t('event_printout.download_pdf', 'Download PDF') }}
+            {{ t('event_printout.download_pdf') }}
           </BaseButton>
         </div>
       </div>
@@ -40,13 +40,13 @@
           <div class="size-14 bg-slate-100 border border-slate-200 text-navy rounded-2xl flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 transition-all">
             <Icon icon="ph:shield-bold" class="text-2xl text-navy" />
           </div>
-          <h2 class="text-base font-black text-navy transition-colors mb-2">{{ t('event_printout.participants.by_club', 'By Club / Contingent') }}</h2>
-          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_club_desc', 'List of athletes grouped by their respective club or regional contingent.') }}</div>
+          <h2 class="text-base font-black text-navy transition-colors mb-2">{{ t('event_printout.participants.by_club') }}</h2>
+          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_club_desc') }}</div>
         </div>
 
         <div class="pt-4 border-t border-slate-100">
           <BaseButton @click="printList('by-club')" variant="primary" size="lg" icon="ph:file-pdf-bold" class="w-full font-black text-sm">
-            {{ t('event_printout.download_pdf', 'Download PDF') }}
+            {{ t('event_printout.download_pdf') }}
           </BaseButton>
         </div>
       </div>
@@ -57,13 +57,13 @@
           <div class="size-14 bg-slate-100 border border-slate-200 text-navy rounded-2xl flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 transition-all">
             <Icon icon="ph:squares-four-bold" class="text-2xl text-navy" />
           </div>
-          <h2 class="text-base font-black text-navy transition-colors mb-2">{{ t('event_printout.participants.by_category', 'By Competition Category') }}</h2>
-          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_category_desc', 'Athlete list grouped by competition age class and bow division.') }}</div>
+          <h2 class="text-base font-black text-navy transition-colors mb-2">{{ t('event_printout.participants.by_category') }}</h2>
+          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.participants.by_category_desc') }}</div>
         </div>
 
         <div class="pt-4 border-t border-slate-100">
           <BaseButton @click="printList('by-category')" variant="primary" size="lg" icon="ph:file-pdf-bold" class="w-full font-black text-sm">
-            {{ t('event_printout.download_pdf', 'Download PDF') }}
+            {{ t('event_printout.download_pdf') }}
           </BaseButton>
         </div>
       </div>
@@ -88,7 +88,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('event_printout.participants.title', 'Daftar Peserta') + ' - Archeris Dashboard')
+  title: computed(() => t('event_printout.participants.title') + ' - Archeris Dashboard')
 })
 
 const apiBaseUrl = useApiBaseUrl()

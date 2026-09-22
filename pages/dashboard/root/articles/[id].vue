@@ -19,6 +19,6 @@ const { t } = useI18n()
 const articleId = String(route.params.id)
 
 useHead({
-    title: computed(() => `${t('root.articles.edit_title', 'Edit Article')} - Archeris Root`)
+    title: computed(() => `${t('root.articles.edit_title')} - Archeris Root`)
 })
 </script>

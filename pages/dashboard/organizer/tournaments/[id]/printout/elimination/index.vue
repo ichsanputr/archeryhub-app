@@ -2,20 +2,20 @@
   <div class="flex flex-col gap-6 pb-16 font-body text-navy antialiased">
     <!-- Header -->
     <DashboardHeader
-      :title="t('event_printout.elimination.title', 'Elimination Bracket')"
-      :subtitle="t('event_printout.elimination.page_desc', 'Print tournament brackets per category for athletes and spectators.')"
+      :title="t('event_printout.elimination.title')"
+      :subtitle="t('event_printout.elimination.page_desc')"
       icon="ph:tree-structure-bold"
       :back-to="`/dashboard/organizer/tournaments/${eventId}/printout`"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-        { label: t('event_printout.breadcrumb_printout', 'Printouts'), to: `/dashboard/organizer/tournaments/${eventId}/printout` },
-        { label: t('event_printout.elimination.title', 'Elimination Bracket') }
+        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('event_printout.breadcrumb_printout'), to: `/dashboard/organizer/tournaments/${eventId}/printout` },
+        { label: t('event_printout.elimination.title') }
       ]"
     >
       <template #actions v-if="bracket && bracket.rounds?.length > 0">
         <BaseButton variant="primary" icon="ph:printer-bold" class="h-10 sm:h-11 px-6 shadow-sm w-full sm:w-auto text-xs sm:text-sm font-black tracking-wider" @click="printBracket">
-          {{ t('event_printout.elimination.btn_print_bracket', 'Print Bracket') }}
+          {{ t('event_printout.elimination.btn_print_bracket') }}
         </BaseButton>
       </template>
     </DashboardHeader>
@@ -27,9 +27,9 @@
           <BaseSelect
             v-model="selectedCategory"
             :items="categoryOptions"
-            :label="t('event_printout.elimination.filter_category_label', 'Select Category') + ' *'"
+            :label="t('event_printout.elimination.filter_category_label') + ' *'"
             required
-            :placeholder="t('event_printout.elimination.select_category_placeholder', 'Select Category...')"
+            :placeholder="t('event_printout.elimination.select_category_placeholder')"
           />
         </div>
 
@@ -37,20 +37,20 @@
           <BaseSelect
             v-model="printOrientation"
             :items="orientationOptions"
-            :label="t('event_printout.elimination.orientation_label', 'Print Orientation')"
+            :label="t('event_printout.elimination.orientation_label')"
           />
         </div>
 
         <div class="space-y-1.5">
-          <label class="text-xs font-bold text-gray-500">{{ t('event_printout.elimination.display_label', 'Display Elements') }}</label>
+          <label class="text-xs font-bold text-gray-500">{{ t('event_printout.elimination.display_label') }}</label>
           <div class="flex gap-4 items-center h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl">
             <label class="flex items-center gap-2 text-xs font-bold text-navy cursor-pointer">
               <input type="checkbox" v-model="showSeeding" class="rounded text-navy" />
-              <span>{{ t('event_printout.elimination.show_seeding', 'Seeding Number') }}</span>
+              <span>{{ t('event_printout.elimination.show_seeding') }}</span>
             </label>
             <label class="flex items-center gap-2 text-xs font-bold text-navy cursor-pointer">
               <input type="checkbox" v-model="showScore" class="rounded text-navy" />
-              <span>{{ t('event_printout.elimination.show_score', 'Match Score') }}</span>
+              <span>{{ t('event_printout.elimination.show_score') }}</span>
             </label>
           </div>
         </div>
@@ -66,20 +66,20 @@
     <div v-else-if="!selectedCategory"
       class="bg-white rounded-2xl border border-gray-100 p-12 flex flex-col items-center gap-3 text-center">
       <Icon icon="mdi:bracket" class="text-5xl text-gray-300" />
-      <div class="font-black text-navy text-base">{{ t('event_printout.elimination.select_category_first', 'Please Select a Category First') }}</div>
-      <div class="text-gray-400 text-xs max-w-sm">{{ t('event_printout.elimination.select_category_desc', 'Select a category to load and view the elimination bracket tree.') }}</div>
+      <div class="font-black text-navy text-base">{{ t('event_printout.elimination.select_category_first') }}</div>
+      <div class="text-gray-400 text-xs max-w-sm">{{ t('event_printout.elimination.select_category_desc') }}</div>
     </div>
 
     <!-- No Bracket Data -->
     <div v-else-if="!bracket || bracket.rounds?.length === 0"
       class="bg-white rounded-2xl border border-gray-100 p-12 flex flex-col items-center gap-3 text-center">
       <Icon icon="mdi:bracket" class="text-5xl text-gray-300" />
-      <div class="font-black text-navy text-base">{{ t('event_printout.elimination.bracket_not_available', 'Elimination Bracket Not Generated') }}</div>
-      <div class="text-gray-400 text-xs max-w-sm">{{ t('event_printout.elimination.bracket_not_available_desc', 'Generate elimination brackets first on the Elimination page.') }}</div>
+      <div class="font-black text-navy text-base">{{ t('event_printout.elimination.bracket_not_available') }}</div>
+      <div class="text-gray-400 text-xs max-w-sm">{{ t('event_printout.elimination.bracket_not_available_desc') }}</div>
       <div class="mt-4">
         <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/elimination`">
           <BaseButton variant="primary" size="sm" icon="ph:arrow-right-bold" class="font-bold">
-            {{ t('event_printout.elimination.btn_open_elimination', 'Open Elimination Menu') }}
+            {{ t('event_printout.elimination.btn_open_elimination') }}
           </BaseButton>
         </NuxtLink>
       </div>
@@ -93,7 +93,7 @@
       <div class="hidden print:block p-8 border-b border-gray-200 text-center">
         <div class="text-2xl font-black text-navy">{{ eventName }}</div>
         <div class="text-lg font-bold text-gray-600 mt-1">Elimination Bracket — {{ selectedCategoryName }}</div>
-        <div class="text-xs text-gray-400 mt-1">{{ t('event_printout.elimination.printed_at', 'Dicetak:') }} {{ printDate }}</div>
+        <div class="text-xs text-gray-400 mt-1">{{ t('event_printout.elimination.printed_at') }} {{ printDate }}</div>
       </div>
 
       <!-- Bracket Visualization -->
@@ -147,12 +147,12 @@
 import { Icon } from '@iconify/vue'
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 
 const route = useRoute()
 const { get } = useApi()
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 
 const eventId = route.params.id
 const eventName = ref('')
@@ -169,7 +169,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('event_printout.elimination.title', 'Bagan Eliminasi') + ' - Archeris Dashboard')
+  title: computed(() => t('event_printout.elimination.title') + ' - Archeris Dashboard')
 })
 
 const categoryOptions = computed(() => {
@@ -180,14 +180,14 @@ const categoryOptions = computed(() => {
 })
 
 const orientationOptions = computed(() => [
-  { value: 'landscape', title: t('event_printout.elimination.orientation_landscape', 'Landscape (Recommended)') },
-  { value: 'portrait', title: t('event_printout.elimination.orientation_portrait', 'Portrait') }
+  { value: 'landscape', title: t('event_printout.elimination.orientation_landscape') },
+  { value: 'portrait', title: t('event_printout.elimination.orientation_portrait') }
 ])
 
 const selectedCategoryName = computed(() => {
-  const found = categories.value.find(c => c.id === selectedCategory.value)
-  if (!found) return ''
-  return `${found.division_name || ''} ${found.category_name || ''} ${found.gender_division_name || ''}`.trim()
+  const cat = categories.value.find(c => c.id === selectedCategory.value)
+  if (!cat) return ''
+  return `${cat.division_name || ''} ${cat.category_name || ''} ${cat.gender_division_name || ''}`.trim()
 })
 
 const printDate = computed(() => {
@@ -216,8 +216,15 @@ const fetchBracket = async () => {
   if (!selectedCategory.value) return
   isLoading.value = true
   try {
-    const res = await get(`/tournaments/${eventId}/elimination/categories/${selectedCategory.value}/bracket`)
-    bracket.value = res?.bracket || res || null
+    const bRes = await get(`/tournaments/${eventId}/elimination/brackets?category_id=${selectedCategory.value}`)
+    const bracketList = bRes?.brackets || bRes?.data || []
+    if (bracketList.length > 0) {
+      const bId = bracketList[0].id || bracketList[0].uuid
+      const detailRes = await get(`/tournaments/${eventId}/elimination/brackets/${bId}`)
+      bracket.value = detailRes?.bracket || detailRes || null
+    } else {
+      bracket.value = null
+    }
   } catch (err) {
     console.error('Failed to fetch bracket:', err)
     bracket.value = null

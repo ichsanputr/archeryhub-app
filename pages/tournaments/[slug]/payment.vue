@@ -385,10 +385,10 @@ const handlePayment = async () => {
         if (res && res.checkout_url) {
             window.open(res.checkout_url, '_blank')
             if (res.reference) {
-                router.push(`/payment/status/${res.reference}`)
+                router.push(`/dashboard/archer/payments/${res.reference}`)
             }
         } else if (res && res.reference) {
-            router.push(`/payment/status/${res.reference}`)
+            router.push(`/dashboard/archer/payments/${res.reference}`)
         }
     } catch (err) {
         console.error('Payment error:', err)

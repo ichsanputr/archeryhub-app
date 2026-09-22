@@ -1,6 +1,6 @@
 <script setup>
 
-useHead({ title: computed(() => t('dashboard.title', 'Dashboard') + ' - Archeris Dashboard') })
+useHead({ title: computed(() => t('dashboard.title') + ' - Archeris Dashboard') })
 import useDashboardI18n from '~/composables/useDashboardI18n'
 import { useI18n } from 'vue-i18n'
 const { t } = useDashboardI18n()
@@ -11,7 +11,7 @@ const { t } = useDashboardI18n()
   <div class="flex items-center justify-center min-h-[60vh]">
     <div class="flex flex-col items-center gap-4">
       <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin" />
-      <div class="text-gray-400 font-bold animate-pulse">{{ t('common.loading_dashboard', 'Loading...') }}</div>
+      <div class="text-gray-400 font-bold animate-pulse">{{ t('common.loading_dashboard') }}</div>
     </div>
   </div>
 </template>

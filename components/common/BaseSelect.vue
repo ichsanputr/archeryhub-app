@@ -82,122 +82,128 @@
         </div>
       </div>
 
-      <!-- dropdown -->
-      <transition
-        enter-active-class="transition duration-200 ease-out"
-        :enter-from-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'"
-        enter-to-class="translate-y-0 opacity-100 scale-100"
-        leave-active-class="transition duration-150 ease-in"
-        leave-from-class="translate-y-0 opacity-100 scale-100"
-        :leave-to-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'">
+      <!-- dropdown (Teleported to body to float above modals & never clip) -->
+      <Teleport to="body" :disabled="!teleport">
+        <transition
+          enter-active-class="transition duration-200 ease-out"
+          :enter-from-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'"
+          enter-to-class="translate-y-0 opacity-100 scale-100"
+          leave-active-class="transition duration-150 ease-in"
+          leave-from-class="translate-y-0 opacity-100 scale-100"
+          :leave-to-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'">
 
-        <div v-if="isOpen"
-          class="absolute left-0 right-0 z-[10000] bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col shadow-2xl"
-          :class="isFlippedTop ? 'bottom-full mb-2 origin-bottom' : 'top-full mt-2 origin-top'"
-          style="box-shadow: 0 20px 60px -10px rgba(15,23,42,0.25); max-height: 320px">
+          <div v-if="isOpen"
+            ref="dropdownEl"
+            class="z-[999999] bg-white border border-gray-100 rounded-2xl overflow-hidden flex flex-col shadow-2xl"
+            :class="[
+              teleport ? 'fixed' : 'absolute left-0 right-0',
+              !teleport && (isFlippedTop ? 'bottom-full mb-2 origin-bottom' : 'top-full mt-2 origin-top')
+            ]"
+            :style="dropdownStyle">
 
-          <!-- multiple: search header (single has inline) -->
-          <div v-if="multiple && searchable" class="px-3 pt-3 pb-2 border-b border-gray-50">
-            <div class="flex items-center gap-2 px-3 h-9 rounded-xl bg-gray-50 border border-gray-100">
-              <Icon icon="ph:magnifying-glass" class="text-gray-400 text-sm flex-shrink-0" />
-              <input v-model="searchQuery" type="text"
-                class="flex-1 bg-transparent border-none outline-none text-sm text-navy placeholder:text-gray-400"
-                :placeholder="t('common.search')" @click.stop />
-              <button v-if="searchQuery" type="button" @click.stop="searchQuery = ''"
-                class="text-gray-300 hover:text-gray-500 transition-colors">
-                <Icon icon="ph:x" class="text-xs" />
+            <!-- multiple: search header (single has inline) -->
+            <div v-if="multiple && searchable" class="px-3 pt-3 pb-2 border-b border-gray-50">
+              <div class="flex items-center gap-2 px-3 h-9 rounded-xl bg-gray-50 border border-gray-100">
+                <Icon icon="ph:magnifying-glass" class="text-gray-400 text-sm flex-shrink-0" />
+                <input v-model="searchQuery" type="text"
+                  class="flex-1 bg-transparent border-none outline-none text-sm text-navy placeholder:text-gray-400"
+                  :placeholder="t('common.search')" @click.stop />
+                <button v-if="searchQuery" type="button" @click.stop="searchQuery = ''"
+                  class="text-gray-300 hover:text-gray-500 transition-colors">
+                  <Icon icon="ph:x" class="text-xs" />
+                </button>
+              </div>
+            </div>
+
+            <!-- multiple: select-all / clear strip -->
+            <div v-if="multiple && filteredItems.length > 0"
+              class="px-4 py-2 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
+              <button type="button" @click.stop="selectAll"
+                class="text-xs font-black text-navy hover:text-slate-600 hover:underline transition-colors">
+                {{ allSelected ? (t('common.deselect_all', 'Deselect all')) : (t('common.select_all', 'Select all')) }}
+              </button>
+              <span class="text-[10px] font-bold text-gray-500 font-mono">
+                {{ selectedValues.length }} / {{ allItems.length }}
+              </span>
+            </div>
+
+            <!-- item list -->
+            <div class="overflow-y-auto p-1.5 space-y-0.5 custom-scrollbar">
+              <div v-if="filteredItems.length === 0" class="p-8 text-center">
+                <Icon icon="ph:magnifying-glass-slash" class="text-3xl text-gray-200 mx-auto mb-2" />
+                <div class="text-gray-400 text-xs font-medium">{{ t('common.no_results') }}</div>
+              </div>
+
+              <button v-for="item in filteredItems" :key="getItemValue(item)" type="button"
+                @click="selectItem(item)"
+                class="w-full px-3 py-2.5 text-sm flex items-center gap-3 rounded-xl transition-all duration-150 text-left group"
+                :class="[
+                  isSelected(item)
+                    ? 'bg-navy/5 text-navy'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-navy'
+                ]">
+
+                <!-- checkbox for multiple -->
+                <div v-if="multiple"
+                  class="flex-shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all"
+                  :class="isSelected(item) ? 'bg-navy border-navy' : 'border-gray-300 group-hover:border-navy/40'">
+                  <Icon v-if="isSelected(item)" icon="ph:check-bold" class="text-white text-[10px]" />
+                </div>
+
+                <!-- item image or icon -->
+                <div v-if="item.image" class="flex-shrink-0 w-7 h-7 rounded-lg overflow-hidden bg-white border border-gray-100 p-0.5">
+                  <img :src="item.image" class="w-full h-full object-contain" :alt="getItemTitle(item)" />
+                </div>
+                <div v-else-if="item.icon"
+                  class="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
+                  :class="isSelected(item) ? 'bg-navy/10 text-navy' : 'text-gray-400 group-hover:text-navy'">
+                  <Icon :icon="item.icon" class="text-base" />
+                </div>
+
+                <!-- label + description -->
+                <div class="flex-1 min-w-0 truncate">
+                  <div class="font-bold truncate" :class="isSelected(item) ? 'text-navy' : 'text-gray-700'">
+                    {{ getItemTitle(item) }}
+                  </div>
+                  <div v-if="item.description" class="text-[11px] text-gray-400 font-medium truncate mt-0.5">
+                    {{ item.description }}
+                  </div>
+                </div>
+
+                <!-- single: selected check -->
+                <Icon v-if="!multiple && isSelected(item)" icon="ph:check-circle-fill"
+                  class="text-navy text-lg flex-shrink-0" />
+              </button>
+            </div>
+
+            <!-- footer slot -->
+            <div v-if="$slots.footer" class="p-2 border-t border-gray-50 bg-gray-50/50">
+              <slot name="footer" />
+            </div>
+
+            <!-- multiple: confirm button -->
+            <div v-if="multiple && selectedValues.length > 0"
+              class="p-3 border-t border-gray-50 flex items-center justify-between">
+              <span class="text-xs font-bold text-gray-500">
+                {{ selectedValues.length }} item{{ selectedValues.length !== 1 ? 's' : '' }} selected
+              </span>
+              <button type="button" @click.stop="closeDropdown"
+                class="text-xs font-black text-white bg-navy px-4 py-1.5 rounded-lg hover:bg-navy/90 transition-all">
+                Done
               </button>
             </div>
           </div>
-
-          <!-- multiple: select-all / clear strip -->
-          <div v-if="multiple && filteredItems.length > 0"
-            class="px-4 py-2 border-b border-gray-100 flex items-center justify-between bg-slate-50/50">
-            <button type="button" @click.stop="selectAll"
-              class="text-xs font-black text-navy hover:text-slate-600 hover:underline transition-colors">
-              {{ allSelected ? (t('common.deselect_all', 'Deselect all')) : (t('common.select_all', 'Select all')) }}
-            </button>
-            <span class="text-[10px] font-bold text-gray-500 font-mono">
-              {{ selectedValues.length }} / {{ allItems.length }}
-            </span>
-          </div>
-
-          <!-- item list -->
-          <div class="overflow-y-auto p-1.5 space-y-0.5 custom-scrollbar">
-            <div v-if="filteredItems.length === 0" class="p-8 text-center">
-              <Icon icon="ph:magnifying-glass-slash" class="text-3xl text-gray-200 mx-auto mb-2" />
-              <p class="text-gray-400 text-xs font-medium">{{ t('common.no_results') }}</p>
-            </div>
-
-            <button v-for="item in filteredItems" :key="getItemValue(item)" type="button"
-              @click="selectItem(item)"
-              class="w-full px-3 py-2.5 text-sm flex items-center gap-3 rounded-xl transition-all duration-150 text-left group"
-              :class="[
-                isSelected(item)
-                  ? 'bg-navy/5 text-navy'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-navy'
-              ]">
-
-              <!-- checkbox for multiple -->
-              <div v-if="multiple"
-                class="flex-shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all"
-                :class="isSelected(item) ? 'bg-navy border-navy' : 'border-gray-300 group-hover:border-navy/40'">
-                <Icon v-if="isSelected(item)" icon="ph:check-bold" class="text-white text-[10px]" />
-              </div>
-
-              <!-- item image or icon -->
-              <div v-if="item.image" class="flex-shrink-0 w-7 h-7 rounded-lg overflow-hidden bg-white border border-gray-100 p-0.5">
-                <img :src="item.image" class="w-full h-full object-contain" :alt="getItemTitle(item)" />
-              </div>
-              <div v-else-if="item.icon"
-                class="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center transition-all"
-                :class="isSelected(item) ? 'bg-navy/10 text-navy' : 'text-gray-400 group-hover:text-navy'">
-                <Icon :icon="item.icon" class="text-base" />
-              </div>
-
-              <!-- label + description -->
-              <div class="flex-1 min-w-0 truncate">
-                <div class="font-bold truncate" :class="isSelected(item) ? 'text-navy' : 'text-gray-700'">
-                  {{ getItemTitle(item) }}
-                </div>
-                <div v-if="item.description" class="text-[11px] text-gray-400 font-medium truncate mt-0.5">
-                  {{ item.description }}
-                </div>
-              </div>
-
-              <!-- single: selected check -->
-              <Icon v-if="!multiple && isSelected(item)" icon="ph:check-circle-fill"
-                class="text-navy text-lg flex-shrink-0" />
-            </button>
-          </div>
-
-          <!-- footer slot -->
-          <div v-if="$slots.footer" class="p-2 border-t border-gray-50 bg-gray-50/50">
-            <slot name="footer" />
-          </div>
-
-          <!-- multiple: confirm button -->
-          <div v-if="multiple && selectedValues.length > 0"
-            class="p-3 border-t border-gray-50 flex items-center justify-between">
-            <span class="text-xs font-bold text-gray-500">
-              {{ selectedValues.length }} item{{ selectedValues.length !== 1 ? 's' : '' }} selected
-            </span>
-            <button type="button" @click.stop="closeDropdown"
-              class="text-xs font-black text-white bg-navy px-4 py-1.5 rounded-lg hover:bg-navy/90 transition-all">
-              Done
-            </button>
-          </div>
-        </div>
-      </transition>
+        </transition>
+      </Teleport>
     </div>
 
-    <p v-if="error" class="text-red-500 text-xs font-bold ml-1">{{ error }}</p>
-    <p v-else-if="hint" class="text-gray-400 text-xs ml-1">{{ hint }}</p>
+    <div v-if="error" class="text-red-500 text-xs font-bold ml-1">{{ error }}</div>
+    <div v-else-if="hint" class="text-gray-400 text-xs ml-1">{{ hint }}</div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
 import { useDropdownPosition } from '~/composables/useDropdownPosition'
@@ -216,6 +222,7 @@ const props = defineProps({
   searchable: { type: Boolean, default: true },
   multiple: { type: Boolean, default: false },
   clearable: { type: Boolean, default: false },
+  teleport: { type: Boolean, default: true },
   icon: String,
   error: String,
   itemTitle: { type: String, default: 'title' },
@@ -228,8 +235,13 @@ const isOpen = ref(false)
 const searchQuery = ref('')
 const searchInput = ref(null)
 const triggerEl = ref(null)
+const dropdownEl = ref(null)
 
-const { isFlippedTop, isAlignedRight } = useDropdownPosition(triggerEl, isOpen, { panelHeight: 320 })
+const { isFlippedTop, dropdownStyle, updatePosition } = useDropdownPosition(triggerEl, isOpen, {
+  matchWidth: true,
+  panelHeight: 300,
+  margin: 6
+})
 
 const allItems = computed(() => (Array.isArray(props.options) ? props.options : props.items) || [])
 
@@ -296,7 +308,11 @@ const toggleDropdown = () => {
   isOpen.value = !isOpen.value
   if (isOpen.value) {
     searchQuery.value = ''
-    nextTick(() => searchInput.value?.focus())
+    updatePosition()
+    nextTick(() => {
+      updatePosition()
+      searchInput.value?.focus()
+    })
   }
 }
 
@@ -347,10 +363,18 @@ const closeDropdown = () => {
 // v-click-outside directive
 const vClickOutside = {
   mounted(el, binding) {
-    el._co = (e) => { if (!el.contains(e.target)) binding.value(e) }
+    el._co = (e) => {
+      if (el.contains(e.target)) return
+      if (dropdownEl.value && dropdownEl.value.contains(e.target)) return
+      binding.value(e)
+    }
     document.addEventListener('mousedown', el._co)
   },
-  unmounted(el) { document.removeEventListener('mousedown', el._co) }
+  unmounted(el) {
+    if (el._co) {
+      document.removeEventListener('mousedown', el._co)
+    }
+  }
 }
 </script>
 

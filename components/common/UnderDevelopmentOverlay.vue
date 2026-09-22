@@ -33,9 +33,9 @@
                     {{ t('under_development.title') }}
                 </h2>
 
-                <p class="text-gray-500 mb-8 leading-relaxed font-medium">
+                <div class="text-gray-500 mb-8 leading-relaxed font-medium">
                     {{ t('under_development.desc') }}
-                </p>
+                </div>
 
                 <a href="https://www.instagram.com/archeris.net/" target="_blank"
                     class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-tr from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white rounded-2xl font-black text-sm  tracking-widest shadow-lg hover:shadow-sm hover:scale-[1.02] transition-all">

@@ -8,13 +8,13 @@
       :back-to="getBackLink()"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('dashboard.reports.title', 'Laporan'), to: '/dashboard/organizer/reports' },
+        { label: t('dashboard.reports.title'), to: '/dashboard/organizer/reports' },
         { label: t('dashboard.reports.attendance_title') }
       ]"
     >
       <template #actions>
         <BaseButton variant="primary" icon="ph:download-simple-bold" class="h-11 px-5 text-xs font-black" @click="handleExportExcel">
-          {{ t('dashboard.reports.export_excel', 'Ekspor Excel') }}
+          {{ t('dashboard.reports.export_excel') }}
         </BaseButton>
       </template>
     </DashboardHeader>
@@ -23,7 +23,7 @@
     <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
       <div class="flex items-center gap-2 pb-3 border-b border-gray-100">
         <Icon icon="ph:funnel-bold" class="text-primary text-lg" />
-        <h3 class="text-sm font-black text-navy-dark">{{ t('dashboard.reports.report_filters', 'Filter Laporan') }}</h3>
+        <h3 class="text-sm font-black text-navy-dark">{{ t('dashboard.reports.report_filters') }}</h3>
       </div>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -58,17 +58,17 @@
 
     <!-- Stats summary grid -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
-      <StatCard :title="t('dashboard.reports.total_registered', 'Total Terdaftar')" :value="stats.total_registered || 0" icon="ph:users-three-bold" color="primary" />
-      <StatCard :title="t('dashboard.reports.checked_in_present', 'Sudah Check-in / Hadir')" :value="stats.total_checked_in || 0" icon="ph:check-square-bold" color="success" />
-      <StatCard :title="t('dashboard.reports.pending_checkin', 'Belum Check-in')" :value="stats.total_pending || 0" icon="ph:clock-bold" color="warning" />
-      <StatCard :title="t('dashboard.reports.checkin_rate', 'Tingkat Kehadiran')" :value="attendanceRate + '%'" icon="ph:percent-bold" color="primary" />
+      <StatCard :title="t('dashboard.reports.total_registered')" :value="stats.total_registered || 0" icon="ph:users-three-bold" color="primary" />
+      <StatCard :title="t('dashboard.reports.checked_in_present')" :value="stats.total_checked_in || 0" icon="ph:check-square-bold" color="success" />
+      <StatCard :title="t('dashboard.reports.pending_checkin')" :value="stats.total_pending || 0" icon="ph:clock-bold" color="warning" />
+      <StatCard :title="t('dashboard.reports.checkin_rate')" :value="attendanceRate + '%'" icon="ph:percent-bold" color="primary" />
     </div>
 
     <!-- Check-in Timeline Chart -->
     <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
       <h3 class="text-navy-dark font-black text-base flex items-center gap-2 mb-6">
         <Icon icon="ph:chart-line-up-bold" class="text-primary" />
-        {{ t('dashboard.reports.checkin_timeline', 'Lini Masa Registrasi Ulang') }}
+        {{ t('dashboard.reports.checkin_timeline') }}
       </h3>
       <div v-if="trendPoints.length > 1" class="relative">
         <svg viewBox="0 0 500 150" class="w-full h-48 overflow-visible" preserveAspectRatio="none">
@@ -89,7 +89,7 @@
       </div>
       <div v-else class="h-48 flex flex-col items-center justify-center text-gray-400 space-y-2 border border-dashed border-gray-100 rounded-xl">
         <Icon icon="ph:identification-card-bold" class="text-3xl" />
-        <div class="text-xs font-bold">{{ t('dashboard.reports.no_timeline_data', 'Belum ada data lini masa.') }}</div>
+        <div class="text-xs font-bold">{{ t('dashboard.reports.no_timeline_data') }}</div>
       </div>
     </div>
 
@@ -99,7 +99,7 @@
       <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
         <h3 class="text-navy-dark font-black text-sm flex items-center gap-2">
           <Icon icon="ph:tag-bold" class="text-primary" />
-          {{ t('dashboard.reports.attendance_by_division', 'Kehadiran per Divisi') }}
+          {{ t('dashboard.reports.attendance_by_division') }}
         </h3>
         <div class="space-y-4 max-h-96 overflow-y-auto no-scrollbar pr-1">
           <div v-for="item in stats.categories_breakdown" :key="item.bow_type + item.age_group + item.gender" class="space-y-1">
@@ -115,61 +115,40 @@
               <div class="bg-emerald-500 h-full rounded-full" :style="{ width: getRate(item.checked_in, item.registered) + '%' }"></div>
             </div>
           </div>
-          <div v-if="!stats.categories_breakdown?.length" class="text-center py-6 text-xs text-gray-400">{{ t('dashboard.reports.no_split_data', 'Belum ada data distribusi.') }}</div>
+          <div v-if="!stats.categories_breakdown?.length" class="text-center py-6 text-xs text-gray-400">{{ t('dashboard.reports.no_split_data') }}</div>
         </div>
       </div>
 
-      <!-- Checked-in List -->
-      <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
-        <div class="p-5 border-b border-gray-100">
-          <h3 class="text-navy-dark font-black text-sm flex items-center gap-2">
-            <Icon icon="ph:check-circle-bold" class="text-primary" />
-            {{ t('dashboard.reports.recent_checkin_logs', 'Log Registrasi Ulang Terbaru') }}
-          </h3>
-        </div>
-        <div class="overflow-x-auto overflow-y-auto max-h-96 no-scrollbar">
-          <table class="w-full text-left text-xs min-w-[500px] sm:min-w-0">
-            <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100 sticky top-0">
-              <tr>
-                <th @click="toggleSort('archer')" class="px-5 py-3 cursor-pointer hover:text-navy transition-colors select-none">
-                  <div class="flex items-center gap-1.5">
-                    <span>{{ t('dashboard.reports.archer') }}</span>
-                    <Icon v-if="sortBy === 'archer'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                  </div>
-                </th>
-                <th @click="toggleSort('event')" class="px-5 py-3 cursor-pointer hover:text-navy transition-colors select-none">
-                  <div class="flex items-center gap-1.5">
-                    <span>{{ t('dashboard.reports.event') }}</span>
-                    <Icon v-if="sortBy === 'event'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                  </div>
-                </th>
-                <th @click="toggleSort('checkin_time')" class="px-5 py-3 cursor-pointer hover:text-navy transition-colors select-none">
-                  <div class="flex items-center gap-1.5">
-                    <span>{{ t('dashboard.reports.checkin_time') }}</span>
-                    <Icon v-if="sortBy === 'checkin_time'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                    <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100 font-medium">
-              <tr v-for="c in sortedRecentCheckins" :key="c.id" class="hover:bg-gray-50 transition-colors">
-                <td class="px-5 py-3 flex items-center gap-3">
-                  <img :src="useImageOrDefault(c.avatar_url, c.archer_name)" :alt="c.archer_name" class="size-7 rounded-full object-cover border border-gray-100 bg-gray-50 shrink-0" />
-                  <span class="text-navy-dark font-bold capitalize">{{ c.archer_name.toLowerCase() }}</span>
-                </td>
-                <td class="px-5 py-3 text-gray-500 font-semibold truncate max-w-[120px] capitalize">{{ c.event_name.toLowerCase() }}</td>
-                <td class="px-5 py-3 text-navy-dark font-mono font-semibold">{{ formatDateTime(c.last_reregistration_at) }}</td>
-              </tr>
-              <tr v-if="!sortedRecentCheckins.length">
-                <td colspan="3" class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_checkins_recorded', 'Belum ada catatan registrasi ulang terbaru.') }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <!-- Checked-in List with DashboardDataTable -->
+      <DashboardDataTable
+        :items="stats.recent_checkins || []"
+        :headers="headers"
+        :searchable="true"
+        :search-placeholder="t('dashboard.reports.search_placeholder', 'Cari nama pemanah...')"
+        :title="t('dashboard.reports.recent_checkin_logs')"
+        :subtitle="t('dashboard.reports.total_checked_in_count', '{n} Check-in', { n: (stats.recent_checkins || []).length })"
+        :icon="'ph:check-circle-bold'"
+        :default-page-size="10"
+      >
+        <template #item-archer_name="{ item }">
+          <div class="flex items-center gap-3">
+            <img :src="useImageOrDefault(item.avatar_url, item.archer_name)" :alt="item.archer_name" class="size-7 rounded-full object-cover border border-gray-100 bg-gray-50 shrink-0" />
+            <span class="text-navy-dark font-bold capitalize text-xs">{{ (item.archer_name || '').toLowerCase() }}</span>
+          </div>
+        </template>
+
+        <template #item-event_name="{ item }">
+          <span class="text-gray-500 font-semibold truncate max-w-[120px] capitalize text-xs">{{ (item.event_name || '').toLowerCase() }}</span>
+        </template>
+
+        <template #item-checkin_time="{ item }">
+          <span class="text-navy-dark font-mono font-semibold text-xs">{{ formatDateTime(item.last_reregistration_at) }}</span>
+        </template>
+
+        <template #empty>
+          <div class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_checkins_recorded') }}</div>
+        </template>
+      </DashboardDataTable>
     </div>
   </div>
 </template>
@@ -180,34 +159,32 @@ import { computed, onMounted, ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { useI18n } from 'vue-i18n'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
+import { exportToExcel } from '~/utils/exportExcel'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
-const { t } = useI18n()
-useHead({ title: computed(() => (t ? t('dashboard.reports.attendance_title', 'Kehadiran & Registrasi Ulang') : 'Kehadiran & Registrasi Ulang') + ' - Archeris Dashboard') })
+const { t, locale } = useI18n()
+useHead({ title: computed(() => `${t('dashboard.reports.attendance_title')} - Archeris Dashboard`) })
 
 const route = useRoute()
 const api = useApi()
 
-const sortBy = ref('checkin_time')
-const sortOrder = ref('desc')
-
-const toggleSort = (column) => {
-  if (sortBy.value === column) {
-    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
-  } else {
-    sortBy.value = column
-    sortOrder.value = 'asc'
-  }
-}
+const headers = computed(() => [
+  { key: 'archer_name', label: t('dashboard.reports.archer', 'Pemanah'), sortable: true },
+  { key: 'event_name', label: t('dashboard.reports.event', 'Event'), sortable: true },
+  { key: 'checkin_time', label: t('dashboard.reports.checkin_time', 'Waktu Check-in'), sortable: true }
+])
 
 const eventsList = ref([])
 const eventsDropdownItems = computed(() => [
-  { title: t('dashboard.reports.all_events', 'Semua Turnamen'), value: 'all' },
+  { title: t('dashboard.reports.all_events'), value: 'all' },
   ...eventsList.value.map(e => ({ title: e.name, value: e.id }))
 ])
+
 const stats = ref({
   total_registered: 0,
   total_checked_in: 0,
@@ -216,25 +193,6 @@ const stats = ref({
   checkin_trend: [],
   recent_checkins: [],
   events_list: []
-})
-
-const sortedRecentCheckins = computed(() => {
-  const list = stats.value?.recent_checkins || []
-  const dir = sortOrder.value === 'asc' ? 1 : -1
-  return [...list].sort((a, b) => {
-    if (sortBy.value === 'archer') {
-      return dir * (a.archer_name || '').localeCompare(b.archer_name || '', undefined, { numeric: true, sensitivity: 'base' })
-    }
-    if (sortBy.value === 'event') {
-      return dir * (a.event_name || '').localeCompare(b.event_name || '', undefined, { numeric: true, sensitivity: 'base' })
-    }
-    if (sortBy.value === 'checkin_time') {
-      const tA = new Date(a.last_reregistration_at || 0).getTime()
-      const tB = new Date(b.last_reregistration_at || 0).getTime()
-      return dir * (tA - tB)
-    }
-    return 0
-  })
 })
 
 const filters = reactive({
@@ -315,10 +273,8 @@ const svgAreaPath = computed(() => {
   if (!path) return ''
   const width = 500
   const height = 150
-  return `${path} L ${width},${height} L 0,${height} Z`
+  return `${path} L 500,150 L 0,150 Z`
 })
-
-import { exportToExcel } from '~/utils/exportExcel'
 
 const handleExportExcel = () => {
   const list = stats.value.recent_checkins || []

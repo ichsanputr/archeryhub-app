@@ -30,9 +30,9 @@
                     Root <br />
                     Terminal
                 </h1>
-                <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
+                <div class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
                     Akses kontrol pusat untuk pengelolaan ekosistem panahan digital Archeris.net.
-                </p>
+                </div>
             </div>
         </div>
 
@@ -53,8 +53,8 @@
                 <div class="text-center sm:text-left">
                     <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display ">System Restore
                     </h2>
-                    <p class="mt-2 text-slate-500 text-sm font-body">Input secure identification to access the root
-                        environment.</p>
+                    <div class="mt-2 text-slate-500 text-sm font-body">Input secure identification to access the root
+                        environment.</div>
                 </div>
 
                 <form @submit.prevent="handleLogin" class="space-y-6">
@@ -85,18 +85,18 @@
                 </form>
 
                 <div class="pt-8 border-t border-gray-100 mt-8">
-                    <p class="text-center text-[10px] text-gray-400 font-bold tracking-[0.3em]">
+                    <div class="text-center text-[10px] text-gray-400 font-bold tracking-[0.3em]">
                         Archeris OS v2.0 • Secure Terminal
-                    </p>
+                    </div>
                 </div>
 
-                <p class="mt-8 text-center text-sm text-slate-600 font-body">
+                <div class="mt-8 text-center text-sm text-slate-600 font-body">
                     Unauthorized access is strictly monitored.
                     <NuxtLink to="/"
                         class="font-black text-navy hover:text-primary transition-colors">
                         Exit to Public
                     </NuxtLink>
-                </p>
+                </div>
             </div>
         </div>
     </div>

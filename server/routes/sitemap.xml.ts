@@ -58,16 +58,17 @@ export default defineEventHandler(async (event) => {
     }
   } catch (_) {}
 
-  // ── 3. Dynamic Tournaments ──
+  // ── 3. Dynamic Tournaments (Archeris Platform) ──
   try {
-    const tournamentsRes: any = await $fetch(`${apiBaseUrl}/tournaments`, {
-      timeout: 3000,
+    const tournamentsRes: any = await $fetch(`${apiBaseUrl}/tournaments?limit=1000`, {
+      timeout: 4000,
       headers: { 'Accept': 'application/json' }
     }).catch(() => null)
 
     const tournaments = tournamentsRes?.tournaments || tournamentsRes?.events || tournamentsRes?.data || (Array.isArray(tournamentsRes) ? tournamentsRes : [])
     if (Array.isArray(tournaments)) {
       for (const t of tournaments) {
+        if (t?.visibility === 'internal') continue
         const slug = t?.slug || t?.uuid || t?.id
         if (slug) {
           const modDate = t.updated_at || t.start_date || today
@@ -83,28 +84,7 @@ export default defineEventHandler(async (event) => {
     }
   } catch (_) {}
 
-  // ── 4. Dynamic Archers Profile ──
-  try {
-    const archersRes: any = await $fetch(`${apiBaseUrl}/archers`, {
-      timeout: 3000,
-      headers: { 'Accept': 'application/json' }
-    }).catch(() => null)
-
-    const archers = archersRes?.archers || archersRes?.data || (Array.isArray(archersRes) ? archersRes : [])
-    if (Array.isArray(archers)) {
-      for (const archer of archers) {
-        const slug = archer?.slug || archer?.username || archer?.id
-        if (slug) {
-          dynamicItems.push({
-            url: `${siteUrl}/archers/${slug}`,
-            lastmod: today,
-            changefreq: 'weekly',
-            priority: 0.7
-          })
-        }
-      }
-    }
-  } catch (_) {}
+  // (Dynamic archer and organizer profiles are excluded from sitemap due to noindex)
 
   // ── 5. Dynamic Documentation Pages ──
   try {
@@ -117,9 +97,11 @@ export default defineEventHandler(async (event) => {
     if (Array.isArray(docs)) {
       for (const doc of docs) {
         if (doc?.slug) {
+          const modDate = doc.updated_at || doc.created_at || today
+          const cleanDate = typeof modDate === 'string' ? modDate.split('T')[0] : today
           dynamicItems.push({
             url: `${siteUrl}/docs/${doc.slug}`,
-            lastmod: today,
+            lastmod: cleanDate,
             changefreq: 'weekly',
             priority: 0.8
           })
@@ -130,12 +112,21 @@ export default defineEventHandler(async (event) => {
 
   const allItems = [...staticItems, ...dynamicItems]
 
+  const escapeXml = (unsafe: string) => {
+    return unsafe
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;')
+  }
+
   // ── Generate XML ──
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${allItems.map(item => `  <url>
-    <loc>${item.url}</loc>
+    <loc>${escapeXml(encodeURI(item.url))}</loc>
     ${item.lastmod ? `<lastmod>${item.lastmod}</lastmod>` : ''}
     ${item.changefreq ? `<changefreq>${item.changefreq}</changefreq>` : ''}
     ${item.priority ? `<priority>${item.priority.toFixed(1)}</priority>` : ''}

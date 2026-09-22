@@ -49,14 +49,8 @@
 
       <!-- Event Manage Mode (For All Personas) -->
       <div v-if="isEventManageMode" class="hidden md:flex items-center gap-4 flex-1">
-        <NuxtLink :to="backToDashboardPath"
-          class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600 hover:text-navy shrink-0">
-          <Icon icon="ph:arrow-left" class="text-xl" />
-          <span class="text-sm font-bold">{{ t('dashboard.header.back_to_dashboard') }}</span>
-        </NuxtLink>
-        <div class="h-6 w-px bg-gray-200"></div>
         <h1 class="text-lg font-black text-header-text truncate">
-          {{ eventTitle || fetchedEventName || t('dashboard.header.event_management', 'Event') }}
+          {{ eventTitle || fetchedEventName || t('dashboard.header.event_management') }}
         </h1>
       </div>
 
@@ -90,8 +84,10 @@
     <!-- Right Section -->
     <div class="flex items-center gap-3 pl-4">
       <!-- Language Switcher -->
-      <div class="relative mr-1" @mouseenter="showLangMenu = true" @mouseleave="showLangMenu = false">
+      <div class="relative mr-1" v-click-outside="() => showLangMenu = false" @mouseenter="showLangMenu = true" @mouseleave="showLangMenu = false">
         <button
+          type="button"
+          @click="showLangMenu = !showLangMenu"
           class="flex items-center gap-2 px-3 h-9 rounded-xl bg-gray-100 dark:bg-white/5 border border-transparent dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 transition-all duration-300 text-xs font-bold tracking-widest text-gray-700 dark:text-slate-300">
           <Icon :icon="langFlags[locale] || 'ph:globe-bold'"
             class="text-lg rounded-full overflow-hidden border border-gray-200 dark:border-white/10 shrink-0" />
@@ -118,34 +114,47 @@
       </div>
 
       <!-- Notification Bell -->
-      <div v-if="user" ref="notificationRef" class="relative">
-        <!-- Fullscreen Backdrop for click-outside -->
-        <Teleport to="body">
-          <div v-if="showNotifications" class="fixed inset-0 z-40 bg-transparent"
-            @click="showNotifications = false" @pointerdown="showNotifications = false" />
-        </Teleport>
-
-        <button @click.stop="toggleNotifications" :class="[
-          isScrolled || !transparent
-            ? 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-navy dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10'
-            : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white border border-white/20'
-        ]" class="relative z-50 flex items-center justify-center h-9 w-9 rounded-xl transition-all cursor-pointer"
-          :title="t('notifications.title', 'Notifikasi')">
+      <div v-if="user" class="relative" v-click-outside="() => showNotifications = false">
+        <button
+          type="button"
+          @click="toggleNotifications"
+          :class="[
+            isScrolled || !transparent
+              ? 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-navy dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10'
+              : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white border border-white/20'
+          ]"
+          class="flex items-center justify-center h-9 w-9 rounded-xl border border-transparent dark:border-white/10 transition-all duration-300 cursor-pointer"
+          :title="t('notifications.title')"
+        >
           <Icon icon="ph:bell-bold" class="text-lg" />
-          <span v-if="unreadCount > 0"
-            class="absolute -top-1 -right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-black text-white shadow-sm ring-2 ring-white dark:ring-slate-900">
+          <span
+            v-if="unreadCount > 0"
+            class="absolute -top-1 -right-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-black text-white shadow-sm ring-2 ring-white dark:ring-slate-900"
+          >
             {{ unreadCount > 99 ? '99+' : unreadCount }}
           </span>
         </button>
 
         <!-- Dropdown Component -->
-        <Transition enter-active-class="transition duration-200 ease-out"
-          enter-from-class="opacity-0 translate-y-2 scale-95" enter-to-class="opacity-100 translate-y-0 scale-100"
+        <Transition
+          enter-active-class="transition duration-200 ease-out"
+          enter-from-class="opacity-0 translate-y-1"
+          enter-to-class="opacity-100 translate-y-0"
           leave-active-class="transition duration-150 ease-in"
-          leave-from-class="opacity-100 translate-y-0 scale-100" leave-to-class="opacity-0 translate-y-2 scale-95">
-          <NotificationList v-if="showNotifications" :notifications="notifications" :unread-count="unreadCount"
-            class="z-50"
-            @close="showNotifications = false" @mark-all-read="handleMarkAllRead" @mark-read="markAsRead" @delete="deleteNotification" @click="handleNotificationSelect" />
+          leave-from-class="opacity-100 translate-y-0"
+          leave-to-class="opacity-0 translate-y-1"
+        >
+          <div v-if="showNotifications" class="absolute right-0 top-full pt-2 w-80 sm:w-96 z-[99]">
+            <NotificationList
+              :notifications="notifications"
+              :unread-count="unreadCount"
+              @close="showNotifications = false"
+              @mark-all-read="handleMarkAllRead"
+              @mark-read="markAsRead"
+              @delete="deleteNotification"
+              @click="handleNotificationSelect"
+            />
+          </div>
         </Transition>
       </div>
 
@@ -177,6 +186,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, defineAsyncComponent } from 'vue'
+import { useDashboardI18n } from '~/composables/useDashboardI18n'
 const NotificationList = defineAsyncComponent(() => import('./NotificationList.vue'))
 const DocSearchDialog = defineAsyncComponent(() => import('./DocSearchDialog.vue'))
 import { useRoute, useRouter } from 'vue-router'
@@ -186,6 +196,7 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 const config = useRuntimeConfig()
 
 const { locale, locales, setLocaleCookie, loadLocaleMessages, t } = useI18n()
+const { setLocale: setDashboardLocale } = useDashboardI18n()
 const showLangMenu = ref(false)
 const langFlags = {
   en: 'circle-flags:us',
@@ -195,6 +206,7 @@ const langFlags = {
 const changeDashboardLocale = async (code) => {
   await loadLocaleMessages(code)
   locale.value = code
+  setDashboardLocale(code)
   if (process.client) {
     try {
       localStorage.setItem('dashboard_locale', code)
@@ -288,13 +300,16 @@ const {
   stopPolling
 } = useNotifications()
 
-const toggleNotifications = (event) => {
-  if (event) {
-    event.stopPropagation()
-  }
+const toggleNotifications = () => {
   showNotifications.value = !showNotifications.value
   if (showNotifications.value) {
     fetchNotifications({ limit: 10 })
+  }
+}
+
+const closeNotifications = () => {
+  if (showNotifications.value) {
+    showNotifications.value = false
   }
 }
 
@@ -315,25 +330,6 @@ const handleNotificationSelect = async (note) => {
 watch(() => route.path, () => {
   showNotifications.value = false
 })
-
-// Notification panel ref for click outside
-const notificationRef = ref(null)
-
-const handleDocumentClickOutside = (event) => {
-  if (!showNotifications.value) return
-  const el = notificationRef.value
-  if (!el) {
-    showNotifications.value = false
-    return
-  }
-  const path = event.composedPath ? event.composedPath() : []
-  if (path.length > 0) {
-    if (path.includes(el)) return
-  } else if (el.contains(event.target)) {
-    return
-  }
-  showNotifications.value = false
-}
 
 const handleKeyDown = (event) => {
   if (event.key === 'Escape' && showNotifications.value) {
@@ -357,15 +353,11 @@ onMounted(() => {
     fetchUnreadCount()
     startPolling(45000)
   }
-  document.addEventListener('pointerdown', handleDocumentClickOutside)
-  document.addEventListener('click', handleDocumentClickOutside)
   window.addEventListener('keydown', handleKeyDown)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
-  document.removeEventListener('pointerdown', handleDocumentClickOutside)
-  document.removeEventListener('click', handleDocumentClickOutside)
   window.removeEventListener('keydown', handleKeyDown)
   stopPolling()
 })

@@ -376,14 +376,26 @@
 import { ref, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
-import { articles } from '~/data/articles'
+import { useApi } from '~/composables/useApi'
 
 definePageMeta({
   layout: false
 })
 
 const route = useRoute()
-const articleList = ref(articles || [])
+const { get } = useApi()
+
+const { data: dbArticles } = await useAsyncData('thumbnail-articles', async () => {
+  try {
+    const res = await get('/blog/articles')
+    if (res?.data && Array.isArray(res.data)) {
+      return res.data
+    }
+  } catch {}
+  return []
+})
+
+const articleList = computed(() => dbArticles.value || [])
 
 const isPureCanvas = computed(() => {
   return route.query.render === 'canvas' || route.query.render === 'true'

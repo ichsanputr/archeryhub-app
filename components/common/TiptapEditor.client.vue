@@ -233,7 +233,7 @@
                         :style="{ background: currentColor }"></span>
                 </TBtn>
                 <div v-if="colorMenuOpen" class="dropdown-menu p-3 min-w-[200px]">
-                    <p class="text-[10px] font-black text-gray-400 tracking-widest mb-2">WARNA TEKS</p>
+                    <div class="text-[10px] font-black text-gray-400 tracking-widest mb-2">WARNA TEKS</div>
                     <div class="grid grid-cols-8 gap-1">
                         <button v-for="color in colorPalette" :key="color" type="button" @click="setColor(color)"
                             class="w-5 h-5 rounded hover:scale-125 transition-transform border border-white/40 shadow-sm"
@@ -325,7 +325,7 @@
                             <img :src="imageUrl" class="max-h-40 w-auto object-contain" @error="imageUrlError = true"
                                 @load="imageUrlError = false" />
                         </div>
-                        <p v-if="imageUrlError" class="text-xs text-red-500 font-bold">URL gambar tidak valid.</p>
+                        <div v-if="imageUrlError" class="text-xs text-red-500 font-bold">URL gambar tidak valid.</div>
                     </div>
                     <div class="flex gap-2 mt-5">
                         <button type="button" @click="insertImageUrl" :disabled="!imageUrl || imageUrlError"
@@ -600,6 +600,8 @@ const insertTable = () => {
     font-size: 0.9375rem;
     line-height: 1.8;
     color: #1e293b;
+    max-height: 480px;
+    overflow-y: auto;
 }
 
 .editor-prose p {

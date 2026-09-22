@@ -74,7 +74,7 @@
           :label="t('org_teams.search_label')" />
       </div>
       <div class="w-full md:w-64">
-        <BaseSelect v-model="statusFilter" :items="statusOptions" :label="t('org_teams.status_label')" :placeholder="t('org_teams.select_status', 'Pilih Status')" />
+        <BaseSelect v-model="statusFilter" :items="statusOptions" :label="t('org_teams.status_label')" :placeholder="t('org_teams.select_status')" />
       </div>
       <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
         {{ t('common.reset') }}

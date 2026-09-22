@@ -9,7 +9,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 useHead({
-  title: computed(() => (t ? t('notifications.title', 'Notifikasi Penyelenggara') : 'Notifikasi Penyelenggara') + ' - Archeris Dashboard')
+  title: computed(() => (t ? t('notifications.title') : 'Notifikasi Penyelenggara') + ' - Archeris Dashboard')
 })
 
 definePageMeta({

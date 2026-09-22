@@ -357,6 +357,7 @@ const typeFilters = computed(() => {
     const qualCount = sessions.filter(s => s.item_type === 'qualification').length
     const elimCount = sessions.filter(s => s.item_type === 'elimination').length
     const finalsCount = sessions.filter(s => s.item_type === 'finals').length
+    const breakCount = sessions.filter(s => s.item_type === 'break').length
     const genCount = sessions.filter(s => s.item_type === 'general' || !s.item_type).length
 
     const list = [
@@ -365,6 +366,7 @@ const typeFilters = computed(() => {
     if (qualCount > 0) list.push({ value: 'qualification', label: t('event_schedule.type_qualification', 'Kualifikasi'), count: qualCount, icon: 'ph:target-bold' })
     if (elimCount > 0) list.push({ value: 'elimination', label: t('event_schedule.type_elimination', 'Eliminasi'), count: elimCount, icon: 'ph:tree-structure-bold' })
     if (finalsCount > 0) list.push({ value: 'finals', label: t('event_schedule.type_finals', 'Final & Medali'), count: finalsCount, icon: 'ph:trophy-bold' })
+    if (breakCount > 0) list.push({ value: 'break', label: t('event_schedule.type_break', 'Istirahat / ISHOMA'), count: breakCount, icon: 'ph:coffee-bold' })
     if (genCount > 0) list.push({ value: 'general', label: t('event_schedule.type_general', 'Umum / Latihan'), count: genCount, icon: 'ph:info-bold' })
 
     return list
@@ -483,6 +485,7 @@ const getItemTypeLabel = (type) => {
         case 'qualification': return t('event_schedule.type_qualification', 'Kualifikasi')
         case 'elimination': return t('event_schedule.type_elimination', 'Eliminasi')
         case 'finals': return t('event_schedule.type_finals', 'Final & Medali')
+        case 'break': return t('event_schedule.type_break', 'Istirahat / ISHOMA')
         default: return t('event_schedule.type_general', 'Umum / Latihan')
     }
 }
@@ -492,6 +495,7 @@ const getItemTypeIcon = (type) => {
         case 'qualification': return 'ph:target-bold'
         case 'elimination': return 'ph:tree-structure-bold'
         case 'finals': return 'ph:trophy-bold'
+        case 'break': return 'ph:coffee-bold'
         default: return 'ph:info-bold'
     }
 }
@@ -501,6 +505,7 @@ const getItemTypeBadgeClass = (type) => {
         case 'qualification': return 'bg-blue-50 text-blue-700 border border-blue-100'
         case 'elimination': return 'bg-orange-50 text-orange-700 border border-orange-100'
         case 'finals': return 'bg-amber-50 text-amber-800 border border-amber-200'
+        case 'break': return 'bg-rose-50 text-rose-700 border border-rose-200'
         default: return 'bg-gray-100 text-gray-700 border border-gray-200'
     }
 }

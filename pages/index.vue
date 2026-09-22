@@ -80,7 +80,14 @@ const structuredData = computed(() => [
 useHead({
     title: computed(() => t('home.meta_title', 'Archeris - The Best Archery Scoring System')),
     link: [
-        { rel: 'canonical', href: useRequestURL().href }
+        { rel: 'canonical', href: 'https://archeris.net' },
+        {
+            rel: 'preload',
+            as: 'image',
+            type: 'image/webp',
+            href: '/hero-homepage.webp',
+            fetchpriority: 'high'
+        }
     ],
     script: [
         {

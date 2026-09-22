@@ -1,854 +1,7 @@
-<template>
-    <div class="flex flex-col gap-8">
-        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
-        
-        <!-- Header -->
-        <DashboardHeader
-            :title="t('dashboard_events_page.title', 'Pengaturan Halaman Event')"
-            :subtitle="t('dashboard_events_page.subtitle', 'Atur konten, jadwal, lokasi, galeri, dan tampilan publik halaman event Anda.')"
-            icon="ph:browser-bold"
-            :breadcrumbs="[
-                { label: 'Dashboard', to: '/dashboard/organizer' },
-                { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-                { label: t('dashboard_events_page.title', 'Halaman Event') }
-            ]"
-        >
-            <template #actions>
-                <div class="flex flex-col sm:flex-row gap-3 shrink-0">
-                    <BaseButton variant="white" icon="ph:eye-bold" :to="`/tournaments/${eventData.slug}`" target="_blank"
-                        class="h-10 sm:h-11 px-5 border-white/20 text-xs sm:text-sm font-bold">
-                        {{ t('dashboard_events_page.view_button', 'Pratinjau Halaman') }}
-                    </BaseButton>
-                    <BaseButton variant="primary" icon="ph:floppy-disk-bold"
-                        @click="isSubscriptionActive ? saveEventPage() : (showPremiumModal = true)"
-                        :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
-                        :loading="saving"
-                        class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all text-xs sm:text-sm font-black tracking-widest">
-                        {{ t('dashboard_events_page.save_button', 'Simpan Perubahan') }}
-                    </BaseButton>
-                </div>
-            </template>
-        </DashboardHeader>
-
-        <!-- Tabs Navigation -->
-        <div class="flex gap-1 bg-gray-100/80 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm mt-2">
-            <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-                :class="activeTab === tab.id ? 'bg-white shadow text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
-                class="flex items-center justify-center gap-2 flex-1 min-w-[120px] px-5 py-2.5 rounded-xl text-sm font-black transition-all">
-                <Icon :icon="tab.icon" class="text-lg sm:text-xl shrink-0" />
-                <span>{{ $t(`dashboard_events_page.tabs.${tab.id}`) }}</span>
-            </button>
-        </div>
-
-        <div v-if="activeTab === 'faq'" class="space-y-6">
-            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                    <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
-                        <Icon icon="ph:question" class="text-primary text-lg sm:text-xl" />
-                        {{ $t('dashboard_events_page.faq.title') }}
-                    </h2>
-                    <BaseButton variant="outline" size="xs" @click="addFAQField">
-                        <Icon icon="ph:plus-bold" class="mr-1" /> {{ $t('dashboard_events_page.faq.add') }}
-                    </BaseButton>
-                </div>
-                    <div class="p-4 sm:p-6 space-y-4">
-                        <div v-if="form.faq?.length === 0"
-                        class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                        <div class="text-sm text-gray-500">{{ $t('dashboard_events_page.faq.no_items') }}</div>
-                    </div>
-                    <div v-else class="space-y-4">
-                        <div v-for="(item, index) in form.faq" :key="index"
-                            class="bg-gray-50 p-6 rounded-2xl border border-gray-100 relative group">
-                            <button @click="removeFAQField(index)"
-                                class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors">
-                                <Icon icon="ph:trash" />
-                            </button>
-                            <div class="space-y-4">
-                                            <div class="space-y-2">
-                                                <label class="text-xs font-bold text-gray-400  tracking-widest">{{ $t('dashboard_events_page.faq.question_label') }}</label>
-                                                <input v-model="item.question" type="text"
-                                                    :placeholder="$t('dashboard_events_page.faq.question_placeholder')"
-                                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                                            </div>
-                                            <div class="space-y-2">
-                                                <label class="text-xs font-bold text-gray-400  tracking-widest">{{ $t('dashboard_events_page.faq.answer_label') }}</label>
-                                                <textarea v-model="item.answer" rows="3"
-                                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all"
-                                                    :placeholder="$t('dashboard_events_page.faq.answer_placeholder')"></textarea>
-                                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Main Content -->
-        <div class="space-y-6">
-            <!-- Informasi Tab -->
-            <div v-if="activeTab === 'informasi'" class="space-y-6">
-                <section class="relative z-20 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-visible">
-                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 rounded-t-2xl overflow-hidden">
-                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:info" class="text-primary text-lg sm:text-xl" />
-                            {{ $t('dashboard_events_page.information.basic_title') }}
-                        </h2>
-                    </div>
-                    <div class="p-4 sm:p-6 space-y-5">
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.information.name_label') }}</label>
-                            <input v-model="form.name" type="text"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                :placeholder="$t('dashboard_events_page.information.name_placeholder')" />
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.information.description_label') }}</label>
-                            <TiptapEditor v-model="form.description" class="min-h-[300px]" />
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.information.start_date_label') }}</label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <BaseDatePicker :model-value="getSchedDate(form, 'start_date')" @update:model-value="val => setSchedDate(form, 'start_date', val)" />
-                                    <BaseTimePicker :model-value="getSchedTime(form, 'start_date')" @update:model-value="val => setSchedTime(form, 'start_date', val)" placeholder="08:00" />
-                                </div>
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.information.end_date_label') }}</label>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <BaseDatePicker :model-value="getSchedDate(form, 'end_date')" @update:model-value="val => setSchedDate(form, 'end_date', val)" />
-                                    <BaseTimePicker :model-value="getSchedTime(form, 'end_date')" @update:model-value="val => setSchedTime(form, 'end_date', val)" placeholder="17:00" />
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <BaseSelect v-model="form.status" :items="statusOptions" :label="$t('dashboard_events_page.information.status_label')" />
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!-- Pendaftaran Tab -->
-            <div v-if="activeTab === 'pendaftaran'" class="space-y-6">
-
-                <!-- Waktu Pendaftaran -->
-                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-visible">
-                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 rounded-t-2xl">
-                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:calendar-check" class="text-primary text-lg sm:text-xl" />
-                            {{ $t('dashboard_events_page.registration.timeline_title') }}
-                        </h2>
-                    </div>
-                    <div class="p-4 sm:p-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
-                                    <Icon icon="ph:calendar-blank-bold" class="text-primary text-base" />
-                                    {{ $t('dashboard_events_page.registration.start_label') }}
-                                </label>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <BaseDatePicker :model-value="getSchedDate(form.page_settings, 'registration_start')" @update:model-value="val => setSchedDate(form.page_settings, 'registration_start', val)" />
-                                    <BaseTimePicker :model-value="getSchedTime(form.page_settings, 'registration_start')" @update:model-value="val => setSchedTime(form.page_settings, 'registration_start', val)" placeholder="08:00" />
-                                </div>
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
-                                    <Icon icon="ph:calendar-check-bold" class="text-primary text-base" />
-                                    {{ $t('dashboard_events_page.registration.end_label') }}
-                                </label>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <BaseDatePicker :model-value="getSchedDate(form, 'registration_deadline')" @update:model-value="val => setSchedDate(form, 'registration_deadline', val)" />
-                                    <BaseTimePicker :model-value="getSchedTime(form, 'registration_deadline')" @update:model-value="val => setSchedTime(form, 'registration_deadline', val)" placeholder="23:59" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Fee Mode Selector + Config -->
-                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
-                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:ticket" class="text-primary text-lg sm:text-xl" />
-                            {{ $t('dashboard_events_page.registration.fee_title') }}
-                        </h2>
-                    </div>
-                    <div class="p-4 sm:p-6 space-y-6">
-
-                        <!-- Mode Selector -->
-                        <div class="space-y-3">
-                            <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.registration.fee_mode_label') }}</label>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <!-- Mode: Per Participant Type -->
-                                <button type="button"
-                                    @click="form.fee_mode = 'per_type'"
-                                    :class="form.fee_mode === 'per_type'
-                                        ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                                        : 'border-gray-200 hover:border-gray-300 bg-white'"
-                                    class="flex items-start gap-4 p-4 rounded-2xl border-2 text-left transition-all">
-                                    <div :class="form.fee_mode === 'per_type' ? 'bg-primary text-navy' : 'bg-gray-100 text-gray-500'"
-                                        class="size-10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                                        <Icon icon="ph:users-three-bold" class="text-xl" />
-                                    </div>
-                                    <div>
-                                        <div class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.mode_per_type_title') }}</div>
-                                        <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">{{ $t('dashboard_events_page.registration.mode_per_type_desc') }}</div>
-                                    </div>
-                                    <div v-if="form.fee_mode === 'per_type'" class="ml-auto shrink-0">
-                                        <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
-                                    </div>
-                                </button>
-
-                                <!-- Mode: Per Category -->
-                                <button type="button"
-                                    @click="form.fee_mode = 'per_category'"
-                                    :class="form.fee_mode === 'per_category'
-                                        ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
-                                        : 'border-gray-200 hover:border-gray-300 bg-white'"
-                                    class="flex items-start gap-4 p-4 rounded-2xl border-2 text-left transition-all">
-                                    <div :class="form.fee_mode === 'per_category' ? 'bg-primary text-navy' : 'bg-gray-100 text-gray-500'"
-                                        class="size-10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                                        <Icon icon="ph:stack-bold" class="text-xl" />
-                                    </div>
-                                    <div>
-                                        <div class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.mode_per_cat_title') }}</div>
-                                        <div class="text-xs text-gray-500 mt-0.5 leading-relaxed">{{ $t('dashboard_events_page.registration.mode_per_cat_desc') }}</div>
-                                    </div>
-                                    <div v-if="form.fee_mode === 'per_category'" class="ml-auto shrink-0">
-                                        <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- ── MODE: Per Participant Type ── -->
-                        <div v-if="form.fee_mode === 'per_type'" class="space-y-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <!-- Individual -->
-                                <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                                    <div class="flex items-center gap-2.5 mb-3">
-                                        <div class="size-9 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5 shrink-0">
-                                            <img src="/category-icon/men-single-recurve.svg" alt="Individual" class="w-full h-full object-contain" />
-                                        </div>
-                                        <label class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.individual') }}</label>
-                                    </div>
-                                    <BaseCurrencyInput
-                                        v-model="form.fee_per_type.individual"
-                                        prefix="Rp"
-                                        placeholder="0"
-                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                    />
-                                    <div class="text-[10px] text-gray-400">{{ $t('dashboard_events_page.registration.individual_desc') }}</div>
-                                </div>
-                                <!-- Team -->
-                                <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                                    <div class="flex items-center gap-2.5 mb-3">
-                                        <div class="size-9 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5 shrink-0">
-                                            <img src="/category-icon/men-team.svg" alt="Team" class="w-full h-full object-contain" />
-                                        </div>
-                                        <label class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.team') }}</label>
-                                    </div>
-                                    <BaseCurrencyInput
-                                        v-model="form.fee_per_type.team"
-                                        prefix="Rp"
-                                        placeholder="0"
-                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                    />
-                                    <div class="text-[10px] text-gray-400">{{ $t('dashboard_events_page.registration.team_desc') }}</div>
-                                </div>
-                                <!-- Mixed Team -->
-                                <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                                    <div class="flex items-center gap-2.5 mb-3">
-                                        <div class="size-9 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5 shrink-0">
-                                            <img src="/category-icon/mix-team.svg" alt="Mixed Team" class="w-full h-full object-contain" />
-                                        </div>
-                                        <label class="text-sm font-black text-navy">{{ $t('dashboard_events_page.registration.mixed_team') }}</label>
-                                    </div>
-                                    <BaseCurrencyInput
-                                        v-model="form.fee_per_type.mixed_team"
-                                        prefix="Rp"
-                                        placeholder="0"
-                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                    />
-                                    <div class="text-[10px] text-gray-400">{{ $t('dashboard_events_page.registration.mixed_team_desc') }}</div>
-                                </div>
-                            </div>
-                            <!-- entry_fee fallback note removed -->
-                        </div>
-
-                        <!-- ── MODE: Per Category ── -->
-                        <div v-if="form.fee_mode === 'per_category'" class="space-y-4">
-                            <div v-if="eventCategories.length === 0"
-                                class="text-center py-10 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                                <Icon icon="ph:stack" class="text-3xl text-gray-300 mx-auto mb-2" />
-                                <div class="text-xs text-gray-400 font-bold">{{ $t('dashboard_events_page.registration.no_categories') }}</div>
-                                <div class="text-xs text-gray-400 mt-1">{{ $t('dashboard_events_page.registration.no_categories_desc') }}</div>
-                                <BaseButton variant="outline" size="xs" class="mt-3" :to="`/dashboard/organizer/tournaments/${eventId}/categories`">
-                                    <Icon icon="ph:plus-bold" class="mr-1" /> {{ $t('dashboard_events_page.registration.add_category') }}
-                                </BaseButton>
-                            </div>
-
-                            <div v-else class="space-y-3">
-                                <div class="flex items-center justify-between pb-1">
-                                    <div class="text-xs font-bold text-gray-500 flex items-center gap-1.5">
-                                        <Icon icon="ph:stack-bold" class="text-primary text-sm" />
-                                        <span>{{ eventCategories.length }} Kategori Dikonfigurasi</span>
-                                    </div>
-                                    <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/categories`"
-                                        class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-navy text-white text-xs font-bold hover:bg-navy/90 hover:shadow-xs transition-all">
-                                        <Icon icon="ph:plus-bold" class="text-primary text-xs" />
-                                        <span>{{ $t('dashboard_events_page.registration.add_category') || 'Tambah Kategori' }}</span>
-                                    </NuxtLink>
-                                </div>
-
-                                <div class="space-y-2">
-                                    <div v-for="cat in eventCategories" :key="cat.id"
-                                        class="flex items-center gap-3.5 p-3.5 bg-gray-50/80 rounded-2xl border border-gray-100 hover:border-primary/30 hover:bg-white transition-all">
-                                        <!-- Category Icon -->
-                                        <div class="size-11 rounded-xl border border-gray-100 bg-white flex items-center justify-center shadow-xs shrink-0 overflow-hidden p-2">
-                                            <img :src="'/' + getCategoryIcon(`${cat.division_name || ''} ${cat.category_name || ''} ${cat.event_type_name || ''} ${cat.gender_division_name || ''}`)"
-                                                :alt="cat.division_name || cat.category_name"
-                                                class="w-full h-full object-contain" />
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <div class="text-sm font-bold text-navy truncate">
-                                                {{ [cat.category_name, cat.event_type_name, cat.gender_division_name].filter(s => s && s.trim() && s !== '-').join(' – ') }}
-                                            </div>
-                                            <div class="text-[11px] text-gray-400 font-medium">{{ cat.division_name }}</div>
-                                        </div>
-                                        <BaseCurrencyInput
-                                            v-model="form.fee_per_category[cat.id]"
-                                            prefix="Rp"
-                                            placeholder="0"
-                                            wrapper-class="w-36 shrink-0"
-                                            input-class="pr-3 py-2 rounded-lg border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                        />
-                                    </div>
-                                </div>
-
-                                <!-- Quick Add Category Button Footer -->
-                                <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/categories`"
-                                    class="flex items-center justify-center gap-2 p-3 rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary hover:bg-primary/5 text-gray-600 hover:text-navy text-xs font-bold transition-all group">
-                                    <div class="size-6 rounded-lg bg-gray-100 group-hover:bg-primary flex items-center justify-center transition-colors">
-                                        <Icon icon="ph:plus-bold" class="text-navy text-xs" />
-                                    </div>
-                                    <span>{{ $t('dashboard_events_page.registration.add_category') || 'Tambah Kategori Baru' }}</span>
-                                </NuxtLink>
-                            </div>
-
-                            <!-- Default fallback fee -->
-                            <div class="pt-4 border-t border-gray-100 space-y-2">
-                                <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.registration.default_fee_label') }}</label>
-                                <BaseCurrencyInput
-                                    v-model="form.entry_fee"
-                                    prefix="Rp"
-                                    placeholder="0"
-                                    wrapper-class="max-w-xs"
-                                    input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                />
-                                <div class="text-[10px] text-gray-400">{{ $t('dashboard_events_page.registration.default_fee_desc') }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Manual Payment Method Section -->
-                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:credit-card" class="text-primary text-lg sm:text-xl" />
-                            {{ $t('dashboard_events_page.manual_payment.title') }}
-                        </h2>
-                    </div>
-                    <div class="p-4 sm:p-6 space-y-4">
-                        <div class="text-xs text-gray-500 text-left">
-                            {{ $t('dashboard_events_page.manual_payment.description') }}
-                        </div>
-
-                        <!-- Preview of configured bank accounts -->
-                        <div v-if="orgBankAccounts.length > 0" class="mt-4 border-t border-gray-100 pt-4">
-                            <h4 class="text-xs font-black text-gray-400 tracking-wider mb-3 text-left ">{{ $t('dashboard_events_page.manual_payment.list_title') }}</h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div v-for="bank in orgBankAccounts" :key="bank.uuid || bank.id"
-                                    @click="togglePaymentMethod(bank.uuid || bank.id)"
-                                    :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'border-primary/40 bg-primary/5' : 'border-gray-100 bg-gray-50/50 opacity-60'"
-                                    class="flex items-center justify-between p-4 rounded-2xl border cursor-pointer hover:border-primary/20 transition-all shadow-sm">
-                                    <div class="flex items-center gap-3.5 min-w-0">
-                                        <div class="size-11 bg-white rounded-xl flex items-center justify-center border border-gray-100 shrink-0 p-1.5 shadow-sm">
-                                            <img v-if="getPaymentMethodImage(bank.bank_name)" :src="getPaymentMethodImage(bank.bank_name)" class="w-full h-full object-contain" :alt="bank.bank_name" />
-                                            <Icon v-else icon="ph:credit-card" class="text-xl text-navy" />
-                                        </div>
-                                        <div class="text-left min-w-0">
-                                            <div class="text-sm font-black text-navy truncate">{{ bank.bank_name }} - {{ bank.account_number }}</div>
-                                            <div class="text-xs text-gray-400 font-bold mt-0.5 truncate">a.n. {{ bank.account_name }}</div>
-                                        </div>
-                                    </div>
-                                    <button type="button"
-                                        :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'bg-primary' : 'bg-gray-200'"
-                                        class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none">
-                                        <span :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'translate-x-5 bg-navy' : 'translate-x-0 bg-white'"
-                                            class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out">
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
-                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:trophy-bold" class="text-primary text-lg sm:text-xl" />
-                            {{ $t('dashboard_events_page.prizes.title') }}
-                        </h2>
-                    </div>
-                    <div class="p-4 sm:p-6 space-y-5">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
-                                    <Icon icon="ph:currency-circle-dollar-bold" class="text-primary text-base" />
-                                    {{ $t('dashboard_events_page.prizes.total_prize_label') }}
-                                </label>
-                                <BaseCurrencyInput
-                                    v-model="form.total_prize"
-                                    prefix="Rp"
-                                    placeholder="0"
-                                    prefix-class="text-sm"
-                                    prefix-padding-class="pl-10"
-                                    input-class="pr-4 py-3 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                />
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
-                                    <Icon icon="ph:book-bookmark-bold" class="text-primary text-base" />
-                                    {{ $t('dashboard_events_page.prizes.guidebook_label') }}
-                                </label>
-                                <div class="flex items-center gap-2">
-                                    <input type="text" :value="form.technical_guidebook_url ? 'Guidebook.pdf' : ''"
-                                        readonly
-                                        class="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm italic"
-                                        :placeholder="$t('dashboard_events_page.prizes.no_file')" />
-                                    <input type="file" ref="guidebookInput" class="hidden" accept=".pdf"
-                                        @change="handleGuidebookUpload" />
-                                    <BaseButton variant="outline" size="sm" icon="ph:upload-simple-bold" @click="$refs.guidebookInput.click()"
-                                        :loading="uploadingGuidebook">{{ $t('dashboard_events_page.prizes.upload') }}</BaseButton>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pt-4 border-t border-gray-100">
-                            <label class="text-sm font-bold text-gray-700 mb-3 block">{{ $t('dashboard_events_page.prizes.detail_title') }}</label>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-gray-600">{{ $t('dashboard_events_page.prizes.first_place') }}</label>
-                                    <BaseCurrencyInput
-                                        v-model="form.prizes.first"
-                                        prefix="Rp"
-                                        :placeholder="$t('dashboard_events_page.prizes.placeholder_prize', 'Rp 15.000.000')"
-                                        prefix-class="text-xs font-bold"
-                                        prefix-padding-class="pl-9"
-                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                    />
-                                    <textarea v-model="form.prizes.first_caption" rows="2"
-                                        :placeholder="$t('dashboard_events_page.prizes.placeholder_caption')"
-                                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs resize-none"></textarea>
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-gray-600">{{ $t('dashboard_events_page.prizes.second_place') }}</label>
-                                    <BaseCurrencyInput
-                                        v-model="form.prizes.second"
-                                        prefix="Rp"
-                                        :placeholder="$t('dashboard_events_page.prizes.placeholder_prize', 'Rp 10.000.000')"
-                                        prefix-class="text-xs font-bold"
-                                        prefix-padding-class="pl-9"
-                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                    />
-                                    <textarea v-model="form.prizes.second_caption" rows="2"
-                                        :placeholder="$t('dashboard_events_page.prizes.placeholder_caption')"
-                                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs resize-none"></textarea>
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-gray-600">{{ $t('dashboard_events_page.prizes.third_place') }}</label>
-                                    <BaseCurrencyInput
-                                        v-model="form.prizes.third"
-                                        prefix="Rp"
-                                        :placeholder="$t('dashboard_events_page.prizes.placeholder_prize', 'Rp 7.500.000')"
-                                        prefix-class="text-xs font-bold"
-                                        prefix-padding-class="pl-9"
-                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                    />
-                                    <textarea v-model="form.prizes.third_caption" rows="2"
-                                        :placeholder="$t('dashboard_events_page.prizes.placeholder_caption')"
-                                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs resize-none"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!-- Lokasi Tab -->
-            <section v-if="activeTab === 'lokasi'"
-                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
-                    <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
-                        <Icon icon="ph:map-pin" class="text-primary text-lg sm:text-xl" />
-                        {{ $t('dashboard_events_page.location.title') }}
-                    </h2>
-                </div>
-                <div class="p-4 sm:p-6 space-y-5">
-                    <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
-                            {{ $t('dashboard_events_page.location.venue_label') }}
-                            <span class="text-red-500">*</span>
-                        </label>
-                        <input v-model="form.venue" type="text" required
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
-                            :placeholder="$t('dashboard_events_page.location.venue_placeholder')" />
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
-                            {{ $t('dashboard_events_page.location.address_label') }}
-                            <span class="text-red-500">*</span>
-                        </label>
-                        <textarea v-model="form.address" rows="2" required
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all font-medium"
-                            :placeholder="$t('dashboard_events_page.location.address_placeholder') || 'Tuliskan alamat lengkap lokasi event...'"></textarea>
-                    </div>
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between">
-                            <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
-                                <Icon icon="ph:map-pin" class="text-primary text-base" />
-                                {{ $t('dashboard_events_page.location.gmaps_label') }}
-                            </label>
-                            <span class="text-[11px] text-gray-400 font-medium hidden sm:inline">
-                                {{ $t('dashboard_events_page.location.gmaps_hint') }}
-                            </span>
-                        </div>
-                        <textarea v-model="form.gmaps_link" rows="3"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all font-mono text-xs text-gray-700 bg-white"
-                            :placeholder="$t('dashboard_events_page.location.gmaps_placeholder')"></textarea>
-                        <div class="text-[11px] text-gray-500 font-medium flex items-center gap-1.5 pl-1">
-                            <Icon icon="ph:info-bold" class="text-blue-500 text-xs shrink-0" />
-                            <span>{{ $t('dashboard_events_page.location.gmaps_hint') }}</span>
-                        </div>
-
-                        <!-- Gmaps Preview -->
-                        <div v-if="gmapsEmbedUrl" class="mt-3 space-y-2">
-                            <div class="flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg w-fit">
-                                <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-sm" />
-                                <span>{{ $t('dashboard_events_page.location.gmaps_detected') }}</span>
-                            </div>
-                            <div class="rounded-xl overflow-hidden border border-gray-200 aspect-video shadow-inner">
-                                <iframe width="100%" height="100%" style="border:0" loading="lazy"
-                                    allowfullscreen referrerpolicy="no-referrer-when-downgrade"
-                                    :src="gmapsEmbedUrl"></iframe>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="space-y-3">
-                        <label class="text-sm font-bold text-gray-700">{{ $t('dashboard_events_page.location.accessibility_title') }}</label>
-                        <div class="text-xs text-gray-500 mb-3">{{ $t('dashboard_events_page.location.accessibility_desc') }}</div>
-                        <div class="flex flex-wrap gap-2">
-                            <button v-for="option in locationAccessibilityOptions" :key="option" type="button"
-                                @click="toggleLocationAccessibility(option)"
-                                class="px-4 py-2 rounded-xl text-sm font-bold transition-all border-2" :class="form.location_accessibility?.includes(option)
-                                    ? 'bg-primary text-navy border-primary shadow-sm'
-                                    : 'bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-navy'">
-                                <Icon :icon="getLocationAccessibilityIcon(option)" class="inline-block mr-1.5" />
-                                {{ $t('dashboard_events_page.location.options.' + locationAccessibilityOptionKeys[option]) }}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Media Tab -->
-            <div v-if="activeTab === 'media'" class="space-y-6">
-                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
-                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:image" class="text-primary text-lg sm:text-xl" />
-                            {{ $t('dashboard_events_page.media.title') }}
-                        </h2>
-                    </div>
-                    <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
-                        <div class="space-y-3">
-                            <label class="text-sm font-bold text-gray-700 flex items-center justify-between">
-                                <span>{{ $t('dashboard_events_page.media.banner_label') }}</span>
-                                <span class="text-xs font-bold text-gray-400 font-body">{{ $t('dashboard_events_page.media.banner_ratio') }}</span>
-                            </label>
-                            <div v-if="form.banner_url" class="relative rounded-xl overflow-hidden aspect-video group">
-                                <img :src="form.banner_url" class="w-full h-full object-cover" />
-                                <div
-                                    class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                    <button @click="openMediaLibrary('banner')"
-                                        class="p-2 bg-white rounded-lg text-navy font-bold text-xs">{{ $t('dashboard_events_page.media.change') }}</button>
-                                    <button @click="form.banner_url = ''"
-                                        class="p-2 bg-red-500 rounded-lg text-white font-bold text-xs">{{ $t('dashboard_events_page.media.delete') }}</button>
-                                </div>
-                            </div>
-                            <button v-else @click="openMediaLibrary('banner')"
-                                class="w-full aspect-video rounded-xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400">
-                                <Icon icon="ph:image-bold" class="text-3xl mb-2" />
-                                <span class="text-xs font-bold">{{ $t('dashboard_events_page.media.select_banner') }}</span>
-                            </button>
-                        </div>
-                        <div class="space-y-3">
-                            <label class="text-sm font-bold text-gray-700 flex items-center justify-between">
-                                <span>{{ $t('dashboard_events_page.media.poster_label') }}</span>
-                                <span class="text-xs font-bold text-gray-400 font-body">{{ $t('dashboard_events_page.media.poster_ratio') }}</span>
-                            </label>
-                            <div v-if="form.logo_url" class="relative rounded-xl overflow-hidden aspect-video group">
-                                <img :src="form.logo_url" class="w-full h-full object-cover" />
-                                <div
-                                    class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                    <button @click="openMediaLibrary('logo')"
-                                        class="p-2 bg-white rounded-lg text-navy font-bold text-xs">{{ $t('dashboard_events_page.media.change') }}</button>
-                                    <button @click="form.logo_url = ''"
-                                        class="p-2 bg-red-500 rounded-lg text-white font-bold text-xs">{{ $t('dashboard_events_page.media.delete') }}</button>
-                                </div>
-                            </div>
-                            <button v-else @click="openMediaLibrary('logo')"
-                                class="w-full aspect-video rounded-xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400">
-                                <Icon icon="ph:image-square-bold" class="text-3xl mb-2" />
-                                <span class="text-xs font-bold">{{ $t('dashboard_events_page.media.select_poster') }}</span>
-                            </button>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
-                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:images" class="text-primary text-lg sm:text-xl" />
-                            {{ $t('dashboard_events_page.media.gallery_title') }}
-                        </h2>
-                    </div>
-                    <div class="p-4 sm:p-6 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
-                        <div v-for="(image, index) in form.event_images" :key="index"
-                            class="relative aspect-square rounded-lg overflow-hidden border border-gray-100 group">
-                            <img :src="image.url" class="w-full h-full object-cover" />
-                            <button @click="removeImage(index)"
-                                class="absolute top-1 right-1 p-1 bg-red-500 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                                <Icon icon="ph:trash" class="text-xs" />
-                            </button>
-                        </div>
-                        <button @click="openMediaLibrary('gallery')"
-                            class="aspect-square rounded-lg border-2 border-dashed border-gray-200 hover:border-primary flex items-center justify-center text-gray-400">
-                            <Icon icon="ph:plus-bold" />
-                        </button>
-                    </div>
-                </section>
-            </div>
-        </div>
-
-        <!-- Hasil Tab -->
-        <div v-if="activeTab === 'hasil'" class="space-y-6">
-            <!-- Results Source Selector -->
-            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
-                    <h2 class="text-base sm:text-lg font-black text-navy flex items-center gap-2 sm:gap-3">
-                        <div class="p-1.5 sm:p-2 bg-primary/10 rounded-lg">
-                            <Icon icon="iconoir:leaderboard" class="text-lg sm:text-xl" />
-                        </div>
-                        {{ $t('dashboard_events_page.results.source_title') }}
-                    </h2>
-                    <div class="text-xs text-gray-400 mt-1.5 font-medium">{{ $t('dashboard_events_page.results.source_desc') }}
-                        halaman publik event.</div>
-                </div>
-                <div class="p-4 sm:p-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <button @click="form.page_settings.results_type = 'system'" type="button"
-                            class="relative p-4 sm:p-5 rounded-2xl border-2 text-left transition-all group"
-                            :class="form.page_settings.results_type === 'system' ? 'border-primary bg-primary/5 shadow-sm' : 'border-gray-200 hover:border-gray-300 bg-white'">
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
-                                    :class="form.page_settings.results_type === 'system' ? 'bg-navy text-primary' : 'bg-gray-100 text-gray-400'">
-                                    <Icon icon="ph:chart-bar-bold" class="text-xl" />
-                                </div>
-                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors"
-                                    :class="form.page_settings.results_type === 'system' ? 'border-primary' : 'border-gray-300'">
-                                    <div v-if="form.page_settings.results_type === 'system'"
-                                        class="w-2.5 h-2.5 rounded-full bg-primary"></div>
-                                </div>
-                            </div>
-                            <h4 class="font-bold text-sm text-navy">{{ $t('dashboard_events_page.results.from_system') }}</h4>
-                            <div class=" text-xs text-gray-400 mt-0.5 leading-relaxed">{{ $t('dashboard_events_page.results.from_system_desc') }}</div>
-                        </button>
-                        <button @click="form.page_settings.results_type = 'manual'" type="button"
-                            class="relative p-4 sm:p-5 rounded-2xl border-2 text-left transition-all group"
-                            :class="form.page_settings.results_type === 'manual' ? 'border-primary bg-primary/5 shadow-sm' : 'border-gray-200 hover:border-gray-300 bg-white'">
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
-                                    :class="form.page_settings.results_type === 'manual' ? 'bg-navy text-primary' : 'bg-gray-100 text-gray-400'">
-                                    <Icon icon="ph:file-arrow-up-bold" class="text-xl" />
-                                </div>
-                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors"
-                                    :class="form.page_settings.results_type === 'manual' ? 'border-primary' : 'border-gray-300'">
-                                    <div v-if="form.page_settings.results_type === 'manual'"
-                                        class="w-2.5 h-2.5 rounded-full bg-primary"></div>
-                                </div>
-                            </div>
-                            <h4 class="font-bold text-sm text-navy">{{ $t('dashboard_events_page.results.manual_upload') }}</h4>
-                            <div class=" text-xs text-gray-400 mt-0.5 leading-relaxed">{{ $t('dashboard_events_page.results.manual_upload_desc') }}</div>
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Manual Upload Section (Only when manual or both) -->
-            <section v-if="form.page_settings.results_type === 'manual'"
-                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div
-                    class="p-4 sm:p-6 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
-                    <div>
-                        <h2 class="text-base sm:text-lg font-black text-navy flex items-center gap-2 sm:gap-3">
-                            <div class="p-1.5 sm:p-2 bg-primary/10 rounded-lg">
-                                <Icon icon="ph:file-arrow-up-bold" class="text-lg sm:text-xl" />
-                            </div>
-                            {{ $t('dashboard_events_page.results.upload_doc_title') }}
-                        </h2>
-                        <div class="text-xs sm:text-sm text-gray-500 mt-1 font-medium">{{ $t('dashboard_events_page.results.upload_doc_desc') }}</div>
-                    </div>
-                    <BaseButton variant="primary" size="sm" icon="ph:plus-bold"
-                        @click="$refs.resultsFileInput?.click()">
-                        {{ $t('dashboard_events_page.results.add_file') }}
-                    </BaseButton>
-                </div>
-
-                <div class="p-4 sm:p-8">
-                    <!-- Upload Area (Compact when files exist) -->
-                    <div v-if="!form.results || form.results.length === 0"
-                        class="border-2 border-dashed border-gray-200 rounded-3xl p-12 text-center hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group"
-                        @click="$refs.resultsFileInput?.click()" @dragover.prevent="isDragging = true"
-                        @dragleave.prevent="isDragging = false" @drop.prevent="handleResultsDrop"
-                        :class="isDragging ? 'border-primary bg-primary/5' : ''">
-                        <div class="flex flex-col items-center gap-4">
-                            <div
-                                class="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-white group-hover:shadow-sm group-hover:shadow-primary/20 transition-all">
-                                <Icon icon="ph:cloud-arrow-up"
-                                    class="text-4xl text-gray-300 group-hover:text-primary" />
-                            </div>
-                            <div class="max-w-xs mx-auto">
-                                <div class="text-base font-black text-navy group-hover:text-primary transition-colors">
-                                    {{ $t('dashboard_events_page.results.upload_result_label') }}</div>
-                                <div class="text-sm text-gray-500 mt-1 font-medium italic">{{ $t('dashboard_events_page.results.drag_drop_hint') }}</div>
-                            </div>
-                            <div class="flex gap-2">
-                                <span
-                                    class="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-black  text-gray-400">{{ $t('dashboard_events_page.results.max_size_hint') }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Uploaded Files List (Revamped) -->
-                    <div v-if="form.results && form.results.length > 0" class="space-y-6">
-                        <div class="grid grid-cols-1 gap-4">
-                            <div v-for="(file, index) in form.results" :key="index"
-                                class="group relative bg-white rounded-2xl border border-gray-100 hover:border-primary/50 hover:shadow-sm hover:shadow-primary/5 transition-all p-4 sm:p-5">
-
-                                <div class="flex gap-3 sm:gap-5">
-                                    <!-- File Icon / Preview -->
-                                    <div
-                                        class="w-16 h-20 rounded-xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                                        <Icon :icon="getFileIcon(file.url)" class="text-3xl" />
-                                        <span class="text-[9px] font-black text-gray-400  mt-1">{{
-                                            getFileExt(file.url) }}</span>
-                                    </div>
-
-                                    <!-- File Metadata & Actions -->
-                                    <div class="flex-1 min-w-0 flex flex-col justify-between py-1">
-                                        <div class="space-y-3">
-                                            <!-- Title Input -->
-                                            <div class="space-y-1">
-                                                <label
-                                                    class="text-[10px] font-black text-gray-400  tracking-widest pl-1">{{ $t('dashboard_events_page.results.display_title') }}</label>
-                                                <input v-model="file.title" type="text"
-                                                    placeholder="Contoh: Hasil Kualifikasi Recurve"
-                                                    class="w-full px-3 py-2 text-sm font-bold text-navy bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-lg outline-none transition-all" />
-                                            </div>
-
-                                            <!-- Filename Input -->
-                                            <div class="space-y-1">
-                                                <label
-                                                    class="text-[10px] font-black text-gray-400  tracking-widest pl-1">{{ $t('dashboard_events_page.results.download_name') }}</label>
-                                                <div class="flex items-center gap-2">
-                                                    <input v-model="file.name" type="text" placeholder="nama-file"
-                                                        class="flex-1 px-3 py-2  text-xs font-medium text-gray-500 bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-lg outline-none transition-all" />
-                                                    <span class="text-[10px] font-bold text-gray-400">.{{
-                                                        getFileExt(file.url) }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Footer Actions -->
-                                        <div class="flex items-center justify-between mt-4">
-                                            <div
-                                                class="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
-                                                {{ formatFileSize(file.size) }}
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <a :href="file.url" target="_blank"
-                                                    class="p-2 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
-                                                    title="Pratinjau">
-                                                    <Icon icon="ph:eye-bold" class="text-lg" />
-                                                </a>
-                                                <button @click="removeResultFile(index)"
-                                                    class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
-                                                    title="Hapus">
-                                                    <Icon icon="ph:trash-bold" class="text-lg" />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Add More Area -->
-                            <div @click="$refs.resultsFileInput?.click()"
-                                class="border-2 border-dashed border-gray-100 rounded-2xl flex flex-col items-center justify-center p-8 hover:border-primary hover:bg-primary/5 transition-all group cursor-pointer border-brand-border">
-                                <div
-                                    class="p-3 bg-gray-50 rounded-full group-hover:bg-navy group-hover:text-primary transition-all text-gray-400">
-                                    <Icon icon="ph:plus-bold" class="text-xl" />
-                                </div>
-                                <div
-                                                    class="text-xs font-black text-gray-400 mt-3  tracking-widest group-hover:text-primary">
-                                                    {{ $t('dashboard_events_page.results.add_more') }}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <input ref="resultsFileInput" type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png" multiple
-                        @change="handleResultsUpload" />
-                </div>
-            </section>
-
-            <!-- System Results Info (Only when system) -->
-            <section v-if="form.page_settings.results_type === 'system'"
-                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-4 sm:p-6">
-                    <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0">
-                            <Icon icon="ph:info-bold" class="text-2xl text-blue-500" />
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-navy text-sm">{{ $t('dashboard_events_page.results.system_scoring_title') }}</h4>
-                            <div class="text-xs text-gray-500 mt-1 leading-relaxed">
-                                {{ $t('dashboard_events_page.results.system_scoring_desc') }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Media Library Modal -->
-        <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
-    </div>
-</template>
-
 <script setup>
+definePageMeta({
+    layout: 'dashboard'
+})
 import { Icon } from '@iconify/vue'
 import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
@@ -858,24 +11,43 @@ import { useApi } from '~/composables/useApi'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
-import { useI18n } from 'vue-i18n'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 import { extractGmapsEmbedUrl } from '~/utils/maps'
+import useCurrency from '~/composables/useCurrency'
 
 const { isSubscriptionActive } = useSubscription()
 const showPremiumModal = ref(false)
-const { t } = useI18n()
+const { t } = useDashboardI18n()
+const { countries, currencies } = useCurrency()
+
+const countryOptions = computed(() => countries.map(c => ({
+    value: c.code,
+    title: c.name,
+    icon: c.icon
+})))
+
+const currencyOptions = computed(() => currencies.map(c => ({
+    value: c.code,
+    title: `${c.code} (${c.symbol}) – ${c.name}`,
+    icon: c.icon
+})))
+
+const onCountryChange = (countryCode) => {
+    const found = countries.find(c => c.code === countryCode)
+    if (found && found.defaultCurrency) {
+        form.value.currency = found.defaultCurrency
+    }
+}
 
 const statusOptions = computed(() => [
     { value: 'draft', title: computed(() => t('dashboard_events_page.status_options.draft')) },
     { value: 'active', title: computed(() => t('dashboard_events_page.status_options.active')) }
 ])
 
-definePageMeta({
-    layout: 'dashboard'
-})
+
 
 useHead({
-    title: () => `${t('dashboard_events_page.title', 'Halaman Turnamen')} - Archeris Dashboard`
+    title: () => `${t('dashboard_events_page.title')} - Archeris Dashboard`
 })
 
 const route = useRoute()
@@ -886,7 +58,6 @@ const { get, put, post } = useApi()
 const saving = ref(false)
 const eventCategories = ref([])
 const orgBankAccounts = ref([])
-
 
 // Tab state
 const tabs = [
@@ -985,6 +156,8 @@ const toggleLocationAccessibility = (option) => {
 const form = ref({
     name: '',
     description: '',
+    country_code: 'ID',
+    currency: 'IDR',
     start_date: '',
     end_date: '',
     venue: '',
@@ -998,15 +171,16 @@ const form = ref({
     schedules: [],
     registration_deadline: '',
     entry_fee: 0,
-    fee_mode: 'per_type',           // 'per_type' | 'per_category'
+    fee_mode: 'per_type',
     fee_per_type: {
         individual: 0,
         team: 0,
         mixed_team: 0
     },
-    fee_per_category: {},           // { [categoryId]: amount }
+    fee_per_category: {},
     location_type: '',
     status: 'draft',
+    visibility: 'external',
     total_prize: 0,
     technical_guidebook_url: '',
     location_accessibility: [],
@@ -1050,41 +224,6 @@ const removeFAQField = (index) => {
     form.value.faq.splice(index, 1)
 }
 
-const addFeeField = () => {
-    if (!form.value.fees) {
-        form.value.fees = []
-    }
-    form.value.fees.push({
-        name: '',
-        amount: 0,
-        description: ''
-    })
-}
-
-const removeFeeField = (index) => {
-    form.value.fees.splice(index, 1)
-}
-
-
-
-const addScheduleField = () => {
-    const lastSchedule = form.value.schedules.length > 0 ? form.value.schedules[form.value.schedules.length - 1] : null
-    form.value.schedules.push({
-        id: null,
-        title: '',
-        description: '',
-        day_order: lastSchedule ? (lastSchedule.day_order || 1) : 1,
-        sort_order: (form.value.schedules.length > 0 ? Math.max(...form.value.schedules.map(s => s.sort_order || 0)) : 0) + 1,
-        location: '',
-        start_time: '',
-        end_time: ''
-    })
-}
-
-const removeScheduleField = (index) => {
-    form.value.schedules.splice(index, 1)
-}
-
 const uploadingGuidebook = ref(false)
 const guidebookInput = ref(null)
 
@@ -1105,11 +244,7 @@ const handleGuidebookUpload = async (event) => {
         formData.append('caption', `Guidebook ${form.value.name}`)
         formData.append('tournament_id', route.params.id || form.value.uuid || '')
 
-        const response = await post('/media/upload', formData, {
-            headers: {
-                // Fetch will handle the boundary automatically for FormData
-            }
-        })
+        const response = await post('/media/upload', formData)
 
         form.value.technical_guidebook_url = response.url
         const toast = useToast()
@@ -1144,13 +279,11 @@ const uploadResultFiles = async (files) => {
     const maxSize = 10 * 1024 * 1024 // 10MB
 
     for (const file of files) {
-        // Validate file type
         if (!allowedTypes.includes(file.type)) {
             toast.error(t('dashboard_events_page.toasts.invalid_format', { name: file.name }).replace('{name}', file.name))
             continue
         }
 
-        // Validate file size
         if (file.size > maxSize) {
             toast.error(t('dashboard_events_page.toasts.file_too_large', { name: file.name }).replace('{name}', file.name))
             continue
@@ -1162,11 +295,7 @@ const uploadResultFiles = async (files) => {
             formData.append('caption', `Result - ${form.value.name}`)
             formData.append('tournament_id', route.params.id || form.value.uuid || '')
 
-            const response = await post('/media/upload', formData, {
-                headers: {
-                    // Fetch will handle the boundary automatically for FormData
-                }
-            })
+            const response = await post('/media/upload', formData)
 
             if (!form.value.results) {
                 form.value.results = []
@@ -1187,7 +316,6 @@ const uploadResultFiles = async (files) => {
         }
     }
 
-    // Clear input
     if (resultsFileInput.value) {
         resultsFileInput.value.value = ''
     }
@@ -1207,11 +335,6 @@ const getFileIcon = (url) => {
     if (ext === 'pdf') return 'ph:file-pdf-duotone'
     if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) return 'ph:file-image-duotone'
     return 'ph:file-duotone'
-}
-
-const getFileName = (url) => {
-    if (!url) return 'Unknown'
-    return url.split('/').pop() || 'Unknown'
 }
 
 const formatFileSize = (bytes) => {
@@ -1253,7 +376,6 @@ const gmapsEmbedUrl = computed(() => {
     return extractGmapsEmbedUrl(form.value.gmaps_link, form.value.venue || form.value.address)
 })
 
-
 const removeImage = (index) => {
     form.value.event_images.splice(index, 1)
 }
@@ -1266,7 +388,6 @@ const fetchEventData = async () => {
         if (data) {
             eventData.value = data
 
-            // Fetch event images
             let eventImages = []
             try {
                 const imagesRes = await get(`/tournaments/${eventId}/images`)
@@ -1275,7 +396,6 @@ const fetchEventData = async () => {
                 console.error('Failed to fetch event images:', err)
             }
 
-            // Fetch event categories
             try {
                 const categoriesRes = await get(`/tournaments/${eventId}/categories`)
                 eventCategories.value = categoriesRes?.events || categoriesRes?.data?.events || []
@@ -1284,7 +404,6 @@ const fetchEventData = async () => {
                 eventCategories.value = []
             }
 
-            // Parse page settings safely (string/object) and normalize missing keys
             let parsedPageSettings = {}
             try {
                 if (typeof data.page_settings === 'string') {
@@ -1320,7 +439,6 @@ const fetchEventData = async () => {
                 results_type: parsedPageSettings.results_type || 'system'
             }
 
-            // Parse FAQ
             let faq = []
             if (data.faq) {
                 try {
@@ -1353,7 +471,6 @@ const fetchEventData = async () => {
                 ? pageSettings.results
                 : (Array.isArray(data.results) ? data.results : [])
 
-            // Fetch schedules
             let schedules = []
             try {
                 const scheduleRes = await get(`/tournaments/${eventId}/schedule`)
@@ -1392,6 +509,8 @@ const fetchEventData = async () => {
                     end_time: formatToDatetimeLocal(s.end_time)
                 })),
                 registration_deadline: formatToDatetimeLocal(data.registration_deadline),
+                country_code: pageSettings.country_code || data.country_code || 'ID',
+                currency: pageSettings.currency || data.currency || 'IDR',
                 entry_fee: data.entry_fee || 0,
                 fee_mode: pageSettings.fee_mode || 'per_type',
                 fee_per_type: {
@@ -1402,6 +521,7 @@ const fetchEventData = async () => {
                 fee_per_category: pageSettings.fee_per_category || {},
                 location_type: data.location_type || data.discipline_name || '',
                 status: data.status || 'draft',
+                visibility: data.visibility || pageSettings.visibility || 'external',
                 total_prize: data.total_prize || 0,
                 technical_guidebook_url: data.technical_guidebook_url || '',
                 location_accessibility: pageSettings.location_accessibility || [],
@@ -1417,28 +537,46 @@ const fetchEventData = async () => {
 }
 
 const saveEventPage = async () => {
-    // Per-tab validation
     const toast = useToast()
     if (activeTab.value === 'informasi') {
         if (!form.value.name || !form.value.name.trim()) {
-            toast.error(t('dashboard_events_page.toasts.fill_event_name', 'Mohon lengkapi Nama Event'))
+            toast.error(t('dashboard_events_page.toasts.fill_event_name'))
             return
         }
     } else if (activeTab.value === 'lokasi') {
-        if (!form.value.venue || !form.value.address || !form.value.gmaps_link) {
-            toast.error(t('dashboard_events_page.toasts.fill_required', 'Mohon lengkapi Nama Venue, Alamat, dan Link Google Maps'))
+        if (!form.value.venue?.trim() || !form.value.address?.trim()) {
+            toast.error(t('dashboard_events_page.toasts.fill_required'))
+            return
+        }
+    } else if (activeTab.value === 'pendaftaran') {
+        if (!form.value.page_settings?.registration_start || !form.value.registration_deadline) {
+            toast.error(t('dashboard_events_page.registration.error_dates_required'))
+            return
+        }
+    }
+
+    // Validate dates
+    if (form.value.start_date && form.value.end_date) {
+        if (new Date(form.value.start_date) > new Date(form.value.end_date)) {
+            toast.error(t('event_create.error_date_order') || 'Tanggal selesai turnamen tidak boleh lebih awal dari tanggal mulai.')
+            return
+        }
+    }
+    const regStartVal = form.value.page_settings?.registration_start
+    const regDeadlineVal = form.value.registration_deadline
+    if (regStartVal && regDeadlineVal) {
+        if (new Date(regStartVal) > new Date(regDeadlineVal)) {
+            toast.error(t('dashboard_events_page.registration.error_deadline_before_start') || 'Batas akhir pendaftaran (deadline) tidak boleh lebih awal dari waktu mulai pendaftaran.')
             return
         }
     }
 
     saving.value = true
     try {
-        // Sync entry_fee from fee_per_type.individual when in per_type mode
         const effectiveEntryFee = form.value.fee_mode === 'per_type'
             ? (form.value.fee_per_type.individual || 0)
             : (form.value.entry_fee || 0)
 
-        // Prepare data for API
         const payload = {
             name: form.value.name,
             description: form.value.description,
@@ -1450,9 +588,12 @@ const saveEventPage = async () => {
             banner_url: form.value.banner_url,
             logo_url: form.value.logo_url,
             registration_deadline: formatFromDatetimeLocal(form.value.registration_deadline),
+            country_code: form.value.country_code || 'ID',
+            currency: form.value.currency || 'IDR',
             entry_fee: effectiveEntryFee,
             location_type: form.value.location_type,
             status: form.value.status,
+            visibility: form.value.visibility || 'external',
             total_prize: form.value.total_prize,
             technical_guidebook_url: form.value.technical_guidebook_url,
             faq: form.value.faq,
@@ -1464,6 +605,9 @@ const saveEventPage = async () => {
             })),
             page_settings: JSON.stringify({
                 ...form.value.page_settings,
+                visibility: form.value.visibility || 'external',
+                country_code: form.value.country_code || 'ID',
+                currency: form.value.currency || 'IDR',
                 registration_start: form.value.page_settings.registration_start ? formatFromDatetimeLocal(form.value.page_settings.registration_start) : null,
                 location_accessibility: form.value.location_accessibility || [],
                 fees: form.value.fees || [],
@@ -1478,7 +622,6 @@ const saveEventPage = async () => {
 
         await put(`/tournaments/${eventId}`, payload)
 
-        // Save schedules separately
         if (form.value.schedules.length > 0) {
             try {
                 await put(`/tournaments/${eventId}/schedule`, {
@@ -1498,7 +641,6 @@ const saveEventPage = async () => {
             }
         }
 
-        // Save event images separately
         try {
             await put(`/tournaments/${eventId}/images`, {
                 images: (form.value.event_images || []).filter(img => img.url)
@@ -1507,11 +649,9 @@ const saveEventPage = async () => {
             console.error('Failed to save event images:', err)
         }
 
-        // Show success notification
         const toast = useToast()
         toast.success(t('dashboard_events_page.toasts.save_success'))
 
-        // Refresh data to show updated values
         await fetchEventData()
     } catch (error) {
         console.error('Failed to save:', error)
@@ -1522,40 +662,6 @@ const saveEventPage = async () => {
         saving.value = false
     }
 }
-
-// Helper functions for divisions
-const getDivisionIcon = (divisionName) => {
-    const name = divisionName?.toLowerCase() || ''
-    if (name.includes('recurve')) return 'ph:target'
-    if (name.includes('compound')) return 'ph:target-bold'
-    if (name.includes('barebow')) return 'ph:target-duotone'
-    return 'ph:target'
-}
-
-const getDivisionDistance = (divisionName) => {
-    const name = divisionName?.toLowerCase() || ''
-    if (name.includes('recurve')) return '70m'
-    if (name.includes('compound')) return '50m'
-    if (name.includes('barebow')) return '50m'
-    return 'Standard'
-}
-
-// Group categories by division
-const groupedDivisions = computed(() => {
-    const groups = {}
-    eventCategories.value.forEach(cat => {
-        const divName = cat.division_name || 'Lainnya'
-        if (!groups[divName]) {
-            groups[divName] = {
-                name: divName,
-                distance: getDivisionDistance(divName),
-                categories: []
-            }
-        }
-        groups[divName].categories.push(cat)
-    })
-    return Object.values(groups)
-})
 
 // Helper functions for payment methods
 const paymentMethodOptions = [
@@ -1609,9 +715,7 @@ const togglePaymentMethod = (bankUuid) => {
     }
 }
 
-
 onMounted(async () => {
-    // Fetch disciplines for location_type dropdown
     try {
         const discRes = await get('/disciplines')
         if (discRes?.disciplines) {
@@ -1627,6 +731,7 @@ onMounted(async () => {
 useSeoMeta({
     title: () => `${t('dashboard_events_page.seo_title')} - Dashboard`
 })
+
 const getSchedDate = (session, field) => {
     const val = session ? session[field] : ''
     if (!val) return ''
@@ -1657,3 +762,1058 @@ const setSchedTime = (session, field, timeVal) => {
     }
 }
 </script>
+
+<template>
+    <div class="flex flex-col gap-8">
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
+        
+        <!-- Header -->
+        <DashboardHeader
+            :title="t('dashboard_events_page.title')"
+            :subtitle="t('dashboard_events_page.subtitle')"
+            icon="ph:browser-bold"
+            :breadcrumbs="[
+                { label: t('dashboard_events_page.breadcrumbs.dashboard'), to: '/dashboard/organizer' },
+                { label: t('dashboard_events_page.breadcrumbs.events'), to: '/dashboard/organizer/tournaments' },
+                { label: t('dashboard_events_page.title') }
+            ]"
+        >
+            <template #actions>
+                <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+                    <BaseButton variant="white" icon="ph:eye-bold" :to="`/tournaments/${eventData.slug}`" target="_blank"
+                        class="h-10 sm:h-11 px-5 border-white/20 text-sm font-bold">
+                        {{ t('dashboard_events_page.view_button') }}
+                    </BaseButton>
+                    <BaseButton variant="primary" icon="ph:floppy-disk-bold"
+                        @click="isSubscriptionActive ? saveEventPage() : (showPremiumModal = true)"
+                        :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                        :loading="saving"
+                        class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all text-sm font-black tracking-wider">
+                        {{ t('dashboard_events_page.save_button') }}
+                    </BaseButton>
+                </div>
+            </template>
+        </DashboardHeader>
+
+        <!-- Tabs Navigation -->
+        <div class="flex gap-1 bg-gray-100/80 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm mt-2">
+            <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+                :class="activeTab === tab.id ? 'bg-white shadow text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
+                class="flex items-center justify-center gap-2 flex-1 min-w-[120px] px-5 py-2.5 rounded-xl text-sm font-black transition-all">
+                <Icon :icon="tab.icon" class="text-lg sm:text-xl shrink-0" />
+                <span>{{ t(`dashboard_events_page.tabs.${tab.id}`, tab.name) }}</span>
+            </button>
+        </div>
+
+        <!-- Tab: FAQ -->
+        <div v-if="activeTab === 'faq'" class="space-y-6">
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-4 sm:p-6 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                            <Icon icon="ph:question-bold" class="text-xl" />
+                        </div>
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-navy">
+                                {{ t('dashboard_events_page.faq.title') }}
+                            </h2>
+                        </div>
+                    </div>
+                    <BaseButton variant="outline" size="sm" class="text-sm font-bold" @click="addFAQField">
+                        <Icon icon="ph:plus-bold" class="mr-1.5" /> {{ t('dashboard_events_page.faq.add') }}
+                    </BaseButton>
+                </div>
+                <div class="p-4 sm:p-6 space-y-4">
+                    <div v-if="form.faq?.length === 0"
+                        class="text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                        <div class="size-12 rounded-2xl bg-gray-100 text-gray-400 flex items-center justify-center mx-auto mb-3">
+                            <Icon icon="ph:question" class="text-2xl" />
+                        </div>
+                        <div class="text-sm font-semibold text-gray-500">{{ t('dashboard_events_page.faq.no_items') }}</div>
+                    </div>
+                    <div v-else class="space-y-4">
+                        <div v-for="(item, index) in form.faq" :key="index"
+                            class="bg-gray-50 p-6 rounded-2xl border border-gray-100 relative group">
+                            <button @click="removeFAQField(index)"
+                                class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-red-50">
+                                <Icon icon="ph:trash-bold" class="text-base" />
+                            </button>
+                            <div class="space-y-4 pr-8">
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-gray-700 tracking-wide">{{ t('dashboard_events_page.faq.question_label') }}</label>
+                                    <input v-model="item.question" type="text"
+                                        :placeholder="t('dashboard_events_page.faq.question_placeholder')"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm transition-all bg-white" />
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-gray-700 tracking-wide">{{ t('dashboard_events_page.faq.answer_label') }}</label>
+                                    <textarea v-model="item.answer" rows="3"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none text-sm transition-all bg-white"
+                                        :placeholder="t('dashboard_events_page.faq.answer_placeholder')"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Main Content (Tabs) -->
+        <div class="space-y-6">
+            <!-- Tab: Informasi -->
+            <div v-if="activeTab === 'informasi'" class="space-y-6">
+                <section class="relative z-20 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-visible">
+                    <div class="p-4 sm:p-6 border-b border-gray-100 bg-gray-50/50 rounded-t-2xl flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                            <Icon icon="ph:info-bold" class="text-xl" />
+                        </div>
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-navy">
+                                {{ t('dashboard_events_page.information.basic_title') }}
+                            </h2>
+                            <div class="text-xs sm:text-sm text-gray-500">
+                                {{ t('dashboard_events_page.subtitle') }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 sm:p-6 space-y-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.information.name_label') }}</label>
+                            <input v-model="form.name" type="text"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm transition-all"
+                                :placeholder="t('dashboard_events_page.information.name_placeholder')" />
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.information.description_label') }}</label>
+                            <TiptapEditor v-model="form.description" class="min-h-[300px]" />
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.information.start_date_label') }}</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <BaseDatePicker :model-value="getSchedDate(form, 'start_date')" :max-date="getSchedDate(form, 'end_date')" @update:model-value="val => setSchedDate(form, 'start_date', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form, 'start_date')" @update:model-value="val => setSchedTime(form, 'start_date', val)" placeholder="08:00" />
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.information.end_date_label') }}</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <BaseDatePicker :model-value="getSchedDate(form, 'end_date')" :min-date="getSchedDate(form, 'start_date')" @update:model-value="val => setSchedDate(form, 'end_date', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form, 'end_date')" @update:model-value="val => setSchedTime(form, 'end_date', val)" placeholder="17:00" />
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <BaseSelect v-model="form.status" :items="statusOptions" :label="t('dashboard_events_page.information.status_label')" />
+                        </div>
+
+                        <!-- Tournament Visibility (External vs Internal) -->
+                        <div class="space-y-3 pt-4 border-t border-gray-100">
+                            <div>
+                                <label class="text-sm font-bold text-navy flex items-center gap-2">
+                                    <Icon icon="ph:eye-bold" class="text-primary text-base" />
+                                    <span>{{ t('event_create.visibility_title') }}</span>
+                                </label>
+                                <span class="text-xs text-gray-500 font-medium">{{ t('event_create.visibility_subtitle') }}</span>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- External (Default) -->
+                                <div
+                                    @click="form.visibility = 'external'"
+                                    class="p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-start gap-3.5 select-none"
+                                    :class="form.visibility === 'external' ? 'border-primary bg-primary/5 shadow-xs' : 'border-gray-200 bg-white hover:border-gray-300'"
+                                >
+                                    <div
+                                        class="size-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors"
+                                        :class="form.visibility === 'external' ? 'border-primary bg-primary text-btn-text' : 'border-gray-300'"
+                                    >
+                                        <Icon v-if="form.visibility === 'external'" icon="ph:check-bold" class="text-xs" />
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="flex items-center gap-2">
+                                            <Icon icon="ph:globe-hemisphere-west-bold" class="text-base text-navy" />
+                                            <span class="text-sm font-black text-navy">{{ t('event_create.visibility_external_title') }}</span>
+                                            <span class="px-2 py-0.5 bg-primary/20 text-navy text-[10px] font-black rounded-md">Default</span>
+                                        </div>
+                                        <span class="text-xs text-gray-500 font-medium leading-relaxed block">
+                                            {{ t('event_create.visibility_external_desc') }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Internal -->
+                                <div
+                                    @click="form.visibility = 'internal'"
+                                    class="p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-start gap-3.5 select-none"
+                                    :class="form.visibility === 'internal' ? 'border-primary bg-primary/5 shadow-xs' : 'border-gray-200 bg-white hover:border-gray-300'"
+                                >
+                                    <div
+                                        class="size-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors"
+                                        :class="form.visibility === 'internal' ? 'border-primary bg-primary text-btn-text' : 'border-gray-300'"
+                                    >
+                                        <Icon v-if="form.visibility === 'internal'" icon="ph:check-bold" class="text-xs" />
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="flex items-center gap-2">
+                                            <Icon icon="ph:lock-key-bold" class="text-base text-navy" />
+                                            <span class="text-sm font-black text-navy">{{ t('event_create.visibility_internal_title') }}</span>
+                                        </div>
+                                        <span class="text-xs text-gray-500 font-medium leading-relaxed block">
+                                            {{ t('event_create.visibility_internal_desc') }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Tab: Pendaftaran (Unified Master Card) -->
+            <div v-if="activeTab === 'pendaftaran'" class="space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-visible divide-y divide-gray-100">
+                    
+                    <!-- Section 1: Waktu Pendaftaran -->
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:calendar-check-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                     {{ t('dashboard_events_page.registration.timeline_title') }}
+                                 </h2>
+                                 <div class="text-xs sm:text-sm text-gray-500">
+                                     {{ t('dashboard_events_page.registration.timeline_subtitle') }}
+                                 </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full pt-2">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                    <Icon icon="ph:calendar-blank-bold" class="text-navy text-base" />
+                                    <span>{{ t('dashboard_events_page.registration.start_label') }}</span>
+                                    <span class="text-rose-500 font-bold">*</span>
+                                </label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <BaseDatePicker :model-value="getSchedDate(form.page_settings, 'registration_start')" :max-date="getSchedDate(form, 'registration_deadline') || getSchedDate(form, 'end_date')" @update:model-value="val => setSchedDate(form.page_settings, 'registration_start', val)" required />
+                                    <BaseTimePicker :model-value="getSchedTime(form.page_settings, 'registration_start')" @update:model-value="val => setSchedTime(form.page_settings, 'registration_start', val)" placeholder="08:00" />
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                    <Icon icon="ph:calendar-check-bold" class="text-navy text-base" />
+                                    <span>{{ t('dashboard_events_page.registration.end_label') }}</span>
+                                    <span class="text-rose-500 font-bold">*</span>
+                                </label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <BaseDatePicker :model-value="getSchedDate(form, 'registration_deadline')" :min-date="getSchedDate(form.page_settings, 'registration_start')" :max-date="getSchedDate(form, 'end_date')" @update:model-value="val => setSchedDate(form, 'registration_deadline', val)" required />
+                                    <BaseTimePicker :model-value="getSchedTime(form, 'registration_deadline')" @update:model-value="val => setSchedTime(form, 'registration_deadline', val)" placeholder="23:59" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Country & Currency Configuration -->
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:globe-hemisphere-west-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.currency_config.title') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('dashboard_events_page.currency_config.subtitle') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <!-- Country Selection -->
+                            <div>
+                                <BaseSelect
+                                    v-model="form.country_code"
+                                    :items="countryOptions"
+                                    :label="t('dashboard_events_page.currency_config.country_label')"
+                                    @update:model-value="onCountryChange"
+                                />
+                            </div>
+                            <!-- Currency Selection -->
+                            <div>
+                                <BaseSelect
+                                    v-model="form.currency"
+                                    :items="currencyOptions"
+                                    :label="t('dashboard_events_page.currency_config.currency_label')"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Payment Gateway Routing Informational Badge -->
+                        <div class="p-4 rounded-2xl border flex items-start gap-3.5 transition-all"
+                            :class="form.currency === 'IDR'
+                                ? 'bg-emerald-50/70 border-emerald-200 text-emerald-900'
+                                : 'bg-blue-50/70 border-blue-200 text-blue-900'">
+                            <div class="size-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                                :class="form.currency === 'IDR' ? 'bg-emerald-500 text-white shadow-xs' : 'bg-blue-500 text-white shadow-xs'">
+                                <Icon :icon="form.currency === 'IDR' ? 'ph:qr-code-bold' : 'ph:paypal-logo-bold'" class="text-lg" />
+                            </div>
+                            <div class="text-sm leading-relaxed">
+                                <div class="font-black flex items-center gap-1.5 text-navy">
+                                    <span>{{ form.currency === 'IDR' ? t('dashboard_events_page.payment_gateway.idr_title') : t('dashboard_events_page.payment_gateway.intl_title') }}</span>
+                                </div>
+                                <div class="text-gray-600 mt-1">
+                                    {{ form.currency === 'IDR'
+                                        ? t('dashboard_events_page.payment_gateway.idr_desc')
+                                        : t('dashboard_events_page.payment_gateway.intl_desc') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Fee Mode Selector + Config -->
+                    <div class="p-4 sm:p-6 space-y-6">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:ticket-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.registration.fee_title') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('dashboard_events_page.registration.fee_subtitle') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mode Selector -->
+                        <div class="space-y-3">
+                            <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.registration.fee_mode_label') }}</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <!-- Mode: Per Participant Type -->
+                                <button type="button"
+                                    @click="form.fee_mode = 'per_type'"
+                                    :class="form.fee_mode === 'per_type'
+                                        ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
+                                        : 'border-gray-200 hover:border-gray-300 bg-white'"
+                                    class="flex items-start gap-4 p-4 rounded-2xl border-2 text-left transition-all">
+                                    <div :class="form.fee_mode === 'per_type' ? 'bg-primary text-btn-text shadow-2xs font-bold' : 'bg-gray-100 text-gray-500'"
+                                        class="size-10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                                        <Icon icon="ph:users-three-bold" class="text-xl" />
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-black text-navy">{{ t('dashboard_events_page.registration.mode_per_type_title') }}</div>
+                                        <div class="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">{{ t('dashboard_events_page.registration.mode_per_type_desc') }}</div>
+                                    </div>
+                                    <div v-if="form.fee_mode === 'per_type'" class="ml-auto shrink-0">
+                                        <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
+                                    </div>
+                                </button>
+
+                                <!-- Mode: Per Category -->
+                                <button type="button"
+                                    @click="form.fee_mode = 'per_category'"
+                                    :class="form.fee_mode === 'per_category'
+                                        ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
+                                        : 'border-gray-200 hover:border-gray-300 bg-white'"
+                                    class="flex items-start gap-4 p-4 rounded-2xl border-2 text-left transition-all">
+                                    <div :class="form.fee_mode === 'per_category' ? 'bg-primary text-btn-text shadow-2xs font-bold' : 'bg-gray-100 text-gray-500'"
+                                        class="size-10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                                        <Icon icon="ph:stack-bold" class="text-xl" />
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-black text-navy">{{ t('dashboard_events_page.registration.mode_per_cat_title') }}</div>
+                                        <div class="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">{{ t('dashboard_events_page.registration.mode_per_cat_desc') }}</div>
+                                    </div>
+                                    <div v-if="form.fee_mode === 'per_category'" class="ml-auto shrink-0">
+                                        <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ── MODE: Per Participant Type ── -->
+                        <div v-if="form.fee_mode === 'per_type'" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <!-- Individual -->
+                                <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                    <div class="flex items-center gap-2.5 mb-3">
+                                        <div class="size-9 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5 shrink-0">
+                                            <img src="/category-icon/men-single-recurve.svg" alt="Individual" class="w-full h-full object-contain" />
+                                        </div>
+                                        <label class="text-sm font-black text-navy">{{ t('dashboard_events_page.registration.individual') }}</label>
+                                    </div>
+                                    <BaseCurrencyInput
+                                        v-model="form.fee_per_type.individual"
+                                        :currency="form.currency || 'IDR'"
+                                        placeholder="0"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
+                                    <div class="text-xs sm:text-sm text-gray-500">{{ t('dashboard_events_page.registration.individual_desc') }}</div>
+                                </div>
+                                <!-- Team -->
+                                <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                    <div class="flex items-center gap-2.5 mb-3">
+                                        <div class="size-9 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5 shrink-0">
+                                            <img src="/category-icon/men-team.svg" alt="Team" class="w-full h-full object-contain" />
+                                        </div>
+                                        <label class="text-sm font-black text-navy">{{ t('dashboard_events_page.registration.team') }}</label>
+                                    </div>
+                                    <BaseCurrencyInput
+                                        v-model="form.fee_per_type.team"
+                                        :currency="form.currency || 'IDR'"
+                                        placeholder="0"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
+                                    <div class="text-xs sm:text-sm text-gray-500">{{ t('dashboard_events_page.registration.team_desc') }}</div>
+                                </div>
+                                <!-- Mixed Team -->
+                                <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                    <div class="flex items-center gap-2.5 mb-3">
+                                        <div class="size-9 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5 shrink-0">
+                                            <img src="/category-icon/mix-team.svg" alt="Mixed Team" class="w-full h-full object-contain" />
+                                        </div>
+                                        <label class="text-sm font-black text-navy">{{ t('dashboard_events_page.registration.mixed_team') }}</label>
+                                    </div>
+                                    <BaseCurrencyInput
+                                        v-model="form.fee_per_type.mixed_team"
+                                        :currency="form.currency || 'IDR'"
+                                        placeholder="0"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
+                                    <div class="text-xs sm:text-sm text-gray-500">{{ t('dashboard_events_page.registration.mixed_team_desc') }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ── MODE: Per Category ── -->
+                        <div v-if="form.fee_mode === 'per_category'" class="space-y-4">
+                            <div v-if="eventCategories.length === 0"
+                                class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                                <Icon icon="ph:stack" class="text-3xl text-gray-300 mx-auto mb-2" />
+                                <div class="text-sm font-bold text-gray-500">{{ t('dashboard_events_page.registration.no_categories') }}</div>
+                                <div class="text-xs sm:text-sm text-gray-400 mt-1">{{ t('dashboard_events_page.registration.no_categories_desc') }}</div>
+                                <BaseButton variant="outline" size="sm" class="mt-3 text-sm font-bold" :to="`/dashboard/organizer/tournaments/${eventId}/categories`">
+                                    <Icon icon="ph:plus-bold" class="mr-1.5" /> {{ t('dashboard_events_page.registration.add_category') }}
+                                </BaseButton>
+                            </div>
+
+                            <div v-else class="space-y-3">
+                                <div class="flex items-center justify-between pb-1">
+                                    <div class="text-sm font-bold text-gray-600 flex items-center gap-1.5">
+                                        <Icon icon="ph:stack-bold" class="text-navy text-base" />
+                                        <span>{{ eventCategories.length }} {{ t('events.categories.configured') }}</span>
+                                    </div>
+                                    <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/categories`"
+                                        class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-navy text-white text-sm font-bold hover:bg-navy/90 hover:shadow-xs transition-all">
+                                        <Icon icon="ph:plus-bold" class="text-primary text-sm" />
+                                        <span>{{ t('dashboard_events_page.registration.add_category') }}</span>
+                                    </NuxtLink>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <div v-for="cat in eventCategories" :key="cat.id"
+                                        class="flex items-center gap-3.5 p-3.5 bg-gray-50/80 rounded-2xl border border-gray-100 hover:border-primary/30 hover:bg-white transition-all">
+                                        <!-- Category Icon -->
+                                        <div class="size-11 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 overflow-hidden p-2">
+                                            <img :src="'/' + getCategoryIcon(`${cat.division_name || ''} ${cat.category_name || ''} ${cat.event_type_name || ''} ${cat.gender_division_name || ''}`)"
+                                                :alt="cat.division_name || cat.category_name"
+                                                class="w-full h-full object-contain" />
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-sm font-bold text-navy truncate">
+                                                {{ [cat.category_name, cat.event_type_name, cat.gender_division_name].filter(s => s && s.trim() && s !== '-').join(' – ') }}
+                                            </div>
+                                            <div class="text-xs sm:text-sm text-gray-500 font-medium">{{ cat.division_name }}</div>
+                                        </div>
+                                        <BaseCurrencyInput
+                                            v-model="form.fee_per_category[cat.id]"
+                                            :currency="form.currency || 'IDR'"
+                                            placeholder="0"
+                                            wrapper-class="w-36 sm:w-44 shrink-0"
+                                            input-class="pr-3 py-2 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Quick Add Category Button Footer -->
+                                <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/categories`"
+                                    class="flex items-center justify-center gap-2 p-3 rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary hover:bg-primary/5 text-gray-600 hover:text-navy text-sm font-bold transition-all group">
+                                    <div class="size-6 rounded-lg bg-gray-100 group-hover:bg-primary flex items-center justify-center transition-colors">
+                                        <Icon icon="ph:plus-bold" class="text-navy text-sm" />
+                                    </div>
+                                    <span>{{ t('dashboard_events_page.registration.add_category') }}</span>
+                                </NuxtLink>
+                            </div>
+
+                            <!-- Default fallback fee -->
+                            <div class="pt-4 border-t border-gray-100 space-y-2">
+                                <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.registration.default_fee_label') }}</label>
+                                <BaseCurrencyInput
+                                    v-model="form.entry_fee"
+                                    :currency="form.currency || 'IDR'"
+                                    placeholder="0"
+                                    wrapper-class="max-w-xs"
+                                    input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                />
+                                <div class="text-xs sm:text-sm text-gray-500">{{ t('dashboard_events_page.registration.default_fee_desc') }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Manual Payment Method Section -->
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:credit-card-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.manual_payment.title') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('dashboard_events_page.manual_payment.description') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Configured Bank Accounts List -->
+                        <div v-if="orgBankAccounts.length > 0" class="pt-2">
+                            <h4 class="text-xs sm:text-sm font-bold text-gray-500 tracking-wider mb-3 text-left">{{ t('dashboard_events_page.manual_payment.list_title') }}</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div v-for="bank in orgBankAccounts" :key="bank.uuid || bank.id"
+                                    @click="togglePaymentMethod(bank.uuid || bank.id)"
+                                    :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'border-primary/40 bg-primary/5 ring-1 ring-primary/20' : 'border-gray-100 bg-gray-50/50 opacity-60'"
+                                    class="flex items-center justify-between p-4 rounded-2xl border cursor-pointer hover:border-primary/30 transition-all shadow-sm">
+                                    <div class="flex items-center gap-3.5 min-w-0">
+                                        <div class="size-11 bg-white rounded-xl flex items-center justify-center border border-gray-100 shrink-0 p-1.5 shadow-sm">
+                                            <img v-if="getPaymentMethodImage(bank.bank_name)" :src="getPaymentMethodImage(bank.bank_name)" class="w-full h-full object-contain" :alt="bank.bank_name" />
+                                            <Icon v-else icon="ph:credit-card" class="text-xl text-navy" />
+                                        </div>
+                                        <div class="text-left min-w-0">
+                                            <div class="text-sm font-black text-navy truncate">{{ bank.bank_name }} - {{ bank.account_number }}</div>
+                                            <div class="text-xs sm:text-sm text-gray-500 font-medium mt-0.5 truncate">a.n. {{ bank.account_name }}</div>
+                                        </div>
+                                    </div>
+                                    <button type="button"
+                                        :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'bg-primary' : 'bg-gray-200'"
+                                        class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none">
+                                        <span :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'translate-x-5 bg-navy' : 'translate-x-0 bg-white'"
+                                            class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out">
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Empty State Design for Manual Payment -->
+                        <div v-else class="p-6 sm:p-8 rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50/50 text-center flex flex-col items-center justify-center gap-3">
+                            <div class="size-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shadow-xs">
+                                <Icon icon="ph:bank-bold" class="text-2xl text-navy" />
+                            </div>
+                            <div class="max-w-md">
+                                <div class="text-base font-bold text-navy">{{ t('dashboard_events_page.manual_payment.empty_title') }}</div>
+                                <div class="text-xs sm:text-sm text-gray-500 mt-1">
+                                    {{ t('dashboard_events_page.manual_payment.empty_desc') }}
+                                </div>
+                            </div>
+                            <NuxtLink to="/dashboard/organizer/bank-accounts"
+                                class="mt-2 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-navy text-white text-sm font-bold hover:bg-navy/90 hover:shadow-sm transition-all">
+                                <Icon icon="ph:plus-bold" class="text-primary text-base" />
+                                <span>{{ t('dashboard_events_page.manual_payment.add_bank_btn') }}</span>
+                            </NuxtLink>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Hadiah & Guidebook -->
+                    <div class="p-4 sm:p-6 space-y-5">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:trophy-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.prizes.title') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('dashboard_events_page.prizes.subtitle') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                    <Icon icon="ph:currency-circle-dollar-bold" class="text-navy text-base" />
+                                    {{ t('dashboard_events_page.prizes.total_prize_label') }}
+                                </label>
+                                <BaseCurrencyInput
+                                    v-model="form.total_prize"
+                                    :currency="form.currency || 'IDR'"
+                                    placeholder="0"
+                                    prefix-class="text-sm font-bold"
+                                    prefix-padding-class="pl-10"
+                                    input-class="pr-4 py-3 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                    <Icon icon="ph:book-bookmark-bold" class="text-navy text-base" />
+                                    {{ t('dashboard_events_page.prizes.guidebook_label') }}
+                                </label>
+                                <div class="flex items-center gap-2">
+                                    <input type="text" :value="form.technical_guidebook_url ? 'Guidebook.pdf' : ''"
+                                        readonly
+                                        class="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm italic"
+                                        :placeholder="t('dashboard_events_page.prizes.no_file')" />
+                                    <input type="file" ref="guidebookInput" class="hidden" accept=".pdf"
+                                        @change="handleGuidebookUpload" />
+                                    <BaseButton variant="outline" size="sm" icon="ph:upload-simple-bold" @click="$refs.guidebookInput.click()"
+                                        :loading="uploadingGuidebook" class="text-sm font-bold">{{ t('dashboard_events_page.prizes.upload') }}</BaseButton>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100">
+                            <label class="text-sm font-bold text-gray-700 mb-3 block">{{ t('dashboard_events_page.prizes.detail_title') }}</label>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.prizes.first_place') }}</label>
+                                    <BaseCurrencyInput
+                                        v-model="form.prizes.first"
+                                        :currency="form.currency || 'IDR'"
+                                        :placeholder="t('dashboard_events_page.prizes.placeholder_prize')"
+                                        prefix-class="text-sm font-bold"
+                                        prefix-padding-class="pl-9"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
+                                    <textarea v-model="form.prizes.first_caption" rows="2"
+                                        :placeholder="t('dashboard_events_page.prizes.placeholder_caption')"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm resize-none bg-white"></textarea>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.prizes.second_place') }}</label>
+                                    <BaseCurrencyInput
+                                        v-model="form.prizes.second"
+                                        :currency="form.currency || 'IDR'"
+                                        :placeholder="t('dashboard_events_page.prizes.placeholder_prize')"
+                                        prefix-class="text-sm font-bold"
+                                        prefix-padding-class="pl-9"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
+                                    <textarea v-model="form.prizes.second_caption" rows="2"
+                                        :placeholder="t('dashboard_events_page.prizes.placeholder_caption')"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm resize-none bg-white"></textarea>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.prizes.third_place') }}</label>
+                                    <BaseCurrencyInput
+                                        v-model="form.prizes.third"
+                                        :currency="form.currency || 'IDR'"
+                                        :placeholder="t('dashboard_events_page.prizes.placeholder_prize')"
+                                        prefix-class="text-sm font-bold"
+                                        prefix-padding-class="pl-9"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
+                                    <textarea v-model="form.prizes.third_caption" rows="2"
+                                        :placeholder="t('dashboard_events_page.prizes.placeholder_caption')"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm resize-none bg-white"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Lokasi -->
+            <section v-if="activeTab === 'lokasi'"
+                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-4 sm:p-6 border-b border-gray-100 bg-gray-50/50 flex items-center gap-3">
+                    <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                        <Icon icon="ph:map-pin-bold" class="text-xl" />
+                    </div>
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-navy">
+                            {{ t('dashboard_events_page.location.title') }}
+                        </h2>
+                        <div class="text-xs sm:text-sm text-gray-500">
+                            {{ t('dashboard_events_page.location.subtitle') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 sm:p-6 space-y-6">
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
+                            {{ t('dashboard_events_page.location.venue_label') }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input v-model="form.venue" type="text" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm font-medium"
+                            :placeholder="t('dashboard_events_page.location.venue_placeholder')" />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
+                            {{ t('dashboard_events_page.location.address_label') }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <textarea v-model="form.address" rows="2" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all text-sm font-medium"
+                            :placeholder="t('dashboard_events_page.location.address_placeholder')"></textarea>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                <Icon icon="ph:map-pin" class="text-navy text-base" />
+                                {{ t('dashboard_events_page.location.gmaps_label') }}
+                            </label>
+                            <span class="text-xs sm:text-sm text-gray-500 font-medium hidden sm:inline">
+                                {{ t('dashboard_events_page.location.gmaps_hint') }}
+                            </span>
+                        </div>
+                        <textarea v-model="form.gmaps_link" rows="3"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all font-mono text-sm text-gray-700 bg-white"
+                            :placeholder="t('dashboard_events_page.location.gmaps_placeholder')"></textarea>
+                        <div class="text-xs sm:text-sm text-gray-500 font-medium flex items-center gap-1.5 pl-1">
+                            <Icon icon="ph:info-bold" class="text-blue-500 text-sm shrink-0" />
+                            <span>{{ t('dashboard_events_page.location.gmaps_hint') }}</span>
+                        </div>
+
+                        <!-- Gmaps Preview -->
+                        <div v-if="gmapsEmbedUrl" class="mt-3 space-y-2">
+                            <div class="flex items-center gap-1.5 text-sm font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-xl w-fit">
+                                <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-base" />
+                                <span>{{ t('dashboard_events_page.location.gmaps_detected') }}</span>
+                            </div>
+                            <div class="rounded-2xl overflow-hidden border border-gray-200 aspect-video shadow-inner">
+                                <iframe width="100%" height="100%" style="border:0" loading="lazy"
+                                    allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+                                    :src="gmapsEmbedUrl"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.location.accessibility_title') }}</label>
+                        <div class="text-xs sm:text-sm text-gray-500 mb-3">{{ t('dashboard_events_page.location.accessibility_desc') }}</div>
+                        <div class="flex flex-wrap gap-2.5">
+                            <button v-for="option in locationAccessibilityOptions" :key="option" type="button"
+                                @click="toggleLocationAccessibility(option)"
+                                class="px-4 py-2.5 rounded-xl text-sm font-bold transition-all border-2" :class="form.location_accessibility?.includes(option)
+                                    ? 'bg-primary text-navy border-primary shadow-sm'
+                                    : 'bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-navy'">
+                                <Icon :icon="getLocationAccessibilityIcon(option)" class="inline-block mr-1.5 text-base" />
+                                {{ t('dashboard_events_page.location.options.' + locationAccessibilityOptionKeys[option]) }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: Media (Unified Master Card) -->
+            <div v-if="activeTab === 'media'" class="space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden divide-y divide-gray-100">
+                    
+                    <!-- Section 1: Banner & Poster -->
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:image-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.media.title') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('dashboard_events_page.media.subtitle') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                            <div class="space-y-3">
+                                <label class="text-sm font-bold text-gray-700 flex items-center justify-between">
+                                    <span>{{ t('dashboard_events_page.media.banner_label') }}</span>
+                                    <span class="text-xs sm:text-sm font-semibold text-gray-400 font-body">{{ t('dashboard_events_page.media.banner_ratio') }}</span>
+                                </label>
+                                <div v-if="form.banner_url" class="relative rounded-2xl overflow-hidden aspect-video group shadow-sm border border-gray-100">
+                                    <img :src="form.banner_url" class="w-full h-full object-cover" />
+                                    <div
+                                        class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                                        <button @click="openMediaLibrary('banner')"
+                                            class="px-4 py-2 bg-white rounded-xl text-navy font-bold text-sm shadow-sm">{{ t('dashboard_events_page.media.change') }}</button>
+                                        <button @click="form.banner_url = ''"
+                                            class="px-4 py-2 bg-red-500 rounded-xl text-white font-bold text-sm shadow-sm">{{ t('dashboard_events_page.media.delete') }}</button>
+                                    </div>
+                                </div>
+                                <button v-else @click="openMediaLibrary('banner')"
+                                    class="w-full aspect-video rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400 hover:text-navy hover:bg-primary/5 transition-all">
+                                    <Icon icon="ph:image-bold" class="text-3xl mb-2" />
+                                    <span class="text-sm font-bold">{{ t('dashboard_events_page.media.select_banner') }}</span>
+                                </button>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-sm font-bold text-gray-700 flex items-center justify-between">
+                                    <span>{{ t('dashboard_events_page.media.poster_label') }}</span>
+                                    <span class="text-xs sm:text-sm font-semibold text-gray-400 font-body">{{ t('dashboard_events_page.media.poster_ratio') }}</span>
+                                </label>
+                                <div v-if="form.logo_url" class="relative rounded-2xl overflow-hidden aspect-square max-w-xs group shadow-sm border border-gray-100">
+                                    <img :src="form.logo_url" class="w-full h-full object-cover" />
+                                    <div
+                                        class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                                        <button @click="openMediaLibrary('logo')"
+                                            class="px-4 py-2 bg-white rounded-xl text-navy font-bold text-sm shadow-sm">{{ t('dashboard_events_page.media.change') }}</button>
+                                        <button @click="form.logo_url = ''"
+                                            class="px-4 py-2 bg-red-500 rounded-xl text-white font-bold text-sm shadow-sm">{{ t('dashboard_events_page.media.delete') }}</button>
+                                    </div>
+                                </div>
+                                <button v-else @click="openMediaLibrary('logo')"
+                                    class="w-full aspect-square max-w-xs rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400 hover:text-navy hover:bg-primary/5 transition-all">
+                                    <Icon icon="ph:image-square-bold" class="text-3xl mb-2" />
+                                    <span class="text-sm font-bold">{{ t('dashboard_events_page.media.select_poster') }}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Galeri Turnamen -->
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:images-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.media.gallery_title') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('dashboard_events_page.media.gallery_subtitle') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 pt-2">
+                            <div v-for="(image, index) in form.event_images" :key="index"
+                                class="relative aspect-square rounded-2xl overflow-hidden border border-gray-100 group shadow-sm">
+                                <img :src="image.url" class="w-full h-full object-cover" />
+                                <button @click="removeImage(index)"
+                                    class="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
+                                    <Icon icon="ph:trash-bold" class="text-sm" />
+                                </button>
+                            </div>
+                            <button @click="openMediaLibrary('gallery')"
+                                class="aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400 hover:text-navy hover:bg-primary/5 transition-all">
+                                <Icon icon="ph:plus-bold" class="text-xl mb-1" />
+                                <span class="text-xs sm:text-sm font-bold">{{ t('common.add') }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Hasil (Unified Master Card) -->
+        <div v-if="activeTab === 'hasil'" class="space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden divide-y divide-gray-100">
+                
+                <!-- Section 1: Results Source Selector -->
+                <div class="p-4 sm:p-6 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                            <Icon icon="iconoir:leaderboard" class="text-xl" />
+                        </div>
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-navy">
+                                {{ t('dashboard_events_page.results.source_title') }}
+                            </h2>
+                            <div class="text-xs sm:text-sm text-gray-500">
+                                {{ t('dashboard_events_page.results.source_desc') }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                        <button @click="form.page_settings.results_type = 'system'" type="button"
+                            class="relative p-4 sm:p-5 rounded-2xl border-2 text-left transition-all group"
+                            :class="form.page_settings.results_type === 'system' ? 'border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20' : 'border-gray-200 hover:border-gray-300 bg-white'">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors font-bold"
+                                    :class="form.page_settings.results_type === 'system' ? 'bg-primary text-btn-text shadow-2xs' : 'bg-gray-100 text-gray-400'">
+                                    <Icon icon="ph:chart-bar-bold" class="text-xl" />
+                                </div>
+                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors font-bold"
+                                    :class="form.page_settings.results_type === 'system' ? 'border-primary' : 'border-gray-300'">
+                                    <div v-if="form.page_settings.results_type === 'system'"
+                                        class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                                </div>
+                            </div>
+                            <h4 class="font-bold text-sm text-navy">{{ t('dashboard_events_page.results.from_system') }}</h4>
+                            <div class="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">{{ t('dashboard_events_page.results.from_system_desc') }}</div>
+                        </button>
+                        <button @click="form.page_settings.results_type = 'manual'" type="button"
+                            class="relative p-4 sm:p-5 rounded-2xl border-2 text-left transition-all group"
+                            :class="form.page_settings.results_type === 'manual' ? 'border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20' : 'border-gray-200 hover:border-gray-300 bg-white'">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors font-bold"
+                                    :class="form.page_settings.results_type === 'manual' ? 'bg-primary text-btn-text shadow-2xs' : 'bg-gray-100 text-gray-400'">
+                                    <Icon icon="ph:file-arrow-up-bold" class="text-xl" />
+                                </div>
+                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors font-bold"
+                                    :class="form.page_settings.results_type === 'manual' ? 'border-primary' : 'border-gray-300'">
+                                    <div v-if="form.page_settings.results_type === 'manual'"
+                                        class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                                </div>
+                            </div>
+                            <h4 class="font-bold text-sm text-navy">{{ t('dashboard_events_page.results.manual_upload') }}</h4>
+                            <div class="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">{{ t('dashboard_events_page.results.manual_upload_desc') }}</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Section 2: Manual Upload Section (Only when manual) -->
+                <div v-if="form.page_settings.results_type === 'manual'" class="p-4 sm:p-6 space-y-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:file-arrow-up-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.results.upload_doc_title') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500 mt-0.5 font-medium">{{ t('dashboard_events_page.results.upload_doc_desc') }}</div>
+                            </div>
+                        </div>
+                        <BaseButton variant="primary" size="sm" icon="ph:plus-bold" class="text-sm font-bold shrink-0"
+                            @click="$refs.resultsFileInput?.click()">
+                            {{ t('dashboard_events_page.results.add_file') }}
+                        </BaseButton>
+                    </div>
+
+                    <!-- Upload Area (Compact when files exist) -->
+                    <div v-if="!form.results || form.results.length === 0"
+                        class="border-2 border-dashed border-gray-200 rounded-3xl p-10 text-center hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group"
+                        @click="$refs.resultsFileInput?.click()" @dragover.prevent="isDragging = true"
+                        @dragleave.prevent="isDragging = false" @drop.prevent="handleResultsDrop"
+                        :class="isDragging ? 'border-primary bg-primary/5' : ''">
+                        <div class="flex flex-col items-center gap-4">
+                            <div
+                                class="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center group-hover:bg-white group-hover:shadow-sm group-hover:shadow-primary/20 transition-all">
+                                <Icon icon="ph:cloud-arrow-up"
+                                    class="text-3xl text-gray-400 group-hover:text-primary" />
+                            </div>
+                            <div class="max-w-xs mx-auto">
+                                <div class="text-sm font-bold text-navy group-hover:text-primary transition-colors">
+                                    {{ t('dashboard_events_page.results.upload_result_label') }}</div>
+                                <div class="text-xs sm:text-sm text-gray-500 mt-1 font-medium">{{ t('dashboard_events_page.results.drag_drop_hint') }}</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <span
+                                    class="px-3 py-1 bg-gray-100 rounded-full text-xs sm:text-sm font-bold text-gray-500">{{ t('dashboard_events_page.results.max_size_hint') }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Uploaded Files List -->
+                    <div v-if="form.results && form.results.length > 0" class="space-y-4">
+                        <div class="grid grid-cols-1 gap-4">
+                            <div v-for="(file, index) in form.results" :key="index"
+                                class="group relative bg-white rounded-2xl border border-gray-100 hover:border-primary/50 hover:shadow-sm transition-all p-4 sm:p-5">
+
+                                <div class="flex gap-3 sm:gap-5">
+                                    <!-- File Icon / Preview -->
+                                    <div
+                                        class="w-16 h-20 rounded-xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                                        <Icon :icon="getFileIcon(file.url)" class="text-3xl text-navy" />
+                                        <span class="text-xs font-bold text-gray-500 mt-1">{{
+                                            getFileExt(file.url) }}</span>
+                                    </div>
+
+                                    <!-- File Metadata & Actions -->
+                                    <div class="flex-1 min-w-0 flex flex-col justify-between py-1">
+                                        <div class="space-y-3">
+                                            <!-- Title Input -->
+                                            <div class="space-y-1">
+                                                <label
+                                                    class="text-xs sm:text-sm font-bold text-gray-600 pl-1">{{ t('dashboard_events_page.results.display_title') }}</label>
+                                                <input v-model="file.title" type="text"
+                                                    placeholder="Contoh: Hasil Kualifikasi Recurve"
+                                                    class="w-full px-3 py-2 text-sm font-bold text-navy bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-xl outline-none transition-all" />
+                                            </div>
+
+                                            <!-- Filename Input -->
+                                            <div class="space-y-1">
+                                                <label
+                                                    class="text-xs sm:text-sm font-bold text-gray-600 pl-1">{{ t('dashboard_events_page.results.download_name') }}</label>
+                                                <div class="flex items-center gap-2">
+                                                    <input v-model="file.name" type="text" placeholder="nama-file"
+                                                        class="flex-1 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-xl outline-none transition-all" />
+                                                    <span class="text-xs sm:text-sm font-bold text-gray-500">.{{
+                                                        getFileExt(file.url) }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Footer Actions -->
+                                        <div class="flex items-center justify-between mt-4">
+                                            <div
+                                                class="text-xs sm:text-sm font-bold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-lg">
+                                                {{ formatFileSize(file.size) }}
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <a :href="file.url" target="_blank"
+                                                    class="p-2 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-xl transition-all"
+                                                    title="Pratinjau">
+                                                    <Icon icon="ph:eye-bold" class="text-lg" />
+                                                </a>
+                                                <button @click="removeResultFile(index)"
+                                                    class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                                                    title="Hapus">
+                                                    <Icon icon="ph:trash-bold" class="text-lg" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Add More Area -->
+                            <div @click="$refs.resultsFileInput?.click()"
+                                class="border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center p-6 hover:border-primary hover:bg-primary/5 transition-all group cursor-pointer">
+                                <div
+                                    class="p-3 bg-gray-50 rounded-full group-hover:bg-navy group-hover:text-primary transition-all text-gray-400">
+                                    <Icon icon="ph:plus-bold" class="text-xl" />
+                                </div>
+                                <div
+                                    class="text-sm font-bold text-gray-500 mt-2 tracking-wide group-hover:text-navy">
+                                    {{ t('dashboard_events_page.results.add_more') }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input ref="resultsFileInput" type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png" multiple
+                        @change="handleResultsUpload" />
+                </div>
+
+                <!-- Section 3: System Results Info (Only when system) -->
+                <div v-if="form.page_settings.results_type === 'system'" class="p-4 sm:p-6">
+                    <div class="flex items-start gap-4 p-4 rounded-2xl bg-blue-50/70 border border-blue-200">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                            <Icon icon="ph:info-bold" class="text-xl" />
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-navy text-sm">{{ t('dashboard_events_page.results.system_scoring_title') }}</h4>
+                            <div class="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed">
+                                {{ t('dashboard_events_page.results.system_scoring_desc') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Media Library Modal -->
+        <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
+    </div>
+</template>

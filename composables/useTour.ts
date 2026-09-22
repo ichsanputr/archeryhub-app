@@ -22,18 +22,8 @@ export function useTour() {
   const isLastStep = computed(() => currentStepIndex.value === tourSteps.value.length - 1)
 
   const startTour = (tourId: string, steps: TourStep[], force = false) => {
-    if (import.meta.server) return
-
-    // Check if already completed
-    const completed = JSON.parse(localStorage.getItem('completed_tours') || '[]')
-    if (completed.includes(tourId) && !force) {
-      return
-    }
-
-    activeTourId.value = tourId
-    tourSteps.value = steps
-    currentStepIndex.value = 0
-    isActive.value = true
+    // Temporarily disabled
+    return
   }
 
   const nextStep = () => {

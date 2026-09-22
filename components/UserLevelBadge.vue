@@ -20,14 +20,14 @@
           </div>
           <div>
             <h3 class="text-sm font-bold text-gray-900">Level {{ level }}</h3>
-            <p class="text-xs font-semibold" :style="{ color: titleColor }">
+            <div class="text-xs font-semibold" :style="{ color: titleColor }">
               {{ levelTitle }}
-            </p>
+            </div>
           </div>
         </div>
         <div class="text-right">
-          <p class="text-xs text-gray-500">XP</p>
-          <p class="text-sm font-bold text-gray-900">{{ currentXP }}</p>
+          <div class="text-xs text-gray-500">XP</div>
+          <div class="text-sm font-bold text-gray-900">{{ currentXP }}</div>
         </div>
       </div>
 
@@ -41,9 +41,9 @@
           <div class="h-full bg-gradient-to-r transition-all duration-500 ease-out" :class="badgeGradient"
             :style="{ width: `${progressPercent}%` }" />
         </div>
-        <p class="text-xs text-gray-500 text-center">
+        <div class="text-xs text-gray-500 text-center">
           {{ xpToNextLevel }} XP to next level
-        </p>
+        </div>
       </div>
     </div>
 
@@ -61,9 +61,9 @@
               <Icon :icon="badgeIcon" class="w-10 h-10 text-white" />
             </div>
             <h3 class="text-2xl font-bold text-gray-900">Level {{ level }}</h3>
-            <p class="text-lg font-semibold mt-1" :style="{ color: titleColor }">
+            <div class="text-lg font-semibold mt-1" :style="{ color: titleColor }">
               {{ levelTitle }}
-            </p>
+            </div>
           </div>
 
           <!-- XP Info -->
@@ -83,20 +83,20 @@
                 <div class="h-full bg-gradient-to-r transition-all duration-500" :class="badgeGradient"
                   :style="{ width: `${progressPercent}%` }" />
               </div>
-              <p class="text-xs text-gray-500 mt-2 text-center">
+              <div class="text-xs text-gray-500 mt-2 text-center">
                 {{ xpToNextLevel }} XP needed for Level {{ level + 1 }}
-              </p>
+              </div>
             </div>
 
             <!-- Stats -->
             <div v-if="stats" class="grid grid-cols-2 gap-3 pt-3 border-t border-gray-200">
               <div class="text-center p-3 bg-yellow-50 rounded-lg">
-                <p class="text-2xl font-bold text-yellow-600">{{ stats.total_solved }}</p>
-                <p class="text-xs text-gray-600 mt-1">Solved</p>
+                <div class="text-2xl font-bold text-yellow-600">{{ stats.total_solved }}</div>
+                <div class="text-xs text-gray-600 mt-1">Solved</div>
               </div>
               <div class="text-center p-3 bg-green-50 rounded-lg">
-                <p class="text-2xl font-bold text-green-600">{{ Math.round(stats.success_rate) }}%</p>
-                <p class="text-xs text-gray-600 mt-1">Success Rate</p>
+                <div class="text-2xl font-bold text-green-600">{{ Math.round(stats.success_rate) }}%</div>
+                <div class="text-xs text-gray-600 mt-1">Success Rate</div>
               </div>
             </div>
           </div>

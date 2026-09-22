@@ -271,8 +271,14 @@ export const useAuth = () => {
         }
       }
     } catch (error: unknown) {
-      // Profile fetch failed (e.g. 401/404/user deleted) -> wipe state & cookies cleanly
-      clearClientAuth()
+      const status = (error as any)?.response?.status || (error as any)?.statusCode || (error as any)?.status
+      // ONLY clear auth if the API explicitly rejects credentials (401/403/404)
+      if (status === 401 || status === 403 || status === 404) {
+        clearClientAuth()
+      } else {
+        // If API is down / timeout / 500 / 502 / network error, do NOT logout the user
+        console.warn('[useAuth] Backend unreachable or temporary error. Retaining local user session.')
+      }
     } finally {
       isUserLoading.value = false
     }

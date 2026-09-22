@@ -7,10 +7,10 @@
         <div class="flex items-center justify-between text-xs">
           <span class="text-slate-500 font-bold flex items-center gap-1.5">
             <Icon icon="ph:calendar-dots-bold" class="text-primary text-sm" />
-            Pilih Hari Pertandingan:
+            {{ ft('select_day') }}
           </span>
           <span class="text-slate-400 font-medium text-[11px]">
-            {{ formattedFopDays.length }} Hari Terjadwal
+            {{ ft('scheduled_days', { count: formattedFopDays.length }) }}
           </span>
         </div>
         <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 pt-0.5">
@@ -33,7 +33,7 @@
                 selectedDayIdx === dIdx ? 'bg-white/20 text-white' : 'bg-slate-200/70 text-slate-600'
               ]"
             >
-              {{ day.sessions.length }} Sesi
+              {{ ft('sessions_badge', { count: day.sessions.length }) }}
             </span>
           </button>
         </div>
@@ -45,7 +45,7 @@
         <div class="flex items-center gap-2.5 flex-1 min-w-0">
           <span class="text-slate-500 font-bold text-xs shrink-0 flex items-center gap-1">
             <Icon icon="ph:clock-bold" class="text-slate-400" />
-            Sesi:
+            {{ ft('session_label') }}
           </span>
           <div class="relative flex-1 max-w-lg">
             <select
@@ -53,7 +53,7 @@
               class="w-full bg-slate-50 hover:bg-slate-100 border border-slate-200 text-navy font-bold rounded-xl px-3.5 py-2 focus:outline-none focus:border-navy text-xs cursor-pointer pr-9 appearance-none transition-all shadow-2xs truncate"
             >
               <option v-for="(session, sIdx) in currentDaySessions" :key="sIdx" :value="sIdx">
-                {{ session.time }} — {{ session.title }} ({{ session.targetCount }} Targets)
+                {{ session.time }} — {{ session.title }} {{ ft('targets_count', { count: session.targetCount }) }}
               </option>
             </select>
             <Icon icon="ph:caret-down-bold" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-xs" />
@@ -65,10 +65,10 @@
           <button
             @click="resetCamera"
             class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
-            title="Reset Zoom & Pan"
+            :title="ft('reset_title')"
           >
             <Icon icon="ph:arrows-counter-clockwise-bold" class="text-xs text-slate-500" />
-            <span>Reset View</span>
+            <span>{{ ft('reset_view') }}</span>
           </button>
         </div>
       </div>
@@ -101,8 +101,8 @@
               #{{ selectedTargetInfo.targetNumber }}
             </span>
             <div>
-              <div class="font-bold text-navy text-sm">Target Butt {{ selectedTargetInfo.targetNumber }}</div>
-              <div class="text-[10px] text-slate-500 font-mono">{{ selectedTargetInfo.distance }} Range Distance</div>
+              <div class="font-bold text-navy text-sm">{{ ft('target_butt', { num: selectedTargetInfo.targetNumber }) }}</div>
+              <div class="text-[10px] text-slate-500 font-mono">{{ ft('shooting_distance', { dist: selectedTargetInfo.distance }) }}</div>
             </div>
           </div>
           <button @click="selectedTargetInfo = null" class="size-6 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-navy flex items-center justify-center transition-colors cursor-pointer">
@@ -112,27 +112,27 @@
 
         <div class="grid grid-cols-2 gap-2 text-[11px]">
           <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
-            <div class="text-slate-400 text-[10px] font-semibold">Division</div>
+            <div class="text-slate-400 text-[10px] font-semibold">{{ ft('division') }}</div>
             <div class="font-bold text-navy truncate mt-0.5">{{ selectedTargetInfo.divisionName }}</div>
             <div class="text-[10px] text-emerald-700 font-mono font-bold">{{ selectedTargetInfo.divisionCode }}</div>
           </div>
           <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
-            <div class="text-slate-400 text-[10px] font-semibold">Phase & Match</div>
+            <div class="text-slate-400 text-[10px] font-semibold">{{ ft('phase_match') }}</div>
             <div class="font-bold text-amber-700 mt-0.5">{{ selectedTargetInfo.phase }}</div>
-            <div class="text-[10px] text-slate-500">{{ activeSession.format || 'Official Match' }}</div>
+            <div class="text-[10px] text-slate-500">{{ activeSession.format || ft('official_match') }}</div>
           </div>
         </div>
 
         <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 space-y-1.5">
           <div class="flex items-center justify-between text-[10px]">
-            <span class="text-slate-500">Target Face:</span>
+            <span class="text-slate-500">{{ ft('target_face') }}</span>
             <span class="font-bold text-navy">{{ selectedTargetInfo.targetFace }}</span>
           </div>
           <div class="flex items-center justify-between text-[10px] border-t border-slate-200/60 pt-1.5">
-            <span class="text-slate-500">Flight Slots:</span>
+            <span class="text-slate-500">{{ ft('flight_slots') }}</span>
             <div class="flex items-center gap-1 font-mono">
-              <span class="px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 font-bold border border-sky-200">A: Archer 1</span>
-              <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold border border-amber-200">B: Archer 2</span>
+              <span class="px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 font-bold border border-sky-200">{{ ft('archer_1') }}</span>
+              <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold border border-amber-200">{{ ft('archer_2') }}</span>
             </div>
           </div>
         </div>
@@ -142,17 +142,17 @@
       <div class="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-200 text-[10px] sm:text-[11px] text-slate-700 flex items-center gap-2.5 z-10 pointer-events-none shadow-sm">
         <div class="flex items-center gap-1.5">
           <span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span class="font-mono font-bold text-navy">{{ activeSession.targetCount }} Lanes</span>
+          <span class="font-mono font-bold text-navy">{{ ft('lanes_badge', { count: activeSession.targetCount }) }}</span>
         </div>
         <span class="text-slate-300">|</span>
         <div class="flex items-center gap-1">
           <Icon icon="ph:cursor-click-bold" class="text-navy text-xs" />
-          <span>Click to Inspect</span>
+          <span>{{ ft('click_inspect') }}</span>
         </div>
         <span class="hidden sm:inline text-slate-300">|</span>
         <div class="hidden sm:flex items-center gap-1">
           <Icon icon="ph:mouse-scroll-bold" class="text-navy text-xs" />
-          <span>Pan & Zoom</span>
+          <span>{{ ft('pan_zoom') }}</span>
         </div>
       </div>
     </div>
@@ -175,8 +175,156 @@ const props = defineProps({
   fopData: {
     type: Array,
     default: () => []
+  },
+  currentLang: {
+    type: String,
+    default: 'id'
   }
 })
+
+// ─────────────────────────────────────────────────────────────
+// MULTI-LANGUAGE I18N DICTIONARY & HELPERS (ID / EN / IT)
+// ─────────────────────────────────────────────────────────────
+const fopI18n = {
+  id: {
+    select_day: 'Pilih Hari Pertandingan:',
+    scheduled_days: '{count} Hari Terjadwal',
+    sessions_badge: '{count} Sesi',
+    session_label: 'Sesi Pertandingan:',
+    targets_count: '({count} Bantalan)',
+    reset_title: 'Reset Sudut Pandang & Zoom',
+    reset_view: 'Reset View',
+    lanes_badge: '{count} Jalur Target',
+    click_inspect: 'Klik Bantalan untuk Detail',
+    pan_zoom: 'Geser & Scroll untuk Zoom',
+    target_butt: 'Bantalan #{num}',
+    shooting_distance: 'Jarak Tembak: {dist}',
+    division: 'Divisi / Kategori',
+    phase_match: 'Fase Pertandingan',
+    official_match: 'Pertandingan Resmi',
+    target_face: 'Target Face / Sasaran',
+    flight_slots: 'Slot Pemanah (AB)',
+    archer_1: 'Pemanah 1 (A)',
+    archer_2: 'Pemanah 2 (B)',
+    unused_lane: 'Kosong (Unused)',
+    official_category: 'Kategori Resmi',
+    open_division: 'Divisi Open',
+    match_round: 'Babak Pertandingan'
+  },
+  en: {
+    select_day: 'Select Competition Day:',
+    scheduled_days: '{count} Days Scheduled',
+    sessions_badge: '{count} Sessions',
+    session_label: 'Match Session:',
+    targets_count: '({count} Targets)',
+    reset_title: 'Reset View Angle & Zoom',
+    reset_view: 'Reset View',
+    lanes_badge: '{count} Target Lanes',
+    click_inspect: 'Click Target for Details',
+    pan_zoom: 'Pan & Scroll to Zoom',
+    target_butt: 'Target Butt #{num}',
+    shooting_distance: 'Shooting Distance: {dist}',
+    division: 'Division / Category',
+    phase_match: 'Match Phase',
+    official_match: 'Official Match',
+    target_face: 'Target Face',
+    flight_slots: 'Archer Slots (AB)',
+    archer_1: 'Archer 1 (A)',
+    archer_2: 'Archer 2 (B)',
+    unused_lane: 'Unused Lane',
+    official_category: 'Official Category',
+    open_division: 'Open Division',
+    match_round: 'Match Round'
+  },
+  it: {
+    select_day: 'Seleziona Giorno di Gara:',
+    scheduled_days: '{count} Giorni Programmati',
+    sessions_badge: '{count} Sessioni',
+    session_label: 'Sessione di Gara:',
+    targets_count: '({count} Bersagli)',
+    reset_title: 'Reimposta Visuale & Zoom',
+    reset_view: 'Reimposta Vista',
+    lanes_badge: '{count} Corsie Bersaglio',
+    click_inspect: 'Clicca sul Bersaglio per i Dettagli',
+    pan_zoom: 'Trascina & Scorri per Zoom',
+    target_butt: 'Paglione #{num}',
+    shooting_distance: 'Distanza di Tiro: {dist}',
+    division: 'Divisione / Categoria',
+    phase_match: 'Fase di Gara',
+    official_match: 'Incontro Ufficiale',
+    target_face: 'Visuale Bersaglio',
+    flight_slots: 'Postazioni Arcieri (AB)',
+    archer_1: 'Arciere 1 (A)',
+    archer_2: 'Arciere 2 (B)',
+    unused_lane: 'Non occupato',
+    official_category: 'Categoria Ufficiale',
+    open_division: 'Divisione Open',
+    match_round: 'Turno di Gara'
+  }
+}
+
+const ft = (key, params = {}) => {
+  const lang = props.currentLang || 'id'
+  const dict = fopI18n[lang] || fopI18n.id
+  let str = dict[key] || fopI18n.id[key] || key
+  for (const [k, v] of Object.entries(params)) {
+    str = str.replace(new RegExp(`\\{${k}\\}`, 'g'), v)
+  }
+  return str
+}
+
+const formatFopDateLabel = (rawLabel, lang = 'id') => {
+  if (!rawLabel) return ''
+  const isoMatch = rawLabel.match(/(\d{4})-(\d{2})-(\d{2})/)
+  if (isoMatch) {
+    const d = new Date(`${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}T00:00:00`)
+    if (!isNaN(d.getTime())) {
+      const locale = lang === 'en' ? 'en-US' : (lang === 'it' ? 'it-IT' : 'id-ID')
+      return d.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric', weekday: 'short' })
+    }
+  }
+
+  const monthMap = {
+    jan: 0, janv: 0, januari: 0, january: 0, gennaio: 0,
+    feb: 1, febr: 1, februari: 1, february: 1, febbraio: 1,
+    mar: 2, maret: 2, march: 2, marzo: 2,
+    apr: 3, april: 3, aprile: 3,
+    mei: 4, may: 4, maggio: 4,
+    jun: 5, juni: 5, june: 5, giugno: 5,
+    jul: 6, juli: 6, july: 6, luglio: 6,
+    agu: 7, ags: 7, agust: 7, agustus: 7, aug: 7, august: 7, agosto: 7,
+    sep: 8, sept: 8, september: 8, settembre: 8,
+    okt: 9, oct: 9, oktober: 9, october: 9, ottobre: 9,
+    nov: 10, nop: 10, november: 10, novembre: 10,
+    des: 11, dec: 11, desember: 11, december: 11, dicembre: 11
+  }
+
+  const dateRegex = /(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/
+  const m = rawLabel.match(dateRegex)
+  if (m) {
+    const day = parseInt(m[1], 10)
+    const monthKey = m[2].toLowerCase()
+    const year = parseInt(m[3], 10)
+    const month = monthMap[monthKey]
+    if (month !== undefined) {
+      const d = new Date(year, month, day)
+      if (!isNaN(d.getTime())) {
+        const locale = lang === 'en' ? 'en-US' : (lang === 'it' ? 'it-IT' : 'id-ID')
+        return d.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric', weekday: 'short' })
+      }
+    }
+  }
+
+  const dayRegex = /(?:Hari|Day|Giorno)\s+(\d+)/i
+  const dm = rawLabel.match(dayRegex)
+  if (dm) {
+    if (lang === 'en') return `Day ${dm[1]}`
+    if (lang === 'it') return `Giorno ${dm[1]}`
+    return `Hari ${dm[1]}`
+  }
+
+  return rawLabel
+}
 
 // ─────────────────────────────────────────────────────────────
 // STATE & AUTHENTIC IANSEO PRESETS
@@ -196,7 +344,7 @@ const formattedFopDays = computed(() => {
   const presets = {
     '27311': [
       {
-        label: '24 Apr 2026, Friday',
+        label: formatFopDateLabel('24 Apr 2026', props.currentLang),
         date: '2026-04-24',
         sessions: [
           {
@@ -295,7 +443,8 @@ const formattedFopDays = computed(() => {
 
       if (!daysMap.has(rawLabel)) {
         daysMap.set(rawLabel, {
-          label: rawLabel,
+          rawLabel: rawLabel,
+          label: formatFopDateLabel(rawLabel, props.currentLang),
           date: d.date_label || d.date || '',
           sessions: []
         })
@@ -316,9 +465,9 @@ const formattedFopDays = computed(() => {
               targetStart: a.target_from,
               targetEnd: a.target_to,
               targetCount: a.target_to - a.target_from + 1,
-              distance: a.distance || a.dist || '',
+              distance: a.distance || a.dist || s.distance || '',
               divisionCode: a.category || a.cat || '',
-              divisionName: a.category || a.cat || 'Official Category',
+              divisionName: a.category || a.cat || ft('official_category'),
               phase: a.phase || '',
               targetFace: s.target_face || '',
               themeColor: '#16a34a'
@@ -330,8 +479,8 @@ const formattedFopDays = computed(() => {
                 targetCount: s.target_max ? (s.target_max - (s.target_min || 1) + 1) : 32,
                 distance: s.distance || '50m',
                 divisionCode: s.division || 'OPEN',
-                divisionName: s.division_name || 'Open Division',
-                phase: s.phase || 'Match Round',
+                divisionName: s.division_name || ft('open_division'),
+                phase: s.phase || ft('match_round'),
                 targetFace: s.target_face || 'Complete 122cm',
                 themeColor: '#16a34a'
               }
@@ -376,24 +525,28 @@ const activeSession = computed(() => {
   }
 })
 
-// Build flat array of 32 lane targets for matrix table & canvas
+// Build flat array of lane targets for matrix table & canvas
 const sessionLanes = computed(() => {
   const session = activeSession.value
   const targetCount = session.targetCount || 32
+  const hasExplicitBlocks = session.blocks && session.blocks.length > 0
   const lanes = []
 
   for (let i = 1; i <= targetCount; i++) {
-    const block = session.blocks.find(b => i >= b.targetStart && i <= b.targetEnd) || {}
+    const block = session.blocks?.find(b => i >= b.targetStart && i <= b.targetEnd)
+    const isUnallocated = hasExplicitBlocks && !block
+    const isEmpty = isUnallocated || !block || !!block.isEmpty || (!block.divisionCode && !block.distance)
+
     lanes.push({
       targetNumber: i,
-      distance: block.distance || '',
-      divisionCode: block.divisionCode || '',
-      divisionName: block.divisionName || '',
-      phase: block.phase || '',
-      medal: block.medal || null,
-      isEmpty: !!block.isEmpty,
-      targetFace: block.targetFace || '',
-      themeColor: block.themeColor || '#16a34a'
+      distance: block?.distance || '',
+      divisionCode: block?.divisionCode || (isEmpty ? '' : 'OPEN'),
+      divisionName: block?.divisionName || (isEmpty ? ft('unused_lane') : ft('open_division')),
+      phase: block?.phase || '',
+      medal: block?.medal || null,
+      isEmpty: isEmpty,
+      targetFace: block?.targetFace || session.target_face || '',
+      themeColor: block?.themeColor || '#16a34a'
     })
   }
 
@@ -499,11 +652,11 @@ function triggerArrowSalvo() {
   const shootY = height - 95
 
   for (let i = 1; i <= targetCount; i++) {
-    const block = session.blocks.find(b => i >= b.targetStart && i <= b.targetEnd) || {}
-    if (block.isEmpty) continue // Do not shoot at empty targets
+    const block = session.blocks?.find(b => i >= b.targetStart && i <= b.targetEnd)
+    if (!block || block.isEmpty || (!block.divisionCode && !block.distance)) continue // Do not shoot at empty targets
 
     const tx = paddingX + (i - 0.5) * slotWidth
-    const distNum = parseInt(block.distance) || 10
+    const distNum = parseInt(block.distance) || 18
     const targetY = shootY - 40 - Math.min(270, (distNum / 70) * 250)
 
     arrows.value.push({
@@ -728,27 +881,29 @@ function renderIsometricStadiumSceneLight(width, height) {
   ctx.fillText(`${tName} • Sesi: ${session.time} • ${session.title}`, leftSideline + 16, 84)
 
   // 8. Category Division Color Headers
-  let curX = paddingX
-  session.blocks.forEach((block) => {
-    const blockW = block.targetCount * slotWidth
-    if (!block.isEmpty) {
-      ctx.fillStyle = block.themeColor || '#16a34a'
-      ctx.beginPath()
-      ctx.roundRect(curX + 1, fieldTopY - 8, blockW - 2, 16, 4)
-      ctx.fill()
+  // Base background bar
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.25)'
+  ctx.beginPath()
+  ctx.roundRect(paddingX, fieldTopY - 8, usableWidth, 16, 4)
+  ctx.fill()
 
-      ctx.fillStyle = '#ffffff'
-      ctx.font = '700 8.5px "Bricolage Grotesque", -apple-system, sans-serif'
-      ctx.textAlign = 'center'
-      ctx.fillText(`${block.divisionCode}`, curX + blockW / 2, fieldTopY + 3)
-    } else {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'
-      ctx.beginPath()
-      ctx.roundRect(curX + 1, fieldTopY - 8, blockW - 2, 16, 4)
-      ctx.fill()
-    }
+  session.blocks?.forEach((block) => {
+    if (block.isEmpty || (!block.divisionCode && !block.distance)) return
+    const tStart = block.targetStart || 1
+    const tEnd = block.targetEnd || (tStart + (block.targetCount || 1) - 1)
+    const blockX = paddingX + (tStart - 1) * slotWidth
+    const blockW = (tEnd - tStart + 1) * slotWidth
 
-    curX += blockW
+    ctx.fillStyle = block.themeColor || '#16a34a'
+    ctx.beginPath()
+    ctx.roundRect(blockX + 1, fieldTopY - 8, blockW - 2, 16, 4)
+    ctx.fill()
+
+    ctx.fillStyle = '#ffffff'
+    ctx.font = '700 8.5px "Bricolage Grotesque", -apple-system, sans-serif'
+    ctx.textAlign = 'center'
+    const label = block.divisionCode ? `${block.divisionCode}${block.distance ? ` (${block.distance})` : ''}` : (block.distance || '')
+    ctx.fillText(label, blockX + blockW / 2, fieldTopY + 3)
   })
 
   // 9. Waiting Line & Area (Extended seamless track)
@@ -807,14 +962,20 @@ function renderIsometricStadiumSceneLight(width, height) {
   // 12. 3D Target Butts & Archers
   for (let i = 1; i <= targetCount; i++) {
     const targetCenterX = paddingX + (i - 0.5) * slotWidth
-    const block = session.blocks.find(b => i >= b.targetStart && i <= b.targetEnd) || {}
+    const block = session.blocks?.find(b => i >= b.targetStart && i <= b.targetEnd)
     const isHovered = hoveredTarget.value === i
     const buttR = isHovered ? 13 : 10
+    const hasExplicitBlocks = session.blocks && session.blocks.length > 0
+    const isEmptyTarget = !block || block.isEmpty || (hasExplicitBlocks && !block.divisionCode && !block.distance)
 
-    if (block.isEmpty) {
+    if (isEmptyTarget) {
+      // Find reference distance from session or active blocks
+      const refBlock = session.blocks?.find(b => b && !b.isEmpty && b.distance)
+      const refDist = parseInt(refBlock?.distance || session.distance) || 18
+      const emptyY = shootY - 40 - Math.min(270, (refDist / 70) * 250)
+
       // Draw subtle inactive/empty tripod stand
-      const emptyY = shootY - 80
-      ctx.strokeStyle = 'rgba(120, 53, 15, 0.35)'
+      ctx.strokeStyle = 'rgba(120, 53, 15, 0.4)'
       ctx.lineWidth = 1.5
       ctx.beginPath()
       ctx.moveTo(targetCenterX - 6, emptyY + 12)
@@ -823,16 +984,16 @@ function renderIsometricStadiumSceneLight(width, height) {
       ctx.stroke()
 
       // Small faint empty circle
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)'
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.45)'
       ctx.lineWidth = 1
       ctx.beginPath()
-      ctx.arc(targetCenterX, emptyY - 2, 7, 0, Math.PI * 2)
+      ctx.arc(targetCenterX, emptyY - 2, 6, 0, Math.PI * 2)
       ctx.stroke()
 
       // Number plate
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.75)'
+      ctx.fillStyle = isHovered ? '#fef08a' : 'rgba(255, 255, 255, 0.85)'
       ctx.beginPath()
-      ctx.roundRect(targetCenterX - 7, emptyY - 20, 14, 10, 2)
+      ctx.roundRect(targetCenterX - 7, emptyY - 18, 14, 10, 2)
       ctx.fill()
       ctx.strokeStyle = '#cbd5e1'
       ctx.lineWidth = 1
@@ -840,7 +1001,7 @@ function renderIsometricStadiumSceneLight(width, height) {
       ctx.fillStyle = '#64748b'
       ctx.font = '700 7.5px "Bricolage Grotesque", -apple-system, sans-serif'
       ctx.textAlign = 'center'
-      ctx.fillText(`${i}`, targetCenterX, emptyY - 12)
+      ctx.fillText(`${i}`, targetCenterX, emptyY - 10)
 
       renderedTargetHitboxes.push({
         targetNumber: i,
@@ -848,9 +1009,9 @@ function renderIsometricStadiumSceneLight(width, height) {
         y: emptyY,
         radius: buttR + 4,
         divisionCode: 'KOSONG',
-        divisionName: 'Bantalan Kosong (Tidak Ada Match)',
+        divisionName: ft('unused_lane'),
         distance: '-',
-        phase: 'Kosong',
+        phase: '-',
         targetFace: '-',
         isEmpty: true
       })

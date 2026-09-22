@@ -2,13 +2,13 @@
   <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
     <DashboardHeader
-      :title="t('event_schedule.title', 'Jadwal Pertandingan')"
-      :subtitle="t('event_schedule.subtitle', 'Atur dan kelola timeline pertandingan resmi berstandar World Archery / Ianseo.')"
+      :title="t('event_schedule.title')"
+      :subtitle="t('event_schedule.subtitle')"
       icon="ph:calendar-bold"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-        { label: t('event_schedule.title', 'Jadwal Pertandingan') }
+        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('event_schedule.title') }
       ]"
     >
       <template #actions>
@@ -21,7 +21,7 @@
             :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
             class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-bold"
           >
-            <span>{{ t('event_schedule.add_item', 'Tambah Sesi') }}</span>
+            <span>{{ t('event_schedule.add_item') }}</span>
           </BaseButton>
         </div>
       </template>
@@ -46,7 +46,7 @@
               ? 'bg-navy text-white shadow-sm'
               : 'text-gray-500 hover:text-navy hover:bg-white/80'"
           >
-            <span>{{ t('event_schedule.day_label', { day: day.day_number }, `Hari ${day.day_number}`) }}</span>
+            <span>{{ t('event_schedule.day_label', { day: day.day_number }, `Day ${day.day_number}`) }}</span>
             <span
               class="text-[11px] px-2 py-0.5 rounded-full font-medium"
               :class="selectedDayNumber === day.day_number ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-600'"
@@ -60,24 +60,24 @@
             type="button"
             @click="openAddDayModal"
             class="px-3 py-2 text-xs font-bold text-gray-400 hover:text-navy hover:bg-white rounded-lg transition-all flex items-center gap-1 shrink-0"
-            :title="t('event_schedule.add_day', 'Tambah Hari')"
+            :title="t('event_schedule.add_day')"
           >
             <Icon icon="ph:plus-bold" class="text-base" />
-            <span class="hidden md:inline">{{ t('event_schedule.add_day', 'Tambah Hari') }}</span>
+            <span class="hidden md:inline">{{ t('event_schedule.add_day') }}</span>
           </button>
         </div>
 
         <!-- Date Label on Right -->
         <div v-if="currentDay" class="flex items-center gap-1.5 text-xs font-bold text-navy bg-gray-50 px-3.5 py-2 rounded-xl border border-gray-100 shrink-0">
           <Icon icon="ph:calendar-blank-bold" class="text-gray-400 text-sm shrink-0" />
-          <span>{{ formatDayDate(currentDay.schedule_date) || t('event_schedule.day_label', { day: currentDay.day_number }, `Hari ${currentDay.day_number}`) }}</span>
+          <span>{{ formatDayDate(currentDay.schedule_date) || t('event_schedule.day_label', { day: currentDay.day_number }, `Day ${currentDay.day_number}`) }}</span>
         </div>
       </div>
 
       <!-- Loading State -->
       <div v-if="loading" class="py-20 flex flex-col items-center justify-center text-gray-400 gap-3">
         <Icon icon="ph:spinner-gap-bold" class="text-4xl animate-spin text-navy" />
-        <p class="text-xs font-bold text-navy">{{ t('event_schedule.loading', 'Memuat jadwal...') }}</p>
+        <div class="text-xs font-bold text-navy">{{ t('event_schedule.loading') }}</div>
       </div>
 
       <!-- Empty State -->
@@ -85,14 +85,9 @@
         <div class="size-20 rounded-3xl bg-gray-50 flex items-center justify-center mx-auto mb-4 text-gray-300">
           <Icon icon="ph:calendar-x-bold" class="text-4xl" />
         </div>
-        <h3 class="text-base sm:text-lg font-bold text-navy mb-1">{{ t('event_schedule.empty_day_title', 'Belum Ada Sesi di Hari Ini') }}</h3>
-        <p class="text-xs text-gray-400 max-w-md mx-auto mb-6">
-          {{ t('event_schedule.empty_day_desc', 'Gunakan tombol tambah sesi untuk menambahkan agenda jadwal pertandingan.') }}
-        </p>
-        <div class="flex items-center justify-center gap-3">
-          <BaseButton variant="primary" size="sm" icon="ph:plus-bold" @click="openCreateModal(selectedDayNumber)">
-            {{ t('event_schedule.add_item', 'Tambah Sesi') }}
-          </BaseButton>
+        <h3 class="text-base sm:text-lg font-bold text-navy mb-1">{{ t('event_schedule.empty_day_title') }}</h3>
+        <div class="text-xs sm:text-sm text-gray-500 max-w-md mx-auto">
+          {{ t('event_schedule.empty_day_desc') }}
         </div>
       </div>
 
@@ -103,35 +98,35 @@
             <tr class="text-[10px] font-bold text-gray-400 tracking-wider">
               <th class="px-6 py-3.5 w-44 min-w-[150px] cursor-pointer hover:text-navy transition-colors" @click="handleSort('time')">
                 <div class="flex items-center gap-1.5">
-                  <span>{{ t('event_schedule.time_header', 'Waktu') }}</span>
+                  <span>{{ t('event_schedule.time_header') }}</span>
                   <Icon :icon="getSortIcon('time')" class="text-xs shrink-0" :class="sortKey === 'time' ? 'text-navy' : 'text-gray-300'" />
                 </div>
               </th>
               <th class="px-6 py-3.5 w-32 min-w-[120px] cursor-pointer hover:text-navy transition-colors" @click="handleSort('type')">
                 <div class="flex items-center gap-1.5">
-                  <span>{{ t('event_schedule.session_type_label', 'Tipe') }}</span>
+                  <span>{{ t('event_schedule.session_type_label') }}</span>
                   <Icon :icon="getSortIcon('type')" class="text-xs shrink-0" :class="sortKey === 'type' ? 'text-navy' : 'text-gray-300'" />
                 </div>
               </th>
               <th class="px-6 py-3.5 min-w-[260px] cursor-pointer hover:text-navy transition-colors" @click="handleSort('title')">
                 <div class="flex items-center gap-1.5">
-                  <span>{{ t('event_schedule.title_label', 'Agenda / Sesi') }}</span>
+                  <span>{{ t('event_schedule.title_label') }}</span>
                   <Icon :icon="getSortIcon('title')" class="text-xs shrink-0" :class="sortKey === 'title' ? 'text-navy' : 'text-gray-300'" />
                 </div>
               </th>
               <th class="px-6 py-3.5 w-36 min-w-[130px] cursor-pointer hover:text-navy transition-colors" @click="handleSort('target')">
                 <div class="flex items-center gap-1.5">
-                  <span>{{ t('event_schedule.target_start_label', 'Target') }}</span>
+                  <span>{{ t('event_schedule.target_start_label') }}</span>
                   <Icon :icon="getSortIcon('target')" class="text-xs shrink-0" :class="sortKey === 'target' ? 'text-navy' : 'text-gray-300'" />
                 </div>
               </th>
               <th class="px-6 py-3.5 w-40 min-w-[140px] cursor-pointer hover:text-navy transition-colors" @click="handleSort('location')">
                 <div class="flex items-center gap-1.5">
-                  <span>{{ t('event_schedule.location_label', 'Lokasi') }}</span>
+                  <span>{{ t('event_schedule.location_label') }}</span>
                   <Icon :icon="getSortIcon('location')" class="text-xs shrink-0" :class="sortKey === 'location' ? 'text-navy' : 'text-gray-300'" />
                 </div>
               </th>
-              <th class="px-6 py-3.5 text-right w-24">{{ t('common.actions', 'Aksi') }}</th>
+              <th class="px-6 py-3.5 text-right w-24">{{ t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
@@ -142,8 +137,16 @@
             >
               <!-- Time Column -->
               <td class="px-6 py-4 align-middle whitespace-nowrap">
-                <div class="font-mono font-bold text-navy text-sm">
-                  {{ formatTime(item.start_time) }} – {{ formatTime(item.end_time) }}
+                <div class="font-mono font-bold text-navy text-sm flex items-center gap-2">
+                  <span>{{ formatTime(item.start_time) }} – {{ formatTime(item.end_time) }}</span>
+                  <span
+                    v-if="isParallelItem(item)"
+                    class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200/80"
+                    :title="t('event_schedule.badge_parallel')"
+                  >
+                    <Icon icon="ph:arrows-split-bold" class="text-xs shrink-0" />
+                    <span>{{ t('event_schedule.badge_parallel') }}</span>
+                  </span>
                 </div>
               </td>
 
@@ -162,7 +165,7 @@
               <td class="px-6 py-4 align-middle min-w-0">
                 <div class="flex items-center gap-2">
                   <span class="font-bold text-navy text-sm line-clamp-1">
-                    {{ item.title || t('common.not_yet', 'Belum Diatur') }}
+                    {{ item.title || t('common.not_yet') }}
                   </span>
                   <span
                     v-if="getSessionCode(item)"
@@ -183,7 +186,7 @@
                   <Icon icon="ph:target-bold" class="text-gray-400 text-sm shrink-0" />
                   <span>{{ formatTarget(item) }}</span>
                 </div>
-                <span v-else class="text-gray-400 font-normal text-xs">{{ t('common.not_yet', 'Belum Diatur') }}</span>
+                <span v-else class="text-gray-400 font-normal text-xs">{{ t('common.not_yet') }}</span>
               </td>
 
               <!-- Location Column -->
@@ -193,7 +196,7 @@
                   <Icon icon="ph:map-pin-bold" class="text-gray-400 text-sm shrink-0" />
                   <span class="truncate">{{ getLocationText(item) }}</span>
                 </div>
-                <span v-else class="text-gray-400 font-normal text-xs">{{ t('common.not_yet', 'Belum Diatur') }}</span>
+                <span v-else class="text-gray-400 font-normal text-xs">{{ t('common.not_yet') }}</span>
               </td>
 
               <!-- Actions Column -->
@@ -204,7 +207,7 @@
                     size="sm"
                     icon="ph:pencil"
                     @click="openEditModal(item)"
-                    :title="t('event_schedule.edit_modal_title', 'Edit Sesi')"
+                    :title="t('event_schedule.edit_modal_title')"
                     class="h-8 w-8 !p-0 flex items-center justify-center rounded-lg"
                   />
                   <BaseButton
@@ -212,7 +215,7 @@
                     size="sm"
                     icon="ph:trash"
                     @click="confirmDeleteItem(item)"
-                    :title="t('event_schedule.confirm_delete_title', 'Hapus Sesi')"
+                    :title="t('event_schedule.confirm_delete_title')"
                     class="h-8 w-8 !p-0 flex items-center justify-center rounded-lg text-red-500 hover:text-red-600 hover:bg-red-50"
                   />
                 </div>
@@ -235,10 +238,10 @@
           </div>
           <div>
             <h2 class="text-lg sm:text-xl font-bold text-navy">
-              {{ editingItem ? t('event_schedule.edit_modal_title', 'Edit Sesi Jadwal') : t('event_schedule.create_modal_title', 'Tambah Sesi Jadwal Baru') }}
+              {{ editingItem ? t('event_schedule.edit_modal_title') : t('event_schedule.create_modal_title') }}
             </h2>
             <div class="text-xs text-gray-400 font-medium mt-0.5">
-              {{ t('event_schedule.modal_desc', 'Atur rincian waktu, kategori, dan rentang target.') }}
+              {{ t('event_schedule.modal_desc') }}
             </div>
           </div>
         </div>
@@ -249,20 +252,22 @@
         <!-- Execution Date -->
         <div>
           <label class="text-xs font-bold text-gray-700 block mb-2">
-            {{ t('event_schedule.schedule_date_label', 'Tanggal Pelaksanaan') }} <span class="text-red-500">*</span>
+            {{ t('event_schedule.schedule_date_label') }} <span class="text-red-500">*</span>
           </label>
           <BaseDatePicker
             v-model="itemForm.schedule_date"
-            :placeholder="t('event_schedule.schedule_date_label', 'Pilih Tanggal')"
+            :min-date="tournamentStartDate"
+            :max-date="tournamentEndDate"
+            :placeholder="t('event_schedule.schedule_date_label')"
           />
         </div>
 
         <!-- Session Type Selector -->
         <div>
           <label class="text-xs font-bold text-gray-700 block mb-2">
-            {{ t('event_schedule.session_type_label', 'Tipe Sesi Pertandingan') }} <span class="text-red-500">*</span>
+            {{ t('event_schedule.session_type_label') }} <span class="text-red-500">*</span>
           </label>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
             <button
               v-for="typ in itemTypeOptions"
               :key="typ.value"
@@ -282,25 +287,25 @@
         <!-- Title & Subtitle -->
         <div>
           <label class="text-xs font-bold text-gray-700 block mb-2">
-            {{ t('event_schedule.title_label', 'Judul Sesi / Agenda') }} <span class="text-red-500">*</span>
+            {{ t('event_schedule.title_label') }} <span class="text-red-500">*</span>
           </label>
           <input
             v-model="itemForm.title"
             type="text"
             required
-            :placeholder="t('event_schedule.title_placeholder', 'Contoh: Official Practice & Equipment Inspection')"
+            :placeholder="t('event_schedule.title_placeholder')"
             class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           />
         </div>
 
         <div>
           <label class="text-xs font-bold text-gray-700 block mb-2">
-            {{ t('event_schedule.subtitle_label', 'Sub-Judul / Divisi / Kategori (Opsional)') }}
+            {{ t('event_schedule.subtitle_label') }}
           </label>
           <input
             v-model="itemForm.subtitle"
             type="text"
-            :placeholder="t('event_schedule.subtitle_placeholder', 'Contoh: Recurve Men, Recurve Women & Compound')"
+            :placeholder="t('event_schedule.subtitle_placeholder')"
             class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
           />
         </div>
@@ -309,7 +314,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label class="text-xs font-bold text-gray-700 block mb-2">
-              {{ t('event_schedule.start_time_label', 'Waktu Mulai') }} <span class="text-red-500">*</span>
+              {{ t('event_schedule.start_time_label') }} <span class="text-red-500">*</span>
             </label>
             <BaseTimePicker
               v-model="itemForm.start_time"
@@ -318,7 +323,7 @@
           </div>
           <div>
             <label class="text-xs font-bold text-gray-700 block mb-2">
-              {{ t('event_schedule.end_time_label', 'Waktu Selesai') }} <span class="text-red-500">*</span>
+              {{ t('event_schedule.end_time_label') }} <span class="text-red-500">*</span>
             </label>
             <BaseTimePicker
               v-model="itemForm.end_time"
@@ -327,60 +332,24 @@
           </div>
         </div>
 
-        <!-- Target Range (2 Columns) -->
-        <div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div>
-              <label class="text-xs font-bold text-gray-700 block mb-2">
-                {{ t('event_schedule.target_start_label', 'Target Awal') }}
-                <span v-if="itemForm.item_type === 'qualification'" class="text-red-500">*</span>
-              </label>
-              <input
-                v-model.number="itemForm.target_start"
-                type="number"
-                min="1"
-                placeholder="1"
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-              />
-            </div>
-            <div>
-              <label class="text-xs font-bold text-gray-700 block mb-2">
-                {{ t('event_schedule.target_end_label', 'Target Akhir') }}
-                <span v-if="itemForm.item_type === 'qualification'" class="text-red-500">*</span>
-              </label>
-              <input
-                v-model.number="itemForm.target_end"
-                type="number"
-                min="1"
-                placeholder="32"
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-              />
-            </div>
-          </div>
-          <p v-if="itemForm.item_type === 'qualification'" class="text-[11px] text-blue-600 font-medium mt-1.5 flex items-center gap-1">
-            <Icon icon="ph:info-bold" class="text-xs shrink-0" />
-            <span>{{ t('event_schedule.target_qual_hint', 'Wajib diisi untuk sesi Kualifikasi (misal: Target 1 s/d 32)') }}</span>
-          </p>
-        </div>
-
         <!-- Elimination Round & Session Code (Only when elimination/finals) -->
         <div v-if="itemForm.item_type === 'elimination' || itemForm.item_type === 'finals'" class="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/70 space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label class="text-xs font-bold text-amber-950 block mb-2">
-                {{ t('event_schedule.elim_round_label', 'Babak Eliminasi') }} <span class="text-red-500">*</span>
+                {{ t('event_schedule.elim_round_label') }} <span class="text-red-500">*</span>
               </label>
               <BaseSelect
                 v-model="itemForm.elim_round"
                 :items="elimRoundOptions"
-                :placeholder="t('event_schedule.select_elim_round', '-- Pilih Babak --')"
+                :placeholder="t('event_schedule.select_elim_round')"
                 clearable
                 :searchable="false"
               />
             </div>
             <div>
               <label class="text-xs font-bold text-amber-950 block mb-2">
-                {{ t('event_schedule.session_code_label', 'Kode Sesi (Opsional)') }}
+                {{ t('event_schedule.session_code_label') }}
               </label>
               <input
                 v-model="itemForm.session_code"
@@ -390,21 +359,21 @@
               />
             </div>
           </div>
-          <p class="text-[11px] text-amber-800 font-medium flex items-center gap-1">
+          <div class="text-[11px] text-amber-800 font-medium flex items-center gap-1">
             <Icon icon="ph:info-bold" class="text-xs shrink-0" />
-            <span>{{ t('event_schedule.elim_round_hint', 'Pilih tahap eliminasi turnamen yang akan bertanding pada sesi ini.') }}</span>
-          </p>
+            <span>{{ t('event_schedule.elim_round_hint') }}</span>
+          </div>
         </div>
 
         <!-- Location / Field (Dedicated 1-Row Textarea) -->
         <div>
           <label class="text-xs font-bold text-gray-700 block mb-2">
-            {{ t('event_schedule.location_label', 'Lokasi / Lapangan Pertandingan (Opsional)') }}
+            {{ t('event_schedule.location_label') }}
           </label>
           <textarea
             v-model="itemForm.location"
             rows="2"
-            :placeholder="t('event_schedule.location_placeholder', 'Contoh: Lapangan Utama Panahan GBK Senayan, Sektor A / Bantalan Timur')"
+            :placeholder="t('event_schedule.location_placeholder')"
             class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all"
           ></textarea>
         </div>
@@ -412,12 +381,12 @@
         <!-- Description / Notes (1-Row Textarea) -->
         <div>
           <label class="text-xs font-bold text-gray-700 block mb-2">
-            {{ t('event_schedule.description_label', 'Catatan Tambahan (Opsional)') }}
+            {{ t('event_schedule.description_label') }}
           </label>
           <textarea
             v-model="itemForm.description"
             rows="2"
-            :placeholder="t('event_schedule.description_placeholder', 'Instruksi tambahan untuk atlet / juri...')"
+            :placeholder="t('event_schedule.description_placeholder')"
             class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all"
           ></textarea>
         </div>
@@ -426,7 +395,7 @@
 
       <template #action>
         <BaseButton variant="white" @click="showItemModal = false">
-          {{ t('common.cancel', 'Batal') }}
+          {{ t('common.cancel') }}
         </BaseButton>
         <BaseButton
           type="submit"
@@ -434,7 +403,7 @@
           :loading="savingItem"
           variant="primary"
         >
-          {{ editingItem ? t('common.save_changes', 'Simpan Perubahan') : t('event_schedule.add_item', 'Tambah Sesi') }}
+          {{ editingItem ? t('common.save_changes') : t('event_schedule.add_item') }}
         </BaseButton>
       </template>
     </BaseDialogForm>
@@ -449,15 +418,15 @@
             <Icon icon="ph:trash-bold" class="text-xl text-red-600" />
           </div>
           <h2 class="text-lg sm:text-xl font-bold text-navy">
-            {{ t('event_schedule.confirm_delete_title', 'Hapus Sesi Jadwal') }}
+            {{ t('event_schedule.confirm_delete_title') }}
           </h2>
         </div>
       </template>
 
       <div class="space-y-4 py-2">
-        <p class="text-sm text-gray-500 leading-relaxed">
-          {{ t('event_schedule.confirm_delete_desc', 'Apakah Anda yakin ingin menghapus agenda ini? Tindakan ini tidak dapat dibatalkan.') }}
-        </p>
+        <div class="text-sm text-gray-500 leading-relaxed">
+          {{ t('event_schedule.confirm_delete_desc') }}
+        </div>
         <div v-if="itemToDelete" class="p-4 rounded-xl bg-gray-50 border border-gray-100">
           <div class="font-bold text-navy text-sm">{{ itemToDelete.title }}</div>
           <div class="text-xs text-gray-400 font-mono mt-1">
@@ -468,14 +437,78 @@
 
       <template #action>
         <BaseButton variant="white" @click="showDeleteModal = false">
-          {{ t('common.cancel', 'Batal') }}
+          {{ t('common.cancel') }}
         </BaseButton>
         <BaseButton
           variant="danger"
           @click="executeDeleteItem"
           :loading="deleting"
         >
-          {{ t('common.delete', 'Hapus') }}
+          {{ t('common.delete') }}
+        </BaseButton>
+      </template>
+    </BaseDialogForm>
+
+    <!-- ───────────────────────────────────────────────────────────────────────────── -->
+    <!-- DIALOG: SCHEDULE OVERLAP / PARALLEL CONFIRMATION -->
+    <!-- ───────────────────────────────────────────────────────────────────────────── -->
+    <BaseDialogForm v-model="showConflictModal" @close="showConflictModal = false">
+      <template #header>
+        <div class="flex items-center gap-3">
+          <div class="size-10 bg-amber-50 rounded-xl flex items-center justify-center shrink-0">
+            <Icon icon="ph:warning-circle-bold" class="text-xl text-amber-600" />
+          </div>
+          <div>
+            <h2 class="text-lg sm:text-xl font-bold text-navy">
+              {{ t('event_schedule.conflict_modal_title') }}
+            </h2>
+          </div>
+        </div>
+      </template>
+
+      <div class="space-y-4 py-2">
+        <div class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+          {{ t('event_schedule.conflict_modal_desc') }}
+        </div>
+
+        <div class="space-y-2">
+          <div class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+            {{ t('event_schedule.conflict_existing_label') }}
+          </div>
+          <div
+            v-for="conf in conflictingItems"
+            :key="conf.uuid"
+            class="p-3 rounded-xl bg-amber-50/60 border border-amber-200/80 flex items-start justify-between gap-3 text-xs"
+          >
+            <div>
+              <div class="font-bold text-navy">{{ conf.title }}</div>
+              <div v-if="conf.location" class="text-[11px] text-gray-500 mt-0.5 flex items-center gap-1">
+                <Icon icon="ph:map-pin-bold" class="size-3 text-gray-400" />
+                <span>{{ conf.location }}</span>
+              </div>
+            </div>
+            <div class="font-mono font-bold text-amber-800 shrink-0 bg-amber-100/80 px-2 py-0.5 rounded text-[11px]">
+              {{ formatTime(conf.start_time) }} – {{ formatTime(conf.end_time) }}
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-gray-50 rounded-xl border border-gray-100 text-xs text-gray-500">
+          <strong>Sesi yang akan disimpan:</strong>
+          <div class="font-bold text-navy mt-0.5">{{ itemForm.title }} ({{ itemForm.start_time }} – {{ itemForm.end_time }})</div>
+        </div>
+      </div>
+
+      <template #action>
+        <BaseButton variant="white" @click="showConflictModal = false">
+          {{ t('event_schedule.btn_cancel_adjust') }}
+        </BaseButton>
+        <BaseButton
+          variant="primary"
+          @click="executeSaveItem"
+          :loading="savingItem"
+        >
+          {{ t('event_schedule.btn_confirm_parallel') }}
         </BaseButton>
       </template>
     </BaseDialogForm>
@@ -486,7 +519,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
-import { useI18n } from 'vue-i18n'
+import { useDashboardI18n } from '~/composables/useDashboardI18n'
 import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 import BaseDialogForm from '~/components/common/BaseDialogForm.vue'
@@ -494,7 +527,7 @@ import BaseDatePicker from '~/components/common/BaseDatePicker.vue'
 import BaseTimePicker from '~/components/common/BaseTimePicker.vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 
-const { t, locale } = useI18n()
+const { t, locale } = useDashboardI18n()
 const { isSubscriptionActive } = useSubscription()
 const showPremiumModal = ref(false)
 
@@ -508,13 +541,33 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => `${t('event_schedule.title', 'Jadwal Pertandingan')} - Archeris Dashboard`)
+  title: computed(() => `${t('event_schedule.title')} - Archeris Dashboard`)
 })
 
 // State
 const loading = ref(true)
 const days = ref([])
 const selectedDayNumber = ref(1)
+const tournamentInfo = ref(null)
+
+const tournamentStartDate = computed(() => {
+  const d = tournamentInfo.value?.start_date || tournamentInfo.value?.date || ''
+  return d ? d.substring(0, 10) : ''
+})
+
+const tournamentEndDate = computed(() => {
+  const d = tournamentInfo.value?.end_date || tournamentInfo.value?.start_date || tournamentInfo.value?.date || ''
+  return d ? d.substring(0, 10) : ''
+})
+
+const fetchTournamentInfo = async () => {
+  try {
+    const res = await get(`/tournaments/${eventId}`)
+    tournamentInfo.value = res?.data || res
+  } catch (err) {
+    console.error('Failed to fetch tournament info:', err)
+  }
+}
 
 // Sorting state
 const sortKey = ref('time')
@@ -537,6 +590,8 @@ const getSortIcon = (key) => {
 // Modal states
 const showItemModal = ref(false)
 const showDeleteModal = ref(false)
+const showConflictModal = ref(false)
+const conflictingItems = ref([])
 
 const savingItem = ref(false)
 const deleting = ref(false)
@@ -555,7 +610,7 @@ const defaultItemForm = () => ({
   title: '',
   subtitle: '',
   description: '',
-  location: 'Lapangan Utama',
+  location: '',
   session_code: '',
   elim_round: null,
   target_start: null,
@@ -565,10 +620,11 @@ const defaultItemForm = () => ({
 const itemForm = ref(defaultItemForm())
 
 const itemTypeOptions = computed(() => [
-  { value: 'general', label: t('event_schedule.type_general', 'Umum / Latihan'), icon: 'ph:info-bold' },
-  { value: 'qualification', label: t('event_schedule.type_qualification', 'Kualifikasi'), icon: 'ph:target-bold' },
-  { value: 'elimination', label: t('event_schedule.type_elimination', 'Eliminasi'), icon: 'ph:tree-structure-bold' },
-  { value: 'finals', label: t('event_schedule.type_finals', 'Final & Medali'), icon: 'ph:trophy-bold' }
+  { value: 'general', label: t('event_schedule.type_general'), icon: 'ph:info-bold' },
+  { value: 'qualification', label: t('event_schedule.type_qualification'), icon: 'ph:target-bold' },
+  { value: 'elimination', label: t('event_schedule.type_elimination'), icon: 'ph:tree-structure-bold' },
+  { value: 'finals', label: t('event_schedule.type_finals'), icon: 'ph:trophy-bold' },
+  { value: 'break', label: t('event_schedule.type_break'), icon: 'ph:coffee-bold' }
 ])
 
 const elimRoundOptions = computed(() => [
@@ -644,7 +700,7 @@ const fetchScheduleTimeline = async () => {
       days.value = []
     }
   } catch (err) {
-    toast.error(err.message || 'Gagal mengambil data jadwal pertandingan')
+    toast.error(err.message || t('event_schedule.err_load_schedule'))
   } finally {
     loading.value = false
   }
@@ -653,9 +709,33 @@ const fetchScheduleTimeline = async () => {
 const openCreateModal = (dayNum) => {
   editingItem.value = null
   itemForm.value = defaultItemForm()
-  if (dayNum) itemForm.value.day_number = dayNum
-  if (currentDay.value && currentDay.value.schedule_date) {
-    itemForm.value.schedule_date = currentDay.value.schedule_date
+  
+  if (dayNum) {
+    itemForm.value.day_number = dayNum
+    const matchedDay = days.value.find(d => d.day_number === dayNum)
+    if (matchedDay && matchedDay.schedule_date) {
+      itemForm.value.schedule_date = matchedDay.schedule_date.substring(0, 10)
+    } else if (days.value.length > 0) {
+      const lastDay = days.value[days.value.length - 1]
+      if (lastDay.schedule_date) {
+        const d = new Date(lastDay.schedule_date.substring(0, 10) + 'T00:00:00')
+        d.setDate(d.getDate() + 1)
+        const dayStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+        itemForm.value.schedule_date = (!tournamentEndDate.value || dayStr <= tournamentEndDate.value) ? dayStr : (tournamentEndDate.value || dayStr)
+      } else {
+        itemForm.value.schedule_date = tournamentStartDate.value || ''
+      }
+    } else {
+      itemForm.value.schedule_date = tournamentStartDate.value || ''
+    }
+  } else {
+    if (currentDay.value && currentDay.value.schedule_date) {
+      itemForm.value.schedule_date = currentDay.value.schedule_date.substring(0, 10)
+      itemForm.value.day_number = currentDay.value.day_number
+    } else {
+      itemForm.value.schedule_date = tournamentStartDate.value || ''
+      itemForm.value.day_number = 1
+    }
   }
   showItemModal.value = true
 }
@@ -677,7 +757,7 @@ const openEditModal = (item) => {
     title: item.title,
     subtitle: item.subtitle?.Valid ? item.subtitle.String : (item.subtitle || ''),
     description: item.description?.Valid ? item.description.String : (item.description || ''),
-    location: item.location?.Valid ? item.location.String : (item.location || 'Lapangan Utama'),
+    location: item.location?.Valid ? item.location.String : (item.location || ''),
     session_code: item.session_code?.Valid ? item.session_code.String : (item.session_code || ''),
     elim_round: item.elim_round?.Valid ? item.elim_round.Int64 : null,
     target_start: item.target_start?.Valid ? item.target_start.Int64 : null,
@@ -688,70 +768,111 @@ const openEditModal = (item) => {
 }
 
 watch(() => itemForm.value.schedule_date, (newDate) => {
-  if (!newDate || !days.value || days.value.length === 0) return
+  if (!newDate) return
   const cleanDate = newDate.substring(0, 10)
   const matchedDay = days.value.find(d => d.schedule_date && d.schedule_date.substring(0, 10) === cleanDate)
   if (matchedDay) {
     itemForm.value.day_number = matchedDay.day_number
+  } else {
+    const existingDates = days.value
+      .map(d => d.schedule_date ? d.schedule_date.substring(0, 10) : '')
+      .filter(Boolean)
+    const allDates = [...new Set([...existingDates, cleanDate])].sort()
+    const newPos = allDates.indexOf(cleanDate) + 1
+    if (newPos > 0) {
+      itemForm.value.day_number = newPos
+    }
   }
 })
 
 const submitItemForm = async () => {
   // 1. Universal Required Validations
   if (!itemForm.value.schedule_date) {
-    toast.error(t('event_schedule.err_date_required', 'Tanggal pelaksanaan wajib diisi'))
+    toast.error(t('event_schedule.err_date_required'))
+    return
+  }
+
+  const cleanSchedDate = itemForm.value.schedule_date.substring(0, 10)
+  if (tournamentStartDate.value && cleanSchedDate < tournamentStartDate.value) {
+    toast.error(t('event_schedule.err_date_min', `Event date cannot be earlier than tournament start date (${tournamentStartDate.value})`))
+    return
+  }
+  if (tournamentEndDate.value && cleanSchedDate > tournamentEndDate.value) {
+    toast.error(t('event_schedule.err_date_max', `Event date cannot be later than tournament end date (${tournamentEndDate.value})`))
     return
   }
 
   if (!itemForm.value.title || !itemForm.value.title.trim()) {
-    toast.error(t('event_schedule.err_title_required', 'Judul sesi / agenda wajib diisi'))
+    toast.error(t('event_schedule.err_title_required'))
     return
   }
 
   if (!itemForm.value.start_time || !itemForm.value.end_time) {
-    toast.error(t('event_schedule.err_time_required', 'Waktu mulai dan waktu selesai wajib diisi'))
+    toast.error(t('event_schedule.err_time_required'))
     return
   }
 
   if (itemForm.value.end_time <= itemForm.value.start_time) {
-    toast.error(t('event_schedule.err_time_order', 'Waktu selesai harus lebih besar dari waktu mulai'))
+    toast.error(t('event_schedule.err_time_order'))
     return
   }
 
   // 2. Type-Specific Smart Validations
-  if (itemForm.value.item_type === 'qualification') {
-    if (!itemForm.value.target_start || !itemForm.value.target_end) {
-      toast.error(t('event_schedule.err_qual_target_required', 'Target awal dan target akhir wajib diisi untuk sesi Kualifikasi'))
-      return
-    }
-  }
-
   if (itemForm.value.item_type === 'elimination' || itemForm.value.item_type === 'finals') {
     if (!itemForm.value.elim_round) {
-      toast.error(t('event_schedule.err_elim_round_required', 'Babak eliminasi wajib dipilih untuk sesi Eliminasi / Final'))
+      toast.error(t('event_schedule.err_elim_round_required'))
       return
     }
   }
 
-  // 3. Target Range Logic
-  if (itemForm.value.target_start && itemForm.value.target_end) {
-    if (Number(itemForm.value.target_start) < 1) {
-      toast.error(t('event_schedule.err_target_min', 'Target awal minimal nomor 1'))
-      return
-    }
-    if (Number(itemForm.value.target_end) < Number(itemForm.value.target_start)) {
-      toast.error(t('event_schedule.err_target_order', 'Target akhir tidak boleh lebih kecil dari target awal'))
-      return
-    }
-  } else if (itemForm.value.target_start && !itemForm.value.target_end) {
-    toast.error(t('event_schedule.err_target_end_missing', 'Silakan lengkapi juga target akhir'))
-    return
-  } else if (!itemForm.value.target_start && itemForm.value.target_end) {
-    toast.error(t('event_schedule.err_target_start_missing', 'Silakan lengkapi juga target awal'))
+  // 3. Conflict & Duplicate Detection on the same day
+  const targetDate = cleanSchedDate
+  const allDayItems = days.value
+    .filter(d => {
+      const dDate = d.schedule_date ? d.schedule_date.substring(0, 10) : ''
+      return (dDate && dDate === targetDate) || (!dDate && d.day_number === itemForm.value.day_number)
+    })
+    .flatMap(d => d.items || [])
+
+  const newStart = itemForm.value.start_time.substring(0, 5)
+  const newEnd = itemForm.value.end_time.substring(0, 5)
+  const newTitle = itemForm.value.title.trim().toLowerCase()
+
+  // 3a. Exact Duplicate Check (same title, same time, same day)
+  const exactDuplicate = allDayItems.find(other => {
+    if (other.uuid === itemForm.value.uuid) return false
+    const oStart = (other.start_time || '').substring(0, 5)
+    const oEnd = (other.end_time || '').substring(0, 5)
+    const oTitle = (other.title || '').trim().toLowerCase()
+    return oStart === newStart && oEnd === newEnd && oTitle === newTitle
+  })
+
+  if (exactDuplicate) {
+    toast.error(t('event_schedule.err_duplicate_item'))
     return
   }
 
+  // 3b. Overlap Check (different title, overlapping time)
+  const overlaps = allDayItems.filter(other => {
+    if (other.uuid === itemForm.value.uuid) return false
+    const oStart = (other.start_time || '').substring(0, 5)
+    const oEnd = (other.end_time || '').substring(0, 5)
+    return newStart < oEnd && newEnd > oStart
+  })
+
+  if (overlaps.length > 0) {
+    conflictingItems.value = overlaps
+    showConflictModal.value = true
+    return
+  }
+
+  await executeSaveItem()
+}
+
+const executeSaveItem = async () => {
+  showConflictModal.value = false
   savingItem.value = true
+  const savedDate = itemForm.value.schedule_date ? itemForm.value.schedule_date.substring(0, 10) : ''
   try {
     const payload = {
       ...itemForm.value,
@@ -763,14 +884,32 @@ const submitItemForm = async () => {
       elim_round: itemForm.value.elim_round ? Number(itemForm.value.elim_round) : null
     }
     const res = await post(`/tournaments/${eventId}/schedule/items`, payload)
-    toast.success(res?.message || 'Item jadwal berhasil disimpan')
+    toast.success(res?.message || t('event_schedule.msg_item_saved'))
     showItemModal.value = false
     await fetchScheduleTimeline()
+    if (savedDate && days.value.length > 0) {
+      const targetDay = days.value.find(d => d.schedule_date && d.schedule_date.substring(0, 10) === savedDate)
+      if (targetDay) {
+        selectedDayNumber.value = targetDay.day_number
+      }
+    }
   } catch (err) {
-    toast.error(err.message || 'Gagal menyimpan item jadwal')
+    toast.error(err?.data?.error || err.message || t('event_schedule.err_save_item'))
   } finally {
     savingItem.value = false
   }
+}
+
+const isParallelItem = (item) => {
+  if (!currentDay.value || !currentDay.value.items) return false
+  const itStart = (item.start_time || '').substring(0, 5)
+  const itEnd = (item.end_time || '').substring(0, 5)
+  return currentDay.value.items.some(other => {
+    if (other.uuid === item.uuid) return false
+    const oStart = (other.start_time || '').substring(0, 5)
+    const oEnd = (other.end_time || '').substring(0, 5)
+    return itStart < oEnd && itEnd > oStart
+  })
 }
 
 const confirmDeleteItem = (item) => {
@@ -783,12 +922,12 @@ const executeDeleteItem = async () => {
   deleting.value = true
   try {
     const res = await deleteApi(`/tournaments/${eventId}/schedule/items/${itemToDelete.value.uuid}`)
-    toast.success(res?.message || 'Item jadwal berhasil dihapus')
+    toast.success(res?.message || t('event_schedule.msg_item_deleted'))
     showDeleteModal.value = false
     itemToDelete.value = null
     await fetchScheduleTimeline()
   } catch (err) {
-    toast.error(err.message || 'Gagal menghapus item jadwal')
+    toast.error(err.message || t('event_schedule.err_delete_item'))
   } finally {
     deleting.value = false
   }
@@ -829,10 +968,11 @@ const formatDuration = (mins) => {
 
 const getItemTypeLabel = (type) => {
   switch (type) {
-    case 'qualification': return t('event_schedule.type_qualification', 'Kualifikasi')
-    case 'elimination': return t('event_schedule.type_elimination', 'Eliminasi')
-    case 'finals': return t('event_schedule.type_finals', 'Final & Medali')
-    default: return t('event_schedule.type_general', 'Umum / Latihan')
+    case 'qualification': return t('event_schedule.type_qualification')
+    case 'elimination': return t('event_schedule.type_elimination')
+    case 'finals': return t('event_schedule.type_finals')
+    case 'break': return t('event_schedule.type_break')
+    default: return t('event_schedule.type_general')
   }
 }
 
@@ -841,6 +981,7 @@ const getItemTypeIcon = (type) => {
     case 'qualification': return 'ph:target-bold'
     case 'elimination': return 'ph:tree-structure-bold'
     case 'finals': return 'ph:trophy-bold'
+    case 'break': return 'ph:coffee-bold'
     default: return 'ph:info-bold'
   }
 }
@@ -850,6 +991,7 @@ const getItemTypeBadgeClass = (type) => {
     case 'qualification': return 'bg-blue-50 text-blue-700 border border-blue-100'
     case 'elimination': return 'bg-orange-50 text-orange-700 border border-orange-100'
     case 'finals': return 'bg-amber-50 text-amber-800 border border-amber-200'
+    case 'break': return 'bg-rose-50 text-rose-700 border border-rose-200'
     default: return 'bg-gray-100 text-gray-700 border border-gray-200'
   }
 }
@@ -885,6 +1027,7 @@ const getSessionCode = (item) => {
 }
 
 onMounted(() => {
+  fetchTournamentInfo()
   fetchScheduleTimeline()
 })
 </script>

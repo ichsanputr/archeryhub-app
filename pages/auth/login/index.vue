@@ -28,11 +28,11 @@
                 <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
                     <div class="flex -space-x-2">
                         <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
-                            :src="getMediaUrl('male_94.jpg')" />
+                            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Ardi" />
                         <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
-                            :src="getMediaUrl('female_18.jpg')" />
+                            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Sarah" />
                         <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
-                            :src="getMediaUrl('male_8.jpg')" />
+                            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Budi" />
                         <div
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
@@ -62,17 +62,6 @@
                 </div>
 
                 <form @submit.prevent="handleEmailAuth" class="space-y-6">
-                    <div v-if="isDev" class="bg-amber-50/80 border border-amber-200/80 rounded-xl p-4 text-xs space-y-2 mb-2 font-body">
-                        <div class="flex items-center justify-between">
-                            <span class="font-bold text-amber-800 flex items-center gap-1.5">
-                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-                                development mode / dev mode
-                            </span>
-                            <span class="text-[10px] bg-amber-200/60 text-amber-800 px-1.5 py-0.5 rounded font-mono font-bold">auto-fill</span>
-                        </div>
-                        <BaseSelect v-model="selectedDemoAccount" :options="demoAccountOptions" label="Select Demo Account Type" placeholder="-- Select Account --" @update:model-value="selectDemoUser" />
-                    </div>
-
                     <BaseInput v-model="form.email" :label="t('auth.login.email_label')" :placeholder="t('auth.login.email_placeholder')" type="email"
                         icon="ph:envelope-simple" required :error="errors.email"
                         @update:model-value="validate('email', form.email, [rules.required(), rules.email()])" />
@@ -157,81 +146,6 @@ watch([isLoggedIn, user], () => {
     checkAndRedirect()
 }, { immediate: true })
 
-const isDev = computed(() => {
-    if (process.client) {
-        const h = window.location.hostname
-        return (
-            h === 'localhost' ||
-            h === '127.0.0.1' ||
-            h.includes('dev.archeris.net') ||
-            h.includes('dev.') ||
-            h.includes('staging') ||
-            h.endsWith('.local') ||
-            h.startsWith('192.168.') ||
-            h.startsWith('10.') ||
-            route.query.dev === 'true' ||
-            import.meta.dev
-        )
-    }
-    return import.meta.dev
-})
-
-interface DevAccount {
-    role: string
-    email: string
-    name: string
-    username: string
-    password: string
-    avatar_url: string
-}
-
-const selectedDemoAccount = ref('')
-const dynamicDemoAccounts = ref<DevAccount[]>([])
-
-const demoAccountOptions = computed(() => {
-    if (dynamicDemoAccounts.value.length > 0) {
-        return dynamicDemoAccounts.value.map(acc => ({
-            title: `${acc.role === 'organizer' ? '🏢 Organizer' : '🎯 Archer'}: ${acc.name || acc.username || acc.email} (${acc.email})`,
-            value: acc.email,
-        }))
-    }
-    return [
-        { title: 'Archer (archer@gmail.com / 123456)', value: 'archer@gmail.com' },
-        { title: 'Organizer (ichsanfadhil67@gmail.com / 123456)', value: 'ichsanfadhil67@gmail.com' },
-    ]
-})
-
-const selectDemoUser = (emailOrKey: string) => {
-    if (!emailOrKey) return
-    const matched = dynamicDemoAccounts.value.find(a => a.email === emailOrKey || a.role === emailOrKey)
-    if (matched) {
-        form.value.email = matched.email
-        form.value.password = matched.password || '123456'
-    } else {
-        form.value.email = emailOrKey
-        form.value.password = '123456'
-    }
-    validate('email', form.value.email, [rules.required(), rules.email()])
-    validate('password', form.value.password, [rules.required()])
-}
-
-const fetchDevAccounts = async () => {
-    if (!isDev.value) return
-    try {
-        const res = await $fetch<{ accounts?: DevAccount[] }>(`${apiBaseUrl}/auth/dev-accounts`).catch(() => null)
-        if (res && res.accounts && res.accounts.length > 0) {
-            dynamicDemoAccounts.value = res.accounts
-            if (!form.value.email && res.accounts.length > 0) {
-                const first = res.accounts[0]
-                selectedDemoAccount.value = first.email
-                selectDemoUser(first.email)
-            }
-        }
-    } catch (e) {
-        console.warn('Failed to load dynamic dev accounts:', e)
-    }
-}
-
 useHead({
     title: computed(() => (t('auth.login.seo_title', 'Masuk ke Akun')) + ' - Archeris.net')
 })
@@ -240,9 +154,11 @@ const apiBaseUrl = useApiBaseUrl()
 
 const getMediaUrl = (filename: string) => {
     if (!filename) return ''
+    if (filename.startsWith('http://localhost') || filename.startsWith('http://127.0.0.1')) {
+        return filename.replace(/^http:\/\/[^/]+/, 'https://api.archeris.net')
+    }
     if (filename.startsWith('http')) return filename
-    // apiBaseUrl already contains /api/v1
-    return `${apiBaseUrl}/media/${filename}`
+    return `https://api.archeris.net/media/${filename.replace(/^\/+/, '')}`
 }
 
 const isLoading = ref(false)
@@ -300,9 +216,6 @@ onMounted(async () => {
 
     await initializeAuth()
     checkAndRedirect()
-    if (isDev.value) {
-        await fetchDevAccounts()
-    }
 })
 
 const handleEmailAuth = async () => {

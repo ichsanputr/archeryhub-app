@@ -71,8 +71,12 @@
                 <div class="order-1 lg:order-2 flex justify-center lg:justify-end w-full">
                     <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-[0_12px_32px_-8px_rgba(15,23,42,0.12),0_4px_12px_-2px_rgba(15,23,42,0.04)] border border-slate-200/80 bg-[#ECEBE6]">
                         <img 
-                            src="/mobile/mobile_showcase.png" 
+                            src="/mobile/mobile_showcase.webp" 
                             alt="Archeris Mobile App - Real-Time Scoring & Event Discovery" 
+                            loading="lazy"
+                            decoding="async"
+                            width="540"
+                            height="540"
                             class="w-full h-full object-cover" 
                         />
                         <!-- Inner gray border overlay -->

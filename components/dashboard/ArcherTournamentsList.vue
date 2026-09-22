@@ -2,18 +2,18 @@
   <div class="space-y-6">
     <!-- Header Section -->
     <DashboardHeader
-      :title="t('my_events.title', 'Turnamen Saya')"
-      :subtitle="t('my_events.subtitle', 'Pantau seluruh turnamen panahan yang Anda ikuti, cek status registrasi, dan akses ringkasan pertandingan.')"
+      :title="t('my_events.title')"
+      :subtitle="t('my_events.subtitle')"
       icon="ph:trophy-bold"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/archer' },
-        { label: t('my_events.title', 'Turnamen Saya') }
+        { label: t('my_events.title') }
       ]"
     >
       <template #actions>
         <BaseButton to="/tournaments" variant="primary" icon="ph:magnifying-glass-bold"
           class="h-11 px-5 font-black text-xs shadow-sm hover:shadow-md transition-all">
-          {{ t('my_events.find_new_events', 'Cari Turnamen Baru') }}
+          {{ t('my_events.find_new_events') }}
         </BaseButton>
       </template>
     </DashboardHeader>
@@ -22,41 +22,41 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
       <!-- Total Events -->
       <StatCard
-        :title="t('my_events.stats_total', 'Total Turnamen')"
+        :title="t('my_events.stats_total')"
         :value="events.length"
         icon="ph:trophy-bold"
         color="primary"
-        :description="t('my_events.stats_total_desc', 'Turnamen diikuti')"
+        :description="t('my_events.stats_total_desc')"
         description-icon="ph:calendar-blank-bold"
       />
 
       <!-- Registered & Paid Events -->
       <StatCard
-        :title="t('my_events.stats_registered', 'Event Terdaftar')"
+        :title="t('my_events.stats_registered')"
         :value="registeredCount"
         icon="ph:check-circle-bold"
         color="primary"
-        :description="t('my_events.stats_registered_desc', 'Lunas & siap bertanding')"
+        :description="t('my_events.stats_registered_desc')"
         description-icon="ph:seal-check-bold"
       />
 
       <!-- Pending Payment Events -->
       <StatCard
-        :title="t('my_events.stats_pending', 'Menunggu Pembayaran')"
+        :title="t('my_events.stats_pending')"
         :value="pendingCount"
         icon="ph:warning-circle-bold"
         color="primary"
-        :description="t('my_events.stats_pending_desc', 'Tagihan belum lunas')"
+        :description="t('my_events.stats_pending_desc')"
         description-icon="ph:hourglass-medium-bold"
       />
 
       <!-- Total Categories / Divisions -->
       <StatCard
-        :title="t('my_events.stats_categories', 'Kategori Lomba')"
+        :title="t('my_events.stats_categories')"
         :value="totalCategoriesCount"
         icon="ph:crosshair-bold"
         color="primary"
-        :description="t('my_events.stats_categories_desc', 'Total divisi pertandingan')"
+        :description="t('my_events.stats_categories_desc')"
         description-icon="ph:chart-polar-bold"
       />
     </div>
@@ -77,26 +77,114 @@
       </BaseButton>
     </div>
 
-    <!-- Search & Filter Card -->
-    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
-      <!-- Search Input -->
-      <div class="flex-grow w-full">
-        <BaseInput v-model="searchQuery" icon="ph:magnifying-glass-bold"
-          :placeholder="t('my_events.search_placeholder')" :label="t('my_events.search_label')" />
+    <!-- Search & Filter Bar Container -->
+    <div class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm space-y-3">
+      <div class="flex flex-col sm:flex-row gap-3 justify-between items-stretch sm:items-center">
+        <!-- Search Input Field -->
+        <div class="relative flex-1 w-full min-w-[240px]">
+          <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none" />
+          <input
+            v-model="searchQuery"
+            type="text"
+            :placeholder="t('my_events.search_placeholder')"
+            class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-xs font-medium"
+          />
+          <button
+            v-if="searchQuery"
+            type="button"
+            @click="searchQuery = ''"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
+            :title="t('common.clear')"
+          >
+            <Icon icon="ph:x-circle-fill" class="text-sm" />
+          </button>
+        </div>
+
+        <!-- Filter Button, Reset, & Counter Group -->
+        <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap shrink-0">
+          <button
+            type="button"
+            @click="showFilterModal = true"
+            :class="[
+              'h-10 px-4 rounded-xl border text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer',
+              activeFilterCount > 0
+                ? 'bg-navy text-white border-navy shadow-sm'
+                : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+            ]"
+          >
+            <Icon icon="ph:sliders-horizontal-bold" class="text-sm" />
+            <span>{{ t('common.filter') }}</span>
+            <span
+              v-if="activeFilterCount > 0"
+              class="px-1.5 py-0.5 rounded-md bg-white/20 text-white text-xs font-black font-mono leading-none"
+            >
+              {{ activeFilterCount }}
+            </span>
+          </button>
+
+          <!-- Reset Button -->
+          <button
+            v-if="hasActiveFilters"
+            type="button"
+            @click="resetAllFilters"
+            class="h-10 px-3.5 rounded-xl border border-slate-200 text-slate-500 hover:text-red-600 hover:bg-red-50 hover:border-red-200 text-xs sm:text-sm font-bold transition-all shrink-0 flex items-center gap-1.5 cursor-pointer"
+            :title="t('common.reset_filters')"
+          >
+            <Icon icon="ph:arrow-counter-clockwise-bold" class="text-sm" />
+            <span class="hidden sm:inline">{{ t('common.reset') }}</span>
+          </button>
+
+          <!-- Result Counter Tag -->
+          <div class="px-3.5 py-2.5 bg-navy/5 text-navy rounded-xl font-bold text-xs sm:text-sm border border-navy/10 flex items-center gap-1.5 shrink-0">
+            <Icon icon="ph:trophy-bold" class="text-sm text-navy/70" />
+            <span>{{ filteredEvents.length }} {{ t('my_events.tournaments_unit') }}</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Status Filter -->
-      <div class="w-full md:w-56">
-        <label class="block text-xs font-bold text-navy mb-1.5">{{ t('my_events.filter_status', 'Status Registrasi') }}</label>
-        <BaseSelect v-model="statusFilter" :options="statusFilterOptions" class="w-full text-xs" />
-      </div>
+      <!-- Active Filter Chips Bar -->
+      <div
+        v-if="activeFilterChips.length > 0"
+        class="flex items-center gap-2 pt-2.5 flex-wrap border-t border-slate-100 animate-in fade-in duration-150"
+      >
+        <div class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-500 shrink-0 select-none">
+          <Icon icon="ph:funnel-bold" class="text-xs sm:text-sm text-slate-400 shrink-0" />
+          <span>{{ t('common.active_filters') }}</span>
+        </div>
 
-      <!-- Reset Button -->
-      <BaseButton variant="white" icon="ph:funnel-bold" @click="resetFilters"
-        class="h-11 font-black tracking-widest text-xs shrink-0">
-        {{ t('my_events.reset') }}
-      </BaseButton>
+        <div
+          v-for="chip in activeFilterChips"
+          :key="chip.key"
+          class="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 text-slate-700 rounded-xl text-xs sm:text-sm font-semibold shadow-2xs group hover:border-slate-300 transition-colors"
+        >
+          <span class="truncate max-w-[220px] text-navy font-bold leading-none">{{ chip.label }}</span>
+          <button
+            type="button"
+            @click="removeFilterChip(chip.key)"
+            class="text-slate-400 hover:text-red-500 rounded-full p-0.5 transition-colors cursor-pointer inline-flex items-center justify-center shrink-0"
+            :title="t('common.remove_filter')"
+          >
+            <Icon icon="ph:x-bold" class="text-xs" />
+          </button>
+        </div>
+
+        <button
+          type="button"
+          @click="resetAllFilters"
+          class="inline-flex items-center text-xs sm:text-sm font-bold text-slate-500 hover:text-red-600 transition-colors ml-1 cursor-pointer"
+        >
+          {{ t('common.clear_all') }}
+        </button>
+      </div>
     </div>
+
+    <!-- Filter Modal Dialog -->
+    <DashboardArcherTournamentFilterModal
+      v-model:show="showFilterModal"
+      :current-filters="currentFilterState"
+      @apply="handleApplyModalFilters"
+      @reset="resetAllFilters"
+    />
 
     <!-- Events List / Grid -->
     <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -199,12 +287,12 @@
                   <span v-if="getMainStatusLabel(event) === 'Registered'"
                     class="text-xs font-bold text-emerald-400 inline-flex items-center gap-1.5 shrink-0">
                     <span class="size-1.5 rounded-full bg-emerald-400"></span>
-                    <span class="leading-none">{{ t('my_events.registered', 'Terdaftar') }}</span>
+                    <span class="leading-none">{{ t('my_events.registered') }}</span>
                   </span>
                   <span v-else
                     class="text-xs font-bold text-amber-400 inline-flex items-center gap-1.5 shrink-0">
                     <span class="size-1.5 rounded-full bg-amber-400"></span>
-                    <span class="leading-none">{{ t('my_events.pending_payment', 'Menunggu Pembayaran') }}</span>
+                    <span class="leading-none">{{ t('my_events.pending_payment') }}</span>
                   </span>
                 </div>
 
@@ -228,7 +316,7 @@
                     <Icon icon="ph:calendar-blank-bold" class="text-sm" />
                   </div>
                   <div class="min-w-0 flex-1">
-                    <span class="text-slate-400 text-[11px] font-medium block leading-none mb-1.5">{{ t('my_events.schedule_label', 'Jadwal') }}</span>
+                    <span class="text-slate-400 text-[11px] font-medium block leading-none mb-1.5">{{ t('my_events.schedule_label') }}</span>
                     <span class="font-bold block truncate text-slate-900 leading-tight">{{ formatDateRange(event.start_date, event.end_date) }}</span>
                   </div>
                 </div>
@@ -239,7 +327,7 @@
                     <Icon icon="ph:map-pin-bold" class="text-sm" />
                   </div>
                   <div class="min-w-0 flex-1">
-                    <span class="text-slate-400 text-[11px] font-medium block leading-none mb-1.5">{{ t('my_events.location_label', 'Lokasi & Kota') }}</span>
+                    <span class="text-slate-400 text-[11px] font-medium block leading-none mb-1.5">{{ t('my_events.location_label') }}</span>
                     <span class="font-bold block truncate text-slate-900 leading-tight">{{ event.city || event.venue || event.location || '-' }}</span>
                   </div>
                 </div>
@@ -250,7 +338,7 @@
                     <Icon icon="ph:crosshair-bold" class="text-sm" />
                   </div>
                   <div class="min-w-0 flex-1">
-                    <span class="text-slate-400 text-[11px] font-medium block leading-none mb-1.5">{{ t('my_events.category_label', 'Kategori') }}</span>
+                    <span class="text-slate-400 text-[11px] font-medium block leading-none mb-1.5">{{ t('my_events.category_label') }}</span>
                     <span class="font-bold block truncate text-slate-900 leading-tight">
                       {{ t('my_events.categories_count', { count: event.event_count || 1 }) }}
                     </span>
@@ -263,7 +351,7 @@
                     <Icon icon="ph:users-three-bold" class="text-sm" />
                   </div>
                   <div class="min-w-0 flex-1">
-                    <span class="text-slate-400 text-[11px] font-medium block leading-none mb-1.5">{{ t('my_events.participant_label', 'Peserta') }}</span>
+                    <span class="text-slate-400 text-[11px] font-medium block leading-none mb-1.5">{{ t('my_events.participant_label') }}</span>
                     <span class="font-bold block truncate text-slate-900 leading-tight">
                       {{ t('my_events.athletes_count', { count: event.participant_count || 0 }) }}
                     </span>
@@ -274,8 +362,8 @@
               <!-- Payment Alert (Only when pending) -->
               <div v-if="event.payment_amount && event.payment_status !== 'lunas' && event.payment_status !== 'paid'"
                 class="bg-amber-50 border border-amber-200/80 rounded-xl p-3 flex items-center justify-between text-xs">
-                <span class="font-medium text-amber-800">{{ t('my_events.registration_fee', 'Tagihan Registrasi:') }}</span>
-                <span class="font-black text-amber-900 font-mono text-sm">Rp {{ Number(event.payment_amount).toLocaleString('id-ID') }}</span>
+                <span class="font-medium text-amber-800">{{ t('my_events.registration_fee') }}</span>
+                <span class="font-black text-amber-900 font-mono text-sm">{{ formatMoney(event.payment_amount, event.currency || 'IDR') }}</span>
               </div>
             </div>
 
@@ -283,7 +371,7 @@
             <div class="pt-3 flex items-center gap-2.5 border-t border-slate-100">
               <NuxtLink :to="`/dashboard/archer/tournaments/${event.slug || event.id}/overview`" class="flex-1">
                 <BaseButton variant="primary" size="md" class="w-full font-bold text-xs h-11 flex items-center justify-center gap-1.5">
-                  <span>{{ t('my_events.open_event', 'Buka Event') }}</span>
+                  <span>{{ t('my_events.open_event') }}</span>
                   <Icon icon="ph:arrow-right-bold" class="text-sm" />
                 </BaseButton>
               </NuxtLink>
@@ -291,7 +379,7 @@
               <button v-if="getMainStatusLabel(event) === 'Registered' || isPaidStatus(event)"
                 @click="showQRDialog(event)"
                 type="button"
-                :title="t('my_events.qr_instructions', 'QR Code Check-in')"
+                :title="t('my_events.qr_instructions')"
                 class="size-10 rounded-xl bg-slate-100 hover:bg-navy hover:text-white text-slate-700 flex items-center justify-center transition-colors border border-slate-200 shrink-0">
                 <Icon icon="ph:qr-code-bold" class="text-lg" />
               </button>
@@ -337,11 +425,11 @@
               <!-- Header Info -->
               <div class="space-y-1 pt-1 pr-6 pl-6">
                 <h3 class="text-base font-black text-navy leading-tight">
-                  {{ t('my_events.qr_modal_title', 'QR Registrasi Ulang') }}
+                  {{ t('my_events.qr_modal_title') }}
                 </h3>
-                <p class="text-xs text-slate-500 font-medium truncate max-w-[240px]">
+                <div class="text-xs text-slate-500 font-medium truncate max-w-[240px]">
                   {{ selectedEvent?.name }}
-                </p>
+                </div>
               </div>
 
               <!-- QR Code Card -->
@@ -355,22 +443,22 @@
               </div>
 
               <!-- Concise Subtitle Redaksi -->
-              <p class="text-xs text-slate-500 leading-relaxed max-w-[260px]">
-                {{ t('my_events.qr_modal_subtitle', 'Tunjukkan QR ini ke panitia meja registrasi saat daftar ulang di venue.') }}
-              </p>
+              <div class="text-xs text-slate-500 leading-relaxed max-w-[260px]">
+                {{ t('my_events.qr_modal_subtitle') }}
+              </div>
 
               <!-- Action Buttons -->
               <div class="w-full space-y-2 pt-1">
                 <NuxtLink :to="`/dashboard/archer/tournaments/${selectedEvent?.slug || selectedEvent?.id}/my-registration`" class="block w-full">
                   <BaseButton variant="primary" block class="h-10 text-xs font-bold justify-center shadow-xs">
-                    <span>{{ t('my_events.qr_modal_view_ticket', 'Lihat Tiket & Detail') }}</span>
+                    <span>{{ t('my_events.qr_modal_view_ticket') }}</span>
                     <Icon icon="ph:arrow-right-bold" class="ml-1 text-xs" />
                   </BaseButton>
                 </NuxtLink>
 
                 <button type="button" @click="showQR = false"
                   class="text-xs text-slate-400 hover:text-slate-600 font-semibold transition-colors py-1">
-                  {{ t('my_events.qr_modal_close', 'Tutup') }}
+                  {{ t('my_events.qr_modal_close') }}
                 </button>
               </div>
 
@@ -390,6 +478,7 @@ import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
 import BasePagination from '~/components/common/BasePagination.vue'
 import { useI18n } from 'vue-i18n'
+import { formatMoney } from '~/composables/useCurrency'
 
 const { t } = useI18n()
 const { get, post } = useApi()
@@ -398,6 +487,9 @@ const { user } = useAuth()
 
 const searchQuery = ref('')
 const statusFilter = ref('all')
+const timelineFilter = ref('all')
+const sortFilter = ref('date_desc')
+const showFilterModal = ref(false)
 const events = ref([])
 const isLoading = ref(true)
 const showQR = ref(false)
@@ -411,11 +503,85 @@ const currentPage = ref(1)
 const totalItems = ref(0)
 const limit = ref(10)
 
-const statusFilterOptions = computed(() => [
-  { label: t('my_events.filter_all_status', 'Semua Status'), value: 'all' },
-  { label: t('my_events.filter_registered', 'Terdaftar / Lunas'), value: 'registered' },
-  { label: t('my_events.filter_pending', 'Menunggu Pembayaran'), value: 'pending' },
-])
+const currentFilterState = computed(() => ({
+  status: statusFilter.value,
+  timeline: timelineFilter.value,
+  sort: sortFilter.value
+}))
+
+const handleApplyModalFilters = (filters) => {
+  statusFilter.value = filters.status || 'all'
+  timelineFilter.value = filters.timeline || 'all'
+  sortFilter.value = filters.sort || 'date_desc'
+  currentPage.value = 1
+}
+
+const activeFilterCount = computed(() => {
+  let count = 0
+  if (statusFilter.value !== 'all') count++
+  if (timelineFilter.value !== 'all') count++
+  if (sortFilter.value !== 'date_desc') count++
+  return count
+})
+
+const hasActiveFilters = computed(() => {
+  return searchQuery.value.trim() !== '' || statusFilter.value !== 'all' || timelineFilter.value !== 'all' || sortFilter.value !== 'date_desc'
+})
+
+const activeFilterChips = computed(() => {
+  const chips = []
+  if (searchQuery.value.trim()) {
+    chips.push({
+      key: 'search',
+      label: `"${searchQuery.value.trim()}"`
+    })
+  }
+  if (statusFilter.value !== 'all') {
+    chips.push({
+      key: 'status',
+      label: statusFilter.value === 'paid' ? t('my_events.opt_registered') : t('my_events.opt_pending')
+    })
+  }
+  if (timelineFilter.value !== 'all') {
+    const labels = {
+      upcoming: t('my_events.opt_upcoming'),
+      ongoing: t('my_events.opt_ongoing'),
+      past: t('my_events.opt_past')
+    }
+    chips.push({
+      key: 'timeline',
+      label: labels[timelineFilter.value] || timelineFilter.value
+    })
+  }
+  if (sortFilter.value !== 'date_desc') {
+    const sortLabels = {
+      date_asc: t('my_events.sort_date_asc'),
+      name_asc: t('my_events.sort_name_asc'),
+      name_desc: t('my_events.sort_name_desc')
+    }
+    chips.push({
+      key: 'sort',
+      label: sortLabels[sortFilter.value] || sortFilter.value
+    })
+  }
+  return chips
+})
+
+const removeFilterChip = (key) => {
+  if (key === 'search') searchQuery.value = ''
+  if (key === 'status') statusFilter.value = 'all'
+  if (key === 'timeline') timelineFilter.value = 'all'
+  if (key === 'sort') sortFilter.value = 'date_desc'
+  currentPage.value = 1
+}
+
+const resetAllFilters = () => {
+  searchQuery.value = ''
+  statusFilter.value = 'all'
+  timelineFilter.value = 'all'
+  sortFilter.value = 'date_desc'
+  currentPage.value = 1
+}
 
 const registeredCount = computed(() => {
   return events.value.filter(e => getMainStatusLabel(e) === 'Registered' || isPaidStatus(e)).length
@@ -429,7 +595,7 @@ const totalCategoriesCount = computed(() => {
   return events.value.reduce((sum, e) => sum + (e.event_count || 1), 0)
 })
 
-watch([searchQuery, statusFilter], () => {
+watch([searchQuery, statusFilter, timelineFilter, sortFilter], () => {
   currentPage.value = 1
 })
 
@@ -499,8 +665,7 @@ onMounted(() => {
 })
 
 const resetFilters = () => {
-  searchQuery.value = ''
-  statusFilter.value = 'all'
+  resetAllFilters()
 }
 
 const showQRDialog = (event) => {
@@ -509,7 +674,7 @@ const showQRDialog = (event) => {
 }
 
 const filteredEvents = computed(() => {
-  return events.value.filter(e => {
+  let list = events.value.filter(e => {
     const q = searchQuery.value.trim().toLowerCase()
     const matchesSearch = !q ||
       e.name?.toLowerCase().includes(q) ||
@@ -520,13 +685,41 @@ const filteredEvents = computed(() => {
 
     if (!matchesSearch) return false
 
-    if (statusFilter.value === 'registered') {
-      return getMainStatusLabel(e) === 'Registered' || isPaidStatus(e)
+    // Status filter
+    if (statusFilter.value === 'paid' || statusFilter.value === 'registered') {
+      if (!(getMainStatusLabel(e) === 'Registered' || isPaidStatus(e))) return false
+    } else if (statusFilter.value === 'pending') {
+      if (getMainStatusLabel(e) === 'Registered' || isPaidStatus(e)) return false
     }
-    if (statusFilter.value === 'pending') {
-      return getMainStatusLabel(e) !== 'Registered' && !isPaidStatus(e)
+
+    // Timeline filter
+    if (timelineFilter.value !== 'all') {
+      const tStatus = getEventTimelineStatus(e)?.label
+      if (timelineFilter.value === 'upcoming' && tStatus !== 'Akan Datang') return false
+      if (timelineFilter.value === 'ongoing' && tStatus !== 'Berlangsung') return false
+      if (timelineFilter.value === 'past' && tStatus !== 'Selesai') return false
     }
+
     return true
+  })
+
+  // Sorting
+  return list.sort((a, b) => {
+    if (sortFilter.value === 'date_asc') {
+      const tA = new Date(a.start_date || 0).getTime()
+      const tB = new Date(b.start_date || 0).getTime()
+      return tA - tB
+    }
+    if (sortFilter.value === 'name_asc') {
+      return (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' })
+    }
+    if (sortFilter.value === 'name_desc') {
+      return (b.name || '').localeCompare(a.name || '', undefined, { sensitivity: 'base' })
+    }
+    // Default date_desc
+    const tA = new Date(a.start_date || 0).getTime()
+    const tB = new Date(b.start_date || 0).getTime()
+    return tB - tA
   })
 })
 

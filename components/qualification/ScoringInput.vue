@@ -11,7 +11,7 @@
                 <div
                     class="inline-block h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin">
                 </div>
-                <p class="text-sm text-gray-500 mt-3">Memuat skor...</p>
+                <div class="text-sm text-gray-500 mt-3">Memuat skor...</div>
             </div>
 
             <div v-else class="space-y-4">
@@ -57,7 +57,7 @@
         </div>
 
         <div v-else class="text-center py-12">
-            <p class="text-gray-500">Pilih peserta untuk input skor</p>
+            <div class="text-gray-500">Pilih peserta untuk input skor</div>
         </div>
     </div>
 </template>

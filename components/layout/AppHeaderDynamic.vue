@@ -93,9 +93,9 @@
             class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-navy"
             :class="{ '!border-primary font-bold text-navy': isActive('/docs') }">
             {{ t('nav.docs') }}</NuxtLink>
-          <NuxtLink to="/pricing"
+          <NuxtLink to="/package"
             class="text-gray-600 font-semibold text-sm transition-all duration-300 px-1 h-full flex items-center border-b-2 border-transparent hover:border-primary hover:text-navy"
-            :class="{ '!border-primary font-bold text-navy': isActive('/pricing') }">
+            :class="{ '!border-primary font-bold text-navy': isActive('/package') }">
             {{ t('nav.pricing') }}
           </NuxtLink>
         </nav>
@@ -158,7 +158,9 @@
 
         <!-- Mobile Menu Toggle -->
         <div class="flex items-center gap-1 md:gap-2 md:hidden">
-          <button class="p-1.5 text-navy transition-colors duration-300" @click="mobileMenuOpen = !mobileMenuOpen">
+          <button class="p-1.5 text-navy transition-colors duration-300"
+            :aria-label="mobileMenuOpen ? 'Tutup navigasi menu' : 'Buka navigasi menu'"
+            @click="mobileMenuOpen = !mobileMenuOpen">
             <Icon :icon="mobileMenuOpen ? 'ph:x-bold' : 'ph:list-bold'" class="text-xl" />
           </button>
         </div>
@@ -185,7 +187,9 @@
             <img src="/logo.png" alt="Archeris" class="w-7 h-7 object-contain transition-transform duration-300 group-hover:scale-105" />
             <span class="text-base font-black tracking-tight text-navy ">Archeris</span>
           </NuxtLink>
-          <button @click="mobileMenuOpen = false" class="p-1.5 hover:bg-gray-100 rounded-lg transition-all scale-100 text-navy">
+          <button @click="mobileMenuOpen = false"
+            aria-label="Tutup navigasi menu"
+            class="p-1.5 hover:bg-gray-100 rounded-lg transition-all scale-100 text-navy">
             <Icon icon="ph:x-bold" class="text-lg" />
           </button>
         </div>
@@ -217,7 +221,7 @@
             <NuxtLink v-for="link in [
               { to: '/', label: t('nav.home'), icon: 'ph:house-bold' },
               { to: '/docs', label: t('nav.docs'), icon: 'ph:book-open-bold' },
-              { to: '/pricing', label: t('nav.pricing'), icon: 'ph:credit-card-bold' },
+              { to: '/package', label: t('nav.pricing'), icon: 'ph:credit-card-bold' },
             ]" :key="link.to" :to="link.to" @click="mobileMenuOpen = false"
               class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all group"
               :class="isActive(link.to) ? 'bg-primary text-navy font-bold shadow-xs' : 'text-slate-600 font-semibold hover:bg-slate-50 hover:text-navy'">

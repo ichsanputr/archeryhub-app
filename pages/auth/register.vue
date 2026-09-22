@@ -26,11 +26,11 @@
                 <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
                     <div class="flex -space-x-2">
                         <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
-                            :src="getMediaUrl('male_94.jpg')" />
+                            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Ardi" />
                         <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
-                            :src="getMediaUrl('female_18.jpg')" />
+                            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Sarah" />
                         <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
-                            :src="getMediaUrl('male_8.jpg')" />
+                            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Budi" />
                         <div
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
@@ -60,7 +60,7 @@
                 <div v-if="currentStep === 'form'">
                     <div class="text-center lg:text-left">
                         <h2 class="text-3xl font-black tracking-tight text-navy font-display">{{ t('auth.register.welcome') }}</h2>
-                        <p class="mt-2 text-sm text-slate-500 font-body">{{ t('auth.register.subtitle') }}</p>
+                        <div class="mt-2 text-sm text-slate-500 font-body">{{ t('auth.register.subtitle') }}</div>
                     </div>
 
                     <!-- User Type Tabs -->
@@ -229,19 +229,19 @@
                                 >
                                     {{ t('auth.register.register_with_google') }}
                                 </BaseButton>
-                                <p class="mt-2 text-[11px] text-center text-slate-400">
+                                <div class="mt-2 text-[11px] text-center text-slate-400">
                                     {{ t('auth.register.google_direct_note', 'Direct 1-click verification into your dashboard.') }}
-                                </p>
+                                </div>
                             </div>
                         </form>
 
                         <div class="mt-8 text-center font-body">
-                            <p class="text-sm text-slate-600">
+                            <div class="text-sm text-slate-600">
                                 {{ t('auth.register.already_have_account') }} 
                                 <NuxtLink class="font-black text-navy hover:text-primary-hover transition-colors" to="/auth/login">
                                     {{ t('auth.register.login_here') }}
                                 </NuxtLink>
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -265,10 +265,10 @@
                         <h2 class="text-2xl sm:text-3xl font-black text-navy font-display">
                             {{ t('auth.register.verify_email_title', 'Verify Your Email') }}
                         </h2>
-                        <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
+                        <div class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
                             {{ t('auth.register.otp_sent_desc', 'We have sent a 6-digit verification code to') }} 
                             <strong class="text-navy font-bold">{{ form.email }}</strong>
-                        </p>
+                        </div>
                     </div>
 
                     <!-- 6-Box OTP Input Container -->
@@ -457,8 +457,12 @@ const apiBaseUrl = useApiBaseUrl()
 
 const getMediaUrl = (filename) => {
     if (!filename) return ''
+    if (filename.startsWith('http://localhost:8001')) {
+        return filename.replace('http://localhost:8001', 'https://api.archeris.net')
+    }
     if (filename.startsWith('http')) return filename
-    return `${apiBaseUrl}/media/${filename}`
+    const base = (apiBaseUrl && !apiBaseUrl.includes('localhost')) ? apiBaseUrl : 'https://api.archeris.net'
+    return `${base}/media/${filename}`
 }
 
 // ─────────────────────────────────────────────────────────────

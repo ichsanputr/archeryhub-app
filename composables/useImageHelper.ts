@@ -35,8 +35,9 @@ export const useRandomImage = (): string => {
 /**
  * Generate a Dicebear avatar URL based on the name/seed
  */
-export const generateDicebearAvatar = (name: string, style: string = 'avataaars'): string => {
-  const seed = encodeURIComponent(name.trim() || 'Archer')
+export const generateDicebearAvatar = (name?: string | null, style: string = 'avataaars'): string => {
+  const cleanName = (typeof name === 'string' ? name.trim() : '') || 'Archer'
+  const seed = encodeURIComponent(cleanName)
   return `https://api.dicebear.com/9.x/${style}/svg?seed=${seed}`
 }
 
@@ -44,7 +45,7 @@ export const generateDicebearAvatar = (name: string, style: string = 'avataaars'
  * Generate a clean, offline SVG avatar data URI with initials in Archeris brand colors
  */
 export const generateInitialsAvatar = (name: string): string => {
-  const initials = name
+  const initials = (name || '')
     .trim()
     .split(/\s+/)
     .map(n => n[0])
@@ -60,22 +61,24 @@ export const generateInitialsAvatar = (name: string): string => {
  * Get the provided image URL or a Dicebear avatar if null/empty
  * @param url - The image URL to check
  * @param name - Optional name to generate a custom Dicebear avatar
+ * @param style - Optional Dicebear style (default: avataaars)
  */
 export const useImageOrDefault = (
   url: string | null | undefined,
-  name?: string
+  name?: string | null,
+  style: string = 'avataaars'
 ): string => {
-  if (url?.trim()) {
+  if (url && typeof url === 'string' && url.trim()) {
     return getImageUrl(url)
   }
 
   // If name provided, generate rich Dicebear avatar
-  if (name?.trim()) {
-    return generateDicebearAvatar(name)
+  if (name && typeof name === 'string' && name.trim()) {
+    return generateDicebearAvatar(name, style)
   }
 
   // Fallback to default avatar if no name
-  return 'https://api.dicebear.com/9.x/avataaars/svg?seed=Archer'
+  return `https://api.dicebear.com/9.x/${style}/svg?seed=Archer`
 }
 
 /**

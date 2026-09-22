@@ -1,0 +1,1767 @@
+ARCHERYHUB.ID — Dashboard i18n Audit Report
+======================================================================
+Files scanned    : 127
+Files with issues: 101
+Total issues     : 508
+EN keys loaded   : 6945
+======================================================================
+
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/reset/index.vue  (29 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line  220: reset_event.title
+             ↳ t('reset_event.title', 'Reset Event Data')
+
+  [RAW]     Raw hardcoded text between tags (21 occurrences):
+    Line   27: Reset Event Data
+             ↳ >                 Reset Event Data               <
+    Line   56: Important Information
+             ↳ >             Important Information           <
+    Line   63: Reset actions are permanent. Once deleted, data cannot be recovered from the dat
+             ↳ >                 Reset actions are permanent. Once deleted, data cannot be recovered from
+    Line   69: Safety Guidelines
+             ↳ >Safety Guidelines<
+    Line   72: Ensure no archers are currently submitting qualification or match scores.
+             ↳ >                   Ensure no archers are currently submitting qualification or match scor
+    Line   76: Export participant data to CSV beforehand if you require a local backup copy.
+             ↳ >                   Export participant data to CSV beforehand if you require a local backu
+    Line   80: A verification OTP code sent to your registered email is required before initiat
+             ↳ >                   A verification OTP code sent to your registered email is required befo
+    Line   93: Available Reset Options
+             ↳ >             Available Reset Options           <
+    Line  108: Reset Qualification
+             ↳ >Reset Qualification<
+    Line  109: Deletes all qualification scores (arrow scores, end scores), log scores, target 
+             ↳ >                     Deletes all qualification scores (arrow scores, end scores), log sco
+    Line  117: Reset Qualification
+             ↳ >                 Reset Qualification               <
+    Line  131: Reset Elimination & Brackets
+             ↳ >Reset Elimination & Brackets<
+    Line  132: Deletes elimination matches, bracket structures, and match scores. Useful for re
+             ↳ >                     Deletes elimination matches, bracket structures, and match scores. U
+    Line  140: Reset Bracket
+             ↳ >                 Reset Bracket               <
+    Line  154: Delete All Participants
+             ↳ >Delete All Participants<
+    Line  155: Unregisters and deletes all participants from this event. This automatically cle
+             ↳ >                     Unregisters and deletes all participants from this event. This autom
+    Line  163: Delete Participants
+             ↳ >                 Delete Participants               <
+    Line  177: Factory Rese__T_CALL__
+             ↳ >Factory Rese__T_CALL__<
+    Line  178: Cleans all event data back to its original state. Removes participants, targets,
+             ↳ >                     Cleans all event data back to its original state. Removes participan
+    Line  186: Factory Reset
+             ↳ >                 Factory Reset               <
+    Line  202: Confirm Data Reset
+             ↳ >Confirm Data Reset<
+
+  [TAG]     Hardcoded text inside common tags (7 occurrences):
+    Line   27: Reset Event Data
+             ↳ <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
+    Line   69: Safety Guidelines
+             ↳ <h3 class="text-xs font-black text-navy tracking-wider">Safety Guidelines</
+    Line  108: Reset Qualification
+             ↳ <h3 class="text-sm font-black text-navy leading-snug">Reset Qualification</
+    Line  131: Reset Elimination & Brackets
+             ↳ <h3 class="text-sm font-black text-navy leading-snug">Reset Elimination & Brackets</
+    Line  154: Delete All Participants
+             ↳ <h3 class="text-sm font-black text-navy leading-snug">Delete All Participants</
+    Line  177: Factory Rese__T_CALL__
+             ↳ <h3 class="text-sm font-black text-navy leading-snug">Factory Rese__T_CALL__</
+    Line  202: Confirm Data Reset
+             ↳ <h2 class="text-xl font-black text-navy">Confirm Data Reset</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/create.vue  (24 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (4 occurrences):
+    Line  265: event_create.field_currency
+             ↳ t('event_create.field_currency', 'Mata Uang (Currency)
+    Line  583: /disciplines
+             ↳ t('/disciplines')
+    Line  584: /organizers/me/quota
+             ↳ t('/organizers/me/quota')
+    Line  683: /tournaments
+             ↳ t('/tournaments', payload)
+
+  [RAW]     Raw hardcoded text between tags (13 occurrences):
+    Line   56: 0 ? form.quotaType = 'free' : null"
+                  class="relative flex flex-
+             ↳ > 0 ? form.quotaType = 'free' : null"                   class="relative flex flex-col just
+    Line  117: 0 ? form.quotaType = 'standard' : null"
+                  class="relative flex f
+             ↳ > 0 ? form.quotaType = 'standard' : null"                   class="relative flex flex-col
+    Line  180: 0 ? form.quotaType = 'elite' : null"
+                  class="relative flex flex
+             ↳ > 0 ? form.quotaType = 'elite' : null"                   class="relative flex flex-col jus
+    Line  373: Visibilitas Turnamen
+             ↳ >Visibilitas Turnamen<
+    Line  375: Tentukan apakah turnamen ditampilkan di direktori publik atau hanya via link lan
+             ↳ >Tentukan apakah turnamen ditampilkan di direktori publik atau hanya via link langsung.<
+    Line  394: External / Publik
+             ↳ >External / Publik<
+    Line  397: Turnamen muncul di halaman daftar turnamen (/tournaments), dapat diakses publik,
+             ↳ >                         Turnamen muncul di halaman daftar turnamen (/tournaments), dapat
+    Line  418: Internal / Tersembunyi
+             ↳ >Internal / Tersembunyi<
+    Line  420: Halaman turnamen tetap aktif via link langsung, tetapi
+             ↳ >                         Halaman turnamen tetap aktif via link langsung, tetapi <
+    Line  421: tidak muncul
+             ↳ >tidak muncul<
+    Line  421: di daftar turnamen dan
+             ↳ > di daftar turnamen dan <
+    Line  421: tidak diindeks
+             ↳ >tidak diindeks<
+    Line  421: search engine (noindex).
+             ↳ > search engine (noindex).                       <
+
+  [TAG]     Hardcoded text inside common tags (7 occurrences):
+    Line  373: Visibilitas Turnamen
+             ↳ <span>Visibilitas Turnamen</
+    Line  375: Tentukan apakah turnamen ditampilkan di direktori publik atau hanya via link lan
+             ↳ <span class="text-xs text-gray-500 font-medium">Tentukan apakah turnamen ditampilkan di di
+    Line  394: External / Publik
+             ↳ <span class="text-sm font-black text-navy">External / Publik</
+    Line  397: Turnamen muncul di halaman daftar turnamen (/tournaments), dapat diakses publik,
+             ↳ <span class="text-xs text-gray-500 font-medium leading-relaxed block">
+    Line  418: Internal / Tersembunyi
+             ↳ <span class="text-sm font-black text-navy">Internal / Tersembunyi</
+    Line  421: tidak muncul
+             ↳ <strong>tidak muncul</
+    Line  421: tidak diindeks
+             ↳ <strong>tidak diindeks</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/page.vue  (17 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (9 occurrences):
+    Line  276: /media/upload
+             ↳ t('/media/upload', formData)
+    Line  327: /media/upload
+             ↳ t('/media/upload', formData)
+    Line  359: .
+             ↳ t('.')
+    Line  701: /organizers/bank-accounts
+             ↳ t('/organizers/bank-accounts')
+    Line  728: /disciplines
+             ↳ t('/disciplines')
+    Line  746: T
+             ↳ t('T')
+    Line  752: T
+             ↳ t('T')
+    Line  759: T
+             ↳ t('T')
+    Line  765: T
+             ↳ t('T')
+
+  [SCRIPT]  Hardcoded string in <script> (8 occurrences):
+    Line  646: BCA (Bank Central Asia)
+             ↳ title: 'BCA (Bank Central Asia)'
+    Line  648: BNI (Bank Negara Indonesia)
+             ↳ title: 'BNI (Bank Negara Indonesia)'
+    Line  649: BRI (Bank Rakyat Indonesia)
+             ↳ title: 'BRI (Bank Rakyat Indonesia)'
+    Line  650: BSI (Bank Syariah Indonesia)
+             ↳ title: 'BSI (Bank Syariah Indonesia)'
+    Line  651: Bank Danamon
+             ↳ title: 'Bank Danamon'
+    Line  659: Bank Transfer (International / SWIFT)
+             ↳ title: 'Bank Transfer (International / SWIFT)'
+    Line  660: Credit / Debit Card
+             ↳ title: 'Credit / Debit Card'
+    Line  661: Lainnya / Custom
+             ↳ title: 'Lainnya / Custom'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/layout/LandingHeader.vue  (16 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line  360: /tournaments?limit=10
+             ↳ t('/tournaments?limit=10')
+    Line  361: /tournaments/external
+             ↳ t('/tournaments/external')
+
+  [RAW]     Raw hardcoded text between tags (7 occurrences):
+    Line   53: Archeris Tournaments
+             ↳ >Archeris Tournaments<
+    Line   69: Ianseo Tournaments
+             ↳ >Ianseo Tournaments<
+    Line  107: Archery scoring & brackets
+             ↳ >Archery scoring & brackets<
+    Line  109: All Tournaments
+             ↳ >All Tournaments<
+    Line  145: No Ianseo archives available
+             ↳ >No Ianseo archives available<
+    Line  150: Official verified results
+             ↳ >Official verified results<
+    Line  152: Browse Ianseo Events
+             ↳ >Browse Ianseo Events<
+
+  [TAG]     Hardcoded text inside common tags (7 occurrences):
+    Line   53: Archeris Tournaments
+             ↳ <span>Archeris Tournaments</
+    Line   69: Ianseo Tournaments
+             ↳ <span>Ianseo Tournaments</
+    Line  107: Archery scoring & brackets
+             ↳ <span class="text-[10px] text-slate-400 font-medium">Archery scoring & brackets</
+    Line  109: All Tournaments
+             ↳ <span>All Tournaments</
+    Line  145: No Ianseo archives available
+             ↳ <p>No Ianseo archives available</
+    Line  150: Official verified results
+             ↳ <span class="text-[10px] text-slate-400 font-medium">Official verified results</
+    Line  152: Browse Ianseo Events
+             ↳ <span>Browse Ianseo Events</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/profile.vue  (15 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (4 occurrences):
+    Line  349: /archer/me
+             ↳ t('/archer/me')
+    Line  356: T
+             ↳ t('T')
+    Line  399: /archers/me/stats
+             ↳ t('/archers/me/stats')
+    Line  449: /user/profile
+             ↳ t('/user/profile', payload)
+
+  [SCRIPT]  Hardcoded string in <script> (11 occurrences):
+    Line   61: @username_instagram
+             ↳ placeholder: '@username_instagram'
+    Line   62: @username_tiktok
+             ↳ placeholder: '@username_tiktok'
+    Line   64: username / link
+             ↳ placeholder: 'username / link'
+    Line   65: Twitter / X
+             ↳ title: 'Twitter / X'
+    Line   65: @username
+             ↳ placeholder: '@username'
+    Line   66: channel / link
+             ↳ placeholder: 'channel / link'
+    Line   67: username / link
+             ↳ placeholder: 'username / link'
+    Line   69: username / link
+             ↳ placeholder: 'username / link'
+    Line   70: username / link
+             ↳ placeholder: 'username / link'
+    Line  135: Standard Bow
+             ↳ title: 'Standard Bow'
+    Line  279: , err)
+    }
+  }, 500)
+})
+
+const userStats = ref({
+  totalEvents: 0,
+  bestScore
+             ↳ name:', err)     }   }, 500) })  const userStats = ref({   totalEvents: 0,   bestScore: nu
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/result/[slug].vue  (15 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [RAW]     Raw hardcoded text between tags (1 occurrences):
+    Line  252: = Math.ceil(filteredResults.length / pageSize)"
+              class="rounded-non
+             ↳ >= Math.ceil(filteredResults.length / pageSize)"               class="rounded-none border-
+
+  [SCRIPT]  Hardcoded string in <script> (12 occurrences):
+    Line   40: In Queue
+             ↳ description: "In Queue"
+    Line   43: Wrong Answer
+             ↳ description: "Wrong Answer"
+    Line   44: Time Limit Exceeded
+             ↳ description: "Time Limit Exceeded"
+    Line   45: Compilation Error
+             ↳ description: "Compilation Error"
+    Line   46: Runtime Error (SIGSEGV)
+             ↳ description: "Runtime Error (SIGSEGV)"
+    Line   47: Runtime Error (SIGXFSZ)
+             ↳ description: "Runtime Error (SIGXFSZ)"
+    Line   48: Runtime Error (SIGFPE)
+             ↳ description: "Runtime Error (SIGFPE)"
+    Line   49: Runtime Error (SIGABRT)
+             ↳ description: "Runtime Error (SIGABRT)"
+    Line   50: Runtime Error (NZEC)
+             ↳ description: "Runtime Error (NZEC)"
+    Line   51: Runtime Error (Other)
+             ↳ description: "Runtime Error (Other)"
+    Line   52: Internal Error
+             ↳ description: "Internal Error"
+    Line   53: Exec Format Error
+             ↳ description: "Exec Format Error"
+
+  [ATTR]    Hardcoded message= attribute (1 occurrences):
+    Line   54: Please log in to view your event results and track your progress.
+             ↳ message="Please log in to view your event results and track your progress."
+
+  [ATTR]    Hardcoded title= attribute (1 occurrences):
+    Line   53: Login Required
+             ↳ title="Login Required"
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/ArticleEditor.vue  (15 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (12 occurrences):
+    Line  125: h2
+             ↳ t('h2')
+    Line  127: h3
+             ↳ t('h3')
+    Line  130: bold
+             ↳ t('bold')
+    Line  132: italic
+             ↳ t('italic')
+    Line  135: ul
+             ↳ t('ul')
+    Line  137: ol
+             ↳ t('ol')
+    Line  139: quote
+             ↳ t('quote')
+    Line  142: link
+             ↳ t('link')
+    Line  144: image
+             ↳ t('image')
+    Line  146: code
+             ↳ t('code')
+    Line  462: /root/dashboard/articles/upload
+             ↳ t('/root/dashboard/articles/upload', formData, {             headers: { 'Content-Type': 'm
+    Line  544: /root/dashboard/articles
+             ↳ t('/root/dashboard/articles', payload)
+
+  [RAW]     Raw hardcoded text between tags (1 occurrences):
+    Line   81: /blog/
+             ↳ >/blog/<
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line   41: Archeris Editorial
+             ↳ name: 'Archeris Editorial'
+
+  [TAG]     Hardcoded text inside common tags (1 occurrences):
+    Line   81: /blog/
+             ↳ <span class="pl-3.5 pr-1 text-xs font-mono text-gray-400 select-none">/blog/</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/my-qualification.vue  (14 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line  133: qualification.my_results
+             ↳ t('qualification.my_results', 'My Qualification Results')
+    Line  179: /archer/me
+             ↳ t('/archer/me')
+    Line  216: ,
+             ↳ t(',')
+
+  [RAW]     Raw hardcoded text between tags (7 occurrences):
+    Line   10: Hasil Kualifikasi
+             ↳ >Hasil Kualifikasi<
+    Line   17: Hasil Kualifikasi
+             ↳ >Hasil Kualifikasi<
+    Line   21: Export PDF
+             ↳ >                     Export PDF                 <
+    Line   62: Peringkat
+                            Kualifikasi
+             ↳ >Peringkat                             Kualifikasi<
+    Line   82: Jejak Kualifikasi
+             ↳ >                             Jejak Kualifikasi                         <
+    Line  101: Rincian Skor
+             ↳ >Rincian Skor<
+    Line  103: 10s+X
+             ↳ >10s+X<
+
+  [TAG]     Hardcoded text inside common tags (4 occurrences):
+    Line   10: Hasil Kualifikasi
+             ↳ <span class="text-slate-600 dark:text-slate-300">Hasil Kualifikasi</
+    Line   17: Hasil Kualifikasi
+             ↳ <h2 class="text-3xl font-black text-navy dark:text-white tracking-tight">Hasil Kualifikasi
+    Line  101: Rincian Skor
+             ↳ <th class="px-8 py-4 text-center">Rincian Skor</
+    Line  103: 10s+X
+             ↳ <th class="px-8 py-4 text-center">10s+X</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/root/articles/index.vue  (14 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (6 occurrences):
+    Line   72: title
+             ↳ t('title')
+    Line   79: category
+             ↳ t('category')
+    Line   86: status
+             ↳ t('status')
+    Line   93: views
+             ↳ t('views')
+    Line  100: published_at
+             ↳ t('published_at')
+    Line  339: /root/dashboard/articles
+             ↳ t('/root/dashboard/articles', { params })
+
+  [SCRIPT]  Hardcoded string in <script> (8 occurrences):
+    Line   43: Semua Kategori
+             ↳ label: 'Semua Kategori'
+    Line   44: Gear & Equipment
+             ↳ label: 'Gear & Equipment'
+    Line   45: Rules & Scoring
+             ↳ label: 'Rules & Scoring'
+    Line   46: Guides & Technique
+             ↳ label: 'Guides & Technique'
+    Line   50: Semua Status
+             ↳ label: 'Semua Status'
+    Line   51: Published (Terbit)
+             ↳ label: 'Published (Terbit)'
+    Line   52: Draft (Draf)
+             ↳ label: 'Draft (Draf)'
+    Line   53: Archived (Arsip)
+             ↳ label: 'Archived (Arsip)'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/profile.vue  (12 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (8 occurrences):
+    Line    9: navigation.dashboard
+             ↳ t('navigation.dashboard', 'Dashboard')
+    Line   95: organizer.profile.platform_username_placeholder
+             ↳ t('organizer.profile.platform_username_placeholder', 'username / tautan')
+    Line   97: organizer.profile.platform_channel_placeholder
+             ↳ t('organizer.profile.platform_channel_placeholder', 'id_channel / tautan')
+    Line  100: organizer.profile.platform_username_placeholder
+             ↳ t('organizer.profile.platform_username_placeholder', 'username / tautan')
+    Line  174: /cities
+             ↳ t('/cities')
+    Line  273: /organizers/me
+             ↳ t('/organizers/me')
+    Line  285: T
+             ↳ t('T')
+    Line  345: /organizers/me
+             ↳ t('/organizers/me', {       name: form.name,       slug: form.slug,       banner_url: form
+
+  [SCRIPT]  Hardcoded string in <script> (4 occurrences):
+    Line   76: @username_instagram
+             ↳ placeholder: '@username_instagram'
+    Line   78: Twitter / X
+             ↳ title: 'Twitter / X'
+    Line   78: @username
+             ↳ placeholder: '@username'
+    Line   80: @username_tiktok
+             ↳ placeholder: '@username_tiktok'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/checkout.vue  (11 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line  156: payment.title
+             ↳ t('payment.title', 'Payment')
+    Line  202: /payment/create
+             ↳ t('/payment/create', {             event_id: tournamentId,             method: selectedCha
+    Line  233: /payment/channels
+             ↳ t('/payment/channels')
+
+  [RAW]     Raw hardcoded text between tags (7 occurrences):
+    Line   19: Selesaikan pembayaran untuk mengaktifkan event Anda dan mulai menerima pendaftar
+             ↳ >                     Selesaikan pembayaran untuk mengaktifkan event Anda dan mulai meneri
+    Line   31: Pilih Metode Pembayaran
+             ↳ >                         Pilih Metode Pembayaran                     <
+    Line   93: Ringkasan Pembayaran
+             ↳ >                         Ringkasan Pembayaran                     <
+    Line  100: Rp 50.000
+             ↳ >Rp 50.000<
+    Line  119: Dengan melanjutkan, Anda menyetujui
+             ↳ >                         Dengan melanjutkan, Anda menyetujui <
+    Line  120: syarat
+                            dan
+                            ketentuan
+             ↳ >syarat                             dan                             ketentuan<
+    Line  122: kami.
+             ↳ > kami.                     <
+
+  [TAG]     Hardcoded text inside common tags (1 occurrences):
+    Line  100: Rp 50.000
+             ↳ <span class="font-semibold text-navy">Rp 50.000</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/my-registration.vue  (11 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line  187: registration.my_registration
+             ↳ t('registration.my_registration', 'My Registration')
+    Line  198: ,
+             ↳ t(',')
+    Line  214: id-ID
+             ↳ t('id-ID')
+
+  [RAW]     Raw hardcoded text between tags (6 occurrences):
+    Line   10: Registrasi Saya
+             ↳ >Registrasi Saya<
+    Line   17: Data Registrasi
+             ↳ >Data Registrasi<
+    Line   87: Detail Pertandingan
+             ↳ >                             Detail Pertandingan                         <
+    Line   94: Divisi &
+                                    Kategori
+             ↳ >Divisi &                                     Kategori<
+    Line  105: Nomor
+                                    Bantalan
+             ↳ >Nomor                                     Bantalan<
+    Line  151: Bukti
+                                    Pembayaran
+             ↳ >Bukti                                     Pembayaran<
+
+  [TAG]     Hardcoded text inside common tags (2 occurrences):
+    Line   10: Registrasi Saya
+             ↳ <span class="text-slate-600 dark:text-slate-300">Registrasi Saya</
+    Line   17: Data Registrasi
+             ↳ <h2 class="text-3xl font-black text-navy dark:text-white tracking-tight">Data Registrasi</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/root/tournaments/index.vue  (11 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (6 occurrences):
+    Line  108: name
+             ↳ t('name')
+    Line  121: participants
+             ↳ t('participants')
+    Line  128: status
+             ↳ t('status')
+    Line  135: start_date
+             ↳ t('start_date')
+    Line  262: common.showing
+             ↳ t('common.showing', 'Menampilkan')
+    Line  265: common.from
+             ↳ t('common.from', 'dari')
+
+  [SCRIPT]  Hardcoded string in <script> (5 occurrences):
+    Line   51: Semua Status
+             ↳ label: 'Semua Status'
+    Line   52: Published (Terbit)
+             ↳ label: 'Published (Terbit)'
+    Line   53: Draft (Konsep)
+             ↳ label: 'Draft (Konsep)'
+    Line   57: Semua Tipe Paket
+             ↳ label: 'Semua Tipe Paket'
+    Line   58: Free (Gratis)
+             ↳ label: 'Free (Gratis)'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/archers/index.vue  (10 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (8 occurrences):
+    Line    5: archer_archers.title
+             ↳ t('archer_archers.title', 'Daftar Akun Pemanah')
+    Line    6: archer_archers.subtitle
+             ↳ t('archer_archers.subtitle', 'Kelola dan pantau seluruh data akun pemanah yang terdaftar d
+    Line   10: archer_archers.breadcrumb
+             ↳ t('archer_archers.breadcrumb', 'Pemanah')
+    Line   23: archer_archers.search_placeholder
+             ↳ t('archer_archers.search_placeholder', 'Cari nama, email, klub, atau ID...')
+    Line  133: /archers
+             ↳ t('/archers', { params })
+    Line  159: archer_archers.fetch_error
+             ↳ t('archer_archers.fetch_error', 'Gagal memuat data pemanah.')
+    Line  209: archer_archers.delete_success
+             ↳ t('archer_archers.delete_success', 'Akun pemanah berhasil dihapus.')
+    Line  215: archer_archers.delete_error
+             ↳ t('archer_archers.delete_error', 'Gagal menghapus akun pemanah.')
+
+  [SCRIPT]  Hardcoded string in <script> (2 occurrences):
+    Line   18: Data Pemanah | Dashboard Archeris
+             ↳ title: 'Data Pemanah | Dashboard Archeris'
+    Line   38: Standard Bow
+             ↳ label: 'Standard Bow'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/balance.vue  (10 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (10 occurrences):
+    Line  118: created_at
+             ↳ t('created_at')
+    Line  128: status
+             ↳ t('status')
+    Line  138: amount
+             ↳ t('amount')
+    Line  360: /auth/login
+             ↳ t('/auth/login', {             email: user.value?.email,             password: password.va
+    Line  377: /organizers/wallet
+             ↳ t('/organizers/wallet')
+    Line  387: /organizers/wallet/withdrawals
+             ↳ t('/organizers/wallet/withdrawals', {             query: {                 limit: itemsPer
+    Line  425: /organizers/wallet/mutations
+             ↳ t('/organizers/wallet/mutations', {             query: {                 page: mutationCur
+    Line  470: /organizers/bank-accounts
+             ↳ t('/organizers/bank-accounts')
+    Line  542: /organizers/wallet/withdrawals/request-otp
+             ↳ t('/organizers/wallet/withdrawals/request-otp')
+    Line  578: /organizers/wallet/withdrawals
+             ↳ t('/organizers/wallet/withdrawals', payload)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/package/index.vue  (10 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (8 occurrences):
+    Line  444: date
+             ↳ t('date')
+    Line  450: package
+             ↳ t('package')
+    Line  456: qty
+             ↳ t('qty')
+    Line  462: total
+             ↳ t('total')
+    Line  468: method
+             ↳ t('method')
+    Line  474: status
+             ↳ t('status')
+    Line  735: /organizers/me/quota
+             ↳ t('/organizers/me/quota')
+    Line  800: /organizers/me/quota/purchase
+             ↳ t('/organizers/me/quota/purchase', {             plan_id,             quantity: selectedQt
+
+  [RAW]     Raw hardcoded text between tags (1 occurrences):
+    Line  357: Archeris EO
+             ↳ >Archeris EO<
+
+  [TAG]     Hardcoded text inside common tags (1 occurrences):
+    Line  357: Archeris EO
+             ↳ <span class="text-[10px] font-mono font-bold text-primary capitalize bg-primary/10 px-2 py
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/categories/index.vue  (9 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (9 occurrences):
+    Line  135: common.gender_male
+             ↳ t('common.gender_male', 'Putra')
+    Line  137: common.gender_female
+             ↳ t('common.gender_female', 'Putri')
+    Line  315: /bow-types
+             ↳ t('/bow-types')
+    Line  316: /age-groups
+             ↳ t('/age-groups')
+    Line  317: /team-types
+             ↳ t('/team-types')
+    Line  318: /gender-divisions
+             ↳ t('/gender-divisions')
+    Line  422: event_categories.toast_cannot_delete_paid
+             ↳ t('event_categories.toast_cannot_delete_paid', 'Kategori tidak dapat dihapus karena telah
+    Line  425: event_categories.toast_cannot_delete_dep_team
+             ↳ t('event_categories.toast_cannot_delete_dep_team', 'Kategori Individual ini tidak dapat di
+    Line  428: event_categories.toast_cannot_delete_has_scores
+             ↳ t('event_categories.toast_cannot_delete_has_scores', 'Kategori tidak dapat dihapus karena
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/my-elimination.vue  (9 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line  144: elimination.my_bracket
+             ↳ t('elimination.my_bracket', 'My Elimination Bracket')
+    Line  169: /archer/me
+             ↳ t('/archer/me')
+
+  [RAW]     Raw hardcoded text between tags (5 occurrences):
+    Line   10: Hasil Eliminasi
+             ↳ >Hasil Eliminasi<
+    Line   17: Hasil Eliminasi
+             ↳ >Hasil Eliminasi<
+    Line   55: Status Eliminasi
+             ↳ >Status Eliminasi                         <
+    Line   76: Alur Eliminasi
+             ↳ >                     Alur Eliminasi                 <
+    Line   83: Belum mencapai eliminasi
+             ↳ >Belum mencapai eliminasi<
+
+  [TAG]     Hardcoded text inside common tags (2 occurrences):
+    Line   10: Hasil Eliminasi
+             ↳ <span class="text-slate-600 dark:text-slate-300">Hasil Eliminasi</
+    Line   17: Hasil Eliminasi
+             ↳ <h2 class="text-3xl font-black text-navy dark:text-white tracking-tight">Hasil Eliminasi</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/targets/index.vue  (9 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (5 occurrences):
+    Line  141: ,
+             ↳ t(',')
+    Line  193: ,
+             ↳ t(',')
+    Line  276: ,
+             ↳ t(',')
+    Line  281: ,
+             ↳ t(',')
+    Line  294: ,
+             ↳ t(',')
+
+  [SCRIPT]  Hardcoded string in <script> (4 occurrences):
+    Line   43: 1 Target
+             ↳ title: '1 Target'
+    Line   44: 2 Target
+             ↳ title: '2 Target'
+    Line   45: 3 Target
+             ↳ title: '3 Target'
+    Line   46: 4 Target
+             ↳ title: '4 Target'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/profile/[id].vue  (8 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [RAW]     Raw hardcoded text between tags (1 occurrences):
+    Line   28: INA - Indonesia
+             ↳ >INA - Indonesia<
+
+  [SCRIPT]  Hardcoded string in <script> (6 occurrences):
+    Line    9: Arif Dwi Pangestu
+             ↳ name: 'Arif Dwi Pangestu'
+    Line   17: Ranking Nasional
+             ↳ label: 'Ranking Nasional'
+    Line   18: Rata-rata Skor
+             ↳ label: 'Rata-rata Skor'
+    Line   19: Total Medali
+             ↳ label: 'Total Medali'
+    Line   41: PON Aceh-Sumut 2024
+             ↳ name: 'PON Aceh-Sumut 2024'
+    Line   50: Surabaya Archery Cup
+             ↳ name: 'Surabaya Archery Cup'
+
+  [TAG]     Hardcoded text inside common tags (1 occurrences):
+    Line   28: INA - Indonesia
+             ↳ <span class="text-sm font-bold tracking-wide">INA - Indonesia</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/OrganizerTournamentsList.vue  (8 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [SCRIPT]  Hardcoded string in <script> (8 occurrences):
+    Line   52: Events Dashboard
+             ↳ title: 'Events Dashboard'
+    Line   53: Welcome to your events dashboard! Here you can manage all your tournaments, regi
+             ↳ description: 'Welcome to your events dashboard! Here you can manage all your tournaments,
+    Line   58: Create Tournaments
+             ↳ title: 'Create Tournaments'
+    Line   59: Click here to create a new archery tournament. You can configure categories, ses
+             ↳ description: 'Click here to create a new archery tournament. You can configure categories,
+    Line   64: Search & Filters
+             ↳ title: 'Search & Filters'
+    Line   65: Quickly find your tournaments by code, name, or location. Keep your dashboard or
+             ↳ description: 'Quickly find your tournaments by code, name, or location. Keep your dashboar
+    Line   70: Tournament List & Management
+             ↳ title: 'Tournament List & Management'
+    Line   71: All your active and draft tournaments are listed here. Click
+             ↳ description: 'All your active and draft tournaments are listed here. Click "
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/tournaments/[id]/leaderboard.vue  (7 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line   56: leaderboard_page.search_placeholder
+             ↳ t('leaderboard_page.search_placeholder', 'Cari nama pemanah, klub, atau kontingen...')
+    Line  173: leaderboard_page.no_matched_title
+             ↳ t('leaderboard_page.no_matched_title', 'Tidak Ada Peserta yang Cocok')
+    Line  176: leaderboard_page.no_matched_desc
+             ↳ t('leaderboard_page.no_matched_desc', 'Coba ubah kata kunci pencarian atau sesuaikan pilih
+
+  [RAW]     Raw hardcoded text between tags (2 occurrences):
+    Line  210: Leader #1
+             ↳ >Leader #1<
+    Line  262: 10+X
+             ↳ >10+X<
+
+  [TAG]     Hardcoded text inside common tags (2 occurrences):
+    Line  210: Leader #1
+             ↳ <span>Leader #1</
+    Line  262: 10+X
+             ↳ <th class="py-3.5 px-4 text-center hidden sm:table-cell">10+X</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/tournaments/[id]/my-registration.vue  (7 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line  208: id-ID
+             ↳ t('id-ID')
+
+  [RAW]     Raw hardcoded text between tags (3 occurrences):
+    Line   85: Pembayaran Ditolak
+             ↳ >                                             Pembayaran Ditolak
+    Line   89: Menunggu Verifikasi
+             ↳ >                                             Menunggu Verifikasi
+    Line   93: Menunggu Pembayaran
+             ↳ >                                             Menunggu Pembayaran
+
+  [TAG]     Hardcoded text inside common tags (3 occurrences):
+    Line   84: Pembayaran Ditolak
+             ↳ <span v-else-if="participant.transaction?.status === 'rejected' || participant.payment_sta
+    Line   88: Menunggu Verifikasi
+             ↳ <span v-else-if="participant.transaction?.status === 'awaiting_verification' || participan
+    Line   92: Menunggu Pembayaran
+             ↳ <span v-else                                             class="inline-flex items-center p
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/layout/AppHeader.vue  (7 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (5 occurrences):
+    Line  189: ./NotificationList.vue
+             ↳ t('./NotificationList.vue')
+    Line  190: ./DocSearchDialog.vue
+             ↳ t('./DocSearchDialog.vue')
+    Line  239: /
+             ↳ t('/')
+    Line  379: /
+             ↳ t('/')
+    Line  421:  
+             ↳ t(' ')
+
+  [RAW]     Raw hardcoded text between tags (1 occurrences):
+    Line  172: Ctrl K
+             ↳ >Ctrl K<
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line   86: , e)
+  }
+}
+
+watch(currentEventId, (id) => {
+  if (id && (!eventTitle.value || cu
+             ↳ name:', e)   } }  watch(currentEventId, (id) => {   if (id && (!eventTitle.value || curren
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/layout/AppSidebar.vue  (7 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (6 occurrences):
+    Line  204: sidebar.community
+             ↳ t('sidebar.community', 'Community')
+    Line  205: sidebar.archers
+             ↳ t('sidebar.archers', 'Archers')
+    Line  252: sidebar.management
+             ↳ t('sidebar.management', 'Management')
+    Line  253: sidebar.tournaments
+             ↳ t('sidebar.tournaments', 'Tournaments')
+    Line  254: sidebar.archers
+             ↳ t('sidebar.archers', 'Archers')
+    Line  255: sidebar.articles
+             ↳ t('sidebar.articles', 'Articles')
+
+  [ATTR]    Hardcoded label= attribute (1 occurrences):
+    Line    7: isSidebarOpen ? 'Menu navigasi terbuka' : 'Menu navigasi tertutup'
+             ↳ label="isSidebarOpen ? 'Menu navigasi terbuka' : 'Menu navigasi tertutup'"
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/reports/finance.vue  (6 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line  155: id-ID
+             ↳ t('id-ID')
+
+  [SCRIPT]  Hardcoded string in <script> (5 occurrences):
+    Line  188: No. Referensi
+             ↳ label: 'No. Referensi'
+    Line  189: Nama Pembayar
+             ↳ label: 'Nama Pembayar'
+    Line  191: Metode Pembayaran
+             ↳ label: 'Metode Pembayaran'
+    Line  193: Nominal (IDR)
+             ↳ label: 'Nominal (IDR)'
+    Line  194: Waktu Transaksi
+             ↳ label: 'Waktu Transaksi'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/reports/performance.vue  (6 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [SCRIPT]  Hardcoded string in <script> (6 occurrences):
+    Line  132: Nama Event
+             ↳ label: 'Nama Event'
+    Line  133: Jadwal Event
+             ↳ label: 'Jadwal Event'
+    Line  134: Kapasitas Kuota
+             ↳ label: 'Kapasitas Kuota'
+    Line  135: Jumlah Terdaftar
+             ↳ label: 'Jumlah Terdaftar'
+    Line  136: Tingkat Keterisian (%)
+             ↳ label: 'Tingkat Keterisian (%)'
+    Line  137: Status Event
+             ↳ label: 'Status Event'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/settings.vue  (6 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (6 occurrences):
+    Line  325: /user/profile
+             ↳ t('/user/profile')
+    Line  331: T
+             ↳ t('T')
+    Line  349: /user/profile
+             ↳ t('/user/profile', {       username: accountForm.value.username,       full_name: accountF
+    Line  419: /user/password
+             ↳ t('/user/password', {       new_password: securityForm.value.new_password     })
+    Line  450: /user/request-email-change
+             ↳ t('/user/request-email-change', {       new_email: emailForm.value.new_email     })
+    Line  468: /user/verify-email-change
+             ↳ t('/user/verify-email-change', {       new_email: emailForm.value.new_email,       otp: em
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/printout/qualification/index.vue  (6 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line  290: content-disposition
+             ↳ t('content-disposition')
+    Line  303: a
+             ↳ t('a')
+
+  [RAW]     Raw hardcoded text between tags (2 occurrences):
+    Line  153: A4 (Portrait)
+             ↳ >A4 (Portrait)<
+    Line  157: 2 Scoresheets/Page
+             ↳ >2 Scoresheets/Page<
+
+  [TAG]     Hardcoded text inside common tags (2 occurrences):
+    Line  153: A4 (Portrait)
+             ↳ <span class="text-white">A4 (Portrait)</
+    Line  157: 2 Scoresheets/Page
+             ↳ <span class="text-white">2 Scoresheets/Page</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/reports/participants.vue  (5 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [SCRIPT]  Hardcoded string in <script> (5 occurrences):
+    Line  101: Standard Bow
+             ↳ label: 'Standard Bow'
+    Line  205: Nama Peserta
+             ↳ label: 'Nama Peserta'
+    Line  208: Kategori Lomba
+             ↳ label: 'Kategori Lomba'
+    Line  209: Status Kehadiran
+             ↳ label: 'Status Kehadiran'
+    Line  210: Tanggal Registrasi
+             ↳ label: 'Tanggal Registrasi'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/elimination/[bracketId]/index.vue  (5 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [RAW]     Raw hardcoded text between tags (2 occurrences):
+    Line    9: Gagal Memuat Bagan Eliminasi
+             ↳ >Gagal Memuat Bagan Eliminasi<
+    Line   12: Muat Ulang Halaman
+             ↳ >             Muat Ulang Halaman           <
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line    5: Bagan Eliminasi - Archeris Dashboard
+             ↳ title: 'Bagan Eliminasi - Archeris Dashboard'
+
+  [TAG]     Hardcoded text inside common tags (2 occurrences):
+    Line    9: Gagal Memuat Bagan Eliminasi
+             ↳ <h3 class="text-xl font-black text-navy">Gagal Memuat Bagan Eliminasi</
+    Line   12: Muat Ulang Halaman
+             ↳ <button @click="clearError()" class="px-6 py-2.5 rounded-xl bg-navy text-primary font-blac
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/printout/index.vue  (5 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (5 occurrences):
+    Line  226: content-disposition
+             ↳ t('content-disposition')
+    Line  239: a
+             ↳ t('a')
+    Line  248: event_printout.err_download_failed
+             ↳ t('event_printout.err_download_failed', 'Gagal mengunduh berkas PDF. Pastikan koneksi ke s
+    Line  477: event_printout.section_schedule
+             ↳ t('event_printout.section_schedule', 'Competition Schedule & Program')
+    Line  519: &
+             ↳ t('&')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/ImportParticipantsModal.vue  (5 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (5 occurrences):
+    Line  116: update:show
+             ↳ t('update:show', false)
+    Line  157: a
+             ↳ t('a')
+    Line  181: ,
+             ↳ t(',')
+    Line  199: ,
+             ↳ t(',')
+    Line  233: parsed
+             ↳ t('parsed', parsedArchers)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/elimination/ChampionshipTower.vue  (5 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (5 occurrences):
+    Line    7: navigate
+             ↳ t('navigate', totalRounds - 1)
+    Line   16: navigate
+             ↳ t('navigate', totalRounds)
+    Line   39: select-match
+             ↳ t('select-match', $event)
+    Line   49: select-match
+             ↳ t('select-match', $event)
+    Line   82: select-match
+             ↳ t('select-match', $event)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/layout/NotificationList.vue  (5 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (5 occurrences):
+    Line   13: mark-all-read
+             ↳ t('mark-all-read')
+    Line   53: mark-read
+             ↳ t('mark-read', note.id)
+    Line   82: close
+             ↳ t('close')
+    Line  174: click
+             ↳ t('click', note)
+    Line  175: close
+             ↳ t('close')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/settings.vue  (4 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (4 occurrences):
+    Line  277: /user/profile
+             ↳ t('/user/profile')
+    Line  297: /user/password
+             ↳ t('/user/password', {       new_password: securityForm.value.new_password     })
+    Line  324: /user/request-email-change
+             ↳ t('/user/request-email-change', {       new_email: emailForm.value.new_email     })
+    Line  342: /user/verify-email-change
+             ↳ t('/user/verify-email-change', {       new_email: emailForm.value.new_email,       otp: em
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/tournaments/[id]/my-qualification.vue  (4 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (4 occurrences):
+    Line  180: qualification.ten_count
+             ↳ t('qualification.ten_count', '10')
+    Line  181: qualification.x_count
+             ↳ t('qualification.x_count', 'X')
+    Line  304: /archer/me
+             ↳ t('/archer/me')
+    Line  361: ,
+             ↳ t(',')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/bank-accounts.vue  (4 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (4 occurrences):
+    Line  103: /organizers/bank-accounts
+             ↳ t('/organizers/bank-accounts')
+    Line  157: /organizers/bank-accounts
+             ↳ t('/organizers/bank-accounts', payload)
+    Line  186: organizer.bank_accounts.set_primary_success
+             ↳ t('organizer.bank_accounts.set_primary_success', { bank: account.bank_name })
+    Line  190: organizer.bank_accounts.set_primary_error
+             ↳ t('organizer.bank_accounts.set_primary_error')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/earnings/[id].vue  (4 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (4 occurrences):
+    Line   76: date
+             ↳ t('date')
+    Line   83: method
+             ↳ t('method')
+    Line   90: reference
+             ↳ t('reference')
+    Line   97: amount
+             ↳ t('amount')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/reports/index.vue  (4 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (4 occurrences):
+    Line   84: /tournaments/my?limit=100
+             ↳ t('/tournaments/my?limit=100')
+    Line   85: /organizers/reports/participants
+             ↳ t('/organizers/reports/participants')
+    Line   86: /organizers/reports/finance
+             ↳ t('/organizers/reports/finance')
+    Line   87: /organizers/reports/attendance
+             ↳ t('/organizers/reports/attendance')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/media.vue  (4 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (4 occurrences):
+    Line  141: .
+             ↳ t('.')
+    Line  190: .
+             ↳ t('.')
+    Line  199: .
+             ↳ t('.')
+    Line  267: /media/upload
+             ↳ t('/media/upload', formData)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/participants/add.vue  (4 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (4 occurrences):
+    Line  362: /clubs?limit=100
+             ↳ t('/clubs?limit=100')
+    Line  371: /cities
+             ↳ t('/cities')
+    Line  453: a
+             ↳ t('a')
+    Line  600: /archers
+             ↳ t('/archers', {                     full_name: archer.full_name,                     usern
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/participants/index.vue  (4 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line  299: a
+             ↳ t('a')
+    Line  309: a
+             ↳ t('a')
+
+  [RAW]     Raw hardcoded text between tags (1 occurrences):
+    Line   18: Check-in Kolektif
+             ↳ >Check-in Kolektif<
+
+  [TAG]     Hardcoded text inside common tags (1 occurrences):
+    Line   18: Check-in Kolektif
+             ↳ <span class="hidden sm:inline">Check-in Kolektif</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/subscription/SubscriptionBillingHistory.vue  (4 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line   88: a
+             ↳ t('a')
+    Line   90: T
+             ↳ t('T')
+
+  [ATTR]    Hardcoded title= attribute (2 occurrences):
+    Line   51: View Invoice
+             ↳ title="View Invoice"
+    Line   56: Download Invoice
+             ↳ title="Download Invoice"
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/elimination/EliminationBracketManager.vue  (4 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (4 occurrences):
+    Line  547: content-disposition
+             ↳ t('content-disposition')
+    Line  560: a
+             ↳ t('a')
+    Line  568: event_elimination.toast_scoresheet_downloaded
+             ↳ t('event_elimination.toast_scoresheet_downloaded', 'Scoresheet PDF berhasil diunduh')
+    Line 1199: DD MMM YYYY, HH:mm
+             ↳ t('DD MMM YYYY, HH:mm')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/payments/index.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line   94: /payment/my?limit=100&offset=0
+             ↳ t('/payment/my?limit=100&offset=0')
+    Line  375: id-ID
+             ↳ t('id-ID')
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line  111: Pendaftaran Gratis
+             ↳ label: 'Pendaftaran Gratis'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/tournaments/[id]/my-team.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [RAW]     Raw hardcoded text between tags (2 occurrences):
+    Line   80: Share Team
+             ↳ >Share Team<
+    Line  150: Scores and rankings update automatically in real-time as ends are scored on targ
+             ↳ >             Scores and rankings update automatically in real-time as ends are scored on
+
+  [TAG]     Hardcoded text inside common tags (1 occurrences):
+    Line   80: Share Team
+             ↳ <span>Share Team</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/tournaments/create.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line  171: event_create.method_num
+             ↳ t('event_create.method_num', { val: index + 1 })
+    Line  338: /disciplines
+             ↳ t('/disciplines')
+    Line  478: /tournaments
+             ↳ t('/tournaments', payload)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/index.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line   58: id-ID
+             ↳ t('id-ID')
+    Line   71: /organizers/stats
+             ↳ t('/organizers/stats')
+    Line   92: /tournaments
+             ↳ t('/tournaments')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/reports/attendance.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [SCRIPT]  Hardcoded string in <script> (3 occurrences):
+    Line  173: Nama Peserta
+             ↳ label: 'Nama Peserta'
+    Line  176: Nomor Bantalan
+             ↳ label: 'Nomor Bantalan'
+    Line  177: Waktu Check-In
+             ↳ label: 'Waktu Check-In'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/elimination/index.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line   80: T
+             ↳ t('T')
+
+  [SCRIPT]  Hardcoded string in <script> (2 occurrences):
+    Line  304: Set System
+             ↳ title: 'Set System'
+    Line  305: Total Score
+             ↳ title: 'Total Score'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/participants/detail.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line  120: common.error_loading
+             ↳ t('common.error_loading', 'Gagal memuat data peserta')
+    Line  236: id-ID
+             ↳ t('id-ID')
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line  247: QRIS Online
+             ↳ label: 'QRIS Online'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/printout/participants/index.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line   31: alphabetical
+             ↳ t('alphabetical')
+    Line   48: by-club
+             ↳ t('by-club')
+    Line   65: by-category
+             ↳ t('by-category')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/qualification/[session].vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line   28: event_qualification.back
+             ↳ t('event_qualification.back', 'Kembali')
+    Line  558: content-disposition
+             ↳ t('content-disposition')
+    Line  571: a
+             ↳ t('a')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/teams/index.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line  282: /clubs
+             ↳ t('/clubs', { params: { limit: 1000 } })
+    Line  420: event_teams.toast_mixed_gender_required
+             ↳ t('event_teams.toast_mixed_gender_required', 'Mixed team wajib terdiri dari 1 pemanah putr
+    Line  490:  
+             ↳ t(' ')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/wallet/index.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line  109: /wallet/my
+             ↳ t('/wallet/my')
+    Line  114: /wallet/withdrawals
+             ↳ t('/wallet/withdrawals')
+    Line  124: /wallet/withdrawals
+             ↳ t('/wallet/withdrawals', {       amount: withdrawAmount.value,       notes: withdrawNotes.
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/profile/edit.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [RAW]     Raw hardcoded text between tags (1 occurrences):
+    Line   11: Archeris.net
+             ↳ >Archeris.net<
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line   13: Arif Dwi Pangestu
+             ↳ name: 'Arif Dwi Pangestu'
+
+  [TAG]     Hardcoded text inside common tags (1 occurrences):
+    Line   11: Archeris.net
+             ↳ <span class="text-navy text-xl font-black tracking-tight font-display">Archeris.net</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/ArcherTournamentFilterModal.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line  251: update:show
+             ↳ t('update:show', false)
+    Line  255: apply
+             ↳ t('apply', { ...draftFilters.value })
+    Line  256: update:show
+             ↳ t('update:show', false)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/CertificateFilterModal.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line  308: update:show
+             ↳ t('update:show', false)
+    Line  312: apply
+             ↳ t('apply', { ...draftFilters.value })
+    Line  313: update:show
+             ↳ t('update:show', false)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/LeaderboardFilterModal.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line  260: update:show
+             ↳ t('update:show', false)
+    Line  264: apply
+             ↳ t('apply', { ...draftFilters.value })
+    Line  265: update:show
+             ↳ t('update:show', false)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/ParticipantFilterModal.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line  547: update:show
+             ↳ t('update:show', false)
+    Line  551: apply
+             ↳ t('apply', { ...draftFilters.value })
+    Line  552: update:show
+             ↳ t('update:show', false)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/PaymentFilterModal.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line  254: update:show
+             ↳ t('update:show', false)
+    Line  258: apply
+             ↳ t('apply', { ...draftFilters.value })
+    Line  259: update:show
+             ↳ t('update:show', false)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/elimination/PublicChampionshipTower.vue  (3 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (3 occurrences):
+    Line   29: select-match
+             ↳ t('select-match', $event)
+    Line   39: select-match
+             ↳ t('select-match', $event)
+    Line   72: select-match
+             ↳ t('select-match', $event)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/certificates/index.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line   74: ?
+             ↳ t('?')
+    Line  102: /archers/my/certificates
+             ↳ t('/archers/my/certificates')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/earnings/index.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line   60: /organizers/earnings
+             ↳ t('/organizers/earnings')
+    Line  142: earnings.table_header_category
+             ↳ t('earnings.table_header_category', 'Category / Type')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/package/detail.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line  104: id-ID
+             ↳ t('id-ID')
+    Line  110: id-ID
+             ↳ t('id-ID')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/scorekeepers.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line   93: /organizers/scorekeepers
+             ↳ t('/organizers/scorekeepers', {             params: {                 limit: limit.value,
+    Line  186: /organizers/scorekeepers
+             ↳ t('/organizers/scorekeepers', {                 name: form.name             })
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/teams/index.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line   60: /teams/my
+             ↳ t('/teams/my')
+    Line  105: org_teams.delete_confirm
+             ↳ t('org_teams.delete_confirm', { name: team.name })
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/certificate.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line  161: ?
+             ↳ t('?')
+    Line  192:  
+             ↳ t(' ')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/participants/edit.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line  119: id-ID
+             ↳ t('id-ID', {         style: 'currency',         currency: 'IDR',         minimumFractionDi
+    Line  272: common.error_loading
+             ↳ t('common.error_loading', 'Gagal memuat data peserta')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/printout/statistics.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line   30: classes
+             ↳ t('classes')
+    Line   47: clubs
+             ↳ t('clubs')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/targets/map.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line   97: org_targets.map_title
+             ↳ t('org_targets.map_title', 'Peta Target Bantalan')
+
+  [RAW]     Raw hardcoded text between tags (1 occurrences):
+    Line    9: Target Assignments
+             ↳ >Target Assignments<
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/root/archers/index.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line  511: /archers
+             ↳ t('/archers', { params })
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line   38: Standard Bow
+             ↳ label: 'Standard Bow'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/subscription/SubscriptionOrganizationPlans.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line   83: select
+             ↳ t('select', plan)
+
+  [RAW]     Raw hardcoded text between tags (1 occurrences):
+    Line   23: Solusi lengkap untuk turnamen skala besar dengan peserta tak terbatas dan analit
+             ↳ >                             Solusi lengkap untuk turnamen skala besar dengan peserta tak
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/subscription/SubscriptionPromo.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line   17: subscription.promo.extra
+             ↳ t('subscription.promo.extra', '')
+    Line   27: subscription.promo.total_value
+             ↳ t('subscription.promo.total_value', '')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/elimination/BracketRound.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line    7: navigate
+             ↳ t('navigate', roundNo)
+    Line   17: select-match
+             ↳ t('select-match', $event)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/elimination/EliminationBracketView.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line   11: navigate-to-round
+             ↳ t('navigate-to-round', $event)
+    Line   12: select-match
+             ↳ t('select-match', $event)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/elimination/EliminationScoringMode.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line  124: select-match
+             ↳ t('select-match', match)
+    Line  128: select-arrow-box
+             ↳ t('select-arrow-box', side, index)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/elimination/EliminationTargetMode.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (2 occurrences):
+    Line   24: auto-assign
+             ↳ t('auto-assign')
+    Line  191: update-target
+             ↳ t('update-target', match)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/layout/AppFooter.vue  (2 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [RAW]     Raw hardcoded text between tags (1 occurrences):
+    Line   19: .net
+             ↳ >.net<
+
+  [TAG]     Hardcoded text inside common tags (1 occurrences):
+    Line   19: .net
+             ↳ <span class="text-logo-id">.net</
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/index.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line   18: dashboard.title
+             ↳ t('dashboard.title', 'Dashboard')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/tournaments/[id]/index.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line   11: Redirecting...
+             ↳ title: 'Redirecting...'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/archer/tournaments/[id]/my-elimination.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line  322: /archer/me
+             ↳ t('/archer/me')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/index.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line   11: dashboard.title
+             ↳ t('dashboard.title', 'Dashboard')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/payment-methods.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line    3: Metode Pembayaran - Archeris Dashboard
+             ↳ title: 'Metode Pembayaran - Archeris Dashboard'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/subscription.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line    3: Langganan Penyelenggara - Archeris Dashboard
+             ↳ title: 'Langganan Penyelenggara - Archeris Dashboard'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/categories/[categoryId].vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line  139: category.detail
+             ↳ t('category.detail', 'Category Detail')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/elimination/[bracketId]/[round].vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [RAW]     Raw hardcoded text between tags (1 occurrences):
+    Line    2: Mengalihkan ke halaman eliminasi...
+             ↳ >     Mengalihkan ke halaman eliminasi...   <
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/overview.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line  352: dashboard_event_overview.publish_failed
+             ↳ t('dashboard_event_overview.publish_failed', 'Gagal mempublikasikan event')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/participants/[participantId]/edit.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line    6: Edit Peserta - Archeris Dashboard
+             ↳ title: 'Edit Peserta - Archeris Dashboard'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/participants/[participantId]/index.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line    6: Detail Peserta - Archeris Dashboard
+             ↳ title: 'Detail Peserta - Archeris Dashboard'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/qualification/index.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line  102: , 
+             ↳ t(', ')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/qualification/results.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [RAW]     Raw hardcoded text between tags (1 occurrences):
+    Line   24: Cetak Hasil
+             ↳ >               Cetak Hasil             <
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/organizer/tournaments/[id]/schedule/index.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line  210: event_schedule.err_load_schedule
+             ↳ t('event_schedule.err_load_schedule', 'Failed to fetch tournament schedule data')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/profile/[username].vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [ATTR]    Hardcoded title= attribute (1 occurrences):
+    Line   58: profile.level_title
+             ↳ title="profile.level_title"
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/pages/dashboard/root/index.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line   82: /root/dashboard/recap
+             ↳ t('/root/dashboard/recap')
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/ArcherTournamentsList.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [SCRIPT]  Hardcoded string in <script> (1 occurrences):
+    Line  289: Akan Datang
+             ↳ label: 'Akan Datang'
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/dashboard/subscription/SubscriptionPlanSelection.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line   75: select
+             ↳ t('select', plan)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/elimination/EliminationMatchCard.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line    2: select
+             ↳ t('select', match)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/elimination/PublicBracketRound.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line    7: select-match
+             ↳ t('select-match', $event)
+
+──────────────────────────────────────────────────────────────────────
+FILE: app/components/layout/AppHeaderDynamic.vue  (1 issues)
+──────────────────────────────────────────────────────────────────────
+
+  [MISSING] t() key missing from EN locale (1 occurrences):
+    Line  180: /tournaments?limit=10
+             ↳ t('/tournaments?limit=10')
+
+======================================================================
+END OF REPORT

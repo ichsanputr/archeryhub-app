@@ -1,14 +1,14 @@
 <template>
-    <div class="min-h-screen bg-gray-50 docs-page">
+    <div class="min-h-screen bg-gray-50 dark:bg-slate-950 docs-page transition-colors duration-200">
         <!-- Breadcrumb bar (not sticky) -->
-        <div class="bg-white border-b border-gray-100">
+        <div class="bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 transition-colors duration-200">
             <div class="container mx-auto px-4 max-w-7xl">
-                <div class="flex items-center gap-2 h-11 text-xs text-gray-500 overflow-x-auto no-scrollbar">
-                    <NuxtLink to="/" class="hover:text-navy transition-colors whitespace-nowrap">{{ $t('nav.home') }}</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-gray-300 shrink-0" />
-                    <NuxtLink to="/docs" class="hover:text-navy transition-colors whitespace-nowrap">{{ $t('docs.all_docs') }}</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-gray-300 shrink-0" />
-                    <span class="text-navy font-semibold whitespace-nowrap truncate">{{ currentDoc?.title }}</span>
+                <div class="flex items-center gap-2 h-11 text-xs text-gray-500 dark:text-slate-400 overflow-x-auto no-scrollbar">
+                    <NuxtLink to="/" class="hover:text-navy dark:hover:text-white transition-colors whitespace-nowrap">{{ $t('nav.home') }}</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-gray-300 dark:text-slate-600 shrink-0" />
+                    <NuxtLink to="/docs" class="hover:text-navy dark:hover:text-white transition-colors whitespace-nowrap">{{ $t('docs.all_docs') }}</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-gray-300 dark:text-slate-600 shrink-0" />
+                    <span class="text-navy dark:text-slate-200 font-semibold whitespace-nowrap truncate">{{ currentDoc?.title }}</span>
                 </div>
             </div>
         </div>
@@ -19,40 +19,40 @@
                 class="flex flex-col w-full lg:w-64 xl:w-72 shrink-0 lg:sticky lg:top-24 lg:h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-4 lg:scrollbar-styled self-start mb-8 lg:mb-0">
                 <!-- Mobile Toggle Button -->
                 <button @click="toggleMobileMenu"
-                    class="lg:hidden flex items-center justify-between w-full bg-white border border-gray-200 rounded-xl px-4 py-3 mb-2 text-sm font-bold text-navy hover:bg-gray-50 transition-colors">
+                    class="lg:hidden flex items-center justify-between w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl px-4 py-3 mb-2 text-sm font-bold text-navy dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
                     <span class="flex items-center gap-2">
                         <Icon icon="ph:list-dashes-bold" class="text-lg text-primary" />
                         {{ $t('docs.sidebar_title') }}
                     </span>
                     <Icon :icon="isMobileMenuOpen ? 'ph:caret-up-bold' : 'ph:caret-down-bold'"
-                        class="text-gray-400 text-base" />
+                        class="text-gray-400 dark:text-slate-500 text-base" />
                 </button>
 
                 <!-- Sidebar content (collapsible on mobile, always visible on desktop) -->
                 <div :class="isMobileMenuOpen ? 'block' : 'hidden lg:block'"
-                    class="bg-gray-50 lg:bg-transparent -mx-4 px-4 py-4 lg:p-0 lg:mx-0 border-y border-gray-100 lg:border-0 rounded-none lg:rounded-none">
+                    class="bg-gray-50 dark:bg-slate-900 lg:bg-transparent -mx-4 px-4 py-4 lg:p-0 lg:mx-0 border-y border-gray-100 dark:border-slate-800 lg:border-0 rounded-none lg:rounded-none">
 
                     <!-- Search filter in sidebar -->
                     <div class="relative mb-3">
-                        <Icon icon="ph:magnifying-glass-bold" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                        <Icon icon="ph:magnifying-glass-bold" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 text-sm" />
                         <input v-model="sidebarSearch" type="text" placeholder="Filter articles..."
-                            class="w-full pl-9 pr-3 py-2 bg-white border border-gray-200 rounded-xl text-xs text-navy placeholder-gray-400 focus:outline-none focus:border-primary transition-all shadow-2xs" />
+                            class="w-full pl-9 pr-3 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl text-xs text-navy dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-primary dark:focus:border-primary transition-all shadow-2xs" />
                     </div>
 
                     <!-- If categories exist -->
                     <template v-if="hasCategories">
                         <div v-for="cat in sidebarVisibleCategories" :key="cat.id" class="mb-4">
                             <div class="flex items-center gap-2 px-2 py-1.5 mb-1">
-                                <Icon :icon="cat.icon" class="text-sm text-gray-400" />
-                                <span class="text-[10px] font-black tracking-widest text-gray-400">{{ cat.label }}</span>
+                                <Icon :icon="cat.icon" class="text-sm text-gray-400 dark:text-slate-500" />
+                                <span class="text-[10px] font-black tracking-widest text-gray-400 dark:text-slate-500">{{ cat.label }}</span>
                             </div>
                             <div class="space-y-0.5">
                                 <NuxtLink v-for="doc in filteredSidebarDocs(cat.id)" :key="doc.slug"
                                     :to="`/docs/${doc.slug}`"
                                     class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all relative group"
                                     :class="currentSlug === doc.slug
-                                        ? 'bg-primary/20 border border-primary/40 text-navy font-black shadow-2xs'
-                                        : 'text-gray-600 hover:bg-gray-100 hover:text-navy font-medium'">
+                                        ? 'bg-primary/20 border border-primary/40 text-navy dark:text-primary font-black shadow-2xs'
+                                        : 'text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800/80 hover:text-navy dark:hover:text-slate-100 font-medium'">
                                     <div v-if="currentSlug === doc.slug"
                                         class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-primary rounded-r-full">
                                     </div>
@@ -65,19 +65,19 @@
                     <!-- Flat list (when uncategorized) -->
                     <template v-else>
                         <div class="flex items-center justify-between px-2 py-1.5 mb-2">
-                            <span class="text-[10px] font-black tracking-widest text-gray-400 uppercase">All Guides ({{ allFilteredSidebarDocs.length }})</span>
+                            <span class="text-[10px] font-black tracking-widest text-gray-400 dark:text-slate-500 uppercase">All Guides ({{ allFilteredSidebarDocs.length }})</span>
                         </div>
                         <div class="space-y-1">
                             <NuxtLink v-for="doc in allFilteredSidebarDocs" :key="doc.slug"
                                 :to="`/docs/${doc.slug}`"
                                 class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm transition-all relative group"
                                 :class="currentSlug === doc.slug
-                                    ? 'bg-primary/20 border border-primary/40 text-navy font-black shadow-2xs'
-                                    : 'text-gray-600 hover:bg-white hover:text-navy font-medium border border-transparent hover:border-gray-100'">
+                                    ? 'bg-primary/20 border border-primary/40 text-navy dark:text-primary font-black shadow-2xs'
+                                    : 'text-gray-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800/80 hover:text-navy dark:hover:text-slate-100 font-medium border border-transparent hover:border-gray-100 dark:hover:border-slate-800'">
                                 <div v-if="currentSlug === doc.slug"
                                     class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-primary rounded-r-full">
                                 </div>
-                                <Icon :icon="doc.icon || 'ph:file-text-bold'" class="text-sm shrink-0" :class="currentSlug === doc.slug ? 'text-navy' : 'text-gray-400'" />
+                                <Icon :icon="doc.icon || 'ph:file-text-bold'" class="text-sm shrink-0" :class="currentSlug === doc.slug ? 'text-navy dark:text-primary' : 'text-gray-400 dark:text-slate-500'" />
                                 <span class="leading-snug truncate" :class="currentSlug !== doc.slug ? 'pl-0.5' : ''">{{ doc.title }}</span>
                             </NuxtLink>
                         </div>
@@ -87,9 +87,9 @@
 
             <!-- Main content -->
             <main class="flex-1 min-w-0 w-full lg:pl-8 lg:pr-6">
-                <div v-if="currentDoc" class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                <div v-if="currentDoc" class="bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800 shadow-sm overflow-hidden transition-colors duration-200">
                     <!-- Doc header -->
-                    <div class="relative bg-gradient-to-br from-navy via-slate-900 to-navy text-white px-6 sm:px-10 pt-10 pb-10 overflow-hidden border-b border-white/10">
+                    <div class="relative bg-gradient-to-br from-navy via-slate-900 to-navy dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-white px-6 sm:px-10 pt-10 pb-10 overflow-hidden border-b border-white/10">
                         <!-- Decorative background glow and archery ring watermark -->
                         <div class="absolute -top-24 -right-24 w-80 h-80 bg-primary/15 rounded-full blur-3xl pointer-events-none"></div>
                         <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-sky-500/10 rounded-full blur-2xl pointer-events-none"></div>
@@ -124,14 +124,6 @@
                                     <Icon icon="ph:check-circle-bold" class="text-emerald-400 text-xs" />
                                     <span>Verified Guide</span>
                                 </div>
-                                <template v-if="isLocalhost">
-                                    <span class="text-white/20">•</span>
-                                    <button @click="openDeleteModal"
-                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 hover:text-white border border-rose-500/40 text-xs font-bold transition-all shadow-sm cursor-pointer">
-                                        <Icon icon="ph:trash-bold" class="text-xs text-rose-400" />
-                                        <span>Delete Doc <span class="text-[9px] uppercase px-1 py-0.5 bg-rose-500/40 rounded text-rose-200">Dev</span></span>
-                                    </button>
-                                </template>
                             </div>
                         </div>
                     </div>
@@ -140,22 +132,22 @@
                     <div class="px-6 md:px-10 py-8 doc-content" v-html="currentDoc.content"></div>
 
                     <!-- Share Social Media -->
-                    <div class="px-6 md:px-10 pb-8 pt-4 border-t border-gray-100">
-                        <h4 class="text-[10px] font-black tracking-widest text-gray-400 mb-3">{{ $t('docs.share_title') || 'Share this article' }}</h4>
+                    <div class="px-6 md:px-10 pb-8 pt-4 border-t border-gray-100 dark:border-slate-800">
+                        <h4 class="text-[10px] font-black tracking-widest text-gray-400 dark:text-slate-500 mb-3">{{ $t('docs.share_title') || 'Share this article' }}</h4>
                         <div class="flex flex-wrap gap-2">
-                            <button @click="shareTo('twitter')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 hover:bg-primary/10 text-navy text-xs font-bold transition-all border border-gray-100 hover:border-primary/30">
+                            <button @click="shareTo('twitter')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-primary/20 text-navy dark:text-slate-200 text-xs font-bold transition-all border border-gray-100 dark:border-slate-700 hover:border-primary/30">
                                 <Icon icon="simple-icons:x" class="text-sm" />
                                 X
                             </button>
-                            <button @click="shareTo('facebook')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 hover:bg-primary/10 text-navy text-xs font-bold transition-all border border-gray-100 hover:border-primary/30">
+                            <button @click="shareTo('facebook')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-primary/20 text-navy dark:text-slate-200 text-xs font-bold transition-all border border-gray-100 dark:border-slate-700 hover:border-primary/30">
                                 <Icon icon="logos:facebook" class="text-sm" />
                                 Facebook
                             </button>
-                            <button @click="shareTo('whatsapp')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 hover:bg-primary/10 text-navy text-xs font-bold transition-all border border-gray-100 hover:border-primary/30">
+                            <button @click="shareTo('whatsapp')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-primary/20 text-navy dark:text-slate-200 text-xs font-bold transition-all border border-gray-100 dark:border-slate-700 hover:border-primary/30">
                                 <Icon icon="logos:whatsapp-icon" class="text-sm" />
                                 WhatsApp
                             </button>
-                            <button @click="copyLink" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 hover:bg-primary/10 text-navy text-xs font-bold transition-all border border-gray-100 hover:border-primary/30">
+                            <button @click="copyLink" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-primary/20 text-navy dark:text-slate-200 text-xs font-bold transition-all border border-gray-100 dark:border-slate-700 hover:border-primary/30">
                                 <Icon icon="ph:link-bold" class="text-sm" />
                                 {{ linkCopied ? ($t('docs.copied') || 'Copied!') : ($t('docs.copy_link') || 'Copy Link') }}
                             </button>
@@ -164,39 +156,39 @@
 
                     <!-- Navigation buttons -->
                     <div
-                        class="px-6 md:px-10 py-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        class="px-6 md:px-10 py-6 border-t border-gray-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <NuxtLink v-if="prevDoc" :to="`/docs/${prevDoc.slug}`"
-                            class="flex items-center gap-3 group p-4 rounded-2xl hover:bg-gray-50 border border-gray-100 transition-all w-full sm:max-w-xs justify-start">
+                            class="flex items-center gap-3 group p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-800 border border-gray-100 dark:border-slate-800 transition-all w-full sm:max-w-xs justify-start">
                             <Icon icon="ph:arrow-left-bold"
-                                class="text-gray-400 group-hover:text-primary transition-colors shrink-0" />
+                                class="text-gray-400 dark:text-slate-500 group-hover:text-primary transition-colors shrink-0" />
                             <div class="text-left min-w-0">
-                                <div class="text-xs text-gray-400 mb-0.5">{{ $t('docs.previous') }}</div>
+                                <div class="text-xs text-gray-400 dark:text-slate-500 mb-0.5">{{ $t('docs.previous') }}</div>
                                 <div
-                                    class="text-sm font-bold text-navy truncate group-hover:text-primary transition-colors">
+                                    class="text-sm font-bold text-navy dark:text-slate-200 truncate group-hover:text-primary transition-colors">
                                     {{ prevDoc.title }}</div>
                             </div>
                         </NuxtLink>
                         <div v-else class="hidden sm:block"></div>
                         <NuxtLink v-if="nextDoc" :to="`/docs/${nextDoc.slug}`"
-                            class="flex items-center gap-3 group p-4 rounded-2xl hover:bg-gray-50 border border-gray-100 transition-all w-full sm:max-w-xs justify-end text-right sm:ml-auto">
+                            class="flex items-center gap-3 group p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-800 border border-gray-100 dark:border-slate-800 transition-all w-full sm:max-w-xs justify-end text-right sm:ml-auto">
                             <div class="min-w-0">
-                                <div class="text-xs text-gray-400 mb-0.5">{{ $t('docs.next') }}</div>
+                                <div class="text-xs text-gray-400 dark:text-slate-500 mb-0.5">{{ $t('docs.next') }}</div>
                                 <div
-                                    class="text-sm font-bold text-navy truncate group-hover:text-primary transition-colors">
+                                    class="text-sm font-bold text-navy dark:text-slate-200 truncate group-hover:text-primary transition-colors">
                                     {{ nextDoc.title }}</div>
                             </div>
                             <Icon icon="ph:arrow-right-bold"
-                                class="text-gray-400 group-hover:text-primary transition-colors shrink-0" />
+                                class="text-gray-400 dark:text-slate-500 group-hover:text-primary transition-colors shrink-0" />
                         </NuxtLink>
                     </div>
                 </div>
 
-                <div v-else class="bg-white rounded-3xl border border-gray-100 shadow-sm p-16 text-center">
-                    <Icon icon="ph:file-x-bold" class="text-5xl text-gray-300 mb-4" />
-                    <h2 class="text-xl font-black text-navy mb-2">{{ $t('docs.not_found_title') }}</h2>
-                    <p class="text-gray-500 mb-6 text-sm">{{ $t('docs.not_found_desc') }}</p>
+                <div v-else class="bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800 shadow-sm p-16 text-center">
+                    <Icon icon="ph:file-x-bold" class="text-5xl text-gray-300 dark:text-slate-600 mb-4" />
+                    <h2 class="text-xl font-black text-navy dark:text-slate-100 mb-2">{{ $t('docs.not_found_title') }}</h2>
+                    <p class="text-gray-500 dark:text-slate-400 mb-6 text-sm">{{ $t('docs.not_found_desc') }}</p>
                     <NuxtLink to="/docs"
-                        class="inline-flex items-center gap-2 bg-navy text-primary font-bold px-6 py-2.5 rounded-xl hover:bg-navy/90 transition-all text-sm">
+                        class="inline-flex items-center gap-2 bg-navy dark:bg-primary text-primary dark:text-navy font-bold px-6 py-2.5 rounded-xl hover:bg-navy/90 dark:hover:bg-primary/90 transition-all text-sm">
                         <Icon icon="ph:arrow-left-bold" />
                         {{ $t('docs.back_to_docs') }}
                     </NuxtLink>
@@ -206,29 +198,29 @@
             <!-- Right sidebar: Table of contents -->
             <aside class="hidden lg:block w-56 shrink-0 pl-4 self-start sticky top-24">
                 <div class="max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-styled flex flex-col">
-                    <div class="text-xs font-black text-gray-400 tracking-widest mb-3">{{ $t('docs.on_this_page') }}</div>
+                    <div class="text-xs font-black text-gray-400 dark:text-slate-500 tracking-widest mb-3">{{ $t('docs.on_this_page') }}</div>
                     <nav class="space-y-1">
                         <a v-for="heading in currentDoc?.toc || []" :key="heading.id" :href="`#${heading.id}`"
                             class="block text-sm py-1.5 transition-colors leading-snug" :class="[
-                                heading.level === 2 ? 'text-gray-600 hover:text-primary font-medium pl-0' : 'text-gray-400 hover:text-primary pl-3 text-xs'
+                                heading.level === 2 ? 'text-gray-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary font-medium pl-0' : 'text-gray-400 dark:text-slate-500 hover:text-primary dark:hover:text-primary pl-3 text-xs'
                             ]">
                             {{ translateHeadingText(heading.text) }}
                         </a>
                     </nav>
 
                     <!-- Divider -->
-                    <div class="mt-6 pt-6 border-t border-gray-100">
+                    <div class="mt-6 pt-6 border-t border-gray-100 dark:border-slate-800">
                         <NuxtLink to="/docs"
-                            class="flex items-center gap-2 text-xs text-gray-400 hover:text-navy transition-colors font-medium mb-3">
+                            class="flex items-center gap-2 text-xs text-gray-400 dark:text-slate-500 hover:text-navy dark:hover:text-slate-200 transition-colors font-medium mb-3">
                             <Icon icon="ph:arrow-left-bold" class="text-xs" /> {{ $t('docs.all_docs') || 'All Guides' }}
                         </NuxtLink>
                         <NuxtLink to="/contact"
-                            class="flex items-center gap-2 text-xs text-gray-500 hover:text-navy transition-colors font-medium mb-2.5 group">
+                            class="flex items-center gap-2 text-xs text-gray-500 dark:text-slate-400 hover:text-navy dark:hover:text-white transition-colors font-medium mb-2.5 group">
                             <Icon icon="ph:paper-plane-tilt-bold" class="text-sm text-primary group-hover:scale-110 transition-transform" />
                             <span>Contact Form</span>
                         </NuxtLink>
                         <a href="mailto:contact@archeris.net"
-                            class="flex items-center gap-2 text-xs text-gray-500 hover:text-navy transition-colors font-medium group">
+                            class="flex items-center gap-2 text-xs text-gray-500 dark:text-slate-400 hover:text-navy dark:hover:text-white transition-colors font-medium group">
                             <Icon icon="ph:envelope-simple-bold" class="text-sm text-primary group-hover:scale-110 transition-transform" />
                             <span>contact@archeris.net</span>
                         </a>
@@ -237,38 +229,6 @@
             </aside>
         </div>
 
-        <!-- Localhost Delete Confirmation Modal -->
-        <Teleport to="body">
-            <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/80 backdrop-blur-sm animate-in fade-in duration-150">
-                <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-100 relative">
-                    <div class="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 mb-4">
-                        <Icon icon="ph:warning-bold" class="text-2xl" />
-                    </div>
-
-                    <h3 class="text-lg font-black text-navy mb-2">Delete Documentation Article?</h3>
-                    <p class="text-xs text-gray-600 mb-4 leading-relaxed">
-                        Are you sure you want to permanently delete <strong class="text-navy font-bold">"{{ currentDoc?.title || currentSlug }}"</strong> (<code class="bg-gray-100 text-rose-600 px-1 py-0.5 rounded text-[11px] font-mono">{{ currentSlug }}.json</code>)?
-                    </p>
-                    <div class="p-3 bg-rose-50/70 border border-rose-100 rounded-xl text-[11px] text-rose-700 mb-6 flex items-start gap-2">
-                        <Icon icon="ph:info-bold" class="text-sm shrink-0 mt-0.5" />
-                        <span>This will permanently remove the JSON file from <code class="font-mono font-bold">data/docs</code> on your disk. This action cannot be undone.</span>
-                    </div>
-
-                    <div class="flex items-center justify-end gap-3">
-                        <button type="button" @click="closeDeleteModal" :disabled="isDeleting"
-                            class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 text-xs font-bold transition-all cursor-pointer">
-                            Cancel
-                        </button>
-                        <button type="button" @click="confirmDeleteDoc" :disabled="isDeleting"
-                            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-md hover:shadow-rose-600/20 disabled:opacity-50 cursor-pointer">
-                            <Icon v-if="isDeleting" icon="ph:spinner-gap-bold" class="animate-spin text-sm" />
-                            <Icon v-else icon="ph:trash-bold" class="text-sm" />
-                            <span>{{ isDeleting ? 'Deleting...' : 'Yes, Delete Doc' }}</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </Teleport>
     </div>
 </template>
 
@@ -296,42 +256,6 @@ const currentSlug = computed(() => {
     return raw ? String(raw) : ''
 })
 
-const showDeleteModal = ref(false)
-const isDeleting = ref(false)
-
-const isLocalhost = computed(() => {
-    if (!import.meta.client) return false
-    const hostname = window.location.hostname
-    return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1' || import.meta.dev
-})
-
-const openDeleteModal = () => {
-    showDeleteModal.value = true
-}
-
-const closeDeleteModal = () => {
-    if (!isDeleting.value) {
-        showDeleteModal.value = false
-    }
-}
-
-const confirmDeleteDoc = async () => {
-    if (!currentSlug.value) return
-    isDeleting.value = true
-    try {
-        await $fetch(`${apiBaseUrl}/docs/${currentSlug.value}`, {
-            method: 'DELETE'
-        })
-        toast.success(`Documentation article "${currentDoc.value?.title || currentSlug.value}" successfully deleted`)
-        showDeleteModal.value = false
-        router.push('/docs')
-    } catch (err) {
-        console.error('Failed to delete doc:', err)
-        toast.error(err?.data?.error || err?.message || 'Failed to delete documentation article')
-    } finally {
-        isDeleting.value = false
-    }
-}
 const sidebarSearch = ref('')
 const isMobileMenuOpen = ref(false)
 
@@ -345,21 +269,12 @@ watch(currentSlug, () => {
 
 const categories = [
     { id: 'accounts', label: 'User Accounts', icon: 'ph:users-three-bold' },
-    { id: 'marketplace', label: 'Marketplace & Store', icon: 'ph:storefront-bold' },
-    { id: 'subscriptions', label: 'Subscriptions', icon: 'ph:credit-card-bold' },
     { id: 'tournaments', label: 'Tournament Setup', icon: 'ph:trophy-bold' },
-    { id: 'rules', label: 'Rules & Target Standards', icon: 'ph:book-open-bold' },
-    { id: 'categories', label: 'Competition Categories', icon: 'ph:circles-three-bold' },
-    { id: 'participants', label: 'Participant Management', icon: 'ph:user-plus-bold' },
-    { id: 'targets', label: 'Target Allocation', icon: 'ph:target-bold' },
     { id: 'scorekeeper', label: 'Scorekeeper Operations', icon: 'ph:device-mobile-bold' },
     { id: 'qualification', label: 'Qualification Rounds', icon: 'ph:chart-line-up-bold' },
-    { id: 'teams', label: 'Team Management', icon: 'ph:users-four-bold' },
     { id: 'elimination', label: 'Elimination Brackets', icon: 'ph:tree-structure-bold' },
     { id: 'finance', label: 'Finance & Payments', icon: 'ph:coins-bold' },
-    { id: 'certificates', label: 'Certificates', icon: 'ph:certificate-bold' },
-    { id: 'reports', label: 'Reports', icon: 'ph:file-pdf-bold' },
-    { id: 'archers', label: 'Archer Guides', icon: 'ph:user-bold' },
+    { id: 'subscriptions', label: 'Subscriptions', icon: 'ph:credit-card-bold' }
 ]
 
 const sidebarCategories = categories
@@ -411,13 +326,22 @@ watch([docs, currentSlug], () => {
 // Fetch details for the current doc slug
 const { data: currentDocData } = await useAsyncData(
     () => `docs-api-detail-${currentSlug.value}-${locale.value}`,
-    () => $fetch(`${apiBaseUrl}/docs/${currentSlug.value}?lang=${locale.value}`),
+    () => $fetch(`${apiBaseUrl}/docs/${currentSlug.value}?lang=${locale.value}`).catch(() => null),
     {
         watch: [currentSlug, locale]
     }
 )
 
 const currentDoc = computed(() => currentDocData.value)
+
+if (!currentDoc.value) {
+    throw createError({
+        statusCode: 404,
+        statusMessage: 'Documentation Article Not Found',
+        message: `The documentation guide "${currentSlug.value}" does not exist or has been removed.`,
+        fatal: true
+    })
+}
 
 // Calculate prev/next
 const currentIndex = computed(() => docs.value.findIndex(d => d.slug === currentSlug.value))
@@ -475,6 +399,7 @@ const copyLink = () => {
 
 const structuredData = computed(() => {
     if (!currentDoc.value?.title) return null
+    const canonicalDocUrl = `https://archeris.net/docs/${currentSlug.value}`
     return [
         {
             '@context': 'https://schema.org',
@@ -496,7 +421,7 @@ const structuredData = computed(() => {
                     '@type': 'ListItem',
                     'position': 3,
                     'name': currentDoc.value.title,
-                    'item': `https://archeris.net/docs/${currentSlug.value}`
+                    'item': canonicalDocUrl
                 }
             ]
         },
@@ -505,11 +430,18 @@ const structuredData = computed(() => {
             '@type': 'TechArticle',
             'headline': currentDoc.value.title,
             'description': currentDoc.value.excerpt || 'Archeris official documentation.',
-            'url': `https://archeris.net/docs/${currentSlug.value}`,
+            'url': canonicalDocUrl,
             'inLanguage': 'en',
+            'datePublished': currentDoc.value?.created_at || '2024-01-15T00:00:00+00:00',
+            'dateModified': currentDoc.value?.updated_at || new Date().toISOString(),
+            'author': {
+                '@type': 'Organization',
+                'name': 'Archeris Technical Team',
+                'url': 'https://archeris.net'
+            },
             'mainEntityOfPage': {
                 '@type': 'WebPage',
-                '@id': `https://archeris.net/docs/${currentSlug.value}`
+                '@id': canonicalDocUrl
             },
             'publisher': {
                 '@type': 'Organization',
@@ -521,20 +453,23 @@ const structuredData = computed(() => {
     ]
 })
 
-const requestUrl = useRequestURL()
-
-useHead(() => ({
-    title: currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
-    link: [
-        { rel: 'canonical', href: requestUrl.href }
-    ],
-    script: [
-        {
-            type: 'application/ld+json',
-            children: structuredData.value ? JSON.stringify(structuredData.value) : ''
-        }
-    ]
-}))
+useHead(() => {
+    const canonicalDocUrl = `https://archeris.net/docs/${currentSlug.value}`
+    return {
+        title: currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
+        link: [
+            { rel: 'canonical', href: canonicalDocUrl },
+            { rel: 'alternate', hreflang: 'en', href: canonicalDocUrl },
+            { rel: 'alternate', hreflang: 'x-default', href: canonicalDocUrl }
+        ],
+        script: [
+            {
+                type: 'application/ld+json',
+                children: structuredData.value ? JSON.stringify(structuredData.value) : ''
+            }
+        ]
+    }
+})
 
 useSeoMeta({
     title: () => currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
@@ -559,6 +494,23 @@ useSeoMeta({
     padding-bottom: 0.5rem;
     border-bottom: 2px solid #f1f5f9;
     scroll-margin-top: 7rem;
+}
+
+.doc-content h3 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    scroll-margin-top: 7rem;
+}
+
+.doc-content h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
 }
 
 .doc-content p {
@@ -605,6 +557,147 @@ useSeoMeta({
     opacity: 0.8;
 }
 
+.doc-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.doc-content th,
+.doc-content td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+}
+
+.doc-content img {
+    border-radius: 1rem;
+    margin: 1.5rem 0;
+    border: 1px solid #e2e8f0;
+    max-width: 100%;
+    height: auto;
+}
+
+.doc-content code {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.375rem;
+    font-size: 0.85em;
+    font-family: monospace;
+}
+
+.doc-content pre {
+    background-color: #0f172a;
+    color: #f8fafc;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.doc-content pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+}
+
+/* ================= DARK THEME STYLES FOR DOC CONTENT ================= */
+.dark .doc-content h2 {
+    color: #f8fafc;
+    border-bottom: 2px solid #1e293b;
+}
+
+.dark .doc-content h3,
+.dark .doc-content h4 {
+    color: #f1f5f9;
+}
+
+.dark .doc-content p {
+    color: #cbd5e1;
+}
+
+.dark .doc-content ul,
+.dark .doc-content ol {
+    color: #cbd5e1;
+}
+
+.dark .doc-content strong {
+    color: #f8fafc;
+}
+
+.dark .doc-content a {
+    color: #38bdf8;
+}
+
+.dark .doc-content table {
+    border-color: #334155;
+}
+
+.dark .doc-content th {
+    background-color: #1e293b;
+    color: #f8fafc;
+    border-color: #334155;
+}
+
+.dark .doc-content td {
+    border-color: #334155;
+    color: #cbd5e1;
+    background-color: #0f172a;
+}
+
+.dark .doc-content tr:nth-child(even) td {
+    background-color: #1e293b/40;
+}
+
+.dark .doc-content img {
+    border-color: #334155;
+}
+
+.dark .doc-content code {
+    background-color: #1e293b;
+    color: #f1f5f9;
+    border: 1px solid #334155;
+}
+
+/* Dark mode overrides for custom HTML callout boxes in doc articles */
+.dark .doc-content .not-prose {
+    border-color: #334155 !important;
+}
+
+.dark .doc-content .not-prose.bg-primary\/10,
+.dark .doc-content .not-prose.bg-primary\/20 {
+    background-color: rgba(217, 255, 0, 0.08) !important;
+    border-color: rgba(217, 255, 0, 0.25) !important;
+}
+
+.dark .doc-content .not-prose.bg-yellow-50,
+.dark .doc-content .not-prose.bg-amber-50 {
+    background-color: rgba(245, 158, 11, 0.12) !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+.dark .doc-content .not-prose.bg-red-50 {
+    background-color: rgba(239, 68, 68, 0.12) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.dark .doc-content .not-prose.bg-gray-50 {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+.dark .doc-content .not-prose .text-navy {
+    color: #f8fafc !important;
+}
+
+.dark .doc-content .not-prose .text-gray-600,
+.dark .doc-content .not-prose .text-gray-700,
+.dark .doc-content .not-prose .text-gray-500 {
+    color: #cbd5e1 !important;
+}
+
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
@@ -625,5 +718,9 @@ useSeoMeta({
 .scrollbar-styled::-webkit-scrollbar-thumb {
     background: #e2e8f0;
     border-radius: 10px;
+}
+
+.dark .scrollbar-styled::-webkit-scrollbar-thumb {
+    background: #334155;
 }
 </style>

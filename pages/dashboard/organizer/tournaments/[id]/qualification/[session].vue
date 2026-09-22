@@ -25,7 +25,7 @@
               <button type="button"
                 @click="navigateTo(`/dashboard/organizer/tournaments/${eventId}/qualification`)"
                 class="size-10 sm:size-12 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md hover:bg-primary hover:text-navy text-white transition-all shrink-0 cursor-pointer active:scale-95"
-                :title="t('event_qualification.back', 'Kembali')">
+                :title="t('event_qualification.back')">
                 <Icon icon="ph:arrow-left-bold" class="text-lg sm:text-xl" />
               </button>
 
@@ -121,11 +121,12 @@
             :class="selectedCategory === category.id ? 'bg-primary' : 'bg-transparent'"></div>
           <div class="flex items-start gap-3 pl-2">
             <div
-              class="size-12 bg-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden p-2 group-hover:bg-primary transition-colors">
+              class="size-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-2xs overflow-hidden p-2 transition-colors"
+              :class="selectedCategory === category.id ? 'bg-primary text-btn-text' : 'bg-primary/10 text-navy group-hover:bg-primary group-hover:text-btn-text'">
               <img
                 :src="'/' + getCategoryIcon(`${category.division_name} ${category.event_type_name} ${category.gender_division_name}`)"
                 :alt="category.division_name"
-                class="w-full h-full object-contain invert group-hover:invert-0 transition-all" />
+                class="w-full h-full object-contain" />
             </div>
             <div class="flex-1 min-w-0">
               <div
@@ -283,34 +284,63 @@ const fetchAllParticipants = async () => {
 }
 
 const fetchArchersForCategory = async (categoryId) => {
-  // Check if we have participants for this category in cache
-  const existing = allParticipants.value.filter(p => p.category_id === categoryId)
+  if (!categoryId) return
 
-  if (existing.length === 0) {
-    // Fetch specifically for this category to speed up initial load
+  const extractForCat = () => {
+    const list = []
+    allParticipants.value.forEach(p => {
+      if (Array.isArray(p.categories)) {
+        p.categories.forEach(cat => {
+          if (cat.category_id === categoryId) {
+            list.push({
+              uuid: cat.participant_id || p.id || p.uuid,
+              archerId: p.archer_id || p.id,
+              name: p.full_name || p.archer_name || p.name,
+              club: p.club_name || p.club,
+              avatar_url: p.avatar_url || p.photo_url,
+              assignedTarget: '',
+              assignmentId: null
+            })
+          }
+        })
+      } else if (p.category_id === categoryId) {
+        list.push({
+          uuid: p.id || p.uuid || p.participant_id,
+          archerId: p.archer_id || p.id,
+          name: p.full_name || p.archer_name || p.name,
+          club: p.club_name || p.club,
+          avatar_url: p.avatar_url || p.photo_url,
+          assignedTarget: '',
+          assignmentId: null
+        })
+      }
+    })
+    return list
+  }
+
+  let matched = extractForCat()
+  if (matched.length === 0) {
     try {
       const response = await get(`/tournaments/${eventId}/participants`, {
         params: { category_id: categoryId, limit: 1000 }
       })
       const newParticipants = response?.participants || []
-      // Merge into cache
-      const otherParticipants = allParticipants.value.filter(p => p.category_id !== categoryId)
+      const otherParticipants = allParticipants.value.filter(p => {
+        if (p.category_id === categoryId) return false
+        if (Array.isArray(p.categories) && p.categories.some(c => c.category_id === categoryId)) return false
+        return true
+      })
       allParticipants.value = [...otherParticipants, ...newParticipants]
+      matched = extractForCat()
     } catch (error) {
       console.error('Failed to fetch category participants:', error)
     }
   }
 
-  const participants = allParticipants.value.filter(p => p.category_id === categoryId)
-  archersByCategory.value[categoryId] = participants.map(p => ({
-    uuid: p.id, // Use registration ID as uuid
-    archerId: p.archer_id,
-    name: p.full_name || p.archer_name || p.name,
-    club: p.club_name || p.club,
-    avatar_url: p.avatar_url || p.photo_url,
-    assignedTarget: '',
-    assignmentId: null
-  }))
+  archersByCategory.value = {
+    ...archersByCategory.value,
+    [categoryId]: matched
+  }
 }
 
 const fetchTargets = async () => {
@@ -338,6 +368,26 @@ const fetchBoardCodes = async () => {
   }
 }
 
+const isAssignmentForCategory = (assignment, categoryId) => {
+  if (!assignment || !categoryId) return false
+  const p = allParticipants.value.find(part => {
+    if (part.id === assignment.participant_id || part.uuid === assignment.participant_id || part.participant_id === assignment.participant_id) return true
+    if (Array.isArray(part.categories)) {
+      return part.categories.some(c => c.participant_id === assignment.participant_id)
+    }
+    return false
+  })
+  if (!p) {
+    // Check inside archersByCategory directly
+    const catArchers = archersByCategory.value[categoryId] || []
+    return catArchers.some(a => a.uuid === assignment.participant_id)
+  }
+  if (Array.isArray(p.categories)) {
+    return p.categories.some(c => c.participant_id === assignment.participant_id && c.category_id === categoryId)
+  }
+  return p.category_id === categoryId
+}
+
 const loadExistingAssignments = async (categoryId, preLoadedAssignments = null) => {
   if (!sessionData.value) return
   try {
@@ -345,15 +395,10 @@ const loadExistingAssignments = async (categoryId, preLoadedAssignments = null) 
     if (!assignments) {
       const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`)
       assignments = response?.assignments || response.data?.assignments || []
-      // Store all session assignments for the target mode
       allSessionAssignments.value = assignments
-      // Filter for the current category to use for the archer list mapping
-      assignments = assignments.filter(a =>
-        allParticipants.value.find(p => p.id === a.participant_id)?.category_id === categoryId
-      )
+      assignments = assignments.filter(a => isAssignmentForCategory(a, categoryId))
     }
 
-    // Replace the array reference to trigger reactivity
     if (archersByCategory.value[categoryId]) {
       const updatedArchers = archersByCategory.value[categoryId].map(archer => {
         const existing = assignments.find(a => a.participant_id === archer.uuid)
@@ -379,7 +424,6 @@ const loadExistingAssignments = async (categoryId, preLoadedAssignments = null) 
 const fetchTargetAssignments = async (categoryId, preLoadedAssignments = null) => {
   if (!sessionData.value) return
   try {
-    // 1. Fetch assignments (if not provided)
     let assignments = preLoadedAssignments
     if (!assignments) {
       const assignmentsRes = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`, {
@@ -388,18 +432,26 @@ const fetchTargetAssignments = async (categoryId, preLoadedAssignments = null) =
       assignments = assignmentsRes?.assignments || assignmentsRes.data?.assignments || []
     }
 
-    // Filter by participationIds to be safe (though backend now filters)
-    const participationIds = new Set((archersByCategory.value[categoryId] || []).map(a => a.uuid))
-    assignments = assignments.filter(a => participationIds.has(a.participant_id))
+    // Filter by participationIds if archersByCategory is loaded
+    const categoryArchers = archersByCategory.value[categoryId] || []
+    if (categoryArchers.length > 0) {
+      const participationIds = new Set(categoryArchers.map(a => a.uuid))
+      assignments = assignments.filter(a => participationIds.has(a.participant_id))
+    }
 
-    // 2. Fetch all scores for this session & category
     const scoresRes = await get(`/qualification/sessions/${sessionData.value.uuid}/scores`, {
       params: { category_id: categoryId }
     })
     const allScores = scoresRes?.scores || []
 
     targetAssignments.value = assignments.map(a => {
-      const participantInfo = allParticipants.value.find(p => p.id === a.participant_id || p.uuid === a.participant_id)
+      const participantInfo = allParticipants.value.find(p => {
+        if (p.id === a.participant_id || p.uuid === a.participant_id || p.participant_id === a.participant_id) return true
+        if (Array.isArray(p.categories)) {
+          return p.categories.some(c => c.participant_id === a.participant_id)
+        }
+        return false
+      })
       const clubName = a.club_name || a.club || participantInfo?.club_name || participantInfo?.club || ''
       const avatarUrl = a.avatar_url || a.archer_avatar_url || participantInfo?.avatar_url || participantInfo?.photo_url || ''
       const archerName = a.archer_name || a.name || participantInfo?.full_name || participantInfo?.archer_name || ''
@@ -420,7 +472,6 @@ const fetchTargetAssignments = async (categoryId, preLoadedAssignments = null) =
           allEndScores[endScore.end_number] = arrows
         })
 
-        // Determine next end to input
         const totalEnds = sessionData.value?.total_ends || 1
         for (let i = 1; i <= totalEnds; i++) {
           if (!allEndScores[i] || allEndScores[i].every(v => v === undefined)) {
@@ -452,14 +503,11 @@ const selectCategory = async (categoryId) => {
   try {
     await fetchArchersForCategory(categoryId)
 
-    // Fetch all session assignments so target layout & locked state across all categories are accurate
     const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`)
     const allAssignments = response?.assignments || response.data?.assignments || []
     allSessionAssignments.value = allAssignments
 
-    const categoryAssignments = allAssignments.filter(a =>
-      allParticipants.value.find(p => p.id === a.participant_id)?.category_id === categoryId
-    )
+    const categoryAssignments = allAssignments.filter(a => isAssignmentForCategory(a, categoryId))
 
     await loadExistingAssignments(categoryId, categoryAssignments)
     await fetchTargetAssignments(categoryId, categoryAssignments)
@@ -478,9 +526,7 @@ const handleAssignmentsSaved = async () => {
       const allAssignments = response?.assignments || response.data?.assignments || []
       allSessionAssignments.value = allAssignments
 
-      const categoryAssignments = allAssignments.filter(a =>
-        allParticipants.value.find(p => p.id === a.participant_id)?.category_id === selectedCategory.value
-      )
+      const categoryAssignments = allAssignments.filter(a => isAssignmentForCategory(a, selectedCategory.value))
 
       await loadExistingAssignments(selectedCategory.value, categoryAssignments)
       await fetchTargetAssignments(selectedCategory.value, categoryAssignments)
@@ -531,7 +577,7 @@ const downloadScoresheet = async () => {
     document.body.removeChild(link)
     window.URL.revokeObjectURL(blobUrl)
 
-    toast.addToast(t('event_qualification.toast_scoresheet_downloaded', 'Scoresheet PDF berhasil diunduh'), 'success')
+    toast.addToast(t('event_qualification.toast_scoresheet_downloaded'), 'success')
   } catch (err) {
     console.error('Failed to download scoresheet PDF:', err)
     toast.addToast(err?.message || t('event_qualification.failed_open_scoresheet'), 'error')

@@ -14,7 +14,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('my_events.title', 'Turnamen Saya') + ' - Archeris Dashboard')
+  title: computed(() => t('my_events.title') + ' - Archeris Dashboard')
 })
 
 const { clearTournament } = useTournamentContext()

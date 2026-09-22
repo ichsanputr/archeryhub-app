@@ -16,7 +16,7 @@
             <div class="h-10 flex flex-col items-center justify-center mb-6">
               <span 
                 :class="[
-                  'text-xs font-bold px-3 py-1 rounded-xl shadow-2xs',
+                  'text-xs sm:text-sm font-bold px-3.5 py-1 rounded-xl shadow-2xs',
                   isExpandedFullscreen ? 'bg-slate-800 text-slate-200 border border-slate-700' : 'bg-white border border-slate-200/80 text-slate-600'
                 ]"
               >
@@ -38,13 +38,13 @@
                   class="w-[230px] sm:w-[250px] bg-white rounded-2xl border border-slate-200/90 shadow-2xs hover:border-navy hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none relative"
                 >
                   <!-- Card Micro-Header -->
-                  <div class="flex items-center justify-between px-3 py-1.5 bg-slate-50/80 border-b border-slate-100 text-[11px] font-semibold text-slate-500">
+                  <div class="flex items-center justify-between px-3 py-1.5 bg-slate-50/80 border-b border-slate-100 text-xs font-semibold text-slate-500">
                     <div class="flex items-center gap-1.5">
-                      <span>Match {{ match.match_no || 1 }}</span>
+                      <span>{{ bt('match_num', { num: match.match_no || 1 }) }}</span>
                     </div>
-                    <div class="flex items-center gap-1 text-[10px] text-slate-400 group-hover:text-navy transition-colors">
-                      <span>Scorecard</span>
-                      <Icon icon="ph:arrow-right-bold" class="text-[9px]" />
+                    <div class="flex items-center gap-1 text-[11px] text-slate-400 group-hover:text-navy transition-colors">
+                      <span>{{ bt('scorecard') }}</span>
+                      <Icon icon="ph:arrow-right-bold" class="text-[10px]" />
                     </div>
                   </div>
 
@@ -59,14 +59,14 @@
                       <span v-if="match.entry_a_seed" class="size-4.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">
                         {{ match.entry_a_seed }}
                       </span>
-                      <span class="text-xs truncate text-navy" :class="match.winner_entry_id === 'a' ? 'font-bold' : 'font-medium text-slate-700'">
+                      <span class="text-xs sm:text-sm truncate text-navy" :class="match.winner_entry_id === 'a' ? 'font-bold' : 'font-medium text-slate-700'">
                         {{ toTitleCase(match.entry_a_name || 'TBD') }}
                       </span>
                       <Icon v-if="match.winner_entry_id === 'a'" icon="ph:crown-fill" class="text-amber-500 text-xs shrink-0" />
                     </div>
                     <span 
                       :class="[
-                        'text-xs px-2 py-0.5 rounded-md font-bold shrink-0 transition-colors',
+                        'text-xs sm:text-sm px-2 py-0.5 rounded-md font-bold shrink-0 transition-colors',
                         match.winner_entry_id === 'a' ? 'bg-navy/10 text-navy font-black' : 'text-slate-400'
                       ]"
                     >
@@ -85,14 +85,14 @@
                       <span v-if="match.entry_b_seed" class="size-4.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-bold flex items-center justify-center shrink-0">
                         {{ match.entry_b_seed }}
                       </span>
-                      <span class="text-xs truncate text-navy" :class="match.winner_entry_id === 'b' ? 'font-bold' : 'font-medium text-slate-700'">
+                      <span class="text-xs sm:text-sm truncate text-navy" :class="match.winner_entry_id === 'b' ? 'font-bold' : 'font-medium text-slate-700'">
                         {{ toTitleCase(match.entry_b_name || 'TBD') }}
                       </span>
                       <Icon v-if="match.winner_entry_id === 'b'" icon="ph:crown-fill" class="text-amber-500 text-xs shrink-0" />
                     </div>
                     <span 
                       :class="[
-                        'text-xs px-2 py-0.5 rounded-md font-bold shrink-0 transition-colors',
+                        'text-xs sm:text-sm px-2 py-0.5 rounded-md font-bold shrink-0 transition-colors',
                         match.winner_entry_id === 'b' ? 'bg-navy/10 text-navy font-black' : 'text-slate-400'
                       ]"
                     >
@@ -123,12 +123,12 @@
           <div class="h-10 flex flex-col items-center justify-center mb-6">
             <span 
               :class="[
-                'text-xs font-bold px-3.5 py-1 rounded-xl shadow-2xs flex items-center gap-1.5',
+                'text-xs sm:text-sm font-bold px-3.5 py-1 rounded-xl shadow-2xs flex items-center gap-1.5',
                 isExpandedFullscreen ? 'bg-amber-950/80 text-amber-300 border border-amber-800' : 'bg-amber-500/10 text-amber-950 border border-amber-400/40'
               ]"
             >
               <Icon icon="ph:crown-simple-fill" class="text-amber-500 text-sm" />
-              Finals Arena
+              {{ bt('finals_arena') }}
             </span>
           </div>
 
@@ -137,24 +137,24 @@
             
             <!-- 1. Gold Medal Final (Centered at exact vertical midpoint matching connector line) -->
             <div class="w-full flex flex-col items-center space-y-2">
-              <div class="px-3 py-1 rounded-xl bg-amber-500/10 border border-amber-400/40 flex items-center gap-1.5 text-xs font-bold text-amber-950 shadow-2xs">
-                <Icon icon="ph:crown-fill" class="text-amber-600 text-xs" />
-                <span>Gold Medal Final</span>
+              <div class="px-3 py-1 rounded-xl bg-amber-500/10 border border-amber-400/40 flex items-center gap-1.5 text-xs sm:text-sm font-bold text-amber-950 shadow-2xs">
+                <Icon icon="ph:crown-fill" class="text-amber-600 text-xs sm:text-sm" />
+                <span>{{ bt('gold_medal_final') }}</span>
               </div>
 
               <div 
                 v-if="resolvedGoldMatch"
-                @click="selectMatch(resolvedGoldMatch, 'Gold Medal Final')"
+                @click="selectMatch(resolvedGoldMatch, bt('gold_medal_final'))"
                 class="w-[240px] sm:w-[260px] bg-gradient-to-b from-amber-50/40 via-white to-white rounded-2xl border-2 border-amber-400/70 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none"
               >
                 <!-- Gold Header -->
-                <div class="flex items-center justify-between px-3.5 py-1.5 bg-amber-500/15 border-b border-amber-400/30 text-[11px] font-bold text-amber-950">
+                <div class="flex items-center justify-between px-3.5 py-1.5 bg-amber-500/15 border-b border-amber-400/30 text-xs font-bold text-amber-950">
                   <div class="flex items-center gap-1.5">
-                    <Icon icon="ph:medal-fill" class="text-amber-600 text-xs" />
-                    <span>Gold Match</span>
+                    <Icon icon="ph:medal-fill" class="text-amber-600 text-xs sm:text-sm" />
+                    <span>{{ bt('gold_match') }}</span>
                   </div>
-                  <span v-if="resolvedGoldMatch.winner_entry_id" class="px-1.5 py-0.2 rounded-md bg-amber-500/25 text-amber-950 text-[10px] font-black">
-                    Champion
+                  <span v-if="resolvedGoldMatch.winner_entry_id" class="px-1.5 py-0.2 rounded-md bg-amber-500/25 text-amber-950 text-[10px] sm:text-xs font-black">
+                    {{ bt('champion') }}
                   </span>
                 </div>
 
@@ -169,7 +169,7 @@
                     <span v-if="resolvedGoldMatch.entry_a_seed" class="size-5 rounded-md bg-amber-200/70 text-amber-950 text-[10px] font-bold flex items-center justify-center shrink-0">
                       {{ resolvedGoldMatch.entry_a_seed }}
                     </span>
-                    <span class="text-xs truncate text-navy" :class="resolvedGoldMatch.winner_entry_id === 'a' ? 'font-black text-navy' : 'font-medium text-slate-700'">
+                    <span class="text-xs sm:text-sm truncate text-navy" :class="resolvedGoldMatch.winner_entry_id === 'a' ? 'font-black text-navy' : 'font-medium text-slate-700'">
                       {{ toTitleCase(resolvedGoldMatch.entry_a_name || 'TBD') }}
                     </span>
                     <Icon v-if="resolvedGoldMatch.winner_entry_id === 'a'" icon="ph:crown-fill" class="text-amber-500 text-sm shrink-0" />
@@ -195,7 +195,7 @@
                     <span v-if="resolvedGoldMatch.entry_b_seed" class="size-5 rounded-md bg-amber-200/70 text-amber-950 text-[10px] font-bold flex items-center justify-center shrink-0">
                       {{ resolvedGoldMatch.entry_b_seed }}
                     </span>
-                    <span class="text-xs truncate text-navy" :class="resolvedGoldMatch.winner_entry_id === 'b' ? 'font-black text-navy' : 'font-medium text-slate-700'">
+                    <span class="text-xs sm:text-sm truncate text-navy" :class="resolvedGoldMatch.winner_entry_id === 'b' ? 'font-black text-navy' : 'font-medium text-slate-700'">
                       {{ toTitleCase(resolvedGoldMatch.entry_b_name || 'TBD') }}
                     </span>
                     <Icon v-if="resolvedGoldMatch.winner_entry_id === 'b'" icon="ph:crown-fill" class="text-amber-500 text-sm shrink-0" />
@@ -214,23 +214,23 @@
 
             <!-- 2. Bronze Medal Final (Neatly underneath Gold Final) -->
             <div v-if="resolvedBronzeMatch" class="w-full flex flex-col items-center space-y-1.5 pt-2">
-              <div class="px-2.5 py-0.5 rounded-lg bg-amber-700/10 border border-amber-700/20 flex items-center gap-1.5 text-[10px] font-bold text-amber-900 shadow-2xs">
-                <Icon icon="ph:medal-fill" class="text-amber-700 text-xs" />
-                <span>Bronze Medal Final (3rd Place)</span>
+              <div class="px-2.5 py-1 rounded-lg bg-amber-700/10 border border-amber-700/20 flex items-center gap-1.5 text-xs font-bold text-amber-900 shadow-2xs">
+                <Icon icon="ph:medal-fill" class="text-amber-700 text-xs sm:text-sm" />
+                <span>{{ bt('bronze_medal_final') }}</span>
               </div>
 
               <div 
-                @click="selectMatch(resolvedBronzeMatch, 'Bronze Medal Final')"
+                @click="selectMatch(resolvedBronzeMatch, bt('bronze_medal_final'))"
                 class="w-[240px] sm:w-[260px] bg-white rounded-2xl border border-amber-700/30 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer overflow-hidden group select-none"
               >
                 <!-- Bronze Header -->
-                <div class="flex items-center justify-between px-3.5 py-1 bg-amber-700/10 border-b border-amber-700/20 text-[10px] font-bold text-amber-900">
+                <div class="flex items-center justify-between px-3.5 py-1 bg-amber-700/10 border-b border-amber-700/20 text-xs font-bold text-amber-900">
                   <div class="flex items-center gap-1">
                     <Icon icon="ph:medal-fill" class="text-amber-700 text-xs" />
-                    <span>Bronze Match</span>
+                    <span>{{ bt('bronze_match') }}</span>
                   </div>
-                  <span v-if="resolvedBronzeMatch.winner_entry_id" class="px-1.5 py-0.2 rounded-md bg-amber-700/20 text-amber-900 text-[9px] font-bold">
-                    3rd Place
+                  <span v-if="resolvedBronzeMatch.winner_entry_id" class="px-1.5 py-0.2 rounded-md bg-amber-700/20 text-amber-900 text-[10px] sm:text-xs font-bold">
+                    {{ bt('third_place') }}
                   </span>
                 </div>
 
@@ -245,12 +245,12 @@
                     <span v-if="resolvedBronzeMatch.entry_a_seed" class="size-4.5 rounded-md bg-amber-100 text-amber-900 text-[10px] font-bold flex items-center justify-center shrink-0">
                       {{ resolvedBronzeMatch.entry_a_seed }}
                     </span>
-                    <span class="text-xs truncate text-navy" :class="resolvedBronzeMatch.winner_entry_id === 'a' ? 'font-bold' : 'font-medium text-slate-700'">
+                    <span class="text-xs sm:text-sm truncate text-navy" :class="resolvedBronzeMatch.winner_entry_id === 'a' ? 'font-bold' : 'font-medium text-slate-700'">
                       {{ toTitleCase(resolvedBronzeMatch.entry_a_name || 'TBD') }}
                     </span>
                     <Icon v-if="resolvedBronzeMatch.winner_entry_id === 'a'" icon="ph:medal-fill" class="text-amber-700 text-xs shrink-0" />
                   </div>
-                  <span :class="['text-xs px-2 py-0.5 rounded-md font-bold shrink-0', resolvedBronzeMatch.winner_entry_id === 'a' ? 'bg-amber-700/15 text-amber-900 font-black' : 'text-slate-400']">
+                  <span :class="['text-xs sm:text-sm px-2 py-0.5 rounded-md font-bold shrink-0', resolvedBronzeMatch.winner_entry_id === 'a' ? 'bg-amber-700/15 text-amber-900 font-black' : 'text-slate-400']">
                     {{ resolvedBronzeMatch.set_points_a !== undefined && resolvedBronzeMatch.set_points_a !== '' ? resolvedBronzeMatch.set_points_a : '-' }}
                   </span>
                 </div>
@@ -266,12 +266,12 @@
                     <span v-if="resolvedBronzeMatch.entry_b_seed" class="size-4.5 rounded-md bg-amber-100 text-amber-900 text-[10px] font-bold flex items-center justify-center shrink-0">
                       {{ resolvedBronzeMatch.entry_b_seed }}
                     </span>
-                    <span class="text-xs truncate text-navy" :class="resolvedBronzeMatch.winner_entry_id === 'b' ? 'font-bold' : 'font-medium text-slate-700'">
+                    <span class="text-xs sm:text-sm truncate text-navy" :class="resolvedBronzeMatch.winner_entry_id === 'b' ? 'font-bold' : 'font-medium text-slate-700'">
                       {{ toTitleCase(resolvedBronzeMatch.entry_b_name || 'TBD') }}
                     </span>
                     <Icon v-if="resolvedBronzeMatch.winner_entry_id === 'b'" icon="ph:medal-fill" class="text-amber-700 text-xs shrink-0" />
                   </div>
-                  <span :class="['text-xs px-2 py-0.5 rounded-md font-bold shrink-0', resolvedBronzeMatch.winner_entry_id === 'b' ? 'bg-amber-700/15 text-amber-900 font-black' : 'text-slate-400']">
+                  <span :class="['text-xs sm:text-sm px-2 py-0.5 rounded-md font-bold shrink-0', resolvedBronzeMatch.winner_entry_id === 'b' ? 'bg-amber-700/15 text-amber-900 font-black' : 'text-slate-400']">
                     {{ resolvedBronzeMatch.set_points_b !== undefined && resolvedBronzeMatch.set_points_b !== '' ? resolvedBronzeMatch.set_points_b : '-' }}
                   </span>
                 </div>
@@ -286,7 +286,7 @@
       <!-- Empty State -->
       <div v-else class="text-center py-20 text-slate-400">
         <Icon icon="ph:sword" class="text-3xl mx-auto mb-2 text-slate-300" />
-        <div class="text-xs sm:text-sm font-medium">No matches available in this round bracket.</div>
+        <div class="text-xs sm:text-sm font-medium">{{ bt('no_matches') }}</div>
       </div>
     </div>
 
@@ -323,7 +323,7 @@
               appear
             >
               <div 
-                v-if="selectedMatch"
+                v-if="selectedMatch" 
                 class="bg-white rounded-3xl border border-slate-100 shadow-2xl max-w-xl w-full overflow-hidden relative z-10 my-auto"
               >
                 <!-- Brand Accent Top Bar -->
@@ -338,14 +338,14 @@
                     <div>
                       <div class="flex items-center gap-2">
                         <h3 class="text-base font-bold text-navy">
-                          {{ selectedMatchRoundName || 'Elimination Match' }}
+                          {{ selectedMatchRoundName || bt('elimination_match') }}
                         </h3>
                         <span class="px-2 py-0.5 rounded-full bg-slate-200/80 text-slate-700 text-[10px] font-bold">
-                          Match #{{ selectedMatch.match_no || 1 }}
+                          {{ bt('match_hash', { num: selectedMatch.match_no || 1 }) }}
                         </span>
                       </div>
                       <div class="text-[11px] text-slate-400 font-medium mt-0.5">
-                        Head-to-head official elimination scorecard
+                        {{ bt('head_to_head_scorecard') }}
                       </div>
                     </div>
                   </div>
@@ -382,7 +382,7 @@
                               :src="getAvatarUrl(selectedMatch.entry_a_name)" 
                               :alt="selectedMatch.entry_a_name || 'Archer A'"
                               class="size-full rounded-[14px] object-cover bg-slate-100"
-                              @error="(e) => e.target.src = 'https://ui-avatars.com/api/?name=Archer&background=f1f5f9&color=94a3b8'"
+                              @error="(e) => e.target.src = generateDicebearAvatar(selectedMatch.entry_a_name)"
                             />
                           </div>
 
@@ -402,7 +402,7 @@
                             {{ toTitleCase(selectedMatch.entry_a_name || 'TBD') }}
                           </div>
                           <div v-if="selectedMatch.entry_a_seed" class="inline-flex items-center gap-1 text-[10px] text-slate-500 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200 mt-1">
-                            <span>Seed #{{ selectedMatch.entry_a_seed }}</span>
+                            <span>{{ bt('seed_hash', { seed: selectedMatch.entry_a_seed }) }}</span>
                           </div>
                         </div>
 
@@ -440,7 +440,7 @@
                               :src="getAvatarUrl(selectedMatch.entry_b_name)" 
                               :alt="selectedMatch.entry_b_name || 'Archer B'"
                               class="size-full rounded-[14px] object-cover bg-slate-100"
-                              @error="(e) => e.target.src = 'https://ui-avatars.com/api/?name=Archer&background=f1f5f9&color=94a3b8'"
+                              @error="(e) => e.target.src = generateDicebearAvatar(selectedMatch.entry_b_name)"
                             />
                           </div>
 
@@ -460,7 +460,7 @@
                             {{ toTitleCase(selectedMatch.entry_b_name || 'TBD') }}
                           </div>
                           <div v-if="selectedMatch.entry_b_seed" class="inline-flex items-center gap-1 text-[10px] text-slate-500 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200 mt-1">
-                            <span>Seed #{{ selectedMatch.entry_b_seed }}</span>
+                            <span>{{ bt('seed_hash', { seed: selectedMatch.entry_b_seed }) }}</span>
                           </div>
                         </div>
 
@@ -482,28 +482,28 @@
                   <div class="space-y-3">
                     <div class="flex items-center justify-between px-0.5">
                       <div class="flex items-center gap-2">
-                        <Icon icon="ph:target-bold" class="text-primary text-sm" />
-                        <h4 class="text-xs font-bold text-navy">
-                          Official Match Record
+                        <Icon icon="ph:target-bold" class="text-primary text-base" />
+                        <h4 class="text-xs sm:text-sm font-bold text-navy">
+                          {{ bt('official_match_record') }}
                         </h4>
                       </div>
-                      <div class="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
-                        <Icon icon="ph:check-circle-fill" class="text-xs" />
-                        <span>Official Set System</span>
+                      <div class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                        <Icon icon="ph:check-circle-fill" class="text-xs sm:text-sm" />
+                        <span>{{ bt('official_set_system') }}</span>
                       </div>
                     </div>
 
                     <!-- Sets Table -->
                     <div v-if="parsedSetRows.length > 0" class="overflow-x-auto rounded-2xl border border-slate-200">
-                      <table class="w-full text-center border-collapse text-xs">
+                      <table class="w-full text-center border-collapse text-xs sm:text-sm">
                         <thead>
-                          <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold text-[11px]">
-                            <th class="py-2 px-3 text-left">Set</th>
-                            <th class="py-2 px-3">End Score A</th>
-                            <th class="py-2 px-2">Pts A</th>
-                            <th class="py-2 px-2">Pts B</th>
-                            <th class="py-2 px-3">End Score B</th>
-                            <th class="py-2 px-3 text-right">Running</th>
+                          <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold text-xs sm:text-sm">
+                            <th class="py-2 px-3 text-left">{{ bt('col_set') }}</th>
+                            <th class="py-2 px-3">{{ bt('col_end_a') }}</th>
+                            <th class="py-2 px-2">{{ bt('col_pts_a') }}</th>
+                            <th class="py-2 px-2">{{ bt('col_pts_b') }}</th>
+                            <th class="py-2 px-3">{{ bt('col_end_b') }}</th>
+                            <th class="py-2 px-3 text-right">{{ bt('col_running') }}</th>
                           </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
@@ -513,17 +513,17 @@
                             class="hover:bg-slate-50/60 transition-colors"
                           >
                             <td class="py-2.5 px-3 text-left font-bold text-slate-600">
-                              Set {{ row.set }}
+                              {{ bt('set_num', { num: row.set }) }}
                             </td>
-                            <td class="py-2.5 px-3 font-bold text-navy text-xs">
-                              <span class="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200/60 inline-block">
+                            <td class="py-2.5 px-3 font-bold text-navy text-xs sm:text-sm">
+                              <span class="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200/60 inline-block font-mono">
                                 {{ row.scoreA || '-' }}
                               </span>
                             </td>
                             <td class="py-2.5 px-2">
                               <span 
                                 :class="[
-                                  'size-6 rounded-lg inline-flex items-center justify-center font-bold text-xs',
+                                  'size-6 sm:size-7 rounded-lg inline-flex items-center justify-center font-bold text-xs sm:text-sm',
                                   row.ptsA > row.ptsB 
                                     ? 'bg-emerald-100 text-emerald-800 font-black' 
                                     : (row.ptsA === row.ptsB ? 'bg-slate-100 text-slate-600' : 'text-slate-400')
@@ -535,7 +535,7 @@
                             <td class="py-2.5 px-2">
                               <span 
                                 :class="[
-                                  'size-6 rounded-lg inline-flex items-center justify-center font-bold text-xs',
+                                  'size-6 sm:size-7 rounded-lg inline-flex items-center justify-center font-bold text-xs sm:text-sm',
                                   row.ptsB > row.ptsA 
                                     ? 'bg-emerald-100 text-emerald-800 font-black' 
                                     : (row.ptsA === row.ptsB ? 'bg-slate-100 text-slate-600' : 'text-slate-400')
@@ -544,13 +544,13 @@
                                 {{ row.ptsB }}
                               </span>
                             </td>
-                            <td class="py-2.5 px-3 font-bold text-navy text-xs">
-                              <span class="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200/60 inline-block">
+                            <td class="py-2.5 px-3 font-bold text-navy text-xs sm:text-sm">
+                              <span class="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200/60 inline-block font-mono">
                                 {{ row.scoreB || '-' }}
                               </span>
                             </td>
-                            <td class="py-2.5 px-3 text-right font-bold text-navy text-xs">
-                              <span class="px-2 py-0.5 rounded-md bg-navy/5 text-navy">
+                            <td class="py-2.5 px-3 text-right font-bold text-navy text-xs sm:text-sm">
+                              <span class="px-2.5 py-1 rounded-md bg-navy/5 text-navy font-mono">
                                 {{ row.runningA }} - {{ row.runningB }}
                               </span>
                             </td>
@@ -559,9 +559,9 @@
                       </table>
                     </div>
 
-                    <div v-else class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 text-center text-slate-400 text-xs space-y-1">
+                    <div v-else class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 text-center text-slate-400 text-xs sm:text-sm space-y-1">
                       <Icon icon="ph:info-bold" class="text-xl mx-auto text-slate-300" />
-                      <div class="font-medium text-slate-500">No individual arrow end breakdown recorded.</div>
+                      <div class="font-medium text-slate-500">{{ bt('no_arrow_breakdown') }}</div>
                     </div>
                   </div>
 
@@ -601,8 +601,136 @@ const props = defineProps({
   isFullPage: {
     type: Boolean,
     default: false
+  },
+  currentLang: {
+    type: String,
+    default: 'en'
   }
 })
+
+// ─────────────────────────────────────────────────────────────
+// MULTI-LANGUAGE I18N DICTIONARY & HELPERS (ID / EN / IT)
+// ─────────────────────────────────────────────────────────────
+const bracketI18n = {
+  id: {
+    finals_arena: 'Arena Babak Final',
+    gold_medal_final: 'Babak Final Perebutan Emas',
+    gold_match: 'Pertandingan Emas',
+    champion: 'Juara 1',
+    bronze_medal_final: 'Babak Final Perebutan Perunggu (Juara 3)',
+    bronze_match: 'Pertandingan Perunggu',
+    third_place: 'Juara 3',
+    scorecard: 'Scorecard',
+    match_num: 'Match {num}',
+    match_hash: 'Match #{num}',
+    seed_hash: 'Unggulan #{seed}',
+    no_matches: 'Tidak ada pertandingan pada babak bagan ini.',
+    elimination_match: 'Pertandingan Eliminasi',
+    head_to_head_scorecard: 'Scorecard resmi pertandingan satu lawan satu babak gugur',
+    official_match_record: 'Catatan Resmi Pertandingan',
+    official_set_system: 'Sistem Set Resmi',
+    col_set: 'Set',
+    col_end_a: 'Skor Rambahan A',
+    col_pts_a: 'Poin A',
+    col_pts_b: 'Poin B',
+    col_end_b: 'Skor Rambahan B',
+    col_running: 'Kumulatif',
+    set_num: 'Set {num}',
+    no_arrow_breakdown: 'Rincian rambahan panah individual tidak tercatat.'
+  },
+  en: {
+    finals_arena: 'Finals Arena',
+    gold_medal_final: 'Gold Medal Final',
+    gold_match: 'Gold Match',
+    champion: 'Champion',
+    bronze_medal_final: 'Bronze Medal Final (3rd Place)',
+    bronze_match: 'Bronze Match',
+    third_place: '3rd Place',
+    scorecard: 'Scorecard',
+    match_num: 'Match {num}',
+    match_hash: 'Match #{num}',
+    seed_hash: 'Seed #{seed}',
+    no_matches: 'No matches available in this round bracket.',
+    elimination_match: 'Elimination Match',
+    head_to_head_scorecard: 'Head-to-head official elimination scorecard',
+    official_match_record: 'Official Match Record',
+    official_set_system: 'Official Set System',
+    col_set: 'Set',
+    col_end_a: 'End Score A',
+    col_pts_a: 'Pts A',
+    col_pts_b: 'Pts B',
+    col_end_b: 'End Score B',
+    col_running: 'Running',
+    set_num: 'Set {num}',
+    no_arrow_breakdown: 'No individual arrow end breakdown recorded.'
+  },
+  it: {
+    finals_arena: 'Arena Finali',
+    gold_medal_final: 'Finale per l\'Oro',
+    gold_match: 'Scontro per l\'Oro',
+    champion: 'Campione',
+    bronze_medal_final: 'Finale per il Bronzo (3° Posto)',
+    bronze_match: 'Scontro per il Bronzo',
+    third_place: '3° Posto',
+    scorecard: 'Scorecard',
+    match_num: 'Incontro {num}',
+    match_hash: 'Incontro #{num}',
+    seed_hash: 'Testa di serie #{seed}',
+    no_matches: 'Nessun incontro disponibile per questo turno del tabellone.',
+    elimination_match: 'Scontro Eliminatorio',
+    head_to_head_scorecard: 'Scorecard ufficiale dello scontro diretto',
+    official_match_record: 'Referto Ufficiale Incontro',
+    official_set_system: 'Sistema Set Ufficiale',
+    col_set: 'Set',
+    col_end_a: 'Punti Volée A',
+    col_pts_a: 'Pt A',
+    col_pts_b: 'Pt B',
+    col_end_b: 'Punti Volée B',
+    col_running: 'Progressivo',
+    set_num: 'Set {num}',
+    no_arrow_breakdown: 'Dettaglio delle volée individuali non registrato.'
+  }
+}
+
+const roundNamesDict = {
+  id: {
+    finals: 'Babak Final',
+    semifinals: 'Babak Semifinal',
+    quarterfinals: 'Babak Perempat Final',
+    round_1_8: 'Babak 1/8 Final',
+    round_1_16: 'Babak 1/16 Final',
+    round_1_32: 'Babak 1/32 Final',
+    round_n: 'Babak {num}'
+  },
+  en: {
+    finals: 'Finals',
+    semifinals: 'Semifinals',
+    quarterfinals: 'Quarterfinals',
+    round_1_8: '1/8 Finals',
+    round_1_16: '1/16 Finals',
+    round_1_32: '1/32 Finals',
+    round_n: 'Round {num}'
+  },
+  it: {
+    finals: 'Finali',
+    semifinals: 'Semifinali',
+    quarterfinals: 'Quarti di Finale',
+    round_1_8: 'Ottavi di Finale',
+    round_1_16: 'Sedicesimi di Finale',
+    round_1_32: 'Trentaduesimi di Finale',
+    round_n: 'Turno {num}'
+  }
+}
+
+const bt = (key, params = {}) => {
+  const lang = props.currentLang || 'en'
+  const dict = bracketI18n[lang] || bracketI18n.en
+  let str = dict[key] || bracketI18n.en[key] || key
+  for (const [k, v] of Object.entries(params)) {
+    str = str.replace(new RegExp(`\\{${k}\\}`, 'g'), v)
+  }
+  return str
+}
 
 // ─────────────────────────────────────────────────────────────
 // AVATAR & TYPOGRAPHY HELPERS
@@ -615,10 +743,7 @@ const toTitleCase = (str) => {
 }
 
 const getAvatarUrl = (name) => {
-  if (!name || name === 'TBD' || name === 'BYE') {
-    return 'https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8&font-size=0.45'
-  }
-  return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffaa00&color=202434&font-size=0.45&bold=true`
+  return generateDicebearAvatar(name)
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -740,14 +865,16 @@ const resolvedBronzeMatch = computed(() => {
 const getRoundName = (roundNo) => {
   const tot = totalRounds.value
   const distFromFinal = tot - roundNo
+  const lang = props.currentLang || 'en'
+  const rDict = roundNamesDict[lang] || roundNamesDict.en
 
-  if (distFromFinal === 0) return 'Finals'
-  if (distFromFinal === 1) return 'Semifinals'
-  if (distFromFinal === 2) return 'Quarterfinals'
-  if (distFromFinal === 3) return '1/8 Finals'
-  if (distFromFinal === 4) return '1/16 Finals'
-  if (distFromFinal === 5) return '1/32 Finals'
-  return `Round ${roundNo}`
+  if (distFromFinal === 0) return rDict.finals
+  if (distFromFinal === 1) return rDict.semifinals
+  if (distFromFinal === 2) return rDict.quarterfinals
+  if (distFromFinal === 3) return rDict.round_1_8
+  if (distFromFinal === 4) return rDict.round_1_16
+  if (distFromFinal === 5) return rDict.round_1_32
+  return rDict.round_n.replace('{num}', roundNo)
 }
 
 // ─────────────────────────────────────────────────────────────

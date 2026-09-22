@@ -4,7 +4,7 @@
     <div class="flex items-center justify-between mb-4">
       <div>
         <h3 class="text-lg font-bold text-gray-900">{{ totalContributions }} problems in the last year</h3>
-        <p class="text-sm text-gray-600 mt-1">Daily problem-solving activity</p>
+        <div class="text-sm text-gray-600 mt-1">Daily problem-solving activity</div>
       </div>
       <div class="flex items-center gap-2 text-xs text-gray-600">
         <span>Less</span>
@@ -59,20 +59,20 @@
     <!-- Stats Row -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-gray-200">
       <div class="text-center p-3 bg-gray-50 rounded-lg">
-        <p class="text-2xl font-bold text-gray-900">{{ currentStreak }}</p>
-        <p class="text-xs text-gray-600 mt-1">Current Streak</p>
+        <div class="text-2xl font-bold text-gray-900">{{ currentStreak }}</div>
+        <div class="text-xs text-gray-600 mt-1">Current Streak</div>
       </div>
       <div class="text-center p-3 bg-green-50 rounded-lg">
-        <p class="text-2xl font-bold text-green-600">{{ longestStreak }}</p>
-        <p class="text-xs text-gray-600 mt-1">Longest Streak</p>
+        <div class="text-2xl font-bold text-green-600">{{ longestStreak }}</div>
+        <div class="text-xs text-gray-600 mt-1">Longest Streak</div>
       </div>
       <div class="text-center p-3 bg-yellow-50 rounded-lg">
-        <p class="text-2xl font-bold text-yellow-600">{{ mostActiveDay }}</p>
-        <p class="text-xs text-gray-600 mt-1">Most Active Day</p>
+        <div class="text-2xl font-bold text-yellow-600">{{ mostActiveDay }}</div>
+        <div class="text-xs text-gray-600 mt-1">Most Active Day</div>
       </div>
       <div class="text-center p-3 bg-orange-50 rounded-lg">
-        <p class="text-2xl font-bold text-orange-600">{{ totalDaysActive }}</p>
-        <p class="text-xs text-gray-600 mt-1">Days Active</p>
+        <div class="text-2xl font-bold text-orange-600">{{ totalDaysActive }}</div>
+        <div class="text-xs text-gray-600 mt-1">Days Active</div>
       </div>
     </div>
   </div>

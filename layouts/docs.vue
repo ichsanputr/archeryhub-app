@@ -1,40 +1,40 @@
 <template>
-    <div class="min-h-screen flex flex-col bg-gray-50 font-body text-navy overflow-x-clip" :class="{ 'dark': isDark }">
-        <!-- Docs Header — always white -->
+    <div class="min-h-screen flex flex-col bg-gray-50 dark:bg-slate-950 font-body text-navy dark:text-slate-100 overflow-x-clip transition-colors duration-200" :class="{ 'dark': isDark }">
+        <!-- Docs Header -->
         <header
-            class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-sm h-16 flex items-center">
+            class="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 shadow-sm h-16 flex items-center transition-colors duration-200">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between">
                 <!-- Left: Logo + Docs badge -->
                 <div class="flex items-center gap-3">
                     <NuxtLink to="/" class="flex items-center gap-2.5 group">
                         <img src="/logo.png" alt="Archeris" class="w-8 h-8 object-contain transition-transform duration-300 group-hover:scale-105" />
-                        <span class="text-lg font-black tracking-tight text-navy">Archeris</span>
+                        <span class="text-lg font-black tracking-tight text-navy dark:text-white">Archeris</span>
                     </NuxtLink>
-                    <div class="items-center gap-2">
-                        <span class="text-gray-200 text-lg font-light select-none">/</span>
-                        <NuxtLink to="/docs" class="text-sm font-bold text-gray-500 hover:text-navy transition-colors">
+                    <div class="flex items-center gap-2">
+                        <span class="text-gray-200 dark:text-slate-700 text-lg font-light select-none">/</span>
+                        <NuxtLink to="/docs" class="text-sm font-bold text-gray-500 dark:text-slate-400 hover:text-navy dark:hover:text-white transition-colors">
                             Docs</NuxtLink>
                     </div>
                 </div>
 
-                <!-- Right: Search button & Theme Toggle & Language switcher -->
+                <!-- Right: Search button & Theme Toggle -->
                 <div class="flex items-center gap-3">
                     <button
                         @click="searchDialog?.open()"
-                        class="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-primary/10 text-gray-400 transition-all text-xs font-medium group"
+                        class="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-slate-700 text-gray-400 dark:text-slate-400 transition-all text-xs font-medium group cursor-pointer border border-transparent dark:border-slate-700"
                     >
                         <Icon icon="ph:magnifying-glass-bold" class="text-base group-hover:text-primary transition-colors" />
-                        <span class="hidden sm:inline text-gray-500 transition-colors">Search documentation</span>
-                        <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 bg-white border border-gray-200 rounded text-xs text-gray-300 font-mono ml-1">Ctrl K</kbd>
+                        <span class="hidden sm:inline text-gray-500 dark:text-slate-300 transition-colors">Search documentation</span>
+                        <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded text-xs text-gray-400 dark:text-slate-400 font-mono ml-1">Ctrl K</kbd>
                     </button>
 
                     <!-- Theme Toggle -->
-                    <button v-if="isSlugPage"
+                    <button
                         @click="toggleDark"
-                        class="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-500 transition-all flex items-center justify-center shrink-0 size-9"
+                        class="p-2 rounded-xl bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-500 dark:text-yellow-400 transition-all flex items-center justify-center shrink-0 size-9 cursor-pointer border border-transparent dark:border-slate-700"
                         :title="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
                     >
-                        <Icon :icon="isDark ? 'ph:sun-bold' : 'ph:moon-bold'" class="text-lg text-navy" />
+                        <Icon :icon="isDark ? 'ph:sun-bold' : 'ph:moon-bold'" class="text-lg text-navy dark:text-yellow-400" />
                     </button>
                 </div>
             </div>
@@ -54,7 +54,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import DocSearchDialog from '~/components/layout/DocSearchDialog.vue'
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 
 defineOptions({ name: 'DocsLayout' })
 
@@ -62,7 +62,6 @@ const searchDialog = ref(null)
 const route = useRoute()
 const router = useRouter()
 
-const isSlugPage = computed(() => route.path.startsWith('/docs/') && route.path !== '/docs')
 const headerSearch = ref(route.query.q || '')
 
 watch(() => route.query.q, (newQ) => {
@@ -74,14 +73,6 @@ watch(() => route.query.q, (newQ) => {
 watch(() => route.path, () => {
     updateDocumentClass()
 })
-
-const onSearchSubmit = () => {
-    if (headerSearch.value.trim() !== '') {
-        router.push({ path: '/docs', query: { q: headerSearch.value } })
-    } else {
-        router.push({ path: '/docs' })
-    }
-}
 
 // Custom dark mode toggle
 const isDark = ref(false)
@@ -96,7 +87,7 @@ const toggleDark = () => {
 
 const updateDocumentClass = () => {
     if (!import.meta.client) return
-    if (isDark.value && isSlugPage.value) {
+    if (isDark.value) {
         document.documentElement.classList.add('dark')
     } else {
         document.documentElement.classList.remove('dark')
@@ -123,7 +114,7 @@ onUnmounted(() => {
 </script>
 
 <style>
-/* Clean light scrollbars for Docs */
+/* Clean scrollbars for Docs */
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
@@ -140,6 +131,9 @@ onUnmounted(() => {
 .scrollbar-styled::-webkit-scrollbar-thumb {
     background: #e2e8f0;
     border-radius: 10px;
+}
+.dark .scrollbar-styled::-webkit-scrollbar-thumb {
+    background: #334155;
 }
 </style>
 

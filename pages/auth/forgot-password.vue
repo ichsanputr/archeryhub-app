@@ -21,17 +21,17 @@
                     <span class="text-white text-3xl font-black tracking-tight font-display">Archeris</span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display" v-html="t('auth.forgot.reset_title')"></h1>
-                <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
+                <div class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
                     {{ t('auth.forgot.reset_desc') }}
-                </p>
+                </div>
                 <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
                     <div class="flex -space-x-2">
                         <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
-                            :src="getMediaUrl('male_94.jpg')" />
+                            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Ardi" />
                         <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
-                            :src="getMediaUrl('female_18.jpg')" />
+                            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Sarah" />
                         <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
-                            :src="getMediaUrl('male_8.jpg')" />
+                            src="https://api.dicebear.com/9.x/avataaars/svg?seed=Budi" />
                         <div
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
@@ -68,14 +68,14 @@
                                 <Icon icon="ph:envelope-simple-open-bold" class="text-2xl text-navy" />
                             </div>
                             <h1 class="text-2xl font-black text-navy tracking-tight">{{ t('auth.forgot.title') }}</h1>
-                            <p class="mt-2 text-slate-500 text-sm leading-relaxed">
+                            <div class="mt-2 text-slate-500 text-sm leading-relaxed">
                                 {{ t('auth.forgot.desc') }}
-                            </p>
+                            </div>
                         </div>
 
                         <form @submit.prevent="requestOTP" class="space-y-5">
                             <BaseInput v-model="form.email" :label="t('auth.login.email_label')" :placeholder="t('auth.login.email_placeholder')"
-                                type="email" icon="mail" required :error="errors.email"
+                                type="email" icon="ph:envelope-simple" required :error="errors.email"
                                 @update:model-value="validate('email', form.email, [rules.required(), rules.email()])" />
 
                             <BaseButton type="submit" variant="gold" block :loading="isLoading"
@@ -84,12 +84,12 @@
                             </BaseButton>
                         </form>
 
-                        <p class="mt-6 text-center text-sm text-slate-500 font-body">
+                        <div class="mt-6 text-center text-sm text-slate-500 font-body">
                             {{ t('auth.forgot.remember_password') }}
                             <NuxtLink to="/auth/login"
                                 class="font-black text-navy hover:text-primary transition-colors">{{ t('auth.forgot.login_here') }}
                             </NuxtLink>
-                        </p>
+                        </div>
                     </div>
                 </Transition>
 
@@ -102,17 +102,17 @@
                                 <Icon icon="ph:lock-key-open-bold" class="text-2xl text-yellow-500" />
                             </div>
                             <h1 class="text-2xl font-black text-navy tracking-tight">{{ t('auth.forgot.enter_otp') }}</h1>
-                            <p class="mt-2 text-slate-500 text-sm leading-relaxed">
+                            <div class="mt-2 text-slate-500 text-sm leading-relaxed">
                                 <span v-html="t('auth.forgot.otp_sent_to', { email: form.email })"></span><br />
                                 {{ t('auth.forgot.otp_valid_for') }}
-                            </p>
+                            </div>
                         </div>
 
                         <!-- OTP boxes (Grid ensures they never break width) -->
-                        <div class="grid grid-cols-6 gap-2 sm:gap-3 mb-8 w-full">
+                        <div class="grid grid-cols-6 gap-2 sm:gap-3 mb-6 w-full">
                             <input v-for="(_, i) in otpDigits" :key="i" :id="`otp-${i}`" v-model="otpDigits[i]"
                                 type="text" maxlength="1" inputmode="numeric" pattern="[0-9]"
-                                class="w-full aspect-square text-center text-lg sm:text-2xl font-black text-navy border-2 border-slate-200 rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all duration-300 bg-slate-50/50 focus:bg-white shadow-sm flex items-center justify-center min-w-0"
+                                class="w-full aspect-square text-center text-lg sm:text-2xl font-black text-navy border-2 border-slate-200 rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none transition-all duration-300 bg-slate-50/50 focus:bg-white shadow-2xs flex items-center justify-center min-w-0"
                                 :class="{ 'border-red-300 bg-red-50 text-red-600 focus:ring-red-500/10': errors.otp }"
                                 @input="onOtpInput(i, $event)" @keydown="onOtpKeydown(i, $event)"
                                 @paste="onOtpPaste($event)" />
@@ -120,8 +120,8 @@
 
                         <div v-if="errors.otp"
                             class="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3 animate-shake">
-                            <Icon icon="ph:warning-circle-fill" class="text-xl text-red-500 flex-shrink-0" />
-                            <p class="text-xs sm:text-sm text-red-700 font-bold leading-tight">{{ errors.otp }}</p>
+                            <Icon icon="ph:warning-circle-fill" class="text-xl text-red-500 shrink-0" />
+                            <div class="text-xs sm:text-sm text-red-700 font-bold leading-tight">{{ errors.otp }}</div>
                         </div>
 
                         <BaseButton variant="gold" block :loading="isLoading" icon-right="ph:arrow-right"
@@ -130,15 +130,22 @@
                         </BaseButton>
 
                         <div class="mt-8 flex flex-col items-center gap-4">
-                            <button @click="requestOTP" :disabled="resendCooldown > 0"
-                                class="text-sm font-bold text-slate-500 hover:text-navy disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-2">
-                                <Icon v-if="resendCooldown <= 0" icon="ph:arrow-counter-clockwise" />
-                                {{ resendCooldown > 0 ? t('auth.forgot.resend_in', { seconds: resendCooldown }) : t('auth.forgot.resend_otp') }}
+                            <!-- Resend OTP Button / Cooldown -->
+                            <div v-if="resendCooldown > 0"
+                                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100/80 border border-slate-200/80 text-slate-500 text-xs font-bold font-mono shadow-2xs select-none">
+                                <Icon icon="ph:clock-countdown-bold" class="text-sm text-slate-400 animate-pulse" />
+                                <span>{{ t('auth.forgot.resend_in', { seconds: resendCooldown }) }}</span>
+                            </div>
+
+                            <button v-else type="button" @click="resendOTP" :disabled="isLoading"
+                                class="inline-flex items-center gap-2 text-sm font-black text-navy hover:text-primary transition-all cursor-pointer group">
+                                <Icon icon="ph:arrow-counter-clockwise-bold" class="text-base group-hover:rotate-180 transition-transform duration-300" />
+                                <span class="underline decoration-slate-300 group-hover:decoration-primary underline-offset-4">{{ t('auth.forgot.resend_otp') }}</span>
                             </button>
 
-                            <button @click="currentStep = 0"
-                                class="text-sm font-bold text-slate-400 hover:text-slate-600 transition-all flex items-center gap-1">
-                                <Icon icon="ph:arrow-left" /> {{ t('auth.forgot.change_email') }}
+                            <button type="button" @click="changeEmail"
+                                class="text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors flex items-center gap-1 cursor-pointer">
+                                <Icon icon="ph:arrow-left-bold" /> {{ t('auth.forgot.change_email') }}
                             </button>
                         </div>
                     </div>
@@ -153,18 +160,18 @@
                                 <Icon icon="ph:shield-check-bold" class="text-2xl text-green-500" />
                             </div>
                             <h1 class="text-2xl font-black text-navy tracking-tight">{{ t('auth.forgot.new_password_title') }}</h1>
-                            <p class="mt-2 text-slate-500 text-sm leading-relaxed">
+                            <div class="mt-2 text-slate-500 text-sm leading-relaxed">
                                 {{ t('auth.forgot.new_password_desc') }}
-                            </p>
+                            </div>
                         </div>
 
                         <form @submit.prevent="resetPassword" class="space-y-5">
                             <BaseInput v-model="form.newPassword" :label="t('auth.forgot.new_password_label')" :placeholder="t('auth.login.password_placeholder')"
-                                type="password" icon="lock" required :error="errors.newPassword"
+                                type="password" icon="ph:lock-key" required :error="errors.newPassword"
                                 @update:model-value="validate('newPassword', form.newPassword, [rules.required(), rules.minLength(6)])" />
 
                             <BaseInput v-model="form.confirmPassword" :label="t('auth.forgot.confirm_password_label')"
-                                :placeholder="t('auth.login.password_placeholder')" type="password" icon="lock" required
+                                :placeholder="t('auth.login.password_placeholder')" type="password" icon="ph:lock-key" required
                                 :error="errors.confirmPassword"
                                 @update:model-value="validate('confirmPassword', form.confirmPassword, [rules.required(), rules.sameAs(form.newPassword, t('auth.forgot.passwords_mismatch'))])" />
 
@@ -175,7 +182,7 @@
                                         class="h-1 flex-1 rounded-full transition-all duration-300"
                                         :class="passwordStrength >= i ? strengthColor : 'bg-gray-100'"></div>
                                 </div>
-                                <p class="text-xs font-medium" :class="strengthTextColor">{{ strengthLabel }}</p>
+                                <div class="text-xs font-medium" :class="strengthTextColor">{{ strengthLabel }}</div>
                             </div>
 
                             <BaseButton type="submit" variant="gold" block :loading="isLoading"
@@ -194,7 +201,7 @@
                             <Icon icon="ph:check-circle-bold" class="text-4xl text-green-500" />
                         </div>
                         <h1 class="text-2xl font-black text-navy mb-3">{{ t('auth.forgot.success_title') }}</h1>
-                        <p class="text-slate-500 text-sm leading-relaxed mb-8 font-body" v-html="t('auth.forgot.success_desc')"></p>
+                        <div class="text-slate-500 text-sm leading-relaxed mb-8 font-body" v-html="t('auth.forgot.success_desc')"></div>
                         <BaseButton variant="gold" block icon-right="ph:arrow-right" @click="goToLogin">
                             {{ t('auth.forgot.login_now') }}
                         </BaseButton>
@@ -223,8 +230,12 @@ const apiBaseUrl = useApiBaseUrl()
 
 const getMediaUrl = (filename) => {
     if (!filename) return ''
+    if (filename.startsWith('http://localhost:8001')) {
+        return filename.replace('http://localhost:8001', 'https://api.archeris.net')
+    }
     if (filename.startsWith('http')) return filename
-    return `${apiBaseUrl}/media/${filename}`
+    const base = (apiBaseUrl && !apiBaseUrl.includes('localhost')) ? apiBaseUrl : 'https://api.archeris.net'
+    return `${base}/media/${filename}`
 }
 
 const slides = ['/slide-1.jpeg', '/slide-2.jpeg', '/slide-3.jpeg']
@@ -243,6 +254,7 @@ onMounted(() => {
 
 onUnmounted(() => {
     if (slideInterval) clearInterval(slideInterval)
+    if (countdownInterval) clearInterval(countdownInterval)
 })
 
 const { errors, validate, validateForm, rules } = useFormValidation()
@@ -250,6 +262,7 @@ const { errors, validate, validateForm, rules } = useFormValidation()
 const currentStep = ref(0)
 const isLoading = ref(false)
 const resendCooldown = ref(0)
+const resetToken = ref('')
 
 const form = ref({
     email: '',
@@ -271,6 +284,7 @@ const otpValue = computed(() => otpDigits.value.join(''))
 const onOtpInput = (index, event) => {
     const val = event.target.value.replace(/\D/g, '')
     otpDigits.value[index] = val.slice(-1)
+    errors.otp = ''
     if (val && index < 5) {
         document.getElementById(`otp-${index + 1}`)?.focus()
     }
@@ -279,6 +293,7 @@ const onOtpInput = (index, event) => {
 const onOtpKeydown = (index, event) => {
     if (event.key === 'Backspace' && !otpDigits.value[index] && index > 0) {
         otpDigits.value[index - 1] = ''
+        errors.otp = ''
         document.getElementById(`otp-${index - 1}`)?.focus()
     }
 }
@@ -289,6 +304,7 @@ const onOtpPaste = (event) => {
     pasted.split('').forEach((char, i) => {
         if (i < 6) otpDigits.value[i] = char
     })
+    errors.otp = ''
     document.getElementById(`otp-${Math.min(pasted.length, 5)}`)?.focus()
 }
 
@@ -321,10 +337,13 @@ const strengthLabel = computed(() => {
 let countdownInterval = null
 const startCooldown = () => {
     resendCooldown.value = 60
-    countdownInterval && clearInterval(countdownInterval)
+    if (countdownInterval) clearInterval(countdownInterval)
     countdownInterval = setInterval(() => {
-        resendCooldown.value--
-        if (resendCooldown.value <= 0) clearInterval(countdownInterval)
+        if (resendCooldown.value > 0) {
+            resendCooldown.value--
+        } else {
+            clearInterval(countdownInterval)
+        }
     }, 1000)
 }
 
@@ -342,32 +361,74 @@ const requestOTP = async () => {
             body: { email: form.value.email }
         })
         otpDigits.value = ['', '', '', '', '', '']
+        errors.otp = ''
         currentStep.value = 1
         startCooldown()
-        toast.success('OTP code has been sent to your email')
+        toast.success(t('auth.forgot.toast_otp_sent', 'Verification code has been sent to your email'))
     } catch (err) {
-        toast.error(err?.data?.error || 'Failed to send code. Please try again.')
+        toast.error(err?.data?.error || t('auth.forgot.toast_otp_failed', 'Failed to send verification code. Please try again.'))
     } finally {
         isLoading.value = false
     }
 }
 
+// Resend OTP
+const resendOTP = async () => {
+    if (resendCooldown.value > 0 || isLoading.value) return
+    isLoading.value = true
+    try {
+        await $fetch(`${apiBaseUrl}/auth/forgot-password`, {
+            method: 'POST',
+            body: { email: form.value.email }
+        })
+        otpDigits.value = ['', '', '', '', '', '']
+        errors.otp = ''
+        startCooldown()
+        toast.success(t('auth.forgot.toast_otp_resent', 'New OTP verification code has been sent to your email'))
+    } catch (err) {
+        toast.error(err?.data?.error || t('auth.forgot.toast_otp_failed', 'Failed to resend code. Please try again.'))
+    } finally {
+        isLoading.value = false
+    }
+}
+
+const changeEmail = () => {
+    currentStep.value = 0
+    errors.otp = ''
+}
+
 // Step 2: verify OTP
 const verifyOTP = async () => {
     if (otpValue.value.length !== 6) {
-        errors.otp = 'Enter all 6 digits of the OTP code'
+        const msg = t('auth.forgot.otp_incomplete', 'Please enter all 6 digits of the OTP code')
+        errors.otp = msg
+        toast.error(msg)
         return
     }
     errors.otp = ''
     isLoading.value = true
     try {
-        await $fetch(`${apiBaseUrl}/auth/verify-reset-otp`, {
+        const res = await $fetch(`${apiBaseUrl}/auth/verify-reset-otp`, {
             method: 'POST',
             body: { email: form.value.email, otp: otpValue.value }
         })
+        resetToken.value = res?.reset_token || ''
         currentStep.value = 2
+        toast.success(t('auth.forgot.toast_otp_verified', 'Verification code verified successfully'))
     } catch (err) {
-        errors.otp = err?.data?.error || 'Invalid or expired OTP code'
+        let errMsg = ''
+        const code = err?.data?.code
+        if (code === 'otp_already_used') {
+            errMsg = t('auth.forgot.otp_already_used_toast', 'Verification code has already been used. Please request a new code.')
+        } else if (code === 'otp_expired') {
+            errMsg = t('auth.forgot.otp_expired_toast', 'Verification code has expired. Please request a new code.')
+        } else if (code === 'otp_invalid') {
+            errMsg = t('auth.forgot.otp_invalid_toast', 'Verification code is invalid or incorrect. Please check again.')
+        } else {
+            errMsg = err?.data?.error || t('auth.forgot.otp_invalid_toast', 'Verification code is invalid or incorrect. Please check again.')
+        }
+        errors.otp = errMsg
+        toast.error(errMsg)
     } finally {
         isLoading.value = false
     }
@@ -379,24 +440,25 @@ const resetPassword = async () => {
         { newPassword: form.value.newPassword, confirmPassword: form.value.confirmPassword },
         {
             newPassword: [rules.required(), rules.minLength(6)],
-            confirmPassword: [rules.required(), rules.sameAs(form.value.newPassword, 'Passwords do not match')]
+            confirmPassword: [rules.required(), rules.sameAs(form.value.newPassword, t('auth.forgot.passwords_mismatch', 'Passwords do not match'))]
         }
     )
     if (!isValid) return
 
     isLoading.value = true
     try {
-        await $fetch(`${apiBaseUrl}/auth/change-password-otp`, {
+        await $fetch(`${apiBaseUrl}/auth/reset-password`, {
             method: 'POST',
             body: {
                 email: form.value.email,
-                otp: otpValue.value,
+                reset_token: resetToken.value,
                 new_password: form.value.newPassword
             }
         })
         currentStep.value = 3
+        toast.success(t('auth.forgot.toast_password_reset_success', 'Your password has been reset successfully'))
     } catch (err) {
-        toast.error(err?.data?.error || 'Failed to reset password. Please start over.')
+        toast.error(err?.data?.error || t('auth.forgot.toast_reset_failed', 'Failed to reset password. Please start over.'))
     } finally {
         isLoading.value = false
     }

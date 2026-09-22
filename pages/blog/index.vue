@@ -286,7 +286,6 @@
 import { Icon } from '@iconify/vue'
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { articles as staticArticles } from '~/data/articles/index'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
@@ -333,12 +332,12 @@ watch(() => route.query, () => {
 
 function resolveArticleImage(image, slug) {
     if (image && !image.includes('unsplash.com')) {
-        return image
+        return image.replace(/\.png$/, '.webp')
     }
     if (slug) {
-        return `/images/blog/thumbnails/${slug}.png`
+        return `/images/blog/thumbnails/${slug}.webp`
     }
-    return '/images/blog/thumbnails/understanding-bow-types-recurve-compound-barebow.png'
+    return '/images/blog/thumbnails/understanding-bow-types-recurve-compound-barebow.webp'
 }
 
 const formatDate = (dateStr) => {
@@ -358,7 +357,7 @@ const { data: dbArticles } = await useAsyncData('blog-index-articles', async () 
                 excerpt: a.excerpt,
                 category: a.category,
                 tags: a.tags || [],
-                date: a.published_at || '2026-09-14',
+                date: a.published_at || a.created_at || '2026-09-14',
                 image: resolveArticleImage(a.image || a.image_url, a.slug),
                 read_time: a.read_time || 5,
                 author: {
@@ -368,25 +367,14 @@ const { data: dbArticles } = await useAsyncData('blog-index-articles', async () 
                 }
             }))
         }
-    } catch {
-        // Fallback to static articles
+    } catch (e) {
+        console.warn('[blog-index] Failed to fetch articles:', e)
     }
-    return null
+    return []
 }, { lazy: true })
 
 const allArticles = computed(() => {
-    if (dbArticles.value && dbArticles.value.length > 0) {
-        return dbArticles.value
-    }
-    return staticArticles.map(a => ({
-        ...a,
-        image: resolveArticleImage(a.image, a.slug),
-        author: {
-            name: a.author?.name || 'Archeris Admin',
-            role: a.author?.role || 'Editorial Team & Archery Scoring Specialists',
-            avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=ArcherisAdmin'
-        }
-    }))
+    return dbArticles.value || []
 })
 
 // Dynamically display ONLY categories that have published articles

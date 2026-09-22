@@ -8,13 +8,13 @@
       :back-to="getBackLink()"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('dashboard.reports.title', 'Laporan'), to: '/dashboard/organizer/reports' },
+        { label: t('dashboard.reports.title'), to: '/dashboard/organizer/reports' },
         { label: t('dashboard.reports.finance_title') }
       ]"
     >
       <template #actions>
         <BaseButton variant="primary" icon="ph:download-simple-bold" class="h-11 px-5 text-xs font-black" @click="handleExportExcel">
-          {{ t('dashboard.reports.export_excel', 'Ekspor Excel') }}
+          {{ t('dashboard.reports.export_excel') }}
         </BaseButton>
       </template>
     </DashboardHeader>
@@ -23,7 +23,7 @@
     <div class="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm space-y-4">
       <div class="flex items-center gap-2 pb-3 border-b border-gray-100">
         <Icon icon="ph:funnel-bold" class="text-primary text-lg" />
-        <h3 class="text-sm font-black text-navy-dark">{{ t('dashboard.reports.report_filters', 'Filter Laporan') }}</h3>
+        <h3 class="text-sm font-black text-navy-dark">{{ t('dashboard.reports.report_filters') }}</h3>
       </div>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
@@ -47,14 +47,14 @@
 
         <!-- Payment Method Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.payment_method', 'Metode Pembayaran') }}</label>
-          <BaseSelect v-model="filters.payment_method" :items="methodOptions" :placeholder="t('dashboard.reports.all_methods', 'Semua Metode')" />
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.payment_method') }}</label>
+          <BaseSelect v-model="filters.payment_method" :items="methodOptions" :placeholder="t('dashboard.reports.all_methods')" />
         </div>
 
         <!-- Payment Status Filter -->
         <div class="space-y-1">
-          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.payment_status', 'Status Pembayaran') }}</label>
-          <BaseSelect v-model="filters.status" :items="statusOptions" :placeholder="t('dashboard.reports.all_status', 'Semua Status')" />
+          <label class="text-[10px] font-black text-gray-500 tracking-wider">{{ t('dashboard.reports.payment_status') }}</label>
+          <BaseSelect v-model="filters.status" :items="statusOptions" :placeholder="t('dashboard.reports.all_status')" />
         </div>
       </div>
 
@@ -70,16 +70,16 @@
 
     <!-- Stats summary grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-      <StatCard :title="t('dashboard.reports.total_paid_revenue', 'Total Pendapatan (Lunas)')" :value="'Rp ' + formatPrice(stats.total_paid || 0)" icon="ph:wallet-bold" color="success" />
-      <StatCard :title="t('dashboard.reports.pending_payments', 'Pembayaran Tertunda')" :value="'Rp ' + formatPrice(stats.total_pending || 0)" icon="ph:clock-bold" color="warning" />
-      <StatCard :title="t('dashboard.reports.expired_failed_payments', 'Kadaluwarsa / Gagal')" :value="'Rp ' + formatPrice(stats.total_failed || 0)" icon="ph:x-circle-bold" color="primary" />
+      <StatCard :title="t('dashboard.reports.total_paid_revenue')" :value="'Rp ' + formatPrice(stats.total_paid || 0)" icon="ph:wallet-bold" color="success" />
+      <StatCard :title="t('dashboard.reports.pending_payments')" :value="'Rp ' + formatPrice(stats.total_pending || 0)" icon="ph:clock-bold" color="warning" />
+      <StatCard :title="t('dashboard.reports.expired_failed_payments')" :value="'Rp ' + formatPrice(stats.total_failed || 0)" icon="ph:x-circle-bold" color="primary" />
     </div>
 
     <!-- Revenue Trend Chart -->
     <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
       <h3 class="text-navy-dark font-black text-base flex items-center gap-2 mb-6">
         <Icon icon="ph:chart-line-up-bold" class="text-primary" />
-        {{ t('dashboard.reports.revenue_trend', 'Tren Pendapatan') }}
+        {{ t('dashboard.reports.revenue_trend') }}
       </h3>
       <div v-if="trendPoints.length > 1" class="relative">
         <svg viewBox="0 0 500 150" class="w-full h-48 overflow-visible" preserveAspectRatio="none">
@@ -100,7 +100,7 @@
       </div>
       <div v-else class="h-48 flex flex-col items-center justify-center text-gray-400 space-y-2 border border-dashed border-gray-100 rounded-xl">
         <Icon icon="ph:coin-bold" class="text-3xl" />
-        <div class="text-xs font-bold">{{ t('dashboard.reports.no_revenue_timeline', 'Tidak ada data lini masa pendapatan untuk filter yang dipilih.') }}</div>
+        <div class="text-xs font-bold">{{ t('dashboard.reports.no_revenue_timeline') }}</div>
       </div>
     </div>
 
@@ -110,7 +110,7 @@
       <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4 lg:col-span-2">
         <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:credit-card-bold" class="text-primary" />
-          {{ t('dashboard.reports.payment_methods_split', 'Distribusi Metode Pembayaran') }}
+          {{ t('dashboard.reports.payment_methods_split') }}
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div v-for="item in stats.payment_method_split" :key="item.name" class="p-4 bg-gray-50 rounded-xl space-y-2 border border-gray-100">
@@ -122,9 +122,9 @@
             <div class="w-full bg-gray-200 h-1.5 rounded-full overflow-hidden">
               <div class="bg-emerald-500 h-full rounded-full" :style="{ width: getPercent(item.amount) + '%' }"></div>
             </div>
-            <div class="text-[10px] text-gray-400 font-bold text-right">{{ getPercent(item.amount) }}{{ t('dashboard.reports.of_total', '% dari Total') }}</div>
+            <div class="text-[10px] text-gray-400 font-bold text-right">{{ getPercent(item.amount) }}{{ t('dashboard.reports.of_total') }}</div>
           </div>
-          <div v-if="!stats.payment_method_split?.length" class="text-center col-span-2 py-6 text-xs text-gray-400 font-medium">{{ t('dashboard.reports.no_payment_split_data', 'Belum ada data distribusi metode pembayaran.') }}</div>
+          <div v-if="!stats.payment_method_split?.length" class="text-center col-span-2 py-6 text-xs text-gray-400 font-medium">{{ t('dashboard.reports.no_payment_split_data') }}</div>
         </div>
       </div>
 
@@ -136,120 +136,77 @@
         <div class="space-y-4 relative z-10">
           <h3 class="text-lg font-black flex items-center gap-2">
             <Icon icon="ph:info-bold" class="text-yellow-400" />
-            {{ t('dashboard.reports.financial_overview_title', 'Ringkasan Finansial') }}
+            {{ t('dashboard.reports.financial_overview_title') }}
           </h3>
           <div class="text-slate-300 text-xs font-medium leading-relaxed">
-            {{ t('dashboard.reports.financial_overview_desc', 'Dashboard ini mengagregasi log transaksi pembayaran dari pendaftaran peserta. Untuk menarik dana ke rekening bank, buka menu Saldo.') }}
+            {{ t('dashboard.reports.financial_overview_desc') }}
           </div>
         </div>
         <NuxtLink to="/dashboard/organizer/balance" class="w-full mt-6 relative z-10">
           <BaseButton variant="primary" class="w-full h-11 text-xs font-black shadow-lg shadow-primary/20">
-            {{ t('dashboard.reports.go_to_balance', 'Buka Saldo & Penarikan') }}
+            {{ t('dashboard.reports.go_to_balance') }}
           </BaseButton>
         </NuxtLink>
       </div>
     </div>
 
-    <!-- Transactions Ledger -->
-    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
-      <div class="p-5 border-b border-gray-100 flex items-center justify-between">
-        <h3 class="text-navy-dark font-black text-sm flex items-center gap-2">
-          <Icon icon="ph:list-dashes-bold" class="text-primary" />
-          {{ t('dashboard.reports.recent_transaction_history', 'Riwayat Transaksi Terbaru') }}
-        </h3>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs">
-          <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
-            <tr>
-              <th @click="toggleSort('reference')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.reference') }}</span>
-                  <Icon v-if="sortBy === 'reference'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('user')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.user') }}</span>
-                  <Icon v-if="sortBy === 'user'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('sender')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('my_registration.sender_name') }}</span>
-                  <Icon v-if="sortBy === 'sender'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('event')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.event') }}</span>
-                  <Icon v-if="sortBy === 'event'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('amount')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.amount') }}</span>
-                  <Icon v-if="sortBy === 'amount'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('method')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.method') }}</span>
-                  <Icon v-if="sortBy === 'method'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('status')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.status') }}</span>
-                  <Icon v-if="sortBy === 'status'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('date')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.date') }}</span>
-                  <Icon v-if="sortBy === 'date'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-100 font-medium">
-            <tr v-for="t in sortedRecentTransactions" :key="t.id" class="hover:bg-gray-50 transition-colors">
-              <td class="px-6 py-4 text-navy-dark font-bold font-mono">{{ t.reference }}</td>
-              <td class="px-6 py-4 text-gray-700 font-bold capitalize">{{ t.user_name ? t.user_name.toLowerCase() : '-' }}</td>
-              <td class="px-6 py-4 text-gray-700 font-medium capitalize">{{ t.sender_name || '-' }}</td>
-              <td class="px-6 py-4 text-gray-500 font-semibold capitalize">{{ t.event_name.toLowerCase() }}</td>
-              <td class="px-6 py-4 text-navy-dark font-black font-mono">Rp {{ formatPrice(t.amount) }}</td>
-              <td class="px-6 py-4 text-gray-500 font-bold ">{{ t.payment_method || 'manual' }}</td>
-              <td class="px-6 py-4">
-                <span 
-                  :class="[
-                    t.status === 'paid' ? 'bg-green-50 text-green-600 border-green-200' : '',
-                    t.status === 'pending' ? 'bg-amber-50 text-amber-600 border-amber-200' : '',
-                    t.status === 'expired' ? 'bg-slate-50 text-slate-400 border-slate-200' : '',
-                    t.status === 'failed' ? 'bg-red-50 text-red-600 border-red-200' : '',
-                  ]"
-                  class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider "
-                >
-                  {{ t.status }}
-                </span>
-              </td>
-              <td class="px-6 py-4 text-gray-400 font-semibold font-mono">{{ formatDate(t.created_at) }}</td>
-            </tr>
-            <tr v-if="!sortedRecentTransactions.length">
-              <td colspan="8" class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_transactions_found', 'Tidak ada transaksi yang cocok dengan filter yang dipilih.') }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <!-- Transactions Ledger with DashboardDataTable -->
+    <DashboardDataTable
+      :items="stats.recent_transactions || []"
+      :headers="headers"
+      :searchable="true"
+      :search-placeholder="t('dashboard.reports.search_placeholder', 'Cari no. referensi, nama atau event...')"
+      :title="t('dashboard.reports.recent_transaction_history')"
+      :subtitle="t('dashboard.reports.total_transactions_count', '{n} Transaksi', { n: (stats.recent_transactions || []).length })"
+      :icon="'ph:list-dashes-bold'"
+      :default-page-size="10"
+    >
+      <template #item-reference="{ item }">
+        <span class="text-navy font-bold font-mono text-xs">{{ item.reference }}</span>
+      </template>
+
+      <template #item-user_name="{ item }">
+        <span class="text-gray-700 font-bold capitalize text-xs">{{ item.user_name ? item.user_name.toLowerCase() : '-' }}</span>
+      </template>
+
+      <template #item-sender_name="{ item }">
+        <span class="text-gray-700 font-medium capitalize text-xs">{{ item.sender_name || '-' }}</span>
+      </template>
+
+      <template #item-event_name="{ item }">
+        <span class="text-gray-500 font-semibold capitalize text-xs">{{ (item.event_name || '').toLowerCase() }}</span>
+      </template>
+
+      <template #item-amount="{ item }">
+        <span class="text-navy font-black font-mono text-xs">Rp {{ formatPrice(item.amount) }}</span>
+      </template>
+
+      <template #item-payment_method="{ item }">
+        <span class="text-gray-500 font-bold text-xs">{{ item.payment_method || 'manual' }}</span>
+      </template>
+
+      <template #item-status="{ item }">
+        <span 
+          :class="[
+            item.status === 'paid' ? 'bg-green-50 text-green-600 border-green-200' : '',
+            item.status === 'pending' ? 'bg-amber-50 text-amber-600 border-amber-200' : '',
+            item.status === 'expired' ? 'bg-slate-50 text-slate-400 border-slate-200' : '',
+            item.status === 'failed' ? 'bg-red-50 text-red-600 border-red-200' : '',
+          ]"
+          class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider"
+        >
+          {{ item.status }}
+        </span>
+      </template>
+
+      <template #item-created_at="{ item }">
+        <span class="text-gray-400 font-semibold font-mono text-xs">{{ formatDate(item.created_at) }}</span>
+      </template>
+
+      <template #empty>
+        <div class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_transactions_found') }}</div>
+      </template>
+    </DashboardDataTable>
   </div>
 </template>
 
@@ -259,28 +216,29 @@ import { computed, onMounted, ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useI18n } from 'vue-i18n'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
+import { exportToExcel } from '~/utils/exportExcel'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
-const { t } = useI18n()
-useHead({ title: computed(() => (t ? t('dashboard.reports.finance_title', 'Laporan Keuangan') : 'Laporan Keuangan') + ' - Archeris Dashboard') })
+const { t, locale } = useI18n()
+useHead({ title: computed(() => `${t('dashboard.reports.finance_title')} - Archeris Dashboard`) })
 
 const route = useRoute()
 const api = useApi()
 
-const sortBy = ref('date')
-const sortOrder = ref('desc')
-
-const toggleSort = (column) => {
-  if (sortBy.value === column) {
-    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
-  } else {
-    sortBy.value = column
-    sortOrder.value = 'asc'
-  }
-}
+const headers = computed(() => [
+  { key: 'reference', label: t('dashboard.reports.reference', 'No. Referensi'), sortable: true },
+  { key: 'user_name', label: t('dashboard.reports.user', 'User'), sortable: true },
+  { key: 'sender_name', label: t('my_registration.sender_name', 'Nama Pengirim'), sortable: true },
+  { key: 'event_name', label: t('dashboard.reports.event', 'Event'), sortable: true },
+  { key: 'amount', label: t('dashboard.reports.amount', 'Nominal'), sortable: true },
+  { key: 'payment_method', label: t('dashboard.reports.method', 'Metode'), sortable: true },
+  { key: 'status', label: t('dashboard.reports.status', 'Status'), sortable: true },
+  { key: 'created_at', label: t('dashboard.reports.date', 'Tanggal'), sortable: true }
+])
 
 const eventsList = ref([])
 const stats = ref({
@@ -293,40 +251,6 @@ const stats = ref({
   events_list: []
 })
 
-const sortedRecentTransactions = computed(() => {
-  const list = stats.value?.recent_transactions || []
-  const dir = sortOrder.value === 'asc' ? 1 : -1
-  return [...list].sort((a, b) => {
-    if (sortBy.value === 'reference') {
-      return dir * (a.reference || '').localeCompare(b.reference || '')
-    }
-    if (sortBy.value === 'user') {
-      return dir * (a.user_name || '').localeCompare(b.user_name || '', undefined, { numeric: true, sensitivity: 'base' })
-    }
-    if (sortBy.value === 'sender') {
-      return dir * (a.sender_name || '').localeCompare(b.sender_name || '', undefined, { numeric: true, sensitivity: 'base' })
-    }
-    if (sortBy.value === 'event') {
-      return dir * (a.event_name || '').localeCompare(b.event_name || '', undefined, { numeric: true, sensitivity: 'base' })
-    }
-    if (sortBy.value === 'amount') {
-      return dir * ((a.amount || 0) - (b.amount || 0))
-    }
-    if (sortBy.value === 'method') {
-      return dir * (a.payment_method || '').localeCompare(b.payment_method || '')
-    }
-    if (sortBy.value === 'status') {
-      return dir * (a.status || '').localeCompare(b.status || '')
-    }
-    if (sortBy.value === 'date') {
-      const tA = new Date(a.created_at || 0).getTime()
-      const tB = new Date(b.created_at || 0).getTime()
-      return dir * (tA - tB)
-    }
-    return 0
-  })
-})
-
 const filters = reactive({
   event_id: route.query.event_id || 'all',
   start_date: '',
@@ -334,6 +258,28 @@ const filters = reactive({
   payment_method: 'all',
   status: 'all'
 })
+
+const eventsDropdownItems = computed(() => [
+  { title: t('dashboard.reports.all_events', 'Semua Event'), value: 'all' },
+  ...eventsList.value.map(e => ({ title: e.name, value: e.id }))
+])
+
+const methodOptions = computed(() => [
+  { title: t('dashboard.reports.all_methods', 'Semua Metode'), value: 'all' },
+  { title: 'Manual Transfer', value: 'manual_transfer' },
+  { title: 'Bank Transfer (VA)', value: 'bank_transfer' },
+  { title: 'QRIS', value: 'qris' },
+  { title: 'Credit Card', value: 'credit_card' },
+  { title: 'E-Wallet', value: 'e_wallet' }
+])
+
+const statusOptions = computed(() => [
+  { title: t('dashboard.reports.all_status', 'Semua Status'), value: 'all' },
+  { title: 'Paid', value: 'paid' },
+  { title: 'Pending', value: 'pending' },
+  { title: 'Expired', value: 'expired' },
+  { title: 'Failed', value: 'failed' }
+])
 
 onMounted(() => {
   fetchReportData()
@@ -411,8 +357,6 @@ const svgAreaPath = computed(() => {
   const height = 150
   return `${path} L ${width},${height} L 0,${height} Z`
 })
-
-import { exportToExcel } from '~/utils/exportExcel'
 
 const handleExportExcel = () => {
   const list = stats.value.recent_transactions || []

@@ -17,7 +17,7 @@
                 'is-loser': match.winner && match.winner !== i
             }">
                 <div class="avatar-wrapper shadow-sm">
-                    <img :src="match[`archer${i}`]?.avatar || 'https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8'" :alt="match[`archer${i}`]?.name || 'Archer'" @error="(e) => e.target.src = 'https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8'" class="avatar-img" />
+                    <img :src="useImageOrDefault(match[`archer${i}`]?.avatar, match[`archer${i}`]?.name)" :alt="match[`archer${i}`]?.name || 'Archer'" @error="(e) => e.target.src = generateDicebearAvatar(match[`archer${i}`]?.name)" class="avatar-img" />
                     <div v-if="match.winner === i" class="winner-crown">
                         <Icon icon="ph:crown-fill" />
                     </div>

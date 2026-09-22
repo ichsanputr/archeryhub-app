@@ -39,9 +39,9 @@
     <!-- ── DATA TABLE CONTAINER ── -->
     <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs bg-white">
       <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs border-collapse">
+        <table class="w-full text-left text-xs sm:text-sm border-collapse">
           <!-- Thead -->
-          <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-xs">
+          <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-xs sm:text-sm">
             <tr>
               <th
                 v-for="col in columns"
@@ -65,7 +65,7 @@
                   <Icon
                     v-if="col.sortable"
                     :icon="getSortIcon(col.key)"
-                    class="text-xs shrink-0"
+                    class="text-xs sm:text-sm shrink-0"
                     :class="sortKey === col.key ? 'text-navy font-black' : 'text-slate-400'"
                   />
                 </div>
@@ -121,7 +121,7 @@
       <!-- ── TABLE FOOTER (Items Per Page + Summary + Pagination) ── -->
       <div
         v-if="showPagination"
-        class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs"
+        class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm"
       >
         <!-- Left: Items Per Page Options -->
         <div class="flex items-center gap-2">
@@ -133,7 +133,7 @@
               type="button"
               @click="changePageSize(size)"
               :class="[
-                'px-2 py-0.5 rounded-lg text-xs font-semibold transition-all cursor-pointer',
+                'px-2 py-0.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer',
                 pageSize === size
                   ? 'bg-navy text-white shadow-2xs font-bold'
                   : 'text-slate-600 hover:text-navy hover:bg-slate-50'

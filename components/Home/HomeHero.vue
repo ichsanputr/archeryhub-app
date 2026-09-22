@@ -1,8 +1,17 @@
 <template>
     <section class="relative w-full min-h-[90vh] sm:min-h-screen flex items-center overflow-hidden pt-20 pb-12 sm:pt-0 sm:pb-0">
         <div class="absolute inset-0 w-full h-full">
-            <img alt="Professional archer aiming at target" class="w-full h-full object-cover object-center"
-                src="/hero-homepage.jpeg" />
+            <picture>
+                <source srcset="/hero-homepage.webp" type="image/webp" />
+                <img alt="Professional archer aiming at target with modern archery scoring system"
+                    class="w-full h-full object-cover object-center"
+                    src="/hero-homepage.webp"
+                    fetchpriority="high"
+                    loading="eager"
+                    decoding="async"
+                    width="1920"
+                    height="1080" />
+            </picture>
             <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/85 to-navy/50"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent opacity-95"></div>
         </div>

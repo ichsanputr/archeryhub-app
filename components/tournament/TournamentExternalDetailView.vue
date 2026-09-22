@@ -74,7 +74,7 @@
           <!-- ── COLUMN 1: LEFT TOC (STICKY TOP-24 BELOW NAVBAR, NATIVE HREF LINKS) ── -->
           <aside class="col-span-12 lg:col-span-2 p-5 sm:p-6 bg-slate-50/30 lg:bg-transparent rounded-t-3xl lg:rounded-tr-none lg:rounded-l-3xl">
             <div class="sticky top-20 sm:top-24 space-y-3">
-              <div class="text-xs font-bold text-slate-400 font-display pl-2.5">
+              <div class="text-xs sm:text-sm font-bold text-slate-400 font-display pl-2.5">
                 {{ t('contents') }}
               </div>
 
@@ -122,47 +122,47 @@
               <!-- Quick Metrics 4 Cards Grid with UNIFIED Typography -->
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
-                  <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
+                  <div class="flex items-center gap-2 text-slate-600 text-xs sm:text-sm font-semibold">
                     <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:users-three" class="size-3.5 text-navy shrink-0 m-auto block" /></div>
                     <span>{{ t('metric_archers') }}</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
                     {{ computedTotalArchers }}
                   </div>
-                  <div class="text-[11px] text-slate-400 mt-0.5">{{ t('metric_archers_sub') }}</div>
+                  <div class="text-[11px] sm:text-xs text-slate-400 mt-0.5">{{ t('metric_archers_sub') }}</div>
                 </div>
 
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
-                  <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
+                  <div class="flex items-center gap-2 text-slate-600 text-xs sm:text-sm font-semibold">
                     <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:shield-chevron" class="size-3.5 text-navy shrink-0 m-auto block" /></div>
                     <span>{{ t('metric_clubs') }}</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
                     {{ computedTotalClubs }}
                   </div>
-                  <div class="text-[11px] text-slate-400 mt-0.5">{{ t('metric_clubs_sub') }}</div>
+                  <div class="text-[11px] sm:text-xs text-slate-400 mt-0.5">{{ t('metric_clubs_sub') }}</div>
                 </div>
 
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
-                  <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
+                  <div class="flex items-center gap-2 text-slate-600 text-xs sm:text-sm font-semibold">
                     <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:crosshair" class="size-3.5 text-navy shrink-0 m-auto block" /></div>
                     <span>{{ t('metric_categories') }}</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
                     {{ categoriesList.length }}
                   </div>
-                  <div class="text-[11px] text-slate-400 mt-0.5">{{ t('metric_categories_sub') }}</div>
+                  <div class="text-[11px] sm:text-xs text-slate-400 mt-0.5">{{ t('metric_categories_sub') }}</div>
                 </div>
 
                 <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 border border-slate-200/60">
-                  <div class="flex items-center gap-2 text-slate-600 text-xs font-semibold">
+                  <div class="flex items-center gap-2 text-slate-600 text-xs sm:text-sm font-semibold">
                     <div class="size-6 rounded-lg bg-primary/20 text-navy border border-primary/30 inline-flex items-center justify-center shrink-0 aspect-square leading-none p-0 overflow-hidden"><Icon icon="ph:target" class="size-3.5 text-navy shrink-0 m-auto block" /></div>
                     <span>{{ t('metric_targets') }}</span>
                   </div>
                   <div class="text-xl sm:text-2xl font-bold font-display text-navy mt-1.5">
                     {{ computedFopTargetCount > 0 ? computedFopTargetCount : '-' }}
                   </div>
-                  <div class="text-[11px] text-slate-400 mt-0.5">{{ t('metric_targets_sub') }}</div>
+                  <div class="text-[11px] sm:text-xs text-slate-400 mt-0.5">{{ t('metric_targets_sub') }}</div>
                 </div>
               </div>
             </section>
@@ -183,8 +183,8 @@
                   </div>
                 </div>
                 <div class="hidden sm:flex items-center gap-2">
-                  <span class="text-xs font-semibold text-slate-400">Total Program Events:</span>
-                  <span class="px-2.5 py-0.5 rounded-full bg-navy/5 text-navy text-xs font-bold font-sans">
+                  <span class="text-xs sm:text-sm font-semibold text-slate-400">Total Program Events:</span>
+                  <span class="px-2.5 py-0.5 rounded-full bg-navy/5 text-navy text-xs sm:text-sm font-bold font-sans">
                     {{ totalScheduleEventsCount }}
                   </span>
                 </div>
@@ -197,7 +197,7 @@
                   :key="day.date_label"
                   @click="selectedScheduleDay = day.date_label"
                   :class="[
-                    'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer border',
+                    'flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap shrink-0 transition-all cursor-pointer border',
                     (selectedScheduleDay || parsedScheduleDays[0]?.date_label) === day.date_label
                       ? 'bg-navy text-white border-navy shadow-xs font-black'
                       : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
@@ -207,7 +207,7 @@
                   <span>{{ day.date_label }}</span>
                   <span
                     :class="[
-                      'px-1.5 py-0.2 rounded-md text-[10px] font-bold',
+                      'px-1.5 py-0.2 rounded-md text-[10px] sm:text-xs font-bold',
                       (selectedScheduleDay || parsedScheduleDays[0]?.date_label) === day.date_label ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
                     ]"
                   >
@@ -228,11 +228,11 @@
                     <div class="flex items-center gap-2">
                       <Icon icon="ph:calendar-dots-bold" class="text-navy text-base" />
                       <span class="text-xs sm:text-sm font-bold text-navy">{{ day.date_label }}</span>
-                      <span v-if="day.divisions" class="hidden sm:inline-block px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-600 text-[11px] font-semibold">
+                      <span v-if="day.divisions" class="hidden sm:inline-block px-2 py-0.5 rounded-md bg-white border border-slate-200 text-slate-600 text-xs font-semibold">
                         {{ day.divisions }}
                       </span>
                     </div>
-                    <span class="text-[11px] font-bold text-slate-500">
+                    <span class="text-xs sm:text-sm font-bold text-slate-500">
                       {{ day.sessions.length }} Agenda
                     </span>
                   </div>
@@ -289,12 +289,12 @@
                               <span class="text-slate-400">-</span>
                               <span>{{ session.time_end }}</span>
                             </template>
-                            <span v-else-if="session.time_end === 'Selesai'" class="text-[10px] px-1.5 py-0.2 rounded bg-slate-100 text-slate-500 font-semibold">
+                            <span v-else-if="session.time_end === 'Selesai'" class="text-[10px] sm:text-xs px-1.5 py-0.2 rounded bg-slate-100 text-slate-500 font-semibold">
                               Selesai
                             </span>
                           </div>
-                          <div v-if="session.duration && session.duration !== 'Selesai'" class="text-[11px] font-medium text-slate-500 mt-0.5 flex items-center gap-1">
-                            <Icon icon="ph:timer" class="text-xs" />
+                          <div v-if="session.duration && session.duration !== 'Selesai'" class="text-[11px] sm:text-xs font-medium text-slate-500 mt-0.5 flex items-center gap-1">
+                            <Icon icon="ph:timer" class="text-xs sm:text-sm" />
                             <span>{{ session.duration }}</span>
                           </div>
                         </div>
@@ -306,7 +306,7 @@
                           <span 
                             v-if="session.stage" 
                             :class="[
-                              'inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wide uppercase',
+                              'inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-bold tracking-wide uppercase',
                               session.type === 'finals' ? 'bg-amber-100 text-amber-900 border border-amber-200' :
                               session.type === 'elimination' ? 'bg-rose-100 text-rose-800 border border-rose-200' :
                               session.type === 'qualification' ? 'bg-primary/20 text-navy border border-primary/30' :
@@ -323,8 +323,8 @@
                           {{ session.title }}
                         </div>
                         <div v-if="session.notes" class="flex flex-wrap items-center gap-1.5">
-                          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-semibold">
-                            <Icon icon="ph:info" class="text-slate-400 text-xs" />
+                          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] sm:text-xs font-semibold">
+                            <Icon icon="ph:info" class="text-slate-400 text-xs sm:text-sm" />
                             <span>{{ session.notes }}</span>
                           </span>
                         </div>
@@ -397,7 +397,7 @@
                   <button
                     type="button"
                     @click="showClubDropdown = !showClubDropdown"
-                    class="px-3.5 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 flex items-center justify-between gap-2.5 transition-all cursor-pointer min-w-[170px]"
+                    class="px-3.5 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 flex items-center justify-between gap-2.5 transition-all cursor-pointer min-w-[170px]"
                   >
                     <div class="flex items-center gap-1.5 truncate">
                       <Icon icon="ph:shield-chevron" class="text-primary text-sm shrink-0" />
@@ -415,7 +415,7 @@
                       type="button"
                       @click="entriesClubFilter = 'all'; showClubDropdown = false; entriesCurrentPage = 1"
                       :class="[
-                        'w-full px-3 py-2 rounded-xl text-xs text-left font-medium transition-all flex items-center justify-between cursor-pointer',
+                        'w-full px-3 py-2 rounded-xl text-xs sm:text-sm text-left font-medium transition-all flex items-center justify-between cursor-pointer',
                         entriesClubFilter === 'all' ? 'bg-primary/20 text-navy font-bold' : 'text-slate-700 hover:bg-slate-50'
                       ]"
                     >
@@ -428,7 +428,7 @@
                       type="button"
                       @click="entriesClubFilter = club; showClubDropdown = false; entriesCurrentPage = 1"
                       :class="[
-                        'w-full px-3 py-2 rounded-xl text-xs text-left font-medium transition-all flex items-center justify-between cursor-pointer',
+                        'w-full px-3 py-2 rounded-xl text-xs sm:text-sm text-left font-medium transition-all flex items-center justify-between cursor-pointer',
                         entriesClubFilter === club ? 'bg-primary/20 text-navy font-bold' : 'text-slate-700 hover:bg-slate-50'
                       ]"
                     >
@@ -442,28 +442,40 @@
               <!-- Entries Table Container -->
               <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
                 <div class="overflow-x-auto">
-                  <table class="w-full text-left text-xs border-collapse">
-                    <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-xs">
+                  <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                    <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-xs sm:text-sm">
                       <tr>
-                        <th @click="handleSortEntries('index')" class="py-3 px-4 w-14 min-w-[56px] text-center whitespace-nowrap cursor-pointer hover:text-navy select-none">
+                        <th @click="handleSortEntries('index')" class="py-3 px-3 w-12 min-w-[48px] text-center whitespace-nowrap cursor-pointer hover:text-navy select-none">
                           <div class="flex items-center justify-center gap-1">
                             <span>#</span>
                             <Icon :icon="getSortIcon('index', entriesSortKey, entriesSortAsc)" class="text-xs" />
                           </div>
                         </th>
-                        <th @click="handleSortEntries('name')" class="py-3 px-4 cursor-pointer hover:text-navy select-none min-w-[240px] sm:min-w-[280px] whitespace-nowrap">
+                        <th @click="handleSortEntries('target')" class="py-3 px-3 cursor-pointer hover:text-navy select-none w-24 min-w-[80px] text-center whitespace-nowrap">
+                          <div class="flex items-center justify-center gap-1">
+                            <span>{{ t('col_target') }}</span>
+                            <Icon :icon="getSortIcon('target', entriesSortKey, entriesSortAsc)" class="text-xs shrink-0" />
+                          </div>
+                        </th>
+                        <th @click="handleSortEntries('bib')" class="py-3 px-3 cursor-pointer hover:text-navy select-none w-24 min-w-[80px] text-center whitespace-nowrap">
+                          <div class="flex items-center justify-center gap-1">
+                            <span>{{ t('col_bib') }}</span>
+                            <Icon :icon="getSortIcon('bib', entriesSortKey, entriesSortAsc)" class="text-xs shrink-0" />
+                          </div>
+                        </th>
+                        <th @click="handleSortEntries('name')" class="py-3 px-4 cursor-pointer hover:text-navy select-none min-w-[200px] whitespace-nowrap">
                           <div class="flex items-center gap-1.5 whitespace-nowrap">
                             <span>{{ t('col_name') }}</span>
                             <Icon :icon="getSortIcon('name', entriesSortKey, entriesSortAsc)" class="text-xs shrink-0" />
                           </div>
                         </th>
-                        <th @click="handleSortEntries('club')" class="py-3 px-4 cursor-pointer hover:text-navy select-none min-w-[260px] sm:min-w-[300px] whitespace-nowrap">
+                        <th @click="handleSortEntries('club')" class="py-3 px-4 cursor-pointer hover:text-navy select-none min-w-[220px] whitespace-nowrap">
                           <div class="flex items-center gap-1.5 whitespace-nowrap">
                             <span>{{ t('col_club') }}</span>
                             <Icon :icon="getSortIcon('club', entriesSortKey, entriesSortAsc)" class="text-xs shrink-0" />
                           </div>
                         </th>
-                        <th @click="handleSortEntries('category')" class="py-3 px-4 cursor-pointer hover:text-navy select-none min-w-[220px] sm:min-w-[260px] whitespace-nowrap">
+                        <th @click="handleSortEntries('category')" class="py-3 px-4 cursor-pointer hover:text-navy select-none min-w-[200px] whitespace-nowrap">
                           <div class="flex items-center gap-1.5 whitespace-nowrap">
                             <span>{{ t('col_category') }}</span>
                             <Icon :icon="getSortIcon('category', entriesSortKey, entriesSortAsc)" class="text-xs shrink-0" />
@@ -477,31 +489,56 @@
                         :key="idx"
                         class="hover:bg-slate-50/60 transition-colors"
                       >
-                        <td class="py-3 px-4 text-center text-slate-400 font-mono text-[11px] whitespace-nowrap">
+                        <!-- Index -->
+                        <td class="py-3 px-3 text-center text-slate-400 font-mono text-xs whitespace-nowrap">
                           {{ (entriesCurrentPage - 1) * entriesPageSize + idx + 1 }}
                         </td>
+                        <!-- Target / Lane -->
+                        <td class="py-3 px-3 text-center whitespace-nowrap">
+                          <span v-if="athlete.target" class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-mono font-bold bg-amber-50 text-amber-800 border border-amber-200 shadow-2xs">
+                            {{ athlete.target }}
+                          </span>
+                          <span v-else class="text-slate-300 font-mono text-xs">-</span>
+                        </td>
+                        <!-- BIB / ID -->
+                        <td class="py-3 px-3 text-center whitespace-nowrap">
+                          <span v-if="athlete.bib" class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-mono font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                            {{ athlete.bib }}
+                          </span>
+                          <span v-else class="text-slate-300 font-mono text-xs">-</span>
+                        </td>
+                        <!-- Athlete Name -->
                         <td class="py-3 px-4 whitespace-nowrap">
                           <div class="flex items-center gap-2.5">
-                            <div class="size-7 rounded-full bg-navy/10 text-navy font-bold text-[11px] flex items-center justify-center shrink-0">
+                            <div class="size-7 sm:size-8 rounded-full bg-navy/10 text-navy font-bold text-xs flex items-center justify-center shrink-0">
                               {{ getArcherInitials(athlete.name || athlete.athlete_name) }}
                             </div>
-                            <span class="font-bold text-navy sm:text-xs whitespace-nowrap">
+                            <span class="font-bold text-navy whitespace-nowrap">
                               {{ toTitleCase(athlete.name || athlete.athlete_name) }}
                             </span>
                           </div>
                         </td>
-                        <td class="py-3 px-4 text-slate-600 font-medium whitespace-nowrap">
-                          {{ toTitleCase(athlete.club || athlete.country || '-') }}
-                        </td>
+                        <!-- Club & Code -->
                         <td class="py-3 px-4 whitespace-nowrap">
-                          <span class="inline-block px-2.5 py-1 rounded-lg bg-navy/5 text-navy font-semibold text-[11px] whitespace-nowrap">
+                          <div class="flex items-center gap-1.5">
+                            <span v-if="athlete.code || athlete.club_code" class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-sky-50 text-sky-800 border border-sky-200 shrink-0">
+                              {{ athlete.code || athlete.club_code }}
+                            </span>
+                            <span class="text-slate-700 font-medium whitespace-nowrap">
+                              {{ toTitleCase(athlete.club || athlete.club_name || athlete.country || '-') }}
+                            </span>
+                          </div>
+                        </td>
+                        <!-- Division / Category -->
+                        <td class="py-3 px-4 whitespace-nowrap">
+                          <span class="inline-block px-2.5 py-1 rounded-lg bg-navy/5 text-navy font-semibold text-xs whitespace-nowrap">
                             {{ athlete.category || '-' }}
                           </span>
                         </td>
                       </tr>
 
                       <tr v-if="paginatedEntriesData.length === 0">
-                        <td colspan="4" class="py-8 text-center text-slate-400">
+                        <td colspan="6" class="py-8 text-center text-slate-400">
                           {{ t('no_entries_found') }}
                         </td>
                       </tr>
@@ -510,7 +547,7 @@
                 </div>
 
                 <!-- TABLE FOOTER (ITEMS PER PAGE + PAGINATION ON FOOTER!) -->
-                <div class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                <div class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm">
                   <!-- Custom Items Per Page Dropdown / Pills -->
                   <div class="flex items-center gap-2">
                     <span class="text-slate-500 font-medium">{{ t('items_per_page') }}:</span>
@@ -521,7 +558,7 @@
                         type="button"
                         @click="entriesPageSize = size; entriesCurrentPage = 1"
                         :class="[
-                          'px-2 py-0.5 rounded-lg text-xs font-semibold transition-all cursor-pointer',
+                          'px-2 py-0.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer',
                           entriesPageSize === size
                             ? 'bg-navy text-white shadow-2xs font-bold'
                             : 'text-slate-600 hover:text-navy hover:bg-slate-50'
@@ -603,7 +640,7 @@
                       :key="cat"
                       @click="selectedQualCategory = cat; qualCurrentPage = 1"
                       :class="[
-                        'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
+                        'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
                         selectedQualCategory === cat
                           ? 'bg-navy text-white shadow-xs font-bold'
                           : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -618,7 +655,7 @@
                 <template #cell-rank="{ item, rowIndex }">
                   <span
                     :class="[
-                      'inline-flex items-center justify-center size-6 rounded-full text-xs font-mono font-bold',
+                      'inline-flex items-center justify-center size-6 sm:size-7 rounded-full text-xs sm:text-sm font-mono font-bold',
                       item.rank === 1 ? 'bg-amber-100 text-amber-800 font-black' : '',
                       item.rank === 2 ? 'bg-slate-200 text-slate-700 font-black' : '',
                       item.rank === 3 ? 'bg-amber-700/20 text-amber-900 font-black' : 'text-navy'
@@ -631,10 +668,10 @@
                 <!-- Custom Cell: Name -->
                 <template #cell-name="{ item }">
                   <div class="flex items-center gap-2">
-                    <span v-if="item.target" class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-semibold shrink-0">
+                    <span v-if="item.target" class="font-mono text-[10px] sm:text-xs px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-semibold shrink-0">
                       {{ item.target }}
                     </span>
-                    <span class="font-bold text-navy sm:text-xs">
+                    <span class="font-bold text-navy whitespace-nowrap">
                       {{ toTitleCase(item.name || item.athlete_name) }}
                     </span>
                   </div>
@@ -649,35 +686,35 @@
 
                 <!-- Custom Cell: Distance 1 -->
                 <template #cell-distance_1="{ item }">
-                  <span class="font-mono text-slate-600 text-xs">
+                  <span class="font-mono text-slate-600 text-xs sm:text-sm">
                     {{ item.distance_1 || '-' }}
                   </span>
                 </template>
 
                 <!-- Custom Cell: Distance 2 -->
                 <template #cell-distance_2="{ item }">
-                  <span class="font-mono text-slate-600 text-xs">
+                  <span class="font-mono text-slate-600 text-xs sm:text-sm">
                     {{ item.distance_2 || '-' }}
                   </span>
                 </template>
 
                 <!-- Custom Cell: Score -->
                 <template #cell-score="{ item }">
-                  <span class="font-mono font-bold text-navy text-sm">
+                  <span class="font-mono font-bold text-navy text-sm sm:text-base">
                     {{ item.score ?? item.total_score ?? item.total ?? '-' }}
                   </span>
                 </template>
 
                 <!-- Custom Cell: 10s -->
                 <template #cell-tens="{ item }">
-                  <span class="font-mono text-slate-500">
+                  <span class="font-mono text-slate-500 text-xs sm:text-sm">
                     {{ item.tens ?? item['10s'] ?? item.tens_count ?? '-' }}
                   </span>
                 </template>
 
                 <!-- Custom Cell: Xs -->
                 <template #cell-xs="{ item }">
-                  <span class="font-mono text-slate-500">
+                  <span class="font-mono text-slate-500 text-xs sm:text-sm">
                     {{ item.xs ?? item['xs'] ?? item.x_count ?? '-' }}
                   </span>
                 </template>
@@ -704,7 +741,7 @@
                   type="button"
                   @click="selectedBracketType = bType; selectedBracketCategory = ''"
                   :class="[
-                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer shrink-0',
+                    'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer shrink-0',
                     (selectedBracketType || 'single') === bType
                       ? 'bg-navy text-white shadow-xs font-bold'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -712,12 +749,12 @@
                 >
                   <Icon 
                     :icon="bType === 'single' ? 'ph:user-bold' : (bType === 'team' ? 'ph:users-three-bold' : 'ph:users-bold')" 
-                    class="text-xs" 
+                    class="text-xs sm:text-sm" 
                   />
                   <span>{{ bType === 'single' ? t('bracket_type_single') : (bType === 'team' ? t('bracket_type_team') : t('bracket_type_mix')) }}</span>
                   <span 
                     :class="[
-                      'text-[10px] px-1.5 py-0.2 rounded-full font-bold',
+                      'text-[10px] sm:text-xs px-1.5 py-0.2 rounded-full font-bold',
                       (selectedBracketType || 'single') === bType ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600'
                     ]"
                   >
@@ -733,7 +770,7 @@
                   :key="cat"
                   @click="selectedBracketCategory = cat"
                   :class="[
-                    'px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
+                    'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer',
                     (selectedBracketCategory || availableBracketCategories[0]) === cat
                       ? 'bg-navy text-white shadow-xs font-bold'
                       : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
@@ -785,7 +822,7 @@
                     <button
                       type="button"
                       @click="showPodiumDropdown = !showPodiumDropdown"
-                      class="px-3.5 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 flex items-center justify-between gap-2.5 transition-all cursor-pointer min-w-[180px]"
+                      class="px-3.5 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 flex items-center justify-between gap-2.5 transition-all cursor-pointer min-w-[180px]"
                     >
                       <div class="flex items-center gap-1.5 truncate">
                         <Icon icon="ph:tag-bold" class="text-primary text-sm shrink-0" />
@@ -805,7 +842,7 @@
                         type="button"
                         @click="selectedPodiumCategory = cat; showPodiumDropdown = false"
                         :class="[
-                          'w-full px-3 py-2 rounded-xl text-xs text-left font-medium transition-all flex items-center justify-between cursor-pointer',
+                          'w-full px-3 py-2 rounded-xl text-xs sm:text-sm text-left font-medium transition-all flex items-center justify-between cursor-pointer',
                           (selectedPodiumCategory || availablePodiumCategories[0]) === cat ? 'bg-primary/20 text-navy font-bold' : 'text-slate-700 hover:bg-slate-50'
                         ]"
                       >
@@ -820,17 +857,17 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <!-- Silver (2nd) -->
                   <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
-                    <div class="flex items-center gap-2 text-slate-600 text-xs font-bold pb-2">
-                      <div class="size-6 rounded-lg bg-slate-200 text-slate-700 flex items-center justify-center shrink-0">
-                        <Icon icon="ph:medal-fill" class="text-xs" />
+                    <div class="flex items-center gap-2 text-slate-600 text-xs sm:text-sm font-bold pb-2">
+                      <div class="size-6 sm:size-7 rounded-lg bg-slate-200 text-slate-700 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:medal-fill" class="text-xs sm:text-sm" />
                       </div>
                       <span>{{ t('podium_silver') }}</span>
                     </div>
                     <div class="pt-2">
-                      <div class="text-sm font-bold text-navy truncate">
+                      <div class="text-sm sm:text-base font-bold text-navy truncate">
                         {{ toTitleCase(currentPodiumCategoryData?.silver?.name || currentPodiumCategoryData?.silver?.athlete_name || 'TBD') }}
                       </div>
-                      <div class="text-xs text-slate-500 truncate mt-0.5">
+                      <div class="text-xs sm:text-sm text-slate-500 truncate mt-0.5">
                         {{ toTitleCase(currentPodiumCategoryData?.silver?.club || currentPodiumCategoryData?.silver?.country || '-') }}
                       </div>
                     </div>
@@ -838,17 +875,17 @@
 
                   <!-- Gold (1st) -->
                   <div class="p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-400/60 flex flex-col justify-between shadow-xs">
-                    <div class="flex items-center gap-2 text-amber-800 text-xs font-bold pb-2">
-                      <div class="size-6 rounded-lg bg-amber-400 text-amber-950 flex items-center justify-center shrink-0">
-                        <Icon icon="ph:crown-fill" class="text-xs" />
+                    <div class="flex items-center gap-2 text-amber-800 text-xs sm:text-sm font-bold pb-2">
+                      <div class="size-6 sm:size-7 rounded-lg bg-amber-400 text-amber-950 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:crown-fill" class="text-xs sm:text-sm" />
                       </div>
                       <span>{{ t('podium_gold') }}</span>
                     </div>
                     <div class="pt-2">
-                      <div class="text-sm font-black text-navy truncate">
+                      <div class="text-sm sm:text-base font-black text-navy truncate">
                         {{ toTitleCase(currentPodiumCategoryData?.gold?.name || currentPodiumCategoryData?.gold?.athlete_name || 'TBD') }}
                       </div>
-                      <div class="text-xs text-amber-900/80 font-semibold truncate mt-0.5">
+                      <div class="text-xs sm:text-sm text-amber-900/80 font-semibold truncate mt-0.5">
                         {{ toTitleCase(currentPodiumCategoryData?.gold?.club || currentPodiumCategoryData?.gold?.country || '-') }}
                       </div>
                     </div>
@@ -856,17 +893,17 @@
 
                   <!-- Bronze (3rd) -->
                   <div class="p-4 rounded-2xl bg-amber-700/5 border border-amber-700/20 flex flex-col justify-between">
-                    <div class="flex items-center gap-2 text-amber-900 text-xs font-bold pb-2">
-                      <div class="size-6 rounded-lg bg-amber-700/20 text-amber-900 flex items-center justify-center shrink-0">
-                        <Icon icon="ph:medal-fill" class="text-xs" />
+                    <div class="flex items-center gap-2 text-amber-900 text-xs sm:text-sm font-bold pb-2">
+                      <div class="size-6 sm:size-7 rounded-lg bg-amber-700/20 text-amber-900 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:medal-fill" class="text-xs sm:text-sm" />
                       </div>
                       <span>{{ t('podium_bronze') }}</span>
                     </div>
                     <div class="pt-2">
-                      <div class="text-sm font-bold text-navy truncate">
+                      <div class="text-sm sm:text-base font-bold text-navy truncate">
                         {{ toTitleCase(currentPodiumCategoryData?.bronze?.name || currentPodiumCategoryData?.bronze?.athlete_name || 'TBD') }}
                       </div>
-                      <div class="text-xs text-slate-500 truncate mt-0.5">
+                      <div class="text-xs sm:text-sm text-slate-500 truncate mt-0.5">
                         {{ toTitleCase(currentPodiumCategoryData?.bronze?.club || currentPodiumCategoryData?.bronze?.country || '-') }}
                       </div>
                     </div>
@@ -884,12 +921,12 @@
 
                   <!-- Search Club Input -->
                   <div class="relative">
-                    <Icon icon="ph:magnifying-glass-bold" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
+                    <Icon icon="ph:magnifying-glass-bold" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs sm:text-sm" />
                     <input
                       v-model="searchMedalClub"
                       type="text"
                       :placeholder="t('search_club_placeholder')"
-                      class="pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-hidden focus:border-navy"
+                      class="pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-hidden focus:border-navy"
                     />
                   </div>
                 </div>
@@ -897,19 +934,19 @@
                 <!-- Medal Table Container -->
                 <div class="border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
                   <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs border-collapse">
-                      <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-xs">
+                    <table class="w-full text-left text-xs sm:text-sm border-collapse">
+                      <thead class="bg-slate-50/80 border-b border-slate-200/80 text-slate-600 font-bold text-xs sm:text-sm">
                         <tr>
                           <th @click="handleSortMedals('rank')" class="py-3 px-4 w-12 text-center cursor-pointer hover:text-navy select-none">
                             <div class="flex items-center justify-center gap-1">
                               <span>#</span>
-                              <Icon :icon="getSortIcon('rank', medalSortKey, medalSortAsc)" class="text-xs" />
+                              <Icon :icon="getSortIcon('rank', medalSortKey, medalSortAsc)" class="text-xs sm:text-sm" />
                             </div>
                           </th>
                           <th @click="handleSortMedals('club')" class="py-3 px-4 cursor-pointer hover:text-navy select-none">
                             <div class="flex items-center gap-1.5">
                               <span>{{ t('club') }}</span>
-                              <Icon :icon="getSortIcon('club', medalSortKey, medalSortAsc)" class="text-xs" />
+                              <Icon :icon="getSortIcon('club', medalSortKey, medalSortAsc)" class="text-xs sm:text-sm" />
                             </div>
                           </th>
                           <th @click="handleSortMedals('gold')" class="py-3 px-4 text-center cursor-pointer hover:text-navy select-none">
@@ -933,7 +970,7 @@
                           <th @click="handleSortMedals('total')" class="py-3 px-4 text-center cursor-pointer hover:text-navy select-none">
                             <div class="flex items-center justify-center gap-1 font-bold text-navy">
                               <span>Total</span>
-                              <Icon :icon="getSortIcon('total', medalSortKey, medalSortAsc)" class="text-xs" />
+                              <Icon :icon="getSortIcon('total', medalSortKey, medalSortAsc)" class="text-xs sm:text-sm" />
                             </div>
                           </th>
                         </tr>
@@ -947,7 +984,7 @@
                           <td class="py-3 px-4 text-center font-mono font-bold text-navy">
                             {{ medal.rank || idx + 1 }}
                           </td>
-                          <td class="py-3 px-4 font-bold text-navy sm:text-xs">
+                          <td class="py-3 px-4 font-bold text-navy whitespace-nowrap">
                             {{ toTitleCase(medal.club || medal.name || '-') }}
                           </td>
                           <td class="py-3 px-4 text-center font-mono font-bold text-amber-600 bg-amber-50/30">
@@ -959,7 +996,7 @@
                           <td class="py-3 px-4 text-center font-mono font-bold text-amber-800 bg-amber-700/5">
                             {{ medal.bronze || 0 }}
                           </td>
-                          <td class="py-3 px-4 text-center font-mono font-black text-navy text-sm">
+                          <td class="py-3 px-4 text-center font-mono font-black text-navy text-sm sm:text-base">
                             {{ medal.total || (Number(medal.gold || 0) + Number(medal.silver || 0) + Number(medal.bronze || 0)) }}
                           </td>
                         </tr>
@@ -974,7 +1011,7 @@
                   </div>
 
                   <!-- MEDAL FOOTER (ITEMS PER PAGE + PAGINATION ON FOOTER!) -->
-                  <div class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                  <div class="p-3.5 border-t border-slate-100 bg-slate-50/70 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm">
                     <!-- Custom Items Per Page Dropdown / Pills -->
                     <div class="flex items-center gap-2">
                       <span class="text-slate-500 font-medium">{{ t('items_per_page') }}:</span>
@@ -985,7 +1022,7 @@
                           type="button"
                           @click="medalsPageSize = size; medalsCurrentPage = 1"
                           :class="[
-                            'px-2 py-0.5 rounded-lg text-xs font-semibold transition-all cursor-pointer',
+                            'px-2 py-0.5 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer',
                             medalsPageSize === size
                               ? 'bg-navy text-white shadow-2xs font-bold'
                               : 'text-slate-600 hover:text-navy hover:bg-slate-50'
@@ -1026,6 +1063,13 @@
               </div>
             </section>
 
+            <!-- 8. RELATED TOURNAMENTS -->
+            <TournamentRelatedSection
+              :current-slug="tournamentId"
+              :country="activeTournament?.country || activeTournament?.location || 'Malaysia'"
+              :lang="currentLang"
+            />
+
           </div>
 
           <!-- ── COLUMN 3: RIGHT SIDEBAR (EVENT DETAILS INFOBOX, TOOLS & MULTILANG) ── -->
@@ -1034,12 +1078,12 @@
               
               <!-- 1. Language Preference Selector (Iconify Powered: ID, EN, IT) -->
               <div class="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-2.5">
-                <div class="flex items-center justify-between text-xs font-bold text-slate-500">
+                <div class="flex items-center justify-between text-xs sm:text-sm font-bold text-slate-500">
                   <span class="flex items-center gap-1.5 font-display">
-                    <Icon icon="ph:translate-bold" class="text-primary text-sm" />
+                    <Icon icon="ph:translate-bold" class="text-primary text-sm shrink-0" />
                     {{ t('language_selector') }}
                   </span>
-                  <span class="text-xs font-mono text-slate-400 font-semibold">{{ currentLang }}</span>
+                  <span class="text-xs sm:text-sm font-mono text-slate-400 font-semibold">{{ currentLang }}</span>
                 </div>
 
                 <div class="grid grid-cols-3 gap-1.5 bg-slate-100/80 p-1 rounded-xl">
@@ -1049,7 +1093,7 @@
                     type="button"
                     @click="setLanguage(lang.code)"
                     :class="[
-                      'py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer select-none',
+                      'py-1.5 px-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer select-none',
                       currentLang === lang.code
                         ? 'bg-white text-navy shadow-xs font-bold'
                         : 'text-slate-600 hover:text-navy hover:bg-white/50'
@@ -1061,53 +1105,99 @@
                 </div>
               </div>
 
-              <!-- 2. Event Details Infobox (Key Metadata Key-Value List) -->
-              <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-3.5">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
-                  <h3 class="text-xs font-bold text-navy font-display flex items-center gap-1.5">
-                    <Icon icon="ph:info-fill" class="text-primary text-sm" />
-                    {{ t('event_details') }}
+              <!-- 2. Event Details Infobox (Clean Categorized Layout) -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <h3 class="text-xs sm:text-sm font-bold text-navy font-display flex items-center gap-2">
+                    <div class="size-6 rounded-lg bg-primary/20 text-navy flex items-center justify-center">
+                      <Icon icon="ph:info-bold" class="text-xs" />
+                    </div>
+                    <span>{{ t('event_details') }}</span>
                   </h3>
                 </div>
 
-                <div class="space-y-2.5 text-xs">
-                  <!-- Dates -->
-                  <div class="flex items-start justify-between gap-2">
-                    <span class="text-slate-400 font-medium shrink-0">{{ t('label_dates') }}</span>
-                    <span class="font-bold text-navy text-right">{{ formatDateRange(activeTournament?.start_date, activeTournament?.end_date) }}</span>
+                <div class="space-y-3.5 text-xs sm:text-sm divide-y divide-slate-100/90">
+                  <!-- Section 1: Dates -->
+                  <div class="space-y-2">
+                    <div class="flex items-start justify-between gap-2">
+                      <span class="text-slate-400 font-medium shrink-0 flex items-center gap-1.5">
+                        <Icon icon="ph:calendar-blank-bold" class="text-slate-400 text-xs shrink-0" />
+                        {{ t('label_dates') }}
+                      </span>
+                      <span class="font-bold text-navy text-right">{{ formatDateRange(activeTournament?.start_date, activeTournament?.end_date) }}</span>
+                    </div>
                   </div>
 
-                  <!-- Venue -->
-                  <div class="flex items-start justify-between gap-2">
-                    <span class="text-slate-400 font-medium shrink-0">{{ t('label_venue') }}</span>
-                    <span class="font-semibold text-navy text-right">{{ toTitleCase(activeTournament?.location || activeTournament?.venue || 'Indonesia') }}</span>
+                  <!-- Section 2: Location & Organization -->
+                  <div class="space-y-2.5 pt-3">
+                    <!-- Venue -->
+                    <div class="flex items-start justify-between gap-2">
+                      <span class="text-slate-400 font-medium shrink-0 flex items-center gap-1.5">
+                        <Icon icon="ph:map-pin-bold" class="text-slate-400 text-xs shrink-0" />
+                        {{ t('label_venue') }}
+                      </span>
+                      <span class="font-semibold text-navy text-right max-w-[65%] leading-snug">{{ displayVenue }}</span>
+                    </div>
+
+                    <!-- City / Region -->
+                    <div v-if="displayCity" class="flex items-start justify-between gap-2">
+                      <span class="text-slate-400 font-medium shrink-0 flex items-center gap-1.5">
+                        <Icon icon="ph:buildings-bold" class="text-slate-400 text-xs shrink-0" />
+                        {{ t('label_city') }}
+                      </span>
+                      <span class="font-medium text-slate-700 text-right">{{ displayCity }}</span>
+                    </div>
+
+                    <!-- Country / Flag -->
+                    <div class="flex items-start justify-between gap-2">
+                      <span class="text-slate-400 font-medium shrink-0 flex items-center gap-1.5">
+                        <Icon icon="ph:globe-hemisphere-west-bold" class="text-slate-400 text-xs shrink-0" />
+                        {{ t('label_country') }}
+                      </span>
+                      <span class="font-bold text-navy text-right flex items-center justify-end gap-1.5">
+                        <Icon :icon="countryFlagIcon" class="text-sm shrink-0" />
+                        <span>{{ displayCountry }}</span>
+                      </span>
+                    </div>
+
+                    <!-- Host Organization -->
+                    <div class="flex items-start justify-between gap-2">
+                      <span class="text-slate-400 font-medium shrink-0 flex items-center gap-1.5">
+                        <Icon icon="ph:shield-star-bold" class="text-slate-400 text-xs shrink-0" />
+                        {{ t('label_host') }}
+                      </span>
+                      <span class="font-medium text-slate-700 text-right max-w-[65%] leading-snug">{{ toTitleCase(activeTournamentData?.organizer_name || 'Host Org') }}</span>
+                    </div>
                   </div>
 
-                  <!-- Host Organization -->
-                  <div class="flex items-start justify-between gap-2">
-                    <span class="text-slate-400 font-medium shrink-0">{{ t('label_host') }}</span>
-                    <span class="font-semibold text-navy text-right">{{ toTitleCase(activeTournamentData?.organizer_name || 'Host Org') }}</span>
-                  </div>
+                  <!-- Section 3: Scale & Scale Metrics -->
+                  <div class="space-y-2 pt-3">
+                    <!-- Total Archers -->
+                    <div class="flex items-start justify-between gap-2">
+                      <span class="text-slate-400 font-medium shrink-0 flex items-center gap-1.5">
+                        <Icon icon="ph:users-three-bold" class="text-slate-400 text-xs shrink-0" />
+                        {{ t('label_archers') }}
+                      </span>
+                      <span class="font-bold text-navy text-right font-mono">{{ computedTotalArchers }}</span>
+                    </div>
 
-                  <!-- Country / Region -->
-                  <div class="flex items-start justify-between gap-2">
-                    <span class="text-slate-400 font-medium shrink-0">{{ t('label_country') }}</span>
-                    <span class="font-semibold text-navy text-right flex items-center justify-end gap-1">
-                      <Icon icon="circle-flags:id" class="text-xs shrink-0" />
-                      {{ formatCityDisplay(activeTournament?.city, activeTournament?.location) }}
-                    </span>
-                  </div>
+                    <!-- Total Categories -->
+                    <div class="flex items-start justify-between gap-2">
+                      <span class="text-slate-400 font-medium shrink-0 flex items-center gap-1.5">
+                        <Icon icon="ph:target-bold" class="text-slate-400 text-xs shrink-0" />
+                        {{ t('label_categories') }}
+                      </span>
+                      <span class="font-bold text-navy text-right font-mono">{{ categoriesList.length }}</span>
+                    </div>
 
-                  <!-- Total Archers -->
-                  <div class="flex items-start justify-between gap-2 pt-2 border-t border-slate-100">
-                    <span class="text-slate-400 font-medium shrink-0">{{ t('label_archers') }}</span>
-                    <span class="font-bold text-navy text-right">{{ computedTotalArchers }}</span>
-                  </div>
-
-                  <!-- Total Categories -->
-                  <div class="flex items-start justify-between gap-2">
-                    <span class="text-slate-400 font-medium shrink-0">{{ t('label_categories') }}</span>
-                    <span class="font-bold text-navy text-right">{{ categoriesList.length }}</span>
+                    <!-- Total Clubs -->
+                    <div class="flex items-start justify-between gap-2">
+                      <span class="text-slate-400 font-medium shrink-0 flex items-center gap-1.5">
+                        <Icon icon="ph:trophy-bold" class="text-slate-400 text-xs shrink-0" />
+                        {{ t('metric_clubs') }}
+                      </span>
+                      <span class="font-bold text-navy text-right font-mono">{{ computedTotalClubs }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1120,9 +1210,9 @@
                   :href="ianseoUrl"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-2xs border border-slate-200/80 hover:border-navy/20"
+                  class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-2xs border border-slate-200/80 hover:border-navy/20"
                 >
-                  <Icon icon="ph:arrow-square-out-bold" class="text-navy text-sm" />
+                  <Icon icon="ph:arrow-square-out-bold" class="text-navy text-base" />
                   <span>{{ t('view_ianseo_btn') }}</span>
                 </a>
 
@@ -1130,7 +1220,7 @@
                 <button
                   type="button"
                   @click="showShareModal = true"
-                  class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-primary/20 via-primary/30 to-primary/20 hover:from-primary/30 hover:to-primary/40 border border-primary/40 text-navy font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer active:scale-[0.98]"
+                  class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-primary/20 via-primary/30 to-primary/20 hover:from-primary/30 hover:to-primary/40 border border-primary/40 text-navy font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer active:scale-[0.98]"
                 >
                   <Icon icon="ph:share-network-bold" class="text-base text-navy" />
                   <span>{{ t('share_tournament') }}</span>
@@ -1180,7 +1270,7 @@
                 <h3 class="text-base sm:text-lg font-bold text-navy font-display">
                   {{ t('share_event') }}
                 </h3>
-                <div class="text-xs text-slate-500 line-clamp-1 mt-0.5">
+                <div class="text-xs sm:text-sm text-slate-500 line-clamp-1 mt-0.5">
                   {{ toTitleCase(activeTournament?.name) }}
                 </div>
               </div>
@@ -1188,30 +1278,30 @@
 
             <!-- Modal Body -->
             <div class="space-y-4 pt-4">
-              <div class="text-xs text-slate-600 leading-relaxed">
+              <div class="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 {{ t('share_event_desc') }}
               </div>
 
               <!-- Link Copy Section -->
               <div class="space-y-1.5">
-                <label class="text-xs font-bold text-slate-500 font-display">
+                <label class="text-xs sm:text-sm font-bold text-slate-500 font-display">
                   {{ t('share_link_label') }}
                 </label>
                 <div class="flex items-center gap-2 p-1 bg-slate-50 border border-slate-200 rounded-2xl">
-                  <div class="pl-3 pr-1 text-xs text-slate-600 font-mono truncate select-all flex-1">
+                  <div class="pl-3 pr-1 text-xs sm:text-sm text-slate-600 font-mono truncate select-all flex-1">
                     {{ currentShareUrl }}
                   </div>
                   <button
                     type="button"
                     @click="copyShareUrl"
                     :class="[
-                      'px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs',
+                      'px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs',
                       copiedShareLink
                         ? 'bg-emerald-600 text-white'
                         : 'bg-navy hover:bg-navy/90 text-white'
                     ]"
                   >
-                    <Icon :icon="copiedShareLink ? 'ph:check-bold' : 'ph:copy-bold'" class="text-xs" />
+                    <Icon :icon="copiedShareLink ? 'ph:check-bold' : 'ph:copy-bold'" class="text-xs sm:text-sm" />
                     <span>{{ copiedShareLink ? t('link_copied_btn') : t('copy_btn') }}</span>
                   </button>
                 </div>
@@ -1219,7 +1309,7 @@
 
               <!-- Social Broadcast Grid -->
               <div class="space-y-2 pt-2">
-                <label class="text-xs font-bold text-slate-500 font-display">
+                <label class="text-xs sm:text-sm font-bold text-slate-500 font-display">
                   {{ t('share_to_social') }}
                 </label>
                 <div class="grid grid-cols-3 gap-2">
@@ -1233,7 +1323,7 @@
                     <div :class="['size-8 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110', platform.bg]">
                       <Icon :icon="platform.icon" :class="['text-lg', platform.color]" />
                     </div>
-                    <span class="text-[11px] font-semibold text-slate-700 truncate w-full text-center">
+                    <span class="text-xs sm:text-sm font-semibold text-slate-700 truncate w-full text-center">
                       {{ platform.name }}
                     </span>
                   </button>
@@ -1283,6 +1373,13 @@ const props = defineProps({
 })
 
 const route = useRoute()
+const isExternalTournamentState = useState('isExternalTournamentPage', () => true)
+isExternalTournamentState.value = true
+
+onMounted(() => {
+  isExternalTournamentState.value = true
+})
+
 const activeTournament = computed(() => props.tournament || {})
 const activeTournamentData = computed(() => props.tournamentData || {})
 const tournamentId = computed(() => {
@@ -1337,6 +1434,8 @@ const translations = {
     search_athlete_placeholder: 'Cari nama atlet, klub, atau divisi...',
     showing_x_of_y_entries: 'Menampilkan {current} dari {total} atlet terdaftar',
     col_rank: 'Pos.',
+    col_target: 'Bantalan',
+    col_bib: 'No. Dada',
     col_name: 'Nama Atlet',
     col_club: 'Klub / Kontingen',
     col_category: 'Divisi',
@@ -1373,6 +1472,7 @@ const translations = {
     event_details: 'Rincian Acara',
     label_dates: 'Tanggal Acara',
     label_venue: 'Lokasi / Venue',
+    label_city: 'Kota / Wilayah',
     label_host: 'Penyelenggara',
     label_country: 'Negara',
     label_archers: 'Jumlah Pemanah',
@@ -1389,7 +1489,8 @@ const translations = {
     items_per_page: 'Baris per halaman',
     prev_page: 'Sebelumnya',
     next_page: 'Berikutnya',
-    page_x_of_y: 'Halaman {current} dari {total}'
+    page_x_of_y: 'Halaman {current} dari {total}',
+    related_title: 'Turnamen Terkait'
   },
   en: {
     tournaments: 'Tournaments',
@@ -1420,9 +1521,11 @@ const translations = {
     athletes_title: 'Athletes & Entries',
     athletes_desc: 'Complete roster of registered archers and delegations.',
     filter_club_all: 'All Clubs / Delegations',
-    search_athlete_placeholder: 'Search athlete by name, club, or division...',
+    search_athlete_placeholder: 'Search athlete by name, bib, target, club, or division...',
     showing_x_of_y_entries: 'Showing {current} of {total} registered athletes',
     col_rank: 'Rank',
+    col_target: 'Target',
+    col_bib: 'BIB',
     col_name: 'Athlete Name',
     col_club: 'Club / Team',
     col_category: 'Division',
@@ -1459,6 +1562,7 @@ const translations = {
     event_details: 'Event Details',
     label_dates: 'Event Dates',
     label_venue: 'Venue Location',
+    label_city: 'City / Region',
     label_host: 'Host Organization',
     label_country: 'Country',
     label_archers: 'Total Archers',
@@ -1475,7 +1579,8 @@ const translations = {
     items_per_page: 'Items per page',
     prev_page: 'Previous',
     next_page: 'Next',
-    page_x_of_y: 'Page {current} of {total}'
+    page_x_of_y: 'Page {current} of {total}',
+    related_title: 'Related Tournaments'
   },
   it: {
     tournaments: 'Tornei',
@@ -1506,9 +1611,11 @@ const translations = {
     athletes_title: 'Arcieri e Iscrizioni',
     athletes_desc: 'Elenco ufficiale degli atleti e contingenti registrati.',
     filter_club_all: 'Tutti i Club / Delegazioni',
-    search_athlete_placeholder: 'Cerca per nome, club o divisione...',
+    search_athlete_placeholder: 'Cerca per nome, pettorale, paglione o divisione...',
     showing_x_of_y_entries: 'Mostrati {current} di {total} arcieri iscritti',
     col_rank: 'Pos.',
+    col_target: 'Paglione',
+    col_bib: 'Pettorale',
     col_name: 'Nome Arciere',
     col_club: 'Club / Squadra',
     col_category: 'Divisione',
@@ -1545,6 +1652,7 @@ const translations = {
     event_details: 'Dettagli Evento',
     label_dates: 'Date dell\'Evento',
     label_venue: 'Luogo di Gara',
+    label_city: 'Città / Regione',
     label_host: 'Organizzatore',
     label_country: 'Nazione',
     label_archers: 'Totale Iscritti',
@@ -1561,7 +1669,8 @@ const translations = {
     items_per_page: 'Elementi per pagina',
     prev_page: 'Precedente',
     next_page: 'Successivo',
-    page_x_of_y: 'Pagina {current} di {total}'
+    page_x_of_y: 'Pagina {current} di {total}',
+    related_title: 'Tornei Correlati'
   }
 }
 
@@ -1741,6 +1850,10 @@ const normalizedEntriesList = computed(() => {
     const fullCat = formatDivisionCategory(rawCat, item.division, item.age_class || item.class)
     return {
       ...item,
+      target: item.target || item.target_lane || item.lane || '',
+      bib: item.bib || item.bib_no || item.id || '',
+      code: item.code || item.club_code || '',
+      club: item.club || item.club_name || item.country || '',
       category: fullCat,
       raw_category: rawCat
     }
@@ -1810,161 +1923,248 @@ const medalSortKey = ref('rank')
 const medalSortAsc = ref(true)
 
 // ─────────────────────────────────────────────────────────────
-// TOURNAMENT OVERVIEW DESCRIPTIONS (BESPOKE NATURAL PROSE)
+// TOURNAMENT OVERVIEW DESCRIPTIONS (BESPOKE NATURAL PROSE FOR ALL 11 TOURNAMENTS)
 // ─────────────────────────────────────────────────────────────
 const bespokeTournamentDescriptions = {
-  '29965': {
+  // 1. Ext: 25777 - KEJUARAAN NASIONAL ANTAR CLUB TAHUN 2025
+  '25777': {
     id: [
-      'IPB Archery Open 2026 merupakan kejuaraan panahan terbuka tingkat nasional yang diselenggarakan oleh UKM Panahan IPB di Kabupaten Bogor, Jawa Barat pada 11 - 13 September 2026. Kejuaraan bergengsi ini mempertemukan 210 atlet panahan dari 25 lebih klub, universitas, sekolah, dan kontingen panahan terkemuka, seperti Fortius UNJ, UKM Panahan UGM, Universitas Padjadjaran (UNPAD), Universitas Siliwangi, Diponegoro Archery Club, Power UKM ITI, FAST Kodamar, SMP IT Al Binaa, Groovy Archery Academy, Puslatcab Kota Tangerang, serta tuan rumah UKM Panahan IPB.',
-      'Kejuaraan ini mempertandingkan 50 nomor kompetisi komprehensif yang memadukan persaingan atlet mahasiswa dengan pembinaan usia dini dan divisi prestasi umum. Kategori perguruan tinggi mencakup divisi Barebow Mahasiswa dan Recurve Mahasiswa (Putra, Putri, Beregu, dan Mix Team). Sementara itu, jalur pembinaan akar rumput menghadirkan persaingan ketat di divisi Standar Nasional SD 1-3 (10m), SD 4-6 (10m), SMP (15m), hingga SMA/Umum (20m), dilengkapi kategori Compound Umum, Recurve Umum, dan Barebow Open.',
-      'Didukung sistem administrasi dan skoring resmi Ianseo, turnamen ini menyajikan rangkaian pertandingan presisi tinggi mulai dari babak kualifikasi penentuan seeding hingga babak eliminasi head-to-head yang kompetitif, menjadikannya tolok ukur penting dalam pembinaan panahan kampus dan generasi muda di Indonesia.'
+      'Kejuaraan Nasional Antar Club 2025 merupakan perhelatan akbar panahan antar-klub paling bergengsi di Indonesia yang diselenggarakan di Super Soccer Arena Kudus, Jawa Tengah pada 9 - 14 Desember 2025. Mempertemukan ratusan pemanah berbakat dari puluhan klub dan akademi panahan elit dari seluruh penjuru nusantara.',
+      'Kejuaraan ini mempertandingkan berbagai nomor bergengsi lintas divisi Standar Nasional, Recurve, Compound, dan Barebow untuk kelompok usia dini hingga senior. Didukung infrastruktur arena modern dan sistem administrasi Ianseo berstandar World Archery, ajang ini menjadi panggung utama unjuk prestasi, pembibitan talenta unggulan, serta tolak ukur pembinaan klub panahan di Indonesia.'
     ],
     en: [
-      'The IPB Archery Open 2026 is a premier national-level open archery championship hosted by UKM Panahan IPB (IPB University Archery Club) in Bogor Regency, West Java from September 11 to 13, 2026. Staged over three competition days, the championship assembled 210 standout archers representing over 25 prominent collegiate teams, archery academies, schools, and regional delegations—including Fortius UNJ, UKM Panahan UGM, Universitas Padjadjaran (UNPAD), Universitas Siliwangi, Diponegoro Archery Club, Power UKM ITI, FAST Kodamar, SMP IT Al Binaa, Groovy Archery Academy, Puslatcab Kota Tangerang, and host IPB University.',
-      'The championship contested 50 comprehensive medal divisions designed to bridge collegiate competition with grassroots youth development and open divisions. The university bracket spotlighted intense rivalries across Collegiate Barebow and Collegiate Recurve (Men, Women, Team, and Mixed Team). Concurrently, youth development pathways featured high-energy competition across National Standard Bow tiers for Elementary Grades 1-3 (10m), Grades 4-6 (10m), Junior High (15m), and Senior High/Open classes (20m), alongside premier Open Barebow, Compound, and Recurve categories.',
-      'Powered by the official Ianseo scoring and tournament management system, the event delivered precise qualification ranking rounds followed by thrilling head-to-head individual and team knockout shootouts, establishing a vital benchmark for university and youth archery development across Indonesia.'
+      'The 2025 National Inter-Club Archery Championship is one of the most prestigious club-level archery tournaments in Indonesia, staged at the Super Soccer Arena Kudus, Central Java from December 9 to 14, 2025. The championship brings together top archers representing elite archery clubs and academies across the Indonesian archipelago.',
+      'Contested across National Standard Bow, Recurve, Compound, and Barebow divisions from youth developmental tiers to senior categories. Supported by world-class arena facilities and official Ianseo tournament management, the event serves as a crucial benchmark for club performance, athlete development, and national talent scouting.'
     ],
     it: [
-      'L\'IPB Archery Open 2026 è un prestigioso campionato nazionale aperto di tiro con l\'arco organizzato dall\'associazione arcieristica universitaria UKM Panahan IPB nella Reggenza di Bogor, Giava Occidentale, dall\'11 al 13 settembre 2026. L\'evento ha riunito 210 arcieri in rappresentanza di oltre 25 delegazioni universitarie, accademie, club e comitati sportivi regionali—tra cui Fortius UNJ, UKM Panahan UGM, Universitas Padjadjaran (UNPAD), Universitas Siliwangi, Diponegoro Archery Club, Power UKM ITI, FAST Kodamar, SMP IT Al Binaa, Groovy Archery Academy, Puslatcab Kota Tangerang e l\'università ospitante IPB.',
-      'La manifestazione ha ospitato 50 divisioni di gara ufficiali strutturate per integrare il circuito universitario con il vivaio giovanile e le classi assolute open. Il settore universitario ha visto protagonisti gli atleti nelle categorie Arco Nudo e Ricurvo Universitario (Maschile, Femminile, Squadre e Squadre Miste). Il vivaio giovanile ha gareggiato nelle classi Standard Nazionale per Scuole Elementari (10m), Medie (15m) e Superiori/Open (20m), affiancate dalle divisioni d\'eccellenza Compound, Ricurvo e Arco Nudo Open.',
-      'Gestito con il sistema di cronometraggio omologato Ianseo, il torneo ha offerto sessioni di qualificazione di alto livello e combattute sfide a eliminazione diretta, confermandosi un punto di riferimento per l\'arcieria universitaria e giovanile indonesiana.'
+      'Il Campionato Nazionale Interclub di Tiro con l\'Arco 2025 rappresenta la più prestigiosa competizione per società in Indonesia, ospitata presso la Super Soccer Arena di Kudus, Giava Centrale, dal 9 al 14 dicembre 2025. La manifestazione riunisce i migliori atleti di decine di club e accademie arcieristiche da tutto il paese.',
+      'Il programma di gara comprende le divisioni Standard Nazionale, Arco Olimpico, Compound e Arco Nudo dalle categorie giovanili ai senior, con omologazione e gestione punteggi ufficiale Ianseo.'
     ]
   },
-  '27311': {
+
+  // 2. Ext: 24921 - SITUBONDO ARCHERY CHAMPIONSHIP 2025
+  '24921': {
     id: [
-      'RIAU OPEN ARCHERY COMPETITION 2026 merupakan kejuaraan panahan terbuka bergengsi yang diselenggarakan di Pekanbaru, Riau pada 23 - 26 April 2026. Kejuaraan ini mempertemukan 165 atlet panahan berbakat dari berbagai klub dan kontingen panahan terkemuka.',
-      'Mempertandingkan 64 nomor kompetisi lintas divisi Recurve, Compound, Barebow, dan Standar Nasional dari kelompok usia dini (U9, U12, U15, U18) hingga divisi Umum. Menggunakan sistem skoring resmi Ianseo, turnamen ini menjadi ajang tolak ukur pembinaan atlet panahan potensial di wilayah Sumatera dan nasional.'
+      'Situbondo Archery Championship 2025 merupakan kejuaraan panahan terbuka tingkat regional dan nasional yang digelar di Situbondo, Jawa Timur pada 24 - 26 Oktober 2025. Diselenggarakan oleh Pengcab PERPANI Situbondo, turnamen ini menjadi sarana pembinaan berkesinambungan bagi atlet panahan pelajar dan umum di kawasan Tapal Kuda dan Jawa Timur.',
+      'Kompetisi menghadirkan divisi Standar Nasional, Barebow, dan Recurve dari kategori pemula (U10, U13, U15) hingga kategori Prestasi Umum. Dengan atmosfer kompetisi yang dinamis dan terdata rapi melalui sistem Ianseo, kejuaraan ini memacu jam terbang serta mental juara para pemanah muda.'
     ],
     en: [
-      'The RIAU OPEN ARCHERY COMPETITION 2026 is a premier open archery championship held in Pekanbaru, Riau from April 23 to 26, 2026. The tournament assembled 165 standout archers representing prominent clubs and regional delegations.',
-      'Contested across 64 event divisions spanning Recurve, Compound, Barebow, and National Standard classes from youth development tiers (U9, U12, U15, U18) to premier Open divisions. Powered by official Ianseo scoring, the event delivered high-level marksmanship and valuable competitive experience.'
+      'The Situbondo Archery Championship 2025 is an open regional and national archery competition held in Situbondo, East Java from October 24 to 26, 2025. Organized by PERPANI Situbondo, the championship provides a dedicated platform for youth and senior archers to hone competitive marksmanship.',
+      'Featuring competition in National Standard, Barebow, and Recurve divisions across junior developmental age brackets (U10, U13, U15) and Open classes. Managed under the Ianseo system, it offers vital matchplay experience and ranking points for rising athletes.'
     ],
     it: [
-      'La RIAU OPEN ARCHERY COMPETITION 2026 è una prestigiosa manifestazione arcieristica tenutasi a Pekanbaru, Riau dal 23 al 26 aprile 2026, con la partecipazione di 165 arcieri in rappresentanza di club e delegazioni regionali.',
-      'L\'evento ha ospitato 64 divisioni di gara tra Ricurvo, Compound, Arco Nudo e Standard Nazionale per tutte le fasce d\'età, fornendo un fondamentale momento di confronto agonistico ufficiale omologato Ianseo.'
+      'Il Situbondo Archery Championship 2025 è una competizione arcieristica regionale tenutasi a Situbondo, Giava Orientale, dal 24 al 26 ottobre 2025. L\'evento ha riunito giovani promesse e tiratori senior nelle divisioni Arco Olimpico, Standard Nazionale e Barebow.'
     ]
   },
-  '28570': {
+
+  // 3. Ext: 26684 - Lumajang Archery Tournament 2026
+  '26684': {
     id: [
-      'USM National Archery Championship 2026 merupakan kejuaraan panahan tingkat nasional yang diselenggarakan oleh UKM Panahan Gendewa Geni Universitas Semarang (USM) di Semarang, Jawa Tengah. Digelar selama tiga hari pada 11 - 13 Juni 2026, kejuaraan bergengsi ini mempertemukan 38 atlet panahan berprestasi dari 20 klub, universitas, dan kontingen daerah di seluruh Indonesia.',
-      'Kejuaraan ini mempertandingkan 14 nomor kompetisi utama yang mencakup kategori Barebow Mahasiswa (Putra/Putri/Mix Team), Barebow Umum (Putra/Putri/Mix Team), serta divisi Standar Nasional kelompok umur (U13 & U15). Lapangan kompetisi didukung 32 bantalan target aktif berstandar resmi Ianseo, menghadirkan rangkaian kompetisi mulai dari babak kualifikasi penentuan seeding hingga babak eliminasi head-to-head yang menegangkan menuju perebutan medali emas.',
-      'Sebagai ajang kompetisi antar-kampus dan umum tingkat nasional, kejuaraan ini menjadi wadah strategis dalam mengasah jam terbang atlet mahasiswa, mempererat sinergi komunitas panahan nasional, serta menjaring bibit atlet panahan potensial dari berbagai daerah.'
+      'Lumajang Archery Tournament 2026 adalah kejuaraan panahan terbuka tingkat Jawa Timur dan nasional yang dihelat di Stadion Semeru, Lumajang pada 11 - 15 Februari 2026. Berlangsung selama lima hari penuh, kejuaraan ini menjadi magnet bagi ratusan atlet dari berbagai klub, sekolah, dan pengkab/pengkot panahan.',
+      'Turnamen mempertandingkan kategori komprehensif mulai dari divisi Paralon/PVC pemula (U10, U13, U15, U19), Standar Nasional jenjang sekolah, hingga Recurve dan Compound. Bertempat di stadion kebanggaan Lumajang dengan alokasi puluhan target lane berstandar resmi, turnamen ini menjadi ajang strategis pemetaan bibit unggul panahan Jawa Timur.'
     ],
     en: [
-      'The USM National Archery Championship 2026 is a premier national-level archery championship hosted by UKM Panahan Gendewa Geni at Universitas Semarang (USM) in Semarang, Central Java. Staged over three competition days from June 11 to 13, 2026, the tournament assembled 38 standout archers representing 20 participating university delegations, clubs, and regional associations across Indonesia.',
-      'The championship contested 14 key medal divisions spanning Collegiate Barebow (Men, Women, and Mixed Team), Open Barebow, and youth National Standard classes (U13 and U15). With 32 active target lanes certified under the official Ianseo scoring system, the event delivered intense action from preliminary ranking rounds to dramatic head-to-head knockout shootouts for the championship podium.',
-      'Serving as a key milestone for collegiate and open-tier archery, this championship provided valuable competitive exposure, fostering sportsmanship and identifying rising archery talents across the nation.'
+      'The Lumajang Archery Tournament 2026 is an expansive regional archery championship staged at Semeru Stadium in Lumajang, East Java from February 11 to 15, 2026. Spanning five full days of competition, the event drew hundreds of aspiring archers from schools, clubs, and regional associations.',
+      'The tournament features wide-ranging competition categories, including introductory PVC/Paralon developmental brackets (U10, U13, U15, U19), National Standard Bow tiers, and high-performance Recurve and Compound divisions. Utilizing official multi-lane Ianseo scoring at Semeru Stadium, it serves as an essential talent identification pathway.'
     ],
     it: [
-      'Il Campionato Nazionale di Tiro con l\'Arco USM 2026 è una prestigiosa manifestazione nazionale ospitata dall\'associazione arcieristica Gendewa Geni presso l\'Università di Semarang (USM) a Giava Centrale. Svoltosi dall\'11 al 13 giugno 2026, l\'evento ha visto la partecipazione di 38 arcieri in rappresentanza di 20 club universitari e delegazioni regionali.',
-      'Le gare hanno coperto 14 divisioni ufficiali tra Arco Nudo Universitario, Barebow Open e Standard Nazionale Giovanile su 32 bersagli omologati Ianseo, culminando in emozionanti finali testa a testa per il titolo.'
+      'Il Lumajang Archery Tournament 2026 è una grande manifestazione arcieristica svoltasi presso lo Stadio Semeru di Lumajang, Giava Orientale, dall\'11 al 15 febbraio 2026, con gare dedicate alle classi giovanili promozionali, Standard Nazionale, Arco Olimpico e Compound.'
     ]
   },
-  '29375': {
-    id: [
-      'Liga Panahan Kabupaten Kendal 2026 Seri 3 merupakan sirkuit pembinaan panahan di Jawa Tengah yang mempertemukan 164 atlet dari 58 klub dan kontingen panahan daerah. Berlangsung di Kabupaten Kendal pada 31 Juli hingga 2 Agustus 2026, kejuaraan ini mempertandingkan 24 divisi lomba dari kelompok usia dini (Recurve U13, Recurve U15, Barebow U18) hingga divisi Standar Nasional dan Recurve umum.',
-      'Ajang seri ketiga ini menjadi momentum penting bagi para pemanah muda untuk mengumpulkan poin sirkuit dan menguji mental bertanding di bawah atmosfer kompetisi resmi PERPANI Kendal.'
-    ],
-    en: [
-      'The 2026 Kendal Regency Archery League Series 3 brought together 164 talented archers across 58 clubs and contingents throughout Central Java. Staged in Kendal from July 31 to August 2, 2026, the tournament featured competition across 24 distinct divisions - spanning youth development categories (Recurve U13/U15 and Barebow U18) to premier National and Recurve classes.',
-      'This third series served as a pivotal ranking milestone for grassroots athletes seeking crucial championship circuit points and regional ranking ascents.'
-    ],
-    it: [
-      'La 3ª Serie della Lega di Tiro con l\'Arco della Reggenza di Kendal 2026 ha riunito 164 promettenti arcieri in rappresentanza di 58 club e delegazioni provenienti da tutta la regione di Giava Centrale. Organizzato a Kendal dal 31 luglio al 2 agosto 2026, l\'evento ha ospitato gare in 24 diverse divisioni, dai settori giovanili (Recurve U13/U15 e Barebow U18) fino alle categorie Arco Olimpico e Standard Nazionale.',
-      'Questa terza tappa ha rappresentato un fondamentale snodo di classifica per i giovani arcieri impegnati a conquistare preziosi punti circuito e consolidare la propria posizione regionale.'
-    ]
-  },
+
+  // 4. Ext: 25818 - PIALA GUBERNUR JAWA TIMUR III
   '25818': {
     id: [
-      'Piala Gubernur Jawa Timur III menjadi salah satu festival panahan termegah di Jawa Timur, menyatukan 715 atlet dari 32 kontingen daerah dan klub panahan unggulan di Stadion Rejoagung, Tulungagung. Berlangsung selama delapan hari (19 - 26 Desember 2025), kejuaraan ini mempertandingkan 32 nomor kompetisi di nomor Standar Nasional, Barebow jarak 20m - 50m, serta Compound dan Recurve.',
-      'Kejuaraan ini menegaskan tingginya antusiasme pembinaan panahan di Jawa Timur dengan partisipasi masif di kategori usia muda (U10, U15, dan U18). Selain memperebutkan trofi bergengsi Piala Gubernur, ajang ini menjadi panggung pemantauan talenta untuk menjaring atlet masa depan Jawa Timur menuju panggung nasional.'
+      'Piala Gubernur Jawa Timur III merupakan festival dan kejuaraan panahan akbar termegah di Jawa Timur yang dihelat di Lapangan Stadion Rejoagung, Tulungagung pada 19 - 26 Desember 2025. Menghadirkan total 715 atlet panahan dari 32 kontingen daerah dan klub terkemuka di seluruh Jawa Timur.',
+      'Kejuaraan ini menggelar 32 divisi nomor perlombaan yang mencakup divisi Standar Nasional usia dini (U10, U15, U18), Barebow jarak 20m dan 50m, serta divisi Compound dan Recurve resmi. Memperebutkan piala bergilir Gubernur Jawa Timur, kompetisi delapan hari ini menjadi barometer utama prestasi panahan daerah dan seleksi kontingen Pekan Olahraga Nasional.'
     ],
     en: [
-      'The 3rd East Java Governor\'s Cup stood as one of the largest archery tournaments in the province, uniting 715 athletes across 32 regional delegations and top clubs at Rejoagung Stadium in Tulungagung. Over eight competition days (December 19 - 26, 2025), archers competed across 32 medal events spanning National Standard Bow, Barebow 20m/50m, and premier Compound and Recurve classes.',
-      'The tournament showcased strong grassroots participation across youth tiers (U10, U15, and U18), serving as a vital talent scouting platform for East Java\'s future archery representatives.'
+      'The 3rd East Java Governor\'s Cup (Piala Gubernur Jawa Timur III) stands as one of the largest archery tournaments in Indonesia, staged at Rejoagung Stadium in Tulungagung from December 19 to 26, 2025. The premier championship gathered 715 elite archers representing 32 regional delegations and top clubs.',
+      'Contested over eight action-packed days across 32 medal divisions spanning National Standard Bow (U10, U15, U18), Barebow (20m/50m), and premier Recurve and Compound classes. Competing for the prestigious Governor\'s Trophy, this tournament serves as the primary evaluation and talent scouting ground for East Java\'s provincial squad.'
     ],
     it: [
-      'La 3ª Coppa del Governatore di Giava Orientale è stata una delle più importanti manifestazioni arcieristiche della provincia, accogliendo 715 atleti provenienti da 32 delegazioni e club d\'eccellenza presso lo Stadio Rejoagung di Tulungagung. Durante gli otto giorni di gara (19 - 26 dicembre 2025), gli arcieri si sono confrontati in 32 discipline tra Standard Nazionale, Arco Nudo 20m/50m, Compound e Arco Olimpico.',
-      'Il torneo ha confermato la straordinaria vitalità del settore giovanile (U10, U15 e U18), fungendo da prestigioso palcoscenico per individuare i migliori talenti destinati ai massimi campionati nazionali.'
+      'La 3ª Coppa del Governatore di Giava Orientale è stata una delle più imponenti manifestazioni arcieristiche della provincia, accogliendo 715 atleti da 32 delegazioni presso lo Stadio Rejoagung di Tulungagung (19 - 26 dicembre 2025), con 32 titoli in palio tra Standard Nazionale, Arco Nudo, Compound e Arco Olimpico.'
     ]
   },
-  '20577': {
+
+  // 5. Ext: 19166 - Campionati Italiani Targa 2024
+  '19166': {
     id: [
-      'Kejuaraan Panahan Banyumas Open 2024 menjadi perhelatan akbar penutup tahun di GOR Satria Purwokerto, menyedot antusiasme 676 atlet panahan dari 10 kontingen klub dan pengcab. Digelar pada 27 - 29 Desember 2024, turnamen ini menghadirkan kompetisi di 18 nomor divisi, mulai dari Standar Nasional Usia Dini (SN U10, U15, U18) hingga nomor Compound dan Recurve Umum.',
-      'GOR Satria menjadi saksi unjuk kebolehan para pemanah muda yang mendominasi bagan kualifikasi dan fase eliminasi. Kejuaraan terbuka ini memadukan pembinaan atlet akar rumput dengan persaingan ketat pemanah senior di Jawa Tengah.'
+      'Campionati Italiani Targa 2024 merupakan edisi ke-62 Kejuaraan Nasional Panahan Outdoor Italia yang diselenggarakan oleh Federasi Panahan Italia (FITARCO) di Camaiore (Lucca), Tuscany pada 4 - 8 September 2024. Menyatukan 914 pemanah terbaik dari seluruh Italia yang telah lolos kualifikasi nasional.',
+      'Kejuaraan ini memperebutkan gelar juara nasional dan medali scudetto di divisi Recurve (Arco Olimpico), Compound, dan Barebow (Arco Nudo) untuk semua kelompok usia (Ragazzi, Allievi, Junior, Senior, hingga Master). Didukung sistem administrasi resmi Ianseo Italia, ajang ini menjadi penentu seleksi skuad tim nasional Italia.'
     ],
     en: [
-      'The 2024 Banyumas Open Archery Championship served as a premier year-end sporting event at GOR Satria Purwokerto, attracting 676 archers from 10 competitive clubs and associations. Held from December 27 to 29, 2024, the championship delivered action across 18 divisions, encompassing grassroots National Standard tiers (SN U10, U15, U18) alongside Open Compound and Recurve categories.',
-      'The event provided valuable competition experience for junior archers while testing precision and consistency across ranking rounds and head-to-head elimination matches.'
+      'The 62nd Italian Outdoor Target Championships (Campionati Italiani Targa 2024) is Italy\'s premier national archery championship, hosted by FITARCO in Camaiore (Lucca), Tuscany from September 4 to 8, 2024. The championship assembled 914 top-qualified archers from leading clubs across Italy.',
+      'Contesting national individual, team, and mixed-team championship titles in Olympic Recurve, Compound, and Barebow divisions across all age categories (Youth, Cadet, Junior, Senior, and Master). Managed by the official Ianseo scoring infrastructure, the tournament determined national scudetto honors and national team selection.'
     ],
     it: [
-      'Il Campionato Open di Tiro con l\'Arco Banyumas 2024 è stato il grande evento di chiusura di fine anno presso il Palazzetto GOR Satria di Purwokerto, registrando l\'adesione di 676 arcieri appartenenti a 10 club e associazioni sportive. Svoltosi dal 27 al 29 dicembre 2024, il campionato ha visto protagonisti gli atleti in 18 divisioni, dalle categorie promozionali giovanili fino alle classi Open Compound e Ricurvo.',
-      'La manifestazione ha offerto un test di altissimo valore tecnico e competitivo per gli atleti emergenti di Giava Centrale.'
+      'I Campionati Italiani Targa 2024 rappresentano la 62ª edizione della massima rassegna nazionale all\'aperto di tiro con l\'arco in Italia, organizzata dalla FITARCO a Camaiore (Lucca) dal 4 all\'8 settembre 2024. L\'evento ha riunito 914 atleti d\'élite qualificati in rappresentanza dei migliori club arcieristici della penisola.',
+      'Le competizioni hanno assegnato i titoli nazionali individuali e a squadre nelle divisioni Arco Olimpico (Ricurvo), Compound e Arco Nudo (Barebow) per tutte le classi di età (Ragazzi, Allievi, Juniores, Seniores e Master), con gestione ufficiale Ianseo e finali scudetto trasmesse sui canali federali.'
     ]
   },
-  '16298': {
+
+  // 6. Ext: 22226 - Campionati Italiani Targa 2025
+  '22226': {
     id: [
-      'Kejurprov Jawa Timur Panahan Kelompok Umur 2023 di Surabaya merupakan pesta akbar panahan usia dini dan remaja yang mempertemukan 629 atlet potensial dari 16 kontingen kota/kabupaten se-Jawa Timur. Berlangsung pada 23 - 24 Desember 2023, kejuaraan provinsi ini mempertandingkan total 46 divisi lomba - mencakup kategori Paralon U15, Nasional U9/U12/U15, hingga Recurve dan Compound U18/U21.',
-      'Format turnamen yang terstruktur menguji ketahanan dan fokus mental para pemanah muda di garis tembak, membuktikan bahwa regenerasi atlet panahan di Jawa Timur terus melahirkan talenta baru.'
+      'Campionati Italiani Targa 2025 adalah edisi ke-63 Kejuaraan Nasional Panahan Outdoor Italia yang dihelat FITARCO di Stadion Quercia, Rovereto (Trento) pada 16 - 20 Juli 2025. Mengumpulkan rekor 938 pemanah elite dari lebih 150 klub panahan terdaftar di Italia.',
+      'Mempertandingkan gelar juara nasional divisi Recurve, Compound, dan Barebow dengan lebih dari 60 bantalan sasaran aktif dalam satu lapangan tembak terpadu, didukung pencatatan skor real-time Ianseo.'
     ],
     en: [
-      'The 2023 East Java Age Group Provincial Archery Championship in Surabaya gathered 629 rising archers from 16 regional delegations across East Java. Held over December 23 - 24, 2023, this provincial tournament hosted 46 competitive divisions - encompassing introductory PVC U15, National U9/U12/U15, and junior Recurve and Compound U18/U21 brackets.',
-      'The fast-paced competition tested endurance and target discipline among junior archers on the shooting line, supporting ongoing talent development in East Java.'
+      'The 63rd Italian Outdoor Target Championships (Campionati Italiani Targa 2025) is Italy\'s pinnacle national archery event, staged by FITARCO at Stadio Quercia in Rovereto (Trento) from July 16 to 20, 2025. Featuring a record 938 qualified archers representing over 150 sports clubs across Italy.',
+      'Archers contested national titles in Olympic Recurve, Compound, and Barebow divisions across an extensive 60+ target line, powered by live Ianseo match results and precision scoring.'
     ],
     it: [
-      'Il Campionato Provinciale Giovanile di Tiro con l\'Arco di Giava Orientale 2023 a Surabaya ha riunito 629 giovani promesse provenienti da 16 delegazioni cittadine e provinciali. Disputatosi il 23 e 24 dicembre 2023, il torneo ha proposto ben 46 divisioni di gara, spaziando dalle categorie promozionali PVC U15 e Nazionali U9/U12/U15 fino alle classi Juniores Arco Olimpico e Compound U18/U21.'
+      'I Campionati Italiani Targa 2025 rappresentano la 63ª edizione dei campionati nazionali assoluti e di classe all\'aperto, organizzati dalla FITARCO a Rovereto (Trento) dal 16 al 20 luglio 2025. Con la partecipazione record di 938 arcieri qualificati da oltre 150 società sportive italiane.',
+      'Sui campi dello Stadio Quercia, gli atleti si sono sfidati nelle divisioni Arco Olimpico, Compound e Barebow, con un\'imponente linea di tiro di oltre 60 paglioni contemporanei gestiti in tempo reale con cronometraggio e risultati ufficiali Ianseo.'
     ]
   },
+
+  // 7. Ext: 16338 - KEJURPROV 5 PANAHAN PROVINSI RIAU TAHUN 2023
   '16338': {
     id: [
-      'Kejurprov 5 Panahan Provinsi Riau Tahun 2023 menjadi ajang unjuk kekuatan antar-pengurus cabang PERPANI kabupaten dan kota di Provinsi Riau. Digelar di Pekanbaru pada 21 - 24 Desember 2023, kejuaraan resmi ini menghadirkan 159 atlet dari 6 kontingen utama daerah yang bertarung di 30 divisi pertandingan, meliputi nomor Recurve, Compound, Nasional U12 hingga Dewasa, serta Barebow.',
-      'Turnamen ini memiliki peran strategis sebagai sarana evaluasi pembinaan atlet daerah sekaligus seleksi skuad unggulan Riau untuk menghadapi kejuaraan tingkat nasional.'
+      'Kejurprov 5 Panahan Provinsi Riau Tahun 2023 merupakan kejuaraan daerah resmi PERPANI Provinsi Riau yang diselenggarakan di Pekanbaru pada 21 - 24 Desember 2023. Mempertemukan 159 pemanah terbaik dari 6 kontingen pengurus cabang kabupaten dan kota di Provinsi Riau.',
+      'Kejuaraan ini mempertandingkan 30 divisi kompetisi di nomor Recurve, Compound, Standar Nasional (U12 hingga Umum), dan Barebow. Berfungsi sebagai ajang seleksi daerah dan tolak ukur pembinaan atlet panahan Riau menuju kompetisi skala nasional.'
     ],
     en: [
-      'The 5th Riau Provincial Archery Championship 2023 was the official provincial tournament for PERPANI regency and city archery chapters across Riau Province. Staged in Pekanbaru from December 21 to 24, 2023, the championship assembled 159 archers across 6 primary contingents competing in 30 medal divisions - ranging from Recurve and Compound to National Bow U12/Senior and Barebow.',
-      'The tournament served as an important evaluation and qualification platform for selecting Riau\'s provincial athlete representatives for future national events.'
+      'The 5th Riau Provincial Archery Championship 2023 is the official provincial championship organized by PERPANI Riau in Pekanbaru from December 21 to 24, 2023. The event brought together 159 top archers representing 6 regency and municipal PERPANI branches across Riau.',
+      'Contested across 30 medal events in Recurve, Compound, National Standard Bow (U12 to Senior), and Barebow divisions, serving as the premier platform for provincial athlete ranking and team selection.'
     ],
     it: [
-      'Il 5° Campionato Provinciale di Tiro con l\'Arco di Riau 2023 ha rappresentato la rassegna ufficiale per i comitati cittadini e distrettuali PERPANI della provincia di Riau. Tenutosi a Pekanbaru dal 21 al 24 dicembre 2023, l\'evento ha coinvolto 159 arcieri in 30 divisioni di gara tra Arco Olimpico, Compound, Standard Nazionale e Arco Nudo.'
+      'Il 5° Campionato Provinciale di Riau 2023 ha riunito a Pekanbaru 159 arcieri da 6 delegazioni per le selezioni regionali nelle divisioni Arco Olimpico, Compound, Standard e Barebow.'
     ]
   },
-  '23662': {
+
+  // 8. Ext: 17869 - European Grand Prix – 1st leg 2024
+  '17869': {
     id: [
-      'Kejurkab Panahan Gunungkidul menjadi tolok ukur pembinaan panahan di wilayah D.I. Yogyakarta, mengumpulkan 150 atlet dari 5 kontingen klub lokal. Bertanding di 10 divisi kompetisi, turnamen ini fokus pada pematangan teknik atlet di nomor Standar Nasional U21, Barebow, Perpani Bow, Recurve, dan Compound menuju seleksi Pekan Olahraga Daerah (PORDA).'
+      'European Grand Prix – 1st leg 2024 merupakan turnamen resmi peringkat dunia World Archery Europe yang diselenggarakan di kota pesisir Poreč, Kroasia pada 1 - 8 Juni 2024. Diikuti 197 atlet panahan tim nasional dari berbagai negara di Eropa dan dunia.',
+      'Mempertandingkan divisi Recurve 70m dan Compound 50m untuk nomor Perorangan, Beregu, dan Mix Team dengan standar tertinggi World Archery dan administrasi Ianseo internasional.'
     ],
     en: [
-      'The Gunungkidul Regency Archery Championship served as a regional benchmark in the Special Region of Yogyakarta, bringing together 150 archers across 5 local club delegations. Contested over 10 distinct divisions, the event emphasized technical development in National Bow U21, Barebow, Perpani Bow, Recurve, and Compound classes.'
+      'The European Grand Prix – 1st Leg 2024 is an official World Archery Europe world-ranking tournament staged in the coastal city of Poreč, Croatia from June 1 to 8, 2024. The prestigious championship assembled 197 international national team archers from across Europe and the globe.',
+      'Contested across 70m Olympic Recurve and 50m Compound divisions for Men, Women, Teams, and Mixed Teams under strict World Archery international competition rules, delivering elite qualification scoring and live broadcast medal finals.'
     ],
     it: [
-      'Il Campionato di Tiro con l\'Arco della Reggenza di Gunungkidul ha costituito un banco di prova fondamentale nella Regione Speciale di Yogyakarta, radunando 150 arcieri di 5 club locali impegnati in 10 divisioni di gara in preparazione delle selezioni regionali.'
+      'L\'European Grand Prix – 1ª Tappa 2024 è una competizione internazionale ufficiale World Archery Europe valevole per il ranking mondiale, tenutasi a Poreč, Croazia, dall\'1 all\'8 giugno 2024, con 197 arcieri delle squadre nazionali in gara nelle divisioni Ricurvo Olimpico 70m e Compound 50m.'
     ]
   },
-  '15863': {
+
+  // 9. Ext: 18413 - 74è CAMPIONAT DE CATALUNYA D'AIRE LLIURE 2024
+  '18413': {
     id: [
-      'Jakarta Youth Archery Series di Cibubur, Jakarta Timur, menghadirkan kompetisi panahan berorientasi prestasi dan pembinaan pemula. Mempertandingkan 13 nomor Standard Bow mulai dari tingkat SD, SMP, hingga Umum, ajang ini menjadi wadah penting bagi pelajar ibu kota untuk merasakan atmosfer pertandingan formal.'
+      '74è Campionat de Catalunya d\'Aire Lliure 2024 merupakan edisi ke-74 Kejuaraan Panahan Outdoor Wilayah Catalunya yang diselenggarakan oleh Federasi Panahan Catalunya (FCTA) di Esclanyà (Girona), Spanyol pada 6 - 7 Juli 2024. Diikuti 197 atlet panahan dari klub-klub terkemuka se-Catalunya.',
+      'Kejuaraan ini mempertandingkan divisi Recurve, Compound, Barebow (Arc Despullat), Tradisional, dan Longbow untuk menentukan juara regional Catalunya.'
     ],
     en: [
-      'The Jakarta Youth Archery Series in Cibubur, East Jakarta, provided a competitive stage for grassroots and school-level archers across 13 Standard Bow divisions in elementary, junior high, and open categories.'
+      'The 74th Outdoor Archery Championship of Catalonia (74è Campionat de Catalunya d\'Aire Lliure 2024) is the historic regional outdoor championship organized by the Catalan Archery Federation (FCTA) in Esclanyà (Girona), Spain on July 6 - 7, 2024, assembling 197 top archers from Catalan clubs.',
+      'The championship awarded regional titles across Recurve, Compound, Barebow, Traditional, and Longbow divisions under official Ianseo tournament regulation.'
     ],
     it: [
-      'La serie giovanile Jakarta Youth Archery a Cibubur ha offerto una vetrina agonistica per i giovani arcieri studenti in 13 divisioni Arco Standard per le categorie scolastiche e open.'
+      'Il 74° Campionato all\'Aperto della Catalogna 2024 è la storica rassegna regionale svoltasi a Esclanyà (Girona), Spagna, il 6 e 7 luglio 2024 con 197 arcieri catalani in gara nelle divisioni Ricurvo, Compound, Arco Nudo, Tradizionale e Longbow.'
+    ]
+  },
+
+  // 10. Ext: 14092 - ISAA Outdoors League Leg 1 / Summer Open 2023
+  '14092': {
+    id: [
+      'ISAA Outdoors League Leg 1 / Summer Open 2023 merupakan kejuaraan panahan terbuka tingkat mahasiswa dan umum yang diselenggarakan oleh Asosiasi Panahan Mahasiswa Irlandia (ISAA) dan Archery Ireland di National Range Blanchardstown, Dublin pada 21 Mei 2023. Diikuti 137 pemanah dari berbagai universitas dan klub panahan se-Irlandia.',
+      'Mempertandingkan divisi Recurve, Compound, dan Barebow jarak 70m, 60m, dan 50m, menjadi seri pembuka liga panahan mahasiswa outdoor nasional Irlandia.'
+    ],
+    en: [
+      'The ISAA Outdoors League Leg 1 / Summer Open 2023 is a premier outdoor tournament organized jointly by the Irish Student Archery Association (ISAA) and Archery Ireland at the National Range in Blanchardstown, Dublin on May 21, 2023. The event assembled 137 archers from universities, student clubs, and open archers across Ireland.',
+      'Featuring 70m Recurve, 50m Compound, and Barebow student and open divisions, the competition served as the opening leg for the collegiate outdoor league and national ranking series.'
+    ],
+    it: [
+      'La 1ª Tappa della Lega all\'Aperto ISAA / Summer Open 2023 è stata organizzata dalla Federazione Studentesca Irlandese (ISAA) e Archery Ireland a Dublino con 137 atleti universitari e societari in gara.'
+    ]
+  },
+
+  // 11. Ext: 30234 - CABARAN RECURVE TUNAS TERENGGANU 2026
+  '30234': {
+    id: [
+      'Cabaran Recurve Tunas Terengganu 2026 merupakan kejuaraan panahan usia dini dan pelajar tingkat negeri Terengganu yang diselenggarakan di Padang SK Teluk Menara, Kuala Terengganu, Malaysia pada 26 September 2026. Menghadirkan 141 pemanah muda berbakat dari berbagai sekolah dasar, sekolah menengah, dan klub panahan di Terengganu dan kawasan Pantai Timur Malaysia.',
+      'Kejuaraan ini mempertandingkan divisi Recurve kelompok umur Bawah 10 Tahun (B10L & B10P - 15m), Bawah 12 Tahun (B12L & B12P - 18m), serta Bawah 15 Tahun (B15L & B15P - 18m). Dikelola menggunakan sistem skoring resmi Ianseo, turnamen ini menjadi sarana strategis pembinaan atlet panahan junior menuju kejohanan peringkat kebangsaan Malaysia.'
+    ],
+    en: [
+      'The Cabaran Recurve Tunas Terengganu 2026 is a grassroots youth archery championship staged at Padang SK Teluk Menara in Kuala Terengganu, Malaysia on September 26, 2026. The tournament assembled 141 aspiring young archers from elementary schools, secondary schools, and youth academies across Terengganu and East Coast Malaysia.',
+      'The championship spotlighted Olympic Recurve developmental divisions across Under-10 (B10 Boys/Girls at 15m), Under-12 (B12 Boys/Girls at 18m), and Under-15 (B15 Boys/Girls at 18m) tiers. Powered by official Ianseo scoring and target management, it serves as a vital junior athlete identification and development platform.'
+    ],
+    it: [
+      'Il Cabaran Recurve Tunas Terengganu 2026 è un campionato giovanile promozionale di tiro con l\'arco svoltosi a Kuala Terengganu, Malesia, il 26 settembre 2026, con 141 giovani arcieri under-10, under-12 e under-15 nelle divisioni Arco Olimpico.'
     ]
   }
 }
+
+// Country flag resolver helper
+const resolveCountryFlag = (countryCode, countryName) => {
+  const code = String(countryCode || '').toLowerCase().trim()
+  const name = String(countryName || '').toLowerCase().trim()
+  
+  if (code === 'id' || code === 'ina' || name.includes('indonesia')) return 'circle-flags:id'
+  if (code === 'my' || code === 'mas' || name.includes('malaysia')) return 'circle-flags:my'
+  if (code === 'it' || code === 'ita' || name.includes('italy') || name.includes('italia')) return 'circle-flags:it'
+  if (code === 'hr' || code === 'cro' || name.includes('croatia') || name.includes('kroasia') || name.includes('porec') || name.includes('poreč')) return 'circle-flags:hr'
+  if (code === 'es' || code === 'esp' || name.includes('spain') || name.includes('spanyol') || name.includes('catalunya') || name.includes('girona')) return 'circle-flags:es'
+  if (code === 'ie' || code === 'irl' || name.includes('ireland') || name.includes('irlandia') || name.includes('dublin')) return 'circle-flags:ie'
+  if (code === 'sg' || code === 'sgp' || name.includes('singapore') || name.includes('singapura')) return 'circle-flags:sg'
+  if (code === 'th' || code === 'tha' || name.includes('thailand')) return 'circle-flags:th'
+  if (code === 'us' || code === 'usa' || name.includes('united states') || name.includes('america')) return 'circle-flags:us'
+  if (code === 'gb' || code === 'gbr' || code === 'uk' || name.includes('united kingdom') || name.includes('britain') || name.includes('england')) return 'circle-flags:gb'
+  
+  if (code && code.length === 2) return `circle-flags:${code}`
+  return 'circle-flags:un'
+}
+
+const displayVenue = computed(() => {
+  const v = activeTournamentData.value?.venue || activeTournament.value?.venue || activeTournament.value?.location
+  return v ? toTitleCase(v) : 'Venue Arena'
+})
+
+const displayCity = computed(() => {
+  const c = activeTournamentData.value?.city || activeTournament.value?.city
+  return c ? toTitleCase(c) : ''
+})
+
+const displayCountry = computed(() => {
+  const c = activeTournamentData.value?.country || activeTournament.value?.country || 'Indonesia'
+  return toTitleCase(c)
+})
+
+const countryFlagIcon = computed(() => {
+  const code = activeTournamentData.value?.country_code || activeTournament.value?.country_code
+  const name = activeTournamentData.value?.country || activeTournament.value?.country
+  return resolveCountryFlag(code, name)
+})
 
 const tournamentDescriptionParagraphs = computed(() => {
   const extId = String(activeTournament.value?.external_id || '').replace(/^ianseo-/, '')
   const slug = String(activeTournament.value?.slug || '')
   const lang = currentLang.value || 'en'
-  
+
+  // 1. Check multilingual descriptions from DB/data_json
+  const multilangDesc = activeTournamentData.value?.descriptions
+  if (multilangDesc && typeof multilangDesc === 'object' && multilangDesc[lang]) {
+    const text = multilangDesc[lang]
+    if (typeof text === 'string' && text.trim().length > 0) {
+      return text.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean)
+    }
+  }
+
+  // 2. Check bespoke hardcoded dictionary
   const foundDesc = bespokeTournamentDescriptions[extId] || (slug ? bespokeTournamentDescriptions[slug] : null)
   if (foundDesc && foundDesc[lang]) {
     return foundDesc[lang]
   }
+
+  // 3. Check plain string description from DB
+  const dbDesc = activeTournamentData.value?.description || activeTournament.value?.description
+  if (dbDesc && typeof dbDesc === 'string' && dbDesc.trim().length > 0) {
+    return dbDesc.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean)
+  }
   
-  // Dynamic Narrative Synthesizer
+  // 4. Dynamic Narrative Synthesizer
   const name = toTitleCase(activeTournament.value?.name || activeTournament.value?.tournament_name || 'Tournament')
-  const loc = toTitleCase(activeTournament.value?.location || activeTournament.value?.city || activeTournament.value?.venue || 'Indonesia')
+  const loc = displayVenue.value || displayCity.value || displayCountry.value || 'Arena'
   const numArchers = computedTotalArchers.value || 0
   const numClubs = computedTotalClubs.value || 0
   const numCats = categoriesList.value?.length || 0
@@ -2066,6 +2266,7 @@ const navigationSections = computed(() => {
   if (hasQualificationsData.value) list.push({ id: 'qualifications', title: t('qualifications_title'), icon: 'ph:medal-bold' })
   if (hasBracketsData.value) list.push({ id: 'brackets', title: t('brackets_title'), icon: 'ph:sword-bold' })
   if (hasMedalsData.value) list.push({ id: 'medals', title: t('medals_title'), icon: 'ph:trophy-bold' })
+  list.push({ id: 'related', title: t('related_title'), icon: 'ph:trophy-bold' })
   return list
 })
 
@@ -2202,6 +2403,9 @@ const filteredEntries = computed(() => {
     const q = entriesSearchQuery.value.toLowerCase().trim()
     list = list.filter(e => (
       (e.name || e.athlete_name || '').toLowerCase().includes(q) ||
+      (e.target || '').toLowerCase().includes(q) ||
+      (e.bib || '').toLowerCase().includes(q) ||
+      (e.code || e.club_code || '').toLowerCase().includes(q) ||
       (e.club || e.country || '').toLowerCase().includes(q) ||
       (e.category || '').toLowerCase().includes(q)
     ))
@@ -2210,7 +2414,7 @@ const filteredEntries = computed(() => {
     if (entriesSortKey.value === 'index') return 0
     const valA = (a[entriesSortKey.value] || a.athlete_name || a.club || a.category || '').toString().toLowerCase()
     const valB = (b[entriesSortKey.value] || b.athlete_name || b.club || b.category || '').toString().toLowerCase()
-    return entriesSortAsc.value ? valA.localeCompare(valB) : valB.localeCompare(valA)
+    return entriesSortAsc.value ? valA.localeCompare(valB, undefined, { numeric: true }) : valB.localeCompare(valA, undefined, { numeric: true })
   })
 })
 

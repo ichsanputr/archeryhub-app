@@ -22,7 +22,7 @@
 
         <!-- Bank Accounts Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div v-for="account in bankAccounts" :key="account.id"
+            <div v-for="account in bankAccounts" :key="account.id || account.uuid"
                 class="rounded-2xl p-5 relative group transition-all duration-200 flex flex-col justify-between bg-white border border-slate-200/80 hover:border-slate-300 shadow-2xs hover:shadow-xs">
                 
                 <div class="space-y-4">
@@ -40,7 +40,7 @@
                                 <div class="flex items-center gap-2">
                                     <h4 class="text-base font-bold text-navy leading-tight truncate">{{ account.bank_name }}</h4>
                                 </div>
-                                <p class="text-xs text-slate-500 font-normal truncate mt-0.5">{{ account.account_name }}</p>
+                                <div class="text-xs text-slate-500 font-normal truncate mt-0.5">{{ account.account_name }}</div>
                             </div>
                         </div>
 
@@ -48,7 +48,7 @@
                         <span v-if="account.is_primary"
                             class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80 text-[11px] font-medium shrink-0">
                             <Icon icon="ph:check-circle-fill" class="text-xs text-emerald-600" />
-                            <span>{{ t('organizer.bank_accounts.badge_primary', 'Rekening utama') }}</span>
+                            <span>{{ t('organizer.bank_accounts.badge_primary') }}</span>
                         </span>
                     </div>
 
@@ -56,7 +56,7 @@
                     <div class="p-3 bg-slate-50/80 rounded-xl border border-slate-100 flex items-center justify-between gap-2">
                         <div class="min-w-0">
                             <span class="text-[11px] font-medium text-slate-400 block leading-none mb-1.5">
-                                {{ t('organizer.bank_accounts.fields.account_number', 'Nomor rekening') }}
+                                {{ t('organizer.bank_accounts.fields.account_number') }}
                             </span>
                             <span class="text-base font-bold font-mono text-navy tracking-tight block select-all">
                                 {{ account.account_number }}
@@ -64,7 +64,7 @@
                         </div>
                         <button @click="copyToClipboard(account.account_number)"
                             class="size-8 rounded-lg bg-white border border-slate-200/80 text-slate-400 hover:text-navy hover:border-slate-300 flex items-center justify-center transition-colors shadow-2xs shrink-0"
-                            :title="t('common.copy', 'Salin')">
+                            :title="t('common.copy')">
                             <Icon icon="ph:copy-bold" class="text-sm" />
                         </button>
                     </div>
@@ -75,27 +75,27 @@
                     <!-- Left status/action -->
                     <div>
                         <span v-if="account.is_primary" class="text-xs text-slate-400 font-normal">
-                            {{ t('organizer.bank_accounts.badge_primary', 'Rekening utama') }}
+                            {{ t('organizer.bank_accounts.badge_primary') }}
                         </span>
                         <button v-else-if="isSubscriptionActive" 
                             @click="handleSetPrimary(account)"
                             class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-navy hover:bg-slate-100 px-2.5 py-1.5 rounded-lg transition-colors border border-slate-200/80">
                             <Icon icon="ph:star" class="text-xs text-amber-500" />
-                            <span>{{ t('organizer.bank_accounts.set_as_primary', 'Jadikan rekening utama') }}</span>
+                            <span>{{ t('organizer.bank_accounts.set_as_primary') }}</span>
                         </button>
-                        <span v-else class="text-xs text-slate-400 font-normal">Rekening tambahan</span>
+                        <span v-else class="text-xs text-slate-400 font-normal">{{ t('organizer.bank_accounts.badge_secondary') }}</span>
                     </div>
 
                     <!-- Right actions (Edit / Delete) -->
                     <div class="flex gap-1 items-center shrink-0">
                         <button @click="isSubscriptionActive ? openEditModal(account) : (showPremiumModal = true)"
                             class="size-8 rounded-lg text-slate-400 hover:text-navy hover:bg-slate-100 flex items-center justify-center transition-colors"
-                            :title="t('common.edit', 'Edit')">
+                            :title="t('common.edit')">
                             <Icon icon="ph:pencil-simple" class="text-sm" />
                         </button>
                         <button @click="isSubscriptionActive ? confirmDelete(account) : (showPremiumModal = true)"
                             class="size-8 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 flex items-center justify-center transition-colors"
-                            :title="t('common.delete', 'Hapus')">
+                            :title="t('common.delete')">
                             <Icon icon="ph:trash" class="text-sm" />
                         </button>
                     </div>
@@ -110,8 +110,8 @@
                     <Icon icon="ph:plus-bold" class="text-xl" />
                 </div>
                 <div class="text-center">
-                    <div class="text-sm font-bold text-navy">{{ t('organizer.bank_accounts.add_new', 'Tambah rekening baru') }}</div>
-                    <div class="text-xs text-slate-400 font-normal mt-0.5">{{ t('organizer.bank_accounts.add_new_desc', 'Gunakan rekening lain untuk pencairan dana') }}</div>
+                    <div class="text-sm font-bold text-navy">{{ t('organizer.bank_accounts.add_new') }}</div>
+                    <div class="text-xs text-slate-400 font-normal mt-0.5">{{ t('organizer.bank_accounts.add_new_desc') }}</div>
                 </div>
             </button>
         </div>
@@ -122,7 +122,7 @@
             <div class="space-y-4">
                 <div class="space-y-2">
                     <label class="text-xs font-bold text-slate-500">
-                        {{ t('organizer.bank_accounts.modal.pick_bank', 'Pilih bank') }}
+                        {{ t('organizer.bank_accounts.modal.pick_bank') }}
                     </label>
                     <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
                         <button v-for="bank in supportedBanks" :key="bank.id" type="button"
@@ -134,13 +134,25 @@
                         </button>
                     </div>
                 </div>
-                <BaseInput v-model="form.bankName" :label="t('organizer.bank_accounts.modal.custom_bank_label', 'Nama bank kustom')"
-                    :placeholder="t('organizer.bank_accounts.modal.custom_bank_placeholder', 'Jika bank tidak ada di daftar')" />
-                <BaseInput v-model="form.accountNumber" :label="t('organizer.bank_accounts.modal.account_number_label', 'Nomor rekening')"
-                    :placeholder="t('organizer.bank_accounts.modal.account_number_placeholder', 'Masukkan nomor rekening')"
-                    required />
-                <BaseInput v-model="form.accountName" :label="t('organizer.bank_accounts.modal.account_name_label', 'Nama pemilik rekening')"
-                    :placeholder="t('organizer.bank_accounts.modal.account_name_placeholder', 'Sesuai buku tabungan')"
+                <BaseInput v-model="form.bankName" :label="t('organizer.bank_accounts.modal.custom_bank_label')"
+                    :placeholder="t('organizer.bank_accounts.modal.custom_bank_placeholder')" />
+                <div>
+                    <BaseInput
+                        v-model="form.accountNumber"
+                        :label="t('organizer.bank_accounts.modal.account_number_label')"
+                        :placeholder="t('organizer.bank_accounts.modal.account_number_placeholder')"
+                        :error="accountNumberError"
+                        @update:modelValue="handleAccountNumberInput"
+                        required />
+                    <div v-if="accountNumberError" class="text-red-500 text-[11px] font-bold mt-1">
+                        {{ accountNumberError }}
+                    </div>
+                    <div v-else class="text-slate-400 text-[10px] mt-1 font-medium">
+                        {{ t('organizer.bank_accounts.modal.account_number_hint') }}
+                    </div>
+                </div>
+                <BaseInput v-model="form.accountName" :label="t('organizer.bank_accounts.modal.account_name_label')"
+                    :placeholder="t('organizer.bank_accounts.modal.account_name_placeholder')"
                     required />
 
                 <div class="space-y-1 mt-2">
@@ -149,12 +161,12 @@
                             :disabled="bankAccounts.length === 0 || (modal.isEdit && bankAccounts.length === 1)"
                             class="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4 disabled:opacity-50">
                         <label for="isPrimary" class="text-xs font-medium text-navy cursor-pointer">
-                            {{ t('organizer.bank_accounts.modal.set_primary_label', 'Jadikan sebagai rekening utama') }}
+                            {{ t('organizer.bank_accounts.modal.set_primary_label') }}
                         </label>
                     </div>
-                    <p v-if="bankAccounts.length === 0 || (modal.isEdit && bankAccounts.length === 1)" class="text-[11px] text-slate-400 ml-6">
-                        {{ t('organizer.bank_accounts.modal.single_primary_hint', 'Rekening pertama otomatis menjadi rekening utama.') }}
-                    </p>
+                    <div v-if="bankAccounts.length === 0 || (modal.isEdit && bankAccounts.length === 1)" class="text-[11px] text-slate-400 ml-6">
+                        {{ t('organizer.bank_accounts.modal.single_primary_hint') }}
+                    </div>
                 </div>
             </div>
 
@@ -237,6 +249,26 @@ const deleteState = reactive({
     target: null
 })
 
+const handleAccountNumberInput = (val) => {
+    // Sanitize to only numeric digits and max 20 digits
+    const cleaned = (val || '').toString().replace(/\D/g, '').slice(0, 20)
+    form.accountNumber = cleaned
+}
+
+const accountNumberError = computed(() => {
+    if (!form.accountNumber) return ''
+    if (!/^\d+$/.test(form.accountNumber)) {
+        return t('organizer.bank_accounts.validation.digits_only')
+    }
+    if (form.accountNumber.length < 6) {
+        return t('organizer.bank_accounts.validation.min_length')
+    }
+    if (form.accountNumber.length > 20) {
+        return t('organizer.bank_accounts.validation.max_length')
+    }
+    return ''
+})
+
 const fetchBankAccounts = async () => {
     try {
         loading.value = true
@@ -261,7 +293,7 @@ const openAddModal = () => {
 
 const openEditModal = (account) => {
     modal.isEdit = true
-    modal.currentId = account.id
+    modal.currentId = account.id || account.uuid
     form.bankName = account.bank_name
     form.accountNumber = account.account_number
     form.accountName = account.account_name
@@ -275,12 +307,18 @@ const handleSubmit = async () => {
         return
     }
 
+    const cleanNumber = form.accountNumber.toString().trim()
+    if (!/^\d{6,20}$/.test(cleanNumber)) {
+        toast.error(t('organizer.bank_accounts.messages.invalid_account_number'))
+        return
+    }
+
     modal.loading = true
     try {
         const payload = {
-            bank_name: form.bankName,
-            account_number: form.accountNumber,
-            account_name: form.accountName,
+            bank_name: form.bankName.trim(),
+            account_number: cleanNumber,
+            account_name: form.accountName.trim(),
             is_primary: form.isPrimary
         }
 
@@ -292,7 +330,7 @@ const handleSubmit = async () => {
             toast.success(t('organizer.bank_accounts.messages.account_added'))
         }
         modal.show = false
-        fetchBankAccounts()
+        await fetchBankAccounts()
     } catch (error) {
         toast.error(error.response?.data?.error || t('organizer.bank_accounts.messages.failed_to_save_account'))
     } finally {
@@ -301,17 +339,27 @@ const handleSubmit = async () => {
 }
 
 const handleSetPrimary = async (account) => {
+    const accountId = account.id || account.uuid
+    if (!accountId) return
     try {
-        await api.put(`/organizers/bank-accounts/${account.id}`, {
+        await api.put(`/organizers/bank-accounts/${accountId}`, {
             bank_name: account.bank_name,
             account_number: account.account_number,
             account_name: account.account_name,
             is_primary: true
         })
-        toast.success(`Rekening ${account.bank_name} berhasil dijadikan rekening utama`)
-        fetchBankAccounts()
+        if (Array.isArray(bankAccounts.value)) {
+            bankAccounts.value.forEach(acc => {
+                const id = acc.id || acc.uuid
+                acc.is_primary = (id === accountId)
+            })
+            bankAccounts.value.sort((a, b) => (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0))
+        }
+        toast.success(t('organizer.bank_accounts.set_primary_success', { bank: account.bank_name }))
+        await fetchBankAccounts()
     } catch (error) {
-        toast.error('Gagal memperbarui status rekening utama')
+        console.error('Failed to set primary bank account:', error)
+        toast.error(error?.response?.data?.error || t('organizer.bank_accounts.set_primary_error'))
     }
 }
 
@@ -321,11 +369,12 @@ const confirmDelete = (account) => {
 }
 
 const handleDelete = async () => {
-    if (!deleteState.target) return
+    const targetId = deleteState.target?.id || deleteState.target?.uuid
+    if (!targetId) return
     try {
-        await api.delete(`/organizers/bank-accounts/${deleteState.target.id}`)
+        await api.delete(`/organizers/bank-accounts/${targetId}`)
         toast.success(t('organizer.bank_accounts.messages.account_deleted'))
-        fetchBankAccounts()
+        await fetchBankAccounts()
     } catch (error) {
         toast.error(t('organizer.bank_accounts.messages.failed_to_delete_account'))
     } finally {

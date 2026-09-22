@@ -22,7 +22,7 @@ module.exports = {
         NUXT_API_BASE_URL: 'http://localhost:8001',
         
         // --- 🌐 SITE URL ---
-        NUXT_PUBLIC_SITE_URL: 'https://dev.archeris.net'
+        NUXT_PUBLIC_SITE_URL: 'https://archeris.net'
       },
       // Optional: Automatic restart if the server crashes
       autorestart: true,

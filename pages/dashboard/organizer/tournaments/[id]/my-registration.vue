@@ -204,7 +204,7 @@ definePageMeta({
     layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('registration.my_registration', 'My Registration') + ' - Archeris Dashboard') })
+useHead({ title: computed(() => t('registration.my_registration') + ' - Archeris Dashboard') })
 
 
 const isLoading = ref(true)

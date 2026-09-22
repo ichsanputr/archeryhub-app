@@ -22,16 +22,16 @@
                         </div>
                         <div>
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-1 text-white">
-                                {{ t('dashboard_events_participants_add.title', 'Tambah Peserta Event') }}
+                                {{ t('dashboard_events_participants_add.title') }}
                             </h1>
                             <div class="text-slate-300 text-xs sm:text-sm max-w-2xl">
-                                {{ t('dashboard_events_participants_add.subtitle', 'Daftarkan pemanah terdaftar atau buat profil pemanah baru langsung ke event ini') }}
+                                {{ t('dashboard_events_participants_add.subtitle') }}
                             </div>
                         </div>
                     </div>
 
                     <BaseButton :to="`/dashboard/organizer/tournaments/${route.params.id}/participants`" variant="white" icon="ph:arrow-left-bold" class="h-11 px-5 text-xs sm:text-sm font-bold shrink-0 shadow-md">
-                        {{ t('dashboard_events_participants_add.back_to_list', 'Kembali ke Daftar Peserta') }}
+                        {{ t('dashboard_events_participants_add.back_to_list') }}
                     </BaseButton>
                 </div>
             </div>
@@ -132,13 +132,13 @@
                                 <div v-else-if="!isSearchingArchers" class="p-8 text-center space-y-2">
                                     <Icon icon="ph:user-minus" class="text-3xl text-gray-300 mx-auto" />
                                     <div v-if="archers.length > 0" class="text-xs sm:text-sm font-bold text-gray-500">
-                                        {{ t('dashboard_events_participants_add.all_already_registered', 'Semua pemanah yang ditemukan sudah terdaftar dalam event ini.') }}
+                                        {{ t('dashboard_events_participants_add.all_already_registered') }}
                                     </div>
                                     <div v-else class="text-xs sm:text-sm font-bold text-gray-500">
-                                        {{ t('dashboard_events_participants_add.not_found', 'Pemanah tidak ditemukan') }}
+                                        {{ t('dashboard_events_participants_add.not_found') }}
                                     </div>
                                     <div class="text-xs sm:text-sm text-gray-400 max-w-sm mx-auto">
-                                        {{ archers.length > 0 ? t('dashboard_events_participants_add.all_already_registered_desc', 'Gunakan tab "Buat Profil Pemanah Baru" jika ingin mendaftarkan atlet baru.') : t('dashboard_events_participants_add.not_found_desc', 'Coba gunakan kata kunci pencarian lain.') }}
+                                        {{ archers.length > 0 ? t('dashboard_events_participants_add.all_already_registered_desc') : t('dashboard_events_participants_add.not_found_desc') }}
                                     </div>
                                 </div>
                             </div>
@@ -160,16 +160,16 @@
                                         <Icon icon="ph:file-csv-bold" class="text-2xl text-primary" />
                                     </div>
                                     <div>
-                                        <div class="text-sm font-bold tracking-tight">{{ t('dashboard_events_participants_add.csv_banner_title', 'Punya banyak data peserta?') }}</div>
-                                        <div class="text-xs sm:text-sm text-slate-300">{{ t('dashboard_events_participants_add.csv_banner_desc', 'Impor sekaligus menggunakan file CSV') }}</div>
+                                        <div class="text-sm font-bold tracking-tight">{{ t('dashboard_events_participants_add.csv_banner_title') }}</div>
+                                        <div class="text-xs sm:text-sm text-slate-300">{{ t('dashboard_events_participants_add.csv_banner_desc') }}</div>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap gap-2 shrink-0">
                                     <BaseButton @click="downloadCsvTemplate" variant="white" icon="ph:download-simple-bold" size="sm" class="font-bold text-xs sm:text-sm shadow-md">
-                                        {{ t('dashboard_events_participants_add.btn_download_template', 'Unduh Template CSV') }}
+                                        {{ t('dashboard_events_participants_add.btn_download_template') }}
                                     </BaseButton>
                                     <BaseButton @click="showImportModal = true" variant="primary" icon="ph:upload-simple-bold" size="sm" class="font-bold text-xs sm:text-sm shadow-md">
-                                        {{ t('dashboard_events_participants_add.btn_import_csv', 'Import CSV Peserta') }}
+                                        {{ t('dashboard_events_participants_add.btn_import_csv') }}
                                     </BaseButton>
                                 </div>
                             </div>
@@ -190,7 +190,7 @@
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <div class="text-sm font-bold text-navy mb-0.5">{{ t('dashboard_events_participants_add.profile_photo') }}</div>
-                                    <div class="text-xs sm:text-sm text-gray-400 mb-2 font-medium">{{ t('dashboard_events_participants_add.photo_hint', 'PNG, JPG atau WEBP (Maks. 2MB)') }}</div>
+                                    <div class="text-xs sm:text-sm text-gray-400 mb-2 font-medium">{{ t('dashboard_events_participants_add.photo_hint') }}</div>
                                     <div class="flex gap-2">
                                         <BaseButton @click="showMediaLibrary = true" variant="white" size="sm" icon="ph:cloud-arrow-up-bold" class="h-8 px-3 text-xs sm:text-sm font-bold shadow-sm">
                                             {{ newArcherForm.avatar_url ? t('dashboard_events_participants_add.change_photo') : t('dashboard_events_participants_add.upload_photo') }}
@@ -215,7 +215,7 @@
                                     <button type="button" @click="generateRandomPassword"
                                         class="absolute right-2 top-8 text-xs sm:text-sm font-bold text-slate-600 hover:text-navy bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg transition-colors flex items-center gap-1">
                                         <Icon icon="ph:arrows-clockwise-bold" class="text-xs sm:text-sm text-slate-500" />
-                                        <span>{{ t('dashboard_events_participants_add.generate_password', 'Acak Password') }}</span>
+                                        <span>{{ t('dashboard_events_participants_add.generate_password') }}</span>
                                     </button>
                                 </div>
 
@@ -228,7 +228,7 @@
                                     {{ t('dashboard_events_participants_add.required_fields_hint') }}
                                 </div>
                                 <BaseButton type="button" @click="addNewArcherToList" variant="primary" icon="ph:user-plus-bold" size="sm" class="font-bold text-xs sm:text-sm shadow-md">
-                                    {{ t('dashboard_events_participants_add.add_to_list', 'Tambah ke Daftar Peserta') }}
+                                    {{ t('dashboard_events_participants_add.add_to_list') }}
                                 </BaseButton>
                             </div>
                         </div>
@@ -245,7 +245,7 @@
                                 <BaseButton v-if="selectedArchers.length > 0" @click="selectedArchers = []" variant="white" size="xs"
                                     class="text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border-red-200/80 font-bold px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 text-xs sm:text-sm">
                                     <Icon icon="ph:trash-bold" class="text-xs sm:text-sm" />
-                                    <span>{{ t('dashboard_events_participants_add.clear_all', 'Hapus Semua') }}</span>
+                                    <span>{{ t('dashboard_events_participants_add.clear_all') }}</span>
                                 </BaseButton>
                             </div>
 
@@ -271,10 +271,10 @@
                                             <div class="flex flex-wrap items-center gap-2">
                                                 <span class="font-black text-navy text-sm sm:text-base truncate">{{ archer.full_name }}</span>
                                                 <span v-if="archer.is_new_profile" class="px-2 py-0.5 bg-amber-50 border border-amber-200 text-amber-700 text-[10px] sm:text-xs font-extrabold rounded-md">
-                                                    {{ t('dashboard_events_participants_add.create_new_short', 'Baru') }}
+                                                    {{ t('dashboard_events_participants_add.create_new_short') }}
                                                 </span>
                                                 <span v-else class="px-2 py-0.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] sm:text-xs font-extrabold rounded-md">
-                                                    {{ t('dashboard_events_participants_add.registered_badge', 'Terdaftar') }}
+                                                    {{ t('dashboard_events_participants_add.registered_badge') }}
                                                 </span>
                                             </div>
 
@@ -301,7 +301,7 @@
                                     <!-- Delete Single Archer Button -->
                                     <button type="button" @click="removeArcher(index)"
                                         class="size-9 rounded-xl bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-600 border border-slate-200 hover:border-red-200 flex items-center justify-center transition-colors shrink-0"
-                                        :title="t('dashboard_events_participants_add.remove_from_list', 'Hapus dari daftar')">
+                                        :title="t('dashboard_events_participants_add.remove_from_list')">
                                         <Icon icon="ph:trash-bold" class="text-sm" />
                                     </button>
                                 </div>
@@ -312,8 +312,8 @@
                                 <div class="size-12 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-2 text-slate-400">
                                     <Icon icon="ph:users-thin" class="text-3xl" />
                                 </div>
-                                <div class="text-sm sm:text-base font-black text-navy">{{ t('dashboard_events_participants_add.empty_list_title', 'Belum ada pemanah yang ditambahkan') }}</div>
-                                <div class="text-xs sm:text-sm text-slate-400 max-w-sm sm:max-w-md mx-auto mt-1">{{ t('dashboard_events_participants_add.empty_list_desc', 'Pilih pemanah terdaftar atau buat profil baru dan klik Tambah ke Daftar Peserta untuk mendaftarkan peserta.') }}</div>
+                                <div class="text-sm sm:text-base font-black text-navy">{{ t('dashboard_events_participants_add.empty_list_title') }}</div>
+                                <div class="text-xs sm:text-sm text-slate-400 max-w-sm sm:max-w-md mx-auto mt-1">{{ t('dashboard_events_participants_add.empty_list_desc') }}</div>
                             </div>
                         </div>
                     </div>
@@ -408,7 +408,7 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => `${t('dashboard_events_participants_add.title', 'Tambah Peserta Event')} - Archeris Dashboard`)
+    title: computed(() => `${t('dashboard_events_participants_add.title')} - Archeris Dashboard`)
 })
 
 const route = useRoute()
@@ -487,9 +487,9 @@ const bowOptions = computed(() => [
 ])
 
 const paymentStatusOptions = computed(() => [
-    { title: t('dashboard_events_participants_add.payment_status_paid', 'Paid'), value: 'paid' },
-    { title: t('dashboard_events_participants_add.payment_status_pending', 'Pending'), value: 'pending' },
-    { title: t('dashboard_events_participants_add.payment_status_unpaid', 'Unpaid'), value: 'unpaid' }
+    { title: t('dashboard_events_participants_add.payment_status_paid'), value: 'paid' },
+    { title: t('dashboard_events_participants_add.payment_status_pending'), value: 'pending' },
+    { title: t('dashboard_events_participants_add.payment_status_unpaid'), value: 'unpaid' }
 ])
 
 const sourceOptions = computed(() => [
@@ -548,7 +548,7 @@ const fetchExistingParticipants = async () => {
 
 const getCategoryName = (cat) => {
     if (!cat) return ''
-    return `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || cat.age_category || cat.class_category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`.trim().replace(/\s+/g, ' ') || t('dashboard_events_participants_add.competition_category', 'Kategori')
+    return `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || cat.age_category || cat.class_category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`.trim().replace(/\s+/g, ' ') || t('dashboard_events_participants_add.competition_category')
 }
 
 const toggleCategory = (categoryId) => {
@@ -565,7 +565,7 @@ const selectedCategories = computed(() => {
 
 const clubOptions = computed(() => {
     return [
-        { title: t('dashboard_events_participants_add.select_club_placeholder', 'Pilih Klub'), value: '' },
+        { title: t('dashboard_events_participants_add.select_club_placeholder'), value: '' },
         ...clubs.value.map(club => ({
             title: club.name,
             value: club.uuid
@@ -689,7 +689,7 @@ const getArcherClubName = (archer) => {
         const found = clubs.value.find(c => (c.uuid || c.id) === archer.club_id)
         if (found) return found.name
     }
-    return t('dashboard_events_participants_add.no_club', 'Tanpa Klub / Individu')
+    return t('dashboard_events_participants_add.no_club')
 }
 
 const generateRandomPassword = () => {
@@ -714,7 +714,7 @@ const downloadCsvTemplate = () => {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-    toast.success(t('dashboard_events_participants_add.download_template_success', 'Template CSV berhasil diunduh'))
+    toast.success(t('dashboard_events_participants_add.download_template_success'))
 }
 
 const handleCsvParsed = (parsedArchers) => {
@@ -774,7 +774,7 @@ const addNewArcherToList = () => {
     }
 
     selectedArchers.value.push(newArcher)
-    toast.success(t('dashboard_events_participants_add.archer_added_toast', 'Profil pemanah ditambahkan ke daftar!'))
+    toast.success(t('dashboard_events_participants_add.archer_added_toast'))
 
     // Reset form
     newArcherForm.full_name = ''
@@ -792,7 +792,7 @@ const validateNewArcherForm = () => {
     }
 
     if (!newArcherForm.email || !newArcherForm.email.trim()) {
-        toast.error(t('dashboard_events_participants_add.email_required_toast', 'Alamat email wajib diisi'))
+        toast.error(t('dashboard_events_participants_add.email_required_toast'))
         return false
     }
 
@@ -803,12 +803,12 @@ const validateNewArcherForm = () => {
     }
 
     if (!newArcherForm.password || !newArcherForm.password.trim()) {
-        toast.error(t('dashboard_events_participants_add.password_required_toast', 'Password wajib diisi'))
+        toast.error(t('dashboard_events_participants_add.password_required_toast'))
         return false
     }
 
     if (newArcherForm.password.trim().length < 6) {
-        toast.error(t('dashboard_events_participants_add.password_min_toast', 'Password minimal 6 karakter'))
+        toast.error(t('dashboard_events_participants_add.password_min_toast'))
         return false
     }
 
@@ -832,7 +832,7 @@ const submit = async () => {
     }
 
     if (selectedArchers.value.length === 0) {
-        toast.error(t('dashboard_events_participants_add.no_archers_selected_toast', 'Belum ada pemanah yang dipilih atau ditambahkan ke daftar'))
+        toast.error(t('dashboard_events_participants_add.no_archers_selected_toast'))
         return
     }
 

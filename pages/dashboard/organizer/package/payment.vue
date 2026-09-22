@@ -16,7 +16,7 @@ const { user, organizerProfile } = useAuth()
 const payment = usePayment()
 
 const planId = computed(() => route.query.plan_id)
-const planName = computed(() => route.query.plan_name || t('subscription_payment_page.default_plan_name', 'Paket Langganan'))
+const planName = computed(() => route.query.plan_name || t('subscription_payment_page.default_plan_name'))
 
 const isUSD = computed(() => {
     return organizerProfile.value?.country !== 'Indonesia'
@@ -122,7 +122,7 @@ const handlePayment = async () => {
             if (res.checkout_url) {
                 window.open(res.checkout_url, '_blank')
             }
-            navigateTo(`/payment/status/${res.reference}`)
+            navigateTo(`/dashboard/archer/payments/${res.reference}`)
         } else if (res.checkout_url) {
             window.open(res.checkout_url, '_blank')
         } else {
@@ -137,7 +137,7 @@ const handlePayment = async () => {
 }
 
 useHead({
-    title: computed(() => t('subscription_payment_page.title', 'Pembayaran Langganan') + ' - Archeris Dashboard')
+    title: computed(() => t('subscription_payment_page.title') + ' - Archeris Dashboard')
 })
 </script>
 
@@ -145,15 +145,15 @@ useHead({
     <div class="space-y-8 pb-20">
         <!-- Header Section -->
         <DashboardHeader
-            :title="t('subscription_payment_page.title', 'Pembayaran')"
-            :subtitle="t('subscription_payment_page.subtitle', 'Selesaikan transaksi untuk mengaktifkan paket Anda.')"
+            :title="t('subscription_payment_page.title')"
+            :subtitle="t('subscription_payment_page.subtitle')"
             icon="ph:credit-card-bold"
             :back-to="'/dashboard/organizer/package'"
-            :back-text="t('subscription_payment_page.back', 'Kembali ke Subscription')"
+            :back-text="t('subscription_payment_page.back')"
             :breadcrumbs="[
                 { label: 'Dashboard', to: '/dashboard/organizer' },
-                { label: t('organizer_subscription.breadcrumb', 'Paket & Kuota'), to: '/dashboard/organizer/package' },
-                { label: t('subscription_payment_page.title', 'Pembayaran') }
+                { label: t('organizer_subscription.breadcrumb'), to: '/dashboard/organizer/package' },
+                { label: t('subscription_payment_page.title') }
             ]"
         >
             <template #actions>
@@ -166,7 +166,7 @@ useHead({
                         </div>
                     </div>
                     <div class="pt-3 border-t border-white/10 flex justify-between items-center">
-                        <span class="text-slate-400 text-[10px] font-black tracking-widest">{{ t('subscription_payment_page.total_pay', 'Total Bayar') }}</span>
+                        <span class="text-slate-400 text-[10px] font-black tracking-widest">{{ t('subscription_payment_page.total_pay') }}</span>
                         <span class="text-primary font-black text-xl">
                             {{ isUSD ? `$${totalAmount}` : `Rp ${totalAmount.toLocaleString('id-ID')}` }}
                         </span>
@@ -183,8 +183,8 @@ useHead({
                         <Icon icon="ph:calendar-bold" class="text-navy text-xl" />
                     </div>
                     <div>
-                        <h3 class="text-lg font-black text-navy leading-none">{{ t('subscription_payment_page.choose_duration', 'Pilih Durasi Berlangganan') }}</h3>
-                        <div class=" text-xs font-bold text-gray-400 tracking-widest mt-2">{{ t('subscription_payment_page.duration_desc', 'Berapa lama Anda ingin berlangganan?') }}</div>
+                        <h3 class="text-lg font-black text-navy leading-none">{{ t('subscription_payment_page.choose_duration') }}</h3>
+                        <div class=" text-xs font-bold text-gray-400 tracking-widest mt-2">{{ t('subscription_payment_page.duration_desc') }}</div>
                     </div>
                 </div>
 
@@ -192,13 +192,13 @@ useHead({
                     <button v-for="m in [1, 3, 6, 12]" :key="m" @click="selectedMonths = m"
                         class="px-6 py-3 rounded-2xl border-2 font-black text-xs tracking-widest transition-all"
                         :class="selectedMonths === m ? 'border-primary bg-primary/5 text-navy ring-4 ring-primary/5' : 'border-gray-100 text-gray-400 hover:border-gray-200 hover:text-navy'">
-                        {{ m === 12 ? t('subscription_payment_page.year', '1 Tahun') : t('subscription_payment_page.months', '{n} Bulan', { n: m }) }}
+                        {{ m === 12 ? t('subscription_payment_page.year') : t('subscription_payment_page.months', '{n} Bulan', { n: m }) }}
                         <span v-if="m >= 6"
-                            class="ml-2 px-2 py-0.5 bg-green-500 text-white text-[9px] rounded-full">{{ t('subscription_payment_page.save', 'Hemat') }}</span>
+                            class="ml-2 px-2 py-0.5 bg-green-500 text-white text-[9px] rounded-full">{{ t('subscription_payment_page.save') }}</span>
                     </button>
 
                     <div class="flex items-center gap-3 ml-4">
-                        <span class="text-[10px] font-black text-gray-400 tracking-widest">{{ t('subscription_payment_page.custom', 'Kustom:') }}</span>
+                        <span class="text-[10px] font-black text-gray-400 tracking-widest">{{ t('subscription_payment_page.custom') }}</span>
                         <div class="flex items-center bg-slate-50 rounded-xl border border-gray-100 p-1">
                             <button @click="selectedMonths > 1 && selectedMonths--"
                                 class="size-8 flex items-center justify-center text-navy hover:bg-white rounded-lg transition-colors">
@@ -242,7 +242,7 @@ useHead({
                                     <div>
                                         <h4 class="text-sm font-black text-navy">{{ method.name }}</h4>
                                         <div class="text-[10px] font-bold text-gray-400 tracking-widest mt-1">
-                                            {{ t('subscription_payment_page.fee', 'Biaya:') }} {{ method.feeLabel }}</div>
+                                            {{ t('subscription_payment_page.fee') }} {{ method.feeLabel }}</div>
                                     </div>
                                 </div>
 
@@ -259,25 +259,25 @@ useHead({
                 <!-- Order Summary -->
                 <div class="lg:col-span-1">
                     <div class="bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm sticky top-24">
-                        <h3 class="text-lg font-black text-navy mb-6">{{ t('subscription_payment_page.order_summary', 'Ringkasan Pesanan') }}</h3>
+                        <h3 class="text-lg font-black text-navy mb-6">{{ t('subscription_payment_page.order_summary') }}</h3>
 
                         <div class="space-y-4 mb-8">
                             <div class="flex justify-between items-center py-2 border-b border-dashed border-gray-100">
-                                <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.plan', 'Paket') }}</span>
+                                <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.plan') }}</span>
                                 <span class="text-navy font-bold text-sm">{{ planName }}</span>
                             </div>
                             <div class="flex justify-between items-center py-2 border-b border-dashed border-gray-100">
-                                <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.duration', 'Durasi') }}</span>
+                                <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.duration') }}</span>
                                 <span class="text-navy font-bold text-sm">{{ t('subscription_payment_page.months', '{n} Bulan', { n: selectedMonths }) }}</span>
                             </div>
                             <div class="flex justify-between items-center py-2 border-b border-dashed border-gray-100">
-                                <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.subtotal', 'Subtotal') }}</span>
+                                <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.subtotal') }}</span>
                                 <span class="text-navy font-bold text-sm">
                                     {{ isUSD ? `$${(parseInt(planPrice?.toString() || '0') * selectedMonths)}` : `Rp ${(parseInt(planPrice?.toString() || '0') * selectedMonths).toLocaleString('id-ID')}` }}
                                 </span>
                             </div>
                             <div v-if="selectedChannel" class="flex justify-between items-center py-2">
-                                <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.method', 'Metode') }}</span>
+                                <span class="text-gray-500 text-sm font-medium">{{ t('subscription_payment_page.method') }}</span>
                                 <span class="text-navy font-bold text-sm">{{channels.find(c => c.code ===
                                     selectedChannel)?.name}}</span>
                             </div>
@@ -286,14 +286,14 @@ useHead({
                         <div v-if="errorMessage || fetchError"
                             class="mb-6 p-4 bg-red-50 text-red-600 rounded-2xl  text-xs font-bold flex items-center gap-3 border border-red-100">
                             <Icon icon="ph:warning-circle-fill" class="text-lg shrink-0" />
-                            {{ errorMessage || t('subscription_payment_page.load_channels_failed', 'Gagal mengambil metode pembayaran. Silakan coba lagi.') }}
+                            {{ errorMessage || t('subscription_payment_page.load_channels_failed') }}
                         </div>
 
                         <button @click="handlePayment" :disabled="isProcessing || !selectedChannel"
                             class="w-full h-12 mt-2 bg-navy text-white rounded-xl font-black text-sm tracking-wide transition-all flex items-center justify-center gap-2 disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200 shadow-sm hover:opacity-90 active:scale-95">
                             <Icon v-if="isProcessing" icon="ph:spinner-gap-bold" class="animate-spin text-xl" />
                             <template v-else>
-                                {{ t('subscription_payment_page.pay_now', 'Bayar Sekarang') }}
+                                {{ t('subscription_payment_page.pay_now') }}
                                 <Icon icon="ph:arrow-right-bold" />
                             </template>
                         </button>

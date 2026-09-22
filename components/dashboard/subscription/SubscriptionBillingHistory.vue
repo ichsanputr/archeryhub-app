@@ -1,85 +1,107 @@
 <template>
-    <div class="space-y-5">
-        <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.billing.title', 'Riwayat Tagihan') }}</h2>
-        <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
-            <div class="p-6 border-b border-gray-100 bg-slate-50/50 flex items-center justify-between">
-                <span class="text-[10px] font-black text-gray-400 tracking-widest">{{ t('subscription.billing.invoice_label', 'Invoice') }}</span>
-                <button v-if="invoices?.length" @click="handleDownload"
-                    class="flex items-center gap-2 px-4 py-2 text-[10px] font-black tracking-widest text-navy bg-white border border-gray-200 rounded-xl hover:border-primary hover:shadow-md transition-all group">
-                    <Icon icon="ph:download-simple-bold" class="text-lg group-hover:text-primary transition-colors" />
-                    <span>{{ t('subscription.billing.download_report', 'Download Report') }}</span>
+    <div class="space-y-4 font-body text-navy antialiased">
+        <h2 class="text-base sm:text-lg font-extrabold text-navy">{{ t('subscription.billing.title') }}</h2>
+        
+        <DashboardDataTable
+            :items="invoices || []"
+            :columns="tableColumns"
+            :searchable="false"
+            count-icon="ph:receipt-bold"
+            :count-unit="t('subscription.billing.invoice_label')"
+            :empty-title="t('subscription.billing.empty')"
+            empty-icon="ph:receipt-bold"
+        >
+            <!-- Toolbar Actions: Download Report -->
+            <template #toolbar-actions>
+                <button
+                    v-if="invoices?.length"
+                    type="button"
+                    @click="handleDownload"
+                    class="h-10 px-4 text-xs font-bold text-navy bg-white border border-slate-200 rounded-xl hover:border-navy hover:bg-slate-50 transition-all flex items-center gap-2 cursor-pointer shadow-2xs"
+                >
+                    <Icon icon="ph:download-simple-bold" class="text-base text-primary" />
+                    <span>{{ t('subscription.billing.download_report') }}</span>
                 </button>
-            </div>
+            </template>
 
-            <div v-if="invoices?.length" class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead
-                        class="bg-gray-50/50 text-gray-400 font-black text-[10px] tracking-widest border-b border-gray-100">
-                        <tr>
-                            <th class="px-8 py-4">{{ t('subscription.billing.date', 'Tanggal') }}</th>
-                            <th class="px-8 py-4">{{ t('subscription.billing.description', 'Deskripsi') }}</th>
-                            <th class="px-8 py-4">{{ t('subscription.billing.amount', 'Jumlah') }}</th>
-                            <th class="px-8 py-4">{{ t('subscription.billing.status', 'Status') }}</th>
-                            <th class="px-8 py-4 text-right">{{ t('subscription.billing.actions', 'Aksi') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-50">
-                        <tr v-for="(invoice, index) in invoices" :key="invoice.id || invoice.invoice_number || index"
-                            class="hover:bg-slate-50 transition-colors group">
-                            <td class="px-8 py-4 text-xs font-bold text-gray-500">{{ invoice.date }}</td>
-                            <td class="px-8 py-4 text-sm font-black text-navy">{{ invoice.description }}</td>
-                            <td class="px-8 py-4 text-sm font-black text-navy">{{ invoice.amount }}</td>
-                            <td class="px-8 py-4">
-                                <span class="px-2.5 py-1 rounded-full text-[9px] font-black capitalize tracking-wider"
-                                    :class="{
-                                        'bg-emerald-50 text-emerald-700 border border-emerald-200/80': invoice.status === 'paid',
-                                        'bg-amber-50 text-amber-700 border border-amber-200/80': invoice.status === 'pending',
-                                        'bg-red-50 text-red-700 border border-red-200/80': ['expired', 'failed'].includes(invoice.status)
-                                    }">
-                                    {{ getStatusLabel(invoice.status) }}
-                                </span>
-                            </td>
-                            <td class="px-8 py-4 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <a v-if="invoice.status === 'pending' && invoice.checkout_url"
-                                        :href="invoice.checkout_url" target="_blank" rel="noopener noreferrer"
-                                        class="px-4 py-2 bg-primary text-btn-text text-[10px] font-black tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-sm">
-                                        {{ t('subscription.billing.pay_now', 'Bayar Sekarang') }}
-                                    </a>
-                                    <template v-else-if="invoice.status === 'paid'">
-                                        <a :href="`${apiBaseUrl}/payment/invoice/${invoice.reference}`" target="_blank"
-                                            title="View Invoice"
-                                            class="p-2 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-navy hover:border-primary hover:shadow-md transition-all">
-                                            <Icon icon="ph:file-pdf-bold" class="text-lg" />
-                                        </a>
-                                        <a :href="`${apiBaseUrl}/payment/invoice/${invoice.reference}?download=true`" download
-                                            title="Download Invoice"
-                                            class="p-2 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-navy hover:border-primary hover:shadow-md transition-all">
-                                            <Icon icon="ph:download-simple-bold" class="text-lg" />
-                                        </a>
-                                    </template>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div v-else class="flex flex-col items-center justify-center p-16 text-center text-gray-300">
-                <Icon icon="ph:receipt-bold" class="text-4xl mb-4 opacity-20" />
-                <div class="text-xs font-black tracking-widest">{{ t('subscription.billing.empty', 'Belum Ada Transaksi') }}</div>
-            </div>
-        </div>
+            <!-- Date Column Slot -->
+            <template #item-date="{ item }">
+                <span class="text-xs font-bold text-slate-500 whitespace-nowrap">{{ item.date }}</span>
+            </template>
+
+            <!-- Description Column Slot -->
+            <template #item-description="{ item }">
+                <span class="text-xs sm:text-sm font-bold text-navy">{{ item.description }}</span>
+            </template>
+
+            <!-- Amount Column Slot -->
+            <template #item-amount="{ item }">
+                <span class="text-xs sm:text-sm font-black text-navy tabular-nums">{{ item.amount }}</span>
+            </template>
+
+            <!-- Status Column Slot -->
+            <template #item-status="{ item }">
+                <div class="flex justify-center">
+                    <span
+                        class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider border"
+                        :class="{
+                            'bg-emerald-50 text-emerald-700 border-emerald-200': item.status === 'paid',
+                            'bg-amber-50 text-amber-700 border-amber-200': item.status === 'pending',
+                            'bg-rose-50 text-rose-700 border-rose-200': ['expired', 'failed'].includes(item.status)
+                        }"
+                    >
+                        {{ getStatusLabel(item.status) }}
+                    </span>
+                </div>
+            </template>
+
+            <!-- Actions Column Slot -->
+            <template #actions="{ item }">
+                <div class="flex items-center justify-end gap-1.5">
+                    <a
+                        v-if="item.status === 'pending' && item.checkout_url"
+                        :href="item.checkout_url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="px-3 py-1.5 bg-primary text-navy text-xs font-black rounded-xl hover:bg-primary/90 transition-all shadow-2xs cursor-pointer"
+                    >
+                        {{ t('subscription.billing.pay_now') }}
+                    </a>
+                    <template v-else-if="item.status === 'paid'">
+                        <a
+                            :href="`${apiBaseUrl}/payment/invoice/${item.reference}`"
+                            target="_blank"
+                            title="View Invoice"
+                            class="p-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 hover:text-navy hover:bg-slate-100 transition-all cursor-pointer"
+                        >
+                            <Icon icon="ph:file-pdf-bold" class="text-base" />
+                        </a>
+                        <a
+                            :href="`${apiBaseUrl}/payment/invoice/${item.reference}?download=true`"
+                            download
+                            title="Download Invoice"
+                            class="p-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 hover:text-navy hover:bg-slate-100 transition-all cursor-pointer"
+                        >
+                            <Icon icon="ph:download-simple-bold" class="text-base" />
+                        </a>
+                    </template>
+                </div>
+            </template>
+        </DashboardDataTable>
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { computed } from 'vue'
 import { useApi } from '~/composables/useApi'
+import { useApiBaseUrl } from '~/composables/useApiBaseUrl'
+import { useToast } from '~/composables/useToast'
 import useDashboardI18n from '~/composables/useDashboardI18n'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
 
 const { t } = useDashboardI18n()
 
-const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
 const api = useApi()
 const toast = useToast()
@@ -87,6 +109,14 @@ const toast = useToast()
 defineProps({
     invoices: Array
 })
+
+const tableColumns = computed(() => [
+    { key: 'date', label: t('subscription.billing.date'), sortable: false, class: 'min-w-[130px]' },
+    { key: 'description', label: t('subscription.billing.description'), sortable: false, class: 'min-w-[200px]' },
+    { key: 'amount', label: t('subscription.billing.amount'), sortable: false, class: 'min-w-[130px]' },
+    { key: 'status', label: t('subscription.billing.status'), sortable: false, align: 'center', class: 'min-w-[120px]' },
+    { key: 'actions', label: t('subscription.billing.actions'), sortable: false, align: 'right', class: 'min-w-[120px]' }
+])
 
 const handleDownload = async () => {
     try {
@@ -108,16 +138,16 @@ const handleDownload = async () => {
         window.URL.revokeObjectURL(url)
     } catch (err) {
         console.error('Failed to download report:', err)
-        toast.error(t('subscription.billing.download_failed', 'Gagal mengunduh laporan. Silakan coba lagi.'))
+        toast.error(t('subscription.billing.download_failed'))
     }
 }
 
 const getStatusLabel = (status) => {
     const labels = {
-        paid: t('subscription.billing.status_paid', 'Lunas'),
-        pending: t('subscription.billing.status_pending', 'Pending'),
-        expired: t('subscription.billing.status_expired', 'Kedaluwarsa'),
-        failed: t('subscription.billing.status_failed', 'Gagal')
+        paid: t('subscription.billing.status_paid'),
+        pending: t('subscription.billing.status_pending'),
+        expired: t('subscription.billing.status_expired'),
+        failed: t('subscription.billing.status_failed')
     }
     return labels[status] || status
 }

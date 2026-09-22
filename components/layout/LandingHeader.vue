@@ -99,7 +99,7 @@
                                         </div>
                                         <div v-else class="py-4 text-center text-slate-400 text-xs">
                                             <Icon icon="ph:calendar-blank" class="text-xl text-slate-300 mx-auto mb-1" />
-                                            <p>{{ $t('nav.no_latest_events', 'No active tournaments at this moment') }}</p>
+                                            <p>{{ $t('nav.no_latest_events') }}</p>
                                         </div>
 
                                         <!-- Footer CTA -->
@@ -180,13 +180,14 @@
                     <!-- Logged In User Avatar -->
                     <div v-if="isLoggedIn" class="relative" @mouseenter="showUserMenu = true"
                         @mouseleave="showUserMenu = false">
-                        <button class="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 transition-colors">
+                        <button class="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                            aria-label="User Account Menu">
                             <div
                                 class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center overflow-hidden border-2 border-white shadow-md">
-                                <img v-if="user?.avatar_url" :src="user.avatar_url"
+                                <img :src="useImageOrDefault(user?.avatar_url, user?.full_name || user?.name || 'User')"
+                                    :alt="user?.full_name || 'User'"
+                                    @error="(e) => e.target.src = generateDicebearAvatar(user?.full_name || user?.name || 'User')"
                                     class="w-full h-full object-cover" />
-                                <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
                             </div>
                         </button>
 
@@ -238,6 +239,7 @@
                 <!-- Mobile Menu Toggle -->
                 <div class="flex items-center gap-1 md:gap-2 md:hidden">
                     <button class="p-1.5 transition-colors duration-300" :class="mobileToggleClasses"
+                        :aria-label="mobileMenuOpen ? 'Tutup navigasi menu' : 'Buka navigasi menu'"
                         @click="mobileMenuOpen = !mobileMenuOpen">
                         <Icon :icon="mobileMenuOpen ? 'ph:x-bold' : 'ph:list-bold'" class="text-xl" />
                     </button>
@@ -276,6 +278,7 @@
                         </div>
                     </div>
                     <button @click="mobileMenuOpen = false"
+                        aria-label="Tutup navigasi menu"
                         class="p-1.5 hover:bg-gray-100 rounded-lg transition-all scale-100 text-navy">
                         <Icon icon="ph:x-bold" class="text-lg" />
                     </button>
@@ -288,10 +291,10 @@
                         <div class="flex items-center gap-3">
                             <div
                                 class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-amber-400 border border-white shadow-2xs overflow-hidden flex items-center justify-center shrink-0">
-                                <img v-if="user?.avatar_url" :src="user.avatar_url"
+                                <img :src="useImageOrDefault(user?.avatar_url, user?.full_name || user?.name || 'User')"
+                                    :alt="user?.full_name || 'User'"
+                                    @error="(e) => e.target.src = generateDicebearAvatar(user?.full_name || user?.name || 'User')"
                                     class="w-full h-full object-cover" />
-                                <span v-else class="text-navy font-black text-base">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="text-navy font-bold text-sm truncate leading-tight">{{ user?.full_name || 'User' }}</div>
@@ -398,7 +401,6 @@ const isSticky = computed(() => route.meta.headerSticky !== false)
 const isExternalTournamentState = useState('isExternalTournamentPage', () => false)
 const isWide = computed(() => {
     return isExternalTournamentState.value === true || 
-           route.path.startsWith('/tournaments/external') ||
            (/^\/tournaments\/\d+/.test(route.path))
 })
 

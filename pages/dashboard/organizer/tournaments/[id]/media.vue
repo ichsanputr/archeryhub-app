@@ -2,24 +2,33 @@
     <div class="flex flex-col gap-6 pb-12">
         <!-- Header -->
         <DashboardHeader
-            :title="t('tournament_media.title', 'Tournament Media & Storage')"
-            :subtitle="tournament ? `${tournament.name} • ${t('tournament_media.subtitle', 'Manage image assets, documents, and monitor storage quota')}` : t('tournament_media.loading', 'Loading data...')"
+            :title="t('tournament_media.title')"
+            :subtitle="tournament ? `${tournament.name} • ${t('tournament_media.subtitle')}` : t('tournament_media.loading')"
             icon="ph:hard-drive-bold"
             :breadcrumbs="[
                 { label: 'Dashboard', to: '/dashboard/organizer' },
-                { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-                { label: t('tournament_media.title', 'Media & Storage') }
+                { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+                { label: t('tournament_media.title') }
             ]"
         >
             <template #actions>
                 <div class="flex items-center gap-3">
+                    <input
+                        ref="fileInputRef"
+                        type="file"
+                        class="hidden"
+                        accept="image/*,application/pdf"
+                        @change="onFileSelected"
+                    />
                     <BaseButton
                         variant="primary"
                         icon="ph:cloud-arrow-up-bold"
                         class="h-10 sm:h-11 px-5 shadow-sm font-black text-xs sm:text-sm tracking-wide"
-                        @click="showUploadModal = true"
+                        :loading="isUploading"
+                        :disabled="isUploading"
+                        @click="triggerFileInput"
                     >
-                        {{ t('tournament_media.upload_btn', 'Upload Media') }}
+                        {{ isUploading ? t('tournament_media.uploading') : t('tournament_media.upload_btn') }}
                     </BaseButton>
                 </div>
             </template>
@@ -48,11 +57,11 @@
                                 {{ quotaTypeLabel }}
                             </span>
                             <span class="text-xs font-bold text-slate-400">
-                                {{ mediaData.total_files }} {{ t('tournament_media.files_count', 'files uploaded') }}
+                                {{ mediaData.total_files }} {{ t('tournament_media.files_count') }}
                             </span>
                         </div>
                         <h2 class="text-xl sm:text-2xl font-black text-navy">
-                            {{ t('tournament_media.usage_title', 'Storage Quota Usage') }}
+                            {{ t('tournament_media.usage_title') }}
                         </h2>
                     </div>
 
@@ -78,7 +87,7 @@
                     </div>
                     <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
                         <span>0 MB</span>
-                        <span>{{ t('tournament_media.remaining', 'Remaining:') }} {{ formattedRemaining }}</span>
+                        <span>{{ t('tournament_media.remaining') }} {{ formattedRemaining }}</span>
                         <span>{{ formattedLimit }}</span>
                     </div>
                 </div>
@@ -90,13 +99,13 @@
                             <Icon icon="ph:warning-circle-bold" class="text-xl" />
                         </div>
                         <div class="text-xs sm:text-sm text-amber-800">
-                            <span class="font-bold">{{ t('tournament_media.near_limit_title', 'Storage almost full!') }}</span>
-                            {{ t('tournament_media.near_limit_desc', 'Upgrade your plan or delete unused media to upload new files.') }}
+                            <span class="font-bold">{{ t('tournament_media.near_limit_title') }}</span>
+                            {{ t('tournament_media.near_limit_desc') }}
                         </div>
                     </div>
                     <NuxtLink to="/dashboard/organizer/package"
                         class="px-4 py-2 bg-navy text-white text-xs font-bold rounded-xl hover:bg-slate-800 transition-colors whitespace-nowrap shrink-0">
-                        {{ t('tournament_media.upgrade_pkg', 'Upgrade Package') }}
+                        {{ t('tournament_media.upgrade_pkg') }}
                     </NuxtLink>
                 </div>
             </div>
@@ -128,7 +137,7 @@
                         <input
                             v-model="searchQuery"
                             type="text"
-                            :placeholder="t('tournament_media.search_placeholder', 'Search file name...')"
+                            :placeholder="t('tournament_media.search_placeholder')"
                             class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-navy focus:outline-none focus:border-primary transition-colors"
                         />
                     </div>
@@ -140,19 +149,21 @@
                         <Icon icon="ph:images-square" class="text-3xl" />
                     </div>
                     <h3 class="text-base font-bold text-navy mb-1">
-                        {{ t('tournament_media.empty_title', 'No Media Yet') }}
+                        {{ t('tournament_media.empty_title') }}
                     </h3>
-                    <p class="text-xs text-slate-400 max-w-sm mx-auto mb-6">
-                        {{ t('tournament_media.empty_desc', 'Upload tournament banners, gallery photos, logos, or guidebook documents for this event.') }}
-                    </p>
+                    <div class="text-xs text-slate-400 max-w-sm mx-auto mb-6">
+                        {{ t('tournament_media.empty_desc') }}
+                    </div>
                     <BaseButton
                         variant="primary"
                         icon="ph:cloud-arrow-up-bold"
                         size="sm"
                         class="font-black"
-                        @click="showUploadModal = true"
+                        :loading="isUploading"
+                        :disabled="isUploading"
+                        @click="triggerFileInput"
                     >
-                        {{ t('tournament_media.upload_btn', 'Upload Media') }}
+                        {{ isUploading ? t('tournament_media.uploading') : t('tournament_media.upload_btn') }}
                     </BaseButton>
                 </div>
 
@@ -181,7 +192,7 @@
                             </div>
 
                             <!-- Extension Badge Overlay -->
-                            <div class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-bold tracking-wider uppercase bg-black/60 text-white backdrop-blur-xs">
+                            <div class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-bold tracking-wider bg-black/60 text-white backdrop-blur-xs">
                                 {{ getFileExtension(file.filename) }}
                             </div>
                         </div>
@@ -207,12 +218,12 @@
                                     class="flex-1 py-1.5 text-center text-xs font-bold text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center gap-1"
                                 >
                                     <Icon icon="ph:arrow-square-out-bold" class="text-xs" />
-                                    <span>{{ t('tournament_media.view', 'View') }}</span>
+                                    <span>{{ t('tournament_media.view') }}</span>
                                 </a>
                                 <button
                                     type="button"
                                     class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                    :title="t('tournament_media.delete', 'Delete File')"
+                                    :title="t('tournament_media.delete')"
                                     @click="confirmDeleteFile(file)"
                                 >
                                     <Icon icon="ph:trash-bold" class="text-sm" />
@@ -224,80 +235,13 @@
             </div>
         </div>
 
-        <!-- ── Upload Media Modal ── -->
-        <AppDialog
-            v-model:show="showUploadModal"
-            :title="t('tournament_media.upload_modal_title', 'Upload Tournament Media')"
-            :confirm-text="isUploading ? t('tournament_media.uploading', 'Uploading...') : t('tournament_media.upload_confirm', 'Start Upload')"
-            :cancel-text="t('common.cancel', 'Cancel')"
-            :confirm-disabled="!selectedFile || isUploading"
-            @confirm="handleUpload"
-        >
-            <div class="space-y-4 py-2">
-                <!-- Dropzone -->
-                <div
-                    class="border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-colors"
-                    :class="selectedFile ? 'border-primary bg-primary/5' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'"
-                    @click="triggerFileInput"
-                    @dragover.prevent
-                    @drop.prevent="onFileDrop"
-                >
-                    <input
-                        ref="fileInputRef"
-                        type="file"
-                        class="hidden"
-                        accept="image/*,application/pdf"
-                        @change="onFileSelected"
-                    />
-
-                    <div v-if="!selectedFile" class="space-y-2">
-                        <div class="size-12 rounded-xl bg-white text-navy flex items-center justify-center mx-auto shadow-xs border border-slate-100">
-                            <Icon icon="ph:cloud-arrow-up-bold" class="text-2xl text-navy" />
-                        </div>
-                        <div class="text-xs font-bold text-navy">
-                            {{ t('tournament_media.dropzone_title', 'Choose a file or drag & drop here') }}
-                        </div>
-                        <div class="text-[10px] text-slate-400">
-                            {{ t('tournament_media.dropzone_types', 'Supports PNG, JPG, WebP, PDF (Max. 10MB per file)') }}
-                        </div>
-                    </div>
-
-                    <div v-else class="flex items-center gap-3 text-left">
-                        <div class="size-10 rounded-xl bg-white flex items-center justify-center text-primary shadow-xs border border-slate-200 shrink-0">
-                            <Icon :icon="selectedFile.type.startsWith('image/') ? 'ph:image-bold' : 'ph:file-pdf-bold'" class="text-xl" />
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <div class="text-xs font-black text-navy truncate">{{ selectedFile.name }}</div>
-                            <div class="text-[10px] text-slate-400">{{ (selectedFile.size / (1024 * 1024)).toFixed(2) }} MB</div>
-                        </div>
-                        <button type="button" class="text-slate-400 hover:text-red-500 p-1" @click.stop="selectedFile = null">
-                            <Icon icon="ph:x-bold" class="text-sm" />
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Caption / Label Input -->
-                <div class="space-y-1.5">
-                    <label class="text-xs font-bold text-navy">
-                        {{ t('tournament_media.label_caption', 'Caption / File Name') }}
-                    </label>
-                    <input
-                        v-model="uploadCaption"
-                        type="text"
-                        :placeholder="t('tournament_media.caption_placeholder', 'Example: Main Banner, Official Rulebook, etc.')"
-                        class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-navy focus:outline-none focus:border-primary"
-                    />
-                </div>
-            </div>
-        </AppDialog>
-
         <!-- ── Delete File Confirmation Dialog ── -->
         <AppDialog
             v-model:show="showDeleteDialog"
-            :title="t('tournament_media.delete_title', 'Delete File?')"
-            :message="t('tournament_media.delete_message', 'The file will be permanently deleted from the server and your storage quota will be freed up.')"
-            :confirm-text="t('tournament_media.delete_confirm', 'Delete')"
-            :cancel-text="t('common.cancel', 'Cancel')"
+            :title="t('tournament_media.delete_title')"
+            :message="t('tournament_media.delete_message')"
+            :confirm-text="t('tournament_media.delete_confirm')"
+            :cancel-text="t('common.cancel')"
             type="danger"
             icon="ph:trash-bold"
             @confirm="handleDeleteConfirmed"
@@ -306,8 +250,8 @@
         <!-- ── Image Preview Modal ── -->
         <AppDialog
             v-model:show="showPreviewModal"
-            :title="previewItem?.filename || t('tournament_media.preview', 'Preview Media')"
-            :confirm-text="t('common.close', 'Close')"
+            :title="previewItem?.filename || t('tournament_media.preview')"
+            :confirm-text="t('common.close')"
             :cancel-text="''"
             @confirm="showPreviewModal = false"
         >
@@ -327,7 +271,7 @@
                         rel="noopener noreferrer"
                         class="px-4 py-2 bg-primary text-navy text-xs font-black rounded-xl"
                     >
-                        {{ t('tournament_media.open_new_tab', 'Open in New Tab') }}
+                        {{ t('tournament_media.open_new_tab') }}
                     </a>
                 </div>
             </div>
@@ -350,7 +294,7 @@ const { t, locale } = useDashboardI18n()
 const toast = useToast()
 
 useHead({
-    title: computed(() => (t ? t('tournament_media.title', 'Media & Penyimpanan') : 'Media & Penyimpanan') + ' - Archeris Dashboard')
+    title: computed(() => (t ? t('tournament_media.title') : 'Media & Penyimpanan') + ' - Archeris Dashboard')
 })
 
 const eventId = computed(() => route.params.id || route.params.slug)
@@ -374,11 +318,11 @@ const activeFilter = ref('all')
 const searchQuery = ref('')
 
 const filterTabs = computed(() => [
-    { key: 'all', label: t('tournament_media.filter_all', 'All Files') },
-    { key: 'image', label: t('tournament_media.filter_images', 'Images / Photos') },
-    { key: 'pdf', label: t('tournament_media.filter_pdf', 'PDF Documents') },
-    { key: 'document', label: t('tournament_media.filter_doc', 'Documents') },
-    { key: 'video', label: t('tournament_media.filter_video', 'Videos') }
+    { key: 'all', label: t('tournament_media.filter_all') },
+    { key: 'image', label: t('tournament_media.filter_images') },
+    { key: 'pdf', label: t('tournament_media.filter_pdf') },
+    { key: 'document', label: t('tournament_media.filter_doc') },
+    { key: 'video', label: t('tournament_media.filter_video') }
 ])
 
 // Storage calculations
@@ -534,29 +478,22 @@ async function loadMediaStorage() {
 }
 
 // Upload Handling
-const showUploadModal = ref(false)
 const fileInputRef = ref(null)
-const selectedFile = ref(null)
-const uploadCaption = ref('')
 const isUploading = ref(false)
 
 function triggerFileInput() {
     fileInputRef.value?.click()
 }
 
-function onFileSelected(e) {
+async function onFileSelected(e) {
     const file = e.target.files?.[0]
-    if (file) handleChosenFile(file)
-}
+    if (!file) return
 
-function onFileDrop(e) {
-    const file = e.dataTransfer?.files?.[0]
-    if (file) handleChosenFile(file)
-}
+    // Reset input so re-selecting same file works
+    e.target.value = ''
 
-function handleChosenFile(file) {
     if (file.size > 10 * 1024 * 1024) {
-        toast.error(t('tournament_media.max_size_error', 'Maximum file size is 10 MB.'))
+        toast.error(t('tournament_media.max_size_error'))
         return
     }
 
@@ -567,32 +504,20 @@ function handleChosenFile(file) {
         return
     }
 
-    selectedFile.value = file
-    if (!uploadCaption.value) {
-        uploadCaption.value = file.name.replace(/\.[^/.]+$/, '')
-    }
-}
-
-async function handleUpload() {
-    if (!selectedFile.value) return
-
     isUploading.value = true
     const formData = new FormData()
-    formData.append('file', selectedFile.value)
-    formData.append('caption', uploadCaption.value)
-    formData.append('tournament_id', tournament.value?.uuid || eventId.value)
+    formData.append('file', file)
+    formData.append('caption', file.name.replace(/\.[^/.]+$/, ''))
+    formData.append('tournament_id', tournament.value?.uuid || tournament.value?.id || eventId.value)
 
     try {
         const res = await post('/media/upload', formData)
         if (res) {
-            toast.success(t('tournament_media.upload_success', 'Media successfully uploaded!'))
-            showUploadModal.value = false
-            selectedFile.value = null
-            uploadCaption.value = ''
+            toast.success(t('tournament_media.upload_success'))
             await loadMediaStorage()
         }
     } catch (err) {
-        const errMsg = err?.data?.error || err?.message || t('tournament_media.upload_failed_error', 'Failed to upload file')
+        const errMsg = err?.data?.error || err?.message || t('tournament_media.upload_failed_error')
         toast.error(errMsg)
     } finally {
         isUploading.value = false
@@ -613,12 +538,12 @@ async function handleDeleteConfirmed() {
 
     try {
         await del(`/media/${fileToDelete.value.id}`)
-        toast.success(t('tournament_media.delete_success', 'File successfully deleted'))
+        toast.success(t('tournament_media.delete_success'))
         showDeleteDialog.value = false
         fileToDelete.value = null
         await loadMediaStorage()
     } catch (err) {
-        toast.error(t('tournament_media.delete_failed_error', 'Failed to delete file'))
+        toast.error(t('tournament_media.delete_failed_error'))
     }
 }
 

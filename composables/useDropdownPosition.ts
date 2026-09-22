@@ -1,9 +1,12 @@
-import { ref, watch, onMounted, onBeforeUnmount, type Ref } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick, type Ref } from 'vue'
 
 export interface DropdownPositionOptions {
-  panelHeight?: number | Ref<number> | any
-  panelWidth?: number | Ref<number> | any
+  panelHeight?: number | Ref<number>
+  panelWidth?: number | Ref<number>
   margin?: number
+  matchWidth?: boolean
+  minHeight?: number
+  zIndex?: number
 }
 
 export function useDropdownPosition(
@@ -15,31 +18,65 @@ export function useDropdownPosition(
   const isAlignedRight = ref(false)
 
   const defaultHeight = options.panelHeight ?? 300
-  const defaultWidth = options.panelWidth ?? 250
-  const margin = options.margin ?? 12
+  const defaultWidth = options.panelWidth ?? 280
+  const margin = options.margin ?? 6
+  const minHeight = options.minHeight ?? 100
+  const matchWidth = options.matchWidth ?? false
+  const zIndex = options.zIndex ?? 999999
+
+  const coords = ref({
+    top: '0px',
+    bottom: 'auto',
+    left: '0px',
+    right: 'auto',
+    width: 'auto',
+    maxHeight: '300px'
+  })
 
   const updatePosition = () => {
     if (typeof window === 'undefined' || !triggerRef.value || !isOpen.value) return
     const rect = triggerRef.value.getBoundingClientRect()
-    const height = typeof defaultHeight === 'number' ? defaultHeight : defaultHeight.value
-    const width = typeof defaultWidth === 'number' ? defaultWidth : defaultWidth.value
+    if (rect.width === 0 && rect.height === 0) return
+
+    const desiredHeight = typeof defaultHeight === 'number' ? defaultHeight : defaultHeight?.value ?? 300
+    const desiredWidth = typeof defaultWidth === 'number' ? defaultWidth : defaultWidth?.value ?? 280
 
     const spaceBelow = window.innerHeight - rect.bottom
     const spaceAbove = rect.top
     const spaceRight = window.innerWidth - rect.left
 
-    // Flip to top if space below is insufficient and space above has more room or fits
-    if (spaceBelow < height + margin && (spaceAbove > spaceBelow || spaceAbove >= height)) {
+    // Vertical flip
+    if (spaceBelow < 220 && (spaceAbove > spaceBelow || spaceAbove >= desiredHeight)) {
       isFlippedTop.value = true
+      const maxH = Math.max(minHeight, Math.min(desiredHeight, spaceAbove - margin - 10))
+      coords.value.top = 'auto'
+      coords.value.bottom = `${window.innerHeight - rect.top + margin}px`
+      coords.value.maxHeight = `${maxH}px`
     } else {
       isFlippedTop.value = false
+      const maxH = Math.max(minHeight, Math.min(desiredHeight, spaceBelow - margin - 10))
+      coords.value.top = `${rect.bottom + margin}px`
+      coords.value.bottom = 'auto'
+      coords.value.maxHeight = `${maxH}px`
     }
 
-    // Align right if space on right is too tight and there is room on the left
-    if (spaceRight < width + margin && rect.right >= width) {
-      isAlignedRight.value = true
+    // Horizontal alignment and width
+    if (matchWidth) {
+      coords.value.left = `${rect.left}px`
+      coords.value.right = 'auto'
+      coords.value.width = `${rect.width}px`
     } else {
-      isAlignedRight.value = false
+      if (spaceRight < desiredWidth + margin && rect.right >= desiredWidth) {
+        isAlignedRight.value = true
+        coords.value.right = `${window.innerWidth - rect.right}px`
+        coords.value.left = 'auto'
+        coords.value.width = `${desiredWidth}px`
+      } else {
+        isAlignedRight.value = false
+        coords.value.left = `${rect.left}px`
+        coords.value.right = 'auto'
+        coords.value.width = `${desiredWidth}px`
+      }
     }
   }
 
@@ -51,12 +88,18 @@ export function useDropdownPosition(
 
   watch(isOpen, (val) => {
     if (val) {
-      updatePosition()
-      window.addEventListener('scroll', handleScrollResize, true)
-      window.addEventListener('resize', handleScrollResize, true)
+      nextTick(() => {
+        updatePosition()
+      })
+      if (typeof window !== 'undefined') {
+        window.addEventListener('scroll', handleScrollResize, true)
+        window.addEventListener('resize', handleScrollResize, true)
+      }
     } else {
-      window.removeEventListener('scroll', handleScrollResize, true)
-      window.removeEventListener('resize', handleScrollResize, true)
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('scroll', handleScrollResize, true)
+        window.removeEventListener('resize', handleScrollResize, true)
+      }
     }
   })
 
@@ -75,12 +118,24 @@ export function useDropdownPosition(
     }
   })
 
+  const dropdownStyle = computed(() => ({
+    position: 'fixed' as const,
+    top: coords.value.top,
+    bottom: coords.value.bottom,
+    left: coords.value.left,
+    right: coords.value.right,
+    width: coords.value.width,
+    maxHeight: coords.value.maxHeight,
+    zIndex
+  }))
+
   return {
     isFlippedTop,
     isAlignedRight,
+    dropdownCoords: coords,
+    dropdownStyle,
     updatePosition
   }
 }
 
 export default useDropdownPosition
-

@@ -2,13 +2,13 @@
   <div class="flex flex-col gap-6 pb-16 font-body text-navy antialiased">
     <!-- Header -->
     <DashboardHeader
-      :title="t('org_certificate.header_title', 'Sertifikat Event')"
-      :subtitle="t('org_certificate.header_subtitle', 'Unggah dan Kelola Distribusi Sertifikat Digital Resmi Peserta.')"
+      :title="t('org_certificate.header_title')"
+      :subtitle="t('org_certificate.header_subtitle')"
       icon="ph:certificate-bold"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-        { label: t('org_certificate.header_title', 'Sertifikat') }
+        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('org_certificate.header_title') }
       ]"
     >
       <template #actions>
@@ -17,7 +17,7 @@
           variant="primary"
           icon="ph:cloud-arrow-up-bold"
           class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest">
-          <span>{{ t('org_certificate.bulk_upload_btn', 'Unggah Massal (Bulk Upload)') }}</span>
+          <span>{{ t('org_certificate.bulk_upload_btn') }}</span>
         </BaseButton>
       </template>
     </DashboardHeader>
@@ -26,37 +26,37 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
       <!-- Total Peserta -->
       <StatCard
-        :title="t('org_certificate.stats_total', 'Total Peserta')"
-        :value="Array.isArray(participants) ? participants.length : 0"
+        :title="t('org_certificate.stats_total')"
+        :value="enrichedArchersList.length"
         icon="ph:users"
         color="primary"
-        :description="t('org_certificate.stats_total_desc', 'Total atlet terdaftar resmi')"
+        :description="t('org_certificate.stats_total_desc')"
         description-icon="ph:users-bold"
       />
 
       <!-- Peserta Lunas (Eligible) -->
       <StatCard
-        :title="t('org_certificate.stats_paid', 'Peserta Lunas')"
+        :title="t('org_certificate.stats_paid')"
         :value="eligibleParticipantsCount"
         icon="ph:check-circle-bold"
         color="primary"
-        :description="t('org_certificate.stats_paid_desc', 'Peserta berhak sertifikat')"
+        :description="t('org_certificate.stats_paid_desc')"
         description-icon="ph:check-circle-bold"
       />
 
       <!-- Sertifikat Terbit -->
       <StatCard
-        :title="t('org_certificate.stats_issued', 'Sertifikat Terbit')"
+        :title="t('org_certificate.stats_issued')"
         :value="certificatesList.length"
         icon="ph:certificate-bold"
         color="primary"
-        :description="t('org_certificate.stats_issued_desc', 'Sertifikat siap diunduh')"
+        :description="t('org_certificate.stats_issued_desc')"
         description-icon="ph:download-simple-bold"
       />
 
       <!-- Tingkat Penyelesaian -->
       <StatCard
-        :title="t('org_certificate.stats_completion', 'Tingkat Penyelesaian')"
+        :title="t('org_certificate.stats_completion')"
         :value="completionRate + '%'"
         icon="ph:check-square-offset"
         color="primary"
@@ -69,242 +69,207 @@
       </StatCard>
     </div>
 
-    <!-- Row 2: Status Tabs & Filter Bar -->
-    <div class="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs flex flex-col lg:flex-row gap-4 justify-between items-stretch lg:items-center">
-      <!-- Status Tabs -->
-      <div class="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl overflow-x-auto shrink-0">
-        <button
-          v-for="tab in statusTabs"
-          :key="tab.value"
-          @click="activeStatusTab = tab.value"
-          type="button"
-          class="px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex items-center gap-2"
-          :class="activeStatusTab === tab.value ? 'bg-white text-navy shadow-xs' : 'text-slate-500 hover:text-navy'">
-          <span>{{ tab.label }}</span>
-          <span
-            class="text-[10px] sm:text-xs font-mono px-1.5 py-0.5 rounded-md"
-            :class="activeStatusTab === tab.value ? 'bg-navy text-white' : 'bg-slate-200 text-slate-600'">
-            {{ tab.count }}
-          </span>
-        </button>
-      </div>
+    <CertificateFilterModal
+      v-model:show="showFilterModal"
+      :categories="uniqueCategories"
+      :current-filters="filters"
+      @apply="handleApplyModalFilters"
+      @reset="resetAllFilters"
+    />
 
-      <!-- Search & Category Filters -->
-      <div class="flex flex-col sm:flex-row items-center gap-3 flex-1 lg:max-w-xl justify-end">
-        <!-- Search Input -->
-        <div class="relative w-full sm:flex-1">
-          <Icon icon="ph:magnifying-glass-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
-          <input
-            v-model="searchQuery"
-            type="text"
-            :placeholder="t('org_certificate.search_placeholder', 'Cari Nama Atlet, Kode, Nomor...')"
-            class="w-full h-10 pl-9 pr-4 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-navy placeholder:text-slate-400 placeholder:font-normal focus:outline-none focus:border-primary focus:bg-white transition-all" />
-        </div>
+    <!-- Certificate Filter Modal -->
+    <CertificateFilterModal
+      v-model:show="showFilterModal"
+      :categories="uniqueCategories"
+      :current-filters="filters"
+      @apply="handleApplyModalFilters"
+      @reset="resetAllFilters"
+    />
 
-        <!-- Category Select -->
-        <div class="w-full sm:w-64 shrink-0">
-          <BaseSelect
-            v-model="selectedCategory"
-            :items="categoryFilterOptions"
-            :placeholder="t('org_certificate.all_categories', 'Semua Kategori')"
-            clearable
-          />
-        </div>
-
-        <!-- Clear All Button -->
+    <!-- Unified DashboardDataTable (Category A: Modal Filter) -->
+    <DashboardDataTable
+      :items="filteredArchersList"
+      :columns="tableColumns"
+      :loading="isLoading"
+      :searchable="true"
+      :search-placeholder="t('org_certificate.search_placeholder')"
+      :has-filter-modal="true"
+      :filter-button-label="t('common.filter')"
+      :active-filter-count="activeFilterCount"
+      :active-filter-chips="activeFilterChips"
+      :show-reset-button="hasActiveFilters"
+      count-icon="ph:users-three-bold"
+      :count-unit="t('dashboard.participants_list.archers_unit')"
+      :show-count-badge="true"
+      :empty-title="t('org_certificate.empty_certs_title')"
+      :empty-description="hasActiveFilters ? t('org_certificate.empty_filtered_desc') : t('org_certificate.empty_initial_desc')"
+      empty-icon="ph:certificate-bold"
+      :items-per-page="itemsPerPage"
+      :initial-sort-by="sortBy"
+      :initial-sort-order="sortOrder"
+      @search="handleTableSearch"
+      @sort="handleTableSort"
+      @open-filter="showFilterModal = true"
+      @reset-filters="resetAllFilters"
+      @remove-chip="removeFilterChip"
+    >
+      <!-- Toolbar Actions Slot: Clear All Certificates Button -->
+      <template #toolbar-actions>
         <button
           v-if="certificatesList.length > 0"
           @click="promptClearAll"
           :disabled="isClearing"
           type="button"
-          class="h-10 px-3.5 rounded-xl bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-600 border border-slate-200 font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-colors shrink-0"
-          :title="t('org_certificate.btn_clear_all', 'Hapus Semua')">
+          class="h-10 px-3.5 rounded-xl bg-slate-50 hover:bg-red-50 text-slate-500 hover:text-red-600 border border-slate-200 font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-colors shrink-0 cursor-pointer shadow-2xs"
+          :title="t('org_certificate.btn_clear_all')"
+        >
           <Icon icon="ph:trash-bold" />
-          <span class="hidden sm:inline">{{ t('org_certificate.btn_clear_all', 'Hapus Semua') }}</span>
+          <span class="hidden sm:inline">{{ t('org_certificate.btn_clear_all') }}</span>
         </button>
-      </div>
-    </div>
+      </template>
 
-    <!-- Row 3: Participants Certificate Roster Table -->
-    <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
-      <!-- Loading State -->
-      <div v-if="isLoading" class="py-20 text-center space-y-3">
-        <Icon icon="ph:spinner-gap-bold" class="text-3xl text-primary animate-spin mx-auto" />
-        <p class="text-xs sm:text-sm text-slate-400 font-bold">{{ t('common.loading', 'Memuat Data Sertifikat...') }}</p>
-      </div>
-
-      <!-- Empty State -->
-      <div v-else-if="filteredParticipantsList.length === 0" class="py-20 text-center space-y-3">
-        <div class="size-14 rounded-2xl bg-slate-50 text-slate-400 border border-slate-200 flex items-center justify-center mx-auto shadow-xs">
-          <Icon icon="ph:certificate-bold" class="text-2xl text-navy" />
+      <!-- Archer & Club Profile Slot -->
+      <template #item-profile="{ item }">
+        <div class="flex items-center gap-3 py-1">
+          <div class="size-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center font-black text-navy text-xs overflow-hidden shrink-0 shadow-2xs">
+            <img
+              :src="useImageOrDefault(item.avatar_url, item.full_name)"
+              :alt="item.full_name || 'Archer'"
+              @error="(e) => e.target.src = generateDicebearAvatar(item.full_name)"
+              class="size-full object-cover"
+            />
+          </div>
+          <div class="min-w-0">
+            <div class="font-black text-navy text-xs sm:text-sm truncate">{{ item.full_name || '-' }}</div>
+            <div class="text-[11px] sm:text-xs text-slate-400 font-medium truncate flex items-center gap-1.5 mt-0.5">
+              <span v-if="item.athlete_code" class="font-mono text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">
+                {{ item.athlete_code }}
+              </span>
+              <span>{{ item.club_name || '-' }}</span>
+              <span v-if="item.email" class="hidden md:inline text-slate-400 font-normal">({{ item.email }})</span>
+            </div>
+          </div>
         </div>
-        <div class="space-y-1">
-          <h4 class="text-sm sm:text-base font-black text-navy">{{ t('org_certificate.empty_certs_title', 'Tidak Ada Data Sertifikat') }}</h4>
-          <p class="text-xs sm:text-sm text-slate-400 max-w-sm mx-auto">
-            {{ searchQuery || selectedCategory ? t('org_certificate.empty_filtered_desc', 'Coba ubah kata kunci pencarian atau filter kategori Anda.') : t('org_certificate.empty_initial_desc', 'Belum ada peserta yang terdaftar pada event ini.') }}
-          </p>
+      </template>
+
+      <!-- Category Column Slot -->
+      <template #item-category="{ item }">
+        <div class="flex flex-wrap gap-1.5 max-w-sm py-1">
+          <span
+            v-for="cat in item.categories"
+            :key="cat"
+            class="inline-block px-2.5 py-1 bg-slate-100 text-slate-700 font-bold rounded-lg text-[10px] sm:text-xs border border-slate-200 truncate"
+          >
+            {{ cat }}
+          </span>
+          <span v-if="!item.categories || item.categories.length === 0" class="text-xs text-slate-400">-</span>
         </div>
-      </div>
+      </template>
 
-      <!-- Main Roster Table -->
-      <div v-else class="overflow-x-auto">
-        <table class="w-full text-left text-xs sm:text-sm border-collapse">
-          <thead>
-            <tr class="bg-slate-50/80 border-b border-slate-200/80 text-xs sm:text-sm font-bold text-slate-500 tracking-wider">
-              <th class="py-4 px-5 w-14 text-center">#</th>
-              <th @click="toggleSort('name')" class="py-4 px-5 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('org_certificate.th_archer', 'Nama Pemanah & Klub') }}</span>
-                  <Icon v-if="sortBy === 'name'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('category')" class="py-4 px-5 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('org_certificate.th_category', 'Kategori Lomba') }}</span>
-                  <Icon v-if="sortBy === 'category'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('cert_no')" class="py-4 px-5 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('org_certificate.th_cert_no', 'Nomor Sertifikat') }}</span>
-                  <Icon v-if="sortBy === 'cert_no'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('status')" class="py-4 px-5 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('org_certificate.th_status', 'Status Sertifikat') }}</span>
-                  <Icon v-if="sortBy === 'status'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th class="py-4 px-5 text-right">{{ t('org_certificate.th_action', 'Aksi') }}</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-100 bg-white">
-            <tr
-              v-for="(row, idx) in paginatedParticipantsList"
-              :key="row.id || row.uuid"
-              class="hover:bg-slate-50/70 transition-colors group">
-              <!-- Index Number -->
-              <td class="py-4 px-5 font-mono font-bold text-slate-400 text-center text-xs sm:text-sm">
-                {{ (currentPage - 1) * itemsPerPage + idx + 1 }}
-              </td>
+      <!-- Status Column Slot -->
+      <template #item-status="{ item }">
+        <div class="py-1">
+          <div v-if="item.certificates && item.certificates.length > 0" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-navy text-white shadow-2xs">
+            <Icon icon="ph:check-bold" class="text-xs text-white" />
+            <span>{{ t('org_certificate.status_issued') }}</span>
+            <span v-if="item.certificates.length > 1" class="bg-white/20 text-white text-[10px] px-1.5 py-0.5 rounded font-mono">
+              {{ item.certificates.length }} {{ t('org_certificate.files_count') }}
+            </span>
+          </div>
+          <div v-else class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-500 border border-slate-200">
+            <Icon icon="ph:clock-bold" class="text-xs" />
+            <span>{{ t('org_certificate.status_pending') }}</span>
+          </div>
+        </div>
+      </template>
 
-              <!-- Archer & Club -->
-              <td class="py-4 px-5">
-                <div class="flex items-center gap-3">
-                  <div class="size-9 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center font-black text-navy text-xs overflow-hidden shrink-0">
-                    <img
-                      v-if="row.avatar_url"
-                      :src="row.avatar_url"
-                      :alt="row.full_name || 'Archer'"
-                      class="size-full object-cover" />
-                    <span v-else>{{ getInitials(row.full_name) }}</span>
-                  </div>
-                  <div class="min-w-0">
-                    <div class="font-black text-navy text-xs sm:text-sm truncate">{{ row.full_name || '-' }}</div>
-                    <div class="text-[11px] sm:text-xs text-slate-400 font-medium truncate flex items-center gap-1.5 mt-0.5">
-                      <span v-if="row.athlete_code" class="font-mono text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">
-                        {{ row.athlete_code }}
-                      </span>
-                      <span>{{ row.club_name || '-' }}</span>
-                    </div>
-                  </div>
-                </div>
-              </td>
+      <!-- Action Buttons Slot (1 Unified Action Block per Archer) -->
+      <template #actions="{ item }">
+        <div class="flex items-center justify-end gap-1.5 py-1">
+          <!-- Case 1: No Certificates Yet -->
+          <div v-if="!item.certificates || item.certificates.length === 0" class="flex items-center justify-end">
+            <button
+              @click="openSingleUpload(item)"
+              type="button"
+              :disabled="isSingleUploading[getArcherKey(item)]"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-navy hover:text-white text-slate-700 font-bold text-xs rounded-xl border border-slate-200 transition-all active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-2xs"
+            >
+              <Icon v-if="isSingleUploading[getArcherKey(item)]" icon="ph:spinner-gap-bold" class="animate-spin text-sm" />
+              <Icon v-else icon="ph:upload-simple-bold" />
+              <span>{{ isSingleUploading[getArcherKey(item)] ? t('common.loading') : t('org_certificate.btn_upload_single') }}</span>
+            </button>
+          </div>
 
-              <!-- Category -->
-              <td class="py-4 px-5">
-                <span class="inline-block px-2.5 py-1 bg-slate-100 text-slate-700 font-bold rounded-lg text-[10px] sm:text-xs border border-slate-200">
-                  {{ row.category_name || '-' }}
-                </span>
-              </td>
+          <!-- Case 2: Exactly 1 Certificate -->
+          <div v-else-if="item.certificates.length === 1" class="flex items-center justify-end gap-1.5">
+            <button
+              @click="openPdfPreview(item.certificates[0].pdf_url, `${item.full_name} - ${item.certificates[0].original_filename || 'Sertifikat'}`)"
+              type="button"
+              class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-navy transition-colors cursor-pointer shadow-2xs"
+              :title="t('org_certificate.btn_preview')"
+            >
+              <Icon icon="ph:eye-bold" class="text-sm" />
+            </button>
 
-              <!-- Certificate Number -->
-              <td class="py-4 px-5">
-                <span v-if="row.cert?.certificate_no" class="font-mono text-xs sm:text-sm font-bold text-navy bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-md">
-                  {{ row.cert.certificate_no }}
-                </span>
-                <span v-else class="text-slate-300 font-mono text-xs sm:text-sm">-</span>
-              </td>
+            <a
+              :href="getImageUrl(item.certificates[0].pdf_url)"
+              target="_blank"
+              download
+              class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-navy transition-colors cursor-pointer shadow-2xs"
+              :title="t('org_certificate.btn_download')"
+            >
+              <Icon icon="ph:download-simple-bold" class="text-sm" />
+            </a>
 
-              <!-- Certificate Status -->
-              <td class="py-4 px-5">
-                <div v-if="row.cert" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs sm:text-sm font-bold bg-navy text-white shadow-xs">
-                  <Icon icon="ph:check-bold" class="text-xs sm:text-sm text-white" />
-                  <span>{{ t('org_certificate.status_issued', 'Terbit') }}</span>
-                </div>
-                <div v-else class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs sm:text-sm font-bold bg-slate-100 text-slate-500 border border-slate-200">
-                  <Icon icon="ph:clock-bold" class="text-xs sm:text-sm" />
-                  <span>{{ t('org_certificate.status_pending', 'Belum Terbit') }}</span>
-                </div>
-              </td>
+            <button
+              @click="promptDeleteCert(item.certificates[0].uuid, `${item.full_name} (${item.certificates[0].original_filename || item.certificates[0].certificate_no})`)"
+              type="button"
+              class="p-2 rounded-lg bg-slate-100 hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors cursor-pointer shadow-2xs"
+              :title="t('org_certificate.btn_delete')"
+            >
+              <Icon icon="ph:trash-bold" class="text-sm" />
+            </button>
 
-              <!-- Action Buttons -->
-              <td class="py-4 px-5 text-right whitespace-nowrap">
-                <div class="flex items-center justify-end gap-1.5">
-                  <!-- When Certificate Exists: Preview, Download, Delete -->
-                  <template v-if="row.cert?.pdf_url">
-                    <button
-                      @click="openPdfPreview(row.cert.pdf_url, row.full_name || 'Sertifikat')"
-                      type="button"
-                      class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-navy transition-colors"
-                      :title="t('org_certificate.btn_preview', 'Pratinjau PDF')">
-                      <Icon icon="ph:eye-bold" class="text-sm" />
-                    </button>
+            <button
+              @click="openSingleUpload(item)"
+              type="button"
+              :disabled="isSingleUploading[getArcherKey(item)]"
+              class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-slate-100 hover:bg-navy hover:text-white text-slate-700 font-bold text-xs rounded-xl border border-slate-200 transition-all active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-2xs"
+              :title="t('org_certificate.btn_add_more')"
+            >
+              <Icon v-if="isSingleUploading[getArcherKey(item)]" icon="ph:spinner-gap-bold" class="animate-spin text-xs" />
+              <Icon v-else icon="ph:plus-bold" class="text-xs" />
+              <span class="hidden sm:inline text-xs font-bold">{{ isSingleUploading[getArcherKey(item)] ? '...' : t('org_certificate.btn_add') }}</span>
+            </button>
+          </div>
 
-                    <a
-                      :href="getImageUrl(row.cert.pdf_url)"
-                      target="_blank"
-                      download
-                      class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-navy transition-colors"
-                      :title="t('org_certificate.btn_download', 'Unduh PDF')">
-                      <Icon icon="ph:download-simple-bold" class="text-sm" />
-                    </a>
+          <!-- Case 3: Multiple Certificates (> 1) -->
+          <div v-else class="flex items-center justify-end gap-2">
+            <button
+              @click="openMultiCertModal(item)"
+              type="button"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-navy hover:text-white text-navy font-bold text-xs rounded-xl border border-slate-200 transition-all active:scale-95 cursor-pointer shadow-2xs"
+              :title="t('org_certificate.btn_manage_certs')"
+            >
+              <Icon icon="ph:files-bold" class="text-sm" />
+              <span>{{ item.certificates.length }} {{ t('org_certificate.files_count') }}</span>
+            </button>
 
-                    <button
-                      @click="promptDeleteCert(row.cert?.uuid || row.cert?.registration_id || row.cert?.participant_id || row.uuid || row.id, row.full_name)"
-                      type="button"
-                      class="p-2 rounded-lg bg-slate-100 hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors"
-                      :title="t('org_certificate.btn_delete', 'Hapus Sertifikat')">
-                      <Icon icon="ph:trash-bold" class="text-sm" />
-                    </button>
-                  </template>
-
-                  <!-- When Certificate Not Yet Issued: Quick Upload -->
-                  <template v-else>
-                    <button
-                      @click="openSingleUpload(row)"
-                      type="button"
-                      class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-navy hover:text-white text-slate-700 font-bold text-xs sm:text-sm rounded-xl border border-slate-200 transition-all active:scale-95">
-                      <Icon icon="ph:upload-simple-bold" />
-                      <span>{{ t('org_certificate.btn_upload_single', 'Unggah PDF') }}</span>
-                    </button>
-                  </template>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Table Pagination Footer -->
-      <div v-if="filteredParticipantsList.length > 0" class="p-4 sm:p-5 border-t border-slate-100 bg-white">
-        <BasePagination
-          :current-page="currentPage"
-          :total-items="filteredParticipantsList.length"
-          :items-per-page="itemsPerPage"
-          :show-page-size="true"
-          :show-info="true"
-          no-margin
-          @update:current-page="currentPage = $event"
-          @update:items-per-page="itemsPerPage = $event"
-        />
-      </div>
-    </div>
+            <button
+              @click="openSingleUpload(item)"
+              type="button"
+              :disabled="isSingleUploading[getArcherKey(item)]"
+              class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-slate-100 hover:bg-navy hover:text-white text-slate-700 font-bold text-xs rounded-xl border border-slate-200 transition-all active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-2xs"
+              :title="t('org_certificate.btn_add_more')"
+            >
+              <Icon v-if="isSingleUploading[getArcherKey(item)]" icon="ph:spinner-gap-bold" class="animate-spin text-xs" />
+              <Icon v-else icon="ph:plus-bold" class="text-xs" />
+              <span class="hidden sm:inline text-xs font-bold">{{ isSingleUploading[getArcherKey(item)] ? '...' : t('org_certificate.btn_add') }}</span>
+            </button>
+          </div>
+        </div>
+      </template>
+    </DashboardDataTable>
 
     <!-- Modal 1: Upload Modal (ZIP / Multi-PDF) -->
     <Transition
@@ -326,13 +291,13 @@
                 <Icon icon="ph:cloud-arrow-up-bold" class="text-2xl" />
               </div>
               <div>
-                <h3 class="text-lg font-black tracking-tight">{{ t('org_certificate.bulk_upload_title', 'Unggah Massal Sertifikat (Bulk Upload)') }}</h3>
-                <div class="text-xs text-slate-300">{{ t('org_certificate.bulk_upload_subtitle', 'Unggah banyak sertifikat peserta sekaligus menggunakan arsip file .ZIP atau multi-file .PDF.') }}</div>
+                <h3 class="text-lg font-black tracking-tight">{{ t('org_certificate.bulk_upload_title') }}</h3>
+                <div class="text-xs text-slate-300">{{ t('org_certificate.bulk_upload_subtitle') }}</div>
               </div>
             </div>
             <button
               @click="closeUploadModal"
-              class="size-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-300 hover:text-white transition-colors">
+              class="size-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer">
               <Icon icon="ph:x-bold" />
             </button>
           </div>
@@ -343,20 +308,23 @@
             <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-3">
               <div class="flex items-center gap-2 text-xs font-bold text-navy">
                 <Icon icon="ph:info-bold" class="text-primary text-base" />
-                <span>{{ t('org_certificate.naming_guide_title', 'Panduan Penamaan Berkas Sertifikat') }}</span>
+                <span>{{ t('org_certificate.naming_guide_title') }}</span>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[11px]">
                 <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-1">
-                  <div class="font-black text-navy">{{ t('org_certificate.naming_format_a_title', 'Format Rekomendasi (Kode + Nama)') }}</div>
-                  <div class="font-mono text-slate-500 truncate text-[10px]">ARC-0012_Nama Pemanah.pdf</div>
+                  <div class="font-black text-navy">{{ t('org_certificate.naming_format_a_title') }}</div>
+                  <div class="font-mono text-slate-500 truncate text-[10px]">ARC-0012_Recurve-Men.pdf</div>
+                  <div class="font-mono text-slate-400 truncate text-[10px]">Budi_Barebow.png</div>
                 </div>
                 <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-1">
-                  <div class="font-black text-navy">{{ t('org_certificate.naming_format_b_title', 'Format Alternatif (Nama Lengkap)') }}</div>
-                  <div class="font-mono text-slate-500 truncate text-[10px]">Nama Lengkap Peserta.pdf</div>
+                  <div class="font-black text-navy">{{ t('org_certificate.naming_format_b_title') }}</div>
+                  <div class="font-mono text-slate-500 truncate text-[10px]">Budi Santoso/Recurve.pdf</div>
+                  <div class="font-mono text-slate-400 truncate text-[10px]">ARC-0012/Barebow.jpg</div>
                 </div>
                 <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-1">
-                  <div class="font-black text-navy">{{ t('org_certificate.naming_format_c_title', 'Format Kode Saja (Kode Atlet)') }}</div>
-                  <div class="font-mono text-slate-500 truncate text-[10px]">ARC-0012.pdf</div>
+                  <div class="font-black text-navy">{{ t('org_certificate.naming_format_c_title') }}</div>
+                  <div class="font-mono text-slate-500 truncate text-[10px]">Recurve Men/Ahmad.pdf</div>
+                  <div class="font-mono text-slate-400 truncate text-[10px]">Semua folder diekstrak otomatis</div>
                 </div>
               </div>
             </div>
@@ -372,27 +340,27 @@
               <input
                 type="file"
                 ref="fileInputRef"
-                accept=".zip,.pdf"
+                accept=".zip,.rar"
                 multiple
                 class="hidden"
                 @change="handleFileInputChange" />
 
               <div class="size-14 rounded-2xl bg-navy text-white group-hover:scale-105 transition-all flex items-center justify-center shadow-xs">
-                <Icon v-if="!isUploading" icon="ph:cloud-arrow-up-bold" class="text-2xl" />
+                <Icon v-if="!isBulkUploading" icon="ph:file-archive-bold" class="text-2xl" />
                 <Icon v-else icon="ph:spinner-gap-bold" class="text-2xl animate-spin" />
               </div>
 
-              <div v-if="!isUploading" class="space-y-1">
+              <div v-if="!isBulkUploading" class="space-y-1">
                 <div class="text-sm font-black text-navy transition-colors">
-                  {{ t('org_certificate.dropzone_title', 'Tarik & Lepas File .ZIP / Multi-PDF di Sini') }}
+                  {{ t('org_certificate.dropzone_title') }}
                 </div>
-                <p class="text-xs text-slate-400 font-medium">
-                  {{ t('org_certificate.dropzone_subtitle', 'Atau klik untuk memilih berkas dari komputer (.zip, .pdf)') }}
-                </p>
+                <div class="text-xs text-slate-400 font-medium">
+                  {{ t('org_certificate.dropzone_subtitle') }}
+                </div>
               </div>
 
               <div v-else class="space-y-2 max-w-xs w-full">
-                <div class="text-xs font-bold text-navy">{{ t('org_certificate.uploading', 'Mengunggah & Memproses Berkas...') }}</div>
+                <div class="text-xs font-bold text-navy">{{ t('org_certificate.uploading') }}</div>
                 <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
                   <div class="bg-primary h-full rounded-full animate-pulse" style="width: 100%"></div>
                 </div>
@@ -404,22 +372,22 @@
               <div class="flex items-center justify-between border-b border-slate-200 pb-3">
                 <div class="text-xs font-black text-navy flex items-center gap-2">
                   <Icon icon="ph:chart-donut-bold" class="text-primary text-base" />
-                  <span>{{ t('org_certificate.batch_result_title', 'Hasil Pemrosesan Batch Terakhir') }}</span>
+                  <span>{{ t('org_certificate.batch_result_title') }}</span>
                 </div>
                 <span class="text-[11px] font-mono text-slate-400">{{ uploadResult.batch_id ? `Batch: ${uploadResult.batch_id.slice(0, 8)}` : '' }}</span>
               </div>
 
               <div class="grid grid-cols-3 gap-3 text-center">
                 <div class="bg-white p-3 rounded-xl border border-slate-200">
-                  <div class="text-[11px] font-bold text-slate-500">{{ t('org_certificate.total_files', 'Total Berkas') }}</div>
+                  <div class="text-[11px] font-bold text-slate-500">{{ t('org_certificate.total_files') }}</div>
                   <div class="text-lg font-black text-navy mt-0.5 font-mono">{{ uploadResult.total_files || 0 }}</div>
                 </div>
                 <div class="bg-white p-3 rounded-xl border border-slate-200">
-                  <div class="text-[11px] font-bold text-slate-500">{{ t('org_certificate.matched_count', 'Berhasil Dicocokkan') }}</div>
+                  <div class="text-[11px] font-bold text-slate-500">{{ t('org_certificate.matched_count') }}</div>
                   <div class="text-lg font-black text-navy mt-0.5 font-mono">{{ uploadResult.matched_count || 0 }}</div>
                 </div>
                 <div class="bg-white p-3 rounded-xl border border-slate-200">
-                  <div class="text-[11px] font-bold text-slate-500">{{ t('org_certificate.unmatched_count', 'Perlu Ditinjau') }}</div>
+                  <div class="text-[11px] font-bold text-slate-500">{{ t('org_certificate.unmatched_count') }}</div>
                   <div class="text-lg font-black text-navy mt-0.5 font-mono">{{ uploadResult.unmatched_count || 0 }}</div>
                 </div>
               </div>
@@ -428,7 +396,7 @@
               <div v-if="uploadResult.unmatched && uploadResult.unmatched.length > 0" class="space-y-3 pt-2">
                 <div class="text-xs font-bold text-navy flex items-center gap-1.5">
                   <Icon icon="ph:warning-circle-bold" class="text-navy" />
-                  <span>{{ t('org_certificate.unmatched_section_title', 'Berkas yang Belum Terhubung Otomatis') }} ({{ uploadResult.unmatched.length }})</span>
+                  <span>{{ t('org_certificate.unmatched_section_title') }} ({{ uploadResult.unmatched.length }})</span>
                 </div>
 
                 <div class="space-y-2 max-h-48 overflow-y-auto">
@@ -442,10 +410,10 @@
                     <div class="flex items-center gap-2 shrink-0">
                       <select
                         v-model="manualAssignments[unm.filename]"
-                        class="h-8 px-2 bg-slate-50 border border-slate-200 rounded-lg text-[11px] font-bold text-navy focus:outline-none focus:border-primary w-44">
-                        <option value="">{{ t('org_certificate.select_archer', 'Pilih Atlet...') }}</option>
+                        class="h-8 px-2 bg-slate-50 border border-slate-200 rounded-lg text-[11px] font-bold text-navy focus:outline-none focus:border-primary w-56">
+                        <option value="">{{ t('org_certificate.select_archer') }}</option>
                         <option v-for="p in (Array.isArray(participants) ? participants : [])" :key="p.uuid || p.id" :value="p.uuid || p.id">
-                          {{ p.full_name }} ({{ p.athlete_code || p.id || '-' }})
+                          {{ p.full_name }} ({{ p.category_name || '-' }}) — {{ p.athlete_code || p.id || '-' }}
                         </option>
                       </select>
                       <BaseButton
@@ -455,7 +423,7 @@
                         :disabled="!manualAssignments[unm.filename]"
                         @click="handleManualAssign(unm.filename, unm.pdf_url)"
                         class="shrink-0 font-bold text-[11px] h-8 px-3">
-                        {{ t('org_certificate.btn_assign', 'Hubungkan') }}
+                        {{ t('org_certificate.btn_assign') }}
                       </BaseButton>
                     </div>
                   </div>
@@ -467,14 +435,124 @@
           <!-- Modal Footer -->
           <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-3">
             <BaseButton @click="closeUploadModal" variant="white" class="h-10 px-5">
-              {{ t('org_certificate.close', 'Tutup') }}
+              {{ t('org_certificate.close') }}
             </BaseButton>
           </div>
         </div>
       </div>
     </Transition>
 
-    <!-- Modal 2: PDF Preview Modal -->
+    <!-- Modal: Multi-Certificates List Dialog (Clean Dialog replacing pop-up menu) -->
+    <Transition
+      enter-active-class="transition duration-200 ease-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition duration-150 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0">
+      <div
+        v-if="showMultiCertModal && selectedArcherForCerts"
+        class="fixed inset-0 bg-navy/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        @click.self="showMultiCertModal = false">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full overflow-hidden flex flex-col max-h-[85vh] border border-slate-200">
+          
+          <!-- Header -->
+          <div class="bg-navy p-5 shrink-0 flex items-center justify-between text-white border-b border-primary/20">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="size-10 rounded-xl bg-white/10 flex items-center justify-center text-white border border-white/20 shrink-0">
+                <Icon icon="ph:files-bold" class="text-xl text-primary" />
+              </div>
+              <div class="min-w-0">
+                <h3 class="font-black text-base text-white leading-tight truncate">
+                  {{ selectedArcherForCerts.full_name }}
+                </h3>
+                <div class="text-[11px] text-slate-300 truncate">
+                  {{ selectedArcherForCerts.athlete_code ? selectedArcherForCerts.athlete_code + ' • ' : '' }}
+                  {{ selectedArcherForCerts.categories?.join(', ') || t('org_certificate.default_category') }}
+                  <span class="text-primary font-bold">({{ selectedArcherForCerts.certificates?.length || 0 }} {{ t('org_certificate.files_count') }})</span>
+                </div>
+              </div>
+            </div>
+            <button
+              @click="showMultiCertModal = false"
+              class="size-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer shrink-0 ml-3">
+              <Icon icon="ph:x-bold" class="text-base" />
+            </button>
+          </div>
+
+          <!-- Body List -->
+          <div class="p-5 space-y-2.5 overflow-y-auto max-h-[55vh] divide-y divide-slate-100">
+            <div
+              v-for="(cert, cIdx) in selectedArcherForCerts.certificates"
+              :key="cert.uuid || cert.id || cIdx"
+              class="pt-2.5 first:pt-0 flex items-center justify-between gap-3 group/item hover:bg-slate-50 p-3 rounded-2xl transition-colors">
+              <div class="flex items-center gap-3 min-w-0 flex-1">
+                <div class="size-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-navy shrink-0 font-bold text-xs">
+                  <Icon icon="ph:file-pdf-bold" class="text-2xl text-red-500" v-if="isPdf(cert.pdf_url)" />
+                  <Icon icon="ph:file-image-bold" class="text-2xl text-blue-500" v-else />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="text-xs sm:text-sm font-bold text-navy truncate" :title="cert.original_filename || cert.certificate_no">
+                    {{ cert.original_filename || `Sertifikat ${cIdx + 1}` }}
+                  </div>
+                  <div class="flex items-center gap-2 text-[10px] sm:text-[11px] text-slate-400 mt-0.5 font-mono">
+                    <span v-if="cert.certificate_no" class="bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-bold border border-slate-200">
+                      {{ cert.certificate_no }}
+                    </span>
+                    <span v-if="cert.created_at || cert.issue_date">{{ formatDate(cert.issue_date || cert.created_at) }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons for this cert -->
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button
+                  @click="openPdfPreview(cert.pdf_url, `${selectedArcherForCerts.full_name} - ${cert.original_filename || 'Sertifikat'}`)"
+                  type="button"
+                  class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy transition-colors cursor-pointer shadow-2xs"
+                  :title="t('org_certificate.btn_preview')">
+                  <Icon icon="ph:eye-bold" class="text-sm" />
+                </button>
+                <a
+                  :href="getImageUrl(cert.pdf_url)"
+                  target="_blank"
+                  download
+                  class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy transition-colors cursor-pointer shadow-2xs"
+                  :title="t('org_certificate.btn_download')">
+                  <Icon icon="ph:download-simple-bold" class="text-sm" />
+                </a>
+                <button
+                  @click="promptDeleteCert(cert.uuid || cert.id, `${selectedArcherForCerts.full_name} (${cert.original_filename || cert.certificate_no})`)"
+                  type="button"
+                  class="p-2 rounded-xl bg-slate-100 hover:bg-red-50 text-slate-400 hover:text-red-600 transition-colors cursor-pointer shadow-2xs"
+                  :title="t('org_certificate.btn_delete')">
+                  <Icon icon="ph:trash-bold" class="text-sm" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-3 shrink-0">
+            <button
+              @click="openSingleUpload(selectedArcherForCerts)"
+              type="button"
+              class="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-navy font-black text-xs rounded-xl shadow-xs hover:bg-primary-hover transition-colors cursor-pointer">
+              <Icon icon="ph:plus-bold" />
+              <span>{{ t('org_certificate.btn_add_more') }}</span>
+            </button>
+            <button
+              @click="showMultiCertModal = false"
+              type="button"
+              class="px-4 py-2 bg-white border border-slate-200 text-slate-700 font-bold text-xs rounded-xl hover:bg-slate-100 transition-colors cursor-pointer">
+              {{ t('org_certificate.close') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Modal 2: Preview Modal (PDF / Image) -->
     <Transition
       enter-active-class="transition duration-200 ease-out"
       enter-from-class="opacity-0"
@@ -490,16 +568,16 @@
           <div class="bg-navy p-5 shrink-0 flex items-center justify-between text-white border-b border-primary/20">
             <div class="flex items-center gap-3">
               <div class="size-10 rounded-xl bg-white/10 flex items-center justify-center text-white">
-                <Icon icon="ph:file-pdf-bold" class="text-xl" />
+                <Icon icon="ph:certificate-bold" class="text-xl" />
               </div>
               <div>
                 <h3 class="font-black text-base text-white leading-tight">{{ previewModalTitle }}</h3>
-                <div class="text-[11px] text-slate-300">{{ t('org_certificate.preview_modal_title', 'Pratinjau Berkas Sertifikat') }}</div>
+                <div class="text-[11px] text-slate-300">{{ t('org_certificate.preview_modal_title') }}</div>
               </div>
             </div>
             <button
               @click="showPreviewModal = false"
-              class="size-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+              class="size-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer">
               <Icon icon="ph:x-bold" class="text-base" />
             </button>
           </div>
@@ -509,7 +587,7 @@
               v-if="isPdf(activePreviewUrl)"
               :src="activePreviewUrl"
               class="w-full h-full min-h-[500px] rounded-2xl bg-white shadow-sm border border-slate-200"
-              title="PDF Certificate Preview"></iframe>
+              title="Certificate Preview"></iframe>
             <img
               v-else
               :src="activePreviewUrl"
@@ -522,14 +600,14 @@
               :href="activePreviewUrl"
               target="_blank"
               download
-              class="px-5 py-2.5 bg-primary text-navy font-black text-xs rounded-xl shadow-xs hover:opacity-90 transition-opacity flex items-center gap-1.5">
+              class="px-5 py-2.5 bg-primary text-navy font-black text-xs rounded-xl shadow-xs hover:opacity-90 transition-opacity flex items-center gap-1.5 cursor-pointer">
               <Icon icon="ph:download-simple-bold" />
-              <span>{{ t('org_certificate.btn_download', 'Unduh PDF') }}</span>
+              <span>{{ t('org_certificate.btn_download') }}</span>
             </a>
             <button
               @click="showPreviewModal = false"
-              class="px-5 py-2.5 bg-white border border-slate-200 text-slate-700 font-bold text-xs rounded-xl hover:bg-slate-100 transition-colors">
-              {{ t('org_certificate.close', 'Tutup') }}
+              class="px-5 py-2.5 bg-white border border-slate-200 text-slate-700 font-bold text-xs rounded-xl hover:bg-slate-100 transition-colors cursor-pointer">
+              {{ t('org_certificate.close') }}
             </button>
           </div>
         </div>
@@ -546,11 +624,11 @@
       @confirm="executeDelete"
     />
 
-    <!-- Hidden Input for Single Participant Upload -->
+    <!-- Hidden Input for Single Participant Upload (PDF or Image) -->
     <input
       type="file"
       ref="singleFileInputRef"
-      accept=".pdf"
+      accept=".pdf,.png,.jpg,.jpeg,.webp"
       class="hidden"
       @change="handleSingleFileInputChange" />
   </div>
@@ -563,9 +641,10 @@ import { useRoute } from '#app'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
-import { getImageUrl } from '~/composables/useImageHelper'
+import { getImageUrl, useImageOrDefault, generateDicebearAvatar } from '~/composables/useImageHelper'
 import AppDialog from '~/components/common/AppDialog.vue'
-import BaseSelect from '~/components/common/BaseSelect.vue'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
+import CertificateFilterModal from '~/components/dashboard/CertificateFilterModal.vue'
 
 definePageMeta({
   layout: 'dashboard'
@@ -578,25 +657,107 @@ const { get, post, del } = useApi()
 const toast = useToast()
 
 useHead({
-  title: computed(() => (t ? t('org_certificate.title', 'Kelola Sertifikat Event') : 'Kelola Sertifikat Event') + ' - Archeris Dashboard')
+  title: computed(() => (t ? t('org_certificate.title') : 'Kelola Sertifikat Event') + ' - Archeris Dashboard')
 })
 
 const participants = ref([])
 const certificatesList = ref([])
 const isLoading = ref(true)
-const isUploading = ref(false)
+const isBulkUploading = ref(false)
+const isSingleUploading = ref({})
 const isClearing = ref(false)
 const isDragging = ref(false)
 const fileInputRef = ref(null)
 const singleFileInputRef = ref(null)
 
+const getArcherKey = (row) => {
+  return String(row?.archer_id || row?.athlete_code || row?.id || row?.uuid || 'default')
+}
+
+// Table columns definition
+const tableColumns = computed(() => [
+  { key: 'profile', label: t('org_certificate.th_archer', 'Pemanah / Klub'), sortable: true, sortKey: 'name', class: 'min-w-[240px]' },
+  { key: 'category', label: t('org_certificate.th_category', 'Kategori'), sortable: false, class: 'min-w-[200px]' },
+  { key: 'status', label: t('org_certificate.th_status', 'Status Sertifikat'), sortable: true, sortKey: 'status', class: 'min-w-[140px]' }
+])
+
+// Search and Filter Modal State
+const showFilterModal = ref(false)
 const searchQuery = ref('')
-const selectedCategory = ref('')
-const activeStatusTab = ref('all') // 'all' | 'issued' | 'pending'
+const filters = ref({
+  status: 'Semua',
+  categories: [],
+  club: ''
+})
+
+const activeFilterCount = computed(() => {
+  let count = 0
+  if (filters.value.status && filters.value.status !== 'Semua') count++
+  if (filters.value.categories && filters.value.categories.length > 0) count++
+  if (filters.value.club && filters.value.club.trim() !== '') count++
+  return count
+})
+
+const hasActiveFilters = computed(() => activeFilterCount.value > 0 || !!searchQuery.value)
+
+const activeFilterChips = computed(() => {
+  const chips = []
+  if (filters.value.status && filters.value.status !== 'Semua') {
+    const label = filters.value.status === 'issued'
+      ? t('org_certificate.status_issued_tab')
+      : t('org_certificate.status_pending_tab')
+    chips.push({ key: 'status', label: `${t('org_certificate.filter_status_label')}: ${label}` })
+  }
+  if (filters.value.categories && filters.value.categories.length > 0) {
+    chips.push({
+      key: 'categories',
+      label: `${t('org_certificate.th_category')}: ${filters.value.categories.join(', ')}`
+    })
+  }
+  if (filters.value.club && filters.value.club.trim() !== '') {
+    chips.push({ key: 'club', label: `${t('org_certificate.filter_club_label')}: ${filters.value.club}` })
+  }
+  return chips
+})
+
+const removeFilterChip = (key) => {
+  if (key === 'status') filters.value.status = 'Semua'
+  else if (key === 'categories') filters.value.categories = []
+  else if (key === 'club') filters.value.club = ''
+  currentPage.value = 1
+}
+
+const handleApplyModalFilters = (newFilters) => {
+  filters.value = { ...newFilters }
+  currentPage.value = 1
+}
+
+const resetAllFilters = () => {
+  searchQuery.value = ''
+  filters.value = {
+    status: 'Semua',
+    categories: [],
+    club: ''
+  }
+  sortBy.value = 'name'
+  sortOrder.value = 'asc'
+  currentPage.value = 1
+}
 
 // Table Sorting
 const sortBy = ref('name') // 'name' | 'category' | 'cert_no' | 'status'
 const sortOrder = ref('asc') // 'asc' | 'desc'
+
+const handleTableSearch = (q) => {
+  searchQuery.value = q
+  currentPage.value = 1
+}
+
+const handleTableSort = ({ sortBy: field, sortOrder: direction }) => {
+  sortBy.value = field === 'profile' ? 'name' : field
+  sortOrder.value = direction
+  currentPage.value = 1
+}
 
 const toggleSort = (column) => {
   if (sortBy.value === column) {
@@ -613,6 +774,16 @@ const manualAssignments = ref({})
 const isAssigning = ref({})
 const selectedParticipantForUpload = ref(null)
 
+// Multi-Certificate Modal State
+const showMultiCertModal = ref(false)
+const selectedArcherForCerts = ref(null)
+
+const openMultiCertModal = (archer) => {
+  if (!archer) return
+  selectedArcherForCerts.value = archer
+  showMultiCertModal.value = true
+}
+
 // Preview Modal State
 const showPreviewModal = ref(false)
 const activePreviewUrl = ref('')
@@ -622,6 +793,21 @@ const isPdf = (url) => {
   if (!url) return false
   const clean = url.split('?')[0].toLowerCase()
   return clean.endsWith('.pdf') || clean.includes('/pdf') || clean.includes('format=pdf') || clean.includes('.pdf')
+}
+
+const formatDate = (dateStr) => {
+  if (!dateStr) return '-'
+  try {
+    const d = new Date(dateStr)
+    if (isNaN(d.getTime())) return String(dateStr)
+    return d.toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    })
+  } catch {
+    return String(dateStr)
+  }
 }
 
 // Delete Dialog State
@@ -663,87 +849,105 @@ const uniqueCategories = computed(() => {
   return [...new Set(cats)]
 })
 
-const categoryFilterOptions = computed(() => {
-  const options = [
-    { title: t('org_certificate.all_categories', 'Semua Kategori'), value: '' }
-  ]
-  uniqueCategories.value.forEach(cat => {
-    options.push({ title: cat, value: cat })
-  })
-  return options
-})
-
-// Build enriched participants list with matched certificate
-const enrichedParticipantsList = computed(() => {
-  const certMapByPartId = new Map()
-  const certMapByArcherId = new Map()
-  const certMapByAthleteCode = new Map()
-  const certMapByName = new Map()
-
+// Build enriched list grouped by unique archer (1 Archer = 1 Row)
+const enrichedArchersList = computed(() => {
+  const partList = Array.isArray(participants.value) ? participants.value : []
   const certList = Array.isArray(certificatesList.value) ? certificatesList.value : []
-  for (const cert of certList) {
-    const partId = cert.participant_id || cert.registration_id
-    if (partId) certMapByPartId.set(String(partId), cert)
-    if (cert.archer_id) certMapByArcherId.set(String(cert.archer_id), cert)
-    if (cert.athlete_code) certMapByAthleteCode.set(String(cert.athlete_code).toLowerCase().trim(), cert)
-    if (cert.archer_name) certMapByName.set(String(cert.archer_name).toLowerCase().trim(), cert)
+  const archerMap = new Map()
+
+  for (const p of partList) {
+    const archerKey = String(p.archer_id || p.athlete_code || p.full_name || p.id || p.uuid).trim()
+    const partId = String(p.uuid || p.id || '')
+    const catName = p.category_name || ''
+
+    if (!archerMap.has(archerKey)) {
+      archerMap.set(archerKey, {
+        id: p.id,
+        uuid: p.uuid,
+        archer_id: p.archer_id,
+        athlete_code: p.athlete_code || p.back_number,
+        full_name: p.full_name,
+        email: p.email || '',
+        club_name: p.club_name,
+        avatar_url: p.avatar_url,
+        categories: catName ? [catName] : [],
+        participant_ids: partId ? [partId] : [],
+        certificates: []
+      })
+    } else {
+      const existing = archerMap.get(archerKey)
+      if (p.email && !existing.email) {
+        existing.email = p.email
+      }
+      if (catName && !existing.categories.includes(catName)) {
+        existing.categories.push(catName)
+      }
+      if (partId && !existing.participant_ids.includes(partId)) {
+        existing.participant_ids.push(partId)
+      }
+    }
   }
 
-  const partList = Array.isArray(participants.value) ? participants.value : []
-  return partList.map(p => {
-    const partId = String(p.uuid || p.id || '')
-    const archerId = String(p.archer_id || '')
-    const code = String(p.athlete_code || p.back_number || '').toLowerCase().trim()
-    const name = String(p.full_name || '').toLowerCase().trim()
+  // Assign certificates to archers
+  for (const cert of certList) {
+    const partId = String(cert.participant_id || cert.registration_id || '')
+    const archerId = String(cert.archer_id || '')
+    const code = String(cert.athlete_code || '').toLowerCase().trim()
+    const name = String(cert.archer_name || '').toLowerCase().trim()
 
-    const cert = (partId ? certMapByPartId.get(partId) : null) ||
-      (archerId ? certMapByArcherId.get(archerId) : null) ||
-      (code ? certMapByAthleteCode.get(code) : null) ||
-      (name ? certMapByName.get(name) : null)
+    for (const [key, archer] of archerMap.entries()) {
+      const match =
+        (archerId && archer.archer_id && String(archer.archer_id) === archerId) ||
+        (partId && archer.participant_ids.includes(partId)) ||
+        (code && archer.athlete_code && String(archer.athlete_code).toLowerCase().trim() === code) ||
+        (name && archer.full_name && String(archer.full_name).toLowerCase().trim() === name)
 
-    return {
-      ...p,
-      cert: cert || null
+      if (match) {
+        if (!archer.certificates.some(c => c.uuid === cert.uuid || (c.id && c.id === cert.id) || (cert.pdf_url && c.pdf_url === cert.pdf_url))) {
+          archer.certificates.push(cert)
+        }
+        break
+      }
     }
-  })
+  }
+
+  return Array.from(archerMap.values())
 })
 
-const statusTabs = computed(() => {
-  const all = enrichedParticipantsList.value.length
-  const issued = enrichedParticipantsList.value.filter(p => p.cert !== null).length
-  const pending = all - issued
+const filteredArchersList = computed(() => {
+  let list = enrichedArchersList.value
 
-  return [
-    { label: t('org_certificate.all_participants', 'Semua Peserta'), value: 'all', count: all },
-    { label: t('org_certificate.status_issued_tab', 'Sudah Terbit'), value: 'issued', count: issued },
-    { label: t('org_certificate.status_pending_tab', 'Belum Terbit'), value: 'pending', count: pending }
-  ]
-})
-
-const filteredParticipantsList = computed(() => {
-  let list = enrichedParticipantsList.value
-
-  // Status Tab Filter
-  if (activeStatusTab.value === 'issued') {
-    list = list.filter(p => p.cert !== null)
-  } else if (activeStatusTab.value === 'pending') {
-    list = list.filter(p => p.cert === null)
+  // Status Filter
+  if (filters.value.status === 'issued') {
+    list = list.filter(a => a.certificates && a.certificates.length > 0)
+  } else if (filters.value.status === 'pending') {
+    list = list.filter(a => !a.certificates || a.certificates.length === 0)
   }
 
   // Category Filter
-  if (selectedCategory.value) {
-    list = list.filter(p => p.category_name === selectedCategory.value)
+  if (filters.value.categories && filters.value.categories.length > 0) {
+    list = list.filter(a => a.categories && a.categories.some(c => filters.value.categories.includes(c)))
+  }
+
+  // Club Filter
+  if (filters.value.club && filters.value.club.trim() !== '') {
+    const clubQ = filters.value.club.toLowerCase().trim()
+    list = list.filter(a => a.club_name?.toLowerCase().includes(clubQ))
   }
 
   // Search Query
   if (searchQuery.value) {
     const q = searchQuery.value.toLowerCase().trim()
-    list = list.filter(p =>
-      p.full_name?.toLowerCase().includes(q) ||
-      p.athlete_code?.toLowerCase().includes(q) ||
-      p.club_name?.toLowerCase().includes(q) ||
-      p.cert?.certificate_no?.toLowerCase().includes(q) ||
-      p.cert?.original_filename?.toLowerCase().includes(q)
+    list = list.filter(a =>
+      a.full_name?.toLowerCase().includes(q) ||
+      a.athlete_code?.toLowerCase().includes(q) ||
+      a.email?.toLowerCase().includes(q) ||
+      a.club_name?.toLowerCase().includes(q) ||
+      a.categories?.some(c => c.toLowerCase().includes(q)) ||
+      a.certificates?.some(c =>
+        c.certificate_no?.toLowerCase().includes(q) ||
+        c.original_filename?.toLowerCase().includes(q)
+      )
     )
   }
 
@@ -755,21 +959,6 @@ const filteredParticipantsList = computed(() => {
       const nameB = b.full_name || ''
       return dir * nameA.localeCompare(nameB, undefined, { numeric: true, sensitivity: 'base' })
     }
-    if (sortBy.value === 'category') {
-      const catA = a.category_name || ''
-      const catB = b.category_name || ''
-      return dir * catA.localeCompare(catB, undefined, { numeric: true, sensitivity: 'base' })
-    }
-    if (sortBy.value === 'cert_no') {
-      const aNo = a.cert?.certificate_no || ''
-      const bNo = b.cert?.certificate_no || ''
-      return dir * aNo.localeCompare(bNo, undefined, { numeric: true, sensitivity: 'base' })
-    }
-    if (sortBy.value === 'status') {
-      const aStat = a.cert ? 1 : 0
-      const bStat = b.cert ? 1 : 0
-      return dir * (aStat - bStat)
-    }
     return 0
   })
 
@@ -780,14 +969,14 @@ const filteredParticipantsList = computed(() => {
 const currentPage = ref(1)
 const itemsPerPage = ref(10)
 
-watch([searchQuery, selectedCategory, activeStatusTab, sortBy, sortOrder], () => {
+watch([searchQuery, filters, sortBy, sortOrder], () => {
   currentPage.value = 1
-})
+}, { deep: true })
 
-const paginatedParticipantsList = computed(() => {
+const paginatedArchersList = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value
   const end = start + itemsPerPage.value
-  return filteredParticipantsList.value.slice(start, end)
+  return filteredArchersList.value.slice(start, end)
 })
 
 const triggerFileInput = () => {
@@ -815,7 +1004,7 @@ const uploadFiles = async (fileList) => {
     formData.append('file', fileList[i])
   }
 
-  isUploading.value = true
+  isBulkUploading.value = true
   try {
     const res = await post(`/tournaments/${eventId}/certificates/upload-zip`, formData)
     uploadResult.value = res
@@ -824,14 +1013,14 @@ const uploadFiles = async (fileList) => {
     } else if (res.unmatched_count > 0) {
       toast.info(t('org_certificate.msg_partial_match', { matched: res.matched_count || 0, unmatched: res.unmatched_count }))
     } else {
-      toast.info(t('org_certificate.msg_no_auto_match', 'Tidak ada nama berkas yang otomatis cocok. Silakan hubungkan manual di bawah.'))
+      toast.info(t('org_certificate.msg_no_auto_match'))
     }
     await fetchData()
   } catch (error) {
     console.error('Failed to upload certificates:', error)
-    toast.error(error?.data?.error || error?.response?.data?.error || t('org_certificate.err_process_zip', 'Gagal memproses berkas sertifikat'))
+    toast.error(error?.data?.error || error?.response?.data?.error || t('org_certificate.err_process_zip'))
   } finally {
-    isUploading.value = false
+    isBulkUploading.value = false
     if (fileInputRef.value) fileInputRef.value.value = ''
   }
 }
@@ -845,21 +1034,22 @@ const handleSingleFileInputChange = async (event) => {
   const files = event.target.files
   if (!files || files.length === 0 || !selectedParticipantForUpload.value) return
   const p = selectedParticipantForUpload.value
-  const partId = p.uuid || p.id
+  const partId = p.uuid || p.id || (p.participant_ids && p.participant_ids[0]) || p.archer_id
+  const archerKey = getArcherKey(p)
 
   const formData = new FormData()
   formData.append('file', files[0])
 
-  isUploading.value = true
+  isSingleUploading.value[archerKey] = true
   try {
     await post(`/tournaments/${eventId}/participants/${partId}/certificate`, formData)
-    toast.success(t('org_certificate.msg_cert_assigned', 'Sertifikat berhasil diunggah dan dihubungkan!'))
+    toast.success(t('org_certificate.msg_cert_assigned'))
     await fetchData()
   } catch (error) {
     console.error('Failed to upload participant certificate:', error)
-    toast.error(error?.data?.error || error?.response?.data?.error || t('org_certificate.err_upload_single', 'Gagal mengunggah sertifikat peserta'))
+    toast.error(error?.data?.error || error?.response?.data?.error || t('org_certificate.err_upload_single'))
   } finally {
-    isUploading.value = false
+    isSingleUploading.value[archerKey] = false
     selectedParticipantForUpload.value = null
     if (singleFileInputRef.value) singleFileInputRef.value.value = ''
   }
@@ -877,7 +1067,7 @@ const handleManualAssign = async (filename, pdfUrl) => {
       participant_id: partId,
       pdf_url: pdfUrl
     })
-    toast.success(t('org_certificate.msg_cert_assigned', 'Sertifikat berhasil dihubungkan!'))
+    toast.success(t('org_certificate.msg_cert_assigned'))
     if (uploadResult.value?.unmatched) {
       uploadResult.value.unmatched = uploadResult.value.unmatched.filter(f => f.filename !== filename)
       uploadResult.value.matched_count = (uploadResult.value.matched_count || 0) + 1
@@ -886,7 +1076,7 @@ const handleManualAssign = async (filename, pdfUrl) => {
     await fetchData()
   } catch (error) {
     console.error('Failed to assign certificate:', error)
-    toast.error(error?.data?.error || error?.response?.data?.error || t('org_certificate.err_assign', 'Gagal menghubungkan sertifikat'))
+    toast.error(error?.data?.error || error?.response?.data?.error || t('org_certificate.err_assign'))
   } finally {
     isAssigning.value[filename] = false
   }
@@ -899,20 +1089,20 @@ const promptDeleteCert = (certId, name = '') => {
   }
   deleteModal.type = 'single'
   deleteModal.targetId = certId
-  deleteModal.title = t('org_certificate.modal_delete_title', 'Hapus Sertifikat')
+  deleteModal.title = t('org_certificate.modal_delete_title')
   deleteModal.message = name
     ? t('org_certificate.confirm_delete_named', { name })
-    : t('org_certificate.confirm_delete_single', 'Yakin ingin menghapus sertifikat ini?')
-  deleteModal.confirmText = t('common.delete', 'Hapus')
+    : t('org_certificate.confirm_delete_single')
+  deleteModal.confirmText = t('common.delete')
   deleteModal.show = true
 }
 
 const promptClearAll = () => {
   deleteModal.type = 'all'
   deleteModal.targetId = null
-  deleteModal.title = t('org_certificate.modal_clear_all_title', 'Hapus Seluruh Sertifikat')
-  deleteModal.message = t('org_certificate.confirm_clear_all', 'Peringatan: Yakin ingin menghapus seluruh sertifikat yang telah diterbitkan untuk event ini?')
-  deleteModal.confirmText = t('org_certificate.btn_clear_all', 'Hapus Semua')
+  deleteModal.title = t('org_certificate.modal_clear_all_title')
+  deleteModal.message = t('org_certificate.confirm_clear_all')
+  deleteModal.confirmText = t('org_certificate.btn_clear_all')
   deleteModal.show = true
 }
 
@@ -920,21 +1110,21 @@ const executeDelete = async () => {
   if (deleteModal.type === 'single') {
     try {
       await del(`/tournaments/${eventId}/certificates/${deleteModal.targetId}`)
-      toast.success(t('org_certificate.msg_cert_deleted', 'Sertifikat berhasil dihapus'))
+      toast.success(t('org_certificate.msg_cert_deleted'))
       await fetchData()
     } catch (error) {
       console.error('Failed to delete certificate:', error)
-      toast.error(t('org_certificate.err_delete', 'Gagal menghapus sertifikat'))
+      toast.error(t('org_certificate.err_delete'))
     }
   } else if (deleteModal.type === 'all') {
     isClearing.value = true
     try {
       await del(`/tournaments/${eventId}/certificates/clear-all`)
-      toast.success(t('org_certificate.msg_certs_cleared', 'Seluruh sertifikat event berhasil dibersihkan'))
+      toast.success(t('org_certificate.msg_certs_cleared'))
       await fetchData()
     } catch (error) {
       console.error('Failed to clear certificates:', error)
-      toast.error(t('org_certificate.err_clear_all', 'Gagal membersihkan sertifikat'))
+      toast.error(t('org_certificate.err_clear_all'))
     } finally {
       isClearing.value = false
     }
@@ -983,6 +1173,17 @@ const fetchData = async () => {
       participants.value = partsRes
     } else {
       participants.value = []
+    }
+
+    // Sync active multi-cert dialog if open
+    if (selectedArcherForCerts.value) {
+      const updated = enrichedArchersList.value.find(a => getArcherKey(a) === getArcherKey(selectedArcherForCerts.value))
+      if (updated && updated.certificates && updated.certificates.length > 0) {
+        selectedArcherForCerts.value = updated
+      } else {
+        showMultiCertModal.value = false
+        selectedArcherForCerts.value = null
+      }
     }
   } catch (err) {
     console.error('Failed to fetch certificates data:', err)

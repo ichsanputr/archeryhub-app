@@ -29,8 +29,11 @@
                     
                     <!-- Full-Covering Header Thumbnail (16:9 matches thumbnail image aspect ratio) -->
                     <div class="relative w-full aspect-[16/9] bg-slate-900 overflow-hidden shrink-0">
-                        <img :src="article.image || '/hero-berita.jpeg'" :alt="article.title"
-                            @error="(e) => (e.target.src = '/hero-berita.jpeg')"
+                        <img :src="article.image || '/hero-berita.webp'" :alt="article.title"
+                            @error="(e) => (e.target.src = '/hero-berita.webp')"
+                            width="400"
+                            height="225"
+                            decoding="async"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                             loading="lazy" />
                         <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
@@ -68,6 +71,10 @@
                                 <img 
                                     :src="article.author?.avatar || '/profile-author.png'" 
                                     :alt="(article.author?.name || 'Archeris Editorial Team') + ' Avatar'"
+                                    width="24"
+                                    height="24"
+                                    loading="lazy"
+                                    decoding="async"
                                     class="w-6 h-6 rounded-full bg-slate-100 object-cover border border-slate-200 shrink-0" 
                                 />
                                 <span class="text-xs font-bold text-navy">{{ article.author?.name || 'Archeris Editorial Team' }}</span>
@@ -85,7 +92,6 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { articles as staticArticles } from '~/data/articles/index'
 
 const { get } = useApi()
 
@@ -108,15 +114,12 @@ const { data: dbArticles } = await useAsyncData('home-blog-articles', async () =
             }))
         }
     } catch (e) {
-        // Fallback
+        console.warn('[home-blog] Failed to fetch articles:', e)
     }
-    return null
+    return []
 }, { lazy: true })
 
 const displayArticles = computed(() => {
-    if (dbArticles.value && dbArticles.value.length > 0) {
-        return dbArticles.value.slice(0, 3)
-    }
-    return staticArticles.slice(0, 3)
+    return (dbArticles.value || []).slice(0, 3)
 })
 </script>

@@ -10,10 +10,10 @@
                     </div>
                     <div>
                         <h3 class="text-base sm:text-lg font-black text-navy leading-tight">
-                            {{ t('event_elimination.target_allocation', 'Alokasi Target & Bantalan') }}
+                            {{ t('event_elimination.target_allocation') }}
                         </h3>
                         <div class="text-xs text-slate-500 font-medium mt-0.5">
-                            {{ t('event_elimination.target_allocation_desc', 'Atur penempatan bantalan target untuk setiap pertandingan eliminasi babak ini.') }}
+                            {{ t('event_elimination.target_allocation_desc') }}
                         </div>
                     </div>
                 </div>
@@ -22,7 +22,7 @@
                 <div class="flex items-center gap-2 self-start sm:self-auto shrink-0">
                     <BaseButton variant="primary" icon="ph:magic-wand-bold" :loading="isAutoAssigning"
                         @click="$emit('auto-assign')" class="w-auto font-black text-xs sm:text-sm h-9 sm:h-10 px-4 sm:px-5 shadow-sm shadow-primary/20">
-                        <span>{{ t('event_elimination.auto_assign', 'Auto Assign Target') }}</span>
+                        <span>{{ t('event_elimination.auto_assign') }}</span>
                     </BaseButton>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                                 ? 'bg-navy text-primary shadow-sm'
                                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-navy'
                         ]">
-                        <span>{{ t('event_elimination.all', 'Semua') }} {{ roundMatches.length }}</span>
+                        <span>{{ t('event_elimination.all') }} {{ roundMatches.length }}</span>
                     </button>
 
                     <button type="button" @click="filterStatus = 'assigned'"
@@ -48,7 +48,7 @@
                                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-navy'
                         ]">
                         <span class="size-2 rounded-full bg-emerald-500"></span>
-                        <span>{{ t('event_elimination.assigned', 'Sudah Diatur') }} {{ assignedCount }}</span>
+                        <span>{{ t('event_elimination.assigned') }} {{ assignedCount }}</span>
                     </button>
 
                     <button type="button" @click="filterStatus = 'unassigned'"
@@ -59,14 +59,14 @@
                                 : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-navy'
                         ]">
                         <span class="size-2 rounded-full bg-amber-500"></span>
-                        <span>{{ t('event_elimination.unassigned', 'Belum Diatur') }} {{ unassignedCount }}</span>
+                        <span>{{ t('event_elimination.unassigned') }} {{ unassignedCount }}</span>
                     </button>
                 </div>
 
                 <!-- Search Match / Archer -->
                 <div class="relative w-full sm:w-64">
                     <input v-model="searchQuery" type="text"
-                        :placeholder="t('event_elimination.search_archer_match', 'Cari pemanah / match...')"
+                        :placeholder="t('event_elimination.search_archer_match')"
                         class="w-full h-9 pl-8 pr-4 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-navy placeholder:text-slate-400 focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                     <Icon icon="ph:magnifying-glass-bold" class="absolute left-2.5 top-2.5 text-slate-400 text-sm" />
                     <button v-if="searchQuery" @click="searchQuery = ''"
@@ -84,15 +84,20 @@
                 
                 <!-- Card Header -->
                 <div class="flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-2">
-                        <div class="px-2.5 py-1 rounded-lg bg-navy text-primary text-xs font-black tracking-wider flex items-center gap-1.5">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <div class="px-2.5 py-1 rounded-lg bg-navy text-primary text-xs font-black tracking-wider flex items-center gap-1.5 shadow-sm">
                             <Icon icon="ph:trophy-bold" class="text-xs" />
                             <span>Match {{ match.match_no }}</span>
                         </div>
+                        <!-- Match Stage Badge -->
+                        <span class="px-2 py-0.5 rounded-lg border text-[10px] font-black tracking-wide"
+                            :class="getMatchStageBadge(match, bracketSize).colorClass">
+                            {{ getMatchStageBadge(match, bracketSize).shortLabel }}
+                        </span>
                         <span v-if="match.status === 'finished' || match.winner_entry_id"
                             class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-black flex items-center gap-1">
                             <Icon icon="ph:check-circle-fill" class="text-xs text-emerald-600" />
-                            <span>{{ t('event_elimination.done', 'Selesai') }}</span>
+                            <span>{{ t('event_elimination.done') }}</span>
                         </span>
                     </div>
 
@@ -110,7 +115,7 @@
                     <div v-else
                         class="px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-700 text-xs font-bold flex items-center gap-1">
                         <Icon icon="ph:warning-circle-bold" class="text-xs" />
-                        <span>{{ t('event_elimination.unplotted', 'Belum Diplot') }}</span>
+                        <span>{{ t('event_elimination.unplotted') }}</span>
                     </div>
                 </div>
 
@@ -128,7 +133,7 @@
                                 </div>
                             </div>
                             <div class="min-w-0">
-                                <div class="text-[8px] font-black tracking-wider text-slate-400">{{ t('event_elimination.side_a', 'Side A') }}</div>
+                                <div class="text-[8px] font-black tracking-wider text-slate-400">{{ t('event_elimination.side_a') }}</div>
                                 <div class="text-xs font-black text-slate-900 truncate">
                                     {{ match.entry_a_name || 'TBD' }}
                                 </div>
@@ -137,7 +142,7 @@
                         <div v-if="match.winner_entry_id && match.winner_entry_id === match.entry_a_id"
                             class="px-1.5 py-0.5 rounded bg-primary text-navy text-[9px] font-black flex items-center gap-1 shrink-0">
                             <Icon icon="ph:crown-simple-fill" />
-                            <span>{{ t('event_elimination.win_badge', 'Win') }}</span>
+                            <span>{{ t('event_elimination.win_badge') }}</span>
                         </div>
                     </div>
 
@@ -158,7 +163,7 @@
                                 </div>
                             </div>
                             <div class="min-w-0">
-                                <div class="text-[8px] font-black tracking-wider text-slate-400">{{ t('event_elimination.side_b', 'Side B') }}</div>
+                                <div class="text-[8px] font-black tracking-wider text-slate-400">{{ t('event_elimination.side_b') }}</div>
                                 <div class="text-xs font-black text-slate-900 truncate">
                                     {{ match.entry_b_name || (match.is_bye ? 'BYE' : 'TBD') }}
                                 </div>
@@ -167,7 +172,7 @@
                         <div v-if="match.winner_entry_id && match.winner_entry_id === match.entry_b_id"
                             class="px-1.5 py-0.5 rounded bg-primary text-navy text-[9px] font-black flex items-center gap-1 shrink-0">
                             <Icon icon="ph:crown-simple-fill" />
-                            <span>{{ t('event_elimination.win_badge', 'Win') }}</span>
+                            <span>{{ t('event_elimination.win_badge') }}</span>
                         </div>
                     </div>
                 </div>
@@ -176,11 +181,11 @@
                 <div class="space-y-1 pt-1">
                     <label class="text-[10px] font-black tracking-wider text-slate-500 flex items-center gap-1">
                         <Icon icon="ph:target-bold" class="text-xs text-primary" />
-                        <span>{{ t('event_elimination.select_target_board', 'Pilih Bantalan Target') }}</span>
+                        <span>{{ t('event_elimination.select_target_board') }}</span>
                     </label>
                     <div v-if="isByeMatch(match)" class="h-9 px-3 rounded-xl bg-slate-100 border border-slate-200/80 text-slate-500 text-xs font-bold flex items-center gap-2">
                         <Icon icon="ph:info-bold" class="text-sm text-slate-400 shrink-0" />
-                        <span class="truncate">{{ t('event_elimination.bye_no_target', 'BYE Match - Otomatis lolos tanpa bantalan target') }}</span>
+                        <span class="truncate">{{ t('event_elimination.bye_no_target') }}</span>
                     </div>
                     <BaseSelect v-else :model-value="match.target_id" :options="getTargetOptions(match.id)" class="w-full text-xs"
                         @update:model-value="val => { match.target_id = val; $emit('update-target', match) }" />
@@ -195,8 +200,8 @@
                 <Icon icon="ph:target-bold" class="text-2xl" />
             </div>
             <div>
-                <h4 class="text-sm font-black text-navy">{{ t('event_elimination.no_matching_matches', 'Tidak ada pertandingan yang cocok') }}</h4>
-                <div class="text-xs text-slate-500 mt-0.5">{{ t('event_elimination.no_matching_matches_desc', 'Coba ubah kata kunci pencarian atau filter status target.') }}</div>
+                <h4 class="text-sm font-black text-navy">{{ t('event_elimination.no_matching_matches') }}</h4>
+                <div class="text-xs text-slate-500 mt-0.5">{{ t('event_elimination.no_matching_matches_desc') }}</div>
             </div>
         </div>
     </div>
@@ -205,17 +210,19 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { Icon } from '@iconify/vue'
-import { useI18n } from 'vue-i18n'
+import { useDashboardI18n } from '~/composables/useDashboardI18n'
+import { getMatchStageBadge } from '~/utils/eliminationStage'
 
 const props = defineProps({
     roundMatches: { type: Array, required: true },
     targetOptions: { type: Array, required: true },
-    isAutoAssigning: { type: Boolean, default: false }
+    isAutoAssigning: { type: Boolean, default: false },
+    bracketSize: { type: Number, default: 8 }
 })
 
 defineEmits(['update-target', 'auto-assign'])
 
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 
 const filterStatus = ref('all') // 'all' | 'assigned' | 'unassigned'
 const searchQuery = ref('')
@@ -271,7 +278,7 @@ const getFilteredOptions = (currentMatchId) => {
 
 const getTargetOptions = (matchId) => {
     return [
-        { title: `-- ${t('event_elimination.select_target_option', 'Pilih Target')} --`, value: '' },
+        { title: `-- ${t('event_elimination.select_target_option')} --`, value: '' },
         ...getFilteredOptions(matchId).map(opt => ({
             title: `${opt.displayName || opt.name} ${opt.board_code ? `(${opt.board_code})` : ''}`,
             value: opt.id
@@ -280,7 +287,6 @@ const getTargetOptions = (matchId) => {
 }
 
 const getAvatarUrl = (name) => {
-    if (!name || name === 'TBD' || name === 'BYE') return `https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8&font-size=0.45`
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffaa00&color=202434&font-size=0.45&bold=true`
+    return generateDicebearAvatar(name)
 }
 </script>

@@ -27,7 +27,7 @@
           class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all backdrop-blur-md border border-white/10 shadow-2xs"
         >
           <Icon icon="ph:arrow-left-bold" class="text-sm text-white" />
-          <span>{{ backText || t('common.back', 'Kembali') }}</span>
+          <span>{{ backText || t('common.back') }}</span>
         </NuxtLink>
 
         <!-- Breadcrumbs Navigation -->

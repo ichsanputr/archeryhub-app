@@ -2,27 +2,22 @@
     <div class="space-y-8">
         <!-- Header Section -->
         <DashboardHeader
-            :title="t('root.overview.title', 'Ringkasan Bisnis')"
-            :subtitle="t('root.overview.subtitle', 'Ringkasan performa platform, pengguna, turnamen, dan transaksi')"
+            :title="t('root.overview.title')"
+            :subtitle="t('root.overview.subtitle')"
             icon="ph:squares-four-bold"
             :breadcrumbs="[
                 { label: 'Dashboard', to: '/dashboard/root' },
-                { label: t('root.overview.title', 'Ringkasan Bisnis') }
+                { label: t('root.overview.title') }
             ]"
         >
             <template #actions>
                 <div class="flex items-center gap-3 w-full sm:w-auto">
                     <NuxtLink to="/dashboard/root/articles" class="w-full sm:w-auto">
-                        <BaseButton variant="outline" icon="ph:newspaper-bold"
-                            class="w-full h-11 px-5 font-bold text-xs !rounded-xl !text-white !border-white/20 hover:!bg-white/10">
-                            {{ t('root.overview.manage_articles', 'Kelola Semua Artikel') }}
+                        <BaseButton variant="primary" icon="ph:newspaper-bold"
+                            class="w-full h-11 px-5 font-bold text-xs !rounded-xl shadow-lg shadow-primary/20">
+                            {{ t('root.overview.manage_articles') }}
                         </BaseButton>
                     </NuxtLink>
-                    <BaseButton variant="primary" icon="ph:arrows-clockwise-bold"
-                        :loading="loading" @click="fetchRecap"
-                        class="w-full sm:w-auto h-11 px-5 shadow-lg shadow-primary/20 font-bold text-xs !rounded-xl">
-                        {{ t('root.overview.refresh', 'Segarkan Data') }}
-                    </BaseButton>
                 </div>
             </template>
         </DashboardHeader>
@@ -31,41 +26,41 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <!-- 1. Gross Revenue / GMV -->
             <StatCard
-                :title="t('root.overview.total_gmv', 'Total Nilai Transaksi')"
+                :title="t('root.overview.total_gmv')"
                 :value="'Rp ' + (recap.finance?.total_gmv || 0).toLocaleString('id-ID')"
                 icon="ph:wallet-bold"
                 color="primary"
-                :description="'Rp ' + (recap.finance?.this_month_revenue || 0).toLocaleString('id-ID') + ' ' + t('root.overview.this_month', 'bulan ini')"
+                :description="'Rp ' + (recap.finance?.this_month_revenue || 0).toLocaleString('id-ID') + ' ' + t('root.overview.this_month')"
                 description-icon="ph:trend-up-bold"
             />
 
             <!-- 2. Total Platform Users -->
             <StatCard
-                :title="t('root.overview.total_users', 'Total Pengguna')"
+                :title="t('root.overview.total_users')"
                 :value="(recap.users?.total || 0).toLocaleString('id-ID')"
                 icon="ph:users-three-bold"
                 color="primary"
-                :description="'+' + (recap.users?.new_this_month || 0) + ' ' + t('root.overview.new_users_30d', 'pendaftar 30 hari terakhir')"
+                :description="'+' + (recap.users?.new_this_month || 0) + ' ' + t('root.overview.new_users_30d')"
                 description-icon="ph:user-plus-bold"
             />
 
             <!-- 3. Tournaments & Registrations -->
             <StatCard
-                :title="t('root.overview.tournaments_registrations', 'Turnamen & Partisipasi')"
-                :value="(recap.tournaments?.total || 0) + ' ' + t('root.overview.tournaments_unit', 'Turnamen')"
+                :title="t('root.overview.tournaments_registrations')"
+                :value="(recap.tournaments?.total || 0) + ' ' + t('root.overview.tournaments_unit')"
                 icon="ph:trophy-bold"
                 color="primary"
-                :description="(recap.tournaments?.total_participants || 0).toLocaleString('id-ID') + ' ' + t('root.overview.total_participants', 'partisipasi atlet')"
+                :description="(recap.tournaments?.total_participants || 0).toLocaleString('id-ID') + ' ' + t('root.overview.total_participants')"
                 description-icon="ph:target-bold"
             />
 
             <!-- 4. Content & Articles Engagement -->
             <StatCard
-                :title="t('root.overview.articles_reads', 'Artikel & Pembaca')"
-                :value="(recap.content?.total_articles || 0) + ' ' + t('root.overview.articles_unit', 'Artikel')"
+                :title="t('root.overview.articles_reads')"
+                :value="(recap.content?.total_articles || 0) + ' ' + t('root.overview.articles_unit')"
                 icon="ph:newspaper-bold"
                 color="primary"
-                :description="(recap.content?.total_views || 0).toLocaleString('id-ID') + ' ' + t('root.overview.total_views', 'total dibaca')"
+                :description="(recap.content?.total_views || 0).toLocaleString('id-ID') + ' ' + t('root.overview.total_views')"
                 description-icon="ph:eye-bold"
             />
         </div>
@@ -79,9 +74,9 @@
                     <div class="space-y-0.5">
                         <h3 class="text-sm font-black text-navy tracking-tight flex items-center gap-2">
                             <Icon icon="ph:receipt-bold" class="text-primary text-lg" />
-                            <span>{{ t('root.overview.recent_transactions', 'Transaksi Pembayaran Terkini') }}</span>
+                            <span>{{ t('root.overview.recent_transactions') }}</span>
                         </h3>
-                        <p class="text-xs text-slate-400 font-medium">{{ t('root.overview.recent_transactions_desc', 'Log pembayaran tiket turnamen oleh pemanah') }}</p>
+                        <div class="text-xs text-slate-400 font-medium">{{ t('root.overview.recent_transactions_desc') }}</div>
                     </div>
                     <div class="text-xs font-bold text-navy">
                         {{ t('root.overview.paid_count', { paid: recap.finance?.paid_transactions || 0, total: recap.finance?.total_transactions || 0 }) }}
@@ -92,24 +87,24 @@
                     <table class="w-full text-left border-collapse min-w-[650px]">
                         <thead>
                             <tr class="bg-slate-50/70 text-slate-400 font-bold text-xs border-b border-slate-100">
-                                <th class="px-4 py-3">{{ t('root.overview.table_archer', 'Pemanah') }}</th>
-                                <th class="px-4 py-3">{{ t('root.overview.table_tournament', 'Turnamen') }}</th>
-                                <th class="px-4 py-3">{{ t('root.overview.table_method', 'Metode') }}</th>
-                                <th class="px-4 py-3 text-right">{{ t('root.overview.table_amount', 'Nominal') }}</th>
-                                <th class="px-4 py-3 text-center">{{ t('root.overview.table_status', 'Status') }}</th>
-                                <th class="px-4 py-3 text-right">{{ t('root.overview.table_time', 'Waktu') }}</th>
+                                <th class="px-4 py-3">{{ t('root.overview.table_archer') }}</th>
+                                <th class="px-4 py-3">{{ t('root.overview.table_tournament') }}</th>
+                                <th class="px-4 py-3">{{ t('root.overview.table_method') }}</th>
+                                <th class="px-4 py-3 text-right">{{ t('root.overview.table_amount') }}</th>
+                                <th class="px-4 py-3 text-center">{{ t('root.overview.table_status') }}</th>
+                                <th class="px-4 py-3 text-right">{{ t('root.overview.table_time') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             <tr v-if="loading">
                                 <td colspan="6" class="px-4 py-12 text-center text-xs text-slate-400">
                                     <Icon icon="ph:circle-notch-bold" class="text-2xl text-primary animate-spin mx-auto mb-2" />
-                                    {{ t('common.loading', 'Memuat data...') }}
+                                    {{ t('common.loading') }}
                                 </td>
                             </tr>
                             <tr v-else-if="!recap.finance?.recent_transactions || recap.finance?.recent_transactions.length === 0">
                                 <td colspan="6" class="px-4 py-12 text-center text-xs text-slate-400">
-                                    {{ t('root.overview.no_transactions', 'Belum ada catatan transaksi pembayaran.') }}
+                                    {{ t('root.overview.no_transactions') }}
                                 </td>
                             </tr>
                             <tr v-else v-for="tx in recap.finance?.recent_transactions" :key="tx.reference" class="hover:bg-slate-50/60 transition-colors">
@@ -131,7 +126,7 @@
                                 <td class="px-4 py-3.5 text-center">
                                     <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border"
                                         :class="tx.status === 'paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200'">
-                                        {{ tx.status === 'paid' ? t('earnings.status_paid', 'Lunas') : t('earnings.status_pending', 'Menunggu') }}
+                                        {{ tx.status === 'paid' ? t('earnings.status_paid') : t('earnings.status_pending') }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3.5 text-right text-xs text-slate-400 whitespace-nowrap">
@@ -148,9 +143,9 @@
                 <div class="border-b border-slate-100 pb-4">
                     <h3 class="text-sm font-black text-navy tracking-tight flex items-center gap-2">
                         <Icon icon="ph:chart-pie-slice-bold" class="text-primary text-lg" />
-                        <span>{{ t('root.overview.user_composition', 'Komposisi Pengguna') }}</span>
+                        <span>{{ t('root.overview.user_composition') }}</span>
                     </h3>
-                    <p class="text-xs text-slate-400 font-medium mt-0.5">{{ t('root.overview.user_composition_desc', 'Distribusi akun berdasarkan peran di sistem') }}</p>
+                    <div class="text-xs text-slate-400 font-medium mt-0.5">{{ t('root.overview.user_composition_desc') }}</div>
                 </div>
 
                 <div class="space-y-4">
@@ -159,7 +154,7 @@
                         <div class="flex items-center justify-between text-xs">
                             <span class="font-bold text-navy flex items-center gap-2">
                                 <Icon icon="ph:user-bold" class="text-navy" />
-                                <span>{{ t('root.overview.role_archers', 'Pemanah') }}</span>
+                                <span>{{ t('root.overview.role_archers') }}</span>
                             </span>
                             <span class="font-black text-navy">{{ recap.users?.archers || 0 }} ({{ getPercentage(recap.users?.archers, recap.users?.total) }}%)</span>
                         </div>
@@ -174,7 +169,7 @@
                         <div class="flex items-center justify-between text-xs">
                             <span class="font-bold text-navy flex items-center gap-2">
                                 <Icon icon="ph:shield-bold" class="text-navy" />
-                                <span>{{ t('root.overview.role_clubs', 'Klub Panahan') }}</span>
+                                <span>{{ t('root.overview.role_clubs') }}</span>
                             </span>
                             <span class="font-black text-navy">{{ recap.users?.clubs || 0 }} ({{ getPercentage(recap.users?.clubs, recap.users?.total) }}%)</span>
                         </div>
@@ -189,7 +184,7 @@
                         <div class="flex items-center justify-between text-xs">
                             <span class="font-bold text-navy flex items-center gap-2">
                                 <Icon icon="ph:buildings-bold" class="text-primary" />
-                                <span>{{ t('root.overview.role_organizers', 'Penyelenggara') }}</span>
+                                <span>{{ t('root.overview.role_organizers') }}</span>
                             </span>
                             <span class="font-black text-navy">{{ recap.users?.organizers || 0 }} ({{ getPercentage(recap.users?.organizers, recap.users?.total) }}%)</span>
                         </div>
@@ -204,7 +199,7 @@
                         <div class="flex items-center justify-between text-xs">
                             <span class="font-bold text-navy flex items-center gap-2">
                                 <Icon icon="ph:device-mobile-bold" class="text-slate-600" />
-                                <span>{{ t('root.overview.role_scorekeepers', 'Scorekeeper / Juri') }}</span>
+                                <span>{{ t('root.overview.role_scorekeepers') }}</span>
                             </span>
                             <span class="font-black text-navy">{{ recap.users?.scorekeepers || 0 }} ({{ getPercentage(recap.users?.scorekeepers, recap.users?.total) }}%)</span>
                         </div>
@@ -217,12 +212,12 @@
 
                 <!-- Quick Action Shortcuts -->
                 <div class="pt-4 border-t border-slate-100 space-y-2">
-                    <div class="text-xs font-bold text-slate-400">{{ t('root.overview.quick_management', 'Manajemen Cepat') }}</div>
+                    <div class="text-xs font-bold text-slate-400">{{ t('root.overview.quick_management') }}</div>
                     <NuxtLink to="/dashboard/root/articles/create"
                         class="w-full flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-navy text-xs font-bold transition-all">
                         <span class="flex items-center gap-2">
                             <Icon icon="ph:plus-circle-bold" class="text-base text-primary" />
-                            <span>{{ t('root.overview.write_article', 'Tulis Artikel Baru') }}</span>
+                            <span>{{ t('root.overview.write_article') }}</span>
                         </span>
                         <Icon icon="ph:caret-right-bold" class="text-xs text-slate-400" />
                     </NuxtLink>
@@ -230,7 +225,7 @@
                         class="w-full flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-navy text-xs font-bold transition-all">
                         <span class="flex items-center gap-2">
                             <Icon icon="ph:newspaper-bold" class="text-base text-navy" />
-                            <span>{{ t('root.overview.manage_articles', 'Kelola Semua Artikel') }}</span>
+                            <span>{{ t('root.overview.manage_articles') }}</span>
                         </span>
                         <Icon icon="ph:caret-right-bold" class="text-xs text-slate-400" />
                     </NuxtLink>
@@ -245,13 +240,13 @@
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <h3 class="text-sm font-black text-navy tracking-tight flex items-center gap-2">
                         <Icon icon="ph:medal-bold" class="text-primary text-lg" />
-                        <span>{{ t('root.overview.top_tournaments', 'Turnamen Terpopuler') }}</span>
+                        <span>{{ t('root.overview.top_tournaments') }}</span>
                     </h3>
-                    <span class="text-xs font-bold text-slate-400">{{ recap.tournaments?.total || 0 }} {{ t('root.overview.tournaments_unit', 'Turnamen') }}</span>
+                    <span class="text-xs font-bold text-slate-400">{{ recap.tournaments?.total || 0 }} {{ t('root.overview.tournaments_unit') }}</span>
                 </div>
 
                 <div v-if="!recap.tournaments?.top_events || recap.tournaments?.top_events.length === 0" class="py-8 text-center text-xs text-slate-400">
-                    {{ t('root.overview.no_tournaments', 'Belum ada data turnamen.') }}
+                    {{ t('root.overview.no_tournaments') }}
                 </div>
                 <div v-else class="space-y-3">
                     <div v-for="event in recap.tournaments?.top_events" :key="event.id"
@@ -266,7 +261,7 @@
                         </div>
                         <div class="text-right shrink-0">
                             <div class="text-sm font-black text-navy tabular-nums">{{ event.participants_count }}</div>
-                            <div class="text-[10px] text-slate-400 font-semibold">{{ t('root.overview.participants_unit', 'Peserta') }}</div>
+                            <div class="text-[10px] text-slate-400 font-semibold">{{ t('root.overview.participants_unit') }}</div>
                         </div>
                     </div>
                 </div>
@@ -277,15 +272,15 @@
                 <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                     <h3 class="text-sm font-black text-navy tracking-tight flex items-center gap-2">
                         <Icon icon="ph:star-bold" class="text-primary text-lg" />
-                        <span>{{ t('root.overview.top_articles', 'Artikel Paling Banyak Dibaca') }}</span>
+                        <span>{{ t('root.overview.top_articles') }}</span>
                     </h3>
                     <NuxtLink to="/dashboard/root/articles" class="text-xs font-bold text-navy hover:underline transition-colors">
-                        {{ t('root.overview.view_all', 'Lihat Semua') }}
+                        {{ t('root.overview.view_all') }}
                     </NuxtLink>
                 </div>
 
                 <div v-if="!recap.content?.top_articles || recap.content?.top_articles.length === 0" class="py-8 text-center text-xs text-slate-400">
-                    {{ t('root.overview.no_articles', 'Belum ada data artikel.') }}
+                    {{ t('root.overview.no_articles') }}
                 </div>
                 <div v-else class="space-y-3">
                     <div v-for="art in recap.content?.top_articles" :key="art.id"
@@ -305,7 +300,7 @@
                         </div>
                         <div class="text-right shrink-0 pl-2">
                             <div class="text-xs font-black text-navy tabular-nums">{{ (art.views || 0).toLocaleString('id-ID') }}</div>
-                            <div class="text-[10px] text-slate-400 font-semibold">{{ t('root.overview.reads_unit', 'Dibaca') }}</div>
+                            <div class="text-[10px] text-slate-400 font-semibold">{{ t('root.overview.reads_unit') }}</div>
                         </div>
                     </div>
                 </div>
@@ -334,7 +329,7 @@ const api = useApi()
 const toast = useToast()
 
 useHead({
-    title: computed(() => `${t('root.overview.title', 'Ringkasan Bisnis')} - Archeris Root`)
+    title: computed(() => `${t('root.overview.title')} - Archeris Root`)
 })
 
 const loading = ref(true)

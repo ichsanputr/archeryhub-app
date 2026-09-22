@@ -16,7 +16,7 @@
             <div class="flex items-center gap-1.5 shrink-0">
                 <span v-if="match.winner_entry_id" class="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-700 text-[8px] font-black tracking-wider flex items-center gap-1">
                     <span class="size-1 rounded-full bg-emerald-500"></span>
-                    <span>{{ t('event_elimination.done', 'Done') }}</span>
+                    <span>{{ t('event_elimination.done') }}</span>
                 </span>
                 <span v-else class="text-[9px] font-black text-slate-400 tracking-wider">M{{ match.match_no }}</span>
             </div>
@@ -27,8 +27,8 @@
             <div v-for="side in ['A', 'B']" :key="side" class="archer-item"
                 :class="{ 'is-winner': isWinner(side), 'is-loser': isLoser(side) }">
                 <div class="avatar-wrapper relative">
-                    <img :src="getAvatarUrl(getName(side))" :alt="getName(side) || 'Archer'" @error="(e) => e.target.src = 'https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8'" class="avatar-img" />
-                    <div v-if="isWinner(side)" class="winner-indicator" :title="t('event_elimination.winner', 'Winner')">
+                    <img :src="getAvatarUrl(getName(side))" :alt="getName(side) || 'Archer'" @error="(e) => e.target.src = generateDicebearAvatar(getName(side))" class="avatar-img" />
+                    <div v-if="isWinner(side)" class="winner-indicator" :title="t('event_elimination.winner')">
                         <Icon icon="ph:crown-simple-fill" />
                     </div>
                     <div v-if="showSeed && getSeed(side)" class="avatar-seed-badge">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="archer-info">
                     <span class="archer-name">
-                        {{ getName(side) || (match.is_bye ? t('event_elimination.bye', 'BYE') : t('event_elimination.tbd', 'TBD')) }}
+                        {{ getName(side) || (match.is_bye ? t('event_elimination.bye') : t('event_elimination.tbd')) }}
                     </span>
                 </div>
                 <div class="score-display">
@@ -52,6 +52,7 @@
 import { Icon } from '@iconify/vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { generateDicebearAvatar, useImageOrDefault } from '~/composables/useImageHelper'
 
 const { t } = useI18n()
 
@@ -74,8 +75,8 @@ const handleCardClick = () => {
 }
 
 const headerLabel = computed(() => {
-    if (props.isFinal) return t('event_elimination.gold_medal_final', 'Gold Medal Final')
-    if (props.isBronze) return t('event_elimination.bronze_medal_match', 'Bronze Medal Match')
+    if (props.isFinal) return t('event_elimination.gold_medal_final')
+    if (props.isBronze) return t('event_elimination.bronze_medal_match')
     return t('event_elimination.match_label', 'Match {no}', { no: props.match.match_no })
 })
 
@@ -97,12 +98,9 @@ const headerTextStyle = computed(() => {
     return 'text-slate-500 font-bold'
 })
 
-import { useImageOrDefault } from '~/composables/useImageHelper'
-
 const getAvatarUrl = (name, avatarUrl) => {
     if (avatarUrl) return useImageOrDefault(avatarUrl, name)
-    if (!name || name === 'TBD' || name === 'BYE') return `https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8&font-size=0.45`
-    return useImageOrDefault(null, name)
+    return generateDicebearAvatar(name)
 }
 
 const getName = (side) => side === 'A' ? props.match.entry_a_name : props.match.entry_b_name
@@ -182,7 +180,7 @@ const isLoser = (side) => {
 }
 
 .score-display {
-    @apply text-sm font-black text-slate-500 tabular-nums min-w-[42px] h-full flex items-center justify-center border-l border-slate-100 bg-slate-50/70 shrink-0 transition-colors;
+    @apply text-xs font-black text-slate-600 tabular-nums min-w-[36px] h-7 px-2.5 rounded-xl flex items-center justify-center bg-slate-100 border border-slate-200/70 shrink-0 transition-all;
 }
 
 .is-winner {
@@ -190,7 +188,7 @@ const isLoser = (side) => {
 }
 
 .is-winner .score-display {
-    @apply bg-navy text-primary text-sm font-black;
+    @apply bg-navy text-primary border-navy shadow-sm font-black;
 }
 
 .is-winner .archer-name {

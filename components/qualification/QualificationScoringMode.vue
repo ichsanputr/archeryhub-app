@@ -21,7 +21,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <!-- Left: Title & Live Summary -->
                 <div class="flex items-center gap-3">
-                    <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shadow-2xs shrink-0 font-black">
+                    <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shadow-2xs shrink-0 font-black">
                         <Icon icon="ph:crosshair-bold" class="text-xl" />
                     </div>
                     <div>
@@ -33,9 +33,9 @@
                                 {{ targetAssignments.length }} {{ t('event_qualification.archers', 'Pemanah') }}
                             </span>
                         </div>
-                        <p class="text-xs text-slate-500 font-medium mt-0.5">
+                        <div class="text-xs text-slate-500 font-medium mt-0.5">
                             {{ t('event_qualification.scoring_subtitle', 'Pilih pemanah dan masukkan perolehan skor panah per rambahan (End).') }}
-                        </p>
+                        </div>
                     </div>
                 </div>
 
@@ -293,7 +293,7 @@
                     </div>
                     <div>
                         <h4 class="text-sm font-black text-navy">{{ t('event_qualification.no_matching_archers', 'Tidak ada pemanah yang cocok') }}</h4>
-                        <p class="text-xs text-slate-500 mt-0.5">{{ t('event_qualification.no_matching_archers_desc', 'Coba ubah kata kunci pencarian atau filter bantalan target.') }}</p>
+                        <div class="text-xs text-slate-500 mt-0.5">{{ t('event_qualification.no_matching_archers_desc', 'Coba ubah kata kunci pencarian atau filter bantalan target.') }}</div>
                     </div>
                 </div>
             </div>
@@ -458,9 +458,9 @@
             </div>
             <div>
                 <h3 class="text-base font-black text-navy">{{ t('event_qualification.category_not_selected', 'Kategori Belum Dipilih') }}</h3>
-                <p class="text-xs text-slate-500 font-medium max-w-sm mx-auto mt-1">
+                <div class="text-xs text-slate-500 font-medium max-w-sm mx-auto mt-1">
                     {{ t('event_qualification.choose_category_to_manage', 'Silakan pilih salah satu kategori di atas untuk mulai mengelola sesi.') }}
-                </p>
+                </div>
             </div>
         </div>
 
@@ -468,7 +468,7 @@
         <div v-else-if="targetAssignments.length === 0"
             class="bg-white rounded-3xl border-2 border-dashed border-slate-200 p-12 sm:p-16 text-center flex flex-col items-center justify-center space-y-5 shadow-2xs">
             <div class="relative">
-                <div class="size-18 rounded-3xl bg-navy text-primary flex items-center justify-center shadow-lg shadow-navy/15">
+                <div class="size-18 rounded-3xl bg-primary text-btn-text flex items-center justify-center shadow-lg shadow-primary/20">
                     <Icon icon="ph:target-bold" class="text-4xl" />
                 </div>
                 <div class="absolute -bottom-1 -right-1 size-6 rounded-xl bg-amber-400 text-navy flex items-center justify-center border-2 border-white shadow-xs">
@@ -480,9 +480,9 @@
                 <h3 class="text-lg font-black text-navy leading-tight">
                     {{ t('event_qualification.no_assignments_title', 'Belum Ada Penempatan Target') }}
                 </h3>
-                <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
+                <div class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
                     {{ t('event_qualification.no_assignments_desc', 'Pemanah pada kategori ini belum ditempatkan ke nomor bantalan target kualifikasi. Silakan atur penempatan target terlebih dahulu sebelum memulai input nilai.') }}
-                </p>
+                </div>
             </div>
 
             <div class="pt-1">
@@ -583,10 +583,20 @@ const ensureEndScoresArray = (assignment) => {
 
 const initEndScores = (assignment) => {
     if (!assignment) return
-    ensureEndScoresArray(assignment)
+    const curEnd = assignment.currentEnd || 1
     const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
+    if (assignment.allEndScores && assignment.allEndScores[curEnd] && Array.isArray(assignment.allEndScores[curEnd])) {
+        assignment.currentEndScores = Array.from({ length: arrowsPerEnd }, (_, i) => 
+            assignment.allEndScores[curEnd][i] !== undefined ? assignment.allEndScores[curEnd][i] : undefined
+        )
+    }
+    ensureEndScoresArray(assignment)
     const emptyIdx = assignment.currentEndScores.findIndex(v => v === undefined || v === null || v === '')
-    selectedArrowIndex.value = emptyIdx === -1 ? 0 : emptyIdx
+    if (emptyIdx !== -1 && emptyIdx < arrowsPerEnd) {
+        selectedArrowIndex.value = emptyIdx
+    } else {
+        selectedArrowIndex.value = Math.max(0, arrowsPerEnd - 1)
+    }
 }
 
 const syncCurrentEndScores = () => {

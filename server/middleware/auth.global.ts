@@ -50,10 +50,21 @@ export default defineEventHandler(async (event: H3Event) => {
                 deleteCookie(event, 'auth_token', { path: '/' })
                 event.context.user = null
             } else {
-                let userVerified = false
                 let profileData: any = null
 
-                // Fetch detailed profile server-side to ensure user still exists in DB
+                // Fallback baseline user object derived directly from valid JWT
+                event.context.user = {
+                    uuid: payload.user_id,
+                    id: payload.user_id,
+                    email: payload.email,
+                    full_name: payload.name,
+                    name: payload.name,
+                    avatar_url: payload.avatar,
+                    role: payload.role,
+                    user_type: payload.user_type,
+                }
+
+                // Attempt to fetch fresh profile from API
                 try {
                     const config = useRuntimeConfig()
                     const apiBaseUrl = config.apiBaseUrl || config.public.apiBaseUrl
@@ -62,42 +73,35 @@ export default defineEventHandler(async (event: H3Event) => {
                     if (payload.role === 'archer') endpoint = '/archer/me'
                     else if (payload.role === 'organizer') endpoint = '/organizer/me'
                     else if (payload.role === 'club') endpoint = '/club/me'
-                    else if (payload.role === 'root') endpoint = '' // No details endpoint for root
 
                     if (endpoint && apiBaseUrl) {
                         const response = await $fetch<any>(`${apiBaseUrl}${endpoint}`, {
                             headers: {
                                 Cookie: `auth_token=${token}`
-                            }
+                            },
+                            timeout: 3000
                         })
 
                         profileData = response?.data || response
                         if (profileData && (profileData.uuid || profileData.id || profileData.email || profileData.name || profileData.full_name)) {
-                            userVerified = true
+                            event.context.user = {
+                                ...event.context.user,
+                                ...profileData
+                            }
                         }
-                    } else if (payload.role === 'root') {
-                        userVerified = true
                     }
                 } catch (error: any) {
-                    // Profile endpoint failed (e.g. 401 Unauthorized / 404 Not Found)
-                    console.warn('[auth.global.ts] Session invalid or user removed from DB. Clearing auth_token cookie.')
-                    deleteCookie(event, 'auth_token', { path: '/' })
-                    event.context.user = null
-                }
-
-                if (userVerified) {
-                    event.context.user = {
-                        uuid: payload.user_id,
-                        email: payload.email,
-                        full_name: payload.name,
-                        avatar_url: payload.avatar,
-                        role: payload.role,
-                        user_type: payload.user_type,
-                        ...(profileData || {})
+                    const status = error?.response?.status || error?.statusCode || error?.status
+                    // ONLY clear session if server explicitly returned 401/403/404 (token invalid or user deleted)
+                    if (status === 401 || status === 403 || status === 404) {
+                        console.warn('[auth.global.ts] Session unauthorized or user removed from DB. Clearing auth_token cookie.')
+                        deleteCookie(event, 'auth_token', { path: '/' })
+                        event.context.user = null
+                    } else {
+                        // For 5xx, timeouts, ECONNREFUSED (API temporarily down):
+                        // KEEP event.context.user from JWT payload! Do NOT delete cookie.
+                        console.warn('[auth.global.ts] API temporarily unreachable, retaining JWT user session.')
                     }
-                } else if (!event.context.user) {
-                    deleteCookie(event, 'auth_token', { path: '/' })
-                    event.context.user = null
                 }
             }
         } else {

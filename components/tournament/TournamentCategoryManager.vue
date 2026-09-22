@@ -5,8 +5,8 @@
             <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
                     <h2 class="text-2xl font-black tracking-tight leading-tight">Konfigurasi Kategori</h2>
-                    <p class="text-white/60 font-medium mt-1 text-sm">Pilih kombinasi divisi dan kelas umur untuk
-                        membuka pendaftaran.</p>
+                    <div class="text-white/60 font-medium mt-1 text-sm">Pilih kombinasi divisi dan kelas umur untuk
+                        membuka pendaftaran.</div>
                 </div>
                 <BaseButton variant="primary" icon="ph:check-circle-bold" :loading="isSubmitting"
                     @click="saveCategories" class="h-11 px-6 shadow-lg shadow-primary/20">
@@ -93,10 +93,10 @@
                     <Icon icon="ph:calculator-bold" />
                 </div>
                 <div>
-                    <p class="text-navy font-bold">Ringkasan Konfigurasi</p>
-                    <p class="text-xs text-gray-500 font-medium mt-0.5">Total <span
+                    <div class="text-navy font-bold">Ringkasan Konfigurasi</div>
+                    <div class="text-xs text-gray-500 font-medium mt-0.5">Total <span
                             class="text-primary-dark font-black">{{ selectedDivisions.length * selectedAgeGroups.length
-                            }}</span> kategori akan ditambahkan.</p>
+                            }}</span> kategori akan ditambahkan.</div>
                 </div>
             </div>
 

@@ -95,7 +95,7 @@ const { get } = useApi()
 const eventId = computed(() => route.params.id as string)
 
 useHead({
-  title: computed(() => (t ? t('org_targets.map_title', 'Peta Target Bantalan') : 'Peta Target Bantalan') + ' - Archeris Dashboard')
+  title: computed(() => (t ? t('org_targets.map_title') : 'Peta Target Bantalan') + ' - Archeris Dashboard')
 })
 const isLoading = ref(false)
 const sessions = ref<any[]>([])

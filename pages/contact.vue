@@ -94,7 +94,7 @@
                 <div>
                   <h4 class="text-xs md:text-sm font-black text-slate-300 tracking-wide mb-1">Email Support</h4>
                   <a class="text-white hover:text-primary transition-colors text-xs md:text-sm font-medium"
-                    href="mailto:support@archeris.net">support@archeris.net</a>
+                    href="mailto:admin@archeris.net">admin@archeris.net</a>
                 </div>
               </div>
               <div class="flex items-start gap-4">

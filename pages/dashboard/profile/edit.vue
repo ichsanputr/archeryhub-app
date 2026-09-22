@@ -13,7 +13,7 @@
                 </div>
                         <div class="flex items-center gap-4">
                             <BaseButton :to="`/dashboard/${userPersona}/profile`" variant="ghost" size="sm" icon="ph:arrow-left">
-                                {{ t('profile.edit.back_to_profile', 'Kembali ke Profil') }}
+                                {{ t('profile.edit.back_to_profile') }}
                             </BaseButton>
                         </div>
             </div>
@@ -29,7 +29,7 @@
                 <div class="absolute top-6 right-6 z-20">
                     <BaseButton type="button" variant="ghost" size="sm" icon="ph:camera-plus"
                         class="bg-black/30 !text-white hover:bg-black/50 backdrop-blur-md border border-white/20">
-                        Ganti Sampul
+                        {{ t('profile.edit.change_cover') }}
                     </BaseButton>
                 </div>
                 <div class="absolute -bottom-16 left-0 w-full px-4 z-30">
@@ -37,7 +37,8 @@
                         <div class="relative group cursor-pointer">
                             <div
                                 class="w-28 h-28 md:w-36 md:h-36 rounded-full border-4 border-white shadow-md overflow-hidden bg-gray-800 relative">
-                                <img :src="profileData.avatar" :alt="profileData.name"
+                                <img :src="useImageOrDefault(profileData.avatar, profileData.name)" :alt="profileData.name"
+                                    @error="(e) => e.target.src = generateDicebearAvatar(profileData.name)"
                                     class="w-full h-full object-cover" />
                                 <div
                                     class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -52,8 +53,8 @@
                         <div class="ml-6 mb-16 md:mb-4 pb-2">
                             <h1
                                 class="text-2xl md:text-3xl font-black text-white tracking-tight drop-shadow-md font-display">
-                                {{ t('profile.edit.title', 'Edit Profil') }}</h1>
-                            <div class="text-white/60 text-xs md:text-sm font-medium drop-shadow-sm">{{ t('profile.edit.subtitle', 'Perbarui informasi pribadi dan preferensi Anda.') }}</div>
+                                {{ t('profile.edit.title') }}</h1>
+                            <div class="text-white/60 text-xs md:text-sm font-medium drop-shadow-sm">{{ t('profile.edit.subtitle') }}</div>
                         </div>
                     </div>
                 </div>
@@ -69,26 +70,26 @@
                             <Icon icon="ph:user" class="text-xl" />
                         </span>
                         <div>
-                            <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.basic_info', 'Informasi Dasar') }}</h2>
-                            <div class="text-sm text-text-sub">{{ t('profile.edit.basic_info_sub', 'Detail pribadi yang akan ditampilkan secara publik.') }}</div>
+                            <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.basic_info') }}</h2>
+                            <div class="text-sm text-text-sub">{{ t('profile.edit.basic_info_sub') }}</div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <BaseInput v-model="profileData.name" label="Nama Lengkap"
-                            placeholder="Masukkan nama lengkap kamu" />
-                        <BaseInput v-model="profileData.username" label="Username" placeholder="username"
+                        <BaseInput v-model="profileData.name" :label="t('profile.edit.full_name')"
+                            :placeholder="t('profile.edit.name_placeholder')" />
+                        <BaseInput v-model="profileData.username" :label="t('profile.edit.username')" placeholder="username"
                             icon="ph:at" />
                         <div class="col-span-1 md:col-span-2">
-                            <BaseTextarea v-model="profileData.bio" label="Bio Singkat"
-                                placeholder="Ceritakan sedikit tentang Anda..." :rows="3" :maxlength="250" />
+                            <BaseTextarea v-model="profileData.bio" :label="t('profile.edit.short_bio')"
+                                :placeholder="t('profile.edit.bio_placeholder')" :rows="3" :maxlength="250" />
                         </div>
-                        <BaseSelect v-model="profileData.nationality" label="Kewarganegaraan" :options="[
+                        <BaseSelect v-model="profileData.nationality" :label="t('profile.edit.nationality')" :options="[
                             { value: 'INA', label: 'Indonesia (INA)' },
                             { value: 'MAS', label: 'Malaysia (MAS)' },
                             { value: 'SGP', label: 'Singapore (SGP)' }
                         ]" />
-                        <BaseInput v-model="profileData.club" label="Afiliasi Klub"
-                            placeholder="Nama klub panahan kamu" />
+                        <BaseInput v-model="profileData.club" :label="t('profile.edit.club_affiliation')"
+                            :placeholder="t('profile.edit.club_placeholder')" />
                     </div>
                 </section>
 
@@ -100,19 +101,19 @@
                             <Icon icon="ph:identification-card" class="text-xl" />
                         </span>
                         <div>
-                            <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.category_discipline', 'Kategori & Disiplin') }}</h2>
-                            <div class="text-sm text-text-sub">{{ t('profile.edit.category_sub', 'Tentukan level kompetisi Anda.') }}</div>
+                            <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.category_discipline') }}</h2>
+                            <div class="text-sm text-text-sub">{{ t('profile.edit.category_sub') }}</div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <BaseSelect v-model="profileData.bowType" label="Jenis Busur Utama" :options="[
+                            <BaseSelect v-model="profileData.bowType" :label="t('profile.edit.main_bow_type')" :options="[
                                 { value: 'recurve', label: 'Recurve' },
                                 { value: 'compound', label: 'Compound' },
                                 { value: 'barebow', label: 'Barebow' },
                                 { value: 'standard', label: 'Standard Bow' }
                             ]" />
-                            <BaseSelect v-model="profileData.ageCategory" :label="t('profile.age_category', 'Kategori Usia')" :options="[
+                            <BaseSelect v-model="profileData.ageCategory" :label="t('profile.age_category')" :options="[
                                 { value: 'U12', label: 'Under 12 (U12)' },
                                 { value: 'U15', label: 'Under 15 (U15)' },
                                 { value: 'U18', label: 'Under 18 (U18)' },
@@ -131,14 +132,14 @@
                             <Icon icon="ph:wrench" class="text-xl" />
                         </span>
                         <div>
-                            <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.equipment_setup', 'Konfigurasi Alat') }}</h2>
-                            <div class="text-sm text-text-sub">{{ t('profile.edit.equipment_sub', 'Catat perlengkapan yang Anda gunakan saat ini.') }}</div>
+                            <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.equipment_setup') }}</h2>
+                            <div class="text-sm text-text-sub">{{ t('profile.edit.equipment_sub') }}</div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <BaseInput v-for="item in equipmentFields" :key="item.key"
                             v-model="profileData.equipment[item.key]" :label="item.label" :icon="item.icon"
-                            placeholder="Merk / tipe alat" />
+                            :placeholder="t('profile.edit.equipment_placeholder')" />
                     </div>
                 </section>
 
@@ -150,23 +151,23 @@
                             <Icon icon="ph:lock-bold" />
                         </span>
                         <div>
-                            <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.privacy_settings', 'Pengaturan Privasi') }}</h2>
-                            <div class="text-sm text-text-sub">{{ t('profile.edit.privacy_sub', 'Kontrol siapa yang dapat melihat profil Anda.') }}</div>
+                            <h2 class="text-lg font-bold text-navy font-display">{{ t('profile.edit.privacy_settings') }}</h2>
+                            <div class="text-sm text-text-sub">{{ t('profile.edit.privacy_sub') }}</div>
                         </div>
                     </div>
                     <div class="space-y-6">
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-sm font-bold text-navy">{{ t('profile.edit.privacy_public', 'Profil Publik') }}</h3>
-                                <div class="text-xs text-text-sub mt-1">{{ t('profile.edit.privacy_public_sub', 'Izinkan siapa saja melihat profil dan prestasi Anda.') }}</div>
+                                <h3 class="text-sm font-bold text-navy">{{ t('profile.edit.privacy_public') }}</h3>
+                                <div class="text-xs text-text-sub mt-1">{{ t('profile.edit.privacy_public_sub') }}</div>
                             </div>
                             <BaseCheckbox v-model="profileData.isPublic" />
                         </div>
                         <div class="border-t border-gray-50"></div>
                         <div class="flex items-center justify-between">
                             <div>
-                                <h3 class="text-sm font-bold text-navy">{{ t('profile.edit.privacy_stats', 'Tampilkan Statistik') }}</h3>
-                                <div class="text-xs text-text-sub mt-1">{{ t('profile.edit.privacy_stats_sub', 'Tampilkan hasil turnamen dan peralatan Anda secara publik.') }}</div>
+                                <h3 class="text-sm font-bold text-navy">{{ t('profile.edit.privacy_stats') }}</h3>
+                                <div class="text-xs text-text-sub mt-1">{{ t('profile.edit.privacy_stats_sub') }}</div>
                             </div>
                             <BaseCheckbox v-model="profileData.showStats" />
                         </div>
@@ -179,10 +180,10 @@
                 class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-100 p-4 z-40 transition-transform duration-300">
                 <div class="max-w-4xl mx-auto flex items-center justify-end gap-3">
                     <BaseButton :to="`/dashboard/${userPersona}/profile`" variant="ghost" size="md">
-                        {{ t('profile.edit.cancel', 'Batal') }}
+                        {{ t('profile.edit.cancel') }}
                     </BaseButton>
                     <BaseButton type="submit" variant="gold" size="lg" icon="ph:floppy-disk">
-                        {{ t('profile.edit.save_changes', 'Simpan Perubahan') }}
+                        {{ t('profile.edit.save_changes') }}
                     </BaseButton>
                 </div>
             </div>
@@ -198,7 +199,7 @@ const { t } = useDashboardI18n()
 const toast = useToast()
 
 useHead({
-    title: computed(() => `${t('profile.edit.head_title', 'Edit Profil')} - Archeris Dashboard`)
+    title: computed(() => `${t('profile.edit.head_title')} - Archeris Dashboard`)
 })
 
 const profileData = ref({
@@ -234,7 +235,7 @@ const equipmentFields = [
 const saveChanges = () => {
     console.log('Saving profile...', profileData.value)
     // Logic to call API would go here
-    toast.success('Perubahan berhasil disimpan!')
+    toast.success(t('profile.edit.save_success'))
 }
 </script>
 

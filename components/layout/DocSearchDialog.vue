@@ -7,62 +7,62 @@
 
         <!-- Dialog -->
         <div
-          class="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl overflow-hidden z-10 border border-gray-100">
+          class="relative w-full max-w-xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden z-10 border border-gray-100 dark:border-slate-800 transition-colors">
           <!-- Input Row -->
-          <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100">
+          <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100 dark:border-slate-800">
             <Icon icon="ph:magnifying-glass-bold" class="text-xl text-primary shrink-0" />
-            <input ref="inputRef" v-model="query" type="text" :placeholder="t('doc_search.placeholder', 'Search documentation & features...')"
-              class="flex-1 text-sm text-gray-900 placeholder-gray-400 focus:outline-none bg-transparent"
+            <input ref="inputRef" v-model="query" type="text" :placeholder="t('doc_search.placeholder')"
+              class="flex-1 text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none bg-transparent"
               @keydown.esc="close" @keydown.down.prevent="moveDown" @keydown.up.prevent="moveUp"
               @keydown.enter.prevent="navigate" />
             <div class="flex items-center gap-1.5 shrink-0">
               <kbd
-                class="hidden sm:inline-flex items-center px-1.5 py-0.5 bg-gray-100 border border-gray-200 rounded text-xs text-gray-400 font-mono">Esc</kbd>
+                class="hidden sm:inline-flex items-center px-1.5 py-0.5 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded text-xs text-gray-400 dark:text-slate-400 font-mono">Esc</kbd>
             </div>
           </div>
 
           <!-- Body -->
-          <div class="max-h-[55vh] overflow-y-auto">
+          <div class="max-h-[55vh] overflow-y-auto scrollbar-styled">
             <!-- Results -->
             <template v-if="query.trim()">
               <template v-if="results.length">
                 <NuxtLink v-for="(page, i) in results" :key="page.path" :to="page.path" @click="close"
-                  class="flex items-center gap-4 px-5 py-3.5 transition-colors cursor-pointer border-b border-gray-50 last:border-0"
-                  :class="i === activeIndex ? 'bg-gray-100' : 'hover:bg-gray-50'">
+                  class="flex items-center gap-4 px-5 py-3.5 transition-colors cursor-pointer border-b border-gray-50 dark:border-slate-800/60 last:border-0"
+                  :class="i === activeIndex ? 'bg-gray-100 dark:bg-slate-800' : 'hover:bg-gray-50 dark:hover:bg-slate-800/50'">
                   <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors"
-                    :class="i === activeIndex ? 'bg-navy/10 text-navy' : 'bg-gray-100 text-gray-400'">
+                    :class="i === activeIndex ? 'bg-navy/10 dark:bg-primary/20 text-navy dark:text-primary' : 'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-slate-400'">
                     <Icon :icon="page.icon" class="text-base" />
                   </div>
                   <div class="flex-1 min-w-0">
-                    <div class="text-sm font-bold text-navy leading-snug" v-html="highlight(getPageTitle(page))" />
-                    <div class="text-xs text-gray-400 truncate mt-0.5" v-html="highlight(getPageDesc(page))" />
+                    <div class="text-sm font-bold text-navy dark:text-slate-100 leading-snug" v-html="highlight(getPageTitle(page))" />
+                    <div class="text-xs text-gray-400 dark:text-slate-400 truncate mt-0.5" v-html="highlight(getPageDesc(page))" />
                   </div>
-                  <Icon icon="ph:arrow-right-bold" class="text-xs text-gray-300 shrink-0"
-                    :class="i === activeIndex ? 'text-navy' : ''" />
+                  <Icon icon="ph:arrow-right-bold" class="text-xs text-gray-300 dark:text-slate-600 shrink-0"
+                    :class="i === activeIndex ? 'text-navy dark:text-primary' : ''" />
                 </NuxtLink>
               </template>
               <div v-else class="py-14 text-center">
                 <div class="flex justify-center w-full">
-                  <Icon icon="ph:file-search-bold" class="text-4xl text-gray-200 mb-3" />
+                  <Icon icon="ph:file-search-bold" class="text-4xl text-gray-200 dark:text-slate-700 mb-3" />
                 </div>
-                <p class="text-sm text-gray-400">{{ t('doc_search.no_results', 'No results found for') }} "{{ query }}"</p>
+                <p class="text-sm text-gray-400 dark:text-slate-400">{{ t('doc_search.no_results') }} "{{ query }}"</p>
               </div>
             </template>
 
             <!-- Empty / Default state: quick links -->
             <template v-else>
               <div class="px-5 pt-5 pb-4">
-                <p class="text-xs text-gray-400 font-bold tracking-widest mb-3">{{ t('doc_search.quick_navigation', 'Quick Navigation') }}</p>
+                <p class="text-xs text-gray-400 dark:text-slate-500 font-bold tracking-widest mb-3">{{ t('doc_search.quick_navigation') }}</p>
                 <div class="flex flex-col gap-1">
                   <NuxtLink v-for="(page, i) in quickLinks" :key="page.path" :to="page.path" @click="close"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors text-xs text-gray-600 border border-gray-100"
-                    :class="i === activeIndex ? 'bg-primary/10 text-primary border-primary/20' : 'hover:bg-gray-50'">
-                    <Icon :icon="page.icon" class="text-base text-gray-400 shrink-0" />
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors text-xs text-gray-600 dark:text-slate-300 border border-gray-100 dark:border-slate-800"
+                    :class="i === activeIndex ? 'bg-primary/10 text-primary border-primary/20' : 'hover:bg-gray-50 dark:hover:bg-slate-800/50'">
+                    <Icon :icon="page.icon" class="text-base text-gray-400 dark:text-slate-500 shrink-0" />
                     <div class="flex-1 min-w-0">
-                      <span class="font-bold text-navy">{{ getPageTitle(page) }}</span>
-                      <span class="text-gray-400 ml-2 truncate hidden sm:inline">{{ getPageDesc(page) }}</span>
+                      <span class="font-bold text-navy dark:text-slate-100">{{ getPageTitle(page) }}</span>
+                      <span class="text-gray-400 dark:text-slate-500 ml-2 truncate hidden sm:inline">{{ getPageDesc(page) }}</span>
                     </div>
-                    <Icon icon="ph:arrow-right" class="text-xs text-gray-300 shrink-0" />
+                    <Icon icon="ph:arrow-right" class="text-xs text-gray-300 dark:text-slate-600 shrink-0" />
                   </NuxtLink>
                 </div>
               </div>
@@ -70,20 +70,20 @@
           </div>
 
           <!-- Footer -->
-          <div class="border-t border-gray-100 bg-gray-50/50 px-5 py-2.5 flex items-center gap-4">
-            <span class="flex items-center gap-1.5 text-xs text-gray-400 font-medium">
-              <kbd class="bg-white border border-gray-200 rounded px-1.5 py-0.5 font-mono text-gray-500">↑↓</kbd>
-              {{ t('doc_search.to_navigate', 'to navigate') }}
+          <div class="border-t border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900 px-5 py-2.5 flex items-center gap-4">
+            <span class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-slate-500 font-medium">
+              <kbd class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded px-1.5 py-0.5 font-mono text-gray-500 dark:text-slate-400">↑↓</kbd>
+              {{ t('doc_search.to_navigate') }}
             </span>
-            <span class="flex items-center gap-1.5 text-xs text-gray-400 font-medium">
-              <kbd class="bg-white border border-gray-200 rounded px-1.5 py-0.5 font-mono text-gray-500">↵</kbd>
-              {{ t('doc_search.to_select', 'to select') }}
+            <span class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-slate-500 font-medium">
+              <kbd class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded px-1.5 py-0.5 font-mono text-gray-500 dark:text-slate-400">↵</kbd>
+              {{ t('doc_search.to_select') }}
             </span>
-            <span class="flex items-center gap-1.5 text-xs text-gray-400 font-medium">
-              <kbd class="bg-white border border-gray-200 rounded px-1.5 py-0.5 font-mono text-gray-500">Esc</kbd>
-              {{ t('doc_search.to_close', 'to close') }}
+            <span class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-slate-500 font-medium">
+              <kbd class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded px-1.5 py-0.5 font-mono text-gray-500 dark:text-slate-400">Esc</kbd>
+              {{ t('doc_search.to_close') }}
             </span>
-            <span class="ml-auto text-xs text-gray-400 hidden sm:block font-mono">Ctrl K</span>
+            <span class="ml-auto text-xs text-gray-400 dark:text-slate-500 hidden sm:block font-mono">Ctrl K</span>
           </div>
         </div>
       </div>

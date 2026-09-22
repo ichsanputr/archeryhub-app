@@ -1,0 +1,504 @@
+{
+  "summary": {
+    "total_scanned": 127,
+    "files_with_issues": 20,
+    "total_instances": 75
+  },
+  "files": [
+    {
+      "file": "app/pages/dashboard/archer/profile.vue",
+      "issues_count": 3,
+      "issues": [
+        {
+          "line": 6,
+          "matched_word": "Kelola",
+          "snippet": ":subtitle=\"isEn ? 'Manage your personal identity, club affiliation, archery specs, and public info.' : 'Kelola identitas"
+        },
+        {
+          "line": 22,
+          "matched_word": "Lihat",
+          "snippet": "<span>{{ isEn ? 'Preview Profile' : 'Lihat Profil Publik' }}</span>"
+        },
+        {
+          "line": 34,
+          "matched_word": "Simpan",
+          "snippet": "<span>{{ isSaving ? (isEn ? 'Saving...' : 'Menyimpan...') : (isEn ? 'Save Changes' : 'Simpan Perubahan') }}</span>"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/payments/[reference].vue",
+      "issues_count": 15,
+      "issues": [
+        {
+          "line": 96,
+          "matched_word": "Berhasil",
+          "snippet": "Pendaftaran Berhasil (Gratis)"
+        },
+        {
+          "line": 103,
+          "matched_word": "Turnamen",
+          "snippet": "Pendaftaran Turnamen Telah Resmi Terdaftar"
+        },
+        {
+          "line": 106,
+          "matched_word": "turnamen",
+          "snippet": "Pendaftaran turnamen ini tidak dipungut biaya. Seluruh data atlet dan divisi telah terdaftar dalam sistem dan target ros"
+        },
+        {
+          "line": 116,
+          "matched_word": "Lihat",
+          "snippet": "<span>Lihat Tiket & Roster</span>"
+        },
+        {
+          "line": 251,
+          "matched_word": "Kategori",
+          "snippet": "Daftar Peserta & Kategori Terdaftar ({{ payment.participants.length }})"
+        },
+        {
+          "line": 264,
+          "matched_word": "Klub",
+          "snippet": "<th scope=\"col\" class=\"py-3 px-3.5\">Klub / Kontingen</th>"
+        },
+        {
+          "line": 265,
+          "matched_word": "Kategori",
+          "snippet": "<th scope=\"col\" class=\"py-3 px-3.5\">Kategori / Divisi</th>"
+        },
+        {
+          "line": 266,
+          "matched_word": "Biaya",
+          "snippet": "<th scope=\"col\" class=\"py-3 px-3.5 text-right\">Biaya Registrasi</th>"
+        },
+        {
+          "line": 322,
+          "matched_word": "unggah",
+          "snippet": "Panitia turnamen menolak bukti transfer yang Anda unggah sebelumnya. Silakan periksa alasan penolakan di bawah dan ungga"
+        },
+        {
+          "line": 358,
+          "matched_word": "unggah",
+          "snippet": "{{ isPaid(payment.status) ?  : payment.status === 'rejected' ? 'Bukti transfer ditolak panitia. Silakan unggah bukti bar"
+        },
+        {
+          "line": 374,
+          "matched_word": "Unggah",
+          "snippet": "<span>{{ payment.status === 'rejected' ? 'Unggah Bukti Baru Pengganti' : 'Unggah Bukti Pembayaran' }}</span>"
+        },
+        {
+          "line": 382,
+          "matched_word": "Rekening",
+          "snippet": "Nama Pengirim Rekening / Rekening Transfer <span class=\"text-rose-500\">*</span>"
+        },
+        {
+          "line": 414,
+          "matched_word": "rekening",
+          "snippet": "<span class=\"text-[11px] text-slate-400\">Pastikan nominal transfer dan nomor rekening tujuan terbaca jelas</span>"
+        },
+        {
+          "line": 491,
+          "matched_word": "peserta",
+          "snippet": "Apakah Anda yakin ingin membatalkan tagihan transaksi ini? Status pembayaran peserta akan direset menjadi belum bayar se"
+        },
+        {
+          "line": 499,
+          "matched_word": "Kembali",
+          "snippet": "Kembali"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/tournaments/[id]/overview.vue",
+      "issues_count": 1,
+      "issues": [
+        {
+          "line": 268,
+          "matched_word": "Turnamen",
+          "snippet": "<span class=\"font-bold text-slate-900\">{{ event?.organizer_name || 'Panitia Turnamen' }}</span>"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/create.vue",
+      "issues_count": 4,
+      "issues": [
+        {
+          "line": 373,
+          "matched_word": "Turnamen",
+          "snippet": "<span>Visibilitas Turnamen</span>"
+        },
+        {
+          "line": 375,
+          "matched_word": "turnamen",
+          "snippet": "<span class=\"text-xs text-gray-500 font-medium\">Tentukan apakah turnamen ditampilkan di direktori publik atau hanya via "
+        },
+        {
+          "line": 398,
+          "matched_word": "Turnamen",
+          "snippet": "Turnamen muncul di halaman daftar turnamen (/tournaments), dapat diakses publik, dan terindeks oleh search engine."
+        },
+        {
+          "line": 421,
+          "matched_word": "turnamen",
+          "snippet": "Halaman turnamen tetap aktif via link langsung, tetapi <strong>tidak muncul</strong> di daftar turnamen dan <strong>tida"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/checkout.vue",
+      "issues_count": 2,
+      "issues": [
+        {
+          "line": 20,
+          "matched_word": "peserta",
+          "snippet": "Selesaikan pembayaran untuk mengaktifkan event Anda dan mulai menerima pendaftaran peserta."
+        },
+        {
+          "line": 94,
+          "matched_word": "Ringkasan",
+          "snippet": "Ringkasan Pembayaran"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/my-elimination.vue",
+      "issues_count": 5,
+      "issues": [
+        {
+          "line": 10,
+          "matched_word": "Eliminasi",
+          "snippet": "<span class=\"text-slate-600 dark:text-slate-300\">Hasil Eliminasi</span>"
+        },
+        {
+          "line": 17,
+          "matched_word": "Eliminasi",
+          "snippet": "<h2 class=\"text-3xl font-black text-navy dark:text-white tracking-tight\">Hasil Eliminasi</h2>"
+        },
+        {
+          "line": 55,
+          "matched_word": "Eliminasi",
+          "snippet": "<div class=\"text-[10px] font-black text-slate-400 tracking-widest mb-1\">Status Eliminasi"
+        },
+        {
+          "line": 77,
+          "matched_word": "Eliminasi",
+          "snippet": "Alur Eliminasi"
+        },
+        {
+          "line": 83,
+          "matched_word": "eliminasi",
+          "snippet": "<div class=\"text-sm font-black tracking-widest text-slate-300\">Belum mencapai eliminasi</div>"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/my-qualification.vue",
+      "issues_count": 4,
+      "issues": [
+        {
+          "line": 10,
+          "matched_word": "Kualifikasi",
+          "snippet": "<span class=\"text-slate-600 dark:text-slate-300\">Hasil Kualifikasi</span>"
+        },
+        {
+          "line": 17,
+          "matched_word": "Kualifikasi",
+          "snippet": "<h2 class=\"text-3xl font-black text-navy dark:text-white tracking-tight\">Hasil Kualifikasi</h2>"
+        },
+        {
+          "line": 63,
+          "matched_word": "Kualifikasi",
+          "snippet": "Kualifikasi</div>"
+        },
+        {
+          "line": 83,
+          "matched_word": "Kualifikasi",
+          "snippet": "Jejak Kualifikasi"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/my-registration.vue",
+      "issues_count": 2,
+      "issues": [
+        {
+          "line": 95,
+          "matched_word": "Kategori",
+          "snippet": "Kategori</div>"
+        },
+        {
+          "line": 106,
+          "matched_word": "Bantalan",
+          "snippet": "Bantalan</div>"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/elimination/[bracketId]/index.vue",
+      "issues_count": 1,
+      "issues": [
+        {
+          "line": 9,
+          "matched_word": "Eliminasi",
+          "snippet": "<h3 class=\"text-xl font-black text-navy\">Gagal Memuat Bagan Eliminasi</h3>"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/elimination/[bracketId]/[round].vue",
+      "issues_count": 1,
+      "issues": [
+        {
+          "line": 3,
+          "matched_word": "eliminasi",
+          "snippet": "Mengalihkan ke halaman eliminasi..."
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/payments/index.vue",
+      "issues_count": 13,
+      "issues": [
+        {
+          "line": 18,
+          "matched_word": "Pendapatan",
+          "snippet": "<div class=\"text-xs font-bold text-slate-500 capitalize tracking-wider mb-1\">Total Pendapatan (Lunas)</div>"
+        },
+        {
+          "line": 33,
+          "matched_word": "Batal",
+          "snippet": "<div class=\"text-xs font-bold text-slate-500 capitalize tracking-wider mb-1\">Ditolak / Batal</div>"
+        },
+        {
+          "line": 35,
+          "matched_word": "batal",
+          "snippet": "<div class=\"text-[11px] text-slate-400 mt-1\">{{ rejectedCount }} ditolak, {{ cancelledCount }} batal</div>"
+        },
+        {
+          "line": 69,
+          "matched_word": "Cari",
+          "snippet": "placeholder=\"Cari reference, nama, klub...\""
+        },
+        {
+          "line": 84,
+          "matched_word": "Tidak ada",
+          "snippet": "<div class=\"text-sm font-bold text-slate-700 dark:text-slate-300\">Tidak ada transaksi ditemukan</div>"
+        },
+        {
+          "line": 85,
+          "matched_word": "Tidak ada",
+          "snippet": "<p class=\"text-xs text-slate-400 mt-1\">Tidak ada data pembayaran yang sesuai dengan kriteria filter saat ini.</p>"
+        },
+        {
+          "line": 121,
+          "matched_word": "Rekening",
+          "snippet": "<span v-if=\"inv.sender_name\" class=\"text-slate-500 font-medium\"> &bull; Rekening Pengirim: <strong>{{ inv.sender_name }}"
+        },
+        {
+          "line": 151,
+          "matched_word": "Lihat",
+          "snippet": "<span>Lihat Bukti</span>"
+        },
+        {
+          "line": 192,
+          "matched_word": "Daftar",
+          "snippet": "Daftar Atlet Terkait Tagihan Ini ({{ inv.participants ? inv.participants.length : 0 }} Atlet)"
+        },
+        {
+          "line": 196,
+          "matched_word": "Tidak ada",
+          "snippet": "Tidak ada rincian atlet spesifik terlampir pada tagihan ini."
+        },
+        {
+          "line": 213,
+          "matched_word": "Kategori",
+          "snippet": "<span>{{ p.category_name || 'Kategori Umum' }}</span>"
+        },
+        {
+          "line": 291,
+          "matched_word": "rekening",
+          "snippet": "placeholder=\"Contoh: Bukti transfer buram / nominal tidak sesuai / nama rekening pengirim berbeda...\""
+        },
+        {
+          "line": 300,
+          "matched_word": "Batal",
+          "snippet": "Batal"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/profile/edit.vue",
+      "issues_count": 2,
+      "issues": [
+        {
+          "line": 91,
+          "matched_word": "Klub",
+          "snippet": "<BaseInput v-model=\"profileData.club\" label=\"Afiliasi Klub\""
+        },
+        {
+          "line": 92,
+          "matched_word": "klub",
+          "snippet": "placeholder=\"Nama klub panahan kamu\" />"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/root/articles/index.vue",
+      "issues_count": 1,
+      "issues": [
+        {
+          "line": 170,
+          "matched_word": "ubah",
+          "snippet": "<button @click=\"toggleStatus(item)\" :title=\"`Klik untuk ubah status`\""
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/root/tournaments/index.vue",
+      "issues_count": 2,
+      "issues": [
+        {
+          "line": 215,
+          "matched_word": "Kategori",
+          "snippet": "<div class=\"text-[10px] text-slate-400 font-medium\">{{ item.category_count }} Kategori</div>"
+        },
+        {
+          "line": 266,
+          "matched_word": "turnamen",
+          "snippet": "<span class=\"text-navy font-black\">{{ meta.total }}</span> turnamen"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/ArticleEditor.vue",
+      "issues_count": 4,
+      "issues": [
+        {
+          "line": 77,
+          "matched_word": "Ubah",
+          "snippet": "<span>{{ isManualSlug ?  : 'Ubah manual' }}</span>"
+        },
+        {
+          "line": 160,
+          "matched_word": "Belum ada",
+          "snippet": "Belum ada konten untuk ditampilkan di pratinjau."
+        },
+        {
+          "line": 236,
+          "matched_word": "Kategori",
+          "snippet": "<label class=\"block text-xs font-bold text-gray-500 mb-1.5 tracking-wider\">Kategori Kustom Baru</label>"
+        },
+        {
+          "line": 237,
+          "matched_word": "kategori",
+          "snippet": "<input v-model=\"customCategory\" type=\"text\" placeholder=\"Masukkan nama kategori baru...\""
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/CertificateFilterModal.vue",
+      "issues_count": 3,
+      "issues": [
+        {
+          "line": 65,
+          "matched_word": "Semua",
+          "snippet": "@click=\"draftFilters.status = 'Semua'\""
+        },
+        {
+          "line": 68,
+          "matched_word": "Semua",
+          "snippet": "draftFilters.status === 'Semua'"
+        },
+        {
+          "line": 73,
+          "matched_word": "Semua",
+          "snippet": "<Icon v-if=\"draftFilters.status === 'Semua'\" icon=\"ph:check-bold\" class=\"text-xs text-navy shrink-0\" />"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/ParticipantFilterModal.vue",
+      "issues_count": 9,
+      "issues": [
+        {
+          "line": 64,
+          "matched_word": "Semua",
+          "snippet": "@click=\"draftFilters.status = 'Semua'\""
+        },
+        {
+          "line": 67,
+          "matched_word": "Semua",
+          "snippet": "draftFilters.status === 'Semua'"
+        },
+        {
+          "line": 72,
+          "matched_word": "Semua",
+          "snippet": "<Icon v-if=\"draftFilters.status === 'Semua'\" icon=\"ph:check-bold\" class=\"text-xs text-navy shrink-0\" />"
+        },
+        {
+          "line": 114,
+          "matched_word": "Semua",
+          "snippet": "@click=\"draftFilters.reregistration = 'Semua'\""
+        },
+        {
+          "line": 117,
+          "matched_word": "Semua",
+          "snippet": "draftFilters.reregistration === 'Semua'"
+        },
+        {
+          "line": 122,
+          "matched_word": "Semua",
+          "snippet": "<Icon v-if=\"draftFilters.reregistration === 'Semua'\" icon=\"ph:check-bold\" class=\"text-xs text-navy shrink-0\" />"
+        },
+        {
+          "line": 164,
+          "matched_word": "Semua",
+          "snippet": "@click=\"draftFilters.gender = 'Semua'\""
+        },
+        {
+          "line": 167,
+          "matched_word": "Semua",
+          "snippet": "draftFilters.gender === 'Semua'"
+        },
+        {
+          "line": 172,
+          "matched_word": "Semua",
+          "snippet": "<Icon v-if=\"draftFilters.gender === 'Semua'\" icon=\"ph:check-bold\" class=\"text-xs text-navy shrink-0\" />"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/subscription/SubscriptionOrganizationPlans.vue",
+      "issues_count": 1,
+      "issues": [
+        {
+          "line": 24,
+          "matched_word": "turnamen",
+          "snippet": "Solusi lengkap untuk turnamen skala besar dengan peserta tak terbatas dan analitik lanjutan."
+        }
+      ]
+    },
+    {
+      "file": "app/components/elimination/EliminationScoringMode.vue",
+      "issues_count": 1,
+      "issues": [
+        {
+          "line": 16,
+          "matched_word": "pemanah",
+          "snippet": "{{ , dan masukkan perolehan skor panah masing-masing pemanah.') }}"
+        }
+      ]
+    },
+    {
+      "file": "app/components/layout/LandingHeader.vue",
+      "issues_count": 1,
+      "issues": [
+        {
+          "line": 212,
+          "matched_word": "Pengaturan",
+          "snippet": "{{ $ || 'Pengaturan' }}"
+        }
+      ]
+    }
+  ]
+}

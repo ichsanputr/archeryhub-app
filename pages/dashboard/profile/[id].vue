@@ -13,7 +13,8 @@
                     <div class="flex-shrink-0 relative group">
                         <div
                             class="w-40 h-40 md:w-52 md:h-52 rounded-full border-4 border-primary shadow-[0_0_30px_rgba(183,251,35,0.3)] overflow-hidden bg-gray-800">
-                            <img :src="athlete.avatar" :alt="athlete.name"
+                            <img :src="useImageOrDefault(athlete.avatar, athlete.name)" :alt="athlete.name"
+                                @error="(e) => e.target.src = generateDicebearAvatar(athlete.name)"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                         </div>
                     </div>
@@ -190,10 +191,10 @@
 
 <script setup>
 
-useHead({ title: computed(() => t('profile.title', 'Profile') + ' - Archeris Dashboard') })
+useHead({ title: computed(() => t('profile.title') + ' - Archeris Dashboard') })
 import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const athlete = {
     name: 'Arif Dwi Pangestu',

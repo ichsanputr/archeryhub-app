@@ -50,11 +50,11 @@
 
             <!-- Completion Scoring -->
             <StatCard
-                :title="t('dashboard.org.completion_scoring', 'Completion Scoring')"
+                :title="t('dashboard.org.completion_scoring')"
                 :value="Math.round(dashboardStats.completionRate || 0) + '%'"
                 icon="ph:check-square-offset"
                 color="primary"
-                description="Progres penilaian ronde skor"
+                :description="t('dashboard.org.scoring_progress_desc')"
                 description-icon="ph:crosshair-bold"
             >
                 <template #footer>
@@ -78,15 +78,19 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 p-6 space-y-6">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                        <h3 class="text-navy font-black text-base flex items-center gap-2">
-                            <Icon icon="ph:chart-bar-bold" class="text-primary text-xl" />
-                            {{ t('dashboard.org.revenue_trend_title', 'Revenue Trend') }}
-                        </h3>
-                        <div class="text-xs text-slate-400 font-medium mt-0.5">{{ t('dashboard.org.revenue_trend_subtitle', 'Grafik tren pendapatan terverifikasi dari pendaftaran event') }}</div>
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                            <Icon icon="ph:chart-bar-bold" class="text-xl" />
+                        </div>
+                        <div>
+                            <h3 class="text-navy font-black text-base leading-tight">
+                                {{ t('dashboard.org.revenue_trend_title') }}
+                            </h3>
+                            <div class="text-xs text-slate-400 font-medium mt-0.5">{{ t('dashboard.org.revenue_trend_subtitle') }}</div>
+                        </div>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="px-3 py-1 text-[11px] font-bold rounded-lg bg-navy text-white">{{ t('dashboard.org.last_30_days', 'Last 30 Days') }}</span>
+                        <span class="px-3 py-1 text-[11px] font-bold rounded-lg bg-navy text-white">{{ t('dashboard.org.last_30_days') }}</span>
                     </div>
                 </div>
 
@@ -94,27 +98,27 @@
                 <div class="w-full bg-slate-50/70 rounded-2xl border border-slate-200/80 p-5 space-y-6">
                     <div class="grid grid-cols-2 gap-4 pb-4 border-b border-slate-200/60">
                         <div>
-                            <span class="text-xs font-bold text-slate-500 block">{{ t('dashboard.org.total_verified_revenue', 'Total Verified Revenue') }}</span>
+                            <span class="text-xs font-bold text-slate-500 block">{{ t('dashboard.org.total_verified_revenue') }}</span>
                             <span class="text-2xl font-black text-emerald-600 tabular-nums">Rp {{ formatPrice(dashboardStats.totalRevenue || 0) }}</span>
                         </div>
                         <div>
-                            <span class="text-xs font-bold text-slate-500 block">{{ t('dashboard.org.total_archers_registered', 'Total Registered Archers') }}</span>
-                            <span class="text-2xl font-black text-navy tabular-nums">{{ dashboardStats.totalArchers || 0 }} {{ t('dashboard.org.peserta', 'Archers') }}</span>
+                            <span class="text-xs font-bold text-slate-500 block">{{ t('dashboard.org.total_archers_registered') }}</span>
+                            <span class="text-2xl font-black text-navy tabular-nums">{{ dashboardStats.totalArchers || 0 }} {{ t('dashboard.org.peserta') }}</span>
                         </div>
                     </div>
 
                     <!-- Trend Bars Grid with Interactive Hover Tooltips -->
                     <div class="space-y-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-slate-500 block">{{ t('dashboard.org.visualization_title', 'Revenue Trend Visualization') }}</span>
-                            <span class="text-[10px] font-semibold text-slate-400">Arahkan kursor ke batang untuk rincian nominal</span>
+                            <span class="text-xs font-bold text-slate-500 block">{{ t('dashboard.org.visualization_title') }}</span>
+                            <span class="text-[10px] font-semibold text-slate-400">{{ t('dashboard.org.hover_chart_hint') }}</span>
                         </div>
                         <div v-if="trendBars && trendBars.length" class="flex items-end gap-2 h-40 pt-8 px-2">
                             <div v-for="(bar, idx) in trendBars" :key="idx" class="relative group/bar flex-1 flex flex-col items-center gap-2 h-full justify-end">
                                 <!-- Floating Hover Value Tooltip -->
                                 <div class="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none z-30 bg-navy text-white text-[10px] font-black px-2.5 py-1 rounded-lg shadow-lg border border-white/10 whitespace-nowrap flex flex-col items-center">
                                     <span class="text-primary font-mono">Rp {{ formatPrice(bar.revenue || (bar.count * 150000)) }}</span>
-                                    <span class="text-[8px] text-slate-300 font-medium">{{ bar.count || 0 }} Atlet · {{ bar.label }}</span>
+                                    <span class="text-[8px] text-slate-300 font-medium">{{ bar.count || 0 }} {{ t('dashboard.org.archers_unit') }} · {{ bar.label }}</span>
                                     <div class="w-1.5 h-1.5 bg-navy rotate-45 -mb-1 mt-0.5 border-r border-b border-white/10"></div>
                                 </div>
 
@@ -125,7 +129,7 @@
                             </div>
                         </div>
                         <div v-else class="flex items-center justify-center h-40 text-slate-400 text-xs font-medium">
-                            {{ t('dashboard.org.no_trend_data', 'Belum ada data pendaftaran event') }}
+                            {{ t('dashboard.org.no_trend_data') }}
                         </div>
                     </div>
                 </div>
@@ -137,16 +141,23 @@
                     <Icon icon="ph:seal-check-fill" class="text-9xl rotate-12 text-white" />
                 </div>
                 <div class="space-y-4 relative z-10">
-                    <h3 class="text-lg font-black flex items-center gap-2">
-                        <Icon icon="ph:lightning-bold" class="text-yellow-400" />
-                        {{ t('dashboard.org.quick_actions', 'Quick Actions') }}
-                    </h3>
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                            <Icon icon="ph:lightning-bold" class="text-xl" />
+                        </div>
+                        <div>
+                            <h3 class="text-base font-black text-white leading-tight">
+                                {{ t('dashboard.org.quick_actions') }}
+                            </h3>
+                            <div class="text-xs text-slate-300 mt-0.5">{{ t('dashboard.org.quick_actions_desc') }}</div>
+                        </div>
+                    </div>
                     <div class="space-y-2">
                         <NuxtLink to="/dashboard/organizer/tournaments"
                             class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
                             <div class="flex items-center gap-3">
                                 <Icon icon="ph:user-circle-check-bold" class="text-lg text-primary" />
-                                <span class="text-xs font-bold">{{ t('dashboard.org.manage_registrants', 'Manage Event Registrants') }}</span>
+                                <span class="text-xs font-bold">{{ t('dashboard.org.manage_registrants') }}</span>
                             </div>
                             <Icon icon="ph:caret-right-bold"
                                 class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
@@ -155,7 +166,7 @@
                             class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
                             <div class="flex items-center gap-3">
                                 <Icon icon="ph:plus-circle-bold" class="text-lg text-primary" />
-                                <span class="text-xs font-bold">{{ t('dashboard.org.create_event', 'Create New Event') }}</span>
+                                <span class="text-xs font-bold">{{ t('dashboard.org.create_event') }}</span>
                             </div>
                             <Icon icon="ph:caret-right-bold"
                                 class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
@@ -164,7 +175,7 @@
                             class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
                             <div class="flex items-center gap-3">
                                 <Icon icon="ph:newspaper-bold" class="text-lg text-primary" />
-                                <span class="text-xs font-bold">{{ t('dashboard.org.create_news', 'Create News / Announcement') }}</span>
+                                <span class="text-xs font-bold">{{ t('dashboard.org.create_news') }}</span>
                             </div>
                             <Icon icon="ph:caret-right-bold"
                                 class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
@@ -173,7 +184,7 @@
                             class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
                             <div class="flex items-center gap-3">
                                 <Icon icon="ph:users-three-bold" class="text-lg text-primary" />
-                                <span class="text-xs font-bold">{{ t('dashboard.org.manage_scorekeepers', 'Manage Scorekeepers') }}</span>
+                                <span class="text-xs font-bold">{{ t('dashboard.org.manage_scorekeepers') }}</span>
                             </div>
                             <Icon icon="ph:caret-right-bold"
                                 class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
@@ -182,7 +193,7 @@
                             class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
                             <div class="flex items-center gap-3">
                                 <Icon icon="ph:wallet-bold" class="text-lg text-primary" />
-                                <span class="text-xs font-bold">{{ t('dashboard.org.wallet_payouts', 'Wallet & Payouts') }}</span>
+                                <span class="text-xs font-bold">{{ t('dashboard.org.wallet_payouts') }}</span>
                             </div>
                             <Icon icon="ph:caret-right-bold"
                                 class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
@@ -196,14 +207,21 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Event Recap Card -->
             <div class="bg-white rounded-2xl border border-slate-200/80 flex flex-col overflow-hidden min-h-[360px]">
-                <div class="h-16 px-6 border-b border-slate-100 flex justify-between items-center bg-white shrink-0">
-                    <h3 class="text-navy font-bold text-sm flex items-center gap-2">
-                        <Icon icon="ph:chart-pie-slice-bold" class="text-primary text-lg" />
-                        {{ t('dashboard.org.event_recap', 'Event Recap') }}
-                    </h3>
+                <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-white shrink-0">
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                            <Icon icon="ph:calendar-check-bold" class="text-xl" />
+                        </div>
+                        <div>
+                            <h3 class="text-navy font-black text-base leading-tight">
+                                {{ t('dashboard.org.event_recap') }}
+                            </h3>
+                            <div class="text-xs text-slate-400 font-medium mt-0.5">{{ t('dashboard.org.event_recap_desc') }}</div>
+                        </div>
+                    </div>
                     <NuxtLink to="/dashboard/organizer/tournaments">
-                        <BaseButton variant="ghost" size="sm" class="text-xs font-bold text-navy hover:text-primary">
-                            {{ t('dashboard.org.view_all', 'View All') }}
+                        <BaseButton variant="white" size="xs" class="text-xs font-bold">
+                            {{ t('dashboard.org.view_all') }}
                         </BaseButton>
                     </NuxtLink>
                 </div>
@@ -226,11 +244,11 @@
                                     <div class="flex items-center gap-3 text-xs text-slate-500">
                                         <span class="flex items-center gap-1">
                                             <Icon icon="ph:users-bold" class="text-[10px]" />
-                                            {{ event.participantCount || 0 }} {{ t('dashboard.org.peserta', 'Archers') }}
+                                            {{ event.participantCount || 0 }} {{ t('dashboard.org.peserta') }}
                                         </span>
                                         <span class="flex items-center gap-1">
                                             <Icon icon="ph:trophy-bold" class="text-[10px]" />
-                                            {{ event.categoryCount || 0 }} {{ t('dashboard.org.kategori', 'Categories') }}
+                                            {{ event.categoryCount || 0 }} {{ t('dashboard.org.kategori') }}
                                         </span>
                                     </div>
                                 </div>
@@ -247,19 +265,26 @@
                         <Icon icon="ph:chart-pie-slice-bold" class="text-2xl text-slate-400" />
                     </div>
                     <div class="max-w-xs space-y-1">
-                        <div class="text-xs font-bold text-navy">{{ t('dashboard.org.no_event_recap', 'No Event Recap') }}</div>
-                        <div class="text-[11px] text-slate-400 font-medium leading-relaxed">{{ t('dashboard.org.recap_empty_desc', 'Recap statistics will automatically appear after events are completed.') }}</div>
+                        <div class="text-xs font-bold text-navy">{{ t('dashboard.org.no_event_recap') }}</div>
+                        <div class="text-[11px] text-slate-400 font-medium leading-relaxed">{{ t('dashboard.org.recap_empty_desc') }}</div>
                     </div>
                 </div>
             </div>
 
             <!-- Leaderboard Card -->
             <div class="bg-white rounded-2xl border border-slate-200/80 flex flex-col overflow-hidden min-h-[360px]">
-                <div class="h-16 px-6 border-b border-slate-100 flex justify-between items-center bg-white shrink-0">
-                    <h3 class="text-navy font-bold text-sm flex items-center gap-2">
-                        <Icon icon="ph:trophy-bold" class="text-primary text-lg" />
-                        {{ t('dashboard.org.leaderboard', 'Event Leaderboard') }}
-                    </h3>
+                <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-white shrink-0">
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                            <Icon icon="ph:trophy-bold" class="text-xl" />
+                        </div>
+                        <div>
+                            <h3 class="text-navy font-black text-base leading-tight">
+                                {{ t('dashboard.org.leaderboard') }}
+                            </h3>
+                            <div class="text-xs text-slate-400 font-medium mt-0.5">{{ t('dashboard.org.leaderboard_desc') }}</div>
+                        </div>
+                    </div>
                     <span class="px-2.5 py-1 bg-primary/15 text-navy font-bold text-xs rounded-lg border border-primary/30">
                         Top 5
                     </span>
@@ -270,9 +295,9 @@
                     <table class="w-full text-left text-sm">
                         <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100 sticky top-0 z-10">
                             <tr>
-                                <th class="px-6 py-3 font-semibold text-xs">{{ t('dashboard.org.rank', 'Rank') }}</th>
-                                <th class="px-6 py-3 font-semibold text-xs">{{ t('dashboard.org.archer', 'Archer') }}</th>
-                                <th class="px-6 py-3 text-right font-semibold text-xs">{{ t('dashboard.org.score', 'Score') }}</th>
+                                <th class="px-6 py-3 font-semibold text-xs">{{ t('dashboard.org.rank') }}</th>
+                                <th class="px-6 py-3 font-semibold text-xs">{{ t('dashboard.org.archer') }}</th>
+                                <th class="px-6 py-3 text-right font-semibold text-xs">{{ t('dashboard.org.score') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
@@ -311,8 +336,8 @@
                         <Icon icon="ph:trophy-bold" class="text-2xl text-slate-400" />
                     </div>
                     <div class="max-w-xs space-y-1">
-                        <div class="text-xs font-bold text-navy">{{ t('dashboard.org.no_leaderboard', 'No Leaderboard Yet') }}</div>
-                        <div class="text-[11px] text-slate-400 font-medium leading-relaxed">{{ t('dashboard.org.leaderboard_empty_desc', 'Archer scores and event rankings will be displayed here.') }}</div>
+                        <div class="text-xs font-bold text-navy">{{ t('dashboard.org.no_leaderboard') }}</div>
+                        <div class="text-[11px] text-slate-400 font-medium leading-relaxed">{{ t('dashboard.org.leaderboard_empty_desc') }}</div>
                     </div>
                 </div>
             </div>

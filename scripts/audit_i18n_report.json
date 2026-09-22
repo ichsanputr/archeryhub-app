@@ -1,0 +1,3664 @@
+{
+  "summary": {
+    "total_files_scanned": 127,
+    "files_with_issues": 101,
+    "total_issues": 508,
+    "en_keys_loaded": 6945
+  },
+  "files": [
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/reset/index.vue",
+      "total_issues": 29,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 27,
+          "text": "Reset Event Data",
+          "context": ">\n                Reset Event Data\n              <"
+        },
+        {
+          "type": "tag_text",
+          "line": 27,
+          "text": "Reset Event Data",
+          "context": "<h1 class=\"text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2\">\n                Reset"
+        },
+        {
+          "type": "raw_text",
+          "line": 56,
+          "text": "Important Information",
+          "context": ">\n            Important Information\n          <"
+        },
+        {
+          "type": "raw_text",
+          "line": 63,
+          "text": "Reset actions are permanent. Once deleted, data cannot be recovered from the database server.",
+          "context": ">\n                Reset actions are permanent. Once deleted, data cannot be recovered from the datab"
+        },
+        {
+          "type": "raw_text",
+          "line": 69,
+          "text": "Safety Guidelines",
+          "context": ">Safety Guidelines<"
+        },
+        {
+          "type": "tag_text",
+          "line": 69,
+          "text": "Safety Guidelines",
+          "context": "<h3 class=\"text-xs font-black text-navy tracking-wider\">Safety Guidelines</"
+        },
+        {
+          "type": "raw_text",
+          "line": 72,
+          "text": "Ensure no archers are currently submitting qualification or match scores.",
+          "context": ">\n                  Ensure no archers are currently submitting qualification or match scores.\n      "
+        },
+        {
+          "type": "raw_text",
+          "line": 76,
+          "text": "Export participant data to CSV beforehand if you require a local backup copy.",
+          "context": ">\n                  Export participant data to CSV beforehand if you require a local backup copy.\n  "
+        },
+        {
+          "type": "raw_text",
+          "line": 80,
+          "text": "A verification OTP code sent to your registered email is required before initiating any reset.",
+          "context": ">\n                  A verification OTP code sent to your registered email is required before initiat"
+        },
+        {
+          "type": "raw_text",
+          "line": 93,
+          "text": "Available Reset Options",
+          "context": ">\n            Available Reset Options\n          <"
+        },
+        {
+          "type": "raw_text",
+          "line": 108,
+          "text": "Reset Qualification",
+          "context": ">Reset Qualification<"
+        },
+        {
+          "type": "tag_text",
+          "line": 108,
+          "text": "Reset Qualification",
+          "context": "<h3 class=\"text-sm font-black text-navy leading-snug\">Reset Qualification</"
+        },
+        {
+          "type": "raw_text",
+          "line": 109,
+          "text": "Deletes all qualification scores (arrow scores, end scores), log scores, target assignments, and resets participant target allocations.",
+          "context": ">\n                    Deletes all qualification scores (arrow scores, end scores), log scores, targe"
+        },
+        {
+          "type": "raw_text",
+          "line": 117,
+          "text": "Reset Qualification",
+          "context": ">\n                Reset Qualification\n              <"
+        },
+        {
+          "type": "raw_text",
+          "line": 131,
+          "text": "Reset Elimination & Brackets",
+          "context": ">Reset Elimination & Brackets<"
+        },
+        {
+          "type": "tag_text",
+          "line": 131,
+          "text": "Reset Elimination & Brackets",
+          "context": "<h3 class=\"text-sm font-black text-navy leading-snug\">Reset Elimination & Brackets</"
+        },
+        {
+          "type": "raw_text",
+          "line": 132,
+          "text": "Deletes elimination matches, bracket structures, and match scores. Useful for re-configuring elimination structures.",
+          "context": ">\n                    Deletes elimination matches, bracket structures, and match scores. Useful for "
+        },
+        {
+          "type": "raw_text",
+          "line": 140,
+          "text": "Reset Bracket",
+          "context": ">\n                Reset Bracket\n              <"
+        },
+        {
+          "type": "raw_text",
+          "line": 154,
+          "text": "Delete All Participants",
+          "context": ">Delete All Participants<"
+        },
+        {
+          "type": "tag_text",
+          "line": 154,
+          "text": "Delete All Participants",
+          "context": "<h3 class=\"text-sm font-black text-navy leading-snug\">Delete All Participants</"
+        },
+        {
+          "type": "raw_text",
+          "line": 155,
+          "text": "Unregisters and deletes all participants from this event. This automatically cleans up dependent qualification and elimination data.",
+          "context": ">\n                    Unregisters and deletes all participants from this event. This automatically c"
+        },
+        {
+          "type": "raw_text",
+          "line": 163,
+          "text": "Delete Participants",
+          "context": ">\n                Delete Participants\n              <"
+        },
+        {
+          "type": "raw_text",
+          "line": 177,
+          "text": "Factory Rese__T_CALL__",
+          "context": ">Factory Rese__T_CALL__<"
+        },
+        {
+          "type": "tag_text",
+          "line": 177,
+          "text": "Factory Rese__T_CALL__",
+          "context": "<h3 class=\"text-sm font-black text-navy leading-snug\">Factory Rese__T_CALL__</"
+        },
+        {
+          "type": "raw_text",
+          "line": 178,
+          "text": "Cleans all event data back to its original state. Removes participants, targets, qualification, elimination, and all scoring data completely.",
+          "context": ">\n                    Cleans all event data back to its original state. Removes participants, target"
+        },
+        {
+          "type": "raw_text",
+          "line": 186,
+          "text": "Factory Reset",
+          "context": ">\n                Factory Reset\n              <"
+        },
+        {
+          "type": "raw_text",
+          "line": 202,
+          "text": "Confirm Data Reset",
+          "context": ">Confirm Data Reset<"
+        },
+        {
+          "type": "tag_text",
+          "line": 202,
+          "text": "Confirm Data Reset",
+          "context": "<h2 class=\"text-xl font-black text-navy\">Confirm Data Reset</"
+        },
+        {
+          "type": "missing_key",
+          "line": 220,
+          "text": "reset_event.title",
+          "context": "t('reset_event.title', 'Reset Event Data')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/create.vue",
+      "total_issues": 24,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 56,
+          "text": "0 ? form.quotaType = 'free' : null\"\n                  class=\"relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all select-none group\"\n                  :class=\"[\n                    (quotaBalance.quota_free ?? 20)",
+          "context": "> 0 ? form.quotaType = 'free' : null\"\n                  class=\"relative flex flex-col justify-betwee"
+        },
+        {
+          "type": "raw_text",
+          "line": 117,
+          "text": "0 ? form.quotaType = 'standard' : null\"\n                  class=\"relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all select-none group\"\n                  :class=\"[\n                    quotaBalance.quota_standard",
+          "context": "> 0 ? form.quotaType = 'standard' : null\"\n                  class=\"relative flex flex-col justify-be"
+        },
+        {
+          "type": "raw_text",
+          "line": 180,
+          "text": "0 ? form.quotaType = 'elite' : null\"\n                  class=\"relative flex flex-col justify-between p-5 rounded-2xl border-2 transition-all select-none group\"\n                  :class=\"[\n                    quotaBalance.quota_elite",
+          "context": "> 0 ? form.quotaType = 'elite' : null\"\n                  class=\"relative flex flex-col justify-betwe"
+        },
+        {
+          "type": "missing_key",
+          "line": 265,
+          "text": "event_create.field_currency",
+          "context": "t('event_create.field_currency', 'Mata Uang (Currency)"
+        },
+        {
+          "type": "raw_text",
+          "line": 373,
+          "text": "Visibilitas Turnamen",
+          "context": ">Visibilitas Turnamen<"
+        },
+        {
+          "type": "tag_text",
+          "line": 373,
+          "text": "Visibilitas Turnamen",
+          "context": "<span>Visibilitas Turnamen</"
+        },
+        {
+          "type": "raw_text",
+          "line": 375,
+          "text": "Tentukan apakah turnamen ditampilkan di direktori publik atau hanya via link langsung.",
+          "context": ">Tentukan apakah turnamen ditampilkan di direktori publik atau hanya via link langsung.<"
+        },
+        {
+          "type": "tag_text",
+          "line": 375,
+          "text": "Tentukan apakah turnamen ditampilkan di direktori publik atau hanya via link langsung.",
+          "context": "<span class=\"text-xs text-gray-500 font-medium\">Tentukan apakah turnamen ditampilkan di direktori pu"
+        },
+        {
+          "type": "raw_text",
+          "line": 394,
+          "text": "External / Publik",
+          "context": ">External / Publik<"
+        },
+        {
+          "type": "tag_text",
+          "line": 394,
+          "text": "External / Publik",
+          "context": "<span class=\"text-sm font-black text-navy\">External / Publik</"
+        },
+        {
+          "type": "raw_text",
+          "line": 397,
+          "text": "Turnamen muncul di halaman daftar turnamen (/tournaments), dapat diakses publik, dan terindeks oleh search engine.",
+          "context": ">\n                        Turnamen muncul di halaman daftar turnamen (/tournaments), dapat diakses p"
+        },
+        {
+          "type": "tag_text",
+          "line": 397,
+          "text": "Turnamen muncul di halaman daftar turnamen (/tournaments), dapat diakses publik, dan terindeks oleh search engine.",
+          "context": "<span class=\"text-xs text-gray-500 font-medium leading-relaxed block\">\n                        Turna"
+        },
+        {
+          "type": "raw_text",
+          "line": 418,
+          "text": "Internal / Tersembunyi",
+          "context": ">Internal / Tersembunyi<"
+        },
+        {
+          "type": "tag_text",
+          "line": 418,
+          "text": "Internal / Tersembunyi",
+          "context": "<span class=\"text-sm font-black text-navy\">Internal / Tersembunyi</"
+        },
+        {
+          "type": "raw_text",
+          "line": 420,
+          "text": "Halaman turnamen tetap aktif via link langsung, tetapi",
+          "context": ">\n                        Halaman turnamen tetap aktif via link langsung, tetapi <"
+        },
+        {
+          "type": "raw_text",
+          "line": 421,
+          "text": "tidak muncul",
+          "context": ">tidak muncul<"
+        },
+        {
+          "type": "raw_text",
+          "line": 421,
+          "text": "di daftar turnamen dan",
+          "context": "> di daftar turnamen dan <"
+        },
+        {
+          "type": "raw_text",
+          "line": 421,
+          "text": "tidak diindeks",
+          "context": ">tidak diindeks<"
+        },
+        {
+          "type": "raw_text",
+          "line": 421,
+          "text": "search engine (noindex).",
+          "context": "> search engine (noindex).\n                      <"
+        },
+        {
+          "type": "tag_text",
+          "line": 421,
+          "text": "tidak muncul",
+          "context": "<strong>tidak muncul</"
+        },
+        {
+          "type": "tag_text",
+          "line": 421,
+          "text": "tidak diindeks",
+          "context": "<strong>tidak diindeks</"
+        },
+        {
+          "type": "missing_key",
+          "line": 583,
+          "text": "/disciplines",
+          "context": "t('/disciplines')"
+        },
+        {
+          "type": "missing_key",
+          "line": 584,
+          "text": "/organizers/me/quota",
+          "context": "t('/organizers/me/quota')"
+        },
+        {
+          "type": "missing_key",
+          "line": 683,
+          "text": "/tournaments",
+          "context": "t('/tournaments', payload)"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/page.vue",
+      "total_issues": 17,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 276,
+          "text": "/media/upload",
+          "context": "t('/media/upload', formData)"
+        },
+        {
+          "type": "missing_key",
+          "line": 327,
+          "text": "/media/upload",
+          "context": "t('/media/upload', formData)"
+        },
+        {
+          "type": "missing_key",
+          "line": 359,
+          "text": ".",
+          "context": "t('.')"
+        },
+        {
+          "type": "script_string",
+          "line": 646,
+          "text": "BCA (Bank Central Asia)",
+          "context": "title: 'BCA (Bank Central Asia)'"
+        },
+        {
+          "type": "script_string",
+          "line": 648,
+          "text": "BNI (Bank Negara Indonesia)",
+          "context": "title: 'BNI (Bank Negara Indonesia)'"
+        },
+        {
+          "type": "script_string",
+          "line": 649,
+          "text": "BRI (Bank Rakyat Indonesia)",
+          "context": "title: 'BRI (Bank Rakyat Indonesia)'"
+        },
+        {
+          "type": "script_string",
+          "line": 650,
+          "text": "BSI (Bank Syariah Indonesia)",
+          "context": "title: 'BSI (Bank Syariah Indonesia)'"
+        },
+        {
+          "type": "script_string",
+          "line": 651,
+          "text": "Bank Danamon",
+          "context": "title: 'Bank Danamon'"
+        },
+        {
+          "type": "script_string",
+          "line": 659,
+          "text": "Bank Transfer (International / SWIFT)",
+          "context": "title: 'Bank Transfer (International / SWIFT)'"
+        },
+        {
+          "type": "script_string",
+          "line": 660,
+          "text": "Credit / Debit Card",
+          "context": "title: 'Credit / Debit Card'"
+        },
+        {
+          "type": "script_string",
+          "line": 661,
+          "text": "Lainnya / Custom",
+          "context": "title: 'Lainnya / Custom'"
+        },
+        {
+          "type": "missing_key",
+          "line": 701,
+          "text": "/organizers/bank-accounts",
+          "context": "t('/organizers/bank-accounts')"
+        },
+        {
+          "type": "missing_key",
+          "line": 728,
+          "text": "/disciplines",
+          "context": "t('/disciplines')"
+        },
+        {
+          "type": "missing_key",
+          "line": 746,
+          "text": "T",
+          "context": "t('T')"
+        },
+        {
+          "type": "missing_key",
+          "line": 752,
+          "text": "T",
+          "context": "t('T')"
+        },
+        {
+          "type": "missing_key",
+          "line": 759,
+          "text": "T",
+          "context": "t('T')"
+        },
+        {
+          "type": "missing_key",
+          "line": 765,
+          "text": "T",
+          "context": "t('T')"
+        }
+      ]
+    },
+    {
+      "file": "app/components/layout/LandingHeader.vue",
+      "total_issues": 16,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 53,
+          "text": "Archeris Tournaments",
+          "context": ">Archeris Tournaments<"
+        },
+        {
+          "type": "tag_text",
+          "line": 53,
+          "text": "Archeris Tournaments",
+          "context": "<span>Archeris Tournaments</"
+        },
+        {
+          "type": "raw_text",
+          "line": 69,
+          "text": "Ianseo Tournaments",
+          "context": ">Ianseo Tournaments<"
+        },
+        {
+          "type": "tag_text",
+          "line": 69,
+          "text": "Ianseo Tournaments",
+          "context": "<span>Ianseo Tournaments</"
+        },
+        {
+          "type": "raw_text",
+          "line": 107,
+          "text": "Archery scoring & brackets",
+          "context": ">Archery scoring & brackets<"
+        },
+        {
+          "type": "tag_text",
+          "line": 107,
+          "text": "Archery scoring & brackets",
+          "context": "<span class=\"text-[10px] text-slate-400 font-medium\">Archery scoring & brackets</"
+        },
+        {
+          "type": "raw_text",
+          "line": 109,
+          "text": "All Tournaments",
+          "context": ">All Tournaments<"
+        },
+        {
+          "type": "tag_text",
+          "line": 109,
+          "text": "All Tournaments",
+          "context": "<span>All Tournaments</"
+        },
+        {
+          "type": "raw_text",
+          "line": 145,
+          "text": "No Ianseo archives available",
+          "context": ">No Ianseo archives available<"
+        },
+        {
+          "type": "tag_text",
+          "line": 145,
+          "text": "No Ianseo archives available",
+          "context": "<p>No Ianseo archives available</"
+        },
+        {
+          "type": "raw_text",
+          "line": 150,
+          "text": "Official verified results",
+          "context": ">Official verified results<"
+        },
+        {
+          "type": "tag_text",
+          "line": 150,
+          "text": "Official verified results",
+          "context": "<span class=\"text-[10px] text-slate-400 font-medium\">Official verified results</"
+        },
+        {
+          "type": "raw_text",
+          "line": 152,
+          "text": "Browse Ianseo Events",
+          "context": ">Browse Ianseo Events<"
+        },
+        {
+          "type": "tag_text",
+          "line": 152,
+          "text": "Browse Ianseo Events",
+          "context": "<span>Browse Ianseo Events</"
+        },
+        {
+          "type": "missing_key",
+          "line": 360,
+          "text": "/tournaments?limit=10",
+          "context": "t('/tournaments?limit=10')"
+        },
+        {
+          "type": "missing_key",
+          "line": 361,
+          "text": "/tournaments/external",
+          "context": "t('/tournaments/external')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/profile.vue",
+      "total_issues": 15,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 61,
+          "text": "@username_instagram",
+          "context": "placeholder: '@username_instagram'"
+        },
+        {
+          "type": "script_string",
+          "line": 62,
+          "text": "@username_tiktok",
+          "context": "placeholder: '@username_tiktok'"
+        },
+        {
+          "type": "script_string",
+          "line": 64,
+          "text": "username / link",
+          "context": "placeholder: 'username / link'"
+        },
+        {
+          "type": "script_string",
+          "line": 65,
+          "text": "Twitter / X",
+          "context": "title: 'Twitter / X'"
+        },
+        {
+          "type": "script_string",
+          "line": 65,
+          "text": "@username",
+          "context": "placeholder: '@username'"
+        },
+        {
+          "type": "script_string",
+          "line": 66,
+          "text": "channel / link",
+          "context": "placeholder: 'channel / link'"
+        },
+        {
+          "type": "script_string",
+          "line": 67,
+          "text": "username / link",
+          "context": "placeholder: 'username / link'"
+        },
+        {
+          "type": "script_string",
+          "line": 69,
+          "text": "username / link",
+          "context": "placeholder: 'username / link'"
+        },
+        {
+          "type": "script_string",
+          "line": 70,
+          "text": "username / link",
+          "context": "placeholder: 'username / link'"
+        },
+        {
+          "type": "script_string",
+          "line": 135,
+          "text": "Standard Bow",
+          "context": "title: 'Standard Bow'"
+        },
+        {
+          "type": "script_string",
+          "line": 279,
+          "text": ", err)\n    }\n  }, 500)\n})\n\nconst userStats = ref({\n  totalEvents: 0,\n  bestScore: null\n})\n\nconst activeTab = ref(",
+          "context": "name:', err)\n    }\n  }, 500)\n})\n\nconst userStats = ref({\n  totalEvents: 0,\n  bestScore: null\n})\n\ncon"
+        },
+        {
+          "type": "missing_key",
+          "line": 349,
+          "text": "/archer/me",
+          "context": "t('/archer/me')"
+        },
+        {
+          "type": "missing_key",
+          "line": 356,
+          "text": "T",
+          "context": "t('T')"
+        },
+        {
+          "type": "missing_key",
+          "line": 399,
+          "text": "/archers/me/stats",
+          "context": "t('/archers/me/stats')"
+        },
+        {
+          "type": "missing_key",
+          "line": 449,
+          "text": "/user/profile",
+          "context": "t('/user/profile', payload)"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/result/[slug].vue",
+      "total_issues": 15,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 40,
+          "text": "In Queue",
+          "context": "description: \"In Queue\""
+        },
+        {
+          "type": "script_string",
+          "line": 43,
+          "text": "Wrong Answer",
+          "context": "description: \"Wrong Answer\""
+        },
+        {
+          "type": "script_string",
+          "line": 44,
+          "text": "Time Limit Exceeded",
+          "context": "description: \"Time Limit Exceeded\""
+        },
+        {
+          "type": "script_string",
+          "line": 45,
+          "text": "Compilation Error",
+          "context": "description: \"Compilation Error\""
+        },
+        {
+          "type": "script_string",
+          "line": 46,
+          "text": "Runtime Error (SIGSEGV)",
+          "context": "description: \"Runtime Error (SIGSEGV)\""
+        },
+        {
+          "type": "script_string",
+          "line": 47,
+          "text": "Runtime Error (SIGXFSZ)",
+          "context": "description: \"Runtime Error (SIGXFSZ)\""
+        },
+        {
+          "type": "script_string",
+          "line": 48,
+          "text": "Runtime Error (SIGFPE)",
+          "context": "description: \"Runtime Error (SIGFPE)\""
+        },
+        {
+          "type": "script_string",
+          "line": 49,
+          "text": "Runtime Error (SIGABRT)",
+          "context": "description: \"Runtime Error (SIGABRT)\""
+        },
+        {
+          "type": "script_string",
+          "line": 50,
+          "text": "Runtime Error (NZEC)",
+          "context": "description: \"Runtime Error (NZEC)\""
+        },
+        {
+          "type": "script_string",
+          "line": 51,
+          "text": "Runtime Error (Other)",
+          "context": "description: \"Runtime Error (Other)\""
+        },
+        {
+          "type": "script_string",
+          "line": 52,
+          "text": "Internal Error",
+          "context": "description: \"Internal Error\""
+        },
+        {
+          "type": "static_attr:title",
+          "line": 53,
+          "text": "Login Required",
+          "context": "title=\"Login Required\""
+        },
+        {
+          "type": "script_string",
+          "line": 53,
+          "text": "Exec Format Error",
+          "context": "description: \"Exec Format Error\""
+        },
+        {
+          "type": "static_attr:message",
+          "line": 54,
+          "text": "Please log in to view your event results and track your progress.",
+          "context": "message=\"Please log in to view your event results and track your progress.\""
+        },
+        {
+          "type": "raw_text",
+          "line": 252,
+          "text": "= Math.ceil(filteredResults.length / pageSize)\"\n              class=\"rounded-none border-l border-gray-300\"\n              @click=\"page",
+          "context": ">= Math.ceil(filteredResults.length / pageSize)\"\n              class=\"rounded-none border-l border-g"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/ArticleEditor.vue",
+      "total_issues": 15,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 41,
+          "text": "Archeris Editorial",
+          "context": "name: 'Archeris Editorial'"
+        },
+        {
+          "type": "raw_text",
+          "line": 81,
+          "text": "/blog/",
+          "context": ">/blog/<"
+        },
+        {
+          "type": "tag_text",
+          "line": 81,
+          "text": "/blog/",
+          "context": "<span class=\"pl-3.5 pr-1 text-xs font-mono text-gray-400 select-none\">/blog/</"
+        },
+        {
+          "type": "missing_key",
+          "line": 125,
+          "text": "h2",
+          "context": "t('h2')"
+        },
+        {
+          "type": "missing_key",
+          "line": 127,
+          "text": "h3",
+          "context": "t('h3')"
+        },
+        {
+          "type": "missing_key",
+          "line": 130,
+          "text": "bold",
+          "context": "t('bold')"
+        },
+        {
+          "type": "missing_key",
+          "line": 132,
+          "text": "italic",
+          "context": "t('italic')"
+        },
+        {
+          "type": "missing_key",
+          "line": 135,
+          "text": "ul",
+          "context": "t('ul')"
+        },
+        {
+          "type": "missing_key",
+          "line": 137,
+          "text": "ol",
+          "context": "t('ol')"
+        },
+        {
+          "type": "missing_key",
+          "line": 139,
+          "text": "quote",
+          "context": "t('quote')"
+        },
+        {
+          "type": "missing_key",
+          "line": 142,
+          "text": "link",
+          "context": "t('link')"
+        },
+        {
+          "type": "missing_key",
+          "line": 144,
+          "text": "image",
+          "context": "t('image')"
+        },
+        {
+          "type": "missing_key",
+          "line": 146,
+          "text": "code",
+          "context": "t('code')"
+        },
+        {
+          "type": "missing_key",
+          "line": 462,
+          "text": "/root/dashboard/articles/upload",
+          "context": "t('/root/dashboard/articles/upload', formData, {\n            headers: { 'Content-Type': 'multipart/f"
+        },
+        {
+          "type": "missing_key",
+          "line": 544,
+          "text": "/root/dashboard/articles",
+          "context": "t('/root/dashboard/articles', payload)"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/my-qualification.vue",
+      "total_issues": 14,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 10,
+          "text": "Hasil Kualifikasi",
+          "context": ">Hasil Kualifikasi<"
+        },
+        {
+          "type": "tag_text",
+          "line": 10,
+          "text": "Hasil Kualifikasi",
+          "context": "<span class=\"text-slate-600 dark:text-slate-300\">Hasil Kualifikasi</"
+        },
+        {
+          "type": "raw_text",
+          "line": 17,
+          "text": "Hasil Kualifikasi",
+          "context": ">Hasil Kualifikasi<"
+        },
+        {
+          "type": "tag_text",
+          "line": 17,
+          "text": "Hasil Kualifikasi",
+          "context": "<h2 class=\"text-3xl font-black text-navy dark:text-white tracking-tight\">Hasil Kualifikasi</"
+        },
+        {
+          "type": "raw_text",
+          "line": 21,
+          "text": "Export PDF",
+          "context": ">\n                    Export PDF\n                <"
+        },
+        {
+          "type": "raw_text",
+          "line": 62,
+          "text": "Peringkat\n                            Kualifikasi",
+          "context": ">Peringkat\n                            Kualifikasi<"
+        },
+        {
+          "type": "raw_text",
+          "line": 82,
+          "text": "Jejak Kualifikasi",
+          "context": ">\n                            Jejak Kualifikasi\n                        <"
+        },
+        {
+          "type": "raw_text",
+          "line": 101,
+          "text": "Rincian Skor",
+          "context": ">Rincian Skor<"
+        },
+        {
+          "type": "tag_text",
+          "line": 101,
+          "text": "Rincian Skor",
+          "context": "<th class=\"px-8 py-4 text-center\">Rincian Skor</"
+        },
+        {
+          "type": "raw_text",
+          "line": 103,
+          "text": "10s+X",
+          "context": ">10s+X<"
+        },
+        {
+          "type": "tag_text",
+          "line": 103,
+          "text": "10s+X",
+          "context": "<th class=\"px-8 py-4 text-center\">10s+X</"
+        },
+        {
+          "type": "missing_key",
+          "line": 133,
+          "text": "qualification.my_results",
+          "context": "t('qualification.my_results', 'My Qualification Results')"
+        },
+        {
+          "type": "missing_key",
+          "line": 179,
+          "text": "/archer/me",
+          "context": "t('/archer/me')"
+        },
+        {
+          "type": "missing_key",
+          "line": 216,
+          "text": ",",
+          "context": "t(',')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/root/articles/index.vue",
+      "total_issues": 14,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 43,
+          "text": "Semua Kategori",
+          "context": "label: 'Semua Kategori'"
+        },
+        {
+          "type": "script_string",
+          "line": 44,
+          "text": "Gear & Equipment",
+          "context": "label: 'Gear & Equipment'"
+        },
+        {
+          "type": "script_string",
+          "line": 45,
+          "text": "Rules & Scoring",
+          "context": "label: 'Rules & Scoring'"
+        },
+        {
+          "type": "script_string",
+          "line": 46,
+          "text": "Guides & Technique",
+          "context": "label: 'Guides & Technique'"
+        },
+        {
+          "type": "script_string",
+          "line": 50,
+          "text": "Semua Status",
+          "context": "label: 'Semua Status'"
+        },
+        {
+          "type": "script_string",
+          "line": 51,
+          "text": "Published (Terbit)",
+          "context": "label: 'Published (Terbit)'"
+        },
+        {
+          "type": "script_string",
+          "line": 52,
+          "text": "Draft (Draf)",
+          "context": "label: 'Draft (Draf)'"
+        },
+        {
+          "type": "script_string",
+          "line": 53,
+          "text": "Archived (Arsip)",
+          "context": "label: 'Archived (Arsip)'"
+        },
+        {
+          "type": "missing_key",
+          "line": 72,
+          "text": "title",
+          "context": "t('title')"
+        },
+        {
+          "type": "missing_key",
+          "line": 79,
+          "text": "category",
+          "context": "t('category')"
+        },
+        {
+          "type": "missing_key",
+          "line": 86,
+          "text": "status",
+          "context": "t('status')"
+        },
+        {
+          "type": "missing_key",
+          "line": 93,
+          "text": "views",
+          "context": "t('views')"
+        },
+        {
+          "type": "missing_key",
+          "line": 100,
+          "text": "published_at",
+          "context": "t('published_at')"
+        },
+        {
+          "type": "missing_key",
+          "line": 339,
+          "text": "/root/dashboard/articles",
+          "context": "t('/root/dashboard/articles', { params })"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/profile.vue",
+      "total_issues": 12,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 9,
+          "text": "navigation.dashboard",
+          "context": "t('navigation.dashboard', 'Dashboard')"
+        },
+        {
+          "type": "script_string",
+          "line": 76,
+          "text": "@username_instagram",
+          "context": "placeholder: '@username_instagram'"
+        },
+        {
+          "type": "script_string",
+          "line": 78,
+          "text": "Twitter / X",
+          "context": "title: 'Twitter / X'"
+        },
+        {
+          "type": "script_string",
+          "line": 78,
+          "text": "@username",
+          "context": "placeholder: '@username'"
+        },
+        {
+          "type": "script_string",
+          "line": 80,
+          "text": "@username_tiktok",
+          "context": "placeholder: '@username_tiktok'"
+        },
+        {
+          "type": "missing_key",
+          "line": 95,
+          "text": "organizer.profile.platform_username_placeholder",
+          "context": "t('organizer.profile.platform_username_placeholder', 'username / tautan')"
+        },
+        {
+          "type": "missing_key",
+          "line": 97,
+          "text": "organizer.profile.platform_channel_placeholder",
+          "context": "t('organizer.profile.platform_channel_placeholder', 'id_channel / tautan')"
+        },
+        {
+          "type": "missing_key",
+          "line": 100,
+          "text": "organizer.profile.platform_username_placeholder",
+          "context": "t('organizer.profile.platform_username_placeholder', 'username / tautan')"
+        },
+        {
+          "type": "missing_key",
+          "line": 174,
+          "text": "/cities",
+          "context": "t('/cities')"
+        },
+        {
+          "type": "missing_key",
+          "line": 273,
+          "text": "/organizers/me",
+          "context": "t('/organizers/me')"
+        },
+        {
+          "type": "missing_key",
+          "line": 285,
+          "text": "T",
+          "context": "t('T')"
+        },
+        {
+          "type": "missing_key",
+          "line": 345,
+          "text": "/organizers/me",
+          "context": "t('/organizers/me', {\n      name: form.name,\n      slug: form.slug,\n      banner_url: form.bannerUrl"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/checkout.vue",
+      "total_issues": 11,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 19,
+          "text": "Selesaikan pembayaran untuk mengaktifkan event Anda dan mulai menerima pendaftaran peserta.",
+          "context": ">\n                    Selesaikan pembayaran untuk mengaktifkan event Anda dan mulai menerima pendaft"
+        },
+        {
+          "type": "raw_text",
+          "line": 31,
+          "text": "Pilih Metode Pembayaran",
+          "context": ">\n                        Pilih Metode Pembayaran\n                    <"
+        },
+        {
+          "type": "raw_text",
+          "line": 93,
+          "text": "Ringkasan Pembayaran",
+          "context": ">\n                        Ringkasan Pembayaran\n                    <"
+        },
+        {
+          "type": "raw_text",
+          "line": 100,
+          "text": "Rp 50.000",
+          "context": ">Rp 50.000<"
+        },
+        {
+          "type": "tag_text",
+          "line": 100,
+          "text": "Rp 50.000",
+          "context": "<span class=\"font-semibold text-navy\">Rp 50.000</"
+        },
+        {
+          "type": "raw_text",
+          "line": 119,
+          "text": "Dengan melanjutkan, Anda menyetujui",
+          "context": ">\n                        Dengan melanjutkan, Anda menyetujui <"
+        },
+        {
+          "type": "raw_text",
+          "line": 120,
+          "text": "syarat\n                            dan\n                            ketentuan",
+          "context": ">syarat\n                            dan\n                            ketentuan<"
+        },
+        {
+          "type": "raw_text",
+          "line": 122,
+          "text": "kami.",
+          "context": "> kami.\n                    <"
+        },
+        {
+          "type": "missing_key",
+          "line": 156,
+          "text": "payment.title",
+          "context": "t('payment.title', 'Payment')"
+        },
+        {
+          "type": "missing_key",
+          "line": 202,
+          "text": "/payment/create",
+          "context": "t('/payment/create', {\n            event_id: tournamentId,\n            method: selectedChannel.value"
+        },
+        {
+          "type": "missing_key",
+          "line": 233,
+          "text": "/payment/channels",
+          "context": "t('/payment/channels')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/my-registration.vue",
+      "total_issues": 11,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 10,
+          "text": "Registrasi Saya",
+          "context": ">Registrasi Saya<"
+        },
+        {
+          "type": "tag_text",
+          "line": 10,
+          "text": "Registrasi Saya",
+          "context": "<span class=\"text-slate-600 dark:text-slate-300\">Registrasi Saya</"
+        },
+        {
+          "type": "raw_text",
+          "line": 17,
+          "text": "Data Registrasi",
+          "context": ">Data Registrasi<"
+        },
+        {
+          "type": "tag_text",
+          "line": 17,
+          "text": "Data Registrasi",
+          "context": "<h2 class=\"text-3xl font-black text-navy dark:text-white tracking-tight\">Data Registrasi</"
+        },
+        {
+          "type": "raw_text",
+          "line": 87,
+          "text": "Detail Pertandingan",
+          "context": ">\n                            Detail Pertandingan\n                        <"
+        },
+        {
+          "type": "raw_text",
+          "line": 94,
+          "text": "Divisi &\n                                    Kategori",
+          "context": ">Divisi &\n                                    Kategori<"
+        },
+        {
+          "type": "raw_text",
+          "line": 105,
+          "text": "Nomor\n                                    Bantalan",
+          "context": ">Nomor\n                                    Bantalan<"
+        },
+        {
+          "type": "raw_text",
+          "line": 151,
+          "text": "Bukti\n                                    Pembayaran",
+          "context": ">Bukti\n                                    Pembayaran<"
+        },
+        {
+          "type": "missing_key",
+          "line": 187,
+          "text": "registration.my_registration",
+          "context": "t('registration.my_registration', 'My Registration')"
+        },
+        {
+          "type": "missing_key",
+          "line": 198,
+          "text": ",",
+          "context": "t(',')"
+        },
+        {
+          "type": "missing_key",
+          "line": 214,
+          "text": "id-ID",
+          "context": "t('id-ID')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/root/tournaments/index.vue",
+      "total_issues": 11,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 51,
+          "text": "Semua Status",
+          "context": "label: 'Semua Status'"
+        },
+        {
+          "type": "script_string",
+          "line": 52,
+          "text": "Published (Terbit)",
+          "context": "label: 'Published (Terbit)'"
+        },
+        {
+          "type": "script_string",
+          "line": 53,
+          "text": "Draft (Konsep)",
+          "context": "label: 'Draft (Konsep)'"
+        },
+        {
+          "type": "script_string",
+          "line": 57,
+          "text": "Semua Tipe Paket",
+          "context": "label: 'Semua Tipe Paket'"
+        },
+        {
+          "type": "script_string",
+          "line": 58,
+          "text": "Free (Gratis)",
+          "context": "label: 'Free (Gratis)'"
+        },
+        {
+          "type": "missing_key",
+          "line": 108,
+          "text": "name",
+          "context": "t('name')"
+        },
+        {
+          "type": "missing_key",
+          "line": 121,
+          "text": "participants",
+          "context": "t('participants')"
+        },
+        {
+          "type": "missing_key",
+          "line": 128,
+          "text": "status",
+          "context": "t('status')"
+        },
+        {
+          "type": "missing_key",
+          "line": 135,
+          "text": "start_date",
+          "context": "t('start_date')"
+        },
+        {
+          "type": "missing_key",
+          "line": 262,
+          "text": "common.showing",
+          "context": "t('common.showing', 'Menampilkan')"
+        },
+        {
+          "type": "missing_key",
+          "line": 265,
+          "text": "common.from",
+          "context": "t('common.from', 'dari')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/archers/index.vue",
+      "total_issues": 10,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 5,
+          "text": "archer_archers.title",
+          "context": "t('archer_archers.title', 'Daftar Akun Pemanah')"
+        },
+        {
+          "type": "missing_key",
+          "line": 6,
+          "text": "archer_archers.subtitle",
+          "context": "t('archer_archers.subtitle', 'Kelola dan pantau seluruh data akun pemanah yang terdaftar di sistem.'"
+        },
+        {
+          "type": "missing_key",
+          "line": 10,
+          "text": "archer_archers.breadcrumb",
+          "context": "t('archer_archers.breadcrumb', 'Pemanah')"
+        },
+        {
+          "type": "script_string",
+          "line": 18,
+          "text": "Data Pemanah | Dashboard Archeris",
+          "context": "title: 'Data Pemanah | Dashboard Archeris'"
+        },
+        {
+          "type": "missing_key",
+          "line": 23,
+          "text": "archer_archers.search_placeholder",
+          "context": "t('archer_archers.search_placeholder', 'Cari nama, email, klub, atau ID...')"
+        },
+        {
+          "type": "script_string",
+          "line": 38,
+          "text": "Standard Bow",
+          "context": "label: 'Standard Bow'"
+        },
+        {
+          "type": "missing_key",
+          "line": 133,
+          "text": "/archers",
+          "context": "t('/archers', { params })"
+        },
+        {
+          "type": "missing_key",
+          "line": 159,
+          "text": "archer_archers.fetch_error",
+          "context": "t('archer_archers.fetch_error', 'Gagal memuat data pemanah.')"
+        },
+        {
+          "type": "missing_key",
+          "line": 209,
+          "text": "archer_archers.delete_success",
+          "context": "t('archer_archers.delete_success', 'Akun pemanah berhasil dihapus.')"
+        },
+        {
+          "type": "missing_key",
+          "line": 215,
+          "text": "archer_archers.delete_error",
+          "context": "t('archer_archers.delete_error', 'Gagal menghapus akun pemanah.')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/balance.vue",
+      "total_issues": 10,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 118,
+          "text": "created_at",
+          "context": "t('created_at')"
+        },
+        {
+          "type": "missing_key",
+          "line": 128,
+          "text": "status",
+          "context": "t('status')"
+        },
+        {
+          "type": "missing_key",
+          "line": 138,
+          "text": "amount",
+          "context": "t('amount')"
+        },
+        {
+          "type": "missing_key",
+          "line": 360,
+          "text": "/auth/login",
+          "context": "t('/auth/login', {\n            email: user.value?.email,\n            password: password.value\n      "
+        },
+        {
+          "type": "missing_key",
+          "line": 377,
+          "text": "/organizers/wallet",
+          "context": "t('/organizers/wallet')"
+        },
+        {
+          "type": "missing_key",
+          "line": 387,
+          "text": "/organizers/wallet/withdrawals",
+          "context": "t('/organizers/wallet/withdrawals', {\n            query: {\n                limit: itemsPerPage.value"
+        },
+        {
+          "type": "missing_key",
+          "line": 425,
+          "text": "/organizers/wallet/mutations",
+          "context": "t('/organizers/wallet/mutations', {\n            query: {\n                page: mutationCurrentPage.v"
+        },
+        {
+          "type": "missing_key",
+          "line": 470,
+          "text": "/organizers/bank-accounts",
+          "context": "t('/organizers/bank-accounts')"
+        },
+        {
+          "type": "missing_key",
+          "line": 542,
+          "text": "/organizers/wallet/withdrawals/request-otp",
+          "context": "t('/organizers/wallet/withdrawals/request-otp')"
+        },
+        {
+          "type": "missing_key",
+          "line": 578,
+          "text": "/organizers/wallet/withdrawals",
+          "context": "t('/organizers/wallet/withdrawals', payload)"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/package/index.vue",
+      "total_issues": 10,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 357,
+          "text": "Archeris EO",
+          "context": ">Archeris EO<"
+        },
+        {
+          "type": "tag_text",
+          "line": 357,
+          "text": "Archeris EO",
+          "context": "<span class=\"text-[10px] font-mono font-bold text-primary capitalize bg-primary/10 px-2 py-0.5 round"
+        },
+        {
+          "type": "missing_key",
+          "line": 444,
+          "text": "date",
+          "context": "t('date')"
+        },
+        {
+          "type": "missing_key",
+          "line": 450,
+          "text": "package",
+          "context": "t('package')"
+        },
+        {
+          "type": "missing_key",
+          "line": 456,
+          "text": "qty",
+          "context": "t('qty')"
+        },
+        {
+          "type": "missing_key",
+          "line": 462,
+          "text": "total",
+          "context": "t('total')"
+        },
+        {
+          "type": "missing_key",
+          "line": 468,
+          "text": "method",
+          "context": "t('method')"
+        },
+        {
+          "type": "missing_key",
+          "line": 474,
+          "text": "status",
+          "context": "t('status')"
+        },
+        {
+          "type": "missing_key",
+          "line": 735,
+          "text": "/organizers/me/quota",
+          "context": "t('/organizers/me/quota')"
+        },
+        {
+          "type": "missing_key",
+          "line": 800,
+          "text": "/organizers/me/quota/purchase",
+          "context": "t('/organizers/me/quota/purchase', {\n            plan_id,\n            quantity: selectedQty.value,\n "
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/categories/index.vue",
+      "total_issues": 9,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 135,
+          "text": "common.gender_male",
+          "context": "t('common.gender_male', 'Putra')"
+        },
+        {
+          "type": "missing_key",
+          "line": 137,
+          "text": "common.gender_female",
+          "context": "t('common.gender_female', 'Putri')"
+        },
+        {
+          "type": "missing_key",
+          "line": 315,
+          "text": "/bow-types",
+          "context": "t('/bow-types')"
+        },
+        {
+          "type": "missing_key",
+          "line": 316,
+          "text": "/age-groups",
+          "context": "t('/age-groups')"
+        },
+        {
+          "type": "missing_key",
+          "line": 317,
+          "text": "/team-types",
+          "context": "t('/team-types')"
+        },
+        {
+          "type": "missing_key",
+          "line": 318,
+          "text": "/gender-divisions",
+          "context": "t('/gender-divisions')"
+        },
+        {
+          "type": "missing_key",
+          "line": 422,
+          "text": "event_categories.toast_cannot_delete_paid",
+          "context": "t('event_categories.toast_cannot_delete_paid', 'Kategori tidak dapat dihapus karena telah memiliki p"
+        },
+        {
+          "type": "missing_key",
+          "line": 425,
+          "text": "event_categories.toast_cannot_delete_dep_team",
+          "context": "t('event_categories.toast_cannot_delete_dep_team', 'Kategori Individual ini tidak dapat dihapus kare"
+        },
+        {
+          "type": "missing_key",
+          "line": 428,
+          "text": "event_categories.toast_cannot_delete_has_scores",
+          "context": "t('event_categories.toast_cannot_delete_has_scores', 'Kategori tidak dapat dihapus karena pertanding"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/my-elimination.vue",
+      "total_issues": 9,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 10,
+          "text": "Hasil Eliminasi",
+          "context": ">Hasil Eliminasi<"
+        },
+        {
+          "type": "tag_text",
+          "line": 10,
+          "text": "Hasil Eliminasi",
+          "context": "<span class=\"text-slate-600 dark:text-slate-300\">Hasil Eliminasi</"
+        },
+        {
+          "type": "raw_text",
+          "line": 17,
+          "text": "Hasil Eliminasi",
+          "context": ">Hasil Eliminasi<"
+        },
+        {
+          "type": "tag_text",
+          "line": 17,
+          "text": "Hasil Eliminasi",
+          "context": "<h2 class=\"text-3xl font-black text-navy dark:text-white tracking-tight\">Hasil Eliminasi</"
+        },
+        {
+          "type": "raw_text",
+          "line": 55,
+          "text": "Status Eliminasi",
+          "context": ">Status Eliminasi\n                        <"
+        },
+        {
+          "type": "raw_text",
+          "line": 76,
+          "text": "Alur Eliminasi",
+          "context": ">\n                    Alur Eliminasi\n                <"
+        },
+        {
+          "type": "raw_text",
+          "line": 83,
+          "text": "Belum mencapai eliminasi",
+          "context": ">Belum mencapai eliminasi<"
+        },
+        {
+          "type": "missing_key",
+          "line": 144,
+          "text": "elimination.my_bracket",
+          "context": "t('elimination.my_bracket', 'My Elimination Bracket')"
+        },
+        {
+          "type": "missing_key",
+          "line": 169,
+          "text": "/archer/me",
+          "context": "t('/archer/me')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/targets/index.vue",
+      "total_issues": 9,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 43,
+          "text": "1 Target",
+          "context": "title: '1 Target'"
+        },
+        {
+          "type": "script_string",
+          "line": 44,
+          "text": "2 Target",
+          "context": "title: '2 Target'"
+        },
+        {
+          "type": "script_string",
+          "line": 45,
+          "text": "3 Target",
+          "context": "title: '3 Target'"
+        },
+        {
+          "type": "script_string",
+          "line": 46,
+          "text": "4 Target",
+          "context": "title: '4 Target'"
+        },
+        {
+          "type": "missing_key",
+          "line": 141,
+          "text": ",",
+          "context": "t(',')"
+        },
+        {
+          "type": "missing_key",
+          "line": 193,
+          "text": ",",
+          "context": "t(',')"
+        },
+        {
+          "type": "missing_key",
+          "line": 276,
+          "text": ",",
+          "context": "t(',')"
+        },
+        {
+          "type": "missing_key",
+          "line": 281,
+          "text": ",",
+          "context": "t(',')"
+        },
+        {
+          "type": "missing_key",
+          "line": 294,
+          "text": ",",
+          "context": "t(',')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/profile/[id].vue",
+      "total_issues": 8,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 9,
+          "text": "Arif Dwi Pangestu",
+          "context": "name: 'Arif Dwi Pangestu'"
+        },
+        {
+          "type": "script_string",
+          "line": 17,
+          "text": "Ranking Nasional",
+          "context": "label: 'Ranking Nasional'"
+        },
+        {
+          "type": "script_string",
+          "line": 18,
+          "text": "Rata-rata Skor",
+          "context": "label: 'Rata-rata Skor'"
+        },
+        {
+          "type": "script_string",
+          "line": 19,
+          "text": "Total Medali",
+          "context": "label: 'Total Medali'"
+        },
+        {
+          "type": "raw_text",
+          "line": 28,
+          "text": "INA - Indonesia",
+          "context": ">INA - Indonesia<"
+        },
+        {
+          "type": "tag_text",
+          "line": 28,
+          "text": "INA - Indonesia",
+          "context": "<span class=\"text-sm font-bold tracking-wide\">INA - Indonesia</"
+        },
+        {
+          "type": "script_string",
+          "line": 41,
+          "text": "PON Aceh-Sumut 2024",
+          "context": "name: 'PON Aceh-Sumut 2024'"
+        },
+        {
+          "type": "script_string",
+          "line": 50,
+          "text": "Surabaya Archery Cup",
+          "context": "name: 'Surabaya Archery Cup'"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/OrganizerTournamentsList.vue",
+      "total_issues": 8,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 52,
+          "text": "Events Dashboard",
+          "context": "title: 'Events Dashboard'"
+        },
+        {
+          "type": "script_string",
+          "line": 53,
+          "text": "Welcome to your events dashboard! Here you can manage all your tournaments, registrations, brackets, and live results in one place.",
+          "context": "description: 'Welcome to your events dashboard! Here you can manage all your tournaments, registrati"
+        },
+        {
+          "type": "script_string",
+          "line": 58,
+          "text": "Create Tournaments",
+          "context": "title: 'Create Tournaments'"
+        },
+        {
+          "type": "script_string",
+          "line": 59,
+          "text": "Click here to create a new archery tournament. You can configure categories, sessions, elimination brackets, venue locations, and fees.",
+          "context": "description: 'Click here to create a new archery tournament. You can configure categories, sessions,"
+        },
+        {
+          "type": "script_string",
+          "line": 64,
+          "text": "Search & Filters",
+          "context": "title: 'Search & Filters'"
+        },
+        {
+          "type": "script_string",
+          "line": 65,
+          "text": "Quickly find your tournaments by code, name, or location. Keep your dashboard organized as your event list grows.",
+          "context": "description: 'Quickly find your tournaments by code, name, or location. Keep your dashboard organize"
+        },
+        {
+          "type": "script_string",
+          "line": 70,
+          "text": "Tournament List & Management",
+          "context": "title: 'Tournament List & Management'"
+        },
+        {
+          "type": "script_string",
+          "line": 71,
+          "text": "All your active and draft tournaments are listed here. Click",
+          "context": "description: 'All your active and draft tournaments are listed here. Click \""
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/tournaments/[id]/leaderboard.vue",
+      "total_issues": 7,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 56,
+          "text": "leaderboard_page.search_placeholder",
+          "context": "t('leaderboard_page.search_placeholder', 'Cari nama pemanah, klub, atau kontingen...')"
+        },
+        {
+          "type": "missing_key",
+          "line": 173,
+          "text": "leaderboard_page.no_matched_title",
+          "context": "t('leaderboard_page.no_matched_title', 'Tidak Ada Peserta yang Cocok')"
+        },
+        {
+          "type": "missing_key",
+          "line": 176,
+          "text": "leaderboard_page.no_matched_desc",
+          "context": "t('leaderboard_page.no_matched_desc', 'Coba ubah kata kunci pencarian atau sesuaikan pilihan filter "
+        },
+        {
+          "type": "raw_text",
+          "line": 210,
+          "text": "Leader #1",
+          "context": ">Leader #1<"
+        },
+        {
+          "type": "tag_text",
+          "line": 210,
+          "text": "Leader #1",
+          "context": "<span>Leader #1</"
+        },
+        {
+          "type": "raw_text",
+          "line": 262,
+          "text": "10+X",
+          "context": ">10+X<"
+        },
+        {
+          "type": "tag_text",
+          "line": 262,
+          "text": "10+X",
+          "context": "<th class=\"py-3.5 px-4 text-center hidden sm:table-cell\">10+X</"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/tournaments/[id]/my-registration.vue",
+      "total_issues": 7,
+      "issues": [
+        {
+          "type": "tag_text",
+          "line": 84,
+          "text": "Pembayaran Ditolak",
+          "context": "<span v-else-if=\"participant.transaction?.status === 'rejected' || participant.payment_status === 'r"
+        },
+        {
+          "type": "raw_text",
+          "line": 85,
+          "text": "Pembayaran Ditolak",
+          "context": ">\n                                            Pembayaran Ditolak\n                                   "
+        },
+        {
+          "type": "tag_text",
+          "line": 88,
+          "text": "Menunggu Verifikasi",
+          "context": "<span v-else-if=\"participant.transaction?.status === 'awaiting_verification' || participant.payment_"
+        },
+        {
+          "type": "raw_text",
+          "line": 89,
+          "text": "Menunggu Verifikasi",
+          "context": ">\n                                            Menunggu Verifikasi\n                                  "
+        },
+        {
+          "type": "tag_text",
+          "line": 92,
+          "text": "Menunggu Pembayaran",
+          "context": "<span v-else\n                                            class=\"inline-flex items-center px-2.5 py-0"
+        },
+        {
+          "type": "raw_text",
+          "line": 93,
+          "text": "Menunggu Pembayaran",
+          "context": ">\n                                            Menunggu Pembayaran\n                                  "
+        },
+        {
+          "type": "missing_key",
+          "line": 208,
+          "text": "id-ID",
+          "context": "t('id-ID')"
+        }
+      ]
+    },
+    {
+      "file": "app/components/layout/AppHeader.vue",
+      "total_issues": 7,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 86,
+          "text": ", e)\n  }\n}\n\nwatch(currentEventId, (id) => {\n  if (id && (!eventTitle.value || currentEvent.value?.id !== id)) {\n    loadEventName(id)\n  }\n}, { immediate: true })\n\nconst backToDashboardPath = computed(() => {\n  return `/dashboard/${userPersona.value}/tournaments`\n})\n\nconst isSidebarOpen = useState(",
+          "context": "name:', e)\n  }\n}\n\nwatch(currentEventId, (id) => {\n  if (id && (!eventTitle.value || currentEvent.val"
+        },
+        {
+          "type": "raw_text",
+          "line": 172,
+          "text": "Ctrl K",
+          "context": ">Ctrl K<"
+        },
+        {
+          "type": "missing_key",
+          "line": 189,
+          "text": "./NotificationList.vue",
+          "context": "t('./NotificationList.vue')"
+        },
+        {
+          "type": "missing_key",
+          "line": 190,
+          "text": "./DocSearchDialog.vue",
+          "context": "t('./DocSearchDialog.vue')"
+        },
+        {
+          "type": "missing_key",
+          "line": 239,
+          "text": "/",
+          "context": "t('/')"
+        },
+        {
+          "type": "missing_key",
+          "line": 379,
+          "text": "/",
+          "context": "t('/')"
+        },
+        {
+          "type": "missing_key",
+          "line": 421,
+          "text": " ",
+          "context": "t(' ')"
+        }
+      ]
+    },
+    {
+      "file": "app/components/layout/AppSidebar.vue",
+      "total_issues": 7,
+      "issues": [
+        {
+          "type": "static_attr:label",
+          "line": 7,
+          "text": "isSidebarOpen ? 'Menu navigasi terbuka' : 'Menu navigasi tertutup'",
+          "context": "label=\"isSidebarOpen ? 'Menu navigasi terbuka' : 'Menu navigasi tertutup'\""
+        },
+        {
+          "type": "missing_key",
+          "line": 204,
+          "text": "sidebar.community",
+          "context": "t('sidebar.community', 'Community')"
+        },
+        {
+          "type": "missing_key",
+          "line": 205,
+          "text": "sidebar.archers",
+          "context": "t('sidebar.archers', 'Archers')"
+        },
+        {
+          "type": "missing_key",
+          "line": 252,
+          "text": "sidebar.management",
+          "context": "t('sidebar.management', 'Management')"
+        },
+        {
+          "type": "missing_key",
+          "line": 253,
+          "text": "sidebar.tournaments",
+          "context": "t('sidebar.tournaments', 'Tournaments')"
+        },
+        {
+          "type": "missing_key",
+          "line": 254,
+          "text": "sidebar.archers",
+          "context": "t('sidebar.archers', 'Archers')"
+        },
+        {
+          "type": "missing_key",
+          "line": 255,
+          "text": "sidebar.articles",
+          "context": "t('sidebar.articles', 'Articles')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/reports/finance.vue",
+      "total_issues": 6,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 155,
+          "text": "id-ID",
+          "context": "t('id-ID')"
+        },
+        {
+          "type": "script_string",
+          "line": 188,
+          "text": "No. Referensi",
+          "context": "label: 'No. Referensi'"
+        },
+        {
+          "type": "script_string",
+          "line": 189,
+          "text": "Nama Pembayar",
+          "context": "label: 'Nama Pembayar'"
+        },
+        {
+          "type": "script_string",
+          "line": 191,
+          "text": "Metode Pembayaran",
+          "context": "label: 'Metode Pembayaran'"
+        },
+        {
+          "type": "script_string",
+          "line": 193,
+          "text": "Nominal (IDR)",
+          "context": "label: 'Nominal (IDR)'"
+        },
+        {
+          "type": "script_string",
+          "line": 194,
+          "text": "Waktu Transaksi",
+          "context": "label: 'Waktu Transaksi'"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/reports/performance.vue",
+      "total_issues": 6,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 132,
+          "text": "Nama Event",
+          "context": "label: 'Nama Event'"
+        },
+        {
+          "type": "script_string",
+          "line": 133,
+          "text": "Jadwal Event",
+          "context": "label: 'Jadwal Event'"
+        },
+        {
+          "type": "script_string",
+          "line": 134,
+          "text": "Kapasitas Kuota",
+          "context": "label: 'Kapasitas Kuota'"
+        },
+        {
+          "type": "script_string",
+          "line": 135,
+          "text": "Jumlah Terdaftar",
+          "context": "label: 'Jumlah Terdaftar'"
+        },
+        {
+          "type": "script_string",
+          "line": 136,
+          "text": "Tingkat Keterisian (%)",
+          "context": "label: 'Tingkat Keterisian (%)'"
+        },
+        {
+          "type": "script_string",
+          "line": 137,
+          "text": "Status Event",
+          "context": "label: 'Status Event'"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/settings.vue",
+      "total_issues": 6,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 325,
+          "text": "/user/profile",
+          "context": "t('/user/profile')"
+        },
+        {
+          "type": "missing_key",
+          "line": 331,
+          "text": "T",
+          "context": "t('T')"
+        },
+        {
+          "type": "missing_key",
+          "line": 349,
+          "text": "/user/profile",
+          "context": "t('/user/profile', {\n      username: accountForm.value.username,\n      full_name: accountForm.value."
+        },
+        {
+          "type": "missing_key",
+          "line": 419,
+          "text": "/user/password",
+          "context": "t('/user/password', {\n      new_password: securityForm.value.new_password\n    })"
+        },
+        {
+          "type": "missing_key",
+          "line": 450,
+          "text": "/user/request-email-change",
+          "context": "t('/user/request-email-change', {\n      new_email: emailForm.value.new_email\n    })"
+        },
+        {
+          "type": "missing_key",
+          "line": 468,
+          "text": "/user/verify-email-change",
+          "context": "t('/user/verify-email-change', {\n      new_email: emailForm.value.new_email,\n      otp: emailForm.va"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/printout/qualification/index.vue",
+      "total_issues": 6,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 153,
+          "text": "A4 (Portrait)",
+          "context": ">A4 (Portrait)<"
+        },
+        {
+          "type": "tag_text",
+          "line": 153,
+          "text": "A4 (Portrait)",
+          "context": "<span class=\"text-white\">A4 (Portrait)</"
+        },
+        {
+          "type": "raw_text",
+          "line": 157,
+          "text": "2 Scoresheets/Page",
+          "context": ">2 Scoresheets/Page<"
+        },
+        {
+          "type": "tag_text",
+          "line": 157,
+          "text": "2 Scoresheets/Page",
+          "context": "<span class=\"text-white\">2 Scoresheets/Page</"
+        },
+        {
+          "type": "missing_key",
+          "line": 290,
+          "text": "content-disposition",
+          "context": "t('content-disposition')"
+        },
+        {
+          "type": "missing_key",
+          "line": 303,
+          "text": "a",
+          "context": "t('a')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/reports/participants.vue",
+      "total_issues": 5,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 101,
+          "text": "Standard Bow",
+          "context": "label: 'Standard Bow'"
+        },
+        {
+          "type": "script_string",
+          "line": 205,
+          "text": "Nama Peserta",
+          "context": "label: 'Nama Peserta'"
+        },
+        {
+          "type": "script_string",
+          "line": 208,
+          "text": "Kategori Lomba",
+          "context": "label: 'Kategori Lomba'"
+        },
+        {
+          "type": "script_string",
+          "line": 209,
+          "text": "Status Kehadiran",
+          "context": "label: 'Status Kehadiran'"
+        },
+        {
+          "type": "script_string",
+          "line": 210,
+          "text": "Tanggal Registrasi",
+          "context": "label: 'Tanggal Registrasi'"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/elimination/[bracketId]/index.vue",
+      "total_issues": 5,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 5,
+          "text": "Bagan Eliminasi - Archeris Dashboard",
+          "context": "title: 'Bagan Eliminasi - Archeris Dashboard'"
+        },
+        {
+          "type": "raw_text",
+          "line": 9,
+          "text": "Gagal Memuat Bagan Eliminasi",
+          "context": ">Gagal Memuat Bagan Eliminasi<"
+        },
+        {
+          "type": "tag_text",
+          "line": 9,
+          "text": "Gagal Memuat Bagan Eliminasi",
+          "context": "<h3 class=\"text-xl font-black text-navy\">Gagal Memuat Bagan Eliminasi</"
+        },
+        {
+          "type": "raw_text",
+          "line": 12,
+          "text": "Muat Ulang Halaman",
+          "context": ">\n            Muat Ulang Halaman\n          <"
+        },
+        {
+          "type": "tag_text",
+          "line": 12,
+          "text": "Muat Ulang Halaman",
+          "context": "<button @click=\"clearError()\" class=\"px-6 py-2.5 rounded-xl bg-navy text-primary font-black text-xs "
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/printout/index.vue",
+      "total_issues": 5,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 226,
+          "text": "content-disposition",
+          "context": "t('content-disposition')"
+        },
+        {
+          "type": "missing_key",
+          "line": 239,
+          "text": "a",
+          "context": "t('a')"
+        },
+        {
+          "type": "missing_key",
+          "line": 248,
+          "text": "event_printout.err_download_failed",
+          "context": "t('event_printout.err_download_failed', 'Gagal mengunduh berkas PDF. Pastikan koneksi ke server API "
+        },
+        {
+          "type": "missing_key",
+          "line": 477,
+          "text": "event_printout.section_schedule",
+          "context": "t('event_printout.section_schedule', 'Competition Schedule & Program')"
+        },
+        {
+          "type": "missing_key",
+          "line": 519,
+          "text": "&",
+          "context": "t('&')"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/ImportParticipantsModal.vue",
+      "total_issues": 5,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 116,
+          "text": "update:show",
+          "context": "t('update:show', false)"
+        },
+        {
+          "type": "missing_key",
+          "line": 157,
+          "text": "a",
+          "context": "t('a')"
+        },
+        {
+          "type": "missing_key",
+          "line": 181,
+          "text": ",",
+          "context": "t(',')"
+        },
+        {
+          "type": "missing_key",
+          "line": 199,
+          "text": ",",
+          "context": "t(',')"
+        },
+        {
+          "type": "missing_key",
+          "line": 233,
+          "text": "parsed",
+          "context": "t('parsed', parsedArchers)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/elimination/ChampionshipTower.vue",
+      "total_issues": 5,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 7,
+          "text": "navigate",
+          "context": "t('navigate', totalRounds - 1)"
+        },
+        {
+          "type": "missing_key",
+          "line": 16,
+          "text": "navigate",
+          "context": "t('navigate', totalRounds)"
+        },
+        {
+          "type": "missing_key",
+          "line": 39,
+          "text": "select-match",
+          "context": "t('select-match', $event)"
+        },
+        {
+          "type": "missing_key",
+          "line": 49,
+          "text": "select-match",
+          "context": "t('select-match', $event)"
+        },
+        {
+          "type": "missing_key",
+          "line": 82,
+          "text": "select-match",
+          "context": "t('select-match', $event)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/layout/NotificationList.vue",
+      "total_issues": 5,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 13,
+          "text": "mark-all-read",
+          "context": "t('mark-all-read')"
+        },
+        {
+          "type": "missing_key",
+          "line": 53,
+          "text": "mark-read",
+          "context": "t('mark-read', note.id)"
+        },
+        {
+          "type": "missing_key",
+          "line": 82,
+          "text": "close",
+          "context": "t('close')"
+        },
+        {
+          "type": "missing_key",
+          "line": 174,
+          "text": "click",
+          "context": "t('click', note)"
+        },
+        {
+          "type": "missing_key",
+          "line": 175,
+          "text": "close",
+          "context": "t('close')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/settings.vue",
+      "total_issues": 4,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 277,
+          "text": "/user/profile",
+          "context": "t('/user/profile')"
+        },
+        {
+          "type": "missing_key",
+          "line": 297,
+          "text": "/user/password",
+          "context": "t('/user/password', {\n      new_password: securityForm.value.new_password\n    })"
+        },
+        {
+          "type": "missing_key",
+          "line": 324,
+          "text": "/user/request-email-change",
+          "context": "t('/user/request-email-change', {\n      new_email: emailForm.value.new_email\n    })"
+        },
+        {
+          "type": "missing_key",
+          "line": 342,
+          "text": "/user/verify-email-change",
+          "context": "t('/user/verify-email-change', {\n      new_email: emailForm.value.new_email,\n      otp: emailForm.va"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/tournaments/[id]/my-qualification.vue",
+      "total_issues": 4,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 180,
+          "text": "qualification.ten_count",
+          "context": "t('qualification.ten_count', '10')"
+        },
+        {
+          "type": "missing_key",
+          "line": 181,
+          "text": "qualification.x_count",
+          "context": "t('qualification.x_count', 'X')"
+        },
+        {
+          "type": "missing_key",
+          "line": 304,
+          "text": "/archer/me",
+          "context": "t('/archer/me')"
+        },
+        {
+          "type": "missing_key",
+          "line": 361,
+          "text": ",",
+          "context": "t(',')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/bank-accounts.vue",
+      "total_issues": 4,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 103,
+          "text": "/organizers/bank-accounts",
+          "context": "t('/organizers/bank-accounts')"
+        },
+        {
+          "type": "missing_key",
+          "line": 157,
+          "text": "/organizers/bank-accounts",
+          "context": "t('/organizers/bank-accounts', payload)"
+        },
+        {
+          "type": "missing_key",
+          "line": 186,
+          "text": "organizer.bank_accounts.set_primary_success",
+          "context": "t('organizer.bank_accounts.set_primary_success', { bank: account.bank_name })"
+        },
+        {
+          "type": "missing_key",
+          "line": 190,
+          "text": "organizer.bank_accounts.set_primary_error",
+          "context": "t('organizer.bank_accounts.set_primary_error')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/earnings/[id].vue",
+      "total_issues": 4,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 76,
+          "text": "date",
+          "context": "t('date')"
+        },
+        {
+          "type": "missing_key",
+          "line": 83,
+          "text": "method",
+          "context": "t('method')"
+        },
+        {
+          "type": "missing_key",
+          "line": 90,
+          "text": "reference",
+          "context": "t('reference')"
+        },
+        {
+          "type": "missing_key",
+          "line": 97,
+          "text": "amount",
+          "context": "t('amount')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/reports/index.vue",
+      "total_issues": 4,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 84,
+          "text": "/tournaments/my?limit=100",
+          "context": "t('/tournaments/my?limit=100')"
+        },
+        {
+          "type": "missing_key",
+          "line": 85,
+          "text": "/organizers/reports/participants",
+          "context": "t('/organizers/reports/participants')"
+        },
+        {
+          "type": "missing_key",
+          "line": 86,
+          "text": "/organizers/reports/finance",
+          "context": "t('/organizers/reports/finance')"
+        },
+        {
+          "type": "missing_key",
+          "line": 87,
+          "text": "/organizers/reports/attendance",
+          "context": "t('/organizers/reports/attendance')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/media.vue",
+      "total_issues": 4,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 141,
+          "text": ".",
+          "context": "t('.')"
+        },
+        {
+          "type": "missing_key",
+          "line": 190,
+          "text": ".",
+          "context": "t('.')"
+        },
+        {
+          "type": "missing_key",
+          "line": 199,
+          "text": ".",
+          "context": "t('.')"
+        },
+        {
+          "type": "missing_key",
+          "line": 267,
+          "text": "/media/upload",
+          "context": "t('/media/upload', formData)"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/participants/add.vue",
+      "total_issues": 4,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 362,
+          "text": "/clubs?limit=100",
+          "context": "t('/clubs?limit=100')"
+        },
+        {
+          "type": "missing_key",
+          "line": 371,
+          "text": "/cities",
+          "context": "t('/cities')"
+        },
+        {
+          "type": "missing_key",
+          "line": 453,
+          "text": "a",
+          "context": "t('a')"
+        },
+        {
+          "type": "missing_key",
+          "line": 600,
+          "text": "/archers",
+          "context": "t('/archers', {\n                    full_name: archer.full_name,\n                    username: arche"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/participants/index.vue",
+      "total_issues": 4,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 18,
+          "text": "Check-in Kolektif",
+          "context": ">Check-in Kolektif<"
+        },
+        {
+          "type": "tag_text",
+          "line": 18,
+          "text": "Check-in Kolektif",
+          "context": "<span class=\"hidden sm:inline\">Check-in Kolektif</"
+        },
+        {
+          "type": "missing_key",
+          "line": 299,
+          "text": "a",
+          "context": "t('a')"
+        },
+        {
+          "type": "missing_key",
+          "line": 309,
+          "text": "a",
+          "context": "t('a')"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/subscription/SubscriptionBillingHistory.vue",
+      "total_issues": 4,
+      "issues": [
+        {
+          "type": "static_attr:title",
+          "line": 51,
+          "text": "View Invoice",
+          "context": "title=\"View Invoice\""
+        },
+        {
+          "type": "static_attr:title",
+          "line": 56,
+          "text": "Download Invoice",
+          "context": "title=\"Download Invoice\""
+        },
+        {
+          "type": "missing_key",
+          "line": 88,
+          "text": "a",
+          "context": "t('a')"
+        },
+        {
+          "type": "missing_key",
+          "line": 90,
+          "text": "T",
+          "context": "t('T')"
+        }
+      ]
+    },
+    {
+      "file": "app/components/elimination/EliminationBracketManager.vue",
+      "total_issues": 4,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 547,
+          "text": "content-disposition",
+          "context": "t('content-disposition')"
+        },
+        {
+          "type": "missing_key",
+          "line": 560,
+          "text": "a",
+          "context": "t('a')"
+        },
+        {
+          "type": "missing_key",
+          "line": 568,
+          "text": "event_elimination.toast_scoresheet_downloaded",
+          "context": "t('event_elimination.toast_scoresheet_downloaded', 'Scoresheet PDF berhasil diunduh')"
+        },
+        {
+          "type": "missing_key",
+          "line": 1199,
+          "text": "DD MMM YYYY, HH:mm",
+          "context": "t('DD MMM YYYY, HH:mm')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/payments/index.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 94,
+          "text": "/payment/my?limit=100&offset=0",
+          "context": "t('/payment/my?limit=100&offset=0')"
+        },
+        {
+          "type": "script_string",
+          "line": 111,
+          "text": "Pendaftaran Gratis",
+          "context": "label: 'Pendaftaran Gratis'"
+        },
+        {
+          "type": "missing_key",
+          "line": 375,
+          "text": "id-ID",
+          "context": "t('id-ID')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/tournaments/[id]/my-team.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 80,
+          "text": "Share Team",
+          "context": ">Share Team<"
+        },
+        {
+          "type": "tag_text",
+          "line": 80,
+          "text": "Share Team",
+          "context": "<span>Share Team</"
+        },
+        {
+          "type": "raw_text",
+          "line": 150,
+          "text": "Scores and rankings update automatically in real-time as ends are scored on target.",
+          "context": ">\n            Scores and rankings update automatically in real-time as ends are scored on target.\n  "
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/tournaments/create.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 171,
+          "text": "event_create.method_num",
+          "context": "t('event_create.method_num', { val: index + 1 })"
+        },
+        {
+          "type": "missing_key",
+          "line": 338,
+          "text": "/disciplines",
+          "context": "t('/disciplines')"
+        },
+        {
+          "type": "missing_key",
+          "line": 478,
+          "text": "/tournaments",
+          "context": "t('/tournaments', payload)"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/index.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 58,
+          "text": "id-ID",
+          "context": "t('id-ID')"
+        },
+        {
+          "type": "missing_key",
+          "line": 71,
+          "text": "/organizers/stats",
+          "context": "t('/organizers/stats')"
+        },
+        {
+          "type": "missing_key",
+          "line": 92,
+          "text": "/tournaments",
+          "context": "t('/tournaments')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/reports/attendance.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 173,
+          "text": "Nama Peserta",
+          "context": "label: 'Nama Peserta'"
+        },
+        {
+          "type": "script_string",
+          "line": 176,
+          "text": "Nomor Bantalan",
+          "context": "label: 'Nomor Bantalan'"
+        },
+        {
+          "type": "script_string",
+          "line": 177,
+          "text": "Waktu Check-In",
+          "context": "label: 'Waktu Check-In'"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/elimination/index.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 80,
+          "text": "T",
+          "context": "t('T')"
+        },
+        {
+          "type": "script_string",
+          "line": 304,
+          "text": "Set System",
+          "context": "title: 'Set System'"
+        },
+        {
+          "type": "script_string",
+          "line": 305,
+          "text": "Total Score",
+          "context": "title: 'Total Score'"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/participants/detail.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 120,
+          "text": "common.error_loading",
+          "context": "t('common.error_loading', 'Gagal memuat data peserta')"
+        },
+        {
+          "type": "missing_key",
+          "line": 236,
+          "text": "id-ID",
+          "context": "t('id-ID')"
+        },
+        {
+          "type": "script_string",
+          "line": 247,
+          "text": "QRIS Online",
+          "context": "label: 'QRIS Online'"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/printout/participants/index.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 31,
+          "text": "alphabetical",
+          "context": "t('alphabetical')"
+        },
+        {
+          "type": "missing_key",
+          "line": 48,
+          "text": "by-club",
+          "context": "t('by-club')"
+        },
+        {
+          "type": "missing_key",
+          "line": 65,
+          "text": "by-category",
+          "context": "t('by-category')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/qualification/[session].vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 28,
+          "text": "event_qualification.back",
+          "context": "t('event_qualification.back', 'Kembali')"
+        },
+        {
+          "type": "missing_key",
+          "line": 558,
+          "text": "content-disposition",
+          "context": "t('content-disposition')"
+        },
+        {
+          "type": "missing_key",
+          "line": 571,
+          "text": "a",
+          "context": "t('a')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/teams/index.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 282,
+          "text": "/clubs",
+          "context": "t('/clubs', { params: { limit: 1000 } })"
+        },
+        {
+          "type": "missing_key",
+          "line": 420,
+          "text": "event_teams.toast_mixed_gender_required",
+          "context": "t('event_teams.toast_mixed_gender_required', 'Mixed team wajib terdiri dari 1 pemanah putra dan 1 pe"
+        },
+        {
+          "type": "missing_key",
+          "line": 490,
+          "text": " ",
+          "context": "t(' ')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/wallet/index.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 109,
+          "text": "/wallet/my",
+          "context": "t('/wallet/my')"
+        },
+        {
+          "type": "missing_key",
+          "line": 114,
+          "text": "/wallet/withdrawals",
+          "context": "t('/wallet/withdrawals')"
+        },
+        {
+          "type": "missing_key",
+          "line": 124,
+          "text": "/wallet/withdrawals",
+          "context": "t('/wallet/withdrawals', {\n      amount: withdrawAmount.value,\n      notes: withdrawNotes.value\n    "
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/profile/edit.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 11,
+          "text": "Archeris.net",
+          "context": ">Archeris.net<"
+        },
+        {
+          "type": "tag_text",
+          "line": 11,
+          "text": "Archeris.net",
+          "context": "<span class=\"text-navy text-xl font-black tracking-tight font-display\">Archeris.net</"
+        },
+        {
+          "type": "script_string",
+          "line": 13,
+          "text": "Arif Dwi Pangestu",
+          "context": "name: 'Arif Dwi Pangestu'"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/ArcherTournamentFilterModal.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 251,
+          "text": "update:show",
+          "context": "t('update:show', false)"
+        },
+        {
+          "type": "missing_key",
+          "line": 255,
+          "text": "apply",
+          "context": "t('apply', { ...draftFilters.value })"
+        },
+        {
+          "type": "missing_key",
+          "line": 256,
+          "text": "update:show",
+          "context": "t('update:show', false)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/CertificateFilterModal.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 308,
+          "text": "update:show",
+          "context": "t('update:show', false)"
+        },
+        {
+          "type": "missing_key",
+          "line": 312,
+          "text": "apply",
+          "context": "t('apply', { ...draftFilters.value })"
+        },
+        {
+          "type": "missing_key",
+          "line": 313,
+          "text": "update:show",
+          "context": "t('update:show', false)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/LeaderboardFilterModal.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 260,
+          "text": "update:show",
+          "context": "t('update:show', false)"
+        },
+        {
+          "type": "missing_key",
+          "line": 264,
+          "text": "apply",
+          "context": "t('apply', { ...draftFilters.value })"
+        },
+        {
+          "type": "missing_key",
+          "line": 265,
+          "text": "update:show",
+          "context": "t('update:show', false)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/ParticipantFilterModal.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 547,
+          "text": "update:show",
+          "context": "t('update:show', false)"
+        },
+        {
+          "type": "missing_key",
+          "line": 551,
+          "text": "apply",
+          "context": "t('apply', { ...draftFilters.value })"
+        },
+        {
+          "type": "missing_key",
+          "line": 552,
+          "text": "update:show",
+          "context": "t('update:show', false)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/PaymentFilterModal.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 254,
+          "text": "update:show",
+          "context": "t('update:show', false)"
+        },
+        {
+          "type": "missing_key",
+          "line": 258,
+          "text": "apply",
+          "context": "t('apply', { ...draftFilters.value })"
+        },
+        {
+          "type": "missing_key",
+          "line": 259,
+          "text": "update:show",
+          "context": "t('update:show', false)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/elimination/PublicChampionshipTower.vue",
+      "total_issues": 3,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 29,
+          "text": "select-match",
+          "context": "t('select-match', $event)"
+        },
+        {
+          "type": "missing_key",
+          "line": 39,
+          "text": "select-match",
+          "context": "t('select-match', $event)"
+        },
+        {
+          "type": "missing_key",
+          "line": 72,
+          "text": "select-match",
+          "context": "t('select-match', $event)"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/certificates/index.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 74,
+          "text": "?",
+          "context": "t('?')"
+        },
+        {
+          "type": "missing_key",
+          "line": 102,
+          "text": "/archers/my/certificates",
+          "context": "t('/archers/my/certificates')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/earnings/index.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 60,
+          "text": "/organizers/earnings",
+          "context": "t('/organizers/earnings')"
+        },
+        {
+          "type": "missing_key",
+          "line": 142,
+          "text": "earnings.table_header_category",
+          "context": "t('earnings.table_header_category', 'Category / Type')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/package/detail.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 104,
+          "text": "id-ID",
+          "context": "t('id-ID')"
+        },
+        {
+          "type": "missing_key",
+          "line": 110,
+          "text": "id-ID",
+          "context": "t('id-ID')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/scorekeepers.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 93,
+          "text": "/organizers/scorekeepers",
+          "context": "t('/organizers/scorekeepers', {\n            params: {\n                limit: limit.value,\n          "
+        },
+        {
+          "type": "missing_key",
+          "line": 186,
+          "text": "/organizers/scorekeepers",
+          "context": "t('/organizers/scorekeepers', {\n                name: form.name\n            })"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/teams/index.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 60,
+          "text": "/teams/my",
+          "context": "t('/teams/my')"
+        },
+        {
+          "type": "missing_key",
+          "line": 105,
+          "text": "org_teams.delete_confirm",
+          "context": "t('org_teams.delete_confirm', { name: team.name })"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/certificate.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 161,
+          "text": "?",
+          "context": "t('?')"
+        },
+        {
+          "type": "missing_key",
+          "line": 192,
+          "text": " ",
+          "context": "t(' ')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/participants/edit.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 119,
+          "text": "id-ID",
+          "context": "t('id-ID', {\n        style: 'currency',\n        currency: 'IDR',\n        minimumFractionDigits: 0,\n "
+        },
+        {
+          "type": "missing_key",
+          "line": 272,
+          "text": "common.error_loading",
+          "context": "t('common.error_loading', 'Gagal memuat data peserta')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/printout/statistics.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 30,
+          "text": "classes",
+          "context": "t('classes')"
+        },
+        {
+          "type": "missing_key",
+          "line": 47,
+          "text": "clubs",
+          "context": "t('clubs')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/targets/map.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 9,
+          "text": "Target Assignments",
+          "context": ">Target Assignments<"
+        },
+        {
+          "type": "missing_key",
+          "line": 97,
+          "text": "org_targets.map_title",
+          "context": "t('org_targets.map_title', 'Peta Target Bantalan')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/root/archers/index.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 38,
+          "text": "Standard Bow",
+          "context": "label: 'Standard Bow'"
+        },
+        {
+          "type": "missing_key",
+          "line": 511,
+          "text": "/archers",
+          "context": "t('/archers', { params })"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/subscription/SubscriptionOrganizationPlans.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 23,
+          "text": "Solusi lengkap untuk turnamen skala besar dengan peserta tak terbatas dan analitik lanjutan.",
+          "context": ">\n                            Solusi lengkap untuk turnamen skala besar dengan peserta tak terbatas "
+        },
+        {
+          "type": "missing_key",
+          "line": 83,
+          "text": "select",
+          "context": "t('select', plan)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/subscription/SubscriptionPromo.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 17,
+          "text": "subscription.promo.extra",
+          "context": "t('subscription.promo.extra', '')"
+        },
+        {
+          "type": "missing_key",
+          "line": 27,
+          "text": "subscription.promo.total_value",
+          "context": "t('subscription.promo.total_value', '')"
+        }
+      ]
+    },
+    {
+      "file": "app/components/elimination/BracketRound.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 7,
+          "text": "navigate",
+          "context": "t('navigate', roundNo)"
+        },
+        {
+          "type": "missing_key",
+          "line": 17,
+          "text": "select-match",
+          "context": "t('select-match', $event)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/elimination/EliminationBracketView.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 11,
+          "text": "navigate-to-round",
+          "context": "t('navigate-to-round', $event)"
+        },
+        {
+          "type": "missing_key",
+          "line": 12,
+          "text": "select-match",
+          "context": "t('select-match', $event)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/elimination/EliminationScoringMode.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 124,
+          "text": "select-match",
+          "context": "t('select-match', match)"
+        },
+        {
+          "type": "missing_key",
+          "line": 128,
+          "text": "select-arrow-box",
+          "context": "t('select-arrow-box', side, index)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/elimination/EliminationTargetMode.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 24,
+          "text": "auto-assign",
+          "context": "t('auto-assign')"
+        },
+        {
+          "type": "missing_key",
+          "line": 191,
+          "text": "update-target",
+          "context": "t('update-target', match)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/layout/AppFooter.vue",
+      "total_issues": 2,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 19,
+          "text": ".net",
+          "context": ">.net<"
+        },
+        {
+          "type": "tag_text",
+          "line": 19,
+          "text": ".net",
+          "context": "<span class=\"text-logo-id\">.net</"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/index.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 18,
+          "text": "dashboard.title",
+          "context": "t('dashboard.title', 'Dashboard')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/tournaments/[id]/index.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 11,
+          "text": "Redirecting...",
+          "context": "title: 'Redirecting...'"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/archer/tournaments/[id]/my-elimination.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 322,
+          "text": "/archer/me",
+          "context": "t('/archer/me')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/index.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 11,
+          "text": "dashboard.title",
+          "context": "t('dashboard.title', 'Dashboard')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/payment-methods.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 3,
+          "text": "Metode Pembayaran - Archeris Dashboard",
+          "context": "title: 'Metode Pembayaran - Archeris Dashboard'"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/subscription.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 3,
+          "text": "Langganan Penyelenggara - Archeris Dashboard",
+          "context": "title: 'Langganan Penyelenggara - Archeris Dashboard'"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/categories/[categoryId].vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 139,
+          "text": "category.detail",
+          "context": "t('category.detail', 'Category Detail')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/elimination/[bracketId]/[round].vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 2,
+          "text": "Mengalihkan ke halaman eliminasi...",
+          "context": ">\n    Mengalihkan ke halaman eliminasi...\n  <"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/overview.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 352,
+          "text": "dashboard_event_overview.publish_failed",
+          "context": "t('dashboard_event_overview.publish_failed', 'Gagal mempublikasikan event')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/participants/[participantId]/edit.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 6,
+          "text": "Edit Peserta - Archeris Dashboard",
+          "context": "title: 'Edit Peserta - Archeris Dashboard'"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/participants/[participantId]/index.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 6,
+          "text": "Detail Peserta - Archeris Dashboard",
+          "context": "title: 'Detail Peserta - Archeris Dashboard'"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/qualification/index.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 102,
+          "text": ", ",
+          "context": "t(', ')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/qualification/results.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "raw_text",
+          "line": 24,
+          "text": "Cetak Hasil",
+          "context": ">\n              Cetak Hasil\n            <"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/organizer/tournaments/[id]/schedule/index.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 210,
+          "text": "event_schedule.err_load_schedule",
+          "context": "t('event_schedule.err_load_schedule', 'Failed to fetch tournament schedule data')"
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/profile/[username].vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "static_attr:title",
+          "line": 58,
+          "text": "profile.level_title",
+          "context": "title=\"profile.level_title\""
+        }
+      ]
+    },
+    {
+      "file": "app/pages/dashboard/root/index.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 82,
+          "text": "/root/dashboard/recap",
+          "context": "t('/root/dashboard/recap')"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/ArcherTournamentsList.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "script_string",
+          "line": 289,
+          "text": "Akan Datang",
+          "context": "label: 'Akan Datang'"
+        }
+      ]
+    },
+    {
+      "file": "app/components/dashboard/subscription/SubscriptionPlanSelection.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 75,
+          "text": "select",
+          "context": "t('select', plan)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/elimination/EliminationMatchCard.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 2,
+          "text": "select",
+          "context": "t('select', match)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/elimination/PublicBracketRound.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 7,
+          "text": "select-match",
+          "context": "t('select-match', $event)"
+        }
+      ]
+    },
+    {
+      "file": "app/components/layout/AppHeaderDynamic.vue",
+      "total_issues": 1,
+      "issues": [
+        {
+          "type": "missing_key",
+          "line": 180,
+          "text": "/tournaments?limit=10",
+          "context": "t('/tournaments?limit=10')"
+        }
+      ]
+    }
+  ]
+}

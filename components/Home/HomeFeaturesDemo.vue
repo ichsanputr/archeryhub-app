@@ -35,11 +35,11 @@
                 <div class="order-1 lg:order-2 relative flex justify-center image-col w-full">
                     <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-[0_24px_50px_-12px_rgba(15,23,42,0.12),0_4px_12px_rgba(15,23,42,0.04)] border border-slate-200/80 bg-[#ECEBE6]">
                         <video 
-                            autoplay 
                             loop 
                             muted 
                             playsinline 
-                            poster="/features/feature_registration.png"
+                            preload="none"
+                            poster="/features/feature_registration.webp"
                             class="w-full h-full object-cover"
                         >
                             <source src="/registration.mp4" type="video/mp4" />
@@ -55,11 +55,11 @@
                 <div class="order-1 relative flex justify-center image-col w-full">
                     <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-[0_24px_50px_-12px_rgba(15,23,42,0.12),0_4px_12px_rgba(15,23,42,0.04)] border border-slate-200/80 bg-[#ECEBE6]">
                         <video 
-                            autoplay 
                             loop 
                             muted 
                             playsinline 
-                            poster="/features/feature_competition.png"
+                            preload="none"
+                            poster="/features/feature_competition.webp"
                             class="w-full h-full object-cover"
                         >
                             <source src="/competition.mp4" type="video/mp4" />
@@ -111,11 +111,11 @@
                 <div class="order-1 lg:order-2 relative flex justify-center image-col w-full">
                     <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-[0_24px_50px_-12px_rgba(15,23,42,0.12),0_4px_12px_rgba(15,23,42,0.04)] border border-slate-200/80 bg-[#ECEBE6]">
                         <video 
-                            autoplay 
                             loop 
                             muted 
                             playsinline 
-                            poster="/features/feature_archer.png"
+                            preload="none"
+                            poster="/features/feature_archer.webp"
                             class="w-full h-full object-cover"
                         >
                             <source src="/archer.mp4" type="video/mp4" />
@@ -131,11 +131,11 @@
                 <div class="order-1 relative flex justify-center image-col w-full">
                     <div class="relative w-full max-w-[540px] aspect-square rounded-3xl overflow-hidden shadow-[0_24px_50px_-12px_rgba(15,23,42,0.12),0_4px_12px_rgba(15,23,42,0.04)] border border-slate-200/80 bg-[#ECEBE6]">
                         <video 
-                            autoplay 
                             loop 
                             muted 
                             playsinline 
-                            poster="/features/feature_scorekeeper.png"
+                            preload="none"
+                            poster="/features/feature_scorekeeper.webp"
                             class="w-full h-full object-cover"
                         >
                             <source src="/scorekeeper.mp4" type="video/mp4" />
@@ -254,13 +254,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const localePath = useLocalePath()
 const sectionRef = ref(null)
+let videoObserver = null
 
 onMounted(() => {
     gsap.registerPlugin(ScrollTrigger)
@@ -350,6 +351,30 @@ onMounted(() => {
             duration: 1.2,
             ease: 'power3.out'
         })
+    }
+
+    // Lazy load & play videos only when intersecting the viewport
+    if (typeof IntersectionObserver !== 'undefined') {
+        videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                const video = entry.target
+                if (entry.isIntersecting) {
+                    video.play().catch(() => {})
+                } else {
+                    video.pause()
+                }
+            })
+        }, { threshold: 0.15 })
+
+        const videos = el.querySelectorAll('video')
+        videos.forEach((v) => videoObserver.observe(v))
+    }
+})
+
+onUnmounted(() => {
+    if (videoObserver) {
+        videoObserver.disconnect()
+        videoObserver = null
     }
 })
 </script>

@@ -15,7 +15,7 @@
                     <div class="flex items-start gap-4">
                         <div
                             class="h-14 w-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg shrink-0 p-2 overflow-hidden">
-                            <img v-if="categoryName" :src="'/' + getCategoryIcon(categoryName)" :alt="categoryName" class="w-full h-full object-contain invert" />
+                            <img v-if="categoryName" :src="'/' + getCategoryIcon(categoryName)" :alt="categoryName" class="w-full h-full object-contain" />
                             <Icon v-else icon="ph:users" class="text-white text-2xl" />
                         </div>
                         <div class="flex-1">
@@ -23,14 +23,14 @@
                                 <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/categories`"
                                         class="text-xs font-bold text-primary hover:underline tracking-widest flex items-center gap-1">
                                         <Icon icon="ph:arrow-left-bold" />
-                                        {{ t('event_categories.back_to_categories', 'Kembali ke Kategori') }}
+                                        {{ t('event_categories.back_to_categories') }}
                                     </NuxtLink>
                             </div>
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
-                                {{ categoryName || t('event_categories.detail_title', 'Peserta Kategori') }}
+                                {{ categoryName || t('event_categories.detail_title') }}
                             </h1>
                             <div class="text-slate-300 text-sm max-w-2xl">
-                                {{ t('event_categories.category_participants_desc', 'Daftar seluruh pemanah yang terdaftar pada kategori event ini.') }}
+                                {{ t('event_categories.category_participants_desc') }}
                             </div>
                         </div>
                     </div>
@@ -38,74 +38,59 @@
             </div>
         </div>
 
-        <!-- Participants List -->
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div
-                class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <h2 class="text-lg font-bold text-navy">{{ t('event_categories.participants_title', 'Daftar Peserta Terdaftar') }}</h2>
-                <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold text-gray-400">{{ t('event_categories.total_label', 'Total:') }}</span>
-                    <span class="px-3 py-1 bg-navy/5 text-navy rounded-lg font-black text-xs border border-navy/10">
-                        {{ t('event_categories.participants_count_unit', '{count} Pemanah', { count: participants.length }) }}
-                    </span>
+        <!-- Participants Table with Unified Component -->
+        <DashboardDataTable
+            :items="participants"
+            :headers="headers"
+            :loading="isLoading"
+            :searchable="true"
+            :search-placeholder="t('event_categories.search_placeholder', 'Cari nama pemanah, klub, atau ID...')"
+            :title="t('event_categories.participants_title')"
+            :subtitle="t('event_categories.participants_count_unit', '{count} Pemanah terdaftar', { count: participants.length })"
+            :icon="'ph:users-bold'"
+            :default-page-size="25"
+        >
+            <!-- Column Slots -->
+            <template #item-no="{ index }">
+                <span class="text-sm font-bold text-gray-400">{{ index + 1 }}</span>
+            </template>
+
+            <template #item-name="{ item }">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs border border-gray-200 overflow-hidden shrink-0">
+                        <img :src="useImageOrDefault(item.avatar_url, item.full_name)"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="min-w-0">
+                        <div class="text-sm font-black text-navy leading-tight">{{ item.full_name }}</div>
+                        <div class="text-xs text-gray-400 font-medium mt-1">{{ item.athlete_code || '-' }}</div>
+                    </div>
                 </div>
-            </div>
+            </template>
 
-            <div v-if="isLoading" class="p-12 space-y-4">
-                <div v-for="i in 5" :key="i" class="h-16 bg-gray-50 animate-pulse rounded-xl"></div>
-            </div>
+            <template #item-club_city="{ item }">
+                <div class="text-sm font-bold text-navy leading-tight">{{ item.club_name || t('event_categories.independent') }}</div>
+                <div class="text-xs text-gray-400 mt-0.5">{{ item.city || '-' }}</div>
+            </template>
 
-                <div v-else-if="participants.length === 0" class="p-20 text-center">
-                <Icon icon="ph:user-circle-minus" class="text-6xl text-gray-200 mx-auto mb-4" />
-                <h3 class="text-xl font-bold text-navy mb-1">{{ t('event_categories.no_participants', 'Belum Ada Peserta') }}</h3>
-                <div class="text-gray-400 text-sm">{{ t('event_categories.no_participants_desc', 'Belum ada pemanah yang terdaftar di kategori ini.') }}</div>
-            </div>
+            <template #item-payment_status="{ item }">
+                <span
+                    :class="item.payment_status === 'Terbayar' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'"
+                    class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-tighter">
+                    {{ item.payment_status === 'Terbayar' ? t('event_categories.status_paid') : t('event_categories.status_pending') }}
+                </span>
+            </template>
 
-            <div v-else class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead class="bg-gray-50/50 border-b border-gray-100">
-                        <tr class="text-[10px] font-black text-gray-400 tracking-widest">
-                            <th class="px-6 py-4 w-16">{{ t('event_categories.table.no', 'No') }}</th>
-                            <th class="px-6 py-4">{{ t('event_categories.table.name', 'Nama Pemanah') }}</th>
-                            <th class="px-6 py-4">{{ t('event_categories.table.club_city', 'Klub & Kota') }}</th>
-                            <th class="px-6 py-4">{{ t('event_categories.table.status', 'Status Pembayaran') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-50">
-                        <tr v-for="(p, index) in participants" :key="p.id"
-                            class="group hover:bg-gray-50 transition-colors">
-                            <td class="px-6 py-4 text-sm font-bold text-gray-400">{{ index + 1 }}</td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div
-                                        class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs border border-gray-200 overflow-hidden shrink-0">
-                                        <img :src="useImageOrDefault(p.avatar_url, p.full_name)"
-                                            class="w-full h-full object-cover">
-                                    </div>
-                                    <div class="min-w-0">
-                                        <div class="text-sm font-black text-navy leading-tight">{{ p.full_name }}</div>
-                                        <div class=" text-xs text-gray-400 font-medium mt-1 ">{{ p.athlete_code ||
-                                            '-' }}</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm font-bold text-navy leading-tight">{{ p.club_name || t('event_categories.independent', 'Independen') }}
-                                </div>
-                                <div class=" text-xs text-gray-400 mt-0.5">{{ p.city || '-' }}</div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span
-                                    :class="p.payment_status === 'Terbayar' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'"
-                                    class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-tighter">
-                                    {{ p.payment_status === 'Terbayar' ? t('event_categories.status_paid', 'Terbayar') : t('event_categories.status_pending', 'Menunggu') }}
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            <!-- Empty Slot -->
+            <template #empty>
+                <div class="p-12 text-center">
+                    <Icon icon="ph:user-circle-minus" class="text-6xl text-gray-200 mx-auto mb-4" />
+                    <h3 class="text-xl font-bold text-navy mb-1">{{ t('event_categories.no_participants') }}</h3>
+                    <div class="text-gray-400 text-sm">{{ t('event_categories.no_participants_desc') }}</div>
+                </div>
+            </template>
+        </DashboardDataTable>
     </div>
 </template>
 
@@ -117,6 +102,7 @@ import { useApi } from '~/composables/useApi'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useI18n } from 'vue-i18n'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
 
 const route = useRoute()
 const eventId = route.params.id
@@ -127,12 +113,19 @@ definePageMeta({
     layout: 'dashboard'
 })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const isLoading = ref(true)
 const categoryName = ref('')
 const participants = ref([])
 
-useHead({ title: computed(() => t('category.detail', 'Category Detail') + ' - Archeris Dashboard') })
+const headers = computed(() => [
+    { key: 'no', label: t('event_categories.table.no', 'No'), width: '60px', align: 'center', sortable: false },
+    { key: 'name', label: t('event_categories.table.name', 'Pemanah'), sortable: true },
+    { key: 'club_city', label: t('event_categories.table.club_city', 'Klub / Kota'), sortable: true },
+    { key: 'payment_status', label: t('event_categories.table.status', 'Status'), sortable: true },
+])
+
+useHead({ title: computed(() => t('category.detail', 'Detail Kategori') + ' - Archeris Dashboard') })
 
 const fetchData = async () => {
     isLoading.value = true

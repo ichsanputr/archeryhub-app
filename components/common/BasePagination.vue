@@ -8,20 +8,20 @@
         <Icon icon="ph:list-numbers-bold" class="text-xl text-black/60" />
       </div>
       <div class="flex flex-col">
-        <span class=" text-xs font-black tracking-widest text-gray-400">{{ t('pagination.stats_label') }}</span>
-        <p class="text-xs sm:text-sm text-gray-500 font-bold leading-tight">
-          {{ t('pagination.showing') }} <span class="text-navy underline decoration-primary decoration-2 underline-offset-2">{{ startItem
+        <span class=" text-xs font-black tracking-widest text-gray-400">{{ t('pagination.stats_label', 'Statistik Data') }}</span>
+        <div class="text-xs sm:text-sm text-gray-500 font-bold leading-tight">
+          {{ t('pagination.showing', 'Menampilkan') }} <span class="text-navy underline decoration-primary decoration-2 underline-offset-2">{{ startItem
           }}</span>
           - <span class="text-navy underline decoration-primary decoration-2 underline-offset-2">{{ endItem }}</span>
-          {{ t('pagination.of') }} <span class="text-navy font-black tabular-nums">{{ totalItems }}</span> {{ t('pagination.entries') }}
-        </p>
+          {{ t('pagination.of', 'dari') }} <span class="text-navy font-black tabular-nums">{{ totalItems }}</span> {{ t('pagination.entries', 'Data') }}
+        </div>
       </div>
     </div>
 
     <!-- Center/Right: Controls -->
     <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
       <div v-if="showPageSize" class="mr-4 hidden lg:flex items-center gap-3">
-        <span class="text-xs font-black tracking-widest text-gray-400">{{ t('pagination.rows') }}</span>
+        <span class="text-xs font-black tracking-widest text-gray-400">{{ t('pagination.rows', 'Baris:') }}</span>
         <BaseSelect :model-value="itemsPerPage" :options="pageSizeSelectOptions" class="w-24 text-xs" @update:model-value="$emit('update:itemsPerPage', parseInt($event))" />
       </div>
 
@@ -30,7 +30,7 @@
         <!-- Previous Button -->
         <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1"
           class="h-10 w-10 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-navy hover:bg-navy hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-sm active:scale-95 group"
-          :aria-label="t('pagination.prev_page')">
+          :aria-label="t('pagination.prev_page', 'Halaman Sebelumnya')">
           <Icon icon="ph:caret-left-bold" class="group-hover:-translate-x-0.5 transition-transform" />
         </button>
 
@@ -54,14 +54,14 @@
         <!-- Next Button -->
         <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages"
           class="h-10 w-10 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-navy hover:bg-navy hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-sm active:scale-95 group"
-          :aria-label="t('pagination.next_page')">
+          :aria-label="t('pagination.next_page', 'Halaman Berikutnya')">
           <Icon icon="ph:caret-right-bold" class="group-hover:translate-x-0.5 transition-transform" />
         </button>
       </div>
 
       <!-- Quick Jump (Mobile/Small Desktop) -->
       <div v-if="totalPages > 5" class="ml-2 flex items-center gap-2 lg:hidden">
-        <input type="number" min="1" :max="totalPages" :placeholder="t('pagination.jump_placeholder')"
+        <input type="number" min="1" :max="totalPages" :placeholder="t('pagination.jump_placeholder', 'Lompat...')"
           class="h-10 w-20 px-3 rounded-xl bg-white border border-gray-200 text-navy text-xs font-bold focus:border-primary outline-none transition-all"
           @keydown.enter="jumpToPage" />
       </div>
@@ -71,9 +71,9 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { useDashboardI18n } from '~/composables/useDashboardI18n'
 
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 
 const props = defineProps({
   currentPage: {

@@ -6,9 +6,9 @@
         </label>
 
         <div class="relative group">
-            <div v-if="icon"
+            <div v-if="resolvedIcon"
                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-navy transition-colors z-10">
-                <Icon :icon="icon.includes(':') ? icon : `ph:${icon}`" class="text-[20px]" />
+                <Icon :icon="resolvedIcon" class="text-[20px]" />
             </div>
 
             <!-- Currency Input -->
@@ -41,12 +41,12 @@
             </template>
         </div>
 
-        <p v-if="displayError" class="text-red-500  text-xs font-bold ml-1 animate-in fade-in slide-in-from-top-1">
+        <div v-if="displayError" class="text-red-500  text-xs font-bold ml-1 animate-in fade-in slide-in-from-top-1">
             {{ displayError }}
-        </p>
-        <p v-else-if="hint" class="text-gray-400  text-xs ml-1">
+        </div>
+        <div v-else-if="hint" class="text-gray-400  text-xs ml-1">
             {{ hint }}
-        </p>
+        </div>
     </div>
 </template>
 
@@ -88,6 +88,21 @@ const emit = defineEmits(['update:modelValue'])
 
 const isPasswordVisible = ref(false)
 const internalError = ref('')
+
+const resolvedIcon = computed(() => {
+    if (!props.icon) return ''
+    if (props.icon.includes(':')) return props.icon
+    const aliasMap = {
+        'mail': 'ph:envelope-simple',
+        'email': 'ph:envelope-simple',
+        'envelope': 'ph:envelope-simple',
+        'lock': 'ph:lock-key',
+        'search': 'ph:magnifying-glass',
+        'user': 'ph:user',
+        'phone': 'ph:phone'
+    }
+    return aliasMap[props.icon] || `ph:${props.icon}`
+})
 
 // Show parent error if provided, otherwise show internal validation error
 const displayError = computed(() => props.error || internalError.value)

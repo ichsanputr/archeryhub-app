@@ -60,6 +60,6 @@ const { t } = useI18n()
 definePageMeta({ layout: 'dashboard' })
 
 useHead({
-  title: computed(() => (t ? t('org_subscription_success.title', 'Berhasil Berlangganan') : 'Berhasil Berlangganan') + ' - Archeris Dashboard')
+  title: computed(() => (t ? t('org_subscription_success.title') : 'Berhasil Berlangganan') + ' - Archeris Dashboard')
 })
 </script>

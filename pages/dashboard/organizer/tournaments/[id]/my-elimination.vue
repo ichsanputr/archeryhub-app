@@ -7,14 +7,14 @@
                     <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}`" class="hover:text-primary transition-colors">Tournament
                     </NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
-                    <span class="text-slate-600 dark:text-slate-300">Hasil Eliminasi</span>
+                    <span class="text-slate-600 dark:text-slate-300">{{ t('elimination.my_bracket') }}</span>
                 </nav>
                 <div class="flex items-center gap-4">
                     <button @click="handleBack"
                         class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-primary/50 transition-all text-navy dark:text-white">
                         <Icon icon="ph:arrow-left-bold" />
                     </button>
-                    <h2 class="text-3xl font-black text-navy dark:text-white tracking-tight">Hasil Eliminasi</h2>
+                    <h2 class="text-3xl font-black text-navy dark:text-white tracking-tight">{{ t('elimination.my_bracket') }}</h2>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
 
                     <!-- Final Standing Badge -->
                     <div class="flex flex-col items-center md:items-end justify-center">
-                        <div class="text-[10px] font-black text-slate-400 tracking-widest mb-1">Status Eliminasi
+                        <div class="text-[10px] font-black text-slate-400 tracking-widest mb-1">{{ t('elimination.status') }}
                         </div>
                         <div class="flex items-center gap-2">
                             <Icon v-if="elimStatusLabel === 'Juara'" icon="ph:crown-fill"
@@ -74,13 +74,13 @@
                         class="w-10 h-10 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-500 shadow-lg shadow-indigo-500/10">
                         <Icon icon="ph:git-merge-bold" class="text-xl" />
                     </div>
-                    Alur Eliminasi
+                    {{ t('elimination.bracket_path') }}
                 </h4>
 
                 <div v-if="elimMatches.length === 0"
                     class="py-20 text-center border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-[32px]">
                     <Icon icon="ph:sword-light" class="text-7xl mx-auto mb-6 opacity-10" />
-                    <div class="text-sm font-black tracking-widest text-slate-300">Belum mencapai eliminasi</div>
+                    <div class="text-sm font-black tracking-widest text-slate-300">{{ t('elimination.not_reached') }}</div>
                 </div>
 
                 <div v-else class="relative overflow-x-auto pb-8 scrollbar-hide">
@@ -148,7 +148,7 @@ definePageMeta({
     layout: 'dashboard'
 })
 
-useHead({ title: computed(() => t('elimination.my_bracket', 'My Elimination Bracket') + ' - Archeris Dashboard') })
+useHead({ title: computed(() => t('elimination.my_bracket') + ' - Archeris Dashboard') })
 
 
 const isLoading = ref(true)

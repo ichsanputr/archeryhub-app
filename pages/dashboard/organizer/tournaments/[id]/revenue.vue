@@ -2,13 +2,13 @@
   <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
     <DashboardHeader
-      :title="t('org_revenue.header_title', 'Pendapatan Event')"
-      :subtitle="t('org_revenue.header_subtitle', 'Ringkasan penerimaan pendaftaran, potongan biaya platform, dan pendapatan bersih event.')"
+      :title="t('org_revenue.header_title')"
+      :subtitle="t('org_revenue.header_subtitle')"
       icon="ph:coins-bold"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-        { label: t('org_revenue.header_title', 'Pendapatan Event') }
+        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('org_revenue.header_title') }
       ]"
     />
 
@@ -36,7 +36,12 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Method Breakdown Card -->
       <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 p-6 shadow-sm space-y-4">
-        <h3 class="font-black text-navy dark:text-white text-lg">{{ t("org_revenue.method_breakdown_title") }}</h3>
+        <div class="flex items-center gap-3">
+          <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+            <Icon icon="ph:credit-card-bold" class="text-xl" />
+          </div>
+          <h3 class="font-black text-navy dark:text-white text-lg">{{ t("org_revenue.method_breakdown_title") }}</h3>
+        </div>
         <div class="space-y-3">
           <div v-for="(amount, method) in methodBreakdown" :key="method" class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/50">
             <div class="flex items-center gap-3">
@@ -50,7 +55,12 @@
 
       <!-- Quick Actions Card -->
       <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 p-6 shadow-sm space-y-4">
-        <h3 class="font-black text-navy dark:text-white text-lg">{{ t("org_revenue.financial_actions_title") }}</h3>
+        <div class="flex items-center gap-3">
+          <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+            <Icon icon="ph:wallet-bold" class="text-xl" />
+          </div>
+          <h3 class="font-black text-navy dark:text-white text-lg">{{ t("org_revenue.financial_actions_title") }}</h3>
+        </div>
         <div class="text-xs text-slate-500 leading-relaxed">
           {{ t("org_revenue.financial_actions_desc") }}
         </div>
@@ -74,10 +84,11 @@ const { get } = useApi()
 const eventId = computed(() => route.params.id as string)
 
 useHead({
-  title: computed(() => (t ? t('org_revenue.header_title', 'Pendapatan Event') : 'Pendapatan Event') + ' - Archeris Dashboard')
+  title: computed(() => (t ? t('org_revenue.header_title') : 'Pendapatan Event') + ' - Archeris Dashboard')
 })
 const isLoading = ref(true)
 const participants = ref<any[]>([])
+const invoices = ref<any[]>([])
 
 const paidParticipants = computed(() =>
   participants.value.filter(p => p.payment_status === 'paid' || p.payment_status === 'lunas')
@@ -94,20 +105,46 @@ const netRevenue = computed(() => grossRevenue.value * 0.95)
 
 const methodBreakdown = computed(() => {
   const map: Record<string, number> = {}
-  for (const p of paidParticipants.value) {
-    const m = (p.payment_method || 'GATEWAY').toUpperCase()
-    map[m] = (map[m] || 0) + (p.payment_amount || p.amount || 0)
+  
+  if (invoices.value && invoices.value.length > 0) {
+    const paidInvoices = invoices.value.filter((inv: any) => inv.status === 'paid' || inv.status === 'lunas' || inv.status === 'settlement')
+    for (const inv of paidInvoices) {
+      const rawMethod = (inv.payment_method || inv.method || 'online').toLowerCase()
+      let label = 'Gateway Online (Mayar)'
+      if (rawMethod === 'manual') label = 'Transfer Bank Manual'
+      else if (rawMethod === 'cash') label = 'Tunai (Cash Desk)'
+      else if (rawMethod === 'paypal') label = 'PayPal'
+      
+      const amt = Number(inv.total_amount || inv.amount || 0)
+      map[label] = (map[label] || 0) + amt
+    }
   }
+  
+  if (Object.keys(map).length === 0) {
+    for (const p of paidParticipants.value) {
+      const m = (p.payment_method || 'Online Gateway').toUpperCase()
+      map[m] = (map[m] || 0) + (Number(p.payment_amount || p.amount || 0))
+    }
+  }
+  
   return map
 })
 
 async function fetchParticipants() {
   isLoading.value = true
   try {
-    const res = await get(`/tournaments/${eventId.value}/participants`)
-    participants.value = res?.participants || res?.data || []
-  } catch { participants.value = [] }
-  finally { isLoading.value = false }
+    const [partRes, payRes] = await Promise.all([
+      get(`/tournaments/${eventId.value}/participants`).catch(() => ({ participants: [] })),
+      get(`/tournaments/${eventId.value}/payments`).catch(() => ({ invoices: [] }))
+    ])
+    participants.value = partRes?.participants || partRes?.data || (Array.isArray(partRes) ? partRes : [])
+    invoices.value = payRes?.invoices || payRes?.data || (Array.isArray(payRes) ? payRes : [])
+  } catch {
+    participants.value = []
+    invoices.value = []
+  } finally {
+    isLoading.value = false
+  }
 }
 
 onMounted(fetchParticipants)

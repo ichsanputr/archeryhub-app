@@ -38,21 +38,19 @@
     </div>
 
     <!-- panel -->
-    <transition
-      enter-active-class="transition duration-200 ease-out"
-      :enter-from-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'"
-      enter-to-class="translate-y-0 opacity-100 scale-100"
-      leave-active-class="transition duration-150 ease-in"
-      leave-from-class="translate-y-0 opacity-100 scale-100"
-      :leave-to-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'">
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition duration-200 ease-out"
+        :enter-from-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'"
+        enter-to-class="translate-y-0 opacity-100 scale-100"
+        leave-active-class="transition duration-150 ease-in"
+        leave-from-class="translate-y-0 opacity-100 scale-100"
+        :leave-to-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'">
 
-      <div v-if="isOpen"
-        class="absolute z-[9999] bg-white border border-gray-100 rounded-2xl overflow-hidden"
-        :class="[
-          isFlippedTop ? 'bottom-full mb-2 origin-bottom' : 'top-full mt-2 origin-top',
-          isAlignedRight ? 'right-0' : 'left-0'
-        ]"
-        style="box-shadow: 0 20px 60px -10px rgba(15,23,42,0.15); width: 240px">
+        <div v-if="isOpen"
+          ref="panelEl"
+          class="bg-white border border-gray-100 rounded-2xl overflow-hidden"
+          :style="[dropdownStyle, { boxShadow: '0 20px 60px -10px rgba(15,23,42,0.15)', width: '275px' }]">
 
         <!-- time display strip -->
         <div class="bg-navy px-4 py-3 flex items-center justify-center gap-1">
@@ -77,7 +75,7 @@
                 <div class="h-[calc(50%-18px)]" />
                 <button v-for="h in hourList" :key="h" type="button"
                   @click.stop="selectHour(h)"
-                  class="w-full h-9 flex items-center justify-center text-sm font-bold snap-center transition-all"
+                  class="w-full h-9 flex items-center justify-center text-sm font-bold snap-center transition-all cursor-pointer"
                   :class="h === selectedHour ? 'text-navy font-black scale-110' : 'text-gray-400 hover:text-navy'">
                   {{ pad(h) }}
                 </button>
@@ -96,7 +94,7 @@
                 <div class="h-[calc(50%-18px)]" />
                 <button v-for="m in minuteList" :key="m" type="button"
                   @click.stop="selectMinute(m)"
-                  class="w-full h-9 flex items-center justify-center text-sm font-bold snap-center transition-all"
+                  class="w-full h-9 flex items-center justify-center text-sm font-bold snap-center transition-all cursor-pointer"
                   :class="m === selectedMinute ? 'text-navy font-black scale-110' : 'text-gray-400 hover:text-navy'">
                   {{ pad(m) }}
                 </button>
@@ -110,12 +108,12 @@
             <div class="text-[9px] font-black text-gray-400 tracking-widest py-2">AM/PM</div>
             <div class="flex flex-col gap-1.5 mt-2 w-full px-2">
               <button type="button" @click.stop="ampm = 'AM'"
-                class="py-2 rounded-xl text-xs font-black transition-all"
+                class="py-2 rounded-xl text-xs font-black transition-all cursor-pointer"
                 :class="ampm === 'AM' ? 'bg-primary text-navy' : 'text-gray-400 hover:bg-primary/10'">
                 AM
               </button>
               <button type="button" @click.stop="ampm = 'PM'"
-                class="py-2 rounded-xl text-xs font-black transition-all"
+                class="py-2 rounded-xl text-xs font-black transition-all cursor-pointer"
                 :class="ampm === 'PM' ? 'bg-primary text-navy' : 'text-gray-400 hover:bg-primary/10'">
                 PM
               </button>
@@ -124,28 +122,29 @@
         </div>
 
         <!-- step selector -->
-        <div class="px-3 py-2 border-t border-gray-50 flex items-center justify-between">
+        <div class="px-3 py-2 border-t border-gray-50 flex items-center justify-between gap-2">
           <div class="flex items-center gap-1">
             <span class="text-[9px] font-black text-gray-400 tracking-wider">step</span>
-            <div class="flex gap-1 ml-1">
+            <div class="flex gap-1 ml-0.5">
               <button v-for="s in [1,5,10,15,30]" :key="s" type="button"
                 @click.stop="minuteStep = s"
-                class="px-1.5 py-0.5 rounded text-[10px] font-black transition-all"
+                class="px-1.5 py-0.5 rounded text-[10px] font-black transition-all cursor-pointer"
                 :class="minuteStep === s ? 'bg-primary text-navy' : 'text-gray-400 hover:bg-primary/10'">
                 {{ s }}m
               </button>
             </div>
           </div>
           <button type="button" @click.stop="confirmTime"
-            class="text-xs font-black text-navy bg-primary px-3 py-1 rounded-lg hover:brightness-105 transition-all">
+            class="text-xs font-black text-navy bg-primary px-3 py-1.5 rounded-lg hover:brightness-105 transition-all shrink-0 cursor-pointer shadow-xs">
             Done
           </button>
         </div>
       </div>
     </transition>
+    </Teleport>
 
-    <p v-if="error" class="text-red-500 text-xs font-bold ml-1">{{ error }}</p>
-    <p v-else-if="hint" class="text-gray-400 text-xs ml-1">{{ hint }}</p>
+    <div v-if="error" class="text-red-500 text-xs font-bold ml-1">{{ error }}</div>
+    <div v-else-if="hint" class="text-gray-400 text-xs ml-1">{{ hint }}</div>
   </div>
 </template>
 
@@ -173,8 +172,9 @@ const isOpen = ref(false)
 const hourCol = ref(null)
 const minCol = ref(null)
 const triggerEl = ref(null)
+const panelEl = ref(null)
 
-const { isFlippedTop, isAlignedRight } = useDropdownPosition(triggerEl, isOpen, { panelHeight: 290, panelWidth: 240 })
+const { isFlippedTop, isAlignedRight, dropdownStyle } = useDropdownPosition(triggerEl, isOpen, { panelHeight: 290, panelWidth: 275 })
 
 const minuteStep = ref(props.step)
 const selectedHour = ref(0)
@@ -295,10 +295,18 @@ watch(ampm, () => emitValue())
 // v-click-outside
 const vClickOutside = {
   mounted(el, binding) {
-    el._co = (e) => { if (!el.contains(e.target)) binding.value(e) }
+    el._co = (e) => {
+      if (el.contains(e.target)) return
+      if (panelEl.value && panelEl.value.contains(e.target)) return
+      binding.value(e)
+    }
     document.addEventListener('mousedown', el._co)
   },
-  unmounted(el) { document.removeEventListener('mousedown', el._co) }
+  unmounted(el) {
+    if (el._co) {
+      document.removeEventListener('mousedown', el._co)
+    }
+  }
 }
 </script>
 

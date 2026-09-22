@@ -95,6 +95,7 @@
                                     class="w-16 h-16 rounded-xl bg-gradient-to-br from-primary to-amber-400 p-0.5 overflow-hidden shadow-sm transition-transform duration-300 group-hover:scale-105">
                                     <div class="w-full h-full rounded-[10px] overflow-hidden bg-white">
                                         <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
+                                            :alt="(archer.full_name || 'Archer') + ' Profile Picture'"
                                             class="w-full h-full object-cover" />
                                     </div>
                                 </div>
@@ -160,6 +161,7 @@
                         <div
                             class="w-14 h-14 rounded-xl bg-slate-100 overflow-hidden shrink-0">
                             <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
+                                :alt="(archer.full_name || 'Archer') + ' Profile Picture'"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                         </div>
                         <div class="min-w-0">

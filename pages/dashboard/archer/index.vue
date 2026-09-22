@@ -8,10 +8,15 @@
 </template>
 
 <script setup>
-
-useHead({ title: computed(() => t('dashboard.title', 'Dashboard') + ' - Archeris Dashboard') })
 import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+
+definePageMeta({
+  layout: 'dashboard'
+})
+
+useHead({ title: computed(() => t('dashboard.title') + ' - Archeris Dashboard') })
 const { t } = useI18n()
 const router = useRouter()
 

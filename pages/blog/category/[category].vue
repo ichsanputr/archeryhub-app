@@ -308,7 +308,6 @@
 </template>
 
 <script setup>
-import { articles as mockArticles } from '~/data/articles'
 import { CATEGORY_DEFINITIONS, getCategoryInfo, categoryToSlug } from '~/utils/blogCategory'
 
 definePageMeta({
@@ -388,30 +387,17 @@ const fetchArticles = async () => {
     try {
         const catQuery = categoryInfo.value?.name || currentCategoryParam.value
         const res = await get(`/blog/articles?category=${encodeURIComponent(catQuery)}`)
-        if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
+        if (res && res.data && Array.isArray(res.data)) {
             articlesList.value = res.data.map(a => ({
                 ...a,
                 image: resolveArticleImage(a.image || a.image_url, a.slug)
             }))
         } else {
-            // Fallback to mock data filtered by category
-            articlesList.value = mockArticles.filter(a => {
-                const aSlug = categoryToSlug(a.category)
-                return aSlug === categoryInfo.value?.slug || a.category.toLowerCase() === (categoryInfo.value?.name || '').toLowerCase()
-            }).map(a => ({
-                ...a,
-                image: resolveArticleImage(a.image, a.slug)
-            }))
+            articlesList.value = []
         }
     } catch (e) {
-        console.warn('Could not fetch category articles from API, using fallback data:', e)
-        articlesList.value = mockArticles.filter(a => {
-            const aSlug = categoryToSlug(a.category)
-            return aSlug === categoryInfo.value?.slug || a.category.toLowerCase() === (categoryInfo.value?.name || '').toLowerCase()
-        }).map(a => ({
-            ...a,
-            image: resolveArticleImage(a.image, a.slug)
-        }))
+        console.warn('Could not fetch category articles from API:', e)
+        articlesList.value = []
     } finally {
         loading.value = false
     }

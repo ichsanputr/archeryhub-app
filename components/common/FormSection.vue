@@ -1,8 +1,8 @@
 <template>
     <div class="flex flex-col gap-6">
         <div class="flex items-center gap-3 text-navy border-b border-gray-100 pb-3">
-            <div class="p-2 bg-primary/20 rounded-lg text-navy">
-                <Icon :icon="icon" class="text-[20px]" />
+            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                <Icon :icon="icon" class="text-xl" />
             </div>
             <h3 class="text-lg font-bold tracking-wide">{{ title }}</h3>
         </div>

@@ -6,8 +6,8 @@
       :subtitle="t('organizer.profile.subtitle')"
       icon="ph:buildings-bold"
       :breadcrumbs="[
-        { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('organizer.profile.title', 'Profil Organisasi') }
+        { label: t('navigation.dashboard'), to: '/dashboard/organizer' },
+        { label: t('organizer.profile.title') }
       ]"
     >
       <template #actions>
@@ -37,9 +37,12 @@
         <div v-if="activeTab === 'general'" class="space-y-8">
           <!-- Identitas -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <div class="flex items-center justify-between">
-              <h3 class="text-sm font-bold text-navy flex items-center gap-2">
-                <Icon icon="ph:identification-badge-bold" class="text-primary text-lg" /> {{ t('organizer.profile.identity_section') }}
+            <div class="flex items-center gap-3">
+              <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                <Icon icon="ph:identification-badge-bold" class="text-xl" />
+              </div>
+              <h3 class="text-base font-bold text-navy">
+                {{ t('organizer.profile.identity_section') }}
               </h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -65,18 +68,6 @@
                 @blur="validateSlug"
               />
 
-              <!-- Country Select -->
-              <BaseSelect 
-                v-model="form.country" 
-                :label="t('organizer.profile.country_label')" 
-                :placeholder="t('organizer.profile.country_placeholder')" 
-                required
-                :error="errors.country"
-                :items="countries" 
-                searchable 
-                @update:model-value="validateCountry"
-              />
-
               <!-- Registration Number / SK -->
               <BaseInput 
                 v-model="form.registration_number" 
@@ -88,7 +79,7 @@
               <BaseDatePicker 
                 v-model="form.established_date" 
                 :label="t('organizer.profile.est_date_label')" 
-                :placeholder="t('organizer.profile.est_date_placeholder', 'Select established date')"
+                :placeholder="t('organizer.profile.est_date_placeholder')"
                 clearable 
               />
             </div>
@@ -101,9 +92,14 @@
 
           <!-- Logo & Banner -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8">
-            <h3 class="text-sm font-bold text-navy flex items-center gap-2">
-              <Icon icon="ph:image-bold" class="text-primary text-lg" /> {{ t('organizer.profile.branding_section') }}
-            </h3>
+            <div class="flex items-center gap-3">
+              <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                <Icon icon="ph:image-bold" class="text-xl" />
+              </div>
+              <h3 class="text-base font-bold text-navy">
+                {{ t('organizer.profile.branding_section') }}
+              </h3>
+            </div>
 
             <div class="space-y-8">
               <!-- Logo Upload -->
@@ -169,9 +165,14 @@
         <!-- Tab: Kontak -->
         <div v-if="activeTab === 'contact'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-sm font-bold text-navy flex items-center gap-2">
-              <Icon icon="ph:phone-bold" class="text-primary text-xl" /> {{ t('organizer.profile.contact_section') }}
-            </h3>
+            <div class="flex items-center gap-3">
+              <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                <Icon icon="ph:phone-bold" class="text-xl" />
+              </div>
+              <h3 class="text-base font-bold text-navy">
+                {{ t('organizer.profile.contact_section') }}
+              </h3>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <BaseInput 
                 v-model="form.whatsapp_no" 
@@ -204,9 +205,14 @@
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-sm font-bold text-navy flex items-center gap-2">
-                <Icon icon="ph:share-network-bold" class="text-primary text-xl" /> {{ t('organizer.profile.social_section') }}
-              </h3>
+              <div class="flex items-center gap-3">
+                <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                  <Icon icon="ph:share-network-bold" class="text-xl" />
+                </div>
+                <h3 class="text-base font-bold text-navy">
+                  {{ t('organizer.profile.social_section') }}
+                </h3>
+              </div>
 
               <div class="relative group">
                 <BaseButton variant="white" size="xs" icon="ph:plus-bold"
@@ -265,16 +271,21 @@
         <!-- Tab: Visi & Misi (Sejarah dihapus) -->
         <div v-if="activeTab === 'about'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-sm font-bold text-navy flex items-center gap-2">
-              <Icon icon="ph:eye-bold" class="text-primary text-xl" /> {{ t('organizer.profile.vision_section', 'Visi & Misi Organisasi') }}
-            </h3>
-            <div>
-              <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.vision_label', 'Visi') }}</label>
-              <TiptapEditor v-model="form.vision" :placeholder="t('organizer.profile.vision_placeholder', 'Tuliskan visi utama organisasi...')" minHeight="120px" />
+            <div class="flex items-center gap-3">
+              <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                <Icon icon="ph:eye-bold" class="text-xl" />
+              </div>
+              <h3 class="text-base font-bold text-navy">
+                {{ t('organizer.profile.vision_section') }}
+              </h3>
             </div>
             <div>
-              <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.mission_label', 'Misi') }}</label>
-              <TiptapEditor v-model="form.mission" :placeholder="t('organizer.profile.mission_placeholder', 'Tuliskan poin-poin misi organisasi...')"
+              <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.vision_label') }}</label>
+              <TiptapEditor v-model="form.vision" :placeholder="t('organizer.profile.vision_placeholder')" minHeight="120px" />
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-navy mb-2">{{ t('organizer.profile.mission_label') }}</label>
+              <TiptapEditor v-model="form.mission" :placeholder="t('organizer.profile.mission_placeholder')"
                 minHeight="180px" />
             </div>
           </div>
@@ -284,11 +295,16 @@
         <div v-if="activeTab === 'faq'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <div>
-                <h3 class="text-base font-bold text-navy flex items-center gap-2">
-                  <Icon icon="ph:question-bold" class="text-primary text-xl" /> {{ t('organizer.profile.faq_section') }}
-                </h3>
-                <p class="text-xs text-slate-400 font-medium mt-0.5">{{ t('organizer.profile.faq_desc') }}</p>
+              <div class="flex items-center gap-3">
+                <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                  <Icon icon="ph:question-bold" class="text-xl" />
+                </div>
+                <div>
+                  <h3 class="text-base font-bold text-navy">
+                    {{ t('organizer.profile.faq_section') }}
+                  </h3>
+                  <div class="text-xs text-slate-400 font-medium mt-0.5">{{ t('organizer.profile.faq_desc') }}</div>
+                </div>
               </div>
               <BaseButton variant="primary" size="sm" @click="addFAQ" icon="ph:plus-circle-bold" class="text-xs font-bold h-9">
                 {{ t('organizer.profile.add_faq') }}
@@ -299,8 +315,8 @@
               <div v-for="(item, idx) in form.faq" :key="idx"
                 class="p-6 bg-slate-50/80 rounded-2xl border border-slate-200/80 space-y-4 relative group hover:bg-white hover:shadow-xs transition-all">
                 <div class="flex items-center justify-between pb-2 border-b border-slate-200/60">
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-navy text-primary text-[10px] font-bold font-mono">
-                    FAQ #{{ idx + 1 }}
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-primary text-btn-text text-[10px] font-bold font-mono">
+                    {{ t('organizer.profile.faq_counter', { number: idx + 1 }) }}
                   </span>
                   <button @click="removeFAQ(idx)"
                     class="size-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center transition-colors">
@@ -319,8 +335,9 @@
                 class="text-center py-12 border-2 border-dashed border-gray-100 rounded-3xl">
                 <Icon icon="ph:chat-centered-dots-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
                 <div class="text-xs text-gray-400 font-medium">{{ t('organizer.profile.no_faq') }}</div>
-                <button @click="addFAQ"
-                  class="mt-4 px-4 py-2 bg-navy text-white text-xs font-bold rounded-xl shadow-md hover:bg-navy-dark transition">{{ t('organizer.profile.create_first_faq') }}</button>
+                <BaseButton @click="addFAQ" variant="primary" size="sm" class="mt-4 text-xs font-bold shadow-md">
+                  {{ t('organizer.profile.create_first_faq') }}
+                </BaseButton>
               </div>
             </div>
           </div>
@@ -330,12 +347,16 @@
       <!-- Side card: Redesigned Page Visibility -->
       <div class="space-y-4">
         <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-4">
-          <div>
-            <h3 class="text-sm font-bold text-navy flex items-center gap-2">
-              <Icon icon="ph:eye-bold" class="text-primary text-lg" />
-              <span>{{ t('organizer.profile.visibility_title') }}</span>
-            </h3>
-            <div class="text-[11px] text-slate-400 font-medium mt-0.5">{{ t('organizer.profile.visibility_subtitle') }}</div>
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+              <Icon icon="ph:eye-bold" class="text-xl" />
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-navy">
+                {{ t('organizer.profile.visibility_title') }}
+              </h3>
+              <div class="text-[11px] text-slate-400 font-medium mt-0.5">{{ t('organizer.profile.visibility_subtitle') }}</div>
+            </div>
           </div>
 
           <div class="space-y-2.5 pt-1">
@@ -345,7 +366,7 @@
               :class="pageSettings.sections.identity ? 'bg-primary/5 border-primary/40' : 'bg-slate-50 border-slate-200/80 opacity-60'">
               <div class="flex items-center gap-3">
                 <div class="size-8 rounded-xl flex items-center justify-center"
-                  :class="pageSettings.sections.identity ? 'bg-navy text-primary' : 'bg-slate-200 text-slate-500'">
+                  :class="pageSettings.sections.identity ? 'bg-primary text-btn-text shadow-2xs' : 'bg-slate-200 text-slate-500'">
                   <Icon icon="ph:identification-card-bold" class="text-base" />
                 </div>
                 <div>
@@ -365,7 +386,7 @@
               :class="pageSettings.sections.contact ? 'bg-primary/5 border-primary/40' : 'bg-slate-50 border-slate-200/80 opacity-60'">
               <div class="flex items-center gap-3">
                 <div class="size-8 rounded-xl flex items-center justify-center"
-                  :class="pageSettings.sections.contact ? 'bg-navy text-primary' : 'bg-slate-200 text-slate-500'">
+                  :class="pageSettings.sections.contact ? 'bg-primary text-btn-text shadow-2xs' : 'bg-slate-200 text-slate-500'">
                   <Icon icon="ph:phone-call-bold" class="text-base" />
                 </div>
                 <div>
@@ -385,7 +406,7 @@
               :class="pageSettings.sections.about ? 'bg-primary/5 border-primary/40' : 'bg-slate-50 border-slate-200/80 opacity-60'">
               <div class="flex items-center gap-3">
                 <div class="size-8 rounded-xl flex items-center justify-center"
-                  :class="pageSettings.sections.about ? 'bg-navy text-primary' : 'bg-slate-200 text-slate-500'">
+                  :class="pageSettings.sections.about ? 'bg-primary text-btn-text shadow-2xs' : 'bg-slate-200 text-slate-500'">
                   <Icon icon="ph:target-bold" class="text-base" />
                 </div>
                 <div>
@@ -405,7 +426,7 @@
               :class="pageSettings.sections.faq ? 'bg-primary/5 border-primary/40' : 'bg-slate-50 border-slate-200/80 opacity-60'">
               <div class="flex items-center gap-3">
                 <div class="size-8 rounded-xl flex items-center justify-center"
-                  :class="pageSettings.sections.faq ? 'bg-navy text-primary' : 'bg-slate-200 text-slate-500'">
+                  :class="pageSettings.sections.faq ? 'bg-primary text-btn-text shadow-2xs' : 'bg-slate-200 text-slate-500'">
                   <Icon icon="ph:question-bold" class="text-base" />
                 </div>
                 <div>
@@ -432,7 +453,7 @@
 import { Icon } from '@iconify/vue'
 import { ref, reactive, onMounted, watch, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
@@ -440,21 +461,7 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useFormValidation } from '~/composables/useFormValidation'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 
-const countries = ref([
-    { title: 'Indonesia', value: 'Indonesia', icon: 'circle-flags:id' },
-    { title: 'Malaysia', value: 'Malaysia', icon: 'circle-flags:my' },
-    { title: 'Singapore', value: 'Singapore', icon: 'circle-flags:sg' },
-    { title: 'Thailand', value: 'Thailand', icon: 'circle-flags:th' },
-    { title: 'Philippines', value: 'Philippines', icon: 'circle-flags:ph' },
-    { title: 'Vietnam', value: 'Vietnam', icon: 'circle-flags:vn' },
-    { title: 'Australia', value: 'Australia', icon: 'circle-flags:au' },
-    { title: 'Japan', value: 'Japan', icon: 'circle-flags:jp' },
-    { title: 'South Korea', value: 'South Korea', icon: 'circle-flags:kr' },
-    { title: 'United Kingdom', value: 'United Kingdom', icon: 'circle-flags:gb' },
-    { title: 'United States', value: 'United States', icon: 'circle-flags:us' }
-])
-
-const { t } = useI18n()
+const { t, locale } = useDashboardI18n()
 
 definePageMeta({
   layout: 'dashboard',
@@ -473,22 +480,18 @@ const toast = useToast()
 const { errors, validate, rules } = useFormValidation()
 
 const validateName = () => validate('name', form.name, [
-  rules.required(t('organizer.profile.validation.name_required', 'Organization name is required')),
-  rules.minLength(2, t('organizer.profile.validation.name_min', 'Organization name must be at least 2 characters'))
+  rules.required(t('organizer.profile.validation.name_required')),
+  rules.minLength(2, t('organizer.profile.validation.name_min'))
 ])
 
 const validateSlug = () => validate('slug', form.slug, [
-  rules.required(t('organizer.profile.validation.slug_required', 'Slug is required')),
-  rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, t('organizer.profile.validation.slug_invalid', 'Slug must contain only lowercase letters, numbers, and hyphens'))
-])
-
-const validateCountry = () => validate('country', form.country, [
-  rules.required(t('organizer.profile.validation.country_required', 'Country is required'))
+  rules.required(t('organizer.profile.validation.slug_required')),
+  rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, t('organizer.profile.validation.slug_invalid'))
 ])
 
 const validateWhatsApp = () => validate('whatsapp_no', form.whatsapp_no, [
-  rules.required(t('organizer.profile.validation.whatsapp_required', 'WhatsApp number is required')),
-  rules.pattern(/^(\+?[0-9]{8,16})$/, t('organizer.profile.validation.whatsapp_invalid', 'Please enter a valid WhatsApp phone number (8-16 digits)'))
+  rules.required(t('organizer.profile.validation.whatsapp_required')),
+  rules.pattern(/^(\+?[0-9]{8,16})$/, t('organizer.profile.validation.whatsapp_invalid'))
 ])
 
 const validateWebsite = () => {
@@ -497,7 +500,7 @@ const validateWebsite = () => {
     return true
   }
   return validate('website', form.website, [
-    rules.pattern(/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/, t('organizer.profile.validation.website_invalid', 'Please enter a valid website URL'))
+    rules.pattern(/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/, t('organizer.profile.validation.website_invalid'))
   ])
 }
 
@@ -520,22 +523,22 @@ const pageSettings = reactive({
   }
 })
 
-const platformOptions = [
+const platformOptions = computed(() => [
   { value: 'instagram', title: 'Instagram', icon: 'ph:instagram-logo', iconColor: 'text-pink-500', placeholder: '@username_instagram' },
-  { value: 'facebook', title: 'Facebook', icon: 'ph:facebook-logo', iconColor: 'text-blue-600', placeholder: 'username / link' },
+  { value: 'facebook', title: 'Facebook', icon: 'ph:facebook-logo', iconColor: 'text-blue-600', placeholder: t('organizer.profile.platform_username_placeholder') },
   { value: 'twitter', title: 'Twitter / X', icon: 'ph:x-logo', iconColor: 'text-slate-800', placeholder: '@username' },
-  { value: 'youtube', title: 'YouTube', icon: 'ph:youtube-logo', iconColor: 'text-red-600', placeholder: 'channel_id / link' },
+  { value: 'youtube', title: 'YouTube', icon: 'ph:youtube-logo', iconColor: 'text-red-600', placeholder: t('organizer.profile.platform_channel_placeholder') },
   { value: 'tiktok', title: 'TikTok', icon: 'ph:tiktok-logo', iconColor: 'text-black', placeholder: '@username_tiktok' },
   { value: 'whatsapp', title: 'WhatsApp', icon: 'ph:whatsapp-logo', iconColor: 'text-green-600', placeholder: '081234567890' },
-  { value: 'linkedin', title: 'LinkedIn', icon: 'ph:linkedin-logo', iconColor: 'text-blue-700', placeholder: 'username / link' }
-]
+  { value: 'linkedin', title: 'LinkedIn', icon: 'ph:linkedin-logo', iconColor: 'text-blue-700', placeholder: t('organizer.profile.platform_username_placeholder') }
+])
 
 const remainingPlatforms = computed(() => {
-  return platformOptions.filter(p => !form.socialMedia.some(s => s.platform === p.value))
+  return platformOptions.value.filter(p => !form.socialMedia.some(s => s.platform === p.value))
 })
 
 const getPlatformInfo = (platform) => {
-  return platformOptions.find(p => p.value === platform) || platformOptions[0]
+  return platformOptions.value.find(p => p.value === platform) || platformOptions.value[0]
 }
 
 const getPlatformIconBagde = (platform) => {
@@ -757,17 +760,16 @@ const loadProfile = async () => {
 const saveProfile = async () => {
   const isNameValid = validateName()
   const isSlugValid = validateSlug()
-  const isCountryValid = validateCountry()
   const isWhatsappValid = validateWhatsApp()
   const isWebsiteValid = validateWebsite()
 
-  if (!isNameValid || !isSlugValid || !isCountryValid || !isWhatsappValid || !isWebsiteValid) {
-    if (!isNameValid || !isSlugValid || !isCountryValid) {
+  if (!isNameValid || !isSlugValid || !isWhatsappValid || !isWebsiteValid) {
+    if (!isNameValid || !isSlugValid) {
       activeTab.value = 'general'
     } else if (!isWhatsappValid || !isWebsiteValid) {
       activeTab.value = 'contact'
     }
-    toast.error(t('organizer.profile.validation_failed', 'Please correct the highlighted form errors'))
+    toast.error(t('organizer.profile.validation_failed'))
     return
   }
 

@@ -1,28 +1,28 @@
 <template>
     <div
-        class="absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-[100] transform transition-all duration-300 origin-top-right">
+        class="w-full bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-800 overflow-hidden">
         <!-- Header -->
-        <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">
+        <div class="px-5 py-3.5 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-900 sticky top-0 z-10">
             <div class="flex items-center gap-2">
-                <div class="font-black text-navy text-base">{{ t('notifications.title', 'Notifikasi') }}</div>
+                <div class="font-black text-navy dark:text-white text-sm">{{ t('notifications.title') }}</div>
                 <span v-if="unreadCount > 0"
                     class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-500 text-white">
                     {{ unreadCount }}
                 </span>
             </div>
             <button v-if="notifications.length > 0" @click.stop="$emit('mark-all-read')"
-                class="text-xs font-bold text-gray-600 hover:bg-gray-100 px-2.5 py-1 rounded-lg transition-colors">
-                {{ t('notifications.mark_all_read', 'Tandai semua dibaca') }}
+                class="text-xs font-bold text-gray-500 hover:text-navy hover:bg-gray-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 px-2.5 py-1 rounded-lg transition-colors">
+                {{ t('notifications.mark_all_read') }}
             </button>
         </div>
 
         <!-- List -->
-        <div class="max-h-[380px] overflow-y-auto no-scrollbar divide-y divide-gray-50">
+        <div class="max-h-[380px] overflow-y-auto no-scrollbar divide-y divide-gray-50 dark:divide-slate-800/60">
             <div v-if="notifications.length > 0">
                 <div v-for="note in notifications" :key="note.id" @click="handleNotificationClick(note)"
                     :class="[
-                        'px-5 py-3.5 flex items-start gap-3.5 hover:bg-gray-50/80 cursor-pointer transition-colors group',
-                        !note.is_read ? 'bg-blue-50/20' : 'bg-white'
+                        'px-5 py-3.5 flex items-start gap-3.5 hover:bg-gray-50/80 dark:hover:bg-slate-800/60 cursor-pointer transition-colors group',
+                        !note.is_read ? 'bg-blue-50/30 dark:bg-blue-900/10' : 'bg-white dark:bg-slate-900'
                     ]">
 
                     <!-- Icon/Avatar -->
@@ -34,14 +34,14 @@
                     <!-- Content -->
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center justify-between gap-2 mb-0.5">
-                            <div :class="['text-xs leading-snug truncate', !note.is_read ? 'font-black text-navy' : 'text-gray-700 font-bold']">
+                            <div :class="['text-xs leading-snug truncate', !note.is_read ? 'font-black text-navy dark:text-white' : 'text-gray-700 dark:text-slate-300 font-bold']">
                                 {{ note.title }}
                             </div>
-                            <span class="text-[10px] text-gray-400 font-medium shrink-0 whitespace-nowrap">
+                            <span class="text-[10px] text-gray-400 dark:text-slate-500 font-medium shrink-0 whitespace-nowrap">
                                 {{ formatTimeAgo(note.created_at) }}
                             </span>
                         </div>
-                        <div class="text-xs text-gray-600 line-clamp-2 leading-relaxed font-normal">
+                        <div class="text-xs text-gray-600 dark:text-slate-400 line-clamp-2 leading-relaxed font-normal">
                             {{ note.message }}
                         </div>
                     </div>
@@ -51,15 +51,15 @@
                         <button
                             v-if="!note.is_read"
                             @click.stop="$emit('mark-read', note.id)"
-                            class="p-1 rounded-lg text-gray-400  hover:bg-emerald-50 transition-colors"
-                            :title="t('notifications.mark_as_read', 'Tandai sudah dibaca')"
+                            class="p-1 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"
+                            :title="t('notifications.mark_as_read')"
                         >
                             <Icon icon="ph:check-bold" class="text-xs" />
                         </button>
                         <button
                             @click.stop="$emit('delete', note.id)"
-                            class="p-1 rounded-lg text-gray-400  hover:bg-rose-50 transition-colors"
-                            :title="t('notifications.delete', 'Hapus notifikasi')"
+                            class="p-1 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+                            :title="t('notifications.delete')"
                         >
                             <Icon icon="ph:x-bold" class="text-xs" />
                         </button>
@@ -68,20 +68,20 @@
             </div>
 
             <!-- Empty State -->
-            <div v-else class="py-12 px-6 text-center">
-                <div class="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-3 text-gray-300">
+            <div v-else class="py-10 px-6 text-center">
+                <div class="w-12 h-12 bg-gray-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-3 text-gray-300 dark:text-slate-600">
                     <Icon icon="ph:bell-slash-bold" class="text-2xl" />
                 </div>
-                <div class="text-navy font-black text-sm">{{ t('notifications.empty_title', 'Belum Ada Notifikasi') }}</div>
-                <div class="text-gray-400 text-xs mt-1">{{ t('notifications.empty_desc', 'Notifikasi aktivitas dan turnamen Anda akan muncul di sini.') }}</div>
+                <div class="text-navy dark:text-white font-black text-sm">{{ t('notifications.empty_title') }}</div>
+                <div class="text-gray-400 dark:text-slate-500 text-xs mt-1">{{ t('notifications.empty_desc') }}</div>
             </div>
         </div>
 
         <!-- Footer -->
-        <div class="px-5 py-3 border-t border-gray-100 bg-gray-50/60 text-center">
+        <div class="px-5 py-2.5 border-t border-gray-100 dark:border-slate-800 bg-gray-50/60 dark:bg-slate-900/60 text-center">
             <NuxtLink :to="`/dashboard/${userPersona}/notifications`" @click="$emit('close')"
-                class="text-xs font-black text-navy hover:bg-gray-100 py-1 px-3 rounded-lg transition-colors inline-flex items-center justify-center gap-1.5">
-                <span>{{ t('notifications.view_all', 'Lihat Semua Notifikasi') }}</span>
+                class="text-xs font-black text-navy dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800 py-1 px-3 rounded-lg transition-colors inline-flex items-center justify-center gap-1.5">
+                <span>{{ t('notifications.view_all') }}</span>
                 <Icon icon="ph:arrow-right-bold" class="text-xs" />
             </NuxtLink>
         </div>
@@ -91,9 +91,9 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { useAuth } from '~/composables/useAuth'
-import { useI18n } from 'vue-i18n'
+import { useDashboardI18n } from '~/composables/useDashboardI18n'
 
-const { t, locale } = useI18n()
+const { t, locale } = useDashboardI18n()
 const { userPersona } = useAuth()
 
 const props = defineProps({

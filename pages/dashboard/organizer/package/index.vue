@@ -1,14 +1,15 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useApi } from '~/composables/useApi'
-import useDashboardI18n from '~/composables/useDashboardI18n'
+import { useI18n } from 'vue-i18n'
 import { usePricingPlans } from '~/composables/usePricingPlans'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
 
 definePageMeta({ layout: 'dashboard' })
 
-const { locale, t } = useDashboardI18n()
-useHead({ title: computed(() => t('organizer_subscription.page_title', 'Paket Event & Kuota') + ' - Archeris Dashboard') })
+const { locale, t } = useI18n()
+useHead({ title: computed(() => t('organizer_subscription.page_title') + ' - Archeris Dashboard') })
 
 const { get, post } = useApi()
 const toast = useToast()
@@ -24,6 +25,16 @@ const limit = ref(10)
 const total = ref(0)
 const totalPages = ref(1)
 const isLoadingHistory = ref(false)
+
+const headers = computed(() => [
+    { key: 'purchased_at', label: t('organizer_subscription.col_date', 'Tanggal'), sortable: true },
+    { key: 'plan_name', label: t('organizer_subscription.col_package', 'Paket Kuota'), sortable: true },
+    { key: 'quantity', label: t('organizer_subscription.col_qty', 'Jumlah'), align: 'center', sortable: true },
+    { key: 'total_amount', label: t('organizer_subscription.col_total', 'Total Biaya'), sortable: true },
+    { key: 'payment_method', label: t('organizer_subscription.col_method', 'Metode'), sortable: true },
+    { key: 'payment_status', label: t('organizer_subscription.col_status', 'Status'), sortable: true },
+    { key: 'actions', label: t('organizer_subscription.col_action', 'Aksi'), align: 'right', sortable: false }
+])
 
 // Table sorting state
 const sortKey = ref('date')
@@ -219,7 +230,7 @@ async function buyQuota() {
         })
         
         const trxRef = res?.purchase_id || res?.reference || res?.transaction_id || ''
-        toast.success(t('organizer_subscription.order_success_toast', 'Pesanan paket kuota berhasil dibuat'))
+        toast.success(t('organizer_subscription.order_success_toast'))
         if (res?.checkout_url) {
             window.open(res.checkout_url, '_blank')
             router.push(`/dashboard/organizer/package/detail?trx_id=${trxRef}`)
@@ -228,7 +239,7 @@ async function buyQuota() {
         }
     } catch (e) {
         console.error(e)
-        toast.error(e?.data?.error || t('organizer_subscription.buy_error', 'Gagal memproses pembelian paket kuota.'))
+        toast.error(e?.data?.error || t('organizer_subscription.buy_error'))
     } finally {
         isPurchasing.value = false
     }
@@ -239,12 +250,12 @@ async function buyQuota() {
     <div class="space-y-8 pb-12">
         <!-- ── Header ── -->
         <DashboardHeader
-            :title="t('organizer_subscription.page_title', 'Paket Event & Kuota')"
-            :subtitle="t('organizer_subscription.subtitle', 'Kelola kuota event, beli paket tambahan, dan pantau riwayat transaksi.')"
+            :title="t('organizer_subscription.page_title')"
+            :subtitle="t('organizer_subscription.subtitle')"
             icon="ph:crown-simple-bold"
             :breadcrumbs="[
                 { label: 'Dashboard', to: '/dashboard/organizer' },
-                { label: t('organizer_subscription.breadcrumb', 'Paket & Kuota') }
+                { label: t('organizer_subscription.breadcrumb') }
             ]"
         />
 
@@ -255,13 +266,13 @@ async function buyQuota() {
                 <div class="flex items-start justify-between gap-4 mb-5 min-h-[92px]">
                     <div class="space-y-1">
                         <span class="inline-block px-2.5 py-0.5 bg-slate-100 text-slate-700 border border-slate-200 rounded-lg text-[10px] font-black tracking-wider capitalize">
-                            {{ t('organizer_subscription.free_tier_badge', 'Bonus Awal Registrasi') }}
+                            {{ t('organizer_subscription.free_tier_badge') }}
                         </span>
-                        <h3 class="text-lg font-black text-navy pt-1">{{ t('organizer_subscription.free_tier_title', 'Free Tier') }}</h3>
-                        <div class="text-xs text-slate-500">{{ t('organizer_subscription.free_tier_desc', 'Kuota gratis untuk event klub & latihan internal') }}</div>
+                        <h3 class="text-lg font-black text-navy pt-1">{{ t('organizer_subscription.free_tier_title') }}</h3>
+                        <div class="text-xs text-slate-500">{{ t('organizer_subscription.free_tier_desc') }}</div>
                     </div>
-                    <div class="size-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-navy shadow-xs shrink-0 group-hover:scale-105 transition-transform">
-                        <Icon icon="ph:gift-bold" class="text-2xl text-emerald-600" />
+                    <div class="size-12 rounded-xl bg-primary text-btn-text flex items-center justify-center shadow-2xs shrink-0 group-hover:scale-105 transition-transform font-bold">
+                        <Icon icon="ph:gift-bold" class="text-2xl" />
                     </div>
                 </div>
 
@@ -269,10 +280,10 @@ async function buyQuota() {
                     <div class="flex items-baseline justify-between">
                         <div class="flex items-baseline gap-1.5">
                             <span class="text-4xl font-black text-navy">{{ quota.quota_free ?? 20 }}</span>
-                            <span class="text-xs font-bold text-slate-400">{{ t('organizer_subscription.remaining_slots', '/ 20 slot tersisa') }}</span>
+                            <span class="text-xs font-bold text-slate-400">{{ t('organizer_subscription.remaining_slots') }}</span>
                         </div>
                         <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
-                            {{ Math.max(0, 20 - (quota.quota_free ?? 20)) }} {{ t('organizer_subscription.used_slots', 'terpakai') }}
+                            {{ Math.max(0, 20 - (quota.quota_free ?? 20)) }} {{ t('organizer_subscription.used_slots') }}
                         </span>
                     </div>
                     <!-- Progress bar indicating remaining quota -->
@@ -282,7 +293,7 @@ async function buyQuota() {
                         </div>
                     </div>
                     <div class="flex justify-between text-[10px] text-slate-400 font-bold">
-                        <span>{{ t('organizer_subscription.initial_slots', 'Awal: 20 Slot Gratis') }}</span>
+                        <span>{{ t('organizer_subscription.initial_slots') }}</span>
                         <span>{{ t('organizer_subscription.remaining_events', { quota: quota.quota_free ?? 20 }) }}</span>
                     </div>
                 </div>
@@ -290,15 +301,15 @@ async function buyQuota() {
                 <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium mt-auto">
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.free_tier_feat_1', 'Maksimal <strong>50 Peserta</strong> per event')"></span>
+                        <span v-html="t('organizer_subscription.free_tier_feat_1')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.free_tier_feat_2', '<strong>200 MB</strong> Media Storage')"></span>
+                        <span v-html="t('organizer_subscription.free_tier_feat_2')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.free_tier_feat_3', 'Akses <strong>Semua Fitur</strong>')"></span>
+                        <span v-html="t('organizer_subscription.free_tier_feat_3')"></span>
                     </div>
                 </div>
             </div>
@@ -308,35 +319,35 @@ async function buyQuota() {
                 <div class="flex items-start justify-between gap-4 mb-5 min-h-[92px]">
                     <div class="space-y-1">
                         <span class="inline-block px-2.5 py-0.5 bg-primary/10 text-navy border border-primary/20 rounded-lg text-[10px] font-black tracking-wider capitalize">
-                            {{ t('organizer_subscription.standard_tier_badge', 'Paling Populer') }}
+                            {{ t('organizer_subscription.standard_tier_badge') }}
                         </span>
-                        <h3 class="text-lg font-black text-navy pt-1">{{ t('organizer_subscription.standard_title', 'Paket Standard') }}</h3>
-                        <div class="text-xs text-slate-500">{{ t('organizer_subscription.standard_desc', 'Ideal untuk kejuaraan daerah & sirkuit panahan') }}</div>
+                        <h3 class="text-lg font-black text-navy pt-1">{{ t('organizer_subscription.standard_title') }}</h3>
+                        <div class="text-xs text-slate-500">{{ t('organizer_subscription.standard_desc') }}</div>
                     </div>
-                    <div class="size-12 rounded-xl bg-slate-50 border border-primary/20 flex items-center justify-center text-navy shadow-xs shrink-0 group-hover:scale-105 transition-transform">
-                        <Icon icon="ph:lightning-bold" class="text-2xl text-navy" />
+                    <div class="size-12 rounded-xl bg-primary text-btn-text flex items-center justify-center shadow-2xs shrink-0 group-hover:scale-105 transition-transform font-bold">
+                        <Icon icon="ph:lightning-bold" class="text-2xl" />
                     </div>
                 </div>
 
                 <div class="flex items-baseline gap-2 mb-6 min-h-[76px] flex flex-col justify-end">
                     <div class="flex items-baseline gap-2">
                         <span class="text-4xl font-black text-navy">{{ quota.quota_standard || 0 }}</span>
-                        <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.slot_available', 'slot event aktif') }}</span>
+                        <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.slot_available') }}</span>
                     </div>
                 </div>
 
                 <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium mt-auto">
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.std_feat_1', 'Hingga <strong>200 Peserta</strong> per event')"></span>
+                        <span v-html="t('organizer_subscription.std_feat_1')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.std_feat_2', '<strong>3 GB</strong> Media Storage')"></span>
+                        <span v-html="t('organizer_subscription.std_feat_2')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.std_feat_3', 'Akses <strong>Semua Fitur</strong>')"></span>
+                        <span v-html="t('organizer_subscription.std_feat_3')"></span>
                     </div>
                 </div>
             </div>
@@ -346,35 +357,35 @@ async function buyQuota() {
                 <div class="flex items-start justify-between gap-4 mb-5 min-h-[92px]">
                     <div class="space-y-1">
                         <span class="inline-block px-2.5 py-0.5 bg-primary/15 text-navy border border-primary/30 rounded-lg text-[10px] font-black tracking-wider capitalize">
-                            {{ t('organizer_subscription.elite_tier_badge', 'Skala Nasional') }}
+                            {{ t('organizer_subscription.elite_tier_badge') }}
                         </span>
-                        <h3 class="text-lg font-black text-navy pt-1">{{ t('organizer_subscription.elite_title', 'Paket Elite') }}</h3>
-                        <div class="text-xs text-slate-500">{{ t('organizer_subscription.elite_desc', 'Untuk turnamen besar, open championship, & kejurnas') }}</div>
+                        <h3 class="text-lg font-black text-navy pt-1">{{ t('organizer_subscription.elite_title') }}</h3>
+                        <div class="text-xs text-slate-500">{{ t('organizer_subscription.elite_desc') }}</div>
                     </div>
-                    <div class="size-12 rounded-xl bg-slate-50 border border-primary/20 flex items-center justify-center text-navy shadow-xs shrink-0 group-hover:scale-105 transition-transform">
-                        <Icon icon="ph:crown-simple-bold" class="text-2xl text-navy" />
+                    <div class="size-12 rounded-xl bg-primary text-btn-text flex items-center justify-center shadow-2xs shrink-0 group-hover:scale-105 transition-transform font-bold">
+                        <Icon icon="ph:crown-simple-bold" class="text-2xl" />
                     </div>
                 </div>
 
                 <div class="flex items-baseline gap-2 mb-6 min-h-[76px] flex flex-col justify-end">
                     <div class="flex items-baseline gap-2">
                         <span class="text-4xl font-black text-navy">{{ quota.quota_elite || 0 }}</span>
-                        <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.slot_available', 'slot event aktif') }}</span>
+                        <span class="text-xs font-bold text-slate-500">{{ t('organizer_subscription.slot_available') }}</span>
                     </div>
                 </div>
 
                 <div class="pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600 font-medium mt-auto">
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.elite_feat_1', 'Peserta <strong>Tak Terbatas</strong>')"></span>
+                        <span v-html="t('organizer_subscription.elite_feat_1')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.elite_feat_2', '<strong>10 GB</strong> Media Storage')"></span>
+                        <span v-html="t('organizer_subscription.elite_feat_2')"></span>
                     </div>
                     <div class="flex items-center gap-2">
                         <Icon icon="ph:check-circle-fill" class="text-primary text-base shrink-0" />
-                        <span v-html="t('organizer_subscription.elite_feat_3', 'Akses <strong>Semua Fitur</strong>')"></span>
+                        <span v-html="t('organizer_subscription.elite_feat_3')"></span>
                     </div>
                 </div>
             </div>
@@ -388,7 +399,7 @@ async function buyQuota() {
                     <!-- 1. Select Tier -->
                     <div class="space-y-3">
                         <label class="text-xs font-black text-slate-400 capitalize tracking-widest">
-                            {{ t('organizer_subscription.step_tier', '1. Pilih Jenis Paket Event') }}
+                            {{ t('organizer_subscription.step_tier') }}
                         </label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <!-- Standard Selection Card -->
@@ -398,9 +409,9 @@ async function buyQuota() {
                                 class="p-5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col justify-between relative group">
                                 <div class="flex items-start justify-between gap-3">
                                     <div class="space-y-1">
-                                        <div class="text-xs font-bold text-slate-400 capitalize">{{ t('organizer_subscription.standard_tier_badge', 'Paling Populer') }}</div>
-                                        <div class="font-black text-navy text-base">{{ t('organizer_subscription.standard_title', 'Paket Standard') }}</div>
-                                        <div class="text-[11px] text-slate-500 leading-relaxed">{{ t('organizer_subscription.standard_desc', 'Ideal untuk kejuaraan daerah & sirkuit') }}</div>
+                                        <div class="text-xs font-bold text-slate-400 capitalize">{{ t('organizer_subscription.standard_tier_badge') }}</div>
+                                        <div class="font-black text-navy text-base">{{ t('organizer_subscription.standard_title') }}</div>
+                                        <div class="text-[11px] text-slate-500 leading-relaxed">{{ t('organizer_subscription.standard_desc') }}</div>
                                     </div>
                                     <div class="size-6 rounded-full flex items-center justify-center text-xs"
                                         :class="selectedTier === 'standard' ? 'bg-primary text-navy font-black' : 'border border-slate-300 text-transparent'">
@@ -413,15 +424,15 @@ async function buyQuota() {
                                             {{ isEn ? '$3.00' : 'Rp 49.900' }}
                                         </span>
                                         <span class="text-[9px] font-black capitalize text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
-                                            {{ t('organizer_subscription.promo_badge_50', 'Diskon Launching 50%') }}
+                                            {{ t('organizer_subscription.promo_badge_50') }}
                                         </span>
                                     </div>
                                     <div class="text-lg font-black text-navy">
                                         {{ isEn ? '$1.50' : 'Rp 24.999' }}
-                                        <span class="text-[10px] font-bold text-slate-500">{{ t('organizer_subscription.per_event', '/ event') }}</span>
+                                        <span class="text-[10px] font-bold text-slate-500">{{ t('organizer_subscription.per_event') }}</span>
                                     </div>
                                     <div class="text-[10px] text-amber-700 font-medium mt-1">
-                                        {{ t('organizer_subscription.promo_subtext', 'Diskon launching 50% untuk semua paket') }}
+                                        {{ t('organizer_subscription.promo_subtext') }}
                                     </div>
                                 </div>
                             </div>
@@ -433,9 +444,9 @@ async function buyQuota() {
                                 class="p-5 rounded-2xl border-2 cursor-pointer transition-all flex flex-col justify-between relative group">
                                 <div class="flex items-start justify-between gap-3">
                                     <div class="space-y-1">
-                                        <div class="text-xs font-bold text-slate-400 capitalize">{{ t('organizer_subscription.elite_tier_badge', 'Skala Nasional') }}</div>
-                                        <div class="font-black text-navy text-base">{{ t('organizer_subscription.elite_title', 'Paket Elite') }}</div>
-                                        <div class="text-[11px] text-slate-500 leading-relaxed">{{ t('organizer_subscription.elite_desc', 'Untuk turnamen besar & kejurnas') }}</div>
+                                        <div class="text-xs font-bold text-slate-400 capitalize">{{ t('organizer_subscription.elite_tier_badge') }}</div>
+                                        <div class="font-black text-navy text-base">{{ t('organizer_subscription.elite_title') }}</div>
+                                        <div class="text-[11px] text-slate-500 leading-relaxed">{{ t('organizer_subscription.elite_desc') }}</div>
                                     </div>
                                     <div class="size-6 rounded-full flex items-center justify-center text-xs"
                                         :class="selectedTier === 'elite' ? 'bg-primary text-navy font-black' : 'border border-slate-300 text-transparent'">
@@ -448,15 +459,15 @@ async function buyQuota() {
                                             {{ isEn ? '$7.00' : 'Rp 79.900' }}
                                         </span>
                                         <span class="text-[9px] font-black capitalize text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded border border-amber-200">
-                                            {{ t('organizer_subscription.promo_badge_50', 'Diskon Launching 50%') }}
+                                            {{ t('organizer_subscription.promo_badge_50') }}
                                         </span>
                                     </div>
                                     <div class="text-lg font-black text-navy">
                                         {{ isEn ? '$3.50' : 'Rp 39.999' }}
-                                        <span class="text-[10px] font-bold text-slate-500">{{ t('organizer_subscription.per_event', '/ event') }}</span>
+                                        <span class="text-[10px] font-bold text-slate-500">{{ t('organizer_subscription.per_event') }}</span>
                                     </div>
                                     <div class="text-[10px] text-amber-700 font-medium mt-1">
-                                        {{ t('organizer_subscription.promo_subtext', 'Diskon launching 50% untuk semua paket') }}
+                                        {{ t('organizer_subscription.promo_subtext') }}
                                     </div>
                                 </div>
                             </div>
@@ -467,7 +478,7 @@ async function buyQuota() {
                     <div class="space-y-3">
                         <div class="flex items-center justify-between flex-wrap gap-2">
                             <label class="text-xs font-black text-slate-400 capitalize tracking-widest">
-                                {{ t('organizer_subscription.step_qty', '2. Jumlah Kuota Event') }}
+                                {{ t('organizer_subscription.step_qty') }}
                             </label>
                             <span v-if="discountPct > 0" class="text-[11px] font-black text-navy bg-primary/10 px-2 py-0.5 rounded-md border border-primary/20">
                                 {{ t('organizer_subscription.save_with_bundle', { pct: discountPct }) }}
@@ -484,9 +495,9 @@ async function buyQuota() {
                                         ? 'border-primary bg-navy text-white shadow-xs' 
                                         : 'border-slate-200 text-navy hover:border-primary/40 bg-white'
                                 ]">
-                                <span class="text-lg font-black">{{ qty }} {{ t('organizer_subscription.event_unit', 'Event') }}</span>
+                                <span class="text-lg font-black">{{ qty }} {{ t('organizer_subscription.event_unit') }}</span>
                                 <span class="text-[10px] font-bold" :class="(!isCustomQty && selectedQty === qty) ? 'text-primary' : 'text-slate-500'">
-                                    {{ qty === 1 ? t('organizer_subscription.single_package', 'Paket Satuan') : t('organizer_subscription.save_pct', { pct: {3: 7, 5: 12}[qty] }) }}
+                                    {{ qty === 1 ? t('organizer_subscription.single_package') : t('organizer_subscription.save_pct', { pct: {3: 7, 5: 12}[qty] }) }}
                                 </span>
                             </button>
                             <button
@@ -498,9 +509,9 @@ async function buyQuota() {
                                         ? 'border-primary bg-navy text-white shadow-xs' 
                                         : 'border-slate-200 text-navy hover:border-primary/40 bg-white'
                                 ]">
-                                <span class="text-lg font-black">{{ t('organizer_subscription.custom_tier_name', 'Kustom') }}</span>
+                                <span class="text-lg font-black">{{ t('organizer_subscription.custom_tier_name') }}</span>
                                 <span class="text-[10px] font-bold" :class="isCustomQty ? 'text-primary' : 'text-slate-500'">
-                                    {{ t('organizer_subscription.custom_slot_label', 'Tentukan Sendiri') }}
+                                    {{ t('organizer_subscription.custom_slot_label') }}
                                 </span>
                             </button>
                         </div>
@@ -508,8 +519,8 @@ async function buyQuota() {
                         <!-- Custom Slot Input Box -->
                         <div v-if="isCustomQty" class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                             <div class="space-y-0.5">
-                                <label class="text-xs font-black text-navy">{{ t('organizer_subscription.custom_slot_title', 'Jumlah Slot Event Kustom:') }}</label>
-                                <div class="text-[11px] text-slate-500">{{ t('organizer_subscription.custom_slot_desc', 'Tentukan jumlah kuota turnamen yang ingin Anda miliki') }}</div>
+                                <label class="text-xs font-black text-navy">{{ t('organizer_subscription.custom_slot_title') }}</label>
+                                <div class="text-[11px] text-slate-500">{{ t('organizer_subscription.custom_slot_desc') }}</div>
                             </div>
                             <div class="flex items-center gap-2">
                                 <input
@@ -520,7 +531,7 @@ async function buyQuota() {
                                     class="w-28 h-10 px-3 bg-white border border-slate-300 rounded-xl font-black text-navy text-center text-base focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                                     @input="onCustomQtyChange"
                                 />
-                                <span class="text-xs font-bold text-navy">{{ t('organizer_subscription.slot_event_unit', 'Slot Event') }}</span>
+                                <span class="text-xs font-bold text-navy">{{ t('organizer_subscription.slot_event_unit') }}</span>
                             </div>
                         </div>
                     </div>
@@ -528,7 +539,7 @@ async function buyQuota() {
                     <!-- 3. Payment Method -->
                     <div class="space-y-4">
                         <label class="text-xs font-black text-slate-400 capitalize tracking-widest">
-                            {{ t('organizer_subscription.step_payment', '3. Metode Pembayaran') }}
+                            {{ t('organizer_subscription.step_payment') }}
                         </label>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -542,8 +553,8 @@ async function buyQuota() {
                                             <img src="/mayar-logo.png" alt="Mayar" class="w-full h-full object-contain" />
                                         </div>
                                         <div>
-                                            <div class="font-black text-navy text-xs">{{ t('organizer_subscription.payment_channel_mayar', 'Domestik (Mayar - IDR)') }}</div>
-                                            <div class="text-[10px] text-slate-500 font-medium">{{ t('organizer_subscription.currency_idr', 'Mata Uang: IDR (Rp)') }}</div>
+                                            <div class="font-black text-navy text-xs">{{ t('organizer_subscription.payment_channel_mayar') }}</div>
+                                            <div class="text-[10px] text-slate-500 font-medium">{{ t('organizer_subscription.currency_idr') }}</div>
                                         </div>
                                     </div>
                                     <div class="size-5 rounded-full flex items-center justify-center text-xs"
@@ -552,7 +563,7 @@ async function buyQuota() {
                                     </div>
                                 </div>
                                 <div class="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                    {{ t('organizer_subscription.mayar_methods_desc', 'QRIS, Virtual Account (BCA, Mandiri, BRI, BNI, Permata), E-Wallet') }}
+                                    {{ t('organizer_subscription.mayar_methods_desc') }}
                                 </div>
                             </div>
 
@@ -566,8 +577,8 @@ async function buyQuota() {
                                             <Icon icon="logos:paypal" class="text-xl" />
                                         </div>
                                         <div>
-                                            <div class="font-black text-navy text-xs">{{ t('organizer_subscription.payment_channel_paypal', 'Internasional (PayPal - USD)') }}</div>
-                                            <div class="text-[10px] text-blue-600 font-bold">{{ t('organizer_subscription.currency_usd', 'Mata Uang: USD ($)') }}</div>
+                                            <div class="font-black text-navy text-xs">{{ t('organizer_subscription.payment_channel_paypal') }}</div>
+                                            <div class="text-[10px] text-blue-600 font-bold">{{ t('organizer_subscription.currency_usd') }}</div>
                                         </div>
                                     </div>
                                     <div class="size-5 rounded-full flex items-center justify-center text-xs"
@@ -576,7 +587,7 @@ async function buyQuota() {
                                     </div>
                                 </div>
                                 <div class="text-[11px] text-slate-600 font-medium leading-relaxed">
-                                    {{ t('organizer_subscription.paypal_methods_desc', 'Saldo PayPal, Kartu Kredit/Debit Internasional (Visa, Mastercard, AMEX)') }}
+                                    {{ t('organizer_subscription.paypal_methods_desc') }}
                                 </div>
                             </div>
                         </div>
@@ -590,40 +601,40 @@ async function buyQuota() {
 
                         <!-- Header -->
                         <div class="flex items-center justify-between border-b border-white/10 pb-4">
-                            <h4 class="font-black text-white text-base tracking-tight">{{ t('organizer_subscription.order_summary', 'Ringkasan Pesanan') }}</h4>
+                            <h4 class="font-black text-white text-base tracking-tight">{{ t('organizer_subscription.order_summary') }}</h4>
                             <span class="text-[10px] font-mono font-bold text-primary capitalize bg-primary/10 px-2 py-0.5 rounded border border-primary/20">Archeris EO</span>
                         </div>
 
                         <!-- Details breakdown -->
                         <div class="space-y-3.5 text-xs">
                             <div class="flex justify-between items-center text-slate-300">
-                                <span>{{ t('organizer_subscription.summary_tier', 'Jenis Paket') }}</span>
-                                <span class="font-black text-white capitalize">{{ selectedTier === 'standard' ? t('organizer_subscription.standard_title', 'Paket Standard') : t('organizer_subscription.elite_title', 'Paket Elite') }}</span>
+                                <span>{{ t('organizer_subscription.summary_tier') }}</span>
+                                <span class="font-black text-white capitalize">{{ selectedTier === 'standard' ? t('organizer_subscription.standard_title') : t('organizer_subscription.elite_title') }}</span>
                             </div>
 
                             <div class="flex justify-between items-center text-slate-300">
-                                <span>{{ t('organizer_subscription.summary_qty', 'Jumlah Slot') }}</span>
-                                <span class="font-black text-white">{{ selectedQty }} {{ t('organizer_subscription.event_unit', 'Event') }}</span>
+                                <span>{{ t('organizer_subscription.summary_qty') }}</span>
+                                <span class="font-black text-white">{{ selectedQty }} {{ t('organizer_subscription.event_unit') }}</span>
                             </div>
 
                             <div class="flex justify-between items-center text-slate-300">
-                                <span>{{ t('organizer_subscription.summary_unit_price', 'Harga per Slot') }}</span>
+                                <span>{{ t('organizer_subscription.summary_unit_price') }}</span>
                                 <span class="font-medium text-slate-200">{{ formatPrice(basePrice) }}</span>
                             </div>
 
                             <div v-if="discountPct > 0" class="flex justify-between items-center text-primary font-bold">
-                                <span>{{ t('organizer_subscription.summary_discount', 'Diskon Bundle') }} ({{ discountPct }}%)</span>
+                                <span>{{ t('organizer_subscription.summary_discount') }} ({{ discountPct }}%)</span>
                                 <span>-{{ formatPrice(discountAmount) }}</span>
                             </div>
 
                             <div class="flex justify-between items-center text-slate-300">
-                                <span>{{ t('organizer_subscription.col_method', 'Metode') }}</span>
+                                <span>{{ t('organizer_subscription.col_method') }}</span>
                                 <span class="font-black text-white">{{ selectedPaymentMethod === 'paypal' ? 'PayPal (USD)' : 'Mayar (IDR)' }}</span>
                             </div>
 
                             <div class="pt-3 border-t border-white/10 space-y-1">
                                 <div class="flex justify-between items-baseline">
-                                    <span class="font-black text-white text-sm">{{ t('organizer_subscription.summary_total', 'Total Tagihan') }}</span>
+                                    <span class="font-black text-white text-sm">{{ t('organizer_subscription.summary_total') }}</span>
                                     <div class="text-right">
                                         <div class="text-2xl font-black text-primary tabular-nums">
                                             {{ formatPrice(totalAmount) }}
@@ -647,11 +658,11 @@ async function buyQuota() {
                                 :disabled="isPurchasing"
                                 class="w-full py-4 px-6 bg-gradient-to-r from-amber-400 via-primary to-amber-500 hover:opacity-95 text-navy font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50">
                                 <Icon :icon="isPurchasing ? 'ph:spinner-gap-bold' : (selectedPaymentMethod === 'paypal' ? 'logos:paypal' : 'ph:rocket-launch-bold')" :class="isPurchasing ? 'animate-spin' : ''" class="text-lg" />
-                                <span>{{ isPurchasing ? t('organizer_subscription.btn_processing', 'Memproses Pembayaran...') : (selectedPaymentMethod === 'paypal' ? t('organizer_subscription.pay_with_paypal', 'Checkout via PayPal') : t('organizer_subscription.btn_pay_now', 'Bayar Sekarang')) }}</span>
+                                <span>{{ isPurchasing ? t('organizer_subscription.btn_processing') : (selectedPaymentMethod === 'paypal' ? t('organizer_subscription.pay_with_paypal') : t('organizer_subscription.btn_pay_now')) }}</span>
                             </button>
 
                             <div class="text-[11px] text-center text-slate-400 font-medium">
-                                {{ t('organizer_subscription.secure_note', 'Transaksi aman, terverifikasi otomatis secara instan') }}
+                                {{ t('organizer_subscription.secure_note') }}
                             </div>
                         </div>
                     </div>
@@ -660,164 +671,87 @@ async function buyQuota() {
         </div>
 
         <!-- ── Section 3: Quota Purchase History Table ── -->
-        <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
-            <div class="p-6 sm:p-7 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div class="flex items-center gap-3">
-                    <div class="size-10 rounded-xl bg-slate-100 flex items-center justify-center text-navy shrink-0">
-                        <Icon icon="ph:receipt-bold" class="text-xl text-navy" />
-                    </div>
-                    <div>
-                        <h3 class="text-base font-black text-navy">{{ t('organizer_subscription.history_title', 'Riwayat Pembelian Kuota') }}</h3>
-                        <div class="text-xs text-slate-400">{{ t('organizer_subscription.history_subtitle', 'Daftar invoice dan transaksi kuota event Anda') }}</div>
+        <DashboardDataTable
+            :items="history"
+            :headers="headers"
+            :loading="isLoadingHistory"
+            :searchable="true"
+            :search-placeholder="t('organizer_subscription.search_placeholder', 'Cari riwayat pembelian...')"
+            :title="t('organizer_subscription.history_title')"
+            :subtitle="t('organizer_subscription.history_subtitle')"
+            :icon="'ph:receipt-bold'"
+            :default-page-size="10"
+        >
+            <template #item-purchased_at="{ item }">
+                <span class="text-slate-500 whitespace-nowrap text-xs">
+                    {{ formatDate(item.purchased_at || item.created_at) }}
+                </span>
+            </template>
+
+            <template #item-plan_name="{ item }">
+                <span class="font-bold text-navy text-xs">
+                    {{ item.plan_name || (item.quota_type === 'elite' ? t('organizer_subscription.elite_title') : t('organizer_subscription.standard_title')) }}
+                </span>
+            </template>
+
+            <template #item-quantity="{ item }">
+                <span class="font-bold text-navy text-xs">
+                    {{ item.quantity }} {{ t('organizer_subscription.event_unit') }}
+                </span>
+            </template>
+
+            <template #item-total_amount="{ item }">
+                <span class="font-black text-navy tabular-nums whitespace-nowrap text-xs">
+                    {{ formatHistoryAmount(item) }}
+                </span>
+            </template>
+
+            <template #item-payment_method="{ item }">
+                <span class="capitalize text-slate-600 font-bold text-xs">
+                    {{ item.payment_method === 'paypal' ? 'PayPal' : 'Mayar' }}
+                </span>
+            </template>
+
+            <template #item-payment_status="{ item }">
+                <span v-if="item.payment_status === 'paid' || item.status === 'paid'"
+                    class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize bg-emerald-100 text-emerald-800 border border-emerald-200">
+                    {{ t('organizer_subscription.status_paid') }}
+                </span>
+                <span v-else-if="item.payment_status === 'pending' || item.status === 'pending'"
+                    class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize bg-amber-100 text-amber-800 border border-amber-200">
+                    {{ t('organizer_subscription.status_pending') }}
+                </span>
+                <span v-else
+                    class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize bg-rose-100 text-rose-800 border border-rose-200">
+                    {{ item.payment_status || item.status }}
+                </span>
+            </template>
+
+            <template #item-actions="{ item }">
+                <div class="flex items-center justify-end">
+                    <NuxtLink :to="`/dashboard/organizer/package/detail?trx_id=${item.payment_reference || item.uuid}`"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy font-bold text-[11px] transition-colors">
+                        <Icon icon="ph:receipt" class="text-sm" />
+                        <span>{{ t('organizer_subscription.btn_view_invoice') }}</span>
+                    </NuxtLink>
+                </div>
+            </template>
+
+            <template #empty>
+                <div class="py-14 text-center">
+                    <div class="flex flex-col items-center justify-center gap-3 max-w-md mx-auto">
+                        <div class="size-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
+                            <Icon icon="ph:receipt-x-bold" class="text-3xl text-slate-400" />
+                        </div>
+                        <div class="space-y-1">
+                            <div class="text-sm font-bold text-navy">{{ t('organizer_subscription.no_history') }}</div>
+                            <div class="text-xs text-slate-400 font-medium leading-relaxed">
+                                {{ t('organizer_subscription.no_history_desc') }}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Table -->
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs min-w-[700px]">
-                    <thead class="bg-slate-50 text-slate-500 font-bold border-b border-gray-100 text-[11px]">
-                        <tr>
-                            <th class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-slate-100 transition-colors" @click="toggleSort('date')">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('organizer_subscription.col_date', 'Tanggal') }}</span>
-                                    <Icon :icon="getSortIcon('date')" class="text-xs text-slate-400" />
-                                </div>
-                            </th>
-                            <th class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-slate-100 transition-colors" @click="toggleSort('package')">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('organizer_subscription.col_package', 'Paket') }}</span>
-                                    <Icon :icon="getSortIcon('package')" class="text-xs text-slate-400" />
-                                </div>
-                            </th>
-                            <th class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-slate-100 transition-colors text-center" @click="toggleSort('qty')">
-                                <div class="flex items-center justify-center gap-1.5">
-                                    <span>{{ t('organizer_subscription.col_qty', 'Jumlah') }}</span>
-                                    <Icon :icon="getSortIcon('qty')" class="text-xs text-slate-400" />
-                                </div>
-                            </th>
-                            <th class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-slate-100 transition-colors" @click="toggleSort('total')">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('organizer_subscription.col_total', 'Total Tagihan') }}</span>
-                                    <Icon :icon="getSortIcon('total')" class="text-xs text-slate-400" />
-                                </div>
-                            </th>
-                            <th class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-slate-100 transition-colors" @click="toggleSort('method')">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('organizer_subscription.col_method', 'Metode') }}</span>
-                                    <Icon :icon="getSortIcon('method')" class="text-xs text-slate-400" />
-                                </div>
-                            </th>
-                            <th class="py-3 px-4 sm:px-6 cursor-pointer hover:bg-slate-100 transition-colors" @click="toggleSort('status')">
-                                <div class="flex items-center gap-1.5">
-                                    <span>{{ t('organizer_subscription.col_status', 'Status') }}</span>
-                                    <Icon :icon="getSortIcon('status')" class="text-xs text-slate-400" />
-                                </div>
-                            </th>
-                            <th class="py-3 px-4 sm:px-6 text-right">{{ t('organizer_subscription.col_action', 'Aksi') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 font-medium">
-                        <tr v-for="item in sortedHistory" :key="item.uuid" class="hover:bg-slate-50/80 transition-colors">
-                            <td class="py-3.5 px-4 sm:px-6 text-slate-500 whitespace-nowrap">
-                                {{ formatDate(item.purchased_at || item.created_at) }}
-                            </td>
-                            <td class="py-3.5 px-4 sm:px-6 font-bold text-navy">
-                                {{ item.plan_name || (item.quota_type === 'elite' ? t('organizer_subscription.elite_title', 'Paket Elite') : t('organizer_subscription.standard_title', 'Paket Standard')) }}
-                            </td>
-                            <td class="py-3.5 px-4 sm:px-6 text-center font-bold text-navy">
-                                {{ item.quantity }} {{ t('organizer_subscription.event_unit', 'Event') }}
-                            </td>
-                            <td class="py-3.5 px-4 sm:px-6 font-black text-navy tabular-nums whitespace-nowrap">
-                                {{ formatHistoryAmount(item) }}
-                            </td>
-                            <td class="py-3.5 px-4 sm:px-6 capitalize text-slate-600 font-bold">
-                                {{ item.payment_method === 'paypal' ? 'PayPal' : 'Mayar' }}
-                            </td>
-                            <td class="py-3.5 px-4 sm:px-6 whitespace-nowrap">
-                                <span v-if="item.payment_status === 'paid' || item.status === 'paid'"
-                                    class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                    {{ t('organizer_subscription.status_paid', 'Lunas') }}
-                                </span>
-                                <span v-else-if="item.payment_status === 'pending' || item.status === 'pending'"
-                                    class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize bg-amber-100 text-amber-800 border border-amber-200">
-                                    {{ t('organizer_subscription.status_pending', 'Menunggu Pembayaran') }}
-                                </span>
-                                <span v-else
-                                    class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize bg-rose-100 text-rose-800 border border-rose-200">
-                                    {{ item.payment_status || item.status }}
-                                </span>
-                            </td>
-                            <td class="py-3.5 px-4 sm:px-6 text-right">
-                                <NuxtLink :to="`/dashboard/organizer/package/detail?trx_id=${item.payment_reference || item.uuid}`"
-                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy font-bold text-[11px] transition-colors">
-                                    <Icon icon="ph:receipt" class="text-sm" />
-                                    <span>{{ t('organizer_subscription.btn_view_invoice', 'Detail Invoice') }}</span>
-                                </NuxtLink>
-                            </td>
-                        </tr>
-                        <tr v-if="!history.length && !isLoadingHistory">
-                            <td colspan="7" class="py-14 text-center">
-                                <div class="flex flex-col items-center justify-center gap-3 max-w-md mx-auto">
-                                    <div class="size-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
-                                        <Icon icon="ph:receipt-x-bold" class="text-3xl text-slate-400" />
-                                    </div>
-                                    <div class="space-y-1">
-                                        <div class="text-sm font-bold text-navy">{{ t('organizer_subscription.no_history', 'Belum Ada Riwayat Pembelian') }}</div>
-                                        <div class="text-xs text-slate-400 font-medium leading-relaxed">
-                                            {{ t('organizer_subscription.no_history_desc', 'Riwayat pembelian kuota Standard & Elite akan tercatat di sini. Kuota Free (Bonus Awal) digunakan langsung tanpa transaksi pembelian.') }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr v-if="isLoadingHistory">
-                            <td colspan="7" class="py-12 text-center text-slate-400">
-                                <Icon icon="ph:spinner-gap-bold" class="text-3xl mx-auto mb-2 animate-spin text-primary" />
-                                <div>{{ t('organizer_subscription.loading_history', 'Memuat riwayat transaksi...') }}</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination Bar -->
-            <div v-if="total > 0" class="p-4 sm:p-5 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-50/50">
-                <div class="text-xs text-slate-500 font-medium">
-                    {{ t('organizer_subscription.history_page_info', { from: (page - 1) * limit + 1, to: Math.min(page * limit, total), total: total }) }}
-                </div>
-
-                <div class="flex items-center gap-1.5">
-                    <button 
-                        type="button"
-                        @click="changePage(page - 1)"
-                        :disabled="page <= 1 || isLoadingHistory"
-                        class="px-3 py-1.5 rounded-xl border border-gray-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-1 shadow-2xs">
-                        <Icon icon="ph:caret-left-bold" />
-                        <span>{{ t('organizer_subscription.btn_prev', 'Sebelumnya') }}</span>
-                    </button>
-
-                    <div class="flex items-center gap-1 px-1">
-                        <button 
-                            v-for="p in visiblePages" :key="p"
-                            type="button"
-                            @click="changePage(p)"
-                            :class="page === p ? 'bg-navy text-white font-black shadow-xs' : 'bg-white text-slate-700 hover:bg-slate-100 border border-gray-200 font-bold'"
-                            class="size-8 rounded-xl text-xs flex items-center justify-center transition-all">
-                            {{ p }}
-                        </button>
-                    </div>
-
-                    <button 
-                        type="button"
-                        @click="changePage(page + 1)"
-                        :disabled="page >= totalPages || isLoadingHistory"
-                        class="px-3 py-1.5 rounded-xl border border-gray-200 bg-white text-xs font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-1 shadow-2xs">
-                        <span>{{ t('organizer_subscription.btn_next', 'Selanjutnya') }}</span>
-                        <Icon icon="ph:caret-right-bold" />
-                    </button>
-                </div>
-            </div>
-        </div>
+            </template>
+        </DashboardDataTable>
     </div>
 </template>

@@ -13,72 +13,75 @@
 
     <!-- Balance Stats & Withdraw Form Card -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-1 bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 p-6 shadow-sm space-y-6">
+      <div class="lg:col-span-1 bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 p-6 shadow-sm space-y-6 h-fit">
         <div>
-          <div class="text-xs font-bold text-slate-500 capitalize tracking-wider mb-1">{{ t("org_wallet.available_balance") }}</div>
+          <div class="text-xs font-bold text-slate-500 capitalize tracking-wider mb-1">{{ t("org_wallet.available_balance", "Saldo Tersedia") }}</div>
           <div class="text-3xl font-black text-navy dark:text-white">Rp {{ (wallet?.balance || 0).toLocaleString('id-ID') }}</div>
         </div>
 
         <!-- Request Withdrawal Button & Form -->
         <div v-if="!showWithdrawForm" class="pt-2">
           <BaseButton variant="navy" size="md" class="w-full justify-center font-bold" @click="showWithdrawForm = true">
-            <Icon icon="ph:bank-bold" class="mr-2" /> {{ t("org_wallet.request_withdrawal_btn") }}
+            <Icon icon="ph:bank-bold" class="mr-2" /> {{ t("org_wallet.request_withdrawal_btn", "Tarik Dana") }}
           </BaseButton>
         </div>
 
         <form v-else @submit.prevent="submitWithdrawal" class="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-700">
-          <h4 class="font-black text-navy dark:text-white text-sm">{{ t("org_wallet.withdrawal_form_title") }}</h4>
-            <BaseCurrencyInput v-model="withdrawAmount" prefix="Rp" :placeholder="t('org_wallet.min_amount_placeholder')" required />
+          <h4 class="font-black text-navy dark:text-white text-sm">{{ t("org_wallet.withdrawal_form_title", "Formulir Penarikan Dana") }}</h4>
+          <BaseCurrencyInput v-model="withdrawAmount" prefix="Rp" :placeholder="t('org_wallet.min_amount_placeholder', 'Min. Rp 50.000')" required />
           <div>
-            <label class="text-xs font-bold text-slate-500 mb-1 block">{{ t("org_wallet.destination_bank_notes") }}</label>
-            <input v-model="withdrawNotes" type="text" :placeholder="t('org_wallet.bank_notes_placeholder')" class="w-full px-4 py-2.5 text-xs bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none" required />
+            <label class="text-xs font-bold text-slate-500 mb-1 block">{{ t("org_wallet.destination_bank_notes", "Rekening Bank Tujuan") }}</label>
+            <input v-model="withdrawNotes" type="text" :placeholder="t('org_wallet.bank_notes_placeholder', 'BCA 1234567890 a.n John Doe')" class="w-full px-4 py-2.5 text-xs bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl focus:outline-none" required />
           </div>
           <div class="flex gap-2">
-            <BaseButton type="submit" variant="navy" size="sm" class="flex-1 justify-center font-bold" :loading="isSubmitting">{{ t("org_wallet.submit_btn") }}</BaseButton>
-            <BaseButton type="button" variant="white" size="sm" @click="showWithdrawForm = false">{{ t("org_wallet.cancel") }}</BaseButton>
+            <BaseButton type="submit" variant="navy" size="sm" class="flex-1 justify-center font-bold" :loading="isSubmitting">{{ t("org_wallet.submit_btn", "Ajukan") }}</BaseButton>
+            <BaseButton type="button" variant="white" size="sm" @click="showWithdrawForm = false">{{ t("org_wallet.cancel", "Batal") }}</BaseButton>
           </div>
         </form>
       </div>
 
-      <!-- Withdrawal History Table -->
-      <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
-        <div class="p-6 border-b border-slate-100 dark:border-slate-700">
-          <h3 class="font-black text-navy dark:text-white text-lg">{{ t("org_wallet.history_title") }}</h3>
-        </div>
+      <!-- Withdrawal History Table with DashboardDataTable -->
+      <div class="lg:col-span-2">
+        <DashboardDataTable
+          :items="withdrawals"
+          :headers="headers"
+          :loading="isLoading"
+          :searchable="true"
+          :search-placeholder="t('org_wallet.search_placeholder', 'Cari nomor referensi atau bank...')"
+          :title="t('org_wallet.history_title', 'Riwayat Penarikan Dana')"
+          :subtitle="t('org_wallet.history_subtitle', '{n} Transaksi', { n: withdrawals.length })"
+          :icon="'ph:clock-counter-clockwise-bold'"
+          :default-page-size="10"
+        >
+          <template #item-created_at="{ item }">
+            <span class="text-slate-600 dark:text-slate-300 font-bold text-xs">{{ formatDate(item.created_at) }}</span>
+          </template>
 
-        <div v-if="isLoading" class="p-12 text-center text-slate-500">{{ t("org_wallet.loading_history") }}</div>
+          <template #item-reference_no="{ item }">
+            <span class="font-mono font-bold text-navy dark:text-white text-xs">{{ item.reference_no || item.uuid }}</span>
+          </template>
 
-        <div v-else-if="withdrawals.length === 0" class="p-12 text-center text-slate-500">
-          {{ t("org_wallet.no_history") }}
-        </div>
+          <template #item-notes="{ item }">
+            <span class="text-slate-600 dark:text-slate-300 text-xs">{{ item.notes || '-' }}</span>
+          </template>
 
-        <div v-else class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr class="bg-slate-50 dark:bg-slate-700/50 border-b border-slate-100 dark:border-slate-700 text-slate-500 font-bold capitalize tracking-wider">
-                <th class="p-4">{{ t("org_wallet.th_date") }}</th>
-                <th class="p-4">{{ t("org_wallet.th_ref_no") }}</th>
-                <th class="p-4">{{ t("org_wallet.th_notes_bank") }}</th>
-                <th class="p-4 text-right">{{ t("org_wallet.th_amount") }}</th>
-                <th class="p-4 text-center">{{ t("org_wallet.th_status") }}</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-              <tr v-for="w in withdrawals" :key="w.uuid || w.id" class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30">
-                <td class="p-4 text-slate-600 dark:text-slate-300 font-bold">{{ formatDate(w.created_at) }}</td>
-                <td class="p-4 font-mono font-bold text-navy dark:text-white">{{ w.reference_no || w.uuid }}</td>
-                <td class="p-4 text-slate-600 dark:text-slate-300">{{ w.notes || '-' }}</td>
-                <td class="p-4 text-right font-black text-navy dark:text-white">Rp {{ (w.amount || 0).toLocaleString('id-ID') }}</td>
-                <td class="p-4 text-center">
-                  <span class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize"
-                    :class="w.status === 'completed' || w.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'">
-                    {{ w.status || 'PENDING' }}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <template #item-amount="{ item }">
+            <span class="font-black text-navy dark:text-white text-xs">Rp {{ (item.amount || 0).toLocaleString('id-ID') }}</span>
+          </template>
+
+          <template #item-status="{ item }">
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize"
+              :class="item.status === 'completed' || item.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'">
+              {{ item.status || 'PENDING' }}
+            </span>
+          </template>
+
+          <template #empty>
+            <div class="p-12 text-center text-slate-500">
+              {{ t("org_wallet.no_history", "Belum ada riwayat penarikan dana") }}
+            </div>
+          </template>
+        </DashboardDataTable>
       </div>
     </div>
   </div>
@@ -87,13 +90,16 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useApi } from '~/composables/useApi'
+import { useToast } from '~/composables/useToast'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { get, post } = useApi()
 const toast = useToast()
 
 useHead({
-  title: computed(() => `${t('org_wallet.header_title', 'Dompet Penyelenggara')} - Archeris Dashboard`)
+  title: computed(() => `${t('org_wallet.header_title', 'Dompet Organizer')} - Archeris Dashboard`)
 })
 
 const isLoading = ref(true)
@@ -103,6 +109,14 @@ const wallet = ref<any>(null)
 const withdrawals = ref<any[]>([])
 const withdrawAmount = ref<number | null>(null)
 const withdrawNotes = ref('')
+
+const headers = computed(() => [
+  { key: 'created_at', label: t('org_wallet.th_date', 'Tanggal'), sortable: true },
+  { key: 'reference_no', label: t('org_wallet.th_ref_no', 'No. Referensi'), sortable: true },
+  { key: 'notes', label: t('org_wallet.th_notes_bank', 'Tujuan / Catatan'), sortable: true },
+  { key: 'amount', label: t('org_wallet.th_amount', 'Nominal'), align: 'right', sortable: true },
+  { key: 'status', label: t('org_wallet.th_status', 'Status'), align: 'center', sortable: true },
+])
 
 async function fetchData() {
   isLoading.value = true
@@ -126,7 +140,7 @@ async function submitWithdrawal() {
       amount: withdrawAmount.value,
       notes: withdrawNotes.value
     })
-    toast.success(t('org_wallet.toast_withdraw_success', 'Pengajuan penarikan dana berhasil dikirim'))
+    toast.success(t('org_wallet.toast_withdraw_success', 'Pengajuan penarikan berhasil'))
     showWithdrawForm.value = false
     withdrawAmount.value = null
     withdrawNotes.value = ''

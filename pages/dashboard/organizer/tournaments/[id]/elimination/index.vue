@@ -2,13 +2,13 @@
   <div class="flex flex-col gap-6 pb-16 font-body text-navy antialiased">
     <!-- Header -->
     <DashboardHeader
-      :title="t('event_elimination.title', 'Bagan & Babak Eliminasi')"
+      :title="t('event_elimination.title')"
       :subtitle="t('event_elimination.desc', { eventName: eventName || 'Event' })"
       icon="mdi:bracket"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-        { label: t('event_elimination.title', 'Bagan Eliminasi') }
+        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('event_elimination.title') }
       ]"
     >
       <template #actions>
@@ -18,7 +18,7 @@
           class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
           :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
           @click="isSubscriptionActive ? (resetForm(), showCreateDialog = true) : (showPremiumModal = true)">
-          {{ t('event_elimination.create_bracket', 'Buat Bagan Eliminasi') }}
+          {{ t('event_elimination.create_bracket') }}
         </BaseButton>
       </template>
     </DashboardHeader>
@@ -27,9 +27,14 @@
     <!-- Brackets List Section -->
     <div class="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-xs">
       <div class="flex items-center justify-between mb-6">
-        <div>
-          <h2 class="text-base font-black text-navy">{{ t('event_elimination.bracket_list', 'Daftar Bagan Eliminasi') }}</h2>
-          <div class="text-xs text-slate-500 mt-0.5">{{ t('event_elimination.bracket_list_desc', 'Kelola dan monitor bagan pertandingan eliminasi') }}</div>
+        <div class="flex items-center gap-3">
+          <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+            <Icon icon="mdi:bracket" class="text-xl" />
+          </div>
+          <div>
+            <h2 class="text-base font-black text-navy">{{ t('event_elimination.bracket_list') }}</h2>
+            <div class="text-xs text-slate-500 mt-0.5">{{ t('event_elimination.bracket_list_desc') }}</div>
+          </div>
         </div>
       </div>
 
@@ -48,8 +53,8 @@
       <div v-else-if="brackets.length === 0"
         class="text-center py-12 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
         <Icon icon="mdi:bracket" class="text-4xl text-slate-300 mx-auto mb-3" />
-        <div class="text-sm font-bold text-slate-700 mb-1">{{ t('event_elimination.no_brackets', 'Belum Ada Bagan Eliminasi') }}</div>
-        <div class="text-xs text-slate-400">{{ t('event_elimination.no_brackets_desc', 'Buat bagan pertama untuk memulai pertandingan eliminasi') }}</div>
+        <div class="text-sm font-bold text-slate-700 mb-1">{{ t('event_elimination.no_brackets') }}</div>
+        <div class="text-xs text-slate-400">{{ t('event_elimination.no_brackets_desc') }}</div>
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -81,7 +86,7 @@
                 <button type="button"
                   @click.stop.prevent="isSubscriptionActive ? openEditBracket(bracket) : (showPremiumModal = true)"
                   class="size-8 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/15 transition-all flex items-center justify-center active:scale-95"
-                  :title="t('event_elimination.edit_bracket', 'Edit Bracket')">
+                  :title="t('event_elimination.edit_bracket')">
                   <Icon icon="ph:pencil-simple-bold" class="text-sm" />
                 </button>
               </div>
@@ -95,7 +100,7 @@
               <div class="flex items-center justify-between text-[11px] font-extrabold text-slate-500">
                 <span class="flex items-center gap-1.5">
                   <Icon icon="ph:folders-bold" class="text-slate-400 text-xs" />
-                  <span>{{ t('event_elimination.competition_category', 'Kategori Lomba') }}</span>
+                  <span>{{ t('event_elimination.competition_category') }}</span>
                 </span>
                 <span class="text-[10px] font-mono font-bold bg-slate-200/80 text-slate-600 px-1.5 py-0.5 rounded-md">
                   {{ getBracketTypeLabel(bracket.bracket_type) }}
@@ -130,7 +135,7 @@
               <div class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs text-center">
                 <div class="flex items-center gap-1 text-[10px] font-bold text-slate-500">
                   <Icon icon="ph:users-three-bold" class="text-navy text-xs" />
-                  <span>Slot</span>
+                  <span>{{ t('event_elimination.slot') }}</span>
                 </div>
                 <span class="text-sm font-black text-navy font-mono mt-0.5">{{ bracket.bracket_size }}</span>
               </div>
@@ -138,7 +143,7 @@
               <div class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs text-center">
                 <div class="flex items-center gap-1 text-[10px] font-bold text-slate-500">
                   <Icon icon="ph:arrow-clockwise-bold" class="text-navy text-xs" />
-                  <span>End/Match</span>
+                  <span>{{ t('event_elimination.end_per_match') }}</span>
                 </div>
                 <span class="text-sm font-black text-navy font-mono mt-0.5">{{ bracket.ends_per_match }}</span>
               </div>
@@ -146,7 +151,7 @@
               <div class="flex flex-col items-center justify-center p-2.5 bg-white rounded-xl border border-slate-200/90 shadow-2xs text-center">
                 <div class="flex items-center gap-1 text-[10px] font-bold text-slate-500">
                   <Icon icon="ph:target-bold" class="text-navy text-xs" />
-                  <span>Panah/End</span>
+                  <span>{{ t('event_elimination.arrows_per_end_label') }}</span>
                 </div>
                 <span class="text-sm font-black text-navy font-mono mt-0.5">{{ bracket.arrows_per_end }}</span>
               </div>
@@ -162,8 +167,8 @@
               </span>
             </div>
             <div
-              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-navy text-primary group-hover:bg-primary group-hover:text-navy text-xs font-black transition-all active:scale-95 shadow-2xs">
-              <span>{{ t('event_elimination.manage', 'Kelola Bagan') }}</span>
+              class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-btn-text group-hover:bg-primary-dark text-xs font-black transition-all active:scale-95 shadow-2xs">
+              <span>{{ t('event_elimination.manage') }}</span>
               <Icon icon="ph:arrow-right-bold" class="text-xs group-hover:translate-x-0.5 transition-transform" />
             </div>
           </div>
@@ -176,13 +181,18 @@
       class="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-xs">
       <div class="flex items-center justify-between mb-6">
         <div class="flex flex-col sm:flex-row sm:items-center w-full justify-between gap-4">
-          <div>
-            <h2 class="text-base font-black text-navy">{{ t('event_elimination.categories_without_bracket', 'Kategori Belum Ada Bagan') }}</h2>
-            <div class="text-xs text-slate-500 mt-0.5">{{ t('event_elimination.categories_without_bracket_desc', 'Daftar kategori perlombaan yang belum memiliki bagan eliminasi') }}</div>
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+              <Icon icon="ph:folders-bold" class="text-xl" />
+            </div>
+            <div>
+              <h2 class="text-base font-black text-navy">{{ t('event_elimination.categories_without_bracket') }}</h2>
+              <div class="text-xs text-slate-500 mt-0.5">{{ t('event_elimination.categories_without_bracket_desc') }}</div>
+            </div>
           </div>
           <div class="relative w-full sm:w-72">
             <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input v-model="searchQuery" type="text" :placeholder="t('event_elimination.search_categories', 'Cari kategori...')"
+            <input v-model="searchQuery" type="text" :placeholder="t('event_elimination.search_categories')"
               class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-navy focus:bg-white transition-all font-bold text-navy placeholder:font-normal" />
           </div>
         </div>
@@ -216,7 +226,7 @@
               <div class="text-xs font-black text-navy truncate">
                 {{ getCategoryName(cat) }}
               </div>
-              <div class="text-[11px] text-slate-400 font-medium mt-0.5">{{ t('event_elimination.click_to_create', 'Klik untuk membuat bagan') }}</div>
+              <div class="text-[11px] text-slate-400 font-medium mt-0.5">{{ t('event_elimination.click_to_create') }}</div>
             </div>
           </div>
           <div class="size-8 rounded-xl bg-navy text-white group-hover:bg-primary group-hover:text-navy flex items-center justify-center shrink-0 transition-all font-black">
@@ -250,7 +260,7 @@
                   {{ modalTitle }}
                 </h3>
                 <div class="text-xs text-slate-300 truncate mt-0.5">
-                  {{ t('event_elimination.configure_details', 'Konfigurasi detail bagan eliminasi') }}
+                  {{ t('event_elimination.configure_details') }}
                 </div>
               </div>
             </div>
@@ -268,31 +278,31 @@
             <div class="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-4">
               <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
                 <Icon icon="ph:trophy-bold" class="text-slate-600 text-base" />
-                <span>{{ t('event_elimination.competition_category', 'Kategori & Tipe Lomba') }}</span>
+                <span>{{ t('event_elimination.competition_category') }}</span>
               </div>
 
               <div class="space-y-3.5">
                 <div>
                   <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                    {{ t('event_elimination.competition_category', 'Kategori Lomba') }} <span class="text-red-500">*</span>
+                    {{ t('event_elimination.competition_category') }} <span class="text-red-500">*</span>
                   </label>
-                  <BaseSelect v-model="newBracket.categoryId" :items="categoryOptions" :placeholder="t('event_elimination.select_category', 'Pilih Kategori Lomba')"
+                  <BaseSelect v-model="newBracket.categoryId" :items="categoryOptions" :placeholder="t('event_elimination.select_category')"
                     required :disabled="isEditing" teleport />
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                      {{ t('event_elimination.bracket_type', 'Tipe Bagan') }} <span class="text-red-500">*</span>
+                      {{ t('event_elimination.bracket_type') }} <span class="text-red-500">*</span>
                     </label>
                     <BaseSelect v-model="newBracket.bracketType" :items="availableBracketTypes"
-                      :placeholder="t('event_elimination.select_bracket_type', 'Pilih Tipe Bagan')" required teleport />
+                      :placeholder="t('event_elimination.select_bracket_type')" required teleport />
                   </div>
                   <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                      {{ t('event_elimination.score_format', 'Format Skor') }} <span class="text-red-500">*</span>
+                      {{ t('event_elimination.score_format') }} <span class="text-red-500">*</span>
                     </label>
-                    <BaseSelect v-model="newBracket.format" :items="formatOptions" :placeholder="t('event_elimination.select_format', 'Pilih Format Skor')" required
+                    <BaseSelect v-model="newBracket.format" :items="formatOptions" :placeholder="t('event_elimination.select_format')" required
                       teleport />
                   </div>
                 </div>
@@ -303,13 +313,13 @@
             <div class="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-4">
               <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
                 <Icon icon="ph:target-bold" class="text-slate-600 text-base" />
-                <span>{{ t('event_elimination.match_config', 'Konfigurasi Pertandingan') }}</span>
+                <span>{{ t('event_elimination.match_config') }}</span>
               </div>
 
               <div class="space-y-3.5">
                 <div>
                   <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                    {{ t('event_elimination.bracket_size', 'Ukuran Bagan') }} <span class="text-red-500">*</span>
+                    {{ t('event_elimination.bracket_size') }} <span class="text-red-500">*</span>
                   </label>
                   <!-- Loading -->
                   <div v-if="loadingBracketSize"
@@ -319,14 +329,14 @@
                     class="flex items-center gap-3 p-3 bg-white rounded-xl border border-slate-200 h-11">
                     <Icon icon="ph:brackets-curly-bold" class="text-navy text-lg flex-shrink-0" />
                     <div>
-                      <div class="font-bold text-slate-900 text-xs sm:text-sm">{{ newBracket.bracketSize }} Slot</div>
-                      <div class="text-[10px] text-slate-400">{{ t('event_elimination.fixed_since_creation', 'Ukuran terkunci sejak pembuatan') }}</div>
+                      <div class="font-bold text-slate-900 text-xs sm:text-sm">{{ newBracket.bracketSize }} {{ t('event_elimination.slot') }}</div>
+                      <div class="text-[10px] text-slate-400">{{ t('event_elimination.fixed_since_creation') }}</div>
                     </div>
                   </div>
                   <!-- Creating: dropdown of valid options -->
                   <div v-else-if="bracketSizeDropdownOptions.length > 0" class="space-y-1.5">
                     <BaseSelect v-model="newBracket.bracketSize" :items="bracketSizeDropdownOptions"
-                      :placeholder="t('event_elimination.select_size', 'Pilih Ukuran Bagan')" required teleport />
+                      :placeholder="t('event_elimination.select_size')" required teleport />
                     <!-- Hint below dropdown -->
                     <div class="text-xs font-medium"
                       :class="selectedBracketHint.isEstimate ? 'text-amber-600' : 'text-slate-500'">
@@ -339,29 +349,29 @@
                     <Icon icon="ph:warning-circle-bold" class="text-amber-600 text-lg flex-shrink-0" />
                     <span class="text-xs font-bold text-amber-800">
                       {{ bracketSizeInfo.participant_count === 1
-                        ? t('event_elimination.min_two_participants', 'Hanya 1 peserta terdaftar. Minimal 2 peserta untuk membuat bagan eliminasi.')
+                        ? t('event_elimination.min_two_participants')
                         : (newBracket.bracketType !== 'individual'
-                          ? t('event_elimination.insufficient_teams', 'Jumlah tim belum mencukupi untuk membuat bagan eliminasi (Minimal 2 tim)')
-                          : t('event_elimination.no_participants_in_category', 'Jumlah peserta belum mencukupi untuk membuat bagan eliminasi (Minimal 2 peserta)'))
+                          ? t('event_elimination.insufficient_teams')
+                          : t('event_elimination.no_participants_in_category'))
                       }}
                     </span>
                   </div>
                   <div v-else class="flex items-center gap-2 p-3 bg-white border border-slate-200 rounded-xl h-11">
                     <Icon icon="ph:info-bold" class="text-slate-400 flex-shrink-0" />
-                    <span class="text-xs text-slate-500">{{ t('event_elimination.select_category_for_calc', 'Pilih kategori untuk kalkulasi ukuran bagan') }}</span>
+                    <span class="text-xs text-slate-500">{{ t('event_elimination.select_category_for_calc') }}</span>
                   </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                   <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                      {{ t('event_elimination.ends_per_match', 'Jumlah Seri / Match') }} <span class="text-red-500">*</span>
+                      {{ t('event_elimination.ends_per_match') }} <span class="text-red-500">*</span>
                     </label>
                     <BaseInput v-model.number="newBracket.endsPerMatch" type="number" min="1" max="15" required />
                   </div>
                   <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                      {{ t('event_elimination.arrows_per_end', 'Jumlah Panah / Seri') }} <span class="text-red-500">*</span>
+                      {{ t('event_elimination.arrows_per_end') }} <span class="text-red-500">*</span>
                     </label>
                     <BaseInput v-model.number="newBracket.arrowsPerEnd" type="number" min="1" max="6" required />
                   </div>
@@ -375,7 +385,7 @@
           <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3 rounded-b-3xl">
             <BaseButton variant="white" class="h-10 px-5 text-xs font-bold border-slate-200"
               @click="showCreateDialog = false; resetForm()">
-              {{ t('event_elimination.cancel', 'Batal') }}
+              {{ t('event_elimination.cancel') }}
             </BaseButton>
             <BaseButton
               :disabled="(!isEditing && bracketSizeDropdownOptions.length === 0) || !newBracket.categoryId || creatingBracket"
@@ -395,7 +405,7 @@
 import { Icon } from '@iconify/vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 import BaseInput from '~/components/common/BaseInput.vue'
-import { getCategoryIcon } from '~/utils/logoArcheryCategory'
+import { getCategoryIcon, getCategoryColorClass } from '~/utils/logoArcheryCategory'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
@@ -411,10 +421,8 @@ const { isSubscriptionActive } = useSubscription()
 const showPremiumModal = ref(false)
 
 useHead({
-  title: computed(() => `${t('event_elimination.title', 'Babak Eliminasi')} - Archeris Dashboard`)
+  title: computed(() => `${t('event_elimination.title')} - Archeris Dashboard`)
 })
-
-import { getCategoryIcon, getCategoryColorClass } from '~/utils/logoArcheryCategory'
 
 const route = useRoute()
 const eventId = computed(() => route.params.id)
@@ -499,6 +507,23 @@ const fetchBracketSizeInfo = async () => {
 watch(
   [() => newBracket.value.categoryId, () => newBracket.value.bracketType],
   () => { fetchBracketSizeInfo() }
+)
+
+watch(
+  () => newBracket.value.bracketType,
+  (type) => {
+    if (isEditing.value) return
+    if (type === 'team3') {
+      newBracket.value.endsPerMatch = 4
+      newBracket.value.arrowsPerEnd = 6
+    } else if (type === 'mixed2') {
+      newBracket.value.endsPerMatch = 4
+      newBracket.value.arrowsPerEnd = 4
+    } else {
+      newBracket.value.endsPerMatch = 5
+      newBracket.value.arrowsPerEnd = 3
+    }
+  }
 )
 
 const searchQuery = ref('')
@@ -689,7 +714,7 @@ const bracketSizeDropdownOptions = computed(() => {
   if (!max || max < 4) return []
   const opts = []
   for (let s = 4; s <= max; s *= 2) {
-    opts.push({ value: s, title: `${s} Slot` })
+    opts.push({ value: s, title: `${s} ${t('event_elimination.slot')}` })
   }
   return opts
 })
@@ -737,14 +762,20 @@ const filteredCategoriesWithoutBracket = computed(() => {
 const openCreateForCategory = (category) => {
   resetForm()
   newBracket.value.categoryId = category.id
-  // Auto-set the bracket type
+  // Auto-set the bracket type and official rules
   const eventType = (category.event_type_name || '').toLowerCase()
   if (eventType === 'individual') {
     newBracket.value.bracketType = 'individual'
+    newBracket.value.endsPerMatch = 5
+    newBracket.value.arrowsPerEnd = 3
   } else if (eventType.includes('mixed') || eventType.includes('campuran')) {
     newBracket.value.bracketType = 'mixed2'
+    newBracket.value.endsPerMatch = 4
+    newBracket.value.arrowsPerEnd = 4
   } else {
     newBracket.value.bracketType = 'team3'
+    newBracket.value.endsPerMatch = 4
+    newBracket.value.arrowsPerEnd = 6
   }
   showCreateDialog.value = true
 }

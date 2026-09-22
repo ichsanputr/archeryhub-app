@@ -56,22 +56,22 @@
     </div>
 
     <!-- panel -->
-    <transition
-      enter-active-class="transition duration-200 ease-out"
-      :enter-from-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'"
-      enter-to-class="translate-y-0 opacity-100 scale-100"
-      leave-active-class="transition duration-150 ease-in"
-      leave-from-class="translate-y-0 opacity-100 scale-100"
-      :leave-to-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'">
+    <Teleport to="body">
+      <transition
+        enter-active-class="transition duration-200 ease-out"
+        :enter-from-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'"
+        enter-to-class="translate-y-0 opacity-100 scale-100"
+        leave-active-class="transition duration-150 ease-in"
+        leave-from-class="translate-y-0 opacity-100 scale-100"
+        :leave-to-class="(isFlippedTop ? '-translate-y-2' : 'translate-y-2') + ' opacity-0 scale-95'">
 
-      <div v-if="isOpen"
-        class="absolute z-[9999] bg-white border border-gray-200 rounded-2xl overflow-hidden select-none"
-        :class="[
-          isFlippedTop ? 'bottom-full mb-2 origin-bottom' : 'top-full mt-2 origin-top',
-          isAlignedRight ? 'right-0' : 'left-0',
-          range ? 'flex-nowrap' : ''
-        ]"
-        :style="range ? 'width:560px; box-shadow:0 20px 60px -10px rgba(15,23,42,0.18)' : 'width:288px; box-shadow:0 20px 60px -10px rgba(15,23,42,0.18)'">
+        <div v-if="isOpen"
+          ref="panelEl"
+          class="bg-white border border-gray-200 rounded-2xl overflow-hidden select-none"
+          :class="[
+            range ? 'flex-nowrap' : ''
+          ]"
+          :style="[dropdownStyle, { boxShadow: '0 20px 60px -10px rgba(15,23,42,0.18)' }]">
 
         <!-- range: two panels side by side -->
         <div v-if="range" class="flex">
@@ -85,6 +85,7 @@
               :today-str="todayStr"
               :range-start="rangeStart" :range-end="rangeEnd"
               :hover-date="hoverDate" :picking-end="pickingEnd"
+              :min-date="effectiveMinDate" :max-date="effectiveMaxDate"
               @pick="onRangeDay" @hover="d => { if (pickingEnd) hoverDate = d }" @leave="hoverDate = ''" />
           </div>
           <div class="w-px bg-gray-100 self-stretch my-3" />
@@ -98,6 +99,7 @@
               :today-str="todayStr"
               :range-start="rangeStart" :range-end="rangeEnd"
               :hover-date="hoverDate" :picking-end="pickingEnd"
+              :min-date="effectiveMinDate" :max-date="effectiveMaxDate"
               @pick="onRangeDay" @hover="d => { if (pickingEnd) hoverDate = d }" @leave="hoverDate = ''" />
           </div>
         </div>
@@ -143,6 +145,7 @@
               :year="viewYear" :month="viewMonth"
               :today-str="todayStr"
               :selected-single="modelValue"
+              :min-date="effectiveMinDate" :max-date="effectiveMaxDate"
               @pick="onSingleDay" />
           </template>
         </div>
@@ -150,7 +153,7 @@
         <!-- footer -->
         <div class="px-4 py-2.5 border-t border-gray-100 flex items-center justify-between bg-gray-50/50">
           <div class="flex items-center gap-3 flex-wrap">
-            <button type="button" @click.stop="selectToday"
+            <button v-if="!isTodayDisabled" type="button" @click.stop="selectToday"
               class="text-xs font-black text-navy hover:underline">
               Today
             </button>
@@ -183,9 +186,10 @@
         </div>
       </div>
     </transition>
+    </Teleport>
 
-    <p v-if="error" class="text-red-500 text-xs font-bold ml-1">{{ error }}</p>
-    <p v-else-if="hint" class="text-gray-400 text-xs ml-1">{{ hint }}</p>
+    <div v-if="error" class="text-red-500 text-xs font-bold ml-1">{{ error }}</div>
+    <div v-else-if="hint" class="text-gray-400 text-xs ml-1">{{ hint }}</div>
   </div>
 </template>
 
@@ -242,6 +246,7 @@ const CalGrid = defineComponent({
     selectedSingle: String,
     rangeStart: String, rangeEnd: String,
     hoverDate: String, pickingEnd: Boolean,
+    minDate: String, maxDate: String,
   },
   emits: ['pick','hover','leave'],
   setup(props, { emit }) {
@@ -258,6 +263,7 @@ const CalGrid = defineComponent({
           : (props.rangeEnd || '')
         const lo = start && effectiveEnd ? (start < effectiveEnd ? start : effectiveEnd) : start
         const hi = start && effectiveEnd ? (start < effectiveEnd ? effectiveEnd : start) : start
+        const isDisabled = !!((props.minDate && ds < props.minDate) || (props.maxDate && ds > props.maxDate))
         result.push({
           day: d, ds,
           isToday: ds === props.todayStr,
@@ -266,6 +272,7 @@ const CalGrid = defineComponent({
           isRangeEnd: effectiveEnd && ds === hi && lo !== hi,
           isRangeSingle: start && effectiveEnd && lo === hi && ds === lo,
           inRange: lo && hi && ds > lo && ds < hi,
+          isDisabled,
         })
       }
       return result
@@ -284,22 +291,28 @@ const CalGrid = defineComponent({
 
           const cls = [
             'aspect-square flex items-center justify-center text-xs font-bold transition-all',
+            cell.isDisabled ? 'opacity-25 cursor-not-allowed pointer-events-none text-gray-300' : '',
             cell.isSelectedSingle ? 'rounded-full bg-navy text-white font-black scale-105 shadow-sm' : '',
             cell.isRangeStart ? 'rounded-l-full bg-navy text-white font-black' : '',
             cell.isRangeEnd ? 'rounded-r-full bg-navy text-white font-black' : '',
             cell.isRangeSingle ? 'rounded-full bg-navy text-white font-black' : '',
             cell.inRange ? 'bg-navy/10 text-navy font-bold rounded-none' : '',
-            !cell.isSelectedSingle && !cell.isRangeStart && !cell.isRangeEnd && !cell.inRange && !cell.isRangeSingle
+            !cell.isDisabled && !cell.isSelectedSingle && !cell.isRangeStart && !cell.isRangeEnd && !cell.inRange && !cell.isRangeSingle
               ? 'rounded-full hover:bg-gray-100 hover:text-navy text-gray-700' : '',
-            cell.isToday && !cell.isSelectedSingle && !cell.isRangeStart && !cell.isRangeEnd && !cell.inRange && !cell.isRangeSingle
+            !cell.isDisabled && cell.isToday && !cell.isSelectedSingle && !cell.isRangeStart && !cell.isRangeEnd && !cell.inRange && !cell.isRangeSingle
               ? 'ring-1 ring-navy/40 text-navy font-black bg-gray-50' : '',
           ].filter(Boolean).join(' ')
 
           return h('button', {
             key: cell.ds, type: 'button',
+            disabled: cell.isDisabled,
             class: cls,
-            onClick: (e) => { e.stopPropagation(); emit('pick', cell.ds) },
-            onMouseenter: () => emit('hover', cell.ds),
+            onClick: (e) => {
+              if (cell.isDisabled) return
+              e.stopPropagation()
+              emit('pick', cell.ds)
+            },
+            onMouseenter: () => { if (!cell.isDisabled) emit('hover', cell.ds) },
             onMouseleave: () => emit('leave'),
           }, String(cell.day))
         })
@@ -321,22 +334,36 @@ const props = defineProps({
   error: String,
   hint: String,
   range: { type: Boolean, default: false },
+  minDate: String,
+  maxDate: String,
+  min: String,
+  max: String,
 })
 
 const emit = defineEmits(['update:modelValue'])
+
+const effectiveMinDate = computed(() => (props.minDate || props.min || '').substring(0, 10))
+const effectiveMaxDate = computed(() => (props.maxDate || props.max || '').substring(0, 10))
 
 // ── state ──────────────────────────────────────────
 const isOpen = ref(false)
 const showYearMonth = ref(false)
 const triggerEl = ref(null)
+const panelEl = ref(null)
 
-const { isFlippedTop, isAlignedRight } = useDropdownPosition(triggerEl, isOpen, {
+const { isFlippedTop, isAlignedRight, dropdownStyle } = useDropdownPosition(triggerEl, isOpen, {
   panelHeight: 360,
   panelWidth: computed(() => props.range ? 560 : 288)
 })
 
 const today = new Date()
 const todayStr = toDateStr(today)
+
+const isTodayDisabled = computed(() => {
+  if (effectiveMinDate.value && todayStr < effectiveMinDate.value) return true
+  if (effectiveMaxDate.value && todayStr > effectiveMaxDate.value) return true
+  return false
+})
 
 // single mode
 const viewYear = ref(today.getFullYear())
@@ -359,6 +386,26 @@ const leftMonth = ref(today.getMonth())
 const rightYear = computed(() => leftMonth.value === 11 ? leftYear.value + 1 : leftYear.value)
 const rightMonth = computed(() => leftMonth.value === 11 ? 0 : leftMonth.value + 1)
 
+function syncViewToRangeOrMin() {
+  if (props.range) {
+    if (props.modelValue?.start) {
+      const d = new Date(props.modelValue.start + 'T00:00:00')
+      if (!isNaN(d)) { leftYear.value = d.getFullYear(); leftMonth.value = d.getMonth() }
+    } else if (effectiveMinDate.value) {
+      const d = new Date(effectiveMinDate.value + 'T00:00:00')
+      if (!isNaN(d)) { leftYear.value = d.getFullYear(); leftMonth.value = d.getMonth() }
+    }
+  } else {
+    if (props.modelValue && typeof props.modelValue === 'string') {
+      const d = new Date(props.modelValue + 'T00:00:00')
+      if (!isNaN(d)) { viewYear.value = d.getFullYear(); viewMonth.value = d.getMonth() }
+    } else if (effectiveMinDate.value) {
+      const d = new Date(effectiveMinDate.value + 'T00:00:00')
+      if (!isNaN(d)) { viewYear.value = d.getFullYear(); viewMonth.value = d.getMonth() }
+    }
+  }
+}
+
 // ── sync incoming model ────────────────────────────
 watch(() => props.modelValue, (val) => {
   if (props.range) {
@@ -373,6 +420,12 @@ watch(() => props.modelValue, (val) => {
       const d = new Date(val + 'T00:00:00')
       if (!isNaN(d)) { viewYear.value = d.getFullYear(); viewMonth.value = d.getMonth() }
     }
+  }
+}, { immediate: true })
+
+watch([effectiveMinDate, effectiveMaxDate], () => {
+  if (!props.modelValue) {
+    syncViewToRangeOrMin()
   }
 }, { immediate: true })
 
@@ -437,6 +490,7 @@ function onRangeDay(ds) {
 }
 
 function selectToday() {
+  if (isTodayDisabled.value) return
   if (props.range) {
     rangeStart.value = todayStr; rangeEnd.value = todayStr
     emit('update:modelValue', { start: todayStr, end: todayStr })
@@ -477,7 +531,13 @@ function clearDate() {
 function toggleCalendar() {
   if (props.disabled) return
   isOpen.value = !isOpen.value
-  if (!isOpen.value) { showYearMonth.value = false; pickingEnd.value = false; hoverDate.value = '' }
+  if (!isOpen.value) {
+    showYearMonth.value = false
+    pickingEnd.value = false
+    hoverDate.value = ''
+  } else if (!props.modelValue) {
+    syncViewToRangeOrMin()
+  }
 }
 
 function closeCalendar() {
@@ -487,9 +547,17 @@ function closeCalendar() {
 // v-click-outside directive
 const vClickOutside = {
   mounted(el, binding) {
-    el._co = (e) => { if (!el.contains(e.target)) binding.value(e) }
+    el._co = (e) => {
+      if (el.contains(e.target)) return
+      if (panelEl.value && panelEl.value.contains(e.target)) return
+      binding.value(e)
+    }
     document.addEventListener('mousedown', el._co)
   },
-  unmounted(el) { document.removeEventListener('mousedown', el._co) }
+  unmounted(el) {
+    if (el._co) {
+      document.removeEventListener('mousedown', el._co)
+    }
+  }
 }
 </script>

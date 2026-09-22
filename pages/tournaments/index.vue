@@ -694,7 +694,7 @@ const { data: rawEventsData, pending: isLoading } = await useAsyncData('tourname
 
 const internalTournaments = computed(() => {
     const list = rawEventsData.value?.internal || []
-    return list.map(e => transformEventData(e, false))
+    return list.filter(e => e.visibility !== 'internal').map(e => transformEventData(e, false))
 })
 
 const externalTournaments = computed(() => {

@@ -8,13 +8,13 @@
       :back-to="getBackLink()"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('dashboard.reports.title', 'Laporan'), to: '/dashboard/organizer/reports' },
+        { label: t('dashboard.reports.title'), to: '/dashboard/organizer/reports' },
         { label: t('dashboard.reports.participants_title') }
       ]"
     >
       <template #actions>
         <BaseButton variant="primary" icon="ph:download-simple-bold" class="h-11 px-5 text-xs font-black" @click="handleExportExcel">
-          {{ t('dashboard.reports.export_excel', 'Ekspor Excel') }}
+          {{ t('dashboard.reports.export_excel') }}
         </BaseButton>
       </template>
     </DashboardHeader>
@@ -23,7 +23,7 @@
     <div class="bg-white border border-primary/10 rounded-2xl p-5 space-y-4">
       <div class="flex items-center gap-2 pb-3 border-b border-gray-100">
         <Icon icon="ph:funnel-bold" class="text-primary text-lg" />
-        <h3 class="text-sm font-black text-navy">{{ t('dashboard.reports.report_filters', 'Filter Laporan') }}</h3>
+        <h3 class="text-sm font-black text-navy">{{ t('dashboard.reports.report_filters') }}</h3>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -33,8 +33,8 @@
           :items="eventSelectItems"
           item-title="name"
           item-value="id"
-          :placeholder="t('dashboard.reports.all_events', 'Semua Event')"
-          :label="t('dashboard.reports.select_event', 'Pilih Event')"
+          :placeholder="t('dashboard.reports.all_events')"
+          :label="t('dashboard.reports.select_event')"
           :searchable="true"
           clearable
         />
@@ -45,8 +45,8 @@
           :items="bowTypeItems"
           item-title="label"
           item-value="value"
-          :label="t('dashboard.reports.bow_type_label', 'Jenis Busur (Division)')"
-          :placeholder="t('dashboard.reports.all_bow_types', 'Semua Jenis Busur')"
+          :label="t('dashboard.reports.bow_type_label')"
+          :placeholder="t('dashboard.reports.all_bow_types')"
           :searchable="false"
         />
 
@@ -56,8 +56,8 @@
           :items="genderItems"
           item-title="label"
           item-value="value"
-          :label="t('dashboard.reports.gender_category', 'Kategori Gender')"
-          :placeholder="t('dashboard.reports.all_genders', 'Semua Gender')"
+          :label="t('dashboard.reports.gender_category')"
+          :placeholder="t('dashboard.reports.all_genders')"
           :searchable="false"
         />
 
@@ -67,8 +67,8 @@
           :items="statusItems"
           item-title="label"
           item-value="value"
-          :label="t('dashboard.reports.checkin_status_label', 'Status Registrasi Ulang')"
-          :placeholder="t('dashboard.reports.all_status', 'Semua Status')"
+          :label="t('dashboard.reports.checkin_status_label')"
+          :placeholder="t('dashboard.reports.all_status')"
           :searchable="false"
         />
       </div>
@@ -85,17 +85,17 @@
 
     <!-- stats -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
-      <StatCard :title="t('dashboard.reports.total_registrations', 'Total Pendaftar')" :value="stats.total_participants || 0" icon="ph:users-three-bold" color="primary" />
-      <StatCard :title="t('dashboard.reports.checked_in_archers', 'Pemanah Hadir (Check-in)')" :value="stats.checked_in_count || 0" icon="ph:user-circle-check-bold" color="success" />
-      <StatCard :title="t('dashboard.reports.pending_checkin', 'Belum Check-in')" :value="stats.pending_checkin_count || 0" icon="ph:clock-bold" color="warning" />
-      <StatCard :title="t('dashboard.reports.checkin_rate', 'Tingkat Kehadiran')" :value="checkInRate + '%'" icon="ph:percent-bold" color="primary" />
+      <StatCard :title="t('dashboard.reports.total_registrations')" :value="stats.total_participants || 0" icon="ph:users-three-bold" color="primary" />
+      <StatCard :title="t('dashboard.reports.checked_in_archers')" :value="stats.checked_in_count || 0" icon="ph:user-circle-check-bold" color="success" />
+      <StatCard :title="t('dashboard.reports.pending_checkin')" :value="stats.pending_checkin_count || 0" icon="ph:clock-bold" color="warning" />
+      <StatCard :title="t('dashboard.reports.checkin_rate')" :value="checkInRate + '%'" icon="ph:percent-bold" color="primary" />
     </div>
 
     <!-- registration trend chart -->
     <div class="bg-white border border-primary/10 rounded-2xl p-6">
       <h3 class="text-navy font-black text-base flex items-center gap-2 mb-6">
         <Icon icon="ph:chart-line-up-bold" class="text-primary" />
-        {{ t('dashboard.reports.registration_trend', 'Tren Registrasi Peserta') }}
+        {{ t('dashboard.reports.registration_trend') }}
       </h3>
       <div v-if="trendPoints.length > 1" class="relative">
         <svg viewBox="0 0 500 150" class="w-full h-48 overflow-visible" preserveAspectRatio="none">
@@ -116,7 +116,7 @@
       </div>
       <div v-else class="h-48 flex flex-col items-center justify-center text-gray-400 space-y-2 border border-dashed border-gray-100 rounded-xl">
         <Icon icon="ph:trend-up-bold" class="text-3xl" />
-        <div class="text-xs font-bold">{{ t('dashboard.reports.no_timeline_trend', 'Tidak ada data tren untuk filter yang dipilih.') }}</div>
+        <div class="text-xs font-bold">{{ t('dashboard.reports.no_timeline_trend') }}</div>
       </div>
     </div>
 
@@ -125,7 +125,7 @@
       <div class="bg-white border border-primary/10 rounded-2xl p-6 space-y-4">
         <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:crosshair-bold" class="text-primary" />
-          {{ t('dashboard.reports.bow_types_split', 'Distribusi Divisi Busur') }}
+          {{ t('dashboard.reports.bow_types_split') }}
         </h3>
         <div class="space-y-3">
           <div v-for="item in stats.bow_type_split" :key="item.name" class="space-y-1">
@@ -137,14 +137,14 @@
               <div class="bg-primary h-full rounded-full" :style="{ width: getPercent(item.count) + '%' }"></div>
             </div>
           </div>
-          <div v-if="!stats.bow_type_split?.length" class="text-center py-6 text-xs text-gray-400">{{ t('dashboard.reports.no_split_data', 'Belum ada data distribusi.') }}</div>
+          <div v-if="!stats.bow_type_split?.length" class="text-center py-6 text-xs text-gray-400">{{ t('dashboard.reports.no_split_data') }}</div>
         </div>
       </div>
 
       <div class="bg-white border border-primary/10 rounded-2xl p-6 space-y-4">
         <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:gender-intersex-bold" class="text-primary" />
-          {{ t('dashboard.reports.gender_split', 'Distribusi Gender') }}
+          {{ t('dashboard.reports.gender_split') }}
         </h3>
         <div class="space-y-3">
           <div v-for="item in stats.gender_split" :key="item.name" class="space-y-1">
@@ -156,14 +156,14 @@
               <div class="bg-primary h-full rounded-full" :style="{ width: getPercent(item.count) + '%' }"></div>
             </div>
           </div>
-          <div v-if="!stats.gender_split?.length" class="text-center py-6 text-xs text-gray-400">{{ t('dashboard.reports.no_split_data', 'Belum ada data distribusi.') }}</div>
+          <div v-if="!stats.gender_split?.length" class="text-center py-6 text-xs text-gray-400">{{ t('dashboard.reports.no_split_data') }}</div>
         </div>
       </div>
 
       <div class="bg-white border border-primary/10 rounded-2xl p-6 space-y-4">
         <h3 class="text-navy font-black text-sm flex items-center gap-2">
           <Icon icon="ph:globe-bold" class="text-primary" />
-          {{ t('dashboard.reports.registration_sources', 'Sumber Pendaftaran') }}
+          {{ t('dashboard.reports.registration_sources') }}
         </h3>
         <div class="space-y-3">
           <div v-for="item in stats.registration_source_split" :key="item.name" class="space-y-1">
@@ -175,101 +175,60 @@
               <div class="bg-primary h-full rounded-full" :style="{ width: getPercent(item.count) + '%' }"></div>
             </div>
           </div>
-          <div v-if="!stats.registration_source_split?.length" class="text-center py-6 text-xs text-gray-400">{{ t('dashboard.reports.no_split_data', 'Belum ada data distribusi.') }}</div>
+          <div v-if="!stats.registration_source_split?.length" class="text-center py-6 text-xs text-gray-400">{{ t('dashboard.reports.no_split_data') }}</div>
         </div>
       </div>
     </div>
 
-    <!-- participants table -->
-    <div class="bg-white border border-primary/10 rounded-2xl overflow-hidden">
-      <div class="p-5 border-b border-gray-100">
-        <h3 class="text-navy font-black text-sm flex items-center gap-2">
-          <Icon icon="ph:list-dashes-bold" class="text-primary" />
-          {{ t('dashboard.reports.recent_registered_participants', 'Peserta Terbaru Terdaftar') }}
-        </h3>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs">
-          <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
-            <tr>
-              <th @click="toggleSort('name')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.archer', 'Pemanah') }}</span>
-                  <Icon v-if="sortBy === 'name'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('event')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.event', 'Turnamen') }}</span>
-                  <Icon v-if="sortBy === 'event'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('category')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.category_bow', 'Kategori / Busur') }}</span>
-                  <Icon v-if="sortBy === 'category'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('reg_date')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.reg_date', 'Tgl Registrasi') }}</span>
-                  <Icon v-if="sortBy === 'reg_date'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('payment')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.payment', 'Pembayaran') }}</span>
-                  <Icon v-if="sortBy === 'payment'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-              <th @click="toggleSort('checkin')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors select-none">
-                <div class="flex items-center gap-1.5">
-                  <span>{{ t('dashboard.reports.checkin', 'Daftar Ulang') }}</span>
-                  <Icon v-if="sortBy === 'checkin'" :icon="sortOrder === 'asc' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-xs" />
-                  <Icon v-else icon="ph:caret-up-down" class="opacity-30 text-xs" />
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-100 font-medium">
-            <tr v-for="p in sortedRecentParticipants" :key="p.id" class="hover:bg-gray-50 transition-colors">
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-3">
-                  <img :src="useImageOrDefault(p.avatar_url, p.archer_name)" :alt="p.archer_name" class="size-8 rounded-full object-cover border border-gray-100 bg-gray-50 shrink-0" />
-                  <span class="text-navy font-bold capitalize">{{ p.archer_name.toLowerCase() }}</span>
-                </div>
-              </td>
-              <td class="px-6 py-4 text-gray-500 font-semibold capitalize">{{ p.event_name.toLowerCase() }}</td>
-              <td class="px-6 py-4">
-                <div class="text-navy font-bold capitalize">{{ p.bow_type ? p.bow_type.toLowerCase() : '-' }}</div>
-                <div class="text-gray-400 text-[10px] font-bold capitalize">{{ p.age_group ? p.age_group.toLowerCase() : '' }} ({{ p.gender ? p.gender.toLowerCase() : '' }})</div>
-              </td>
-              <td class="px-6 py-4 text-gray-500 font-semibold font-mono">{{ formatDate(p.registration_date) }}</td>
-              <td class="px-6 py-4">
-                <span :class="p.payment_status === 'paid' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-amber-50 text-amber-600 border-amber-200'"
-                  class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider ">
-                  {{ p.payment_status }}
-                </span>
-              </td>
-              <td class="px-6 py-4">
-                <span :class="p.last_reregistration_at ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-slate-50 text-slate-400 border-slate-200'"
-                  class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider capitalize">
-                  {{ p.last_reregistration_at ? t('dashboard.reports.checked_in', 'Sudah Check-in') : t('dashboard.reports.pending', 'Menunggu') }}
-                </span>
-              </td>
-            </tr>
-            <tr v-if="!sortedRecentParticipants.length">
-              <td colspan="6" class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_participants_found', 'Tidak ada peserta yang cocok dengan filter yang dipilih.') }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <!-- participants table with DashboardDataTable -->
+    <DashboardDataTable
+      :items="stats.recent_participants || []"
+      :headers="headers"
+      :searchable="true"
+      :search-placeholder="t('dashboard.reports.search_placeholder', 'Cari nama pemanah atau event...')"
+      :title="t('dashboard.reports.recent_registered_participants')"
+      :subtitle="t('dashboard.reports.total_participants_count', '{n} Peserta', { n: (stats.recent_participants || []).length })"
+      :icon="'ph:user-list-bold'"
+      :default-page-size="10"
+    >
+      <template #item-archer_name="{ item }">
+        <div class="flex items-center gap-3">
+          <img :src="useImageOrDefault(item.avatar_url, item.archer_name)" :alt="item.archer_name" class="size-8 rounded-full object-cover border border-gray-100 bg-gray-50 shrink-0" />
+          <span class="text-navy font-bold capitalize text-xs">{{ (item.archer_name || '').toLowerCase() }}</span>
+        </div>
+      </template>
+
+      <template #item-event_name="{ item }">
+        <span class="text-gray-500 font-semibold capitalize text-xs">{{ (item.event_name || '').toLowerCase() }}</span>
+      </template>
+
+      <template #item-category="{ item }">
+        <div class="text-navy font-bold capitalize text-xs">{{ item.bow_type ? item.bow_type.toLowerCase() : '-' }}</div>
+        <div class="text-gray-400 text-[10px] font-bold capitalize">{{ item.age_group ? item.age_group.toLowerCase() : '' }} ({{ item.gender ? item.gender.toLowerCase() : '' }})</div>
+      </template>
+
+      <template #item-registration_date="{ item }">
+        <span class="text-gray-500 font-semibold font-mono text-xs">{{ formatDate(item.registration_date) }}</span>
+      </template>
+
+      <template #item-payment_status="{ item }">
+        <span :class="item.payment_status === 'paid' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-amber-50 text-amber-600 border-amber-200'"
+          class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider">
+          {{ item.payment_status }}
+        </span>
+      </template>
+
+      <template #item-checkin="{ item }">
+        <span :class="item.last_reregistration_at ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-slate-50 text-slate-400 border-slate-200'"
+          class="px-2 py-0.5 rounded-full border text-[10px] font-black tracking-wider capitalize">
+          {{ item.last_reregistration_at ? t('dashboard.reports.checked_in') : t('dashboard.reports.pending') }}
+        </span>
+      </template>
+
+      <template #empty>
+        <div class="text-center py-10 text-gray-400 font-bold">{{ t('dashboard.reports.no_participants_found') }}</div>
+      </template>
+    </DashboardDataTable>
   </div>
 </template>
 
@@ -278,26 +237,26 @@ import { Icon } from '@iconify/vue'
 import { computed, onMounted, ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
+import { useI18n } from 'vue-i18n'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
+import { exportToExcel } from '~/utils/exportExcel'
 
 definePageMeta({ layout: 'dashboard' })
 
-const { t } = useI18n()
-useHead({ title: computed(() => (t ? t('dashboard.reports.participants_title', 'Statistik Peserta') : 'Statistik Peserta') + ' - Archeris Dashboard') })
+const { t, locale } = useI18n()
+useHead({ title: computed(() => `${t('dashboard.reports.participants_title')} - Archeris Dashboard`) })
 const route = useRoute()
 const api = useApi()
 
-const sortBy = ref('reg_date')
-const sortOrder = ref('desc')
-
-const toggleSort = (column) => {
-  if (sortBy.value === column) {
-    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
-  } else {
-    sortBy.value = column
-    sortOrder.value = 'asc'
-  }
-}
+const headers = computed(() => [
+  { key: 'archer_name', label: t('dashboard.reports.archer', 'Pemanah'), sortable: true },
+  { key: 'event_name', label: t('dashboard.reports.event', 'Event'), sortable: true },
+  { key: 'category', label: t('dashboard.reports.category_bow', 'Kategori & Busur'), sortable: true },
+  { key: 'registration_date', label: t('dashboard.reports.reg_date', 'Tanggal Daftar'), sortable: true },
+  { key: 'payment_status', label: t('dashboard.reports.payment', 'Pembayaran'), sortable: true },
+  { key: 'checkin', label: t('dashboard.reports.checkin', 'Check-in'), sortable: true }
+])
 
 const eventsList = ref([])
 const stats = ref({
@@ -313,38 +272,6 @@ const stats = ref({
   events_list: []
 })
 
-const sortedRecentParticipants = computed(() => {
-  const list = stats.value?.recent_participants || []
-  const dir = sortOrder.value === 'asc' ? 1 : -1
-  return [...list].sort((a, b) => {
-    if (sortBy.value === 'name') {
-      return dir * (a.archer_name || '').localeCompare(b.archer_name || '', undefined, { numeric: true, sensitivity: 'base' })
-    }
-    if (sortBy.value === 'event') {
-      return dir * (a.event_name || '').localeCompare(b.event_name || '', undefined, { numeric: true, sensitivity: 'base' })
-    }
-    if (sortBy.value === 'category') {
-      const catA = `${a.bow_type || ''} ${a.age_group || ''} ${a.gender || ''}`
-      const catB = `${b.bow_type || ''} ${b.age_group || ''} ${b.gender || ''}`
-      return dir * catA.localeCompare(catB, undefined, { numeric: true, sensitivity: 'base' })
-    }
-    if (sortBy.value === 'reg_date') {
-      const tA = new Date(a.registration_date || 0).getTime()
-      const tB = new Date(b.registration_date || 0).getTime()
-      return dir * (tA - tB)
-    }
-    if (sortBy.value === 'payment') {
-      return dir * (a.payment_status || '').localeCompare(b.payment_status || '')
-    }
-    if (sortBy.value === 'checkin') {
-      const aC = a.last_reregistration_at ? 1 : 0
-      const bC = b.last_reregistration_at ? 1 : 0
-      return dir * (aC - bC)
-    }
-    return 0
-  })
-})
-
 const filters = reactive({
   event_id: route.query.event_id || 'all',
   gender: 'all',
@@ -353,12 +280,12 @@ const filters = reactive({
 })
 
 const eventSelectItems = computed(() => [
-  { id: 'all', name: t('dashboard.reports.all_events', 'Semua Turnamen') },
+  { id: 'all', name: t('dashboard.reports.all_events') },
   ...eventsList.value
 ])
 
 const bowTypeItems = computed(() => [
-  { value: 'all', label: t('dashboard.reports.all_bow_types', 'Semua Divisi Busur') },
+  { value: 'all', label: t('dashboard.reports.all_bow_types') },
   { value: 'Recurve', label: 'Recurve' },
   { value: 'Compound', label: 'Compound' },
   { value: 'Barebow', label: 'Barebow' },
@@ -367,16 +294,16 @@ const bowTypeItems = computed(() => [
 ])
 
 const genderItems = computed(() => [
-  { value: 'all', label: t('dashboard.reports.all_genders', 'Semua Gender') },
-  { value: 'men', label: t('dashboard.reports.gender_male', 'Putra / Pria') },
-  { value: 'women', label: t('dashboard.reports.gender_female', 'Putri / Wanita') },
-  { value: 'mixed', label: t('dashboard.reports.gender_mixed', 'Mix / Campuran') },
+  { value: 'all', label: t('dashboard.reports.all_genders') },
+  { value: 'men', label: t('dashboard.reports.gender_male') },
+  { value: 'women', label: t('dashboard.reports.gender_female') },
+  { value: 'mixed', label: t('dashboard.reports.gender_mixed') },
 ])
 
 const statusItems = computed(() => [
-  { value: 'all', label: t('dashboard.reports.all_status', 'Semua Status') },
-  { value: 'checked_in', label: t('dashboard.reports.status_checked_in', 'Sudah Registrasi Ulang (Checked In)') },
-  { value: 'pending', label: t('dashboard.reports.status_pending', 'Belum Registrasi Ulang (Pending)') },
+  { value: 'all', label: t('dashboard.reports.all_status') },
+  { value: 'checked_in', label: t('dashboard.reports.status_checked_in') },
+  { value: 'pending', label: t('dashboard.reports.status_pending') },
 ])
 
 onMounted(() => { fetchReportData() })
@@ -404,7 +331,9 @@ const getBackLink = () =>
     ? `/dashboard/organizer/reports?event_id=${route.query.event_id}`
     : '/dashboard/organizer/reports'
 
-const applyFilters = () => fetchReportData()
+const applyFilters = () => {
+  fetchReportData()
+}
 
 const resetFilters = () => {
   filters.event_id = route.query.event_id || 'all'
@@ -445,8 +374,6 @@ const svgAreaPath = computed(() => {
   if (!path) return ''
   return `${path} L 500,150 L 0,150 Z`
 })
-
-import { exportToExcel } from '~/utils/exportExcel'
 
 const handleExportExcel = () => {
   const list = stats.value.recent_participants || []

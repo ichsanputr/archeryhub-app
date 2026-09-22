@@ -26,9 +26,9 @@
             <div v-for="side in ['A', 'B']" :key="side" class="archer-item"
                 :class="{ 'is-winner': isWinner(side), 'is-loser': isLoser(side) }">
                 <div class="avatar-wrapper relative">
-                    <img :src="getAvatarUrl(getName(side))" :alt="getName(side) || 'Archer'" @error="(e) => e.target.src = 'https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8'" class="avatar-img" />
+                    <img :src="getAvatarUrl(getName(side))" :alt="getName(side) || 'Archer'" @error="(e) => e.target.src = generateDicebearAvatar(getName(side))" class="avatar-img" />
                     <div v-if="isWinner(side)" class="winner-indicator" title="Winner">
-                        <Icon icon="ph:crown-simple-fill" />
+                    <Icon icon="ph:crown-simple-fill" />
                     </div>
                     <div v-if="showSeed && getSeed(side)" class="avatar-seed-badge">
                         {{ getSeed(side) }}
@@ -50,9 +50,10 @@
 <script setup>
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
-import { useI18n } from 'vue-i18n'
+import { useDashboardI18n } from '~/composables/useDashboardI18n'
+import { generateDicebearAvatar, useImageOrDefault } from '~/composables/useImageHelper'
 
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 
 const props = defineProps({
     match: { type: Object, required: true },
@@ -66,9 +67,9 @@ const props = defineProps({
 defineEmits(['select'])
 
 const headerLabel = computed(() => {
-    if (props.isFinal) return t('event_elimination.gold_medal_final', 'Gold Medal Final')
-    if (props.isBronze) return t('event_elimination.bronze_medal_match', 'Bronze Medal Match')
-    return t('event_elimination.match_label', 'Match {no}', { no: props.match.match_no })
+    if (props.isFinal) return t('event_elimination.gold_medal_final')
+    if (props.isBronze) return t('event_elimination.bronze_medal_match')
+    return t('event_elimination.match_label', { no: props.match?.match_no || '' }, `Match ${props.match?.match_no || ''}`)
 })
 
 const headerIcon = computed(() => {
@@ -90,8 +91,7 @@ const headerTextStyle = computed(() => {
 })
 
 const getAvatarUrl = (name) => {
-    if (!name || name === 'TBD' || name === 'BYE') return `https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8&font-size=0.45`
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffaa00&color=202434&font-size=0.45&bold=true`
+    return generateDicebearAvatar(name)
 }
 
 const getName = (side) => side === 'A' ? props.match.entry_a_name : props.match.entry_b_name
@@ -171,7 +171,7 @@ const isLoser = (side) => {
 }
 
 .score-display {
-    @apply text-sm font-black text-slate-500 tabular-nums min-w-[42px] h-full flex items-center justify-center border-l border-slate-100 bg-slate-50/70 shrink-0 transition-colors;
+    @apply text-xs font-black text-slate-600 tabular-nums min-w-[36px] h-7 px-2.5 rounded-xl flex items-center justify-center bg-slate-100 border border-slate-200/70 shrink-0 transition-all;
 }
 
 .is-winner {
@@ -179,7 +179,7 @@ const isLoser = (side) => {
 }
 
 .is-winner .score-display {
-    @apply bg-navy text-primary text-sm font-black;
+    @apply bg-navy text-primary border-navy shadow-sm font-black;
 }
 
 .is-winner .archer-name {

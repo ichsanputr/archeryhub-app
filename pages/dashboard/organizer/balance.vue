@@ -21,22 +21,22 @@
 
                     <div class="space-y-2">
                         <h2 class="text-2xl font-black text-navy tracking-tight ">
-                            {{ t('organizer.balance.security.title', 'Verifikasi Keamanan') }}
+                            {{ t('organizer.balance.security.title') }}
                         </h2>
                         <div
                             class=" text-xs text-gray-400 font-bold leading-relaxed max-w-[240px] mx-auto tracking-wider">
-                            {{ t('organizer.balance.security.desc', 'Masukkan kata sandi akun Anda untuk mengakses informasi saldo dan keuangan.') }}
+                            {{ t('organizer.balance.security.desc') }}
                         </div>
                     </div>
 
                     <div class="space-y-4 pt-2">
                         <BaseInput v-model="password" type="password"
-                            :placeholder="t('organizer.balance.security.password_placeholder', 'Masukkan kata sandi Anda')"
+                            :placeholder="t('organizer.balance.security.password_placeholder')"
                             class="!rounded-2xl border-gray-100 focus:!border-primary/30" icon="ph:lock-bold"
                             @keyup.enter="verifyPassword" />
                         <BaseButton @click="verifyPassword" variant="primary" block :loading="verifying"
                             class="h-11 !rounded-xl font-black tracking-widest text-[10px] shadow-lg shadow-primary/20">
-                            {{ t('organizer.balance.security.open_access', 'Buka Akses') }}
+                            {{ t('organizer.balance.security.open_access') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -47,12 +47,12 @@
             class="space-y-8 transition-opacity duration-500">
             <!-- Header Section -->
             <DashboardHeader
-                :title="t('organizer.balance.header.title', 'Saldo & Rekening')"
-                :subtitle="t('organizer.balance.header.subtitle', 'Kelola pendapatan, saldo dompet, rekening bank, dan penarikan dana.')"
+                :title="t('organizer.balance.header.title')"
+                :subtitle="t('organizer.balance.header.subtitle')"
                 icon="ph:bank-bold"
                 :breadcrumbs="[
                     { label: 'Dashboard', to: '/dashboard/organizer' },
-                    { label: t('organizer.balance.header.title', 'Saldo & Rekening') }
+                    { label: t('organizer.balance.header.title') }
                 ]"
             />
 
@@ -65,7 +65,7 @@
                             <Icon icon="ph:coins-bold" class="text-8xl" />
                         </div>
                         <div class="text-primary text-[10px] font-black tracking-[0.2em] mb-3">
-                            {{ t('organizer.balance.available', 'Saldo Tersedia') }}
+                            {{ t('organizer.balance.available') }}
                         </div>
                         <h2 class="text-3xl sm:text-4xl font-black tracking-tight mb-10 leading-none tabular-nums">
                             <span class="text-lg font-bold opacity-40 mr-1">Rp</span>{{ balance.toLocaleString('id-ID')
@@ -77,10 +77,10 @@
                                 @click="isSubscriptionActive ? openWithdrawDialog() : (showPremiumModal = true)"
                                 :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
                                 class="font-black tracking-widest text-[10px] h-11 !rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
-                                {{ t('organizer.balance.withdraw_button', 'Tarik Saldo') }}
+                                {{ t('organizer.balance.withdraw_button') }}
                             </BaseButton>
                             <div class="text-[9px] text-slate-400 text-center font-black tracking-widest leading-loose">
-                                {{ t('organizer.balance.withdraw_info', 'Penarikan diproses dalam 1-2 hari kerja') }}
+                                {{ t('organizer.balance.withdraw_info') }}
                             </div>
                         </div>
                     </div>
@@ -96,147 +96,101 @@
                                     :class="activeTab === 'withdrawals' ? 'bg-white text-navy shadow-xs font-black' : 'text-gray-500 hover:text-navy font-bold'"
                                     class="px-3.5 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5">
                                     <Icon icon="ph:clock-counter-clockwise-bold" class="text-sm" />
-                                    <span>{{ t('organizer.balance.withdrawals.title', 'Riwayat Penarikan') }}</span>
+                                    <span>{{ t('organizer.balance.withdrawals.title') }}</span>
                                 </button>
                                 <button type="button" @click="activeTab = 'mutations'"
                                     :class="activeTab === 'mutations' ? 'bg-white text-navy shadow-xs font-black' : 'text-gray-500 hover:text-navy font-bold'"
                                     class="px-3.5 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5">
                                     <Icon icon="ph:receipt-bold" class="text-sm" />
-                                    <span>{{ t('organizer.balance.mutations.title', 'Buku Mutasi Saldo') }}</span>
+                                    <span>{{ t('organizer.balance.mutations.title') }}</span>
                                 </button>
                             </div>
                         </div>
 
                         <!-- Tab 1: Withdrawal History Table -->
-                        <div v-if="activeTab === 'withdrawals'" class="flex-grow flex flex-col">
-                            <div class="flex-grow overflow-x-auto">
-                                <table class="w-full text-left">
-                                    <thead>
-                                        <tr
-                                            class="bg-gray-50/50 text-gray-500 font-black text-[10px] tracking-widest border-b border-gray-100">
-                                            <th class="px-6 py-4">{{ t('organizer.balance.withdrawals.table_tx_id') }}</th>
-                                            <th @click="toggleSort('created_at')"
-                                                class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
-                                                <div class="flex items-center gap-2">
-                                                    {{ t('organizer.balance.withdrawals.table_date') }}
-                                                    <Icon v-if="sortBy === 'created_at'"
-                                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                                        class="text-primary text-xs" />
-                                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
-                                                </div>
-                                            </th>
-                                            <th @click="toggleSort('status')"
-                                                class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
-                                                <div class="flex items-center gap-2">
-                                                    {{ t('organizer.balance.withdrawals.table_status') }}
-                                                    <Icon v-if="sortBy === 'status'"
-                                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                                        class="text-primary text-xs" />
-                                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
-                                                </div>
-                                            </th>
-                                            <th @click="toggleSort('amount')"
-                                                class="px-6 py-4 text-right cursor-pointer hover:text-navy transition-colors">
-                                                <div class="flex items-center justify-end gap-2">
-                                                    {{ t('organizer.balance.withdrawals.table_amount') }}
-                                                    <Icon v-if="sortBy === 'amount'"
-                                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                                        class="text-primary text-xs" />
-                                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
-                                                </div>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-100">
-                                        <tr v-for="item in withdrawalHistory" :key="item.id"
-                                            class="hover:bg-gray-50 transition-colors">
-                                            <td class="px-6 py-4">
-                                                <span class="font-mono text-[10px] font-bold text-gray-400">#{{ item.txId
-                                                    }}</span>
-                                            </td>
-                                            <td class="px-6 py-4 text-sm text-navy font-bold">{{ item.date }}</td>
-                                            <td class="px-6 py-4">
-                                                <span :class="getStatusClass(item.status)"
-                                                    class="px-3 py-1 rounded-full text-[10px] font-black tracking-widest">
-                                                    {{ item.status }}
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 text-right font-black text-navy">
-                                                Rp {{ item.amount.toLocaleString('id-ID') }}
-                                            </td>
-                                        </tr>
-                                        <tr v-if="!withdrawalHistory.length">
-                                            <td colspan="4" class="px-6 py-12 text-center">
-                                                <div class="opacity-20 mb-2">
-                                                    <Icon icon="ph:clock-counter-clockwise" class="text-4xl mx-auto" />
-                                                </div>
-                                                <div class="text-gray-400 text-sm font-bold tracking-tight">{{ t('organizer.balance.withdrawals.empty') }}</div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div v-if="totalItems > itemsPerPage" class="px-6 py-4 bg-gray-50 border-t border-gray-100 mt-auto">
-                                <BasePagination v-model:items-per-page="itemsPerPage" :current-page="currentPage"
-                                    :total-items="totalItems" @change-page="currentPage = $event" />
-                            </div>
+                        <div v-if="activeTab === 'withdrawals'" class="p-2 sm:p-4">
+                            <DashboardDataTable
+                                :items="withdrawalHistory"
+                                :columns="withdrawalColumns"
+                                :searchable="false"
+                                :has-filter-modal="false"
+                                :initial-sort-by="sortBy"
+                                :initial-sort-order="order === 'ASC' ? 'asc' : 'desc'"
+                                :items-per-page="itemsPerPage"
+                                :empty-title="t('organizer.balance.withdrawals.empty')"
+                                empty-icon="ph:clock-counter-clockwise"
+                                @sort="toggleSort($event.sortBy)"
+                            >
+                                <template #item-txId="{ item }">
+                                    <span class="font-mono text-xs font-bold text-slate-400">#{{ item.txId }}</span>
+                                </template>
+
+                                <template #item-date="{ item }">
+                                    <span class="text-xs sm:text-sm text-navy font-bold">{{ item.date }}</span>
+                                </template>
+
+                                <template #item-status="{ item }">
+                                    <div class="flex justify-center">
+                                        <span :class="getStatusClass(item.status)"
+                                            class="px-2.5 py-0.5 rounded-full text-xs font-bold">
+                                            {{ item.status ? item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase() : '' }}
+                                        </span>
+                                    </div>
+                                </template>
+
+                                <template #item-amount="{ item }">
+                                    <div class="text-right font-black text-navy text-xs sm:text-sm tabular-nums">
+                                        Rp {{ item.amount.toLocaleString('id-ID') }}
+                                    </div>
+                                </template>
+                            </DashboardDataTable>
                         </div>
 
                         <!-- Tab 2: Mutation Ledger Table -->
-                        <div v-else class="flex-grow flex flex-col">
-                            <div class="flex-grow overflow-x-auto">
-                                <table class="w-full text-left">
-                                    <thead>
-                                        <tr
-                                            class="bg-gray-50/50 text-gray-500 font-black text-[10px] tracking-widest border-b border-gray-100">
-                                            <th class="px-6 py-4">{{ t('organizer.balance.mutations.table_date') }}</th>
-                                            <th class="px-6 py-4">{{ t('organizer.balance.mutations.table_desc') }}</th>
-                                            <th class="px-6 py-4">{{ t('organizer.balance.mutations.table_type') }}</th>
-                                            <th class="px-6 py-4 text-right">{{ t('organizer.balance.mutations.table_amount') }}</th>
-                                            <th class="px-6 py-4 text-right">{{ t('organizer.balance.mutations.table_balance_after') }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-100">
-                                        <tr v-for="m in mutationHistory" :key="m.id"
-                                            class="hover:bg-gray-50 transition-colors">
-                                            <td class="px-6 py-4 text-xs text-slate-500 font-medium whitespace-nowrap">
-                                                {{ m.date }}
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <div class="text-xs font-bold text-navy">{{ m.description }}</div>
-                                                <div v-if="m.refId" class="font-mono text-[10px] text-gray-400">#{{ m.refId }}</div>
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                <span :class="m.type === 'credit' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200'"
-                                                    class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider border">
-                                                    {{ m.type === 'credit' ? t('organizer.balance.mutations.credit_badge') : t('organizer.balance.mutations.debit_badge') }}
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 text-right font-black"
-                                                :class="m.type === 'credit' ? 'text-emerald-600' : 'text-rose-600'">
-                                                {{ m.type === 'credit' ? '+' : '-' }} Rp {{ m.amount.toLocaleString('id-ID') }}
-                                            </td>
-                                            <td class="px-6 py-4 text-right font-mono text-xs font-bold text-navy">
-                                                Rp {{ m.balanceAfter.toLocaleString('id-ID') }}
-                                            </td>
-                                        </tr>
-                                        <tr v-if="!mutationHistory.length">
-                                            <td colspan="5" class="px-6 py-12 text-center">
-                                                <div class="opacity-20 mb-2">
-                                                    <Icon icon="ph:receipt" class="text-4xl mx-auto" />
-                                                </div>
-                                                <div class="text-gray-400 text-sm font-bold tracking-tight">
-                                                    {{ t('organizer.balance.mutations.empty') }}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div v-if="mutationTotalItems > mutationItemsPerPage" class="px-6 py-4 bg-gray-50 border-t border-gray-100 mt-auto">
-                                <BasePagination v-model:items-per-page="mutationItemsPerPage" :current-page="mutationCurrentPage"
-                                    :total-items="mutationTotalItems" @change-page="mutationCurrentPage = $event" />
-                            </div>
+                        <div v-else class="p-2 sm:p-4">
+                            <DashboardDataTable
+                                :items="mutationHistory"
+                                :columns="mutationColumns"
+                                :loading="mutationLoading"
+                                :searchable="false"
+                                :has-filter-modal="false"
+                                :items-per-page="mutationItemsPerPage"
+                                :empty-title="t('organizer.balance.mutations.empty')"
+                                empty-icon="ph:receipt"
+                            >
+                                <template #item-date="{ item }">
+                                    <span class="text-xs text-slate-500 font-medium whitespace-nowrap">{{ item.date }}</span>
+                                </template>
+
+                                <template #item-description="{ item }">
+                                    <div>
+                                        <div class="text-xs font-bold text-navy">{{ item.description }}</div>
+                                        <div v-if="item.refId" class="font-mono text-[10px] text-slate-400">#{{ item.refId }}</div>
+                                    </div>
+                                </template>
+
+                                <template #item-type="{ item }">
+                                    <div class="flex justify-center">
+                                        <span :class="item.type === 'credit' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-rose-50 text-rose-700 border-rose-200'"
+                                            class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider border">
+                                            {{ item.type === 'credit' ? t('organizer.balance.mutations.credit_badge') : t('organizer.balance.mutations.debit_badge') }}
+                                        </span>
+                                    </div>
+                                </template>
+
+                                <template #item-amount="{ item }">
+                                    <div class="text-right font-black text-xs sm:text-sm tabular-nums"
+                                        :class="item.type === 'credit' ? 'text-emerald-600' : 'text-rose-600'">
+                                        {{ item.type === 'credit' ? '+' : '-' }} Rp {{ item.amount.toLocaleString('id-ID') }}
+                                    </div>
+                                </template>
+
+                                <template #item-balanceAfter="{ item }">
+                                    <div class="text-right font-mono text-xs font-bold text-navy tabular-nums">
+                                        Rp {{ item.balanceAfter.toLocaleString('id-ID') }}
+                                    </div>
+                                </template>
+                            </DashboardDataTable>
                         </div>
                     </div>
                 </div>
@@ -323,10 +277,10 @@
                     <div v-if="bankAccounts.length"
                         class="p-4 bg-navy/5 border border-navy/10 rounded-2xl space-y-2.5">
                         <div class="flex items-center justify-between">
-                            <label class="text-xs font-black text-navy">{{ t('organizer.balance.destination_account', 'Rekening Bank Tujuan') }}</label>
+                            <label class="text-xs font-black text-navy">{{ t('organizer.balance.destination_account') }}</label>
                             <NuxtLink to="/dashboard/organizer/bank-accounts" class="text-[10px] font-bold text-primary hover:underline flex items-center gap-1">
                                 <Icon icon="ph:gear-six-bold" />
-                                <span>Kelola Rekening</span>
+                                <span>{{ t('organizer.balance.manage_accounts') }}</span>
                             </NuxtLink>
                         </div>
 
@@ -335,7 +289,7 @@
                             <select v-model="selectedAccountId"
                                 class="w-full px-3.5 py-2.5 bg-white border border-gray-200 rounded-xl text-xs font-bold text-navy focus:border-primary outline-none shadow-2xs">
                                 <option v-for="acc in bankAccounts" :key="acc.id || acc.uuid" :value="acc.id || acc.uuid">
-                                    {{ acc.bank_name }} - {{ acc.account_number }} (a.n {{ acc.account_name }}) {{ acc.is_primary ? '(Utama)' : '' }}
+                                    {{ acc.bank_name }} - {{ acc.account_number }} (a.n {{ acc.account_name }}) {{ acc.is_primary ? `(${t('organizer.balance.primary_badge')})` : '' }}
                                 </option>
                             </select>
                         </div>
@@ -371,8 +325,8 @@ import { useI18n } from 'vue-i18n'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
-import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
 
 const { isSubscriptionActive } = useSubscription()
 const showPremiumModal = ref(false)
@@ -389,6 +343,21 @@ definePageMeta({
 useHead({
     title: () => `${t('organizer.balance.header.title')} - Archeris Dashboard`
 })
+
+const withdrawalColumns = computed(() => [
+    { key: 'txId', label: t('organizer.balance.withdrawals.table_tx_id'), sortable: false, class: 'min-w-[140px]' },
+    { key: 'date', label: t('organizer.balance.withdrawals.table_date'), sortable: true, sortKey: 'created_at', class: 'min-w-[140px]' },
+    { key: 'status', label: t('organizer.balance.withdrawals.table_status'), sortable: true, sortKey: 'status', align: 'center', class: 'min-w-[120px]' },
+    { key: 'amount', label: t('organizer.balance.withdrawals.table_amount'), sortable: true, sortKey: 'amount', align: 'right', class: 'min-w-[140px]' }
+])
+
+const mutationColumns = computed(() => [
+    { key: 'date', label: t('organizer.balance.mutations.table_date'), sortable: false, class: 'min-w-[140px]' },
+    { key: 'description', label: t('organizer.balance.mutations.table_desc'), sortable: false, class: 'min-w-[200px]' },
+    { key: 'type', label: t('organizer.balance.mutations.table_type'), sortable: false, align: 'center', class: 'min-w-[100px]' },
+    { key: 'amount', label: t('organizer.balance.mutations.table_amount'), sortable: false, align: 'right', class: 'min-w-[140px]' },
+    { key: 'balanceAfter', label: t('organizer.balance.mutations.table_balance_after'), sortable: false, align: 'right', class: 'min-w-[140px]' }
+])
 
 // Security State
 const isVerified = ref(false)
@@ -477,7 +446,7 @@ const verifyPassword = async () => {
         sessionStorage.setItem('finance_verified', 'true')
         await initData()
     } catch (error) {
-        toast.error(t('organizer.balance.password_error', 'Password salah. Silakan coba lagi.'))
+        toast.error(t('organizer.balance.password_error'))
     } finally {
         verifying.value = false
     }
@@ -612,12 +581,12 @@ const initData = async () => {
 
 const openWithdrawDialog = () => {
     if (balance.value < 100000) {
-        toast.error(t('organizer.balance.minimum_balance_error', 'Saldo minimum untuk penarikan adalah Rp 100.000'))
+        toast.error(t('organizer.balance.minimum_balance_error'))
         return
     }
     
     if (!primaryAccount.value && !bankAccounts.value.length) {
-        toast.error(t('organizer.balance.no_account_error', 'Anda belum memiliki rekening bank. Silakan tambahkan rekening terlebih dahulu.'))
+        toast.error(t('organizer.balance.no_account_error'))
         return
     }
     
@@ -652,10 +621,10 @@ const requestWithdrawalOTP = async () => {
     try {
         await api.post('/organizers/wallet/withdrawals/request-otp')
         otpSent.value = true
-        toast.success(t('organizer.balance.otp.sent_success', 'Kode verifikasi dikirim ke email Anda'))
+        toast.success(t('organizer.balance.otp.sent_success'))
     } catch (error) {
         console.error('Failed to request withdrawal OTP:', error)
-        toast.error(error?.data?.error || t('organizer.balance.otp.sent_error', 'Gagal mengirim kode verifikasi'))
+        toast.error(error?.data?.error || t('organizer.balance.otp.sent_error'))
     } finally {
         sendingOtp.value = false
     }
@@ -663,17 +632,17 @@ const requestWithdrawalOTP = async () => {
 
 const handleWithdrawal = async () => {
     if (otpCode.value.trim().length !== 6) {
-        toast.error(t('organizer.balance.otp.invalid_length', 'Kode OTP harus 6 digit'))
+        toast.error(t('organizer.balance.otp.invalid_length'))
         return
     }
     
     if (!withdrawalAmount.value || withdrawalAmount.value < 100000) {
-        toast.error(t('organizer.balance.amount_minimum_error', 'Jumlah penarikan minimum adalah Rp 100.000'))
+        toast.error(t('organizer.balance.amount_minimum_error'))
         return
     }
     
     if (withdrawalAmount.value > balance.value) {
-        toast.error(t('organizer.balance.amount_exceeds_error', 'Jumlah penarikan melebihi saldo tersedia'))
+        toast.error(t('organizer.balance.amount_exceeds_error'))
         return
     }
 
@@ -687,7 +656,7 @@ const handleWithdrawal = async () => {
         }
 
         await api.post('/organizers/wallet/withdrawals', payload)
-        toast.success(t('organizer.balance.withdrawal_success', 'Permintaan penarikan berhasil diajukan'))
+        toast.success(t('organizer.balance.withdrawal_success'))
         
         // Save verified OTP and time for 5 minutes window
         verifiedOtp.value = otpCode.value.trim()
@@ -700,7 +669,7 @@ const handleWithdrawal = async () => {
         await initData()
     } catch (error) {
         console.error('Failed to submit withdrawal:', error)
-        toast.error(error?.data?.error || t('organizer.balance.withdrawal_error', 'Gagal mengajukan permintaan penarikan'))
+        toast.error(error?.data?.error || t('organizer.balance.withdrawal_error'))
     } finally {
         isSubmittingWithdrawal.value = false
     }

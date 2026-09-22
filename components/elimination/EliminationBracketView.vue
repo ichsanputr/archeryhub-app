@@ -57,7 +57,7 @@
                 <Icon icon="ph:brackets-curly-bold" class="text-3xl text-slate-400" />
             </div>
             <h2 class="text-lg font-black text-slate-900 tracking-tight mb-2">{{ t('event_elimination.bracket_not_generated') }}</h2>
-            <div class="text-xs text-slate-400 max-w-sm mx-auto mb-6">{{ t('event_elimination.generate_bracket_desc', 'Bagan pertandingan belum dibuat. Klik tombol di bawah untuk membuat bagan otomatis.') }}</div>
+            <div class="text-xs text-slate-400 max-w-sm mx-auto mb-6">{{ t('event_elimination.generate_bracket_desc') }}</div>
             <button @click="$emit('generate-bracket')"
                 class="px-6 py-2.5 rounded-xl bg-navy text-primary text-xs font-black tracking-widest hover:brightness-110 shadow-lg shadow-navy/20 active:scale-95 transition-all flex items-center gap-2.5 mx-auto">
                 <Icon icon="ph:magic-wand-bold" class="text-base" />
@@ -69,12 +69,12 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
+import { useDashboardI18n } from '~/composables/useDashboardI18n'
 import BracketRound from './BracketRound.vue'
 import ChampionshipTower from './ChampionshipTower.vue'
 
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 
 const props = defineProps({
     bracket: { type: Object, required: true },

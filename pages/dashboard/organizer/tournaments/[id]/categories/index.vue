@@ -2,13 +2,13 @@
     <div class="flex flex-col gap-6 pb-12">
         <!-- Header -->
         <DashboardHeader
-            :title="t('event_categories.title', 'Kategori & Divisi Lomba')"
-            :subtitle="t('event_categories.desc', 'Atur kategori lomba, jarak bantalan, kelompok usia, dan kuota pemanah.')"
+            :title="t('event_categories.title')"
+            :subtitle="t('event_categories.desc')"
             icon="ph:tag"
             :breadcrumbs="[
                 { label: 'Dashboard', to: '/dashboard/organizer' },
-                { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-                { label: t('event_categories.title', 'Kategori & Divisi') }
+                { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+                { label: t('event_categories.title') }
             ]"
         >
             <template #actions>
@@ -17,121 +17,107 @@
                         class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
                         :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
                         @click="isSubscriptionActive ? openCreateDialog() : (showPremiumModal = true)">
-                        {{ t('event_categories.add_category', 'Tambah Kategori') }}
+                        {{ t('event_categories.add_category') }}
                     </BaseButton>
                 </div>
             </template>
         </DashboardHeader>
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
-        <!-- Categories List -->
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div
-                class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <h2 class="text-lg font-bold text-navy">{{ t('event_categories.category_list') }}</h2>
-                <div class="flex items-center gap-3">
-                    <span class="text-sm font-medium text-gray-500 hidden sm:inline">{{ t('event_categories.filter_bow') }}</span>
-                    <BaseSelect v-model="selectedBowType" :items="bowFilterOptions" :placeholder="t('event_categories.all_bows')"
-                        class="w-full sm:w-48" />
-                    <span class="text-sm font-medium text-gray-500 hidden sm:inline">{{ t('event_categories.team_type') }}</span>
-                    <BaseSelect v-model="selectedTeamType" :items="teamTypeFilterOptions" :placeholder="t('event_categories.all_team_types')"
-                        class="w-full sm:w-48" />
-                </div>
-            </div>
-            <!-- Skeleton Loader -->
-            <div v-if="isLoading" class="divide-y divide-gray-100">
-                <div v-for="i in 3" :key="i" class="p-4 sm:p-6">
-                    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                        <div class="flex-1 space-y-4">
-                            <div class="flex items-center gap-3">
-                                <div class="h-6 w-3/4 bg-gray-100 animate-pulse rounded"></div>
-                                <div class="h-5 w-16 bg-gray-50 animate-pulse rounded-full"></div>
-                            </div>
-                            <div class="flex gap-6">
-                                <div class="h-4 w-32 bg-gray-50 animate-pulse rounded"></div>
-                                <div class="h-4 w-32 bg-gray-50 animate-pulse rounded"></div>
-                            </div>
-                        </div>
-                        <div class="h-9 w-20 bg-gray-100 animate-pulse rounded-lg"></div>
+        <!-- Categories List (Unified DashboardDataTable) -->
+        <DashboardDataTable
+            :items="categories"
+            :columns="tableColumns"
+            :loading="isLoading"
+            :searchable="false"
+            count-icon="ph:tag-bold"
+            :count-unit="t('event_categories.category_list')"
+            :items-per-page="limit"
+            :empty-title="t('event_categories.no_categories')"
+            :empty-description="t('event_categories.no_categories_desc')"
+            empty-icon="ph:tag-simple"
+        >
+            <!-- Inline Filters: Bow & Team Type Selects -->
+            <template #inline-filters>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <div class="w-40 sm:w-48">
+                        <BaseSelect v-model="selectedBowType" :items="bowFilterOptions" :placeholder="t('event_categories.all_bows')" />
+                    </div>
+                    <div class="w-40 sm:w-48">
+                        <BaseSelect v-model="selectedTeamType" :items="teamTypeFilterOptions" :placeholder="t('event_categories.all_team_types')" />
                     </div>
                 </div>
-            </div>
-            <div v-else-if="categories.length === 0" class="p-12 text-center">
-                <Icon icon="ph:tag-simple" class="text-5xl text-gray-300 mx-auto mb-4" />
-                <div class="text-gray-600 font-bold mb-1">{{ t('event_categories.no_categories') }}</div>
-                <div class="text-sm text-gray-400">{{ t('event_categories.no_categories_desc') }}</div>
-            </div>
-            <div v-else class="divide-y divide-gray-100">
-                <div v-for="category in categories" :key="category.id"
-                    class="p-4 sm:p-6 hover:bg-gray-50 transition-colors group">
-                    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                        <div class="flex items-start gap-4 flex-1 min-w-0">
-                            <!-- Category Icon -->
-                            <div
-                                class="h-12 w-12 rounded-xl border border-gray-100 bg-gray-50 flex items-center justify-center shadow-sm shrink-0 transition-all group-hover:bg-navy p-2 overflow-hidden">
-                                <img :src="'/' + getCategoryIcon(`${category.division_name || ''} ${category.category_name || ''} ${category.event_type_name || ''} ${category.gender_division_name || ''}`)"
-                                    :alt="category.division_name"
-                                    class="w-full h-full object-contain group-hover:invert transition-all" />
-                            </div>
+            </template>
 
-                            <div class="min-w-0 flex-1">
-                                <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                                    <h3 class="text-base sm:text-lg font-bold text-navy break-words min-w-0">
-                                        {{ [category.division_name, category.category_name, category.event_type_name, category.gender_division_name].filter(s => s && s.trim() && s !== '-').join(' – ') }}
-                                    </h3>
-                                    <span
-                                        :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
-                                        class="px-2.5 py-0.5 rounded-full text-xs font-bold shrink-0">
-                                        {{ category.status === 'active' ? t('event_categories.status_active') : t('event_categories.status_inactive') }}
-                                    </span>
-                                </div>
-                                <div
-                                    class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-6 text-sm text-gray-500">
-                                    <div class="flex items-center gap-2 min-w-0">
-                                        <Icon icon="ph:users" class="text-base shrink-0" />
-                                        <span class="break-words">
-                                            {{ t('event_categories.max_participants', { count: category.max_participants || t('event_categories.unlimited') }) }}
-                                        </span>
-                                    </div>
-                                    <div v-if="category.team_size > 0" class="flex items-center gap-2 min-w-0">
-                                        <Icon icon="ph:users-three" class="text-base shrink-0" />
-                                        <span class="break-words">
-                                            {{ t('event_categories.team_capacity', { count: category.team_size }) }}
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center gap-2 min-w-0">
-                                        <Icon icon="ph:calendar" class="text-base shrink-0" />
-                                        <span class="break-words">
-                                            {{ t('event_categories.created', { date: formatDate(category.created_at) }) }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+            <!-- Category Column Slot -->
+            <template #item-category="{ item }">
+                <div class="flex items-center gap-3.5 py-1">
+                    <div class="size-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shadow-2xs shrink-0 p-2 overflow-hidden">
+                        <img :src="'/' + getCategoryIcon(`${item.division_name || ''} ${item.category_name || ''} ${item.event_type_name || ''} ${item.gender_division_name || ''}`)"
+                            :alt="item.division_name"
+                            class="w-full h-full object-contain" />
+                    </div>
+                    <div class="min-w-0">
+                        <div class="font-bold text-xs sm:text-sm text-navy leading-snug">
+                            {{ [item.division_name, item.category_name, item.event_type_name, item.gender_division_name].filter(s => s && s.trim() && s !== '-').join(' – ') }}
                         </div>
-                        <div
-                            class="flex items-center justify-end sm:justify-start shrink-0 pt-2 sm:pt-0 border-t border-gray-100 sm:border-t-0 gap-2">
-                            <BaseButton variant="white" size="sm" icon="ph:eye" :title="t('event_categories.view_participants')"
-                                :to="`/dashboard/organizer/tournaments/${eventId}/categories/${category.id}`">
-                                {{ t('event_categories.view') }}
-                            </BaseButton>
-                            <BaseButton variant="white" size="sm" icon="ph:pencil"
-                                @click="isSubscriptionActive ? openEditDialog(category) : (showPremiumModal = true)">
-                                {{ t('event_categories.edit') }}
-                            </BaseButton>
-                            <button @click="isSubscriptionActive ? deleteCategory(category) : (showPremiumModal = true)"
-                                class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors group/del"
-                                :title="t('event_categories.delete_category')">
-                                <Icon icon="ph:trash" class="text-lg group-hover/del:scale-110 transition-transform" />
-                            </button>
+                        <div class="text-[11px] text-slate-400 font-medium flex items-center gap-1.5 mt-0.5">
+                            <Icon icon="ph:calendar-blank-bold" class="text-[10px] text-slate-400" />
+                            <span>{{ t('event_categories.created', { date: formatDate(item.created_at) }) }}</span>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div v-if="categories.length > 0" class="p-6 border-t border-gray-100">
-                <BasePagination :current-page="currentPage" :total-items="totalItems" :items-per-page="limit"
-                    @change-page="handlePageChange" />
-            </div>
-        </div>
+            </template>
+
+            <!-- Quota Column Slot -->
+            <template #item-quota="{ item }">
+                <div class="flex justify-center">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200/80 text-xs font-bold text-navy">
+                        <Icon icon="ph:users-bold" class="text-xs text-slate-400" />
+                        <span>{{ item.max_participants || t('event_categories.unlimited') }}</span>
+                    </span>
+                </div>
+            </template>
+
+            <!-- Team Type Column Slot -->
+            <template #item-team="{ item }">
+                <div class="flex justify-center">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-navy/5 border border-navy/10 text-xs font-bold text-navy">
+                        <Icon :icon="item.team_size > 1 ? 'ph:users-three-bold' : 'ph:user-bold'" class="text-xs text-navy/70" />
+                        <span>{{ item.team_size > 1 ? t('event_categories.team_capacity', { count: item.team_size }) : 'Individu' }}</span>
+                    </span>
+                </div>
+            </template>
+
+            <!-- Status Column Slot -->
+            <template #item-status="{ item }">
+                <div class="flex justify-center">
+                    <span :class="item.status === 'active' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-100 text-slate-600 border-slate-200'"
+                        class="px-2.5 py-0.5 rounded-full text-[10px] font-black border tracking-wider">
+                        {{ item.status === 'active' ? t('event_categories.status_active') : t('event_categories.status_inactive') }}
+                    </span>
+                </div>
+            </template>
+
+            <!-- Actions Column Slot -->
+            <template #actions="{ item }">
+                <div class="flex items-center justify-end gap-1.5">
+                    <BaseButton variant="white" size="sm" icon="ph:eye" :title="t('event_categories.view_participants')"
+                        :to="`/dashboard/organizer/tournaments/${eventId}/categories/${item.id}`">
+                        {{ t('event_categories.view') }}
+                    </BaseButton>
+                    <BaseButton variant="white" size="sm" icon="ph:pencil"
+                        @click="isSubscriptionActive ? openEditDialog(item) : (showPremiumModal = true)">
+                        {{ t('event_categories.edit') }}
+                    </BaseButton>
+                    <button @click="isSubscriptionActive ? deleteCategory(item) : (showPremiumModal = true)"
+                        class="p-2 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                        :title="t('event_categories.delete_category')">
+                        <Icon icon="ph:trash-bold" class="text-base" />
+                    </button>
+                </div>
+            </template>
+        </DashboardDataTable>
 
         <!-- Create/Edit Dialog -->
         <BaseDialogForm v-model="showDialog" :header="editingCategory ? t('event_categories.edit_category') : t('event_categories.add_category_new')">
@@ -186,6 +172,21 @@
                             </div>
                             <div class="text-[10px] text-gray-400">
                                 {{ teamTypeDescription }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gate Warning Banner for Team & Mixed Team -->
+                    <div v-if="missingIndividualCategory" class="p-4 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-start gap-3.5">
+                        <div class="size-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+                            <Icon icon="ph:warning-circle-bold" class="text-lg" />
+                        </div>
+                        <div class="space-y-1 min-w-0 flex-1">
+                            <div class="text-xs font-bold text-amber-900 leading-tight">
+                                {{ t('event_categories.gate_warning_title') }}
+                            </div>
+                            <div class="text-[11px] text-amber-800 leading-relaxed">
+                                {{ missingIndividualCategory.message }}
                             </div>
                         </div>
                     </div>
@@ -287,9 +288,8 @@ import BasePagination from '~/components/common/BasePagination.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { getCategoryIcon, getCategoryColorClass } from '~/utils/logoArcheryCategory'
-import { useI18n } from 'vue-i18n'
-import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
 
 const { t, locale } = useI18n()
 
@@ -298,8 +298,15 @@ definePageMeta({
 })
 
 useHead({
-    title: computed(() => `${t('event_categories.title', 'Kategori Pertandingan')} - Archeris Dashboard`)
+    title: computed(() => `${t('event_categories.title')} - Archeris Dashboard`)
 })
+
+const tableColumns = computed(() => [
+    { key: 'category', label: t('event_categories.category_list'), sortable: false, class: 'min-w-[260px]' },
+    { key: 'quota', label: 'Kuota', sortable: false, align: 'center', class: 'min-w-[130px]' },
+    { key: 'team', label: t('event_categories.team_type'), sortable: false, align: 'center', class: 'min-w-[130px]' },
+    { key: 'status', label: t('common.status'), sortable: false, align: 'center', class: 'min-w-[120px]' }
+])
 
 const route = useRoute()
 const eventId = route.params.id
@@ -358,17 +365,45 @@ const bowOptions = computed(() => {
 })
 
 const ageOptions = computed(() => {
-    return ageGroups.value.map(age => ({ value: age.id, title: age.name }))
+    return ageGroups.value.map(age => {
+        let title = age.name
+        if (age.code === 'kustom' || age.name?.toLowerCase().includes('kustom')) {
+            title = t('event_categories.opt_custom')
+        } else if (age.code === 'umum' || age.name?.toLowerCase() === 'umum') {
+            title = t('event_categories.opt_general')
+        }
+        return { value: age.id, title }
+    })
 })
 
 const eventTypeOptions = computed(() => {
-    return eventTypes.value.map(type => ({ value: type.id, title: type.name }))
+    return eventTypes.value.map(type => {
+        let title = type.name
+        const code = (type.code || type.name || '').toLowerCase()
+        if (code === 'individual' || code.includes('individu')) {
+            title = t('event_categories.opt_individual')
+        } else if (code === 'mixed_team' || code.includes('mixed')) {
+            title = t('event_categories.opt_mixed_team')
+        } else if (code === 'team' || code.includes('beregu') || code.includes('team')) {
+            title = t('event_categories.opt_team')
+        }
+        return { value: type.id, title }
+    })
 })
 
 const genderOptions = computed(() => {
     return genderDivisions.value
         .filter(gender => gender.code !== 'mixed')
-        .map(gender => ({ value: gender.id, title: gender.name }))
+        .map(gender => {
+            let title = gender.name
+            const code = (gender.code || gender.name || '').toLowerCase()
+            if (code === 'men' || code === 'male' || code.includes('putra')) {
+                title = t('common.gender_male')
+            } else if (code === 'women' || code === 'female' || code.includes('putri')) {
+                title = t('common.gender_female')
+            }
+            return { value: gender.id, title }
+        })
 })
 
 const form = ref({
@@ -381,6 +416,8 @@ const form = ref({
     team_size: 3,
     status: 'active'
 })
+
+const allTournamentCategories = ref([])
 
 const isCustomAgeGroup = computed(() => {
     const selected = ageGroups.value.find(ag => ag.id === form.value.category_uuid)
@@ -395,6 +432,79 @@ const isMixedTeam = computed(() => {
 const isTeamEvent = computed(() => {
     const selected = eventTypes.value.find(et => et.id === form.value.event_type_uuid)
     return selected?.name?.toLowerCase() !== 'individual'
+})
+
+const getGenderLabel = (gender) => {
+    const code = (gender?.code || gender?.name || '').toLowerCase()
+    if (code === 'men' || code === 'male' || code.includes('putra')) {
+        return t('event_categories.gender_male')
+    }
+    if (code === 'women' || code === 'female' || code.includes('putri')) {
+        return t('event_categories.gender_female')
+    }
+    return gender?.name || ''
+}
+
+const missingIndividualCategory = computed(() => {
+    if (!isTeamEvent.value || !form.value.division_uuid || !form.value.category_uuid) {
+        return null
+    }
+
+    const existing = allTournamentCategories.value.length > 0 ? allTournamentCategories.value : categories.value
+
+    if (isMixedTeam.value) {
+        const maleGender = genderDivisions.value.find(g => g.code === 'men' || g.code === 'male')
+        const femaleGender = genderDivisions.value.find(g => g.code === 'women' || g.code === 'female')
+
+        const hasMaleIndiv = existing.some(c => {
+            const isSameDivision = (c.division_id === form.value.division_uuid || c.division_uuid === form.value.division_uuid)
+            const isSameAge = (c.category_id === form.value.category_uuid || c.category_uuid === form.value.category_uuid)
+            const isIndiv = (c.event_type_name?.toLowerCase() === 'individual' || c.event_type_code === 'individual')
+            const isMale = (c.gender_division_id === maleGender?.id || c.gender_division_uuid === maleGender?.id || c.gender_division_name?.toLowerCase().includes('putra') || c.gender_division_name?.toLowerCase().includes('men') || c.gender_division_code === 'men' || c.gender_division_code === 'male')
+            return isSameDivision && isSameAge && isIndiv && isMale
+        })
+
+        const hasFemaleIndiv = existing.some(c => {
+            const isSameDivision = (c.division_id === form.value.division_uuid || c.division_uuid === form.value.division_uuid)
+            const isSameAge = (c.category_id === form.value.category_uuid || c.category_uuid === form.value.category_uuid)
+            const isIndiv = (c.event_type_name?.toLowerCase() === 'individual' || c.event_type_code === 'individual')
+            const isFemale = (c.gender_division_id === femaleGender?.id || c.gender_division_uuid === femaleGender?.id || c.gender_division_name?.toLowerCase().includes('putri') || c.gender_division_name?.toLowerCase().includes('women') || c.gender_division_code === 'women' || c.gender_division_code === 'female')
+            return isSameDivision && isSameAge && isIndiv && isFemale
+        })
+
+        if (!hasMaleIndiv || !hasFemaleIndiv) {
+            let missing = []
+            if (!hasMaleIndiv) missing.push(t('event_categories.gender_male'))
+            if (!hasFemaleIndiv) missing.push(t('event_categories.gender_female'))
+            return {
+                type: 'mixed',
+                missingGenders: missing.join(' & '),
+                message: t('event_categories.gate_warning_mixed_desc')
+            }
+        }
+    } else {
+        if (!form.value.gender_division_uuid) return null
+        const selectedGender = genderDivisions.value.find(g => g.id === form.value.gender_division_uuid)
+        const genderLabel = getGenderLabel(selectedGender)
+
+        const hasIndiv = existing.some(c => {
+            const isSameDivision = (c.division_id === form.value.division_uuid || c.division_uuid === form.value.division_uuid)
+            const isSameAge = (c.category_id === form.value.category_uuid || c.category_uuid === form.value.category_uuid)
+            const isIndiv = (c.event_type_name?.toLowerCase() === 'individual' || c.event_type_code === 'individual')
+            const isSameGender = (c.gender_division_id === form.value.gender_division_uuid || c.gender_division_uuid === form.value.gender_division_uuid || c.gender_division_name === selectedGender?.name || (selectedGender?.code && c.gender_division_code === selectedGender.code))
+            return isSameDivision && isSameAge && isIndiv && isSameGender
+        })
+
+        if (!hasIndiv) {
+            return {
+                type: 'team',
+                missingGenders: genderLabel,
+                message: t('event_categories.gate_warning_team_desc', { gender: genderLabel })
+            }
+        }
+    }
+
+    return null
 })
 
 const teamTypeDescription = computed(() => {
@@ -465,19 +575,21 @@ const fetchCategories = async () => {
             params.append('event_type', selectedTeamType.value)
         }
 
-        const [categoriesRes, bowRes, ageRes, eventTypeRes, genderRes] = await Promise.all([
+        const [categoriesRes, allCatsRes, bowRes, ageRes, eventTypeRes, genderRes] = await Promise.all([
             get(`/tournaments/${eventId}/categories?${params.toString()}`),
+            get(`/tournaments/${eventId}/categories?limit=500`),
             get('/bow-types'),
             get('/age-groups'),
             get('/team-types'),
             get('/gender-divisions')
         ])
         categories.value = categoriesRes?.events || categoriesRes?.data?.events || []
+        allTournamentCategories.value = allCatsRes?.events || allCatsRes?.data?.events || categories.value
         totalItems.value = categoriesRes?.total || categoriesRes?.data?.total || 0
         bowTypes.value = bowRes?.bow_types || bowRes?.data?.bow_types || []
-        ageGroups.value = ageGroups.value.length > 0 ? ageGroups.value : (ageRes?.age_groups || ageRes?.data?.age_groups || [])
-        eventTypes.value = eventTypes.value.length > 0 ? eventTypes.value : (eventTypeRes?.team_types || eventTypeRes?.event_types || eventTypeRes?.data?.team_types || eventTypeRes?.data?.event_types || [])
-        genderDivisions.value = genderDivisions.value.length > 0 ? genderDivisions.value : (genderRes?.gender_divisions || genderRes?.data?.gender_divisions || [])
+        ageGroups.value = ageRes?.age_groups || ageRes?.data?.age_groups || []
+        eventTypes.value = eventTypeRes?.team_types || eventTypeRes?.event_types || eventTypeRes?.data?.team_types || eventTypeRes?.data?.event_types || []
+        genderDivisions.value = genderRes?.gender_divisions || genderRes?.data?.gender_divisions || []
     } catch (error) {
         console.error('Failed to fetch categories:', error)
         toast.error(getApiErrorMessage(error, t('event_categories.toast_load_failed')))
@@ -560,7 +672,32 @@ const confirmDeleteCategory = async () => {
 }
 
 const getApiErrorMessage = (error, defaultMsg) => {
-    return error?.response?.data?.error || error?.data?.error || error?.message || defaultMsg
+    const errData = error?.response?.data || error?.data || {}
+    const rawError = errData.error || error?.message || ''
+    const errorCode = errData.error_code || ''
+
+    if (errorCode === 'team_requires_individual' || rawError.includes('Kategori Beregu memerlukan')) {
+        const selectedGender = genderDivisions.value.find(g => g.id === form.value.gender_division_uuid)
+        const genderLabel = getGenderLabel(selectedGender)
+        return t('event_categories.toast_gate_team_requires_individual', { gender: genderLabel })
+    }
+    if (errorCode === 'mixed_team_requires_both' || rawError.includes('Kategori Beregu Campuran')) {
+        return t('event_categories.toast_gate_mixed_requires_both')
+    }
+    if (errorCode === 'category_has_paid_participants' || rawError.includes('status pembayaran lunas')) {
+        return t('event_categories.toast_cannot_delete_paid')
+    }
+    if (errorCode === 'individual_required_by_team' || rawError.includes('masih digunakan sebagai basis skoring')) {
+        return t('event_categories.toast_cannot_delete_dep_team')
+    }
+    if (errorCode === 'category_has_scores' || rawError.includes('rekaman skor anak panah')) {
+        return t('event_categories.toast_cannot_delete_has_scores')
+    }
+    if (rawError.includes('Kategori sudah ada') || rawError.includes('already exists')) {
+        return t('event_categories.toast_category_exists')
+    }
+
+    return rawError || defaultMsg
 }
 
 const saveCategory = async () => {
@@ -577,6 +714,11 @@ const saveCategory = async () => {
 
     if (isTeamEvent.value && (!form.value.team_size || form.value.team_size <= 1)) {
         toast.error(t('event_categories.toast_team_size_invalid'))
+        return
+    }
+
+    if (missingIndividualCategory.value) {
+        toast.error(missingIndividualCategory.value.message)
         return
     }
 

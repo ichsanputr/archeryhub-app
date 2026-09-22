@@ -74,9 +74,9 @@
                                             {{ t('event_qualification.standard_draw', 'Undian Standar (Acak Sekaligus)') }}
                                         </span>
                                     </div>
-                                    <p class="text-[11px] text-slate-500 font-medium leading-snug">
+                                    <div class="text-[11px] text-slate-500 font-medium leading-snug">
                                         {{ t('event_qualification.standard_draw_desc', 'Mengacak seluruh pemanah sekaligus dan mengisi target secara berurutan.') }}
-                                    </p>
+                                    </div>
                                 </div>
                                 <Icon icon="ph:caret-right-bold" class="text-slate-300 group-hover:text-navy group-hover:translate-x-0.5 transition-all text-sm shrink-0 self-center" />
                             </button>
@@ -93,9 +93,9 @@
                                             {{ t('event_qualification.field_draw', 'Undian Lapangan (Sebar Klub)') }}
                                         </span>
                                     </div>
-                                    <p class="text-[11px] text-slate-500 font-medium leading-snug">
+                                    <div class="text-[11px] text-slate-500 font-medium leading-snug">
                                         {{ t('event_qualification.field_draw_desc', 'Mendistribusikan atlet dari klub yang sama ke target berbeda agar tidak satu bantalan.') }}
-                                    </p>
+                                    </div>
                                 </div>
                                 <Icon icon="ph:caret-right-bold" class="text-slate-300 group-hover:text-navy group-hover:translate-x-0.5 transition-all text-sm shrink-0 self-center" />
                             </button>
@@ -181,7 +181,7 @@
                 <div v-if="props.availableTargets.length === 0"
                     class="bg-white rounded-3xl border-2 border-dashed border-slate-200 p-8 sm:p-14 text-center flex flex-col items-center justify-center space-y-5 min-h-[480px] shadow-2xs">
                     <div class="relative">
-                        <div class="size-20 rounded-3xl bg-navy text-primary flex items-center justify-center shadow-lg shadow-navy/15">
+                        <div class="size-20 rounded-3xl bg-primary text-btn-text flex items-center justify-center shadow-lg shadow-primary/20">
                             <Icon icon="ph:target-bold" class="text-4xl" />
                         </div>
                         <div class="absolute -bottom-1 -right-1 size-7 rounded-xl bg-amber-400 text-navy flex items-center justify-center border-2 border-white shadow-xs">
@@ -193,9 +193,9 @@
                         <h3 class="text-lg sm:text-xl font-black text-navy leading-tight">
                             {{ t('event_qualification.no_targets_title', 'Belum Ada Bantalan Target') }}
                         </h3>
-                        <p class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
+                        <div class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
                             {{ t('event_qualification.no_targets_desc', 'Turnamen ini belum memiliki target kualifikasi yang dikonfigurasi. Buat nomor bantalan target terlebih dahulu pada menu Manajemen Target untuk mulai menempatkan pemanah.') }}
-                        </p>
+                        </div>
                     </div>
 
                     <div class="pt-2">
@@ -392,9 +392,9 @@
                   <h3 class="text-base sm:text-lg font-black text-white leading-tight">
                     {{ t('event_qualification.auto_assign_confirm_title', 'Konfirmasi Penempatan Target') }}
                   </h3>
-                  <p class="text-xs text-slate-300 font-medium mt-0.5">
+                  <div class="text-xs text-slate-300 font-medium mt-0.5">
                     {{ t('event_qualification.auto_assign_confirm_subtitle', 'Penempatan pemanah ke bantalan target secara otomatis') }}
-                  </p>
+                  </div>
                 </div>
               </div>
               <button type="button" @click="showAutoAssignDialog = false"
@@ -418,9 +418,9 @@
                   <h4 class="text-sm font-black text-slate-900 mb-0.5">
                     {{ drawType === 'standard' ? t('event_qualification.standard_draw', 'Undian Standar (Acak Sekaligus)') : t('event_qualification.field_draw', 'Undian Lapangan (Sebar Klub)') }}
                   </h4>
-                  <p class="text-xs text-slate-500 font-medium leading-relaxed">
+                  <div class="text-xs text-slate-500 font-medium leading-relaxed">
                     {{ drawType === 'standard' ? t('event_qualification.standard_draw_desc', 'Mengacak seluruh pemanah sekaligus dan mengisi target secara berurutan.') : t('event_qualification.field_draw_desc', 'Mendistribusikan atlet dari klub yang sama ke target berbeda agar tidak satu bantalan.') }}
-                  </p>
+                  </div>
                 </div>
               </div>
 
@@ -485,17 +485,17 @@
               <h3 class="text-xl font-black text-slate-900 leading-tight">
                 {{ t('event_qualification.reset_confirm_title', 'Reset Penempatan Target?') }}
               </h3>
-              <p class="text-sm text-slate-500 font-medium mt-2 leading-relaxed">
+              <div class="text-sm text-slate-500 font-medium mt-2 leading-relaxed">
                 {{ t('event_qualification.reset_confirm_msg', 'Pemanah tanpa skor akan dikembalikan ke daftar belum diatur (unassigned).') }}
-              </p>
+              </div>
             </div>
 
             <!-- Smart Protection Alert in Reset -->
             <div v-if="scoredArchersCount > 0" class="p-3 bg-emerald-50 border border-emerald-200/80 rounded-2xl flex items-start gap-2.5 text-left">
               <Icon icon="ph:shield-check-bold" class="text-emerald-600 text-lg shrink-0 mt-0.5" />
-              <p class="text-xs text-emerald-800 font-medium leading-relaxed">
+              <div class="text-xs text-emerald-800 font-medium leading-relaxed">
                 {{ t('event_qualification.reset_scored_notice', { count: scoredArchersCount }).replace('{count}', String(scoredArchersCount)) }}
-              </p>
+              </div>
             </div>
           </div>
 
@@ -529,7 +529,7 @@
               <h3 class="text-xl font-black text-slate-900 leading-tight">
                 {{ t('event_qualification.move_scored_confirm_title', 'Pindahkan Target Pemanah Berskor?') }}
               </h3>
-              <p class="text-sm text-slate-600 font-medium mt-2 leading-relaxed">
+              <div class="text-sm text-slate-600 font-medium mt-2 leading-relaxed">
                 {{ t('event_qualification.move_scored_confirm_desc', {
                   name: pendingMoveData?.movingArcher?.name || '',
                   ends: pendingMoveData?.movingArcher?.ends_completed || 1,
@@ -537,7 +537,7 @@
                 }).replace('{name}', pendingMoveData?.movingArcher?.name || '')
                   .replace('{ends}', String(pendingMoveData?.movingArcher?.ends_completed || 1))
                   .replace('{score}', String(pendingMoveData?.movingArcher?.total_score || 0)) }}
-              </p>
+              </div>
             </div>
           </div>
           <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3 rounded-b-3xl">
@@ -569,7 +569,7 @@
               <h3 class="text-xl font-black text-slate-900 leading-tight">
                 {{ t('event_qualification.unassign_scored_confirm_title', 'Lepas Target Pemanah Berskor?') }}
               </h3>
-              <p class="text-sm text-slate-600 font-medium mt-2 leading-relaxed">
+              <div class="text-sm text-slate-600 font-medium mt-2 leading-relaxed">
                 {{ t('event_qualification.unassign_scored_confirm_desc', {
                   name: pendingUnassignData?.archer?.name || '',
                   ends: pendingUnassignData?.archer?.ends_completed || 1,
@@ -577,7 +577,7 @@
                 }).replace('{name}', pendingUnassignData?.archer?.name || '')
                   .replace('{ends}', String(pendingUnassignData?.archer?.ends_completed || 1))
                   .replace('{score}', String(pendingUnassignData?.archer?.total_score || 0)) }}
-              </p>
+              </div>
             </div>
           </div>
           <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-3 rounded-b-3xl">
@@ -634,8 +634,6 @@ const showAutoAssignDialog = ref(false)
 const showAutoAssignMenu = ref(false)
 const drawType = ref('standard')
 
-// Smart Protection state & counts
-const assignMode = ref('unassigned_only')
 const scoredArchersCount = computed(() => {
     return props.archers.filter(a => a.has_score || (a.total_score && a.total_score > 0) || (a.ends_completed && a.ends_completed > 0)).length
 })
@@ -1043,8 +1041,7 @@ const autoAssignTargets = async () => {
         await post(`/qualification/sessions/${props.sessionData.uuid}/auto-assign`, {
             category_id: props.selectedCategory,
             archers_per_target: props.sessionData.archers_per_target || 4,
-            draw_type: drawType.value,
-            assign_mode: assignMode.value
+            draw_type: drawType.value
         })
 
         toast.success(t('event_qualification.toast_auto_assign_success'))

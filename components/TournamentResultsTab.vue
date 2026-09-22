@@ -159,10 +159,11 @@
                                 :class="selectedCategory === category.uuid ? 'bg-primary' : 'bg-transparent'"></div>
                             <div class="flex items-start gap-3 pl-2">
                                 <div
-                                    class="size-12 bg-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden p-2 group-hover:bg-primary transition-colors">
+                                    class="size-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-2xs overflow-hidden p-2 transition-colors"
+                                    :class="selectedCategory === category.uuid ? 'bg-primary text-btn-text' : 'bg-primary/10 text-navy group-hover:bg-primary group-hover:text-btn-text'">
                                     <img :src="'/' + getCategoryIcon(`${category.division_name} ${category.event_type_name} ${category.gender_division_name}`)"
                                         :alt="category.division_name"
-                                        class="w-full h-full object-contain invert group-hover:invert-0 transition-all" />
+                                        class="w-full h-full object-contain" />
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <p
@@ -334,9 +335,9 @@
                                                 </td>
                                                 <td class="px-4 py-4">
                                                     <div class="flex items-center gap-3">
-                                                        <img :src="result.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${result.archer_name}`"
+                                                        <img :src="useImageOrDefault(result.avatar_url, result.archer_name)"
                                                             :alt="result.archer_name || 'Archer'"
-                                                            @error="(e) => e.target.src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(result.archer_name || 'A') + '&background=f1f5f9&color=94a3b8'"
+                                                            @error="(e) => e.target.src = generateDicebearAvatar(result.archer_name)"
                                                             class="size-9 rounded-full border-2 border-gray-200 object-cover shrink-0" />
                                                         <span class="text-sm sm:text-base font-bold text-navy whitespace-nowrap">{{
                                                             result.archer_name }}</span>

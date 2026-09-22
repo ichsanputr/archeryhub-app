@@ -2,15 +2,15 @@
   <div class="flex flex-col gap-6 pb-16 font-body text-navy antialiased">
     <!-- Header -->
     <DashboardHeader
-      :title="t('event_printout.statistics.title', 'Tournament Statistics')"
-      :subtitle="t('event_printout.statistics.page_desc', 'Official participant distribution statistical reports for organizers and technical delegates.')"
+      :title="t('event_printout.statistics.title')"
+      :subtitle="t('event_printout.statistics.page_desc')"
       icon="ph:chart-bar-bold"
       :back-to="`/dashboard/organizer/tournaments/${eventId}/printout`"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-        { label: t('event_printout.breadcrumb_printout', 'Printouts'), to: `/dashboard/organizer/tournaments/${eventId}/printout` },
-        { label: t('event_printout.statistics.title', 'Tournament Statistics') }
+        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('event_printout.breadcrumb_printout'), to: `/dashboard/organizer/tournaments/${eventId}/printout` },
+        { label: t('event_printout.statistics.title') }
       ]"
     />
 
@@ -22,13 +22,13 @@
           <div class="size-14 bg-slate-100 border border-slate-200/80 text-navy rounded-2xl flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 transition-all">
             <Icon icon="ph:chart-bar-bold" class="text-2xl text-navy" />
           </div>
-          <h2 class="text-base font-black text-navy mb-2">{{ t('event_printout.statistics.classes_title', 'Classes & Divisions Statistics') }}</h2>
-          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.statistics.classes_desc', 'Participant counts broken down by age group and bow type category combinations.') }}</div>
+          <h2 class="text-base font-black text-navy mb-2">{{ t('event_printout.statistics.classes_title') }}</h2>
+          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.statistics.classes_desc') }}</div>
         </div>
 
         <div class="pt-4 border-t border-slate-100">
           <BaseButton @click="printStat('classes')" variant="primary" size="lg" icon="ph:file-pdf-bold" class="w-full font-black text-sm">
-            {{ t('event_printout.download_pdf', 'Download PDF') }}
+            {{ t('event_printout.download_pdf') }}
           </BaseButton>
         </div>
       </div>
@@ -39,13 +39,13 @@
           <div class="size-14 bg-slate-100 border border-slate-200/80 text-navy rounded-2xl flex items-center justify-center mb-5 shadow-2xs group-hover:scale-105 transition-all">
             <Icon icon="ph:castle-turret-bold" class="text-2xl text-navy" />
           </div>
-          <h2 class="text-base font-black text-navy mb-2">{{ t('event_printout.statistics.clubs_title', 'Clubs & Contingents Statistics') }}</h2>
-          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.statistics.clubs_desc', 'Summary of athlete counts and entries from each participating club.') }}</div>
+          <h2 class="text-base font-black text-navy mb-2">{{ t('event_printout.statistics.clubs_title') }}</h2>
+          <div class="text-xs text-slate-500 mb-6 leading-relaxed">{{ t('event_printout.statistics.clubs_desc') }}</div>
         </div>
 
         <div class="pt-4 border-t border-slate-100">
           <BaseButton @click="printStat('clubs')" variant="primary" size="lg" icon="ph:file-pdf-bold" class="w-full font-black text-sm">
-            {{ t('event_printout.download_pdf', 'Download PDF') }}
+            {{ t('event_printout.download_pdf') }}
           </BaseButton>
         </div>
       </div>
@@ -69,7 +69,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => t('event_printout.statistics.title', 'Statistik Turnamen') + ' - Archeris Dashboard')
+  title: computed(() => t('event_printout.statistics.title') + ' - Archeris Dashboard')
 })
 
 const apiBaseUrl = useApiBaseUrl()

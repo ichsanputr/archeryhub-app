@@ -10,8 +10,8 @@
       </div>
 
       <h1 class="text-2xl font-black text-navy mb-2 tracking-tight">Login Successful!</h1>
-      <p class="text-slate-500 font-medium mb-8">Your authentication was successful. You can now return to the homepage.
-      </p>
+      <div class="text-slate-500 font-medium mb-8">Your authentication was successful. You can now return to the homepage.
+      </div>
 
       <button @click="goHome"
         class="w-full bg-navy hover:bg-navy-light text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-navy/10 active:scale-[0.98]">

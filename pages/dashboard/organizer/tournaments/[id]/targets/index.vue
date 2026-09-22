@@ -2,13 +2,13 @@
   <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
     <DashboardHeader
-      :title="t('event_targets.title', 'Bantalan Target')"
+      :title="t('event_targets.title')"
       :subtitle="t('event_targets.manage_desc', { event: eventName || 'Event' })"
       icon="ph:target"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title', 'Event Saya'), to: '/dashboard/organizer/tournaments' },
-        { label: t('event_targets.title', 'Bantalan Target') }
+        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('event_targets.title') }
       ]"
     >
       <template #actions>
@@ -40,12 +40,10 @@
 
     <!-- Grid View -->
     <div v-if="viewMode === 'grid'" class="space-y-6">
-      <!-- Enhanced Skeleton Loader Grid -->
+      <!-- Skeleton Loader Grid -->
       <div v-if="loading && targets.length === 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="i in 6" :key="i"
           class="animate-pulse bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm flex flex-col h-[340px]">
-
-          <!-- Skeleton Header -->
           <div class="px-6 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
             <div class="flex items-center gap-2">
               <div class="h-3 w-10 bg-gray-200 rounded"></div>
@@ -56,20 +54,14 @@
               <div class="size-8 bg-gray-100 rounded-lg border border-gray-50"></div>
             </div>
           </div>
-
-          <!-- Skeleton Body (Target Board) -->
           <div class="flex-1 p-6 flex items-center justify-center bg-white relative">
             <div class="grid grid-cols-2 gap-4 w-full max-w-[160px] justify-items-center">
               <div v-for="j in 4" :key="j" class="flex flex-col items-center gap-2 w-full">
-                <!-- Target Circle -->
                 <div class="w-full aspect-square bg-gray-100 rounded-full shadow-inner"></div>
-                <!-- Target Label Below -->
                 <div class="h-2.5 w-8 bg-gray-50 rounded"></div>
               </div>
             </div>
           </div>
-
-          <!-- Skeleton Footer -->
           <div class="px-6 py-4 bg-gray-50/30 border-t border-gray-50/50">
             <div class="h-2.5 w-24 bg-gray-100 rounded mx-auto"></div>
           </div>
@@ -96,7 +88,6 @@
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="target in targets" :key="target.target_number"
           class="group relative bg-white rounded-3xl border border-gray-100 shadow-sm hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col">
-
           <!-- Board Header -->
           <div class="px-6 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -121,10 +112,7 @@
 
           <!-- Target Board Visualization -->
           <div class="flex-1 p-6 flex flex-col items-center justify-center relative min-h-[220px]">
-            <!-- Target Board Texture Overlay (Bantalan look) -->
             <div class="absolute inset-0 opacity-[0.03] pointer-events-none target-board-texture"></div>
-
-            <!-- Targets Layout -->
             <div :class="[
               'grid gap-4 w-full transition-all duration-500 justify-items-center',
               target.letters.split(',').length === 1 ? 'grid-cols-1 max-w-[100px]' :
@@ -134,12 +122,10 @@
             ]">
               <div v-for="letter in target.letters.split(',').map(l => l.trim())" :key="letter"
                 class="flex flex-col items-center gap-2 group/target w-full">
-                <!-- Target Face Image -->
                 <div class="relative w-full aspect-square">
                   <img src="/target.svg" class="w-full h-full" alt="Archery Target" />
                 </div>
-                <span class=" text-xs font-black text-navy/40 tracking-widest ">{{ target.target_number }}{{
-                  letter }}</span>
+                <span class="text-xs font-black text-navy/40 tracking-widest">{{ target.target_number }}{{ letter }}</span>
               </div>
             </div>
           </div>
@@ -152,86 +138,60 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Table View -->
-    <div v-if="viewMode === 'table'" class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="w-full text-left">
-          <thead class="bg-gray-50/50 border-b border-gray-100">
-            <tr class="text-[10px] font-black text-gray-400  tracking-widest">
-              <th class="px-6 py-4">{{ t('event_targets.number') }}</th>
-              <th class="px-6 py-4">{{ t('event_targets.target_number') }}</th>
-              <th class="px-6 py-4 text-right">{{ t('event_targets.action') }}</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-50 relative min-h-[200px]">
-            <!-- Table Row Loading Overlay -->
-            <Transition enter-active-class="transition-opacity duration-300" enter-from-class="opacity-0"
-              enter-to-class="opacity-100" leave-active-class="transition-opacity duration-200"
-              leave-from-class="opacity-100" leave-to-class="opacity-0">
-              <div v-if="loading && targets.length > 0"
-                class="absolute inset-0 bg-white/50 backdrop-blur-[1px] z-10 flex items-center justify-center">
-                <div class="animate-spin rounded-full h-8 w-8 border-3 border-primary border-t-transparent"></div>
-              </div>
-            </Transition>
-
-            <!-- Table Skeleton Loader -->
-            <template v-if="loading && targets.length === 0">
-              <tr v-for="i in 5" :key="i" class="animate-pulse">
-                <td class="px-6 py-4">
-                  <div class="size-11 rounded-lg bg-gray-200 shadow-sm"></div>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="h-4 w-20 bg-gray-100 rounded"></div>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="flex items-center justify-end gap-2">
-                    <div class="size-8 rounded-lg bg-gray-50 border border-gray-100"></div>
-                    <div class="size-8 rounded-lg bg-gray-50 border border-gray-100"></div>
-                  </div>
-                </td>
-              </tr>
-            </template>
-
-            <!-- Data Rows -->
-            <tr v-for="target in targets" :key="target.target_number" class="hover:bg-gray-50 transition-colors group">
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-3">
-                  <div
-                    class="size-11 rounded-lg bg-navy text-white flex items-center justify-center font-black text-sm shadow-sm font-mono">
-                    {{ target.target_number }}
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <span class="font-bold text-navy text-sm">{{ target.letters }}</span>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center justify-end gap-2">
-                  <button @click="isSubscriptionActive ? editTarget(target) : (showPremiumModal = true)"
-                    class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors group/btn">
-                    <Icon icon="ph:pencil-simple" class="text-lg group-hover/btn:scale-110 transition-transform" />
-                  </button>
-                  <button @click="isSubscriptionActive ? confirmDelete(target) : (showPremiumModal = true)"
-                    class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors group/btn">
-                    <Icon icon="ph:trash" class="text-lg group-hover/btn:scale-110 transition-transform" />
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Grid Pagination -->
+      <div v-if="targets.length > 0" class="p-6 bg-white border border-gray-100 rounded-2xl shadow-sm">
+        <BasePagination :current-page="page" :total-items="total" :items-per-page="limit"
+          :page-size-options="[9, 18, 27, 45, 90]" @change-page="handlePageChange"
+          @update:items-per-page="handleLimitChange" no-margin />
       </div>
-
     </div>
 
-    <!-- Standardized Pagination -->
-    <div v-if="targets.length > 0" class="p-6 bg-white border border-gray-100 rounded-2xl shadow-sm">
-      <BasePagination :current-page="page" :total-items="total" :items-per-page="limit"
-        :page-size-options="[9, 18, 27, 45, 90]" @change-page="handlePageChange"
-        @update:items-per-page="handleLimitChange" no-margin />
-    </div>
+    <!-- Table View with DashboardDataTable -->
+    <DashboardDataTable
+      v-else
+      :items="targets"
+      :headers="tableHeaders"
+      :loading="loading"
+      :searchable="false"
+      :title="t('event_targets.title')"
+      :subtitle="t('event_targets.targets_count', { count: targets.length })"
+      :icon="'ph:target-bold'"
+      :default-page-size="25"
+    >
+      <template #item-target_number="{ item }">
+        <div class="flex items-center gap-3">
+          <div class="size-11 rounded-lg bg-navy text-white flex items-center justify-center font-black text-sm shadow-sm font-mono">
+            {{ item.target_number }}
+          </div>
+        </div>
+      </template>
+
+      <template #item-letters="{ item }">
+        <span class="font-bold text-navy text-sm">{{ item.letters }}</span>
+      </template>
+
+      <template #item-actions="{ item }">
+        <div class="flex items-center justify-end gap-2">
+          <button @click="isSubscriptionActive ? editTarget(item) : (showPremiumModal = true)"
+            class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+            <Icon icon="ph:pencil-simple" class="text-lg" />
+          </button>
+          <button @click="isSubscriptionActive ? confirmDelete(item) : (showPremiumModal = true)"
+            class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+            <Icon icon="ph:trash" class="text-lg" />
+          </button>
+        </div>
+      </template>
+
+      <template #empty>
+        <div class="p-12 text-center">
+          <Icon icon="ph:target-bold" class="text-6xl text-gray-200 mx-auto mb-4" />
+          <h3 class="text-xl font-bold text-navy mb-1">{{ t('event_targets.no_targets') }}</h3>
+          <div class="text-gray-400 text-sm">{{ t('event_targets.no_targets_desc') }}</div>
+        </div>
+      </template>
+    </DashboardDataTable>
 
     <!-- Create/Edit Dialog -->
     <Teleport to="body">
@@ -281,8 +241,8 @@
 
                 <div v-if="!showEditDialog" class="mt-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
                   <div class="flex items-center justify-between gap-2 mb-2">
-                    <div class=" text-xs font-bold text-navy tracking-wider">{{ t('event_targets.preview_title') }}</div>
-                    <span class=" text-xs font-bold text-gray-500">
+                    <div class="text-xs font-bold text-navy tracking-wider">{{ t('event_targets.preview_title') }}</div>
+                    <span class="text-xs font-bold text-gray-500">
                       {{ t('event_targets.targets_count', { count: totalCreatedTargets }) }}
                     </span>
                   </div>
@@ -357,13 +317,17 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
 import { useSubscription } from '~/composables/useSubscription'
 import { useApi, getApiErrorMessage } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const { isSubscriptionActive } = useSubscription()
 const showPremiumModal = ref(false)
 const viewMode = ref('grid')
@@ -384,6 +348,12 @@ const limit = ref(9)
 const total = ref(0) // Total items from API
 
 const totalPages = computed(() => Math.ceil(total.value / limit.value))
+
+const tableHeaders = computed(() => [
+  { key: 'target_number', label: t('event_targets.number', 'Nomor Bantalan'), sortable: true },
+  { key: 'letters', label: t('event_targets.target_number', 'Face Target'), sortable: true },
+  { key: 'actions', label: t('event_targets.action', 'Aksi'), align: 'right', sortable: false }
+])
 
 const showCreateDialog = ref(false)
 const showEditDialog = ref(false)
@@ -448,7 +418,7 @@ definePageMeta({
 })
 
 useHead({
-  title: computed(() => `${t('event_targets.title', 'Target Bantalan')} - Archeris Dashboard`)
+  title: computed(() => `${t('event_targets.title')} - Archeris Dashboard`)
 })
 
 const breadcrumbItems = computed(() => [
@@ -476,7 +446,6 @@ const fetchTargets = async () => {
       }
     })
     const fetched = response?.targets || []
-    // Ensure numerical ascending order (1, 2, 3...)
     targets.value = fetched.sort((a, b) => (Number(a.target_number) || 0) - (Number(b.target_number) || 0))
     total.value = response?.total || 0
   } catch (error) {
@@ -596,7 +565,6 @@ const editTarget = (target) => {
   targetToEdit.value = target
   currentTargetId.value = target.target_ids.split(',')[0]
 
-  // Set form values individually for better reactivity tracking
   form.value.target_name = Number(target.target_number) || target.target_number
   form.value.target_total = 1
   form.value.target_count = target.letters ? target.letters.split(',').filter(l => l.trim()).length : 1
@@ -643,6 +611,7 @@ onMounted(() => {
   fetchEventInfo()
 })
 </script>
+
 <style scoped>
 .target-board-texture {
   background-image:

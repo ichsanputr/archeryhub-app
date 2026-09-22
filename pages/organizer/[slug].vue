@@ -619,6 +619,13 @@ const { t } = useI18n()
 
 definePageMeta({ layout: 'landing' })
 
+useHead({
+    meta: [
+        { name: 'robots', content: 'noindex, nofollow' },
+        { name: 'googlebot', content: 'noindex, nofollow' }
+    ]
+})
+
 const route = useRoute()
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()

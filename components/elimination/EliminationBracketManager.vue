@@ -1,6 +1,19 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
+
+        <!-- Reset Match Confirmation Dialog -->
+        <AppDialog
+            v-model:show="showResetConfirmDialog"
+            :title="t('event_elimination.reset_match_title')"
+            :message="t('event_elimination.confirm_reset_match')"
+            :confirmText="t('event_elimination.confirm_reset_btn')"
+            :cancelText="t('common.cancel')"
+            icon="ph:arrow-counter-clockwise-bold"
+            type="danger"
+            @confirm="executeResetMatch"
+        />
+
         <!-- Loading Skeleton -->
         <div v-if="isLoading" class="animate-pulse space-y-6">
             <!-- Header Skeleton -->
@@ -94,7 +107,7 @@
                                 <button type="button"
                                     @click="handleBack"
                                     class="size-10 sm:size-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md hover:bg-primary hover:text-navy text-white transition-all shrink-0 cursor-pointer active:scale-95"
-                                    :title="t('event_elimination.back_to_brackets', 'Kembali')">
+                                    :title="t('event_elimination.back_to_brackets')">
                                     <Icon icon="ph:arrow-left-bold" class="text-lg sm:text-2xl" />
                                 </button>
 
@@ -120,7 +133,7 @@
                                 <!-- Format Chip -->
                                 <div class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-[11px] sm:text-xs font-bold">
                                     <Icon icon="ph:crosshair-bold" class="text-xs text-white/70" />
-                                    <span>{{ bracket.format === 'recurve_set' ? t('event_elimination.set_system', 'Set System') : t('event_elimination.total_score_format', 'Total Score') }} • {{ t('event_elimination.arrows_ends_format', '{arrows} Panah / {ends} End', { arrows: bracket.arrows_per_end, ends: bracket.ends_per_match }) }}</span>
+                                    <span>{{ bracket.format === 'recurve_set' ? t('event_elimination.set_system') : t('event_elimination.total_score_format') }} • {{ t('event_elimination.arrows_ends_format', '{arrows} Panah / {ends} End', { arrows: bracket.arrows_per_end, ends: bracket.ends_per_match }) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -133,7 +146,7 @@
                                 @click="downloadScoresheet">
                                 <Icon :icon="isDownloadingScoresheet ? 'ph:spinner' : 'ph:printer-bold'"
                                     :class="['text-base', isDownloadingScoresheet ? 'animate-spin' : '']" />
-                                <span class="truncate">{{ isDownloadingScoresheet ? t('event_elimination.processing') : t('event_elimination.print_scoresheet', 'Print Scoresheet') }}</span>
+                                <span class="truncate">{{ isDownloadingScoresheet ? t('event_elimination.processing') : t('event_elimination.print_scoresheet') }}</span>
                             </button>
 
                             <!-- Back to Full Tree Button (when in round mode) -->
@@ -141,7 +154,7 @@
                                 @click="handleBack"
                                 class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 sm:px-4 py-2.5 bg-white/10 text-white hover:bg-white/20 border border-white/20 rounded-xl transition-all text-xs font-black shadow-sm active:scale-95 cursor-pointer">
                                 <Icon icon="ph:tree-structure-bold" class="text-base text-white" />
-                                <span class="truncate">{{ t('event_elimination.view_bracket', 'Lihat Bagan') }}</span>
+                                <span class="truncate">{{ t('event_elimination.view_bracket') }}</span>
                             </button>
 
                             <BaseButton v-if="!currentRoundNo && Object.keys(rounds).length === 0"
@@ -157,7 +170,7 @@
             <!-- Tab Navigation (Matching Qualification Style) -->
             <div v-if="currentRoundNo"
                 class="flex items-center gap-1 border-b border-gray-200 overflow-x-auto scrollbar-hide bg-white rounded-t-2xl px-2 mb-6">
-                <button v-for="t in tabs" :key="t.id" type="button" @click="activeTab = t.id"
+                <button v-for="t in tabs" :key="t.id" type="button" @click="switchTab(t.id)"
                     class="px-6 py-4 border-b-2 font-black text-sm sm:text-base flex items-center gap-2.5 whitespace-nowrap transition-colors outline-none cursor-pointer"
                     :class="activeTab === t.id
                         ? 'border-primary text-navy bg-primary/5'
@@ -171,7 +184,7 @@
             <div v-if="currentRoundNo" class="space-y-6">
                 <!-- TARGET TAB -->
                 <EliminationTargetMode v-if="activeTab === 'target'" :round-matches="roundMatches"
-                    :target-options="targetOptions" :is-auto-assigning="isAutoAssigning" @update-target="updateTarget"
+                    :target-options="targetOptions" :is-auto-assigning="isAutoAssigning" :bracket-size="bracket?.bracket_size || 8" @update-target="updateTarget"
                     @auto-assign="autoAssignTargets" />
 
                 <!-- SCORING TAB -->
@@ -340,28 +353,28 @@
 <script setup>
 import { useApi, getApiErrorMessage } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
-import { useI18n } from 'vue-i18n'
+import { useDashboardI18n } from '~/composables/useDashboardI18n'
 import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+import AppDialog from '~/components/common/AppDialog.vue'
+import EliminationBracketView from '~/components/elimination/EliminationBracketView.vue'
+import EliminationTargetMode from '~/components/elimination/EliminationTargetMode.vue'
+import EliminationScoringMode from '~/components/elimination/EliminationScoringMode.vue'
 
-import { defineAsyncComponent } from 'vue'
-const EliminationBracketView = defineAsyncComponent(() => import('~/components/elimination/EliminationBracketView.vue'))
-const EliminationTargetMode = defineAsyncComponent(() => import('~/components/elimination/EliminationTargetMode.vue'))
-const EliminationScoringMode = defineAsyncComponent(() => import('~/components/elimination/EliminationScoringMode.vue'))
-
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
-const eventId = route.params.id
-const bracketId = route.params.bracketId
+const eventId = computed(() => route.params.id)
+const bracketId = computed(() => route.params.bracketId)
 const { post, get, put } = useApi()
 const toast = useToast()
 
 const { isSubscriptionActive } = useSubscription()
 const showPremiumModal = ref(false)
+const showResetConfirmDialog = ref(false)
 
 const isLoading = ref(true)
 const isSaving = ref(false)
@@ -403,7 +416,7 @@ const currentRoundNo = computed(() => {
 })
 const roundMatches = computed(() => {
     if (!currentRoundNo.value) return []
-    return rounds.value[currentRoundNo.value] || []
+    return rounds.value[currentRoundNo.value] || rounds.value[Number(currentRoundNo.value)] || []
 })
 
 const finishedMatchesCount = computed(() => {
@@ -411,7 +424,7 @@ const finishedMatchesCount = computed(() => {
 })
 
 const pageTitle = computed(() => {
-    const catName = bracket.value?.category_name || t('event_elimination.title') || 'Bagan Eliminasi'
+    const catName = bracket.value?.category_name || t('event_elimination.title')
     if (!currentRoundNo.value) return catName
     return `${catName} - ${getRoundName(parseInt(currentRoundNo.value))}`
 })
@@ -430,24 +443,47 @@ const targetOptions = computed(() => {
 // Round Management States
 const activeTab = ref(route.query.mode === 'scoring' ? 'scoring' : 'target')
 const tabs = computed(() => [
-    { id: 'target', label: t('event_elimination.target_codes') || 'Target', icon: 'ph:target-bold' },
-    { id: 'scoring', label: t('event_elimination.scores') || 'Penilaian', icon: 'ph:pencil-circle-bold' }
-    ])
+    { id: 'target', label: t('event_elimination.target_codes'), icon: 'ph:target-bold' },
+    { id: 'scoring', label: t('event_elimination.scores'), icon: 'ph:pencil-circle-bold' }
+])
 
-// Sync activeTab with route query
-watch(() => route.query.mode, (newMode) => {
-    if (newMode === 'scoring' || newMode === 'target') {
-        if (activeTab.value !== newMode) {
-            activeTab.value = newMode
-        }
+const switchTab = (tabId) => {
+    activeTab.value = tabId
+    const isOrganizer = route.path.includes('/organizer/')
+    const base = isOrganizer 
+        ? `/dashboard/organizer/tournaments/${eventId.value}/elimination/${bracketId.value}`
+        : `/dashboard/archer/tournaments/${eventId.value}/my-elimination`
+    const newQuery = { ...route.query, mode: tabId }
+    if (currentRoundNo.value) {
+        newQuery.round = String(currentRoundNo.value)
     }
-}, { immediate: true })
+    router.replace({ path: base, query: newQuery })
+}
 
-watch(activeTab, (newTab) => {
-    if (route.query.mode !== newTab) {
-        router.replace({ path: route.path, query: { ...route.query, mode: newTab } })
+// Sync activeTab with route query when changed externally
+watch(() => route.query.mode, (newMode) => {
+    if ((newMode === 'scoring' || newMode === 'target') && activeTab.value !== newMode) {
+        activeTab.value = newMode
     }
 })
+
+const initMatchEnds = (matchId) => {
+    if (!matchId) return
+    if (!matchEnds.value[matchId]) {
+        const initEnds = {}
+        const totalEnds = bracket.value?.ends_per_match || 5
+        const arrowsPerEnd = bracket.value?.arrows_per_end || 3
+        for (let i = 1; i <= totalEnds; i++) {
+            initEnds[i] = { total: 0, arrows: Array(arrowsPerEnd).fill(null), end_no: i }
+        }
+        initEnds[99] = { total: 0, arrows: [null], end_no: 99 }
+
+        matchEnds.value[matchId] = {
+            A: JSON.parse(JSON.stringify(initEnds)),
+            B: JSON.parse(JSON.stringify(initEnds))
+        }
+    }
+}
 
 // Auto-select first playable match when in scoring mode or when round changes
 watchEffect(() => {
@@ -455,10 +491,10 @@ watchEffect(() => {
         if (!selectedScoringMatch.value || !roundMatches.value.some(m => m.id === selectedScoringMatch.value?.id)) {
             // Find first playable (non-BYE) match first, fallback to first match
             const firstPlayable = roundMatches.value.find(m => !isByeMatch(m))
-            selectedScoringMatch.value = firstPlayable || roundMatches.value[0]
-            currentEnd.value = 1
-            activeSide.value = 'A'
-            selectedArrowIndex.value = 0
+            const chosen = firstPlayable || roundMatches.value[0]
+            if (chosen) {
+                selectMatchForScoring(chosen)
+            }
         }
     }
 })
@@ -485,7 +521,7 @@ const isShootOffTie = computed(() => {
     if (!selectedScoringMatch.value) return false
     const matchId = selectedScoringMatch.value.id
     const m = matchEnds.value[matchId]
-    if (!m) return false
+    if (!m || !m.A || !m.B) return false
 
     const soA = m.A?.[99]?.arrows?.[0]
     const soB = m.B?.[99]?.arrows?.[0]
@@ -503,8 +539,8 @@ const isShootOffTie = computed(() => {
         baseA = calculateSetPoints(matchId, 'A')
         baseB = calculateSetPoints(matchId, 'B')
     } else {
-        baseA = Object.values(m.A).reduce((s, e) => e.end_no === 99 ? s : s + (e.total || 0), 0)
-        baseB = Object.values(m.B).reduce((s, e) => e.end_no === 99 ? s : s + (e.total || 0), 0)
+        baseA = Object.values(m.A || {}).reduce((s, e) => e.end_no === 99 ? s : s + (e.total || 0), 0)
+        baseB = Object.values(m.B || {}).reduce((s, e) => e.end_no === 99 ? s : s + (e.total || 0), 0)
     }
 
     if (baseA !== baseB) return false
@@ -515,14 +551,14 @@ const isShootOffTie = computed(() => {
 const canEndMatch = computed(() => {
     if (!selectedScoringMatch.value) return false
     const matchId = selectedScoringMatch.value.id
-    const m = matchEnds.value[matchId]
-    if (!m) return false
+    const m = matchEnds.value[matchId] || (selectedScoringMatch.value.uuid ? matchEnds.value[selectedScoringMatch.value.uuid] : null)
+    if (!m || !m.A || !m.B) return false
 
     // Check if at least one end has been completed by both sides
     const arrowsPerEnd = bracket.value?.arrows_per_end || 3
     for (let i = 1; i <= (bracket.value?.ends_per_match || 5); i++) {
-        const hasA = m.A?.[i]?.arrows?.every(a => a !== null && a !== '')
-        const hasB = m.B?.[i]?.arrows?.every(a => a !== null && a !== '')
+        const hasA = Array.isArray(m.A?.[i]?.arrows) && m.A[i].arrows.length === arrowsPerEnd && m.A[i].arrows.every(a => a !== null && a !== '')
+        const hasB = Array.isArray(m.B?.[i]?.arrows) && m.B[i].arrows.length === arrowsPerEnd && m.B[i].arrows.every(a => a !== null && a !== '')
         if (hasA && hasB) return true
     }
     return false
@@ -531,18 +567,46 @@ const canEndMatch = computed(() => {
 // Scoring States
 const activeSide = ref('A')
 const currentEnd = ref(1)
-// Monitor end changes to reset arrow focus
-watch(currentEnd, () => {
-    selectedArrowIndex.value = 0
-    activeSide.value = 'A'
+
+// Helper to automatically focus the first empty arrow (or last arrow if end is full)
+const focusNextEmptyArrow = (side = activeSide.value, endNo = currentEnd.value) => {
+    if (!selectedScoringMatch.value) return
+    const matchId = selectedScoringMatch.value.id || selectedScoringMatch.value.uuid
+    if (!matchId) return
+    initMatchEnds(matchId)
+    
+    const end = matchEnds.value[matchId]?.[side]?.[endNo]
+    const totalArrows = endNo === 99 ? 1 : (bracket.value?.arrows_per_end || 3)
+    
+    if (end && Array.isArray(end.arrows)) {
+        const emptyIdx = end.arrows.findIndex(a => a === null || a === undefined || a === '')
+        if (emptyIdx !== -1 && emptyIdx < totalArrows) {
+            selectedArrowIndex.value = emptyIdx
+            return
+        }
+        selectedArrowIndex.value = Math.max(0, totalArrows - 1)
+    } else {
+        selectedArrowIndex.value = 0
+    }
+}
+
+// Monitor end changes to adjust arrow focus to first empty
+watch(currentEnd, (newEnd) => {
+    focusNextEmptyArrow(activeSide.value, newEnd)
 })
+
+// Monitor side changes to adjust arrow focus to first empty
+watch(activeSide, (newSide) => {
+    focusNextEmptyArrow(newSide, currentEnd.value)
+})
+
 const isEndingMatch = ref(false)
 const showEndMatchDialog = ref(false)
 
 const fetchBracket = async (silent = false) => {
     if (!silent) isLoading.value = true
     try {
-        const response = await get(`/tournaments/${eventId}/elimination/brackets/${bracketId}`)
+        const response = await get(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}`)
         bracket.value = response?.bracket || null
         entries.value = response?.entries || []
         matches.value = response?.matches || []
@@ -573,7 +637,7 @@ const fetchBracket = async (silent = false) => {
 
 const fetchCategoryDetails = async (categoryUuid) => {
     try {
-        const response = await get(`/tournaments/${eventId}/categories`)
+        const response = await get(`/tournaments/${eventId.value}/categories`)
         const cats = response?.events || response.data?.events || []
         categoryInfo.value = cats.find(c => (c.id === categoryUuid || c.uuid === categoryUuid))
     } catch (error) {
@@ -583,7 +647,7 @@ const fetchCategoryDetails = async (categoryUuid) => {
 
 const fetchAvailableTargets = async () => {
     try {
-        const response = await get(`/tournaments/${eventId}/targets/options`)
+        const response = await get(`/tournaments/${eventId.value}/targets/options`)
         const options = response?.options || response.data?.options || []
         availableTargets.value = options.map(o => ({
             id: o.uuid || o.id,
@@ -596,7 +660,7 @@ const fetchAvailableTargets = async () => {
 
 const generateBracket = async () => {
     try {
-        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/generate`)
+        await post(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/generate`)
         toast.success(t('event_elimination.toast_bracket_generated'))
         await fetchBracket()
     } catch (error) {
@@ -610,59 +674,65 @@ const generateBracket = async () => {
     }
 }
 
-const downloadScoresheet = async () => { openScoresheet() }
-
-const openScoresheet = async () => {
+const downloadScoresheet = async () => {
     if (isDownloadingScoresheet.value) return
     isDownloadingScoresheet.value = true
     try {
         const apiBase = apiBaseUrl
-        const params = new URLSearchParams({ autoprint: '1' })
-        const url = `${apiBase}/events/${eventId}/elimination/brackets/${bracketId}/scoresheet?${params}`
+        const isTeam = bracket.value?.bracket_type && bracket.value.bracket_type !== 'individual'
+        const url = isTeam
+            ? `${apiBase}/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/scoresheet-team?bracket_id=${bracketId.value}`
+            : `${apiBase}/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/scoresheet`
 
-        // Silent in-page printing via hidden iframe (No new tab opened)
-        let iframe = document.getElementById('elimination-scoresheet-print-frame')
-        if (!iframe) {
-            iframe = document.createElement('iframe')
-            iframe.id = 'elimination-scoresheet-print-frame'
-            iframe.style.position = 'fixed'
-            iframe.style.right = '0'
-            iframe.style.bottom = '0'
-            iframe.style.width = '0'
-            iframe.style.height = '0'
-            iframe.style.border = '0'
-            iframe.style.visibility = 'hidden'
-            document.body.appendChild(iframe)
+        const res = await fetch(url, { credentials: 'include' })
+        if (!res.ok) {
+            const errJson = await res.json().catch(() => null)
+            throw new Error(errJson?.error || `HTTP error! status: ${res.status}`)
         }
 
-        iframe.onload = () => {
-            setTimeout(() => {
-                try {
-                    iframe.contentWindow?.focus()
-                    iframe.contentWindow?.print()
-                } catch (err) {
-                    console.error('Failed to trigger iframe print:', err)
-                } finally {
-                    isDownloadingScoresheet.value = false
-                }
-            }, 300)
+        let filename = `Scoresheet-Eliminasi-${bracket.value?.bracket_id || bracketId.value}.pdf`
+        const disposition = res.headers.get('content-disposition')
+        if (disposition && disposition.includes('filename=')) {
+            const match = disposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)
+            if (match && match[1]) {
+                filename = match[1].replace(/['"]/g, '').trim()
+            }
+        }
+        if (!filename.toLowerCase().endsWith('.pdf')) {
+            filename += '.pdf'
         }
 
-        iframe.src = url
-    } catch {
-        toast.addToast(t('event_elimination.toast_failed_open_scoresheet'), 'error')
+        const blob = await res.blob()
+        const blobUrl = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = blobUrl
+        link.setAttribute('download', filename)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        window.URL.revokeObjectURL(blobUrl)
+
+        toast.addToast(t('event_elimination.toast_scoresheet_downloaded'), 'success')
+    } catch (err) {
+        console.error('Failed to download scoresheet PDF:', err)
+        toast.addToast(err?.message || t('event_elimination.toast_failed_open_scoresheet'), 'error')
+    } finally {
         isDownloadingScoresheet.value = false
     }
+}
+
+const openScoresheet = async () => {
+    await downloadScoresheet()
 }
 
 const navigateToRound = (roundNo) => {
     const isOrganizer = route.path.includes('/organizer/')
     const base = isOrganizer 
-        ? `/dashboard/organizer/tournaments/${eventId}/elimination/${bracketId}`
-        : `/dashboard/archer/tournaments/${eventId}/my-elimination`
+        ? `/dashboard/organizer/tournaments/${eventId.value}/elimination/${bracketId.value}`
+        : `/dashboard/archer/tournaments/${eventId.value}/my-elimination`
     router.push({
-        path: `${base}/${roundNo}`,
-        query: { mode: activeTab.value }
+        path: base,
+        query: { round: String(roundNo), mode: activeTab.value || 'target' }
     })
 }
 
@@ -680,29 +750,31 @@ const handleBack = () => {
     const isOrganizer = route.path.includes('/organizer/')
     if (currentRoundNo.value) {
         const base = isOrganizer 
-            ? `/dashboard/organizer/tournaments/${eventId}/elimination/${bracketId}`
-            : `/dashboard/archer/tournaments/${eventId}/my-elimination`
-        router.push(base)
+            ? `/dashboard/organizer/tournaments/${eventId.value}/elimination/${bracketId.value}`
+            : `/dashboard/archer/tournaments/${eventId.value}/my-elimination`
+        router.push({ path: base, query: {} })
     } else {
         const list = isOrganizer 
-            ? `/dashboard/organizer/tournaments/${eventId}/elimination`
-            : `/dashboard/archer/tournaments/${eventId}`
+            ? `/dashboard/organizer/tournaments/${eventId.value}/elimination`
+            : `/dashboard/archer/tournaments/${eventId.value}`
         router.push(list)
     }
 }
 
 const selectMatchForScoring = (match) => {
+    if (!match) return
     selectedScoringMatch.value = match
     activeSide.value = 'A'
     currentEnd.value = 1
-    selectedArrowIndex.value = 0
+    initMatchEnds(match.id)
+    focusNextEmptyArrow('A', 1)
     fetchMatchScores(match.id)
 }
 
 const fetchTeamMembers = async () => {
     if (bracket.value?.bracket_type === 'individual') return
     try {
-        const res = await get(`/tournaments/${eventId}/elimination/brackets/${bracketId}/team-members`)
+        const res = await get(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/team-members`)
         teamMembersMap.value = res?.members || {}
     } catch (e) {
         console.error('Failed to fetch team members:', e)
@@ -711,7 +783,7 @@ const fetchTeamMembers = async () => {
 
 const fetchAllScores = async () => {
     try {
-        const response = await get(`/tournaments/${eventId}/elimination/brackets/${bracketId}/scores`)
+        const response = await get(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/scores`)
         const ends = response?.ends || []
 
         ends.forEach(end => {
@@ -719,30 +791,22 @@ const fetchAllScores = async () => {
             const side = end.side
             const endNo = end.end_no
 
-            if (!matchEnds.value[matchId]) {
-                const initEnds = {}
-                for (let i = 1; i <= (bracket.value?.ends_per_match || 5); i++) {
-                    initEnds[i] = { total: 0, arrows: Array(bracket.value?.arrows_per_end || 3).fill(null), end_no: i }
+            const mObj = matches.value.find(m => m.uuid === matchId || m.id === matchId)
+            const idsToUpdate = [matchId]
+            if (mObj?.id && mObj.id !== matchId) idsToUpdate.push(mObj.id)
+            if (mObj?.uuid && mObj.uuid !== matchId) idsToUpdate.push(mObj.uuid)
+
+            idsToUpdate.forEach(id => {
+                initMatchEnds(id)
+                if (matchEnds.value[id]?.[side]?.[endNo]) {
+                    matchEnds.value[id][side][endNo].total = end.end_total
+                    const arrows = [...(end.arrows || [])]
+                    const targetSize = endNo === 99 ? 1 : (bracket.value?.arrows_per_end || 3)
+                    while (arrows.length < targetSize) arrows.push(null)
+                    if (arrows.length > targetSize) arrows.length = targetSize
+                    matchEnds.value[id][side][endNo].arrows = arrows
                 }
-                // Add shoot-off slot
-                initEnds[99] = { total: 0, arrows: [null], end_no: 99 }
-
-                matchEnds.value[matchId] = {
-                    A: JSON.parse(JSON.stringify(initEnds)),
-                    B: JSON.parse(JSON.stringify(initEnds))
-                }
-            }
-
-            if (matchEnds.value[matchId][side] && matchEnds.value[matchId][side][endNo]) {
-                matchEnds.value[matchId][side][endNo].total = end.end_total
-
-                // Pad or truncate arrows to size
-                const arrows = [...(end.arrows || [])]
-                const targetSize = endNo === 99 ? 1 : (bracket.value?.arrows_per_end || 3)
-                while (arrows.length < targetSize) arrows.push(null)
-                if (arrows.length > targetSize) arrows.length = targetSize
-                matchEnds.value[matchId][side][endNo].arrows = arrows
-            }
+            })
         })
     } catch (e) {
         console.error('Failed to fetch bracket scores:', e)
@@ -750,84 +814,80 @@ const fetchAllScores = async () => {
 }
 
 const fetchMatchScores = async (matchId) => {
+    if (!matchId) return
     try {
-        const response = await get(`/tournaments/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}`)
+        initMatchEnds(matchId)
+        const response = await get(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/matches/${matchId}`)
         const ends = response?.ends || []
 
-        if (!matchEnds.value[matchId]) {
-            const initEnds = {}
-            for (let i = 1; i <= (bracket.value?.ends_per_match || 5); i++) {
-                initEnds[i] = { total: 0, arrows: Array(bracket.value?.arrows_per_end || 3).fill(null), end_no: i }
-            }
-            // Add shoot-off slot
-            initEnds[99] = { total: 0, arrows: [null], end_no: 99 }
-
-            matchEnds.value[matchId] = {
-                A: JSON.parse(JSON.stringify(initEnds)),
-                B: JSON.parse(JSON.stringify(initEnds))
-            }
-        }
+        const mObj = matches.value.find(m => m.uuid === matchId || m.id === matchId)
+        const idsToUpdate = [matchId]
+        if (mObj?.id && mObj.id !== matchId) idsToUpdate.push(mObj.id)
+        if (mObj?.uuid && mObj.uuid !== matchId) idsToUpdate.push(mObj.uuid)
 
         ends.forEach(end => {
             const side = end.side
             const endNo = end.end_no
-            if (matchEnds.value[matchId][side] && matchEnds.value[matchId][side][endNo]) {
-                matchEnds.value[matchId][side][endNo].total = end.end_total
-                matchEnds.value[matchId][side][endNo].end_no = endNo
-
-                // Pad or truncate arrows to size
-                const arrows = [...(end.arrows || [])]
-                const targetSize = endNo === 99 ? 1 : (bracket.value?.arrows_per_end || 3)
-                while (arrows.length < targetSize) arrows.push(null)
-                if (arrows.length > targetSize) arrows.length = targetSize
-                matchEnds.value[matchId][side][endNo].arrows = arrows
-            }
+            idsToUpdate.forEach(id => {
+                initMatchEnds(id)
+                if (matchEnds.value[id]?.[side]?.[endNo]) {
+                    matchEnds.value[id][side][endNo].total = end.end_total
+                    matchEnds.value[id][side][endNo].end_no = endNo
+                    const arrows = [...(end.arrows || [])]
+                    const targetSize = endNo === 99 ? 1 : (bracket.value?.arrows_per_end || 3)
+                    while (arrows.length < targetSize) arrows.push(null)
+                    if (arrows.length > targetSize) arrows.length = targetSize
+                    matchEnds.value[id][side][endNo].arrows = arrows
+                }
+            })
         })
+        focusNextEmptyArrow(activeSide.value, currentEnd.value)
     } catch (e) {
         console.error('Failed to fetch match scores:', e)
     }
 }
 
-
-
 const getMatchScore = (match, side) => {
+    if (!match || (!match.id && !match.uuid)) return 0
     const isRecurve = bracket.value?.format === 'recurve_set'
     const sideKey = side === 'A' ? 'A' : 'B'
 
-    const m = matchEnds.value[match.id]
+    const m = matchEnds.value[match.id] || matchEnds.value[match.uuid]
     let score = 0
-    if (m) {
+    if (m && m[sideKey]) {
         if (isRecurve) score = calculateSetPoints(match.id, sideKey)
         else score = Object.values(m[sideKey] || {}).reduce((s, e) => {
-            if (e.end_no === 99) return s
-            return s + (e.total || 0)
+            if (e?.end_no === 99) return s
+            return s + (e?.total || 0)
         }, 0) || 0
     } else {
         if (isRecurve) score = (side === 'A' ? match.total_points_a : match.total_points_b) || 0
         else score = (side === 'A' ? match.total_score_a : match.total_score_b) || 0
     }
 
-    // Shoot-off logic: Winner gets +1 point to total score
-    const soA = m?.A?.[99]?.arrows?.[0]
-    const soB = m?.B?.[99]?.arrows?.[0]
+    // Shoot-off logic: Winner gets +1 Set Point ONLY in Recurve Set System (making 5-5 become 6-5)
+    if (isRecurve) {
+        const soA = m?.A?.[99]?.arrows?.[0]
+        const soB = m?.B?.[99]?.arrows?.[0]
 
-    if (soA && soB) {
-        const getV = (v) => v === 'X' ? 11 : (v === 'M' ? 0 : parseInt(v) || 0)
-        const vA = getV(soA)
-        const vB = getV(soB)
+        if (soA && soB) {
+            const getV = (v) => v === 'X' ? 11 : (v === 'M' ? 0 : parseInt(v) || 0)
+            const vA = getV(soA)
+            const vB = getV(soB)
 
-        if (vA > vB) {
-            if (side === 'A') score += 1
-        } else if (vB > vA) {
-            if (side === 'B') score += 1
-        } else {
-            // Tie in shootout - check manual selection
-            const currentSideId = side === 'A' ? match.entry_a_id : match.entry_b_id
-            if (manualWinnerId.value && manualWinnerId.value === currentSideId) {
-                score += 1
-            } else if (match.winner_entry_id === currentSideId && match.status === 'finished') {
-                // Persistent winner check
-                score += 1
+            if (vA > vB) {
+                if (side === 'A') score += 1
+            } else if (vB > vA) {
+                if (side === 'B') score += 1
+            } else {
+                // Tie in shootout - check manual selection
+                const currentSideId = side === 'A' ? match.entry_a_id : match.entry_b_id
+                if (manualWinnerId.value && manualWinnerId.value === currentSideId) {
+                    score += 1
+                } else if (match.winner_entry_id === currentSideId && match.status === 'finished') {
+                    // Persistent winner check
+                    score += 1
+                }
             }
         }
     }
@@ -836,8 +896,9 @@ const getMatchScore = (match, side) => {
 }
 
 const calculateSetPoints = (matchId, side) => {
+    if (!matchId) return 0
     const m = matchEnds.value[matchId]
-    if (!m) return 0
+    if (!m || !m.A || !m.B) return 0
 
     let setPointsA = 0
     let setPointsB = 0
@@ -846,8 +907,8 @@ const calculateSetPoints = (matchId, side) => {
     const arrowsPerEnd = bracket.value?.arrows_per_end || 3
 
     for (let i = 1; i <= totalEnds; i++) {
-        const endA = m.A[i]
-        const endB = m.B[i]
+        const endA = m.A?.[i]
+        const endB = m.B?.[i]
         if (!endA || !endB) continue
 
         // Only count if both have finished the end
@@ -870,22 +931,25 @@ const calculateSetPoints = (matchId, side) => {
 }
 
 const getMatchProgress = (match) => {
+    if (!match) return 0
     if (match.winner_entry_id) return 100
     const m = matchEnds.value[match.id]
-    if (!m) return 0
-    const scoredEnds = Object.values(m.A).filter(e => e.arrows.length > 0).length
+    if (!m || !m.A) return 0
+    const scoredEnds = Object.values(m.A).filter(e => Array.isArray(e?.arrows) && e.arrows.some(a => a !== null && a !== '')).length
     const totalEnds = bracket.value?.ends_per_match || 5
     return Math.min(scoredEnds * (100 / totalEnds), 95)
 }
 
 const getArrowScore = (matchId, endNo, side, arrowIdx) => {
+    if (!matchId) return ''
     const val = matchEnds.value[matchId]?.[side]?.[endNo]?.arrows?.[arrowIdx - 1]
     return val === null || val === undefined ? '' : val
 }
 
 const calculateEndTotal = (matchId, endNo, side) => {
+    if (!matchId) return 0
     const end = matchEnds.value[matchId]?.[side]?.[endNo]
-    if (!end || !end.arrows) return 0
+    if (!end || !Array.isArray(end.arrows)) return 0
     return end.arrows.reduce((sum, a) => {
         if (!a || a === '-' || a === '') return sum
         const val = a === 'X' ? 10 : (a === 'M' ? 0 : parseInt(a) || 0)
@@ -894,8 +958,9 @@ const calculateEndTotal = (matchId, endNo, side) => {
 }
 
 const calculateEndStats = (matchId, endNo, side) => {
+    if (!matchId) return { x: 0, ten: 0 }
     const end = matchEnds.value[matchId]?.[side]?.[endNo]
-    if (!end || !end.arrows) return { x: 0, ten: 0 }
+    if (!end || !Array.isArray(end.arrows)) return { x: 0, ten: 0 }
     return end.arrows.reduce((stats, a) => {
         if (a === 'X') {
             stats.x++
@@ -910,7 +975,7 @@ const calculateEndStats = (matchId, endNo, side) => {
 const addArrowScore = (score) => {
     if (!selectedScoringMatch.value) return
     if (isByeMatch(selectedScoringMatch.value)) {
-        toast.info(t('event_elimination.bye_no_scoring_needed', 'Pertandingan BYE tidak memerlukan input skor.'))
+        toast.info(t('event_elimination.bye_no_scoring_needed'))
         return
     }
     if (isMatchFinished.value) {
@@ -924,9 +989,7 @@ const addArrowScore = (score) => {
     const totalArrows = endNo === 99 ? 1 : (bracket.value?.arrows_per_end || 3)
 
     // Ensure match object exists
-    if (!matchEnds.value[matchId]) {
-        matchEnds.value[matchId] = { A: {}, B: {} }
-    }
+    initMatchEnds(matchId)
 
     // Ensure side exist
     if (!matchEnds.value[matchId][side]) matchEnds.value[matchId][side] = {}
@@ -964,7 +1027,7 @@ const addArrowScore = (score) => {
         // Automatically switch side if current side is finished
         if (side === 'A') {
             activeSide.value = 'B'
-            selectedArrowIndex.value = 0
+            focusNextEmptyArrow('B', endNo)
         }
     }
 }
@@ -1017,10 +1080,11 @@ const saveAndNext = async () => {
     isSaving.value = true
     try {
         const matchId = selectedScoringMatch.value.id
+        initMatchEnds(matchId)
         const arrowsA = matchEnds.value[matchId].A[currentEnd.value].arrows.map(a => String(a))
         const arrowsB = matchEnds.value[matchId].B[currentEnd.value].arrows.map(a => String(a))
 
-        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/score`, {
+        await post(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/matches/${matchId}/score`, {
             end_no: currentEnd.value,
             score_a: matchEnds.value[matchId].A[currentEnd.value].total,
             score_b: matchEnds.value[matchId].B[currentEnd.value].total,
@@ -1035,9 +1099,13 @@ const saveAndNext = async () => {
 
         if (activeSide.value === 'A') {
             activeSide.value = 'B'
+            focusNextEmptyArrow('B', currentEnd.value)
         } else {
             activeSide.value = 'A'
-            if (currentEnd.value < (bracket.value?.ends_per_match || 5)) currentEnd.value++
+            if (currentEnd.value < (bracket.value?.ends_per_match || 5)) {
+                currentEnd.value++
+            }
+            focusNextEmptyArrow('A', currentEnd.value)
         }
     } catch (e) {
         toast.error(getApiErrorMessage(e, t('event_elimination.toast_save_score_failed')))
@@ -1046,23 +1114,25 @@ const saveAndNext = async () => {
     }
 }
 
-const resetMatch = async () => {
+const resetMatch = () => {
     if (!isSubscriptionActive.value) {
         showPremiumModal.value = true
         return
     }
     if (!selectedScoringMatch.value) return
     if (isByeMatch(selectedScoringMatch.value)) {
-        toast.info(t('event_elimination.bye_no_scoring_needed', 'Pertandingan BYE otomatis selesai dan tidak dapat di-reset.'))
+        toast.info(t('event_elimination.bye_no_scoring_needed'))
         return
     }
-    const confirmed = confirm(t('event_elimination.confirm_reset_match'))
-    if (!confirmed) return
+    showResetConfirmDialog.value = true
+}
 
+const executeResetMatch = async () => {
+    if (!selectedScoringMatch.value) return
     isResetting.value = true
     try {
         const matchId = selectedScoringMatch.value.id
-        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/reset`)
+        await post(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/matches/${matchId}/reset`)
         toast.success(t('event_elimination.toast_match_reset_live'))
 
         // Refresh data
@@ -1089,7 +1159,7 @@ const finishByeMatch = async (match) => {
     isEndingMatch.value = true
     try {
         const winnerId = match.entry_a_id || match.entry_b_id
-        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/matches/${match.id}/finish`, {
+        await post(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/matches/${match.id}/finish`, {
             winner_entry_id: winnerId
         })
         toast.success(t('event_elimination.toast_match_finished'))
@@ -1122,9 +1192,43 @@ const confirmEndMatch = async () => {
     isEndingMatch.value = true
     try {
         const matchId = selectedScoringMatch.value.id
+        initMatchEnds(matchId)
+
+        // Auto-save any ends that have arrow entries before ending match
+        const endsData = matchEnds.value[matchId]
+        if (endsData && (endsData.A || endsData.B)) {
+            const totalEnds = bracket.value?.ends_per_match || 5
+            const endNumbersToSave = []
+            for (let i = 1; i <= totalEnds; i++) {
+                const hasArrowsA = endsData.A?.[i]?.arrows?.some(a => a !== null && a !== '' && a !== undefined)
+                const hasArrowsB = endsData.B?.[i]?.arrows?.some(a => a !== null && a !== '' && a !== undefined)
+                if (hasArrowsA || hasArrowsB) endNumbersToSave.push(i)
+            }
+            // Check Shoot-off (End 99)
+            const hasShootOffA = endsData.A?.[99]?.arrows?.some(a => a !== null && a !== '' && a !== undefined)
+            const hasShootOffB = endsData.B?.[99]?.arrows?.some(a => a !== null && a !== '' && a !== undefined)
+            if (hasShootOffA || hasShootOffB) endNumbersToSave.push(99)
+
+            // Save all dirty ends sequentially
+            for (const endNo of endNumbersToSave) {
+                const endA = endsData.A?.[endNo] || { total: 0, arrows: [] }
+                const endB = endsData.B?.[endNo] || { total: 0, arrows: [] }
+                try {
+                    await post(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/matches/${matchId}/score`, {
+                        end_no: endNo,
+                        score_a: endA.total || 0,
+                        score_b: endB.total || 0,
+                        arrows_a: (endA.arrows || []).filter(a => a !== null && a !== undefined && a !== '').map(a => String(a)),
+                        arrows_b: (endB.arrows || []).filter(a => a !== null && a !== undefined && a !== '').map(a => String(a))
+                    })
+                } catch (saveErr) {
+                    console.warn(`Failed to auto-save end ${endNo} before ending match:`, saveErr)
+                }
+            }
+        }
 
         // Call API endpoint that will auto-calculate winner from saved scores
-        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/end`, {
+        await post(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/matches/${matchId}/end`, {
             winner_entry_id: manualWinnerId.value
         })
 
@@ -1153,7 +1257,7 @@ const updateTarget = async (match) => {
         return
     }
     try {
-        await put(`/tournaments/${eventId}/elimination/brackets/${bracketId}/targets`, {
+        await put(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/targets`, {
             assignments: [
                 {
                     match_id: match.id,
@@ -1175,7 +1279,7 @@ const autoAssignTargets = async () => {
     isAutoAssigning.value = true
     try {
         const roundNo = currentRoundNo.value || 1
-        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/targets/auto-assign?round=${roundNo}`)
+        await post(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/targets/auto-assign?round=${roundNo}`)
         toast.success(t('event_elimination.toast_auto_assign_success'))
         await fetchBracket(true)
     } catch (e) {
@@ -1188,11 +1292,11 @@ const autoAssignTargets = async () => {
 const canFinishMatch = (match) => {
     if (!match || match.winner_entry_id) return false
     const m = matchEnds.value[match.id]
-    if (!m) return false
+    if (!m || !m.A || !m.B) return false
 
     // Check if at least one arrow is scored to enable finishing
-    const hasAnyArrow = Object.values(m.A).some(e => e.arrows.length > 0) ||
-        Object.values(m.B).some(e => e.arrows.length > 0)
+    const hasAnyArrow = Object.values(m.A).some(e => e?.arrows?.length > 0) ||
+        Object.values(m.B).some(e => e?.arrows?.length > 0)
 
     return hasAnyArrow
 }
@@ -1211,12 +1315,12 @@ const finishMatchAction = async (match) => {
             const pointsB = calculateSetPoints(match.id, 'B')
             winnerId = pointsA >= pointsB ? match.entry_a_id : match.entry_b_id
         } else {
-            const totalA = Object.values(matchEnds.value[match.id].A).reduce((s, e) => s + e.total, 0)
-            const totalB = Object.values(matchEnds.value[match.id].B).reduce((s, e) => s + e.total, 0)
+            const totalA = Object.values(matchEnds.value[match.id]?.A || {}).reduce((s, e) => s + (e?.total || 0), 0)
+            const totalB = Object.values(matchEnds.value[match.id]?.B || {}).reduce((s, e) => s + (e?.total || 0), 0)
             winnerId = totalA >= totalB ? match.entry_a_id : match.entry_b_id
         }
 
-        await post(`/tournaments/${eventId}/elimination/brackets/${bracketId}/matches/${match.id}/finish`, {
+        await post(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/matches/${match.id}/finish`, {
             winner_entry_id: winnerId
         })
         toast.success(t('event_elimination.toast_match_finished'))
@@ -1319,28 +1423,17 @@ function getRoundName(roundNo) {
     return t('event_elimination.round_of', { count: Math.pow(2, roundFromEnd) }) || `Round of ${Math.pow(2, roundFromEnd)}`
 }
 
-// Auto-select first match when in scoring mode and roundMatches are loaded
-watch(roundMatches, (newMatches) => {
-    if (activeTab.value === 'scoring' && newMatches.length > 0 && !selectedScoringMatch.value) {
-        // Find first non-finished match, or just the first match
-        const firstMatch = newMatches.find(m => m.status !== 'finished' && !m.winner_entry_id) || newMatches[0]
-        if (firstMatch) {
-            selectMatchForScoring(firstMatch)
-        }
+// Auto-re-fetch when route parameters change during client navigation
+watch([eventId, bracketId], async ([newId, newBracketId], [oldId, oldBracketId]) => {
+    if (newId && newBracketId && (newId !== oldId || newBracketId !== oldBracketId)) {
+        await fetchBracket()
+        await fetchAvailableTargets()
     }
-}, { immediate: true })
+})
 
 onMounted(async () => {
     await fetchBracket()
     await fetchAvailableTargets()
-
-    // Auto-select first match if in scoring mode with a round selected
-    if (activeTab.value === 'scoring' && currentRoundNo.value && roundMatches.value.length > 0 && !selectedScoringMatch.value) {
-        const firstMatch = roundMatches.value.find(m => m.status !== 'finished' && !m.winner_entry_id) || roundMatches.value[0]
-        if (firstMatch) {
-            selectMatchForScoring(firstMatch)
-        }
-    }
 })
 </script>
 

@@ -16,22 +16,22 @@
       <!-- Header Content -->
       <div class="relative p-6 sm:p-8">
         <div class="flex items-center gap-2 text-sm text-white/60 mb-4">
-          <NuxtLink to="/dashboard/archer/tournaments" class="hover:text-white transition-colors">{{ t('elimination.nav_event', 'Event Saya') }}</NuxtLink>
+          <NuxtLink to="/dashboard/archer/tournaments" class="hover:text-white transition-colors">{{ t('elimination.nav_event') }}</NuxtLink>
           <Icon icon="ph:caret-right-bold" class="text-base" />
           <NuxtLink :to="`/dashboard/archer/tournaments/${eventId}/overview`" class="hover:text-white transition-colors">{{ eventName || 'Event' }}</NuxtLink>
           <Icon icon="ph:caret-right-bold" class="text-base" />
-          <span class="text-primary font-medium">{{ t('elimination.nav_title', 'Bagan Eliminasi') }}</span>
+          <span class="text-amber-300 font-medium">{{ t('elimination.nav_title') }}</span>
         </div>
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div class="flex items-start gap-4">
             <!-- Icon Badge -->
             <div
               class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-              <Icon icon="ph:tree-structure-bold" class="text-primary text-2xl" />
+              <Icon icon="ph:tree-structure-bold" class="text-white text-2xl" />
             </div>
             <div class="flex-grow">
-              <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">{{ t('elimination.title', 'Bagan Eliminasi') }}</h1>
-              <div class="text-slate-300 text-sm mt-1">{{ t('elimination.subtitle', 'Skema pertandingan gugur head-to-head dan live skor eliminasi.') }}</div>
+              <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight text-white">{{ t('elimination.title') }}</h1>
+              <div class="text-slate-300 text-sm mt-1">{{ t('elimination.subtitle') }}</div>
             </div>
           </div>
 
@@ -41,7 +41,7 @@
               <select
                 v-model="categoryId"
                 @change="updateResultsData"
-                class="h-10 sm:h-11 pl-4 pr-9 bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-primary cursor-pointer transition-colors appearance-none">
+                class="h-10 sm:h-11 pl-4 pr-9 bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-white/50 cursor-pointer transition-colors appearance-none">
                 <option v-for="c in categoryOptions" :key="c.value" :value="c.value" class="bg-navy text-white py-2">
                   {{ c.title }}
                 </option>
@@ -67,17 +67,15 @@
       <!-- Profile Card -->
       <div
         class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700 p-6 sm:p-8 relative overflow-hidden group">
-        <div
-          class="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full blur-3xl -mr-24 -mt-24 pointer-events-none group-hover:bg-primary/10 transition-all duration-500" />
         <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start relative z-10">
           <div
-            class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border-2 border-primary/40 p-1 bg-white dark:bg-slate-800 shadow-md shrink-0">
+            class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border-2 border-slate-200 dark:border-slate-600 p-1 bg-white dark:bg-slate-800 shadow-md shrink-0">
             <img :src="useImageOrDefault(userProfile?.avatar_url, userProfile?.full_name)"
               class="w-full h-full rounded-xl object-cover" />
           </div>
           <div class="flex-1 text-center sm:text-left">
             <h2 class="text-2xl sm:text-3xl font-black text-navy dark:text-white tracking-tight">
-              {{ userProfile?.full_name || t('elimination.archer', 'Archer') }}
+              {{ userProfile?.full_name || t('elimination.archer') }}
             </h2>
             <div
               class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2 text-slate-500 dark:text-slate-400 text-xs font-medium">
@@ -88,16 +86,16 @@
               <span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600" />
               <span>{{ currentCategoryName || categoryName || '-' }}</span>
               <span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600" />
-              <span>{{ userProfile?.club_name || t('elimination.independent', 'Independent') }}</span>
+              <span>{{ userProfile?.club_name || t('elimination.independent') }}</span>
             </div>
           </div>
           <!-- Match count -->
           <div class="flex flex-col items-center sm:items-end">
-            <span class="text-[10px] font-black text-slate-400 tracking-widest mb-1">{{ t('elimination.matches', 'Pertandingan') }}</span>
+            <span class="text-[10px] font-black text-slate-400 tracking-widest mb-1">{{ t('elimination.matches') }}</span>
             <div class="flex items-baseline gap-1">
               <span class="text-4xl sm:text-5xl font-black text-navy dark:text-white tracking-tighter tabular-nums">{{
                 elimMatches.length }}</span>
-              <span class="text-xs font-bold text-slate-400">{{ t('elimination.match', 'Match') }}</span>
+              <span class="text-xs font-bold text-slate-400">{{ t('elimination.match') }}</span>
             </div>
           </div>
         </div>
@@ -109,13 +107,13 @@
         <div
           class="px-6 sm:px-8 py-5 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+            <div class="w-9 h-9 rounded-xl bg-navy text-white flex items-center justify-center">
               <Icon icon="ph:git-merge-bold" class="text-lg" />
             </div>
-            <h4 class="font-black text-lg text-navy dark:text-white">{{ t('elimination.path_title', 'Perjalanan Eliminasi') }}</h4>
+            <h4 class="font-black text-lg text-navy dark:text-white">{{ t('elimination.path_title') }}</h4>
           </div>
           <span class="text-xs font-bold text-slate-400">
-            {{ elimMatches.length }} {{ t('elimination.rounds_completed', 'Ronde') }}
+            {{ elimMatches.length }} {{ t('elimination.rounds_completed') }}
           </span>
         </div>
 
@@ -126,10 +124,10 @@
             <Icon icon="ph:git-merge" class="text-3xl" />
           </div>
           <div class="text-base font-black text-navy dark:text-white mb-1">
-            {{ t('elimination.not_reached', 'Belum Ada Pertandingan Eliminasi') }}
+            {{ t('elimination.not_reached') }}
           </div>
           <div class="text-xs text-slate-400 max-w-sm mx-auto">
-            {{ t('elimination.not_reached_desc', 'Bagan eliminasi untuk kategori ini belum digenerate atau pertandingan belum dijadwalkan.') }}
+            {{ t('elimination.not_reached_desc') }}
           </div>
         </div>
 
@@ -169,7 +167,7 @@
                         : (match.status === 'finished' ? 'bg-slate-100 dark:bg-slate-700 text-slate-500' : 'bg-amber-100 dark:bg-amber-950 text-amber-600')">
                       <Icon
                         :icon="match.winner_entry_uuid === myEntryUuid ? 'ph:crown-fill' : (match.status === 'finished' ? 'ph:check-circle-bold' : 'ph:clock-bold')" />
-                      {{ match.winner_entry_uuid === myEntryUuid ? t('elimination.win', 'WIN') : (match.status === 'finished' ? t('elimination.lose', 'LOSE') : t('elimination.active', 'ACTIVE')) }}
+                      {{ match.winner_entry_uuid === myEntryUuid ? t('elimination.win') : (match.status === 'finished' ? t('elimination.lose') : t('elimination.active')) }}
                     </span>
                   </div>
 
@@ -233,7 +231,7 @@
                   <div v-if="match.ends && match.ends.length"
                     class="px-5 py-3 border-t border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30">
                     <div class="text-[10px] font-black capitalize tracking-wider text-slate-400 mb-2">
-                      {{ t('elimination.score_per_end', 'Set Points Breakdown') }}
+                      {{ t('elimination.score_per_end') }}
                     </div>
                     <div class="flex flex-wrap gap-2 text-xs">
                       <div v-for="end in match.ends" :key="end.end_no"
@@ -248,9 +246,9 @@
                   <div
                     class="px-5 py-2.5 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center bg-white dark:bg-slate-800">
                     <NuxtLink :to="`/match/${match.match_id || match.uuid}`"
-                      class="text-xs font-bold text-slate-400 hover:text-primary transition-colors flex items-center gap-1.5">
+                      class="text-xs font-bold text-slate-500 hover:text-navy dark:hover:text-white transition-colors flex items-center gap-1.5">
                       <Icon icon="ph:arrow-square-out-bold" />
-                      <span>{{ t('elimination.open_match_page', 'Lihat Rincian Pertandingan') }}</span>
+                      <span>{{ t('elimination.open_match_page') }}</span>
                     </NuxtLink>
                     <span v-if="match.target_number" class="text-[11px] font-bold text-slate-400">
                       {{ match.target_number }}
@@ -281,7 +279,7 @@ const eventId = computed(() => route.params.id as string)
 const eventName = ref('')
 
 useHead({
-  title: computed(() => `${eventName.value || t('elimination.title', 'My Elimination Matches')} - Archeris Dashboard`)
+  title: computed(() => `${eventName.value || t('elimination.title')} - Archeris Dashboard`)
 })
 
 const isLoading = ref(true)
@@ -306,11 +304,11 @@ const categoryOptions = computed(() => {
 })
 
 const elimStatusLabel = computed(() => {
-  if (!elimMatches.value.length) return t('elimination.status_ready', 'Standby')
+  if (!elimMatches.value.length) return t('elimination.status_ready')
   const lastMatch = [...elimMatches.value].reverse()[0]
-  if (lastMatch.status !== 'finished' && lastMatch.status !== 'completed') return t('elimination.status_active', 'In Competition')
-  if (lastMatch.winner_entry_uuid === myEntryUuid.value) return t('elimination.status_champion', 'Champion')
-  return t('elimination.status_ended', 'Completed')
+  if (lastMatch.status !== 'finished' && lastMatch.status !== 'completed') return t('elimination.status_active')
+  if (lastMatch.winner_entry_uuid === myEntryUuid.value) return t('elimination.status_champion')
+  return t('elimination.status_ended')
 })
 
 function getRoundLabel(roundNo: number): string {
