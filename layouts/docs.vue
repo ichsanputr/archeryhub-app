@@ -17,16 +17,52 @@
                     </div>
                 </div>
 
-                <!-- Right: Search button & Theme Toggle -->
-                <div class="flex items-center gap-3">
+                <!-- Right: Search button, Language Switcher & Theme Toggle -->
+                <div class="flex items-center gap-2 sm:gap-3">
                     <button
                         @click="searchDialog?.open()"
                         class="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-slate-700 text-gray-400 dark:text-slate-400 transition-all text-xs font-medium group cursor-pointer border border-transparent dark:border-slate-700"
                     >
                         <Icon icon="ph:magnifying-glass-bold" class="text-base group-hover:text-primary transition-colors" />
-                        <span class="hidden sm:inline text-gray-500 dark:text-slate-300 transition-colors">Search documentation</span>
+                        <span class="hidden sm:inline text-gray-500 dark:text-slate-300 transition-colors">{{ locale === 'id' ? 'Cari dokumentasi' : 'Search documentation' }}</span>
                         <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded text-xs text-gray-400 dark:text-slate-400 font-mono ml-1">Ctrl K</kbd>
                     </button>
+
+                    <!-- Language Switcher -->
+                    <div class="relative" ref="langMenuRef">
+                        <button
+                            @click="showLangMenu = !showLangMenu"
+                            class="flex items-center gap-1.5 px-2.5 h-9 rounded-xl bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 transition-all text-xs font-bold text-gray-700 dark:text-slate-300 border border-transparent dark:border-slate-700 cursor-pointer"
+                            :title="locale === 'id' ? 'Ganti Bahasa' : 'Switch Language'"
+                        >
+                            <Icon :icon="langFlags[locale] || 'circle-flags:us'" class="text-base rounded-full shrink-0" />
+                            <span class="font-black uppercase text-[11px]">{{ locale || 'EN' }}</span>
+                            <Icon icon="ph:caret-down-bold" class="text-[10px] text-gray-400 dark:text-slate-500 transition-transform duration-200" :class="{ 'rotate-180': showLangMenu }" />
+                        </button>
+
+                        <Transition
+                            enter-active-class="transition duration-150 ease-out"
+                            enter-from-class="opacity-0 translate-y-1 scale-95"
+                            enter-to-class="opacity-100 translate-y-0 scale-100"
+                            leave-active-class="transition duration-100 ease-in"
+                            leave-from-class="opacity-100 translate-y-0 scale-100"
+                            leave-to-class="opacity-0 translate-y-1 scale-95"
+                        >
+                            <div v-if="showLangMenu" class="absolute right-0 top-full mt-1.5 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-gray-100 dark:border-slate-800 overflow-hidden py-1 z-50">
+                                <button
+                                    v-for="l in supportedLocales"
+                                    :key="l.code"
+                                    @click="switchLocale(l.code)"
+                                    class="flex items-center gap-2.5 w-full px-3 py-2 text-xs transition-colors cursor-pointer"
+                                    :class="locale === l.code ? 'bg-primary/15 text-navy dark:text-primary font-black' : 'text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800 font-medium'"
+                                >
+                                    <Icon :icon="langFlags[l.code]" class="text-sm rounded-full shrink-0" />
+                                    <span class="flex-1 text-left">{{ l.name }}</span>
+                                    <Icon v-if="locale === l.code" icon="ph:check-bold" class="text-xs text-primary" />
+                                </button>
+                            </div>
+                        </Transition>
+                    </div>
 
                     <!-- Theme Toggle -->
                     <button
@@ -55,12 +91,53 @@
 import { Icon } from '@iconify/vue'
 import DocSearchDialog from '~/components/layout/DocSearchDialog.vue'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 defineOptions({ name: 'DocsLayout' })
 
 const searchDialog = ref(null)
 const route = useRoute()
 const router = useRouter()
+
+// Language switcher
+const { locale, setLocale, setLocaleCookie, loadLocaleMessages } = useI18n()
+const showLangMenu = ref(false)
+const langMenuRef = ref(null)
+const supportedLocales = [
+    { code: 'en', name: 'English' },
+    { code: 'id', name: 'Indonesia' }
+]
+const langFlags = {
+    en: 'circle-flags:us',
+    id: 'circle-flags:id'
+}
+
+const switchLocale = async (code) => {
+    if (typeof loadLocaleMessages === 'function') {
+        await loadLocaleMessages(code)
+    }
+    if (typeof setLocale === 'function') {
+        await setLocale(code)
+    } else {
+        locale.value = code
+    }
+    if (typeof setLocaleCookie === 'function') {
+        setLocaleCookie(code)
+    }
+    if (import.meta.client) {
+        try {
+            localStorage.setItem('docs_locale', code)
+            localStorage.setItem('dashboard_locale', code)
+        } catch (e) {}
+    }
+    showLangMenu.value = false
+}
+
+const handleClickOutside = (e) => {
+    if (langMenuRef.value && !langMenuRef.value.contains(e.target)) {
+        showLangMenu.value = false
+    }
+}
 
 const headerSearch = ref(route.query.q || '')
 
@@ -96,6 +173,7 @@ const updateDocumentClass = () => {
 
 onMounted(() => {
     if (import.meta.client) {
+        document.addEventListener('click', handleClickOutside)
         const saved = localStorage.getItem('docs-theme')
         if (saved === 'dark') {
             isDark.value = true
@@ -108,6 +186,7 @@ onMounted(() => {
 
 onUnmounted(() => {
     if (import.meta.client) {
+        document.removeEventListener('click', handleClickOutside)
         document.documentElement.classList.remove('dark')
     }
 })

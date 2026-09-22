@@ -112,17 +112,17 @@
                             <div class="flex items-center gap-4 mt-6 pt-5 border-t border-white/10 text-slate-400 text-xs font-medium flex-wrap">
                                 <div class="flex items-center gap-1.5 text-slate-300">
                                     <Icon icon="ph:shield-check-bold" class="text-primary text-sm" />
-                                    <span>Official Documentation</span>
+                                    <span>{{ locale === 'id' ? 'Dokumentasi Resmi' : 'Official Documentation' }}</span>
                                 </div>
                                 <span class="text-white/20">•</span>
                                 <div class="flex items-center gap-1.5">
                                     <Icon icon="ph:translate-bold" class="text-xs text-slate-400" />
-                                    <span>English</span>
+                                    <span>{{ locale === 'id' ? 'Bahasa Indonesia' : 'English' }}</span>
                                 </div>
                                 <span class="text-white/20">•</span>
                                 <div class="flex items-center gap-1.5">
                                     <Icon icon="ph:check-circle-bold" class="text-emerald-400 text-xs" />
-                                    <span>Verified Guide</span>
+                                    <span>{{ locale === 'id' ? 'Panduan Terverifikasi' : 'Verified Guide' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -267,20 +267,20 @@ watch(currentSlug, () => {
     isMobileMenuOpen.value = false // Auto close on navigation in mobile
 })
 
-const categories = [
-    { id: 'accounts', label: 'User Accounts', icon: 'ph:users-three-bold' },
-    { id: 'tournaments', label: 'Tournament Setup', icon: 'ph:trophy-bold' },
-    { id: 'scorekeeper', label: 'Scorekeeper Operations', icon: 'ph:device-mobile-bold' },
-    { id: 'qualification', label: 'Qualification Rounds', icon: 'ph:chart-line-up-bold' },
-    { id: 'elimination', label: 'Elimination Brackets', icon: 'ph:tree-structure-bold' },
-    { id: 'finance', label: 'Finance & Payments', icon: 'ph:coins-bold' },
-    { id: 'subscriptions', label: 'Subscriptions', icon: 'ph:credit-card-bold' }
-]
+const categories = computed(() => [
+    { id: 'accounts', label: locale.value === 'id' ? 'Tipe Akun' : 'User Accounts', icon: 'ph:users-three-bold' },
+    { id: 'tournaments', label: locale.value === 'id' ? 'Turnamen' : 'Tournament Setup', icon: 'ph:trophy-bold' },
+    { id: 'scorekeeper', label: locale.value === 'id' ? 'Petugas Skor' : 'Scorekeeper Operations', icon: 'ph:device-mobile-bold' },
+    { id: 'qualification', label: locale.value === 'id' ? 'Babak Kualifikasi' : 'Qualification Rounds', icon: 'ph:chart-line-up-bold' },
+    { id: 'elimination', label: locale.value === 'id' ? 'Bagan Eliminasi' : 'Elimination Brackets', icon: 'ph:tree-structure-bold' },
+    { id: 'finance', label: locale.value === 'id' ? 'Keuangan & Bayar' : 'Finance & Payments', icon: 'ph:coins-bold' },
+    { id: 'subscriptions', label: locale.value === 'id' ? 'Langganan' : 'Subscriptions', icon: 'ph:credit-card-bold' }
+])
 
 const sidebarCategories = categories
 
 const getCategoryLabel = (id) => {
-    const cat = categories.find(c => c.id === id)
+    const cat = categories.value.find(c => c.id === id)
     return cat ? cat.label : (id ? id.charAt(0).toUpperCase() + id.slice(1) : '')
 }
 
@@ -358,7 +358,7 @@ const filteredSidebarDocs = (categoryId) => {
 }
 
 const sidebarVisibleCategories = computed(() => {
-    return sidebarCategories.filter(cat => filteredSidebarDocs(cat.id).length > 0)
+    return sidebarCategories.value.filter(cat => filteredSidebarDocs(cat.id).length > 0)
 })
 
 // translateHeadingText fallback no longer needed, we render text directly

@@ -103,12 +103,16 @@
             <template v-else>
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                     <div>
-                        <h2 class="text-xl sm:text-2xl font-black text-navy dark:text-slate-100 tracking-tight font-display">All Documentation Guides</h2>
-                        <p class="text-gray-500 dark:text-slate-400 text-xs sm:text-sm mt-1">Explore complete architectural references, tournament rules, and step-by-step platform operations.</p>
+                        <h2 class="text-xl sm:text-2xl font-black text-navy dark:text-slate-100 tracking-tight font-display">
+                            {{ locale === 'id' ? 'Semua Panduan Dokumentasi' : 'All Documentation Guides' }}
+                        </h2>
+                        <p class="text-gray-500 dark:text-slate-400 text-xs sm:text-sm mt-1">
+                            {{ locale === 'id' ? 'Jelajahi panduan penggunaan sistem, aturan perlombaan, dan pengoperasian turnamen secara lengkap.' : 'Explore complete architectural references, tournament rules, and step-by-step platform operations.' }}
+                        </p>
                     </div>
                     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-xs font-bold text-navy dark:text-slate-200 shadow-xs self-start sm:self-auto">
                         <Icon icon="ph:files-bold" class="text-primary text-sm" />
-                        <span>{{ allFilteredDocs.length }} Articles Available</span>
+                        <span>{{ allFilteredDocs.length }} {{ locale === 'id' ? 'Artikel Tersedia' : 'Articles Available' }}</span>
                     </div>
                 </div>
 
@@ -135,7 +139,7 @@
                             </span>
                             <span
                                 class="ml-auto flex items-center gap-1 text-xs font-black text-navy dark:text-primary opacity-0 group-hover:opacity-100 transition-all duration-300">
-                                {{ $t('docs.read') || 'Read Guide' }}
+                                {{ locale === 'id' ? 'Baca Panduan' : ($t('docs.read') || 'Read Guide') }}
                                 <Icon icon="ph:arrow-right-bold" class="text-xs" />
                             </span>
                         </div>
@@ -146,8 +150,8 @@
             <!-- Empty state -->
             <div v-if="allFilteredDocs.length === 0" class="text-center py-24 bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800 p-8">
                 <Icon icon="ph:file-search-bold" class="text-5xl text-gray-300 dark:text-slate-600 mb-4" />
-                <p class="text-gray-500 dark:text-slate-400 font-bold text-sm">{{ $t('docs.no_docs_found') || 'No documentation found' }}</p>
-                <p class="text-gray-400 dark:text-slate-500 text-xs mt-1">Try adjusting your search query.</p>
+                <p class="text-gray-500 dark:text-slate-400 font-bold text-sm">{{ locale === 'id' ? 'Dokumentasi tidak ditemukan' : ($t('docs.no_docs_found') || 'No documentation found') }}</p>
+                <p class="text-gray-400 dark:text-slate-500 text-xs mt-1">{{ locale === 'id' ? 'Coba cari dengan kata kunci lain.' : 'Try adjusting your search query.' }}</p>
             </div>
         </section>
     </div>
@@ -235,22 +239,22 @@ const filteredDocsByCat = (categoryId: string) => {
     return allFilteredDocs.value.filter((d: any) => d.category === categoryId)
 }
 
-const categories = [
-    { id: 'all', label: 'All Guides', icon: 'ph:squares-four-bold', description: 'Browse all official documentation articles' },
-    { id: 'accounts', label: 'User Accounts', icon: 'ph:users-three-bold', description: 'Account types, permissions, and profile setups' },
-    { id: 'tournaments', label: 'Tournament Setup', icon: 'ph:trophy-bold', description: 'Event wizards, schedules, venue setup, and embed widgets' },
-    { id: 'scorekeeper', label: 'Scorekeeper Operations', icon: 'ph:device-mobile-bold', description: 'Mobile short-code login, score inputs, and corrections' },
-    { id: 'qualification', label: 'Qualification Rounds', icon: 'ph:chart-line-up-bold', description: 'Sessions, cumulative scoring, and live leaderboards' },
-    { id: 'elimination', label: 'Elimination Brackets', icon: 'ph:tree-structure-bold', description: 'Brackets, seedings, byes, set system, and shoot-offs' },
-    { id: 'finance', label: 'Finance & Payments', icon: 'ph:coins-bold', description: 'QRIS, Virtual Accounts, payment verification, and withdrawals' },
-    { id: 'subscriptions', label: 'Subscriptions', icon: 'ph:credit-card-bold', description: 'Organizer packages, feature quotas, and billing' }
-]
+const categories = computed(() => [
+    { id: 'all', label: locale.value === 'id' ? 'Semua Panduan' : 'All Guides', icon: 'ph:squares-four-bold', description: locale.value === 'id' ? 'Jelajahi seluruh artikel panduan resmi Archeris' : 'Browse all official documentation articles' },
+    { id: 'accounts', label: locale.value === 'id' ? 'Tipe Akun' : 'User Accounts', icon: 'ph:users-three-bold', description: locale.value === 'id' ? 'Jenis akun, hak akses, dan pengaturan profil' : 'Account types, permissions, and profile setups' },
+    { id: 'tournaments', label: locale.value === 'id' ? 'Turnamen' : 'Tournament Setup', icon: 'ph:trophy-bold', description: locale.value === 'id' ? 'Pengaturan event, jadwal, arena, dan widget embed' : 'Event wizards, schedules, venue setup, and embed widgets' },
+    { id: 'scorekeeper', label: locale.value === 'id' ? 'Petugas Skor' : 'Scorekeeper Operations', icon: 'ph:device-mobile-bold', description: locale.value === 'id' ? 'Login kode singkat, input skor, dan koreksi poin' : 'Mobile short-code login, score inputs, and corrections' },
+    { id: 'qualification', label: locale.value === 'id' ? 'Babak Kualifikasi' : 'Qualification Rounds', icon: 'ph:chart-line-up-bold', description: locale.value === 'id' ? 'Sesi tembakan, skor kumulatif, dan papan skor live' : 'Sessions, cumulative scoring, and live leaderboards' },
+    { id: 'elimination', label: locale.value === 'id' ? 'Bagan Eliminasi' : 'Elimination Brackets', icon: 'ph:tree-structure-bold', description: locale.value === 'id' ? 'Bagan eliminasi, pemeringkatan, sistem set, dan shoot-off' : 'Brackets, seedings, byes, set system, and shoot-offs' },
+    { id: 'finance', label: locale.value === 'id' ? 'Keuangan & Bayar' : 'Finance & Payments', icon: 'ph:coins-bold', description: locale.value === 'id' ? 'QRIS, Virtual Account, verifikasi pembayaran, dan penarikan dana' : 'QRIS, Virtual Accounts, payment verification, and withdrawals' },
+    { id: 'subscriptions', label: locale.value === 'id' ? 'Langganan' : 'Subscriptions', icon: 'ph:credit-card-bold', description: locale.value === 'id' ? 'Paket organizer, kuota fitur, dan tagihan' : 'Organizer packages, feature quotas, and billing' }
+])
 
 const filteredCategories = computed(() => {
     if (activeCategory.value !== 'all') {
-        return categories.filter(c => c.id === activeCategory.value)
+        return categories.value.filter(c => c.id === activeCategory.value)
     }
-    return categories.filter(c => c.id !== 'all' && filteredDocsByCat(c.id).length > 0)
+    return categories.value.filter(c => c.id !== 'all' && filteredDocsByCat(c.id).length > 0)
 })
 
 const heroImages = [
