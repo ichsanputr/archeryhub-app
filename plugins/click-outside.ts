@@ -26,6 +26,13 @@ export default defineNuxtPlugin((nuxtApp) => {
       document.addEventListener('click', el.__clickOutsideHandler__, true)
       document.addEventListener('touchstart', el.__clickOutsideHandler__, true)
     },
+    beforeUnmount(el: ClickOutsideElement) {
+      if (el.__clickOutsideHandler__) {
+        document.removeEventListener('click', el.__clickOutsideHandler__, true)
+        document.removeEventListener('touchstart', el.__clickOutsideHandler__, true)
+        delete el.__clickOutsideHandler__
+      }
+    },
     unmounted(el: ClickOutsideElement) {
       if (el.__clickOutsideHandler__) {
         document.removeEventListener('click', el.__clickOutsideHandler__, true)

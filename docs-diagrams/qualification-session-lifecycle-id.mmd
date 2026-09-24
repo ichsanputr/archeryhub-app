@@ -1,0 +1,14 @@
+stateDiagram-v2
+  direction TB
+
+  state "🔧 Persiapan" as Draft
+  state "🔒 Terkunci" as Locked
+  state "▶️ Sedang Berlangsung" as InProgress
+  state "✅ Selesai & Final" as Completed
+
+  [*] --> Draft : Buat sesi
+  Draft --> Locked : Simpan pengaturan
+  Locked --> InProgress : Panitia buka
+  InProgress --> Locked : Kunci kembali
+  InProgress --> Completed : Semua rambahan selesai
+  Completed --> [*]

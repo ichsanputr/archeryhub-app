@@ -336,6 +336,7 @@ const navSections = computed(() => {
       { label: t('sidebar.tournaments'), icon: 'ph:trophy-bold', path: '/dashboard/root/tournaments' },
       { label: t('sidebar.archers'), icon: 'ph:users-three-bold', path: '/dashboard/root/archers' },
       { label: t('sidebar.articles'), icon: 'ph:newspaper-bold', path: '/dashboard/root/articles' },
+      { label: t('sidebar.docs', 'Documentation'), icon: 'ph:book-bookmark-bold', path: '/dashboard/root/docs' },
     ]
   }
 

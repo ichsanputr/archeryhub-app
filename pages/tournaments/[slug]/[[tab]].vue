@@ -88,15 +88,39 @@
                                         {{ t('event_detail.no_description') }}
                                     </div>
 
-                                    <div v-if="tournament.technical_guidebook_url"
-                                        class="bg-blue-50 p-4 rounded-xl border border-blue-100 mt-4">
-                                        <h4 class="font-bold text-navy !mt-0 mb-2">{{ t('event_detail.technical_handbook') }}</h4>
-                                        <div class="text-sm text-gray-600 mb-3">{{ t('event_detail.technical_handbook_desc') }}</div>
-                                        <a :href="tournament.technical_guidebook_url" target="_blank"
-                                            class="text-navy font-bold text-sm hover:underline inline-flex items-center gap-1">
-                                            {{ t('event_detail.download_pdf') }}
-                                            <Icon icon="ph:download-simple" class="text-lg" />
-                                        </a>
+                                    <!-- Technical Handbook (THB / Guidebook) -->
+                                    <div v-if="(tournament.guidebooks && tournament.guidebooks.length > 0) || tournament.technical_guidebook_url"
+                                        class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 mt-6 space-y-3">
+                                        <div class="flex items-center gap-2.5">
+                                            <div class="size-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                                                <Icon icon="ph:file-pdf-duotone" class="text-xl" />
+                                            </div>
+                                            <div>
+                                                <h4 class="font-black text-navy !mt-0 !mb-0 text-sm sm:text-base leading-tight">{{ t('event_detail.technical_handbook', 'Buku Panduan Teknis (THB)') }}</h4>
+                                                <div class="text-xs text-slate-500 font-medium mt-0.5">{{ t('event_detail.technical_handbook_desc', 'Unduh panduan lengkap yang berisi peraturan, regulasi, dan jadwal detail turnamen.') }}</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                                            <a
+                                                v-for="(gb, idx) in (tournament.guidebooks?.length ? tournament.guidebooks : [{ url: tournament.technical_guidebook_url, name: 'Technical Handbook' }])"
+                                                :key="idx"
+                                                :href="gb.url"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="flex items-center justify-between p-3 rounded-xl bg-white border border-slate-200 hover:border-slate-300 hover:shadow-2xs transition-all group no-underline"
+                                            >
+                                                <div class="flex items-center gap-2.5 min-w-0 pr-2">
+                                                    <Icon icon="ph:file-pdf-bold" class="text-red-500 text-lg shrink-0" />
+                                                    <span class="text-xs font-bold text-navy group-hover:text-primary truncate transition-colors">
+                                                        {{ gb.name || `Dokumen Panduan ${idx + 1}` }}
+                                                    </span>
+                                                </div>
+                                                <div class="inline-flex items-center gap-1 text-xs font-bold text-navy shrink-0">
+                                                    <Icon icon="ph:download-simple-bold" class="text-sm" />
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </section>
@@ -949,6 +973,19 @@ const transformEventData = (data, paymentMethodsData = null) => {
         description: data.description || '',
         total_prize: data.total_prize || 0,
         technical_guidebook_url: data.technical_guidebook_url || null,
+        guidebooks: (() => {
+            if (Array.isArray(pg.technical_guidebooks) && pg.technical_guidebooks.length > 0) {
+                return pg.technical_guidebooks
+            }
+            if (data.technical_guidebook_url) {
+                return [{
+                    url: data.technical_guidebook_url,
+                    name: data.technical_guidebook_url.split('/').pop() || 'Technical Handbook.pdf',
+                    type: data.technical_guidebook_url.toLowerCase().endsWith('.pdf') ? 'pdf' : 'link'
+                }]
+            }
+            return []
+        })(),
         max_participants: data.max_participants ?? null,
         registration_deadline: data.registration_deadline || null,
         participant_count: data.participant_count || 0,

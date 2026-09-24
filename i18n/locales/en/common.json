@@ -733,6 +733,7 @@
     "sort_desc": "Sort Descending"
   },
   "sidebar": {
+    "docs": "Documentation",
     "package": "Package",
     "subscription": "Package",
     "back_to_events": "All Tournaments",

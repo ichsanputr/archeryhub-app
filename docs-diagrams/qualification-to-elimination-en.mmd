@@ -1,0 +1,13 @@
+flowchart TD
+  A(["📋 All ends submitted<br/>by scorekeepers"]) --> B(["🔒 Session locked<br/>results finalized"])
+  B --> C(["📊 Calculate per archer<br/>Score → 10s → Xs"])
+  C --> D(["🏆 Official Ranking<br/>Rank 1, 2, 3..."])
+  D --> E{"How many<br/>qualifiers?"}
+  E -->|4 to 7| F(["Bracket 4<br/>Semifinals only"])
+  E -->|8 to 15| G(["Bracket 8<br/>Quarterfinals"])
+  E -->|16 to 31| H(["Bracket 16<br/>Round of 16"])
+  E -->|32 plus| I(["Bracket 32 or 64<br/>Full knockout"])
+  F --> J(["🎯 Elimination begins<br/>Seed 1 vs last, 2 vs second-last"])
+  G --> J
+  H --> J
+  I --> J

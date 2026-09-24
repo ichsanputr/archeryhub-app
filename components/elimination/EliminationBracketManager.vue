@@ -221,9 +221,11 @@
         <Teleport to="body">
             <Transition name="modal">
                 <div v-if="showEndMatchDialog"
-                    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60 backdrop-blur-sm">
+                    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60 backdrop-blur-sm"
+                    @click.self="showEndMatchDialog = false">
                     <div
-                        class="relative w-full max-w-lg bg-navy rounded-3xl shadow-2xl overflow-hidden border border-white/10 max-h-[90vh] overflow-y-auto">
+                        class="relative w-full max-w-lg bg-navy rounded-3xl shadow-2xl overflow-hidden border border-white/10 max-h-[90vh] overflow-y-auto"
+                        @click.stop>
                         <!-- Decorative Elements -->
                         <div class="absolute inset-0 opacity-10 pointer-events-none">
                             <Icon icon="ph:target"

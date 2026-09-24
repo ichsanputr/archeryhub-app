@@ -33,10 +33,10 @@
                         <button
                             @click="showLangMenu = !showLangMenu"
                             class="flex items-center gap-1.5 px-2.5 h-9 rounded-xl bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 transition-all text-xs font-bold text-gray-700 dark:text-slate-300 border border-transparent dark:border-slate-700 cursor-pointer"
-                            :title="locale === 'id' ? 'Ganti Bahasa' : 'Switch Language'"
+                            :title="activeLocaleCode === 'id' ? 'Ganti Bahasa' : 'Switch Language'"
                         >
-                            <Icon :icon="langFlags[locale] || 'circle-flags:us'" class="text-base rounded-full shrink-0" />
-                            <span class="font-black uppercase text-[11px]">{{ locale || 'EN' }}</span>
+                            <Icon :icon="langFlags[activeLocaleCode] || 'circle-flags:us'" class="text-base rounded-full shrink-0" />
+                            <span class="font-black uppercase text-[11px]">{{ activeLocaleCode || 'EN' }}</span>
                             <Icon icon="ph:caret-down-bold" class="text-[10px] text-gray-400 dark:text-slate-500 transition-transform duration-200" :class="{ 'rotate-180': showLangMenu }" />
                         </button>
 
@@ -54,11 +54,11 @@
                                     :key="l.code"
                                     @click="switchLocale(l.code)"
                                     class="flex items-center gap-2.5 w-full px-3 py-2 text-xs transition-colors cursor-pointer"
-                                    :class="locale === l.code ? 'bg-primary/15 text-navy dark:text-primary font-black' : 'text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800 font-medium'"
+                                    :class="activeLocaleCode === l.code ? 'bg-primary/15 text-navy dark:text-primary font-black' : 'text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800 font-medium'"
                                 >
                                     <Icon :icon="langFlags[l.code]" class="text-sm rounded-full shrink-0" />
                                     <span class="flex-1 text-left">{{ l.name }}</span>
-                                    <Icon v-if="locale === l.code" icon="ph:check-bold" class="text-xs text-primary" />
+                                    <Icon v-if="activeLocaleCode === l.code" icon="ph:check-bold" class="text-xs text-primary" />
                                 </button>
                             </div>
                         </Transition>
@@ -90,7 +90,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import DocSearchDialog from '~/components/layout/DocSearchDialog.vue'
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 defineOptions({ name: 'DocsLayout' })
@@ -112,6 +112,14 @@ const langFlags = {
     id: 'circle-flags:id'
 }
 
+const activeLocaleCode = computed(() => {
+    const currentPath = route.path
+    if (currentPath.startsWith('/docs/') && currentPath !== '/docs') {
+        return currentPath.endsWith('/id') ? 'id' : 'en'
+    }
+    return locale.value || 'en'
+})
+
 const switchLocale = async (code) => {
     if (typeof loadLocaleMessages === 'function') {
         await loadLocaleMessages(code)
@@ -131,6 +139,20 @@ const switchLocale = async (code) => {
         } catch (e) {}
     }
     showLangMenu.value = false
+
+    // Route if on detail doc page
+    const currentPath = route.path
+    if (currentPath.startsWith('/docs/') && currentPath !== '/docs') {
+        if (code === 'id') {
+            if (!currentPath.endsWith('/id')) {
+                router.push(`${currentPath}/id`)
+            }
+        } else if (code === 'en') {
+            if (currentPath.endsWith('/id')) {
+                router.push(currentPath.replace(/\/id$/, ''))
+            }
+        }
+    }
 }
 
 const handleClickOutside = (e) => {

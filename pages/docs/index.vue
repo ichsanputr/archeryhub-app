@@ -245,9 +245,7 @@ const categories = computed(() => [
     { id: 'tournaments', label: locale.value === 'id' ? 'Turnamen' : 'Tournament Setup', icon: 'ph:trophy-bold', description: locale.value === 'id' ? 'Pengaturan event, jadwal, arena, dan widget embed' : 'Event wizards, schedules, venue setup, and embed widgets' },
     { id: 'scorekeeper', label: locale.value === 'id' ? 'Petugas Skor' : 'Scorekeeper Operations', icon: 'ph:device-mobile-bold', description: locale.value === 'id' ? 'Login kode singkat, input skor, dan koreksi poin' : 'Mobile short-code login, score inputs, and corrections' },
     { id: 'qualification', label: locale.value === 'id' ? 'Babak Kualifikasi' : 'Qualification Rounds', icon: 'ph:chart-line-up-bold', description: locale.value === 'id' ? 'Sesi tembakan, skor kumulatif, dan papan skor live' : 'Sessions, cumulative scoring, and live leaderboards' },
-    { id: 'elimination', label: locale.value === 'id' ? 'Bagan Eliminasi' : 'Elimination Brackets', icon: 'ph:tree-structure-bold', description: locale.value === 'id' ? 'Bagan eliminasi, pemeringkatan, sistem set, dan shoot-off' : 'Brackets, seedings, byes, set system, and shoot-offs' },
-    { id: 'finance', label: locale.value === 'id' ? 'Keuangan & Bayar' : 'Finance & Payments', icon: 'ph:coins-bold', description: locale.value === 'id' ? 'QRIS, Virtual Account, verifikasi pembayaran, dan penarikan dana' : 'QRIS, Virtual Accounts, payment verification, and withdrawals' },
-    { id: 'subscriptions', label: locale.value === 'id' ? 'Langganan' : 'Subscriptions', icon: 'ph:credit-card-bold', description: locale.value === 'id' ? 'Paket organizer, kuota fitur, dan tagihan' : 'Organizer packages, feature quotas, and billing' }
+    { id: 'elimination', label: locale.value === 'id' ? 'Bagan Eliminasi' : 'Elimination Brackets', icon: 'ph:tree-structure-bold', description: locale.value === 'id' ? 'Bagan eliminasi, pemeringkatan, sistem set, dan shoot-off' : 'Brackets, seedings, byes, set system, and shoot-offs' }
 ])
 
 const filteredCategories = computed(() => {

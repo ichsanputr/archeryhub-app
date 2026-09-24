@@ -728,6 +728,7 @@
     "sort_desc": "Urutkan Menurun"
   },
   "sidebar": {
+    "docs": "Dokumentasi",
     "package": "Paket",
     "subscription": "Paket",
     "back_to_events": "Semua Turnamen",

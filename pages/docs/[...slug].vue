@@ -32,13 +32,6 @@
                 <div :class="isMobileMenuOpen ? 'block' : 'hidden lg:block'"
                     class="bg-gray-50 dark:bg-slate-900 lg:bg-transparent -mx-4 px-4 py-4 lg:p-0 lg:mx-0 border-y border-gray-100 dark:border-slate-800 lg:border-0 rounded-none lg:rounded-none">
 
-                    <!-- Search filter in sidebar -->
-                    <div class="relative mb-3">
-                        <Icon icon="ph:magnifying-glass-bold" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500 text-sm" />
-                        <input v-model="sidebarSearch" type="text" placeholder="Filter articles..."
-                            class="w-full pl-9 pr-3 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl text-xs text-navy dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-primary dark:focus:border-primary transition-all shadow-2xs" />
-                    </div>
-
                     <!-- If categories exist -->
                     <template v-if="hasCategories">
                         <div v-for="cat in sidebarVisibleCategories" :key="cat.id" class="mb-4">
@@ -48,7 +41,7 @@
                             </div>
                             <div class="space-y-0.5">
                                 <NuxtLink v-for="doc in filteredSidebarDocs(cat.id)" :key="doc.slug"
-                                    :to="`/docs/${doc.slug}`"
+                                    :to="docPath(doc.slug)"
                                     class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all relative group"
                                     :class="currentSlug === doc.slug
                                         ? 'bg-primary/20 border border-primary/40 text-navy dark:text-primary font-black shadow-2xs'
@@ -65,15 +58,15 @@
                     <!-- Flat list (when uncategorized) -->
                     <template v-else>
                         <div class="flex items-center justify-between px-2 py-1.5 mb-2">
-                            <span class="text-[10px] font-black tracking-widest text-gray-400 dark:text-slate-500 uppercase">All Guides ({{ allFilteredSidebarDocs.length }})</span>
+                            <span class="text-[10px] font-black tracking-widest text-gray-400 dark:text-slate-500 uppercase">All Guides ({{ docs.length }})</span>
                         </div>
                         <div class="space-y-1">
-                            <NuxtLink v-for="doc in allFilteredSidebarDocs" :key="doc.slug"
-                                :to="`/docs/${doc.slug}`"
+                            <NuxtLink v-for="doc in docs" :key="doc.slug"
+                                :to="docPath(doc.slug)"
                                 class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs sm:text-sm transition-all relative group"
                                 :class="currentSlug === doc.slug
                                     ? 'bg-primary/20 border border-primary/40 text-navy dark:text-primary font-black shadow-2xs'
-                                    : 'text-gray-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800/80 hover:text-navy dark:hover:text-slate-100 font-medium border border-transparent hover:border-gray-100 dark:hover:border-slate-800'">
+                                    : 'text-gray-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800/80 hover:text-navy dark:hover:text-slate-100 font-medium border border-transparent hover:border-gray-100 dark:border-slate-800'">
                                 <div v-if="currentSlug === doc.slug"
                                     class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-primary rounded-r-full">
                                 </div>
@@ -108,32 +101,51 @@
                                 {{ currentDoc.excerpt }}
                             </p>
 
-                            <!-- Meta info row -->
-                            <div class="flex items-center gap-4 mt-6 pt-5 border-t border-white/10 text-slate-400 text-xs font-medium flex-wrap">
-                                <div class="flex items-center gap-1.5 text-slate-300">
-                                    <Icon icon="ph:shield-check-bold" class="text-primary text-sm" />
-                                    <span>{{ locale === 'id' ? 'Dokumentasi Resmi' : 'Official Documentation' }}</span>
+                            <!-- Meta info row & Language Switcher -->
+                            <div class="flex flex-wrap items-center justify-between gap-4 mt-6 pt-5 border-t border-white/10 text-slate-400 text-xs font-medium">
+                                <div class="flex items-center gap-4 flex-wrap">
+                                    <div class="flex items-center gap-1.5 text-slate-300">
+                                        <Icon icon="ph:shield-check-bold" class="text-primary text-sm" />
+                                        <span>{{ isIdRoute ? 'Dokumentasi Resmi' : 'Official Documentation' }}</span>
+                                    </div>
+                                    <span class="text-white/20">•</span>
+                                    <div class="flex items-center gap-1.5">
+                                        <Icon icon="ph:check-circle-bold" class="text-emerald-400 text-xs" />
+                                        <span>{{ isIdRoute ? 'Panduan Terverifikasi' : 'Verified Guide' }}</span>
+                                    </div>
                                 </div>
-                                <span class="text-white/20">•</span>
-                                <div class="flex items-center gap-1.5">
-                                    <Icon icon="ph:translate-bold" class="text-xs text-slate-400" />
-                                    <span>{{ locale === 'id' ? 'Bahasa Indonesia' : 'English' }}</span>
-                                </div>
-                                <span class="text-white/20">•</span>
-                                <div class="flex items-center gap-1.5">
-                                    <Icon icon="ph:check-circle-bold" class="text-emerald-400 text-xs" />
-                                    <span>{{ locale === 'id' ? 'Panduan Terverifikasi' : 'Verified Guide' }}</span>
+
+                                <!-- Language Switcher Pill -->
+                                <div class="flex items-center bg-white/10 dark:bg-black/40 backdrop-blur-md rounded-full p-1 border border-white/15">
+                                    <NuxtLink :to="`/docs/${currentSlug}`"
+                                        class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all"
+                                        :class="!isIdRoute ? 'bg-primary text-navy shadow-sm' : 'text-slate-300 hover:text-white'">
+                                        <span class="text-[11px]">🇬🇧</span>
+                                        <span>English</span>
+                                    </NuxtLink>
+                                    <NuxtLink :to="`/docs/${currentSlug}/id`"
+                                        class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all"
+                                        :class="isIdRoute ? 'bg-primary text-navy shadow-sm' : 'text-slate-300 hover:text-white'">
+                                        <span class="text-[11px]">🇮🇩</span>
+                                        <span>Indonesia</span>
+                                    </NuxtLink>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Doc body -->
-                    <div class="px-6 md:px-10 py-8 doc-content" v-html="currentDoc.content"></div>
+                    <div class="px-6 md:px-10 py-8 doc-content" v-html="formattedDocContent"></div>
+
+                    <!-- Last Updated Info -->
+                    <div class="px-6 md:px-10 pb-6 text-xs text-gray-400 dark:text-slate-500 font-medium flex items-center gap-1.5">
+                        <Icon icon="ph:clock-clockwise-bold" class="text-xs" />
+                        <span>{{ lastUpdatedText }}</span>
+                    </div>
 
                     <!-- Share Social Media -->
                     <div class="px-6 md:px-10 pb-8 pt-4 border-t border-gray-100 dark:border-slate-800">
-                        <h4 class="text-[10px] font-black tracking-widest text-gray-400 dark:text-slate-500 mb-3">{{ $t('docs.share_title') || 'Share this article' }}</h4>
+                        <h4 class="text-[10px] font-black tracking-widest text-gray-400 dark:text-slate-500 mb-3">{{ isIdRoute ? 'Bagikan dokumen ini' : ($t('docs.share_title') || 'Share this document') }}</h4>
                         <div class="flex flex-wrap gap-2">
                             <button @click="shareTo('twitter')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-primary/20 text-navy dark:text-slate-200 text-xs font-bold transition-all border border-gray-100 dark:border-slate-700 hover:border-primary/30">
                                 <Icon icon="simple-icons:x" class="text-sm" />
@@ -149,7 +161,7 @@
                             </button>
                             <button @click="copyLink" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-primary/20 text-navy dark:text-slate-200 text-xs font-bold transition-all border border-gray-100 dark:border-slate-700 hover:border-primary/30">
                                 <Icon icon="ph:link-bold" class="text-sm" />
-                                {{ linkCopied ? ($t('docs.copied') || 'Copied!') : ($t('docs.copy_link') || 'Copy Link') }}
+                                {{ linkCopied ? (isIdRoute ? 'Tautan Disalin!' : 'Copied!') : (isIdRoute ? 'Salin Tautan' : 'Copy Link') }}
                             </button>
                         </div>
                     </div>
@@ -157,22 +169,22 @@
                     <!-- Navigation buttons -->
                     <div
                         class="px-6 md:px-10 py-6 border-t border-gray-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <NuxtLink v-if="prevDoc" :to="`/docs/${prevDoc.slug}`"
+                        <NuxtLink v-if="prevDoc" :to="docPath(prevDoc.slug)"
                             class="flex items-center gap-3 group p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-800 border border-gray-100 dark:border-slate-800 transition-all w-full sm:max-w-xs justify-start">
                             <Icon icon="ph:arrow-left-bold"
                                 class="text-gray-400 dark:text-slate-500 group-hover:text-primary transition-colors shrink-0" />
                             <div class="text-left min-w-0">
-                                <div class="text-xs text-gray-400 dark:text-slate-500 mb-0.5">{{ $t('docs.previous') }}</div>
+                                <div class="text-xs text-gray-400 dark:text-slate-500 mb-0.5">{{ isIdRoute ? 'Sebelumnya' : $t('docs.previous') }}</div>
                                 <div
                                     class="text-sm font-bold text-navy dark:text-slate-200 truncate group-hover:text-primary transition-colors">
                                     {{ prevDoc.title }}</div>
                             </div>
                         </NuxtLink>
                         <div v-else class="hidden sm:block"></div>
-                        <NuxtLink v-if="nextDoc" :to="`/docs/${nextDoc.slug}`"
+                        <NuxtLink v-if="nextDoc" :to="docPath(nextDoc.slug)"
                             class="flex items-center gap-3 group p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-800 border border-gray-100 dark:border-slate-800 transition-all w-full sm:max-w-xs justify-end text-right sm:ml-auto">
                             <div class="min-w-0">
-                                <div class="text-xs text-gray-400 dark:text-slate-500 mb-0.5">{{ $t('docs.next') }}</div>
+                                <div class="text-xs text-gray-400 dark:text-slate-500 mb-0.5">{{ isIdRoute ? 'Selanjutnya' : $t('docs.next') }}</div>
                                 <div
                                     class="text-sm font-bold text-navy dark:text-slate-200 truncate group-hover:text-primary transition-colors">
                                     {{ nextDoc.title }}</div>
@@ -196,33 +208,38 @@
             </main>
 
             <!-- Right sidebar: Table of contents -->
-            <aside class="hidden lg:block w-56 shrink-0 pl-4 self-start sticky top-24">
-                <div class="max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-styled flex flex-col">
-                    <div class="text-xs font-black text-gray-400 dark:text-slate-500 tracking-widest mb-3">{{ $t('docs.on_this_page') }}</div>
-                    <nav class="space-y-1">
+            <aside class="hidden lg:block w-64 xl:w-72 shrink-0 pl-4 self-start sticky top-24">
+                <div class="max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-styled flex flex-col pr-1">
+                    <div class="flex items-center gap-2 px-2 py-1.5 mb-1">
+                        <Icon icon="ph:list-bullets-bold" class="text-sm text-gray-400 dark:text-slate-500" />
+                        <span class="text-[10px] font-black tracking-widest text-gray-400 dark:text-slate-500">{{ $t('docs.on_this_page') }}</span>
+                    </div>
+
+                    <nav class="space-y-0.5">
                         <a v-for="heading in currentDoc?.toc || []" :key="heading.id" :href="`#${heading.id}`"
-                            class="block text-sm py-1.5 transition-colors leading-snug" :class="[
-                                heading.level === 2 ? 'text-gray-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary font-medium pl-0' : 'text-gray-400 dark:text-slate-500 hover:text-primary dark:hover:text-primary pl-3 text-xs'
+                            class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium leading-snug transition-all text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800/80 hover:text-navy dark:hover:text-slate-100" :class="[
+                                heading.level > 2 ? 'pl-6 text-xs' : ''
                             ]">
-                            {{ translateHeadingText(heading.text) }}
+                            <span>{{ translateHeadingText(heading.text) }}</span>
                         </a>
                     </nav>
 
                     <!-- Divider -->
-                    <div class="mt-6 pt-6 border-t border-gray-100 dark:border-slate-800">
+                    <div class="mt-4 pt-3 border-t border-gray-100 dark:border-slate-800 space-y-0.5">
                         <NuxtLink to="/docs"
-                            class="flex items-center gap-2 text-xs text-gray-400 dark:text-slate-500 hover:text-navy dark:hover:text-slate-200 transition-colors font-medium mb-3">
-                            <Icon icon="ph:arrow-left-bold" class="text-xs" /> {{ $t('docs.all_docs') || 'All Guides' }}
+                            class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-all text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800/80 hover:text-navy dark:hover:text-slate-100 group">
+                            <Icon icon="ph:arrow-left-bold" class="text-sm shrink-0 text-gray-400 dark:text-slate-500 group-hover:text-primary transition-colors" />
+                            <span>{{ $t('docs.all_docs') || 'Semua Dokumentasi' }}</span>
                         </NuxtLink>
                         <NuxtLink to="/contact"
-                            class="flex items-center gap-2 text-xs text-gray-500 dark:text-slate-400 hover:text-navy dark:hover:text-white transition-colors font-medium mb-2.5 group">
-                            <Icon icon="ph:paper-plane-tilt-bold" class="text-sm text-primary group-hover:scale-110 transition-transform" />
-                            <span>Contact Form</span>
+                            class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-all text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800/80 hover:text-navy dark:hover:text-slate-100 group">
+                            <Icon icon="ph:paper-plane-tilt-bold" class="text-sm shrink-0 text-primary group-hover:scale-110 transition-transform" />
+                            <span>{{ locale === 'id' ? 'Formulir Kontak' : 'Contact Form' }}</span>
                         </NuxtLink>
-                        <a href="mailto:contact@archeris.net"
-                            class="flex items-center gap-2 text-xs text-gray-500 dark:text-slate-400 hover:text-navy dark:hover:text-white transition-colors font-medium group">
-                            <Icon icon="ph:envelope-simple-bold" class="text-sm text-primary group-hover:scale-110 transition-transform" />
-                            <span>contact@archeris.net</span>
+                        <a href="mailto:admin@archeris.net"
+                            class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-all text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800/80 hover:text-navy dark:hover:text-slate-100 group">
+                            <Icon icon="ph:envelope-simple-bold" class="text-sm shrink-0 text-primary group-hover:scale-110 transition-transform" />
+                            <span class="truncate">admin@archeris.net</span>
                         </a>
                     </div>
                 </div>
@@ -234,7 +251,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
@@ -250,11 +267,32 @@ const toast = useToast()
 
 const route = useRoute()
 const router = useRouter()
-const currentSlug = computed(() => {
+
+const rawSlug = computed(() => {
     const raw = route.params.slug
     if (Array.isArray(raw)) return raw.join('/')
     return raw ? String(raw) : ''
 })
+
+const isIdRoute = computed(() => {
+    return rawSlug.value.endsWith('/id') || rawSlug.value === 'id'
+})
+
+const currentSlug = computed(() => {
+    if (isIdRoute.value) {
+        return rawSlug.value.replace(/\/id$/, '')
+    }
+    return rawSlug.value
+})
+
+const activeDocLanguage = computed(() => {
+    return isIdRoute.value ? 'id' : 'en'
+})
+
+const docPath = (slug) => {
+    if (!slug) return '/docs'
+    return isIdRoute.value ? `/docs/${slug}/id` : `/docs/${slug}`
+}
 
 const sidebarSearch = ref('')
 const isMobileMenuOpen = ref(false)
@@ -263,18 +301,16 @@ const toggleMobileMenu = () => {
     isMobileMenuOpen.value = !isMobileMenuOpen.value
 }
 
-watch(currentSlug, () => {
+watch(rawSlug, () => {
     isMobileMenuOpen.value = false // Auto close on navigation in mobile
 })
 
 const categories = computed(() => [
-    { id: 'accounts', label: locale.value === 'id' ? 'Tipe Akun' : 'User Accounts', icon: 'ph:users-three-bold' },
-    { id: 'tournaments', label: locale.value === 'id' ? 'Turnamen' : 'Tournament Setup', icon: 'ph:trophy-bold' },
-    { id: 'scorekeeper', label: locale.value === 'id' ? 'Petugas Skor' : 'Scorekeeper Operations', icon: 'ph:device-mobile-bold' },
-    { id: 'qualification', label: locale.value === 'id' ? 'Babak Kualifikasi' : 'Qualification Rounds', icon: 'ph:chart-line-up-bold' },
-    { id: 'elimination', label: locale.value === 'id' ? 'Bagan Eliminasi' : 'Elimination Brackets', icon: 'ph:tree-structure-bold' },
-    { id: 'finance', label: locale.value === 'id' ? 'Keuangan & Bayar' : 'Finance & Payments', icon: 'ph:coins-bold' },
-    { id: 'subscriptions', label: locale.value === 'id' ? 'Langganan' : 'Subscriptions', icon: 'ph:credit-card-bold' }
+    { id: 'accounts', label: isIdRoute.value ? 'Tipe Akun' : 'User Accounts', icon: 'ph:users-three-bold' },
+    { id: 'tournaments', label: isIdRoute.value ? 'Turnamen' : 'Tournament Setup', icon: 'ph:trophy-bold' },
+    { id: 'scorekeeper', label: isIdRoute.value ? 'Petugas Skor' : 'Scorekeeper Operations', icon: 'ph:device-mobile-bold' },
+    { id: 'qualification', label: isIdRoute.value ? 'Babak Kualifikasi' : 'Qualification Rounds', icon: 'ph:chart-line-up-bold' },
+    { id: 'elimination', label: isIdRoute.value ? 'Bagan Eliminasi' : 'Elimination Brackets', icon: 'ph:tree-structure-bold' }
 ])
 
 const sidebarCategories = categories
@@ -286,10 +322,10 @@ const getCategoryLabel = (id) => {
 
 // Fetch all docs list for sidebar navigation & prev/next calculations
 const { data: docsList } = await useAsyncData(
-    () => `docs-api-sidebar-${locale.value}`,
-    () => $fetch(`${apiBaseUrl}/docs?lang=${locale.value}`),
+    () => `docs-api-sidebar-${activeDocLanguage.value}`,
+    () => $fetch(`${apiBaseUrl}/docs?lang=${activeDocLanguage.value}`),
     {
-        watch: [locale]
+        watch: [activeDocLanguage]
     }
 )
 
@@ -299,14 +335,26 @@ const hasCategories = computed(() => {
     return docs.value.some(d => d.category && d.category.trim() !== '')
 })
 
-const allFilteredSidebarDocs = computed(() => {
-    return docs.value.filter(d => {
-        if (!sidebarSearch.value) return true
-        const q = sidebarSearch.value.toLowerCase()
-        return (d.title && d.title.toLowerCase().includes(q)) ||
-               (d.excerpt && d.excerpt.toLowerCase().includes(q)) ||
-               (d.slug && d.slug.toLowerCase().includes(q))
-    })
+const lastUpdatedText = computed(() => {
+    const rawDate = currentDoc.value?.updated_at
+    const dateObj = rawDate ? new Date(rawDate) : new Date()
+    const validDate = isNaN(dateObj.getTime()) ? new Date() : dateObj
+    
+    if (isIdRoute.value) {
+        const formatted = validDate.toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        })
+        return `Terakhir diperbarui pada ${formatted}`
+    } else {
+        const formatted = validDate.toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+        })
+        return `Last updated on ${formatted}`
+    }
 })
 
 // Canonicalize legacy non-nested URLs or category-prefixed URLs
@@ -318,21 +366,31 @@ watch([docs, currentSlug], () => {
         const base = slug.split('/').pop()
         const match = docs.value.find(d => d.slug === base || d.slug === slug)
         if (match?.slug && match.slug !== slug) {
-            router.replace(`/docs/${match.slug}`)
+            router.replace(docPath(match.slug))
         }
     }
 }, { immediate: true })
 
 // Fetch details for the current doc slug
 const { data: currentDocData } = await useAsyncData(
-    () => `docs-api-detail-${currentSlug.value}-${locale.value}`,
-    () => $fetch(`${apiBaseUrl}/docs/${currentSlug.value}?lang=${locale.value}`).catch(() => null),
+    () => `docs-api-detail-${currentSlug.value}-${activeDocLanguage.value}`,
+    () => $fetch(`${apiBaseUrl}/docs/${currentSlug.value}?lang=${activeDocLanguage.value}`).catch(() => null),
     {
-        watch: [currentSlug, locale]
+        watch: [currentSlug, activeDocLanguage]
     }
 )
 
 const currentDoc = computed(() => currentDocData.value)
+
+const formattedDocContent = computed(() => {
+    const content = currentDoc.value?.content || ''
+    if (!content) return ''
+    
+    // Auto wrap any unwrapped <table> with <div class="table-responsive">
+    return content.replace(/(?<!<div class="(?:table-responsive|tableWrapper)"[^>]*>)\s*(<table[\s\S]*?<\/table>)/gi, (match) => {
+        return `<div class="table-responsive">${match}</div>`
+    })
+})
 
 if (!currentDoc.value) {
     throw createError({
@@ -349,12 +407,7 @@ const prevDoc = computed(() => currentIndex.value > 0 ? docs.value[currentIndex.
 const nextDoc = computed(() => currentIndex.value >= 0 && currentIndex.value < docs.value.length - 1 ? docs.value[currentIndex.value + 1] : null)
 
 const filteredSidebarDocs = (categoryId) => {
-    return docs.value.filter(d => {
-        const matchCat = d.category === categoryId
-        const matchSearch = sidebarSearch.value === '' ||
-            d.title.toLowerCase().includes(sidebarSearch.value.toLowerCase())
-        return matchCat && matchSearch
-    })
+    return docs.value.filter(d => d.category === categoryId)
 }
 
 const sidebarVisibleCategories = computed(() => {
@@ -397,9 +450,12 @@ const copyLink = () => {
     })
 }
 
+const enDocUrl = computed(() => `https://archeris.net/docs/${currentSlug.value}`)
+const idDocUrl = computed(() => `https://archeris.net/docs/${currentSlug.value}/id`)
+const canonicalDocUrl = computed(() => isIdRoute.value ? idDocUrl.value : enDocUrl.value)
+
 const structuredData = computed(() => {
     if (!currentDoc.value?.title) return null
-    const canonicalDocUrl = `https://archeris.net/docs/${currentSlug.value}`
     return [
         {
             '@context': 'https://schema.org',
@@ -421,7 +477,7 @@ const structuredData = computed(() => {
                     '@type': 'ListItem',
                     'position': 3,
                     'name': currentDoc.value.title,
-                    'item': canonicalDocUrl
+                    'item': canonicalDocUrl.value
                 }
             ]
         },
@@ -430,8 +486,8 @@ const structuredData = computed(() => {
             '@type': 'TechArticle',
             'headline': currentDoc.value.title,
             'description': currentDoc.value.excerpt || 'Archeris official documentation.',
-            'url': canonicalDocUrl,
-            'inLanguage': 'en',
+            'url': canonicalDocUrl.value,
+            'inLanguage': isIdRoute.value ? 'id-ID' : 'en-US',
             'datePublished': currentDoc.value?.created_at || '2024-01-15T00:00:00+00:00',
             'dateModified': currentDoc.value?.updated_at || new Date().toISOString(),
             'author': {
@@ -441,7 +497,7 @@ const structuredData = computed(() => {
             },
             'mainEntityOfPage': {
                 '@type': 'WebPage',
-                '@id': canonicalDocUrl
+                '@id': canonicalDocUrl.value
             },
             'publisher': {
                 '@type': 'Organization',
@@ -454,13 +510,16 @@ const structuredData = computed(() => {
 })
 
 useHead(() => {
-    const canonicalDocUrl = `https://archeris.net/docs/${currentSlug.value}`
     return {
+        htmlAttrs: {
+            lang: isIdRoute.value ? 'id' : 'en'
+        },
         title: currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
         link: [
-            { rel: 'canonical', href: canonicalDocUrl },
-            { rel: 'alternate', hreflang: 'en', href: canonicalDocUrl },
-            { rel: 'alternate', hreflang: 'x-default', href: canonicalDocUrl }
+            { rel: 'canonical', href: canonicalDocUrl.value },
+            { rel: 'alternate', hreflang: 'en', href: enDocUrl.value },
+            { rel: 'alternate', hreflang: 'id', href: idDocUrl.value },
+            { rel: 'alternate', hreflang: 'x-default', href: enDocUrl.value }
         ],
         script: [
             {
@@ -477,7 +536,8 @@ useSeoMeta({
     ogTitle: () => currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
     ogDescription: () => currentDoc.value?.excerpt || 'Archeris official documentation and archery scoring guides.',
     ogType: 'article',
-    ogUrl: () => `https://archeris.net/docs/${currentSlug.value}`,
+    ogUrl: () => canonicalDocUrl.value,
+    ogLocale: () => isIdRoute.value ? 'id_ID' : 'en_US',
     twitterCard: 'summary_large_image',
     twitterTitle: () => currentDoc.value ? `${currentDoc.value.title} - Archeris Docs` : 'Documentation - Archeris',
     twitterDescription: () => currentDoc.value?.excerpt || 'Archeris official documentation and archery scoring guides.'
@@ -557,18 +617,89 @@ useSeoMeta({
     opacity: 0.8;
 }
 
-.doc-content table {
+/* Responsive Table Wrapper */
+.doc-content .table-responsive,
+.doc-content .tableWrapper {
     width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    border-radius: 0.75rem;
-    overflow: hidden;
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 1.75rem 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
 }
 
-.doc-content th,
+.doc-content .table-responsive::-webkit-scrollbar,
+.doc-content .tableWrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.doc-content .table-responsive::-webkit-scrollbar-track,
+.doc-content .tableWrapper::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+.doc-content .table-responsive::-webkit-scrollbar-thumb,
+.doc-content .tableWrapper::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.doc-content table {
+    width: 100%;
+    min-width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+    border: none;
+    font-size: 0.875rem;
+}
+
+.doc-content th {
+    background-color: #f8fafc;
+    color: #0f172a;
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-align: left;
+    white-space: nowrap !important;
+    padding: 0.875rem 1.25rem;
+    border-bottom: 2px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    letter-spacing: 0.02em;
+}
+
+.doc-content th:last-child {
+    border-right: none;
+}
+
 .doc-content td {
-    padding: 0.75rem 1rem;
-    border: 1px solid #e2e8f0;
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    color: #334155;
+    background-color: #ffffff;
+    vertical-align: top;
+    line-height: 1.6;
+}
+
+.doc-content td:last-child {
+    border-right: none;
+}
+
+.doc-content tr:last-child td {
+    border-bottom: none;
+}
+
+.doc-content tr:nth-child(even) td {
+    background-color: #f8fafc;
+}
+
+.doc-content tr:hover td {
+    background-color: #f1f5f9;
 }
 
 .doc-content img {
@@ -631,24 +762,56 @@ useSeoMeta({
     color: #38bdf8;
 }
 
-.dark .doc-content table {
+.dark .doc-content .table-responsive,
+.dark .doc-content .tableWrapper {
     border-color: #334155;
+    scrollbar-color: #475569 transparent;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.dark .doc-content .table-responsive::-webkit-scrollbar-track,
+.dark .doc-content .tableWrapper::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+.dark .doc-content .table-responsive::-webkit-scrollbar-thumb,
+.dark .doc-content .tableWrapper::-webkit-scrollbar-thumb {
+    background: #475569;
 }
 
 .dark .doc-content th {
     background-color: #1e293b;
     color: #f8fafc;
-    border-color: #334155;
+    border-bottom: 2px solid #334155;
+    border-right: 1px solid #334155;
+    white-space: nowrap !important;
+}
+
+.dark .doc-content th:last-child {
+    border-right: none;
 }
 
 .dark .doc-content td {
-    border-color: #334155;
+    border-bottom: 1px solid #334155;
+    border-right: 1px solid #334155;
     color: #cbd5e1;
     background-color: #0f172a;
 }
 
+.dark .doc-content td:last-child {
+    border-right: none;
+}
+
+.dark .doc-content tr:last-child td {
+    border-bottom: none;
+}
+
 .dark .doc-content tr:nth-child(even) td {
-    background-color: #1e293b/40;
+    background-color: rgba(30, 41, 59, 0.4);
+}
+
+.dark .doc-content tr:hover td {
+    background-color: rgba(51, 65, 85, 0.4);
 }
 
 .dark .doc-content img {
@@ -723,4 +886,19 @@ useSeoMeta({
 .dark .scrollbar-styled::-webkit-scrollbar-thumb {
     background: #334155;
 }
+
+/* ================= DEV MODE SMART IMAGE STYLING ================= */
+.dev-mode-enabled img {
+    cursor: pointer !important;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+}
+
+.dev-mode-enabled img:hover {
+    outline: 3px dashed #0284c7;
+    outline-offset: 4px;
+    box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.35);
+    filter: brightness(0.97);
+}
+
 </style>

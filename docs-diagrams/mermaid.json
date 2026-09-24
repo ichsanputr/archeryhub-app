@@ -1,0 +1,21 @@
+{
+  "theme": "neutral",
+  "themeVariables": {
+    "fontFamily": "Plus Jakarta Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
+    "fontSize": "15px",
+    "primaryColor": "#f8fafc",
+    "primaryBorderColor": "#94a3b8",
+    "primaryTextColor": "#0f172a",
+    "secondaryColor": "#f1f5f9",
+    "tertiaryColor": "#ffffff",
+    "lineColor": "#475569",
+    "textColor": "#0f172a",
+    "mainBkg": "#ffffff",
+    "nodeBorder": "#cbd5e1",
+    "clusterBkg": "#f8fafc",
+    "clusterBorder": "#cbd5e1",
+    "titleColor": "#0f172a",
+    "edgeLabelBackground": "#ffffff",
+    "nodeTextColor": "#0f172a"
+  }
+}

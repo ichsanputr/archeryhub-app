@@ -1,0 +1,13 @@
+flowchart TD
+  A(["📋 Semua rambahan selesai<br/>diinput scorekeeper"]) --> B(["🔒 Sesi dikunci<br/>hasil disahkan wasit"])
+  B --> C(["📊 Sistem hitung per atlet<br/>Total Skor → Jml 10 → Jml X"])
+  C --> D(["🏆 Peringkat Kualifikasi resmi<br/>Peringkat 1, 2, 3..."])
+  D --> E{"Berapa atlet<br/>lolos eliminasi?"}
+  E -->|4 sampai 7| F(["Bagan 4<br/>Hanya Semifinal"])
+  E -->|8 sampai 15| G(["Bagan 8<br/>Perempat Final"])
+  E -->|16 sampai 31| H(["Bagan 16<br/>16 Besar"])
+  E -->|32 lebih| I(["Bagan 32 atau 64<br/>Format gugur penuh"])
+  F --> J(["🎯 Babak Eliminasi dimulai<br/>Seeding: 1 vs terakhir<br/>2 vs kedua terakhir"])
+  G --> J
+  H --> J
+  I --> J

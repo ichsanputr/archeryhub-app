@@ -203,12 +203,14 @@ const eventSlug = computed(() => {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'event'
 })
 
-// PDF Download helper (Opens directly in a new tab with inline=1 in development mode for hot-reload testing)
+// PDF & ZIP Download helper (Opens directly in a new tab with inline=1 in development mode for hot-reload testing)
 const isDev = process.dev || import.meta.dev || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
 
 const downloadPdfFile = async (path, defaultFilename = 'document.pdf', key = path) => {
-  // In development stage, open PDF in new tab for instant reload on template edits
-  if (isDev) {
+  const isZip = path.includes('zip') || defaultFilename.toLowerCase().endsWith('.zip')
+
+  // In development stage, open PDF in new tab for instant reload on template edits (unless it's a zip)
+  if (isDev && !isZip) {
     const sep = path.includes('?') ? '&' : '?'
     const fullUrl = `${getApiBase()}${path}${sep}inline=1`
     window.open(fullUrl, '_blank')
@@ -231,8 +233,8 @@ const downloadPdfFile = async (path, defaultFilename = 'document.pdf', key = pat
         filename = match[1].replace(/['"]/g, '').trim()
       }
     }
-    if (!filename.toLowerCase().endsWith('.pdf')) {
-      filename += '.pdf'
+    if (!filename.toLowerCase().endsWith('.pdf') && !filename.toLowerCase().endsWith('.zip')) {
+      filename += isZip ? '.zip' : '.pdf'
     }
 
     const blob = await res.blob()
@@ -245,7 +247,7 @@ const downloadPdfFile = async (path, defaultFilename = 'document.pdf', key = pat
     document.body.removeChild(link)
     window.URL.revokeObjectURL(blobUrl)
   } catch (err) {
-    console.error('Failed to download PDF:', err)
+    console.error('Failed to download file:', err)
     toast.error(t('event_printout.err_download_failed'))
   } finally {
     downloadingKeys.value[key] = false
@@ -261,14 +263,28 @@ const rawSections = computed(() => [
     items: [
       {
         id: 'scoresheet',
-        badge: 'CONFIG',
+        badge: 'WA QUAL',
         title: t('event_printout.scoresheet.title'),
         desc: t('event_printout.scoresheet.desc'),
         icon: 'ph:file-pdf-bold',
-        type: 'navigate',
-        actionLabel: t('event_printout.btn_configure_print'),
-        actionIcon: 'ph:gear-six-bold',
-        to: `/dashboard/organizer/tournaments/${eventId}/printout/qualification`
+        type: 'multi',
+        subActions: [
+          {
+            key: 'scoresheet_by_category_zip',
+            label: t('event_printout.scoresheet.by_category_zip', 'Per Kategori (ZIP Archive)'),
+            action: () => downloadPdfFile(`/tournaments/${eventId}/qualification/scoresheets-zip`, `${eventSlug.value}-qualification-scoresheets-by-category.zip`, 'scoresheet_by_category_zip')
+          },
+          {
+            key: 'scoresheet_all',
+            label: t('event_printout.scoresheet.all_sessions', 'Semua Sesi (Full PDF)'),
+            action: () => downloadPdfFile(`/tournaments/${eventId}/qualification/scoresheet`, `${eventSlug.value}-qualification-scoresheets-all.pdf`, 'scoresheet_all')
+          },
+          {
+            key: 'scoresheet_blank',
+            label: t('event_printout.scoresheet.blank_template', 'Template Kosong (Blank PDF)'),
+            action: () => downloadPdfFile(`/tournaments/${eventId}/qualification/scoresheet?blank=1`, `${eventSlug.value}-qualification-scoresheets-blank.pdf`, 'scoresheet_blank')
+          }
+        ]
       },
       {
         id: 'team_scoresheet',
@@ -303,15 +319,6 @@ const rawSections = computed(() => [
         icon: 'ph:calendar-check-bold',
         type: 'direct',
         action: () => downloadPdfFile(`/tournaments/${eventId}/elimination/schedule/printout`, `${eventSlug.value}-elimination-match-schedule-C58.pdf`, 'elim_schedule')
-      },
-      {
-        id: 'elim_brackets_vector',
-        badge: 'C75',
-        title: t('event_printout.elim_brackets_vector.title'),
-        desc: t('event_printout.elim_brackets_vector.desc'),
-        icon: 'ph:tree-structure-bold',
-        type: 'direct',
-        action: () => downloadPdfFile(`/tournaments/${eventId}/elimination/brackets/printout`, `${eventSlug.value}-elimination-brackets-C75.pdf`, 'elim_brackets_vector')
       }
     ]
   },

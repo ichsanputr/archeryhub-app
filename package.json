@@ -15,6 +15,7 @@
     "thumbnails": "node scripts/generateBlogThumbnails.js",
     "problem-thumbnails": "node scripts/generateProblemThumbnails.js",
     "quiz-thumbnails": "node scripts/generateQuizThumbnails.js",
+    "diagrams": "node scripts/generateDiagrams.js",
     "sitemap": "node scripts/generateSitemap.js"
   },
   "devDependencies": {

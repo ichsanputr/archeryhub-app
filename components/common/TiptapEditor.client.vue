@@ -788,8 +788,9 @@ const insertTable = () => {
 
 .editor-prose table th {
     background: #f1f5f9;
-    font-weight: 700;
+    font-weight: 800;
     text-align: left;
+    white-space: nowrap;
 }
 
 .editor-prose table .selectedCell::after {

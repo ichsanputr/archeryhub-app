@@ -73,16 +73,6 @@
                     <span class="text-[10px] font-extrabold font-mono text-primary bg-primary/15 border border-primary/30 px-2 py-0.5 rounded-md">
                       {{ session.session_code }}
                     </span>
-                    <span v-if="session.is_locked"
-                      class="inline-flex items-center gap-1 text-[10px] font-bold text-rose-300 bg-rose-500/20 border border-rose-500/40 px-2 py-0.5 rounded-md">
-                      <Icon icon="ph:lock-fill" class="text-xs" />
-                      {{ t('event_qualification.session_locked') }}
-                    </span>
-                    <span v-else
-                      class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-300 bg-emerald-500/20 border border-emerald-500/40 px-2 py-0.5 rounded-md">
-                      <Icon icon="ph:lock-open-bold" class="text-xs" />
-                      {{ t('event_qualification.session_unlocked') }}
-                    </span>
                   </div>
 
                   <h3 class="font-black text-white text-base sm:text-lg leading-tight group-hover:text-primary transition-colors truncate">
@@ -103,34 +93,14 @@
             <!-- Card Body: Categories, Schedule, Metrics -->
             <div class="p-5 sm:p-6 bg-slate-50/70 flex-1 space-y-4">
               
-              <!-- Assigned Categories Preview -->
-              <div class="space-y-1.5">
-                <div class="flex items-center justify-between text-[11px] font-extrabold text-slate-500">
-                  <span class="flex items-center gap-1.5">
-                    <Icon icon="ph:folders-bold" class="text-slate-400 text-xs" />
-                    {{ t('event_qualification.assigned_categories') }}
-                  </span>
-                  <span class="text-[10px] font-mono font-bold bg-slate-200/80 text-slate-600 px-1.5 py-0.2 rounded-md">
-                    {{ getSessionCategories(session).length }}
-                  </span>
+              <!-- Categories Count Row -->
+              <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs text-xs font-bold text-slate-700">
+                <div class="flex items-center gap-2">
+                  <Icon icon="ph:folders-bold" class="text-primary text-sm shrink-0" />
+                  <span>{{ t('event_qualification.assigned_categories') }}</span>
                 </div>
-
-                <div v-if="getSessionCategories(session).length > 0" class="flex flex-wrap gap-1.5">
-                  <div v-for="cat in getSessionCategories(session).slice(0, 2)" :key="cat.id"
-                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-200/90 text-[11px] font-bold text-navy shadow-2xs">
-                    <img
-                      :src="'/' + getCategoryIcon(`${cat.division_name} ${cat.event_type_name} ${cat.gender_division_name}`)"
-                      :alt="cat.division_name"
-                      class="size-3.5 object-contain shrink-0" />
-                    <span class="truncate max-w-[140px]">{{ getCategoryName(cat) }}</span>
-                  </div>
-                  <span v-if="getSessionCategories(session).length > 2"
-                    class="inline-flex items-center px-2 py-1 rounded-lg bg-slate-200/70 border border-slate-300 text-[10px] font-extrabold text-slate-600">
-                    +{{ getSessionCategories(session).length - 2 }}
-                  </span>
-                </div>
-                <div v-else class="px-3 py-2 rounded-xl bg-white border border-dashed border-slate-200 text-[11px] text-slate-400 italic">
-                  {{ t('event_qualification.no_categories_assigned') }}
+                <div class="font-black text-navy text-xs">
+                  <span class="font-mono">{{ getSessionCategories(session).length }}</span> {{ t('event_qualification.categories_label', 'Kategori') }}
                 </div>
               </div>
 

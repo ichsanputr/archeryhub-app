@@ -156,7 +156,7 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             <BaseInput
               v-model="accountForm.full_name"
               :label="isEn ? 'Full Name' : 'Nama Lengkap'"
@@ -175,15 +175,6 @@
               @blur="validateField('username')"
               icon="ph:at-bold" />
 
-            <BaseInput
-              v-model="accountForm.nik"
-              :label="isEn ? 'National ID / NIK' : 'NIK / Nomor Identitas'"
-              :placeholder="isEn ? '16-digit ID number' : '16 digit nomor NIK'"
-              :error="errors.nik"
-              @blur="validateField('nik')"
-              numberOnly
-              icon="ph:identification-badge-bold" />
-
             <BaseDatePicker
               v-model="accountForm.date_of_birth"
               :label="isEn ? 'Date of Birth' : 'Tanggal Lahir'"
@@ -196,24 +187,6 @@
               :items="genderOptions"
               required
               icon="ph:gender-intersex" />
-
-            <BaseInput
-              v-model.number="accountForm.height_cm"
-              :label="isEn ? 'Height (cm)' : 'Tinggi Badan (cm)'"
-              type="number"
-              placeholder="170"
-              :error="errors.height_cm"
-              @blur="validateField('height_cm')"
-              icon="ph:arrows-out-line-vertical-bold" />
-            
-            <BaseInput
-              v-model.number="accountForm.weight_kg"
-              :label="isEn ? 'Weight (kg)' : 'Berat Badan (kg)'"
-              type="number"
-              placeholder="65"
-              :error="errors.weight_kg"
-              @blur="validateField('weight_kg')"
-              icon="ph:scales-bold" />
           </div>
         </div>
 
@@ -730,20 +703,168 @@ const getPlatformIconBagde = (platform) => {
   return 'bg-slate-100 text-slate-700 border border-slate-200'
 }
 
-// Comprehensive Countries List
+// Comprehensive Countries List with ISO codes and flag icons
 const rawCountries = [
-  'Indonesia',
-  'Malaysia', 'Singapore', 'Thailand', 'Philippines', 'Vietnam', 'Brunei', 'Cambodia', 'Laos', 'Myanmar', 'Timor-Leste',
-  'Australia', 'New Zealand', 'Japan', 'South Korea', 'China', 'Hong Kong', 'Taiwan', 'India', 'Pakistan', 'Bangladesh', 'Sri Lanka', 'Nepal',
-  'United States', 'Canada', 'Mexico', 'Brazil', 'Argentina', 'Chile', 'Colombia', 'Peru',
-  'United Kingdom', 'Germany', 'France', 'Italy', 'Spain', 'Netherlands', 'Belgium', 'Switzerland', 'Austria', 'Sweden', 'Norway', 'Denmark', 'Finland', 'Poland', 'Portugal', 'Greece', 'Turkey', 'Russia', 'Ukraine',
-  'Saudi Arabia', 'United Arab Emirates', 'Qatar', 'Kuwait', 'Bahrain', 'Oman', 'Jordan', 'Egypt', 'South Africa', 'Morocco', 'Nigeria', 'Kenya',
-  'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Armenia', 'Azerbaijan', 'Bahamas', 'Barbados', 'Belarus', 'Belize', 'Benin', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Bulgaria',
-  'Cameroon', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic', 'Dominican Republic', 'Ecuador', 'El Salvador', 'Estonia', 'Ethiopia', 'Fiji', 'Georgia', 'Ghana', 'Guatemala', 'Haiti', 'Honduras', 'Hungary', 'Iceland', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Jamaica', 'Kazakhstan', 'Kyrgyzstan', 'Latvia', 'Lebanon', 'Libya', 'Lithuania', 'Luxembourg', 'Madagascar', 'Maldives', 'Mali', 'Malta', 'Mauritius', 'Moldova', 'Monaco', 'Mongolia', 'Montenegro', 'Namibia', 'Nicaragua', 'North Korea', 'North Macedonia', 'Palestine', 'Panama', 'Papua New Guinea', 'Paraguay', 'Romania', 'Rwanda', 'Senegal', 'Serbia', 'Seychelles', 'Slovakia', 'Slovenia', 'Somalia', 'Sudan', 'Suriname', 'Syria', 'Tajikistan', 'Tanzania', 'Togo', 'Trinidad and Tobago', 'Tunisia', 'Turkmenistan', 'Uganda', 'Uruguay', 'Uzbekistan', 'Vatican City', 'Venezuela', 'Yemen', 'Zambia', 'Zimbabwe'
+  { name: 'Indonesia', code: 'id' },
+  { name: 'Malaysia', code: 'my' },
+  { name: 'Singapore', code: 'sg' },
+  { name: 'Thailand', code: 'th' },
+  { name: 'Philippines', code: 'ph' },
+  { name: 'Vietnam', code: 'vn' },
+  { name: 'Brunei', code: 'bn' },
+  { name: 'Cambodia', code: 'kh' },
+  { name: 'Laos', code: 'la' },
+  { name: 'Myanmar', code: 'mm' },
+  { name: 'Timor-Leste', code: 'tl' },
+  { name: 'Australia', code: 'au' },
+  { name: 'New Zealand', code: 'nz' },
+  { name: 'Japan', code: 'jp' },
+  { name: 'South Korea', code: 'kr' },
+  { name: 'China', code: 'cn' },
+  { name: 'Hong Kong', code: 'hk' },
+  { name: 'Taiwan', code: 'tw' },
+  { name: 'India', code: 'in' },
+  { name: 'Pakistan', code: 'pk' },
+  { name: 'Bangladesh', code: 'bd' },
+  { name: 'Sri Lanka', code: 'lk' },
+  { name: 'Nepal', code: 'np' },
+  { name: 'United States', code: 'us' },
+  { name: 'Canada', code: 'ca' },
+  { name: 'Mexico', code: 'mx' },
+  { name: 'Brazil', code: 'br' },
+  { name: 'Argentina', code: 'ar' },
+  { name: 'Chile', code: 'cl' },
+  { name: 'Colombia', code: 'co' },
+  { name: 'Peru', code: 'pe' },
+  { name: 'United Kingdom', code: 'gb' },
+  { name: 'Germany', code: 'de' },
+  { name: 'France', code: 'fr' },
+  { name: 'Italy', code: 'it' },
+  { name: 'Spain', code: 'es' },
+  { name: 'Netherlands', code: 'nl' },
+  { name: 'Belgium', code: 'be' },
+  { name: 'Switzerland', code: 'ch' },
+  { name: 'Austria', code: 'at' },
+  { name: 'Sweden', code: 'se' },
+  { name: 'Norway', code: 'no' },
+  { name: 'Denmark', code: 'dk' },
+  { name: 'Finland', code: 'fi' },
+  { name: 'Poland', code: 'pl' },
+  { name: 'Portugal', code: 'pt' },
+  { name: 'Greece', code: 'gr' },
+  { name: 'Turkey', code: 'tr' },
+  { name: 'Russia', code: 'ru' },
+  { name: 'Ukraine', code: 'ua' },
+  { name: 'Saudi Arabia', code: 'sa' },
+  { name: 'United Arab Emirates', code: 'ae' },
+  { name: 'Qatar', code: 'qa' },
+  { name: 'Kuwait', code: 'kw' },
+  { name: 'Bahrain', code: 'bh' },
+  { name: 'Oman', code: 'om' },
+  { name: 'Jordan', code: 'jo' },
+  { name: 'Egypt', code: 'eg' },
+  { name: 'South Africa', code: 'za' },
+  { name: 'Morocco', code: 'ma' },
+  { name: 'Nigeria', code: 'ng' },
+  { name: 'Kenya', code: 'ke' },
+  { name: 'Afghanistan', code: 'af' },
+  { name: 'Albania', code: 'al' },
+  { name: 'Algeria', code: 'dz' },
+  { name: 'Andorra', code: 'ad' },
+  { name: 'Angola', code: 'ao' },
+  { name: 'Armenia', code: 'am' },
+  { name: 'Azerbaijan', code: 'az' },
+  { name: 'Bahamas', code: 'bs' },
+  { name: 'Barbados', code: 'bb' },
+  { name: 'Belarus', code: 'by' },
+  { name: 'Belize', code: 'bz' },
+  { name: 'Benin', code: 'bj' },
+  { name: 'Bhutan', code: 'bt' },
+  { name: 'Bolivia', code: 'bo' },
+  { name: 'Bosnia and Herzegovina', code: 'ba' },
+  { name: 'Botswana', code: 'bw' },
+  { name: 'Bulgaria', code: 'bg' },
+  { name: 'Cameroon', code: 'cm' },
+  { name: 'Costa Rica', code: 'cr' },
+  { name: 'Croatia', code: 'hr' },
+  { name: 'Cuba', code: 'cu' },
+  { name: 'Cyprus', code: 'cy' },
+  { name: 'Czech Republic', code: 'cz' },
+  { name: 'Dominican Republic', code: 'do' },
+  { name: 'Ecuador', code: 'ec' },
+  { name: 'El Salvador', code: 'sv' },
+  { name: 'Estonia', code: 'ee' },
+  { name: 'Ethiopia', code: 'et' },
+  { name: 'Fiji', code: 'fj' },
+  { name: 'Georgia', code: 'ge' },
+  { name: 'Ghana', code: 'gh' },
+  { name: 'Guatemala', code: 'gt' },
+  { name: 'Haiti', code: 'ht' },
+  { name: 'Honduras', code: 'hn' },
+  { name: 'Hungary', code: 'hu' },
+  { name: 'Iceland', code: 'is' },
+  { name: 'Iran', code: 'ir' },
+  { name: 'Iraq', code: 'iq' },
+  { name: 'Ireland', code: 'ie' },
+  { name: 'Israel', code: 'il' },
+  { name: 'Jamaica', code: 'jm' },
+  { name: 'Kazakhstan', code: 'kz' },
+  { name: 'Kyrgyzstan', code: 'kg' },
+  { name: 'Latvia', code: 'lv' },
+  { name: 'Lebanon', code: 'lb' },
+  { name: 'Libya', code: 'ly' },
+  { name: 'Lithuania', code: 'lt' },
+  { name: 'Luxembourg', code: 'lu' },
+  { name: 'Madagascar', code: 'mg' },
+  { name: 'Maldives', code: 'mv' },
+  { name: 'Mali', code: 'ml' },
+  { name: 'Malta', code: 'mt' },
+  { name: 'Mauritius', code: 'mu' },
+  { name: 'Moldova', code: 'md' },
+  { name: 'Monaco', code: 'mc' },
+  { name: 'Mongolia', code: 'mn' },
+  { name: 'Montenegro', code: 'me' },
+  { name: 'Namibia', code: 'na' },
+  { name: 'Nicaragua', code: 'ni' },
+  { name: 'North Korea', code: 'kp' },
+  { name: 'North Macedonia', code: 'mk' },
+  { name: 'Palestine', code: 'ps' },
+  { name: 'Panama', code: 'pa' },
+  { name: 'Papua New Guinea', code: 'pg' },
+  { name: 'Paraguay', code: 'py' },
+  { name: 'Romania', code: 'ro' },
+  { name: 'Rwanda', code: 'rw' },
+  { name: 'Senegal', code: 'sn' },
+  { name: 'Serbia', code: 'rs' },
+  { name: 'Seychelles', code: 'sc' },
+  { name: 'Slovakia', code: 'sk' },
+  { name: 'Slovenia', code: 'si' },
+  { name: 'Somalia', code: 'so' },
+  { name: 'Sudan', code: 'sd' },
+  { name: 'Suriname', code: 'sr' },
+  { name: 'Syria', code: 'sy' },
+  { name: 'Tajikistan', code: 'tj' },
+  { name: 'Tanzania', code: 'tz' },
+  { name: 'Togo', code: 'tg' },
+  { name: 'Trinidad and Tobago', code: 'tt' },
+  { name: 'Tunisia', code: 'tn' },
+  { name: 'Turkmenistan', code: 'tm' },
+  { name: 'Uganda', code: 'ug' },
+  { name: 'Uruguay', code: 'uy' },
+  { name: 'Uzbekistan', code: 'uz' },
+  { name: 'Vatican City', code: 'va' },
+  { name: 'Venezuela', code: 've' },
+  { name: 'Yemen', code: 'ye' },
+  { name: 'Zambia', code: 'zm' },
+  { name: 'Zimbabwe', code: 'zw' }
 ]
 
 const countryItems = computed(() => {
-  return rawCountries.map(c => ({ title: c, value: c }))
+  return rawCountries.map(c => ({
+    title: c.name,
+    value: c.name,
+    icon: `circle-flags:${c.code}`
+  }))
 })
 
 const genderOptions = computed(() => [
@@ -768,12 +889,9 @@ const handDominanceOptions = computed(() => [
 const accountForm = ref({
   full_name: '',
   username: '',
-  nik: '',
   date_of_birth: '',
   gender: 'male',
   hand_dominance: 'right',
-  height_cm: null,
-  weight_kg: null,
   phone: '',
   email: '',
   emergency_contact_name: '',
@@ -794,10 +912,7 @@ const errors = ref({
   username: '',
   email: '',
   phone: '',
-  nik: '',
-  date_of_birth: '',
-  height_cm: '',
-  weight_kg: ''
+  date_of_birth: ''
 })
 
 const validateField = (field) => {
@@ -845,33 +960,6 @@ const validateField = (field) => {
       errors.value.phone = isEn.value ? 'Phone number must be at least 8 digits.' : 'Nomor telepon minimal 8 digit.'
     } else {
       errors.value.phone = ''
-    }
-  }
-
-  if (field === 'nik') {
-    const val = accountForm.value.nik?.trim()
-    if (val && accountForm.value.country === 'Indonesia' && !/^\d{16}$/.test(val)) {
-      errors.value.nik = isEn.value ? 'Indonesian NIK must be exactly 16 digits.' : 'NIK Indonesia harus terdiri dari 16 digit angka.'
-    } else {
-      errors.value.nik = ''
-    }
-  }
-
-  if (field === 'height_cm') {
-    const val = accountForm.value.height_cm
-    if (val !== null && val !== '' && (Number(val) < 50 || Number(val) > 250)) {
-      errors.value.height_cm = isEn.value ? 'Height must be between 50 - 250 cm.' : 'Tinggi badan harus antara 50 - 250 cm.'
-    } else {
-      errors.value.height_cm = ''
-    }
-  }
-
-  if (field === 'weight_kg') {
-    const val = accountForm.value.weight_kg
-    if (val !== null && val !== '' && (Number(val) < 20 || Number(val) > 250)) {
-      errors.value.weight_kg = isEn.value ? 'Weight must be between 20 - 250 kg.' : 'Berat badan harus antara 20 - 250 kg.'
-    } else {
-      errors.value.weight_kg = ''
     }
   }
 
@@ -940,12 +1028,9 @@ const loadProfile = async () => {
     accountForm.value = {
       full_name: data.full_name || '',
       username: data.username || '',
-      nik: data.nik || '',
       date_of_birth: data.date_of_birth ? new Date(data.date_of_birth).toISOString().split('T')[0] : '',
       gender: data.gender || 'male',
       hand_dominance: data.hand_dominance || 'right',
-      height_cm: data.height_cm || null,
-      weight_kg: data.weight_kg || null,
       phone: data.phone || '',
       email: data.email || '',
       emergency_contact_name: data.emergency_contact_name || '',
@@ -1002,7 +1087,7 @@ const loadProfile = async () => {
 
 const saveFullProfile = async () => {
   // Trigger full validation
-  ['full_name', 'email', 'username', 'phone', 'nik', 'height_cm', 'weight_kg', 'date_of_birth'].forEach(validateField)
+  ['full_name', 'email', 'username', 'phone', 'date_of_birth'].forEach(validateField)
 
   const hasErrors = Object.values(errors.value).some(err => !!err)
   if (hasErrors) {

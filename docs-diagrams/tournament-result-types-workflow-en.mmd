@@ -1,0 +1,10 @@
+flowchart TD
+  A(["Tournament Created"]) --> B{"Choose result type"}
+  B -->|System-Generated| C(["Setup qualification<br/>sessions & categories"])
+  B -->|Manual Upload| D(["Setup participants<br/>& registration only"])
+  C --> E(["Scorekeepers enter scores<br/>via mobile app"])
+  D --> F(["Prepare results<br/>externally"])
+  E --> G(["Auto-generate<br/>leaderboards & brackets"])
+  F --> H(["Upload PDF/images<br/>to tournament"])
+  G --> I(["🔴 Live, interactive results<br/>on public page"])
+  H --> J(["📄 Static documents<br/>on public page"])

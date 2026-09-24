@@ -1,0 +1,10 @@
+flowchart TD
+  A(["Turnamen Dibuat"]) --> B{"Pilih Jenis Hasil"}
+  B -->|System-Generated| C(["Atur sesi kualifikasi<br/>& kategori lomba"])
+  B -->|Manual Upload| D(["Atur peserta<br/>& pendaftaran saja"])
+  C --> E(["Scorekeeper input nilai<br/>via aplikasi mobile"])
+  D --> F(["Siapkan berkas hasil<br/>secara eksternal"])
+  E --> G(["Sistem generate otomatis<br/>klasemen & bagan"])
+  F --> H(["Upload PDF/gambar<br/>ke turnamen"])
+  G --> I(["🔴 Hasil live & interaktif<br/>di halaman publik"])
+  H --> J(["📄 Dokumen statis<br/>di halaman publik"])

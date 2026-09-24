@@ -1,18 +1,6 @@
 <template>
     <div class="space-y-6">
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
-        
-        <!-- Session Lock / Unlock Confirmation Dialog -->
-        <AppDialog
-            v-model:show="showLockConfirmDialog"
-            :title="isSessionLocked ? t('event_qualification.unlock_session_title', 'Buka Kunci Sesi Penilaian?') : t('event_qualification.lock_session_title', 'Kunci Sesi Penilaian?')"
-            :message="isSessionLocked ? t('event_qualification.unlock_session_desc', 'Sesi penilaian akan dibuka kembali. Scorekeeper dan panitia dapat menginput atau mengubah skor kualifikasi.') : t('event_qualification.lock_session_desc', 'Setelah dikunci, input dan perubahan skor pada sesi ini tidak dapat dilakukan hingga kunci dibuka kembali.')"
-            :confirmText="isSessionLocked ? t('event_qualification.confirm_unlock_btn', 'Buka Kunci') : t('event_qualification.confirm_lock_btn', 'Kunci Sesi')"
-            :cancelText="t('common.cancel', 'Batal')"
-            :icon="isSessionLocked ? 'ph:lock-open-bold' : 'ph:lock-bold'"
-            :type="isSessionLocked ? 'primary' : 'danger'"
-            @confirm="executeToggleSessionLock"
-        />
 
         <!-- Top Target Board Quick Switcher & Stats Bar -->
         <div v-if="selectedCategory && targetAssignments.length > 0"
@@ -52,32 +40,34 @@
                         </button>
                     </div>
 
-                    <!-- Lock / Unlock Session Switcher -->
-                    <div class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 shrink-0 select-none shadow-2xs">
-                        <div class="flex items-center gap-1.5">
-                            <Icon :icon="isSessionLocked ? 'ph:lock-key-fill' : 'ph:lock-key-open-bold'"
-                                :class="isSessionLocked ? 'text-rose-600' : 'text-slate-500'"
+                    <!-- Lock / Unlock Category Switcher -->
+                    <div @click="handleToggleLock"
+                        class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/90 shrink-0 select-none shadow-2xs cursor-pointer hover:bg-slate-100/80 transition-all"
+                        :title="isCategoryLocked ? t('event_qualification.unlock_category_title', 'Buka Kunci Penilaian Kategori Ini?') : t('event_qualification.lock_category_title', 'Kunci Penilaian Kategori Ini?')">
+                        <div class="flex items-center gap-1.5 pointer-events-none">
+                            <Icon :icon="isCategoryLocked ? 'ph:lock-key-fill' : 'ph:lock-key-open-bold'"
+                                :class="isCategoryLocked ? 'text-rose-600' : 'text-slate-500'"
                                 class="text-sm transition-colors" />
                             <span class="text-xs font-bold"
-                                :class="isSessionLocked ? 'text-rose-700 font-black' : 'text-slate-600'">
-                                {{ isSessionLocked ? t('event_qualification.session_locked', 'Terkunci') : t('event_qualification.session_unlocked', 'Terbuka') }}
+                                :class="isCategoryLocked ? 'text-rose-700 font-black' : 'text-slate-600'">
+                                {{ isCategoryLocked ? t('event_qualification.scoring_locked', 'Input Nilai Terkunci') : t('event_qualification.scoring_unlocked', 'Input Nilai Terbuka') }}
                             </span>
                         </div>
 
                         <!-- Switch Toggle Button -->
-                        <button type="button" role="switch" :aria-checked="isSessionLocked"
-                            @click="isSubscriptionActive ? promptToggleLock() : (showPremiumModal = true)"
+                        <button type="button" role="switch" :aria-checked="isCategoryLocked"
+                            :disabled="isTogglingLock"
                             :class="[
                                 'relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none',
-                                isSessionLocked ? 'bg-rose-600' : 'bg-slate-300 hover:bg-slate-400'
-                            ]"
-                            :title="isSessionLocked ? t('event_qualification.unlock_session_title', 'Buka Kunci Sesi Penilaian?') : t('event_qualification.lock_session_title', 'Kunci Sesi Penilaian?')">
+                                isCategoryLocked ? 'bg-rose-600' : 'bg-slate-300 hover:bg-slate-400'
+                            ]">
                             <span
                                 :class="[
                                     'pointer-events-none inline-block size-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out flex items-center justify-center text-[10px]',
-                                    isSessionLocked ? 'translate-x-5 text-rose-600' : 'translate-x-0 text-slate-400'
+                                    isCategoryLocked ? 'translate-x-5 text-rose-600' : 'translate-x-0 text-slate-400'
                                 ]">
-                                <Icon :icon="isSessionLocked ? 'ph:lock-fill' : 'ph:lock-open-bold'" />
+                                <Icon v-if="isTogglingLock" icon="ph:spinner-bold" class="animate-spin text-slate-500" />
+                                <Icon v-else :icon="isCategoryLocked ? 'ph:lock-fill' : 'ph:lock-open-bold'" />
                             </span>
                         </button>
                     </div>
@@ -494,6 +484,7 @@
                 </button>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -506,7 +497,6 @@ import { useApi, getApiErrorMessage } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useSubscription } from '~/composables/useSubscription'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
-import AppDialog from '~/components/common/AppDialog.vue'
 
 const { isSubscriptionActive } = useSubscription()
 const { t } = useI18n()
@@ -540,29 +530,85 @@ const showMobileInputBoard = ref(false)
 const searchArcherQuery = ref('')
 const selectedTargetFilter = ref(null)
 
-const isSessionLocked = computed(() => Boolean(props.sessionData?.is_locked))
-const showLockConfirmDialog = ref(false)
+const localCategoryLocks = ref({})
+const isTogglingLock = ref(false)
 
-const promptToggleLock = () => {
-    showLockConfirmDialog.value = true
-}
+// Keep localCategoryLocks in sync whenever props.sessionData changes
+watch(
+    () => [props.sessionData?.category_locks, props.selectedCategory],
+    ([newLocks, catId]) => {
+        if (newLocks && catId && newLocks[catId] !== undefined) {
+            localCategoryLocks.value[catId] = Boolean(newLocks[catId])
+        }
+    },
+    { immediate: true, deep: true }
+)
 
-const executeToggleSessionLock = async () => {
+const isCategoryLocked = computed(() => {
+    const catId = props.selectedCategory
+    if (catId && localCategoryLocks.value[catId] !== undefined) {
+        return Boolean(localCategoryLocks.value[catId])
+    }
+    if (props.sessionData?.category_locks && catId) {
+        if (props.sessionData.category_locks[catId] !== undefined) {
+            return Boolean(props.sessionData.category_locks[catId])
+        }
+    }
+    return Boolean(props.sessionData?.is_locked)
+})
+
+const handleToggleLock = async () => {
+    if (isTogglingLock.value) return
+    if (!isSubscriptionActive.value) {
+        showPremiumModal.value = true
+        return
+    }
+
+    const catId = props.selectedCategory
+    const sessionId = props.sessionData?.uuid || props.sessionData?.id
+    const eventId = route.params.id
+    if (!catId || !sessionId) return
+
+    const previousState = isCategoryLocked.value
+    const nextState = !previousState
+
+    // Optimistically update local state so the switcher moves immediately!
+    localCategoryLocks.value[catId] = nextState
+    if (props.sessionData) {
+        if (!props.sessionData.category_locks) {
+            props.sessionData.category_locks = {}
+        }
+        props.sessionData.category_locks[catId] = nextState
+    }
+
+    isTogglingLock.value = true
     try {
-        const sessionId = props.sessionData?.uuid || props.sessionData?.id
-        const eventId = route.params.id
-        const res = await post(`/tournaments/${eventId}/qualification/sessions/${sessionId}/lock`, {})
+        const res = await post(`/tournaments/${eventId}/qualification/sessions/${sessionId}/lock`, {
+            category_id: catId
+        })
         if (res) {
-            props.sessionData.is_locked = res.is_locked
-            if (res.is_locked) {
-                toast.success(t('event_qualification.session_locked_success', 'Sesi penilaian berhasil dikunci'))
+            const serverState = res.is_locked !== undefined ? Boolean(res.is_locked) : nextState
+            localCategoryLocks.value[catId] = serverState
+            if (props.sessionData?.category_locks) {
+                props.sessionData.category_locks[catId] = serverState
+            }
+            if (serverState) {
+                toast.success(t('event_qualification.category_scoring_locked_success', 'Penilaian kategori berhasil dikunci'))
             } else {
-                toast.success(t('event_qualification.session_unlocked_success', 'Kunci sesi penilaian berhasil dibuka'))
+                toast.success(t('event_qualification.category_scoring_unlocked_success', 'Kunci penilaian kategori berhasil dibuka'))
             }
             emit('updated')
         }
     } catch (err) {
-        toast.error(getApiErrorMessage(err, t('event_qualification.session_lock_failed', 'Gagal mengubah status kunci sesi')))
+        // Revert on error
+        localCategoryLocks.value[catId] = previousState
+        if (props.sessionData?.category_locks) {
+            props.sessionData.category_locks[catId] = previousState
+        }
+        console.error('Failed to toggle category lock:', err)
+        toast.error(getApiErrorMessage(err, t('event_qualification.session_lock_failed', 'Gagal mengubah status kunci penilaian')))
+    } finally {
+        isTogglingLock.value = false
     }
 }
 
@@ -739,8 +785,8 @@ const closeMobileInputBoard = () => {
 }
 
 const addScore = (score) => {
-    if (isSessionLocked.value) {
-        toast.warning(t('event_qualification.session_is_locked_warning', 'Sesi penilaian terkunci. Tidak dapat mengubah nilai.'))
+    if (isCategoryLocked.value) {
+        toast.warning(t('event_qualification.category_is_locked_warning', 'Penilaian kategori ini terkunci. Tidak dapat mengubah nilai.'))
         return
     }
     const assignment = currentScoringAssignment.value
@@ -766,8 +812,8 @@ const addScore = (score) => {
 }
 
 const deleteLastScore = () => {
-    if (isSessionLocked.value) {
-        toast.warning(t('event_qualification.session_is_locked_warning', 'Sesi penilaian terkunci. Tidak dapat mengubah nilai.'))
+    if (isCategoryLocked.value) {
+        toast.warning(t('event_qualification.category_is_locked_warning', 'Penilaian kategori ini terkunci. Tidak dapat mengubah nilai.'))
         return
     }
     const assignment = currentScoringAssignment.value
@@ -945,8 +991,8 @@ const goNextEnd = () => {
 }
 
 const saveEndAndNext = async () => {
-    if (isSessionLocked.value) {
-        toast.warning(t('event_qualification.session_is_locked_warning', 'Sesi penilaian terkunci. Tidak dapat mengubah nilai.'))
+    if (isCategoryLocked.value) {
+        toast.warning(t('event_qualification.category_is_locked_warning', 'Penilaian kategori ini terkunci. Tidak dapat mengubah nilai.'))
         return
     }
     if (!currentScoringAssignment.value) return

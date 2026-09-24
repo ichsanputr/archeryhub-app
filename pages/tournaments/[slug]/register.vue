@@ -1638,9 +1638,6 @@
                                 <Icon v-if="isArcherCategorySelected(activeCategoryDropdownAth, cat.id)" icon="ph:check-bold" class="text-[10px]" />
                             </div>
                             <span class="truncate">{{ getCategoryFullName(cat) }}</span>
-                            <span v-if="activeCategoryDropdownAth && isCategoryRecommendedForArcher(cat, activeCategoryDropdownAth)" class="px-1.5 py-0.2 rounded text-[10px] font-black bg-amber-50 text-amber-700 border border-amber-200 shrink-0">
-                                {{ isEn ? 'Recommended' : 'Sesuai Usia' }}
-                            </span>
                         </div>
                         <span class="text-[11px] font-bold text-slate-500 whitespace-nowrap">
                             {{ formatPrice(getFeeForCategory(cat.id)) }}
@@ -2291,39 +2288,6 @@ const isCategoryMatchingGender = (cat, archerGender) => {
         return true
     }
     return true
-}
-
-const isCategoryRecommendedForArcher = (cat, ath) => {
-    if (!cat || !ath) return false
-    if (!isCategoryMatchingGender(cat, ath.gender)) return false
-    if (!ath.date_of_birth) return false
-
-    const birthDate = new Date(ath.date_of_birth)
-    if (isNaN(birthDate.getTime())) return false
-
-    const now = new Date()
-    const age = now.getFullYear() - birthDate.getFullYear()
-    const catName = String(cat.name || cat.category_name || cat.category_name_custom || '').toLowerCase()
-
-    if (catName.includes('u-12') || catName.includes('u12')) {
-        return age <= 12
-    }
-    if (catName.includes('u-15') || catName.includes('u15')) {
-        return age > 12 && age <= 15
-    }
-    if (catName.includes('u-18') || catName.includes('u18')) {
-        return age > 15 && age <= 18
-    }
-    if (catName.includes('u-21') || catName.includes('u21')) {
-        return age > 18 && age <= 21
-    }
-    if (catName.includes('master')) {
-        return age >= 50
-    }
-    if (catName.includes('umum') || catName.includes('open') || catName.includes('senior')) {
-        return age >= 18 && age < 50
-    }
-    return false
 }
 
 const individualCategories = computed(() => {

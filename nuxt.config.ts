@@ -10,34 +10,8 @@ export default defineNuxtConfig({
   i18n: {
     baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://archeris.net',
     locales: [
-      {
-        code: 'en',
-        iso: 'en-US',
-        name: 'English',
-        language: 'en-US',
-        files: [
-          'en/common.json',
-          'en/auth.json',
-          'en/dashboard.json',
-          'en/tournaments.json',
-          'en/archers.json',
-          'en/commerce.json'
-        ]
-      },
-      {
-        code: 'id',
-        iso: 'id-ID',
-        name: 'Bahasa Indonesia',
-        language: 'id-ID',
-        files: [
-          'id/common.json',
-          'id/auth.json',
-          'id/dashboard.json',
-          'id/tournaments.json',
-          'id/archers.json',
-          'id/commerce.json'
-        ]
-      }
+      { code: 'en', iso: 'en-US', file: 'en.json', name: 'English', language: 'en-US' },
+      { code: 'id', iso: 'id-ID', file: 'id.json', name: 'Bahasa Indonesia', language: 'id-ID' }
     ],
     lazy: false,
     langDir: 'locales',
@@ -150,7 +124,6 @@ export default defineNuxtConfig({
     },
     routeRules: {
       '/feed.xml': { redirect: { to: '/rss.xml', statusCode: 301 } },
-      '/pricing': { redirect: { to: '/package', statusCode: 301 } },
       '/events': { redirect: { to: '/tournaments', statusCode: 301 } },
       '/events/**': { redirect: { to: '/tournaments/**', statusCode: 301 } },
       // Static media caching for Google PageSpeed / Lighthouse

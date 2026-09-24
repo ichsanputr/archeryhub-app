@@ -129,9 +129,33 @@
                 class="w-full h-full object-contain" />
             </div>
             <div class="flex-1 min-w-0">
-              <div
-                class="font-extrabold text-navy leading-tight mb-1.5 line-clamp-2">
-                {{ getCategoryName(category) }}</div>
+              <div class="flex items-start justify-between gap-1.5 mb-1">
+                <span class="font-extrabold text-navy leading-tight line-clamp-2">
+                  {{ getCategoryName(category) }}
+                </span>
+              </div>
+
+              <!-- Badges for lock statuses: Target Assignment Lock vs Score Input Lock -->
+              <div v-if="sessionData?.category_target_locks?.[category.id || category.uuid] || sessionData?.category_locks?.[category.id || category.uuid]" 
+                   class="flex items-center gap-1.5 flex-wrap mt-1">
+                <!-- 1. Lock Target Assignment (Bantalan terkunci karena ada nilai kualifikasi) -->
+                <span v-if="sessionData?.category_target_locks?.[category.id || category.uuid]" 
+                      class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200/90 text-[10px] font-extrabold shadow-2xs" 
+                      :title="t('event_qualification.lock_target_tooltip', 'Penempatan Target Terkunci: Nilai kualifikasi sudah mulai tercatat')">
+                  <Icon icon="ph:target-bold" class="text-[11px] text-amber-600" />
+                  <span>{{ t('event_qualification.lock_target_badge', 'Target') }}</span>
+                  <Icon icon="ph:lock-simple-fill" class="text-[9px] text-amber-600/80" />
+                </span>
+
+                <!-- 2. Lock Input Score (Input nilai terkunci oleh panitia) -->
+                <span v-if="sessionData?.category_locks?.[category.id || category.uuid]" 
+                      class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-rose-50 text-rose-700 border border-rose-200/90 text-[10px] font-extrabold shadow-2xs" 
+                      :title="t('event_qualification.lock_score_tooltip', 'Input Skor Terkunci: Penilaian kategori ini telah ditutup oleh panitia')">
+                  <Icon icon="ph:pencil-simple-slash-bold" class="text-[11px] text-rose-600" />
+                  <span>{{ t('event_qualification.lock_score_badge', 'Skor') }}</span>
+                  <Icon icon="ph:lock-simple-fill" class="text-[9px] text-rose-600/80" />
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -159,7 +183,7 @@
       <!-- Mode: Input Scoring -->
       <div v-else-if="activeTab === 'input' && selectedCategory">
         <QualificationScoringMode :sessionData="sessionData" :selectedCategory="selectedCategory"
-          :targetAssignments="targetAssignments" @updated="fetchTargetAssignments(selectedCategory)"
+          :targetAssignments="targetAssignments" @updated="handleScoringUpdated"
           @switch-tab="(tab) => activeTab = tab" />
       </div>
 
@@ -610,6 +634,13 @@ onMounted(async () => {
   // Ensure we finish full list fetch in background
   await participantsPromise
 })
+
+const handleScoringUpdated = async () => {
+  await fetchSessionData()
+  if (selectedCategory.value) {
+    await fetchTargetAssignments(selectedCategory.value)
+  }
+}
 
 watch(activeTab, (newTab) => {
   if (newTab === 'input' && selectedCategory.value) {

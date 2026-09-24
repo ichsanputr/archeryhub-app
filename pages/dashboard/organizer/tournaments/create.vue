@@ -356,6 +356,128 @@
             </div>
           </FormSection>
 
+          <!-- Section: Buku Panduan Teknis (THB / Technical Handbook) -->
+          <FormSection icon="ph:file-pdf-bold" :title="t('event_create.section_guidebook')">
+            <div class="space-y-4">
+              <div class="text-xs sm:text-sm text-gray-500 font-medium">
+                {{ t('event_create.guidebook_subtitle') }}
+              </div>
+
+              <!-- Hidden multi-file input -->
+              <input
+                ref="guidebookInput"
+                type="file"
+                multiple
+                class="hidden"
+                accept="application/pdf"
+                @change="handleGuidebookUpload"
+              />
+
+              <!-- Upload / Add link controls -->
+              <div class="flex flex-col sm:flex-row gap-2.5">
+                <div class="relative flex-1">
+                  <Icon icon="ph:link-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
+                  <input
+                    v-model="manualGuidebookUrl"
+                    type="url"
+                    :placeholder="t('event_create.guidebook_url_placeholder')"
+                    class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/10 outline-none text-sm text-navy transition-all"
+                    @keydown.enter.prevent="addManualGuidebookLink"
+                  />
+                </div>
+                <div class="sm:w-60">
+                  <input
+                    v-model="manualGuidebookName"
+                    type="text"
+                    :placeholder="t('event_create.guidebook_name_placeholder')"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/10 outline-none text-sm text-navy transition-all"
+                    @keydown.enter.prevent="addManualGuidebookLink"
+                  />
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    @click="addManualGuidebookLink"
+                    :disabled="!manualGuidebookUrl?.trim()"
+                    class="px-4 py-2.5 rounded-xl bg-white border border-gray-200 hover:border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed text-navy text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs"
+                  >
+                    <Icon icon="ph:plus-bold" class="text-sm" />
+                    <span>{{ t('event_create.guidebook_add_link') }}</span>
+                  </button>
+                  <button
+                    type="button"
+                    @click="openMediaLibrary('guidebook')"
+                    class="px-4 py-2.5 rounded-xl bg-navy hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs"
+                  >
+                    <Icon icon="ph:file-arrow-up-bold" class="text-sm" />
+                    <span>{{ t('event_create.guidebook_upload_btn') }}</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- List of Uploaded/Added THB Documents -->
+              <div v-if="form.guidebooks && form.guidebooks.length > 0" class="space-y-2 pt-2">
+                <div
+                  v-for="(gb, idx) in form.guidebooks"
+                  :key="idx"
+                  class="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                >
+                  <div class="flex items-center gap-3 min-w-0">
+                    <div class="size-10 rounded-lg bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                      <Icon icon="ph:file-pdf-duotone" class="text-2xl" />
+                    </div>
+                    <div class="min-w-0">
+                      <div class="text-sm font-bold text-navy truncate">
+                        {{ gb.name || `Dokumen THB ${idx + 1}` }}
+                      </div>
+                      <a
+                        :href="gb.url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-xs text-slate-500 hover:text-navy hover:underline inline-flex items-center gap-1 truncate max-w-full font-medium"
+                      >
+                        <span class="truncate">{{ gb.url }}</span>
+                        <Icon icon="ph:arrow-square-out" class="shrink-0 text-xs" />
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                    <a
+                      :href="gb.url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 hover:border-slate-300 text-navy font-bold text-xs flex items-center gap-1.5 transition-colors shadow-2xs"
+                    >
+                      <Icon icon="ph:download-simple-bold" class="text-xs" />
+                      <span>{{ t('common.download', 'Unduh') }}</span>
+                    </a>
+                    <button
+                      type="button"
+                      @click="removeGuidebook(idx)"
+                      class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                      :title="t('common.delete', 'Hapus')"
+                    >
+                      <Icon icon="ph:trash-bold" class="text-sm" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- Empty State Design -->
+              <div v-else class="p-5 rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 flex flex-col items-center justify-center text-center">
+                <div class="size-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mb-2">
+                  <Icon icon="ph:file-pdf-duotone" class="text-xl text-slate-400" />
+                </div>
+                <div class="text-xs sm:text-sm font-bold text-navy">
+                  {{ t('event_create.guidebook_empty_title', 'Belum Ada Dokumen THB') }}
+                </div>
+                <div class="text-xs text-slate-400 max-w-sm mt-0.5 font-medium">
+                  {{ t('event_create.guidebook_empty', 'Unggah file PDF atau masukkan link dokumen eksternal untuk peraturan lomba turnamen ini.') }}
+                </div>
+              </div>
+            </div>
+          </FormSection>
+
           <FormSection icon="ph:gear" :title="t('event_create.section_settings')">
             <div class="space-y-6">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -441,6 +563,9 @@
         </div>
       </form>
     </div>
+
+    <!-- Media Library Modal -->
+    <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
   </div>
 </template>
 
@@ -448,6 +573,7 @@
 import { Icon } from '@iconify/vue'
 import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import FormSection from '~/components/common/FormSection.vue'
+import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import { useFormValidation } from '~/composables/useFormValidation'
 import { useToast } from '~/composables/useToast'
 import { useI18n } from 'vue-i18n'
@@ -473,6 +599,27 @@ const { isSubscriptionActive } = useSubscription()
 
 const isSubmitting = ref(false)
 
+// Media Library State
+const showMediaLibrary = ref(false)
+const mediaTarget = ref('')
+
+const openMediaLibrary = (target) => {
+  mediaTarget.value = target
+  showMediaLibrary.value = true
+}
+
+const handleMediaSelect = (media) => {
+  if (mediaTarget.value === 'guidebook') {
+    if (!form.guidebooks) form.guidebooks = []
+    form.guidebooks.push({
+      url: media.url,
+      name: media.caption || media.filename?.replace(/\.[^/.]+$/, '') || media.url.split('/').pop() || 'Dokumen THB',
+      type: media.url.toLowerCase().endsWith('.pdf') ? 'pdf' : 'link'
+    })
+  }
+  showMediaLibrary.value = false
+}
+
 const { errors, validate, validateForm, rules, clearErrors } = useFormValidation()
 
 const form = reactive({
@@ -489,8 +636,76 @@ const form = reactive({
   registrationDeadline: '',
   status: 'draft',
   quotaType: 'free',
-  visibility: 'external'
+  visibility: 'external',
+  guidebooks: []
 })
+
+const uploadingGuidebook = ref(false)
+const guidebookInput = ref(null)
+const manualGuidebookUrl = ref('')
+const manualGuidebookName = ref('')
+
+const triggerGuidebookUpload = () => {
+  guidebookInput.value?.click()
+}
+
+const handleGuidebookUpload = async (event) => {
+  const files = Array.from(event.target.files || [])
+  if (!files.length) return
+
+  uploadingGuidebook.value = true
+  try {
+    for (const file of files) {
+      if (file.type !== 'application/pdf') {
+        toast.error(t('dashboard_events_page.toasts.only_pdf') || 'Hanya file PDF yang diperbolehkan')
+        continue
+      }
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('caption', `THB - ${file.name.replace(/\.[^/.]+$/, '')}`)
+
+      const response = await post('/media/upload', formData)
+      if (response?.url) {
+        if (!form.guidebooks) form.guidebooks = []
+        form.guidebooks.push({
+          url: response.url,
+          name: file.name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' '),
+          size: file.size,
+          type: 'pdf'
+        })
+      }
+    }
+    toast.success(t('dashboard_events_page.toasts.guidebook_success') || 'Buku panduan teknis berhasil diunggah')
+  } catch (err) {
+    console.error('Upload failed:', err)
+    toast.error(t('dashboard_events_page.toasts.guidebook_failed') || 'Gagal mengunggah buku panduan')
+  } finally {
+    uploadingGuidebook.value = false
+    if (guidebookInput.value) {
+      guidebookInput.value.value = ''
+    }
+  }
+}
+
+const addManualGuidebookLink = () => {
+  if (!manualGuidebookUrl.value || !manualGuidebookUrl.value.trim()) return
+  if (!form.guidebooks) form.guidebooks = []
+
+  const url = manualGuidebookUrl.value.trim()
+  const name = manualGuidebookName.value?.trim() || url.split('/').pop() || `Buku Panduan ${form.guidebooks.length + 1}`
+
+  form.guidebooks.push({
+    url,
+    name,
+    type: 'link'
+  })
+  manualGuidebookUrl.value = ''
+  manualGuidebookName.value = ''
+}
+
+const removeGuidebook = (index) => {
+  form.guidebooks.splice(index, 1)
+}
 
 const quotaBalance = ref({
   quota_free: 20,
@@ -674,10 +889,12 @@ const handleSubmit = async () => {
       location_type: form.type,
       quota_type: form.quotaType,
       visibility: form.visibility || 'external',
+      technical_guidebook_url: form.guidebooks?.[0]?.url || '',
       page_settings: JSON.stringify({
         country: form.country,
         currency: form.currency || 'IDR',
-        visibility: form.visibility || 'external'
+        visibility: form.visibility || 'external',
+        technical_guidebooks: form.guidebooks || []
       })
     }
 

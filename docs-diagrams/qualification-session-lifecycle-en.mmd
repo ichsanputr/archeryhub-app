@@ -1,0 +1,14 @@
+stateDiagram-v2
+  direction TB
+
+  state "🔧 Draft" as Draft
+  state "🔒 Locked" as Locked
+  state "▶️ In Progress" as InProgress
+  state "✅ Completed" as Completed
+
+  [*] --> Draft : Create session
+  Draft --> Locked : Save settings
+  Locked --> InProgress : Organizer unlocks
+  InProgress --> Locked : Re-lock (protest)
+  InProgress --> Completed : All ends submitted
+  Completed --> [*]

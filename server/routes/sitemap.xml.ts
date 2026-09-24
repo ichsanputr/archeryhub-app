@@ -99,8 +99,16 @@ export default defineEventHandler(async (event) => {
         if (doc?.slug) {
           const modDate = doc.updated_at || doc.created_at || today
           const cleanDate = typeof modDate === 'string' ? modDate.split('T')[0] : today
+          // English canonical doc URL
           dynamicItems.push({
             url: `${siteUrl}/docs/${doc.slug}`,
+            lastmod: cleanDate,
+            changefreq: 'weekly',
+            priority: 0.8
+          })
+          // Indonesian independent doc URL for search engine indexing
+          dynamicItems.push({
+            url: `${siteUrl}/docs/${doc.slug}/id`,
             lastmod: cleanDate,
             changefreq: 'weekly',
             priority: 0.8

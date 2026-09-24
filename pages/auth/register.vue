@@ -122,16 +122,36 @@
                                     />
                                 </div>
 
-                                <BaseSelect 
-                                    v-model="form.country" 
-                                    :label="t('auth.register.country_label')" 
-                                    :placeholder="t('auth.register.country_placeholder')" 
-                                    required
-                                    :items="countries" 
-                                    :error="errors.country" 
-                                    searchable
-                                    @update:model-value="handleCountryChange" 
-                                />
+                                <!-- Gender Selector -->
+                                <div class="flex flex-col gap-1.5 w-full">
+                                    <label class="text-navy text-sm font-bold ml-1 flex items-center gap-1">
+                                        {{ t('auth.register.gender_label', 'Gender') }}
+                                        <span class="text-red-500">*</span>
+                                    </label>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <button
+                                            type="button"
+                                            @click="form.gender = 'male'; errors.gender = ''"
+                                            class="flex items-center justify-center gap-2 h-11 px-4 rounded-xl border text-sm font-bold transition-all cursor-pointer"
+                                            :class="form.gender === 'male' ? 'border-navy bg-navy text-primary shadow-xs' : (errors.gender ? 'border-red-300 bg-red-50/40 text-slate-700' : 'border-gray-200 bg-gray-50/50 hover:bg-white text-slate-700')"
+                                        >
+                                            <Icon icon="ph:gender-male-bold" class="text-lg" />
+                                            <span>{{ t('auth.register.gender_male', 'Male') }}</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            @click="form.gender = 'female'; errors.gender = ''"
+                                            class="flex items-center justify-center gap-2 h-11 px-4 rounded-xl border text-sm font-bold transition-all cursor-pointer"
+                                            :class="form.gender === 'female' ? 'border-navy bg-navy text-primary shadow-xs' : (errors.gender ? 'border-red-300 bg-red-50/40 text-slate-700' : 'border-gray-200 bg-gray-50/50 hover:bg-white text-slate-700')"
+                                        >
+                                            <Icon icon="ph:gender-female-bold" class="text-lg" />
+                                            <span>{{ t('auth.register.gender_female', 'Female') }}</span>
+                                        </button>
+                                    </div>
+                                    <div v-if="errors.gender" class="text-xs font-semibold text-red-500 ml-1">
+                                        {{ errors.gender }}
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Organizer Fields -->
@@ -395,6 +415,7 @@ const form = ref({
     userType: getInitialUserType(),
     fullName: '',
     organizationName: '',
+    gender: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -444,6 +465,7 @@ const isNameValid = computed(() => {
 
 const isFormValid = computed(() => {
     if (!isNameValid.value) return false
+    if (form.value.userType === 'archer' && !form.value.gender) return false
     if (!form.value.email || !form.value.email.includes('@')) return false
     if (!form.value.password || form.value.password.length < 6) return false
     if (form.value.password !== form.value.confirmPassword) return false
@@ -471,6 +493,12 @@ const getMediaUrl = (filename) => {
 const isSubmitting = ref(false)
 
 const handleEmailRegister = async () => {
+    if (form.value.userType === 'archer' && !form.value.gender) {
+        errors.gender = t('auth.register.gender_required', 'Please select a gender')
+    }
+    if (!form.value.terms) {
+        errors.terms = t('auth.register.terms_required_error', 'You must agree to the terms & conditions')
+    }
     if (!isFormValid.value) {
         validateConfirmPassword(form.value.confirmPassword)
         return
@@ -482,6 +510,7 @@ const handleEmailRegister = async () => {
             user_type: form.value.userType,
             full_name: form.value.userType === 'archer' ? form.value.fullName : form.value.organizationName,
             organization_name: form.value.organizationName,
+            gender: form.value.userType === 'archer' ? form.value.gender : '',
             email: form.value.email,
             password: form.value.password,
             whatsapp_no: form.value.whatsappNo,
@@ -651,13 +680,43 @@ const resendOtpCode = async () => {
 const isGoogleLoading = ref(false)
 
 const handleGoogleRegister = async () => {
+    const isArcher = form.value.userType === 'archer'
+    const missingGender = isArcher && !form.value.gender
+    const missingTerms = !form.value.terms
+
+    if (missingGender && missingTerms) {
+        errors.gender = t('auth.register.gender_required', 'Please select a gender')
+        errors.terms = t('auth.register.terms_required_error', 'You must agree to the terms & conditions')
+        toast.error(
+            t('auth.register.google_missing_gender_terms', 'Please select your Gender and agree to the Terms & Conditions before continuing with Google.')
+        )
+        return
+    }
+
+    if (missingGender) {
+        errors.gender = t('auth.register.gender_required', 'Please select a gender')
+        toast.error(
+            t('auth.register.google_missing_gender', 'Please select your Gender before continuing with Google.')
+        )
+        return
+    }
+
+    if (missingTerms) {
+        errors.terms = t('auth.register.terms_required_error', 'You must agree to the terms & conditions')
+        toast.error(
+            t('auth.register.google_missing_terms', 'Please agree to the Terms & Conditions before continuing with Google.')
+        )
+        return
+    }
+
     isGoogleLoading.value = true
     try {
         const metadata = {
-            full_name: form.value.userType === 'archer' ? form.value.fullName : form.value.organizationName,
+            full_name: isArcher ? form.value.fullName : form.value.organizationName,
             user_type: form.value.userType,
+            gender: isArcher ? form.value.gender : '',
             oauth_mode: 'register',
-            country: form.value.country,
+            country: form.value.country || 'Indonesia',
             club_id: form.value.clubID || '',
             new_club_name: form.value.newClubName || '',
             new_club_acronym: form.value.newClubAcronym || ''

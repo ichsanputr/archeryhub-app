@@ -1,68 +1,148 @@
 <template>
   <Teleport to="body">
     <Transition name="search-fade">
-      <div v-if="isOpen" class="fixed inset-0 z-[999] flex items-start justify-center px-4" style="padding-top: 12vh">
+      <div v-if="isOpen" class="fixed inset-0 z-[999] flex items-start justify-center px-4" style="padding-top: 10vh">
         <!-- Backdrop -->
-        <div class="absolute inset-0 bg-navy/60 backdrop-blur-sm" @click="close" />
+        <div class="absolute inset-0 bg-navy/70 dark:bg-slate-950/80 backdrop-blur-sm" @click="close" />
 
         <!-- Dialog -->
         <div
-          class="relative w-full max-w-xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl overflow-hidden z-10 border border-gray-100 dark:border-slate-800 transition-colors">
-          <!-- Input Row -->
-          <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100 dark:border-slate-800">
-            <Icon icon="ph:magnifying-glass-bold" class="text-xl text-primary shrink-0" />
-            <input ref="inputRef" v-model="query" type="text" :placeholder="t('doc_search.placeholder')"
-              class="flex-1 text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none bg-transparent"
-              @keydown.esc="close" @keydown.down.prevent="moveDown" @keydown.up.prevent="moveUp"
-              @keydown.enter.prevent="navigate" />
+          class="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden z-10 border border-gray-100 dark:border-slate-800 transition-colors flex flex-col max-h-[75vh]">
+          <!-- Input Header -->
+          <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0">
+            <Icon icon="ph:magnifying-glass-bold" class="text-2xl text-primary shrink-0" />
+            <input
+              ref="inputRef"
+              v-model="query"
+              type="text"
+              :placeholder="locale === 'id' ? 'Cari topik, eliminasi, kualifikasi, panduan...' : 'Search documentation guides, rules, setup...'"
+              class="flex-1 text-sm sm:text-base text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none bg-transparent font-medium"
+              @keydown.esc="close"
+              @keydown.down.prevent="moveDown"
+              @keydown.up.prevent="moveUp"
+              @keydown.enter.prevent="navigate"
+            />
+            <button
+              v-if="query"
+              @click="query = ''"
+              class="p-1 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
+              title="Clear search"
+            >
+              <Icon icon="ph:x-bold" class="text-sm" />
+            </button>
             <div class="flex items-center gap-1.5 shrink-0">
-              <kbd
-                class="hidden sm:inline-flex items-center px-1.5 py-0.5 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded text-xs text-gray-400 dark:text-slate-400 font-mono">Esc</kbd>
+              <kbd class="hidden sm:inline-flex items-center px-2 py-0.5 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-xs text-gray-400 dark:text-slate-400 font-mono">Esc</kbd>
             </div>
           </div>
 
-          <!-- Body -->
-          <div class="max-h-[55vh] overflow-y-auto scrollbar-styled">
-            <!-- Results -->
+          <!-- Category Filter Chips -->
+          <div class="px-5 py-2.5 bg-gray-50/70 dark:bg-slate-900/90 border-b border-gray-100 dark:border-slate-800 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
+            <button
+              v-for="cat in categoryFilters"
+              :key="cat.id"
+              @click="selectedCategory = cat.id"
+              class="px-3 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer"
+              :class="selectedCategory === cat.id
+                ? 'bg-primary text-navy font-black shadow-xs'
+                : 'text-gray-500 dark:text-slate-400 hover:bg-gray-200/60 dark:hover:bg-slate-800'"
+            >
+              <Icon :icon="cat.icon" class="text-xs" />
+              <span>{{ cat.label }}</span>
+            </button>
+          </div>
+
+          <!-- Results & Content Body -->
+          <div class="flex-1 overflow-y-auto scrollbar-styled p-3 sm:p-4">
+            <!-- Search Results -->
             <template v-if="query.trim()">
-              <template v-if="results.length">
-                <NuxtLink v-for="(page, i) in results" :key="page.path" :to="page.path" @click="close"
-                  class="flex items-center gap-4 px-5 py-3.5 transition-colors cursor-pointer border-b border-gray-50 dark:border-slate-800/60 last:border-0"
-                  :class="i === activeIndex ? 'bg-gray-100 dark:bg-slate-800' : 'hover:bg-gray-50 dark:hover:bg-slate-800/50'">
-                  <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors"
-                    :class="i === activeIndex ? 'bg-navy/10 dark:bg-primary/20 text-navy dark:text-primary' : 'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-slate-400'">
-                    <Icon :icon="page.icon" class="text-base" />
+              <div v-if="filteredResults.length" class="space-y-1.5">
+                <NuxtLink
+                  v-for="(doc, i) in filteredResults"
+                  :key="doc.slug"
+                  :to="`/docs/${doc.slug}`"
+                  @click="close"
+                  class="flex items-start gap-3.5 p-3.5 rounded-2xl transition-all cursor-pointer border group"
+                  :class="i === activeIndex
+                    ? 'bg-primary/10 dark:bg-primary/15 border-primary/40 text-navy dark:text-primary shadow-xs'
+                    : 'bg-white dark:bg-slate-900/60 hover:bg-gray-50 dark:hover:bg-slate-800/60 border-gray-100/80 dark:border-slate-800/80 text-gray-700 dark:text-slate-200'"
+                >
+                  <div
+                    class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors mt-0.5"
+                    :class="i === activeIndex
+                      ? 'bg-primary text-navy font-black'
+                      : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 group-hover:bg-primary/20 group-hover:text-navy dark:group-hover:text-primary'"
+                  >
+                    <Icon :icon="doc.icon || 'ph:file-text-bold'" class="text-lg" />
                   </div>
                   <div class="flex-1 min-w-0">
-                    <div class="text-sm font-bold text-navy dark:text-slate-100 leading-snug" v-html="highlight(getPageTitle(page))" />
-                    <div class="text-xs text-gray-400 dark:text-slate-400 truncate mt-0.5" v-html="highlight(getPageDesc(page))" />
+                    <div class="flex items-center gap-2 mb-1 flex-wrap">
+                      <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400">
+                        {{ getCategoryLabel(doc.category) }}
+                      </span>
+                      <span v-if="doc.readTime" class="text-[10px] text-gray-400 dark:text-slate-500 font-medium">
+                        {{ doc.readTime }}
+                      </span>
+                    </div>
+                    <div class="text-sm font-bold text-navy dark:text-slate-100 leading-snug group-hover:text-primary transition-colors" v-html="highlight(doc.title)" />
+                    <div class="text-xs text-gray-500 dark:text-slate-400 line-clamp-2 mt-1 leading-relaxed" v-html="highlight(doc.excerpt)" />
                   </div>
-                  <Icon icon="ph:arrow-right-bold" class="text-xs text-gray-300 dark:text-slate-600 shrink-0"
-                    :class="i === activeIndex ? 'text-navy dark:text-primary' : ''" />
+                  <Icon
+                    icon="ph:arrow-right-bold"
+                    class="text-xs text-gray-300 dark:text-slate-600 shrink-0 self-center transition-transform group-hover:translate-x-0.5"
+                    :class="i === activeIndex ? 'text-primary' : ''"
+                  />
                 </NuxtLink>
-              </template>
-              <div v-else class="py-14 text-center">
-                <div class="flex justify-center w-full">
-                  <Icon icon="ph:file-search-bold" class="text-4xl text-gray-200 dark:text-slate-700 mb-3" />
+              </div>
+
+              <!-- No Results State -->
+              <div v-else class="py-12 text-center px-4">
+                <div class="w-12 h-12 rounded-2xl bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-400 dark:text-slate-500 mx-auto mb-3">
+                  <Icon icon="ph:file-search-bold" class="text-2xl" />
                 </div>
-                <p class="text-sm text-gray-400 dark:text-slate-400">{{ t('doc_search.no_results') }} "{{ query }}"</p>
+                <h4 class="text-sm font-bold text-navy dark:text-slate-200 mb-1">
+                  {{ locale === 'id' ? 'Dokumentasi tidak ditemukan' : 'No documentation found' }}
+                </h4>
+                <p class="text-xs text-gray-400 dark:text-slate-500 max-w-sm mx-auto">
+                  {{ locale === 'id'
+                    ? `Tidak ada artikel dokumentasi yang cocok dengan kata kunci "${query}". Coba kata kunci seperti: eliminasi, target, shoot-off, kualifikasi.`
+                    : `No documentation articles matched "${query}". Try searching for: elimination, target, shoot-off, qualification.` }}
+                </p>
               </div>
             </template>
 
-            <!-- Empty / Default state: quick links -->
+            <!-- Default State: Quick Navigation / Suggested Docs -->
             <template v-else>
-              <div class="px-5 pt-5 pb-4">
-                <p class="text-xs text-gray-400 dark:text-slate-500 font-bold tracking-widest mb-3">{{ t('doc_search.quick_navigation') }}</p>
-                <div class="flex flex-col gap-1">
-                  <NuxtLink v-for="(page, i) in quickLinks" :key="page.path" :to="page.path" @click="close"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors text-xs text-gray-600 dark:text-slate-300 border border-gray-100 dark:border-slate-800"
-                    :class="i === activeIndex ? 'bg-primary/10 text-primary border-primary/20' : 'hover:bg-gray-50 dark:hover:bg-slate-800/50'">
-                    <Icon :icon="page.icon" class="text-base text-gray-400 dark:text-slate-500 shrink-0" />
-                    <div class="flex-1 min-w-0">
-                      <span class="font-bold text-navy dark:text-slate-100">{{ getPageTitle(page) }}</span>
-                      <span class="text-gray-400 dark:text-slate-500 ml-2 truncate hidden sm:inline">{{ getPageDesc(page) }}</span>
+              <div class="py-2">
+                <div class="flex items-center justify-between px-2 mb-3">
+                  <span class="text-[11px] font-black tracking-wider text-gray-400 dark:text-slate-500 uppercase">
+                    {{ locale === 'id' ? 'Dokumentasi Populer & Panduan Cepat' : 'Popular Guides & Quick Start' }}
+                  </span>
+                  <span class="text-[10px] text-gray-400 dark:text-slate-500 font-medium">
+                    {{ allDocs.length }} {{ locale === 'id' ? 'Dokumen' : 'Documents' }}
+                  </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <NuxtLink
+                    v-for="(doc, i) in suggestedDocs"
+                    :key="doc.slug"
+                    :to="`/docs/${doc.slug}`"
+                    @click="close"
+                    class="flex items-center gap-3 p-3 rounded-2xl transition-all cursor-pointer border border-gray-100 dark:border-slate-800/80 hover:border-primary/40 bg-white dark:bg-slate-900/60 hover:bg-gray-50 dark:hover:bg-slate-800/50 group"
+                    :class="i === activeIndex ? 'bg-primary/10 border-primary/40' : ''"
+                  >
+                    <div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 group-hover:bg-primary/20 group-hover:text-navy dark:group-hover:text-primary flex items-center justify-center shrink-0 transition-colors">
+                      <Icon :icon="doc.icon || 'ph:file-text-bold'" class="text-base" />
                     </div>
-                    <Icon icon="ph:arrow-right" class="text-xs text-gray-300 dark:text-slate-600 shrink-0" />
+                    <div class="flex-1 min-w-0">
+                      <div class="text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase leading-none mb-1">
+                        {{ getCategoryLabel(doc.category) }}
+                      </div>
+                      <div class="text-xs font-bold text-navy dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                        {{ doc.title }}
+                      </div>
+                    </div>
+                    <Icon icon="ph:arrow-right" class="text-xs text-gray-300 dark:text-slate-600 shrink-0 group-hover:text-primary" />
                   </NuxtLink>
                 </div>
               </div>
@@ -70,20 +150,22 @@
           </div>
 
           <!-- Footer -->
-          <div class="border-t border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900 px-5 py-2.5 flex items-center gap-4">
-            <span class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-slate-500 font-medium">
-              <kbd class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded px-1.5 py-0.5 font-mono text-gray-500 dark:text-slate-400">↑↓</kbd>
-              {{ t('doc_search.to_navigate') }}
+          <div class="border-t border-gray-100 dark:border-slate-800 bg-gray-50/60 dark:bg-slate-900 px-5 py-3 flex items-center gap-4 text-xs text-gray-400 dark:text-slate-500 shrink-0 font-medium flex-wrap">
+            <span class="flex items-center gap-1.5">
+              <kbd class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded px-1.5 py-0.5 font-mono text-[11px] text-gray-600 dark:text-slate-300">↑↓</kbd>
+              <span>{{ locale === 'id' ? 'navigasi' : 'navigate' }}</span>
             </span>
-            <span class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-slate-500 font-medium">
-              <kbd class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded px-1.5 py-0.5 font-mono text-gray-500 dark:text-slate-400">↵</kbd>
-              {{ t('doc_search.to_select') }}
+            <span class="flex items-center gap-1.5">
+              <kbd class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded px-1.5 py-0.5 font-mono text-[11px] text-gray-600 dark:text-slate-300">↵</kbd>
+              <span>{{ locale === 'id' ? 'buka' : 'select' }}</span>
             </span>
-            <span class="flex items-center gap-1.5 text-xs text-gray-400 dark:text-slate-500 font-medium">
-              <kbd class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded px-1.5 py-0.5 font-mono text-gray-500 dark:text-slate-400">Esc</kbd>
-              {{ t('doc_search.to_close') }}
+            <span class="flex items-center gap-1.5">
+              <kbd class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded px-1.5 py-0.5 font-mono text-[11px] text-gray-600 dark:text-slate-300">Esc</kbd>
+              <span>{{ locale === 'id' ? 'tutup' : 'close' }}</span>
             </span>
-            <span class="ml-auto text-xs text-gray-400 dark:text-slate-500 hidden sm:block font-mono">Ctrl K</span>
+            <span class="ml-auto font-mono text-[11px] hidden sm:block">
+              Archeris Docs Engine
+            </span>
           </div>
         </div>
       </div>
@@ -91,101 +173,128 @@
   </Teleport>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
-import { useAuth } from '~/composables/useAuth'
-import pagesData from '~/data/pages.json'
+
+interface DocItem {
+  slug: string
+  icon?: string
+  category: string
+  order?: number
+  readTime?: string
+  title: string
+  excerpt: string
+  updated_at?: string
+}
 
 const isOpen = ref(false)
 const query = ref('')
+const selectedCategory = ref('all')
 const activeIndex = ref(-1)
-const inputRef = ref(null)
+const inputRef = ref<HTMLInputElement | null>(null)
 const router = useRouter()
-const { t } = useI18n()
+const { locale } = useI18n()
+const apiBaseUrl = useApiBaseUrl()
 
-const { user, userPersona } = useAuth()
+// Fetch docs list dynamically from API based on current locale
+const { data: docsData } = await useAsyncData<DocItem[]>(
+  'doc-search-list',
+  () => $fetch(`${apiBaseUrl}/docs?lang=${locale.value}`),
+  { watch: [locale] }
+)
 
-const getPageTitle = (page) => {
-  if (page.titleKey) {
-    const val = t(page.titleKey)
-    if (val && val !== page.titleKey) return val
-  }
-  return page.title
+const allDocs = computed<DocItem[]>(() => docsData.value || [])
+
+const categoryLabels: Record<string, { en: string; id: string; icon: string }> = {
+  accounts: { en: 'Accounts', id: 'Akun', icon: 'ph:users-three-bold' },
+  tournaments: { en: 'Tournament Setup', id: 'Turnamen', icon: 'ph:trophy-bold' },
+  scorekeeper: { en: 'Scorekeeper', id: 'Petugas Skor', icon: 'ph:device-mobile-bold' },
+  qualification: { en: 'Qualification', id: 'Kualifikasi', icon: 'ph:chart-line-up-bold' },
+  elimination: { en: 'Elimination', id: 'Eliminasi', icon: 'ph:tree-structure-bold' }
 }
 
-const getPageDesc = (page) => {
-  if (page.descriptionKey) {
-    const val = t(page.descriptionKey)
-    if (val && val !== page.descriptionKey) return val
+const categoryFilters = computed(() => [
+  { id: 'all', label: locale.value === 'id' ? 'Semua Kategori' : 'All Categories', icon: 'ph:squares-four-bold' },
+  { id: 'accounts', label: locale.value === 'id' ? 'Akun' : 'Accounts', icon: 'ph:users-three-bold' },
+  { id: 'tournaments', label: locale.value === 'id' ? 'Turnamen' : 'Tournaments', icon: 'ph:trophy-bold' },
+  { id: 'scorekeeper', label: locale.value === 'id' ? 'Petugas Skor' : 'Scorekeeper', icon: 'ph:device-mobile-bold' },
+  { id: 'qualification', label: locale.value === 'id' ? 'Kualifikasi' : 'Qualification', icon: 'ph:chart-line-up-bold' },
+  { id: 'elimination', label: locale.value === 'id' ? 'Eliminasi' : 'Elimination', icon: 'ph:tree-structure-bold' }
+])
+
+const getCategoryLabel = (catId: string) => {
+  const item = categoryLabels[catId]
+  if (item) {
+    return locale.value === 'id' ? item.id : item.en
   }
-  return page.description
+  return catId ? catId.toUpperCase() : ''
 }
 
-// Build the page list based on the logged-in user's role
-const rolePages = computed(() => {
-  const role = userPersona?.value || user.value?.role || user.value?.user_type || user.value?.type || 'archer'
-  const specific = pagesData[role] || (role === 'club' ? pagesData.organizer : []) || pagesData.organizer || []
-  const common = pagesData.common || []
-  // Deduplicate by path
-  const seen = new Set()
-  return [...specific, ...common].filter(p => {
-    if (seen.has(p.path)) return false
-    seen.add(p.path)
-    return true
+const filteredResults = computed<DocItem[]>(() => {
+  if (!query.value.trim()) return []
+  const q = query.value.toLowerCase().trim()
+
+  return allDocs.value.filter((d: DocItem) => {
+    if (selectedCategory.value !== 'all' && d.category !== selectedCategory.value) {
+      return false
+    }
+    const matchTitle = d.title && d.title.toLowerCase().includes(q)
+    const matchExcerpt = d.excerpt && d.excerpt.toLowerCase().includes(q)
+    const matchSlug = d.slug && d.slug.toLowerCase().includes(q)
+    const matchCat = d.category && d.category.toLowerCase().includes(q)
+    const matchCatLabel = getCategoryLabel(d.category).toLowerCase().includes(q)
+
+    return matchTitle || matchExcerpt || matchSlug || matchCat || matchCatLabel
   })
 })
 
-const quickLinks = computed(() => rolePages.value.slice(0, 6))
-
-const results = computed(() => {
-  if (!query.value.trim()) return []
-  const q = query.value.toLowerCase()
-  return rolePages.value
-    .filter(p => {
-      const title = getPageTitle(p).toLowerCase()
-      const desc = getPageDesc(p).toLowerCase()
-      return title.includes(q) ||
-        desc.includes(q) ||
-        p.title.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q) ||
-        p.keywords.some(k => k.toLowerCase().includes(q))
-    })
-    .slice(0, 8)
+const suggestedDocs = computed<DocItem[]>(() => {
+  if (selectedCategory.value !== 'all') {
+    return allDocs.value.filter((d: DocItem) => d.category === selectedCategory.value).slice(0, 8)
+  }
+  return allDocs.value.slice(0, 8)
 })
 
-const highlight = (text) => {
-  if (!query.value.trim()) return text
+const highlight = (text: string) => {
+  if (!query.value.trim() || !text) return text || ''
   const escaped = query.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   return text.replace(
     new RegExp(`(${escaped})`, 'gi'),
-    '<mark class="bg-yellow-100 text-navy font-semibold rounded-sm not-italic">$1</mark>'
+    '<mark class="bg-primary/30 text-navy dark:text-primary font-bold px-1 rounded-sm not-italic">$1</mark>'
   )
 }
 
-watch(results, () => { activeIndex.value = -1 })
+watch([filteredResults, selectedCategory], () => {
+  activeIndex.value = -1
+})
 
 const moveDown = () => {
-  const list = query.value.trim() ? results.value : quickLinks.value
+  const list = query.value.trim() ? filteredResults.value : suggestedDocs.value
   if (activeIndex.value < list.length - 1) activeIndex.value++
 }
+
 const moveUp = () => {
   if (activeIndex.value > 0) activeIndex.value--
 }
+
 const navigate = () => {
-  const list = query.value.trim() ? results.value : quickLinks.value
+  const list = query.value.trim() ? filteredResults.value : suggestedDocs.value
   const idx = activeIndex.value === -1 ? 0 : activeIndex.value
-  const page = list[idx]
-  if (page) {
-    router.push(page.path)
+  const doc = list[idx]
+  if (doc) {
+    router.push(`/docs/${doc.slug}`)
     close()
   }
 }
 
 const open = () => {
   isOpen.value = true
+  query.value = ''
+  selectedCategory.value = 'all'
+  activeIndex.value = -1
   nextTick(() => inputRef.value?.focus())
 }
 
@@ -195,15 +304,24 @@ const close = () => {
   activeIndex.value = -1
 }
 
-const handleKeydown = (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+const handleKeydown = (e: KeyboardEvent) => {
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
     e.preventDefault()
     isOpen.value ? close() : open()
   }
 }
 
-onMounted(() => window.addEventListener('keydown', handleKeydown))
-onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
+onMounted(() => {
+  if (import.meta.client) {
+    window.addEventListener('keydown', handleKeydown)
+  }
+})
+
+onUnmounted(() => {
+  if (import.meta.client) {
+    window.removeEventListener('keydown', handleKeydown)
+  }
+})
 
 defineExpose({ open, close })
 </script>
@@ -227,5 +345,13 @@ defineExpose({ open, close })
 .search-fade-enter-from .relative {
   transform: translateY(-8px);
   opacity: 0;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 </style>
