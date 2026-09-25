@@ -207,12 +207,6 @@ const changeDashboardLocale = async (code) => {
   await loadLocaleMessages(code)
   locale.value = code
   setDashboardLocale(code)
-  if (process.client) {
-    try {
-      localStorage.setItem('dashboard_locale', code)
-    } catch (e) {}
-  }
-  setLocaleCookie(code)
   showLangMenu.value = false
 }
 

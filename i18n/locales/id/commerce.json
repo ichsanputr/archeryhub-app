@@ -1533,6 +1533,7 @@
     "receipt_clarity_hint": "Pastikan nominal transfer dan nomor rekening tujuan terbaca jelas",
     "upload_submit_btn": "Kirim Bukti Pembayaran",
     "reupload_submit_btn": "Kirim Ulang Bukti Transfer ke Panitia",
+    "replace_proof_btn": "Ganti Bukti Transfer",
     "cancel_tx_btn": "Batalkan Transaksi Pembayaran",
     "cancel_modal_title": "Batalkan Transaksi?",
     "cancel_modal_desc": "Apakah Anda yakin ingin membatalkan tagihan transaksi ini? Status pembayaran peserta akan direset menjadi belum bayar sehingga Anda dapat memilih metode pembayaran lain atau mendaftar ulang.",

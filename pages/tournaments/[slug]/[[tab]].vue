@@ -668,19 +668,31 @@
 
                         <!-- Organizer Card -->
                         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                            <h3 class="text-lg font-bold text-navy mb-4">{{ t('event_detail.organizer') }}</h3>
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-bold text-navy mb-0">{{ t('event_detail.organizer') }}</h3>
+                                <button v-if="isOrganizerSubscribed || tournament.is_organizer_subscribed" 
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-xl text-xs font-bold text-navy cursor-default">
+                                    <Icon icon="ph:check-circle-fill" class="text-primary text-sm" />
+                                    <span>{{ t('event_detail.following', 'Mengikuti') }}</span>
+                                </button>
+                                <button v-else @click="openSubscribeModal"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-navy/5 hover:bg-primary/20 border border-navy/10 hover:border-primary/40 rounded-xl text-xs font-bold text-navy transition-all active:scale-95 shadow-2xs cursor-pointer">
+                                    <Icon icon="ph:bell-ringing-bold" class="text-navy text-sm" />
+                                    <span>{{ t('event_detail.subscribe', 'Langganan') }}</span>
+                                </button>
+                            </div>
                             <div class="flex items-center gap-4 mb-4">
-                                <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden shrink-0 border border-gray-100">
                                     <img alt="Logo Penyelenggara" class="w-full h-full object-cover"
                                         :src="tournament.organizer_logo || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBLm2bt_rocjJTBJyLy5egiG9qWTRu9j6JZGiQJiPm8b1G-HSoEuiHPFCrCPBc7qb81krUTSO68P9GueohN-_0IAPQUYSb-Jmd32xXgCNveXoWn0ACR6lV3AFfehy0pYgrdNBVXEyn4uZBaLcOM53xvrj6Nj8lqZdHdDm_sqOirc-36E7u9Qk0pblOTfHJH69INJpXI6D78iO58yfy0HygaJfL6aQRUXwsA6QzEsyDTsfEt6-q4b8f5rl3D59A-pT-X4fXlv7Fm3ng'" />
                                 </div>
-                                <div>
+                                <div class="min-w-0 flex-1">
                                     <NuxtLink v-if="tournament.organizer_slug"
                                         :to="`/organizer/${tournament.organizer_slug}`"
-                                        class="font-bold text-navy text-sm hover:text-primary transition-colors">
+                                        class="font-bold text-navy text-sm hover:text-primary transition-colors block truncate">
                                         {{ tournament.organizer }}
                                     </NuxtLink>
-                                    <h4 v-else class="font-bold text-navy text-sm">{{ tournament.organizer }}</h4>
+                                    <h4 v-else class="font-bold text-navy text-sm truncate">{{ tournament.organizer }}</h4>
                                     <div class="text-xs sm:text-sm text-gray-500">{{ t('event_detail.verified_organizer') }} <Icon
                                             icon="ph:seal-check-fill" class="text-[14px] inline align-middle text-blue-500" />
                                     </div>
@@ -777,6 +789,65 @@
                         </div>
                     </Transition>
                 </Teleport>
+
+                <!-- Subscribe Organizer Modal -->
+                <Teleport to="body">
+                    <Transition enter-active-class="transition duration-300 ease-out"
+                        enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100"
+                        leave-active-class="transition duration-200 ease-in" leave-from-class="opacity-100 scale-100"
+                        leave-to-class="opacity-0 scale-95">
+                        <div v-if="showSubscribeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+                            <!-- Backdrop -->
+                            <div class="fixed inset-0 bg-navy/60 backdrop-blur-xs transition-opacity" @click="closeSubscribeModal"></div>
+
+                            <!-- Modal Box -->
+                            <div class="relative bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-gray-100 z-10">
+                                <button @click="closeSubscribeModal" class="absolute top-5 right-5 text-gray-400 hover:text-navy transition-colors cursor-pointer">
+                                    <Icon icon="ph:x-bold" class="text-xl" />
+                                </button>
+
+                                <div class="flex flex-col items-center text-center">
+                                    <div class="size-14 rounded-2xl bg-primary/20 text-navy flex items-center justify-center mb-4 shadow-sm">
+                                        <Icon icon="ph:bell-ringing-bold" class="text-2xl text-navy" />
+                                    </div>
+
+                                    <h3 class="text-xl font-black text-navy mb-2 font-display">
+                                        {{ t('event_detail.subscribe_modal_title', 'Langganan Info Turnamen') }}
+                                    </h3>
+                                    <p class="text-sm text-gray-500 mb-6 leading-relaxed">
+                                        {{ t('event_detail.subscribe_modal_desc', 'Dapatkan notifikasi email setiap kali') }} <strong class="text-navy">{{ tournament.organizer }}</strong> {{ t('event_detail.subscribe_modal_desc_end', 'merilis atau membuka pendaftaran turnamen baru.') }}
+                                    </p>
+
+                                    <form @submit.prevent="handleOrganizerSubscribe" class="w-full space-y-4">
+                                        <div class="text-left">
+                                            <label class="block text-xs font-black text-gray-400 uppercase tracking-wider mb-1.5">
+                                                {{ t('event_detail.email_label', 'Alamat Email') }}
+                                            </label>
+                                            <div class="relative">
+                                                <Icon icon="ph:envelope-simple" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
+                                                <input v-model="subscribeEmail" type="email" required
+                                                    :placeholder="t('event_detail.email_placeholder', 'nama@email.com')"
+                                                    class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-navy focus:outline-none focus:border-primary focus:bg-white transition-all" />
+                                            </div>
+                                        </div>
+
+                                        <div class="flex gap-3 pt-2">
+                                            <button type="button" @click="closeSubscribeModal"
+                                                class="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer">
+                                                {{ t('common.cancel', 'Batal') }}
+                                            </button>
+                                            <button type="submit" :disabled="isSubscribing"
+                                                class="flex-1 py-3 bg-primary hover:bg-primary-hover disabled:opacity-50 text-navy font-black rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer">
+                                                <Icon v-if="isSubscribing" icon="ph:spinner-gap-bold" class="animate-spin text-lg" />
+                                                <span>{{ isSubscribing ? t('common.submitting', 'Memproses...') : t('event_detail.subscribe_action', 'Ya, Berlangganan') }}</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </Transition>
+                </Teleport>
             </ClientOnly>
         </template>
     </div>
@@ -793,6 +864,8 @@ import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, onUnmounted, watch, nextTick, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
+import { useApi } from '~/composables/useApi'
+import { useToast } from '~/composables/useToast'
 import { useSeoMeta, useHead, useRequestURL, createError, useRuntimeConfig, useAsyncData, navigateTo } from '#imports'
 import { useDateFormat } from '@vueuse/core'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
@@ -806,9 +879,52 @@ const route = useRoute()
 const slug = route.params.slug
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
+const { post } = useApi()
+const toast = useToast()
 
 // Auth state
 const { user, isLoggedIn } = useAuth()
+
+// Organizer Subscribe state
+const showSubscribeModal = ref(false)
+const subscribeEmail = ref('')
+const isSubscribing = ref(false)
+const isOrganizerSubscribed = ref(false)
+
+const openSubscribeModal = () => {
+    if (user.value?.email) {
+        subscribeEmail.value = user.value.email
+    }
+    showSubscribeModal.value = true
+}
+
+const closeSubscribeModal = () => {
+    showSubscribeModal.value = false
+}
+
+const handleOrganizerSubscribe = async () => {
+    if (!subscribeEmail.value || !subscribeEmail.value.includes('@')) {
+        toast.error(t('event_detail.invalid_email', 'Format email tidak valid'))
+        return
+    }
+
+    isSubscribing.value = true
+    try {
+        const res = await post(`/tournaments/${slug}/subscribe`, {
+            body: {
+                email: subscribeEmail.value.trim()
+            }
+        })
+        isOrganizerSubscribed.value = true
+        showSubscribeModal.value = false
+        const orgName = tournament.value?.organizer || 'penyelenggara'
+        toast.success(res?.message || t('event_detail.subscribe_success', `Berhasil berlangganan notifikasi turnamen dari ${orgName}`))
+    } catch (err) {
+        toast.error(err?.data?.error || err?.message || t('event_detail.subscribe_error', 'Gagal berlangganan info turnamen'))
+    } finally {
+        isSubscribing.value = false
+    }
+}
 
 const scrollContainer = ref(null)
 const scroll = (direction) => {
@@ -960,6 +1076,7 @@ const transformEventData = (data, paymentMethodsData = null) => {
         organizer: data.organizer_name || data.organizer || 'Penyelenggara',
         organizer_slug: data.organizer_username || data.organizer_slug || null,
         organizer_logo: data.organizer_avatar_url || data.organizer_logo || null,
+        is_organizer_subscribed: data.is_organizer_subscribed === true || data.is_subscribed === true,
         whatsapp_number: (() => {
             const num = data.whatsapp_number || data.organizer_phone || data.phone || null
             if (!num) return null

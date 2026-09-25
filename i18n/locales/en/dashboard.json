@@ -57,6 +57,40 @@
       "event_recap_desc": "Summary of completed tournaments",
       "leaderboard_desc": "Top scoring archer standings"
     },
+    "earnings": {
+      "title": "Earnings",
+      "subtitle": "View your tournament revenue and earnings reports",
+      "export_col_event": "Event",
+      "export_col_category": "Category",
+      "export_col_date": "Date",
+      "export_col_participants": "Participants",
+      "export_col_earnings": "Earnings",
+      "export_empty_info": "No earnings data available",
+      "export_error": "Failed to export earnings data"
+    },
+    "balance": {
+      "security": {
+        "title": "Verify Your Identity",
+        "desc": "Enter your password to access balance and withdrawal information",
+        "password_placeholder": "Enter your password",
+        "open_access": "Unlock Access"
+      },
+      "header": {
+        "title": "Wallet & Balance",
+        "subtitle": "Manage your account balance and withdrawals"
+      },
+      "withdrawal_info": "Withdrawal processing takes up to 1x24 hours"
+    },
+    "package": {
+      "title": "Subscription Package",
+      "subtitle": "Manage your subscription plan and usage",
+      "history_title": "Quota Usage History"
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Configure your organizer account settings",
+      "profile_section": "Profile Settings"
+    },
     "org_event_payments": {
       "title": "Payments & Event Finance",
       "subtitle": "Monitor registration transactions, verify manual transfer proofs, and manage delegation invoices.",

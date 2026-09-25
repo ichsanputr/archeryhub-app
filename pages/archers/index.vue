@@ -337,17 +337,19 @@ const activeArchers = computed(() => {
 const filteredArchers = computed(() => archers.value)
 
 useHead({
-    title: computed(() => 'Archer Profiles & Athlete Rankings - Archeris.net'),
-    link: [
-        { rel: 'canonical', href: useRequestURL().href }
+    title: computed(() => 'Archer Profiles & Athlete Rankings - Archeris'),
+    meta: [
+        { name: 'robots', content: 'noindex, nofollow' },
+        { name: 'googlebot', content: 'noindex, nofollow' }
     ]
 })
 
 useSeoMeta({
-    title: () => 'Archer Profiles & Athlete Rankings - Archeris.net',
-    description: () => t('archers.seo_desc', 'Discover and explore profiles of talented archers. View verified tournament records, arrow averages, and rankings on Archeris.net.'),
-    ogTitle: () => 'Archer Profiles & Athlete Rankings - Archeris.net',
-    ogDescription: () => t('archers.seo_desc', 'Discover and explore profiles of talented archers. View verified tournament records, arrow averages, and rankings on Archeris.net.')
+    title: () => 'Archer Profiles & Athlete Rankings - Archeris',
+    robots: 'noindex, nofollow',
+    description: () => t('archers.seo_desc', 'Discover and explore profiles of talented archers. View verified tournament records, arrow averages, and rankings on Archeris.'),
+    ogTitle: () => 'Archer Profiles & Athlete Rankings - Archeris',
+    ogDescription: () => t('archers.seo_desc', 'Discover and explore profiles of talented archers. View verified tournament records, arrow averages, and rankings on Archeris.')
 })
 </script>
 

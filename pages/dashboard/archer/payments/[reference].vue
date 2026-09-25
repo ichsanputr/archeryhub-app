@@ -39,6 +39,7 @@ const reuploadSenderName = ref('')
 const reuploadFileUrl = ref('')
 const reuploadPreviewUrl = ref('')
 const isReuploading = ref(false)
+const showReplaceProofForm = ref(false)
 const reuploadFileInputRef = ref(null)
 
 // Participants Table State: Search, Sorting, Pagination
@@ -91,7 +92,7 @@ const submitReuploadProof = async () => {
     await loadPaymentDetails()
     reuploadFileUrl.value = ''
     reuploadPreviewUrl.value = ''
-    reuploadSenderName.value = ''
+    showReplaceProofForm.value = false
   } catch (err) {
     toast.error(err?.data?.error || t('archer_payment_detail.toast_proof_failed'))
   } finally {
@@ -134,6 +135,9 @@ const loadPaymentDetails = async () => {
     const res = await get(`/payment/status/${reference}`)
     if (res) {
       payment.value = res
+      if (!reuploadSenderName.value && res.sender_name) {
+        reuploadSenderName.value = res.sender_name
+      }
     } else {
       payment.value = null
     }
@@ -837,14 +841,26 @@ onMounted(() => {
               {{ isPaid(payment.status) ? t('archer_payment_detail.proof_verified_note') : payment.status === 'rejected' ? t('archer_payment_detail.proof_rejected_note') : t('payment_status.manual_verif_desc') }}
             </div>
           </div>
+
+          <!-- Replace proof toggle button when pending or awaiting verification -->
+          <div v-if="!isPaid(payment.status) && ['pending', 'awaiting_verification'].includes((payment.status || '').toLowerCase())" class="shrink-0 self-end sm:self-center">
+            <button
+              type="button"
+              @click="showReplaceProofForm = !showReplaceProofForm"
+              class="px-3.5 py-2 rounded-xl border border-navy/20 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-xs font-bold text-navy dark:text-white flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
+            >
+              <Icon :icon="showReplaceProofForm ? 'ph:x-bold' : 'ph:arrows-clockwise-bold'" class="size-3.5 text-primary" />
+              <span>{{ showReplaceProofForm ? t('common.cancel', 'Batal') : t('archer_payment_detail.replace_proof_btn', 'Ganti Bukti Transfer') }}</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Re-upload Form when Pending or Rejected -->
-        <div v-if="['pending', 'rejected'].includes((payment.status || '').toLowerCase())" class="mt-4 p-5 sm:p-6 bg-slate-50 dark:bg-slate-700/30 rounded-2xl border border-slate-200 dark:border-slate-600 space-y-4">
+        <!-- Re-upload Form when No Proof, Rejected, or user toggled showReplaceProofForm -->
+        <div v-if="!isPaid(payment.status) && (!payment.proof_url || payment.status === 'rejected' || showReplaceProofForm)" class="mt-4 p-5 sm:p-6 bg-slate-50 dark:bg-slate-700/30 rounded-2xl border border-slate-200 dark:border-slate-600 space-y-4">
           <div class="flex items-center justify-between">
             <div class="text-sm font-black text-navy dark:text-white flex items-center gap-2">
               <Icon icon="ph:upload-simple-bold" class="text-base text-primary" />
-              <span>{{ payment.status === 'rejected' ? t('archer_payment_detail.reupload_title') : t('archer_payment_detail.upload_proof_title') }}</span>
+              <span>{{ payment.status === 'rejected' ? t('archer_payment_detail.reupload_title') : (payment.proof_url ? t('archer_payment_detail.replace_proof_btn') : t('archer_payment_detail.upload_proof_title')) }}</span>
             </div>
             <span class="text-xs text-slate-400">{{ t('archer_payment_detail.file_format_hint') }}</span>
           </div>
@@ -896,7 +912,7 @@ onMounted(() => {
             variant="navy"
             class="w-full justify-center text-xs sm:text-sm font-bold shadow-xs py-2.5">
             <Icon icon="ph:paper-plane-right-bold" class="mr-2 text-base text-primary" />
-            {{ payment.status === 'rejected' ? t('archer_payment_detail.reupload_submit_btn') : t('archer_payment_detail.upload_submit_btn') }}
+            {{ payment.status === 'rejected' ? t('archer_payment_detail.reupload_submit_btn') : (payment.proof_url ? t('archer_payment_detail.replace_proof_btn') : t('archer_payment_detail.upload_submit_btn')) }}
           </BaseButton>
         </div>
       </div>
@@ -910,8 +926,8 @@ onMounted(() => {
         />
       </div>
 
-      <!-- Cancel Transaction Action (only for pending or awaiting_verification) -->
-      <div v-if="!isPaid(payment.status) && ['pending', 'awaiting_verification'].includes((payment.status || '').toLowerCase())" class="flex justify-end pt-2">
+      <!-- Cancel Transaction Action (only for non-manual pending online payments) -->
+      <div v-if="!isManualMethod && !isPaid(payment.status) && (payment.status || '').toLowerCase() === 'pending'" class="flex justify-end pt-2">
         <button
           type="button"
           @click="showCancelModal = true"

@@ -20,6 +20,64 @@ const showPremiumModal = ref(false)
 const { t } = useDashboardI18n()
 const { countries, currencies } = useCurrency()
 
+const form = ref({
+    name: '',
+    description: '',
+    country_code: 'ID',
+    currency: 'IDR',
+    start_date: '',
+    end_date: '',
+    venue: '',
+    address: '',
+    gmaps_link: '',
+    banner_url: '',
+    logo_url: '',
+    event_images: [],
+    fees: [],
+    payment_methods: [],
+    schedules: [],
+    registration_deadline: '',
+    entry_fee: 0,
+    fee_mode: 'per_type',
+    fee_per_type: {
+        individual: 0,
+        team: 0,
+        mixed_team: 0
+    },
+    fee_per_category: {},
+    location_type: '',
+    status: 'draft',
+    visibility: 'external',
+    total_prize: 0,
+    technical_guidebook_url: '',
+    guidebooks: [],
+    location_accessibility: [],
+    prizes: {
+        first: '',
+        second: '',
+        third: '',
+        first_caption: '',
+        second_caption: '',
+        third_caption: ''
+    },
+    page_settings: {
+        enable_manual_payment: true,
+        sections: {
+            about: true,
+            divisions: true,
+            fees: true,
+            payment_methods: true,
+            prizes: true,
+            schedule: true,
+            location: true,
+            faq: true
+        },
+        results_type: 'system'
+    },
+    faq: [],
+    results: []
+})
+
 const countryOptions = computed(() => countries.map(c => ({
     value: c.code,
     title: c.name,
@@ -44,10 +102,8 @@ const statusOptions = computed(() => [
     { value: 'active', title: computed(() => t('dashboard_events_page.status_options.active')) }
 ])
 
-
-
 useHead({
-    title: () => `${t('dashboard_events_page.title')} - Archeris Dashboard`
+    title: () => `${form.value?.name ? form.value.name + ' - ' : ''}${t('dashboard_events_page.title', 'Halaman Turnamen')} - Archeris Dashboard`
 })
 
 const route = useRoute()
@@ -160,64 +216,6 @@ const toggleLocationAccessibility = (option) => {
         form.value.location_accessibility.push(option)
     }
 }
-
-const form = ref({
-    name: '',
-    description: '',
-    country_code: 'ID',
-    currency: 'IDR',
-    start_date: '',
-    end_date: '',
-    venue: '',
-    address: '',
-    gmaps_link: '',
-    banner_url: '',
-    logo_url: '',
-    event_images: [],
-    fees: [],
-    payment_methods: [],
-    schedules: [],
-    registration_deadline: '',
-    entry_fee: 0,
-    fee_mode: 'per_type',
-    fee_per_type: {
-        individual: 0,
-        team: 0,
-        mixed_team: 0
-    },
-    fee_per_category: {},
-    location_type: '',
-    status: 'draft',
-    visibility: 'external',
-    total_prize: 0,
-    technical_guidebook_url: '',
-    guidebooks: [],
-    location_accessibility: [],
-    prizes: {
-        first: '',
-        second: '',
-        third: '',
-        first_caption: '',
-        second_caption: '',
-        third_caption: ''
-    },
-    page_settings: {
-        enable_manual_payment: true,
-        sections: {
-            about: true,
-            divisions: true,
-            fees: true,
-            payment_methods: true,
-            prizes: true,
-            schedule: true,
-            location: true,
-            faq: true
-        },
-        results_type: 'system'
-    },
-    faq: [],
-    results: []
-})
 
 const disciplines = ref([])
 

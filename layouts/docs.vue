@@ -10,7 +10,7 @@
                         <img src="/logo.png" alt="Archeris" class="w-8 h-8 object-contain transition-transform duration-300 group-hover:scale-105" />
                         <span class="text-lg font-black tracking-tight text-navy dark:text-white">Archeris</span>
                     </NuxtLink>
-                    <div class="flex items-center gap-2">
+                    <div class="hidden sm:flex items-center gap-2">
                         <span class="text-gray-200 dark:text-slate-700 text-lg font-light select-none">/</span>
                         <NuxtLink to="/docs" class="text-sm font-bold text-gray-500 dark:text-slate-400 hover:text-navy dark:hover:text-white transition-colors">
                             Docs</NuxtLink>
@@ -135,7 +135,6 @@ const switchLocale = async (code) => {
     if (import.meta.client) {
         try {
             localStorage.setItem('docs_locale', code)
-            localStorage.setItem('dashboard_locale', code)
         } catch (e) {}
     }
     showLangMenu.value = false

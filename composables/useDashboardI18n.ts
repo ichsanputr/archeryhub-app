@@ -1,4 +1,7 @@
 import { ref, computed, watch } from 'vue'
+import rootEn from '../locales/en.json'
+import rootId from '../locales/id.json'
+
 import enCommon from '../i18n/locales/en/common.json'
 import enAuth from '../i18n/locales/en/auth.json'
 import enDashboard from '../i18n/locales/en/dashboard.json'
@@ -37,8 +40,8 @@ function deepMerge(target: any, source: any): any {
   return output
 }
 
-const enModules = [enCommon, enAuth, enDashboard, enTournaments, enArchers, enCommerce]
-const idModules = [idCommon, idAuth, idDashboard, idTournaments, idArchers, idCommerce]
+const enModules = [rootEn, enCommon, enAuth, enDashboard, enTournaments, enArchers, enCommerce]
+const idModules = [rootId, idCommon, idAuth, idDashboard, idTournaments, idArchers, idCommerce]
 
 let enMessages: Record<string, any> = {}
 for (const m of enModules) {
@@ -55,7 +58,7 @@ const localeMap: Record<string, any> = {
   id: idMessages,
 }
 
-// Global shared reactive state
+// Global shared reactive state - always default to 'en'
 const globalLocale = ref<string>('en')
 let isInitialized = false
 
@@ -63,46 +66,19 @@ export function useDashboardI18n(defaultLocale = 'en') {
   if (!isInitialized) {
     if (process.client) {
       try {
-        const saved = localStorage.getItem(LS_KEY_LOCALE)
-        if (saved && (saved === 'en' || saved === 'id')) {
-          globalLocale.value = saved
-        }
+        // Clear any saved dashboard locale so reloads always reset to English
+        localStorage.removeItem(LS_KEY_LOCALE)
+        document.cookie = 'i18n_redirected=en; path=/; max-age=0'
       } catch (e) {}
     }
+    globalLocale.value = 'en'
     isInitialized = true
   }
-
-  // Sync with global nuxt app i18n if available
-  try {
-    const maybeUseNuxt = (globalThis as any).useNuxtApp || (typeof useNuxtApp === 'function' ? useNuxtApp : undefined)
-    const nuxt = maybeUseNuxt ? (maybeUseNuxt as any)() : undefined
-    const globalI18n = nuxt && (nuxt.$i18n || nuxt.app?.$i18n)
-    if (globalI18n) {
-      const currentNuxtLocale = typeof globalI18n.locale === 'string'
-        ? globalI18n.locale
-        : (globalI18n.locale?.value || globalI18n.locale)
-      if (currentNuxtLocale && (currentNuxtLocale === 'en' || currentNuxtLocale === 'id')) {
-        globalLocale.value = currentNuxtLocale
-      }
-      if (process.client && globalI18n.locale && typeof globalI18n.locale === 'object' && 'value' in globalI18n.locale) {
-        watch(() => (globalI18n.locale as any).value, (v: string) => {
-          if (v && (v === 'en' || v === 'id') && v !== globalLocale.value) {
-            setLocale(v)
-          }
-        })
-      }
-    }
-  } catch (e) {}
 
   function setLocale(loc: string) {
     if (loc !== 'en' && loc !== 'id') return
     globalLocale.value = loc
-    if (process.client) {
-      try { localStorage.setItem(LS_KEY_LOCALE, loc) } catch {}
-      try {
-        document.cookie = `i18n_redirected=${loc}; path=/; max-age=31536000`
-      } catch {}
-    }
+    // Do NOT persist to localStorage so reload always starts as English
     try {
       const maybeUseNuxt = (globalThis as any).useNuxtApp || (typeof useNuxtApp === 'function' ? useNuxtApp : undefined)
       const nuxt = maybeUseNuxt ? (maybeUseNuxt as any)() : undefined

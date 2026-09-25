@@ -1,7 +1,7 @@
 <template>
     <div class="bracket-visualization rounded-[40px] shadow-sm overflow-hidden border border-[#d1dcf0]">
         <div class="bracket-scroll-container no-scrollbar">
-            <div v-if="Object.keys(rounds).length > 0" class="flex items-center justify-center min-w-max gap-4 p-12">
+            <div v-if="Object.keys(rounds).length > 0" class="flex items-start justify-center min-w-max gap-4 p-12">
 
                 <!-- LEFT SIDE ROUNDS -->
                 <template v-for="rNo in leftSideRoundNumbers" :key="'left-' + rNo">
@@ -10,14 +10,17 @@
                         :slot-height="getSlotHeightForSide(rNo)" :bracket-format="bracket?.format" />
 
                     <!-- Connector (Left to Next) -->
-                    <div class="connector-space" :style="{ height: getSideTotalHeight + 'px' }">
-                        <svg class="bracket-svg" :viewBox="`0 0 80 ${getSideTotalHeight}`" preserveAspectRatio="none"
-                            style="width: 100%; height: 100%;">
-                            <path v-for="i in Math.floor(getMatchesForSide(rNo, 'left').length / 2)" :key="i"
-                                class="connector-line" :d="calculateConnectorPath(i, rNo, 'left')" />
-                            <path v-if="getMatchesForSide(rNo, 'left').length === 1" class="connector-line"
-                                :d="calculateConnectorPath(1, rNo, 'left', true)" />
-                        </svg>
+                    <div class="flex flex-col items-center">
+                        <div class="round-header-spacer"></div>
+                        <div class="connector-space" :style="{ height: getSideTotalHeight + 'px' }">
+                            <svg class="bracket-svg" :viewBox="`0 0 80 ${getSideTotalHeight}`" preserveAspectRatio="none"
+                                style="width: 100%; height: 100%;">
+                                <path v-for="i in Math.floor(getMatchesForSide(rNo, 'left').length / 2)" :key="i"
+                                    class="connector-line" :d="calculateConnectorPath(i, rNo, 'left')" />
+                                <path v-if="getMatchesForSide(rNo, 'left').length === 1" class="connector-line"
+                                    :d="calculateConnectorPath(1, rNo, 'left', true)" />
+                            </svg>
+                        </div>
                     </div>
                 </template>
 
@@ -29,14 +32,17 @@
                 <!-- RIGHT SIDE ROUNDS -->
                 <template v-for="rNo in rightSideRoundNumbers" :key="'right-' + rNo">
                     <!-- Connector (Right to Previous) -->
-                    <div class="connector-space" :style="{ height: getSideTotalHeight + 'px' }">
-                        <svg class="bracket-svg" :viewBox="`0 0 80 ${getSideTotalHeight}`" preserveAspectRatio="none"
-                            style="width: 100%; height: 100%;">
-                            <path v-for="i in Math.floor(getMatchesForSide(rNo, 'right').length / 2)" :key="i"
-                                class="connector-line" :d="calculateConnectorPath(i, rNo, 'right')" />
-                            <path v-if="getMatchesForSide(rNo, 'right').length === 1" class="connector-line"
-                                :d="calculateConnectorPath(1, rNo, 'right', true)" />
-                        </svg>
+                    <div class="flex flex-col items-center">
+                        <div class="round-header-spacer"></div>
+                        <div class="connector-space" :style="{ height: getSideTotalHeight + 'px' }">
+                            <svg class="bracket-svg" :viewBox="`0 0 80 ${getSideTotalHeight}`" preserveAspectRatio="none"
+                                style="width: 100%; height: 100%;">
+                                <path v-for="i in Math.floor(getMatchesForSide(rNo, 'right').length / 2)" :key="i"
+                                    class="connector-line" :d="calculateConnectorPath(i, rNo, 'right')" />
+                                <path v-if="getMatchesForSide(rNo, 'right').length === 1" class="connector-line"
+                                    :d="calculateConnectorPath(1, rNo, 'right', true)" />
+                            </svg>
+                        </div>
                     </div>
 
                     <PublicBracketRound :round-no="rNo" :round-name="getRoundName(parseInt(rNo))"
@@ -167,6 +173,10 @@ const calculateConnectorPath = (i, roundNo, side = 'left', isSingle = false) => 
 
 .connector-space {
     @apply w-[80px] relative shrink-0;
+}
+
+.round-header-spacer {
+    @apply mb-12 h-20;
 }
 
 .bracket-svg {

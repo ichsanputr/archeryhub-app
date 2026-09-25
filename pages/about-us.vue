@@ -136,22 +136,7 @@
           </p>
         </section>
 
-        <!-- Call to Action Footer -->
-        <section class="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="space-y-1 text-center sm:text-left">
-            <h4 class="text-sm font-bold text-navy">Have questions or want to partner with us?</h4>
-            <p class="text-xs text-slate-500">We are always happy to support your club, tournament, or organization.</p>
-          </div>
 
-          <div class="flex items-center gap-3">
-            <NuxtLink to="/tournaments" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy text-xs font-bold transition-colors cursor-pointer">
-              Explore Tournaments
-            </NuxtLink>
-            <NuxtLink to="/blog" class="px-4 py-2 rounded-xl bg-navy hover:bg-slate-800 text-white text-xs font-bold transition-colors cursor-pointer">
-              Read Articles
-            </NuxtLink>
-          </div>
-        </section>
 
       </article>
     </main>

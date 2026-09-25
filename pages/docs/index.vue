@@ -303,7 +303,7 @@ const structuredData = computed(() => [
 ])
 
 useHead(() => ({
-    title: 'Documentation & Organizer Guides - Archeris.net',
+    title: 'Documentation & Organizer Guides - Archeris',
     link: [
         { rel: 'canonical', href: 'https://archeris.net/docs' },
         { rel: 'alternate', hreflang: 'en', href: 'https://archeris.net/docs' },
@@ -318,7 +318,7 @@ useHead(() => ({
 }))
 
 useSeoMeta({
-    title: 'Archery Scoring Documentation & Guides - Archeris',
+    title: 'Documentation & Organizer Guides - Archeris',
     description: 'Explore step-by-step guides for digital archery scoring, target scorekeeping, World Archery elimination brackets, and tournament setup on Archeris.',
     ogTitle: 'Archery Scoring Documentation & Guides - Archeris',
     ogDescription: 'Explore step-by-step guides for digital archery scoring, target scorekeeping, World Archery elimination brackets, and tournament setup on Archeris.',

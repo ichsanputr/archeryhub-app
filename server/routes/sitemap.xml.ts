@@ -21,8 +21,6 @@ export default defineEventHandler(async (event) => {
     { url: `${siteUrl}/package`, lastmod: today, changefreq: 'weekly', priority: 0.9 },
     { url: `${siteUrl}/blog`, lastmod: today, changefreq: 'daily', priority: 0.8 },
     { url: `${siteUrl}/docs`, lastmod: today, changefreq: 'weekly', priority: 0.8 },
-    { url: `${siteUrl}/archers`, lastmod: today, changefreq: 'daily', priority: 0.8 },
-    { url: `${siteUrl}/organizer`, lastmod: today, changefreq: 'weekly', priority: 0.8 },
     { url: `${siteUrl}/archeris-vs-ianseo`, lastmod: today, changefreq: 'weekly', priority: 0.8 },
     { url: `${siteUrl}/about-us`, lastmod: today, changefreq: 'monthly', priority: 0.7 },
     { url: `${siteUrl}/faq`, lastmod: today, changefreq: 'weekly', priority: 0.7 },

@@ -34,26 +34,58 @@
             <form class="space-y-6" @submit.prevent="handleSubmit">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label class="block text-xs font-bold text-slate-600 tracking-wider mb-2">Your Name</label>
+                  <label class="block text-xs font-bold text-slate-600 tracking-wider mb-2">Your Name <span class="text-rose-500">*</span></label>
                   <input v-model="form.name"
-                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:outline-hidden transition-colors placeholder:text-slate-400"
-                    placeholder="Enter your full name" type="text" required />
+                    @input="validateField('name')"
+                    @blur="validateField('name')"
+                    :class="errors.name ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500' : 'border-slate-200 bg-slate-50 focus:border-navy focus:bg-white'"
+                    class="w-full px-4 py-3 border rounded-xl text-sm text-slate-800 focus:outline-hidden transition-colors placeholder:text-slate-400"
+                    placeholder="Enter your full name" type="text" />
+                  <p v-if="errors.name" class="mt-1.5 text-xs text-rose-600 font-medium flex items-center gap-1">
+                    <Icon icon="ph:warning-circle-fill" class="shrink-0 text-sm" />
+                    <span>{{ errors.name }}</span>
+                  </p>
                 </div>
                 <div>
-                  <label class="block text-xs font-bold text-slate-600 tracking-wider mb-2">Email Address</label>
+                  <label class="block text-xs font-bold text-slate-600 tracking-wider mb-2">Email Address <span class="text-rose-500">*</span></label>
                   <input v-model="form.email"
-                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:outline-hidden transition-colors placeholder:text-slate-400"
-                    placeholder="name@example.com" type="email" required />
+                    @input="validateField('email')"
+                    @blur="validateField('email')"
+                    :class="errors.email ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500' : 'border-slate-200 bg-slate-50 focus:border-navy focus:bg-white'"
+                    class="w-full px-4 py-3 border rounded-xl text-sm text-slate-800 focus:outline-hidden transition-colors placeholder:text-slate-400"
+                    placeholder="name@example.com" type="email" />
+                  <p v-if="errors.email" class="mt-1.5 text-xs text-rose-600 font-medium flex items-center gap-1">
+                    <Icon icon="ph:warning-circle-fill" class="shrink-0 text-sm" />
+                    <span>{{ errors.email }}</span>
+                  </p>
                 </div>
               </div>
               <div>
-                <BaseSelect v-model="form.subject" :options="subjectOptions" label="Subject" placeholder="Select a topic" required />
+                <BaseSelect 
+                  v-model="form.subject" 
+                  :options="subjectOptions" 
+                  label="Subject" 
+                  placeholder="Select a topic" 
+                  :error="errors.subject"
+                  @change="validateField('subject')"
+                  required />
+                <p v-if="errors.subject" class="mt-1.5 text-xs text-rose-600 font-medium flex items-center gap-1">
+                  <Icon icon="ph:warning-circle-fill" class="shrink-0 text-sm" />
+                  <span>{{ errors.subject }}</span>
+                </p>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-600 tracking-wider mb-2">Message</label>
+                <label class="block text-xs font-bold text-slate-600 tracking-wider mb-2">Message <span class="text-rose-500">*</span></label>
                 <textarea v-model="form.message"
-                  class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:outline-hidden transition-colors placeholder:text-slate-400 resize-none"
-                  placeholder="How can we help you?" rows="5" required></textarea>
+                  @input="validateField('message')"
+                  @blur="validateField('message')"
+                  :class="errors.message ? 'border-rose-400 bg-rose-50/20 focus:border-rose-500' : 'border-slate-200 bg-slate-50 focus:border-navy focus:bg-white'"
+                  class="w-full px-4 py-3 border rounded-xl text-sm text-slate-800 focus:outline-hidden transition-colors placeholder:text-slate-400 resize-none"
+                  placeholder="How can we help you?" rows="5"></textarea>
+                <p v-if="errors.message" class="mt-1.5 text-xs text-rose-600 font-medium flex items-center gap-1">
+                  <Icon icon="ph:warning-circle-fill" class="shrink-0 text-sm" />
+                  <span>{{ errors.message }}</span>
+                </p>
               </div>
               <div class="pt-2">
                 <button
@@ -171,22 +203,78 @@ const form = reactive({
   message: ''
 })
 
+const errors = reactive({
+  name: '',
+  email: '',
+  subject: '',
+  message: ''
+})
+
+const validateField = (field) => {
+  if (field === 'name') {
+    if (!form.name || !form.name.trim()) {
+      errors.name = 'Please enter your full name.'
+    } else if (form.name.trim().length < 2) {
+      errors.name = 'Name must be at least 2 characters long.'
+    } else {
+      errors.name = ''
+    }
+  }
+
+  if (field === 'email') {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!form.email || !form.email.trim()) {
+      errors.email = 'Please enter your email address.'
+    } else if (!emailRegex.test(form.email.trim())) {
+      errors.email = 'Please enter a valid email address (e.g. name@example.com).'
+    } else {
+      errors.email = ''
+    }
+  }
+
+  if (field === 'subject') {
+    if (!form.subject) {
+      errors.subject = 'Please select a topic/subject.'
+    } else {
+      errors.subject = ''
+    }
+  }
+
+  if (field === 'message') {
+    if (!form.message || !form.message.trim()) {
+      errors.message = 'Please enter your message.'
+    } else if (form.message.trim().length < 10) {
+      errors.message = 'Message must be at least 10 characters long.'
+    } else {
+      errors.message = ''
+    }
+  }
+}
+
+const validateAll = () => {
+  validateField('name')
+  validateField('email')
+  validateField('subject')
+  validateField('message')
+  return !errors.name && !errors.email && !errors.subject && !errors.message
+}
+
 const { post } = useApi()
 const toast = useToast()
 
 const handleSubmit = async () => {
-  if (!form.name || !form.email || !form.subject || !form.message) {
-    toast.error('Please fill in all fields.')
+  if (!validateAll()) {
+    toast.error('Please check and fill in all required fields correctly.')
     return
   }
 
   loading.value = true
   try {
     await post('/contact', {
-      name: form.name,
-      email: form.email,
+      name: form.name.trim(),
+      email: form.email.trim(),
       subject: form.subject,
-      message: form.message
+      message: form.message.trim()
     })
 
     toast.success('Thank you! Your message has been sent.')
@@ -194,6 +282,10 @@ const handleSubmit = async () => {
     form.email = ''
     form.subject = ''
     form.message = ''
+    errors.name = ''
+    errors.email = ''
+    errors.subject = ''
+    errors.message = ''
   } catch (error) {
     console.error('Failed to send message:', error)
     toast.error('Failed to send message. Please try again later.')
@@ -203,7 +295,7 @@ const handleSubmit = async () => {
 }
 
 useHead({
-  title: 'Contact Support - Archeris Archery Scoring',
+  title: 'Contact Support - Archeris',
   link: [
     { rel: 'canonical', href: useRequestURL().href }
   ],
@@ -233,9 +325,9 @@ useHead({
 })
 
 useSeoMeta({
-  title: 'Contact Support - Archeris Archery Scoring',
+  title: 'Contact Support - Archeris',
   description: 'Get in touch with the Archeris team for tournament scoring support, technical inquiries, and certified scorekeeper onboarding.',
-  ogTitle: 'Contact Support - Archeris Archery Scoring',
+  ogTitle: 'Contact Support - Archeris',
   ogDescription: 'Get in touch with the Archeris team for tournament scoring support, technical inquiries, and certified scorekeeper onboarding.',
   ogType: 'website',
   twitterCard: 'summary_large_image'

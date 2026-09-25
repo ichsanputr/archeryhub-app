@@ -13,7 +13,7 @@
               <h2 class="text-white text-sm font-bold leading-none">Customer Service</h2>
               <div class="flex items-center gap-1.5 mt-1">
                 <span class="size-2 bg-primary rounded-full animate-pulse"></span>
-                <span class="text-white/60  text-xs font-medium tracking-wider">Sedang Online</span>
+                <span class="text-white/60 text-xs font-medium tracking-wider">{{ isEn ? 'Online Now' : 'Sedang Online' }}</span>
               </div>
             </div>
           </div>
@@ -58,7 +58,7 @@
               <Icon icon="ph:robot-bold" class="text-lg" />
             </div>
             <div class="bg-navy text-white px-4 py-3 rounded-2xl rounded-bl-none text-sm leading-relaxed shadow-sm">
-              <div class="typing-loader" aria-label="Bot sedang mengetik">
+              <div class="typing-loader" :aria-label="isEn ? 'Bot is typing' : 'Bot sedang mengetik'">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -71,9 +71,9 @@
           <form class="relative flex items-center" @submit.prevent="sendMessage()">
             <input v-model="inputMessage"
               class="w-full bg-slate-100 border-none rounded-xl py-3 pl-4 pr-12 text-sm focus:ring-2 focus:ring-primary/50 text-navy placeholder-slate-500"
-              placeholder="Tulis pesan kamu..." type="text" />
+              :placeholder="isEn ? 'Ask a question...' : 'Tulis pesan kamu...'" type="text" />
             <button type="submit"
-              class="absolute right-2 p-1.5 bg-primary text-navy rounded-lg hover:brightness-95 transition-all flex items-center justify-center shadow-sm"
+              class="absolute right-2 p-1.5 bg-primary text-navy rounded-lg hover:brightness-95 transition-all flex items-center justify-center shadow-sm cursor-pointer"
               :disabled="!inputMessage.trim() || isLoading">
               <Icon icon="ph:paper-plane-tilt-fill" class="text-lg" />
             </button>
@@ -83,7 +83,7 @@
     </Transition>
 
     <button
-      class="size-10 md:size-12 bg-primary text-navy rounded-full flex items-center justify-center shadow-[0_10px_25px_-5px_rgba(0,0,0,0.12)] hover:scale-105 active:scale-95 transition-all duration-300 relative"
+      class="size-10 md:size-12 bg-primary text-navy rounded-full flex items-center justify-center shadow-[0_10px_25px_-5px_rgba(0,0,0,0.12)] hover:scale-105 active:scale-95 transition-all duration-300 relative cursor-pointer"
       :class="isOpen ? 'max-sm:hidden' : ''" @click="isOpen = !isOpen" aria-label="Toggle support chat">
       <Icon :icon="isOpen ? 'ph:x-bold' : 'ph:chat-circle-dots-fill'" class="text-xl md:text-2xl" />
       <span v-if="!isOpen && unreadCount > 0"
@@ -95,7 +95,11 @@
 </template>
 
 <script setup>
-import { nextTick, ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { nextTick, ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { locale } = useI18n()
+const isEn = computed(() => locale.value === 'en')
 
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
@@ -122,13 +126,25 @@ onBeforeUnmount(() => {
 
 const nowTime = () => new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
 
+const defaultGreeting = () => {
+  return isEn.value
+    ? 'Hello! I am the Archeris Customer Support assistant. How can I help you today?'
+    : 'Halo! Saya Customer Service Archeris. Ada yang bisa saya bantu hari ini?'
+}
+
 const messages = ref([
   {
     role: 'bot',
-    text: 'Halo, saya Customer Service Archeris. Ada yang bisa saya bantu hari ini?',
+    text: defaultGreeting(),
     time: nowTime(),
   },
 ])
+
+watch(isEn, () => {
+  if (messages.value.length === 1 && messages.value[0].role === 'bot') {
+    messages.value[0].text = defaultGreeting()
+  }
+})
 
 const scrollToBottom = async () => {
   await nextTick()
@@ -146,21 +162,30 @@ const sendMessage = async (prefilled) => {
   await scrollToBottom()
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 780))
-    const res = await $fetch(`${apiBaseUrl}/chatbot/message`, {
+    await new Promise((resolve) => setTimeout(resolve, 400))
+    const currentLang = locale.value || 'id'
+    const res = await $fetch(`${apiBaseUrl}/chatbot/message?lang=${currentLang}`, {
       method: 'POST',
-      body: { message: text },
+      body: { message: text, lang: currentLang },
     })
+
+    const fallbackReply = isEn.value
+      ? "I'm sorry, I couldn't understand that question. Could you please rephrase or ask about tournaments, scoring, rules, or packages?"
+      : "Maaf, saya belum bisa memproses pertanyaan itu. Silakan coba tanyakan seputar turnamen, scoring, aturan, atau paket langganan."
 
     messages.value.push({
       role: 'bot',
-      text: res?.answer || 'Maaf, saya belum bisa memproses pertanyaan itu. Coba pertanyaan lain ya.',
+      text: res?.answer || fallbackReply,
       time: nowTime(),
     })
   } catch (error) {
+    const errorReply = isEn.value
+      ? 'The chatbot service is temporarily unavailable. Please try again in a moment.'
+      : 'Saat ini server chatbot sedang sibuk. Silakan coba beberapa saat lagi ya.'
+
     messages.value.push({
       role: 'bot',
-      text: 'Saat ini server chatbot sedang sibuk. Silakan coba beberapa saat lagi ya.',
+      text: errorReply,
       time: nowTime(),
     })
   } finally {

@@ -29,31 +29,31 @@
     <!-- Main Content -->
     <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 mb-20 relative z-20">
       <div
-        class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
-        <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed space-y-6">
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Scoring and Ranking Accuracy</h3>
-          <p>
+        class="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-14">
+        <div class="space-y-8 text-slate-700 dark:text-slate-200 text-base sm:text-lg leading-relaxed">
+          <h3 class="text-xl sm:text-2xl font-black text-navy dark:text-white pt-4 pb-2 border-b border-slate-100 dark:border-slate-700">1. Scoring and Ranking Accuracy</h3>
+          <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             Archeris provides tools for live mobile scoring, qualification tables, and elimination brackets. All scores, arrow points, and rankings are recorded directly by event organizers, appointed scorekeepers, or archers.
           </p>
-          <p>
+          <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             While Archeris provides reliable software, tournament organizers are responsible for verifying on-field arrow values and resolving scoring disputes in accordance with official competition rules.
           </p>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Match Operations and Internet Reliability</h3>
-          <p>
+          <h3 class="text-xl sm:text-2xl font-black text-navy dark:text-white pt-4 pb-2 border-b border-slate-100 dark:border-slate-700">2. Match Operations and Internet Reliability</h3>
+          <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             We strive to maintain continuous availability and real-time syncing during events. However, outdoor archery venues may experience cellular or Wi-Fi interruptions.
           </p>
-          <p>
+          <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             Tournament organizers are advised to follow standard practice and keep paper backup scorecards at target lines during critical matches. Archeris is not liable for match delays caused by third-party network or hardware failures.
           </p>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Payment Processing</h3>
-          <p>
+          <h3 class="text-xl sm:text-2xl font-black text-navy dark:text-white pt-4 pb-2 border-b border-slate-100 dark:border-slate-700">3. Payment Processing</h3>
+          <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             All payment transactions, entry fee checkouts, and organizer payouts are handled by certified third-party payment gateways (such as Mayar). Any payment processor outages, banking settlement delays, or charge disputes are subject to the terms of the payment provider.
           </p>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Agreement</h3>
-          <p>
+          <h3 class="text-xl sm:text-2xl font-black text-navy dark:text-white pt-4 pb-2 border-b border-slate-100 dark:border-slate-700">4. Agreement</h3>
+          <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             By using Archeris, you acknowledge that you understand and agree to these terms.
           </p>
         </div>

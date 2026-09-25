@@ -1553,7 +1553,7 @@
       "save_failed": "Failed to save tournament",
       "fill_event_name": "Please enter tournament name"
     },
-    "seo_title": "Seo Title",
+    "seo_title": "Tournament Page",
     "currency_config": {
       "title": "Tournament Country & Currency",
       "subtitle": "Set the tournament host country and base currency for entry fees and prize money.",

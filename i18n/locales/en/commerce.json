@@ -1543,6 +1543,7 @@
     "receipt_clarity_hint": "Ensure transfer amount and destination account number are clearly readable",
     "upload_submit_btn": "Submit Payment Proof",
     "reupload_submit_btn": "Resubmit Transfer Proof to Committee",
+    "replace_proof_btn": "Replace Transfer Proof",
     "cancel_tx_btn": "Cancel Payment Transaction",
     "cancel_modal_title": "Cancel Transaction?",
     "cancel_modal_desc": "Are you sure you want to cancel this transaction? Participant payment status will be reset to unpaid so you can choose another payment method or re-register.",

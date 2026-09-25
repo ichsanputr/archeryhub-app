@@ -29,46 +29,46 @@
     <!-- Main Content -->
     <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 mb-20 relative z-20">
       <div
-        class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
-        <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed space-y-6">
-          <p>
+        class="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-14">
+        <div class="space-y-8 text-slate-700 dark:text-slate-200 text-base sm:text-lg leading-relaxed">
+          <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             Welcome to Archeris. These Terms and Conditions govern your use of the Archeris platform, including all features for tournament organizers, archers, and scorekeepers.
           </p>
-          <p>
+          <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             By creating an account, registering for an event, or submitting scores, you agree to these terms.
           </p>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. User Roles and Responsibilities</h3>
-          <p>
+          <h3 class="text-xl sm:text-2xl font-black text-navy dark:text-white pt-4 pb-2 border-b border-slate-100 dark:border-slate-700">1. User Roles and Responsibilities</h3>
+          <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             We support three primary user roles with specific guidelines:
           </p>
-          <ul class="list-disc pl-6 space-y-2 marker:text-primary">
+          <ul class="list-disc pl-6 space-y-2.5 text-base sm:text-lg marker:text-primary">
             <li><strong>Archers:</strong> Responsible for providing accurate personal information (name, gender, age category, bow type) and practicing good sportsmanship.</li>
             <li><strong>Organizers:</strong> Responsible for setting up event details, target assignments, category rules, and resolving participant inquiries fairly.</li>
             <li><strong>Scorekeepers:</strong> Appointed by organizers to record arrow scores honestly and in line with tournament rules.</li>
           </ul>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Subscriptions and Payments</h3>
-          <p>
+          <h3 class="text-xl sm:text-2xl font-black text-navy dark:text-white pt-4 pb-2 border-b border-slate-100 dark:border-slate-700">2. Subscriptions and Payments</h3>
+          <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             Organizers may choose subscription plans or event packages to unlock additional capabilities (e.g. unlimited events, custom score sheets, and multi-day brackets):
           </p>
-          <ul class="list-disc pl-6 space-y-2 marker:text-primary">
+          <ul class="list-disc pl-6 space-y-2.5 text-base sm:text-lg marker:text-primary">
             <li><strong>Plans & Invoicing:</strong> Subscriptions and quota packages are billed securely through our payment partner (Mayar).</li>
             <li><strong>Subscription Expiry:</strong> When a subscription ends, organizers can still log in, review past events, and view all records. However, creating or publishing new tournaments requires an active plan.</li>
             <li><strong>Entry Fee Collection:</strong> Registration fees collected from archers are processed securely, with payouts disbursed to organizers after standard processing fees.</li>
           </ul>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Scoring Integrity and Fair Play</h3>
-          <p>
+          <h3 class="text-xl sm:text-2xl font-black text-navy dark:text-white pt-4 pb-2 border-b border-slate-100 dark:border-slate-700">3. Scoring Integrity and Fair Play</h3>
+          <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             All arrow scores, qualification totals, and elimination bracket results entered into Archeris form the official event record:
           </p>
-          <ol class="list-decimal pl-6 space-y-2 marker:text-navy marker:font-bold">
+          <ol class="list-decimal pl-6 space-y-2.5 text-base sm:text-lg marker:text-navy marker:font-bold">
             <li>Organizers must ensure competition categories and target distances comply with standard archery rules.</li>
             <li>Any intentional score tampering, falsification, or bracket manipulation will lead to immediate account suspension and cancellation of event results.</li>
           </ol>
 
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Account Termination</h3>
-          <p>
+          <h3 class="text-xl sm:text-2xl font-black text-navy dark:text-white pt-4 pb-2 border-b border-slate-100 dark:border-slate-700">4. Account Termination</h3>
+          <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             We reserve the right to suspend or terminate accounts that violate these terms, attempt fraud, or disrupt scoring operations.
           </p>
         </div>

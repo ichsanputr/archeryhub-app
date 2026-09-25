@@ -12,34 +12,15 @@ export default defineNuxtRouteMiddleware((to) => {
     }, { replace: true })
   }
 
-  // Handle locale switching between public and dashboard
+  // Handle locale: always default to English
   const nuxtApp = useNuxtApp()
   const i18n = (nuxtApp as any).$i18n
 
   if (i18n) {
-    if (to.path.startsWith('/dashboard')) {
-      // In dashboard, restore dashboard locale preference if on client
-      if (process.client) {
-        try {
-          const saved = localStorage.getItem('dashboard_locale')
-          if (saved && (saved === 'en' || saved === 'id')) {
-            if (i18n.locale.value !== saved) {
-              i18n.locale.value = saved
-            }
-          }
-        } catch (e) {
-          // ignore
-        }
-      }
-    } else {
-      // In public / landing pages, force English
-      if (typeof i18n.locale === 'object' && i18n.locale && 'value' in i18n.locale) {
-        if (i18n.locale.value !== 'en') {
-          i18n.locale.value = 'en'
-        }
-      } else if (typeof i18n.locale === 'string') {
-        i18n.locale = 'en'
-      }
+    if (process.client) {
+      try {
+        localStorage.removeItem('dashboard_locale')
+      } catch (e) {}
     }
   }
 })

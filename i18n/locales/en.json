@@ -3337,7 +3337,7 @@
       "gmaps_hint": "Open Google Maps > Share > Embed a map > Copy HTML",
       "gmaps_detected": "Google Maps detected"
     },
-    "seo_title": "Seo Title",
+    "seo_title": "Tournament Page",
     "toasts": {
       "fill_event_name": "Please enter tournament name",
       "fill_required": "Please complete Venue Name and Address",
@@ -7471,6 +7471,7 @@
     "receipt_clarity_hint": "Ensure transfer amount and destination account number are clearly readable",
     "upload_submit_btn": "Submit Payment Proof",
     "reupload_submit_btn": "Resubmit Transfer Proof to Committee",
+    "replace_proof_btn": "Replace Transfer Proof",
     "cancel_tx_btn": "Cancel Payment Transaction",
     "cancel_modal_title": "Cancel Transaction?",
     "cancel_modal_desc": "Are you sure you want to cancel this transaction? Participant payment status will be reset to unpaid so you can choose another payment method or re-register.",

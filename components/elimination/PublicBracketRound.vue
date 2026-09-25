@@ -1,5 +1,10 @@
 <template>
     <div class="bracket-round">
+        <div class="round-header group">
+            <span class="text-[10px] font-black tracking-[0.25em] text-slate-400 capitalize">
+                {{ roundName }}
+            </span>
+        </div>
         <div class="slots-container flex flex-col justify-center" :style="{ height: totalHeight + 'px' }">
             <div v-for="match in matches" :key="match.id" class="match-slot" :style="{ height: slotHeight + 'px' }">
                 <PublicEliminationMatchCard :match="match" :bracket-format="bracketFormat"

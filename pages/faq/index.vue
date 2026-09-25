@@ -13,12 +13,10 @@
 
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <!-- Breadcrumbs -->
-                <div class="mb-4">
-                    <Breadcrumbs 
-                        :items="[]" 
-                        :current="$t('nav.faq', 'FAQ')" 
-                        class="!text-slate-300" 
-                    />
+                <div class="flex items-center gap-2 text-xs text-slate-300 font-medium mb-4">
+                    <NuxtLink to="/" class="hover:text-white transition-colors">Home</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-[10px] text-slate-400" />
+                    <span class="text-primary font-semibold">FAQ</span>
                 </div>
 
                 <div class="max-w-3xl text-center md:text-left">
@@ -194,11 +192,6 @@
                         <NuxtLink to="/docs">
                             <BaseButton variant="outline" size="lg" icon="ph:book-open-bold" class="!border-white/30 !text-white hover:!bg-white/10 min-w-[160px] font-bold">
                                 {{ $t('faq_page.documentation', 'Browse Docs') }}
-                            </BaseButton>
-                        </NuxtLink>
-                        <NuxtLink to="/auth/register">
-                            <BaseButton variant="secondary" size="lg" icon="ph:arrow-right-bold" class="!bg-white !text-navy hover:!bg-slate-100 min-w-[160px] font-bold">
-                                {{ $t('faq_page.register_now', 'Create Free Account') }}
                             </BaseButton>
                         </NuxtLink>
                     </div>

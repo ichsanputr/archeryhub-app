@@ -141,22 +141,18 @@ const structuredData = computed(() => ({
 }))
 
 useHead({
-    title: 'Tournament Organizers - Archeris Archery Scoring',
-    link: [
-        { rel: 'canonical', href: useRequestURL().href }
-    ],
-    script: [
-        {
-            type: 'application/ld+json',
-            children: computed(() => JSON.stringify(structuredData.value))
-        }
+    title: 'Tournament Organizers - Archeris',
+    meta: [
+        { name: 'robots', content: 'noindex, nofollow' },
+        { name: 'googlebot', content: 'noindex, nofollow' }
     ]
 })
 
 useSeoMeta({
-    title: 'Tournament Organizers - Archeris Archery Scoring',
+    title: 'Tournament Organizers - Archeris',
+    robots: 'noindex, nofollow',
     description: 'Explore verified archery tournament organizers, competition committees, and PERPANI administrators using Archeris digital scoring.',
-    ogTitle: 'Tournament Organizers - Archeris Archery Scoring',
+    ogTitle: 'Tournament Organizers - Archeris',
     ogDescription: 'Explore verified archery tournament organizers, competition committees, and PERPANI administrators using Archeris digital scoring.',
     ogType: 'website',
     twitterCard: 'summary_large_image'
