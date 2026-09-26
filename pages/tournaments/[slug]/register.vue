@@ -118,6 +118,85 @@
             </div>
         </div>
 
+        <!-- Already Registered State -->
+        <div v-else-if="isAlreadyRegistered && !allowRegisterAnotherDelegation" class="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12">
+            <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10 space-y-6 text-center">
+                <div class="size-16 sm:size-20 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto shadow-xs">
+                    <Icon icon="ph:seal-check-bold" class="text-3xl sm:text-4xl" />
+                </div>
+
+                <div class="space-y-2">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/70 text-emerald-800 text-xs font-black uppercase tracking-wider">
+                        <Icon icon="ph:check-circle-fill" class="text-emerald-600 text-sm" />
+                        <span>{{ isEn ? 'Already Registered' : 'Sudah Terdaftar' }}</span>
+                    </span>
+                    <h2 class="text-xl sm:text-2xl font-black text-navy">
+                        {{ isEn ? 'You are already registered for this tournament' : 'Anda telah terdaftar pada turnamen ini' }}
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
+                        {{ isEn 
+                            ? 'Your registration data has been recorded. You can view your ticket, target assignment, and payment status anytime.' 
+                            : 'Data pendaftaran Anda telah tercatat. Anda dapat memeriksa tiket, jadwal bantalan target, dan status pembayaran kapan saja.' 
+                        }}
+                    </p>
+                </div>
+
+                <!-- Registration Summary Box -->
+                <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 text-left space-y-3.5 max-w-lg mx-auto">
+                    <div class="flex items-center justify-between gap-3 border-b border-slate-200/60 pb-3">
+                        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">{{ isEn ? 'Registered Archer' : 'Nama Atlet' }}</div>
+                        <div class="text-xs sm:text-sm font-black text-navy">{{ myRegistration?.full_name || archerProfile?.full_name || user?.full_name }}</div>
+                    </div>
+
+                    <div v-if="myRegistration?.categories && myRegistration.categories.length > 0" class="flex items-start justify-between gap-3 border-b border-slate-200/60 pb-3">
+                        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-0.5">{{ isEn ? 'Category' : 'Kategori' }}</div>
+                        <div class="text-right space-y-1">
+                            <div v-for="cat in myRegistration.categories" :key="cat.id || cat.category_id" class="text-xs sm:text-sm font-bold text-navy">
+                                {{ [cat.division_name, cat.category_name, cat.gender_division_name, cat.event_type_name].filter(Boolean).join(' ') }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-3">
+                        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">{{ isEn ? 'Payment Status' : 'Status Pembayaran' }}</div>
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold capitalize"
+                            :class="myRegistration?.payment_status === 'paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'">
+                            <Icon :icon="myRegistration?.payment_status === 'paid' ? 'ph:check-circle-fill' : 'ph:clock-bold'" />
+                            <span>{{ myRegistration?.payment_status || 'Pending' }}</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Action CTA Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    <NuxtLink
+                        :to="`/dashboard/archer/tournaments/${slug}/my-registration`"
+                        class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-navy text-primary hover:bg-navy/90 font-bold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <Icon icon="ph:ticket-bold" class="text-lg" />
+                        <span>{{ isEn ? 'View My Ticket & Registration' : 'Lihat Tiket & Pendaftaran Saya' }}</span>
+                    </NuxtLink>
+
+                    <NuxtLink
+                        :to="`/tournaments/${slug}`"
+                        class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2">
+                        <Icon icon="ph:arrow-left-bold" class="text-base" />
+                        <span>{{ isEn ? 'Back to Tournament' : 'Kembali ke Info Event' }}</span>
+                    </NuxtLink>
+                </div>
+
+                <!-- Club delegation alternative -->
+                <div class="pt-4 border-t border-slate-100 text-xs text-slate-500">
+                    <span>{{ isEn ? 'Need to register other archers as a Club Representative?' : 'Ingin mendaftarkan atlet lain sebagai perwakilan klub?' }}</span>
+                    <button
+                        type="button"
+                        @click="allowRegisterAnotherDelegation = true; registrationMode = 'club_delegation'"
+                        class="text-navy font-bold underline hover:text-primary-hover ml-1 cursor-pointer">
+                        {{ isEn ? 'Register Club Delegation' : 'Daftarkan Delegasi Klub' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div v-else class="flex-1">
             <!-- COMPACT TOURNAMENT HERO HEADER STRIP WITH LANGUAGE TOGGLE IN SAME ROW -->
             <div class="bg-navy text-white border-b border-navy/90 relative overflow-hidden">
@@ -222,38 +301,6 @@
 
             <!-- MAIN FORM BODY CONTAINER -->
             <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 pb-12 w-full">
-                <!-- DRAFT RESTORATION BANNER -->
-                <div v-if="hasSavedDraft && currentStep === 1" class="mb-5 p-4 sm:p-5 rounded-2xl bg-amber-50/90 border border-amber-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-in fade-in duration-200 shadow-xs">
-                    <div class="flex items-start gap-3">
-                        <div class="size-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs mt-0.5 sm:mt-0">
-                            <Icon icon="ph:file-text-bold" class="text-lg" />
-                        </div>
-                        <div>
-                            <div class="text-xs sm:text-sm font-black text-slate-900">
-                                {{ isEn ? 'Draft Registration Found' : 'Ditemukan Draf Pendaftaran Tersimpan' }}
-                            </div>
-                            <div class="text-xs text-slate-600 mt-0.5">
-                                {{ isEn ? 'You have an unsaved registration session for this tournament. Would you like to restore it?' : 'Anda memiliki sesi pendaftaran yang belum diselesaikan untuk turnamen ini. Ingin memulihkan data tersebut?' }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2 w-full sm:w-auto shrink-0 justify-end">
-                        <button
-                            type="button"
-                            @click="discardDraft"
-                            class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 font-bold text-xs transition-colors cursor-pointer">
-                            {{ isEn ? 'Discard' : 'Hapus Draf' }}
-                        </button>
-                        <button
-                            type="button"
-                            @click="restoreDraft"
-                            class="px-3.5 py-1.5 rounded-xl bg-navy text-primary hover:bg-navy/90 font-bold text-xs shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer">
-                            <Icon icon="ph:arrow-counter-clockwise-bold" class="text-xs" />
-                            <span>{{ isEn ? 'Restore Draft' : 'Pulihkan Draf' }}</span>
-                        </button>
-                    </div>
-                </div>
-
                 <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden divide-y divide-slate-100">
                     
                     <!-- ───────────────────────────────────────────────────────── -->
@@ -1246,54 +1293,89 @@
 
                                         <div v-else class="space-y-4">
                                             <!-- Destination Bank Section -->
-                                            <div class="space-y-2">
-                                                <div class="text-xs sm:text-sm font-bold text-navy flex items-center gap-1.5">
-                                                    <Icon icon="ph:bank-bold" class="text-sm text-slate-500" />
-                                                    <span>{{ isEn ? 'Select Destination Bank:' : 'Pilih Rekening Tujuan:' }}</span>
+                                            <div class="space-y-2.5">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="text-xs sm:text-sm font-bold text-navy flex items-center gap-1.5">
+                                                        <Icon icon="ph:bank-bold" class="text-sm text-slate-500" />
+                                                        <span>{{ isEn ? 'Select Destination Bank:' : 'Pilih Rekening Tujuan Transfer:' }}</span>
+                                                    </div>
+                                                    <span class="text-[11px] font-medium text-slate-400">
+                                                        {{ isEn ? 'Tap to choose' : 'Pilih salah satu' }}
+                                                    </span>
                                                 </div>
 
-                                                <div :class="orgManualMethods.length === 1 ? 'grid grid-cols-1' : 'grid grid-cols-1 sm:grid-cols-2 gap-2.5'">
+                                                <div :class="orgManualMethods.length === 1 ? 'grid grid-cols-1' : 'grid grid-cols-1 sm:grid-cols-2 gap-3'">
                                                     <div
                                                         v-for="m in orgManualMethods"
                                                         :key="m.uuid || m.id"
                                                         @click="manualMethodId = m.uuid || m.id"
-                                                        class="p-4 rounded-2xl border-2 cursor-pointer transition-all relative flex flex-col justify-between"
-                                                        :class="manualMethodId === (m.uuid || m.id) ? 'border-navy bg-navy/[0.03] shadow-xs ring-1 ring-navy/10' : 'border-slate-200 bg-white hover:border-slate-300'">
-                                                        <div class="flex items-start justify-between gap-3">
-                                                            <div class="flex items-start gap-3 min-w-0">
-                                                                <div class="size-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0 mt-0.5 shadow-2xs p-1.5 overflow-hidden">
-                                                                    <img
-                                                                        v-if="getPaymentMethodImage(m.payment_method || m.bank_name)"
-                                                                        :src="getPaymentMethodImage(m.payment_method || m.bank_name)"
-                                                                        :alt="m.payment_method || m.bank_name"
-                                                                        class="w-full h-full object-contain" />
-                                                                    <Icon v-else icon="ph:bank-bold" class="text-lg text-navy" />
+                                                        class="group p-4 sm:p-4.5 rounded-2xl border-2 cursor-pointer transition-all duration-200 relative flex flex-col justify-between select-none"
+                                                        :class="manualMethodId === (m.uuid || m.id)
+                                                            ? 'border-navy bg-gradient-to-br from-navy/[0.04] to-primary/[0.04] shadow-sm ring-2 ring-navy/15'
+                                                            : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/60 shadow-2xs hover:shadow-xs hover:-translate-y-0.5'">
+                                                        
+                                                        <!-- Top Row: Radio + Bank Name + Selected Badge -->
+                                                        <div class="flex items-start justify-between gap-3 mb-3">
+                                                            <div class="flex items-center gap-3 min-w-0">
+                                                                <!-- Custom Radio Indicator -->
+                                                                <div class="size-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all"
+                                                                    :class="manualMethodId === (m.uuid || m.id)
+                                                                        ? 'border-navy bg-navy text-primary ring-2 ring-navy/20'
+                                                                        : 'border-slate-300 bg-white group-hover:border-slate-400'">
+                                                                    <div v-if="manualMethodId === (m.uuid || m.id)" class="size-2 rounded-full bg-primary" />
                                                                 </div>
-                                                                <div class="min-w-0">
-                                                                    <div class="text-xs sm:text-sm font-black text-navy">{{ m.payment_method || m.bank_name }}</div>
-                                                                    <div class="text-sm sm:text-base font-black text-slate-900 font-mono tracking-wider mt-1 flex items-center gap-2">
-                                                                        <span>{{ m.account_number }}</span>
-                                                                        <button
-                                                                            type="button"
-                                                                            @click.stop="copyAccountNumber(m.account_number, m.uuid || m.id)"
-                                                                            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-navy/10 text-slate-600 hover:text-navy text-xs font-sans font-bold transition-colors cursor-pointer"
-                                                                            :title="isEn ? 'Copy account number' : 'Salin nomor rekening'">
-                                                                            <Icon v-if="copiedBankId === (m.uuid || m.id)" icon="ph:check-bold" class="text-xs text-emerald-600" />
-                                                                            <Icon v-else icon="ph:copy-simple-bold" class="text-xs" />
-                                                                            <span>{{ copiedBankId === (m.uuid || m.id) ? (isEn ? 'Copied' : 'Tersalin') : (isEn ? 'Copy' : 'Salin') }}</span>
-                                                                        </button>
+
+                                                                <!-- Bank Logo & Name -->
+                                                                <div class="flex items-center gap-2.5 min-w-0">
+                                                                    <div class="size-9 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs p-1.5 overflow-hidden">
+                                                                        <img
+                                                                            v-if="getPaymentMethodImage(m.payment_method || m.bank_name)"
+                                                                            :src="getPaymentMethodImage(m.payment_method || m.bank_name)"
+                                                                            :alt="m.payment_method || m.bank_name"
+                                                                            class="w-full h-full object-contain" />
+                                                                        <Icon v-else icon="ph:bank-bold" class="text-base text-navy" />
                                                                     </div>
-                                                                    <div class="text-xs sm:text-sm font-medium text-slate-500 mt-1">
-                                                                        <span class="text-slate-400 font-normal">a/n</span> {{ m.account_name || m.account_holder }}
+                                                                    <div class="min-w-0">
+                                                                        <div class="text-sm font-black text-navy truncate leading-tight">{{ m.payment_method || m.bank_name }}</div>
+                                                                        <div class="text-[11px] text-slate-500 font-medium truncate mt-0.5">
+                                                                            <span class="text-slate-400 font-normal">{{ isEn ? 'a/n' : 'a/n' }}</span> {{ m.account_name || m.account_holder }}
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="size-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 transition-colors"
-                                                                :class="manualMethodId === (m.uuid || m.id) ? 'bg-navy text-primary' : 'border-2 border-slate-300 text-transparent'">
-                                                                <Icon icon="ph:check-bold" class="text-[10px] font-black" />
-                                                            </div>
+
+                                                            <!-- Selected Tag -->
+                                                            <span v-if="manualMethodId === (m.uuid || m.id)" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-navy text-primary text-[10px] font-black shrink-0 uppercase tracking-wider">
+                                                                <Icon icon="ph:check-bold" class="text-[10px]" />
+                                                                <span>{{ isEn ? 'Selected' : 'Dipilih' }}</span>
+                                                            </span>
                                                         </div>
-                                                        <div v-if="m.instructions" class="mt-3 pt-2.5 border-t border-slate-100 text-xs text-slate-500 leading-relaxed flex items-start gap-1.5">
+
+                                                        <!-- Account Number Box with Copy Action -->
+                                                        <div class="rounded-xl p-2.5 flex items-center justify-between gap-2 transition-colors"
+                                                            :class="manualMethodId === (m.uuid || m.id) ? 'bg-white border border-navy/15 shadow-2xs' : 'bg-slate-50 border border-slate-100 group-hover:bg-white group-hover:border-slate-200'">
+                                                            <div class="min-w-0">
+                                                                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{{ isEn ? 'Account Number' : 'Nomor Rekening' }}</div>
+                                                                <div class="text-base sm:text-lg font-black text-slate-900 font-mono tracking-wider truncate leading-tight mt-0.5">
+                                                                    {{ m.account_number }}
+                                                                </div>
+                                                            </div>
+                                                            <button
+                                                                type="button"
+                                                                @click.stop="copyAccountNumber(m.account_number, m.uuid || m.id)"
+                                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans font-bold transition-all shrink-0 cursor-pointer"
+                                                                :class="copiedBankId === (m.uuid || m.id)
+                                                                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                                                    : 'bg-slate-100 hover:bg-navy hover:text-primary text-slate-700 border border-slate-200/80 active:scale-95'"
+                                                                :title="isEn ? 'Copy account number' : 'Salin nomor rekening'">
+                                                                <Icon v-if="copiedBankId === (m.uuid || m.id)" icon="ph:check-bold" class="text-xs text-emerald-600" />
+                                                                <Icon v-else icon="ph:copy-simple-bold" class="text-xs" />
+                                                                <span>{{ copiedBankId === (m.uuid || m.id) ? (isEn ? 'Copied' : 'Tersalin') : (isEn ? 'Copy' : 'Salin') }}</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <!-- Transfer Instructions (if any) -->
+                                                        <div v-if="m.instructions" class="mt-2.5 pt-2 border-t border-slate-100 text-xs text-slate-500 leading-relaxed flex items-start gap-1.5">
                                                             <Icon icon="ph:info-bold" class="text-xs text-slate-400 shrink-0 mt-0.5" />
                                                             <span>{{ m.instructions }}</span>
                                                         </div>
@@ -1699,7 +1781,8 @@ const slug = route.params.slug
 const apiBaseUrl = useApiBaseUrl()
 
 const { user, archerProfile: globalArcherProfile, logout } = useAuth()
-const { upload, put, post } = useApi()
+const { upload, put, post, get } = useApi()
+const myClientRegistration = ref(null)
 
 // User Dropdown State
 const showUserDropdown = ref(false)
@@ -1715,7 +1798,7 @@ const handleUserLogout = async () => {
 }
 
 // ─── DATA FETCHING ────────────────────────────────────────────────────────────
-const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-register-${slug}`, async () => {
+const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-register-${slug}-${user.value?.id || 'guest'}`, async () => {
     const token = useCookie('auth_token').value
     const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
     const fetchOptions = { headers, credentials: 'include' }
@@ -1732,9 +1815,18 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             ),
             token ? $fetch(`${apiBaseUrl}/archer/me`, fetchOptions).catch(() => null) : Promise.resolve(null),
             $fetch(`${apiBaseUrl}/payment/channels`).catch(() => ({ data: [] })),
-            token ? $fetch(`${apiBaseUrl}/events/${slug}/my-registration`, fetchOptions).catch(() => null) : Promise.resolve(null),
+            token ? $fetch(`${apiBaseUrl}/tournaments/${slug}/participants/me`, fetchOptions).catch(() => 
+                $fetch(`${apiBaseUrl}/events/${slug}/my-registration`, fetchOptions).catch(() => null)
+            ) : Promise.resolve(null),
             $fetch(`${apiBaseUrl}/events/${slug}/payment-methods`).catch(() => ({ data: [] }))
         ])
+
+        if (myRegistrationRes && ((Array.isArray(myRegistrationRes.categories) && myRegistrationRes.categories.length > 0) || myRegistrationRes.archer_id)) {
+            const isNotCancelled = (myRegistrationRes.payment_status || '').toLowerCase() !== 'cancelled'
+            if (isNotCancelled && route.query.mode !== 'delegation') {
+                return navigateTo(`/tournaments/${slug}`)
+            }
+        }
 
         const rawCats = categoriesResponse?.data || categoriesResponse?.tournaments || categoriesResponse?.events || categoriesResponse?.competition_categories || []
         const mappedCategories = rawCats.map(cat => {
@@ -1850,98 +1942,6 @@ const athleteGenderFilter = ref('all')
 const showClubFilterDropdown = ref(false)
 const athleteCurrentPage = ref(1)
 const athletePageSize = ref(10)
-
-// ─── DRAFT AUTOSAVE & RESTORATION ─────────────────────────────────────────────
-const hasSavedDraft = ref(false)
-const draftKey = computed(() => `archery_reg_draft_${slug}`)
-
-const saveDraftToStorage = () => {
-    if (typeof window === 'undefined' || registrationSuccess.value) return
-    const draftData = {
-        registrationMode: registrationMode.value,
-        delegationClubId: delegationClubId.value,
-        delegationClubName: delegationClubName.value,
-        delegationOfficialName: delegationOfficialName.value,
-        delegationOfficialPhone: delegationOfficialPhone.value,
-        delegationOfficialEmail: delegationOfficialEmail.value,
-        delegationAthletes: delegationAthletes.value,
-        delegationTeamBookings: delegationTeamBookings.value,
-        selectedIndividualCategoryIds: selectedIndividualCategoryIds.value,
-        selectedTeamCategories: selectedTeamCategories.value,
-        teamRosters: teamRosters.value,
-        timestamp: Date.now()
-    }
-    try {
-        sessionStorage.setItem(draftKey.value, JSON.stringify(draftData))
-    } catch (e) {}
-}
-
-const restoreDraft = () => {
-    if (typeof window === 'undefined') return
-    try {
-        const saved = sessionStorage.getItem(draftKey.value)
-        if (!saved) return
-        const parsed = JSON.parse(saved)
-        if (parsed.registrationMode) registrationMode.value = parsed.registrationMode
-        if (parsed.delegationClubId) delegationClubId.value = parsed.delegationClubId
-        if (parsed.delegationClubName) delegationClubName.value = parsed.delegationClubName
-        if (parsed.delegationOfficialName) delegationOfficialName.value = parsed.delegationOfficialName
-        if (parsed.delegationOfficialPhone) delegationOfficialPhone.value = parsed.delegationOfficialPhone
-        if (parsed.delegationOfficialEmail) delegationOfficialEmail.value = parsed.delegationOfficialEmail
-        if (Array.isArray(parsed.delegationAthletes)) delegationAthletes.value = parsed.delegationAthletes
-        if (parsed.delegationTeamBookings) delegationTeamBookings.value = parsed.delegationTeamBookings
-        if (Array.isArray(parsed.selectedIndividualCategoryIds)) selectedIndividualCategoryIds.value = parsed.selectedIndividualCategoryIds
-        if (Array.isArray(parsed.selectedTeamCategories)) selectedTeamCategories.value = parsed.selectedTeamCategories
-        if (parsed.teamRosters) teamRosters.value = parsed.teamRosters
-
-        hasSavedDraft.value = false
-        toast.success(isEn.value ? 'Draft restored successfully' : 'Draf pendaftaran berhasil dipulihkan')
-    } catch (e) {
-        toast.error(isEn.value ? 'Failed to restore draft' : 'Gagal memulihkan draf')
-    }
-}
-
-const discardDraft = () => {
-    if (typeof window !== 'undefined') {
-        sessionStorage.removeItem(draftKey.value)
-    }
-    hasSavedDraft.value = false
-    toast.info(isEn.value ? 'Draft discarded' : 'Draf pendaftaran telah dihapus')
-}
-
-onMounted(() => {
-    if (typeof window !== 'undefined') {
-        const saved = sessionStorage.getItem(draftKey.value)
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved)
-                if (parsed && (parsed.delegationAthletes?.length > 0 || parsed.selectedIndividualCategoryIds?.length > 0 || parsed.selectedTeamCategories?.length > 0)) {
-                    hasSavedDraft.value = true
-                }
-            } catch (e) {}
-        }
-    }
-})
-
-watch(
-    [
-        registrationMode,
-        delegationClubId,
-        delegationClubName,
-        delegationOfficialName,
-        delegationOfficialPhone,
-        delegationOfficialEmail,
-        delegationAthletes,
-        delegationTeamBookings,
-        selectedIndividualCategoryIds,
-        selectedTeamCategories,
-        teamRosters
-    ],
-    () => {
-        saveDraftToStorage()
-    },
-    { deep: true }
-)
 
 const uniqueClubsInRoster = computed(() => {
     const clubs = delegationAthletes.value.map(a => a.club_name).filter(Boolean)
@@ -2209,6 +2209,38 @@ const profileForm = ref({
 })
 
 // ─── COMPUTED ─────────────────────────────────────────────────────────────────
+const allowRegisterAnotherDelegation = ref(false)
+const myRegistration = computed(() => myClientRegistration.value || data.value?.myRegistration || null)
+const isAlreadyRegistered = computed(() => {
+    if (!myRegistration.value) return false
+    const hasCategories = Array.isArray(myRegistration.value.categories) && myRegistration.value.categories.length > 0
+    const hasArcherId = !!myRegistration.value.archer_id
+    const isNotCancelled = (myRegistration.value.payment_status || '').toLowerCase() !== 'cancelled'
+    return (hasCategories || hasArcherId) && isNotCancelled
+})
+
+watch(isAlreadyRegistered, (already) => {
+    if (already && !allowRegisterAnotherDelegation.value && route.query.mode !== 'delegation') {
+        toast.info(isEn.value ? 'You are already registered for this tournament.' : 'Anda sudah terdaftar pada turnamen ini.')
+        navigateTo(`/tournaments/${slug}`)
+    }
+}, { immediate: true })
+
+onMounted(async () => {
+    try {
+        const checkRes = await get(`/tournaments/${slug}/participants/me`)
+        if (checkRes && ((Array.isArray(checkRes.categories) && checkRes.categories.length > 0) || checkRes.archer_id)) {
+            myClientRegistration.value = checkRes
+            if (!allowRegisterAnotherDelegation.value && route.query.mode !== 'delegation') {
+                toast.info(isEn.value ? 'You are already registered for this tournament.' : 'Anda sudah terdaftar pada turnamen ini.')
+                navigateTo(`/tournaments/${slug}`)
+            }
+        }
+    } catch (e) {
+        // Not registered
+    }
+})
+
 const event = computed(() => data.value?.event || { name: '', date: '', location: '', registration_fee: 0, fee_mode: 'per_type', fee_per_type: {}, currency: 'IDR' })
 const eventCurrency = computed(() => event.value?.currency || 'IDR')
 const onlineGateway = computed(() => getPaymentGatewayForCurrency(eventCurrency.value))
@@ -2237,13 +2269,13 @@ const getPaymentMethodImage = (bankName) => {
     return method ? method.image : null
 }
 
-watch(orgManualMethods, (methods) => {
-    if (methods?.length > 0) {
+watch([orgManualMethods, paymentType], ([methods]) => {
+    if (methods && methods.length > 0) {
         if (!manualMethodId.value || !methods.some(m => (m.uuid || m.id) === manualMethodId.value)) {
             manualMethodId.value = methods[0]?.uuid || methods[0]?.id || ''
         }
     }
-}, { immediate: true })
+}, { immediate: true, deep: true })
 const archerProfile = computed(() => globalArcherProfile.value || data.value?.archerProfile)
 
 const singleEntryFee = computed(() => {
@@ -3157,9 +3189,6 @@ const handleSubmit = async () => {
 
             const redirectUrl = paymentRes.invoice_url || paymentRes.payment_url || paymentRes.redirect_url
             if (redirectUrl) {
-                if (typeof window !== 'undefined') {
-                    sessionStorage.removeItem(draftKey.value)
-                }
                 window.location.href = redirectUrl
                 return
             }
@@ -3171,6 +3200,8 @@ const handleSubmit = async () => {
                 method: 'manual',
                 registration_id: registrationIdStr,
                 participant_ids: participantIds,
+                amount: totalCalculatedFee.value,
+                event_id: event.value.id || event.value.uuid,
                 type: 'registration'
             })
 
@@ -3187,11 +3218,6 @@ const handleSubmit = async () => {
         } else {
             // Free / Rp 0 registration
             refCode = res.reference_code || res.transaction_id || registrationId
-        }
-
-        // Clean up draft upon successful submission
-        if (typeof window !== 'undefined') {
-            sessionStorage.removeItem(draftKey.value)
         }
 
         registrationSuccess.value = true

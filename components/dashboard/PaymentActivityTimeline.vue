@@ -14,9 +14,6 @@
           </div>
         </div>
       </div>
-      <span class="text-xs font-bold text-navy dark:text-slate-200 px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 select-none">
-        {{ t('org_event_payments.timeline_badge') }}
-      </span>
     </div>
 
     <div class="relative pl-6 sm:pl-7 space-y-6 sm:space-y-7 before:absolute before:left-2.5 sm:before:left-3 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200 dark:before:bg-slate-700">
@@ -41,8 +38,8 @@
         </div>
       </div>
 
-      <!-- Stage 2: Proof Uploaded (if manual method) -->
-      <div v-if="isManual" class="relative flex items-start gap-3.5">
+      <!-- Stage 2: Proof Uploaded (if manual method and not cancelled without proof) -->
+      <div v-if="isManual && (hasProof || !isCancelled)" class="relative flex items-start gap-3.5">
         <div
           class="absolute -left-6 sm:-left-7 size-5 sm:size-6 rounded-full ring-4 ring-white dark:ring-slate-800 flex items-center justify-center text-white text-xs font-bold shadow-2xs"
           :class="hasProof ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'"
@@ -73,16 +70,16 @@
       <div class="relative flex items-start gap-3.5">
         <div
           class="absolute -left-6 sm:-left-7 size-5 sm:size-6 rounded-full ring-4 ring-white dark:ring-slate-800 flex items-center justify-center text-white text-xs font-bold shadow-2xs"
-          :class="isPaid ? 'bg-emerald-500' : isRejected ? 'bg-rose-500' : 'bg-amber-500 animate-pulse'"
+          :class="isPaid ? 'bg-emerald-500' : (isRejected || isCancelled) ? 'bg-rose-500' : 'bg-amber-500 animate-pulse'"
         >
-          <Icon :icon="isPaid ? 'ph:seal-check-bold' : isRejected ? 'ph:x-bold' : 'ph:hourglass-bold'" />
+          <Icon :icon="isPaid ? 'ph:seal-check-bold' : (isRejected || isCancelled) ? 'ph:x-bold' : 'ph:hourglass-bold'" />
         </div>
         <div class="space-y-1 text-xs sm:text-sm">
           <div
             class="font-bold"
-            :class="isPaid ? 'text-emerald-700 dark:text-emerald-400' : isRejected ? 'text-rose-700 dark:text-rose-400' : 'text-amber-700 dark:text-amber-400'"
+            :class="isPaid ? 'text-emerald-700 dark:text-emerald-400' : (isRejected || isCancelled) ? 'text-rose-700 dark:text-rose-400' : 'text-amber-700 dark:text-amber-400'"
           >
-            {{ isPaid ? t('org_event_payments.timeline_approved_title') : isRejected ? t('org_event_payments.timeline_rejected_title') : t('org_event_payments.timeline_pending_title') }}
+            {{ isPaid ? t('org_event_payments.timeline_approved_title') : isRejected ? t('org_event_payments.timeline_rejected_title') : isCancelled ? t('org_event_payments.timeline_cancelled_title', 'Pembayaran Dibatalkan') : t('org_event_payments.timeline_pending_title') }}
           </div>
           <div class="text-slate-500 dark:text-slate-400 leading-relaxed">
             <template v-if="isPaid">
@@ -94,11 +91,18 @@
                 <strong>{{ t('org_event_payments.rejection_reason') }}</strong> <em>"{{ payment.rejection_reason }}"</em>
               </span>
             </template>
+            <template v-else-if="isCancelled">
+              <span>{{ t('org_event_payments.timeline_cancelled_desc', 'Tagihan pembayaran telah dibatalkan atau kedaluwarsa.') }}</span>
+            </template>
             <template v-else>
               {{ t('org_event_payments.timeline_pending_desc') }}
             </template>
           </div>
-          <div v-if="payment?.verified_at || (isPaid && payment?.paid_at)" class="text-xs text-slate-400 font-medium font-mono pt-0.5 flex items-center gap-1.5">
+          <div v-if="isCancelled && (payment?.cancelled_at || payment?.updated_at || payment?.expired_at || payment?.created_at)" class="text-xs text-slate-400 font-medium font-mono pt-0.5 flex items-center gap-1.5">
+            <Icon icon="ph:calendar-blank-bold" class="text-xs shrink-0" />
+            <span>{{ formatDateTime(payment.cancelled_at || payment.updated_at || payment.expired_at || payment.created_at) }}</span>
+          </div>
+          <div v-else-if="payment?.verified_at || (isPaid && payment?.paid_at)" class="text-xs text-slate-400 font-medium font-mono pt-0.5 flex items-center gap-1.5">
             <Icon icon="ph:calendar-blank-bold" class="text-xs shrink-0" />
             <span>{{ formatDateTime(payment.verified_at || payment.paid_at) }}</span>
           </div>
@@ -138,6 +142,11 @@ const isPaid = computed(() => {
 const isRejected = computed(() => {
   const s = (props.payment?.status || '').toLowerCase()
   return s === 'rejected'
+})
+
+const isCancelled = computed(() => {
+  const s = (props.payment?.status || '').toLowerCase()
+  return ['cancelled', 'canceled', 'expired', 'failed'].includes(s)
 })
 
 const isManual = computed(() => {

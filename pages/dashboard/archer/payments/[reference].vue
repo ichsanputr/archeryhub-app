@@ -155,6 +155,16 @@ const isPaid = (status) => {
   return ['paid', 'lunas', 'settlement', 'success', 'completed'].includes(s)
 }
 
+const isCancelled = computed(() => {
+  const s = (payment.value?.status || '').toLowerCase()
+  return ['cancelled', 'canceled', 'expired', 'failed'].includes(s)
+})
+
+const isRejected = computed(() => {
+  const s = (payment.value?.status || '').toLowerCase()
+  return s === 'rejected'
+})
+
 const isManualMethod = computed(() => {
   const m = (payment.value?.payment_method || '').toLowerCase()
   return m === 'manual' || String(reference || '').toUpperCase().startsWith('PAY-MANUAL-')
@@ -162,7 +172,7 @@ const isManualMethod = computed(() => {
 
 const isAwaitingVerif = computed(() => {
   const s = (payment.value?.status || '').toLowerCase()
-  return s === 'awaiting_verification' || (isManualMethod.value && !!payment.value?.proof_url && !isPaid(s) && s !== 'rejected')
+  return s === 'awaiting_verification' || (isManualMethod.value && !!payment.value?.proof_url && !isPaid(s) && !isRejected.value && !isCancelled.value)
 })
 
 const getStatusBadgeClass = (status) => {
@@ -186,9 +196,46 @@ const getStatusLabel = (status) => {
   if (isAwaitingVerif.value) return t('payment_status.badge_awaiting_verification')
   const s = (status || '').toLowerCase()
   if (['pending', 'unpaid'].includes(s)) return t('payment_status.badge_pending')
-  if (s === 'rejected') return 'Ditolak'
-  if (s === 'cancelled') return 'Dibatalkan'
-  return status || 'Menunggu Pembayaran'
+  if (s === 'rejected') return t('payment_status.badge_rejected', 'Ditolak')
+  if (['cancelled', 'canceled', 'expired', 'failed'].includes(s)) return t('payment_status.badge_cancelled', 'Dibatalkan')
+  return status || t('payment_status.badge_pending')
+}
+
+const getParticipantStatusInfo = (p) => {
+  const rawStatus = (p?.payment_status || payment.value?.status || '').toLowerCase()
+  if (isPaid(rawStatus)) {
+    return {
+      label: t('archer_payment_detail.status_registered', 'Terdaftar'),
+      badgeClass: 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800',
+      dotClass: 'bg-emerald-500'
+    }
+  }
+  if (['cancelled', 'canceled', 'expired', 'failed'].includes(rawStatus)) {
+    return {
+      label: t('payment_status.badge_cancelled', 'Dibatalkan'),
+      badgeClass: 'bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800',
+      dotClass: 'bg-rose-500'
+    }
+  }
+  if (rawStatus === 'rejected') {
+    return {
+      label: t('payment_status.badge_rejected', 'Ditolak'),
+      badgeClass: 'bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800',
+      dotClass: 'bg-rose-500'
+    }
+  }
+  if (isAwaitingVerif.value) {
+    return {
+      label: t('payment_status.badge_awaiting_verification', 'Menunggu Verifikasi'),
+      badgeClass: 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800',
+      dotClass: 'bg-amber-500'
+    }
+  }
+  return {
+    label: t('archer_payment_detail.status_waiting', 'Menunggu'),
+    badgeClass: 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800',
+    dotClass: 'bg-amber-500'
+  }
 }
 
 const isPayPal = computed(() => {
@@ -229,12 +276,12 @@ const paymentCurrency = computed(() => {
 })
 
 const formatPaymentMethodName = (method) => {
-  if (isFree.value) return `Pendaftaran Gratis (${formatCurrency(0)})`
-  if (!method) return isManualMethod.value ? t('archer_payments_list.method_manual') : '-'
+  if (isFree.value) return `${t('archer_payment_detail.free_badge', 'Pendaftaran Gratis')} (${formatCurrency(0)})`
+  if (!method) return isManualMethod.value ? t('archer_payments_list.method_manual', 'Transfer Bank Manual') : '-'
   const m = method.toLowerCase()
-  if (m === 'free' || m === 'free_registration') return `Pendaftaran Gratis (${formatCurrency(0)})`
-  if (m === 'manual' || m === 'manual_transfer' || m === 'bank_transfer') return t('archer_payments_list.method_manual')
-  if (m === 'mayar') return t('archer_payments_list.method_mayar')
+  if (m === 'free' || m === 'free_registration') return `${t('archer_payment_detail.free_badge', 'Pendaftaran Gratis')} (${formatCurrency(0)})`
+  if (m === 'manual' || m === 'manual_transfer' || m === 'bank_transfer') return t('archer_payments_list.method_manual', 'Transfer Bank Manual')
+  if (m === 'mayar') return t('archer_payments_list.method_mayar', 'Mayar')
   if (m === 'paypal') return 'PayPal'
   return method
 }
@@ -401,9 +448,9 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Prominent Gateway Action Banner (PayPal / Mayar) when Pending -->
+      <!-- Prominent Gateway Action Banner (PayPal / Mayar) when Pending (not cancelled / rejected) -->
       <div
-        v-else-if="!isPaid(payment.status) && payment.checkout_url"
+        v-else-if="!isPaid(payment.status) && !isCancelled && !isRejected && payment.checkout_url"
         class="p-5 sm:p-6 bg-gradient-to-r from-navy via-navy-dark to-slate-900 rounded-2xl text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-5 border border-navy/30 shadow-md relative overflow-hidden"
       >
         <div class="space-y-1.5 z-10">
@@ -441,7 +488,7 @@ onMounted(() => {
         <!-- Top Status & Total Bar -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100 dark:border-slate-700">
           <div class="space-y-1">
-            <div class="text-xs sm:text-sm text-slate-400 font-bold">
+            <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-bold">
               {{ t('archer_payment_detail.ref_number', t('payment_status.ref_number')) }}
             </div>
             <div class="flex items-center gap-2">
@@ -473,17 +520,17 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- 2-Column Clean Key-Value Info Grid -->
+        <!-- 2-Column Clean Key-Value Info Grid (No aggressive uppercase) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 text-xs sm:text-sm">
           <div>
-            <span class="text-xs text-slate-400 font-bold block mb-1 uppercase tracking-wider">{{ t('archer_payment_detail.item_event_name') }}</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium block mb-1">{{ t('archer_payment_detail.item_event_name') }}</span>
             <span class="text-sm sm:text-base text-navy dark:text-white font-bold block leading-snug">
               {{ payment.event_name || payment.plan_name || payment.description || '-' }}
             </span>
           </div>
 
           <div v-if="payment.registered_by_name || payment.payer_name">
-            <span class="text-xs text-slate-400 font-bold block mb-1 uppercase tracking-wider">{{ t('participant.detail.payer_label', 'Akun Pendaftar') }}</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium block mb-1">{{ t('participant.detail.payer_label', 'Akun Pendaftar') }}</span>
             <span class="text-sm sm:text-base text-navy dark:text-white font-bold block">
               {{ payment.registered_by_name || payment.payer_name }}
               <span v-if="payment.registered_by_email" class="text-xs sm:text-sm text-slate-400 font-normal">({{ payment.registered_by_email }})</span>
@@ -491,7 +538,7 @@ onMounted(() => {
           </div>
 
           <div>
-            <span class="text-xs text-slate-400 font-bold block mb-1 uppercase tracking-wider">{{ t('archer_payment_detail.payment_method') }}</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium block mb-1">{{ t('archer_payment_detail.payment_method') }}</span>
             <span class="text-sm sm:text-base text-navy dark:text-white font-bold block">
               {{ formatPaymentMethodName(payment.payment_method) }}
               <span v-if="payment.payment_channel && !isFree" class="text-xs sm:text-sm text-slate-400 font-normal">({{ payment.payment_channel }})</span>
@@ -499,21 +546,21 @@ onMounted(() => {
           </div>
 
           <div>
-            <span class="text-xs text-slate-400 font-bold block mb-1 uppercase tracking-wider">{{ t('archer_payment_detail.transaction_date') }}</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium block mb-1">{{ t('archer_payment_detail.transaction_date') }}</span>
             <span class="text-sm sm:text-base text-slate-700 dark:text-slate-300 font-medium block">
               {{ formatDateTime(payment.created_at) }}
             </span>
           </div>
 
           <div v-if="payment.paid_at">
-            <span class="text-xs text-slate-400 font-bold block mb-1 uppercase tracking-wider">{{ t('archer_payment_detail.paid_at') }}</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium block mb-1">{{ t('archer_payment_detail.paid_at') }}</span>
             <span class="text-sm sm:text-base text-emerald-700 dark:text-emerald-400 font-bold block">
               {{ formatDateTime(payment.paid_at) }}
             </span>
           </div>
 
           <div v-else-if="payment.expired_at">
-            <span class="text-xs text-slate-400 font-bold block mb-1 uppercase tracking-wider">{{ t('payment_status.pay_before') }}</span>
+            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium block mb-1">{{ t('payment_status.pay_before') }}</span>
             <span class="text-sm sm:text-base text-slate-700 dark:text-slate-300 font-medium block">
               {{ formatDateTime(payment.expired_at) }}
             </span>
@@ -521,38 +568,38 @@ onMounted(() => {
         </div>
       </div>
 
-      <!-- Section: Separated Card for Registered Participants & Categories -->
-      <div v-if="payment.participants && payment.participants.length > 0" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden divide-y divide-slate-100 dark:divide-slate-700">
+      <!-- Section: Merged Invoice Details Card (Registered Participants, Teams, and Calculation Summary) -->
+      <div v-if="(payment.participants && payment.participants.length > 0) || (payment.teams && payment.teams.length > 0)" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden divide-y divide-slate-100 dark:divide-slate-700">
         <!-- Card Header with Toolbar -->
         <div class="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div class="flex items-center gap-3">
             <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
-              <Icon icon="ph:users-three-bold" class="text-xl" />
+              <Icon icon="ph:receipt-bold" class="text-xl" />
             </div>
             <div>
               <h3 class="font-bold text-base sm:text-lg text-navy dark:text-white">
-                {{ t('archer_payment_detail.participants_count', { count: payment.participants.length }, `Registered Participants & Categories (${payment.participants.length})`) }}
+                {{ t('archer_payment_detail.participants_count', { count: (payment.participants?.length || 0) + (payment.teams?.length || 0) }, `Rincian Tagihan & Peserta Terdaftar (${(payment.participants?.length || 0) + (payment.teams?.length || 0)})`) }}
               </h3>
-              <div class="text-xs sm:text-sm text-slate-400 mt-0.5">{{ t('archer_payment_detail.roster_title') }}</div>
+              <div class="text-xs sm:text-sm text-slate-400 mt-0.5">{{ t('archer_payment_detail.roster_title', 'Roster Atlet & Rincian Tagihan') }}</div>
             </div>
           </div>
 
-          <!-- Search Input Bar -->
-          <div class="flex items-center gap-3 w-full sm:w-auto">
+          <!-- Search Input Bar (when multiple participants) -->
+          <div v-if="payment.participants && payment.participants.length > 3" class="flex items-center gap-3 w-full sm:w-auto">
             <div class="relative flex-1 sm:w-64">
               <Icon icon="ph:magnifying-glass-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base" />
               <input
                 v-model="participantSearch"
                 type="text"
-                :placeholder="t('common.search') || 'Cari nama, klub, kategori...'"
+                :placeholder="t('common.search', 'Cari nama, klub, kategori...')"
                 class="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 rounded-xl text-xs sm:text-sm text-navy dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-navy/20 transition-all"
               />
             </div>
           </div>
         </div>
 
-        <!-- Table Container -->
-        <div class="overflow-x-auto">
+        <!-- Individual Participants Table Container -->
+        <div v-if="payment.participants && payment.participants.length > 0" class="overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm border-collapse">
             <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 font-bold border-b border-slate-100 dark:border-slate-700">
               <tr>
@@ -617,7 +664,7 @@ onMounted(() => {
                     <div>
                       <div class="font-bold text-navy dark:text-white">{{ p.athlete_name || p.archer_name }}</div>
                       <span v-if="p.gender" class="text-xs text-slate-400 font-normal capitalize">
-                        {{ p.gender === 'male' ? 'Putra' : (p.gender === 'female' ? 'Putri' : p.gender) }}
+                        {{ p.gender === 'male' ? t('participant.filter_modal.gender_male', 'Putra') : (p.gender === 'female' ? t('participant.filter_modal.gender_female', 'Putri') : p.gender) }}
                       </span>
                     </div>
                   </div>
@@ -636,36 +683,36 @@ onMounted(() => {
                 </td>
                 <td class="py-3.5 px-4 text-center">
                   <span
-                    class="px-2.5 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5"
-                    :class="isPaid(p.payment_status || payment.status) ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200'"
+                    class="px-2.5 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5 border"
+                    :class="getParticipantStatusInfo(p).badgeClass"
                   >
-                    <span class="size-1.5 rounded-full" :class="isPaid(p.payment_status || payment.status) ? 'bg-emerald-500' : 'bg-amber-500'"></span>
-                    <span>{{ isPaid(p.payment_status || payment.status) ? t('archer_payment_detail.status_registered') : t('archer_payment_detail.status_waiting') }}</span>
+                    <span class="size-1.5 rounded-full" :class="getParticipantStatusInfo(p).dotClass"></span>
+                    <span>{{ getParticipantStatusInfo(p).label }}</span>
                   </span>
                 </td>
               </tr>
               <tr v-if="paginatedParticipants.length === 0">
                 <td colspan="6" class="py-8 text-center text-slate-400 italic">
-                  {{ t('org_event_payments.no_athletes') }}
+                  {{ t('org_event_payments.no_athletes', 'Tidak ada peserta yang cocok.') }}
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- Table Footer / Pagination -->
-        <div class="p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-slate-500">
+        <!-- Table Footer / Pagination (if multiple pages) -->
+        <div v-if="filteredParticipants.length > participantPerPage" class="p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm text-slate-500">
           <div>
-            Menampilkan {{ (participantCurrentPage - 1) * participantPerPage + (paginatedParticipants.length > 0 ? 1 : 0) }} - {{ Math.min(participantCurrentPage * participantPerPage, filteredParticipants.length) }} dari {{ filteredParticipants.length }} atlet
+            {{ t('common.showing', 'Menampilkan') }} {{ (participantCurrentPage - 1) * participantPerPage + (paginatedParticipants.length > 0 ? 1 : 0) }} - {{ Math.min(participantCurrentPage * participantPerPage, filteredParticipants.length) }} {{ t('common.of', 'dari') }} {{ filteredParticipants.length }} {{ t('participant.archers_unit', 'Peserta') }}
           </div>
           <div v-if="totalParticipantPages > 1" class="flex items-center gap-2">
             <button
               type="button"
               @click="participantCurrentPage = Math.max(1, participantCurrentPage - 1)"
               :disabled="participantCurrentPage <= 1"
-              class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed font-bold transition-colors cursor-pointer"
+              class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed font-bold transition-colors cursor-pointer"
             >
-              {{ t('common.previous') || 'Sebelumnya' }}
+              {{ t('common.previous', 'Sebelumnya') }}
             </button>
             <span class="px-2 font-bold text-navy dark:text-white">
               {{ participantCurrentPage }} / {{ totalParticipantPages }}
@@ -674,127 +721,110 @@ onMounted(() => {
               type="button"
               @click="participantCurrentPage = Math.min(totalParticipantPages, participantCurrentPage + 1)"
               :disabled="participantCurrentPage >= totalParticipantPages"
-              class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed font-bold transition-colors cursor-pointer"
+              class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed font-bold transition-colors cursor-pointer"
             >
-              {{ t('common.next') || 'Selanjutnya' }}
+              {{ t('common.next', 'Selanjutnya') }}
             </button>
           </div>
         </div>
-      </div>
 
-      <!-- Section: Separated Card for Team Reservations (If Any) -->
-      <div v-if="payment.teams && payment.teams.length > 0" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden divide-y divide-slate-100 dark:divide-slate-700">
-        <div class="p-5 sm:p-6 flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
-              <Icon icon="ph:shield-bold" class="text-xl" />
+        <!-- Team Section (If Any) inside the same invoice card -->
+        <div v-if="payment.teams && payment.teams.length > 0" class="p-0">
+          <div class="p-4 sm:p-5 bg-slate-50/70 dark:bg-slate-700/30 flex items-center justify-between border-t border-b border-slate-100 dark:border-slate-700">
+            <div class="flex items-center gap-2.5 font-bold text-sm text-navy dark:text-white">
+              <Icon icon="ph:shield-bold" class="text-base text-primary" />
+              <span>{{ t('org_event_payments.team_quota_title', 'Registrasi Beregu') }} ({{ payment.teams.length }})</span>
             </div>
-            <div>
-              <h3 class="font-bold text-base sm:text-lg text-navy dark:text-white">
-                {{ t('org_event_payments.team_quota_title') }} ({{ payment.teams.length }})
-              </h3>
-              <div class="text-xs sm:text-sm text-slate-400 mt-0.5">{{ t('org_event_payments.team_quota_subtitle') }}</div>
-            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-100">
+              {{ payment.teams.length }} {{ t('org_event_payments.th_club', 'Klub / Kontingen') }}
+            </span>
           </div>
-          <span class="px-3 py-1 rounded-full text-xs sm:text-sm font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-100">
-            {{ payment.teams.length }} {{ t('org_event_payments.th_club') }}
-          </span>
-        </div>
-
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs sm:text-sm border-collapse">
-            <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-600 dark:text-slate-300 font-bold border-b border-slate-100 dark:border-slate-700">
-              <tr>
-                <th scope="col" class="py-3 px-4 w-12 text-center text-slate-400">#</th>
-                <th scope="col" class="py-3 px-4">{{ t('org_event_payments.th_athlete_name') }}</th>
-                <th scope="col" class="py-3 px-4">{{ t('org_event_payments.th_competition_category') }}</th>
-                <th scope="col" class="py-3 px-4 text-center">{{ t('org_event_payments.th_slot') }}</th>
-                <th scope="col" class="py-3 px-4 text-right">{{ t('org_event_payments.th_fee') }}</th>
-                <th scope="col" class="py-3 px-4 text-center">{{ t('archer_payment_detail.th_status') }}</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100 dark:divide-slate-700 font-medium text-slate-700 dark:text-slate-200">
-              <tr v-for="(tm, tmIdx) in payment.teams" :key="tm.uuid || tmIdx" class="hover:bg-slate-50/60 dark:hover:bg-slate-700/30 transition-colors">
-                <td class="py-3.5 px-4 text-center text-slate-400 font-mono">{{ tmIdx + 1 }}</td>
-                <td class="py-3.5 px-4">
-                  <div class="font-bold text-navy dark:text-white">{{ tm.team_name || 'Tim Beregu' }}</div>
-                  <div class="text-xs text-slate-400">{{ tm.club_name || payment.club_name || '-' }}</div>
-                </td>
-                <td class="py-3.5 px-4">
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 font-bold text-xs">
-                    <Icon icon="ph:users-three-bold" class="text-xs" />
-                    <span>{{ tm.category_name || '-' }}</span>
-                  </span>
-                </td>
-                <td class="py-3.5 px-4 text-center">
-                  <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300">
-                    {{ tm.member_count || 1 }} Slot
-                  </span>
-                </td>
-                <td class="py-3.5 px-4 text-right font-black tabular-nums text-navy dark:text-white">
-                  {{ Number(tm.fee || 0) === 0 ? t('common.free') : formatCurrency(tm.fee) }}
-                </td>
-                <td class="py-3.5 px-4 text-center">
-                  <span
-                    class="px-2.5 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5"
-                    :class="isPaid(payment.status) ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200'"
-                  >
-                    <span class="size-1.5 rounded-full" :class="isPaid(payment.status) ? 'bg-emerald-500' : 'bg-amber-500'"></span>
-                    <span>{{ isPaid(payment.status) ? 'Terkonfirmasi' : 'Menunggu' }}</span>
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Section: Invoice Summary Calculation Card -->
-      <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 sm:p-6 space-y-4">
-        <div class="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-slate-700">
-          <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
-            <Icon icon="ph:calculator-bold" class="text-xl" />
-          </div>
-          <div>
-            <h3 class="font-bold text-base sm:text-lg text-navy dark:text-white">
-              {{ t('org_event_payments.calculation_title') }}
-            </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs sm:text-sm border-collapse">
+              <thead class="bg-slate-50/40 dark:bg-slate-700/30 text-slate-500 dark:text-slate-400 font-bold border-b border-slate-100 dark:border-slate-700">
+                <tr>
+                  <th scope="col" class="py-3 px-4 w-12 text-center text-slate-400">#</th>
+                  <th scope="col" class="py-3 px-4">{{ t('org_event_payments.th_athlete_name', 'Nama Tim') }}</th>
+                  <th scope="col" class="py-3 px-4">{{ t('org_event_payments.th_competition_category', 'Kategori') }}</th>
+                  <th scope="col" class="py-3 px-4 text-center">{{ t('org_event_payments.th_slot', 'Slot') }}</th>
+                  <th scope="col" class="py-3 px-4 text-right">{{ t('org_event_payments.th_fee', 'Biaya') }}</th>
+                  <th scope="col" class="py-3 px-4 text-center">{{ t('archer_payment_detail.th_status', 'Status') }}</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-700 font-medium text-slate-700 dark:text-slate-200">
+                <tr v-for="(tm, tmIdx) in payment.teams" :key="tm.uuid || tmIdx" class="hover:bg-slate-50/60 dark:hover:bg-slate-700/30 transition-colors">
+                  <td class="py-3.5 px-4 text-center text-slate-400 font-mono">{{ tmIdx + 1 }}</td>
+                  <td class="py-3.5 px-4">
+                    <div class="font-bold text-navy dark:text-white">{{ tm.team_name || 'Tim Beregu' }}</div>
+                    <div class="text-xs text-slate-400">{{ tm.club_name || payment.club_name || '-' }}</div>
+                  </td>
+                  <td class="py-3.5 px-4">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 font-bold text-xs">
+                      <Icon icon="ph:users-three-bold" class="text-xs" />
+                      <span>{{ tm.category_name || '-' }}</span>
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 text-center">
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                      {{ tm.member_count || 1 }} Slot
+                    </span>
+                  </td>
+                  <td class="py-3.5 px-4 text-right font-black tabular-nums text-navy dark:text-white">
+                    {{ Number(tm.fee || 0) === 0 ? t('common.free') : formatCurrency(tm.fee) }}
+                  </td>
+                  <td class="py-3.5 px-4 text-center">
+                    <span
+                      class="px-2.5 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5 border"
+                      :class="getParticipantStatusInfo({ payment_status: payment.status }).badgeClass"
+                    >
+                      <span class="size-1.5 rounded-full" :class="getParticipantStatusInfo({ payment_status: payment.status }).dotClass"></span>
+                      <span>{{ getParticipantStatusInfo({ payment_status: payment.status }).label }}</span>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <div class="space-y-3 text-xs sm:text-sm">
-          <div v-if="payment.participants && payment.participants.length > 0" class="flex items-center justify-between text-slate-600 dark:text-slate-300">
-            <span>{{ t('org_event_payments.subtotal_individual', { count: payment.participants.length }) }}</span>
+        <!-- Bottom Integrated Invoice Calculation Summary -->
+        <div class="p-5 sm:p-6 bg-slate-50/60 dark:bg-slate-800/60 space-y-3">
+          <div class="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-2">
+            {{ t('org_event_payments.calculation_title', 'Rincian Perhitungan Biaya') }}
+          </div>
+
+          <div v-if="payment.participants && payment.participants.length > 0" class="flex items-center justify-between text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+            <span>{{ t('org_event_payments.subtotal_individual', { count: payment.participants.length }, `Subtotal Individu (${payment.participants.length} Pemanah)`) }}</span>
             <span class="font-bold text-navy dark:text-white tabular-nums">
               {{ formatCurrency((payment.participants.reduce((acc, p) => acc + Number(p.payment_amount || p.cost || 0), 0))) }}
             </span>
           </div>
 
-          <div v-if="payment.teams && payment.teams.length > 0" class="flex items-center justify-between text-slate-600 dark:text-slate-300">
-            <span>{{ t('org_event_payments.subtotal_team', { count: payment.teams.length }) }}</span>
+          <div v-if="payment.teams && payment.teams.length > 0" class="flex items-center justify-between text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+            <span>{{ t('org_event_payments.subtotal_team', { count: payment.teams.length }, `Subtotal Beregu (${payment.teams.length} Tim)`) }}</span>
             <span class="font-bold text-navy dark:text-white tabular-nums">
               {{ formatCurrency((payment.teams.reduce((acc, tm) => acc + Number(tm.fee || 0), 0))) }}
             </span>
           </div>
 
-          <div v-if="payment.fee_amount && payment.fee_amount > 0" class="flex items-center justify-between text-slate-600 dark:text-slate-300">
-            <span>{{ t('org_event_payments.service_fee') }}</span>
+          <div v-if="payment.fee_amount && payment.fee_amount > 0" class="flex items-center justify-between text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+            <span>{{ t('org_event_payments.service_fee', 'Biaya Layanan / Gateway') }}</span>
             <span class="font-bold text-navy dark:text-white tabular-nums">
               {{ formatCurrency(payment.fee_amount) }}
             </span>
           </div>
 
           <div class="flex items-center justify-between pt-3.5 border-t border-dashed border-slate-200 dark:border-slate-600 text-sm sm:text-base font-black text-navy dark:text-white">
-            <span>{{ isPaid(payment.status) ? t('payment_status.total_paid') : t('org_event_payments.total_bill') }}</span>
+            <span>{{ isPaid(payment.status) ? t('payment_status.total_paid', 'Total Lunas') : t('org_event_payments.total_bill', 'Total Tagihan') }}</span>
             <span class="text-xl sm:text-2xl text-navy dark:text-white tabular-nums">
-              {{ formatCurrency(payment.total_amount || payment.amount || 0) }}
+              {{ isFree ? formatCurrency(0) : formatCurrency(payment.total_amount || payment.amount || 0) }}
             </span>
           </div>
         </div>
       </div>
 
-      <!-- Section: Transfer Proof & Upload Box (If Manual Payment) -->
-      <div v-if="isManualMethod" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 sm:p-6 space-y-4">
+      <!-- Section: Transfer Proof & Upload Box (If Manual Payment and not Cancelled) -->
+      <div v-if="isManualMethod && !isCancelled" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 sm:p-6 space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
           <div class="flex items-center gap-3">
             <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
@@ -926,8 +956,8 @@ onMounted(() => {
         />
       </div>
 
-      <!-- Cancel Transaction Action (only for non-manual pending online payments) -->
-      <div v-if="!isManualMethod && !isPaid(payment.status) && (payment.status || '').toLowerCase() === 'pending'" class="flex justify-end pt-2">
+      <!-- Cancel Transaction Action (only for pending non-manual payments, not when cancelled / rejected / paid) -->
+      <div v-if="!isManualMethod && !isPaid(payment.status) && !isCancelled && !isRejected && (payment.status || '').toLowerCase() === 'pending'" class="flex justify-end pt-2">
         <button
           type="button"
           @click="showCancelModal = true"

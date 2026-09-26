@@ -654,10 +654,14 @@
                                     </NuxtLink>
                                 </template>
                                 <template v-else>
-                                    <div v-if="isAlreadyRegistered"
-                                        class="w-full py-4 bg-gray-100 text-gray-400 font-bold rounded-xl text-center cursor-not-allowed border border-gray-200">
-                                        {{ $t('event_detail.already_registered') }}
-                                    </div>
+                                    <NuxtLink v-if="isAlreadyRegistered"
+                                        :to="`/dashboard/archer/tournaments/${slug}/my-registration`"
+                                        class="w-full block py-4 bg-navy hover:bg-navy/90 text-primary font-bold rounded-xl transition-colors shadow-md text-center">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <Icon icon="ph:ticket-bold" class="text-lg" />
+                                            <span>{{ t('event_detail.view_my_registration', 'Lihat Pendaftaran Saya') }}</span>
+                                        </div>
+                                    </NuxtLink>
                                     <NuxtLink v-else :to="registerUrl"
                                         class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
                                         {{ $t('event_detail.register_now') }}

@@ -176,7 +176,7 @@ const handleReuploadFileChange = async (evt) => {
     const file = evt.target.files?.[0]
     if (!file) return
     if (file.size > 5 * 1024 * 1024) {
-        toast.error(t('archer_payment_detail.toast_file_limit', 'Ukuran berkas maksimal 5MB'))
+        toast.error(t('my_registration.toast_file_limit', 'Ukuran berkas maksimal 5MB'))
         return
     }
     reuploadPreviewUrl.value = URL.createObjectURL(file)
@@ -187,9 +187,9 @@ const handleReuploadFileChange = async (evt) => {
         formData.append('caption', `proof-reupload-${participant.value?.transaction?.reference || eventId}-${Date.now()}`)
         const res = await upload('/media/upload', formData)
         reuploadFileUrl.value = res.url || res.URL || ''
-        toast.success(t('archer_payment_detail.toast_file_uploaded', 'Bukti berhasil diunggah'))
+        toast.success(t('my_registration.toast_file_uploaded', 'Bukti berhasil diunggah'))
     } catch (err) {
-        toast.error(t('archer_payment_detail.toast_upload_error', 'Gagal mengunggah berkas: ') + (err?.data?.error || err?.message || 'Error'))
+        toast.error(t('my_registration.toast_upload_error', 'Gagal mengunggah berkas: ') + (err?.data?.error || err?.message || 'Error'))
         reuploadPreviewUrl.value = ''
     } finally {
         isReuploading.value = false
@@ -203,7 +203,7 @@ const submitReuploadProof = async () => {
         return
     }
     if (!reuploadFileUrl.value || !reuploadSenderName.value.trim()) {
-        toast.warning(t('archer_payment_detail.toast_fill_required', 'Mohon lengkapi nama pengirim dan pilih berkas'))
+        toast.warning(t('my_registration.toast_fill_required', 'Mohon lengkapi nama pengirim dan pilih berkas'))
         return
     }
     isReuploading.value = true
@@ -212,14 +212,14 @@ const submitReuploadProof = async () => {
             proof_url: reuploadFileUrl.value,
             sender_name: reuploadSenderName.value.trim()
         })
-        toast.success(t('archer_payment_detail.toast_proof_sent', 'Bukti pembayaran berhasil dikirim'))
+        toast.success(t('my_registration.toast_proof_sent', 'Bukti pembayaran berhasil dikirim'))
         showReuploadModal.value = false
         reuploadFileUrl.value = ''
         reuploadPreviewUrl.value = ''
         reuploadSenderName.value = ''
         await fetchInitialData()
     } catch (err) {
-        toast.error(err?.data?.error || t('archer_payment_detail.toast_proof_failed', 'Gagal mengirim bukti'))
+        toast.error(err?.data?.error || t('my_registration.toast_proof_failed', 'Gagal mengirim bukti'))
     } finally {
         isReuploading.value = false
     }
@@ -461,7 +461,7 @@ onMounted(() => {
             <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-6 sm:p-8">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                     
-                    <!-- Left Column (2 cols): Athlete Profile, Metrics, Target & Categories -->
+                    <!-- Left Column (2 cols): Athlete Profile, Metrics, Target, Categories & Payment Details -->
                     <div class="lg:col-span-2 space-y-6">
 
                         <!-- Section 1: Athlete Pass Header & Metrics -->
@@ -480,15 +480,15 @@ onMounted(() => {
                                         </span>
                                         <span v-else-if="participant.transaction?.status === 'rejected' || participant.payment_status === 'rejected'"
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs sm:text-sm font-bold bg-rose-50 text-rose-700 border border-rose-200">
-                                            Pembayaran Ditolak
+                                            {{ t('my_registration.payment_rejected') }}
                                         </span>
                                         <span v-else-if="participant.transaction?.status === 'awaiting_verification' || participant.payment_status === 'awaiting_verification'"
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs sm:text-sm font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                                            Menunggu Verifikasi
+                                            {{ t('my_registration.awaiting_verification') }}
                                         </span>
                                         <span v-else
                                             class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs sm:text-sm font-bold bg-blue-50 text-blue-700 border border-blue-200">
-                                            Menunggu Pembayaran
+                                            {{ t('my_registration.awaiting_payment') }}
                                         </span>
                                     </div>
                                     <div class="flex flex-wrap items-center gap-2.5 mt-1.5 text-sm sm:text-base text-slate-600 font-medium">
@@ -573,9 +573,212 @@ onMounted(() => {
                             </div>
                         </div>
 
+                        <!-- Section 3: Payment Details (Moved to Left Column) -->
+                        <div class="border-t border-slate-100 pt-6 space-y-4">
+                            <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
+                                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                                    <Icon icon="ph:credit-card-bold" class="text-slate-500 text-lg" />
+                                    <span>{{ t('my_registration.payment_details_title') }}</span>
+                                </h3>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
+                                    <span class="text-slate-500 block mb-1 font-medium text-xs sm:text-sm">{{ t('my_registration.total_bill') }}</span>
+                                    <span class="text-slate-900 font-black text-base sm:text-lg">
+                                        Rp {{ formatCurrency(participant.payment_amount) }}
+                                    </span>
+                                </div>
+                                <div v-if="participant.transaction?.reference" class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
+                                    <span class="text-slate-500 block mb-1 font-medium text-xs sm:text-sm">{{ t('my_registration.invoice_no') }}</span>
+                                    <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
+                                        class="font-mono font-bold text-slate-900 hover:text-slate-700 transition-colors flex items-center gap-1 text-xs sm:text-sm truncate">
+                                        <span>{{ participant.transaction.reference }}</span>
+                                        <Icon icon="ph:arrow-square-out-bold" class="text-xs text-slate-400 shrink-0" />
+                                    </NuxtLink>
+                                </div>
+                                <div v-if="participant.transaction?.payment_method" class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
+                                    <span class="text-slate-500 block mb-1 font-medium text-xs sm:text-sm">{{ t('my_registration.method') }}</span>
+                                    <span class="font-bold text-slate-900 text-xs sm:text-sm truncate block">
+                                        {{ participant.transaction.payment_method }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Uploaded Proof Preview (If exists) -->
+                            <div v-if="participantProofUrl" class="p-4 bg-slate-50/90 rounded-xl border border-slate-200 space-y-3">
+                                <div class="flex items-center justify-between text-xs sm:text-sm">
+                                    <span class="font-bold text-slate-800 flex items-center gap-1.5">
+                                        <Icon icon="ph:image-square-bold" class="text-slate-500 text-sm sm:text-base" />
+                                        <span>{{ t('my_registration.payment_proof_title') }}</span>
+                                    </span>
+                                    <span v-if="participant.transaction?.sender_name" class="text-xs sm:text-sm text-slate-500 font-medium truncate max-w-[200px]" :title="participant.transaction.sender_name">
+                                        {{ t('my_registration.sender_account_holder') }} {{ participant.transaction.sender_name }}
+                                    </span>
+                                </div>
+                                <div
+                                    @click="openImage(participantProofUrl)"
+                                    class="group relative h-36 sm:h-44 w-full rounded-xl overflow-hidden border border-slate-200 bg-slate-900/5 cursor-pointer shadow-2xs flex items-center justify-center hover:border-slate-400 transition-all"
+                                >
+                                    <img :src="participantProofUrl" :alt="t('my_registration.payment_proof_title')" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                    <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 text-white text-xs sm:text-sm font-bold backdrop-blur-[1px]">
+                                        <Icon icon="ph:magnifying-glass-plus-bold" class="text-base" />
+                                        <span>{{ t('my_registration.zoom_proof') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment Actions depending on status -->
+                            <!-- Case 1: Lunas (Paid) -->
+                            <div v-if="isPaid(participant.payment_status) && participant.transaction?.reference">
+                                <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
+                                    class="w-full py-2.5 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-2xs">
+                                    <Icon icon="ph:receipt-bold" class="text-base text-slate-700" />
+                                    <span>{{ t('my_registration.view_payment_detail') }}</span>
+                                </NuxtLink>
+                            </div>
+
+                            <!-- Case 2: Rejected (Ditolak Panitia) -->
+                            <div v-else-if="participant.transaction?.status === 'rejected' || participant.payment_status === 'rejected'" class="space-y-3 pt-1">
+                                <div class="p-4 bg-rose-50 border border-rose-200 rounded-xl space-y-2 text-left">
+                                    <div class="text-xs sm:text-sm font-bold text-rose-800 flex items-center gap-1.5">
+                                        <Icon icon="ph:warning-circle-bold" class="text-base shrink-0 text-rose-600" />
+                                        <span>{{ t('my_registration.proof_rejected_title') }}</span>
+                                    </div>
+                                    <div class="text-xs text-rose-700 leading-relaxed font-medium">
+                                        {{ t('my_registration.proof_rejected_desc') }}
+                                    </div>
+                                    <div v-if="participant.transaction?.rejection_reason" class="p-2.5 bg-white/90 rounded-lg border border-rose-200 text-xs text-rose-900">
+                                        <span class="font-bold block text-rose-950 mb-0.5">{{ t('my_registration.rejection_reason_label') }}</span>
+                                        <span class="italic font-medium">"{{ participant.transaction.rejection_reason }}"</span>
+                                    </div>
+                                </div>
+                                <button
+                                    type="button"
+                                    @click="showReuploadModal = true"
+                                    class="w-full py-2.5 px-4 rounded-xl bg-rose-600 text-white hover:bg-rose-700 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer">
+                                    <Icon icon="ph:upload-simple-bold" class="text-sm" />
+                                    <span>{{ t('my_registration.reupload_proof') }}</span>
+                                </button>
+                            </div>
+
+                            <!-- Case 3: Awaiting Verification (Menunggu Verifikasi Panitia) -->
+                            <div v-else-if="participant.transaction?.status === 'awaiting_verification' || participant.payment_status === 'awaiting_verification' || (participantProofUrl && !isPaid(participant.payment_status))" class="space-y-3 pt-1">
+                                <!-- Delegation notice if registered by another account -->
+                                <div v-if="isDelegatedByOther" class="p-4 bg-blue-50/80 border border-blue-200/80 rounded-xl space-y-1.5 text-left">
+                                    <div class="text-xs sm:text-sm font-bold text-blue-900 flex items-center gap-1.5">
+                                        <Icon icon="ph:users-three-bold" class="text-base shrink-0 text-blue-600" />
+                                        <span>{{ t('my_registration.delegation_registration_title') }}</span>
+                                    </div>
+                                    <div class="text-xs text-blue-800 leading-relaxed font-medium">
+                                        {{ t('my_registration.delegation_registered_by', { name: participant.transaction?.registered_by_name || participant.transaction?.payer_name || 'Perwakilan / Klub' }) }}
+                                    </div>
+                                    <div class="text-[11px] text-blue-700/80 pt-0.5">
+                                        {{ t('my_registration.awaiting_verification_desc') }}
+                                    </div>
+                                </div>
+
+                                <!-- Self registered owner options -->
+                                <template v-else>
+                                    <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl space-y-1.5 text-left">
+                                        <div class="text-xs sm:text-sm font-bold text-amber-800 flex items-center gap-1.5">
+                                            <Icon icon="ph:hourglass-medium-bold" class="text-sm shrink-0" />
+                                            <span>{{ t('my_registration.awaiting_verification_title') }}</span>
+                                        </div>
+                                        <div class="text-xs sm:text-sm text-amber-700/90 leading-relaxed font-medium">
+                                            {{ t('my_registration.awaiting_verification_desc') }}
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <button
+                                            type="button"
+                                            @click="showReuploadModal = true"
+                                            class="flex-1 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
+                                            <Icon icon="ph:arrows-clockwise-bold" class="text-sm" />
+                                            <span>{{ t('my_registration.btn_change_proof') }}</span>
+                                        </button>
+                                        <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction?.reference || ''}`"
+                                            class="flex-1 py-2.5 px-3 rounded-xl bg-navy text-white hover:bg-navy/90 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 shadow-xs">
+                                            <Icon icon="ph:receipt-bold" class="text-sm" />
+                                            <span>{{ t('my_registration.btn_invoice_detail') }}</span>
+                                        </NuxtLink>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Case 4: Pending Unpaid with Existing Transaction -->
+                            <div v-else-if="!isPaid(participant.payment_status) && participant.transaction" class="space-y-3 pt-1">
+                                <!-- Delegation notice if registered by another account -->
+                                <div v-if="isDelegatedByOther" class="p-4 bg-blue-50/80 border border-blue-200/80 rounded-xl space-y-1.5 text-left">
+                                    <div class="text-xs sm:text-sm font-bold text-blue-900 flex items-center gap-1.5">
+                                        <Icon icon="ph:users-three-bold" class="text-base shrink-0 text-blue-600" />
+                                        <span>{{ t('my_registration.delegation_registration_title') }}</span>
+                                    </div>
+                                    <div class="text-xs text-blue-800 leading-relaxed font-medium">
+                                        {{ t('my_registration.delegation_registered_by', { name: participant.transaction?.registered_by_name || participant.transaction?.payer_name || 'Perwakilan / Klub' }) }}
+                                    </div>
+                                </div>
+
+                                <!-- Self registered owner payment buttons -->
+                                <template v-else>
+                                    <!-- Online Gateway Checkout Button (Direct to Mayar/PayPal) -->
+                                    <a
+                                        v-if="participant.transaction.checkout_url"
+                                        :href="participant.transaction.checkout_url"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="w-full py-3 px-4 rounded-xl bg-primary hover:bg-primary/90 text-navy text-xs sm:text-sm font-black transition-all flex items-center justify-center gap-2 shadow-sm"
+                                    >
+                                        <Icon :icon="participant.transaction.payment_method?.toLowerCase() === 'paypal' ? 'logos:paypal' : 'ph:credit-card-bold'" class="text-base" />
+                                        <span>{{ participant.transaction.payment_method?.toLowerCase() === 'paypal' ? t('archer_payment_detail.btn_pay_paypal') : t('archer_payment_detail.btn_pay_mayar') }}</span>
+                                        <Icon icon="ph:arrow-square-out-bold" class="text-xs" />
+                                    </a>
+
+                                    <!-- Manual Bank Transfer or Fallback to Internal Payment Page -->
+                                    <NuxtLink
+                                        v-else
+                                        :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
+                                        class="w-full py-3 px-4 rounded-xl bg-primary hover:bg-primary/90 text-navy text-xs sm:text-sm font-black transition-all flex items-center justify-center gap-2 shadow-sm"
+                                    >
+                                        <Icon icon="ph:credit-card-bold" class="text-base" />
+                                        <span>{{ participant.transaction.payment_method === 'manual' ? t('my_registration.complete_transfer_upload') : t('my_registration.pay_now') }}</span>
+                                        <Icon icon="ph:arrow-right-bold" class="text-xs" />
+                                    </NuxtLink>
+
+                                    <!-- Bill Details: Always navigates to internal receipt/invoice page -->
+                                    <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
+                                        class="w-full py-2 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5">
+                                        <Icon icon="ph:receipt-bold" class="text-xs" />
+                                        <span>{{ t('my_registration.bill_detail') }}</span>
+                                    </NuxtLink>
+                                </template>
+                            </div>
+
+                            <!-- Case 5: Pending Unpaid without Transaction -->
+                            <div v-else-if="!isPaid(participant.payment_status) && !participant.transaction && !isDelegatedByOther">
+                                <BaseButton variant="primary" block @click="initiatePaymentGateway"
+                                    :loading="isProcessingPayment" class="h-11 text-xs sm:text-sm font-bold justify-center">
+                                    <Icon icon="ph:lightning-bold" class="text-base mr-1.5" />
+                                    <span>{{ t('my_registration.pay_online_auto') }}</span>
+                                </BaseButton>
+                            </div>
+
+                            <!-- Cancellation Button (only when unpaid and self-registered owner) -->
+                            <div v-if="!isPaid(participant.payment_status) && !isDelegatedByOther && participant.registration_source !== 'invited'" class="pt-2">
+                                <button
+                                    type="button"
+                                    @click="showCancelConfirm = true"
+                                    class="w-full py-2 px-3 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5"
+                                >
+                                    <Icon icon="ph:trash-bold" class="text-xs" />
+                                    <span>{{ t('my_registration.cancel_registration_btn') }}</span>
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
 
-                    <!-- Right Column (1 col): QR Pass, Payment Info & THB Guide -->
+                    <!-- Right Column (1 col): QR Pass & THB Guide -->
                     <div class="lg:col-span-1 space-y-6 lg:border-l lg:border-slate-100 lg:pl-8 lg:pt-0">
 
                         <!-- Section 1: Official Field Check-in QR Pass -->
@@ -628,210 +831,7 @@ onMounted(() => {
                             </div>
                         </div>
 
-                        <!-- Section 2: Payment Details -->
-                        <div class="border-t border-slate-100 pt-5 space-y-3.5">
-                            <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
-                                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                                    <Icon icon="ph:credit-card-bold" class="text-slate-500 text-lg" />
-                                    <span>{{ t('my_registration.payment_details_title') }}</span>
-                                </h3>
-                            </div>
-
-                            <div class="p-4 bg-slate-50/80 rounded-xl border border-slate-200/80 space-y-2.5 text-xs sm:text-sm">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-slate-500 font-medium">{{ t('my_registration.total_bill') }}</span>
-                                    <span class="text-base sm:text-lg font-black text-slate-900">
-                                        Rp {{ formatCurrency(participant.payment_amount) }}
-                                    </span>
-                                </div>
-                                <div v-if="participant.transaction?.reference" class="flex justify-between items-center pt-2 border-t border-slate-200/60">
-                                    <span class="text-slate-500 font-medium">{{ t('my_registration.invoice_no') }}</span>
-                                    <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
-                                        class="font-mono font-bold text-slate-900 hover:text-slate-700 transition-colors flex items-center gap-1 text-xs sm:text-sm">
-                                        <span>{{ participant.transaction.reference }}</span>
-                                        <Icon icon="ph:arrow-square-out-bold" class="text-xs text-slate-400" />
-                                    </NuxtLink>
-                                </div>
-                                <div v-if="participant.transaction?.payment_method" class="flex justify-between items-center">
-                                    <span class="text-slate-500 font-medium">{{ t('my_registration.method') }}</span>
-                                    <span class="font-bold text-slate-900 text-xs sm:text-sm">
-                                        {{ participant.transaction.payment_method }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!-- Uploaded Proof Preview (If exists) -->
-                            <div v-if="participantProofUrl" class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-2">
-                                <div class="flex items-center justify-between text-xs sm:text-sm">
-                                    <span class="font-bold text-slate-800 flex items-center gap-1.5">
-                                        <Icon icon="ph:image-square-bold" class="text-slate-500 text-sm sm:text-base" />
-                                        <span>{{ t('my_registration.payment_proof_title') }}</span>
-                                    </span>
-                                    <span v-if="participant.transaction?.sender_name" class="text-xs sm:text-sm text-slate-500 font-medium truncate max-w-[130px]" :title="participant.transaction.sender_name">
-                                        {{ t('my_registration.sender_account_holder') }} {{ participant.transaction.sender_name }}
-                                    </span>
-                                </div>
-                                <div
-                                    @click="openImage(participantProofUrl)"
-                                    class="group relative h-28 w-full rounded-lg overflow-hidden border border-slate-200 bg-slate-900/5 cursor-pointer shadow-2xs flex items-center justify-center hover:border-slate-400 transition-all"
-                                >
-                                    <img :src="participantProofUrl" alt="Bukti Transfer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                                    <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 text-white text-xs sm:text-sm font-bold backdrop-blur-[1px]">
-                                        <Icon icon="ph:magnifying-glass-plus-bold" class="text-base" />
-                                        <span>{{ t('my_registration.zoom_proof') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Payment Actions depending on status -->
-                            <!-- Case 1: Lunas (Paid) -->
-                            <div v-if="isPaid(participant.payment_status) && participant.transaction?.reference">
-                                <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
-                                    class="w-full py-2.5 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-2xs">
-                                    <Icon icon="ph:receipt-bold" class="text-base text-slate-700" />
-                                    <span>{{ t('my_registration.view_payment_detail') }}</span>
-                                </NuxtLink>
-                            </div>
-
-                            <!-- Case 2: Rejected (Ditolak Panitia) -->
-                            <div v-else-if="participant.transaction?.status === 'rejected' || participant.payment_status === 'rejected'" class="space-y-2.5 pt-1">
-                                <div class="p-3.5 bg-rose-50 border border-rose-200 rounded-xl space-y-2 text-left">
-                                    <div class="text-xs sm:text-sm font-bold text-rose-800 flex items-center gap-1.5">
-                                        <Icon icon="ph:warning-circle-bold" class="text-base shrink-0 text-rose-600" />
-                                        <span>Bukti Transfer Ditolak Panitia</span>
-                                    </div>
-                                    <div class="text-xs text-rose-700 leading-relaxed font-medium">
-                                        Panitia turnamen menolak bukti transfer sebelumnya. Silakan unggah bukti transfer baru yang sah.
-                                    </div>
-                                    <div v-if="participant.transaction?.rejection_reason" class="p-2.5 bg-white/90 rounded-lg border border-rose-200 text-xs text-rose-900">
-                                        <span class="font-bold block text-rose-950 mb-0.5">Alasan:</span>
-                                        <span class="italic font-medium">"{{ participant.transaction.rejection_reason }}"</span>
-                                    </div>
-                                </div>
-                                <button
-                                    type="button"
-                                    @click="showReuploadModal = true"
-                                    class="w-full py-2.5 px-3 rounded-xl bg-rose-600 text-white hover:bg-rose-700 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer">
-                                    <Icon icon="ph:upload-simple-bold" class="text-sm" />
-                                    <span>Unggah Ulang Bukti Transfer</span>
-                                </button>
-                            </div>
-
-                            <!-- Case 3: Awaiting Verification (Menunggu Verifikasi Panitia) -->
-                            <div v-else-if="participant.transaction?.status === 'awaiting_verification' || participant.payment_status === 'awaiting_verification' || (participantProofUrl && !isPaid(participant.payment_status))" class="space-y-2.5 pt-1">
-                                <!-- Delegation notice if registered by another account -->
-                                <div v-if="isDelegatedByOther" class="p-3.5 bg-blue-50/80 border border-blue-200/80 rounded-xl space-y-1.5 text-left">
-                                    <div class="text-xs sm:text-sm font-bold text-blue-900 flex items-center gap-1.5">
-                                        <Icon icon="ph:users-three-bold" class="text-base shrink-0 text-blue-600" />
-                                        <span>{{ t('my_registration.delegation_registration_title') }}</span>
-                                    </div>
-                                    <div class="text-xs text-blue-800 leading-relaxed font-medium">
-                                        {{ t('my_registration.delegation_registered_by', { name: participant.transaction?.registered_by_name || participant.transaction?.payer_name || 'Perwakilan / Klub' }) }}
-                                    </div>
-                                    <div class="text-[11px] text-blue-700/80 pt-0.5">
-                                        {{ t('my_registration.awaiting_verification_desc') }}
-                                    </div>
-                                </div>
-
-                                <!-- Self registered owner options -->
-                                <template v-else>
-                                    <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl space-y-1.5 text-left">
-                                        <div class="text-xs sm:text-sm font-bold text-amber-800 flex items-center gap-1.5">
-                                            <Icon icon="ph:hourglass-medium-bold" class="text-sm shrink-0" />
-                                            <span>{{ t('my_registration.awaiting_verification_title') }}</span>
-                                        </div>
-                                        <div class="text-xs sm:text-sm text-amber-700/90 leading-relaxed font-medium">
-                                            {{ t('my_registration.awaiting_verification_desc') }}
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <button
-                                            type="button"
-                                            @click="showReuploadModal = true"
-                                            class="flex-1 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
-                                            <Icon icon="ph:arrows-clockwise-bold" class="text-sm" />
-                                            <span>{{ t('my_registration.btn_change_proof') }}</span>
-                                        </button>
-                                        <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction?.reference || ''}`"
-                                            class="flex-1 py-2.5 px-3 rounded-xl bg-navy text-white hover:bg-navy/90 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 shadow-xs">
-                                            <Icon icon="ph:receipt-bold" class="text-sm" />
-                                            <span>{{ t('my_registration.btn_invoice_detail') }}</span>
-                                        </NuxtLink>
-                                    </div>
-                                </template>
-                            </div>
-
-                            <!-- Case 4: Pending Unpaid with Existing Transaction -->
-                            <div v-else-if="!isPaid(participant.payment_status) && participant.transaction" class="space-y-2 pt-1">
-                                <!-- Delegation notice if registered by another account -->
-                                <div v-if="isDelegatedByOther" class="p-3.5 bg-blue-50/80 border border-blue-200/80 rounded-xl space-y-1.5 text-left">
-                                    <div class="text-xs sm:text-sm font-bold text-blue-900 flex items-center gap-1.5">
-                                        <Icon icon="ph:users-three-bold" class="text-base shrink-0 text-blue-600" />
-                                        <span>{{ t('my_registration.delegation_registration_title') }}</span>
-                                    </div>
-                                    <div class="text-xs text-blue-800 leading-relaxed font-medium">
-                                        {{ t('my_registration.delegation_registered_by', { name: participant.transaction?.registered_by_name || participant.transaction?.payer_name || 'Perwakilan / Klub' }) }}
-                                    </div>
-                                </div>
-
-                                <!-- Self registered owner payment buttons -->
-                                <template v-else>
-                                    <!-- Online Gateway Checkout Button (Direct to Mayar/PayPal) -->
-                                    <a
-                                        v-if="participant.transaction.checkout_url"
-                                        :href="participant.transaction.checkout_url"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="w-full py-3 px-4 rounded-xl bg-primary hover:bg-primary/90 text-navy text-xs sm:text-sm font-black transition-all flex items-center justify-center gap-2 shadow-sm"
-                                    >
-                                        <Icon :icon="participant.transaction.payment_method?.toLowerCase() === 'paypal' ? 'logos:paypal' : 'ph:credit-card-bold'" class="text-base" />
-                                        <span>{{ participant.transaction.payment_method?.toLowerCase() === 'paypal' ? t('archer_payment_detail.btn_pay_paypal') : t('archer_payment_detail.btn_pay_mayar') }}</span>
-                                        <Icon icon="ph:arrow-square-out-bold" class="text-xs" />
-                                    </a>
-
-                                    <!-- Manual Bank Transfer or Fallback to Internal Payment Page -->
-                                    <NuxtLink
-                                        v-else
-                                        :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
-                                        class="w-full py-3 px-4 rounded-xl bg-primary hover:bg-primary/90 text-navy text-xs sm:text-sm font-black transition-all flex items-center justify-center gap-2 shadow-sm"
-                                    >
-                                        <Icon icon="ph:credit-card-bold" class="text-base" />
-                                        <span>{{ participant.transaction.payment_method === 'manual' ? t('my_registration.complete_transfer_upload') : t('my_registration.pay_now') }}</span>
-                                        <Icon icon="ph:arrow-right-bold" class="text-xs" />
-                                    </NuxtLink>
-
-                                    <!-- Bill Details: Always navigates to internal receipt/invoice page -->
-                                    <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
-                                        class="w-full py-2 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5">
-                                        <Icon icon="ph:receipt-bold" class="text-xs" />
-                                        <span>{{ t('my_registration.bill_detail') }}</span>
-                                    </NuxtLink>
-                                </template>
-                            </div>
-
-                            <!-- Case 4: Pending Unpaid without Transaction -->
-                            <div v-else-if="!isPaid(participant.payment_status) && !participant.transaction && !isDelegatedByOther">
-                                <BaseButton variant="primary" block @click="initiatePaymentGateway"
-                                    :loading="isProcessingPayment" class="h-11 text-xs sm:text-sm font-bold justify-center">
-                                    <Icon icon="ph:lightning-bold" class="text-base mr-1.5" />
-                                    <span>{{ t('my_registration.pay_online_auto') }}</span>
-                                </BaseButton>
-                            </div>
-
-                            <!-- Cancellation Button (only when unpaid and self-registered owner) -->
-                            <div v-if="!isPaid(participant.payment_status) && !isDelegatedByOther && participant.registration_source !== 'invited'" class="pt-2">
-                                <button
-                                    type="button"
-                                    @click="showCancelConfirm = true"
-                                    class="w-full py-2 px-3 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5"
-                                >
-                                    <Icon icon="ph:trash-bold" class="text-xs" />
-                                    <span>{{ t('my_registration.cancel_registration_btn') }}</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Section 3: THB Guidebook & Event Info -->
+                        <!-- Section 2: THB Guidebook & Event Info -->
                         <div v-if="event?.technical_guidebook_url" class="border-t border-slate-100 pt-5 text-center space-y-2">
                             <span class="text-xs sm:text-sm text-slate-500 font-medium block">{{ t('my_registration.thb_guidebook') }}</span>
                             <a :href="event.technical_guidebook_url" target="_blank"
@@ -884,8 +884,8 @@ onMounted(() => {
                             <Icon icon="ph:upload-simple-bold" class="text-xl" />
                         </div>
                         <div>
-                            <h4 class="font-black text-navy text-base">Unggah Bukti Transfer</h4>
-                            <div class="text-xs text-slate-400 font-mono">{{ participant?.transaction?.reference || 'Transfer Manual' }}</div>
+                            <h4 class="font-black text-navy text-base">{{ t('my_registration.reupload_modal_title') }}</h4>
+                            <div class="text-xs text-slate-400 font-mono">{{ participant?.transaction?.reference || t('my_registration.reupload_manual_fallback') }}</div>
                         </div>
                     </div>
                     <button type="button" @click="showReuploadModal = false" class="size-8 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-navy flex items-center justify-center transition-colors cursor-pointer">
@@ -895,22 +895,22 @@ onMounted(() => {
 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs sm:text-sm font-bold text-navy mb-1.5">Nama Pemilik Rekening Pengirim <span class="text-rose-500">*</span></label>
+                        <label class="block text-xs sm:text-sm font-bold text-navy mb-1.5">{{ t('my_registration.reupload_sender_name_label') }} <span class="text-rose-500">*</span></label>
                         <input
                             v-model="reuploadSenderName"
                             type="text"
-                            placeholder="cth. Budi Santoso (sesuai nama di rekening/struk)"
+                            :placeholder="t('my_registration.reupload_sender_name_placeholder')"
                             class="w-full h-11 px-4 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium outline-none focus:bg-white focus:border-navy focus:ring-2 focus:ring-navy/10 transition-all text-navy"
                         />
                     </div>
 
                     <div>
-                        <label class="block text-xs sm:text-sm font-bold text-navy mb-1.5">Berkas Bukti Transfer (Foto / PDF) <span class="text-rose-500">*</span></label>
+                        <label class="block text-xs sm:text-sm font-bold text-navy mb-1.5">{{ t('my_registration.reupload_file_label') }} <span class="text-rose-500">*</span></label>
                         <input ref="reuploadFileInputRef" type="file" accept="image/*,.pdf" class="hidden" @change="handleReuploadFileChange" />
 
                         <div v-if="isReuploading" class="p-6 rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 flex flex-col items-center justify-center text-center gap-2">
                             <Icon icon="ph:spinner-gap-bold" class="text-2xl text-navy animate-spin" />
-                            <div class="text-xs sm:text-sm font-bold text-navy">Mengunggah bukti transfer...</div>
+                            <div class="text-xs sm:text-sm font-bold text-navy">{{ t('my_registration.reupload_uploading') }}</div>
                         </div>
 
                         <div v-else-if="reuploadFileUrl" class="p-4 rounded-2xl border border-emerald-300 bg-emerald-50/60 flex items-center justify-between gap-3">
@@ -920,26 +920,26 @@ onMounted(() => {
                                     <Icon v-else icon="ph:file-pdf-bold" class="text-2xl text-rose-500" />
                                 </div>
                                 <div class="min-w-0">
-                                    <div class="text-xs font-bold text-emerald-800">Berkas Terlampir</div>
-                                    <div class="text-[11px] text-slate-500 truncate">Siap dikirim ke panitia</div>
+                                    <div class="text-xs font-bold text-emerald-800">{{ t('my_registration.reupload_file_attached') }}</div>
+                                    <div class="text-[11px] text-slate-500 truncate">{{ t('my_registration.reupload_file_ready') }}</div>
                                 </div>
                             </div>
                             <button type="button" @click="triggerReuploadFileInput" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:text-navy cursor-pointer">
-                                Ganti
+                                {{ t('my_registration.reupload_change_file') }}
                             </button>
                         </div>
 
                         <div v-else @click="triggerReuploadFileInput" class="border-2 border-dashed border-slate-200 hover:border-navy rounded-2xl p-5 text-center cursor-pointer transition-colors bg-slate-50/50 hover:bg-slate-50 group">
                             <Icon icon="ph:cloud-arrow-up-bold" class="text-2xl text-slate-400 group-hover:text-navy mx-auto mb-1.5 transition-colors" />
-                            <div class="text-xs sm:text-sm font-bold text-navy">Klik untuk memilih foto / file PDF struk</div>
-                            <div class="text-[11px] text-slate-400 mt-0.5">Format JPG, PNG, WEBP, atau PDF (Maks. 5MB)</div>
+                            <div class="text-xs sm:text-sm font-bold text-navy">{{ t('my_registration.reupload_dropzone_title') }}</div>
+                            <div class="text-[11px] text-slate-400 mt-0.5">{{ t('my_registration.reupload_dropzone_hint') }}</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex justify-end gap-2.5 pt-2 border-t border-slate-100">
                     <button type="button" @click="showReuploadModal = false" class="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer">
-                        Batal
+                        {{ t('my_registration.reupload_cancel') }}
                     </button>
                     <button
                         type="button"
@@ -947,7 +947,7 @@ onMounted(() => {
                         :disabled="!reuploadFileUrl || !reuploadSenderName.trim() || isReuploading"
                         class="px-5 py-2.5 rounded-xl bg-navy hover:bg-navy/90 disabled:opacity-50 text-white font-bold text-xs sm:text-sm transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer">
                         <Icon v-if="isReuploading" icon="ph:spinner-bold" class="animate-spin text-sm" />
-                        <span>Kirim Bukti Pembayaran</span>
+                        <span>{{ t('my_registration.reupload_submit') }}</span>
                     </button>
                 </div>
             </div>

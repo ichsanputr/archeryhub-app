@@ -233,6 +233,7 @@ const eventLinks = computed(() => {
     { label: t('sidebar.summary'), icon: 'ph:squares-four', path: `${prefix}/tournaments/${eventId.value}/overview` },
     { label: t('sidebar.event_page'), icon: 'ph:gear-six-bold', path: `${prefix}/tournaments/${eventId.value}/page` },
     { label: t('sidebar.participants'), icon: 'ph:users-three', path: `${prefix}/tournaments/${eventId.value}/participants` },
+    { label: t('sidebar.payments'), icon: 'ph:credit-card-bold', path: `${prefix}/tournaments/${eventId.value}/payments` },
     { label: t('sidebar.teams'), icon: 'ph:users-four', path: `${prefix}/tournaments/${eventId.value}/teams` },
   ]
 
@@ -241,7 +242,6 @@ const eventLinks = computed(() => {
   }
 
   links.push(
-    { label: t('sidebar.payments'), icon: 'ph:credit-card-bold', path: `${prefix}/tournaments/${eventId.value}/payments` },
     { label: t('sidebar.targets'), icon: 'ph:target', path: `${prefix}/tournaments/${eventId.value}/targets` },
     { label: t('sidebar.schedule'), icon: 'ph:calendar-bold', path: `${prefix}/tournaments/${eventId.value}/schedule` },
     { label: t('sidebar.qualification'), icon: 'fluent:table-freeze-column-20-regular', path: `${prefix}/tournaments/${eventId.value}/qualification` },

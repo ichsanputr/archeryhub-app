@@ -513,7 +513,12 @@ function getStatusLabel(status?: string) {
     case 'rejected':
       return t('org_event_payments.status_rejected')
     case 'cancelled':
-      return t('org_event_payments.status_cancelled')
+    case 'canceled':
+      return t('org_event_payments.status_cancelled', 'Dibatalkan')
+    case 'expired':
+      return t('payment_status.badge_expired', 'Kedaluwarsa')
+    case 'failed':
+      return t('payment_status.badge_failed', 'Gagal')
     default:
       return status || t('org_event_payments.status_pending')
   }
@@ -530,9 +535,11 @@ function getStatusBadgeClass(status?: string) {
     case 'awaiting_verification':
       return 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/50 dark:text-amber-300 dark:border-amber-800'
     case 'rejected':
-      return 'bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/50 dark:text-rose-300 dark:border-rose-800'
     case 'cancelled':
-      return 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600'
+    case 'canceled':
+    case 'expired':
+    case 'failed':
+      return 'bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/50 dark:text-rose-300 dark:border-rose-800'
     default:
       return 'bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800'
   }
@@ -549,9 +556,11 @@ function getStatusDotClass(status?: string) {
     case 'awaiting_verification':
       return 'bg-amber-500 animate-pulse'
     case 'rejected':
-      return 'bg-rose-500'
     case 'cancelled':
-      return 'bg-slate-400'
+    case 'canceled':
+    case 'expired':
+    case 'failed':
+      return 'bg-rose-500'
     default:
       return 'bg-blue-500'
   }

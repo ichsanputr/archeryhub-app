@@ -142,11 +142,17 @@ const handleMediaSelect = (media) => {
     } else if (mediaTarget.value === 'logo') {
         form.value.logo_url = media.url
     } else if (mediaTarget.value === 'guidebook') {
+        const isPdf = media.url?.toLowerCase().endsWith('.pdf') || media.mime_type === 'application/pdf'
+        if (!isPdf) {
+            const toast = useToast()
+            toast.error(t('dashboard_events_page.toasts.only_pdf', 'Hanya file PDF yang diperbolehkan'))
+            return
+        }
         if (!form.value.guidebooks) form.value.guidebooks = []
         form.value.guidebooks.push({
             url: media.url,
             name: media.caption || media.url.split('/').pop() || 'Dokumen THB',
-            type: media.url.toLowerCase().endsWith('.pdf') ? 'pdf' : 'link'
+            type: 'pdf'
         })
         form.value.technical_guidebook_url = form.value.guidebooks[0]?.url || media.url
     } else if (mediaTarget.value === 'gallery') {
@@ -248,8 +254,14 @@ const handleGuidebookUpload = async (event) => {
     const toast = useToast()
     try {
         for (const file of files) {
-            if (file.type !== 'application/pdf') {
+            const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
+            if (!isPdf) {
                 toast.error(t('dashboard_events_page.toasts.only_pdf', 'Hanya file PDF yang diperbolehkan'))
+                continue
+            }
+
+            if (file.size > 20 * 1024 * 1024) {
+                toast.error(`Ukuran file "${file.name}" melebihi batas maksimal 20MB`)
                 continue
             }
 
@@ -288,7 +300,10 @@ const addManualGuidebookLink = () => {
     if (!manualGuidebookUrl.value || !manualGuidebookUrl.value.trim()) return
     if (!form.value.guidebooks) form.value.guidebooks = []
 
-    const url = manualGuidebookUrl.value.trim()
+    let url = manualGuidebookUrl.value.trim()
+    if (!/^https?:\/\//i.test(url)) {
+        url = 'https://' + url
+    }
     const name = manualGuidebookName.value?.trim() || url.split('/').pop() || `Buku Panduan ${form.value.guidebooks.length + 1}`
 
     form.value.guidebooks.push({
@@ -975,10 +990,10 @@ const setSchedTime = (session, field, timeVal) => {
                                     <Icon icon="ph:file-pdf-bold" class="text-navy text-base" />
                                     <span>{{ t('event_create.section_guidebook', 'Buku Panduan Teknis (THB / Handbook)') }}</span>
                                 </label>
-                                <span class="text-xs text-gray-400 font-medium">Format PDF / Link (Maks. 20MB)</span>
+                                <span class="text-xs text-gray-400 font-medium">Format PDF (Maks. 20MB)</span>
                             </div>
                             <div class="text-xs text-slate-500 font-medium">
-                                {{ t('event_create.guidebook_subtitle', 'Unggah dokumen PDF peraturan/THB atau tambahkan tautan eksternal (Google Drive, dll).') }}
+                                {{ t('event_create.guidebook_subtitle', 'Unggah satu atau lebih dokumen PDF buku panduan teknis (THB) / peraturan turnamen.') }}
                             </div>
 
                             <!-- Hidden multi-file input -->
@@ -987,50 +1002,20 @@ const setSchedTime = (session, field, timeVal) => {
                                 type="file"
                                 multiple
                                 class="hidden"
-                                accept="application/pdf"
+                                accept="application/pdf,.pdf"
                                 @change="handleGuidebookUpload"
                             />
 
-                            <!-- Upload / Add link controls -->
-                            <div class="flex flex-col sm:flex-row gap-2">
-                                <div class="relative flex-1">
-                                    <Icon icon="ph:link-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
-                                    <input
-                                        v-model="manualGuidebookUrl"
-                                        type="url"
-                                        :placeholder="t('event_create.guidebook_url_placeholder', 'Tempel link dokumen (Google Drive, Cloud PDF, dll.)')"
-                                        class="w-full pl-9 pr-4 py-2 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/10 outline-none text-sm text-navy transition-all"
-                                        @keydown.enter.prevent="addManualGuidebookLink"
-                                    />
-                                </div>
-                                <div class="sm:w-56">
-                                    <input
-                                        v-model="manualGuidebookName"
-                                        type="text"
-                                        :placeholder="t('event_create.guidebook_name_placeholder', 'Nama Dokumen (opsional)')"
-                                        class="w-full px-3.5 py-2 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/10 outline-none text-sm text-navy transition-all"
-                                        @keydown.enter.prevent="addManualGuidebookLink"
-                                    />
-                                </div>
-                                <div class="flex items-center gap-2 shrink-0">
-                                    <button
-                                        type="button"
-                                        @click="addManualGuidebookLink"
-                                        :disabled="!manualGuidebookUrl?.trim()"
-                                        class="px-3.5 py-2 rounded-xl bg-white border border-gray-200 hover:border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed text-navy text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs"
-                                    >
-                                        <Icon icon="ph:plus-bold" class="text-sm" />
-                                        <span>{{ t('event_create.guidebook_add_link', 'Tambah Link') }}</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        @click="openMediaLibrary('guidebook')"
-                                        class="px-3.5 py-2 rounded-xl bg-navy hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs"
-                                    >
-                                        <Icon icon="ph:file-arrow-up-bold" class="text-sm" />
-                                        <span>{{ t('event_create.guidebook_upload_btn', 'Unggah PDF') }}</span>
-                                    </button>
-                                </div>
+                            <!-- Upload / Select PDF from Media Library button -->
+                            <div class="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    @click="openMediaLibrary('guidebook')"
+                                    class="px-4 py-2.5 rounded-xl bg-navy hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-2 transition-colors shadow-2xs cursor-pointer"
+                                >
+                                    <Icon icon="ph:file-arrow-up-bold" class="text-sm" />
+                                    <span>{{ t('event_create.guidebook_upload_btn', 'Pilih dari Media Library / Unggah PDF') }}</span>
+                                </button>
                             </div>
 
                             <!-- List of THB documents -->
@@ -1986,6 +1971,11 @@ const setSchedTime = (session, field, timeVal) => {
         </div>
 
         <!-- Media Library Modal -->
-        <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
+        <MediaLibrary
+            :show="showMediaLibrary"
+            :filter-type="mediaTarget === 'guidebook' ? 'pdf' : (['banner', 'logo', 'gallery'].includes(mediaTarget) ? 'image' : 'all')"
+            @close="showMediaLibrary = false"
+            @select="handleMediaSelect"
+        />
     </div>
 </template>

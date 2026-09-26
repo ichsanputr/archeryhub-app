@@ -53,17 +53,21 @@
                             <!-- Loading State -->
                             <div v-if="isLoadingLibrary" class="flex flex-col items-center justify-center py-16">
                                 <Icon icon="ph:spinner-bold" class="text-4xl text-primary animate-spin mb-4" />
-                                <div class="text-gray-500 text-sm">Memuat media library...</div>
+                                <div class="text-gray-500 text-sm">{{ t('media_library.loading', 'Memuat media library...') }}</div>
                             </div>
 
                             <!-- Empty State -->
-                            <div v-else-if="mediaFiles.length === 0"
+                            <div v-else-if="filteredMediaFiles.length === 0"
                                 class="flex flex-col items-center justify-center py-16">
                                 <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-                                    <Icon icon="ph:image-broken" class="text-3xl text-gray-400" />
+                                    <Icon :icon="filterType === 'pdf' ? 'ph:file-pdf-duotone' : 'ph:image-broken'" class="text-3xl text-gray-400" />
                                 </div>
-                                <div class="text-gray-600 font-medium">{{ t('media_library.empty_title') }}</div>
-                                <div class="text-gray-400 text-sm mt-1">{{ t('media_library.empty_desc') }}</div>
+                                <div class="text-gray-600 font-medium">
+                                    {{ filterType === 'pdf' ? t('media_library.empty_pdf_title', 'Belum Ada Dokumen PDF') : t('media_library.empty_title') }}
+                                </div>
+                                <div class="text-gray-400 text-sm mt-1">
+                                    {{ filterType === 'pdf' ? t('media_library.empty_pdf_desc', 'Unggah file PDF baru melalui tab Upload') : t('media_library.empty_desc') }}
+                                </div>
                                 <button @click="activeTab = 'upload'"
                                     class="mt-4 px-4 py-2 bg-primary text-navy font-bold text-sm rounded-lg hover:bg-primary-hover transition-colors">
                                     {{ t('media_library.upload_now') }}
@@ -72,7 +76,7 @@
 
                             <!-- Media Grid: 2 cols mobile, touch-friendly -->
                             <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
-                                <div v-for="file in mediaFiles" :key="file.id" @click="selectMedia(file)" role="button"
+                                <div v-for="file in filteredMediaFiles" :key="file.id" @click="selectMedia(file)" role="button"
                                     tabindex="0" @keydown.enter="selectMedia(file)"
                                     @keydown.space.prevent="selectMedia(file)"
                                     class="group relative aspect-square rounded-xl overflow-hidden border-2 transition-all hover:shadow-md active:scale-[0.98] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary touch-manipulation min-h-0"
@@ -118,12 +122,12 @@
                             <!-- Caption Input (Required) -->
                             <div class="mb-4">
                                 <label class="text-navy text-sm font-bold mb-1.5 block">
-                                    Caption <span class="text-red-500">*</span>
+                                    {{ t('media_library.caption_label', 'Caption') }} <span class="text-red-500">*</span>
                                 </label>
                                 <input v-model="uploadCaption" type="text"
-                                    placeholder="Contoh: Banner Turnamen Jakarta 2026"
+                                    :placeholder="filterType === 'pdf' ? t('media_library.caption_pdf_placeholder', 'Contoh: THB / Juknis Turnamen 2026') : t('media_library.caption_placeholder', 'Contoh: Banner Turnamen Jakarta 2026')"
                                     class="w-full h-11 px-4 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all placeholder:text-gray-400 touch-manipulation" />
-                                <div class="text-xs text-gray-400 mt-1">Caption akan digunakan sebagai nama file</div>
+                                <div class="text-xs text-gray-400 mt-1">{{ t('media_library.caption_hint', 'Caption akan digunakan sebagai nama file') }}</div>
                             </div>
 
                             <!-- Upload Zone -->
@@ -140,7 +144,9 @@
                                     <Icon icon="ph:cloud-arrow-up"
                                         class="text-4xl sm:text-5xl text-gray-400 mx-auto mb-3 sm:mb-4" />
                                     <div class="text-gray-600 font-medium text-sm sm:text-base">{{ uploadZoneText }}</div>
-                                    <div class="text-xs text-gray-400 mt-2">{{ t('media_library.upload_hint') }}</div>
+                                    <div class="text-xs text-gray-400 mt-2">
+                                        {{ filterType === 'pdf' ? t('media_library.upload_pdf_hint', 'Dokumen PDF (maks. 20MB)') : t('media_library.upload_hint', 'Gambar, PDF, DOC, XLS (maks. 20MB)') }}
+                                    </div>
                                 </div>
 
                                 <!-- Uploading State -->
@@ -220,6 +226,10 @@ const props = defineProps({
     show: {
         type: Boolean,
         default: false
+    },
+    filterType: {
+        type: String, // 'all', 'pdf', 'image'
+        default: 'all'
     }
 })
 
@@ -228,8 +238,8 @@ const emit = defineEmits(['close', 'select'])
 const { get, upload, delete: del } = useApi()
 const toast = useToast()
 
-// Max 10MB, same as API
-const MAX_FILE_SIZE_MB = 10
+// Max 20MB
+const MAX_FILE_SIZE_MB = 20
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 
 // Common dashboard file types: images, PDF, Word, Excel (must match API)
@@ -241,11 +251,19 @@ const ACCEPT_MIME_TYPES = [
     'application/vnd.ms-excel',
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 ]
-// MIME types + extensions for better mobile file picker
-const acceptTypes = [
-    ...ACCEPT_MIME_TYPES,
-    '.jpg', '.jpeg', '.png', '.gif', '.webp', '.pdf', '.doc', '.docx', '.xls', '.xlsx'
-].join(',')
+
+const acceptTypes = computed(() => {
+    if (props.filterType === 'pdf') {
+        return 'application/pdf,.pdf'
+    }
+    if (props.filterType === 'image') {
+        return 'image/jpeg,image/png,image/gif,image/webp,.jpg,.jpeg,.png,.gif,.webp'
+    }
+    return [
+        ...ACCEPT_MIME_TYPES,
+        '.jpg', '.jpeg', '.png', '.gif', '.webp', '.pdf', '.doc', '.docx', '.xls', '.xlsx'
+    ].join(',')
+})
 
 const ALLOWED_TYPES = [...ACCEPT_MIME_TYPES]
 
@@ -255,6 +273,24 @@ const activeTab = ref('browse')
 const isLoadingLibrary = ref(false)
 const mediaFiles = ref([])
 const selectedMedia = ref(null)
+
+const filteredMediaFiles = computed(() => {
+    if (!mediaFiles.value) return []
+    if (props.filterType === 'pdf') {
+        return mediaFiles.value.filter(file => 
+            file.mime_type === 'application/pdf' || 
+            file.url?.toLowerCase().endsWith('.pdf') || 
+            file.filename?.toLowerCase().endsWith('.pdf')
+        )
+    }
+    if (props.filterType === 'image') {
+        return mediaFiles.value.filter(file => 
+            file.mime_type?.startsWith('image/') || 
+            /\.(jpg|jpeg|png|gif|webp)$/i.test(file.url || '')
+        )
+    }
+    return mediaFiles.value
+})
 
 // Upload state
 const isDragging = ref(false)
@@ -324,17 +360,29 @@ const handleFileDrop = async (event) => {
 // Upload file
 const uploadFile = async (file) => {
     if (!uploadCaption.value.trim()) {
-        uploadError.value = 'Caption wajib diisi'
+        uploadError.value = t('media_library.error_caption_required', 'Caption wajib diisi')
         return
     }
 
-    if (!ALLOWED_TYPES.includes(file.type)) {
-        uploadError.value = 'Format file tidak didukung. Gunakan: JPEG, PNG, GIF, WebP, PDF, DOC, DOCX, XLS, XLSX.'
+    if (props.filterType === 'pdf') {
+        const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
+        if (!isPdf) {
+            uploadError.value = t('media_library.error_only_pdf', 'Format file tidak didukung. Hanya file PDF yang diperbolehkan.')
+            return
+        }
+    } else if (props.filterType === 'image') {
+        const isImage = file.type?.startsWith('image/') || /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)
+        if (!isImage) {
+            uploadError.value = t('media_library.error_only_image', 'Format file tidak didukung. Hanya file gambar yang diperbolehkan.')
+            return
+        }
+    } else if (!ALLOWED_TYPES.includes(file.type)) {
+        uploadError.value = t('media_library.error_invalid_format', 'Format file tidak didukung. Gunakan: JPEG, PNG, GIF, WebP, PDF, DOC, DOCX, XLS, XLSX.')
         return
     }
 
     if (file.size > MAX_FILE_SIZE_BYTES) {
-        uploadError.value = `Ukuran file terlalu besar. Maksimal ${MAX_FILE_SIZE_MB}MB.`
+        uploadError.value = t('media_library.error_file_too_large', `Ukuran file terlalu besar. Maksimal ${MAX_FILE_SIZE_MB}MB.`)
         return
     }
 
@@ -357,11 +405,10 @@ const uploadFile = async (file) => {
         await loadMediaLibrary()
     } catch (error) {
         console.error('Upload failed:', error)
-        // Show API error (e.g. "File too large. Maximum size is 10MB.")
         const data = error?.data || error?.response?.data
         uploadError.value = (data?.error && typeof data.error === 'string')
             ? data.error
-            : (error?.message || 'Gagal mengupload file')
+            : (error?.message || t('media_library.error_upload_failed', 'Gagal mengupload file'))
     } finally {
         isUploading.value = false
     }
@@ -369,7 +416,8 @@ const uploadFile = async (file) => {
 
 // Delete media
 const deleteMedia = async (file) => {
-    if (!confirm(`Apakah Anda yakin ingin menghapus media "${file.filename}"?`)) return
+    const confirmMsg = t('media_library.confirm_delete', { name: file.filename }) || `Apakah Anda yakin ingin menghapus media "${file.filename}"?`
+    if (!confirm(confirmMsg)) return
 
     try {
         await del(`/media/${file.id}`)
@@ -379,7 +427,7 @@ const deleteMedia = async (file) => {
         await loadMediaLibrary()
     } catch (error) {
         console.error('Failed to delete media:', error)
-        toast.error('Gagal menghapus media')
+        toast.error(t('media_library.error_delete_failed', 'Gagal menghapus media'))
     }
 }
 

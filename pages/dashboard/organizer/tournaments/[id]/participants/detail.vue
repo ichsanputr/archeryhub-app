@@ -78,7 +78,17 @@ const enrolledCategories = computed(() => {
         list = categories.value.filter(c => registeredIds.includes(c.id))
     }
 
-    return list.map(c => {
+    const seen = new Set()
+    const uniqueList = []
+    for (const c of list) {
+        const key = c.category_id || c.id
+        if (key && !seen.has(key)) {
+            seen.add(key)
+            uniqueList.push(c)
+        }
+    }
+
+    return uniqueList.map(c => {
         const amount = (c.payment_amount !== undefined && c.payment_amount !== null && c.payment_amount > 0)
             ? c.payment_amount
             : ((c.fee !== undefined && c.fee !== null && c.fee > 0) ? c.fee : (participant.value.payment_amount || 0))
@@ -415,9 +425,6 @@ const needsManualConfirmation = computed(() => {
                         <BaseButton :to="`/dashboard/organizer/tournaments/${eventId}/participants`" variant="white" icon="ph:arrow-left-bold" class="h-11 sm:h-12 px-4 sm:px-6 text-sm sm:text-base font-bold shadow-md">
                             {{ t('dashboard.participants_list.title') }}
                         </BaseButton>
-                        <BaseButton v-if="archerId" :to="`/dashboard/organizer/tournaments/${eventId}/participants/edit?archer_id=${archerId}`" variant="primary" icon="ph:pencil-simple-bold" class="h-11 sm:h-12 px-6 sm:px-8 text-sm sm:text-base font-black shadow-lg shadow-primary/20">
-                            {{ t('participant.detail.edit_participant') }}
-                        </BaseButton>
                     </div>
                 </div>
             </div>
@@ -563,10 +570,20 @@ const needsManualConfirmation = computed(() => {
                                     <!-- Top Row: Reference, Method & Status, Amount -->
                                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                                         <div class="flex flex-wrap items-center gap-2.5">
-                                            <!-- Reference Tag -->
-                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs sm:text-sm font-mono font-bold bg-white border border-slate-200 text-slate-800 shadow-2xs">
+                                            <!-- Reference Tag with Link -->
+                                            <NuxtLink
+                                                v-if="trx.reference || trx.id"
+                                                :to="`/dashboard/organizer/tournaments/${eventId}/payments/${trx.reference || trx.id}`"
+                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs sm:text-sm font-mono font-bold bg-white hover:bg-slate-100 border border-slate-200 text-navy shadow-2xs transition-colors cursor-pointer group"
+                                                :title="t('archer_payment_detail.header_title', 'Buka Detail Tagihan')"
+                                            >
+                                                <Icon icon="ph:receipt-bold" class="text-slate-400 text-xs" />
+                                                <span>{{ trx.reference || trx.id || ('TRX-' + (idx + 1)) }}</span>
+                                                <Icon icon="ph:arrow-square-out-bold" class="text-xs text-slate-400" />
+                                            </NuxtLink>
+                                            <span v-else class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs sm:text-sm font-mono font-bold bg-white border border-slate-200 text-slate-800 shadow-2xs">
                                                 <Icon icon="ph:hash-bold" class="text-slate-400 text-xs" />
-                                                {{ trx.reference || trx.id || ('TRX-' + (idx + 1)) }}
+                                                {{ 'TRX-' + (idx + 1) }}
                                             </span>
 
                                             <!-- Method Badge -->
@@ -593,7 +610,7 @@ const needsManualConfirmation = computed(() => {
                                         </div>
                                     </div>
 
-                                    <!-- Middle / Bottom Row: Time, Notes, Verifier & Proof -->
+                                    <!-- Middle / Bottom Row: Time, Notes, Verifier, Proof & Payment Link -->
                                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2.5 border-t border-slate-200/70 text-xs sm:text-sm text-slate-600">
                                         <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
                                             <!-- Timestamp -->
@@ -609,13 +626,24 @@ const needsManualConfirmation = computed(() => {
                                             </span>
                                         </div>
 
-                                        <!-- Proof Button if available -->
-                                        <div v-if="trx.proof_url" class="shrink-0">
-                                            <button type="button" @click="openProofZoom(trx.proof_url)"
-                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 hover:text-navy bg-white hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors shadow-2xs cursor-pointer">
-                                                <Icon icon="ph:image-bold" class="text-slate-500" />
-                                                <span>{{ t('participant.detail.view_proof_btn') }}</span>
-                                            </button>
+                                        <!-- Action Buttons: View Proof & Payment Detail Link -->
+                                        <div class="flex items-center gap-2 shrink-0">
+                                            <div v-if="trx.proof_url">
+                                                <button type="button" @click="openProofZoom(trx.proof_url)"
+                                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 hover:text-navy bg-white hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors shadow-2xs cursor-pointer">
+                                                    <Icon icon="ph:image-bold" class="text-slate-500" />
+                                                    <span>{{ t('participant.detail.view_proof_btn') }}</span>
+                                                </button>
+                                            </div>
+                                            <NuxtLink
+                                                v-if="trx.reference || trx.id"
+                                                :to="`/dashboard/organizer/tournaments/${eventId}/payments/${trx.reference || trx.id}`"
+                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-navy hover:text-navy-dark bg-white hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors shadow-2xs cursor-pointer"
+                                            >
+                                                <Icon icon="ph:receipt-bold" class="text-primary text-xs" />
+                                                <span>{{ t('common.detail', 'Detail Tagihan') }}</span>
+                                                <Icon icon="ph:arrow-right-bold" class="text-[10px]" />
+                                            </NuxtLink>
                                         </div>
                                     </div>
 
@@ -655,7 +683,7 @@ const needsManualConfirmation = computed(() => {
                                 </h3>
                             </div>
 
-                            <div class="space-y-4 text-xs sm:text-sm">
+                            <div class="space-y-3.5 text-xs sm:text-sm">
                                 <div class="flex items-center justify-between py-1">
                                     <span class="text-slate-500 font-medium">{{ t('participant.detail.payment_status_label') }}</span>
                                     <span class="font-bold text-xs sm:text-sm px-2.5 py-1 rounded-md border"
@@ -669,32 +697,35 @@ const needsManualConfirmation = computed(() => {
                                         Rp {{ formatCurrency(participant.payment_amount || participant.total_fee || 0) }}
                                     </span>
                                 </div>
-                                <div class="flex items-center justify-between py-1 border-t border-slate-50">
-                                    <span class="text-slate-500 font-medium">{{ t('participant.detail.payment_method_label') }}</span>
-                                    <span class="font-bold text-slate-800 text-right">
-                                        {{ displayPaymentMethod }}
-                                    </span>
-                                </div>
-                                <div v-if="participant.transaction?.reference || participant.payment_reference" class="flex items-center justify-between py-1 border-t border-slate-50">
-                                    <span class="text-slate-500 font-medium">{{ t('participant.detail.invoice_ref_label') }}</span>
-                                    <span class="font-mono font-bold text-xs bg-slate-100 text-slate-800 px-2 py-0.5 rounded">
-                                        {{ participant.transaction?.reference || participant.payment_reference }}
-                                    </span>
-                                </div>
-                                <div v-if="participant.transaction?.registered_by_name || participant.transaction?.payer_name" class="flex items-start justify-between py-1 border-t border-slate-50 gap-2">
-                                    <span class="text-slate-500 font-medium shrink-0">{{ t('participant.detail.payer_label') }}</span>
-                                    <div class="text-right">
-                                        <div class="font-bold text-slate-800">
-                                            {{ participant.transaction?.registered_by_name || participant.transaction?.payer_name }}
+
+                                <!-- Redesigned Invoice Ref Link Card -->
+                                <div v-if="participant.transaction?.reference || participant.payment_reference" class="pt-1.5">
+                                    <NuxtLink
+                                        :to="`/dashboard/organizer/tournaments/${eventId}/payments/${participant.transaction?.reference || participant.payment_reference}`"
+                                        class="group flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-navy/5 border border-slate-200/90 hover:border-slate-300 transition-all shadow-2xs hover:shadow-xs cursor-pointer"
+                                        :title="t('archer_payment_detail.header_title', 'Buka Detail Tagihan')"
+                                    >
+                                        <div class="flex items-center gap-3 min-w-0">
+                                            <div class="size-8 rounded-lg bg-navy text-primary flex items-center justify-center shrink-0 shadow-2xs">
+                                                <Icon icon="ph:receipt-bold" class="text-base" />
+                                            </div>
+                                            <div class="min-w-0">
+                                                <div class="text-[11px] text-slate-400 font-medium leading-none">{{ t('participant.detail.invoice_ref_label', 'Nomor Tagihan') }}</div>
+                                                <div class="text-xs sm:text-sm font-mono font-bold text-navy truncate mt-1 group-hover:text-primary transition-colors">
+                                                    {{ participant.transaction?.reference || participant.payment_reference }}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div v-if="participant.transaction?.registered_by_email" class="text-[11px] text-slate-500 font-normal">
-                                            {{ participant.transaction.registered_by_email }}
+                                        <div class="flex items-center gap-1 text-xs font-bold text-slate-500 group-hover:text-navy transition-colors shrink-0 ml-2">
+                                            <span>{{ t('common.detail', 'Detail') }}</span>
+                                            <Icon icon="ph:arrow-right-bold" class="size-3 group-hover:translate-x-0.5 transition-transform text-slate-400 group-hover:text-navy" />
                                         </div>
-                                    </div>
+                                    </NuxtLink>
                                 </div>
-                                <div v-if="participant.transaction?.delegation_count && participant.transaction.delegation_count > 1" class="flex items-center justify-between py-1 border-t border-slate-50">
-                                    <span class="text-slate-500 font-medium">{{ t('participant.detail.registration_source_label') }}</span>
-                                    <span class="inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200">
+
+                                <div v-if="participant.transaction?.delegation_count && participant.transaction.delegation_count > 1" class="flex items-center justify-between pt-2 border-t border-slate-50">
+                                    <span class="text-slate-500 font-medium text-xs">{{ t('participant.detail.registration_source_label') }}</span>
+                                    <span class="inline-flex items-center gap-1 font-bold text-xs px-2.5 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200">
                                         <Icon icon="ph:users-three-bold" class="text-xs" />
                                         <span>{{ t('participant.detail.delegation_invoice_badge', { count: participant.transaction.delegation_count }) }}</span>
                                     </span>
@@ -746,17 +777,6 @@ const needsManualConfirmation = computed(() => {
                                         <span>{{ t('participant.detail.go_to_payments') }}</span>
                                         <Icon icon="ph:arrow-right-bold" class="text-xs" />
                                     </NuxtLink>
-                                </div>
-                            </div>
-
-                            <!-- Automatic Gateway Note when Pending (No EO Confirmation Needed) -->
-                            <div v-else-if="isAutomaticGateway && !isPaidStatus(participant.payment_status || participant.status)" class="pt-2">
-                                <div class="p-3 bg-blue-50/80 border border-blue-200/80 rounded-xl text-xs text-blue-900 flex items-start gap-2.5">
-                                    <Icon icon="ph:info-bold" class="text-base text-blue-600 shrink-0 mt-0.5" />
-                                    <div class="leading-relaxed">
-                                        <span class="font-bold">{{ t('participant.detail.auto_gateway_title') }}:</span>
-                                        {{ t('participant.detail.auto_gateway_desc') }}
-                                    </div>
                                 </div>
                             </div>
                         </div>

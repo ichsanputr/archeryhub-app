@@ -15,8 +15,8 @@
         <div class="flex gap-3 flex-shrink-0">
           <BaseButton variant="white" icon="ph:check-square-offset-bold" class="h-10 sm:h-11 px-4 border-white/20 text-xs sm:text-sm font-bold"
             @click="showBatchCheckinModal = true">
-            <span class="hidden sm:inline">Check-in Kolektif</span>
-            <span class="sm:hidden">Check-in</span>
+            <span class="hidden sm:inline">{{ t('dashboard.participants_list.batch_checkin_btn', 'Check-in Kolektif') }}</span>
+            <span class="sm:hidden">{{ t('dashboard.participants_list.batch_checkin_btn', 'Check-in') }}</span>
           </BaseButton>
           <BaseButton variant="white" icon="ph:download" class="h-10 sm:h-11 px-5 border-white/20 text-xs sm:text-sm font-bold"
             :loading="isExporting"
@@ -41,58 +41,71 @@
         <!-- Batch Check-in Modal -->
         <div
           v-if="showBatchCheckinModal"
-          class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xs animate-in fade-in duration-150"
+          class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60 backdrop-blur-xs animate-in fade-in duration-150"
           @click.self="showBatchCheckinModal = false"
         >
-          <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="size-10 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-black">
-                <Icon icon="ph:check-square-offset-bold" class="size-5" />
+          <div class="relative w-full max-w-lg bg-white dark:bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700 flex flex-col">
+            <!-- Header -->
+            <div class="px-6 py-5 bg-gradient-to-r from-navy to-navy/90 text-white flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="size-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20">
+                  <Icon icon="ph:check-square-offset-bold" class="text-2xl text-primary" />
+                </div>
+                <div>
+                  <h3 class="text-lg font-black tracking-tight text-white">{{ t('dashboard.participants_list.batch_checkin_modal.title') }}</h3>
+                  <div class="text-xs sm:text-sm text-slate-300">{{ t('dashboard.participants_list.batch_checkin_modal.subtitle') }}</div>
+                </div>
               </div>
-              <div>
-                <h4 class="font-black text-navy dark:text-white text-base">Check-in Kehadiran Kolektif</h4>
-                <div class="text-xs text-slate-400">Tandai kehadiran atlet kontingen/klub sekaligus</div>
-              </div>
+              <button @click="showBatchCheckinModal = false" class="size-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-300 hover:text-white transition-colors cursor-pointer">
+                <Icon icon="ph:x-bold" class="size-4" />
+              </button>
             </div>
 
-            <div class="space-y-4 mb-5">
+            <!-- Body -->
+            <div class="p-6 space-y-5">
               <div>
-                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Pilih Kontingen / Klub</label>
+                <label class="block text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">
+                  {{ t('dashboard.participants_list.batch_checkin_modal.club_label') }} <span class="text-rose-500">*</span>
+                </label>
                 <select
                   v-model="selectedBatchClub"
-                  class="w-full h-10 px-3 text-xs bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl outline-none font-medium text-navy dark:text-white"
+                  class="w-full h-11 px-4 text-xs sm:text-sm bg-slate-50 dark:bg-slate-700/60 border border-slate-200 dark:border-slate-600 rounded-xl outline-none font-medium text-navy dark:text-white focus:ring-2 focus:ring-navy/20 transition-all"
                 >
-                  <option value="">-- Pilih Kontingen / Klub --</option>
+                  <option value="">{{ t('dashboard.participants_list.batch_checkin_modal.club_placeholder') }}</option>
                   <option v-for="c in availableClubs" :key="c" :value="c">{{ c }}</option>
                 </select>
               </div>
 
-              <div class="p-3.5 bg-slate-50 dark:bg-slate-700/50 rounded-xl border border-slate-200/70 dark:border-slate-600/50 text-xs text-slate-600 dark:text-slate-300">
-                <div class="flex items-center gap-2 font-bold text-navy dark:text-white mb-1">
-                  <Icon icon="ph:info-bold" class="text-primary size-4" />
-                  <span>Ketentuan Check-in Kehadiran</span>
+              <div class="p-4 bg-blue-50/70 dark:bg-slate-700/40 rounded-2xl border border-blue-100 dark:border-slate-600 text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-1">
+                <div class="flex items-center gap-2 font-bold text-navy dark:text-white">
+                  <Icon icon="ph:info-bold" class="text-primary size-4 shrink-0" />
+                  <span>{{ t('dashboard.participants_list.batch_checkin_modal.rules_title') }}</span>
                 </div>
-                <div class="text-[11px] text-slate-500 dark:text-slate-400">
-                  Hanya atlet yang status pendaftarannya <strong>Lunas</strong> pada klub yang dipilih yang akan di-check-in kehadirannya.
+                <div class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed pl-6">
+                  {{ t('dashboard.participants_list.batch_checkin_modal.rules_desc') }}
                 </div>
               </div>
-            </div>
 
-            <div class="flex justify-end gap-2">
-              <button
-                @click="showBatchCheckinModal = false"
-                class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
-              >
-                Batal
-              </button>
-              <button
-                @click="executeBatchCheckin"
-                :disabled="!selectedBatchClub || isBatchProcessing"
-                class="px-4 py-2 bg-primary hover:bg-primary-hover disabled:opacity-50 text-btn-text rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 shadow-2xs"
-              >
-                <Icon v-if="isBatchProcessing" icon="ph:spinner-bold" class="size-3.5 animate-spin" />
-                <span>Konfirmasi Check-in</span>
-              </button>
+              <!-- Action Buttons -->
+              <div class="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  @click="showBatchCheckinModal = false"
+                  class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+                >
+                  {{ t('dashboard.participants_list.batch_checkin_modal.cancel') }}
+                </button>
+                <button
+                  type="button"
+                  @click="executeBatchCheckin"
+                  :disabled="!selectedBatchClub || isBatchProcessing"
+                  class="px-6 py-2.5 bg-primary hover:bg-primary/90 disabled:opacity-50 text-navy font-bold rounded-xl text-xs sm:text-sm transition-all flex items-center gap-2 shadow-md cursor-pointer"
+                >
+                  <Icon v-if="isBatchProcessing" icon="ph:spinner-bold" class="size-4 animate-spin" />
+                  <Icon v-else icon="ph:check-bold" class="size-4" />
+                  <span>{{ t('dashboard.participants_list.batch_checkin_modal.confirm') }}</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -210,11 +223,6 @@
             variant="white" size="sm" icon="ph:eye-bold"
             class="h-9 w-9 p-0 text-slate-400 hover:text-navy border-slate-200 shadow-2xs"
             :title="t('dashboard.participants_list.view_details')" />
-          <BaseButton
-            :to="`/dashboard/organizer/tournaments/${eventId}/participants/edit?archer_id=${item.archer_id || item.athlete_code}`"
-            variant="white" size="sm" icon="ph:pencil-simple-bold"
-            class="h-9 w-9 p-0 text-slate-400 hover:text-primary hover:border-primary/30 border-slate-200 shadow-2xs"
-            :title="t('dashboard.participants_list.edit_button')" />
         </div>
       </template>
     </DashboardDataTable>
@@ -279,7 +287,7 @@ const executeBatchCheckin = async () => {
         const targetIds = targetParticipants.map(p => p.uuid || p.id).filter(Boolean)
 
         if (targetIds.length === 0) {
-            toast.error('Tidak ada atlet dengan status lunas pada klub ini')
+            toast.error(t('dashboard.participants_list.batch_checkin_modal.toast_no_paid', 'Tidak ada atlet dengan status lunas pada klub ini'))
             return
         }
 
@@ -287,12 +295,12 @@ const executeBatchCheckin = async () => {
             participant_ids: targetIds
         })
 
-        toast.success(res?.message || 'Check-in kehadiran kolektif berhasil')
+        toast.success(res?.message || t('dashboard.participants_list.batch_checkin_modal.toast_success', 'Check-in kehadiran kolektif berhasil'))
         showBatchCheckinModal.value = false
         selectedBatchClub.value = ''
         fetchParticipants()
     } catch (err) {
-        toast.error(err?.data?.error || 'Gagal melakukan check-in kolektif')
+        toast.error(err?.data?.error || t('dashboard.participants_list.batch_checkin_modal.toast_error', 'Gagal melakukan check-in kolektif'))
     } finally {
         isBatchProcessing.value = false
     }

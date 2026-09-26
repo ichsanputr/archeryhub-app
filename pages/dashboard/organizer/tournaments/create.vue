@@ -335,12 +335,21 @@
                   <BaseTimePicker v-model="endDateTime" placeholder="17:00" />
                 </div>
               </div>
-              <div class="space-y-2 md:col-span-2">
+              <div class="space-y-2">
                 <label class="text-navy text-sm font-bold ml-1 flex items-center gap-1">
-                  {{ t('event_create.field_registration_deadline') }}
+                  {{ t('event_create.field_registration_start') }} <span class="text-red-500">*</span>
                 </label>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  <BaseDatePicker v-model="regDate" :max-date="endDateDate || startDateDate" :placeholder="t('event_create.field_registration_deadline')" />
+                <div class="grid grid-cols-2 gap-2">
+                  <BaseDatePicker v-model="regStartDate" :max-date="regDate || endDateDate || startDateDate" :placeholder="t('event_create.field_registration_start')" :error="errors.registrationStart" />
+                  <BaseTimePicker v-model="regStartTime" placeholder="08:00" />
+                </div>
+              </div>
+              <div class="space-y-2">
+                <label class="text-navy text-sm font-bold ml-1 flex items-center gap-1">
+                  {{ t('event_create.field_registration_deadline') }} <span class="text-red-500">*</span>
+                </label>
+                <div class="grid grid-cols-2 gap-2">
+                  <BaseDatePicker v-model="regDate" :min-date="regStartDate" :max-date="endDateDate || startDateDate" :placeholder="t('event_create.field_registration_deadline')" :error="errors.registrationDeadline" />
                   <BaseTimePicker v-model="regTime" placeholder="23:59" />
                 </div>
               </div>
@@ -369,50 +378,20 @@
                 type="file"
                 multiple
                 class="hidden"
-                accept="application/pdf"
+                accept="application/pdf,.pdf"
                 @change="handleGuidebookUpload"
               />
 
-              <!-- Upload / Add link controls -->
-              <div class="flex flex-col sm:flex-row gap-2.5">
-                <div class="relative flex-1">
-                  <Icon icon="ph:link-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
-                  <input
-                    v-model="manualGuidebookUrl"
-                    type="url"
-                    :placeholder="t('event_create.guidebook_url_placeholder')"
-                    class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/10 outline-none text-sm text-navy transition-all"
-                    @keydown.enter.prevent="addManualGuidebookLink"
-                  />
-                </div>
-                <div class="sm:w-60">
-                  <input
-                    v-model="manualGuidebookName"
-                    type="text"
-                    :placeholder="t('event_create.guidebook_name_placeholder')"
-                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/10 outline-none text-sm text-navy transition-all"
-                    @keydown.enter.prevent="addManualGuidebookLink"
-                  />
-                </div>
-                <div class="flex items-center gap-2 shrink-0">
-                  <button
-                    type="button"
-                    @click="addManualGuidebookLink"
-                    :disabled="!manualGuidebookUrl?.trim()"
-                    class="px-4 py-2.5 rounded-xl bg-white border border-gray-200 hover:border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed text-navy text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs"
-                  >
-                    <Icon icon="ph:plus-bold" class="text-sm" />
-                    <span>{{ t('event_create.guidebook_add_link') }}</span>
-                  </button>
-                  <button
-                    type="button"
-                    @click="openMediaLibrary('guidebook')"
-                    class="px-4 py-2.5 rounded-xl bg-navy hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-1.5 transition-colors shadow-2xs"
-                  >
-                    <Icon icon="ph:file-arrow-up-bold" class="text-sm" />
-                    <span>{{ t('event_create.guidebook_upload_btn') }}</span>
-                  </button>
-                </div>
+              <!-- Upload / Select PDF from Media Library button -->
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  @click="openMediaLibrary('guidebook')"
+                  class="px-4 py-2.5 rounded-xl bg-navy hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-2 transition-colors shadow-2xs cursor-pointer"
+                >
+                  <Icon icon="ph:file-arrow-up-bold" class="text-sm" />
+                  <span>{{ t('event_create.guidebook_upload_btn', 'Pilih dari Media Library / Unggah PDF') }}</span>
+                </button>
               </div>
 
               <!-- List of Uploaded/Added THB Documents -->
@@ -565,7 +544,12 @@
     </div>
 
     <!-- Media Library Modal -->
-    <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
+    <MediaLibrary
+      :show="showMediaLibrary"
+      :filter-type="mediaTarget === 'guidebook' ? 'pdf' : (['banner', 'logo', 'gallery'].includes(mediaTarget) ? 'image' : 'all')"
+      @close="showMediaLibrary = false"
+      @select="handleMediaSelect"
+    />
   </div>
 </template>
 
@@ -610,11 +594,16 @@ const openMediaLibrary = (target) => {
 
 const handleMediaSelect = (media) => {
   if (mediaTarget.value === 'guidebook') {
+    const isPdf = media.url?.toLowerCase().endsWith('.pdf') || media.mime_type === 'application/pdf'
+    if (!isPdf) {
+      toast.error(t('dashboard_events_page.toasts.only_pdf') || 'Hanya file PDF yang diperbolehkan')
+      return
+    }
     if (!form.guidebooks) form.guidebooks = []
     form.guidebooks.push({
       url: media.url,
       name: media.caption || media.filename?.replace(/\.[^/.]+$/, '') || media.url.split('/').pop() || 'Dokumen THB',
-      type: media.url.toLowerCase().endsWith('.pdf') ? 'pdf' : 'link'
+      type: 'pdf'
     })
   }
   showMediaLibrary.value = false
@@ -633,6 +622,7 @@ const form = reactive({
   endDate: '',
   description: '',
   type: '', // Discipline
+  registrationStart: '',
   registrationDeadline: '',
   status: 'draft',
   quotaType: 'free',
@@ -656,8 +646,13 @@ const handleGuidebookUpload = async (event) => {
   uploadingGuidebook.value = true
   try {
     for (const file of files) {
-      if (file.type !== 'application/pdf') {
+      const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
+      if (!isPdf) {
         toast.error(t('dashboard_events_page.toasts.only_pdf') || 'Hanya file PDF yang diperbolehkan')
+        continue
+      }
+      if (file.size > 20 * 1024 * 1024) {
+        toast.error(`Ukuran file "${file.name}" melebihi batas maksimal 20MB`)
         continue
       }
       const formData = new FormData()
@@ -691,7 +686,10 @@ const addManualGuidebookLink = () => {
   if (!manualGuidebookUrl.value || !manualGuidebookUrl.value.trim()) return
   if (!form.guidebooks) form.guidebooks = []
 
-  const url = manualGuidebookUrl.value.trim()
+  let url = manualGuidebookUrl.value.trim()
+  if (!/^https?:\/\//i.test(url)) {
+    url = 'https://' + url
+  }
   const name = manualGuidebookName.value?.trim() || url.split('/').pop() || `Buku Panduan ${form.guidebooks.length + 1}`
 
   form.guidebooks.push({
@@ -718,8 +716,12 @@ const startDateDate = ref('')
 const startDateTime = ref('08:00')
 const endDateDate = ref('')
 const endDateTime = ref('17:00')
+const regStartDate = ref(new Date().toISOString().split('T')[0])
+const regStartTime = ref('08:00')
 const regDate = ref('')
 const regTime = ref('23:59')
+
+form.registrationStart = `${regStartDate.value}T${regStartTime.value}`
 
 watch([startDateDate, startDateTime], () => {
   form.startDate = startDateDate.value ? `${startDateDate.value}T${startDateTime.value || '00:00'}` : ''
@@ -729,8 +731,18 @@ watch([endDateDate, endDateTime], () => {
   form.endDate = endDateDate.value ? `${endDateDate.value}T${endDateTime.value || '00:00'}` : ''
 })
 
+watch([regStartDate, regStartTime], () => {
+  form.registrationStart = regStartDate.value ? `${regStartDate.value}T${regStartTime.value || '00:00'}` : ''
+  if (form.registrationStart) {
+    errors.registrationStart = null
+  }
+})
+
 watch([regDate, regTime], () => {
   form.registrationDeadline = regDate.value ? `${regDate.value}T${regTime.value || '00:00'}` : ''
+  if (form.registrationDeadline) {
+    errors.registrationDeadline = null
+  }
 })
 
 const isSlugManuallyEdited = ref(false)
@@ -845,6 +857,8 @@ const validateStep = () => {
     slug: [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, t('event_create.slug_validation'))],
     startDate: [rules.required()],
     endDate: [rules.required()],
+    registrationStart: [rules.required()],
+    registrationDeadline: [rules.required()],
     type: [rules.required()],
     country: [rules.required()],
     currency: [rules.required()]
@@ -856,6 +870,16 @@ const validateStep = () => {
     const endTime = new Date(form.endDate).getTime()
     if (endTime <= startTime) {
       errors.endDate = t('event_create.end_date_validation')
+      return false
+    }
+  }
+
+  // Registration deadline must be after registration start
+  if (form.registrationStart && form.registrationDeadline) {
+    const regStartTimeVal = new Date(form.registrationStart).getTime()
+    const regEndTimeVal = new Date(form.registrationDeadline).getTime()
+    if (regEndTimeVal <= regStartTimeVal) {
+      errors.registrationDeadline = t('dashboard_events_page.registration.error_deadline_before_start') || 'Batas akhir pendaftaran tidak boleh lebih awal dari mulai pendaftaran'
       return false
     }
   }
@@ -885,6 +909,7 @@ const handleSubmit = async () => {
       end_date: formatToISO(form.endDate),
       description: form.description,
       status: form.status,
+      registration_start: formatToISO(form.registrationStart),
       registration_deadline: formatToISO(form.registrationDeadline),
       location_type: form.type,
       quota_type: form.quotaType,
@@ -894,7 +919,8 @@ const handleSubmit = async () => {
         country: form.country,
         currency: form.currency || 'IDR',
         visibility: form.visibility || 'external',
-        technical_guidebooks: form.guidebooks || []
+        technical_guidebooks: form.guidebooks || [],
+        registration_start: formatToISO(form.registrationStart)
       })
     }
 
